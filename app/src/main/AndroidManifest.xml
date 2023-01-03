@@ -157,15 +157,6 @@
         <activity
             android:name="info.plateaukao.einkbro.activity.WhiteListActivity"
             android:label="@string/setting_title_whitelist" />
-        <activity
-            android:name="info.plateaukao.einkbro.activity.Whitelist_AdBlock"
-            android:label="@string/setting_title_whitelist" />
-        <activity
-            android:name="info.plateaukao.einkbro.activity.Whitelist_Javascript"
-            android:label="@string/setting_title_whitelistJS" />
-        <activity
-            android:name="info.plateaukao.einkbro.activity.Whitelist_Cookie"
-            android:label="@string/setting_title_whitelistCookie" />
 
         <service
             android:name="info.plateaukao.einkbro.service.ClearService"

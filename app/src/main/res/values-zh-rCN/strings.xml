@@ -188,7 +188,7 @@
     <string name="setting_title_import_appData">导入应用程序数据</string>
     <string name="setting_summary_export_appData">导出应用程序数据 (起始页 + 预览、历史记录、书签) 以及您的个人设置。</string>
     <string name="title_appData">应用程序数据</string>
-    <string name="hint_database">这将删除当前的所有设置和数据，是否继续？</string>
+    <string name="hint_database">这将删除当前的所有网址，是否继续？</string>
 
 
     <!-- Others setting -->
@@ -390,4 +390,5 @@
     <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen.</string>
     <string name="setting_title_video_pip">Show Video in Small Window</string>
     <string name="setting_summary_video_pip">When playing video in fullscreen and leave, show small window to continue play.</string>
+    <string name="empty_whitelist_hint">Please click on top right button to add a new domain</string>
 </resources>

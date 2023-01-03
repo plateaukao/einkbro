@@ -5,7 +5,7 @@
 
     <!-- App -->
     <string name="app_name">EinkBro</string>
-    <string name="list_empty">Current list is empty</string>
+    <string name="list_empty">Current list is empty.</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="album_title_history">History</string>
     <string name="album_title_home">Home</string>
@@ -199,7 +199,7 @@
     <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
         and your personal settings.</string>
     <string name="title_appData">App data</string>
-    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
+    <string name="hint_database">This will delete all items here. Will you proceed?</string>
 
 
     <!-- Others setting -->
@@ -386,4 +386,5 @@
     <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen.</string>
     <string name="setting_title_video_pip">Show video in small window</string>
     <string name="setting_summary_video_pip">When playing video in fullscreen and leave, show small window to continue play.</string>
+    <string name="empty_whitelist_hint">Please click on top right button to add a new domain</string>
 </resources>

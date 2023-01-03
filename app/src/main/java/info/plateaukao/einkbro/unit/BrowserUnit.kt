@@ -397,7 +397,6 @@ object BrowserUnit : KoinComponent {
         return count
     }
 
-    fun clearHome(context: Context?) = recordDb.clearHome()
 
     @JvmStatic
     fun clearCache(context: Context) {

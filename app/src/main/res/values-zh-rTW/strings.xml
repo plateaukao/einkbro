@@ -2,7 +2,7 @@
 <resources>
     <!-- App -->
     <string name="app_name">EinkBro</string>
-    <string name="list_empty">目前清單是空的</string>
+    <string name="list_empty">目前清單是空的。</string>
     <string name="bookmarks">書籤</string>
     <string name="album_title_history">歷史</string>
     <string name="album_title_home">首頁</string>
@@ -148,7 +148,7 @@
     <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
         and your personal settings.</string>
     <string name="title_appData">App data</string>
-    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
+    <string name="hint_database">確定要刪除所有項目嗎？</string>
     <!-- Others setting -->
     <string name="setting_title_license">License</string>
     <!-- Toast -->
@@ -320,4 +320,5 @@
     <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen.</string>
     <string name="setting_title_video_pip">Show Video in Small Window</string>
     <string name="setting_summary_video_pip">When playing video in fullscreen and leave, show small window to continue play.</string>
+    <string name="empty_whitelist_hint">請按右上角新增網域。</string>
 </resources>

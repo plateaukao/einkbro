@@ -116,10 +116,6 @@ class RecordDb(context: Context?) : KoinComponent {
         database.execSQL("DELETE FROM " + table + " WHERE " + RecordUnit.COLUMN_DOMAIN + " = " + "\"" + domain.trim { it <= ' ' } + "\"")
     }
 
-    fun clearHome() {
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_GRID)
-    }
-
     fun clearHistory() {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_HISTORY)
     }
