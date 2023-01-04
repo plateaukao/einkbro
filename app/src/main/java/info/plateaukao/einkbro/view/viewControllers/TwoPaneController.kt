@@ -1,11 +1,11 @@
 package info.plateaukao.einkbro.view.viewControllers
 
 import android.app.Activity
-import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.view.LayoutInflater
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -181,7 +181,6 @@ class TwoPaneController(
                 }
             }
 
-            TranslationMode.ONYX -> launchTranslateWindow(webView.getRawText().purify())
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
         }
     }
@@ -217,15 +216,6 @@ class TwoPaneController(
             NinjaToast.showShort(activity, "Translation does not work for this page.")
             return
         }
-        // onyx case
-        if (config.translationMode == TranslationMode.ONYX) {
-            ViewUnit.toggleMultiWindow(activity, true)
-            try {
-                launchOnyxDictTranslation(text)
-            } catch (ignored: ClassNotFoundException) {
-            }
-            return
-        }
 
         // webview cases: google, papago
         if (!isWebViewAdded) {
@@ -256,11 +246,8 @@ class TwoPaneController(
     }
 
     fun showTranslationConfigDialog() {
-        val enumValues: List<TranslationMode> = if (Build.MANUFACTURER != "ONYX") {
+        val enumValues: List<TranslationMode> =
             TranslationMode.values().toMutableList().apply { remove(TranslationMode.ONYX) }
-        } else {
-            TranslationMode.values().toList()
-        }
 
         val translationModeArray = enumValues.map { it.label }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
@@ -373,31 +360,15 @@ class TwoPaneController(
         return uri.toString()
     }
 
-    private fun launchOnyxDictTranslation(text: String) {
-        val intent = Intent().apply {
-            action = "com.onyx.intent.ACTION_DICT_TRANSLATION"
-            putExtra("translation", "{\"type\": \"page\", \"content\": \"$text\"}")
-        }
-        activity.startActivity(intent)
-    }
-
     private fun isTranslationModeOn(): Boolean =
         (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) || twoPaneLayout.shouldShowSecondPane
 
     private fun toggleTranslationWindow(
         isEnabled: Boolean, onTranslationClosed: () -> Unit = {}
     ) {
-        if (config.translationMode == TranslationMode.ONYX) {
-            ViewUnit.toggleMultiWindow(activity, isEnabled)
-        } else {
-            // all other translation types, should remove sub webviews
-            if (!isEnabled) {
-                webView.loadUrl(BrowserUnit.URL_ABOUT_BLANK)
-                twoPaneLayout.shouldShowSecondPane = false
-            }
-        }
-
         if (!isEnabled) {
+            webView.loadUrl(BrowserUnit.URL_ABOUT_BLANK)
+            twoPaneLayout.shouldShowSecondPane = false
             onTranslationClosed()
         }
     }
