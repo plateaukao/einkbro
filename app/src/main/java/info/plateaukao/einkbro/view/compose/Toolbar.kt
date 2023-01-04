@@ -110,6 +110,9 @@ fun ComposedIconBar(
             when (val toolbarAction = toolbarActionInfo.toolbarAction) {
                 Title -> {
                     val titleModifier = Modifier
+                        .padding(start = 2.dp, top = 6.dp, bottom = 6.dp)
+                        .fillMaxHeight()
+                        .border(0.5.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(16.dp))
                         .padding(start = 3.dp, end = 1.dp)
                         .then(
                             if (shouldTitleWidthFixed) Modifier.widthIn(max = 300.dp) else Modifier.weight(
@@ -121,15 +124,6 @@ fun ComposedIconBar(
                         modifier = titleModifier,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (!shouldTitleWidthFixed)
-                            Icon(
-                                modifier = Modifier
-                                    .padding(horizontal = 2.dp)
-                                    .size(20.dp),
-                                painter = painterResource(id = R.drawable.ic_input_url),
-                                contentDescription = null,
-                                tint = MaterialTheme.colors.onBackground
-                            )
                         Text(
                             text = title,
                             color = MaterialTheme.colors.onBackground,
