@@ -249,20 +249,20 @@ class TwoPaneController(
         val enumValues: List<TranslationMode> =
             TranslationMode.values().toMutableList().apply { remove(TranslationMode.ONYX) }
 
-        val translationModeArray = enumValues.map { it.label }.toTypedArray()
+        val translationModeArray = enumValues.map { activity.getString(it.labelResId) }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
         val selected = valueArray.indexOf(config.translationMode.ordinal)
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
-                setTitle(context.getString(R.string.translation_mode))
-                setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
-                    dialog.dismiss()
-                    config.translationMode = enumValues[which]
-                    showTranslationAction.invoke()
-                }
-            }.create().also {
-                it.show()
-                it.window?.setLayout(300.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
+            setTitle(context.getString(R.string.translation_mode))
+            setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
+                dialog.dismiss()
+                config.translationMode = enumValues[which]
+                showTranslationAction.invoke()
             }
+        }.create().also {
+            it.show()
+            it.window?.setLayout(300.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
     }
 
     private fun String.purify(): String =

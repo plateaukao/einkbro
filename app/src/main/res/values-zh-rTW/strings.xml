@@ -316,9 +316,14 @@
     <string name="dark_mode_disabled">關閉</string>
 
     <string name="changelogs">最新功能介紹</string>
-    <string name="setting_title_video_auto_fullscreen">Enable video play in fullscreen</string>
-    <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen.</string>
-    <string name="setting_title_video_pip">Show Video in Small Window</string>
-    <string name="setting_summary_video_pip">When playing video in fullscreen and leave, show small window to continue play.</string>
+    <string name="setting_title_video_auto_fullscreen">播放影片時呈現全螢幕</string>
+    <string name="setting_summary_video_auto_fullscreen">當影片開始播放時，自動切換至全螢幕</string>
+    <string name="setting_title_video_pip">支援用小視窗播放影片</string>
+    <string name="setting_summary_video_pip">播放影片時，如果離開 EinkBro，會將影片以小視窗顯示</string>
     <string name="empty_whitelist_hint">請按右上角新增網域。</string>
+    <string name="google_text">Google 純文字模式</string>
+    <string name="papago_text">Papago 純文字模式</string>
+    <string name="google_full_page">Google 整頁翻譯</string>
+    <string name="papago_dual_pane">Papago 整頁翻譯</string>
+    <string name="google_in_place">Google 即時翻譯</string>
 </resources>
