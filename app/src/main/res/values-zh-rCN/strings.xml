@@ -391,4 +391,9 @@
     <string name="setting_title_video_pip">Show Video in Small Window</string>
     <string name="setting_summary_video_pip">When playing video in fullscreen and leave, show small window to continue play.</string>
     <string name="empty_whitelist_hint">Please click on top right button to add a new domain</string>
+    <string name="google_text">Google Text Mode</string>
+    <string name="papago_text">Papago Text Mode</string>
+    <string name="google_full_page">Google Whole Page</string>
+    <string name="papago_dual_pane">Papago Dual Pane</string>
+    <string name="google_in_place">Google in-Place</string>
 </resources>

@@ -518,14 +518,14 @@ enum class FabPosition {
     Right, Left, Center, NotShow, Custom
 }
 
-enum class TranslationMode(val label: String) {
-    ONYX("ONYX"),
-    GOOGLE("Google Text"),
-    PAPAGO("Papago Text"),
-    PAPAGO_URL("Papago Full Page"),
-    GOOGLE_URL("Google Full Page"),
-    PAPAGO_DUAL("Papago Dual Pane"),
-    GOOGLE_IN_PLACE("Google in-Place"),
+enum class TranslationMode(val labelResId: Int) {
+    ONYX(0),
+    GOOGLE(R.string.google_text),
+    PAPAGO(R.string.papago_text),
+    PAPAGO_URL(R.string.papago_full_page),
+    GOOGLE_URL(R.string.google_full_page),
+    PAPAGO_DUAL(R.string.papago_dual_pane),
+    GOOGLE_IN_PLACE(R.string.google_in_place),
 }
 
 enum class FontType(val resId: Int) {
