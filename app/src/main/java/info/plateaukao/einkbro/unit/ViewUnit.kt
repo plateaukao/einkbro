@@ -169,16 +169,4 @@ object ViewUnit {
         }
         return activity.isInMultiWindowMode
     }
-
-    fun toggleMultiWindow(activity: Activity, isEnabled: Boolean) {
-        if (isEnabled && isMultiWindowEnabled(activity)) return
-        if (!isEnabled && !isMultiWindowEnabled(activity)) return
-
-        val intent = Intent().apply {
-            action =
-                if (isEnabled) "com.onyx.action.START_MULTI_WINDOW" else "com.onyx.action.QUIT_MULTI_WINDOW"
-        }
-        activity.sendBroadcast(intent)
-    }
-
 }
