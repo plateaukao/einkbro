@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App -->
-    <string name="app_name">EinkBro ブラウザ</string>
+    <string name="app_name">EinkBro</string>
     <string name="list_empty">現在のリストは空です</string>
     <string name="bookmarks">ブックマーク</string>
     <string name="album_title_history">履歴</string>
     <string name="album_title_home">ホーム</string>
     <string name="search_hint">検索</string>
     <!-- Menu -->
-    <string name="main_menu_new_tab">新規タブ (裏)</string>
-    <string name="main_menu_new_tabOpen">新規タブ (前)</string>
-    <string name="main_omnibox_input_hint">検索または URL を入力</string>
-    <string name="menu_open_with">リンクを開く…</string>
+    <string name="main_menu_new_tab">新規タブ(裏)</string>
+    <string name="main_menu_new_tabOpen">新規タブ(前)</string>
+    <string name="main_omnibox_input_hint">検索またURL入力</string>
+    <string name="menu_open_with">リンク開く</string>
     <string name="menu_quit">終了</string>
-    <string name="menu_openFav">お気に入りを開く</string>
+    <string name="menu_openFav">お気に入り開く</string>
     <string name="menu_delete">削除</string>
-    <string name="menu_delete_list">リストを削除</string>
+    <string name="menu_delete_list">リスト削除</string>
     <string name="menu_edit">編集</string>
-    <string name="menu_closeTab">タブを閉じる</string>
-    <string name="menu_download">ダウンロードを開く</string>
+    <string name="menu_closeTab">タブ閉じる</string>
+    <string name="menu_download">ダウンロード開く</string>
     <string name="menu_fav">お気に入りに保存</string>
-    <string name="menu_sc">ホーム画面のショートカット</string>
-    <string name="menu_share_link">リンクを共有</string>
-    <string name="menu_save_screenshot">スクリーンショットを保存</string>
-    <string name="menu_save_bookmark">ブックマークに保存</string>
-    <string name="menu_save_as">名前を付けて保存</string>
-    <string name="menu_save_pdf">PDF として保存</string>
-    <string name="menu_shareClipboard">クリップボードにコピー</string>
+    <string name="menu_sc">ショートカット</string>
+    <string name="menu_share_link">リンク共有</string>
+    <string name="menu_save_screenshot">スクリーンショット</string>
+    <string name="menu_save_bookmark">ブックマーク保存</string>
+    <string name="menu_save_as">名前付けて保存</string>
+    <string name="menu_save_pdf">PDF保存</string>
+    <string name="menu_shareClipboard">コピー</string>
     <string name="menu_other_searchSite">サイト上の検索</string>
-    <string name="menu_other_info">EinkBro ブラウザについて</string>
+    <string name="menu_other_info">EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">タイトル:</string>
     <string name="dialog_url_hint">URL:</string>
@@ -38,9 +38,9 @@
     <!-- Settings -->
     <string name="setting_label">設定</string>
     <!-- browser setting -->
-    <string name="setting_title_clear_control">Data Control</string>
-    <string name="setting_title_start_control">Start Control</string>
-    <string name="setting_title_search_engine">Search Engine</string>
+    <string name="setting_title_clear_control">データ管理</string>
+    <string name="setting_title_start_control">起動管理</string>
+    <string name="setting_title_search_engine">検索エンジン</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -96,7 +96,7 @@
     <string name="clear_title_deleteDatabase">データベースを削除</string>
     <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
     <!-- App setting -->
-    <string name="setting_title_ui">動作/UI</string>
+    <string name="setting_title_ui">画面調整</string>
     <string name="setting_title_data">バックアップ</string>
     <string name="setting_title_fav">お気に入り</string>
     <string name="setting_title_searchEngine">カスタム検索エンジン</string>
@@ -118,9 +118,9 @@
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
     <string name="setting_title_confirm_tab_close">タブ削除の確認</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
-    <string name="setting_overView">概観</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
+    <string name="setting_overView">メーニュ</string>
+    <string name="setting_gestures">ジェスチャー</string>
+    <string name="setting_gestures_use_title">ジェスチャー</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">ツールバー</string>
@@ -136,8 +136,8 @@
     <string name="switch_to_left_tab">Switch to left tab</string>
     <string name="switch_to_right_tab">Switch to right tab</string>
     <string name="show_overview">Show overview</string>
-    <string name="open_new_tab">新しいタブを開く</string>
-    <string name="close_tab">タブを閉じる</string>
+    <string name="open_new_tab">新規タブ開く</string>
+    <string name="close_tab">タブ閉じる</string>
     <!-- Data -->
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
@@ -177,6 +177,27 @@
     <string name="whitelist_menu_clear">消去</string>
     <string name="whitelist_edit_hint">ドメイン</string>
     <string name="whitelist_add">追加</string>
+    <string name="bold_font">太字フォント</string>
+    <string name="white_background">白ベースカラー</string>
+    <string name="vertical_read">縦書き</string>
+    <string name="reader_mode">リーダーモード</string>
+    <string name="touch_area_setting">タッチ設定</string>
+    <string name="toolbar_setting">ツールバー設定</string>
+    <string name="menu_save_epub">epub保存</string>
+    <string name="font_size">フォントサイズ</string>
+    <string name="settings">設定</string>
+    <string name="toolbars">ツールバー設定</string>
+    <string name="translate">翻訳</string>
+    <string name="split_screen">画面分割</string>
+    <string name="menu_open_epub">epub開く</string>
+    <string name="translation_mode">翻訳モード</string>
+    <string name="menu_quickToggle">快速起動</string>
+    <string name="menu_send_link">リンク送る</string>
+    <string name="menu_receive">データ受け取り</string>
+    <string name="copy_link">コピー</string>
+    <string name="title_about">EinkBro について</string>
+    <string name="menu_tts">読み上げ</string>
+    <string name="changelog_dialog">新着情報</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
