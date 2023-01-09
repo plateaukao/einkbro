@@ -44,11 +44,12 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-open class NinjaWebView(context: Context?, var browserController: BrowserController?) : WebView(
-    context!!
-), AlbumController, KoinComponent {
+open class NinjaWebView(
+    context: Context,
+    var browserController: BrowserController?
+) : WebView(context), AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
-    private val album: Album = Album(this, browserController)
+    override val album: Album = Album(this, browserController)
     protected val webViewClient: NinjaWebViewClient
     private val webChromeClient: NinjaWebChromeClient
     private val downloadListener: NinjaDownloadListener = NinjaDownloadListener(context)
@@ -66,8 +67,7 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
             toggleCookieSupport(!incognito)
         }
 
-    var isForeground = false
-        private set
+    private var isForeground = false
 
     override fun onScrollChanged(l: Int, t: Int, old_l: Int, old_t: Int) {
         super.onScrollChanged(l, t, old_l, old_t)
@@ -327,16 +327,16 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
         return stream.toByteArray()
     }
 
-    override fun getAlbum(): Album = album
 
-    override fun getAlbumTitle(): String = album.albumTitle
+    override var albumTitle: String
+        get() = album.albumTitle
+        set(value) {
+            album.albumTitle = value
+            update(value)
+        }
 
-    override fun setAlbumTitle(title: String) {
-        album.albumTitle = title
-        update(title)
-    }
-
-    override fun getAlbumUrl(): String = url ?: ""
+    override val albumUrl: String
+        get() = url ?: ""
 
     var initAlbumUrl: String = ""
     override fun activate() {
@@ -673,8 +673,9 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
     }
 
     private fun injectGoogleTranslateV2Js(): String =
-        String.format(injectGoogleTranslateV2JsFormat,
-            if (config.preferredTranslateLanguageString.isNotEmpty())"includedLanguages: '${config.preferredTranslateLanguageString}',"
+        String.format(
+            injectGoogleTranslateV2JsFormat,
+            if (config.preferredTranslateLanguageString.isNotEmpty()) "includedLanguages: '${config.preferredTranslateLanguageString}',"
             else ""
         )
 
@@ -697,16 +698,16 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
 
         private const val injectGoogleTranslateV2JsFormat =
             "!function(){!function(){function e(){" +
-                "window.setTimeout(" +
-                  "function(){window[t].showBanner(!0)},10)}" +
-                  "function n(){" +
+                    "window.setTimeout(" +
+                    "function(){window[t].showBanner(!0)},10)}" +
+                    "function n(){" +
                     "return new google.translate.TranslateElement({" +
-                            "autoDisplay:!1,floatPosition:0,%s pageLanguage:'auto'" +
-                  "})}" +
-                  "var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';" +
-                  "if(window[t])e();" +
+                    "autoDisplay:!1,floatPosition:0,%s pageLanguage:'auto'" +
+                    "})}" +
+                    "var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';" +
+                    "if(window[t])e();" +
                     "else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});" +
-                  "var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
+                    "var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
 
         private const val hidePTranslateContext = """
             javascript:(function() {

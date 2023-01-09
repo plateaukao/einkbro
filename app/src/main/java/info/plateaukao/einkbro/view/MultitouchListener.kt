@@ -8,7 +8,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.View
-import info.plateaukao.einkbro.browser.NinjaGestureListener
+import info.plateaukao.einkbro.browser.LongPressGestureListener
 import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -17,7 +17,7 @@ import kotlin.math.max
 
 open class MultitouchListener(
     context: Context,
-    private val webView: NinjaWebView,
+    webView: NinjaWebView,
     private val touchCount: Int = 2
 ) : View.OnTouchListener, KoinComponent {
 
@@ -29,7 +29,7 @@ open class MultitouchListener(
 
     private val config: ConfigManager by inject()
 
-    private val gestureDetector: GestureDetector = GestureDetector(context, NinjaGestureListener(webView))
+    private val gestureDetector: GestureDetector = GestureDetector(context, LongPressGestureListener(webView))
     // https://android-developers.googleblog.com/2010/06/making-sense-of-multitouch.html
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
 

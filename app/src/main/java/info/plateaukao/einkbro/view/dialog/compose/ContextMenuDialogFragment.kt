@@ -72,13 +72,16 @@ class ContextMenuDialogFragment(
         val window = dialog?.window ?: return
         window.setGravity(Gravity.TOP or Gravity.LEFT)
 
-
-        val params = window.attributes.apply {
-            x = position.x
-            y = position.y
+        if (position.isValid()) {
+            val params = window.attributes.apply {
+                x = position.x
+                y = position.y
+            }
+            window.attributes = params
         }
-        window.attributes = params
     }
+
+    private fun Point.isValid() = x != 0 && y != 0
 }
 
 @Composable
