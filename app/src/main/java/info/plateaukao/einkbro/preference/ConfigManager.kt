@@ -110,6 +110,7 @@ class ConfigManager(
     var searchEngine by StringPreference(sp, K_SEARCH_ENGINE, if (Locale.getDefault().country == "CN") "2" else "5")
     var searchEngineUrl by StringPreference(sp, K_SEARCH_ENGINE_URL, "https://www.google.com/search?q=%s")
     var processTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL, "")
+    var adblockHostUrl by StringPreference(sp, K_ADBLOCK_HOSTS_URL, "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
 
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
@@ -412,6 +413,7 @@ class ConfigManager(
         const val K_ENABLE_IMAGES = "SP_IMAGES_9"
         const val K_ENABLE_VIDEO_AUTO_FULLSCREEN = "sp_video_auto_fullscreen"
         const val K_ENABLE_VIDEO_PIP = "sp_video_auto_pip"
+        const val K_ADBLOCK_HOSTS_URL = "ab_hosts"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"

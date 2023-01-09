@@ -3,8 +3,10 @@ package info.plateaukao.einkbro.browser
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import androidx.preference.PreferenceManager
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.RecordUnit
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.File
@@ -17,22 +19,22 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class AdBlockV2(context: Context) : BaseWebConfig(context) {
+class AdBlockV2(
+    context: Context
+): BaseWebConfig(context), KoinComponent {
+    private val config: ConfigManager by inject()
     override val dbTable: String = RecordUnit.TABLE_WHITELIST
 
     init {
-        val file = File(context.getDir("filesdir", Context.MODE_PRIVATE).toString() + "/" + FILE)
+        val file = File(context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/" + FILE)
         if (!file.exists()) {
             Log.d("Hosts file", "does not exist")
             file.createNewFile()
             downloadHosts(context) //try to update hosts.txt from internet
         } else {
-            val time = Calendar.getInstance()
-            time.add(Calendar.DAY_OF_YEAR, -7)
-            val lastModified = Date(file.lastModified())
-            if (lastModified.before(time.time) || getHostsDate(context) == "") {
-                //also download again if something is wrong with the file
-                //update if file is older than a day
+            // update once per week
+            val sevenDaysAgo = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -7) }
+            if (Date(file.lastModified()).before(sevenDaysAgo.time) || getHostsDate(file).isBlank()) {
                 downloadHosts(context)
             } else {
                 loadHosts(context)
@@ -43,16 +45,16 @@ class AdBlockV2(context: Context) : BaseWebConfig(context) {
     private fun loadHosts(context: Context) {
         val thread = Thread {
             try {
-                val file = File(context.getDir("filesdir", Context.MODE_PRIVATE).toString() + "/" + FILE)
-                val `in` = FileReader(file)
-                val reader = BufferedReader(`in`)
-                var line: String?
-                while (reader.readLine().also { line = it } != null) {
-                    val nonNullLine = line ?: break
-                    if (nonNullLine.startsWith("#")) continue
-                    hosts.add(nonNullLine.lowercase(locale))
+                val file = File(context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/" + FILE)
+                FileReader(file).use { fileReader ->
+                    BufferedReader(fileReader).use { bufferReader ->
+                        var line: String?
+                        while (bufferReader.readLine().also { line = it } != null) {
+                            if (line?.startsWith("#") == true) continue
+                            line?.lowercase(locale)?.let { hosts.add(it) }
+                        }
+                    }
                 }
-                `in`.close()
             } catch (i: IOException) {
                 Log.w("browser", "Error loading adBlockHosts", i)
             }
@@ -62,52 +64,55 @@ class AdBlockV2(context: Context) : BaseWebConfig(context) {
 
     private fun downloadHosts(context: Context) {
         val thread = Thread {
-            val sp = PreferenceManager.getDefaultSharedPreferences(context)
-            val hostURL = sp.getString("ab_hosts", "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
             try {
-                val url = URL(hostURL)
                 Log.d("browser", "Download AdBlock hosts")
-                val connection = url.openConnection()
-                connection.readTimeout = 5000
-                connection.connectTimeout = 10000
-                val `is` = connection.getInputStream()
-                val inStream = BufferedInputStream(`is`, 1024 * 5)
-                val tempfile = File(context.getDir("filesdir", Context.MODE_PRIVATE).toString() + "/temp.txt")
-                if (tempfile.exists()) {
-                    tempfile.delete()
+                val connection = URL(config.adblockHostUrl).openConnection().apply {
+                    readTimeout = 5000
+                    connectTimeout = 10000
                 }
-                tempfile.createNewFile()
-                val outStream = FileOutputStream(tempfile)
-                val buff = ByteArray(5 * 1024)
-                var len: Int
-                while (inStream.read(buff).also { len = it } != -1) {
-                    outStream.write(buff, 0, len)
+
+                val tempFile = File(
+                    context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/temp.txt")
+                if (tempFile.exists()) { tempFile.delete() }
+                tempFile.createNewFile()
+
+                connection.getInputStream().use { inputStream ->
+                    BufferedInputStream(inputStream, 1024 * 5).use { bufferedInputStream ->
+                        FileOutputStream(tempFile).use { outputStream ->
+                            val buff = ByteArray(5 * 1024)
+                            var len: Int
+                            while (bufferedInputStream.read(buff).also { len = it } != -1) {
+                                outputStream.write(buff, 0, len)
+                            }
+                            outputStream.flush()
+                        }
+                    }
                 }
-                outStream.flush()
-                outStream.close()
-                inStream.close()
 
                 //now remove leading 0.0.0.0 from file
-                val `in` = FileReader(tempfile)
-                val reader = BufferedReader(`in`)
-                val outfile = File(context.getDir("filesdir", Context.MODE_PRIVATE).toString() + "/" + FILE)
-                if (!outfile.exists()) outfile.createNewFile()
-                val out = FileWriter(outfile)
-                var line: String?
-                while (reader.readLine().also { line = it } != null) {
-                    if (line?.startsWith("0.0.0.0 ") == true) {
-                        line = line?.substring(8)
+                FileReader(tempFile).use { fileReader ->
+                    val outfile = File(context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/" + FILE)
+                    if (!outfile.exists()) outfile.createNewFile()
+
+                    BufferedReader(fileReader).use { reader ->
+                        FileWriter(outfile).use { fileWriter ->
+                            var line: String?
+                            while (reader.readLine().also { line = it } != null) {
+                                if (line?.startsWith("0.0.0.0 ") == true) {
+                                    line = line?.substring(8)
+                                }
+                                fileWriter.write("$line\n")
+                            }
+                        }
                     }
-                    out.write("$line\n")
                 }
-                `in`.close()
-                out.close()
-                tempfile.delete()
+                tempFile.delete()
                 hosts.clear()
+
                 loadHosts(context) //reload hosts after update
                 Log.w("browser", "AdBlock hosts updated")
-            } catch (i: IOException) {
-                Log.w("browser", "Error updating AdBlock hosts", i)
+            } catch (exception: IOException) {
+                Log.w("browser", "Error updating AdBlock hosts", exception)
             }
         }
         thread.start()
@@ -116,32 +121,27 @@ class AdBlockV2(context: Context) : BaseWebConfig(context) {
     private val locale = Locale.getDefault()
 
     @SuppressLint("ConstantLocale")
-    private fun getHostsDate(context: Context): String {
-        val file = File(context.getDir("filesdir", Context.MODE_PRIVATE).toString() + "/" + FILE)
-        var date = ""
-        if (!file.exists()) {
-            return ""
-        }
+    private fun getHostsDate(file: File): String {
+        if (!file.exists()) { return "" }
         try {
-            val `in` = FileReader(file)
-            val reader = BufferedReader(`in`)
-            var line: String
-            while (reader.readLine().also { line = it } != null) {
-                if (line.contains("Date:")) {
-                    date = "hosts.txt " + line.substring(2)
-                    `in`.close()
-                    break
+            FileReader(file).use { fileReader ->
+                BufferedReader(fileReader).use { reader ->
+                    var line: String
+                    while (reader.readLine().also { line = it } != null) {
+                        if (line.contains("Date:")) {
+                            return "hosts.txt " + line.substring(2)
+                        }
+                    }
                 }
             }
-            `in`.close()
-        } catch (i: IOException) {
-            Log.w("browser", "Error getting hosts date", i)
+        } catch (exception: IOException) {
+            Log.w("browser", "Error getting hosts date", exception)
         }
-        return date
+        return ""
     }
-
 
     companion object {
         private const val FILE = "hosts.txt"
+        private const val FILES_DIR = "filesdir"
     }
 }
