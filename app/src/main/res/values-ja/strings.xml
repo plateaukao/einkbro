@@ -21,7 +21,7 @@
     <string name="menu_download">ダウンロード開く</string>
     <string name="menu_fav">お気に入りに保存</string>
     <string name="menu_sc">ショートカット</string>
-    <string name="menu_share_link">リンク共有</string>
+    <string name="menu_share_link">共有</string>
     <string name="menu_save_screenshot">スクリーンショット</string>
     <string name="menu_save_bookmark">ブックマーク保存</string>
     <string name="menu_save_as">名前付けて保存</string>
@@ -75,9 +75,9 @@
     <string name="setting_title_whitelistJS">JavaScript whitelist</string>
     <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
         trust to use javascript.</string>
-    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_title_adblock">広告ブロック</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
-    <string name="setting_title_whitelist">AdBlock whitelist</string>
+    <string name="setting_title_whitelist">広告ブロック whitelist</string>
     <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
     <string name="setting_title_location">位置情報</string>
     <string name="setting_summary_location">ウェブサイトに位置情報へのアクセスを許可して下さい。いくつかのウェブサイト (Google マップなど) は許可が必要です。</string>

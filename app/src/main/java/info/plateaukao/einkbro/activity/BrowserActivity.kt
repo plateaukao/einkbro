@@ -379,8 +379,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun isMeetPipCriteria() = config.enableVideoPip &&
-                fullscreenHolder != null &&
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+            fullscreenHolder != null &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun enterPipMode() {
@@ -650,7 +650,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateTabBar()
     }
 
-    override fun onUpdateAlbum(album: Album?) {
+    override fun onUpdateAlbum(album: Album) {
         updateTabBar()
     }
 
@@ -1548,7 +1548,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private var previousKeyEvent: KeyEvent? = null
-    override fun handleKeyEvent(event: KeyEvent?): Boolean {
+    override fun handleKeyEvent(event: KeyEvent): Boolean {
         if (event?.action != ACTION_DOWN) return false
         if (ninjaWebView.hitTestResult.type == HitTestResult.EDIT_TEXT_TYPE) return false
 
@@ -1680,7 +1680,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    override fun onLongPress(message: Message, event: MotionEvent) {
+    override fun onLongPress(message: Message, event: MotionEvent?) {
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message).ifBlank { return }
         val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
         BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
@@ -1688,7 +1688,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ContextMenuDialogFragment(
                 url,
                 linkImageUrl.isNotBlank(),
-                Point(event.x.toInt(), event.y.toInt())
+                Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
             ) {
                 this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
             }.show(supportFragmentManager, "contextMenu")

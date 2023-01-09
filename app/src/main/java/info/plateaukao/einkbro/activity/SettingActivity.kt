@@ -128,6 +128,20 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         overridePendingTransition(0, 0)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> {
+                val uri = intent?.data ?: return
+                backupUnit.exportBookmarks(lifecycleScope, uri)
+            }
+            DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> {
+                val uri = intent?.data ?: return
+                backupUnit.importBookmarks(lifecycleScope, uri)
+            }
+        }
+    }
+
     private fun handleLink(url: String) {
         startActivity(
             Intent(this, BrowserActivity::class.java).apply {

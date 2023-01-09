@@ -10,17 +10,15 @@ import info.plateaukao.einkbro.unit.RecordUnit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class RecordDb(context: Context?) : KoinComponent {
+class RecordDb(
+    context: Context
+) : KoinComponent {
     private val helper: RecordHelper = RecordHelper(context)
     private val database: SQLiteDatabase by lazy { helper.writableDatabase }
     private val bookmarkManager: BookmarkManager by inject()
     private val config: ConfigManager by inject()
 
-    fun open(rw: Boolean) {}
-
-    fun close() {
-        helper.close()
-    }
+    fun close() = helper.close()
 
     suspend fun addHistory(record: Record) {
         if (record.url.startsWith("data:")) return
