@@ -31,9 +31,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.Cookie
-import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
@@ -83,9 +81,6 @@ object BrowserUnit : KoinComponent {
     val UA_DESKTOP_PREFIX = "Mozilla/5.0 (X11; Linux " + System.getProperty("os.arch") + ")"
     val UA_MOBILE_PREFIX = "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ")"
 
-    private val recordDb: RecordDb by inject()
-    private val adBlock: AdBlock by inject()
-    private val js: Javascript by inject()
     private val config: ConfigManager by inject()
     val cookie: Cookie by inject()
 

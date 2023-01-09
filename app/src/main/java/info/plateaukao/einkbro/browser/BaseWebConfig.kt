@@ -33,7 +33,7 @@ class Cookie(context: Context) : BaseWebConfig(context) {
 abstract class BaseWebConfig(private val context: Context) : KoinComponent, DomainInterface {
     private val config: ConfigManager by inject()
     private val recordDb: RecordDb by inject()
-    private val hosts: MutableSet<String> = HashSet()
+    protected val hosts: MutableSet<String> = HashSet()
     private val whitelist: MutableList<String> = ArrayList()
 
     @SuppressLint("ConstantLocale")

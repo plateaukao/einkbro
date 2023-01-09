@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import info.plateaukao.einkbro.browser.AdBlock
+import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -35,6 +36,7 @@ class EinkBroApplication : Application() {
         single { BookmarkManager(androidContext()) }
         single { RecordDb(androidContext()) }
         single { AdBlock(androidContext()) }
+        single { AdBlockV2(androidContext()) }
         single { Javascript(androidContext()) }
         single { Cookie(androidContext()) }
         single { ttsManager }
