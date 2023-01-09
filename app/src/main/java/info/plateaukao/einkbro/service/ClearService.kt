@@ -1,13 +1,13 @@
 package info.plateaukao.einkbro.service
 
 import android.app.Service
+import android.content.Intent
+import android.os.IBinder
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit.clearCache
 import info.plateaukao.einkbro.unit.BrowserUnit.clearCookie
 import info.plateaukao.einkbro.unit.BrowserUnit.clearHistory
 import info.plateaukao.einkbro.unit.BrowserUnit.clearIndexedDB
-import android.content.Intent
-import android.os.IBinder
-import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.system.exitProcess

@@ -33,6 +33,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AdBlock
+import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.DomainInterface
 import info.plateaukao.einkbro.browser.Javascript
@@ -204,7 +205,7 @@ abstract class BaseWhiteListType {
 
 class WhiteListTypeAdblock : BaseWhiteListType(), KoinComponent {
     override val titleId: Int = R.string.setting_title_whitelist
-    private val adBlock: AdBlock by inject()
+    private val adBlock: AdBlockV2 by inject()
     override val domainHandler: DomainInterface by lazy { adBlock }
 }
 

@@ -39,7 +39,7 @@ class NinjaWebViewClient(
 ) : WebViewClient(), KoinComponent {
     private val context: Context = ninjaWebView.context
     private val config: ConfigManager by inject()
-    private val adBlock: AdBlock by inject()
+    private val adBlock: AdBlockV2 by inject()
     private val cookie: Cookie by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
 
