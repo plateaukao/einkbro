@@ -175,7 +175,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         NavigateSettingItem(
             R.string.setting_title_clear_control,
-            R.drawable.icon_delete,
+            R.drawable.ic_data,
             destination = DataControl
         ),
         NavigateSettingItem(R.string.setting_title_search, R.drawable.icon_search, destination = Search),
