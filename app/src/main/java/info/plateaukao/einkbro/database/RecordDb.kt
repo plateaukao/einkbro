@@ -18,8 +18,6 @@ class RecordDb(
     private val bookmarkManager: BookmarkManager by inject()
     private val config: ConfigManager by inject()
 
-    fun close() = helper.close()
-
     suspend fun addHistory(record: Record) {
         if (record.url.startsWith("data:")) return
 

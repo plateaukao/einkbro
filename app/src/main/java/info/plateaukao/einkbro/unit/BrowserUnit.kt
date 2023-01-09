@@ -349,7 +349,6 @@ object BrowserUnit : KoinComponent {
                 val shortcutManager = context.getSystemService(ShortcutManager::class.java)
                 Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts()
             }
-            close()
         }
     }
 

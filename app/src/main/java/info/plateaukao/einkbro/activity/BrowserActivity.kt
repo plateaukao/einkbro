@@ -524,7 +524,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
         browserContainer.clear()
         unregisterReceiver(downloadReceiver)
-        recordDb.close()
 
         super.onDestroy()
     }
