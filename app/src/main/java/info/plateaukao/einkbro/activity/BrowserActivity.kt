@@ -142,10 +142,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         when (toolbarAction) {
             ToolbarAction.Back -> openHistoryPage(5)
             ToolbarAction.Refresh -> fullscreen()
-            ToolbarAction.Touch -> TouchAreaDialogFragment().show(
-                supportFragmentManager,
-                "TouchAreaDialog"
-            )
+            ToolbarAction.Touch -> TouchAreaDialogFragment().show(supportFragmentManager, "TouchAreaDialog")
 
             ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
             ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
@@ -154,12 +151,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
             ToolbarAction.NewTab -> launchNewBrowser()
-            ToolbarAction.Tts -> TtsSettingDialogFragment(
-                this::gotoSystemTtsSettings
-            ).show(supportFragmentManager, "TtsSettingDialog")
-
+            ToolbarAction.Tts -> TtsSettingDialogFragment(this::gotoSystemTtsSettings)
+                .show(supportFragmentManager, "TtsSettingDialog")
             ToolbarAction.Font -> ninjaWebView.toggleReaderMode()
-
             else -> {}
         }
     }
@@ -197,10 +191,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Font -> showFontSizeChangeDialog()
             ToolbarAction.Settings -> showMenuDialog()
             ToolbarAction.Bookmark -> openBookmarkPage()
-            ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(
-                supportFragmentManager,
-                "toolbar_config"
-            )
+            ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(supportFragmentManager, "toolbar_config")
 
             ToolbarAction.VerticalLayout -> ninjaWebView.toggleVerticalRead()
             ToolbarAction.ReaderMode -> ninjaWebView.toggleReaderMode()
@@ -222,21 +213,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun newATab() {
-        when (config.newTabBehavior) {
-            NewTabBehavior.START_INPUT -> {
-                addAlbum(getString(R.string.app_name), "")
-                focusOnInput()
-            }
-
-            NewTabBehavior.SHOW_HOME -> {
-                addAlbum("", config.favoriteUrl)
-            }
-
-            NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
-                addAlbum("", "")
-                showRecentlyUsedBookmarks(ninjaWebView)
-            }
+    private fun newATab() = when (config.newTabBehavior) {
+        NewTabBehavior.START_INPUT -> {
+            addAlbum(getString(R.string.app_name), "")
+            focusOnInput()
+        }
+        NewTabBehavior.SHOW_HOME -> addAlbum("", config.favoriteUrl)
+        NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
+            addAlbum("", "")
+            showRecentlyUsedBookmarks(ninjaWebView)
         }
     }
 
@@ -294,9 +279,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
         MediaPlayer.OnErrorListener {
-        override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
-            return false
-        }
+        override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean = false
 
         override fun onCompletion(mp: MediaPlayer) {
             onHideCustomView()
@@ -551,26 +534,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 if (config.useUpDownPageTurn) ninjaWebView.pageDownWithNoAnimation()
             }
-
             KeyEvent.KEYCODE_DPAD_UP -> {
                 if (config.useUpDownPageTurn) ninjaWebView.pageUpWithNoAnimation()
             }
-
-            KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                return handleVolumeDownKey()
-            }
-
-            KeyEvent.KEYCODE_VOLUME_UP -> {
-                return handleVolumeUpKey()
-            }
-
+            KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey()
+            KeyEvent.KEYCODE_VOLUME_UP -> return handleVolumeUpKey()
             KeyEvent.KEYCODE_MENU -> {
                 showMenuDialog(); return true
             }
-
-            KeyEvent.KEYCODE_BACK -> {
-                return handleBackKey()
-            }
+            KeyEvent.KEYCODE_BACK -> return handleBackKey()
         }
         return false
     }
