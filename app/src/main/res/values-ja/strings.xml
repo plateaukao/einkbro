@@ -204,6 +204,7 @@
     <string name="setting_summary_adblock_url">If you want to use other adblock content, please edit this url.</string>
     <string name="setting_title_adblock_auto_update">Auto update Adblock</string>
     <string name="setting_summary_adblock_auto_update">Auto update adblock content weekly</string>
+    <string name="toast_adblock_updated">Adblock is updated!</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->

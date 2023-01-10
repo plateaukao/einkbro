@@ -48,6 +48,7 @@ import info.plateaukao.einkbro.setting.ValueSettingItem
 import info.plateaukao.einkbro.setting.VersionSettingItem
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.view.GestureType
+import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
@@ -585,12 +586,18 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Adblock)) },
         ActionSettingItem(
             R.string.setting_title_update_adblock,
-            R.drawable.ic_block,
+            R.drawable.ic_receive,
             R.string.setting_summary_update_adblock,
-        ) { adBlock.downloadHosts(this) },
+        ) {
+            lifecycleScope.launch {
+                adBlock.downloadHosts(this@SettingActivity)  {
+                    NinjaToast.show(this@SettingActivity, R.string.toast_adblock_updated)
+                }
+            }
+          },
         ValueSettingItem(
             R.string.setting_title_adblock_url,
-            R.drawable.ic_block,
+            R.drawable.ic_input_url,
             R.string.setting_summary_adblock_url,
             config = config::adblockHostUrl,
         ),
