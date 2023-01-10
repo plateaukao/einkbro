@@ -35,6 +35,7 @@ import info.plateaukao.einkbro.activity.SettingRoute.StartControl
 import info.plateaukao.einkbro.activity.SettingRoute.Toolbar
 import info.plateaukao.einkbro.activity.SettingRoute.Ui
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
+import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
@@ -58,6 +59,7 @@ import org.koin.core.component.inject
 class SettingActivity : ComponentActivity(), KoinComponent {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
+    private val adBlock: AdBlockV2 by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -570,11 +572,28 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_adblock,
             config::adBlock
         ),
+        BooleanSettingItem(
+            R.string.setting_title_adblock_auto_update,
+            R.drawable.ic_block,
+            R.string.setting_summary_adblock_auto_update,
+            config::autoUpdateAdblock
+        ),
         ActionSettingItem(
             R.string.setting_title_whitelist,
             R.drawable.icon_list,
             R.string.setting_summary_whitelist,
         ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Adblock)) },
+        ActionSettingItem(
+            R.string.setting_title_update_adblock,
+            R.drawable.ic_block,
+            R.string.setting_summary_update_adblock,
+        ) { adBlock.downloadHosts(this) },
+        ValueSettingItem(
+            R.string.setting_title_adblock_url,
+            R.drawable.ic_block,
+            R.string.setting_summary_adblock_url,
+            config = config::adblockHostUrl,
+        ),
         BooleanSettingItem(
             R.string.setting_title_javascript,
             R.drawable.icon_java,

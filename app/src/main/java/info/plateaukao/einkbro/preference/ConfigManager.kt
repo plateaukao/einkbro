@@ -79,6 +79,7 @@ class ConfigManager(
     var enableImages by BooleanPreference(sp, K_ENABLE_IMAGES, true)
     var enableVideoAutoFullscreen by BooleanPreference(sp, K_ENABLE_VIDEO_AUTO_FULLSCREEN, false)
     var enableVideoPip by BooleanPreference(sp, K_ENABLE_VIDEO_PIP, false)
+    var autoUpdateAdblock by BooleanPreference(sp, K_AUTO_UPDATE_ADBLOCK, false)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -414,6 +415,7 @@ class ConfigManager(
         const val K_ENABLE_VIDEO_AUTO_FULLSCREEN = "sp_video_auto_fullscreen"
         const val K_ENABLE_VIDEO_PIP = "sp_video_auto_pip"
         const val K_ADBLOCK_HOSTS_URL = "ab_hosts"
+        const val K_AUTO_UPDATE_ADBLOCK = "sp_auto_update_adblock"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"
