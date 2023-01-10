@@ -20,29 +20,41 @@ import java.util.Date
 import java.util.Locale
 
 class AdBlockV2(
-    context: Context
-): BaseWebConfig(context), KoinComponent {
+    private val context: Context
+) : BaseWebConfig(context), KoinComponent {
     private val config: ConfigManager by inject()
     override val dbTable: String = RecordUnit.TABLE_WHITELIST
 
     init {
+        setup()
+    }
+
+    private fun setup() {
         val file = File(context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/" + FILE)
+        // no file yet
         if (!file.exists()) {
             Log.d("Hosts file", "does not exist")
             file.createNewFile()
-            downloadHosts(context) //try to update hosts.txt from internet
-        } else {
+            downloadHosts(context)
+            return
+        }
+
+        // has file, check if auto update is enabled and it's expired
+        if (config.autoUpdateAdblock) {
             // update once per week
             val sevenDaysAgo = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -7) }
             if (Date(file.lastModified()).before(sevenDaysAgo.time) || getHostsDate(file).isBlank()) {
                 downloadHosts(context)
-            } else {
-                loadHosts(context)
+                return
             }
         }
+
+        // other cases, load the hosts directly
+        loadHosts(context)
     }
 
     private fun loadHosts(context: Context) {
+        val locale = Locale.getDefault()
         val thread = Thread {
             try {
                 val file = File(context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/" + FILE)
@@ -62,7 +74,7 @@ class AdBlockV2(
         thread.start()
     }
 
-    private fun downloadHosts(context: Context) {
+    fun downloadHosts(context: Context) {
         val thread = Thread {
             try {
                 Log.d("browser", "Download AdBlock hosts")
@@ -72,8 +84,11 @@ class AdBlockV2(
                 }
 
                 val tempFile = File(
-                    context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/temp.txt")
-                if (tempFile.exists()) { tempFile.delete() }
+                    context.getDir(FILES_DIR, Context.MODE_PRIVATE).toString() + "/temp.txt"
+                )
+                if (tempFile.exists()) {
+                    tempFile.delete()
+                }
                 tempFile.createNewFile()
 
                 connection.getInputStream().use { inputStream ->
@@ -118,11 +133,12 @@ class AdBlockV2(
         thread.start()
     }
 
-    private val locale = Locale.getDefault()
 
     @SuppressLint("ConstantLocale")
     private fun getHostsDate(file: File): String {
-        if (!file.exists()) { return "" }
+        if (!file.exists()) {
+            return ""
+        }
         try {
             FileReader(file).use { fileReader ->
                 BufferedReader(fileReader).use { reader ->
