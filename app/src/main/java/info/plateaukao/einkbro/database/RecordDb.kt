@@ -184,6 +184,8 @@ class RecordDb(
         cursor.close()
         return list
     }
+
+    fun close() = database.close()
 }
 
 private fun Bookmark.toRecord(): Record = Record(

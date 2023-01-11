@@ -133,14 +133,15 @@ class SettingActivity : ComponentActivity(), KoinComponent {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode) {
-            DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> {
-                val uri = intent?.data ?: return
-                backupUnit.exportBookmarks(lifecycleScope, uri)
-            }
-            DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> {
-                val uri = intent?.data ?: return
-                backupUnit.importBookmarks(lifecycleScope, uri)
+        val uri = data?.data ?: return
+        when (requestCode) {
+            DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.exportBookmarks(lifecycleScope, uri)
+            DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.importBookmarks(lifecycleScope, uri)
+
+            DialogManager.EXPORT_BACKUP_REQUEST_CODE -> backupUnit.backupData(this, uri)
+
+            DialogManager.IMPORT_BACKUP_REQUEST_CODE -> if (backupUnit.restoreBackupData(this, uri)) {
+                dialogManager.showRestartConfirmDialog()
             }
         }
     }
@@ -475,11 +476,11 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ActionSettingItem(
             R.string.setting_title_export_appData,
             R.drawable.icon_export,
-        ) { backupUnit.backup() },
+        ) { dialogManager.showBackupFilePicker() },
         ActionSettingItem(
             R.string.setting_title_import_appData,
             R.drawable.icon_import,
-        ) { backupUnit.restore() },
+        ) { dialogManager.showImportBackupFilePicker() },
         ActionSettingItem(
             R.string.setting_title_export_bookmarks,
             R.drawable.icon_bookmark,
@@ -590,11 +591,11 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_update_adblock,
         ) {
             lifecycleScope.launch {
-                adBlock.downloadHosts(this@SettingActivity)  {
+                adBlock.downloadHosts(this@SettingActivity) {
                     NinjaToast.show(this@SettingActivity, R.string.toast_adblock_updated)
                 }
             }
-          },
+        },
         ValueSettingItem(
             R.string.setting_title_adblock_url,
             R.drawable.ic_input_url,
