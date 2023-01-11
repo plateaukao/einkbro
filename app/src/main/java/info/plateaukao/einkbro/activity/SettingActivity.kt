@@ -137,9 +137,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         when (requestCode) {
             DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.exportBookmarks(lifecycleScope, uri)
             DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.importBookmarks(lifecycleScope, uri)
-
             DialogManager.EXPORT_BACKUP_REQUEST_CODE -> backupUnit.backupData(this, uri)
-
             DialogManager.IMPORT_BACKUP_REQUEST_CODE -> if (backupUnit.restoreBackupData(this, uri)) {
                 dialogManager.showRestartConfirmDialog()
             }

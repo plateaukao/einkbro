@@ -31,6 +31,7 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
@@ -260,19 +261,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val recordDb: RecordDb by inject()
 
     private val customFontResultLauncher: ActivityResultLauncher<Intent> =
-        BrowserUnit.registerCustomFontSelectionResult(this)
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            BrowserUnit.handleFontSelectionResult(this, it)
+        }
     private val saveImageFilePickerLauncher: ActivityResultLauncher<Intent> =
-        BrowserUnit.registerSaveImageFilePickerResult(this) { uri ->
-            // action to show the downloaded image
-            val fileIntent = Intent(ACTION_VIEW).apply {
-                data = uri
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            BrowserUnit.handleSaveImageFilePickerResult(this, it) { uri ->
+                // action to show the downloaded image
+                val fileIntent = Intent(ACTION_VIEW).apply {
+                    data = uri
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                dialogManager.showOkCancelDialog(
+                    messageResId = R.string.toast_downloadComplete,
+                    okAction = { startActivity(fileIntent) }
+                )
             }
-            dialogManager.showOkCancelDialog(
-                messageResId = R.string.toast_downloadComplete,
-                okAction = { startActivity(fileIntent) }
-            )
         }
 
     // Classes
