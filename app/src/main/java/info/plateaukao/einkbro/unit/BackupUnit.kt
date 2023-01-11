@@ -1,20 +1,13 @@
 package info.plateaukao.einkbro.unit
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.preference.PreferenceManager
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.unit.HelperUnit.copyDirectory
+import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.view.NinjaToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -22,169 +15,118 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.w3c.dom.Element
-import org.w3c.dom.Node
-import org.xml.sax.SAXException
-import java.io.*
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.parsers.ParserConfigurationException
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipOutputStream
 
 class BackupUnit(
     private val context: Context,
     private val activity: Activity,
 ): KoinComponent {
-    private val manager: BookmarkManager by inject()
+    private val bookmarkManager: BookmarkManager by inject()
+    private val recordDb: RecordDb by inject()
 
-    fun backup() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            NinjaToast.show(activity, activity.getString(R.string.not_supported))
-            return
-        }
-
-        val sd = activity.getExternalFilesDir(null)
-        val data = Environment.getDataDirectory()
-        val previewsPathApp = "//data//" + activity.packageName + "//"
-        val previewsPathBackup = "browser_backup//data//"
-        val previewsFolderApp = File(data, previewsPathApp)
-        val previewsFolderBackup = File(sd, previewsPathBackup)
-
-        makeBackupDir()
-        BrowserUnit.deleteDir(previewsFolderBackup)
-        copyDirectory(previewsFolderApp, previewsFolderBackup)
-        backupUserPrefs(activity)
-        NinjaToast.show(activity, activity.getString(R.string.toast_export_successful) + "browser_backup")
-    }
-
-    fun restore() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            NinjaToast.show(activity, activity.getString(R.string.not_supported))
-            return
-        }
-
-        val sd = activity.getExternalFilesDir(null)
-        val data = Environment.getDataDirectory()
-        val previewsPathApp = "//data//" + activity.packageName + "//"
-        val previewsPathBackup = "browser_backup//data//"
-        val previewsFolderApp = File(data, previewsPathApp)
-        val previewsFolderBackup = File(sd, previewsPathBackup)
-
-        if (Build.VERSION.SDK_INT in 23..28) {
-            val hasWriteExternalStoragePermission =
-                activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (hasWriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                HelperUnit.needGrantStoragePermission(activity)
-            } else {
-                copyDirectory(previewsFolderBackup, previewsFolderApp)
-                restoreUserPrefs()
-            }
-        } else {
-            copyDirectory(previewsFolderBackup, previewsFolderApp)
-            restoreUserPrefs()
-        }
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun makeBackupDir() {
-        val backupDir = File(activity.getExternalFilesDir(null), "browser_backup//")
-        val noMedia = File(backupDir, "//.nomedia")
-        if (!HelperUnit.needGrantStoragePermission(activity)) {
-            if (!backupDir.exists()) {
-                try {
-                    backupDir.mkdirs()
-                    noMedia.createNewFile()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
-    private fun backupUserPrefs(context: Context) {
-        val prefsFile = File(context.filesDir, "../shared_prefs/" + context.packageName + "_preferences.xml")
-        val backupFile = File(
-            context.getExternalFilesDir(null),
-            "browser_backup/preferenceBackup.xml"
-        )
+    fun backupData(context: Context, uri: Uri): Boolean {
         try {
-            val src = FileInputStream(prefsFile).channel
-            val dst = FileOutputStream(backupFile).channel
-            dst.transferFrom(src, 0, src.size())
-            src.close()
-            dst.close()
-            NinjaToast.show(context, "Backed up user prefs to " + backupFile.absolutePath)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
+            val fos = context.contentResolver.openOutputStream(uri) ?: return false
+            val zos = ZipOutputStream(fos)
 
-    @SuppressLint("ApplySharedPref")
-    private fun restoreUserPrefs() {
-        val backupFile = File(
-            context.getExternalFilesDir(null),
-            "browser_backup/preferenceBackup.xml"
-        )
-        val error: String
-        try {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val editor = sharedPreferences.edit()
-            val inputStream: InputStream = FileInputStream(backupFile)
-            val docFactory = DocumentBuilderFactory.newInstance()
-            val docBuilder = docFactory.newDocumentBuilder()
-            val doc = docBuilder.parse(inputStream)
-            val root = doc.documentElement
-            var child = root.firstChild
-            while (child != null) {
-                if (child.nodeType == Node.ELEMENT_NODE) {
-                    val element = child as Element
-                    val type = element.nodeName
-                    val name = element.getAttribute("name")
-
-                    // In my app, all prefs seem to get serialized as either "string" or
-                    // "boolean" - this will need expanding if yours uses any other types!
-                    if (type == "string") {
-                        val value = element.textContent
-                        editor.putString(name, value)
-                    } else if (type == "boolean") {
-                        val value = element.getAttribute("value")
-                        editor.putBoolean(name, value == "true")
+            // Add databases to the zip file
+            val dbDirectory = File(DATABASE_PATH)
+            val dbFiles = dbDirectory.listFiles()
+            if (dbFiles != null) {
+                for (dbFile in dbFiles) {
+                    val fis = FileInputStream(dbFile)
+                    zos.putNextEntry(ZipEntry(dbFile.name))
+                    val buffer = ByteArray(1024)
+                    var length = fis.read(buffer)
+                    while (length > 0) {
+                        zos.write(buffer, 0, length)
+                        length = fis.read(buffer)
                     }
+                    zos.closeEntry()
+                    fis.close()
                 }
-                child = child.nextSibling
             }
-            editor.commit()
-            NinjaToast.show(context, "Restored user prefs from " + backupFile.absolutePath)
-            return
+
+            // Add shared preferences to the zip file
+            val sharedPrefsDirectory = File(SHARED_PREFS_PATH)
+            val sharedPrefsFiles = sharedPrefsDirectory.listFiles()
+            if (sharedPrefsFiles != null) {
+                for (sharedPrefsFile in sharedPrefsFiles) {
+                    val fis = FileInputStream(sharedPrefsFile)
+                    zos.putNextEntry(ZipEntry(sharedPrefsFile.name))
+                    val buffer = ByteArray(1024)
+                    var length = fis.read(buffer)
+                    while (length > 0) {
+                        zos.write(buffer, 0, length)
+                        length = fis.read(buffer)
+                    }
+                    zos.closeEntry()
+                    fis.close()
+                }
+            }
+
+            zos.close()
+            fos.close()
+            NinjaToast.show(context, R.string.toast_backup_successful)
+            return true
         } catch (e: IOException) {
-            error = e.message ?: ""
             e.printStackTrace()
-        } catch (e: SAXException) {
-            error = e.message ?: ""
-            e.printStackTrace()
-        } catch (e: ParserConfigurationException) {
-            error = e.message ?: ""
-            e.printStackTrace()
+            return false
         }
-        Toast.makeText(
-            context,
-            """Failed to restore user prefs from ${backupFile.absolutePath} - $error""",
-            Toast.LENGTH_SHORT
-        ).show()
+    }
+
+    fun restoreBackupData(context: Context, uri: Uri): Boolean {
+        try {
+            bookmarkManager.database.close()
+            recordDb.close()
+
+            val fis = context.contentResolver.openInputStream(uri) ?: return false
+            val zis = ZipInputStream(fis)
+
+            var zipEntry = zis.nextEntry
+            while (zipEntry != null) {
+                val file = File(
+                    if (zipEntry.name.endsWith(".db") ||
+                        zipEntry.name.contains("einkbro_db")
+                    ) "$DATABASE_PATH${zipEntry.name}"
+                    else "$SHARED_PREFS_PATH${zipEntry.name}"
+                )
+                val fos = FileOutputStream(file)
+                val buffer = ByteArray(1024)
+                var length = zis.read(buffer)
+                while (length > 0) {
+                    fos.write(buffer, 0, length)
+                    length = zis.read(buffer)
+                }
+                fos.close()
+                zipEntry = zis.nextEntry
+            }
+            zis.close()
+            fis.close()
+            return true
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return false
+        }
     }
 
     fun importBookmarks(lifecycleScope: CoroutineScope, uri: Uri) {
-        val context = context ?: return
-
         lifecycleScope.launch {
             try {
                 context.contentResolver.openInputStream(uri).use {
                     val jsonString = it?.bufferedReader()?.readText() ?: ""
                     val bookmarkArray = JSONArray(jsonString)
                     if (bookmarkArray.length() != 0) {
-                        manager.deleteAll()
+                        bookmarkManager.deleteAll()
                         for (i in 0 until bookmarkArray.length()) {
                             val bookmark = (bookmarkArray[i] as JSONObject).toBookmark()
-                            manager.insert(bookmark)
+                            bookmarkManager.insert(bookmark)
                         }
                     }
                 }
@@ -198,7 +140,7 @@ class BackupUnit(
 
     fun exportBookmarks(lifecycleScope: CoroutineScope, uri: Uri) {
         lifecycleScope.launch {
-            val bookmarks = manager.getAllBookmarks()
+            val bookmarks = bookmarkManager.getAllBookmarks()
             try {
                 context.contentResolver.openOutputStream(uri).use {
                     it?.write(bookmarks.toJsonString().toByteArray())
@@ -209,6 +151,11 @@ class BackupUnit(
                 Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    companion object {
+        private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
+        private const val SHARED_PREFS_PATH = "/data/data/info.plateaukao.einkbro/shared_prefs/"
     }
 }
 

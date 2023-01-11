@@ -78,7 +78,6 @@ import org.koin.android.ext.android.inject
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
-import kotlin.system.exitProcess
 
 
 open class BrowserActivity : FragmentActivity(), BrowserController {
@@ -403,7 +402,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (nightModeFlags != uiMode && config.darkMode == DarkMode.SYSTEM) {
-                //restartApp()
                 recreate()
             }
         }
@@ -469,7 +467,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onResume()
         if (config.restartChanged) {
             config.restartChanged = false
-            showRestartConfirmDialog()
+            dialogManager.showRestartConfirmDialog()
         }
 
         updateTitle()
@@ -488,20 +486,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ninjaWebView.resumeTimers()
             }
         }
-    }
-
-    private fun showRestartConfirmDialog() {
-        dialogManager.showOkCancelDialog(
-            messageResId = R.string.toast_restart,
-            okAction = { restartApp() }
-        )
-    }
-
-    private fun restartApp() {
-        finishAffinity() // Finishes all activities.
-        startActivity(packageManager.getLaunchIntentForPackage(packageName))    // Start the launch activity
-        overridePendingTransition(0, 0)
-        exitProcess(0)
     }
 
     private fun showFileListConfirmDialog() {

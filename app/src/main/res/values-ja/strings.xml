@@ -205,6 +205,7 @@
     <string name="setting_title_adblock_auto_update">Auto update Adblock</string>
     <string name="setting_summary_adblock_auto_update">Auto update adblock content weekly</string>
     <string name="toast_adblock_updated">Adblock is updated!</string>
+    <string name="toast_backup_successful">Backup succeeds</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
