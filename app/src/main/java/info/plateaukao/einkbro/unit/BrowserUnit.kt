@@ -25,9 +25,7 @@ import android.webkit.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
@@ -431,17 +429,7 @@ object BrowserUnit : KoinComponent {
     }
 
 
-    fun registerCustomFontSelectionResult(fragment: Fragment): ActivityResultLauncher<Intent> =
-        fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            handleFontSelectionResult(fragment.requireContext(), it)
-        }
-
-    fun registerCustomFontSelectionResult(activity: ComponentActivity): ActivityResultLauncher<Intent> =
-        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            handleFontSelectionResult(activity, it)
-        }
-
-    private fun handleFontSelectionResult(context: Context, activityResult: ActivityResult) {
+    fun handleFontSelectionResult(context: Context, activityResult: ActivityResult) {
         if (activityResult.data == null || activityResult.resultCode != Activity.RESULT_OK) return
         val uri = activityResult.data?.data ?: return
 
@@ -451,14 +439,6 @@ object BrowserUnit : KoinComponent {
         val file = File(uri.path)
         config.customFontInfo = CustomFontInfo(file.name, uri.toString())
     }
-
-    fun registerSaveImageFilePickerResult(
-        activity: ComponentActivity,
-        postAction: (Uri) -> Unit
-    ): ActivityResultLauncher<Intent> =
-        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            handleSaveImageFilePickerResult(activity, it, postAction)
-        }
 
     fun stripUrlQuery(url: String): String {
         if (!config.shouldPruneQueryParameters) return url
@@ -537,7 +517,7 @@ object BrowserUnit : KoinComponent {
     }
 
 
-    private fun handleSaveImageFilePickerResult(
+    fun handleSaveImageFilePickerResult(
         activity: ComponentActivity,
         activityResult: ActivityResult,
         postAction: (Uri) -> Unit
