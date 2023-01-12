@@ -60,11 +60,11 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
         } catch (u: URISyntaxException) {
             return false
         }
-        return hosts.contains(domain) || isAdExtraSites(url)
+        return hosts.contains(domain) || isAdExtraSites(domain)
     }
 
-    private fun isAdExtraSites(url: String): Boolean {
-        return config.adSites.any { url.contains(it, true) }
+    private fun isAdExtraSites(domain: String): Boolean {
+        return config.adSites.any { it.contains(domain, true) }
     }
 
     override fun getDomains() = recordDb.listDomains(dbTable)
