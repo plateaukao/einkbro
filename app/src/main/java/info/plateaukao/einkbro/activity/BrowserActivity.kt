@@ -1617,9 +1617,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             lifecycleScope.launch {
                 val domain = TextInputDialog(
                     this@BrowserActivity,
-                    "Ad Url to be blocked",
+                    "Ad domain to be blocked",
                     "",
-                    url,
+                    host,
                 ).show() ?: ""
 
                 if (domain.isNotBlank()) {
