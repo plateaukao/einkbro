@@ -7,7 +7,6 @@ import android.app.PictureInPictureParams
 import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
-import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Point
@@ -150,23 +149,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Settings -> showFastToggleDialog()
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
-            ToolbarAction.NewTab -> launchNewBrowser()
-            ToolbarAction.Tts -> TtsSettingDialogFragment(this::gotoSystemTtsSettings)
+            ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(this, config.favoriteUrl)
+            ToolbarAction.Tts -> TtsSettingDialogFragment{ IntentUnit.gotoSystemTtsSettings(this) }
                 .show(supportFragmentManager, "TtsSettingDialog")
             ToolbarAction.Font -> ninjaWebView.toggleReaderMode()
             else -> {}
-        }
-    }
-
-    private fun gotoSystemTtsSettings() {
-        val intent = Intent().apply {
-            action = "com.android.settings.TTS_SETTINGS"
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        try {
-            startActivity(intent)
-        } catch (e: Exception) {
-            NinjaToast.show(this, "No Text to Speech settings found")
         }
     }
 
@@ -619,17 +606,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun showOverview() = overviewDialogController.show()
 
     override fun hideOverview() = overviewDialogController.hide()
-
-    private fun launchNewBrowser() {
-        val intent = Intent(this, ExtraBrowserActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-            addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-            action = ACTION_VIEW
-            data = Uri.parse(config.favoriteUrl)
-        }
-
-        startActivity(intent)
-    }
 
     private var isRotated: Boolean = false
     private fun rotateScreen() {
@@ -1509,7 +1485,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var previousKeyEvent: KeyEvent? = null
     override fun handleKeyEvent(event: KeyEvent): Boolean {
-        if (event?.action != ACTION_DOWN) return false
+        if (event.action != ACTION_DOWN) return false
         if (ninjaWebView.hitTestResult.type == HitTestResult.EDIT_TEXT_TYPE) return false
 
         // process dpad navigation
@@ -1873,9 +1849,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             BoldFont -> config::boldFontStyle.toggle()
             Search -> showSearchPanel()
             Download -> BrowserUnit.openDownloadFolder(this)
-            Settings -> startActivity(Intent(this, SettingActivity::class.java).apply {
-                addFlags(FLAG_ACTIVITY_NO_ANIMATION)
-            })
+            Settings -> IntentUnit.gotoSettings(this)
         }
     }
 
@@ -1903,9 +1877,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (text.startsWith("http")) ninjaWebView.loadUrl(text)
             else {
                 val clip = ClipData.newPlainText("Copied Text", text)
-                (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
-                    clip
-                )
+                (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(clip)
                 NinjaToast.show(this, "String is Copied!")
             }
         }

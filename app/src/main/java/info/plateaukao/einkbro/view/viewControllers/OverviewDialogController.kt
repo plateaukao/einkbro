@@ -3,8 +3,6 @@ package info.plateaukao.einkbro.view.viewControllers
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -12,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.ExtraBrowserActivity
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
@@ -20,6 +17,7 @@ import info.plateaukao.einkbro.database.RecordType
 import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.NinjaToast
@@ -87,7 +85,7 @@ class OverviewDialogController(
             addTab = { hide(); addEmptyTabAction() }
             closePanel = { hide() }
             onDeleteAction = { hide(); deleteAllItems() }
-            launchNewBrowserAction = { hide(); launchNewBrowser() }
+            launchNewBrowserAction = { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
         }
     }
 
@@ -182,17 +180,6 @@ class OverviewDialogController(
         recordDb.deleteHistoryItem(record)
         onHistoryChanged()
         refreshHistoryList()
-    }
-
-    private fun launchNewBrowser() {
-        val intent = Intent(context, ExtraBrowserActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-            addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-            action = Intent.ACTION_VIEW
-            data = Uri.parse(config.favoriteUrl)
-        }
-
-        context.startActivity(intent)
     }
 
     fun updateTabView() {

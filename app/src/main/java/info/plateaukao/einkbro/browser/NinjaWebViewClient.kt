@@ -296,6 +296,7 @@ class NinjaWebViewClient(
         }
 
         val text = """$message - ${context.getString(R.string.dialog_content_ssl_error)}"""
+        Log.e(TAG, "onReceivedSslError: $message")
         if (config.enableCertificateErrorDialog) {
             dialogManager.showOkCancelDialog(
                 message = text,
@@ -303,6 +304,12 @@ class NinjaWebViewClient(
                 okAction = { handler.proceed() },
                 cancelAction = { handler.cancel() }
             )
+        } else {
+            handler.proceed()
         }
+    }
+
+    companion object {
+        private const val TAG = "NinjaWebViewClient"
     }
 }

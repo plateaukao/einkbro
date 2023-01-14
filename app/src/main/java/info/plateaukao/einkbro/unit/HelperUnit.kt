@@ -247,40 +247,4 @@ object HelperUnit {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(nonNullUrl))
         activity.startActivity(Intent.createChooser(intent, title))
     }
-
-    @Throws(IOException::class)
-    fun copyDirectory(sourceLocation: File, targetLocation: File) {
-        if (sourceLocation.isDirectory) {
-            if (sourceLocation.name == "app_webview" || sourceLocation.name == "cache") {
-                return
-            }
-            if (!targetLocation.exists() && !targetLocation.mkdirs()) {
-                throw IOException("Cannot create dir " + targetLocation.absolutePath)
-            }
-            val children = sourceLocation.list()
-            for (aChildren in Objects.requireNonNull(children)) {
-                copyDirectory(
-                    File(sourceLocation, aChildren),
-                    File(targetLocation, aChildren)
-                )
-            }
-        } else {
-            // make sure the directory we plan to store the recording in exists
-            val directory = targetLocation.parentFile
-            if (directory != null && !directory.exists() && !directory.mkdirs()) {
-                throw IOException("Cannot create dir " + directory.absolutePath)
-            }
-            val `in`: InputStream = FileInputStream(sourceLocation)
-            val out: OutputStream = FileOutputStream(targetLocation)
-            // Copy the bits from InputStream to OutputStream
-            val buf = ByteArray(1024)
-            var len: Int
-            while (`in`.read(buf).also { len = it } > 0) {
-                out.write(buf, 0, len)
-            }
-            `in`.close()
-            out.close()
-        }
-    }
-
 }
