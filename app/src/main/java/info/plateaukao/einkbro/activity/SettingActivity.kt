@@ -344,6 +344,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_useUpDownKey,
             config::useUpDownPageTurn,
         ),
+        BooleanSettingItem(
+            R.string.setting_title_enable_ssl_error_dialog,
+            R.drawable.icon_settings,
+            R.string.setting_summary_enable_ssl_error_dialog,
+            config::enableCertificateErrorDialog,
+        ),
     )
 
     private val toolbarSettingItems = listOf(

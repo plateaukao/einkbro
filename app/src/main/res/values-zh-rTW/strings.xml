@@ -334,4 +334,6 @@
     <string name="setting_summary_adblock_auto_update">Auto update adblock content weekly</string>
     <string name="toast_adblock_updated">Adblock is updated!</string>
     <string name="toast_backup_successful">Backup succeeds</string>
+    <string name="setting_title_enable_ssl_error_dialog">Show SSL error dialog</string>
+    <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
 </resources>
