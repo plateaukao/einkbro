@@ -1,8 +1,8 @@
 package info.plateaukao.einkbro.setting
 
-import kotlin.reflect.KMutableProperty0
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute
+import kotlin.reflect.KMutableProperty0
 
 interface SettingItemInterface {
     val titleResId: Int
@@ -94,5 +94,6 @@ enum class LinkSettingItem(
         R.drawable.icon_copyright,
         "https://github.com/plateaukao/browser/blob/main/CONTRIBUTORS.md"
     ),
-    Medium(R.string.medium_articles, R.drawable.ic_reader, "https://medium.com/einkbro")
+    Medium(R.string.medium_articles, R.drawable.ic_reader, "https://medium.com/einkbro"),
+    Manual(R.string.manual, R.drawable.ic_reader, "https://github.com/plateaukao/einkbro/wiki")
 }

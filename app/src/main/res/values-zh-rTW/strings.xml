@@ -326,14 +326,15 @@
     <string name="google_full_page">Google 整頁翻譯</string>
     <string name="papago_dual_pane">Papago 整頁翻譯</string>
     <string name="google_in_place">Google 即時翻譯</string>
-    <string name="setting_title_update_adblock">Update Adblock content</string>
-    <string name="setting_summary_update_adblock">Update list of adblock websites</string>
-    <string name="setting_title_adblock_url">Adblock list url</string>
-    <string name="setting_summary_adblock_url">If you want to use other adblock content, please edit this url.</string>
-    <string name="setting_title_adblock_auto_update">Auto update Adblock</string>
-    <string name="setting_summary_adblock_auto_update">Auto update adblock content weekly</string>
-    <string name="toast_adblock_updated">Adblock is updated!</string>
-    <string name="toast_backup_successful">Backup succeeds</string>
+    <string name="setting_title_update_adblock">更新廣告阻擋資料</string>
+    <string name="setting_summary_update_adblock">更新廣告的網站資料列表</string>
+    <string name="setting_title_adblock_url">廣告阻擋資料網址</string>
+    <string name="setting_summary_adblock_url">如果你想自訂廣告阻擋來源，請編輯這個網址</string>
+    <string name="setting_title_adblock_auto_update">自動更新廣告阻擋</string>
+    <string name="setting_summary_adblock_auto_update">每週更新廣告阻擋資料庫</string>
+    <string name="toast_adblock_updated">廣告阻擋資料已更新</string>
+    <string name="toast_backup_successful">備份完成</string>
     <string name="setting_title_enable_ssl_error_dialog">Show SSL error dialog</string>
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
+    <string name="manual">使用說明</string>
 </resources>
