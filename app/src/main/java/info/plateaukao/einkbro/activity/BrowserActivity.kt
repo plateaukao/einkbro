@@ -1185,8 +1185,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun loadUrlInWebView(foreground: Boolean, webView: NinjaWebView, url: String) {
+        ViewUnit.bound(this, webView)
         if (!foreground) {
-            ViewUnit.bound(this, webView)
             webView.deactivate()
             if (config.enableWebBkgndLoad) {
                 webView.loadUrl(url)
