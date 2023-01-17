@@ -1228,8 +1228,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun updateSavedAlbumInfo() {
         val albumControllers = browserContainer.list()
         val albumInfoList = albumControllers
-            .filter { it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK }
-            .map { controller -> AlbumInfo(controller.albumTitle, controller.albumUrl) }
+            .filter {
+                (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) || it.initAlbumUrl.isNotBlank()
+            }
+            .map { controller ->
+                AlbumInfo(
+                    controller.albumTitle,
+                    controller.albumUrl.ifBlank { controller.initAlbumUrl },
+                )
+            }
         config.savedAlbumInfoList = albumInfoList
         config.currentAlbumIndex = browserContainer.indexOf(currentAlbumController)
         // fix if current album is still with null url

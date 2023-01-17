@@ -338,7 +338,7 @@ open class NinjaWebView(
     override val albumUrl: String
         get() = url ?: ""
 
-    var initAlbumUrl: String = ""
+    override var initAlbumUrl: String = ""
     override fun activate() {
         requestFocus()
         isForeground = true
