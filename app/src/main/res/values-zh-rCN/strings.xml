@@ -365,7 +365,7 @@
     <string name="password">密码</string>
     <string name="user_name">用户名</string>
     <string name="authentication">身份验证</string>
-    <string name="setting_title_edit_homepage">编辑主页URL</string>
+    <string name="setting_title_edit_homepage">编辑主页网址</string>
     <string name="setting_title_plus_behavior">新建标签页行为</string>
     <string name="setting_summary_plus_behavior">添加新标签页时，应显示的内容。</string>
     <string name="setting_title_translated_langs">首选翻译语言</string>
@@ -396,15 +396,15 @@
     <string name="google_full_page">谷歌整页</string>
     <string name="papago_dual_pane">Papago双窗口</string>
     <string name="google_in_place">谷歌原状</string>
-    <string name="setting_title_update_adblock">Update Adblock content</string>
-    <string name="setting_summary_update_adblock">Update list of adblock websites</string>
-    <string name="setting_title_adblock_url">Adblock list url</string>
-    <string name="setting_summary_adblock_url">If you want to use other adblock content, please edit this url.</string>
-    <string name="setting_title_adblock_auto_update">Auto update Adblock</string>
-    <string name="setting_summary_adblock_auto_update">Auto update adblock content weekly</string>
-    <string name="toast_adblock_updated">Adblock is updated!</string>
-    <string name="toast_backup_successful">Backup succeeds</string>
-    <string name="setting_title_enable_ssl_error_dialog">Show SSL error dialog</string>
-    <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
-    <string name="manual">Manual</string>
+    <string name="setting_title_update_adblock">更新Adblock内容</string>
+    <string name="setting_summary_update_adblock">Adblock网站更新列表</string>
+    <string name="setting_title_adblock_url">Adblock列表网址</string>
+    <string name="setting_summary_adblock_url">如果您想使用其他Adblock内容，请编辑此网址。</string>
+    <string name="setting_title_adblock_auto_update">自动更新Adblock</string>
+    <string name="setting_summary_adblock_auto_update">每周自动更新Adblock内容</string>
+    <string name="toast_adblock_updated">Adblock已更新！</string>
+    <string name="toast_backup_successful">已完成备份</string>
+    <string name="setting_title_enable_ssl_error_dialog">显示SSL错误对话框</string>
+    <string name="setting_summary_enable_ssl_error_dialog">当SSL出现问题时，显示错误对话框。</string>
+    <string name="manual">使用指南</string>
 </resources>
