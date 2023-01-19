@@ -6,10 +6,14 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.net.Uri
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.ExtraBrowserActivity
 import info.plateaukao.einkbro.activity.SettingActivity
 import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.dialog.DialogManager
 
 object IntentUnit {
     fun share(context: Context, title: String?, url: String?) {
@@ -51,4 +55,25 @@ object IntentUnit {
 
         activity.startActivity(intent)
     }
+
+    fun createCustomFontResultLauncher(activity: ComponentActivity) : ActivityResultLauncher<Intent> =
+        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            BrowserUnit.handleFontSelectionResult(activity, it)
+        }
+
+    fun createSaveImageFilePickerLauncher(activity: ComponentActivity) : ActivityResultLauncher<Intent> =
+        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            BrowserUnit.handleSaveImageFilePickerResult(activity, it) { uri ->
+                // action to show the downloaded image
+                val fileIntent = Intent(ACTION_VIEW).apply {
+                    data = uri
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                DialogManager(activity).showOkCancelDialog(
+                    messageResId = R.string.toast_downloadComplete,
+                    okAction = { activity.startActivity(fileIntent) }
+                )
+            }
+        }
 }

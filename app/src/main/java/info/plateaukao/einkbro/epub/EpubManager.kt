@@ -109,7 +109,7 @@ class EpubManager(private val context: Context): KoinComponent {
         (context as Activity).startActivityForResult(intent, BrowserActivity.WRITE_EPUB_REQUEST_CODE)
     }
 
-    suspend fun internalSaveEpub(
+    private suspend fun internalSaveEpub(
             isNew: Boolean,
             fileUri: Uri,
             html: String,
