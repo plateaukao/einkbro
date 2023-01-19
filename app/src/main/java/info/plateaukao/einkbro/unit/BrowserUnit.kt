@@ -2,8 +2,11 @@ package info.plateaukao.einkbro.unit
 
 import android.app.Activity
 import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -35,7 +38,9 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
 import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
 import info.plateaukao.einkbro.util.Constants
+import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaToast.showShort
+import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -95,19 +100,42 @@ object BrowserUnit : KoinComponent {
         return ByteArrayInputStream(imageBytes)
     }
 
+    fun createDownloadReceiver(activity: Activity): BroadcastReceiver {
+        return object: BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (activity.isFinishing || downloadFileId == -1L) return
+
+                val downloadManager = activity.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+                val mostRecentDownload: Uri =
+                    downloadManager.getUriForDownloadedFile(downloadFileId) ?: return
+                val mimeType: String = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
+                val fileIntent = Intent(ACTION_VIEW).apply {
+                    setDataAndType(mostRecentDownload, mimeType)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                downloadFileId = -1L
+                DialogManager(activity).showOkCancelDialog(
+                    messageResId = R.string.toast_downloadComplete,
+                    okAction = {
+                        try {
+                            activity.startActivity(fileIntent)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            NinjaToast.show(activity, R.string.toast_error)
+                        }
+                    }
+                )
+            }
+        }
+    }
     fun openDownloadFolder(activity: Activity) {
         val uri = Uri.parse(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                .toString()
-        );
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            setDataAndType(uri, "resource/folder");
-        }
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
+        )
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply { setDataAndType(uri, "resource/folder") }
         activity.startActivity(
-            Intent.createChooser(
-                intent,
-                activity.getString(R.string.dialog_title_download)
-            )
+            Intent.createChooser(intent, activity.getString(R.string.dialog_title_download))
         )
     }
 

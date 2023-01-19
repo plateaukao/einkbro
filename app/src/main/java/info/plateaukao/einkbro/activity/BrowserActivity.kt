@@ -56,7 +56,7 @@ import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.task.SaveScreenshotTask
 import info.plateaukao.einkbro.unit.*
-import info.plateaukao.einkbro.unit.BrowserUnit.downloadFileId
+import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
@@ -150,8 +150,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
             ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(this, config.favoriteUrl)
-            ToolbarAction.Tts -> TtsSettingDialogFragment{ IntentUnit.gotoSystemTtsSettings(this) }
+            ToolbarAction.Tts -> TtsSettingDialogFragment { IntentUnit.gotoSystemTtsSettings(this) }
                 .show(supportFragmentManager, "TtsSettingDialog")
+
             ToolbarAction.Font -> ninjaWebView.toggleReaderMode()
             else -> {}
         }
@@ -205,6 +206,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             addAlbum(getString(R.string.app_name), "")
             focusOnInput()
         }
+
         NewTabBehavior.SHOW_HOME -> addAlbum("", config.favoriteUrl)
         NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
             addAlbum("", "")
@@ -303,34 +305,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initOverview()
         initTouchArea()
 
-        downloadReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if (this@BrowserActivity.isFinishing || downloadFileId == -1L) return
-
-                val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-                val mostRecentDownload: Uri =
-                    downloadManager.getUriForDownloadedFile(downloadFileId) ?: return
-                val mimeType: String = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
-                val fileIntent = Intent(ACTION_VIEW).apply {
-                    setDataAndType(mostRecentDownload, mimeType)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
-                downloadFileId = -1L
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.toast_downloadComplete,
-                    okAction = {
-                        try {
-                            startActivity(fileIntent)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            NinjaToast.show(this@BrowserActivity, R.string.toast_error)
-                        }
-                    }
-                )
-            }
-        }
-
+        downloadReceiver = createDownloadReceiver(this)
         registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
         dispatchIntent(intent)
         // after dispatching intent, the value should be reset to false
@@ -407,9 +382,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun initTouchArea() {
-        updateTouchView()
-    }
+    private fun initTouchArea() = updateTouchView()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -509,14 +482,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 if (config.useUpDownPageTurn) ninjaWebView.pageDownWithNoAnimation()
             }
+
             KeyEvent.KEYCODE_DPAD_UP -> {
                 if (config.useUpDownPageTurn) ninjaWebView.pageUpWithNoAnimation()
             }
+
             KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey()
             KeyEvent.KEYCODE_VOLUME_UP -> return handleVolumeUpKey()
             KeyEvent.KEYCODE_MENU -> {
                 showMenuDialog(); return true
             }
+
             KeyEvent.KEYCODE_BACK -> return handleBackKey()
         }
         return false
