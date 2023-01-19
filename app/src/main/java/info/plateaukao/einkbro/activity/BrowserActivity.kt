@@ -252,6 +252,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
 
+    private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
+
+    private lateinit var openFileLauncher: ActivityResultLauncher<Intent>
+
+    private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
         MediaPlayer.OnErrorListener {
@@ -304,8 +310,42 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun initLaunchers() {
-        customFontResultLauncher = IntentUnit.createCustomFontResultLauncher(this)
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
+        customFontResultLauncher = IntentUnit.createResultLauncher(this) { result ->
+            if (result.resultCode != RESULT_OK) return@createResultLauncher
+            BrowserUnit.handleFontSelectionResult(this, result)
+        }
+        writeEpubFilePickerLauncher = IntentUnit.createResultLauncher(this) { result ->
+            if (result.resultCode != RESULT_OK) return@createResultLauncher
+            val uri = result.data?.data ?: return@createResultLauncher
+            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(uri, takeFlags)
+            epubManager.saveEpub(this, uri, ninjaWebView)
+        }
+        openFileLauncher = IntentUnit.createResultLauncher(this) { result ->
+            if (result.resultCode != RESULT_OK) return@createResultLauncher
+            val uri = result.data?.data ?: return@createResultLauncher
+            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(uri, takeFlags)
+
+            HelperUnit.openFile(this@BrowserActivity, uri)
+        }
+        fileChooserLauncher = IntentUnit.createResultLauncher(this) { result ->
+            if (result.resultCode != RESULT_OK || filePathCallback == null){
+                filePathCallback = null
+                return@createResultLauncher
+            }
+            var results: Array<Uri>?
+            // Check that the response is a good one
+            val data = result.data
+            if (data != null) {
+                // If there is not data, then we may have taken a photo
+                val dataString = data.dataString
+                results = arrayOf(Uri.parse(dataString))
+                filePathCallback?.onReceiveValue(results)
+            }
+            filePathCallback = null
+        }
     }
 
     override fun onUserLeaveHint() {
@@ -372,45 +412,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun initTouchArea() = updateTouchView()
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == WRITE_EPUB_REQUEST_CODE && resultCode == RESULT_OK) {
-            val uri = data?.data ?: return
-            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(uri, takeFlags)
-            epubManager.saveEpub(this, uri, ninjaWebView)
-
-            return
-        }
-
-        if (requestCode == GRANT_PERMISSION_REQUEST_CODE && resultCode == RESULT_OK) {
-            val uri = data?.data ?: return
-            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(uri, takeFlags)
-
-            HelperUnit.openFile(this@BrowserActivity, uri)
-            return
-        }
-
-        if (requestCode == INPUT_FILE_REQUEST_CODE && filePathCallback != null) {
-            var results: Array<Uri>? = null
-            // Check that the response is a good one
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    // If there is not data, then we may have taken a photo
-                    val dataString = data.dataString
-                    if (dataString != null) {
-                        results = arrayOf(Uri.parse(dataString))
-                    }
-                }
-            }
-            filePathCallback?.onReceiveValue(results)
-            filePathCallback = null
-            return
-        }
-    }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -1385,7 +1386,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         contentSelectionIntent.type = "*/*"
         val chooserIntent = Intent(Intent.ACTION_CHOOSER)
         chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent)
-        startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE)
+        fileChooserLauncher.launch(chooserIntent)
     }
 
     override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
@@ -1729,7 +1730,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
         if (uri == null) {
-            epubManager.showEpubFilePicker()
+            epubManager.showEpubFilePicker(writeEpubFilePickerLauncher)
         } else {
             epubManager.saveEpub(this, uri, ninjaWebView)
         }
@@ -1922,9 +1923,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     companion object {
         private const val TAG = "BrowserActivity"
-        private const val INPUT_FILE_REQUEST_CODE = 1
-        const val WRITE_EPUB_REQUEST_CODE = 2
-        const val GRANT_PERMISSION_REQUEST_CODE = 4
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
 }

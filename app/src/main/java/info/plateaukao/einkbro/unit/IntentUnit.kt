@@ -7,6 +7,7 @@ import android.content.Intent.ACTION_VIEW
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.net.Uri
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import info.plateaukao.einkbro.R
@@ -56,9 +57,12 @@ object IntentUnit {
         activity.startActivity(intent)
     }
 
-    fun createCustomFontResultLauncher(activity: ComponentActivity) : ActivityResultLauncher<Intent> =
+    fun createResultLauncher(
+        activity: ComponentActivity,
+        postAction: (ActivityResult)->Unit
+    ) : ActivityResultLauncher<Intent> =
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            BrowserUnit.handleFontSelectionResult(activity, it)
+            postAction(it)
         }
 
     fun createSaveImageFilePickerLauncher(activity: ComponentActivity) : ActivityResultLauncher<Intent> =

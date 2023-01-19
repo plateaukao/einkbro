@@ -34,11 +34,11 @@ import android.text.Html
 import android.text.SpannableString
 import android.text.util.Linkify
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaToast
@@ -215,10 +215,15 @@ object HelperUnit {
     }
 
     fun openEpubToLastChapter(activity: Activity, uri: Uri) {
-        openFile(activity, uri, true)
+        openFile(activity, uri, shouldGoToEnd = true)
     }
 
-    fun openFile(activity: Activity, uri: Uri, shouldGoToEnd: Boolean = false) {
+    fun openFile(
+        activity: Activity,
+        uri: Uri,
+        resultLauncher: ActivityResultLauncher<Intent>? = null,
+        shouldGoToEnd: Boolean = false
+    ) {
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             data = uri
@@ -238,7 +243,7 @@ object HelperUnit {
             intent.type = Constants.MIME_TYPE_ANY
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.putExtra("android.provider.extra.INITIAL_URI", uri);
-            activity.startActivityForResult(intent, BrowserActivity.GRANT_PERMISSION_REQUEST_CODE)
+            resultLauncher?.launch(intent)
         }
     }
 

@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -99,14 +99,15 @@ class EpubManager(private val context: Context): KoinComponent {
         ).show()
     }
 
-    fun showEpubFilePicker() {
+    fun showEpubFilePicker(activityResultLauncher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_EPUB
         intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        (context as Activity).startActivityForResult(intent, BrowserActivity.WRITE_EPUB_REQUEST_CODE)
+        activityResultLauncher.launch(intent)
+        //(context as Activity).startActivityForResult(intent, BrowserActivity.WRITE_EPUB_REQUEST_CODE)
     }
 
     private suspend fun internalSaveEpub(
