@@ -30,7 +30,6 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
@@ -249,25 +248,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val recordDb: RecordDb by inject()
 
-    private val customFontResultLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            BrowserUnit.handleFontSelectionResult(this, it)
-        }
-    private val saveImageFilePickerLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            BrowserUnit.handleSaveImageFilePickerResult(this, it) { uri ->
-                // action to show the downloaded image
-                val fileIntent = Intent(ACTION_VIEW).apply {
-                    data = uri
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.toast_downloadComplete,
-                    okAction = { startActivity(fileIntent) }
-                )
-            }
-        }
+    private lateinit var customFontResultLauncher: ActivityResultLauncher<Intent>
+
+    private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
 
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
@@ -299,6 +282,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         mainContentLayout = findViewById(R.id.main_content)
         subContainer = findViewById(R.id.sub_container)
         updateAppbarPosition()
+        initLaunchers()
         initToolbar()
         initSearchPanel()
         initInputBar()
@@ -317,6 +301,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         listenKeyboardShowHide()
 
+    }
+
+    private fun initLaunchers() {
+        customFontResultLauncher = IntentUnit.createCustomFontResultLauncher(this)
+        saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
     }
 
     override fun onUserLeaveHint() {
@@ -462,8 +451,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onDestroy() {
         ttsManager.stopReading()
-
-        customFontResultLauncher.unregister()
 
         updateSavedAlbumInfo()
 
