@@ -51,7 +51,6 @@ import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.*
-import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.task.SaveScreenshotTask
 import info.plateaukao.einkbro.unit.*
@@ -452,10 +451,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         updateSavedAlbumInfo()
 
-        if (config.clearWhenQuit) {
-            val toClearService = Intent(this, ClearService::class.java)
-            startService(toClearService)
-        }
         browserContainer.clear()
         unregisterReceiver(downloadReceiver)
 
