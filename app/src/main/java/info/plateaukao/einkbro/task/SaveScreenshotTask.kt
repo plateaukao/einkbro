@@ -50,7 +50,7 @@ class SaveScreenshotTask(
         showSavedScreenshot(uri)
     }
 
-    suspend fun captureAndSaveImage(webView: WebView, width: Float, height: Float, name: String): Uri? {
+    private suspend fun captureAndSaveImage(webView: WebView, width: Float, height: Float, name: String): Uri? {
         val bitmap = capture(webView, width, height)
         var uri: Uri? = null
         withContext(Dispatchers.IO) {

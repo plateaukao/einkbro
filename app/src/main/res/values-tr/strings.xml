@@ -164,7 +164,6 @@
     <string name="toast_input_empty">Hiçbir şey girmediniz</string>
     <string name="toast_invalid_domain">Geçersiz etki alanı</string>
     <string name="toast_load_error">Bu URL yüklenemiyor</string>
-    <string name="toast_new_tab_successful">Yeni bir sekmede başarıyla açıldı</string>
     <string name="toast_share_failed">Bu sayfa paylaşılamıyor</string>
     <string name="toast_start_download">İndirmeye başla</string>
     <string name="toast_wait_a_minute">Lütfen biraz bekleyin</string>

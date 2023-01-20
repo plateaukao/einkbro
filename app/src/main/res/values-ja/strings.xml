@@ -162,7 +162,6 @@
     <string name="toast_input_empty">You haven\'t input anything</string>
     <string name="toast_invalid_domain">無効なドメイン</string>
     <string name="toast_load_error">Can\'t load this URL</string>
-    <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">ダウンロード開始中…</string>
     <string name="toast_wait_a_minute">少々お待ちください</string>

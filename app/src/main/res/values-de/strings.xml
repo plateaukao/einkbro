@@ -153,7 +153,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="toast_input_empty">Du hast nichts eingegeben</string>
     <string name="toast_invalid_domain">Ungültige Domain</string>
     <string name="toast_load_error">Kann diese URL nicht laden</string>
-    <string name="toast_new_tab_successful">Erfolgreich in neuem Tab geöffnet</string>
     <string name="toast_share_failed">Kann diese Seite nicht teilen</string>
     <string name="toast_start_download">Starte Download</string>
     <string name="toast_wait_a_minute">Bitte einen Moment warten</string>

@@ -153,7 +153,6 @@
     <string name="toast_input_empty">Вы ничего не ввели</string>
     <string name="toast_invalid_domain">Неверный домен</string>
     <string name="toast_load_error">Не удается загрузить этот URL</string>
-    <string name="toast_new_tab_successful">Успешно открыто в новой вкладке</string>
     <string name="toast_share_failed">Не удаётся поделиться этой страницей</string>
     <string name="toast_start_download">Начало загрузки</string>
     <string name="toast_wait_a_minute">Подождите минутку</string>

@@ -152,7 +152,6 @@
     <string name="toast_input_empty">Não introduziu dados</string>
     <string name="toast_invalid_domain">Domínio inválido</string>
     <string name="toast_load_error">Não é possível carregar este URL</string>
-    <string name="toast_new_tab_successful">Aberto com sucesso em novo separador</string>
     <string name="toast_share_failed">Não é possível partilhar esta página</string>
     <string name="toast_start_download">Descarga iniciada</string>
     <string name="toast_wait_a_minute">Aguarde um pouco</string>

@@ -164,7 +164,6 @@
     <string name="toast_input_empty">Vous n\'avez rien entré.</string>
     <string name="toast_invalid_domain">Domaine non valide</string>
     <string name="toast_load_error">Impossible de charger cette URL</string>
-    <string name="toast_new_tab_successful">Ouvert avec succès dans un nouvel onglet</string>
     <string name="toast_share_failed">Impossible de partager cette page</string>
     <string name="toast_start_download">Démarrage du téléchargement</string>
     <string name="toast_wait_a_minute">SVP attendez un moment</string>

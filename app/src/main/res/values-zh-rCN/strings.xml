@@ -206,7 +206,6 @@
     <string name="toast_input_empty">您还未输入任何数据</string>
     <string name="toast_invalid_domain">域名无效</string>
     <string name="toast_load_error">无法加载此网址</string>
-    <string name="toast_new_tab_successful">在新标签页成功打开</string>
     <string name="toast_share_failed">无法分享此页面</string>
     <string name="toast_start_download">开始下载</string>
     <string name="toast_wait_a_minute">请稍等</string>
