@@ -1,7 +1,6 @@
 package info.plateaukao.einkbro
 
 import android.app.Application
-import android.content.Intent
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
@@ -12,7 +11,6 @@ import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -58,9 +56,5 @@ class EinkBroApplication : Application() {
     override fun onTerminate() {
         super.onTerminate()
         ttsManager.release()
-        if (config.clearWhenQuit) {
-            val toClearService = Intent(this, ClearService::class.java)
-            startService(toClearService)
-        }
     }
 }

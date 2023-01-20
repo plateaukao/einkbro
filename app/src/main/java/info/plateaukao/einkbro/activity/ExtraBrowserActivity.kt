@@ -1,3 +1,5 @@
 package info.plateaukao.einkbro.activity
 
-class ExtraBrowserActivity : BrowserActivity()
+class ExtraBrowserActivity : BrowserActivity() {
+    override var shouldRunClearService: Boolean = false
+}

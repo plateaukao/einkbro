@@ -11,20 +11,12 @@ import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.os.*
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.URLUtil
 import android.webkit.WebView
-import android.webkit.WebView.HitTestResult.ANCHOR_TYPE
-import android.webkit.WebView.HitTestResult.IMAGE_ANCHOR_TYPE
-import android.webkit.WebView.HitTestResult.IMAGE_TYPE
-import android.webkit.WebView.HitTestResult.SRC_ANCHOR_TYPE
-import android.webkit.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
+import android.webkit.WebView.HitTestResult.*
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -384,7 +376,7 @@ object BrowserUnit : KoinComponent {
         deleteDir(localStorage_dir)
     }
 
-    fun deleteDir(dir: File?): Boolean {
+    private fun deleteDir(dir: File?): Boolean {
         if (dir != null && dir.isDirectory) {
             val children = dir.list()
             for (aChildren in Objects.requireNonNull(children)) {
@@ -395,11 +387,6 @@ object BrowserUnit : KoinComponent {
             }
         }
         return dir != null && dir.delete()
-    }
-
-    fun printTimestamp(function: String) {
-        val timestamp = System.currentTimeMillis()
-        Log.v("timestamp", "$function timestamp:$timestamp")
     }
 
     private fun guessFilename(url: String, contentDisposition: String, mimeType: String): String {

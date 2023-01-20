@@ -12,6 +12,7 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.launch
 
 class EpubReaderActivity: BrowserActivity() {
+    override var shouldRunClearService: Boolean = false
     private lateinit var epubReader: EpubReaderView
 
     override fun onCreate(savedInstanceState: Bundle?) {
