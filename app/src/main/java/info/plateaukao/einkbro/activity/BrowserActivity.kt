@@ -429,11 +429,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         overridePendingTransition(0, 0)
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
-        if (config.customFontChanged) {
-            dialogManager.showOkCancelDialog(
-                title = getString(R.string.reload_font_change),
-                okAction = { ninjaWebView.reload() }
-            )
+        if (config.customFontChanged && config.fontType == FontType.CUSTOM) {
+            ninjaWebView.reload()
             config.customFontChanged = false
         }
         if (!config.continueMedia) {

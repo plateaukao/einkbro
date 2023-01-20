@@ -305,7 +305,7 @@
     <string name="system_default">Default</string>
     <string name="serif">Serif</string>
     <string name="googleserif">Google Serif</string>
-    <string name="custom_font">Custom font</string>
+    <string name="custom_font">Custom</string>
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
     <string name="menu_quickToggle">Quick Toggle</string>
@@ -314,7 +314,6 @@
     <string name="setting_title_vi_binding">VI key binding</string>
     <string name="setting_summary_vi_binding">enable VI key bindings for eaiser keyboard navigation.</string>
     <string name="edit_custom_font">Edit Custom Font</string>
-    <string name="reload_font_change">Reload to take effect of font change</string>
     <string name="cannot_open_file">File can\'t be opened. Please re-open it from file picker.</string>
     <string name="setting_recent_bookmarks">Show recently used bookmarks</string>
     <string name="setting_summary_recent_bookmarks">Show recently used bookmarks when opening a new tab</string>

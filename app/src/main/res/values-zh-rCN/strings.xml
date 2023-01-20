@@ -311,7 +311,7 @@
     <string name="system_default">默认值</string>
     <string name="serif">衬线</string>
     <string name="googleserif">谷歌衬线</string>
-    <string name="custom_font">自定义字体</string>
+    <string name="custom_font">自定义</string>
     <string name="setting_title_font">字体</string>
     <string name="font_type">字体类型</string>
     <string name="menu_quickToggle">快速切换</string>
@@ -320,7 +320,6 @@
     <string name="setting_title_vi_binding">VI键值绑定</string>
     <string name="setting_summary_vi_binding">启用VI键值绑定以简化键盘导航。</string>
     <string name="edit_custom_font">选择自定义字体</string>
-    <string name="reload_font_change">刷新切换字体</string>
     <string name="cannot_open_file">无法打开文件，请从文件选择器重新打开。</string>
     <string name="setting_recent_bookmarks">显示最近使用的书签</string>
     <string name="setting_summary_recent_bookmarks">打开新标签时显示最近使用的书签</string>

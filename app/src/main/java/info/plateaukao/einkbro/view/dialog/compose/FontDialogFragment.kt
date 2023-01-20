@@ -1,18 +1,21 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 
@@ -22,18 +25,36 @@ class FontDialogFragment(
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
+                val customFontName = remember { mutableStateOf(config.customFontInfo?.name ?: "") }
                 MainFontDialog(
                     selectedFontSizeValue = config.fontSize,
                     selectedFontType = config.fontType,
+                    customFontName = customFontName.value,
                     onFontSizeClick = {
                         config.fontSize = it
                         dismiss()
                     },
                     onFontTypeClick = {
-                        config.fontType = it
-                        dismiss()
+                        if (it == FontType.CUSTOM && config.customFontInfo == null) {
+                            onFontCustomizeClick()
+                            config.registerOnSharedPreferenceChangeListener { _, key ->
+                                if (key == ConfigManager.K_CUSTOM_FONT) {
+                                    customFontName.value = config.customFontInfo?.name ?: ""
+                                }
+                            }
+                        } else {
+                            config.fontType = it
+                            dismiss()
+                        }
                     },
-                    onFontCustomizeClick = onFontCustomizeClick,
+                    onFontCustomizeClick = {
+                        onFontCustomizeClick()
+                        config.registerOnSharedPreferenceChangeListener { _, key ->
+                            if (key == ConfigManager.K_CUSTOM_FONT) {
+                                customFontName.value = config.customFontInfo?.name ?: ""
+                            }
+                        }
+                    },
                     okAction = { dismiss() },
                 )
             }
@@ -59,6 +80,7 @@ private val fontSizeList2 = listOf(
 private fun MainFontDialog(
     selectedFontSizeValue: Int,
     selectedFontType: FontType,
+    customFontName: String,
     onFontSizeClick: (Int) -> Unit,
     onFontTypeClick: (FontType) -> Unit,
     onFontCustomizeClick: () -> Unit,
@@ -112,12 +134,37 @@ private fun MainFontDialog(
         Column {
             FontType.values().map { fontType ->
                 val isSelect = fontType == selectedFontType
-                SelectableText(
-                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 5.dp),
-                    selected = isSelect,
-                    text = stringResource(id = fontType.resId),
-                ) {
-                    onFontTypeClick(fontType)
+                if (fontType != FontType.CUSTOM) {
+                    SelectableText(
+                        modifier = Modifier.padding(horizontal = 1.dp, vertical = 5.dp),
+                        selected = isSelect,
+                        text = stringResource(id = fontType.resId),
+                    ) {
+                        onFontTypeClick(fontType)
+                    }
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        val fontName = customFontName.ifBlank {
+                            stringResource(id = R.string.nothing)
+                        }
+                        SelectableText(
+                            modifier = Modifier.padding(horizontal = 1.dp, vertical = 5.dp).weight(1f),
+                            selected = isSelect,
+                            text = stringResource(id = fontType.resId) + " ($fontName)",
+                        ) {
+                            onFontTypeClick(fontType)
+                        }
+                        IconButton(
+                            onClick = onFontCustomizeClick,
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = stringResource(id = R.string.settings),
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -133,39 +180,27 @@ fun FontDialogButtonBar(
     okAction: () -> Unit,
     editFontAction: () -> Unit
 ) {
-    Column {
+    Column(
+        horizontalAlignment = Alignment.End,
+    ) {
         HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
+        TextButton(
+            modifier = Modifier.wrapContentWidth(),
+            onClick = okAction
         ) {
-            TextButton(
-                modifier = Modifier.wrapContentWidth(),
-                onClick = editFontAction
-            ) {
-                Text(stringResource(id = R.string.edit_custom_font), color = MaterialTheme.colors.onBackground)
-            }
-            VerticalSeparator()
-            TextButton(
-                modifier = Modifier.wrapContentWidth(),
-                onClick = okAction
-            ) {
-                Text(stringResource(id = android.R.string.ok), color = MaterialTheme.colors.onBackground)
-            }
+            Text(stringResource(id = android.R.string.ok), color = MaterialTheme.colors.onBackground)
         }
     }
 }
 
-@Preview(widthDp = 600)
+@Preview(widthDp = 350)
 @Composable
 fun PreviewMainFontDialog() {
     MyTheme {
         MainFontDialog(
             selectedFontSizeValue = 100,
             selectedFontType = FontType.SYSTEM_DEFAULT,
+            customFontName = "Noto Sans CJK TC",
             onFontSizeClick = {},
             onFontTypeClick = {},
             onFontCustomizeClick = {},
