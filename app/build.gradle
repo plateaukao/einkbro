@@ -10,8 +10,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 91800
-        versionName "9.18.0"
+        versionCode 91900
+        versionName "9.19.0"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -67,7 +67,6 @@ android {
 
 dependencies {
     implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.preference:preference-ktx:1.2.0'
 
     // epublib
     implementation("com.positiondev.epublib:epublib-core:3.1") {
@@ -82,7 +81,7 @@ dependencies {
 
     // for epub saving: html processing
     implementation 'org.jsoup:jsoup:1.15.3'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    //implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation "androidx.room:room-runtime:2.4.3"
@@ -108,8 +107,6 @@ dependencies {
     testImplementation "io.insert-koin:koin-test:$koin_version"
     // Android
     implementation "io.insert-koin:koin-android-compat:$koin_version"
-
-    implementation 'androidx.activity:activity-ktx:1.6.0'
 
     // memory leak detection
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'

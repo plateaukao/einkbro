@@ -2,7 +2,6 @@
 
 package info.plateaukao.einkbro.view.compose
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -171,7 +170,6 @@ fun ToolbarIcon(
     val borderWidth = if (pressed) 0.5.dp else (-1).dp
 
     val toolbarAction = toolbarActionInfo.toolbarAction
-    Log.d("abc", toolbarAction.name)
     Icon(
         modifier = Modifier
             .fillMaxHeight()
