@@ -1,0 +1,34 @@
+appId: info.plateaukao.einkbro
+---
+- launchApp
+# Settings button on toolbar
+- tapOn:
+    id: "settings"
+# Settings button on menu
+- tapOn: "Settings"
+- tapOn: "UI"
+- back
+- tapOn: "Toolbar"
+- back
+- tapOn: "Behavior"
+- back
+- tapOn: "Gestures"
+- back
+- tapOn: "Backup"
+- back
+- tapOn: "Printed pdf paper size"
+- back
+- tapOn: "Start Control"
+- back
+- tapOn: "Data Control"
+- back
+- tapOn: "Search"
+- back
+- tapOn: "Custom user agent"
+- back
+- tapOn: "Edit Home Url"
+- back
+- tapOn:
+      text: "About EinkBro.*"
+- back
+- back

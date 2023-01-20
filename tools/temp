@@ -1,0 +1,1118 @@
+Running on emulator-5554
+{
+  "attributes" : { },
+  "children" : [ {
+    "attributes" : { },
+    "children" : [ {
+      "attributes" : { },
+      "children" : [ ]
+    }, {
+      "attributes" : {
+        "text" : "",
+        "resource-id" : "",
+        "clickable" : "false",
+        "bounds" : "[0,0][1080,63]",
+        "enabled" : "true",
+        "focused" : "false",
+        "checked" : "false",
+        "selected" : "false"
+      },
+      "children" : [ {
+        "attributes" : { },
+        "children" : [ ]
+      }, {
+        "attributes" : {
+          "text" : "",
+          "resource-id" : "com.android.systemui:id/status_bar_launch_animation_container",
+          "clickable" : "false",
+          "bounds" : "[0,0][1080,63]",
+          "enabled" : "true",
+          "focused" : "false",
+          "checked" : "false",
+          "selected" : "false"
+        },
+        "children" : [ ],
+        "clickable" : false,
+        "enabled" : true,
+        "focused" : false,
+        "checked" : false,
+        "selected" : false
+      }, {
+        "attributes" : { },
+        "children" : [ ]
+      }, {
+        "attributes" : {
+          "text" : "",
+          "resource-id" : "com.android.systemui:id/status_bar_container",
+          "clickable" : "false",
+          "bounds" : "[0,0][1080,63]",
+          "enabled" : "true",
+          "focused" : "false",
+          "checked" : "false",
+          "selected" : "false"
+        },
+        "children" : [ {
+          "attributes" : { },
+          "children" : [ ]
+        }, {
+          "attributes" : {
+            "text" : "",
+            "resource-id" : "com.android.systemui:id/status_bar",
+            "clickable" : "false",
+            "bounds" : "[0,0][1080,63]",
+            "enabled" : "true",
+            "focused" : "false",
+            "checked" : "false",
+            "selected" : "false"
+          },
+          "children" : [ {
+            "attributes" : { },
+            "children" : [ ]
+          }, {
+            "attributes" : {
+              "text" : "",
+              "resource-id" : "com.android.systemui:id/status_bar_contents",
+              "clickable" : "false",
+              "bounds" : "[0,0][1027,63]",
+              "enabled" : "true",
+              "focused" : "false",
+              "checked" : "false",
+              "selected" : "false"
+            },
+            "children" : [ {
+              "attributes" : { },
+              "children" : [ ]
+            }, {
+              "attributes" : {
+                "text" : "",
+                "resource-id" : "com.android.systemui:id/status_bar_start_side_container",
+                "clickable" : "false",
+                "bounds" : "[21,0][513,63]",
+                "enabled" : "true",
+                "focused" : "false",
+                "checked" : "false",
+                "selected" : "false"
+              },
+              "children" : [ {
+                "attributes" : { },
+                "children" : [ ]
+              }, {
+                "attributes" : {
+                  "text" : "",
+                  "resource-id" : "com.android.systemui:id/status_bar_start_side_content",
+                  "clickable" : "false",
+                  "bounds" : "[21,0][235,63]",
+                  "enabled" : "true",
+                  "focused" : "false",
+                  "checked" : "false",
+                  "selected" : "false"
+                },
+                "children" : [ {
+                  "attributes" : { },
+                  "children" : [ ]
+                }, {
+                  "attributes" : {
+                    "text" : "",
+                    "resource-id" : "com.android.systemui:id/status_bar_start_side_except_heads_up",
+                    "clickable" : "false",
+                    "bounds" : "[21,0][235,63]",
+                    "enabled" : "true",
+                    "focused" : "false",
+                    "checked" : "false",
+                    "selected" : "false"
+                  },
+                  "children" : [ {
+                    "attributes" : { },
+                    "children" : [ ]
+                  }, {
+                    "attributes" : {
+                      "text" : "11:36",
+                      "resource-id" : "com.android.systemui:id/clock",
+                      "clickable" : "false",
+                      "bounds" : "[21,0][119,63]",
+                      "enabled" : "true",
+                      "focused" : "false",
+                      "checked" : "false",
+                      "selected" : "false"
+                    },
+                    "children" : [ ],
+                    "clickable" : false,
+                    "enabled" : true,
+                    "focused" : false,
+                    "checked" : false,
+                    "selected" : false
+                  }, {
+                    "attributes" : { },
+                    "children" : [ ]
+                  }, {
+                    "attributes" : {
+                      "text" : "",
+                      "resource-id" : "com.android.systemui:id/notification_icon_area",
+                      "clickable" : "false",
+                      "bounds" : "[119,0][235,63]",
+                      "enabled" : "true",
+                      "focused" : "false",
+                      "checked" : "false",
+                      "selected" : "false"
+                    },
+                    "children" : [ {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "com.android.systemui:id/notificationIcons",
+                        "clickable" : "false",
+                        "bounds" : "[119,0][235,63]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ {
+                        "attributes" : { },
+                        "children" : [ ]
+                      }, {
+                        "attributes" : {
+                          "text" : "Android System notification: Configure physical keyboard",
+                          "resource-id" : "",
+                          "clickable" : "false",
+                          "bounds" : "[119,0][177,63]",
+                          "enabled" : "true",
+                          "focused" : "false",
+                          "checked" : "false",
+                          "selected" : "false"
+                        },
+                        "children" : [ ],
+                        "clickable" : false,
+                        "enabled" : true,
+                        "focused" : false,
+                        "checked" : false,
+                        "selected" : false
+                      }, {
+                        "attributes" : { },
+                        "children" : [ ]
+                      }, {
+                        "attributes" : {
+                          "text" : "Digital Wellbeing notification: Need time to focus?",
+                          "resource-id" : "",
+                          "clickable" : "false",
+                          "bounds" : "[177,0][235,63]",
+                          "enabled" : "true",
+                          "focused" : "false",
+                          "checked" : "false",
+                          "selected" : "false"
+                        },
+                        "children" : [ ],
+                        "clickable" : false,
+                        "enabled" : true,
+                        "focused" : false,
+                        "checked" : false,
+                        "selected" : false
+                      }, {
+                        "attributes" : { },
+                        "children" : [ ]
+                      } ],
+                      "clickable" : false,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    } ],
+                    "clickable" : false,
+                    "enabled" : true,
+                    "focused" : false,
+                    "checked" : false,
+                    "selected" : false
+                  }, {
+                    "attributes" : { },
+                    "children" : [ ]
+                  } ],
+                  "clickable" : false,
+                  "enabled" : true,
+                  "focused" : false,
+                  "checked" : false,
+                  "selected" : false
+                }, {
+                  "attributes" : { },
+                  "children" : [ ]
+                } ],
+                "clickable" : false,
+                "enabled" : true,
+                "focused" : false,
+                "checked" : false,
+                "selected" : false
+              }, {
+                "attributes" : { },
+                "children" : [ ]
+              } ],
+              "clickable" : false,
+              "enabled" : true,
+              "focused" : false,
+              "checked" : false,
+              "selected" : false
+            }, {
+              "attributes" : { },
+              "children" : [ ]
+            }, {
+              "attributes" : {
+                "text" : "",
+                "resource-id" : "com.android.systemui:id/status_bar_end_side_container",
+                "clickable" : "false",
+                "bounds" : "[513,0][1006,63]",
+                "enabled" : "true",
+                "focused" : "false",
+                "checked" : "false",
+                "selected" : "false"
+              },
+              "children" : [ {
+                "attributes" : { },
+                "children" : [ ]
+              }, {
+                "attributes" : {
+                  "text" : "",
+                  "resource-id" : "com.android.systemui:id/status_bar_end_side_content",
+                  "clickable" : "false",
+                  "bounds" : "[885,0][1006,63]",
+                  "enabled" : "true",
+                  "focused" : "false",
+                  "checked" : "false",
+                  "selected" : "false"
+                },
+                "children" : [ {
+                  "attributes" : { },
+                  "children" : [ ]
+                }, {
+                  "attributes" : {
+                    "text" : "",
+                    "resource-id" : "com.android.systemui:id/system_icons",
+                    "clickable" : "false",
+                    "bounds" : "[885,0][1006,63]",
+                    "enabled" : "true",
+                    "focused" : "false",
+                    "checked" : "false",
+                    "selected" : "false"
+                  },
+                  "children" : [ {
+                    "attributes" : { },
+                    "children" : [ ]
+                  }, {
+                    "attributes" : {
+                      "text" : "",
+                      "resource-id" : "com.android.systemui:id/statusIcons",
+                      "clickable" : "false",
+                      "bounds" : "[885,0][986,63]",
+                      "enabled" : "true",
+                      "focused" : "false",
+                      "checked" : "false",
+                      "selected" : "false"
+                    },
+                    "children" : [ {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "Wifi signal full.",
+                        "resource-id" : "com.android.systemui:id/wifi_combo",
+                        "clickable" : "false",
+                        "bounds" : "[885,2][931,60]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ {
+                        "attributes" : { },
+                        "children" : [ ]
+                      }, {
+                        "attributes" : {
+                          "text" : "",
+                          "resource-id" : "com.android.systemui:id/wifi_group",
+                          "clickable" : "false",
+                          "bounds" : "[892,2][931,60]",
+                          "enabled" : "true",
+                          "focused" : "false",
+                          "checked" : "false",
+                          "selected" : "false"
+                        },
+                        "children" : [ {
+                          "attributes" : { },
+                          "children" : [ ]
+                        }, {
+                          "attributes" : {
+                            "text" : "",
+                            "resource-id" : "com.android.systemui:id/wifi_combo",
+                            "clickable" : "false",
+                            "bounds" : "[892,11][931,50]",
+                            "enabled" : "true",
+                            "focused" : "false",
+                            "checked" : "false",
+                            "selected" : "false"
+                          },
+                          "children" : [ {
+                            "attributes" : { },
+                            "children" : [ ]
+                          }, {
+                            "attributes" : {
+                              "text" : "",
+                              "resource-id" : "com.android.systemui:id/wifi_signal",
+                              "clickable" : "false",
+                              "bounds" : "[892,11][931,50]",
+                              "enabled" : "true",
+                              "focused" : "false",
+                              "checked" : "false",
+                              "selected" : "false"
+                            },
+                            "children" : [ ],
+                            "clickable" : false,
+                            "enabled" : true,
+                            "focused" : false,
+                            "checked" : false,
+                            "selected" : false
+                          }, {
+                            "attributes" : { },
+                            "children" : [ ]
+                          } ],
+                          "clickable" : false,
+                          "enabled" : true,
+                          "focused" : false,
+                          "checked" : false,
+                          "selected" : false
+                        }, {
+                          "attributes" : { },
+                          "children" : [ ]
+                        } ],
+                        "clickable" : false,
+                        "enabled" : true,
+                        "focused" : false,
+                        "checked" : false,
+                        "selected" : false
+                      }, {
+                        "attributes" : { },
+                        "children" : [ ]
+                      } ],
+                      "clickable" : false,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "Phone signal full.",
+                        "resource-id" : "com.android.systemui:id/mobile_combo",
+                        "clickable" : "false",
+                        "bounds" : "[931,2][970,60]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ {
+                        "attributes" : { },
+                        "children" : [ ]
+                      }, {
+                        "attributes" : {
+                          "text" : "",
+                          "resource-id" : "com.android.systemui:id/mobile_group",
+                          "clickable" : "false",
+                          "bounds" : "[931,2][970,60]",
+                          "enabled" : "true",
+                          "focused" : "false",
+                          "checked" : "false",
+                          "selected" : "false"
+                        },
+                        "children" : [ {
+                          "attributes" : { },
+                          "children" : [ ]
+                        }, {
+                          "attributes" : {
+                            "text" : "",
+                            "resource-id" : "",
+                            "clickable" : "false",
+                            "bounds" : "[931,11][970,50]",
+                            "enabled" : "true",
+                            "focused" : "false",
+                            "checked" : "false",
+                            "selected" : "false"
+                          },
+                          "children" : [ {
+                            "attributes" : { },
+                            "children" : [ ]
+                          }, {
+                            "attributes" : {
+                              "text" : "",
+                              "resource-id" : "com.android.systemui:id/mobile_signal",
+                              "clickable" : "false",
+                              "bounds" : "[931,11][970,50]",
+                              "enabled" : "true",
+                              "focused" : "false",
+                              "checked" : "false",
+                              "selected" : "false"
+                            },
+                            "children" : [ ],
+                            "clickable" : false,
+                            "enabled" : true,
+                            "focused" : false,
+                            "checked" : false,
+                            "selected" : false
+                          }, {
+                            "attributes" : { },
+                            "children" : [ ]
+                          } ],
+                          "clickable" : false,
+                          "enabled" : true,
+                          "focused" : false,
+                          "checked" : false,
+                          "selected" : false
+                        }, {
+                          "attributes" : { },
+                          "children" : [ ]
+                        } ],
+                        "clickable" : false,
+                        "enabled" : true,
+                        "focused" : false,
+                        "checked" : false,
+                        "selected" : false
+                      }, {
+                        "attributes" : { },
+                        "children" : [ ]
+                      } ],
+                      "clickable" : false,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    } ],
+                    "clickable" : false,
+                    "enabled" : true,
+                    "focused" : false,
+                    "checked" : false,
+                    "selected" : false
+                  }, {
+                    "attributes" : { },
+                    "children" : [ ]
+                  }, {
+                    "attributes" : {
+                      "text" : "Battery 100 percent.",
+                      "resource-id" : "com.android.systemui:id/battery",
+                      "clickable" : "false",
+                      "bounds" : "[986,0][1006,63]",
+                      "enabled" : "true",
+                      "focused" : "false",
+                      "checked" : "false",
+                      "selected" : "false"
+                    },
+                    "children" : [ {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "",
+                        "clickable" : "false",
+                        "bounds" : "[986,14][1006,48]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ ],
+                      "clickable" : false,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    } ],
+                    "clickable" : false,
+                    "enabled" : true,
+                    "focused" : false,
+                    "checked" : false,
+                    "selected" : false
+                  }, {
+                    "attributes" : { },
+                    "children" : [ ]
+                  } ],
+                  "clickable" : false,
+                  "enabled" : true,
+                  "focused" : false,
+                  "checked" : false,
+                  "selected" : false
+                }, {
+                  "attributes" : { },
+                  "children" : [ ]
+                } ],
+                "clickable" : false,
+                "enabled" : true,
+                "focused" : false,
+                "checked" : false,
+                "selected" : false
+              }, {
+                "attributes" : { },
+                "children" : [ ]
+              } ],
+              "clickable" : false,
+              "enabled" : true,
+              "focused" : false,
+              "checked" : false,
+              "selected" : false
+            }, {
+              "attributes" : { },
+              "children" : [ ]
+            } ],
+            "clickable" : false,
+            "enabled" : true,
+            "focused" : false,
+            "checked" : false,
+            "selected" : false
+          }, {
+            "attributes" : { },
+            "children" : [ ]
+          } ],
+          "clickable" : false,
+          "enabled" : true,
+          "focused" : false,
+          "checked" : false,
+          "selected" : false
+        }, {
+          "attributes" : { },
+          "children" : [ ]
+        } ],
+        "clickable" : false,
+        "enabled" : true,
+        "focused" : false,
+        "checked" : false,
+        "selected" : false
+      }, {
+        "attributes" : { },
+        "children" : [ ]
+      } ],
+      "clickable" : false,
+      "enabled" : true,
+      "focused" : false,
+      "checked" : false,
+      "selected" : false
+    }, {
+      "attributes" : { },
+      "children" : [ ]
+    }, {
+      "attributes" : {
+        "text" : "",
+        "resource-id" : "",
+        "clickable" : "false",
+        "bounds" : "[0,0][1080,2277]",
+        "enabled" : "true",
+        "focused" : "false",
+        "checked" : "false",
+        "selected" : "false"
+      },
+      "children" : [ {
+        "attributes" : { },
+        "children" : [ ]
+      }, {
+        "attributes" : {
+          "text" : "",
+          "resource-id" : "",
+          "clickable" : "false",
+          "bounds" : "[0,0][1080,2277]",
+          "enabled" : "true",
+          "focused" : "false",
+          "checked" : "false",
+          "selected" : "false"
+        },
+        "children" : [ {
+          "attributes" : { },
+          "children" : [ ]
+        }, {
+          "attributes" : {
+            "text" : "",
+            "resource-id" : "android:id/content",
+            "clickable" : "false",
+            "bounds" : "[0,63][1080,2277]",
+            "enabled" : "true",
+            "focused" : "false",
+            "checked" : "false",
+            "selected" : "false"
+          },
+          "children" : [ {
+            "attributes" : { },
+            "children" : [ ]
+          }, {
+            "attributes" : {
+              "text" : "",
+              "resource-id" : "",
+              "clickable" : "false",
+              "bounds" : "[0,63][1080,2277]",
+              "enabled" : "true",
+              "focused" : "false",
+              "checked" : "false",
+              "selected" : "false"
+            },
+            "children" : [ {
+              "attributes" : { },
+              "children" : [ ]
+            }, {
+              "attributes" : {
+                "text" : "",
+                "resource-id" : "info.plateaukao.einkbro:id/two_panel_layout",
+                "clickable" : "false",
+                "bounds" : "[0,63][1080,2146]",
+                "enabled" : "true",
+                "focused" : "false",
+                "checked" : "false",
+                "selected" : "false"
+              },
+              "children" : [ {
+                "attributes" : { },
+                "children" : [ ]
+              }, {
+                "attributes" : {
+                  "text" : "",
+                  "resource-id" : "info.plateaukao.einkbro:id/activity_main_content",
+                  "clickable" : "false",
+                  "bounds" : "[0,63][1080,2146]",
+                  "enabled" : "true",
+                  "focused" : "false",
+                  "checked" : "false",
+                  "selected" : "false"
+                },
+                "children" : [ {
+                  "attributes" : { },
+                  "children" : [ ]
+                }, {
+                  "attributes" : {
+                    "text" : "",
+                    "resource-id" : "info.plateaukao.einkbro:id/main_content",
+                    "clickable" : "false",
+                    "bounds" : "[0,63][1080,2146]",
+                    "enabled" : "true",
+                    "focused" : "false",
+                    "checked" : "false",
+                    "selected" : "false"
+                  },
+                  "children" : [ {
+                    "attributes" : { },
+                    "children" : [ ]
+                  }, {
+                    "attributes" : {
+                      "text" : "",
+                      "resource-id" : "",
+                      "clickable" : "false",
+                      "bounds" : "[0,63][1080,2146]",
+                      "enabled" : "true",
+                      "focused" : "false",
+                      "checked" : "false",
+                      "selected" : "false"
+                    },
+                    "children" : [ {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "Google",
+                        "resource-id" : "",
+                        "clickable" : "false",
+                        "bounds" : "[0,63][1080,2148]",
+                        "enabled" : "true",
+                        "focused" : "true",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ ],
+                      "clickable" : false,
+                      "enabled" : true,
+                      "focused" : true,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    } ],
+                    "clickable" : false,
+                    "enabled" : true,
+                    "focused" : false,
+                    "checked" : false,
+                    "selected" : false
+                  }, {
+                    "attributes" : { },
+                    "children" : [ ]
+                  } ],
+                  "clickable" : false,
+                  "enabled" : true,
+                  "focused" : false,
+                  "checked" : false,
+                  "selected" : false
+                }, {
+                  "attributes" : { },
+                  "children" : [ ]
+                } ],
+                "clickable" : false,
+                "enabled" : true,
+                "focused" : false,
+                "checked" : false,
+                "selected" : false
+              }, {
+                "attributes" : { },
+                "children" : [ ]
+              } ],
+              "clickable" : false,
+              "enabled" : true,
+              "focused" : false,
+              "checked" : false,
+              "selected" : false
+            }, {
+              "attributes" : { },
+              "children" : [ ]
+            }, {
+              "attributes" : {
+                "text" : "",
+                "resource-id" : "info.plateaukao.einkbro:id/content_separator",
+                "clickable" : "false",
+                "bounds" : "[0,2145][1080,2146]",
+                "enabled" : "true",
+                "focused" : "false",
+                "checked" : "false",
+                "selected" : "false"
+              },
+              "children" : [ ],
+              "clickable" : false,
+              "enabled" : true,
+              "focused" : false,
+              "checked" : false,
+              "selected" : false
+            }, {
+              "attributes" : { },
+              "children" : [ ]
+            }, {
+              "attributes" : {
+                "text" : "",
+                "resource-id" : "info.plateaukao.einkbro:id/appBar",
+                "clickable" : "false",
+                "bounds" : "[0,2146][1080,2277]",
+                "enabled" : "true",
+                "focused" : "false",
+                "checked" : "false",
+                "selected" : "false"
+              },
+              "children" : [ {
+                "attributes" : { },
+                "children" : [ ]
+              }, {
+                "attributes" : {
+                  "text" : "",
+                  "resource-id" : "info.plateaukao.einkbro:id/compose_icon_bar",
+                  "clickable" : "false",
+                  "bounds" : "[0,2146][1080,2277]",
+                  "enabled" : "true",
+                  "focused" : "false",
+                  "checked" : "false",
+                  "selected" : "false"
+                },
+                "children" : [ {
+                  "attributes" : { },
+                  "children" : [ ]
+                }, {
+                  "attributes" : {
+                    "text" : "",
+                    "resource-id" : "",
+                    "clickable" : "false",
+                    "bounds" : "[0,2146][1080,2277]",
+                    "enabled" : "true",
+                    "focused" : "false",
+                    "checked" : "false",
+                    "selected" : "false"
+                  },
+                  "children" : [ {
+                    "attributes" : { },
+                    "children" : [ ]
+                  }, {
+                    "attributes" : {
+                      "text" : "",
+                      "resource-id" : "",
+                      "clickable" : "true",
+                      "bounds" : "[0,2146][1080,2277]",
+                      "enabled" : "true",
+                      "focused" : "false",
+                      "checked" : "false",
+                      "selected" : "false"
+                    },
+                    "children" : [ {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "",
+                        "clickable" : "true",
+                        "bounds" : "[13,2148][472,2274]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ {
+                        "attributes" : { },
+                        "children" : [ ]
+                      }, {
+                        "attributes" : {
+                          "text" : "Google",
+                          "resource-id" : "",
+                          "clickable" : "false",
+                          "bounds" : "[13,2183][155,2240]",
+                          "enabled" : "true",
+                          "focused" : "false",
+                          "checked" : "false",
+                          "selected" : "false"
+                        },
+                        "children" : [ ],
+                        "clickable" : false,
+                        "enabled" : true,
+                        "focused" : false,
+                        "checked" : false,
+                        "selected" : false
+                      }, {
+                        "attributes" : { },
+                        "children" : [ ]
+                      } ],
+                      "clickable" : true,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "",
+                        "clickable" : "true",
+                        "bounds" : "[472,2148][593,2274]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ ],
+                      "clickable" : true,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "",
+                        "clickable" : "true",
+                        "bounds" : "[593,2148][714,2274]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ {
+                        "attributes" : { },
+                        "children" : [ ]
+                      }, {
+                        "attributes" : {
+                          "text" : "3",
+                          "resource-id" : "",
+                          "clickable" : "false",
+                          "bounds" : "[620,2180][694,2249]",
+                          "enabled" : "true",
+                          "focused" : "false",
+                          "checked" : "false",
+                          "selected" : "false"
+                        },
+                        "children" : [ ],
+                        "clickable" : false,
+                        "enabled" : true,
+                        "focused" : false,
+                        "checked" : false,
+                        "selected" : false
+                      }, {
+                        "attributes" : { },
+                        "children" : [ ]
+                      } ],
+                      "clickable" : true,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "",
+                        "clickable" : "true",
+                        "bounds" : "[714,2148][835,2274]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ ],
+                      "clickable" : true,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "",
+                        "clickable" : "true",
+                        "bounds" : "[835,2148][956,2274]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ ],
+                      "clickable" : true,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    }, {
+                      "attributes" : {
+                        "text" : "",
+                        "resource-id" : "",
+                        "clickable" : "true",
+                        "bounds" : "[956,2148][1080,2274]",
+                        "enabled" : "true",
+                        "focused" : "false",
+                        "checked" : "false",
+                        "selected" : "false"
+                      },
+                      "children" : [ ],
+                      "clickable" : true,
+                      "enabled" : true,
+                      "focused" : false,
+                      "checked" : false,
+                      "selected" : false
+                    }, {
+                      "attributes" : { },
+                      "children" : [ ]
+                    } ],
+                    "clickable" : true,
+                    "enabled" : true,
+                    "focused" : false,
+                    "checked" : false,
+                    "selected" : false
+                  }, {
+                    "attributes" : { },
+                    "children" : [ ]
+                  } ],
+                  "clickable" : false,
+                  "enabled" : true,
+                  "focused" : false,
+                  "checked" : false,
+                  "selected" : false
+                }, {
+                  "attributes" : { },
+                  "children" : [ ]
+                } ],
+                "clickable" : false,
+                "enabled" : true,
+                "focused" : false,
+                "checked" : false,
+                "selected" : false
+              }, {
+                "attributes" : { },
+                "children" : [ ]
+              } ],
+              "clickable" : false,
+              "enabled" : true,
+              "focused" : false,
+              "checked" : false,
+              "selected" : false
+            }, {
+              "attributes" : { },
+              "children" : [ ]
+            } ],
+            "clickable" : false,
+            "enabled" : true,
+            "focused" : false,
+            "checked" : false,
+            "selected" : false
+          }, {
+            "attributes" : { },
+            "children" : [ ]
+          } ],
+          "clickable" : false,
+          "enabled" : true,
+          "focused" : false,
+          "checked" : false,
+          "selected" : false
+        }, {
+          "attributes" : { },
+          "children" : [ ]
+        } ],
+        "clickable" : false,
+        "enabled" : true,
+        "focused" : false,
+        "checked" : false,
+        "selected" : false
+      }, {
+        "attributes" : { },
+        "children" : [ ]
+      }, {
+        "attributes" : {
+          "text" : "",
+          "resource-id" : "android:id/navigationBarBackground",
+          "clickable" : "false",
+          "bounds" : "[0,0][0,0]",
+          "enabled" : "true",
+          "focused" : "false",
+          "checked" : "false",
+          "selected" : "false"
+        },
+        "children" : [ ],
+        "clickable" : false,
+        "enabled" : true,
+        "focused" : false,
+        "checked" : false,
+        "selected" : false
+      }, {
+        "attributes" : { },
+        "children" : [ ]
+      } ],
+      "clickable" : false,
+      "enabled" : true,
+      "focused" : false,
+      "checked" : false,
+      "selected" : false
+    }, {
+      "attributes" : { },
+      "children" : [ ]
+    } ],
+    "clickable" : false,
+    "enabled" : false,
+    "focused" : false,
+    "checked" : false,
+    "selected" : false
+  } ]
+}
