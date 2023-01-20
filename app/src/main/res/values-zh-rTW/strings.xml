@@ -246,7 +246,7 @@
     <string name="font_custom">選擇字型檔案(*.ttf)</string>
     <string name="translation_mode">翻譯方式</string>
     <string name="system_default">系統預設</string>
-    <string name="custom_font">自訂字型</string>
+    <string name="custom_font">自訂</string>
     <string name="setting_title_font">字型</string>
     <string name="font_type">字型</string>
     <string name="menu_quickToggle">快速切換</string>
@@ -255,7 +255,6 @@
     <string name="setting_title_vi_binding">VI 按鍵</string>
     <string name="setting_summary_vi_binding">開啟 VI 快捷鍵功能</string>
     <string name="edit_custom_font">設定自訂定型</string>
-    <string name="reload_font_change">重新載入網頁以更新字型</string>
     <string name="cannot_open_file">無法開啟文件。請重新在文件管理器中選擇。</string>
     <string name="setting_recent_bookmarks">顯示最近使用過的書籤</string>
     <string name="setting_summary_recent_bookmarks">開啟新分頁時，顯示最近使用過的書籤</string>
