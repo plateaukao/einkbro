@@ -51,6 +51,7 @@ import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.*
+import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.task.SaveScreenshotTask
 import info.plateaukao.einkbro.unit.*
@@ -81,6 +82,7 @@ import kotlin.math.roundToInt
 open class BrowserActivity : FragmentActivity(), BrowserController {
     private lateinit var progressBar: ProgressBar
     protected lateinit var ninjaWebView: NinjaWebView
+    protected open var shouldRunClearService: Boolean = true
 
     private var videoView: VideoView? = null
     private var customView: View? = null
@@ -450,6 +452,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ttsManager.stopReading()
 
         updateSavedAlbumInfo()
+
+        if (config.clearWhenQuit && shouldRunClearService) {
+            startService(Intent(this, ClearService::class.java))
+        }
 
         browserContainer.clear()
         unregisterReceiver(downloadReceiver)
