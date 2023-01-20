@@ -155,7 +155,6 @@
     <string name="toast_input_empty">Ви нічого не ввели</string>
     <string name="toast_invalid_domain">Невірний домен</string>
     <string name="toast_load_error">Не вдається завантажити цю URL-адресу</string>
-    <string name="toast_new_tab_successful">Успішно відкрито в новій вкладці</string>
     <string name="toast_share_failed">Не вдається поділитися цією сторінкою</string>
     <string name="toast_start_download">Початок завантаження</string>
     <string name="toast_wait_a_minute">Будь ласка, зачекайте</string>

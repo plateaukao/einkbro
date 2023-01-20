@@ -160,7 +160,6 @@
     <string name="toast_input_empty">Nic jste nevložili</string>
     <string name="toast_invalid_domain">Neplatná doména</string>
     <string name="toast_load_error">Nelze načíst tuto URL</string>
-    <string name="toast_new_tab_successful">Úspěšně otevřeno na nové kartě</string>
     <string name="toast_share_failed">Nelze sdílet tuto stránku</string>
     <string name="toast_start_download">Zahajování stahování</string>
     <string name="toast_wait_a_minute">Prosím, počkejte chvilku</string>

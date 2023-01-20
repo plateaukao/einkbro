@@ -20,7 +20,6 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.Album
-import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.HistoryAndTabsView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.launch
@@ -157,7 +156,6 @@ class OverviewDialogController(
             menuContextListNewTab.setOnClickListener {
                 dialog.dismissWithAction {
                     addTabAction(context.getString(R.string.app_name), record.url, false)
-                    NinjaToast.show(context, context.getString(R.string.toast_new_tab_successful))
                 }
             }
             menuContextListSplitScreen.setOnClickListener {

@@ -152,7 +152,6 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="toast_input_empty">No ha introducido nada</string>
     <string name="toast_invalid_domain">Dominio no válido</string>
     <string name="toast_load_error">No se puede cargar esta dirección URL</string>
-    <string name="toast_new_tab_successful">Abierto con éxito en una nueva pestaña</string>
     <string name="toast_share_failed">No se puede compartir esta página</string>
     <string name="toast_start_download">Iniciando descarga</string>
     <string name="toast_wait_a_minute">Por favor, espere un momento</string>

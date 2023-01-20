@@ -163,7 +163,6 @@
     <string name="toast_input_empty">Je hebt niks ingevoerd</string>
     <string name="toast_invalid_domain">Ongeldig domein</string>
     <string name="toast_load_error">Deze URL kan niet worden geladen</string>
-    <string name="toast_new_tab_successful">Geopend op nieuw tabblad</string>
     <string name="toast_share_failed">Deze pagina kan niet worden gedeeld</string>
     <string name="toast_start_download">Bezig met starten van download…</string>
     <string name="toast_wait_a_minute">Even geduld…</string>

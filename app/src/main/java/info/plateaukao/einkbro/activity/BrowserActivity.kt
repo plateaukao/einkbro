@@ -545,7 +545,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
 
-        mainContentLayout.addView(controller as View)
+        mainContentLayout.addView(
+            controller as View,
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         currentAlbumController = controller
         currentAlbumController?.activate()
@@ -1107,7 +1113,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         maybeCreateNewPreloadWebView(enablePreloadWebView, newWebView)
 
-        ViewUnit.bound(this, newWebView)
+        //ViewUnit.bound(this, newWebView)
 
         updateTabPreview(newWebView, url)
         updateWebViewCount()
@@ -1149,7 +1155,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun loadUrlInWebView(foreground: Boolean, webView: NinjaWebView, url: String) {
-        ViewUnit.bound(this, webView)
+        //ViewUnit.bound(this, webView)
         if (!foreground) {
             webView.deactivate()
             if (config.enableWebBkgndLoad) {

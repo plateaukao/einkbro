@@ -29,11 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.NormalTextModifier
 import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
@@ -137,7 +136,6 @@ class BookmarksDialogFragment(
         dialogView.menuContextListNewTab.setOnClickListener {
             optionDialog.dismissWithAction {
                 addTabAction(getString(R.string.app_name), bookmark.url, false)
-                NinjaToast.show(context, getString(R.string.toast_new_tab_successful))
                 dialog?.dismiss()
             }
         }

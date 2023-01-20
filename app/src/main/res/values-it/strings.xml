@@ -155,7 +155,6 @@
     <string name="toast_input_empty">Non hai inserito nulla</string>
     <string name="toast_invalid_domain">Dominio non valido</string>
     <string name="toast_load_error">Non è possibile caricare questo URL</string>
-    <string name="toast_new_tab_successful">Aperto con successo in una nuova scheda</string>
     <string name="toast_share_failed">Impossibile condividere questa pagina</string>
     <string name="toast_start_download">Avvio del download</string>
     <string name="toast_wait_a_minute">Attendere un momento</string>
