@@ -112,7 +112,7 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.6.0'
 
     // memory leak detection
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // compose
     // Compose Material Design

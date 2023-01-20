@@ -2,17 +2,27 @@
 
 package info.plateaukao.einkbro.view.compose
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +38,7 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 
 private val toolbarIconWidth = 46.dp
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ComposedToolbar(
     showTabs: Boolean,
@@ -45,7 +56,8 @@ fun ComposedToolbar(
     Column(
         modifier = Modifier
             .height(height)
-            .background(MaterialTheme.colors.background),
+            .background(MaterialTheme.colors.background)
+            .semantics { testTagsAsResourceId = true },
         horizontalAlignment = Alignment.End
     ) {
         if (showTabs) {
@@ -156,9 +168,10 @@ fun ToolbarIcon(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 0.5.dp else -1.dp
+    val borderWidth = if (pressed) 0.5.dp else (-1).dp
 
     val toolbarAction = toolbarActionInfo.toolbarAction
+    Log.d("abc", toolbarAction.name)
     Icon(
         modifier = Modifier
             .fillMaxHeight()
@@ -171,7 +184,8 @@ fun ToolbarIcon(
                 onClick = { onClick(toolbarAction) },
                 onLongClick = { onLongClick?.invoke(toolbarAction) }
             )
-            .padding(6.dp),
+            .padding(6.dp)
+            .testTag(toolbarAction.name.lowercase()),
         painter = painterResource(id = toolbarActionInfo.getCurrentResId()),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
