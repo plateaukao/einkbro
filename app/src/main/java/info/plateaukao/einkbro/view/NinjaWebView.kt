@@ -448,7 +448,7 @@ open class NinjaWebView(
     suspend fun getRawHtml() = suspendCoroutine<String> { continuation ->
         if (!isReaderModeOn) {
             injectMozReaderModeJs(false)
-            evaluateJavascript(getReaderModeBodyHtmlJs) { html ->
+            evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
                 continuation.resume(
                     processedHtml.substring(
@@ -525,12 +525,16 @@ open class NinjaWebView(
     ) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
-            //injectMozReaderModeJs(isVertical)
             evaluateMozReaderModeJs(isVertical) {
                 val getRawTextJs =
                     if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
                 evaluateJavascript(
-                    "(function() { $replaceWithReaderModeBodyJs $getRawTextJs })();",
+                    "(function() { ${
+                        String.format(
+                            replaceWithReaderModeBodyJs,
+                            url
+                        )
+                    } $getRawTextJs })();",
                     getRawTextAction
                 )
             }
@@ -747,8 +751,9 @@ open class NinjaWebView(
                 var documentClone = document.cloneNode(true);
                 var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
                 article.readingTime = getReadingTime(article.length, document.lang);
-                var outerHTML = createHtmlBody(article)
-                return ('<html>'+ outerHTML +'</html>');
+                var bodyOuterHTML = createHtmlBodyWithUrl(article, "%s")
+                var headOuterHTML = document.head.outerHTML;
+                return ('<html>'+ headOuterHTML + bodyOuterHTML +'</html>');
             })()
         """
         private const val getReaderModeBodyTextJs = """

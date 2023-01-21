@@ -2281,6 +2281,27 @@ function escapeHTML(text) {
     .replace(/\'/g, "&#039;");
 }
 
+function createHtmlBodyWithUrl(article, originalUrl) {
+  const safeTitle = escapeHTML(article.title);
+  const safeReadingTime = escapeHTML(article.readingTime);
+  return `
+    <body class="mozac-readerview-body">
+      <div id="mozac-readerview-container" class="container">
+        <div class="header">
+          <h3>${safeTitle}</h3>
+        </div>
+        <div>
+          ${safeReadingTime}&nbsp;|&nbsp;<a href=${originalUrl}>original link</a>
+        </div>
+        <hr/>
+        <div class="content">
+          <div class="mozac-readerview-content">${article.content}</div>
+        </div>
+      </div>
+    </body>
+  `
+}
+
 function createHtmlBody(article) {
   const safeTitle = escapeHTML(article.title);
   const safeReadingTime = escapeHTML(article.readingTime);
@@ -2291,7 +2312,7 @@ function createHtmlBody(article) {
           <h3>${safeTitle}</h3>
         </div>
         <div>
-          <div>${safeReadingTime}</div>
+          ${safeReadingTime}
         </div>
         <hr/>
         <div class="content">
