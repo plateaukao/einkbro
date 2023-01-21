@@ -2,8 +2,12 @@ package info.plateaukao.einkbro.view.viewControllers
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View.*
-import androidx.compose.runtime.*
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.AbstractComposeView
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TtsManager
@@ -11,7 +15,17 @@ import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.compose.ComposedToolbar
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.*
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.BoldFont
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.CloseTab
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Desktop
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Font
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.FullScreen
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Refresh
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.RotateScreen
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Settings
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TOC
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Touch
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Tts
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
