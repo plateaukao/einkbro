@@ -23,6 +23,7 @@ class EpubReaderActivity: BrowserActivity() {
 
     private fun initUI() {
         composeToolbarViewController.setEpubReaderMode()
+        composeToolbarViewController.showTabbar(false)
         hideOverview()
     }
 
