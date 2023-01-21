@@ -232,7 +232,21 @@
 .mozac-readerview-content code,
 .mozac-readerview-content pre {
   white-space: pre-wrap !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 3px !important;
+}
+
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}
+
+pre {
+    padding: 9px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .mozac-readerview-content blockquote {

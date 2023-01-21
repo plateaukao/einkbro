@@ -198,7 +198,12 @@ class EpubManager(private val context: Context): KoinComponent {
         val doc = Jsoup.parse(html, baseUri)
         doc.head().allElements.select("link").remove()
         doc.head().allElements.select("meta").remove()
-        doc.head().allElements.select("script").remove()
+        val scripts = doc.head().allElements.select("script")
+        scripts.forEach {
+            if (it.attr("type").equals("text/javascript")) {
+                it.remove()
+            }
+        }
 
         val imageKeyUrlMap = mutableMapOf<String, String>()
         doc.select("img").forEachIndexed { index, element ->
