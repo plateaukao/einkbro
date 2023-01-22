@@ -1,0 +1,51 @@
+appId: info.plateaukao.einkbro
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "plateaukao"
+    timeout: 3000
+- takeScreenshot: MainScreen
+# Settings button on toolbar
+- tapOn:
+    id: "settings"
+- takeScreenshot: SettingsMenu
+
+- tapOn: "Settings"
+- takeScreenshot: SettingsScreen
+
+- tapOn: "UI"
+- waitForAnimationToEnd
+- takeScreenshot: UISettingsScreen
+- back
+- tapOn: "Toolbar"
+- takeScreenshot: ToolbarSettingsScreen
+- back
+- tapOn: "Behavior"
+- takeScreenshot: BehaviorSettingsScreen
+- back
+- tapOn: "Gestures"
+- takeScreenshot: GesturesSettingsScreen
+- back
+- tapOn: "Backup"
+- takeScreenshot: BackupSettingsScreen
+- back
+- tapOn: "Printed pdf paper size"
+- back
+- tapOn: "Start Control"
+- takeScreenshot: StartControlSettingsScreen
+- back
+- tapOn: "Data Control"
+- takeScreenshot: DataControlSettingsScreen
+- back
+- tapOn: "Search"
+- takeScreenshot: SearchSettingsScreen
+- back
+- tapOn: "Custom user agent"
+- back
+- tapOn: "Edit Home Url"
+- back
+- tapOn:
+      text: "About EinkBro.*"
+- takeScreenshot: AboutSettingsScreen
+- back
+- back
