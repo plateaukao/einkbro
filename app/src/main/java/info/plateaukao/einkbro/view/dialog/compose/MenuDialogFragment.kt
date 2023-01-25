@@ -5,7 +5,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -26,7 +37,35 @@ import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.BlackFont
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.BoldFont
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CloseTab
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CopyLink
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Download
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.FontSize
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenEpub
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenHome
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenWith
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.QuickToggle
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Quit
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ReaderMode
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ReceiveData
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SaveBookmark
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SaveEpub
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SavePdf
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Search
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SendLink
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SetHome
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Settings
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ShareLink
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Shortcut
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SplitScreen
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ToolbarSetting
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.TouchSetting
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Translate
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Tts
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.VerticalRead
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.WhiteBknd
 import org.koin.android.ext.android.inject
 
 class MenuDialogFragment(
@@ -36,7 +75,10 @@ class MenuDialogFragment(
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            MenuItems(config.whiteBackground, config.boldFontStyle, ttsManager.isSpeaking()) { item ->
+            MenuItems(
+                config.whiteBackground, config.boldFontStyle,
+                config.blackFontStyle, ttsManager.isSpeaking()
+            ) { item ->
                 dialog?.dismiss()
                 itemClicked(item)
             }
@@ -49,13 +91,14 @@ enum class MenuItemType {
     SplitScreen, Translate, VerticalRead, ReaderMode, TouchSetting, ToolbarSetting,
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
-    FontSize, WhiteBknd, BoldFont, Search, Download, Settings
+    FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont
 }
 
 @Composable
 private fun MenuItems(
     hasWhiteBkd: Boolean,
     boldFont: Boolean,
+    blackFont: Boolean,
     isSpeaking: Boolean,
     onClicked: (MenuItemType) -> Unit
 ) {
@@ -144,6 +187,9 @@ private fun MenuItems(
             val whiteRes =
                 if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
             MenuItem(R.string.white_background, whiteRes) { onClicked(WhiteBknd) }
+            val blackRes =
+                if (blackFont) R.drawable.ic_black_font_on else R.drawable.ic_black_font_off
+            MenuItem(R.string.black_font, blackRes) { onClicked(BlackFont) }
             val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
             MenuItem(R.string.bold_font, boldRes) { onClicked(BoldFont) }
             MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
@@ -219,6 +265,6 @@ private fun PreviewItem() {
 @Composable
 private fun PreviewMenuItems() {
     MyTheme {
-        MenuItems(hasWhiteBkd = false, boldFont = false, false) {}
+        MenuItems(hasWhiteBkd = false, boldFont = false, blackFont = false, isSpeaking = false) {}
     }
 }

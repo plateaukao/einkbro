@@ -913,6 +913,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
 
+                ConfigManager.K_BLACK_FONT -> {
+                    composeToolbarViewController.updateIcons()
+                    if (config.blackFontStyle) {
+                        ninjaWebView.updateCssStyle()
+                    } else {
+                        ninjaWebView.reload()
+                    }
+                }
+
                 ConfigManager.K_WHITE_BACKGROUND -> {
                     if (config.whiteBackground) {
                         ninjaWebView.updateCssStyle()
@@ -1822,6 +1831,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             FontSize -> showFontSizeChangeDialog()
             WhiteBknd -> config::whiteBackground.toggle()
             BoldFont -> config::boldFontStyle.toggle()
+            BlackFont-> config::blackFontStyle.toggle()
             Search -> showSearchPanel()
             Download -> BrowserUnit.openDownloadFolder(this)
             Settings -> IntentUnit.gotoSettings(this)
