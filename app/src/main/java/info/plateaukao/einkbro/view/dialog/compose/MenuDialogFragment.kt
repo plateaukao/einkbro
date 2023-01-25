@@ -166,7 +166,8 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(R.string.menu_fav, R.drawable.ic_home) { onClicked(SetHome) }
+            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
+            MenuItem(R.string.menu_fav, R.drawable.ic_home_set) { onClicked(SetHome) }
             MenuItem(
                 R.string.menu_save_bookmark,
                 R.drawable.ic_bookmark
@@ -182,7 +183,6 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
             MenuItem(R.string.menu_other_searchSite, R.drawable.icon_search) { onClicked(Search) }
             val whiteRes =
                 if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
