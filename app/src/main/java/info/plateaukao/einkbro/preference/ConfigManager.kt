@@ -81,7 +81,15 @@ class ConfigManager(
     var enableVideoAutoFullscreen by BooleanPreference(sp, K_ENABLE_VIDEO_AUTO_FULLSCREEN, false)
     var enableVideoPip by BooleanPreference(sp, K_ENABLE_VIDEO_PIP, false)
     var autoUpdateAdblock by BooleanPreference(sp, K_AUTO_UPDATE_ADBLOCK, false)
-    var enableCertificateErrorDialog by BooleanPreference(sp, K_ENABLE_CERTIFICATE_ERROR_DIALOG, false)
+    var enableCertificateErrorDialog by BooleanPreference(
+        sp,
+        K_ENABLE_CERTIFICATE_ERROR_DIALOG,
+        false
+    )
+
+    var enableImageAdjustment by BooleanPreference(sp, K_ENABLE_IMAGE_ADJUSTMENT, false)
+    var imageAdjustmentBrightness by IntPreference(sp, K_IMAGE_ADJUSTMENT_VALUE,20)
+    var imageAdjustmentSaturation by IntPreference(sp, K_IMAGE_ADJUSTMENT_SATURATION,60)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -110,10 +118,22 @@ class ConfigManager(
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
     var preferredTranslateLanguageString by StringPreference(sp, K_TRANSLATED_LANGS)
-    var searchEngine by StringPreference(sp, K_SEARCH_ENGINE, if (Locale.getDefault().country == "CN") "2" else "5")
-    var searchEngineUrl by StringPreference(sp, K_SEARCH_ENGINE_URL, "https://www.google.com/search?q=%s")
+    var searchEngine by StringPreference(
+        sp,
+        K_SEARCH_ENGINE,
+        if (Locale.getDefault().country == "CN") "2" else "5"
+    )
+    var searchEngineUrl by StringPreference(
+        sp,
+        K_SEARCH_ENGINE_URL,
+        "https://www.google.com/search?q=%s"
+    )
     var processTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL, "")
-    var adblockHostUrl by StringPreference(sp, K_ADBLOCK_HOSTS_URL, "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
+    var adblockHostUrl by StringPreference(
+        sp,
+        K_ADBLOCK_HOSTS_URL,
+        "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+    )
 
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
@@ -298,7 +318,7 @@ class ConfigManager(
         set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value)) }
 
     var darkMode: DarkMode
-        get() = DarkMode.values()[sp.getString(K_DARK_MODE, "0")?.toInt() ?: 0]
+        get() = DarkMode.values()[sp.getString(K_DARK_MODE, "2")?.toInt() ?: 2]
         set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
 
     var newTabBehavior: NewTabBehavior
@@ -420,6 +440,9 @@ class ConfigManager(
         const val K_ADBLOCK_HOSTS_URL = "ab_hosts"
         const val K_AUTO_UPDATE_ADBLOCK = "sp_auto_update_adblock"
         const val K_ENABLE_CERTIFICATE_ERROR_DIALOG = "sp_certificate_error_dialog"
+        const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
+        const val K_IMAGE_ADJUSTMENT_VALUE = "sp_image_adjustment_value"
+        const val K_IMAGE_ADJUSTMENT_SATURATION = "sp_image_adjustment_saturation"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"

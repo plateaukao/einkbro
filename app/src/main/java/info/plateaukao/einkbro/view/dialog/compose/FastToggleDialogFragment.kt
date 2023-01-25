@@ -1,9 +1,26 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -13,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 
 class FastToggleDialogFragment(
@@ -54,6 +72,13 @@ fun FastToggleItemList(config: ConfigManager? = null, onClicked: ((Boolean) -> U
         ToggleItem(state = config?.saveHistory
             ?: false, titleResId = R.string.history, iconResId = R.drawable.ic_history) {
             config?.let { it.saveHistory = it.saveHistory.not() }
+            onClicked(false)
+        }
+
+        ToggleItem(state = config?.enableImageAdjustment
+            ?: false, titleResId = R.string.image_adjust, iconResId = R.drawable.icon_image) {
+            val config = config ?: return@ToggleItem
+            config::enableImageAdjustment.toggle()
             onClicked(false)
         }
 

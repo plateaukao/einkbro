@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -16,22 +17,30 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.SaturationTransformation
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
+import jp.wasabeef.glide.transformations.gpu.BrightnessFilterTransformation
 import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.io.InputStream
+import java.util.Locale
 
 
 class NinjaWebViewClient(
@@ -54,12 +63,7 @@ class NinjaWebViewClient(
     }
 
     override fun onPageFinished(view: WebView, url: String) {
-        if (config.boldFontStyle ||
-            config.fontType != FontType.SYSTEM_DEFAULT ||
-            config.whiteBackground
-        ) {
-            ninjaWebView.updateCssStyle()
-        }
+        ninjaWebView.updateCssStyle()
 
         webContentPostProcessor.postProcess(ninjaWebView, url)
 
@@ -215,57 +219,74 @@ class NinjaWebViewClient(
         processBookResource(uri)?.let { return it }
         processCustomFontRequest(uri)?.let { return it }
 
-        return null
-        // images handling
-//        val brightness = 0.2f
-//        val lowerCaseUrl = url.lowercase(Locale.ROOT)
-//        return if (lowerCaseUrl.contains(".jpg") || lowerCaseUrl.contains(".jpeg")) {
-//            val bitmap = Glide.with(webView).asBitmap()
-//                .diskCacheStrategy(DiskCacheStrategy.ALL).load(url)
-//                .apply(bitmapTransform(BrightnessFilterTransformation(brightness)))
-//                .submit().get()
-//            WebResourceResponse(
-//                "image/jpg", "UTF-8", getBitmapInputStream(
-//                    bitmap,
-//                    Bitmap.CompressFormat.JPEG
-//                )
-//            )
-//        } else if (lowerCaseUrl.contains(".png")) {
-//            val bitmap = Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .load(url)
-//                .apply(bitmapTransform(BrightnessFilterTransformation(brightness)))
-//                .submit().get()
-//            WebResourceResponse(
-//                "image/png", "UTF-8", getBitmapInputStream(
-//                    bitmap,
-//                    Bitmap.CompressFormat.PNG
-//                )
-//            )
-//        } else if (lowerCaseUrl.contains(".webp")) {
-//            val bitmap = Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .load(url)
-//                .apply(bitmapTransform(BrightnessFilterTransformation(brightness)))
-//                .submit().get()
-//            WebResourceResponse(
-//                "image/webp", "UTF-8", getBitmapInputStream(
-//                    bitmap,
-//                    Bitmap.CompressFormat.WEBP
-//                )
-//            )
-//        } else {
-//            null
-//        }
+        if (!config.enableImageAdjustment) {
+            return null
+        } else {
+            // images handling
+            val brightness: Float = config.imageAdjustmentBrightness / 100f
+            val saturation: Float = config.imageAdjustmentSaturation / 100f
+            val lowerCaseUrl = url.lowercase(Locale.ROOT)
+            try {
+                return if (lowerCaseUrl.contains(".jpg") || lowerCaseUrl.contains(".jpeg")) {
+                    val bitmap = Glide.with(webView).asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL).load(url)
+                        .apply(bitmapTransform(MultiTransformation(
+                            BrightnessFilterTransformation(brightness),
+                            SaturationTransformation(saturation)
+                        ))).submit().get()
+                    WebResourceResponse(
+                        "image/jpg", "UTF-8", getBitmapInputStream(
+                            bitmap,
+                            Bitmap.CompressFormat.JPEG
+                        )
+                    )
+                } else if (lowerCaseUrl.contains(".png")) {
+                    val bitmap =
+                        Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .load(url)
+                            .apply(bitmapTransform(MultiTransformation(
+                                BrightnessFilterTransformation(brightness),
+                                SaturationTransformation(saturation)
+                            ))).submit().get()
+                    WebResourceResponse(
+                        "image/png", "UTF-8", getBitmapInputStream(
+                            bitmap,
+                            Bitmap.CompressFormat.PNG
+                        )
+                    )
+                } else if (lowerCaseUrl.contains(".webp")) {
+                    val bitmap =
+                        Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .load(url)
+                            .apply(bitmapTransform(MultiTransformation(
+                                BrightnessFilterTransformation(brightness),
+                                SaturationTransformation(saturation)
+                            ))).submit().get()
+                    WebResourceResponse(
+                        "image/webp", "UTF-8", getBitmapInputStream(
+                            bitmap,
+                            Bitmap.CompressFormat.WEBP
+                        )
+                    )
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("NinjaWebViewClient", "Error while processing image: $url", e)
+                return null
+            }
+        }
     }
 
-//    private fun getBitmapInputStream(
-//        bitmap: Bitmap,
-//        compressFormat: Bitmap.CompressFormat
-//    ): InputStream {
-//        val byteArrayOutputStream = ByteArrayOutputStream()
-//        bitmap.compress(compressFormat, 80, byteArrayOutputStream)
-//        val bitmapData: ByteArray = byteArrayOutputStream.toByteArray()
-//        return ByteArrayInputStream(bitmapData)
-//    }
+    private fun getBitmapInputStream(
+        bitmap: Bitmap,
+        compressFormat: Bitmap.CompressFormat
+    ): InputStream {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(compressFormat, 80, byteArrayOutputStream)
+        val bitmapData: ByteArray = byteArrayOutputStream.toByteArray()
+        return ByteArrayInputStream(bitmapData)
+    }
 
     private fun processBookResource(uri: Uri): WebResourceResponse? {
         val currentBook = book ?: return null

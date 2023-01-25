@@ -922,6 +922,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
 
+                ConfigManager.K_ENABLE_IMAGE_ADJUSTMENT -> ninjaWebView.reload()
+
                 ConfigManager.K_WHITE_BACKGROUND -> {
                     if (config.whiteBackground) {
                         ninjaWebView.updateCssStyle()
@@ -1875,7 +1877,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        twoPaneController.showSecondPane(url ?: config.favoriteUrl)
+        twoPaneController.showSecondPane(url ?: ninjaWebView.url.orEmpty())
     }
 
     private fun saveScreenshot() {
