@@ -90,7 +90,9 @@ open class NinjaWebView(
                     getByteArrayFromAsset("readerview.css"),
                     Charsets.UTF_8
                 ) else ""
-        injectCss(cssStyle.toByteArray())
+        if (cssStyle.isNotBlank()) {
+            injectCss(cssStyle.toByteArray())
+        }
     }
 
     override fun reload() {
@@ -849,6 +851,19 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
         private const val makeTextBlackCss = """
             * {
+                color: #000000 !important;
+            }
+            a, a * { 
+                color: #000000 !important;
+                text-decoration:underline;
+            }
+            input,select,option,button,textarea {
+                color: #000000 !important;
+            }
+            input: focus,select: focus,option: focus,button: focus,textarea: focus,input: hover,select: hover,option: hover,button: hover,textarea: hover {
+                color: #000000 !important;
+            }
+            input[type=button],input[type=submit],input[type=reset],input[type=image] {
                 color: #000000 !important;
             }
         """

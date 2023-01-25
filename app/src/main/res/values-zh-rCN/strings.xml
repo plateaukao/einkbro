@@ -406,4 +406,5 @@
     <string name="setting_summary_enable_ssl_error_dialog">当SSL出现问题时，显示错误对话框。</string>
     <string name="manual">使用指南</string>
     <string name="black_font">Black font</string>
+    <string name="image_adjust">Image Adjust</string>
 </resources>
