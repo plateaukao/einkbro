@@ -8,8 +8,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import info.plateaukao.einkbro.database.Record
+import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordType
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +41,7 @@ fun BrowseHistoryList(
         columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         reverseLayout = shouldReverse
     ) {
-        itemsIndexed(records) { _, record ->
+        itemsIndexed(records) { index, record ->
             RecordItem(
                 record = record,
                 bitmap = bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
@@ -122,7 +122,7 @@ private fun RecordItem(
 
 @Preview
 @Composable
-private fun PreviewItem() {
+private fun previewItem() {
     MyTheme {
         RecordItem(
             modifier = Modifier,
@@ -134,7 +134,7 @@ private fun PreviewItem() {
 
 @Preview
 @Composable
-private fun PreviewHistoryList() {
+private fun previewHistoryList() {
     val list = listOf(
         Record(
             title = "Hello aaa aaa aaa aa aa aaa aa a aa a a a aa a a a a a a a a a aa a a ",
