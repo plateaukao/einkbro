@@ -33,6 +33,7 @@ import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
 import java.io.IOException
 
+
 class NinjaWebViewClient(
     private val ninjaWebView: NinjaWebView,
     private val addHistoryAction: (String, String) -> Unit
@@ -181,12 +182,21 @@ class NinjaWebViewClient(
         if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
             ninjaWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
         } else {
-//            NinjaToast.showShort(context, "onReceivedError:${request?.url} / ${error?.description}")
             Log.e("NinjaWebViewClient", "onReceivedError:${request?.url} / ${error?.description}")
         }
     }
 
-    override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
+    override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? =
+        handleWebRequest(view, Uri.parse(url)) ?: super.shouldInterceptRequest(view, url)
+
+    override fun shouldInterceptRequest(
+        view: WebView,
+        request: WebResourceRequest
+    ): WebResourceResponse? =
+        handleWebRequest(view, request.url) ?: super.shouldInterceptRequest(view, request)
+
+    private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
+        val url = uri.toString()
         if (hasAdBlock && !white && adBlock.isAd(url)) {
             return adTxtResponse
         }
@@ -202,43 +212,66 @@ class NinjaWebViewClient(
             }
         }
 
-        val fontResponse = processCustomFontRequest(Uri.parse(url))
-        if (fontResponse != null) return fontResponse
+        processBookResource(uri)?.let { return it }
+        processCustomFontRequest(uri)?.let { return it }
 
-        val strippedUrl = BrowserUnit.stripUrlQuery(url)
-        return super.shouldInterceptRequest(view, strippedUrl)
+        return null
+        // images handling
+//        val brightness = 0.2f
+//        val lowerCaseUrl = url.lowercase(Locale.ROOT)
+//        return if (lowerCaseUrl.contains(".jpg") || lowerCaseUrl.contains(".jpeg")) {
+//            val bitmap = Glide.with(webView).asBitmap()
+//                .diskCacheStrategy(DiskCacheStrategy.ALL).load(url)
+//                .apply(bitmapTransform(BrightnessFilterTransformation(brightness)))
+//                .submit().get()
+//            WebResourceResponse(
+//                "image/jpg", "UTF-8", getBitmapInputStream(
+//                    bitmap,
+//                    Bitmap.CompressFormat.JPEG
+//                )
+//            )
+//        } else if (lowerCaseUrl.contains(".png")) {
+//            val bitmap = Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .load(url)
+//                .apply(bitmapTransform(BrightnessFilterTransformation(brightness)))
+//                .submit().get()
+//            WebResourceResponse(
+//                "image/png", "UTF-8", getBitmapInputStream(
+//                    bitmap,
+//                    Bitmap.CompressFormat.PNG
+//                )
+//            )
+//        } else if (lowerCaseUrl.contains(".webp")) {
+//            val bitmap = Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .load(url)
+//                .apply(bitmapTransform(BrightnessFilterTransformation(brightness)))
+//                .submit().get()
+//            WebResourceResponse(
+//                "image/webp", "UTF-8", getBitmapInputStream(
+//                    bitmap,
+//                    Bitmap.CompressFormat.WEBP
+//                )
+//            )
+//        } else {
+//            null
+//        }
     }
 
-    override fun shouldInterceptRequest(
-        view: WebView,
-        request: WebResourceRequest
-    ): WebResourceResponse? {
-        if (hasAdBlock && !white && adBlock.isAd(request.url.toString())) {
-            return adTxtResponse
-        }
+//    private fun getBitmapInputStream(
+//        bitmap: Bitmap,
+//        compressFormat: Bitmap.CompressFormat
+//    ): InputStream {
+//        val byteArrayOutputStream = ByteArrayOutputStream()
+//        bitmap.compress(compressFormat, 80, byteArrayOutputStream)
+//        val bitmapData: ByteArray = byteArrayOutputStream.toByteArray()
+//        return ByteArrayInputStream(bitmapData)
+//    }
 
-        if (!config.cookies) {
-            if (cookie.isWhite(request.url.toString())) {
-                val manager = CookieManager.getInstance()
-                manager.getCookie(request.url.toString())
-                manager.setAcceptCookie(true)
-            } else {
-                val manager = CookieManager.getInstance()
-                manager.setAcceptCookie(false)
-            }
-        }
-
-        processBookResource(request)?.let { return it }
-        processCustomFontRequest(request.url)?.let { return it }
-
-        return super.shouldInterceptRequest(view, request)
-    }
-
-    private fun processBookResource(request: WebResourceRequest): WebResourceResponse? {
+    private fun processBookResource(uri: Uri): WebResourceResponse? {
         val currentBook = book ?: return null
 
-        if (request.url.scheme == "img") {
-            val resource = currentBook.resources.getByHref(request.url.host.toString())
+        if (uri.scheme == "img") {
+            val resource = currentBook.resources.getByHref(uri.host.toString())
             return WebResourceResponse(
                 resource.mediaType.name,
                 "UTF-8",
@@ -250,10 +283,10 @@ class NinjaWebViewClient(
 
     private fun processCustomFontRequest(uri: Uri): WebResourceResponse? {
         if (uri.path?.contains("mycustomfont") == true) {
-            val uri = config.customFontInfo?.url?.toUri() ?: return null
+            val fontUri = config.customFontInfo?.url?.toUri() ?: return null
 
             try {
-                val inputStream = context.contentResolver.openInputStream(uri)
+                val inputStream = context.contentResolver.openInputStream(fontUri)
                 return WebResourceResponse("application/x-font-ttf", "UTF-8", inputStream)
             } catch (e: IOException) {
                 e.printStackTrace()

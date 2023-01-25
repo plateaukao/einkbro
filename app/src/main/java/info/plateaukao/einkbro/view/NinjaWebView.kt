@@ -80,6 +80,7 @@ open class NinjaWebView(
 
     fun updateCssStyle() {
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
+                (if (config.blackFontStyle) makeTextBlackCss else "") +
                 (if (config.fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
                 (if (config.fontType == FontType.SERIF) serifFontCss else "") +
                 (if (config.whiteBackground) whiteBackgroundCss else "") +
@@ -846,8 +847,14 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 }
         """
 
+        private const val makeTextBlackCss = """
+            * {
+                color: #000000 !important;
+            }
+        """
+
         private const val boldFontCss = "* {\n" +
-                "\tfont-weight:700 !important;\n" +  /*"\tborder-color: #555555 !important;\n" +*/
+                "\tfont-weight:700 !important;\n" +
                 "}\n" +
                 "a,a * {\n" +
                 "\tfont-weight:700 !important;\n" +

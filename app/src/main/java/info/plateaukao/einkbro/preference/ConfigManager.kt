@@ -44,6 +44,7 @@ class ConfigManager(
     var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
     var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
     var boldFontStyle by BooleanPreference(sp, K_BOLD_FONT, false)
+    var blackFontStyle by BooleanPreference(sp, K_BLACK_FONT, false)
     var shouldSaveTabs by BooleanPreference(sp, K_SHOULD_SAVE_TABS, true)
     var adBlock by BooleanPreference(sp, K_ADBLOCK, true)
     var cookies by BooleanPreference(sp, K_COOKIES, true)
@@ -349,6 +350,7 @@ class ConfigManager(
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_BOLD_FONT = "sp_bold_font"
+        const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"
         const val K_FONT_SIZE = "sp_fontSize"
         const val K_TTS_SPEED_VALUE = "sp_tts_speed"
