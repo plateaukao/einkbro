@@ -39,10 +39,6 @@ open class MultitouchListener(
 
         if (!config.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)
 
-        if (!inSwipe && event.pointerCount != touchCount) {
-            return gestureDetector.onTouchEvent(event)
-        }
-
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_POINTER_DOWN -> {
                 scaleFactor = 1.0f
@@ -74,6 +70,12 @@ open class MultitouchListener(
                 if (inSwipe) {
                     endPoint0 = event.getPoint(0)
                     endPoint1 = event.getPoint(1)
+                    return true
+                }
+            }
+            else -> {
+                if (inSwipe) {
+                    return true
                 }
             }
         }
