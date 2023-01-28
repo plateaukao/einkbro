@@ -99,6 +99,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
     private val ttsManager: TtsManager by inject()
+    private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -255,6 +256,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
 
+    private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
+    private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
+
     private lateinit var openFileLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
@@ -315,6 +319,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         customFontResultLauncher = IntentUnit.createResultLauncher(this) { result ->
             if (result.resultCode != RESULT_OK) return@createResultLauncher
             BrowserUnit.handleFontSelectionResult(this, result)
+        }
+        openBookmarkFileLauncher = IntentUnit.createResultLauncher(this) { result ->
+            if (result.resultCode != RESULT_OK) return@createResultLauncher
+            val uri = result.data?.data ?: return@createResultLauncher
+            val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(uri, takeFlags)
+            backupUnit.importBookmarks(lifecycleScope, uri)
+            config.bookmarkSyncUrl = uri.toString()
+        }
+        createBookmarkFileLauncher = IntentUnit.createResultLauncher(this) { result ->
+            if (result.resultCode != RESULT_OK) return@createResultLauncher
+            val uri = result.data?.data ?: return@createResultLauncher
+            val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(uri, takeFlags)
+            backupUnit.exportBookmarks(lifecycleScope, uri)
+            config.bookmarkSyncUrl = uri.toString()
         }
         writeEpubFilePickerLauncher = IntentUnit.createResultLauncher(this) { result ->
             if (result.resultCode != RESULT_OK) return@createResultLauncher
@@ -596,6 +616,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     bookmarkManager,
                     Bookmark(nonNullTitle, currentUrl),
                     {
+                        handleBookmarkSync(true)
                         hideKeyboard()
                         NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
                     },
@@ -1057,8 +1078,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             bookmarkViewModel,
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-            splitScreenAction = { url -> toggleSplitScreen(url) }
+            splitScreenAction = { url -> toggleSplitScreen(url) },
+            syncBookmarksAction =  this::handleBookmarkSync
         ).show(supportFragmentManager, "bookmarks dialog")
+
+    private fun handleBookmarkSync(forceUpload: Boolean = false) {
+        if (config.bookmarkSyncUrl.isNotBlank()) {
+            if (forceUpload) {
+                backupUnit.exportBookmarks(lifecycleScope, Uri.parse(config.bookmarkSyncUrl), false)
+            } else {
+                backupUnit.importBookmarks(lifecycleScope, Uri.parse(config.bookmarkSyncUrl))
+            }
+        } else {
+            dialogManager.showCreateOrOpenBookmarkFileDialog(
+                {
+                    BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher)
+                },
+                {
+                    BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher)
+                }
+            )
+        }
+    }
 
     private fun initSearchPanel() {
         searchPanel = binding.mainSearchPanel

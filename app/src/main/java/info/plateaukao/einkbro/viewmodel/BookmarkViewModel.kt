@@ -8,7 +8,7 @@ import info.plateaukao.einkbro.database.BookmarkDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Stack
 
 class BookmarkViewModel(private val bookmarkDao: BookmarkDao) : ViewModel() {
 

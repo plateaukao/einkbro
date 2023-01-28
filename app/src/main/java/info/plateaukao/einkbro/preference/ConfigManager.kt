@@ -134,6 +134,7 @@ class ConfigManager(
         K_ADBLOCK_HOSTS_URL,
         "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
     )
+    var bookmarkSyncUrl by StringPreference(sp, K_BOOKMARK_SYNC_URL , "")
 
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
@@ -443,6 +444,7 @@ class ConfigManager(
         const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
         const val K_IMAGE_ADJUSTMENT_VALUE = "sp_image_adjustment_value"
         const val K_IMAGE_ADJUSTMENT_SATURATION = "sp_image_adjustment_saturation"
+        const val K_BOOKMARK_SYNC_URL = "sp_bookmark_sync_url"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"

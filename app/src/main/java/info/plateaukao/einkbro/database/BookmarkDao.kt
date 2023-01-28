@@ -75,6 +75,12 @@ interface BookmarkDao {
 
     @Query("DELETE FROM bookmarks")
     suspend fun deleteAll()
+
+    @Transaction
+    suspend fun overwrite(bookmarks: List<Bookmark>) {
+        deleteAll()
+        bookmarks.forEach { insert(it) }
+    }
 }
 
 class BookmarkManager(context: Context) : KoinComponent {
@@ -132,7 +138,7 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     suspend fun deleteAll() = bookmarkDao.deleteAll()
 
-    suspend fun existsUrl(url: String): Boolean = bookmarkDao.existsUrl(url) > 0
+    private suspend fun existsUrl(url: String): Boolean = bookmarkDao.existsUrl(url) > 0
 
     suspend fun findBy(url: String): List<Bookmark> = bookmarkDao.findBy(url)
 
@@ -150,4 +156,7 @@ class BookmarkManager(context: Context) : KoinComponent {
     suspend fun delete(bookmark: Bookmark) = bookmarkDao.delete(bookmark)
 
     suspend fun update(bookmark: Bookmark) = bookmarkDao.update(bookmark)
+    suspend fun overwriteBookmarks(bookmarks: List<Bookmark>) {
+        if (bookmarks.isNotEmpty()) bookmarkDao.overwrite(bookmarks)
+    }
 }
