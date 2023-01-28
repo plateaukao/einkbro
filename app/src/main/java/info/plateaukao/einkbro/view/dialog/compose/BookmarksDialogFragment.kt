@@ -51,6 +51,7 @@ class BookmarksDialogFragment(
     private val gotoUrlAction: (String) -> Unit,
     private val addTabAction: (String, String, Boolean) -> Unit,
     private val splitScreenAction: (String) -> Unit,
+    private val syncBookmarksAction: (Boolean) -> Unit,
 ) : ComposeDialogFragment(), KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
@@ -65,7 +66,8 @@ class BookmarksDialogFragment(
                         DialogPanel(
                             folder = bookmarkViewModel.currentFolder,
                             upParentAction = { bookmarkViewModel.outOfFolder() },
-                            createFolderAction = { createBookmarkFolder(it) },
+                            createFolderAction = this@BookmarksDialogFragment::createBookmarkFolder,
+                            syncBookmarksAction = syncBookmarksAction,
                             closeAction = { dialog?.dismiss() }) {
                             if (bookmarks.isEmpty()) {
                                 Text(
@@ -114,7 +116,10 @@ class BookmarksDialogFragment(
     private fun createBookmarkFolder(bookmark: Bookmark) {
         lifecycleScope.launch {
             val folderName = dialogManager.getBookmarkFolderName()
-            folderName?.let { bookmarkManager.insertDirectory(it, bookmark.id) }
+            folderName?.let {
+                bookmarkManager.insertDirectory(it, bookmark.id)
+                syncBookmarksAction(true)
+            }
         }
     }
 
@@ -149,7 +154,10 @@ class BookmarksDialogFragment(
             }
         }
         dialogView.menuContextListDelete.setOnClickListener {
-            lifecycleScope.launch { bookmarkManager.delete(bookmark) }
+            lifecycleScope.launch {
+                bookmarkManager.delete(bookmark)
+                syncBookmarksAction(true)
+            }
             optionDialog.dismiss()
         }
 
@@ -158,7 +166,10 @@ class BookmarksDialogFragment(
                 requireActivity(),
                 bookmarkManager,
                 bookmark,
-                { ViewUnit.hideKeyboard(requireActivity()) },
+                {
+                    ViewUnit.hideKeyboard(requireActivity())
+                    syncBookmarksAction(true)
+                },
                 { ViewUnit.hideKeyboard(requireActivity()) }
             ).show()
             optionDialog.dismiss()
@@ -171,6 +182,7 @@ fun DialogPanel(
     folder: Bookmark,
     upParentAction: (Bookmark) -> Unit,
     createFolderAction: (Bookmark) -> Unit,
+    syncBookmarksAction: (Boolean) -> Unit,
     closeAction: () -> Unit,
     content: @Composable () -> Unit
 ) {
@@ -211,6 +223,13 @@ fun DialogPanel(
                     .padding(horizontal = 5.dp),
                 iconResId = R.drawable.ic_add_folder,
                 action = { createFolderAction(folder) }
+            )
+            ActionIcon(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = 5.dp),
+                iconResId = R.drawable.ic_sync,
+                action = { syncBookmarksAction(false) }
             )
             ActionIcon(
                 modifier = Modifier
@@ -335,6 +354,31 @@ private fun PreviewBookmarkList() {
             {},
             {}
         )
+    }
+}
+
+// preview dialog panel
+@Preview
+@Composable
+private fun PreviewDialogPanel() {
+    MyTheme {
+        DialogPanel(
+            folder = Bookmark("test 1", "https://www.google.com", false),
+            {},
+            {},
+            {},
+            {}
+        ) {
+            BookmarkList(
+                bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
+                null,
+                isWideLayout = true,
+                shouldReverse = true,
+                {},
+                {},
+                {}
+            )
+        }
     }
 }
 

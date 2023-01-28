@@ -337,4 +337,6 @@
     <string name="manual">使用說明</string>
     <string name="black_font">Black font</string>
     <string name="image_adjust">Image Adjust</string>
+    <string name="bookmark_new_file">Create new file</string>
+    <string name="bookmark_open_file">Open existing file</string>
 </resources>

@@ -228,6 +228,19 @@ class DialogManager(
         )
     }
 
+    fun showCreateOrOpenBookmarkFileDialog(
+        createFileAction: () -> Unit,
+        openFileAction: () -> Unit
+    ) {
+        val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+            .setPositiveButton(R.string.bookmark_new_file) { _, _ -> createFileAction() }
+            .apply {
+                setTitle("Bookmark file")
+                setNegativeButton(R.string.bookmark_open_file) { _, _ -> openFileAction() }
+            }
+        dialog.show()
+    }
+
     private fun restartApp() {
         finishAffinity(activity) // Finishes all activities.
         activity.startActivity(activity.packageManager.getLaunchIntentForPackage(activity.packageName))    // Start the launch activity

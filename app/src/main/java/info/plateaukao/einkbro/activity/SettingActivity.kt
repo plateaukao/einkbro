@@ -41,7 +41,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val adBlock: AdBlockV2 by inject()
-    private val backupUnit: BackupUnit by lazy { BackupUnit(this, this) }
+    private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {

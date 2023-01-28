@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.unit
 
-import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
@@ -23,9 +22,9 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
+
 class BackupUnit(
     private val context: Context,
-    private val activity: Activity,
 ): KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
     private val recordDb: RecordDb by inject()
@@ -121,13 +120,10 @@ class BackupUnit(
             try {
                 context.contentResolver.openInputStream(uri).use {
                     val jsonString = it?.bufferedReader()?.readText() ?: ""
-                    val bookmarkArray = JSONArray(jsonString)
-                    if (bookmarkArray.length() != 0) {
-                        bookmarkManager.deleteAll()
-                        for (i in 0 until bookmarkArray.length()) {
-                            val bookmark = (bookmarkArray[i] as JSONObject).toBookmark()
-                            bookmarkManager.insert(bookmark)
-                        }
+                    val bookmarks = JSONArray(jsonString).toJSONObjectList()
+                        .map { json -> json.toBookmark() }
+                    if (bookmarks.isNotEmpty()) {
+                        bookmarkManager.overwriteBookmarks(bookmarks)
                     }
                 }
                 Toast.makeText(context, "Bookmarks are imported", Toast.LENGTH_SHORT).show()
@@ -138,17 +134,22 @@ class BackupUnit(
         }
     }
 
-    fun exportBookmarks(lifecycleScope: CoroutineScope, uri: Uri) {
+    private fun JSONArray.toJSONObjectList() =
+        (0 until length()).map { get(it) as JSONObject }
+
+    fun exportBookmarks(lifecycleScope: CoroutineScope, uri: Uri, showToast: Boolean = true) {
         lifecycleScope.launch {
             val bookmarks = bookmarkManager.getAllBookmarks()
             try {
                 context.contentResolver.openOutputStream(uri).use {
                     it?.write(bookmarks.toJsonString().toByteArray())
                 }
-                Toast.makeText(context, "Bookmarks are exported", Toast.LENGTH_SHORT).show()
+                if (showToast)
+                    Toast.makeText(context, "Bookmarks are exported", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 e.printStackTrace()
-                Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT).show()
+                if (showToast)
+                    Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT).show()
             }
         }
     }
