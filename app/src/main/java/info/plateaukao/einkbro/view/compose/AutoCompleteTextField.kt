@@ -13,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -171,13 +170,12 @@ private fun TextInputBar(
             onValueSubmit = onTextSubmit,
         )
 
+        TextBarIcon(
+            iconResId = R.drawable.icon_close,
+            onClick = { text.value = TextFieldValue("") })
         if (hasCopiedText) {
             TextBarIcon(iconResId = R.drawable.ic_paste, onClick = onPasteClick)
         }
-
-        TextBarIcon(
-            iconResId = R.drawable.close_circle,
-            onClick = { text.value = TextFieldValue("") })
         TextBarIcon(iconResId = R.drawable.icon_arrow_down_gest, onClick = onDownClick)
     }
 }
