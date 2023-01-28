@@ -112,8 +112,7 @@ fun ComposedIconBar(
                     rememberScrollState(),
                     reverseScrolling = true
                 )
-            }
-            .clickable { onClick(Title) }, // these two lines prevent row having click action
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
