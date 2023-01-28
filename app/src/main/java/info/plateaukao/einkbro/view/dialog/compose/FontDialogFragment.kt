@@ -1,7 +1,16 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
@@ -26,6 +35,11 @@ class FontDialogFragment(
         composeView.setContent {
             MyTheme {
                 val customFontName = remember { mutableStateOf(config.customFontInfo?.name ?: "") }
+                config.registerOnSharedPreferenceChangeListener { _, key ->
+                    if (key == ConfigManager.K_CUSTOM_FONT) {
+                        customFontName.value = config.customFontInfo?.name ?: ""
+                    }
+                }
                 MainFontDialog(
                     selectedFontSizeValue = config.fontSize,
                     selectedFontType = config.fontType,
@@ -37,11 +51,6 @@ class FontDialogFragment(
                     onFontTypeClick = {
                         if (it == FontType.CUSTOM && config.customFontInfo == null) {
                             onFontCustomizeClick()
-                            config.registerOnSharedPreferenceChangeListener { _, key ->
-                                if (key == ConfigManager.K_CUSTOM_FONT) {
-                                    customFontName.value = config.customFontInfo?.name ?: ""
-                                }
-                            }
                         } else {
                             config.fontType = it
                             dismiss()

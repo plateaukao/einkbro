@@ -219,63 +219,57 @@ class NinjaWebViewClient(
         processBookResource(uri)?.let { return it }
         processCustomFontRequest(uri)?.let { return it }
 
-        if (!config.enableImageAdjustment) {
-            return null
+        return if (config.enableImageAdjustment) {
+            processImageRequest(url, webView)
         } else {
-            // images handling
-            val brightness: Float = config.imageAdjustmentBrightness / 100f
-            val saturation: Float = config.imageAdjustmentSaturation / 100f
-            val lowerCaseUrl = url.lowercase(Locale.ROOT)
-            try {
-                return if (lowerCaseUrl.contains(".jpg") || lowerCaseUrl.contains(".jpeg")) {
-                    val bitmap = Glide.with(webView).asBitmap()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL).load(url)
-                        .apply(bitmapTransform(MultiTransformation(
-                            BrightnessFilterTransformation(brightness),
-                            SaturationTransformation(saturation)
-                        ))).submit().get()
+            null
+        }
+    }
+
+    private fun processImageRequest(url: String, webView: WebView): WebResourceResponse? {
+        val lowerCaseUrl = url.lowercase(Locale.ROOT)
+        try {
+            return when {
+                lowerCaseUrl.contains(".jpg") || lowerCaseUrl.contains(".jpeg") ->
                     WebResourceResponse(
                         "image/jpg", "UTF-8", getBitmapInputStream(
-                            bitmap,
+                            fetchBitmap(webView, url),
                             Bitmap.CompressFormat.JPEG
                         )
                     )
-                } else if (lowerCaseUrl.contains(".png")) {
-                    val bitmap =
-                        Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .load(url)
-                            .apply(bitmapTransform(MultiTransformation(
-                                BrightnessFilterTransformation(brightness),
-                                SaturationTransformation(saturation)
-                            ))).submit().get()
-                    WebResourceResponse(
-                        "image/png", "UTF-8", getBitmapInputStream(
-                            bitmap,
-                            Bitmap.CompressFormat.PNG
-                        )
+                lowerCaseUrl.contains(".png") -> WebResourceResponse(
+                    "image/png", "UTF-8", getBitmapInputStream(
+                        fetchBitmap(webView, url),
+                        Bitmap.CompressFormat.PNG
                     )
-                } else if (lowerCaseUrl.contains(".webp")) {
-                    val bitmap =
-                        Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .load(url)
-                            .apply(bitmapTransform(MultiTransformation(
-                                BrightnessFilterTransformation(brightness),
-                                SaturationTransformation(saturation)
-                            ))).submit().get()
-                    WebResourceResponse(
-                        "image/webp", "UTF-8", getBitmapInputStream(
-                            bitmap,
-                            Bitmap.CompressFormat.WEBP
-                        )
+                )
+                lowerCaseUrl.contains(".webp") -> WebResourceResponse(
+                    "image/webp", "UTF-8", getBitmapInputStream(
+                        fetchBitmap(webView, url),
+                        Bitmap.CompressFormat.WEBP
                     )
-                } else {
-                    null
-                }
-            } catch (e: Exception) {
-                Log.e("NinjaWebViewClient", "Error while processing image: $url", e)
-                return null
+                )
+                else -> { null }
             }
+        } catch (e: Exception) {
+            Log.e("NinjaWebViewClient", "Error while processing image: $url", e)
+            return null
         }
+    }
+
+    private fun fetchBitmap(webView: WebView, url: String): Bitmap {
+        val brightness: Float = config.imageAdjustmentBrightness / 100f
+        val saturation: Float = config.imageAdjustmentSaturation / 100f
+        return Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+            .load(url)
+            .apply(
+                bitmapTransform(
+                    MultiTransformation(
+                        BrightnessFilterTransformation(brightness),
+                        SaturationTransformation(saturation)
+                    )
+                )
+            ).submit().get()
     }
 
     private fun getBitmapInputStream(

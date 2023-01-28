@@ -325,6 +325,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
         openFileLauncher = IntentUnit.createResultLauncher(this) { result ->
             if (result.resultCode != RESULT_OK) return@createResultLauncher
+
             val uri = result.data?.data ?: return@createResultLauncher
             val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
             contentResolver.takePersistableUriPermission(uri, takeFlags)
