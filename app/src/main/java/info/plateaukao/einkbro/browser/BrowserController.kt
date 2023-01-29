@@ -37,4 +37,8 @@ interface BrowserController {
     fun showFontSizeChangeDialog()
     fun showSearchPanel()
     fun showWebArchiveFilePicker()
+    //for tool bar
+    fun openHistoryPage(amount: Int = 0)
+    fun showTranslationConfigDialog()
+    fun fullscreen()
 }
