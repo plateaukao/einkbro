@@ -127,7 +127,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var shouldLoadTabState: Boolean = false
 
     private val toolbarActionHandler: ToolbarActionHandler by lazy {
-        ToolbarActionHandler(this, ninjaWebView)
+        ToolbarActionHandler(this)
     }
 
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
@@ -246,6 +246,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
     }
+
+    override fun jumpToTop() = ninjaWebView.jumpToTop()
+    override fun jumpToBottom() = ninjaWebView.jumpToBottom()
+    override fun pageDown() = ninjaWebView.pageDownWithNoAnimation()
+    override fun pageUp() = ninjaWebView.pageUpWithNoAnimation()
+    override fun toggleReaderMode() = ninjaWebView.toggleReaderMode()
+    override fun toggleVerticalRead() = ninjaWebView.toggleVerticalRead()
+
 
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
@@ -826,10 +834,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initFAB()
         if (config.enableNavButtonGesture) {
             val onNavButtonTouchListener = object : SwipeTouchListener(this@BrowserActivity) {
-                override fun onSwipeTop() = performGesture(config.navGestureUp)
-                override fun onSwipeBottom() = performGesture(config.navGestureDown)
-                override fun onSwipeRight() = performGesture(config.navGestureRight)
-                override fun onSwipeLeft() = performGesture(config.navGestureLeft)
+                override fun onSwipeTop() = gestureHandler.handle(config.navGestureUp)
+                override fun onSwipeBottom() = gestureHandler.handle(config.navGestureDown)
+                override fun onSwipeRight() = gestureHandler.handle(config.navGestureRight)
+                override fun onSwipeLeft() = gestureHandler.handle(config.navGestureLeft)
             }
             fabImageViewController.defaultTouchListener = onNavButtonTouchListener
         }
@@ -946,8 +954,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    private val gestureHandler: GestureHandler by lazy { GestureHandler(this, ninjaWebView) }
-    private fun performGesture(gesture: GestureType) = gestureHandler.handle(gesture)
+    private val gestureHandler: GestureHandler by lazy { GestureHandler(this) }
 
     override fun goForward() {
         if (ninjaWebView.canGoForward()) {
@@ -1156,10 +1163,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun createMultiTouchTouchListener(ninjaWebView: NinjaWebView): MultitouchListener =
         object : MultitouchListener(this@BrowserActivity, ninjaWebView) {
-            override fun onSwipeTop() = performGesture(config.multitouchUp)
-            override fun onSwipeBottom() = performGesture(config.multitouchDown)
-            override fun onSwipeRight() = performGesture(config.multitouchRight)
-            override fun onSwipeLeft() = performGesture(config.multitouchLeft)
+            override fun onSwipeTop() = gestureHandler.handle(config.multitouchUp)
+            override fun onSwipeBottom() = gestureHandler.handle(config.multitouchDown)
+            override fun onSwipeRight() = gestureHandler.handle(config.multitouchRight)
+            override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
         }
 
     private fun updateSavedAlbumInfo() {
@@ -1725,15 +1732,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private val menuActionHandler: MenuActionHandler by lazy {
-        MenuActionHandler(
-            this,
-            ninjaWebView
-        )
-    }
+    private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this) }
 
     override fun showMenuDialog() =
-        MenuDialogFragment { menuActionHandler.handle(it) }
+        MenuDialogFragment { menuActionHandler.handle(it, ninjaWebView) }
             .show(supportFragmentManager, "menu_dialog")
 
     override fun showWebArchiveFilePicker() {

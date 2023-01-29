@@ -5,7 +5,6 @@ import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
@@ -14,8 +13,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class ToolbarActionHandler(
-    private val activity: FragmentActivity,
-    private val ninjaWebView: NinjaWebView,
+    private val activity: FragmentActivity
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val browserController = activity as BrowserController
@@ -28,8 +26,8 @@ class ToolbarActionHandler(
             "TouchAreaDialog"
         )
 
-        ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
-        ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
+        ToolbarAction.PageUp -> browserController.jumpToTop()
+        ToolbarAction.PageDown -> browserController.jumpToBottom()
         ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
         ToolbarAction.Settings -> browserController.showFastToggleDialog()
         ToolbarAction.Bookmark -> browserController.saveBookmark()
@@ -39,7 +37,7 @@ class ToolbarActionHandler(
             TtsSettingDialogFragment { IntentUnit.gotoSystemTtsSettings(activity) }
                 .show(activity.supportFragmentManager, "TtsSettingDialog")
 
-        ToolbarAction.Font -> ninjaWebView.toggleReaderMode()
+        ToolbarAction.Font -> browserController.toggleReaderMode()
         else -> {}
     }
 
@@ -48,8 +46,8 @@ class ToolbarActionHandler(
         ToolbarAction.Back -> browserController.handleBackKey()
         ToolbarAction.Refresh -> browserController.refreshAction()
         ToolbarAction.Touch -> browserController.toggleTouchTurnPageFeature()
-        ToolbarAction.PageUp -> ninjaWebView.pageUpWithNoAnimation()
-        ToolbarAction.PageDown -> ninjaWebView.pageDownWithNoAnimation()
+        ToolbarAction.PageUp -> browserController.pageUp()
+        ToolbarAction.PageDown -> browserController.pageDown()
         ToolbarAction.TabCount -> browserController.showOverview()
         ToolbarAction.Font -> browserController.showFontSizeChangeDialog()
         ToolbarAction.Settings -> browserController.showMenuDialog()
@@ -59,15 +57,13 @@ class ToolbarActionHandler(
             "toolbar_config"
         )
 
-        ToolbarAction.VerticalLayout -> ninjaWebView.toggleVerticalRead()
-        ToolbarAction.ReaderMode -> ninjaWebView.toggleReaderMode()
+        ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
+        ToolbarAction.ReaderMode -> browserController.toggleReaderMode()
         ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
         ToolbarAction.IncreaseFont -> browserController.increaseFontSize()
         ToolbarAction.DecreaseFont -> browserController.decreaseFontSize()
         ToolbarAction.FullScreen -> browserController.fullscreen()
-        ToolbarAction.Forward -> if (ninjaWebView.canGoForward()) ninjaWebView.goForward() else {
-        }
-
+        ToolbarAction.Forward -> browserController.goForward()
         ToolbarAction.RotateScreen -> browserController.rotateScreen()
         ToolbarAction.Translation -> browserController.showTranslation()
         ToolbarAction.CloseTab -> browserController.removeAlbum()
@@ -78,6 +74,5 @@ class ToolbarActionHandler(
         ToolbarAction.DuplicateTab -> browserController.duplicateTab()
         ToolbarAction.Tts -> browserController.toggleTtsRead()
         ToolbarAction.TOC -> browserController.showTocDialog()
-        else -> {}
     }
 }

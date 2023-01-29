@@ -28,65 +28,70 @@ import org.koin.core.component.inject
 
 class MenuActionHandler(
     private val activity: FragmentActivity,
-    private val ninjaWebView: NinjaWebView,
-): KoinComponent {
+) : KoinComponent {
     private val config: ConfigManager by inject()
     private val browserController = activity as BrowserController
-    private val dialogManager by lazy {  DialogManager(activity) }
+    private val dialogManager by lazy { DialogManager(activity) }
 
-       fun handle(menuItemType: MenuItemType) = when (menuItemType) {
-           MenuItemType.Tts -> browserController.toggleTtsRead()
-           MenuItemType.QuickToggle -> browserController.showFastToggleDialog()
-           MenuItemType.OpenHome -> browserController.updateAlbum(config.favoriteUrl)
-           MenuItemType.CloseTab -> browserController.removeAlbum()
-           MenuItemType.Quit -> activity.finishAndRemoveTask()
+    fun handle(menuItemType: MenuItemType, ninjaWebView: NinjaWebView) = when (menuItemType) {
+        MenuItemType.Tts -> browserController.toggleTtsRead()
+        MenuItemType.QuickToggle -> browserController.showFastToggleDialog()
+        MenuItemType.OpenHome -> browserController.updateAlbum(config.favoriteUrl)
+        MenuItemType.CloseTab -> browserController.removeAlbum()
+        MenuItemType.Quit -> activity.finishAndRemoveTask()
 
-           MenuItemType.SplitScreen -> browserController.toggleSplitScreen()
-           MenuItemType.Translate -> browserController.showTranslation()
-           MenuItemType.VerticalRead -> ninjaWebView.toggleVerticalRead()
-           MenuItemType.ReaderMode -> ninjaWebView.toggleReaderMode()
-           MenuItemType.TouchSetting -> TouchAreaDialogFragment().show(
-               activity.supportFragmentManager,
-               "TouchAreaDialog"
-           )
-           MenuItemType.ToolbarSetting -> ToolbarConfigDialogFragment().show(
-               activity.supportFragmentManager,
-               "toolbar_config"
-           )
-           MenuItemType.ReceiveData -> showReceiveDataDialog()
-           MenuItemType.SendLink ->
-               SendLinkDialog(activity, activity.lifecycleScope).show(ninjaWebView.url.orEmpty())
-           MenuItemType.ShareLink ->
-               IntentUnit.share(activity, ninjaWebView.title, ninjaWebView.url)
-           MenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
-               activity,
-               ninjaWebView.url,
-               activity.getString(R.string.menu_open_with)
-           )
-           MenuItemType.CopyLink -> ShareUtil.copyToClipboard(activity, ninjaWebView.url ?: "")
-           MenuItemType.Shortcut -> HelperUnit.createShortcut(
-               activity,
-               ninjaWebView.title,
-               ninjaWebView.url,
-               ninjaWebView.favicon
-           )
+        MenuItemType.SplitScreen -> browserController.toggleSplitScreen()
+        MenuItemType.Translate -> browserController.showTranslation()
+        MenuItemType.VerticalRead -> browserController.toggleVerticalRead()
+        MenuItemType.ReaderMode -> browserController.toggleReaderMode()
+        MenuItemType.TouchSetting -> TouchAreaDialogFragment().show(
+            activity.supportFragmentManager,
+            "TouchAreaDialog"
+        )
 
-           MenuItemType.SetHome -> config.favoriteUrl = ninjaWebView.url.orEmpty()
-           MenuItemType.SaveBookmark -> browserController.saveBookmark()
-           MenuItemType.OpenEpub -> openSavedEpub()
-           MenuItemType.SaveEpub -> browserController.showSaveEpubDialog()
-           MenuItemType.SavePdf -> printPDF()
+        MenuItemType.ToolbarSetting -> ToolbarConfigDialogFragment().show(
+            activity.supportFragmentManager,
+            "toolbar_config"
+        )
 
-           MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
-           MenuItemType.WhiteBknd -> config::whiteBackground.toggle()
-           MenuItemType.BoldFont -> config::boldFontStyle.toggle()
-           MenuItemType.BlackFont -> config::blackFontStyle.toggle()
-           MenuItemType.Search -> browserController.showSearchPanel()
-           MenuItemType.Download -> BrowserUnit.openDownloadFolder(activity)
-           MenuItemType.SaveArchive -> browserController.showWebArchiveFilePicker()
-           MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
-       }
-    private fun showReceiveDataDialog() {
+        MenuItemType.ReceiveData -> showReceiveDataDialog(ninjaWebView)
+        MenuItemType.SendLink ->
+            SendLinkDialog(activity, activity.lifecycleScope).show(ninjaWebView.url.orEmpty())
+
+        MenuItemType.ShareLink ->
+            IntentUnit.share(activity, ninjaWebView.title, ninjaWebView.url)
+
+        MenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
+            activity,
+            ninjaWebView.url,
+            activity.getString(R.string.menu_open_with)
+        )
+
+        MenuItemType.CopyLink -> ShareUtil.copyToClipboard(activity, ninjaWebView.url ?: "")
+        MenuItemType.Shortcut -> HelperUnit.createShortcut(
+            activity,
+            ninjaWebView.title,
+            ninjaWebView.url,
+            ninjaWebView.favicon
+        )
+
+        MenuItemType.SetHome -> config.favoriteUrl = ninjaWebView.url.orEmpty()
+        MenuItemType.SaveBookmark -> browserController.saveBookmark()
+        MenuItemType.OpenEpub -> openSavedEpub()
+        MenuItemType.SaveEpub -> browserController.showSaveEpubDialog()
+        MenuItemType.SavePdf -> printPDF(ninjaWebView)
+
+        MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
+        MenuItemType.WhiteBknd -> config::whiteBackground.toggle()
+        MenuItemType.BoldFont -> config::boldFontStyle.toggle()
+        MenuItemType.BlackFont -> config::blackFontStyle.toggle()
+        MenuItemType.Search -> browserController.showSearchPanel()
+        MenuItemType.Download -> BrowserUnit.openDownloadFolder(activity)
+        MenuItemType.SaveArchive -> browserController.showWebArchiveFilePicker()
+        MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
+    }
+
+    private fun showReceiveDataDialog(ninjaWebView: NinjaWebView) {
         ReceiveDataDialog(activity, activity.lifecycleScope).show { text ->
             if (text.startsWith("http")) ninjaWebView.loadUrl(text)
             else {
@@ -97,6 +102,7 @@ class MenuActionHandler(
             }
         }
     }
+
     private fun openSavedEpub() = if (config.savedEpubFileInfos.isEmpty()) {
         NinjaToast.show(activity, "no saved epub!")
     } else {
@@ -104,10 +110,12 @@ class MenuActionHandler(
             HelperUnit.openFile(activity, uri ?: return@showSaveEpubDialog)
         }
     }
-    private fun printPDF() {
+
+    private fun printPDF(ninjaWebView: NinjaWebView) {
         try {
             val title = HelperUnit.fileName(ninjaWebView.url)
-            val printManager = activity.getSystemService(FragmentActivity.PRINT_SERVICE) as PrintManager
+            val printManager =
+                activity.getSystemService(FragmentActivity.PRINT_SERVICE) as PrintManager
             val printAdapter = ninjaWebView.createPrintDocumentAdapter(title) {
                 showFileListConfirmDialog()
             }
@@ -116,6 +124,7 @@ class MenuActionHandler(
             e.printStackTrace()
         }
     }
+
     private fun showFileListConfirmDialog() {
         dialogManager.showOkCancelDialog(
             messageResId = R.string.toast_downloadComplete,
