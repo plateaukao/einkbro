@@ -188,6 +188,7 @@ open class NinjaWebView(
             //cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             textZoom = config.fontSize
             allowFileAccessFromFileURLs = config.enableRemoteAccess
+            allowFileAccess = true
             allowUniversalAccessFromFileURLs = config.enableRemoteAccess
             domStorageEnabled = config.enableRemoteAccess
             databaseEnabled = true
@@ -287,7 +288,7 @@ open class NinjaWebView(
         album.isLoaded = true
         dTLoadUrl = DebugT("loadUrl")
 
-        if (url.startsWith("javascript:")) {
+        if (url.startsWith("javascript:") || url.startsWith("content:")) {
             // Daniel
             super.loadUrl(url)
             return

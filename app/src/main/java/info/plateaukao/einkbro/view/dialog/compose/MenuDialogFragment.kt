@@ -91,7 +91,8 @@ enum class MenuItemType {
     SplitScreen, Translate, VerticalRead, ReaderMode, TouchSetting, ToolbarSetting,
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
-    FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont
+    FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
+    SaveArchive
 }
 
 @Composable
@@ -114,6 +115,7 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
+            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
             val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
             MenuItem(R.string.menu_tts, ttsRes) { onClicked(Tts) }
             MenuItem(
@@ -166,12 +168,14 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
             MenuItem(R.string.menu_fav, R.drawable.ic_home_set) { onClicked(SetHome) }
             MenuItem(
                 R.string.menu_save_bookmark,
                 R.drawable.ic_bookmark
             ) { onClicked(SaveBookmark) }
+            MenuItem(R.string.menu_save_archive, R.drawable.ic_save_archive) { onClicked(
+                MenuItemType.SaveArchive
+            ) }
             MenuItem(R.string.menu_open_epub, R.drawable.ic_open_epub) { onClicked(OpenEpub) }
             MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
             MenuItem(R.string.menu_save_pdf, R.drawable.ic_pdf) { onClicked(SavePdf) }

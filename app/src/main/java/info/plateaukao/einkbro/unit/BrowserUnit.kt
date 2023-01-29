@@ -435,6 +435,16 @@ object BrowserUnit : KoinComponent {
         resultLauncher.launch(intent)
     }
 
+    fun createWebArchiveFilePicker(resultLauncher: ActivityResultLauncher<Intent>, title: String) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_ANY
+        intent.putExtra(Intent.EXTRA_TITLE, title)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        resultLauncher.launch(intent)
+    }
+
     private var tempImageInputStream: InputStream? = null
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -1,3 +1,4 @@
 <paths>
     <external-path name="external" path="Screenshots/" />
+    <external-path name="external_files" path="."/>
 </paths>
