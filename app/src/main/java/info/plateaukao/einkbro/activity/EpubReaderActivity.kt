@@ -8,7 +8,6 @@ import info.plateaukao.einkbro.epub.EpubReaderListener
 import info.plateaukao.einkbro.epub.EpubReaderView
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.view.NinjaWebView
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.launch
 
 class EpubReaderActivity: BrowserActivity() {
@@ -27,14 +26,9 @@ class EpubReaderActivity: BrowserActivity() {
         hideOverview()
     }
 
-    override fun onToolActionClick(toolbarAction: ToolbarAction) {
-        if (toolbarAction == ToolbarAction.TOC) {
-            epubReader.showTocDialog()
-            return
-        }
-        super.onToolActionClick(toolbarAction)
+    override fun showTocDialog() {
+        epubReader.showTocDialog()
     }
-
         override fun dispatchIntent(intent: Intent) {
         val epubUri= intent.data ?: return
         val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
