@@ -15,6 +15,8 @@ interface BrowserController {
     fun addNewTab(url: String)
     fun showAlbum(albumController: AlbumController)
     fun removeAlbum(albumController: AlbumController)
+    fun removeAlbum()
+    fun updateAlbum(url: String?)
     fun onUpdateAlbum(album: Album)
     fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
     fun onShowCustomView(view: View?, callback: CustomViewCallback?)
@@ -24,4 +26,15 @@ interface BrowserController {
     fun onHideCustomView(): Boolean
     fun handleKeyEvent(event: KeyEvent): Boolean
     fun loadInSecondPane(url: String): Boolean //void updateTabs(Album album);
+
+    // for menu actions
+    fun toggleTtsRead()
+    fun showFastToggleDialog()
+    fun toggleSplitScreen(url: String? = null)
+    fun showTranslation()
+    fun saveBookmark(url: String? = null, title: String? = null)
+    fun showSaveEpubDialog()
+    fun showFontSizeChangeDialog()
+    fun showSearchPanel()
+    fun showWebArchiveFilePicker()
 }
