@@ -179,6 +179,16 @@ object HelperUnit {
         return buildUpon().scheme(scheme).build()
     }
 
+    fun getCachedPathFromURI(context: Context, contentURI: Uri): String {
+        val tempFile = File(context.filesDir.absolutePath + "/temp.mht")
+        context.contentResolver.openInputStream(contentURI)?.use { inputStream ->
+            tempFile.outputStream().use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        return tempFile.absolutePath
+    }
+
     @JvmStatic
     fun fileName(url: String?): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault())

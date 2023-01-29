@@ -29,6 +29,7 @@ import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -74,6 +75,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.io.File
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -256,10 +258,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
 
+    private lateinit var createWebArchivePickerLauncher: ActivityResultLauncher<Intent>
+
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
 
-    private lateinit var openFileLauncher: ActivityResultLauncher<Intent>
+    //private lateinit var openFileLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
 
@@ -314,59 +318,98 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
-        customFontResultLauncher = IntentUnit.createResultLauncher(this) { result ->
-            if (result.resultCode != RESULT_OK) return@createResultLauncher
-            BrowserUnit.handleFontSelectionResult(this, result)
-        }
-        openBookmarkFileLauncher = IntentUnit.createResultLauncher(this) { result ->
-            if (result.resultCode != RESULT_OK) return@createResultLauncher
-            val uri = result.data?.data ?: return@createResultLauncher
-            val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(uri, takeFlags)
-            backupUnit.importBookmarks(lifecycleScope, uri)
-            config.bookmarkSyncUrl = uri.toString()
-        }
-        createBookmarkFileLauncher = IntentUnit.createResultLauncher(this) { result ->
-            if (result.resultCode != RESULT_OK) return@createResultLauncher
-            val uri = result.data?.data ?: return@createResultLauncher
-            val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(uri, takeFlags)
-            backupUnit.exportBookmarks(lifecycleScope, uri)
-            config.bookmarkSyncUrl = uri.toString()
-        }
-        writeEpubFilePickerLauncher = IntentUnit.createResultLauncher(this) { result ->
-            if (result.resultCode != RESULT_OK) return@createResultLauncher
-            val uri = result.data?.data ?: return@createResultLauncher
-            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(uri, takeFlags)
-            epubManager.saveEpub(this, uri, ninjaWebView)
-        }
-        openFileLauncher = IntentUnit.createResultLauncher(this) { result ->
-            if (result.resultCode != RESULT_OK) return@createResultLauncher
+        customFontResultLauncher =
+            IntentUnit.createResultLauncher(this) { handleFontSelectionResult(it) }
+        openBookmarkFileLauncher =
+            IntentUnit.createResultLauncher(this) { linkToBookmarkSyncFile(it) }
+        createBookmarkFileLauncher =
+            IntentUnit.createResultLauncher(this) { createBookmarkSyncFile(it) }
+        createWebArchivePickerLauncher =
+            IntentUnit.createResultLauncher(this) { saveWebArchive(it) }
+        writeEpubFilePickerLauncher =
+            IntentUnit.createResultLauncher(this) { saveEpub(it) }
+        fileChooserLauncher =
+            IntentUnit.createResultLauncher(this) { handleWebViewFileChooser(it) }
+//        openFileLauncher = IntentUnit.createResultLauncher(this) { result ->
+//            if (result.resultCode != RESULT_OK) return@createResultLauncher
+//
+//            val uri = result.data?.data ?: return@createResultLauncher
+//            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+//            contentResolver.takePersistableUriPermission(uri, takeFlags)
+//
+//            HelperUnit.openFile(this@BrowserActivity, uri)
+//        }
+    }
 
-            val uri = result.data?.data ?: return@createResultLauncher
-            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            contentResolver.takePersistableUriPermission(uri, takeFlags)
+    private fun handleFontSelectionResult(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) return
+        BrowserUnit.handleFontSelectionResult(this, result)
+    }
 
-            HelperUnit.openFile(this@BrowserActivity, uri)
-        }
-        fileChooserLauncher = IntentUnit.createResultLauncher(this) { result ->
-            if (result.resultCode != RESULT_OK || filePathCallback == null){
-                filePathCallback = null
-                return@createResultLauncher
-            }
-            var results: Array<Uri>?
-            // Check that the response is a good one
-            val data = result.data
-            if (data != null) {
-                // If there is not data, then we may have taken a photo
-                val dataString = data.dataString
-                results = arrayOf(Uri.parse(dataString))
-                filePathCallback?.onReceiveValue(results)
-            }
+    private fun handleWebViewFileChooser(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK || filePathCallback == null) {
             filePathCallback = null
+            return
+        }
+        var results: Array<Uri>?
+        // Check that the response is a good one
+        val data = result.data
+        if (data != null) {
+            // If there is not data, then we may have taken a photo
+            val dataString = data.dataString
+            results = arrayOf(Uri.parse(dataString))
+            filePathCallback?.onReceiveValue(results)
+        }
+        filePathCallback = null
+    }
+
+    private fun linkToBookmarkSyncFile(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) return
+        val uri = result.data?.data ?: return
+        val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        backupUnit.importBookmarks(lifecycleScope, uri)
+        config.bookmarkSyncUrl = uri.toString()
+    }
+
+    private fun createBookmarkSyncFile(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) return
+        val uri = result.data?.data ?: return
+        val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        backupUnit.exportBookmarks(lifecycleScope, uri)
+        config.bookmarkSyncUrl = uri.toString()
+    }
+
+    private fun saveEpub(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) return
+        val uri = result.data?.data ?: return
+        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        epubManager.saveEpub(this, uri, ninjaWebView)
+    }
+
+    private fun saveWebArchive(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) return
+        val uri = result.data?.data ?: return
+        val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        saveWebArchiveToUri(uri)
+    }
+
+    private fun saveWebArchiveToUri(uri: Uri) {
+        // get archive from webview
+        val filePath = File(filesDir.absolutePath + "/temp.mht").absolutePath
+        ninjaWebView.saveWebArchive(filePath, false) {
+            val tempFile = File(filePath)
+            contentResolver.openOutputStream(uri)?.use { outputStream ->
+                tempFile.inputStream().use { inputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
         }
     }
 
@@ -733,8 +776,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 // if webview for that url already exists, show the original tab, otherwise, create new
                 val viewUri = intent.data?.toNormalScheme() ?: Uri.parse(config.favoriteUrl)
                 if (viewUri.scheme == "content") {
-                    epubManager.showEpubReader(viewUri)
-                    finish()
+                    if (viewUri.lastPathSegment?.contains("mht") == true) {
+                        HelperUnit.getCachedPathFromURI(this, viewUri)?.let {
+                            addAlbum(url = "file://$it")
+                        }
+                    } else {
+                        epubManager.showEpubReader(viewUri)
+                        finish()
+                    }
                 } else {
                     val url = viewUri.toString()
                     getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
@@ -1878,8 +1927,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             BlackFont-> config::blackFontStyle.toggle()
             Search -> showSearchPanel()
             Download -> BrowserUnit.openDownloadFolder(this)
+            SaveArchive -> openWebArchiveFilePicker()
             Settings -> IntentUnit.gotoSettings(this)
         }
+    }
+
+    private fun openWebArchiveFilePicker() {
+        val fileName = "${ninjaWebView.title}.mht"
+        BrowserUnit.createWebArchiveFilePicker(createWebArchivePickerLauncher, fileName)
     }
 
     private fun toggleTtsRead() {

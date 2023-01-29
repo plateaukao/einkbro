@@ -126,6 +126,17 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="message/rfc822" android:scheme="file"/>
+                <data android:mimeType="message/rfc822" android:scheme="content"/>
+                <data android:mimeType="multipart/related" android:scheme="file"/>
+                <data android:mimeType="multipart/related" android:scheme="content"/>
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.mht" />
+                <data android:pathPattern=".*\\.mhtml" />
+            </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
