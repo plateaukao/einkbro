@@ -55,6 +55,8 @@ interface BrowserController {
     fun rotateScreen()
     fun newATab()
     fun duplicateTab()
+    fun toggleReaderMode()
+    fun toggleVerticalRead()
 
     // ereader activity
     fun showTocDialog() = Unit
@@ -63,4 +65,9 @@ interface BrowserController {
     fun gotoLeftTab()
     fun gotoRightTab()
     fun goForward()
+
+    fun jumpToTop()
+    fun jumpToBottom()
+    fun pageDown()
+    fun pageUp()
 }
