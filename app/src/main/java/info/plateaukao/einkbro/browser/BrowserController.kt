@@ -37,8 +37,25 @@ interface BrowserController {
     fun showFontSizeChangeDialog()
     fun showSearchPanel()
     fun showWebArchiveFilePicker()
-    //for tool bar
+    //for tool bar long click
     fun openHistoryPage(amount: Int = 0)
     fun showTranslationConfigDialog()
     fun fullscreen()
+
+    // toolbar click
+    fun focusOnInput()
+    fun handleBackAction()
+    fun refreshAction()
+    fun toggleTouchTurnPageFeature()
+    fun showOverview()
+    fun showMenuDialog()
+    fun openBookmarkPage()
+    fun increaseFontSize()
+    fun decreaseFontSize()
+    fun rotateScreen()
+    fun newATab()
+    fun duplicateTab()
+
+    // ereader activity
+    fun showTocDialog() = Unit
 }

@@ -66,7 +66,6 @@ import info.plateaukao.einkbro.view.dialog.compose.*
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.viewControllers.*
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
@@ -129,66 +128,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var shouldLoadTabState: Boolean = false
 
     private val toolbarActionHandler: ToolbarActionHandler by lazy {
-        ToolbarActionHandler( this, ninjaWebView)
+        ToolbarActionHandler(this, ninjaWebView)
     }
 
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
             binding.composeIconBar,
-            this::onToolActionClick,
-            { toolbarActionHandler.handlerLongClick(it) },
+            { toolbarActionHandler.handleClick(it) },
+            { toolbarActionHandler.handleLongClick(it) },
             onTabClick = { it.show() },
             onTabLongClick = { it.remove() },
         )
     }
 
-    protected open fun onToolActionClick(toolbarAction: ToolbarAction) {
-        when (toolbarAction) {
-            ToolbarAction.Title -> focusOnInput()
-            ToolbarAction.Back -> if (ninjaWebView.canGoBack()) {
-                ninjaWebView.goBack()
-            } else {
-                NinjaToast.show(this, getString(R.string.no_previous_page))
-            }
-
-            ToolbarAction.Refresh -> refreshAction()
-            ToolbarAction.Touch -> toggleTouchTurnPageFeature()
-            ToolbarAction.PageUp -> ninjaWebView.pageUpWithNoAnimation()
-            ToolbarAction.PageDown -> {
-                keepToolbar = true
-                ninjaWebView.pageDownWithNoAnimation()
-            }
-
-            ToolbarAction.TabCount -> showOverview()
-            ToolbarAction.Font -> showFontSizeChangeDialog()
-            ToolbarAction.Settings -> showMenuDialog()
-            ToolbarAction.Bookmark -> openBookmarkPage()
-            ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(
-                supportFragmentManager,
-                "toolbar_config"
-            )
-
-            ToolbarAction.VerticalLayout -> ninjaWebView.toggleVerticalRead()
-            ToolbarAction.ReaderMode -> ninjaWebView.toggleReaderMode()
-            ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
-            ToolbarAction.IncreaseFont -> increaseFontSize()
-            ToolbarAction.DecreaseFont -> decreaseFontSize()
-            ToolbarAction.FullScreen -> fullscreen()
-            ToolbarAction.Forward -> if (ninjaWebView.canGoForward()) ninjaWebView.goForward()
-            ToolbarAction.RotateScreen -> rotateScreen()
-            ToolbarAction.Translation -> showTranslation()
-            ToolbarAction.CloseTab -> removeAlbum()
-            ToolbarAction.InputUrl -> focusOnInput()
-            ToolbarAction.NewTab -> newATab()
-            ToolbarAction.Desktop -> config::desktop.toggle()
-            ToolbarAction.Search -> showSearchPanel()
-            ToolbarAction.DuplicateTab -> duplicateTab()
-            ToolbarAction.Tts -> toggleTtsRead()
-            else -> {}
-        }
-    }
-
-    private fun newATab() = when (config.newTabBehavior) {
+    override fun newATab() = when (config.newTabBehavior) {
         NewTabBehavior.START_INPUT -> {
             addAlbum(getString(R.string.app_name), "")
             focusOnInput()
@@ -201,14 +154,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun duplicateTab() {
+    override fun duplicateTab() {
         val webView = currentAlbumController as NinjaWebView
         val title = webView.title ?: ""
         val url = webView.url ?: return
         addAlbum(title, url)
     }
 
-    private fun refreshAction() {
+    override fun refreshAction() {
         if (ninjaWebView.isLoadFinish && ninjaWebView.url?.isNotEmpty() == true) {
             ninjaWebView.reload()
         } else {
@@ -590,12 +543,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
 
-    private fun showOverview() = overviewDialogController.show()
+    override fun showOverview() = overviewDialogController.show()
 
     override fun hideOverview() = overviewDialogController.hide()
 
     private var isRotated: Boolean = false
-    private fun rotateScreen() {
+    override fun rotateScreen() {
         isRotated = !isRotated
         requestedOrientation = if (!isRotated) {
             ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -627,7 +580,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun toggleTouchTurnPageFeature() {
+    override fun toggleTouchTurnPageFeature() {
         config::enableTouchTurn.toggle()
         updateTouchView()
     }
@@ -644,9 +597,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         config.fontSize = size
     }
 
-    private fun increaseFontSize() = changeFontSize(config.fontSize + 20)
+    override fun increaseFontSize() = changeFontSize(config.fontSize + 20)
 
-    private fun decreaseFontSize() {
+    override fun decreaseFontSize() {
         if (config.fontSize > 50) changeFontSize(config.fontSize - 20)
     }
 
@@ -1004,11 +957,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 NinjaToast.show(this, R.string.toast_webview_forward)
             }
 
-            Backward -> if (ninjaWebView.canGoBack()) {
-                ninjaWebView.goBack()
-            } else {
-                NinjaToast.show(this, getString(R.string.no_previous_page))
-            }
+            Backward -> handleBackAction()
 
             ScrollToTop -> ninjaWebView.jumpToTop()
             ScrollToBottom -> ninjaWebView.pageDownWithNoAnimation()
@@ -1039,6 +988,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    override fun handleBackAction() {
+        if (ninjaWebView.canGoBack()) {
+            ninjaWebView.goBack()
+        } else {
+            NinjaToast.show(this, getString(R.string.no_previous_page))
+        }
+    }
+
     private val bookmarkViewModel: BookmarkViewModel by viewModels {
         BookmarkViewModelFactory(bookmarkManager.bookmarkDao)
     }
@@ -1062,7 +1019,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun openHistoryPage(amount: Int) = overviewDialogController.openHistoryPage(amount)
 
-    private fun openBookmarkPage() =
+    override fun openBookmarkPage() =
         BookmarksDialogFragment(
             lifecycleScope,
             bookmarkViewModel,
@@ -1384,7 +1341,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var inputTextOrUrl = mutableStateOf(TextFieldValue(""))
     private var focusRequester = FocusRequester()
-    private fun focusOnInput() {
+    override fun focusOnInput() {
         composeToolbarViewController.hide()
 
         val textOrUrl = if (ninjaWebView.url?.startsWith("data:") != true) {
@@ -1806,7 +1763,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    private fun showMenuDialog() =
+    override fun showMenuDialog() =
         MenuDialogFragment { menuActionHandler.handle(it) }
             .show(supportFragmentManager, "menu_dialog")
 
