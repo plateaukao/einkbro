@@ -253,18 +253,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val recordDb: RecordDb by inject()
 
     private lateinit var customFontResultLauncher: ActivityResultLauncher<Intent>
-
     private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
-
     private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
-
     private lateinit var createWebArchivePickerLauncher: ActivityResultLauncher<Intent>
-
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
-
-    //private lateinit var openFileLauncher: ActivityResultLauncher<Intent>
-
     private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
 
     // Classes
@@ -318,7 +311,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
         customFontResultLauncher =
@@ -333,15 +325,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             IntentUnit.createResultLauncher(this) { saveEpub(it) }
         fileChooserLauncher =
             IntentUnit.createResultLauncher(this) { handleWebViewFileChooser(it) }
-//        openFileLauncher = IntentUnit.createResultLauncher(this) { result ->
-//            if (result.resultCode != RESULT_OK) return@createResultLauncher
-//
-//            val uri = result.data?.data ?: return@createResultLauncher
-//            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-//            contentResolver.takePersistableUriPermission(uri, takeFlags)
-//
-//            HelperUnit.openFile(this@BrowserActivity, uri)
-//        }
     }
 
     private fun handleFontSelectionResult(result: ActivityResult) {
@@ -367,37 +350,32 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun linkToBookmarkSyncFile(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK) return
-        val uri = result.data?.data ?: return
-        val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        val uri = preprocessActivityResult(result) ?: return
         backupUnit.importBookmarks(lifecycleScope, uri)
         config.bookmarkSyncUrl = uri.toString()
     }
 
     private fun createBookmarkSyncFile(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK) return
-        val uri = result.data?.data ?: return
-        val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        val uri = preprocessActivityResult(result) ?: return
         backupUnit.exportBookmarks(lifecycleScope, uri)
         config.bookmarkSyncUrl = uri.toString()
     }
 
     private fun saveEpub(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK) return
-        val uri = result.data?.data ?: return
-        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        val uri = preprocessActivityResult(result) ?: return
         epubManager.saveEpub(this, uri, ninjaWebView)
     }
 
     private fun saveWebArchive(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK) return
-        val uri = result.data?.data ?: return
-        val takeFlags: Int = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        val uri = preprocessActivityResult(result) ?: return
         saveWebArchiveToUri(uri)
+    }
+
+    private fun preprocessActivityResult(result: ActivityResult): Uri? {
+        if (result.resultCode != RESULT_OK) return null
+        val uri = result.data?.data ?: return null
+        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        return uri
     }
 
     private fun saveWebArchiveToUri(uri: Uri) {
