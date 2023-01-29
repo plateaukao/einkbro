@@ -44,7 +44,7 @@ interface BrowserController {
 
     // toolbar click
     fun focusOnInput()
-    fun handleBackAction()
+    fun handleBackKey()
     fun refreshAction()
     fun toggleTouchTurnPageFeature()
     fun showOverview()
@@ -58,4 +58,9 @@ interface BrowserController {
 
     // ereader activity
     fun showTocDialog() = Unit
+
+    // gesture
+    fun gotoLeftTab()
+    fun gotoRightTab()
+    fun goForward()
 }

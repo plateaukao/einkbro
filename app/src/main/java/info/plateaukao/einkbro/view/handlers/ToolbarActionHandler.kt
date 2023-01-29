@@ -6,7 +6,6 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.NinjaWebView
-import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
@@ -20,7 +19,6 @@ class ToolbarActionHandler(
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val browserController = activity as BrowserController
-    private val dialogManager by lazy { DialogManager(activity) }
 
     fun handleLongClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
         ToolbarAction.Back -> browserController.openHistoryPage(5)
@@ -47,7 +45,7 @@ class ToolbarActionHandler(
 
     fun handleClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
         ToolbarAction.Title -> browserController.focusOnInput()
-        ToolbarAction.Back -> browserController.handleBackAction()
+        ToolbarAction.Back -> browserController.handleBackKey()
         ToolbarAction.Refresh -> browserController.refreshAction()
         ToolbarAction.Touch -> browserController.toggleTouchTurnPageFeature()
         ToolbarAction.PageUp -> ninjaWebView.pageUpWithNoAnimation()

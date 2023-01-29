@@ -58,12 +58,11 @@ import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
-import info.plateaukao.einkbro.view.GestureType.CloseTab
-import info.plateaukao.einkbro.view.GestureType.Menu
 import info.plateaukao.einkbro.view.compose.SearchBarView
 import info.plateaukao.einkbro.view.dialog.*
 import info.plateaukao.einkbro.view.dialog.compose.*
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
+import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
 import info.plateaukao.einkbro.view.viewControllers.*
@@ -451,7 +450,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 showMenuDialog(); return true
             }
 
-            KeyEvent.KEYCODE_BACK -> return handleBackKey()
+            KeyEvent.KEYCODE_BACK -> {
+                handleBackKey(); return true
+            }
         }
         return false
     }
@@ -474,15 +475,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun handleBackKey(): Boolean {
+    override fun handleBackKey() {
         hideKeyboard()
         if (overviewDialogController.isVisible()) {
             hideOverview()
-            return true
         }
         if (fullscreenHolder != null || customView != null || videoView != null) {
-            return onHideCustomView()
-        } else if (!binding.appBar.isVisible && sp.getBoolean("sp_toolbarShow", true)) {
+            onHideCustomView()
+        } else if (!binding.appBar.isVisible && config.showToolbarFirst) {
             showToolbar()
         } else if (!composeToolbarViewController.isDisplayed()) {
             composeToolbarViewController.show()
@@ -490,10 +490,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
-                removeAlbum()
+                NinjaToast.show(this, getString(R.string.no_previous_page))
             }
         }
-        return true
     }
 
     override fun showAlbum(controller: AlbumController) {
@@ -825,10 +824,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initFAB()
         if (config.enableNavButtonGesture) {
             val onNavButtonTouchListener = object : SwipeTouchListener(this@BrowserActivity) {
-                override fun onSwipeTop() = performGesture(ConfigManager.K_GESTURE_NAV_UP)
-                override fun onSwipeBottom() = performGesture(ConfigManager.K_GESTURE_NAV_DOWN)
-                override fun onSwipeRight() = performGesture(ConfigManager.K_GESTURE_NAV_RIGHT)
-                override fun onSwipeLeft() = performGesture(ConfigManager.K_GESTURE_NAV_LEFT)
+                override fun onSwipeTop() = performGesture(config.navGestureUp)
+                override fun onSwipeBottom() = performGesture(config.navGestureDown)
+                override fun onSwipeRight() = performGesture(config.navGestureRight)
+                override fun onSwipeLeft() = performGesture(config.navGestureLeft)
             }
             fabImageViewController.defaultTouchListener = onNavButtonTouchListener
         }
@@ -945,55 +944,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    private fun performGesture(gestureString: String) {
-        val gesture = GestureType.from(sp.getString(gestureString, "01") ?: "01")
-        val controller: AlbumController?
-        ninjaWebView = currentAlbumController as NinjaWebView
-        when (gesture) {
-            NothingHappen -> Unit
-            Forward -> if (ninjaWebView.canGoForward()) {
-                ninjaWebView.goForward()
-            } else {
-                NinjaToast.show(this, R.string.toast_webview_forward)
-            }
+    private val gestureHandler: GestureHandler by lazy { GestureHandler(this, ninjaWebView) }
+    private fun performGesture(gesture: GestureType) = gestureHandler.handle(gesture)
 
-            Backward -> handleBackAction()
-
-            ScrollToTop -> ninjaWebView.jumpToTop()
-            ScrollToBottom -> ninjaWebView.pageDownWithNoAnimation()
-            ToLeftTab -> {
-                controller = nextAlbumController(false)
-                showAlbum(controller!!)
-            }
-
-            ToRightTab -> {
-                controller = nextAlbumController(true)
-                showAlbum(controller!!)
-            }
-
-            Overview -> showOverview()
-            OpenNewTab -> {
-                addAlbum(getString(R.string.app_name), "", true)
-                focusOnInput()
-            }
-
-            CloseTab -> runOnUiThread { removeAlbum() }
-            PageUp -> ninjaWebView.pageUpWithNoAnimation()
-            PageDown -> ninjaWebView.pageDownWithNoAnimation()
-            Bookmark -> openBookmarkPage()
-            Back -> handleBackKey()
-            Fullscreen -> fullscreen()
-            Refresh -> ninjaWebView.reload()
-            Menu -> showMenuDialog()
+    override fun goForward() {
+        if (ninjaWebView.canGoForward()) {
+            ninjaWebView.goForward()
+        } else {
+            NinjaToast.show(this, R.string.toast_webview_forward)
         }
     }
 
-    override fun handleBackAction() {
-        if (ninjaWebView.canGoBack()) {
-            ninjaWebView.goBack()
-        } else {
-            NinjaToast.show(this, getString(R.string.no_previous_page))
-        }
+    override fun gotoLeftTab() {
+        nextAlbumController(false)?.let { showAlbum(it) }
+    }
+
+    override fun gotoRightTab() {
+        nextAlbumController(true)?.let { showAlbum(it) }
     }
 
     private val bookmarkViewModel: BookmarkViewModel by viewModels {
@@ -1187,10 +1154,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun createMultiTouchTouchListener(ninjaWebView: NinjaWebView): MultitouchListener =
         object : MultitouchListener(this@BrowserActivity, ninjaWebView) {
-            override fun onSwipeTop() = performGesture(ConfigManager.K_MULTITOUCH_UP)
-            override fun onSwipeBottom() = performGesture(ConfigManager.K_MULTITOUCH_DOWN)
-            override fun onSwipeRight() = performGesture(ConfigManager.K_MULTITOUCH_RIGHT)
-            override fun onSwipeLeft() = performGesture(ConfigManager.K_MULTITOUCH_LEFT)
+            override fun onSwipeTop() = performGesture(config.multitouchUp)
+            override fun onSwipeBottom() = performGesture(config.multitouchDown)
+            override fun onSwipeRight() = performGesture(config.multitouchRight)
+            override fun onSwipeLeft() = performGesture(config.multitouchLeft)
         }
 
     private fun updateSavedAlbumInfo() {
@@ -1242,7 +1209,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun closeTabConfirmation(okAction: () -> Unit) {
-        if (!sp.getBoolean("sp_close_tab_confirm", false)) {
+        if (!config.confirmTabClose) {
             okAction()
         } else {
             dialogManager.showOkCancelDialog(
@@ -1295,7 +1262,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     twoPaneController.scrollChange(scrollY - oldScrollY)
                 }
 
-                if (!sp.getBoolean("hideToolbar", false)) return
+                if (!config.shouldHideToolbar) return
 
                 val height =
                     floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
