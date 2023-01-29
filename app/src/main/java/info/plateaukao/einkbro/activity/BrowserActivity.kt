@@ -669,7 +669,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 // if webview for that url already exists, show the original tab, otherwise, create new
                 val viewUri = intent.data?.toNormalScheme() ?: Uri.parse(config.favoriteUrl)
                 if (viewUri.scheme == "content") {
-                    if (viewUri.lastPathSegment?.contains("mht") == true) {
+                    val mimeType = contentResolver.getType(viewUri)
+                    Log.d(TAG, "mimeType: $mimeType")
+                    if (mimeType.equals("application/octet-stream")) {
                         HelperUnit.getCachedPathFromURI(this, viewUri)?.let {
                             addAlbum(url = "file://$it")
                         }
