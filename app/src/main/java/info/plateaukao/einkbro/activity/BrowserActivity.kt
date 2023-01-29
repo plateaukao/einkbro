@@ -18,8 +18,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Message
-import android.print.PrintAttributes
-import android.print.PrintManager
 import android.util.Log
 import android.view.*
 import android.view.KeyEvent.ACTION_DOWN
@@ -67,6 +65,7 @@ import info.plateaukao.einkbro.view.compose.SearchBarView
 import info.plateaukao.einkbro.view.dialog.*
 import info.plateaukao.einkbro.view.dialog.compose.*
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
+import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.viewControllers.*
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
@@ -144,7 +143,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         when (toolbarAction) {
             ToolbarAction.Back -> openHistoryPage(5)
             ToolbarAction.Refresh -> fullscreen()
-            ToolbarAction.Touch -> TouchAreaDialogFragment().show(supportFragmentManager, "TouchAreaDialog")
+            ToolbarAction.Touch -> TouchAreaDialogFragment().show(
+                supportFragmentManager,
+                "TouchAreaDialog"
+            )
 
             ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
             ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
@@ -182,7 +184,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Font -> showFontSizeChangeDialog()
             ToolbarAction.Settings -> showMenuDialog()
             ToolbarAction.Bookmark -> openBookmarkPage()
-            ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(supportFragmentManager, "toolbar_config")
+            ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(
+                supportFragmentManager,
+                "toolbar_config"
+            )
 
             ToolbarAction.VerticalLayout -> ninjaWebView.toggleVerticalRead()
             ToolbarAction.ReaderMode -> ninjaWebView.toggleReaderMode()
@@ -483,13 +488,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun showFileListConfirmDialog() {
-        dialogManager.showOkCancelDialog(
-            messageResId = R.string.toast_downloadComplete,
-            okAction = { BrowserUnit.openDownloadFolder(this@BrowserActivity) }
-        )
-    }
-
     override fun onDestroy() {
         ttsManager.stopReading()
 
@@ -627,7 +625,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun saveBookmark(url: String? = null, title: String? = null) {
+    override fun saveBookmark(url: String?, title: String?) {
         val currentUrl = url ?: ninjaWebView.url ?: return
         val nonNullTitle = title ?: HelperUnit.secString(ninjaWebView.title)
         try {
@@ -660,8 +658,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     // Methods
-    //private fun showFontSizeChangeDialog() = dialogManager.showFontSizeChangeDialog()
-    private fun showFontSizeChangeDialog() =
+    override fun showFontSizeChangeDialog() =
         FontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
 
     private fun changeFontSize(size: Int) {
@@ -689,24 +686,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
 
-    private fun showTranslation() {
+    override fun showTranslation() {
         maybeInitTwoPaneController()
 
         lifecycleScope.launch(Dispatchers.Main) {
             twoPaneController.showTranslation(ninjaWebView)
-        }
-    }
-
-    private fun printPDF() {
-        try {
-            val title = HelperUnit.fileName(ninjaWebView.url)
-            val printManager = getSystemService(PRINT_SERVICE) as PrintManager
-            val printAdapter = ninjaWebView.createPrintDocumentAdapter(title) {
-                showFileListConfirmDialog()
-            }
-            printManager.print(title, printAdapter, PrintAttributes.Builder().build())
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
@@ -1106,7 +1090,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
             splitScreenAction = { url -> toggleSplitScreen(url) },
-            syncBookmarksAction =  this::handleBookmarkSync
+            syncBookmarksAction = this::handleBookmarkSync
         ).show(supportFragmentManager, "bookmarks dialog")
 
     private fun handleBookmarkSync(forceUpload: Boolean = false) {
@@ -1156,7 +1140,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         (currentAlbumController as NinjaWebView).findNext(true)
     }
 
-    private fun showFastToggleDialog() {
+    override fun showFastToggleDialog() {
         if (!this::ninjaWebView.isInitialized) return
 
         FastToggleDialogFragment {
@@ -1313,7 +1297,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         fabImageViewController.updateTabCount(countString)
     }
 
-    private fun updateAlbum(url: String?) {
+    override fun updateAlbum(url: String?) {
         if (url == null) return
         (currentAlbumController as NinjaWebView).loadUrl(url)
         updateTitle()
@@ -1802,7 +1786,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun showSearchPanel() {
+    override fun showSearchPanel() {
         searchOnSite = true
         fabImageViewController.hide()
         searchPanel.visibility = VISIBLE
@@ -1812,7 +1796,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         showKeyboard()
     }
 
-    private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
+    override fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
         if (uri == null) {
             epubManager.showEpubFilePicker(writeEpubFilePickerLauncher)
         } else {
@@ -1836,91 +1820,32 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun openSavedEpub() = if (config.savedEpubFileInfos.isEmpty()) {
-        NinjaToast.show(this, "no saved epub!")
-    } else {
-        dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) { uri ->
-            HelperUnit.openFile(this@BrowserActivity, uri ?: return@showSaveEpubDialog)
-        }
+    private val menuActionHandler: MenuActionHandler by lazy {
+        MenuActionHandler(
+            this,
+            ninjaWebView
+        )
     }
 
-    private fun showMenuDialog() {
-        MenuDialogFragment { handleMenuItem(it) }.show(supportFragmentManager, "menu_dialog")
-    }
+    private fun showMenuDialog() =
+        MenuDialogFragment { menuActionHandler.handle(it) }
+            .show(supportFragmentManager, "menu_dialog")
 
-    private fun handleMenuItem(menuItemType: MenuItemType) {
-        when (menuItemType) {
-            Tts -> toggleTtsRead()
-            QuickToggle -> showFastToggleDialog()
-            OpenHome -> updateAlbum(
-                sp.getString(
-                    "favoriteURL",
-                    "https://github.com/plateaukao/browser"
-                )
-            )
-
-            MenuItemType.CloseTab -> currentAlbumController?.let { removeAlbum(it) }
-            Quit -> finishAndRemoveTask()
-
-            SplitScreen -> toggleSplitScreen()
-            Translate -> showTranslation()
-            VerticalRead -> ninjaWebView.toggleVerticalRead()
-            ReaderMode -> ninjaWebView.toggleReaderMode()
-            TouchSetting -> TouchAreaDialogFragment().show(
-                supportFragmentManager,
-                "TouchAreaDialog"
-            )
-
-            ToolbarSetting -> ToolbarConfigDialogFragment().show(
-                supportFragmentManager,
-                "toolbar_config"
-            )
-
-            ReceiveData -> showReceiveDataDialog()
-            SendLink -> SendLinkDialog(this, lifecycleScope).show(ninjaWebView.url.orEmpty())
-            ShareLink -> IntentUnit.share(this, ninjaWebView.title, ninjaWebView.url)
-            OpenWith -> HelperUnit.showBrowserChooser(
-                this,
-                ninjaWebView.url,
-                getString(R.string.menu_open_with)
-            )
-
-            CopyLink -> ShareUtil.copyToClipboard(this, ninjaWebView.url ?: "")
-            Shortcut -> HelperUnit.createShortcut(
-                this,
-                ninjaWebView.title,
-                ninjaWebView.url,
-                ninjaWebView.favicon
-            )
-
-            SetHome -> config.favoriteUrl = ninjaWebView.url.orEmpty()
-            SaveBookmark -> saveBookmark()
-            OpenEpub -> openSavedEpub()
-            SaveEpub -> showSaveEpubDialog()
-            SavePdf -> printPDF()
-
-            FontSize -> showFontSizeChangeDialog()
-            WhiteBknd -> config::whiteBackground.toggle()
-            BoldFont -> config::boldFontStyle.toggle()
-            BlackFont-> config::blackFontStyle.toggle()
-            Search -> showSearchPanel()
-            Download -> BrowserUnit.openDownloadFolder(this)
-            SaveArchive -> openWebArchiveFilePicker()
-            Settings -> IntentUnit.gotoSettings(this)
-        }
-    }
-
-    private fun openWebArchiveFilePicker() {
+    override fun showWebArchiveFilePicker() {
         val fileName = "${ninjaWebView.title}.mht"
         BrowserUnit.createWebArchiveFilePicker(createWebArchivePickerLauncher, fileName)
     }
 
-    private fun toggleTtsRead() {
+    override fun toggleTtsRead() {
         if (ttsManager.isSpeaking()) {
             ttsManager.stopReading()
         } else {
             readArticle()
         }
+    }
+
+    override fun removeAlbum() {
+        currentAlbumController?.let { removeAlbum(it) }
     }
 
     private fun speakingCompleteDetector() {
@@ -1934,18 +1859,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun showReceiveDataDialog() {
-        ReceiveDataDialog(this, lifecycleScope).show { text ->
-            if (text.startsWith("http")) ninjaWebView.loadUrl(text)
-            else {
-                val clip = ClipData.newPlainText("Copied Text", text)
-                (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(clip)
-                NinjaToast.show(this, "String is Copied!")
-            }
-        }
-    }
-
-    private fun toggleSplitScreen(url: String? = null) {
+    override fun toggleSplitScreen(url: String?) {
         maybeInitTwoPaneController()
         if (twoPaneController.isSecondPaneDisplayed() && url == null) {
             twoPaneController.hideSecondPane()
