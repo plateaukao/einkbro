@@ -52,7 +52,6 @@ import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.*
 import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
-import info.plateaukao.einkbro.task.SaveScreenshotTask
 import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
@@ -66,6 +65,7 @@ import info.plateaukao.einkbro.view.dialog.*
 import info.plateaukao.einkbro.view.dialog.compose.*
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
+import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.viewControllers.*
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
@@ -128,39 +128,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var shouldLoadTabState: Boolean = false
 
+    private val toolbarActionHandler: ToolbarActionHandler by lazy {
+        ToolbarActionHandler( this, ninjaWebView)
+    }
+
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
             binding.composeIconBar,
             this::onToolActionClick,
-            this::onToolActionLongClick,
+            { toolbarActionHandler.handlerLongClick(it) },
             onTabClick = { it.show() },
             onTabLongClick = { it.remove() },
         )
-    }
-
-
-    private fun onToolActionLongClick(toolbarAction: ToolbarAction) {
-        when (toolbarAction) {
-            ToolbarAction.Back -> openHistoryPage(5)
-            ToolbarAction.Refresh -> fullscreen()
-            ToolbarAction.Touch -> TouchAreaDialogFragment().show(
-                supportFragmentManager,
-                "TouchAreaDialog"
-            )
-
-            ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
-            ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
-            ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
-            ToolbarAction.Settings -> showFastToggleDialog()
-            ToolbarAction.Bookmark -> saveBookmark()
-            ToolbarAction.Translation -> showTranslationConfigDialog()
-            ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(this, config.favoriteUrl)
-            ToolbarAction.Tts -> TtsSettingDialogFragment { IntentUnit.gotoSystemTtsSettings(this) }
-                .show(supportFragmentManager, "TtsSettingDialog")
-
-            ToolbarAction.Font -> ninjaWebView.toggleReaderMode()
-            else -> {}
-        }
     }
 
     protected open fun onToolActionClick(toolbarAction: ToolbarAction) {
@@ -198,7 +177,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Forward -> if (ninjaWebView.canGoForward()) ninjaWebView.goForward()
             ToolbarAction.RotateScreen -> rotateScreen()
             ToolbarAction.Translation -> showTranslation()
-            ToolbarAction.CloseTab -> removeAlbum(currentAlbumController!!)
+            ToolbarAction.CloseTab -> removeAlbum()
             ToolbarAction.InputUrl -> focusOnInput()
             ToolbarAction.NewTab -> newATab()
             ToolbarAction.Desktop -> config::desktop.toggle()
@@ -558,7 +537,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
-                removeAlbum(currentAlbumController!!)
+                removeAlbum()
             }
         }
         return true
@@ -908,7 +887,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun showTranslationConfigDialog() {
+    override fun showTranslationConfigDialog() {
         maybeInitTwoPaneController()
         twoPaneController.showTranslationConfigDialog()
     }
@@ -1049,7 +1028,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 focusOnInput()
             }
 
-            CloseTab -> runOnUiThread { removeAlbum(currentAlbumController!!) }
+            CloseTab -> runOnUiThread { removeAlbum() }
             PageUp -> ninjaWebView.pageUpWithNoAnimation()
             PageDown -> ninjaWebView.pageDownWithNoAnimation()
             Bookmark -> openBookmarkPage()
@@ -1081,7 +1060,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    private fun openHistoryPage(amount: Int = 0) = overviewDialogController.openHistoryPage(amount)
+    override fun openHistoryPage(amount: Int) = overviewDialogController.openHistoryPage(amount)
 
     private fun openBookmarkPage() =
         BookmarksDialogFragment(
@@ -1316,15 +1295,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun removeAlbum(controller: AlbumController) {
+    override fun removeAlbum(albumController: AlbumController) {
         if (browserContainer.size() <= 1) {
             finish()
         } else {
             closeTabConfirmation {
-                overviewDialogController.removeTabView(controller.album)
-                val removeIndex = browserContainer.indexOf(controller)
+                overviewDialogController.removeTabView(albumController.album)
+                val removeIndex = browserContainer.indexOf(albumController)
                 val currentIndex = browserContainer.indexOf(currentAlbumController)
-                browserContainer.remove(controller)
+                browserContainer.remove(albumController)
                 // only refresh album when the delete one is current one
                 if (removeIndex == currentIndex) {
                     val newIndex = max(0, removeIndex - 1)
@@ -1576,7 +1555,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 KeyEvent.KEYCODE_H -> ninjaWebView.goBack()
                 KeyEvent.KEYCODE_L -> ninjaWebView.goForward()
                 KeyEvent.KEYCODE_R -> showTranslation()
-                KeyEvent.KEYCODE_D -> removeAlbum(currentAlbumController!!)
+                KeyEvent.KEYCODE_D -> removeAlbum()
                 KeyEvent.KEYCODE_T -> {
                     addAlbum(getString(R.string.app_name), "")
                     focusOnInput()
@@ -1750,7 +1729,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun fullscreen() {
+    override fun fullscreen() {
         if (!searchOnSite) {
             if (config.fabPosition != FabPosition.NotShow) {
                 fabImageViewController.show()
@@ -1867,12 +1846,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         twoPaneController.showSecondPane(url ?: ninjaWebView.url.orEmpty())
-    }
-
-    private fun saveScreenshot() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            SaveScreenshotTask(this@BrowserActivity, ninjaWebView).execute()
-        }
     }
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
