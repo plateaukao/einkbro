@@ -413,4 +413,6 @@
     <string name="setting_title_sync_bookmarks">Sync bookmarks</string>
     <string name="setting_summary_setup_bookmarks_location">Select a file in Google Drive or other file location that supports remote sync.</string>
     <string name="setting_summary_import_appData">Import app data by choosing a zip file that is previously exported.</string>
+    <string name="dialog_message_sync_bookmark_file">"To sync bookmarks, you need to use system file picker to create or open a bookmark file from Google Drive or a file that is synced with other remote service. "</string>
+    <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
 </resources>
