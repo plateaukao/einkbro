@@ -1,15 +1,24 @@
 package info.plateaukao.einkbro.unit
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.NinjaToast
-import kotlinx.coroutines.CoroutineScope
+import info.plateaukao.einkbro.view.dialog.DialogManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
@@ -25,9 +34,10 @@ import java.util.zip.ZipOutputStream
 
 class BackupUnit(
     private val context: Context,
-): KoinComponent {
+) : KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
     private val recordDb: RecordDb by inject()
+    private val config: ConfigManager by inject()
 
     fun backupData(context: Context, uri: Uri): Boolean {
         try {
@@ -115,8 +125,8 @@ class BackupUnit(
         }
     }
 
-    fun importBookmarks(lifecycleScope: CoroutineScope, uri: Uri) {
-        lifecycleScope.launch {
+    fun importBookmarks(uri: Uri) {
+        GlobalScope.launch {
             try {
                 context.contentResolver.openInputStream(uri).use {
                     val jsonString = it?.bufferedReader()?.readText() ?: ""
@@ -126,10 +136,20 @@ class BackupUnit(
                         bookmarkManager.overwriteBookmarks(bookmarks)
                     }
                 }
-                Toast.makeText(context, "Bookmarks are imported", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Bookmarks are imported", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: IOException) {
                 e.printStackTrace()
-                Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
+                }
+                config.bookmarkSyncUrl = ""
             }
         }
     }
@@ -137,22 +157,82 @@ class BackupUnit(
     private fun JSONArray.toJSONObjectList() =
         (0 until length()).map { get(it) as JSONObject }
 
-    fun exportBookmarks(lifecycleScope: CoroutineScope, uri: Uri, showToast: Boolean = true) {
-        lifecycleScope.launch {
+    fun exportBookmarks(uri: Uri, showToast: Boolean = true) {
+        GlobalScope.launch {
             val bookmarks = bookmarkManager.getAllBookmarks()
             try {
                 context.contentResolver.openOutputStream(uri).use {
                     it?.write(bookmarks.toJsonString().toByteArray())
                 }
-                if (showToast)
-                    Toast.makeText(context, "Bookmarks are exported", Toast.LENGTH_SHORT).show()
+                if (showToast) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Bookmarks are exported", Toast.LENGTH_SHORT).show()
+                    }
+                }
             } catch (e: IOException) {
                 e.printStackTrace()
-                if (showToast)
+                if (showToast) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT).show()
+                }
+                config.bookmarkSyncUrl = ""
             }
         }
     }
+
+    fun createOpenBookmarkFileLauncher(activity: ComponentActivity) =
+        IntentUnit.createResultLauncher(activity) { linkToBookmarkSyncFile(it) }
+
+    fun createCreateBookmarkFileLauncher(activity: ComponentActivity) =
+        IntentUnit.createResultLauncher(activity) { createBookmarkSyncFile(it) }
+
+    fun handleBookmarkSync(
+        forceUpload: Boolean = false,
+        dialogManager: DialogManager,
+        openBookmarkFileLauncher: ActivityResultLauncher<Intent>,
+        createBookmarkFileLauncher: ActivityResultLauncher<Intent>
+    ) {
+        if (config.bookmarkSyncUrl.isNotBlank()) {
+            if (forceUpload) {
+                exportBookmarks(Uri.parse(config.bookmarkSyncUrl), false)
+            } else {
+                importBookmarks(Uri.parse(config.bookmarkSyncUrl))
+            }
+        } else {
+            dialogManager.showCreateOrOpenBookmarkFileDialog(
+                { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
+                { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
+            )
+        }
+    }
+
+    private fun linkToBookmarkSyncFile(result: ActivityResult) {
+        val uri = preprocessActivityResult(result) ?: return
+        importBookmarks(uri)
+        config.bookmarkSyncUrl = uri.toString()
+    }
+
+    private fun createBookmarkSyncFile(result: ActivityResult) {
+        val uri = preprocessActivityResult(result) ?: return
+        exportBookmarks(uri)
+        config.bookmarkSyncUrl = uri.toString()
+    }
+
+    fun preprocessActivityResult(result: ActivityResult): Uri? {
+        if (result.resultCode != FragmentActivity.RESULT_OK) return null
+        val uri = result.data?.data ?: return null
+        context.contentResolver
+            .takePersistableUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        return uri
+    }
+
 
     companion object {
         private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
