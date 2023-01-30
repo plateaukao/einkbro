@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -27,6 +28,7 @@ import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.setting.*
 import info.plateaukao.einkbro.unit.BackupUnit
+import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -43,9 +45,16 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val adBlock: AdBlockV2 by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
+    private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
+    private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
+
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        openBookmarkFileLauncher = backupUnit.createOpenBookmarkFileLauncher(this)
+        createBookmarkFileLauncher = backupUnit.createCreateBookmarkFileLauncher(this)
+
         setContent {
             val navController: NavHostController = rememberNavController()
             MyTheme {
@@ -80,28 +89,70 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                             SettingScreen(navController, uiSettingItems, dialogManager, action, 1)
                         }
                         composable(Toolbar.name) {
-                            SettingScreen(navController, toolbarSettingItems, dialogManager, action, 1)
+                            SettingScreen(
+                                navController,
+                                toolbarSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
                         }
                         composable(Behavior.name) {
-                            SettingScreen(navController, behaviorSettingItems, dialogManager, action, 1)
+                            SettingScreen(
+                                navController,
+                                behaviorSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
                         }
                         composable(Gesture.name) {
-                            SettingScreen(navController, gestureSettingItems, dialogManager, action, 1)
+                            SettingScreen(
+                                navController,
+                                gestureSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
                         }
                         composable(Backup.name) {
                             SettingScreen(navController, dataSettingItems, dialogManager, action, 1)
                         }
                         composable(StartControl.name) {
-                            SettingScreen(navController, startSettingItems, dialogManager, action, 1)
+                            SettingScreen(
+                                navController,
+                                startSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
                         }
                         composable(DataControl.name) {
-                            SettingScreen(navController, clearDataSettingItems, dialogManager, action, 1)
+                            SettingScreen(
+                                navController,
+                                clearDataSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
                         }
                         composable(Search.name) {
-                            SettingScreen(navController, searchSettingItems, dialogManager, action, 1)
+                            SettingScreen(
+                                navController,
+                                searchSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
                         }
                         composable(About.name) {
-                            SettingScreen(navController, LinkSettingItem.values().toList(), dialogManager, action, 2)
+                            SettingScreen(
+                                navController,
+                                LinkSettingItem.values().toList(),
+                                dialogManager,
+                                action,
+                                2
+                            )
                         }
                     }
                 }
@@ -119,10 +170,14 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         super.onActivityResult(requestCode, resultCode, data)
         val uri = data?.data ?: return
         when (requestCode) {
-            DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.exportBookmarks(lifecycleScope, uri)
-            DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.importBookmarks(lifecycleScope, uri)
+            DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.exportBookmarks(uri)
+            DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.importBookmarks(uri)
             DialogManager.EXPORT_BACKUP_REQUEST_CODE -> backupUnit.backupData(this, uri)
-            DialogManager.IMPORT_BACKUP_REQUEST_CODE -> if (backupUnit.restoreBackupData(this, uri)) {
+            DialogManager.IMPORT_BACKUP_REQUEST_CODE -> if (backupUnit.restoreBackupData(
+                    this,
+                    uri
+                )
+            ) {
                 dialogManager.showRestartConfirmDialog()
             }
         }
@@ -146,9 +201,21 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.ic_toolbar,
             destination = Toolbar
         ),
-        NavigateSettingItem(R.string.setting_title_behavior, R.drawable.icon_ui, destination = Behavior),
-        NavigateSettingItem(R.string.setting_gestures, R.drawable.gesture_tap, destination = Gesture),
-        NavigateSettingItem(R.string.setting_title_data, R.drawable.icon_backup, destination = Backup),
+        NavigateSettingItem(
+            R.string.setting_title_behavior,
+            R.drawable.icon_ui,
+            destination = Behavior
+        ),
+        NavigateSettingItem(
+            R.string.setting_gestures,
+            R.drawable.gesture_tap,
+            destination = Gesture
+        ),
+        NavigateSettingItem(
+            R.string.setting_title_data,
+            R.drawable.icon_backup,
+            destination = Backup
+        ),
         ActionSettingItem(R.string.setting_title_pdf_paper_size, R.drawable.ic_pdf) {
             PrinterDocumentPaperSizeDialog(
                 this
@@ -164,7 +231,11 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.ic_data,
             destination = DataControl
         ),
-        NavigateSettingItem(R.string.setting_title_search, R.drawable.icon_search, destination = Search),
+        NavigateSettingItem(
+            R.string.setting_title_search,
+            R.drawable.icon_search,
+            destination = Search
+        ),
         ActionSettingItem(
             R.string.setting_title_userAgent,
             R.drawable.icon_useragent
@@ -464,10 +535,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ActionSettingItem(
             R.string.setting_title_export_appData,
             R.drawable.icon_export,
+            R.string.setting_summary_export_appData
         ) { dialogManager.showBackupFilePicker() },
         ActionSettingItem(
             R.string.setting_title_import_appData,
             R.drawable.icon_import,
+            R.string.setting_summary_import_appData
         ) { dialogManager.showImportBackupFilePicker() },
         ActionSettingItem(
             R.string.setting_title_export_bookmarks,
@@ -477,6 +550,20 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_import_bookmarks,
             R.drawable.ic_bookmark,
         ) { dialogManager.showImportBookmarkFilePicker() },
+        ActionSettingItem(
+            R.string.setting_title_setup_bookmarks_location,
+            R.drawable.icon_settings,
+            R.string.setting_summary_setup_bookmarks_location,
+        ) {
+            dialogManager.showCreateOrOpenBookmarkFileDialog(
+                { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
+                { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
+            )
+        },
+        ActionSettingItem(
+            R.string.setting_title_sync_bookmarks,
+            R.drawable.ic_sync,
+        ) { handleBookmarkSync(true) },
     )
 
     private val clearDataSettingItems = listOf(
@@ -614,6 +701,14 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Cookie)) },
     )
 
+    private fun handleBookmarkSync(forceUpload: Boolean) {
+        backupUnit.handleBookmarkSync(
+            forceUpload,
+            dialogManager,
+            createBookmarkFileLauncher,
+            openBookmarkFileLauncher
+        )
+    }
 }
 
 enum class SettingRoute(@StringRes val titleId: Int) {
@@ -635,7 +730,12 @@ fun EinkBroAppBar(
     navigateUp: () -> Unit,
 ) {
     TopAppBar(
-        title = { Text(stringResource(currentScreen.titleId), color = MaterialTheme.colors.onPrimary) },
+        title = {
+            Text(
+                stringResource(currentScreen.titleId),
+                color = MaterialTheme.colors.onPrimary
+            )
+        },
         navigationIcon = {
             IconButton(onClick = navigateUp) {
                 Icon(

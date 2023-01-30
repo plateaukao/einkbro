@@ -93,7 +93,7 @@ object BrowserUnit : KoinComponent {
     }
 
     fun createDownloadReceiver(activity: Activity): BroadcastReceiver {
-        return object: BroadcastReceiver() {
+        return object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 if (activity.isFinishing || downloadFileId == -1L) return
 
@@ -121,11 +121,14 @@ object BrowserUnit : KoinComponent {
             }
         }
     }
+
     fun openDownloadFolder(activity: Activity) {
         val uri = Uri.parse(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .toString()
         )
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply { setDataAndType(uri, "resource/folder") }
+        val intent =
+            Intent(Intent.ACTION_GET_CONTENT).apply { setDataAndType(uri, "resource/folder") }
         activity.startActivity(
             Intent.createChooser(intent, activity.getString(R.string.dialog_title_download))
         )
@@ -416,21 +419,22 @@ object BrowserUnit : KoinComponent {
 
         resultLauncher.launch(intent)
     }
+
     fun openBookmarkFilePicker(resultLauncher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_ANY
-        intent.putExtra(Intent.EXTRA_TITLE, "einkbro_bookmarks.json")
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
         resultLauncher.launch(intent)
     }
+
     fun createBookmarkFilePicker(resultLauncher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_ANY
         intent.putExtra(Intent.EXTRA_TITLE, "einkbro_bookmarks.json")
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
 
         resultLauncher.launch(intent)
     }

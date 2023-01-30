@@ -196,7 +196,7 @@
 
     <string name="setting_title_export_appData">Export app data</string>
     <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
+    <string name="setting_summary_export_appData">Export app data (History, Bookmarks)
         and your personal settings.</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all items here. Will you proceed?</string>
@@ -407,4 +407,8 @@
     <string name="bookmark_new_file">Create new file</string>
     <string name="bookmark_open_file">Open existing file</string>
     <string name="menu_save_archive">Save archive</string>
+    <string name="setting_title_sync_bookmarks">Sync bookmarks</string>
+    <string name="setting_title_setup_bookmarks_location">Configure bookmark location</string>
+    <string name="setting_summary_setup_bookmarks_location">Select a file in Google Drive or other file location that supports remote sync.</string>
+    <string name="setting_summary_import_appData">Import app data by choosing a zip file that is previously exported.</string>
 </resources>

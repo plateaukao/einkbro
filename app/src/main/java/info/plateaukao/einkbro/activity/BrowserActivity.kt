@@ -259,10 +259,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
         customFontResultLauncher =
             IntentUnit.createResultLauncher(this) { handleFontSelectionResult(it) }
-        openBookmarkFileLauncher =
-            IntentUnit.createResultLauncher(this) { linkToBookmarkSyncFile(it) }
-        createBookmarkFileLauncher =
-            IntentUnit.createResultLauncher(this) { createBookmarkSyncFile(it) }
+        openBookmarkFileLauncher = backupUnit.createOpenBookmarkFileLauncher(this)
+        createBookmarkFileLauncher = backupUnit.createCreateBookmarkFileLauncher(this)
         createWebArchivePickerLauncher =
             IntentUnit.createResultLauncher(this) { saveWebArchive(it) }
         writeEpubFilePickerLauncher =
@@ -293,33 +291,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         filePathCallback = null
     }
 
-    private fun linkToBookmarkSyncFile(result: ActivityResult) {
-        val uri = preprocessActivityResult(result) ?: return
-        backupUnit.importBookmarks(lifecycleScope, uri)
-        config.bookmarkSyncUrl = uri.toString()
-    }
-
-    private fun createBookmarkSyncFile(result: ActivityResult) {
-        val uri = preprocessActivityResult(result) ?: return
-        backupUnit.exportBookmarks(lifecycleScope, uri)
-        config.bookmarkSyncUrl = uri.toString()
-    }
-
     private fun saveEpub(result: ActivityResult) {
-        val uri = preprocessActivityResult(result) ?: return
+        val uri = backupUnit.preprocessActivityResult(result) ?: return
         epubManager.saveEpub(this, uri, ninjaWebView)
     }
 
     private fun saveWebArchive(result: ActivityResult) {
-        val uri = preprocessActivityResult(result) ?: return
+        val uri = backupUnit.preprocessActivityResult(result) ?: return
         saveWebArchiveToUri(uri)
-    }
-
-    private fun preprocessActivityResult(result: ActivityResult): Uri? {
-        if (result.resultCode != RESULT_OK) return null
-        val uri = result.data?.data ?: return null
-        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        return uri
     }
 
     private fun saveWebArchiveToUri(uri: Uri) {
@@ -1006,22 +985,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ).show(supportFragmentManager, "bookmarks dialog")
 
     private fun handleBookmarkSync(forceUpload: Boolean = false) {
-        if (config.bookmarkSyncUrl.isNotBlank()) {
-            if (forceUpload) {
-                backupUnit.exportBookmarks(lifecycleScope, Uri.parse(config.bookmarkSyncUrl), false)
-            } else {
-                backupUnit.importBookmarks(lifecycleScope, Uri.parse(config.bookmarkSyncUrl))
-            }
-        } else {
-            dialogManager.showCreateOrOpenBookmarkFileDialog(
-                {
-                    BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher)
-                },
-                {
-                    BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher)
-                }
-            )
-        }
+        backupUnit.handleBookmarkSync(
+            forceUpload,
+            dialogManager,
+            createBookmarkFileLauncher,
+            openBookmarkFileLauncher
+        )
     }
 
     private fun initSearchPanel() {
