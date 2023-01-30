@@ -199,17 +199,19 @@ class BackupUnit(
         openBookmarkFileLauncher: ActivityResultLauncher<Intent>,
         createBookmarkFileLauncher: ActivityResultLauncher<Intent>
     ) {
-        if (config.bookmarkSyncUrl.isNotBlank()) {
-            if (forceUpload) {
+        if (forceUpload) {
+            if (config.bookmarkSyncUrl.isNotBlank()) {
                 exportBookmarks(Uri.parse(config.bookmarkSyncUrl), false)
-            } else {
-                importBookmarks(Uri.parse(config.bookmarkSyncUrl))
             }
         } else {
-            dialogManager.showCreateOrOpenBookmarkFileDialog(
-                { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
-                { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
-            )
+            if (config.bookmarkSyncUrl.isNotBlank()) {
+                importBookmarks(Uri.parse(config.bookmarkSyncUrl))
+            } else {
+                dialogManager.showCreateOrOpenBookmarkFileDialog(
+                    { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
+                    { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
+                )
+            }
         }
     }
 
