@@ -196,8 +196,8 @@ class BackupUnit(
     fun handleBookmarkSync(
         forceUpload: Boolean = false,
         dialogManager: DialogManager,
+        createBookmarkFileLauncher: ActivityResultLauncher<Intent>,
         openBookmarkFileLauncher: ActivityResultLauncher<Intent>,
-        createBookmarkFileLauncher: ActivityResultLauncher<Intent>
     ) {
         if (forceUpload) {
             if (config.bookmarkSyncUrl.isNotBlank()) {
