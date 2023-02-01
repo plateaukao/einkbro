@@ -1,3 +1,49 @@
+### 9.20.0
+* Support maestro to run automation scripts.
+* Add an option to set all text color in black.
+* Add image adjustment in quick setting
+* UI: do not scroll screen when using multi-touch gesture.
+* UI: fix accidentally trigger input address bar.
+* Support bookmark sync feature with Google Drive through system file picker.
+* Support saving web content to .mht file. It keeps the original web layout.
+* Refactor menu handler, toolbar handler, gesture handler.
+
+### 9.19.0
+* Backup now works with file save location feature.
+* Manual is available now in Settings > About.
+* Fix: new created web size is wrong.
+* Fix: save tabs feature now works with lazy loading tabs.
+* Enhance font customization dialog.
+* Hide tab bar is it's in epub reading mode.
+
+### 9.18.0
+* All files are in kotlin language.
+* Use adblock hosts from github link.
+* Add settings for adblock: auto-update, trigger update, modify adblock content url.
+
+### 9.17.0
+* Support playing video in fullscreen automatically when start playing.
+* Support picture-in-picture mode if video playing is in fullscreen, and leave EinkBro
+* Refactor UI for whitelists
+* Fix search engine setting error
+
+### 9.16.0
+* re-write whole setting UI with jetpack compose
+
+### 9.15.0
+* optimize link context menu position
+
+### 9.14.0
+* Add text-to-speech feature (**Read Content** in menu, Figure 1)
+* Add text-to-speech action in toolbar configuration
+* Long click text-to-speech button on toolbar to adjust voice speed or open voice setting. (Figure 2)
+
+### Figure 1
+<img src=https://user-images.githubusercontent.com/4084738/202916340-40d9fea9-9f79-4a78-a646-f1b037e8b10b.png width=400>
+
+### Figure 2
+<img src=https://user-images.githubusercontent.com/4084738/202916456-ad25af6d-c673-4dbf-93fa-ac69a6731dad.png width=200>
+
 ### 9.13.0
 * Enhance context menu UI when long pressing a link
 
