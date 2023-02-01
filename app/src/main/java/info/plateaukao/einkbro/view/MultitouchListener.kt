@@ -8,6 +8,8 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.View
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import info.plateaukao.einkbro.browser.LongPressGestureListener
 import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent
@@ -19,7 +21,7 @@ open class MultitouchListener(
     context: Context,
     webView: NinjaWebView,
     private val touchCount: Int = 2
-) : View.OnTouchListener, KoinComponent {
+) : View.OnTouchListener, DefaultLifecycleObserver, KoinComponent {
 
     private var startPoint0: Point = Point(0, 0)
     private var startPoint1: Point = Point(0, 0)
@@ -32,6 +34,12 @@ open class MultitouchListener(
     private val gestureDetector: GestureDetector = GestureDetector(context, LongPressGestureListener(webView))
     // https://android-developers.googleblog.com/2010/06/making-sense-of-multitouch.html
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        // clear swipe status if accidentally activity enters background
+        inSwipe = false
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {

@@ -1136,7 +1136,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeBottom() = gestureHandler.handle(config.multitouchDown)
             override fun onSwipeRight() = gestureHandler.handle(config.multitouchRight)
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
-        }
+        }.apply { lifecycle.addObserver(this) }
 
     private fun updateSavedAlbumInfo() {
         val albumControllers = browserContainer.list()
