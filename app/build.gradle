@@ -3,15 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion '33.0.0'
+    compileSdk 33
+    buildToolsVersion  = '33.0.0'
 
     defaultConfig {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 91900
-        versionName "9.19.0"
+        versionCode 92000
+        versionName "9.20.0"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -35,8 +35,7 @@ android {
     }
 
     buildFeatures {
-        viewBinding true
-        // Enables Jetpack Compose
+        viewBinding = true
         compose true
     }
 
