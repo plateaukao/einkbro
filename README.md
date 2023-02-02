@@ -1,38 +1,39 @@
-# EinkBro: Android Browser, specifically made for Eink devices 
+# EinkBro: Small Browser made for Eink devices 
 
-This browser is called EinkBro. It's designed to fit Eink devices' needs; no unnecessary UI transitions, clear B&W icons, useful feature for eink reading experience. It's originated from [FOSS Browser](https://github.com/scoute-dich/browser), which is fully free/libre (as in freedom) Android app. 
+EinkBro is designed to fit Eink devices' needs; no unnecessary UI transitions and animations, clear B&W icons, useful features for eink reading experience. It's originated from [FOSS Browser](https://github.com/scoute-dich/browser), which is fully free/libre (as in freedom) Android app. 
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/info.plateaukao.einkbro/)
+     height="60">](https://f-droid.org/packages/info.plateaukao.einkbro/)
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
      alt="Get it on Google Play"
-     height="80">](https://play.google.com/store/apps/details?id=info.plateaukao.einkbro)     
+     height="60">](https://play.google.com/store/apps/details?id=info.plateaukao.einkbro) 
+
 [<img src="https://badgen.net/github/release/plateaukao/einkbro">](https://github.com/plateaukao/einkbro/releases)   [<img src="https://badgen.net/badge/download/snapshot_zip/green">](https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip)   
 
-### Screenshots
+
+## Screenshots
 
 |Main Screen|Menu Items|Toolbar Configuration|
 |----|----|----|
-|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_1.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_3.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_4.png" width="200"/>|
+|<img src="https://user-images.githubusercontent.com/4084738/216380150-dbac589a-175e-4ae6-9776-7cd0b219ae43.png" width="200"/>|<img src="https://user-images.githubusercontent.com/4084738/216380448-9b226f37-c30c-49fd-8242-3291bf82eaab.png" width="200"/>|<img src="https://user-images.githubusercontent.com/4084738/216380769-b2461e9b-a78a-43a0-8317-43882a683d13.png" width="200"/>|
 |Touch Setting|Settings|Vertical Read|
-|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_5.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_6.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200"/>|
+|<img src="https://user-images.githubusercontent.com/4084738/216380971-7e021ba9-e6f6-4f69-8323-1faf10f9e06b.png" width="200"/>|<img src="https://user-images.githubusercontent.com/4084738/216381202-e8103082-2866-48d9-92b1-96d3cc8106dd.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200"/>|
 
-### E-Ink specific features
+## E-Ink specific features
 
-- **tapping on screen left/right edge for pageUp/Down** (finger button on toolbar)
+- **tap on screen left/right area for pageUp/Down**
+- **use physical volume keys for pageUp/pageDown**
 - **reader mode**
 - **vertical reading mode** (for Chinese/Japanese content)
-- **export web content to epub file** (better results when used with reader mode)
-- pageUp / pageDown / Back button on toolbar
-- **physical volume keys for pageUp/pageDown**
-- desktop mode feature
+- **export web content to epub files**
+- pageUp / pageDown button on toolbar
 - all icons in high contrast colors
 - tab count in bottom function bar
 - font size configuration in first layer setting.
+- custom font with local font files
 
-
-#### Customizable Toolbar Icons
+## Customizable Toolbar Icons
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/4084738/122229339-39f62080-ceeb-11eb-8c46-2f6ea270b486.png">
 
 * web title
@@ -56,18 +57,17 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 * rotate screen
 * fullscreen
 
-### Basic UI/Handling:
+## Basic UI/Handling:
 
 - optimized for one hand handling (toolbar at bottom)
-- tab control (switch, open, close unlimited tabs)
-- full material design
-- fullscreen browsing (optional)
-- navigation button in fullscreen mode
+- tab control
+- fullscreen browsing
+- floating button in fullscreen mode
 - fast toggle for most important settings
-- advanced gesture control for toolbar and navigation button
+- gesture control for floating navigation button
+- multi-touch gesture support
 
-
-### Some nice extra features:
+## Some nice extra features:
 
 - small size
 - search on site
@@ -77,7 +77,7 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 - share/save as PDF
 - open links in other apps (for example YouTube)
 
-### Development environment supported by JetBrains
+## Development environment supported by JetBrains
 [<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/IntelliJ_IDEA_icon.png"
      alt="IDE supported by JetBrains"
      height="80">](https://jb.gg/OpenSourceSupport)   
