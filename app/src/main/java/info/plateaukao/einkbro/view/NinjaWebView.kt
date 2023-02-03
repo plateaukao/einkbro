@@ -856,7 +856,6 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
             }
             a, a * { 
                 color: #000000 !important;
-                text-decoration:underline;
             }
             input,select,option,button,textarea {
                 color: #000000 !important;
