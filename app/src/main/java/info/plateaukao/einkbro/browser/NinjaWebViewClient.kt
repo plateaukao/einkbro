@@ -333,32 +333,33 @@ class NinjaWebViewClient(
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
-<<<<<<< HEAD
+    // return true means it's processed
+    private fun handlePrivateKeyAlias(request: ClientCertRequest, alias: String?): Boolean {
+        val keyAlias = alias ?: return false
+        val holder = context as? Activity ?: return false
+        try {
+            val certChain = KeyChain.getCertificateChain(holder, keyAlias) ?: return false
+            val privateKey = KeyChain.getPrivateKey(holder, keyAlias) ?: return false
+            request.proceed(privateKey, certChain)
+            return true
+        } catch (e: Exception) {
+            Log.e(
+                "NinjaWebViewClient",
+                "Error when getting CertificateChain or PrivateKey for alias '${alias}'",
+                e
+            )
+        }
+        return false
+    }
+
     override fun onReceivedClientCertRequest(view: WebView, request: ClientCertRequest) {
         val holder = view.context as? Activity ?: return
-        KeyChain.choosePrivateKeyAlias(holder, { alias ->
-            if (alias == null) {
+        KeyChain.choosePrivateKeyAlias(
+            holder,
+            { alias -> if (!handlePrivateKeyAlias(request, alias)) {
                 super.onReceivedClientCertRequest(view, request)
-                return@choosePrivateKeyAlias
-            }
-            try {
-                val certChain = KeyChain.getCertificateChain(holder, alias)
-                val privateKey = KeyChain.getPrivateKey(holder, alias)
-                if (certChain == null || privateKey == null) {
-                    super.onReceivedClientCertRequest(view, request)
-                } else {
-                    request.proceed(privateKey, certChain)
-                }
-            } catch (e: Exception) {
-                Log.e(
-                    "NinjaWebViewClient",
-                    "Error when getting CertificateChain or PrivateKey for alias '${alias}'",
-                    e
-                )
-                super.onReceivedClientCertRequest(view, request)
-            }
-
-        }, request.keyTypes, request.principals, request.host, request.port, null)
+            }},
+            request.keyTypes, request.principals, request.host, request.port, null)
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
