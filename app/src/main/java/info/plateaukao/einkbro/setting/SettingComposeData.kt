@@ -95,5 +95,5 @@ enum class LinkSettingItem(
         "https://github.com/plateaukao/browser/blob/main/CONTRIBUTORS.md"
     ),
     Medium(R.string.medium_articles, R.drawable.ic_reader, "https://medium.com/einkbro"),
-    Manual(R.string.manual, R.drawable.ic_reader, "https://github.com/plateaukao/einkbro/wiki")
+    Manual(R.string.manual, R.drawable.ic_reader, "https://einkbro.github.io/docs/home/")
 }
