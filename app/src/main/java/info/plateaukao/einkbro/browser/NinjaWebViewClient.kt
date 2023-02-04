@@ -333,6 +333,7 @@ class NinjaWebViewClient(
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
+<<<<<<< HEAD
     override fun onReceivedClientCertRequest(view: WebView, request: ClientCertRequest) {
         val holder = view.context as? Activity ?: return
         KeyChain.choosePrivateKeyAlias(holder, { alias ->
