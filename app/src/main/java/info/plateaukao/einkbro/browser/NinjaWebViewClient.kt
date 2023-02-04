@@ -9,6 +9,7 @@ import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Message
+import android.security.KeyChain
 import android.util.Log
 import android.view.View
 import android.webkit.*
@@ -330,6 +331,33 @@ class NinjaWebViewClient(
         dialog.setContentView(dialogView)
         dialog.show()
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
+    }
+
+    override fun onReceivedClientCertRequest(view: WebView, request: ClientCertRequest) {
+        val holder = view.context as? Activity ?: return
+        KeyChain.choosePrivateKeyAlias(holder, { alias ->
+            if (alias == null) {
+                super.onReceivedClientCertRequest(view, request)
+                return@choosePrivateKeyAlias
+            }
+            try {
+                val certChain = KeyChain.getCertificateChain(holder, alias)
+                val privateKey = KeyChain.getPrivateKey(holder, alias)
+                if (certChain == null || privateKey == null) {
+                    super.onReceivedClientCertRequest(view, request)
+                } else {
+                    request.proceed(privateKey, certChain)
+                }
+            } catch (e: Exception) {
+                Log.e(
+                    "NinjaWebViewClient",
+                    "Error when getting CertificateChain or PrivateKey for alias '${alias}'",
+                    e
+                )
+                super.onReceivedClientCertRequest(view, request)
+            }
+
+        }, request.keyTypes, request.principals, request.host, request.port, null)
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
