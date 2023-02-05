@@ -436,6 +436,7 @@ open class NinjaWebView(
             scrollX = min(computeHorizontalScrollRange() - width, scrollX)
         } else {
             scrollBy(0, shiftOffset())
+            scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
         }
     }
 
