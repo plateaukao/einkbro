@@ -352,6 +352,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             config::enableWebBkgndLoad,
         ),
         BooleanSettingItem(
+            R.string.settings_title_back_key_behavior,
+            R.drawable.icon_arrow_left_gest,
+            R.string.settings_summary_back_key_behavior,
+            config::closeTabWhenNoMoreBackHistory,
+        ),
+        BooleanSettingItem(
             R.string.setting_title_trim_input_url,
             R.drawable.icon_edit,
             R.string.setting_summary_trim_input_url,
