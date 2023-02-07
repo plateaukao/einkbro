@@ -477,7 +477,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
-                NinjaToast.show(this, getString(R.string.no_previous_page))
+                if (config.closeTabWhenNoMoreBackHistory) {
+                    removeAlbum()
+                } else {
+                    NinjaToast.show(this, getString(R.string.no_previous_page))
+                }
             }
         }
     }

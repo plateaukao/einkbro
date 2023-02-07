@@ -413,4 +413,6 @@
     <string name="setting_summary_import_appData">Import app data by choosing a zip file that is previously exported.</string>
     <string name="dialog_message_sync_bookmark_file">"To sync bookmarks, you need to use system file picker to create or open a bookmark file from Google Drive or a file that is synced with other remote service. "</string>
     <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
+    <string name="settings_title_back_key_behavior">Back key behavior</string>
+    <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history.</string>
 </resources>
