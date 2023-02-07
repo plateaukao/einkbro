@@ -506,10 +506,15 @@ object BrowserUnit : KoinComponent {
                     strippedCount++
                 }
             }
-            if (strippedCount > 0) {
+
+            // only return the stripped url if we stripped something
+            // to fix the only key but no value scenario
+            return if (strippedCount > 0) {
                 Log.d("strippedCount", "$strippedCount")
+                uriBuilder.build().toString()
+            } else {
+                url
             }
-            return uriBuilder.build().toString()
         } catch (e: Exception) {
             return url
         }
