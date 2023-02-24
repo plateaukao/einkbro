@@ -417,4 +417,5 @@
     <string name="dialog_title_bookmark_sync">书签文件设置</string>
     <string name="settings_title_back_key_behavior">返回键行为</string>
     <string name="settings_summary_back_key_behavior">当标签页已位于历史记录的第一页时，关闭该标签页。</string>
+    <string name="page_count">Page count</string>
 </resources>

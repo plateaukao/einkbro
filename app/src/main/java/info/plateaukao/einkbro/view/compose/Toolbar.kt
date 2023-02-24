@@ -44,6 +44,7 @@ fun ComposedToolbar(
     toolbarActionInfos: List<ToolbarActionInfo>,
     title: String,
     tabCount: String,
+    pageInfo: String,
     isIncognito: Boolean,
     onIconClick: (ToolbarAction) -> Unit,
     onIconLongClick: ((ToolbarAction) -> Unit)? = null,
@@ -84,6 +85,7 @@ fun ComposedToolbar(
             toolbarActionInfos = toolbarActionInfos,
             title = title,
             tabCount = tabCount,
+            pageInfo = pageInfo,
             isIncognito = isIncognito,
             onClick = onIconClick,
             onLongClick = onIconLongClick,
@@ -96,6 +98,7 @@ fun ComposedIconBar(
     toolbarActionInfos: List<ToolbarActionInfo>,
     title: String,
     tabCount: String,
+    pageInfo: String,
     isIncognito: Boolean,
     onClick: (ToolbarAction) -> Unit,
     onLongClick: ((ToolbarAction) -> Unit)? = null,
@@ -122,7 +125,11 @@ fun ComposedIconBar(
                     val titleModifier = Modifier
                         .padding(start = 2.dp, top = 6.dp, bottom = 6.dp)
                         .fillMaxHeight()
-                        .border(0.5.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(16.dp))
+                        .border(
+                            0.5.dp,
+                            MaterialTheme.colors.onBackground,
+                            RoundedCornerShape(16.dp)
+                        )
                         .padding(start = 3.dp, end = 1.dp)
                         .then(
                             if (shouldTitleWidthFixed) Modifier.widthIn(max = 300.dp) else Modifier.weight(
@@ -150,6 +157,14 @@ fun ComposedIconBar(
                         onClick = { onClick(toolbarAction) },
                         onLongClick = { onLongClick?.invoke(toolbarAction) }
                     )
+
+                PageInfo -> Text(
+                    text = pageInfo,
+                    color = MaterialTheme.colors.onBackground,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(6.dp)
+                )
 
                 else -> ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
             }
@@ -261,6 +276,7 @@ fun PreviewToolbar() {
             toolbarActionInfos = ToolbarAction.values().map { ToolbarActionInfo(it, false) },
             "hihi",
             tabCount = "1",
+            pageInfo = "1/1",
             isIncognito = true,
             { },
         )
@@ -281,6 +297,7 @@ fun PreviewToolbarLongTitle() {
             ),
             "hi 1 2 3 456789",
             tabCount = "1",
+            pageInfo = "1/1",
             isIncognito = true,
             { },
         )

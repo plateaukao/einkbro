@@ -335,16 +335,17 @@
     <string name="setting_title_enable_ssl_error_dialog">Show SSL error dialog</string>
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
     <string name="manual">使用說明</string>
-    <string name="black_font">Black font</string>
-    <string name="image_adjust">Image Adjust</string>
-    <string name="bookmark_new_file">Create new file</string>
-    <string name="bookmark_open_file">Open existing file</string>
-    <string name="menu_save_archive">Save archive</string>
-    <string name="setting_title_sync_bookmarks">Sync bookmarks</string>
+    <string name="black_font">黑色字體</string>
+    <string name="image_adjust">加強圖片</string>
+    <string name="bookmark_new_file">建立新檔案</string>
+    <string name="bookmark_open_file">開啟既有檔案</string>
+    <string name="menu_save_archive">儲存網頁</string>
+    <string name="setting_title_sync_bookmarks">同步書籤</string>
     <string name="setting_summary_setup_bookmarks_location">Select a file in Google Drive or other file location that supports remote sync.</string>
     <string name="setting_summary_import_appData">Import app data by choosing a zip file that is previously exported.</string>
     <string name="dialog_message_sync_bookmark_file">"To sync bookmarks, you need to use system file picker to create or open a bookmark file from Google Drive or a file that is synced with other remote service. "</string>
     <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
-    <string name="settings_title_back_key_behavior">Back key behavior</string>
+    <string name="settings_title_back_key_behavior">返回鍵行為</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history.</string>
+    <string name="page_count">頁數資訊</string>
 </resources>

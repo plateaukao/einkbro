@@ -415,4 +415,5 @@
     <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
     <string name="settings_title_back_key_behavior">Back key behavior</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history.</string>
+    <string name="page_count">Page count</string>
 </resources>

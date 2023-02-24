@@ -71,7 +71,8 @@ enum class ToolbarAction(
             R.drawable.ic_stop,
             R.drawable.ic_tts
         )
-    );
+    ),
+    PageInfo(iconResId = R.drawable.ic_page_count, titleResId = R.string.page_count);
 
 
     companion object {
