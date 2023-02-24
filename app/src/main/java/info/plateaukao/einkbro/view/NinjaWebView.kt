@@ -40,6 +40,7 @@ import java.io.InputStream
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 
@@ -420,14 +421,16 @@ open class NinjaWebView(
 
     fun jumpToTop() {
         scrollTo(0, 0)
+        updatePageInfo()
     }
 
     fun jumpToBottom() {
         if (isVerticalRead) {
-            scrollTo(computeHorizontalScrollRange(), 0)
+            scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
         } else {
-            scrollTo(0, computeVerticalScrollRange())
+            scrollTo(0, computeVerticalScrollRange() - shiftOffset())
         }
+        updatePageInfo()
     }
 
     open fun pageDownWithNoAnimation() {
@@ -438,6 +441,7 @@ open class NinjaWebView(
             scrollBy(0, shiftOffset())
             scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
         }
+        updatePageInfo()
     }
 
     open fun pageUpWithNoAnimation() {
@@ -447,6 +451,19 @@ open class NinjaWebView(
         } else {
             scrollBy(0, -shiftOffset())
             scrollY = max(0, scrollY)
+        }
+        updatePageInfo()
+    }
+
+    fun updatePageInfo() {
+        if (isVerticalRead) {
+            browserController?.updatePageInfo(
+                "${ceil((scrollX + 1).toDouble() / shiftOffset()).toInt()}/${computeHorizontalScrollRange() / shiftOffset()}"
+            )
+        } else {
+            browserController?.updatePageInfo(
+                "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/${computeVerticalScrollRange() / shiftOffset()}"
+            )
         }
     }
 

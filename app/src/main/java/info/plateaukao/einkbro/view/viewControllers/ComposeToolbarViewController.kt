@@ -20,6 +20,7 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.CloseTab
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Desktop
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Font
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.FullScreen
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.PageInfo
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Refresh
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.RotateScreen
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Settings
@@ -47,6 +48,7 @@ class ComposeToolbarViewController(
         Font,
         Touch,
         TOC,
+        PageInfo,
         Settings,
         CloseTab,
     )
@@ -88,6 +90,13 @@ class ComposeToolbarViewController(
 
     fun updateTabCount(text: String) {
         toolbarComposeView.tabCount = text
+    }
+
+    fun updatePageInfo(text: String) {
+        val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
+        if (iconEnums.indexOf(PageInfo) != -1) {
+            toolbarComposeView.pageInfo = text
+        }
     }
 
     fun updateRefresh(isLoadingWeb: Boolean) {
@@ -145,6 +154,7 @@ class ToolbarComposeView @JvmOverloads constructor(
     var shouldShowTabs by mutableStateOf(false)
     var title by mutableStateOf("")
     var tabCount by mutableStateOf("")
+    var pageInfo by mutableStateOf("")
     var isIncognito by mutableStateOf(false)
     var onItemClick: (ToolbarAction) -> Unit = {}
     var onItemLongClick: (ToolbarAction) -> Unit = {}
@@ -161,6 +171,7 @@ class ToolbarComposeView @JvmOverloads constructor(
                 toolbarActionInfoList,
                 title = title,
                 tabCount = tabCount,
+                pageInfo = pageInfo,
                 isIncognito = isIncognito,
                 onIconClick = onItemClick,
                 onIconLongClick = onItemLongClick,

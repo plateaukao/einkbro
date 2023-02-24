@@ -253,7 +253,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun pageUp() = ninjaWebView.pageUpWithNoAnimation()
     override fun toggleReaderMode() = ninjaWebView.toggleReaderMode()
     override fun toggleVerticalRead() = ninjaWebView.toggleVerticalRead()
-
+    override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
 
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)

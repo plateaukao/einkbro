@@ -74,5 +74,6 @@ class ToolbarActionHandler(
         ToolbarAction.DuplicateTab -> browserController.duplicateTab()
         ToolbarAction.Tts -> browserController.toggleTtsRead()
         ToolbarAction.TOC -> browserController.showTocDialog()
+        ToolbarAction.PageInfo -> Unit
     }
 }

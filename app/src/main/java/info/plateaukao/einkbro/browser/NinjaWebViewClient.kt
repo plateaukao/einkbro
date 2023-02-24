@@ -74,6 +74,8 @@ class NinjaWebViewClient(
             }, 2000)
         }
 
+        ninjaWebView.updatePageInfo()
+
         // skip translation pages
         if (config.saveHistory &&
             !ninjaWebView.incognito &&
@@ -238,19 +240,24 @@ class NinjaWebViewClient(
                             Bitmap.CompressFormat.JPEG
                         )
                     )
+
                 lowerCaseUrl.contains(".png") -> WebResourceResponse(
                     "image/png", "UTF-8", getBitmapInputStream(
                         fetchBitmap(webView, url),
                         Bitmap.CompressFormat.PNG
                     )
                 )
+
                 lowerCaseUrl.contains(".webp") -> WebResourceResponse(
                     "image/webp", "UTF-8", getBitmapInputStream(
                         fetchBitmap(webView, url),
                         Bitmap.CompressFormat.WEBP
                     )
                 )
-                else -> { null }
+
+                else -> {
+                    null
+                }
             }
         } catch (e: Exception) {
             Log.e("NinjaWebViewClient", "Error while processing image: $url", e)
@@ -356,10 +363,13 @@ class NinjaWebViewClient(
         val holder = view.context as? Activity ?: return
         KeyChain.choosePrivateKeyAlias(
             holder,
-            { alias -> if (!handlePrivateKeyAlias(request, alias)) {
-                super.onReceivedClientCertRequest(view, request)
-            }},
-            request.keyTypes, request.principals, request.host, request.port, null)
+            { alias ->
+                if (!handlePrivateKeyAlias(request, alias)) {
+                    super.onReceivedClientCertRequest(view, request)
+                }
+            },
+            request.keyTypes, request.principals, request.host, request.port, null
+        )
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {

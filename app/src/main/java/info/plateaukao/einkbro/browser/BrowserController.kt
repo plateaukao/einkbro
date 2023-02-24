@@ -70,4 +70,5 @@ interface BrowserController {
     fun jumpToBottom()
     fun pageDown()
     fun pageUp()
+    fun updatePageInfo(info: String)
 }
