@@ -523,8 +523,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ninjaWebView = controller as NinjaWebView
 
         updateTitle()
-
         updateTabBar()
+        ninjaWebView.updatePageInfo()
     }
 
     override fun onUpdateAlbum(album: Album) {

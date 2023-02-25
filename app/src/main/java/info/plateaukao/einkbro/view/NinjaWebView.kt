@@ -456,15 +456,12 @@ open class NinjaWebView(
     }
 
     fun updatePageInfo() {
-        if (isVerticalRead) {
-            browserController?.updatePageInfo(
-                "${ceil((scrollX + 1).toDouble() / shiftOffset()).toInt()}/${computeHorizontalScrollRange() / shiftOffset()}"
-            )
+        val info = if (isVerticalRead) {
+            "${ceil((scrollX + 1).toDouble() / shiftOffset()).toInt()}/${computeHorizontalScrollRange() / shiftOffset()}"
         } else {
-            browserController?.updatePageInfo(
-                "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/${computeVerticalScrollRange() / shiftOffset()}"
-            )
+            "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/${computeVerticalScrollRange() / shiftOffset()}"
         }
+        browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
     }
 
     suspend fun getRawHtml() = suspendCoroutine<String> { continuation ->
