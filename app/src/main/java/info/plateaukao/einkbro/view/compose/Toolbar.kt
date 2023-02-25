@@ -163,7 +163,9 @@ fun ComposedIconBar(
                     color = MaterialTheme.colors.onBackground,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(6.dp)
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .defaultMinSize(minWidth = 46.dp)
                 )
 
                 else -> ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
