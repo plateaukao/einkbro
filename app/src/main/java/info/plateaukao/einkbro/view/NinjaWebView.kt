@@ -182,7 +182,7 @@ open class NinjaWebView(
     @Suppress("DEPRECATION")
     fun initPreferences() {
 
-        updateDesktopMode()
+        updateUserAgentString()
 
         with(settings) {
             // don't load cache by default, so that it won't cause some issues
@@ -213,7 +213,7 @@ open class NinjaWebView(
         toggleCookieSupport(config.cookies)
     }
 
-    fun updateDesktopMode() {
+    fun updateUserAgentString() {
         val defaultUserAgentString = WebSettings.getDefaultUserAgent(context).replace("wv", "")
         val prefix: String =
             defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
@@ -225,7 +225,7 @@ open class NinjaWebView(
                     settings.userAgentString =
                         defaultUserAgentString.replace(prefix, BrowserUnit.UA_DESKTOP_PREFIX)
 
-                config.customUserAgent.isNotBlank() ->
+                config.enableCustomUserAgent && config.customUserAgent.isNotBlank() ->
                     settings.userAgentString = config.customUserAgent
 
                 else ->

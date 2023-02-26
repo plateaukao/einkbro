@@ -348,4 +348,7 @@
     <string name="settings_title_back_key_behavior">返回鍵行為</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history.</string>
     <string name="page_count">頁數資訊</string>
+    <string name="setting_title_userAgent_toggle">Enable Custom UserAgent</string>
+    <string name="setting_summary_userAgent">Input custom useragent strings here.</string>
+    <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
 </resources>

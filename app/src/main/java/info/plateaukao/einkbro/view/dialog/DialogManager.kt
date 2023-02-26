@@ -175,7 +175,7 @@ class DialogManager(
         TextInputDialog(
             activity,
             activity.getString(titleId),
-            activity.getString(descriptionId),
+            if (descriptionId == 0) "" else activity.getString(descriptionId),
             defaultValue.toString()
         ).show()
 
@@ -248,6 +248,7 @@ class DialogManager(
         activity.overridePendingTransition(0, 0)
         exitProcess(0)
     }
+
     companion object {
         const val EXPORT_BOOKMARKS_REQUEST_CODE = 2345
         const val IMPORT_BOOKMARKS_REQUEST_CODE = 2346

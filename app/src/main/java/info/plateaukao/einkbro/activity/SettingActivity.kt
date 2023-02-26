@@ -34,7 +34,6 @@ import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
-import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -131,6 +130,15 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                             SettingScreen(
                                 navController,
                                 clearDataSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
+                        }
+                        composable(UserAgent.name) {
+                            SettingScreen(
+                                navController,
+                                userAgentSettingItems,
                                 dialogManager,
                                 action,
                                 1
@@ -236,38 +244,19 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_search,
             destination = Search
         ),
-        ActionSettingItem(
+        NavigateSettingItem(
             R.string.setting_title_userAgent,
-            R.drawable.icon_useragent
-        ) { lifecycleScope.launch { updateUserAgent() } },
-        ActionSettingItem(
+            R.drawable.icon_useragent,
+            destination = UserAgent
+        ),
+        ValueSettingItem(
             R.string.setting_title_edit_homepage,
-            R.drawable.icon_edit
-        ) { lifecycleScope.launch { updateHomepage() } },
+            R.drawable.ic_home,
+            config = config::favoriteUrl,
+            showValue = false
+        ),
         VersionSettingItem(R.string.menu_other_info, R.drawable.icon_info, destination = About),
     )
-
-    private suspend fun updateUserAgent() {
-        val newValue = TextInputDialog(
-            this,
-            getString(R.string.setting_title_userAgent),
-            "",
-            config.customUserAgent
-        ).show()
-
-        newValue?.let { config.customUserAgent = it }
-    }
-
-    private suspend fun updateHomepage() {
-        val newValue = TextInputDialog(
-            this,
-            getString(R.string.setting_title_edit_homepage),
-            "",
-            config.favoriteUrl
-        ).show()
-
-        newValue?.let { config.favoriteUrl = it }
-    }
 
     private val uiSettingItems = listOf(
         BooleanSettingItem(
@@ -612,6 +601,21 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         }
     )
 
+    private val userAgentSettingItems = listOf(
+        BooleanSettingItem(
+            R.string.setting_title_userAgent_toggle,
+            R.drawable.icon_useragent,
+            R.string.setting_summary_userAgent_toggle,
+            config::enableCustomUserAgent
+        ),
+        ValueSettingItem(
+            R.string.setting_title_userAgent,
+            R.drawable.ic_page_height,
+            R.string.setting_summary_userAgent,
+            config::customUserAgent
+        ),
+    )
+
     private val startSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_images,
@@ -726,6 +730,7 @@ enum class SettingRoute(@StringRes val titleId: Int) {
     Backup(R.string.setting_title_data),
     StartControl(R.string.setting_title_start_control),
     DataControl(R.string.setting_title_clear_control),
+    UserAgent(R.string.setting_title_userAgent),
     Search(R.string.setting_title_search),
     About(R.string.title_about);
 }
