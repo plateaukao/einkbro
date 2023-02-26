@@ -913,7 +913,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_DESKTOP -> {
-                    ninjaWebView.updateDesktopMode()
+                    ninjaWebView.updateUserAgentString()
                     ninjaWebView.reload()
                     composeToolbarViewController.updateIcons()
                 }
@@ -924,6 +924,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_NAV_POSITION -> fabImageViewController.initialize()
                 ConfigManager.K_TTS_SPEED_VALUE ->
                     ttsManager.setSpeechRate(config.ttsSpeedValue / 100f)
+
+                ConfigManager.K_CUSTOM_USER_AGENT,
+                ConfigManager.K_ENABLE_CUSTOM_USER_AGENT -> {
+                    ninjaWebView.updateUserAgentString()
+                    ninjaWebView.reload()
+                }
             }
         }
 

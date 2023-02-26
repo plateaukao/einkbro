@@ -416,4 +416,7 @@
     <string name="settings_title_back_key_behavior">Back key behavior</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history.</string>
     <string name="page_count">Page count</string>
+    <string name="setting_title_userAgent_toggle">Enable Custom UserAgent</string>
+    <string name="setting_summary_userAgent">Input custom useragent strings here.</string>
+    <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
 </resources>

@@ -83,6 +83,7 @@ class ConfigManager(
     var autoUpdateAdblock by BooleanPreference(sp, K_AUTO_UPDATE_ADBLOCK, false)
     var enableCertificateErrorDialog by BooleanPreference(sp, CERTIFICATE_ERROR_DIALOG, false)
     var closeTabWhenNoMoreBackHistory by BooleanPreference(sp, K_CLOSE_TAB_WHEN_BACK, true)
+    var enableCustomUserAgent by BooleanPreference(sp, K_ENABLE_CUSTOM_USER_AGENT, false)
 
     var enableImageAdjustment by BooleanPreference(sp, K_ENABLE_IMAGE_ADJUSTMENT, false)
     var imageAdjustmentBrightness by IntPreference(sp, K_IMAGE_ADJUSTMENT_VALUE, 20)
@@ -443,6 +444,7 @@ class ConfigManager(
         const val K_IMAGE_ADJUSTMENT_SATURATION = "sp_image_adjustment_saturation"
         const val K_BOOKMARK_SYNC_URL = "sp_bookmark_sync_url"
         const val K_CLOSE_TAB_WHEN_BACK = "sp_close_tab_when_no_more_back_history"
+        const val K_ENABLE_CUSTOM_USER_AGENT = "sp_custom_user_agent"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"
