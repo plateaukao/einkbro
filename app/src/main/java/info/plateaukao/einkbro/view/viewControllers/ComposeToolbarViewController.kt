@@ -93,10 +93,7 @@ class ComposeToolbarViewController(
     }
 
     fun updatePageInfo(text: String) {
-        val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
-        if (iconEnums.indexOf(PageInfo) != -1) {
-            toolbarComposeView.pageInfo = text
-        }
+        toolbarComposeView.pageInfo = text
     }
 
     fun updateRefresh(isLoadingWeb: Boolean) {
