@@ -73,7 +73,7 @@ class OverviewDialogController(
             shouldShowTwoColumns = isWideLayout()
             albumList = albumsState
             onTabIconClick = { openHomePage() }
-            onTabClick = { hide(); it.show() }
+            onTabClick = { hide(); it.showOrJumpToTop() }
             onTabLongClick = { it.remove() }
 
             recordList = currentRecordList

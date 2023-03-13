@@ -67,7 +67,7 @@ class MenuActionHandler(
             activity.getString(R.string.menu_open_with)
         )
 
-        MenuItemType.CopyLink -> ShareUtil.copyToClipboard(activity, ninjaWebView.url ?: "")
+        MenuItemType.CopyLink -> ShareUtil.copyToClipboard(activity, BrowserUnit.stripUrlQuery(ninjaWebView.url ?: ""))
         MenuItemType.Shortcut -> HelperUnit.createShortcut(
             activity,
             ninjaWebView.title,

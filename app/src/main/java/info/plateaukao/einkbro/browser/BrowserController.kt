@@ -13,6 +13,8 @@ interface BrowserController {
     fun updateProgress(progress: Int)
     fun updateTitle(title: String?)
     fun addNewTab(url: String)
+    fun isAtTop(): Boolean
+    fun isCurrentAlbum(albumController: AlbumController): Boolean
     fun showAlbum(albumController: AlbumController)
     fun removeAlbum(albumController: AlbumController)
     fun removeAlbum()

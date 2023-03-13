@@ -135,7 +135,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             binding.composeIconBar,
             { toolbarActionHandler.handleClick(it) },
             { toolbarActionHandler.handleLongClick(it) },
-            onTabClick = { it.show() },
+            onTabClick = { it.showOrJumpToTop() },
             onTabLongClick = { it.remove() },
         )
     }
@@ -247,6 +247,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     }
 
+    override fun isAtTop(): Boolean = ninjaWebView.isAtTop()
     override fun jumpToTop() = ninjaWebView.jumpToTop()
     override fun jumpToBottom() = ninjaWebView.jumpToBottom()
     override fun pageDown() = ninjaWebView.pageDownWithNoAnimation()
@@ -485,6 +486,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
     }
+
+    override fun isCurrentAlbum(albumController: AlbumController): Boolean =
+        currentAlbumController == albumController
 
     override fun showAlbum(controller: AlbumController) {
         if (currentAlbumController != null) {
@@ -1581,7 +1585,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 else IntentUnit.share(this, title, url)
             }
 
-            ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(this, url)
+            ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(this, BrowserUnit.stripUrlQuery(url))
             ContextMenuItemType.CopyText -> ShareUtil.copyToClipboard(this, title)
             ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
                 this,
