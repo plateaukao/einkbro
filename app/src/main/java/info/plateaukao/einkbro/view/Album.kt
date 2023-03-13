@@ -16,8 +16,17 @@ data class Album(
 
     var isActivated = false
 
-    fun show() {
-        browserController?.showAlbum(albumController)
+    fun showOrJumpToTop() {
+        val controller = browserController ?: return
+        if (controller.isCurrentAlbum(albumController)) {
+            if (controller.isAtTop()) {
+                controller.refreshAction()
+            } else {
+                controller.jumpToTop()
+            }
+        } else {
+            controller.showAlbum(albumController)
+        }
     }
 
     fun remove() {
