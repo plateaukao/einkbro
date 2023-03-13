@@ -419,6 +419,12 @@ open class NinjaWebView(
         requestFocusNodeHref(click)
     }
 
+    fun isAtTop(): Boolean = if (isVerticalRead) {
+        scrollX == 0
+    } else {
+        scrollY == 0
+    }
+
     fun jumpToTop() {
         scrollTo(0, 0)
         updatePageInfo()

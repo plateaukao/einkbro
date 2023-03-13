@@ -489,6 +489,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showAlbum(controller: AlbumController) {
         if (currentAlbumController != null) {
             if (currentAlbumController == controller) {
+                // if it's the same controller, just scroll to top
+                if (ninjaWebView.isAtTop()) {
+                    ninjaWebView.reload()
+                } else {
+                    jumpToTop()
+                }
                 return
             }
             currentAlbumController?.deactivate()
