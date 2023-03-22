@@ -537,10 +537,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ninjaWebView.updatePageInfo()
     }
 
-    override fun onUpdateAlbum(album: Album) {
-        updateTabBar()
-    }
-
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
 
     override fun showOverview() = overviewDialogController.show()
