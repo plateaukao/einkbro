@@ -446,6 +446,6 @@ private fun Album.toTabInfo(): TabInfo =
     TabInfo(
         title = this.albumTitle,
         url = this.getUrl(),
-        favicon = this.getAlbumBitmap(),
+        favicon = this.stateOfBitmap
     )
 

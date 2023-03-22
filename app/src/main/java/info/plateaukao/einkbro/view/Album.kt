@@ -1,6 +1,9 @@
 package info.plateaukao.einkbro.view
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserController
 
@@ -13,6 +16,8 @@ data class Album(
     var albumTitle: String = ""
 
     var bitmap: Bitmap? = null
+
+    var stateOfBitmap by mutableStateOf(bitmap)
 
     var isActivated = false
 
@@ -37,10 +42,8 @@ data class Album(
 
     fun setAlbumCover(bitmap: Bitmap?) {
         this.bitmap = bitmap
-        browserController?.onUpdateAlbum(this)
+        stateOfBitmap = bitmap
     }
-
-    fun getAlbumBitmap(): Bitmap? = bitmap
 
     fun activate() {
         isActivated = true

@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
-import info.plateaukao.einkbro.view.Album
 
 interface BrowserController {
     fun updateProgress(progress: Int)
@@ -19,7 +18,6 @@ interface BrowserController {
     fun removeAlbum(albumController: AlbumController)
     fun removeAlbum()
     fun updateAlbum(url: String?)
-    fun onUpdateAlbum(album: Album)
     fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
     fun onShowCustomView(view: View?, callback: CustomViewCallback?)
     fun onLongPress(message: Message, event: MotionEvent?)
