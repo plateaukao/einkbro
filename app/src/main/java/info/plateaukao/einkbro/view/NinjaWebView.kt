@@ -301,7 +301,7 @@ open class NinjaWebView(
             return
         }
 
-        albumTitle = ""
+        albumTitle = "..."
         // show progress right away
         if (url.startsWith("https")) {
             postDelayed({ if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
@@ -312,6 +312,11 @@ open class NinjaWebView(
         }
 
         val strippedUrl = BrowserUnit.stripUrlQuery(processedUrl)
+
+        bookmarkManager.findFaviconBy(strippedUrl)?.getBitmap()?.let {
+            setAlbumCover(it)
+        }
+
         super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }
 
