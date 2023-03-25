@@ -11,10 +11,9 @@ assignees: plateaukao
 Please write necessary information as described below. If information is not enough, I may not have time to look into it.
 
 **What device and app version are you using**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 9.7.0.   You can find the version number in Settings.]
+ - Device: 
+ - OS: 
+ - EinkBro Version [e.g. 9.7.0.   You can find the version number in Settings.]
 
 **Describe the bug**
 A clear and concise description of what the bug is.
