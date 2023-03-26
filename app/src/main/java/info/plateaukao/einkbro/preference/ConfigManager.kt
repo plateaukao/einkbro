@@ -130,7 +130,7 @@ class ConfigManager(
     var adblockHostUrl by StringPreference(
         sp,
         K_ADBLOCK_HOSTS_URL,
-        "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+        ADBLOCK_URL_DEFAULT
     )
     var bookmarkSyncUrl by StringPreference(sp, K_BOOKMARK_SYNC_URL, "")
 
@@ -461,6 +461,8 @@ class ConfigManager(
         const val K_GESTURE_NAV_DOWN = "setting_gesture_nav_down"
         const val K_GESTURE_NAV_LEFT = "setting_gesture_nav_left"
         const val K_GESTURE_NAV_RIGHT = "setting_gesture_nav_right"
+
+        const val ADBLOCK_URL_DEFAULT = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
