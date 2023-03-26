@@ -84,7 +84,8 @@ class AdBlockV2(
     ) = withContext(Dispatchers.IO) {
         try {
             Log.d("browser", "Download AdBlock hosts")
-            val connection = URL(config.adblockHostUrl).openConnection().apply {
+            val url = config.adblockHostUrl.ifBlank { ConfigManager.ADBLOCK_URL_DEFAULT }
+            val connection = URL(url).openConnection().apply {
                 readTimeout = 5000
                 connectTimeout = 10000
             }
