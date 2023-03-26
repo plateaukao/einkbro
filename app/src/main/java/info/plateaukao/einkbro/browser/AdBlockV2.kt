@@ -121,6 +121,13 @@ class AdBlockV2(
                         while (reader.readLine().also { line = it } != null) {
                             if (line?.startsWith("0.0.0.0 ") == true) {
                                 line = line?.substring(8)
+                            } else if (line?.startsWith("||") == true) {
+                                // handle lines like: ||example.com^
+                                line = line?.substring(2)
+                                if (line?.endsWith("^") == true) {
+                                    val length = (line?.length ?: 1) - 1
+                                    line = line?.substring(0, length)
+                                }
                             }
                             fileWriter.write("$line\n")
                         }
@@ -153,6 +160,7 @@ class AdBlockV2(
                             return "hosts.txt " + line.substring(2)
                         }
                     }
+                    return ""
                 }
             }
         } catch (exception: IOException) {
