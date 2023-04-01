@@ -79,30 +79,47 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
             "javascript:document.getElementsByName('viewport')[0].setAttribute('content', 'initial-scale=1,maximum-scale=10.0');"
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
-//            var posts = [].filter.call(document.getElementsByTagName('article'), el => (
-//                  (el.attributes['data-store'] != null && el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0) || 
-//                  (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || 
-//                  (el.attributes['data-xt-vimp'] != null && el.attributes['data-xt-vimp'].value.indexOf('is_sponsored') >= 0) || 
-//                  (el.getElementsByTagName('header')[0] != null  && el.getElementsByTagName('header')[0].innerText == 'Suggested for you')));
-//              while(posts.length > 0) { posts.pop().style.display = "none"; }
-//              
-//              var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
-//              ads.forEach(el => {el.style.display="none"; el.nextSibling.style.display="none";el.nextSibling.nextSibling.style.display="none"});
-//              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.style.display="none"});
-//              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none"});
-              
+              function removeItems() {
+                  var reels = Array.from(document.querySelectorAll('div.m[data-actual-height="490"]')).filter(e => e.innerText.search("Reels") != -1);
+                  reels.forEach(el => {el.style.display="none";});
+                  
+                  var hrLines = document.querySelectorAll('div.m[data-actual-height="1"]');
+                  hrLines.forEach(el => {
+                    var n = el.nextSibling; 
+                    if (n.innerText.search("Suggested for you") != -1) {
+                        n.style.display="none";
+                        n.nextSibling.style.display="none";
+                    }
+                    if (n.innerText.search("Sponsored󰞋󰙷") != -1) {
+                        n.style.display="none";
+                        n.nextSibling.style.display="none";
+                        n.nextSibling.nextSibling.style.display="none";
+                        n.nextSibling.nextSibling.nextSibling.style.display="none";
+                        n.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none";
+                    }
+                    });
+                    
+                  var hrLines = document.querySelectorAll('div.m[data-actual-height="2"]');
+                  hrLines.forEach(el => {
+                    var n = el.nextSibling; 
+                    if (n.innerText.search("Suggested for you") != -1) {
+                        n.style.display="none";
+                        n.nextSibling.style.display="none";
+                        n.nextSibling.nextSibling.style.display="none";
+                    }
+                    if (n.innerText.search("Sponsored") != -1) {
+                        n.style.display="none";
+                        n.nextSibling.style.display="none";
+                        n.nextSibling.nextSibling.style.display="none";
+                        n.nextSibling.nextSibling.nextSibling.style.display="none";
+                        n.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none";
+                    }
+                    });
+              }
+              setInterval(removeItems, 3000);
+                
             var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
-            var posts = [].filter.call(document.getElementsByTagName('article'), el => (
-                  (el.attributes['data-store'] != null && el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0) || 
-                  (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || 
-                  (el.attributes['data-xt-vimp'] != null && el.attributes['data-xt-vimp'].value.indexOf('is_sponsored') >= 0) || 
-                  (el.getElementsByTagName('header')[0] != null  && el.getElementsByTagName('header')[0].innerText == 'Suggested for you')));
-              while(posts.length > 0) { posts.pop().style.display = "none"; }
-              
-              var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
-              ads.forEach(el => {el.style.display="none"; el.nextSibling.style.display="none";el.nextSibling.nextSibling.style.display="none"});
-              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.style.display="none"});
-              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none"});
+              setInterval(removeItems, 3000);
             });
             
             qcleanObserver.observe(document, { subtree: true, childList: true });
