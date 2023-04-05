@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -29,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.WhiteListActivity
+import info.plateaukao.einkbro.activity.WhiteListType
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -38,7 +41,7 @@ class FastToggleDialogFragment(
 ) : ComposeDialogFragment() {
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            FastToggleItemList(config) { needExtraAction ->
+            FastToggleItemList(requireContext(), config) { needExtraAction ->
                 if (needExtraAction) extraAction()
                 dialog?.dismiss()
             }
@@ -47,61 +50,99 @@ class FastToggleDialogFragment(
 }
 
 @Composable
-fun FastToggleItemList(config: ConfigManager? = null, onClicked: ((Boolean) -> Unit)) {
+fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boolean) -> Unit)) {
     Column(modifier = Modifier.width(IntrinsicSize.Max)) {
-        ToggleItem(state = config?.isIncognitoMode
-            ?: false, titleResId = R.string.setting_title_incognito, iconResId = R.drawable.ic_incognito) {
-            config?.let { it.isIncognitoMode = it.isIncognitoMode.not() }
+        ToggleItem(
+            state = config.isIncognitoMode,
+            titleResId = R.string.setting_title_incognito, iconResId = R.drawable.ic_incognito
+        ) {
+            config::isIncognitoMode.toggle()
             onClicked(true)
         }
-        ToggleItem(state = config?.adBlock
-            ?: false, titleResId = R.string.setting_title_adblock, iconResId = R.drawable.ic_block) {
-            config?.let { it.adBlock = it.adBlock.not() }
+        ToggleItem(
+            state = config.adBlock,
+            titleResId = R.string.setting_title_adblock, iconResId = R.drawable.ic_block,
+            onEditAction = {
+                context.startActivity(
+                    WhiteListActivity.createIntent(
+                        context,
+                        WhiteListType.Adblock
+                    )
+                )
+            }
+        ) {
+            config::adBlock.toggle()
             onClicked(true)
         }
-        ToggleItem(state = config?.enableJavascript
-            ?: false, titleResId = R.string.setting_title_javascript, iconResId = R.drawable.icon_java) {
-            config?.let { it.enableJavascript = it.enableJavascript.not() }
+        ToggleItem(
+            state = config.enableJavascript,
+            titleResId = R.string.setting_title_javascript, iconResId = R.drawable.icon_java,
+            onEditAction = {
+                context.startActivity(
+                    WhiteListActivity.createIntent(
+                        context,
+                        WhiteListType.Javascript
+                    )
+                )
+            }
+        ) {
+            config::enableJavascript.toggle()
             onClicked(true)
         }
-        ToggleItem(state = config?.cookies
-            ?: false, titleResId = R.string.setting_title_cookie, iconResId = R.drawable.icon_cookie) {
-            config?.let { it.cookies = it.cookies.not() }
+        ToggleItem(
+            state = config.cookies,
+            titleResId = R.string.setting_title_cookie, iconResId = R.drawable.icon_cookie,
+            onEditAction = {
+                context.startActivity(WhiteListActivity.createIntent(context, WhiteListType.Cookie))
+            }
+        ) {
+            config::cookies.toggle()
             onClicked(true)
         }
-        ToggleItem(state = config?.saveHistory
-            ?: false, titleResId = R.string.history, iconResId = R.drawable.ic_history) {
-            config?.let { it.saveHistory = it.saveHistory.not() }
+        ToggleItem(
+            state = config.saveHistory,
+            titleResId = R.string.history, iconResId = R.drawable.ic_history
+        ) {
+            config::saveHistory.toggle()
             onClicked(false)
         }
 
-        ToggleItem(state = config?.enableImageAdjustment
-            ?: false, titleResId = R.string.image_adjust, iconResId = R.drawable.icon_image) {
-            val config = config ?: return@ToggleItem
+        ToggleItem(
+            state = config.enableImageAdjustment,
+            titleResId = R.string.image_adjust, iconResId = R.drawable.icon_image
+        ) {
             config::enableImageAdjustment.toggle()
             onClicked(false)
         }
 
         Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
 
-        ToggleItem(state = config?.shareLocation
-            ?: false, titleResId = R.string.location, iconResId = R.drawable.ic_location) {
-            config?.let { it.shareLocation = it.shareLocation.not() }
+        ToggleItem(
+            state = config.shareLocation,
+            titleResId = R.string.location, iconResId = R.drawable.ic_location
+        ) {
+            config::shareLocation.toggle()
             onClicked(false)
         }
-        ToggleItem(state = config?.volumePageTurn
-            ?: false, titleResId = R.string.volume_page_turn, iconResId = R.drawable.ic_volume) {
-            config?.let { it.volumePageTurn = it.volumePageTurn.not() }
+        ToggleItem(
+            state = config.volumePageTurn,
+            titleResId = R.string.volume_page_turn, iconResId = R.drawable.ic_volume
+        ) {
+            config::volumePageTurn.toggle()
             onClicked(false)
         }
-        ToggleItem(state = config?.continueMedia
-            ?: false, titleResId = R.string.media_continue, iconResId = R.drawable.ic_media_continue) {
-            config?.let { it.continueMedia = it.continueMedia.not() }
+        ToggleItem(
+            state = config.continueMedia,
+            titleResId = R.string.media_continue, iconResId = R.drawable.ic_media_continue
+        ) {
+            config::continueMedia.toggle()
             onClicked(false)
         }
-        ToggleItem(state = config?.desktop
-            ?: false, titleResId = R.string.desktop_mode, iconResId = R.drawable.icon_desktop) {
-            config?.let { it.desktop = it.desktop.not() }
+        ToggleItem(
+            state = config.desktop,
+            titleResId = R.string.desktop_mode, iconResId = R.drawable.icon_desktop
+        ) {
+            config::desktop.toggle()
             onClicked(false)
         }
     }
@@ -113,6 +154,7 @@ fun ToggleItem(
     titleResId: Int,
     iconResId: Int,
     isEnabled: Boolean = true,
+    onEditAction: (() -> Unit)? = null,
     onClicked: (Boolean) -> Unit,
 ) {
     var currentState by remember { mutableStateOf(state) }
@@ -155,15 +197,27 @@ fun ToggleItem(
                 tint = MaterialTheme.colors.onBackground
             )
         }
-        Spacer(modifier = Modifier
-            .width(6.dp)
-            .fillMaxHeight())
+        Spacer(
+            modifier = Modifier
+                .width(6.dp)
+                .fillMaxHeight()
+        )
         Text(
             modifier = Modifier.wrapContentWidth(),
             text = stringResource(id = titleResId),
             fontSize = 18.sp,
             color = MaterialTheme.colors.onBackground
         )
+        if (onEditAction != null) {
+            Icon(
+                painter = painterResource(id = R.drawable.icon_edit), contentDescription = null,
+                modifier = Modifier
+                    .padding(horizontal = 6.dp)
+                    .fillMaxHeight()
+                    .clickable { onEditAction() },
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
     }
 }
 
@@ -171,7 +225,7 @@ fun ToggleItem(
 @Composable
 private fun PreviewItem() {
     MyTheme {
-        ToggleItem(true, R.string.title, R.drawable.ic_location) {}
+        ToggleItem(true, R.string.title, R.drawable.ic_location, onEditAction = {}) {}
     }
 }
 
@@ -179,6 +233,6 @@ private fun PreviewItem() {
 @Composable
 private fun PreviewItemList() {
     MyTheme {
-        FastToggleItemList(onClicked = {})
+        //FastToggleItemList(config = ConfigManager(), onClicked = {})
     }
 }
