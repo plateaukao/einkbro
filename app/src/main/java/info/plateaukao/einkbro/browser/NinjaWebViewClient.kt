@@ -73,7 +73,9 @@ class NinjaWebViewClient(
             }, 2000)
         }
 
-        ninjaWebView.updatePageInfo()
+        ninjaWebView.postDelayed({
+            ninjaWebView.updatePageInfo()
+        }, 1000)
 
         // skip translation pages
         if (config.saveHistory &&
