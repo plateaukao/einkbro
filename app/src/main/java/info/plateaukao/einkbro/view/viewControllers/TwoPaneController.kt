@@ -18,7 +18,6 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.BrowserUnit
-import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.NinjaToast
@@ -182,6 +181,7 @@ class TwoPaneController(
             }
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
+            TranslationMode.ONYX -> Unit
         }
     }
 
@@ -246,10 +246,10 @@ class TwoPaneController(
     }
 
     fun showTranslationConfigDialog() {
-        val enumValues: List<TranslationMode> =
-            TranslationMode.values().toMutableList().apply { remove(TranslationMode.ONYX) }
+        val enumValues: List<TranslationMode> = TranslationMode.values().toList()
 
-        val translationModeArray = enumValues.map { activity.getString(it.labelResId) }.toTypedArray()
+        val translationModeArray =
+            enumValues.map { activity.getString(it.labelResId) }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
         val selected = valueArray.indexOf(config.translationMode.ordinal)
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
@@ -360,8 +360,6 @@ class TwoPaneController(
         return uri.toString()
     }
 
-    private fun isTranslationModeOn(): Boolean =
-        (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) || twoPaneLayout.shouldShowSecondPane
 
     private fun toggleTranslationWindow(
         isEnabled: Boolean, onTranslationClosed: () -> Unit = {}

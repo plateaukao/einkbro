@@ -58,9 +58,12 @@ open class NinjaWebView(
 
     var shouldHideTranslateContext: Boolean = false
     protected var isEpubReaderMode = false
+    private val cookieManager: CookieManager = CookieManager.getInstance()
 
     private val config: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
+    private val javascript: Javascript by inject()
+    private val cookie: Cookie by inject()
 
     var incognito: Boolean = false
         set(value) {
@@ -240,7 +243,7 @@ open class NinjaWebView(
     }
 
     private fun toggleCookieSupport(isEnabled: Boolean) {
-        with(CookieManager.getInstance()) {
+        with(cookieManager) {
             setAcceptCookie(isEnabled)
             setAcceptThirdPartyCookies(this@NinjaWebView, isEnabled)
         }
@@ -281,6 +284,9 @@ open class NinjaWebView(
             setAlbumCover(it)
         }
 
+        settings.javaScriptEnabled = config.enableJavascript || javascript.isWhite(url)
+        toggleCookieSupport(config.cookies || cookie.isWhite(url))
+
         super.loadUrl(url, additionalHttpHeaders)
     }
 
@@ -316,6 +322,9 @@ open class NinjaWebView(
         bookmarkManager.findFaviconBy(strippedUrl)?.getBitmap()?.let {
             setAlbumCover(it)
         }
+
+        settings.javaScriptEnabled = config.enableJavascript || javascript.isWhite(url)
+        toggleCookieSupport(config.cookies || cookie.isWhite(url))
 
         super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }

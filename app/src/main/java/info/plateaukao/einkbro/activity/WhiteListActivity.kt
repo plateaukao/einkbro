@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.DomainInterface

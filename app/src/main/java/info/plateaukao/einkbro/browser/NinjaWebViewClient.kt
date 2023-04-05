@@ -54,7 +54,6 @@ class NinjaWebViewClient(
     private val cookie: Cookie by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
 
-    private val white: Boolean = false
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
     var book: Book? = null
@@ -204,7 +203,7 @@ class NinjaWebViewClient(
 
     private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
         val url = uri.toString()
-        if (hasAdBlock && !white && adBlock.isAd(url)) {
+        if (hasAdBlock && !adBlock.isWhite(url) && adBlock.isAd(url)) {
             return adTxtResponse
         }
 
