@@ -439,40 +439,28 @@ open class NinjaWebView(
         scrollY == 0
     }
 
-    fun jumpToTop() {
-        scrollTo(0, 0)
-        updatePageInfo()
+    fun jumpToTop() = scrollTo(0, 0)
+
+    fun jumpToBottom() = if (isVerticalRead) {
+        scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
+    } else {
+        scrollTo(0, computeVerticalScrollRange() - shiftOffset())
     }
 
-    fun jumpToBottom() {
-        if (isVerticalRead) {
-            scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
-        } else {
-            scrollTo(0, computeVerticalScrollRange() - shiftOffset())
-        }
-        updatePageInfo()
+    open fun pageDownWithNoAnimation() = if (isVerticalRead) {
+        scrollBy(shiftOffset(), 0)
+        scrollX = min(computeHorizontalScrollRange() - width, scrollX)
+    } else {
+        scrollBy(0, shiftOffset())
+        scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
     }
 
-    open fun pageDownWithNoAnimation() {
-        if (isVerticalRead) {
-            scrollBy(shiftOffset(), 0)
-            scrollX = min(computeHorizontalScrollRange() - width, scrollX)
-        } else {
-            scrollBy(0, shiftOffset())
-            scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
-        }
-        updatePageInfo()
-    }
-
-    open fun pageUpWithNoAnimation() {
-        if (isVerticalRead) {
-            scrollBy(-shiftOffset(), 0)
-            scrollX = max(0, scrollX)
-        } else {
-            scrollBy(0, -shiftOffset())
-            scrollY = max(0, scrollY)
-        }
-        updatePageInfo()
+    open fun pageUpWithNoAnimation() = if (isVerticalRead) {
+        scrollBy(-shiftOffset(), 0)
+        scrollX = max(0, scrollX)
+    } else {
+        scrollBy(0, -shiftOffset())
+        scrollY = max(0, scrollY)
     }
 
     fun updatePageInfo() {

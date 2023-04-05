@@ -1252,6 +1252,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun scrollChange() {
         ninjaWebView.setScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
+                ninjaWebView.updatePageInfo()
+
                 if (::twoPaneController.isInitialized) {
                     twoPaneController.scrollChange(scrollY - oldScrollY)
                 }
@@ -1581,7 +1583,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 else IntentUnit.share(this, title, url)
             }
 
-            ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(this, BrowserUnit.stripUrlQuery(url))
+            ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(
+                this,
+                BrowserUnit.stripUrlQuery(url)
+            )
+
             ContextMenuItemType.CopyText -> ShareUtil.copyToClipboard(this, title)
             ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
                 this,
