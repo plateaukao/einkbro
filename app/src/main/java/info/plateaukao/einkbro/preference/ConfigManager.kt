@@ -133,6 +133,7 @@ class ConfigManager(
         ADBLOCK_URL_DEFAULT
     )
     var bookmarkSyncUrl by StringPreference(sp, K_BOOKMARK_SYNC_URL, "")
+    var pocketAccessToken by StringPreference(sp, K_POCKET_ACCESS_TOKEN, "")
 
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
@@ -461,6 +462,8 @@ class ConfigManager(
         const val K_GESTURE_NAV_DOWN = "setting_gesture_nav_down"
         const val K_GESTURE_NAV_LEFT = "setting_gesture_nav_left"
         const val K_GESTURE_NAV_RIGHT = "setting_gesture_nav_right"
+
+        const val K_POCKET_ACCESS_TOKEN = "sp_pocket_access_token"
 
         const val ADBLOCK_URL_DEFAULT = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 

@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.AddToPocket
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.BlackFont
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.BoldFont
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CloseTab
@@ -92,7 +93,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive
+    SaveArchive, AddToPocket
 }
 
 @Composable
@@ -179,6 +180,15 @@ private fun MenuItems(
             MenuItem(R.string.menu_open_epub, R.drawable.ic_open_epub) { onClicked(OpenEpub) }
             MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
             MenuItem(R.string.menu_save_pdf, R.drawable.ic_pdf) { onClicked(SavePdf) }
+        }
+        HorizontalSeparator()
+        Row(
+            modifier = Modifier
+                .wrapContentWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.End
+        ) {
+            MenuItem(R.string.menu_add_to_pocket, R.drawable.ic_book) { onClicked(AddToPocket) }
         }
         HorizontalSeparator()
         Row(
