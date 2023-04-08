@@ -49,6 +49,7 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
+import info.plateaukao.einkbro.pocket.PocketNetwork
 import info.plateaukao.einkbro.preference.*
 import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
@@ -99,6 +100,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val config: ConfigManager by inject()
     private val ttsManager: TtsManager by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
+    private val pocketNetwork: PocketNetwork by inject()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -255,6 +257,37 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun toggleReaderMode() = ninjaWebView.toggleReaderMode()
     override fun toggleVerticalRead() = ninjaWebView.toggleVerticalRead()
     override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
+
+    private var urlToBeAdded: String = ""
+    override fun addToPocket(url: String) {
+        if (config.pocketAccessToken.isEmpty()) {
+            pocketNetwork.getRequestToken { requestToken ->
+                val authUrl =
+                    "https://getpocket.com/auth/authorize?request_token=$requestToken&redirect_uri=einkbropocket://pocket-auth"
+                urlToBeAdded = url
+                runOnUiThread { addNewTab(authUrl) }
+            }
+        } else {
+            pocketNetwork.addUrlToPocket(config.pocketAccessToken, url) { success ->
+                runOnUiThread {
+                    NinjaToast.showShort(this, if (success) "Added" else "Failed")
+                }
+            }
+        }
+    }
+
+    override fun handlePocketRequestToken(requestToken: String) {
+        pocketNetwork.getAccessToken { accessToken ->
+            config.pocketAccessToken = accessToken
+            pocketNetwork.addUrlToPocket(config.pocketAccessToken, urlToBeAdded) { success ->
+                urlToBeAdded = ""
+                runOnUiThread {
+                    NinjaToast.showShort(this, if (success) "Added" else "Failed")
+                }
+            }
+            runOnUiThread { removeAlbum() }
+        }
+    }
 
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)

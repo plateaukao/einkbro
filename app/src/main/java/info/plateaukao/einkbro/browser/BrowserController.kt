@@ -71,4 +71,7 @@ interface BrowserController {
     fun pageDown()
     fun pageUp()
     fun updatePageInfo(info: String)
+
+    fun addToPocket(url: String)
+    fun handlePocketRequestToken(requestToken: String)
 }

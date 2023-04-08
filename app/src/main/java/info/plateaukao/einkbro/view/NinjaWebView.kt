@@ -329,6 +329,10 @@ open class NinjaWebView(
         super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }
 
+    fun handlePocketRequestToken(requestToken: String) {
+        browserController?.handlePocketRequestToken(requestToken)
+    }
+
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
     private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)

@@ -127,4 +127,7 @@ dependencies {
     // integrate glide transformations
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
     implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
+
+    // okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 }

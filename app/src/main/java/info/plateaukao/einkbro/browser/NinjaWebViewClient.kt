@@ -101,6 +101,14 @@ class NinjaWebViewClient(
 
     private fun handleUri(webView: WebView, uri: Uri): Boolean {
         val url = uri.toString()
+
+        // handle pocket authentication
+        if (url.startsWith("einkbropocket://pocket-auth")) {
+            val requestToken = url.substringAfter("code=", "")
+            ninjaWebView.handlePocketRequestToken(requestToken)
+            return true
+        }
+
         if (url.startsWith("http")) {
             webView.loadUrl(url, ninjaWebView.requestHeaders)
             return true

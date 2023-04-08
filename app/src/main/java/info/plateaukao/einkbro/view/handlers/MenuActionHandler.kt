@@ -89,7 +89,10 @@ class MenuActionHandler(
         MenuItemType.Download -> BrowserUnit.openDownloadFolder(activity)
         MenuItemType.SaveArchive -> browserController.showWebArchiveFilePicker()
         MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
+
+        MenuItemType.AddToPocket -> ninjaWebView.url?.let { browserController.addToPocket(it) }
     }
+
 
     private fun showReceiveDataDialog(ninjaWebView: NinjaWebView) {
         ReceiveDataDialog(activity, activity.lifecycleScope).show { text ->
