@@ -1,5 +1,7 @@
 package info.plateaukao.einkbro.pocket
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -7,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okio.IOException
+import org.json.JSONObject
 
 class PocketNetwork {
     private val client = OkHttpClient()
@@ -68,7 +71,13 @@ class PocketNetwork {
         })
     }
 
-    fun addUrlToPocket(accessToken: String, url: String, title: String? = null, tags: String? = null, callback: (Boolean) -> Unit) {
+    fun addUrlToPocket(
+        accessToken: String,
+        url: String,
+        title: String? = null,
+        tags: String? = null,
+        callback: (Boolean) -> Unit
+    ) {
         val requestBodyBuilder = FormBody.Builder()
             .add("url", url)
             .add("consumer_key", consumerKey)
@@ -99,5 +108,62 @@ class PocketNetwork {
                 callback(response.isSuccessful)
             }
         })
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun addUrlToPocket(
+        accessToken: String,
+        url: String,
+        title: String? = null,
+        tags: String? = null
+    ): String? {
+        return suspendCancellableCoroutine { continuation ->
+            val requestBodyBuilder = FormBody.Builder()
+                .add("url", url)
+                .add("consumer_key", consumerKey)
+                .add("access_token", accessToken)
+
+            title?.let {
+                requestBodyBuilder.add("title", it)
+            }
+
+            tags?.let {
+                requestBodyBuilder.add("tags", it)
+            }
+
+            val requestBody = requestBodyBuilder.build()
+
+            val request = Request.Builder()
+                .url("https://getpocket.com/v3/add")
+                .post(requestBody)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    if (continuation.isActive) {
+                        continuation.resume(null) {}
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (continuation.isActive) {
+                        val body = response.body?.string()
+                        if (body != null) {
+                            val jsonResponse = JSONObject(body)
+                            val item = jsonResponse.getJSONObject("item")
+                            val articleUrl =
+                                "https://getpocket.com/read/" + item.getString("item_id")
+                            continuation.resume(articleUrl) {}
+                        } else {
+                            continuation.resume(null) {}
+                        }
+                    }
+                }
+            })
+
+            continuation.invokeOnCancellation {
+                client.dispatcher.executorService.shutdownNow()
+            }
+        }
     }
 }

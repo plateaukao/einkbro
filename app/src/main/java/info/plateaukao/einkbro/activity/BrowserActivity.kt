@@ -39,6 +39,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
@@ -268,9 +269,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 runOnUiThread { addNewTab(authUrl) }
             }
         } else {
-            pocketNetwork.addUrlToPocket(config.pocketAccessToken, url) { success ->
-                runOnUiThread {
-                    NinjaToast.showShort(this, if (success) "Added" else "Failed")
+            lifecycleScope.launch {
+                val resolvedUrl = pocketNetwork.addUrlToPocket(config.pocketAccessToken, url)
+                if (resolvedUrl == null) {
+                    NinjaToast.showShort(this@BrowserActivity, "Failed")
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        "Added",
+                        Snackbar.LENGTH_SHORT
+                    ).apply {
+                        setAction("Go to Pocket article url") {
+                            addNewTab(resolvedUrl)
+                        }
+                    }.show()
                 }
             }
         }
