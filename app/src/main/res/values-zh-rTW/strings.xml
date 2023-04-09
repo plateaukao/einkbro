@@ -332,7 +332,7 @@
     <string name="setting_summary_adblock_auto_update">每週更新廣告阻擋資料庫</string>
     <string name="toast_adblock_updated">廣告阻擋資料已更新</string>
     <string name="toast_backup_successful">備份完成</string>
-    <string name="setting_title_enable_ssl_error_dialog">Show SSL error dialog</string>
+    <string name="setting_title_enable_ssl_error_dialog">顯示 SSL 錯誤對話框</string>
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
     <string name="manual">使用說明</string>
     <string name="black_font">黑色字體</string>
@@ -351,5 +351,7 @@
     <string name="setting_title_userAgent_toggle">Enable Custom UserAgent</string>
     <string name="setting_summary_userAgent">Input custom useragent strings here.</string>
     <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
-    <string name="menu_add_to_pocket">Add to Pocket</string>
+    <string name="menu_add_to_pocket">加到 Pocket</string>
+    <string name="content_adjustment">網頁內容調整</string>
+    <string name="share_save">分享或儲存</string>
 </resources>

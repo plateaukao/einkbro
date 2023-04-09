@@ -117,16 +117,8 @@ private fun MenuItems(
             MenuItem(R.string.menu_quit, R.drawable.icon_exit) { onClicked(Quit) }
         }
         HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-        }
-        HorizontalSeparator()
         Text(
-            "Share & Save",
+            stringResource(R.string.share_save),
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
@@ -199,7 +191,7 @@ private fun MenuItems(
         }
         HorizontalSeparator()
         Text(
-            "Content",
+            stringResource(R.string.content_adjustment),
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
