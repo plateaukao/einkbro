@@ -14,7 +14,6 @@ import org.json.JSONObject
 class PocketNetwork {
     private val client = OkHttpClient()
     private val consumerKey = "106771-19592cda93fd9033c29a31b"
-    private var requestToken: String = ""
 
     fun getRequestToken(callback: (String) -> Unit) {
         val requestBody = FormBody.Builder()
@@ -35,14 +34,14 @@ class PocketNetwork {
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     val body = response.body?.string()
-                    requestToken = body?.replace("code=", "") ?: return
+                    val requestToken = body?.replace("code=", "") ?: return
                     callback(requestToken)
                 }
             }
         })
     }
 
-    fun getAccessToken(callback: (String) -> Unit) {
+    fun getAccessToken(requestToken: String, callback: (String) -> Unit) {
         val requestBody = FormBody.Builder()
             .add("consumer_key", consumerKey)
             .add("code", requestToken)

@@ -50,7 +50,6 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
-import info.plateaukao.einkbro.pocket.PocketNetwork
 import info.plateaukao.einkbro.preference.*
 import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
@@ -70,6 +69,8 @@ import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
 import info.plateaukao.einkbro.view.viewControllers.*
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
+import info.plateaukao.einkbro.viewmodel.PocketViewModel
+import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -101,7 +102,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val config: ConfigManager by inject()
     private val ttsManager: TtsManager by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
-    private val pocketNetwork: PocketNetwork by inject()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -261,43 +261,39 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var urlToBeAdded: String = ""
     override fun addToPocket(url: String) {
-        if (config.pocketAccessToken.isEmpty()) {
-            pocketNetwork.getRequestToken { requestToken ->
-                val authUrl =
-                    "https://getpocket.com/auth/authorize?request_token=$requestToken&redirect_uri=einkbropocket://pocket-auth"
-                urlToBeAdded = url
-                runOnUiThread { addNewTab(authUrl) }
-            }
-        } else {
+        // need to handle the case where the user is not logged in
+        if (!pocketViewModel.isPocketLoggedIn()) {
+            urlToBeAdded = url
             lifecycleScope.launch {
-                val resolvedUrl = pocketNetwork.addUrlToPocket(config.pocketAccessToken, url)
-                if (resolvedUrl == null) {
-                    NinjaToast.showShort(this@BrowserActivity, "Failed")
-                } else {
-                    Snackbar.make(
-                        binding.root,
-                        "Added",
-                        Snackbar.LENGTH_SHORT
-                    ).apply {
-                        setAction("Go to Pocket article url") {
-                            addNewTab(resolvedUrl)
-                        }
-                    }.show()
-                }
+                val authUrl = pocketViewModel.getAuthUrl()
+                addNewTab(authUrl)
+            }
+            return
+        }
+
+        lifecycleScope.launch {
+            val resolvedUrl = pocketViewModel.addUrlToPocket(url)
+            if (resolvedUrl == null) {
+                NinjaToast.showShort(this@BrowserActivity, "Failed")
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    "Added",
+                    Snackbar.LENGTH_SHORT
+                ).apply {
+                    setAction("Go to Pocket article url") {
+                        addNewTab(resolvedUrl)
+                    }
+                }.show()
             }
         }
     }
 
     override fun handlePocketRequestToken(requestToken: String) {
-        pocketNetwork.getAccessToken { accessToken ->
-            config.pocketAccessToken = accessToken
-            pocketNetwork.addUrlToPocket(config.pocketAccessToken, urlToBeAdded) { success ->
-                urlToBeAdded = ""
-                runOnUiThread {
-                    NinjaToast.showShort(this, if (success) "Added" else "Failed")
-                }
-            }
-            runOnUiThread { removeAlbum() }
+        lifecycleScope.launch {
+            pocketViewModel.getAndSaveAccessToken()
+            addToPocket(urlToBeAdded)
+            urlToBeAdded = ""
         }
     }
 
@@ -1014,6 +1010,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val bookmarkViewModel: BookmarkViewModel by viewModels {
         BookmarkViewModelFactory(bookmarkManager.bookmarkDao)
+    }
+
+    private val pocketViewModel: PocketViewModel by viewModels {
+        PocketViewModelFactory()
     }
 
     private fun initOverview() {

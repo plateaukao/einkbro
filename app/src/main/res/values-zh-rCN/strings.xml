@@ -422,4 +422,5 @@
     <string name="setting_summary_userAgent">Input custom useragent strings here.</string>
     <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
     <string name="menu_add_to_pocket">Add to Pocket</string>
+    <string name="content_adjustment">Content Adjustment</string>
 </resources>
