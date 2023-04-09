@@ -201,13 +201,13 @@ class TwoPaneController(
 
     private fun updateSyncScrollView(shouldSyncScroll: Boolean = false) {
         val drawable =
-            if (shouldSyncScroll) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+            if (shouldSyncScroll) R.drawable.selected_border_bg else R.drawable.background_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
     }
 
     private fun updateLinkHereView(shouldLinkHere: Boolean = false) {
         val drawable =
-            if (shouldLinkHere) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+            if (shouldLinkHere) R.drawable.selected_border_bg else R.drawable.background_with_border
         translationViewBinding.linkHere.setBackgroundResource(drawable)
     }
 
@@ -304,7 +304,7 @@ class TwoPaneController(
 
         pageContainer.children.iterator().forEach { pageIndexView ->
             pageIndexView.setBackgroundResource(
-                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.background_with_border
             )
         }
     }

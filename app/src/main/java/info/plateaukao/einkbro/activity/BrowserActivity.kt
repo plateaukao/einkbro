@@ -279,7 +279,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 Snackbar.make(
                     binding.root,
                     "Added",
-                    Snackbar.LENGTH_SHORT
+                    Snackbar.LENGTH_LONG
                 ).apply {
                     setAction("Go to Pocket article url") {
                         addNewTab(resolvedUrl)

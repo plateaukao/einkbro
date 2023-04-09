@@ -30,7 +30,7 @@
         android:layout_height="40dp"
         android:src="@drawable/icon_info"
         app:tint="?attr/colorControlNormal"
-        android:background="@drawable/backgound_with_border"
+        android:background="@drawable/background_with_border"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:visibility="invisible"
@@ -47,7 +47,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:background="@drawable/backgound_with_border"
+            android:background="@drawable/background_with_border"
             android:src="@drawable/ic_rotate"
             app:tint="?attr/colorControlNormal"/>
         <ImageButton
@@ -57,7 +57,7 @@
             android:layout_margin="0.5dp"
             android:src="@drawable/ic_link_here"
             app:tint="?attr/colorControlNormal"
-            android:background="@drawable/backgound_with_border"
+            android:background="@drawable/background_with_border"
             />
         <ImageButton
             android:id="@+id/sync_scroll"
@@ -66,7 +66,7 @@
             android:layout_margin="0.5dp"
             android:src="@drawable/ic_sync_scroll"
             app:tint="?attr/colorControlNormal"
-            android:background="@drawable/backgound_with_border"
+            android:background="@drawable/background_with_border"
             />
         <TextView
             android:id="@+id/translation_language"
@@ -74,7 +74,7 @@
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
             android:tint="?attr/colorControlNormal"
-            android:background="@drawable/backgound_with_border"
+            android:background="@drawable/background_with_border"
             android:textAlignment="center"
             android:gravity="center"
             android:textSize="16sp"
@@ -87,7 +87,7 @@
             android:layout_margin="0.5dp"
             android:src="@drawable/ic_font_increase"
             app:tint="?attr/colorControlNormal"
-            android:background="@drawable/backgound_with_border"
+            android:background="@drawable/background_with_border"
             />
         <ImageButton
             android:id="@+id/translation_font_minus"
@@ -96,7 +96,7 @@
             android:layout_margin="0.5dp"
             android:src="@drawable/ic_font_decrease"
             app:tint="?attr/colorControlNormal"
-            android:background="@drawable/backgound_with_border"
+            android:background="@drawable/background_with_border"
             />
         <ImageButton
             android:id="@+id/translation_close"
@@ -105,7 +105,7 @@
             android:layout_margin="0.5dp"
             android:src="@drawable/icon_close"
             app:tint="?attr/colorControlNormal"
-            android:background="@drawable/backgound_with_border"
+            android:background="@drawable/background_with_border"
             />
     </LinearLayout>
 </RelativeLayout>
