@@ -24,7 +24,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -35,38 +37,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.AddToPocket
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.BlackFont
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.BoldFont
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CloseTab
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CopyLink
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Download
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.FontSize
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenEpub
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenHome
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenWith
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.QuickToggle
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Quit
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ReaderMode
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ReceiveData
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SaveBookmark
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SaveEpub
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SavePdf
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Search
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SendLink
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SetHome
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Settings
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ShareLink
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Shortcut
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SplitScreen
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ToolbarSetting
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.TouchSetting
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Translate
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Tts
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.VerticalRead
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.WhiteBknd
 import org.koin.android.ext.android.inject
 
 class MenuDialogFragment(
@@ -78,7 +63,10 @@ class MenuDialogFragment(
         MyTheme {
             MenuItems(
                 config.whiteBackground, config.boldFontStyle,
-                config.blackFontStyle, ttsManager.isSpeaking()
+                config.blackFontStyle, ttsManager.isSpeaking(),
+                config.showShareSaveMenu, config.showContentMenu,
+                { config::showShareSaveMenu.toggle() },
+                { config::showContentMenu.toggle() }
             ) { item ->
                 dialog?.dismiss()
                 itemClicked(item)
@@ -102,6 +90,10 @@ private fun MenuItems(
     boldFont: Boolean,
     blackFont: Boolean,
     isSpeaking: Boolean,
+    showShareSaveMenu: Boolean,
+    showContentMenu: Boolean,
+    toggleShareSaveMenu: () -> Unit,
+    toggleContentMenu: () -> Unit,
     onClicked: (MenuItemType) -> Unit
 ) {
     Column(
@@ -110,19 +102,16 @@ private fun MenuItems(
             .width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.End
     ) {
+        var currentShowShare by remember { mutableStateOf(showShareSaveMenu) }
+        var currentShowContent by remember { mutableStateOf(showContentMenu) }
+
         Row(
             modifier = Modifier
                 .width(IntrinsicSize.Max)
                 .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
-            val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
-            MenuItem(R.string.menu_tts, ttsRes) { onClicked(Tts) }
-            MenuItem(
-                R.string.menu_quickToggle,
-                R.drawable.ic_quick_toggle
-            ) { onClicked(QuickToggle) }
+            MenuItem(R.string.menu_fav, R.drawable.ic_home_set) { onClicked(MenuItemType.SetHome) }
             MenuItem(R.string.menu_openFav, R.drawable.ic_home) { onClicked(OpenHome) }
             MenuItem(R.string.menu_closeTab, R.drawable.icon_close) { onClicked(CloseTab) }
             MenuItem(R.string.menu_quit, R.drawable.icon_exit) { onClicked(Quit) }
@@ -132,81 +121,184 @@ private fun MenuItems(
             modifier = Modifier
                 .wrapContentWidth()
                 .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            MenuItem(R.string.toolbar_setting, R.drawable.ic_toolbar) { onClicked(ToolbarSetting) }
-            MenuItem(R.string.split_screen, R.drawable.ic_split_screen) { onClicked(SplitScreen) }
-            MenuItem(R.string.translate, R.drawable.ic_translate) { onClicked(Translate) }
-            MenuItem(
-                R.string.vertical_read,
-                R.drawable.ic_vertical_read
-            ) { onClicked(VerticalRead) }
-            MenuItem(R.string.reader_mode, R.drawable.ic_reader) { onClicked(ReaderMode) }
-            MenuItem(R.string.touch_area_setting, R.drawable.ic_touch_disabled) {
+        }
+        HorizontalSeparator()
+        Text(
+            "Share & Save",
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+                .clickable {
+                    currentShowShare = !currentShowShare
+                    toggleShareSaveMenu()
+                },
+            textAlign = TextAlign.Center,
+            fontSize = 13.sp,
+            color = MaterialTheme.colors.onBackground
+        )
+        if (currentShowShare) {
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MenuItem(
+                    R.string.menu_receive,
+                    R.drawable.ic_receive
+                ) { onClicked(MenuItemType.ReceiveData) }
+                MenuItem(
+                    R.string.menu_save_bookmark,
+                    R.drawable.ic_bookmark
+                ) { onClicked(MenuItemType.SaveBookmark) }
+                MenuItem(R.string.menu_sc, R.drawable.link_plus) { onClicked(Shortcut) }
+                MenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
+                MenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
+                MenuItem(
+                    R.string.menu_share_link,
+                    R.drawable.icon_menu_share
+                ) { onClicked(ShareLink) }
+            }
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MenuItem(
+                    R.string.menu_send_link,
+                    R.drawable.ic_send
+                ) { onClicked(MenuItemType.SendLink) }
+                MenuItem(
+                    R.string.menu_add_to_pocket,
+                    R.drawable.ic_pocket
+                ) { onClicked(AddToPocket) }
+                MenuItem(R.string.menu_save_archive, R.drawable.ic_save_archive) {
+                    onClicked(
+                        MenuItemType.SaveArchive
+                    )
+                }
+                MenuItem(R.string.menu_open_epub, R.drawable.ic_open_epub) { onClicked(OpenEpub) }
+                MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
+                MenuItem(R.string.menu_save_pdf, R.drawable.ic_pdf) { onClicked(SavePdf) }
+            }
+        } else {
+            Icon(
+                painter = painterResource(id = R.drawable.icon_arrow_down_gest),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        currentShowShare = !currentShowShare
+                        toggleShareSaveMenu()
+                    },
+                tint = MaterialTheme.colors.onBackground,
+            )
+        }
+        HorizontalSeparator()
+        Text(
+            "Content",
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+                .clickable {
+                    currentShowContent = !currentShowContent
+                    toggleContentMenu()
+                },
+            textAlign = TextAlign.Center,
+            fontSize = 13.sp,
+            color = MaterialTheme.colors.onBackground
+        )
+        if (currentShowContent) {
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MenuItem(
+                    R.string.split_screen,
+                    R.drawable.ic_split_screen
+                ) { onClicked(MenuItemType.SplitScreen) }
+                MenuItem(
+                    R.string.translate,
+                    R.drawable.ic_translate
+                ) { onClicked(MenuItemType.Translate) }
+                MenuItem(
+                    R.string.vertical_read,
+                    R.drawable.ic_vertical_read
+                ) { onClicked(MenuItemType.VerticalRead) }
+                MenuItem(
+                    R.string.reader_mode,
+                    R.drawable.ic_reader
+                ) { onClicked(MenuItemType.ReaderMode) }
+                MenuItem(R.string.touch_area_setting, R.drawable.ic_touch_disabled) {
+                    onClicked(
+                        MenuItemType.TouchSetting
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
+                MenuItem(R.string.menu_tts, ttsRes) { onClicked(MenuItemType.Tts) }
+                val whiteRes =
+                    if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
+                MenuItem(R.string.white_background, whiteRes) { onClicked(MenuItemType.WhiteBknd) }
+                val blackRes =
+                    if (blackFont) R.drawable.ic_black_font_on else R.drawable.ic_black_font_off
+                MenuItem(R.string.black_font, blackRes) { onClicked(MenuItemType.BlackFont) }
+                val boldRes =
+                    if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
+                MenuItem(R.string.bold_font, boldRes) { onClicked(MenuItemType.BoldFont) }
+                MenuItem(
+                    R.string.font_size,
+                    R.drawable.icon_size
+                ) { onClicked(MenuItemType.FontSize) }
+            }
+        } else {
+            Icon(
+                painter = painterResource(id = R.drawable.icon_arrow_down_gest),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        currentShowContent = !currentShowContent
+                        toggleContentMenu()
+                    },
+                tint = MaterialTheme.colors.onBackground,
+            )
+        }
+        HorizontalSeparator()
+        Row(
+            modifier = Modifier
+                .wrapContentWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            MenuItem(R.string.menu_other_searchSite, R.drawable.icon_search) {
                 onClicked(
-                    TouchSetting
+                    MenuItemType.Search
                 )
             }
-        }
-        HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.End
-        ) {
-            MenuItem(R.string.menu_sc, R.drawable.link_plus) { onClicked(Shortcut) }
-            MenuItem(R.string.menu_receive, R.drawable.ic_receive) { onClicked(ReceiveData) }
-            MenuItem(R.string.menu_send_link, R.drawable.ic_send) { onClicked(SendLink) }
-            MenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
-            MenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
-            MenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) { onClicked(ShareLink) }
-        }
-        HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.End
-        ) {
-            MenuItem(R.string.menu_fav, R.drawable.ic_home_set) { onClicked(SetHome) }
             MenuItem(
-                R.string.menu_save_bookmark,
-                R.drawable.ic_bookmark
-            ) { onClicked(SaveBookmark) }
-            MenuItem(R.string.menu_save_archive, R.drawable.ic_save_archive) { onClicked(
-                MenuItemType.SaveArchive
-            ) }
-            MenuItem(R.string.menu_open_epub, R.drawable.ic_open_epub) { onClicked(OpenEpub) }
-            MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
-            MenuItem(R.string.menu_save_pdf, R.drawable.ic_pdf) { onClicked(SavePdf) }
-        }
-        HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.End
-        ) {
-            MenuItem(R.string.menu_add_to_pocket, R.drawable.ic_book) { onClicked(AddToPocket) }
-        }
-        HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.End
-        ) {
-            MenuItem(R.string.menu_other_searchSite, R.drawable.icon_search) { onClicked(Search) }
-            val whiteRes =
-                if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
-            MenuItem(R.string.white_background, whiteRes) { onClicked(WhiteBknd) }
-            val blackRes =
-                if (blackFont) R.drawable.ic_black_font_on else R.drawable.ic_black_font_off
-            MenuItem(R.string.black_font, blackRes) { onClicked(BlackFont) }
-            val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
-            MenuItem(R.string.bold_font, boldRes) { onClicked(BoldFont) }
-            MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
+                R.string.menu_download,
+                R.drawable.icon_download
+            ) { onClicked(MenuItemType.Download) }
+            MenuItem(
+                R.string.toolbar_setting,
+                R.drawable.ic_toolbar
+            ) { onClicked(MenuItemType.ToolbarSetting) }
+            MenuItem(
+                R.string.menu_quickToggle,
+                R.drawable.ic_quick_toggle
+            ) { onClicked(MenuItemType.QuickToggle) }
             MenuItem(R.string.settings, R.drawable.icon_settings) { onClicked(Settings) }
         }
     }
@@ -279,6 +371,15 @@ private fun PreviewItem() {
 @Composable
 private fun PreviewMenuItems() {
     MyTheme {
-        MenuItems(hasWhiteBkd = false, boldFont = false, blackFont = false, isSpeaking = false) {}
+        MenuItems(
+            hasWhiteBkd = false,
+            boldFont = false,
+            blackFont = false,
+            isSpeaking = false,
+            showShareSaveMenu = false,
+            showContentMenu = false,
+            {},
+            {}
+        ) {}
     }
 }
