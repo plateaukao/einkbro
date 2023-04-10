@@ -67,6 +67,7 @@ import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
 import info.plateaukao.einkbro.view.viewControllers.*
+import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
@@ -132,6 +133,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val toolbarActionHandler: ToolbarActionHandler by lazy {
         ToolbarActionHandler(this)
     }
+
+    private val albumViewModel: AlbumViewModel by viewModels()
 
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
@@ -1019,6 +1022,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun initOverview() {
         overviewDialogController = OverviewDialogController(
             this,
+            albumViewModel.albums,
             binding.layoutOverview,
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
@@ -1150,10 +1154,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (currentAlbumController != null) {
             val index = browserContainer.indexOf(currentAlbumController) + 1
             browserContainer.add(newWebView, index)
-            overviewDialogController.addTabPreview(album, index)
+            albumViewModel.addAlbum(album, index)
         } else {
             browserContainer.add(newWebView)
-            overviewDialogController.addTabPreview(album, browserContainer.size() - 1)
+            albumViewModel.addAlbum(album, browserContainer.size() - 1)
         }
         updateTabBar()
     }
@@ -1263,7 +1267,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             finish()
         } else {
             closeTabConfirmation {
-                overviewDialogController.removeTabView(albumController.album)
+                albumViewModel.removeAlbum(albumController.album)
                 val removeIndex = browserContainer.indexOf(albumController)
                 val currentIndex = browserContainer.indexOf(currentAlbumController)
                 browserContainer.remove(albumController)
@@ -1281,7 +1285,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun updateTabBar() {
         if (config.shouldShowTabBar) {
-            composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList.toList())
+            composeToolbarViewController.updateTabView(albumViewModel.albums.value.toList())
         }
     }
 

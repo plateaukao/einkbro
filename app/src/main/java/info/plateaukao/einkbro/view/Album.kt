@@ -13,11 +13,9 @@ data class Album(
 ) {
     var isLoaded = false
 
-    var albumTitle: String = ""
+    var albumTitle: String by mutableStateOf("")
 
-    var bitmap: Bitmap? = null
-
-    var stateOfBitmap by mutableStateOf(bitmap)
+    var bitmap: Bitmap? by mutableStateOf(null)
 
     var isActivated = false
 
@@ -42,7 +40,6 @@ data class Album(
 
     fun setAlbumCover(bitmap: Bitmap?) {
         this.bitmap = bitmap
-        stateOfBitmap = bitmap
     }
 
     fun activate() {

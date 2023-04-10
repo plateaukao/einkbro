@@ -6,7 +6,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
@@ -29,6 +29,7 @@ import org.koin.core.component.inject
 
 class OverviewDialogController(
     private val context: Context,
+    private val albumList: MutableState<List<Album>>,
     private val composeView: HistoryAndTabsView,
     private val gotoUrlAction: (String) -> Unit,
     private val addTabAction: (String, String, Boolean) -> Unit,
@@ -45,20 +46,6 @@ class OverviewDialogController(
 
     private val currentRecordList = mutableListOf<Record>()
 
-    private val albumsState = mutableStateOf(listOf<Album>())
-
-    val currentAlbumList = mutableListOf<Album>()
-
-    fun addTabPreview(album: Album, index: Int) {
-        currentAlbumList.add(index, album)
-        albumsState.value = currentAlbumList.toList()
-    }
-
-    fun removeTabView(album: Album) {
-        currentAlbumList.remove(album)
-        albumsState.value = currentAlbumList.toList()
-    }
-
     fun isVisible() = composeView.visibility == VISIBLE
 
     fun show() {
@@ -67,11 +54,12 @@ class OverviewDialogController(
     }
 
     private fun initViews(showHistory: Boolean = false) {
+        val currentAlbumList = albumList
         with(composeView) {
             isHistoryOpen = showHistory
             shouldReverse = !config.isToolbarOnTop
             shouldShowTwoColumns = isWideLayout()
-            albumList = albumsState
+            albumList = currentAlbumList
             onTabIconClick = { openHomePage() }
             onTabClick = { hide(); it.showOrJumpToTop() }
             onTabLongClick = { it.remove() }
@@ -84,7 +72,8 @@ class OverviewDialogController(
             addTab = { hide(); addEmptyTabAction() }
             closePanel = { hide() }
             onDeleteAction = { hide(); deleteAllItems() }
-            launchNewBrowserAction = { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
+            launchNewBrowserAction =
+                { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
         }
     }
 
@@ -178,10 +167,6 @@ class OverviewDialogController(
         recordDb.deleteHistoryItem(record)
         onHistoryChanged()
         refreshHistoryList()
-    }
-
-    fun updateTabView() {
-        composeView.albumList.value = currentAlbumList.toList()
     }
 }
 
