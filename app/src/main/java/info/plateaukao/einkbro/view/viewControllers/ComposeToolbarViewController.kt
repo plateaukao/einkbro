@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -33,6 +34,7 @@ import org.koin.core.component.inject
 
 class ComposeToolbarViewController(
     private val toolbarComposeView: ToolbarComposeView,
+    private val albums: MutableState<List<Album>>,
     private val onIconClick: (ToolbarAction) -> Unit,
     private val onIconLongClick: (ToolbarAction) -> Unit,
     onTabClick: (Album) -> Unit,
@@ -57,14 +59,8 @@ class ComposeToolbarViewController(
 
     private var isReader: Boolean = false
 
-    private val albumsState = mutableStateOf(listOf<Album>())
-
     fun showTabbar(shouldShow: Boolean) {
         toolbarComposeView.shouldShowTabs = shouldShow
-    }
-
-    fun updateTabView(albumList: List<Album>) {
-        albumsState.value = albumList.toList()
     }
 
     init {
@@ -75,7 +71,7 @@ class ComposeToolbarViewController(
             shouldShowTabs = config.shouldShowTabBar
             onItemClick = onIconClick
             onItemLongClick = onIconLongClick
-            albumList = albumsState
+            albumList = albums
         }
 
         toolbarComposeView.onTabClick = onTabClick

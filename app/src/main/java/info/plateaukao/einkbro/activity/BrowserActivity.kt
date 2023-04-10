@@ -139,6 +139,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
             binding.composeIconBar,
+            albumViewModel.albums,
             { toolbarActionHandler.handleClick(it) },
             { toolbarActionHandler.handleLongClick(it) },
             onTabClick = { it.showOrJumpToTop() },
@@ -577,7 +578,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ninjaWebView = controller as NinjaWebView
 
         updateTitle()
-        updateTabBar()
         ninjaWebView.updatePageInfo()
     }
 
@@ -1159,7 +1159,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             browserContainer.add(newWebView)
             albumViewModel.addAlbum(album, browserContainer.size() - 1)
         }
-        updateTabBar()
     }
 
     private fun loadUrlInWebView(foreground: Boolean, webView: NinjaWebView, url: String) {
@@ -1277,16 +1276,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     showAlbum(browserContainer[newIndex])
                 }
                 updateWebViewCount()
-                updateTabBar()
             }
         }
         updateSavedAlbumInfo()
-    }
-
-    private fun updateTabBar() {
-        if (config.shouldShowTabBar) {
-            composeToolbarViewController.updateTabView(albumViewModel.albums.value.toList())
-        }
     }
 
     private fun updateTitle() {
