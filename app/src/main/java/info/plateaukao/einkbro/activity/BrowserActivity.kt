@@ -265,6 +265,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var urlToBeAdded: String = ""
     override fun addToPocket(url: String) {
+        // if Pocket app is installed, share to it
+        if (pocketViewModel.shareToPocketApp(this, url)) return
+
         // need to handle the case where the user is not logged in
         if (!pocketViewModel.isPocketLoggedIn()) {
             urlToBeAdded = url

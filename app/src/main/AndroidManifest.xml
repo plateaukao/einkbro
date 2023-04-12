@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <queries>
+        <package android:name="com.ideashower.readitlater.pro" />
         <package android:name="info.plateaukao.naverdict" />
-
         <intent>
             <action android:name="android.intent.action.VIEW" />
-
             <data android:scheme="https" />
         </intent>
         <intent>
