@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
@@ -79,5 +80,12 @@ object IntentUnit {
                     okAction = { activity.startActivity(fileIntent) }
                 )
             }
+        }
+
+    fun isPocketInstalled(context: Context): Boolean = try {
+            context.packageManager.getPackageInfo("com.ideashower.readitlater.pro", PackageManager.GET_ACTIVITIES)
+            true
+        } catch (e: Exception) {
+            false
         }
 }
