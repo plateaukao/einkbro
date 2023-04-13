@@ -249,8 +249,7 @@
     <string name="setting_summary_bold_font">Terapkan gaya font tebal (perlu memuat ulang halaman saat ini)</string>
     <string name="desktop_mode">Mode desktop</string>
     <string name="setting_title_page_left_value">Tinggi Cadangan Laman</string>
-    <string name="setting_summary_page_left_value">Berapa tinggi yang harus disediakan saat beralih ke halaman berikutnya
-</string>
+    <string name="setting_summary_page_left_value">Berapa tinggi yang harus disediakan saat beralih ke halaman berikutnya</string>
     <string name="setting_title_pdf_paper_size">Ukuran cetak kertas pdf</string>
     <string name="vertical_read">Vertikal</string>
     <string name="reader_mode">Mode pembaca</string>
@@ -292,7 +291,7 @@
     <string name="setting_summary_useUpDownKey">Gunakan tombol Atas/Bawah untuk membalik halaman. Berguna untuk perangkat bluetooth.</string>
     <string name="setting_title_process_text">Url Penelusuran Eksternal Khusus</string>
     <string name="split_screen">Layar terpisah</string>
-    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode">Mode Gelap</string>
     <string name="setting_summary_dark_mode">Mendukung modegelap</string>
     <string name="hie_touch_area_when_input">nonaktifkan saat mengetik</string>
     <string name="switch_touch_area_action">beralih aksi area sentuh</string>
@@ -398,7 +397,7 @@
     <string name="setting_summary_update_adblock">Picu perbarui situs web adblock sekarang</string>
     <string name="setting_title_adblock_url">Daftar Url Adblock</string>
     <string name="setting_summary_adblock_url">Jika ingin menggunakan konten adblock lain, silahkan edit url ini.</string>
-    <string name="setting_title_adblock_auto_update">Perbarui Adblock otimatis</string>
+    <string name="setting_title_adblock_auto_update">Perbarui Adblock otomatis</string>
     <string name="setting_summary_adblock_auto_update">Perbarui otomatis konten adblock setiap minggu</string>
     <string name="toast_adblock_updated">Adblock telah di perbarui!</string>
     <string name="toast_backup_successful">Pencadangan berhasil</string>
@@ -424,5 +423,5 @@
     <string name="setting_summary_userAgent_toggle">Aktifkan useragent khusus</string>
     <string name="menu_add_to_pocket">Tambah ke Pocket</string>
     <string name="content_adjustment">Penyesuaian konten</string>
-    <string name="share_save"><![CDATA[Bagi & Simpam]]></string>
+    <string name="share_save"><![CDATA[Bagi & Simpan]]></string>
 </resources>
