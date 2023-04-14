@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+
+    <!-- App -->
+    <string name="app_name">EinkBro</string>
+    <string name="list_empty">Daftar saat ini kosong.</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="album_title_history">Riwayat</string>
+    <string name="album_title_home">Beranda</string>
+    <string name="search_hint">Cari</string>
+
+
+    <!-- Menu -->
+    <string name="main_menu_new_tab">Tab baru (latar belakang)</string>
+    <string name="main_menu_new_tabOpen">Tab baru (latar depan)</string>
+    <string name="main_omnibox_input_hint">Cari atau masukan URL</string>
+    <string name="menu_open_with">Buka tautan dengan …</string>
+
+    <string name="menu_quit">Keluar</string>
+    <string name="menu_openFav">Buka Beranda</string>
+    <string name="menu_delete">Hapus</string>
+    <string name="menu_delete_list">Hapus daftar</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_closeTab">Tutup tab</string>
+    <string name="menu_download">Buka unduhan</string>
+    <string name="menu_fav">Simpan sebagai beranda</string>
+    <string name="menu_sc">Pintasan di layar utama</string>
+
+    <string name="menu_share_link">Bagi tautan</string>
+
+    <string name="menu_save_screenshot">Simpan tangkapan layar</string>
+    <string name="menu_save_bookmark">Simpan sebagai bookmark</string>
+    <string name="menu_save_as">Simpan sebagai …</string>
+    <string name="menu_save_pdf">Simpan sebagai PDF</string>
+    <string name="menu_shareClipboard">Salin ke papan klip</string>
+
+    <string name="menu_other_searchSite">Cari di situs</string>
+    <string name="menu_other_info">Tentang EinkBro</string>
+
+    <!-- Dialog -->
+    <string name="dialog_title_hint">Judul:</string>
+    <string name="dialog_url_hint">Url:</string>
+    <string name="dialog_extension_hint">Ekstensi (misal: \".jpg\"):</string>
+    <string name="dialog_title_download">Apa anda ingin mengunduh berkas?</string>
+    <string name="dialog_content_resubmission">Apakah Anda ingin mengirimkan kembali data Anda?</string>
+
+    <!-- Settings -->
+    <string name="setting_label">Pengaturan</string>
+
+    <!-- browser setting -->
+    <string name="setting_title_clear_control">Kontrol data</string>
+    <string name="setting_title_start_control">Kontrol awal</string>
+
+    <string name="setting_title_search_engine">Mesin Pencari</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
+    <string name="setting_summary_search_engine_ecosia">Ecosia</string>
+
+    <string name="setting_title_font_size">Ukuran font</string>
+    <string name="setting_summary_font_size">Ubah ukuran font untuk menampilkan situs web.</string>
+
+    <string name="setting_title_remote">Konten jarak jauh</string>
+    <string name="setting_summary_remote">Aktifkan konten jarak jauh, yang tidak langsung dari situs web yang Anda kunjungi.
+        Menonaktifkan ini lebih aman, lebih cepat, dan menghemat volume data. Tetapi beberapa konten tidak akan ditampilkan lagi.</string>
+
+    <string name="setting_title_save_data">Permintaan \'Simpan Data\'</string>
+    <string name="setting_summary_save_data">Beri tahu situs web bahwa Anda lebih suka menyimpan data. Situs web yang didukung akan memuat lebih cepat.</string>
+
+
+    <!-- browser start -->
+    <string name="setting_title_images">Gambar</string>
+    <string name="setting_summary_images">Aktifkan gambar Jaringan. Menonaktifkan dapat berguna untuk menghemat data seluler dan memuat
+    situs web lebih cepat.</string>
+    <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie_delete">Jika diaktifkan, semua cookie akan dihapus. Juga Cookie dari situs web tepercaya.</string>
+    <string name="setting_summary_cookie">Aktifkan Cookie. Cookie adalah file teks kecil, yang disimpan di perangkat Anda. Situs web
+    umumnya menggunakan untuk menyimpan pengaturan pengguna (misalnya pengaturan pencarian). Tapi mereka juga bisa digunakan untuk mengumpulkan data
+        pribadi pengguna. Cookie pihak ketiga (mereka mengumpulkan data pengguna untuk iklan) selalu dinonaktifkan.</string>
+    <string name="setting_title_whitelistCookie">Daftar putih Cookie</string>
+    <string name="setting_summary_whitelistCookie">Jika Anda menonaktifkan Cookie, Anda dapat menggunakan daftar putih ini untuk mengizinkan situs yang anda
+        percaya untuk menggunakan cookie yang aman.</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">Aktifkan JavaScript. Banyak situs web memerlukan JavaScript untuk fungsinya (menu,
+        memuat dan menampilkan gambar, …). Tapi mereka juga berisiko dan bisa digunakan untuk menyerang.</string>
+    <string name="setting_title_whitelistJS">Daftar putih JavaScript</string>
+    <string name="setting_summary_whitelistJS">Jika Anda menonaktifkan JavaScript, Anda dapat menggunakan daftar putih ini untuk mengizinkan situs yang Anda
+        percaya untuk menggunakan javascript.</string>
+
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">Aktifkan AdBlock untuk memblokir iklan yang mengganggu. Situs juga memuat lebih cepat saat diaktifkan.
+</string>
+    <string name="setting_title_whitelist">Daftar putih AdBlock</string>
+    <string name="setting_summary_whitelist">Izinkan situs ini menampilkan iklan. Beberapa situs tidak berfungsi, saat AdBlock diaktifkan.</string>
+
+    <string name="setting_title_location">Lokasi</string>
+    <string name="setting_summary_location">Izinkan situs web mengakses lokasi Anda. Beberapa situs web (seperti peta Google untuk navigasi)
+        memerlukan pengaktifkan ini.</string>
+
+    <string name="setting_title_history">Riwayat</string>
+    <string name="setting_summary_history">Simpan riwayat situs web yang dikunjungi.</string>
+
+
+    <!-- browser clear -->
+    <string name="data_summary">Semua file akan diekspor ke \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
+        direktori sd-card Anda. Direktori ini akan DIHAPUS, jika Anda menghapus EinkBro. Jadi lakukan backup secara rutin di tempat
+        aman.</string>
+    <string name="clear_title_quit">Hapus saat keluar aplikasi</string>
+    <string name="clear_summary_quit">Setiap kali Anda keluar dari EinkBro, semua data yang dicentang di atas akan dihapus.</string>
+    <string name="clear_title_cache">Hapus Cache</string>
+    <string name="clear_title_cookie">Hapus Cookies</string>
+    <string name="clear_title_history">Hapus Riwayat</string>
+    <string name="clear_title_indexedDB">Hapus \"basis data terindeks\" dan \"penyimpanan webview lokal\"</string>
+
+    <string name="clear_title_deleteDatabase">Hapus basis data</string>
+    <string name="clear_summary_deleteDatabase">Hapus seluruh basis data (Halaman awal, bookmark, riwayat, dan semua daftar putih).</string>
+
+
+    <!-- App setting -->
+    <string name="setting_title_ui">UI</string>
+    <string name="setting_title_data">Cadangan</string>
+
+    <string name="setting_title_fav">Favorit</string>
+
+    <string name="setting_title_searchEngine">Mesin pencari khusus</string>
+
+    <string name="setting_title_userAgent">User agent khusus</string>
+
+    <!-- App behavior -->
+    <string name="setting_title_hideToolbar">Sembunyikan toolbar</string>
+    <string name="setting_summary_hide">Gunakan layar penuh saat menelusuri situs web. Jika Anda menekan tombol kembali Anda akan
+    keluar dari mode layar penuh.</string>
+
+    <string name="setting_title_theme">UI</string>
+    <string name="setting_title_behavior">Perilaku</string>
+
+    <string name="setting_summary_toolbarShow">Menekan kembali akan membuat toolbar terlihat, sebelum kembali ke riwayat.</string>
+    <string name="setting_title_toolbarShow">Utamakan toolbar</string>
+
+    <string name="setting_title_nav">Tombol navigasi</string>
+    <string name="setting_title_nav_pos">Posisi Tombol Mengambang</string>
+    <string name="setting_summary_nav_pos">Tentukan di mana \"Tombol Navigasi\" akan ditempatkan.</string>
+    <string name="setting_summary_nav_pos_right">Kanan</string>
+    <string name="setting_summary_nav_pos_left">Kiri</string>
+    <string name="setting_summary_nav_pos_center">Tengah</string>
+    <string name="setting_summary_nav_pos_not_show">Tidak tampil</string>
+    <string name="setting_summary_nav_pos_custom">Khusus</string>
+
+    <string name="setting_summary_tab">Apa yang harus ditampilkan di awal \"Ringkasan\"? Halaman Awal, bookmark Anda, …</string>
+
+    <string name="setting_title_confirm_tab_close">Konfirmasi tutup tab</string>
+    <string name="setting_summary_confirm_tab_close">Dialog konfirmasi saat menutup tab.</string>
+
+    <string name="setting_overView">Ringkasan</string>
+
+    <string name="setting_gestures">Gestur</string>
+    <string name="setting_gestures_use_title">Gunakan Gestur</string>
+    <string name="setting_gestures_use_summary">Gunakan gestur pada \"tombol Navigasi\".</string>
+
+    <string name="setting_title_saveTabs">Simpan tab</string>
+    <string name="setting_summary_saveTabs">Simpan tab agar dapat dibuka lain kali.</string>
+
+    <!-- gestures -->
+    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_gesture_up">Geser ke atas</string>
+    <string name="setting_gesture_down">Geser ke bawah</string>
+    <string name="setting_gesture_left">Geser ke kiri</string>
+    <string name="setting_gesture_right">Geser ke kanan</string>
+    <string name="nothing">Tidak ada</string>
+    <string name="forward_in_history">Maju dari riwayat</string>
+    <string name="back_in_history">Mundur dari riwayat</string>
+    <string name="scroll_to_top">Gulir ke atas</string>
+    <string name="scroll_to_bottom">Gulir ke bawah</string>
+    <string name="switch_to_left_tab">Beralih ke tab kiri</string>
+    <string name="switch_to_right_tab">Beralih ke tab kanan</string>
+    <string name="show_overview">Tampilkan ringkasan</string>
+    <string name="open_new_tab">Buka tab baru</string>
+    <string name="close_tab">Tutup tab</string>
+    <string name="page_up">Halaman Atas</string>
+    <string name="page_down">Halaman Bawah</string>
+
+    <!-- Data -->
+
+    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+
+    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
+
+    <string name="setting_title_export_appData">Ekspor data aplikasi</string>
+    <string name="setting_title_import_appData">Impor data aplikasi</string>
+    <string name="setting_summary_export_appData">Ekspor data aplikasi (Riwayat, Bookmarks)
+        dan pengaturan pribadi Anda.</string>
+    <string name="title_appData">Data aplikasi</string>
+    <string name="hint_database">Tindakan ini akan menghapus semua item di sini. Apakah Anda akan melanjutkan?</string>
+
+
+    <!-- Others setting -->
+    <string name="setting_title_license">Lisensi</string>
+
+    <!-- Toast -->
+    <string name="toast_add_whitelist_successful">Berhasil menambah Domain</string>
+    <string name="toast_copy_successful">Berhasil disalin</string>
+    <string name="toast_delete_successful">Berhasil dihapus</string>
+    <string name="toast_domain_already_exists">Domain sudah ada</string>
+    <string name="toast_export_successful">Expor sebagai:&#160;</string>
+    <string name="toast_export_failed">Gagal mengexpor</string>
+    <string name="toast_import_successful">Jumlah yang diimpor:&#160;</string>
+    <string name="toast_import_failed">Gagal mengimpor</string>
+    <string name="toast_input_empty">Anda belum memasukkan apa pun</string>
+    <string name="toast_invalid_domain">Domain tidak valid</string>
+    <string name="toast_load_error">Tidak dapat memuat URL ini</string>
+    <string name="toast_share_failed">Tidak dapat membagikan halaman ini</string>
+    <string name="toast_start_download">Mulai mengunduh</string>
+    <string name="toast_wait_a_minute">Harap tunggu sebentar</string>
+    <string name="toast_error">Uuups. Ada yang salah.</string>
+    <string name="toast_edit_successful">Berhasil disimpan</string>
+    <string name="toast_webview_forward">Tidak dapat memuat situs berikutnya
+</string>
+    <string name="toast_restart">Anda harus memulai ulang EinkBro untuk menerapkan perubahan. Tutup sekarang?</string>
+    <string name="toast_close_tab">Apakah Anda ingin menutup tab saat ini?</string>
+    <string name="toast_downloadComplete">Unduh selesai. Membuka file?</string>
+    <string name="toast_backup">Cadangankan data? Ini akan menimpa cadangan lama.</string>
+
+
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">Bersih</string>
+    <string name="whitelist_edit_hint">Domain</string>
+    <string name="whitelist_add">Tambah</string>
+
+
+    <string name="setting_summary_desktop">Mendukung mode desktop situs web</string>
+    <string name="history">Riwayat</string>
+    <string name="location">Lokasi</string>
+    <string name="media_continue">Pemutar layar belakang</string>
+    <string name="show_touch_area_hint">tampilkan batas area sentuh</string>
+    <string name="touch_left_side">kiri</string>
+    <string name="touch_right_side">kanan</string>
+    <string name="bold_font">Font tebal</string>
+    <string name="white_background">Latar belakang putih</string>
+    <string name="setting_summary_bold_font">Terapkan gaya font tebal (perlu memuat ulang halaman saat ini)</string>
+    <string name="desktop_mode">Mode desktop</string>
+    <string name="setting_title_page_left_value">Tinggi Cadangan Laman</string>
+    <string name="setting_summary_page_left_value">Berapa tinggi yang harus disediakan saat beralih ke halaman berikutnya</string>
+    <string name="setting_title_pdf_paper_size">Ukuran cetak kertas pdf</string>
+    <string name="vertical_read">Vertikal</string>
+    <string name="reader_mode">Mode pembaca</string>
+    <string name="touch_area_setting">Pengaturan sentuh</string>
+    <string name="toolbar_setting">Pengaturan Toolbar</string>
+    <string name="menu_save_epub">simpan epub</string>
+    <string name="new_epub_or_from_picker">Epub baru atau dari pemilih</string>
+    <string name="title">Nama bab</string>
+    <string name="title_in_toc">nama bab dalam Daftar Isi</string>
+    <string name="book_name">Nama buku</string>
+    <string name="book_name_description">Masukan nama buku</string>
+    <string name="saving_epub">Menyimpan Epub</string>
+    <string name="volume_page_turn">Tombol Volume</string>
+    <string name="folder_name">Nama folder Bookmark</string>
+    <string name="folder_name_description">Masukan nama folder Bookmark</string>
+    <string name="setting_title_export_bookmarks">expor bookmark</string>
+    <string name="setting_title_import_bookmarks">impor bookmarkb</string>
+    <string name="setting_title_incognito">Mode Penyamaran</string>
+    <string name="back">Kembali</string>
+    <string name="refresh">Perbarui</string>
+    <string name="touch_turn_page">Sentuh balik halaman</string>
+    <string name="tab_preview">Pratinjau tab</string>
+    <string name="font_size">Ukuran Font</string>
+    <string name="settings">Pengaturan</string>
+    <string name="toolbars">Pengaturan toolbar</string>
+    <string name="font_size_increase">Peningkatan font</string>
+    <string name="font_size_decrease">Penurunan font</string>
+    <string name="fullscreen">Layar penuh</string>
+    <string name="forward">Maju</string>
+    <string name="rotate">Rotasi</string>
+    <string name="translate">Translate</string>
+    <string name="toolbar_title">Judul</string>
+    <string name="setting_title_screen_awake">Tetap nyalakan layar</string>
+    <string name="setting_summary_screen_awake">Biarkan layar selalu terjaga</string>
+    <string name="middle">tengah</string>
+    <string name="bottom">bawah</string>
+    <string name="input_url">masukan url</string>
+    <string name="setting_title_useUpDown">Gunakan tombol Atas/Bawah</string>
+    <string name="setting_summary_useUpDownKey">Gunakan tombol Atas/Bawah untuk membalik halaman. Berguna untuk perangkat bluetooth.</string>
+    <string name="setting_title_process_text">Url Penelusuran Eksternal Khusus</string>
+    <string name="split_screen">Layar terpisah</string>
+    <string name="dark_mode">Mode Gelap</string>
+    <string name="setting_summary_dark_mode">Mendukung modegelap</string>
+    <string name="hie_touch_area_when_input">nonaktifkan saat mengetik</string>
+    <string name="switch_touch_area_action">beralih aksi area sentuh</string>
+    <string name="no_previous_page">tidak ada halaman sebelumnya!</string>
+    <string name="menu_open_epub">buka epub</string>
+    <string name="setting_multitouch_use_title">Gunakan gesekan dua jari</string>
+    <string name="setting_multitouch_use_summary">Gunakan gesekan dua jari pada konten web untuk memicu tindakan</string>
+    <string name="setting_title_two_finger_swipe">gesekan dua jari</string>
+    <string name="font_custom">Pilih file font khusus</string>
+    <string name="translation_mode">Mode Terjemahan</string>
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="system_default">Default</string>
+    <string name="serif">Serif</string>
+    <string name="googleserif">Google Serif</string>
+    <string name="custom_font">Khusus</string>
+    <string name="setting_title_font">Font</string>
+    <string name="font_type">Tipe Font</string>
+    <string name="menu_quickToggle">Beralih Cepat</string>
+    <string name="setting_title_toolbar_top">Toolbar diatas</string>
+    <string name="setting_summary_toolbar_top">Tampilkan toolbar di bagian atas layar.</string>
+    <string name="setting_title_vi_binding">Pengikatan kunci VI</string>
+    <string name="setting_summary_vi_binding">aktifkan binding kunci VI untuk navigasi keyboard yang lebih mudah.</string>
+    <string name="edit_custom_font">Edit Font Khusus</string>
+    <string name="cannot_open_file">File tidak bisa dibuka. Silakan buka kembali dari pemilih file.</string>
+    <string name="setting_recent_bookmarks">Tampilkan bookmark yang baru saja digunakan</string>
+    <string name="setting_summary_recent_bookmarks">Tampilkan bookmark yang baru saja digunakan saat membuka tab baru</string>
+    <string name="setting_clear_recent_bookmarks">Hapus daftar bookmark terbaru</string>
+    <string name="setting_summary_clear_recent_bookmarks">Hapus daftar bookmark yang baru saja digunakan</string>
+    <string name="recently_used_bookmarks">Bookmark yang Baru Digunakan</string>
+    <string name="menu_send_link">Kirim tautan</string>
+    <string name="done">Tutup saat transfer selesai</string>
+    <string name="menu_receive">Terima data</string>
+    <string name="copy_link">Salin tautan</string>
+    <string name="setting_title_background_loading">Memuat tab yang tidak aktif</string>
+    <string name="setting_summary_background_loading">Saat tab tidak aktif, tetap memuat konten di latar belakang</string>
+    <string name="dialog_content_ssl_error">Sertifikat situs tidak dipercaya. Tetap melanjutkan?</string>
+    <string name="setting_title_search">Cari</string>
+    <string name="dialog_toc_title">Daftar isi</string>
+    <string name="latest_release">Release Terbaru</string>
+    <string name="project_site">Situs Proyek</string>
+    <string name="facebook_groups">Grup Facebook</string>
+    <string name="changelogs">Apa yang baru</string>
+    <string name="medium_articles">Artikel Medium</string>
+    <string name="contributors">Kontributor</string>
+    <string name="turn_on">Nyala</string>
+    <string name="turn_off">Mati</string>
+    <string name="title_touch_area">Area Sentuh</string>
+    <string name="title_about">Tentang</string>
+    <string name="setting_title_auto_fill_form">Isi formulir data secara otomatis</string>
+    <string name="setting_summary_auto_fill_form">Isi otomatis data formulir jika diaktifkan.</string>
+    <string name="setting_title_trim_input_url">Pangkas konten teks masukan</string>
+    <string name="setting_summary_trim_input_url">Hapus teks awalan non-http di konten masukan</string>
+    <string name="no_bookmarks">Tekan lama ikon bookmark untuk menambahkan beberapa bookmark.</string>
+    <string name="always_enable_zoom">Selalu aktifkan pembesaran konten</string>
+    <string name="setting_summary_enable_zoom">Paksa beberapa konten situs web agar dapat di perbesar</string>
+    <string name="setting_title_debug">Debug WebView</string>
+    <string name="setting_summary_debug">Aktifkan opsi ini untuk dapat men-debug WebView</string>
+    <string name="setting_title_prune_query_parameter">Pangkas parameter kueri pelacakan di url</string>
+    <string name="setting_summary_prune_query_parameter">parameter kueri seperti utm_medium, utm_source, dll akan dihapus dari url.</string>
+    <string name="setting_title_show_tab_bar">Tampilkan bilah tab</string>
+    <string name="setting_summary_show_tab_bar">Selalu tampilkan bilah tab di atas bilah alat</string>
+    <string name="error_download_link_invalid">Tautan unduhan tidak valid.</string>
+    <string name="duplicate_tab">Duplicate tab</string>
+    <string name="password">Kata sandi</string>
+    <string name="user_name">Nama pengguna</string>
+    <string name="authentication">Autentikasi</string>
+    <string name="twitter">Twitter</string>
+    <string name="setting_title_edit_homepage">Edit Url Beranda</string>
+    <string name="setting_summary_plus_behavior">Ketika menambahkan tab baru, apa yang harus di tampilkan.</string>
+    <string name="setting_title_plus_behavior">Perilaku tab baru</string>
+    <string name="setting_summary_translated_langs">Sesuaikan bahasa untuk terjemahan (misalnya: en,fr,zh-TW,zh-CN)</string>
+    <string name="setting_title_translated_langs">Bahasa Terjemahan Pilihan</string>
+    <string name="menu">Menu</string>
+    <string name="copy_text">salin teks</string>
+    <string name="menu_tts">Baca konten</string>
+    <string name="read_speed">Kecepatan Baca</string>
+    <string name="toast_send_link_failed">Gagal mengirim tautan</string>
+    <string name="toast_receive_link_failed">Gagal menerima tautan.</string>
+    <string name="setting_summary_search_engine">Pilih mesin pencari</string>
+    <string name="setting_summary_custom_process_text_url">Ketika anda memilih teks di aplikasi lain, Anda dapat mencarinya di browser dengan awalan url ini.</string>
+    <string name="not_supported">Tidak didukung.</string>
+
+    <string name="plus_start_input_url">Mulai Url Masukan</string>
+    <string name="plus_show_homepage">Tampilkan Beranda</string>
+    <string name="plus_show_bookmarks">Tampilkan Bookmark Terbaru</string>
+    <string name="dark_mode_follow_system">Ikuti Sistem</string>
+    <string name="dark_mode_force_on">Paksa On</string>
+    <string name="dark_mode_disabled">dinonaktifkan</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="setting_title_video_auto_fullscreen">Aktifkan pemutaran video dalam layar penuh</string>
+    <string name="setting_summary_video_auto_fullscreen">Saat video mulai diputar, ubah ukuran secara otomatis ke layar penuh.</string>
+    <string name="setting_title_video_pip">Tampilkan video di jendela kecil</string>
+    <string name="setting_summary_video_pip">Saat memutar video dalam layar penuh dan keluar, tampilkan jendela kecil untuk melanjutkan pemutaran.</string>
+    <string name="empty_whitelist_hint">Silahkan klik tombol kanan atas untuk menambahkan domain baru</string>
+    <string name="google_text">Mode Teks Google</string>
+    <string name="papago_text">Mode Teks Papago</string>
+    <string name="papago_full_page">Papago Seluruh Halaman</string>
+    <string name="google_full_page">Google Seluruh Halaman</string>
+    <string name="papago_dual_pane">Panel Ganda Papago</string>
+    <string name="google_in_place">Google di tempat</string>
+    <string name="setting_title_update_adblock">Perbarui konten Adblock</string>
+    <string name="setting_summary_update_adblock">Picu perbarui situs web adblock sekarang</string>
+    <string name="setting_title_adblock_url">Daftar Url Adblock</string>
+    <string name="setting_summary_adblock_url">Jika ingin menggunakan konten adblock lain, silahkan edit url ini.</string>
+    <string name="setting_title_adblock_auto_update">Perbarui Adblock otomatis</string>
+    <string name="setting_summary_adblock_auto_update">Perbarui otomatis konten adblock setiap minggu</string>
+    <string name="toast_adblock_updated">Adblock telah di perbarui!</string>
+    <string name="toast_backup_successful">Pencadangan berhasil</string>
+    <string name="setting_title_enable_ssl_error_dialog">Tampilkan dialog kesalahan SSL</string>
+    <string name="setting_summary_enable_ssl_error_dialog">Ketika terjadi kesalahan dengan SSL, tampilkan dialog kesalahan.</string>
+    <string name="manual">Manual</string>
+    <string name="black_font">Font hitam</string>
+    <string name="image_adjust">Sesuaikan Gambar</string>
+    <string name="bookmark_new_file">Buat berkas baru</string>
+    <string name="bookmark_open_file">Tautkan file yang ada</string>
+    <string name="menu_save_archive">Simpan arsip</string>
+    <string name="setting_title_sync_bookmarks">Sinkronisasi bookmark</string>
+    <string name="setting_title_setup_bookmarks_location">Konfigurasikan lokasi bookmark</string>
+    <string name="setting_summary_setup_bookmarks_location">Pilih file di Google Drive atau lokasi file lain yang mendukung sinkronisasi jarak jauh.</string>
+    <string name="setting_summary_import_appData">Impor data aplikasi dengan memilih file zip yang sebelumnya diekspor.</string>
+    <string name="dialog_message_sync_bookmark_file">"Untuk menyinkronkan bookmark, Anda perlu menggunakan pemilih file sistem untuk membuat atau membuka file bookmark dari Google Drive atau file yang disinkronkan dengan layanan jarak jauh lainnya. "</string>
+    <string name="dialog_title_bookmark_sync">Pengaturan File Bookmark</string>
+    <string name="settings_title_back_key_behavior">Perilaku tombol kembali</string>
+    <string name="settings_summary_back_key_behavior">Tutup tab saat sudah ada di halaman pertama dalam riwayat.</string>
+    <string name="page_count">Jumlah halaman</string>
+    <string name="setting_title_userAgent_toggle">Aktifkan UserAgent Khusus</string>
+    <string name="setting_summary_userAgent">Masukan text useragent khusus disini.</string>
+    <string name="setting_summary_userAgent_toggle">Aktifkan useragent khusus</string>
+    <string name="menu_add_to_pocket">Tambah ke Pocket</string>
+    <string name="content_adjustment">Penyesuaian konten</string>
+    <string name="share_save"><![CDATA[Bagi & Simpan]]></string>
+</resources>
