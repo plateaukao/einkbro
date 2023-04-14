@@ -1686,6 +1686,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     @SuppressLint("RestrictedApi")
     private fun showToolbar() {
         if (!searchOnSite) {
+            showStatusBar()
             fabImageViewController.hide()
             searchPanel.visibility = INVISIBLE
             binding.appBar.visibility = VISIBLE
@@ -1693,7 +1694,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             binding.inputUrl.visibility = INVISIBLE
             composeToolbarViewController.show()
             hideKeyboard()
-            showStatusBar()
         }
     }
 
