@@ -1842,6 +1842,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onActionModeStarted(mode)
         if (mActionMode == null) {
             mActionMode = mode
+            val menu = mode.menu
+            val idToBeRemoved = mutableListOf<Int>()
+            for (index in 0 until menu.size()) {
+                val item = menu.getItem(index)
+                if (item.title in listOf("Web search", "Share", "Select all")) {
+                    idToBeRemoved.add(item.itemId)
+                }
+            }
+            idToBeRemoved.forEach { menu.removeItem(it) }
         }
     }
 
