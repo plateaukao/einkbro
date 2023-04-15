@@ -8,9 +8,12 @@ import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -1216,6 +1219,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeBottom() = gestureHandler.handle(config.multitouchDown)
             override fun onSwipeRight() = gestureHandler.handle(config.multitouchRight)
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
+            override fun onLongPressMove(motionEvent: MotionEvent) {
+                super.onLongPressMove(motionEvent)
+                Log.d("onLongPressMove", "onLongPressMove")
+                clickedPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
+            }
         }.apply { lifecycle.addObserver(this) }
 
     private fun updateSavedAlbumInfo() {
@@ -1880,10 +1888,34 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
             }
+            menu.clear()
             lifecycleScope.launch {
                 selectedText = ninjaWebView.getSelectedText()
+                ActionModeDialogFragment(
+                    selectedText,
+                    clickedPoint,
+                    getAllProcessTextMenuInfos()
+                ).show(
+                    supportFragmentManager,
+                    "action_mode_dialog"
+                )
+                //mActionMode?.finish()
             }
         }
+    }
+
+    override fun onPointerCaptureChanged(hasCapture: Boolean) {
+        super.onPointerCaptureChanged(hasCapture)
+        Log.d("BrowserActivity", "onPointerCaptureChanged: $hasCapture")
+    }
+
+    private fun getAllProcessTextMenuInfos(): List<MenuInfo> {
+        val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
+            type = "text/plain"
+        }
+        val resolveInfos = packageManager.queryIntentActivities(intent, 0)
+
+        return resolveInfos.map { it.toMenuInfo(packageManager, selectedText) }
     }
 
 
@@ -1909,4 +1941,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
         private const val ACTION_GPT = "info.plateaukao.einkbro.gpt"
     }
+}
+
+data class MenuInfo(
+    val title: String,
+    val icon: Drawable? = null,
+    val intent: Intent,
+)
+
+fun ResolveInfo.toMenuInfo(pm: PackageManager, text: String): MenuInfo {
+    val title = loadLabel(pm).toString()
+    val icon = loadIcon(pm)
+    val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_PROCESS_TEXT, text)
+        putExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, true)
+        setClassName(activityInfo.packageName, activityInfo.name)
+    }
+    return MenuInfo(title, icon, intent)
 }

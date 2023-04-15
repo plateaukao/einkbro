@@ -45,6 +45,12 @@ open class MultitouchListener(
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         scaleGestureDetector.onTouchEvent(event);
 
+        when (event.action and MotionEvent.ACTION_MASK) {
+            MotionEvent.ACTION_MOVE -> {
+                onLongPressMove(event)
+            }
+        }
+
         if (!config.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)
 
         if (!inSwipe && event.pointerCount != touchCount) {
@@ -119,6 +125,8 @@ open class MultitouchListener(
     open fun onSwipeTop() {}
 
     open fun onSwipeBottom() {}
+
+    open fun onLongPressMove(motionEvent: MotionEvent) {}
 
     companion object {
         private const val SWIPE_THRESHOLD = 50
