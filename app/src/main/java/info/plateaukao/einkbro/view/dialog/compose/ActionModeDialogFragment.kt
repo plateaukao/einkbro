@@ -65,7 +65,6 @@ class ActionModeDialogFragment(
                 }
 
                 actionModeMenuViewModel.finishActionMode()
-                this@ActionModeDialogFragment.dismiss()
             }
         }
     }
