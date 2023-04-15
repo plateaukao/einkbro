@@ -2,24 +2,42 @@ package info.plateaukao.einkbro.view.dialog.compose
 
 import android.content.Intent
 import android.graphics.Point
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import info.plateaukao.einkbro.activity.MenuInfo
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
@@ -95,11 +113,12 @@ private fun ActionModeMenu(
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         modifier = Modifier
-            .wrapContentWidth()
+            .width(320.dp)
+            .wrapContentHeight()
     ) {
         items(menuInfos.size) { index ->
             val info = menuInfos[index]
-            ActionModeMenuItem(info.title) {
+            ActionMenuItem(info.title, info.icon) {
                 info.action?.invoke()
                 onClicked(info.intent)
             }
@@ -118,3 +137,53 @@ fun ActionModeMenuItem(
         .width(80.dp)
         .clickable { onClicked() },
 )
+
+@Composable
+fun ActionMenuItem(
+    title: String,
+    iconDrawable: Drawable?,
+    onClicked: () -> Unit = {},
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val borderWidth = if (pressed) 0.5.dp else (-1).dp
+
+    val configuration = LocalConfiguration.current
+    val width = when {
+        configuration.screenWidthDp > 500 -> 55.dp
+        else -> 45.dp
+    }
+
+    val fontSize = if (configuration.screenWidthDp > 500) 10.sp else 8.sp
+    Column(
+        modifier = Modifier
+            .width(width)
+            .height(70.dp)
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource,
+            ) { onClicked() },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = rememberDrawablePainter(drawable = iconDrawable),
+            contentDescription = null,
+            modifier = Modifier
+                .size(44.dp)
+                .padding(horizontal = 6.dp),
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(31.dp)
+                .offset(y = (-5).dp),
+            text = title,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            lineHeight = fontSize,
+            fontSize = fontSize,
+            color = MaterialTheme.colors.onBackground
+        )
+    }
+}

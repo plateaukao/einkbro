@@ -118,6 +118,8 @@ dependencies {
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.5.0-alpha01'
 
+    implementation "com.google.accompanist:accompanist-drawablepainter:0.31.0-alpha"
+
     // reorder lazylist
     implementation "org.burnoutcrew.composereorderable:reorderable:0.9.0"
 

@@ -1879,8 +1879,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     packageManager
                 )
             }
-            mode.menu.clear()
         }
+        mode.menu.clear()
     }
 
 
