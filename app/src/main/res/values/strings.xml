@@ -430,4 +430,5 @@
     <string name="setting_summary_edit_gpt_prompt">Set a role for ChatGPT, e.g., You are a interpreter.</string>
     <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix, e.g., Translate following content to English:</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
+    <string name="gpt_api_key_not_set">Add OpenAI Key in Settings.</string>
 </resources>

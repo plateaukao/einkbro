@@ -689,6 +689,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 if (gptViewModel.hasApiKey()) {
                     GPTDialogFragment(gptViewModel, clickedPoint)
                         .show(supportFragmentManager, "contextMenu")
+                } else {
+                    NinjaToast.show(this, R.string.gpt_api_key_not_set)
                 }
             }
 
@@ -1870,17 +1872,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
             idToBeRemoved.forEach { menu.removeItem(it) }
-            menu.add(0, 1, 0, R.string.menu_gpt).apply {
-                intent = Intent(this@BrowserActivity, BrowserActivity::class.java).apply {
-                    action = ACTION_GPT
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            if (gptViewModel.hasApiKey()) {
+                menu.add(0, 1, 0, R.string.menu_gpt).apply {
+                    intent = Intent(this@BrowserActivity, BrowserActivity::class.java).apply {
+                        action = ACTION_GPT
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
                 }
             }
             lifecycleScope.launch {
                 selectedText = ninjaWebView.getSelectedText()
             }
-//                .setIcon(R.drawable.ic_share)
-//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         }
     }
 
