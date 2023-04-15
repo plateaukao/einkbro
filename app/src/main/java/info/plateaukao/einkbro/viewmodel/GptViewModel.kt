@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.koin.android.BuildConfig
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -54,9 +55,12 @@ class GptViewModel : ViewModel(), KoinComponent {
         )
 
         viewModelScope.launch(Dispatchers.IO) {
-//            val response = openai.chatCompletion(chatCompletionRequest)
-//            _responseMessage.value = response.choices.first().message?.content ?: ""
-            _responseMessage.value = "12345"
+            if (!BuildConfig.DEBUG) {
+                val response = openai.chatCompletion(chatCompletionRequest)
+                _responseMessage.value = response.choices.first().message?.content ?: ""
+            } else {
+                _responseMessage.value = "12345"
+            }
         }
     }
 }
