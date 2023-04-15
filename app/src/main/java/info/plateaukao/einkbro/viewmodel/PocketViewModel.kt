@@ -24,8 +24,10 @@ class PocketViewModel : KoinComponent, ViewModel() {
         if (IntentUnit.isPocketInstalled(context)) {
             return try {
                 val intent = Intent().apply {
-                    setClassName("com.ideashower.readitlater.pro",
-                        "com.ideashower.readitlater.activity.AddActivity")
+                    setClassName(
+                        "com.ideashower.readitlater.pro",
+                        "com.ideashower.readitlater.activity.AddActivity"
+                    )
                     action = Intent.ACTION_SEND
                     type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT, url)
@@ -45,6 +47,7 @@ class PocketViewModel : KoinComponent, ViewModel() {
     fun isPocketLoggedIn(): Boolean {
         return configManager.pocketAccessToken.isNotBlank()
     }
+
     suspend fun getAuthUrl(): String {
         return suspendCancellableCoroutine { continuation ->
             pocketNetwork.getRequestToken { requestToken ->

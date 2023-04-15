@@ -144,6 +144,15 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                 1
                             )
                         }
+                        composable(ChatGPT.name) {
+                            SettingScreen(
+                                navController,
+                                chatGptSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
+                        }
                         composable(Search.name) {
                             SettingScreen(
                                 navController,
@@ -255,7 +264,17 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             config = config::favoriteUrl,
             showValue = false
         ),
-        VersionSettingItem(R.string.menu_other_info, R.drawable.icon_info, destination = About),
+        NavigateSettingItem(
+            R.string.setting_title_chat_gpt,
+            R.drawable.ic_sync_scroll,
+            destination = ChatGPT
+        ),
+        VersionSettingItem(
+            R.string.menu_other_info,
+            R.drawable.icon_info,
+            destination = About,
+            span = 2
+        ),
     )
 
     private val uiSettingItems = listOf(
@@ -616,6 +635,27 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
     )
 
+    private val chatGptSettingItems = listOf(
+        ValueSettingItem(
+            R.string.setting_title_edit_gpt_api_key,
+            R.drawable.ic_sync_scroll,
+            R.string.setting_summary_edit_gpt_api_key,
+            config::gptApiKey
+        ),
+        ValueSettingItem(
+            R.string.setting_title_edit_gpt_system_prompt,
+            R.drawable.ic_page_height,
+            R.string.setting_summary_edit_gpt_prompt,
+            config::gptSystemPrompt
+        ),
+        ValueSettingItem(
+            R.string.setting_title_edit_gpt_user_prompt_prefix,
+            R.drawable.ic_page_height,
+            R.string.setting_summary_edit_gpt_user_prompt,
+            config::gptUserPromptPrefix
+        ),
+    )
+
     private val startSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_images,
@@ -732,7 +772,8 @@ enum class SettingRoute(@StringRes val titleId: Int) {
     DataControl(R.string.setting_title_clear_control),
     UserAgent(R.string.setting_title_userAgent),
     Search(R.string.setting_title_search),
-    About(R.string.title_about);
+    About(R.string.title_about),
+    ChatGPT(R.string.setting_title_chat_gpt);
 }
 
 @Composable

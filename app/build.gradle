@@ -130,4 +130,9 @@ dependencies {
 
     // okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+    // gpt
+    implementation("com.aallam.openai:openai-client:3.2.0")
+    implementation("io.ktor:ktor-client-android:2.2.4")
+
 }
