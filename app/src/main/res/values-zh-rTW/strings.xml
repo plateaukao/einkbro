@@ -354,4 +354,12 @@
     <string name="menu_add_to_pocket">加到 Pocket</string>
     <string name="content_adjustment">網頁內容調整</string>
     <string name="share_save">分享或儲存</string>
+    <string name="menu_gpt">GPT</string>
+    <string name="setting_title_chat_gpt">ChatGPT Integration</string>
+    <string name="setting_title_edit_gpt_api_key">Input OpenAI Key</string>
+    <string name="setting_summary_edit_gpt_api_key">Input key in order to use this feature.</string>
+    <string name="setting_title_edit_gpt_system_prompt">ChatGPT Prompt</string>
+    <string name="setting_summary_edit_gpt_prompt">Input prompt like: translate into English</string>
+    <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix</string>
+    <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
 </resources>

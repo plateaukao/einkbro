@@ -70,6 +70,7 @@ import info.plateaukao.einkbro.view.viewControllers.*
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
+import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -103,6 +104,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val config: ConfigManager by inject()
     private val ttsManager: TtsManager by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
+
+    private val gptViewModel: GptViewModel by viewModels()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -681,6 +684,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         when (intent.action) {
+            ACTION_GPT -> {
+                gptViewModel.updateInputMessage(selectedText)
+                if (gptViewModel.hasApiKey()) {
+                    GPTDialogFragment(gptViewModel, clickedPoint)
+                        .show(supportFragmentManager, "contextMenu")
+                }
+            }
+
             "", Intent.ACTION_MAIN -> { // initial case
                 if (currentAlbumController == null) { // newly opened Activity
                     if ((shouldLoadTabState || config.shouldSaveTabs) &&
@@ -1598,18 +1609,25 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
+    private var clickedPoint = Point(0, 0)
     override fun onLongPress(message: Message, event: MotionEvent?) {
-        val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message).ifBlank { return }
-        val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
-        BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
-            val titleText = linkTitle.ifBlank { url }.toString()
-            ContextMenuDialogFragment(
-                url,
-                linkImageUrl.isNotBlank(),
-                Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
-            ) {
-                this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
-            }.show(supportFragmentManager, "contextMenu")
+        val point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
+        val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
+        if (url.isBlank()) {
+            clickedPoint = point
+        } else {
+            // case: image or link
+            val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
+            BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
+                val titleText = linkTitle.ifBlank { url }.toString()
+                ContextMenuDialogFragment(
+                    url,
+                    linkImageUrl.isNotBlank(),
+                    point
+                ) {
+                    this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
+                }.show(supportFragmentManager, "contextMenu")
+            }
         }
     }
 
@@ -1838,6 +1856,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // - action mode handling
     private var mActionMode: ActionMode? = null
+    private var selectedText: String = ""
     override fun onActionModeStarted(mode: ActionMode) {
         super.onActionModeStarted(mode)
         if (mActionMode == null) {
@@ -1851,8 +1870,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
             idToBeRemoved.forEach { menu.removeItem(it) }
+            menu.add(0, 1, 0, R.string.menu_gpt).apply {
+                intent = Intent(this@BrowserActivity, BrowserActivity::class.java).apply {
+                    action = ACTION_GPT
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+            }
+            lifecycleScope.launch {
+                selectedText = ninjaWebView.getSelectedText()
+            }
+//                .setIcon(R.drawable.ic_share)
+//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         }
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -1874,5 +1905,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     companion object {
         private const val TAG = "BrowserActivity"
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
+        private const val ACTION_GPT = "info.plateaukao.einkbro.gpt"
     }
 }
