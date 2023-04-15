@@ -59,6 +59,7 @@ import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
+import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
 import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
@@ -70,6 +71,7 @@ import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
 import info.plateaukao.einkbro.view.viewControllers.*
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
@@ -688,9 +690,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         when (intent.action) {
             ACTION_GPT -> {
-                gptViewModel.updateInputMessage(selectedText)
+                gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                 if (gptViewModel.hasApiKey()) {
-                    GPTDialogFragment(gptViewModel, clickedPoint)
+                    GPTDialogFragment(gptViewModel, actionModeMenuViewModel.clickedPoint.value)
                         .show(supportFragmentManager, "contextMenu")
                 } else {
                     NinjaToast.show(this, R.string.gpt_api_key_not_set)
@@ -768,11 +770,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Intent.ACTION_PROCESS_TEXT -> {
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
                 val url = config.customProcessTextUrl + text
-                if (this::ninjaWebView.isInitialized) {
-                    ninjaWebView.loadUrl(url)
-                } else {
-                    addAlbum(url = url)
-                }
+                addAlbum(url = url)
             }
 
             "colordict.intent.action.PICK_RESULT",
@@ -1038,6 +1036,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         PocketViewModelFactory()
     }
 
+    private val actionModeMenuViewModel: ActionModeMenuViewModel by viewModels()
+
     private fun initOverview() {
         overviewDialogController = OverviewDialogController(
             this,
@@ -1221,8 +1221,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                Log.d("onLongPressMove", "onLongPressMove")
-                clickedPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
+                actionModeMenuViewModel.updateClickedPoint(
+                    Point(motionEvent.x.toInt(), motionEvent.y.toInt())
+                )
             }
         }.apply { lifecycle.addObserver(this) }
 
@@ -1624,7 +1625,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
         if (url.isBlank()) {
-            clickedPoint = point
+            actionModeMenuViewModel.updateClickedPoint(point)
         } else {
             // case: image or link
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
@@ -1865,64 +1866,27 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun hideKeyboard() = ViewUnit.hideKeyboard(this)
 
     // - action mode handling
-    private var mActionMode: ActionMode? = null
-    private var selectedText: String = ""
     override fun onActionModeStarted(mode: ActionMode) {
         super.onActionModeStarted(mode)
-        if (mActionMode == null) {
-            mActionMode = mode
-            val menu = mode.menu
-            val idToBeRemoved = mutableListOf<Int>()
-            for (index in 0 until menu.size()) {
-                val item = menu.getItem(index)
-                if (item.title in listOf("Web search", "Share", "Select all")) {
-                    idToBeRemoved.add(item.itemId)
-                }
-            }
-            idToBeRemoved.forEach { menu.removeItem(it) }
-            if (gptViewModel.hasApiKey()) {
-                menu.add(0, 1, 0, R.string.menu_gpt).apply {
-                    intent = Intent(this@BrowserActivity, BrowserActivity::class.java).apply {
-                        action = ACTION_GPT
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                }
-            }
-            menu.clear()
+        if (!actionModeMenuViewModel.isInActionMode()) {
+            actionModeMenuViewModel.updateActionMode(mode)
+
             lifecycleScope.launch {
-                selectedText = ninjaWebView.getSelectedText()
-                ActionModeDialogFragment(
-                    selectedText,
-                    clickedPoint,
-                    getAllProcessTextMenuInfos()
-                ).show(
+                actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
+                actionModeMenuViewModel.showActionModeDialogFragment(
+                    this@BrowserActivity,
                     supportFragmentManager,
-                    "action_mode_dialog"
+                    packageManager
                 )
-                //mActionMode?.finish()
             }
+            mode.menu.clear()
         }
-    }
-
-    override fun onPointerCaptureChanged(hasCapture: Boolean) {
-        super.onPointerCaptureChanged(hasCapture)
-        Log.d("BrowserActivity", "onPointerCaptureChanged: $hasCapture")
-    }
-
-    private fun getAllProcessTextMenuInfos(): List<MenuInfo> {
-        val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
-            type = "text/plain"
-        }
-        val resolveInfos = packageManager.queryIntentActivities(intent, 0)
-
-        return resolveInfos.map { it.toMenuInfo(packageManager, selectedText) }
     }
 
 
     override fun onPause() {
         super.onPause()
-        mActionMode?.finish()
-        mActionMode = null
+        actionModeMenuViewModel.finishActionMode()
         if (!config.continueMedia && !isMeetPipCriteria()) {
             if (this::ninjaWebView.isInitialized) {
                 ninjaWebView.pauseTimers()
@@ -1932,30 +1896,29 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onActionModeFinished(mode: ActionMode?) {
         super.onActionModeFinished(mode)
-        mActionMode = null
+        actionModeMenuViewModel.updateActionMode(null)
     }
+
     // - action mode handling
 
     companion object {
         private const val TAG = "BrowserActivity"
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
-        private const val ACTION_GPT = "info.plateaukao.einkbro.gpt"
     }
 }
 
 data class MenuInfo(
     val title: String,
     val icon: Drawable? = null,
-    val intent: Intent,
+    val intent: Intent? = null,
+    val action: (() -> Unit)? = null
 )
 
-fun ResolveInfo.toMenuInfo(pm: PackageManager, text: String): MenuInfo {
+fun ResolveInfo.toMenuInfo(pm: PackageManager): MenuInfo {
     val title = loadLabel(pm).toString()
     val icon = loadIcon(pm)
     val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
         type = "text/plain"
-        putExtra(Intent.EXTRA_PROCESS_TEXT, text)
-        putExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, true)
         setClassName(activityInfo.packageName, activityInfo.name)
     }
     return MenuInfo(title, icon, intent)

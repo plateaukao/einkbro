@@ -9,6 +9,8 @@ class Constants {
         const val MIME_TYPE_ANY = "*/*"
         const val MIME_TYPE_FONT = "application/x-font-ttf"
         // from https://github.com/Smile4ever/Neat-URL
+        const val ACTION_GPT = "info.plateaukao.einkbro.gpt"
+
         const val NEAT_URL_DATA = """
             {
     "categories": [
