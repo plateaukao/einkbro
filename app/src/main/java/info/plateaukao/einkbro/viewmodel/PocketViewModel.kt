@@ -26,6 +26,8 @@ class PocketViewModel : KoinComponent, ViewModel() {
                 val intent = Intent().apply {
                     setClassName("com.ideashower.readitlater.pro",
                         "com.ideashower.readitlater.activity.AddActivity")
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT, url)
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }
