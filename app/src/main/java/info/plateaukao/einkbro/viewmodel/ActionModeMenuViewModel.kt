@@ -8,6 +8,7 @@ import android.view.ActionMode
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
+import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.activity.MenuInfo
 import info.plateaukao.einkbro.activity.toMenuInfo
@@ -86,6 +87,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 "Copy", //R.string.menu_browser,
+                icon = context.getDrawable(R.drawable.ic_copy),
                 action = {
                     ShareUtil.copyToClipboard(context, selectedText.value)
                 }
@@ -97,6 +99,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 MenuInfo(
 
                     "GPT", //R.string.menu_gpt,
+                    icon = context.getDrawable(R.drawable.ic_chat_gpt),
                     intent = Intent(context, BrowserActivity::class.java).apply {
                         action = ACTION_GPT
                     }
