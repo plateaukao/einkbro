@@ -138,6 +138,18 @@ class ConfigManager(
     var bookmarkSyncUrl by StringPreference(sp, K_BOOKMARK_SYNC_URL, "")
     var pocketAccessToken by StringPreference(sp, K_POCKET_ACCESS_TOKEN, "")
 
+    var gptApiKey by StringPreference(sp, K_GPT_API_KEY, "")
+    var gptSystemPrompt by StringPreference(
+        sp,
+        K_GPT_SYSTEM_PROMPT,
+        "You are a good interpreter."
+    )
+    var gptUserPromptPrefix by StringPreference(
+        sp,
+        K_GPT_USER_PROMPT_PREFIX,
+        "Translate following content to English:"
+    )
+
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
     var multitouchLeft by GestureTypePreference(sp, K_MULTITOUCH_LEFT)
@@ -469,8 +481,12 @@ class ConfigManager(
         const val K_GESTURE_NAV_RIGHT = "setting_gesture_nav_right"
 
         const val K_POCKET_ACCESS_TOKEN = "sp_pocket_access_token"
+        const val K_GPT_API_KEY = "sp_gpt_api_key"
+        const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
+        const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
 
-        const val ADBLOCK_URL_DEFAULT = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+        const val ADBLOCK_URL_DEFAULT =
+            "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"

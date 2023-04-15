@@ -7,6 +7,11 @@ import info.plateaukao.einkbro.view.NinjaWebView
 class LongPressGestureListener(private var webView: NinjaWebView) : SimpleOnGestureListener() {
     private var longPress = true
 
+
+    override fun onContextClick(e: MotionEvent): Boolean {
+        return super.onContextClick(e)
+    }
+
     override fun onLongPress(e: MotionEvent) {
         if (longPress) {
             webView.onLongPress(e)
