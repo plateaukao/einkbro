@@ -7,3 +7,7 @@
     public static int d(...);
     public static int i(...);
 }
+
+-keepattributes InnerClasses
+-if @kotlinx.serialization.Serializable class com.aallam.openai.api.**{static **$* *;}
+-keepnames class <1>$$serializer {static <1>$$serializer INSTANCE;}
