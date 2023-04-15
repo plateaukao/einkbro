@@ -411,18 +411,21 @@
     <string name="bookmark_open_file">打开现有文件</string>
     <string name="menu_save_archive">保存存档文件</string>
     <string name="setting_title_sync_bookmarks">同步书签</string>
+    <string name="setting_title_setup_bookmarks_location">配置书签位置</string>
     <string name="setting_summary_setup_bookmarks_location">在 Google Drive 或其他支持远程同步的文件位置选择文件。</string>
     <string name="setting_summary_import_appData">通过选择以前导出的zip文件导入应用程序数据。</string>
     <string name="dialog_message_sync_bookmark_file">"要同步书签，您需要使用系统文件选择器从 Google Drive 或与其他远程服务同步的文件中创建或打开书签文件。"</string>
     <string name="dialog_title_bookmark_sync">书签文件设置</string>
     <string name="settings_title_back_key_behavior">返回键行为</string>
     <string name="settings_summary_back_key_behavior">当标签页已位于历史记录的第一页时，关闭该标签页。</string>
-    <string name="page_count">Page count</string>
-    <string name="setting_title_userAgent_toggle">Enable Custom UserAgent</string>
-    <string name="setting_summary_userAgent">Input custom useragent strings here.</string>
-    <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
-    <string name="menu_add_to_pocket">Add to Pocket</string>
-    <string name="content_adjustment">Content Adjustment</string>
+    <string name="page_count">总页数</string>
+    <string name="setting_title_userAgent_toggle">启用自定义用户代理</string>
+    <string name="setting_summary_userAgent">在此输入自定义用户代理字符串。</string>
+    <string name="setting_summary_userAgent_toggle">启用自定义用户代理</string>
+    <string name="menu_add_to_pocket">添加到Pocket</string>
+    <string name="content_adjustment">重排版</string>
+    <string name="share_save"><![CDATA[分享或保存]]></string>
+
     <string name="menu_gpt">GPT</string>
     <string name="setting_title_chat_gpt">ChatGPT Integration</string>
     <string name="setting_title_edit_gpt_api_key">Input OpenAI Key</string>
