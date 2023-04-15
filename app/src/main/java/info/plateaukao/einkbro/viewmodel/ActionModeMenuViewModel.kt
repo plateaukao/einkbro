@@ -52,7 +52,6 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             getAllProcessTextMenuInfos(context, packageManager)
         ) {
             finishActionMode()
-            fragment = null
         }.apply {
             show(supportFragmentManager, "action_mode_dialog")
         }
@@ -61,6 +60,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     fun finishActionMode() {
         actionMode?.finish()
         actionMode = null
+        fragment?.dismiss()
+        fragment = null
     }
 
     fun updateSelectedText(text: String) {
