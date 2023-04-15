@@ -54,8 +54,9 @@ class GptViewModel : ViewModel(), KoinComponent {
         )
 
         viewModelScope.launch(Dispatchers.IO) {
-            val response = openai.chatCompletion(chatCompletionRequest)
-            _responseMessage.value = response.choices.first().message?.content ?: ""
+//            val response = openai.chatCompletion(chatCompletionRequest)
+//            _responseMessage.value = response.choices.first().message?.content ?: ""
+            _responseMessage.value = "12345"
         }
     }
 }
