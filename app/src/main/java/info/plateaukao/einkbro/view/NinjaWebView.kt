@@ -705,7 +705,7 @@ open class NinjaWebView(
     suspend fun getSelectedText(): String = suspendCoroutine { continuation ->
         val js = "window.getSelection().toString();"
         evaluateJavascript(js) { value ->
-            continuation.resume(value)
+            continuation.resume(value.substring(1, value.length - 1))
         }
     }
 
