@@ -476,7 +476,7 @@ open class NinjaWebView(
         browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
     }
 
-    suspend fun getRawHtml() = suspendCoroutine<String> { continuation ->
+    suspend fun getRawHtml() = suspendCoroutine { continuation ->
         if (!isReaderModeOn) {
             injectMozReaderModeJs(false)
             evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
@@ -699,6 +699,13 @@ open class NinjaWebView(
             )
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    suspend fun getSelectedText(): String = suspendCoroutine { continuation ->
+        val js = "window.getSelection().toString();"
+        evaluateJavascript(js) { value ->
+            continuation.resume(value)
         }
     }
 
