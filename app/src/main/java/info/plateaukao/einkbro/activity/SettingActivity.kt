@@ -266,7 +266,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         NavigateSettingItem(
             R.string.setting_title_chat_gpt,
-            R.drawable.ic_sync_scroll,
+            R.drawable.ic_chat_gpt,
             destination = ChatGPT
         ),
         VersionSettingItem(
@@ -644,19 +644,19 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val chatGptSettingItems = listOf(
         ValueSettingItem(
             R.string.setting_title_edit_gpt_api_key,
-            R.drawable.ic_sync_scroll,
+            R.drawable.ic_chat_gpt,
             R.string.setting_summary_edit_gpt_api_key,
             config::gptApiKey
         ),
         ValueSettingItem(
             R.string.setting_title_edit_gpt_system_prompt,
-            R.drawable.ic_page_height,
+            R.drawable.icon_edit,
             R.string.setting_summary_edit_gpt_prompt,
             config::gptSystemPrompt
         ),
         ValueSettingItem(
             R.string.setting_title_edit_gpt_user_prompt_prefix,
-            R.drawable.ic_page_height,
+            R.drawable.icon_edit,
             R.string.setting_summary_edit_gpt_user_prompt,
             config::gptUserPromptPrefix
         ),

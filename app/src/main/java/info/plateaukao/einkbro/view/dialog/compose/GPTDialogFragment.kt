@@ -14,10 +14,11 @@ import android.view.WindowManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -132,8 +133,9 @@ private fun GptResponse(
     Box {
         Column(
             modifier = Modifier
+                .defaultMinSize(minWidth = 200.dp)
                 .wrapContentHeight()
-                .width(320.dp),
+                .wrapContentWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (showRequest.value) {
