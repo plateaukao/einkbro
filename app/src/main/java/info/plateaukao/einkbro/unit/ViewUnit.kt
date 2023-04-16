@@ -16,7 +16,9 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import info.plateaukao.einkbro.util.TranslationLanguage
 
 
 object ViewUnit {
@@ -165,5 +167,11 @@ object ViewUnit {
             return false
         }
         return activity.isInMultiWindowMode
+    }
+
+    fun updateLanguageLabel(textView: TextView, translationLanguage: TranslationLanguage) {
+        val languageString = translationLanguage.value
+        val language = languageString.split("-").last()
+        textView.text = language
     }
 }

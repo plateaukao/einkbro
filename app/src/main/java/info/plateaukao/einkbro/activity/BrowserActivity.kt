@@ -98,6 +98,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var videoView: VideoView? = null
     private var customView: View? = null
+    private var languageLabelView: TextView? = null
 
     // Layouts
     private lateinit var searchPanel: SearchBarView
@@ -263,6 +264,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         listenKeyboardShowHide()
+
+        languageLabelView = findViewById(R.id.translation_language)
+        ViewUnit.updateLanguageLabel(languageLabelView!!, config.translationLanguage)
+        languageLabelView?.setOnClickListener {
+            TranslationLanguageDialog(this).show { translationLanguage ->
+                ViewUnit.updateLanguageLabel(languageLabelView!!, translationLanguage)
+                translateByParagraph()
+            }
+        }
+
 
     }
 
@@ -594,6 +605,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         updateTitle()
         ninjaWebView.updatePageInfo()
+
+        languageLabelView?.visibility =
+            (if (ninjaWebView.isTranslatePage) VISIBLE else GONE)
     }
 
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
@@ -667,19 +681,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    private var htmlToBeTranslated = ""
     private fun translateByParagraph() {
         lifecycleScope.launch {
             val currentUrl = ninjaWebView.url
-            val html = ninjaWebView.getRawHtml()
-
-            addAlbum("", "")
+            if (!ninjaWebView.isTranslatePage) {
+                htmlToBeTranslated = ninjaWebView.getRawHtml()
+                addAlbum("", "")
+            }
 
             val processingHtml = HelperUnit.loadAssetFileToString(
                 this@BrowserActivity, "translate_processing.html"
             ).format(getString(R.string.translate_processing))
             ninjaWebView.loadData(processingHtml, "text/html", "utf-8")
 
-            val translatedHtml = translationViewModel.translateByParagraph(html)
+            val translatedHtml = translationViewModel.translateByParagraph(htmlToBeTranslated)
             ninjaWebView.loadDataWithBaseURL(
                 currentUrl,
                 translatedHtml,
@@ -687,7 +703,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 "utf-8",
                 null
             )
-
+            if (!ninjaWebView.isTranslatePage) {
+                ninjaWebView.isTranslatePage = true
+                languageLabelView?.visibility = VISIBLE
+            }
         }
     }
 
@@ -1654,7 +1673,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    private var clickedPoint = Point(0, 0)
     override fun onLongPress(message: Message, event: MotionEvent?) {
         val point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
