@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -61,8 +60,6 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         traverseNodes(parsedHtml) { node ->
             val translation =
                 translateRepository.gTranslate(node.text(), config.translationLanguage.value)
-            Log.d("TranslationViewModel", "text: ${node.text()}")
-            Log.d("TranslationViewModel", "translation: $translation")
             node.append("<br><br>$translation")
         }
         return parsedHtml.toString()
