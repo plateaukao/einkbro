@@ -24,6 +24,7 @@ import android.os.Message
 import android.util.Log
 import android.view.*
 import android.view.KeyEvent.ACTION_DOWN
+import android.view.Menu
 import android.view.View.*
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
@@ -689,10 +690,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         when (intent.action) {
             ACTION_GTRANSLATE -> {
                 translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                TranslateDialogFragment(translationViewModel, actionModeMenuViewModel.clickedPoint.value)
+                TranslateDialogFragment(
+                    translationViewModel,
+                    actionModeMenuViewModel.clickedPoint.value
+                )
                     .show(supportFragmentManager, "translateDialog")
 
             }
+
             ACTION_GPT -> {
                 gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                 if (gptViewModel.hasApiKey()) {
@@ -1877,7 +1882,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (!actionModeMenuViewModel.isInActionMode()) {
             actionModeMenuViewModel.updateActionMode(mode)
 
-            if (!config.showDefaultActionMenu) {
+            if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
                 lifecycleScope.launch {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
                     actionModeMenuViewModel.showActionModeDialogFragment(
@@ -1889,11 +1894,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
 
-        if (!config.showDefaultActionMenu) {
+        if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
             mode.menu.clear()
         }
     }
 
+    private fun isTextEditMode(menu: Menu): Boolean {
+        for (i in 0 until menu.size()) {
+            val item = menu.getItem(i)
+            if (item.title == getString(android.R.string.paste)) {
+                return true
+            }
+        }
+        return false
+    }
 
     override fun onPause() {
         super.onPause()
