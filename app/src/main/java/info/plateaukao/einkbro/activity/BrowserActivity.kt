@@ -631,14 +631,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun toggleTouchTurnPageFeature() {
-        config::enableTouchTurn.toggle()
-        updateTouchView()
-    }
+    override fun toggleTouchTurnPageFeature() = config::enableTouchTurn.toggle()
 
-    private fun updateTouchView() {
-        composeToolbarViewController.updateIcons()
-    }
+    private fun updateTouchView() = composeToolbarViewController.updateIcons()
 
     // Methods
     override fun showFontSizeChangeDialog() =
@@ -997,6 +992,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     ninjaWebView.updateUserAgentString()
                     ninjaWebView.reload()
                 }
+
+                ConfigManager.K_ENABLE_TOUCH -> updateTouchView()
             }
         }
 

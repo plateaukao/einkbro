@@ -39,7 +39,7 @@ import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 
-class TouchAreaDialogFragment : ComposeDialogFragment(), KoinComponent {
+class TouchAreaDialogFragment() : ComposeDialogFragment(), KoinComponent {
     override fun setupComposeView() = composeView.setContent {
         val touchAreaType = remember { mutableStateOf(config.touchAreaType) }
         val enableTurn = remember { mutableStateOf(config.enableTouchTurn) }
@@ -141,6 +141,7 @@ fun TouchAreaContent(
                     .weight(1f),
                 text = stringResource(R.string.switch_touch_area_action),
                 color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Start,
             )
             Switch(
