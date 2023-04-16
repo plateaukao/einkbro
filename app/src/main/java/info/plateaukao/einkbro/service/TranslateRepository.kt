@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.service
 
-import android.net.Uri
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
@@ -10,7 +9,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okio.IOException
-import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
 
 class TranslateRepository {
@@ -51,7 +49,7 @@ class TranslateRepository {
                                 .body()
                                 .getElementsByClass("result-container")
                                 .first()?.text()?.let {
-                                    continuation.resume(StringEscapeUtils.unescapeJava(Uri.decode(it))) {}
+                                    continuation.resume(it) {}
                                 } ?: continuation.resume(null) {}
                         } else {
                             continuation.resume(null) {}
