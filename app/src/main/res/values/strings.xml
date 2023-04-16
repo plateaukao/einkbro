@@ -434,4 +434,5 @@
     <string name="dialog_touch_area_enable">Enable touch pagination</string>
     <string name="show_default_text_menu">Show Default Selected Text Menu</string>
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu.</string>
+    <string name="google_translate">Google Translate</string>
 </resources>

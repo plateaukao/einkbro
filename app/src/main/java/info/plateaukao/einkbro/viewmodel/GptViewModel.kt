@@ -8,13 +8,13 @@ import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.koin.android.BuildConfig
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

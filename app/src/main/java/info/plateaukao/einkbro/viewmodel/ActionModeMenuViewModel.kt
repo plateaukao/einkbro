@@ -16,6 +16,7 @@ import info.plateaukao.einkbro.activity.toMenuInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
+import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
 import info.plateaukao.einkbro.view.dialog.compose.ActionModeDialogFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -88,13 +89,14 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             0,
             MenuInfo(
-                context.getString(android.R.string.copy),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
-                action = {
-                    ShareUtil.copyToClipboard(context, selectedText.value)
+                context.getString(R.string.google_translate),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                intent = Intent(context, BrowserActivity::class.java).apply {
+                    action = ACTION_GTRANSLATE
                 }
             )
         )
+
         if (configManager.gptApiKey.isNotEmpty()) {
             menuInfos.add(
                 0,
@@ -107,6 +109,17 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 )
             )
         }
+
+        menuInfos.add(
+            0,
+            MenuInfo(
+                context.getString(android.R.string.copy),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
+                action = {
+                    ShareUtil.copyToClipboard(context, selectedText.value)
+                }
+            )
+        )
 
         return menuInfos
     }

@@ -70,45 +70,6 @@ class PocketNetwork {
         })
     }
 
-    fun addUrlToPocket(
-        accessToken: String,
-        url: String,
-        title: String? = null,
-        tags: String? = null,
-        callback: (Boolean) -> Unit
-    ) {
-        val requestBodyBuilder = FormBody.Builder()
-            .add("url", url)
-            .add("consumer_key", consumerKey)
-            .add("access_token", accessToken)
-
-        title?.let {
-            requestBodyBuilder.add("title", it)
-        }
-
-        tags?.let {
-            requestBodyBuilder.add("tags", it)
-        }
-
-        val requestBody = requestBodyBuilder.build()
-
-        val request = Request.Builder()
-            .url("https://getpocket.com/v3/add")
-            .post(requestBody)
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                // Handle error
-                callback(false)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                callback(response.isSuccessful)
-            }
-        })
-    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun addUrlToPocket(
         accessToken: String,
