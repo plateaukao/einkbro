@@ -36,7 +36,8 @@ class TwoPaneController(
     private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
-    private val loadTranslationUrl: (String) -> Unit
+    private val loadTranslationUrl: (String) -> Unit,
+    private val translateByParagraph: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val webView: NinjaWebView by lazy {
@@ -181,6 +182,7 @@ class TwoPaneController(
             }
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
+            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph()
             TranslationMode.ONYX -> Unit
         }
     }
@@ -246,7 +248,9 @@ class TwoPaneController(
     }
 
     fun showTranslationConfigDialog() {
-        val enumValues: List<TranslationMode> = TranslationMode.values().toList()
+        val enumValues: List<TranslationMode> = TranslationMode.values().toMutableList().apply {
+            removeAt(0) // remove onyx
+        }
 
         val translationModeArray =
             enumValues.map { activity.getString(it.labelResId) }.toTypedArray()

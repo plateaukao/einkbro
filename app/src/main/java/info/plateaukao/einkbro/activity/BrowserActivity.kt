@@ -662,7 +662,32 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 { showTranslation() },
                 { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
                 { url -> ninjaWebView.loadUrl(url) },
+                { translateByParagraph() }
             )
+        }
+    }
+
+    private fun translateByParagraph() {
+        lifecycleScope.launch {
+            val currentUrl = ninjaWebView.url
+            val html = ninjaWebView.getRawHtml()
+
+            addAlbum("", "")
+
+            val processingHtml = HelperUnit.loadAssetFileToString(
+                this@BrowserActivity, "translate_processing.html"
+            ).format(getString(R.string.translate_processing))
+            ninjaWebView.loadData(processingHtml, "text/html", "utf-8")
+
+            val translatedHtml = translationViewModel.translateByParagraph(html)
+            ninjaWebView.loadDataWithBaseURL(
+                currentUrl,
+                translatedHtml,
+                "text/html",
+                "utf-8",
+                null
+            )
+
         }
     }
 
@@ -1150,8 +1175,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         maybeCreateNewPreloadWebView(enablePreloadWebView, newWebView)
-
-        //ViewUnit.bound(this, newWebView)
 
         updateTabPreview(newWebView, url)
         updateWebViewCount()

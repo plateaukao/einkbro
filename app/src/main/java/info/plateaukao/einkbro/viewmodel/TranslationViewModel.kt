@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -11,6 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.apache.commons.text.StringEscapeUtils
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -50,6 +53,35 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     targetLanguage = config.translationLanguage.value
                 )
                     ?: "Something went wrong."
+        }
+    }
+
+    suspend fun translateByParagraph(html: String): String {
+        val parsedHtml = Jsoup.parse(html)
+        traverseNodes(parsedHtml) { node ->
+            val translation =
+                translateRepository.gTranslate(node.text(), config.translationLanguage.value)
+            Log.d("TranslationViewModel", "text: ${node.text()}")
+            Log.d("TranslationViewModel", "translation: $translation")
+            node.append("<br><br>$translation")
+        }
+        return parsedHtml.toString()
+    }
+
+    private suspend fun traverseNodes(
+        element: Element,
+        action: suspend (Element) -> Unit
+    ) {
+        for (child in element.children()) {
+            if ((child.children().size == 0 && child.text().isNotBlank()) ||
+                child.tagName() == "p"
+            ) {
+                if (child.text().isNotEmpty()) {
+                    action(child)
+                }
+            } else {
+                traverseNodes(child, action)
+            }
         }
     }
 }
