@@ -422,7 +422,7 @@
     <string name="menu_add_to_pocket">Add to Pocket</string>
     <string name="content_adjustment">Content Adjustment</string>
     <string name="share_save"><![CDATA[Share & Save]]></string>
-    <string name="menu_gpt">GPT</string>
+    <string name="menu_gpt">ChatGPT</string>
     <string name="setting_title_chat_gpt">ChatGPT Integration</string>
     <string name="setting_title_edit_gpt_api_key">Input OpenAI Key</string>
     <string name="setting_summary_edit_gpt_api_key">Input key in order to use this feature.</string>
@@ -432,4 +432,6 @@
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
     <string name="gpt_api_key_not_set">Add OpenAI Key in Settings.</string>
     <string name="dialog_touch_area_enable">Enable touch pagination</string>
+    <string name="show_default_text_menu">Show Default Selected Text Menu</string>
+    <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu.</string>
 </resources>

@@ -3,11 +3,13 @@ package info.plateaukao.einkbro.view.dialog.compose
 import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,12 +17,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,10 +54,11 @@ class ActionModeDialogFragment(
         shouldShowInCenter = true
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun setupComposeView() = composeView.setContent {
         val text by actionModeMenuViewModel.selectedText.collectAsState()
         MyTheme {
-            ActionModeMenu(text, menuInfos) { intent ->
+            ActionModeMenu(menuInfos) { intent ->
                 if (intent != null) {
                     startActivity(intent.apply {
                         putExtra(Intent.EXTRA_PROCESS_TEXT, text)
@@ -105,15 +107,14 @@ class ActionModeDialogFragment(
 
 @Composable
 private fun ActionModeMenu(
-    text: String,
     menuInfos: List<MenuInfo>,
     onClicked: (Intent?) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         modifier = Modifier
-            .width(320.dp)
             .wrapContentHeight()
+            .wrapContentWidth()
     ) {
         items(menuInfos.size) { index ->
             val info = menuInfos[index]
@@ -124,18 +125,6 @@ private fun ActionModeMenu(
         }
     }
 }
-
-@Composable
-fun ActionModeMenuItem(
-    title: String,
-    onClicked: () -> Unit = {},
-) = Text(
-    text = title,
-    Modifier
-        .height(80.dp)
-        .width(80.dp)
-        .clickable { onClicked() },
-)
 
 @Composable
 fun ActionMenuItem(
@@ -157,7 +146,8 @@ fun ActionMenuItem(
     Column(
         modifier = Modifier
             .width(width)
-            .height(70.dp)
+            .wrapContentHeight()
+            .padding(8.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .clickable(
                 indication = null,
@@ -175,8 +165,7 @@ fun ActionMenuItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(31.dp)
-                .offset(y = (-5).dp),
+                .wrapContentHeight(),
             text = title,
             textAlign = TextAlign.Center,
             maxLines = 2,
