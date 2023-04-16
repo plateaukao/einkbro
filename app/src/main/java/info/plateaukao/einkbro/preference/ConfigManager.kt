@@ -88,10 +88,6 @@ class ConfigManager(
     var showShareSaveMenu by BooleanPreference(sp, K_SHOW_SHARE_SAVE_MENU, false)
     var showContentMenu by BooleanPreference(sp, K_SHOW_CONTENT_MENU, false)
 
-    var enableImageAdjustment by BooleanPreference(sp, K_ENABLE_IMAGE_ADJUSTMENT, false)
-    var imageAdjustmentBrightness by IntPreference(sp, K_IMAGE_ADJUSTMENT_VALUE, 20)
-    var imageAdjustmentSaturation by IntPreference(sp, K_IMAGE_ADJUSTMENT_SATURATION, 60)
-
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
@@ -456,8 +452,6 @@ class ConfigManager(
         const val K_AUTO_UPDATE_ADBLOCK = "sp_auto_update_adblock"
         const val CERTIFICATE_ERROR_DIALOG = "sp_certificate_error_dialog"
         const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
-        const val K_IMAGE_ADJUSTMENT_VALUE = "sp_image_adjustment_value"
-        const val K_IMAGE_ADJUSTMENT_SATURATION = "sp_image_adjustment_saturation"
         const val K_BOOKMARK_SYNC_URL = "sp_bookmark_sync_url"
         const val K_CLOSE_TAB_WHEN_BACK = "sp_close_tab_when_no_more_back_history"
         const val K_ENABLE_CUSTOM_USER_AGENT = "sp_custom_user_agent"

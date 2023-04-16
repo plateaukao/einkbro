@@ -4,7 +4,6 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -18,30 +17,21 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
-import info.plateaukao.einkbro.unit.SaturationTransformation
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
-import jp.wasabeef.glide.transformations.gpu.BrightnessFilterTransformation
 import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.io.InputStream
-import java.util.Locale
 
 
 class NinjaWebViewClient(
@@ -231,72 +221,7 @@ class NinjaWebViewClient(
         processBookResource(uri)?.let { return it }
         processCustomFontRequest(uri)?.let { return it }
 
-        return if (config.enableImageAdjustment) {
-            processImageRequest(url, webView)
-        } else {
-            null
-        }
-    }
-
-    private fun processImageRequest(url: String, webView: WebView): WebResourceResponse? {
-        val lowerCaseUrl = url.lowercase(Locale.ROOT)
-        try {
-            return when {
-                lowerCaseUrl.contains(".jpg") || lowerCaseUrl.contains(".jpeg") ->
-                    WebResourceResponse(
-                        "image/jpg", "UTF-8", getBitmapInputStream(
-                            fetchBitmap(webView, url),
-                            Bitmap.CompressFormat.JPEG
-                        )
-                    )
-
-                lowerCaseUrl.contains(".png") -> WebResourceResponse(
-                    "image/png", "UTF-8", getBitmapInputStream(
-                        fetchBitmap(webView, url),
-                        Bitmap.CompressFormat.PNG
-                    )
-                )
-
-                lowerCaseUrl.contains(".webp") -> WebResourceResponse(
-                    "image/webp", "UTF-8", getBitmapInputStream(
-                        fetchBitmap(webView, url),
-                        Bitmap.CompressFormat.WEBP
-                    )
-                )
-
-                else -> {
-                    null
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("NinjaWebViewClient", "Error while processing image: $url", e)
-            return null
-        }
-    }
-
-    private fun fetchBitmap(webView: WebView, url: String): Bitmap {
-        val brightness: Float = config.imageAdjustmentBrightness / 100f
-        val saturation: Float = config.imageAdjustmentSaturation / 100f
-        return Glide.with(webView).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-            .load(url)
-            .apply(
-                bitmapTransform(
-                    MultiTransformation(
-                        BrightnessFilterTransformation(brightness),
-                        SaturationTransformation(saturation)
-                    )
-                )
-            ).submit().get()
-    }
-
-    private fun getBitmapInputStream(
-        bitmap: Bitmap,
-        compressFormat: Bitmap.CompressFormat
-    ): InputStream {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(compressFormat, 80, byteArrayOutputStream)
-        val bitmapData: ByteArray = byteArrayOutputStream.toByteArray()
-        return ByteArrayInputStream(bitmapData)
+        return null
     }
 
     private fun processBookResource(uri: Uri): WebResourceResponse? {
