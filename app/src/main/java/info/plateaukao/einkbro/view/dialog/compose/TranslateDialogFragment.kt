@@ -12,9 +12,8 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -30,14 +29,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.viewmodel.GptViewModel
+import info.plateaukao.einkbro.view.compose.SelectableText
+import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 
-
-class GPTDialogFragment(
-    private val gptViewModel: GptViewModel,
+class TranslateDialogFragment(
+    private val translationViewModel: TranslationViewModel,
     private val anchorPoint: Point,
 ) : ComposeDialogFragment() {
 
@@ -47,7 +48,11 @@ class GPTDialogFragment(
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            GptResponse(gptViewModel)
+            TranslateResponse(translationViewModel) {
+                TranslationLanguageDialog(requireActivity()).show { translationLanguage ->
+                    translationViewModel.updateTranslationLanguage(translationLanguage)
+                }
+            }
         }
     }
 
@@ -59,7 +64,7 @@ class GPTDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         setupDialogPosition(anchorPoint)
 
-        gptViewModel.query()
+        translationViewModel.query()
         return view
     }
 
@@ -120,41 +125,53 @@ class GPTDialogFragment(
 }
 
 @Composable
-private fun GptResponse(gptViewModel: GptViewModel) {
-    val requestMessage by gptViewModel.inputMessage.collectAsState()
-    val responseMessage by gptViewModel.responseMessage.collectAsState()
+private fun TranslateResponse(
+    translationViewModel: TranslationViewModel,
+    onLanguageClick: () -> Unit
+) {
+    val requestMessage by translationViewModel.inputMessage.collectAsState()
+    val responseMessage by translationViewModel.responseMessage.collectAsState()
+    val targetLanguage by translationViewModel.translationLanguage.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
-    Box {
-        Column(
-            modifier = Modifier
-                .defaultMinSize(minWidth = 200.dp)
-                .wrapContentHeight()
-                .wrapContentWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier
+            .wrapContentHeight()
+            .wrapContentWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (showRequest.value) {
-                Text(
-                    text = requestMessage,
-                    modifier = Modifier.padding(10.dp)
-                )
-                Divider()
-            }
-            Text(
-                text = responseMessage,
-                modifier = Modifier.padding(10.dp)
+            SelectableText(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                selected = true,
+                text = targetLanguage.language,
+                textAlign = TextAlign.Center,
+                onClick = onLanguageClick
             )
-        }
-        if (!showRequest.value) {
             Icon(
-                painter = painterResource(id = R.drawable.icon_arrow_down_gest),
+                painter = painterResource(
+                    id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_arrow_down_gest
+                ),
                 contentDescription = "Info Icon",
                 modifier = Modifier
                     .size(32.dp)
-                    .align(Alignment.TopEnd)
-                    .clickable { showRequest.value = true }
+                    .clickable { showRequest.value = !showRequest.value }
             )
         }
+        if (showRequest.value) {
+            Text(
+                text = requestMessage,
+                modifier = Modifier.padding(10.dp)
+            )
+            Divider()
+        }
+        Text(
+            text = responseMessage,
+            modifier = Modifier.padding(10.dp)
+        )
     }
 }
-

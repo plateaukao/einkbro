@@ -60,6 +60,7 @@ import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
+import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
 import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
@@ -78,6 +79,7 @@ import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
+import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -111,6 +113,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private val gptViewModel: GptViewModel by viewModels()
+    private val translationViewModel: TranslationViewModel by viewModels()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -684,6 +687,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         when (intent.action) {
+            ACTION_GTRANSLATE -> {
+                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                TranslateDialogFragment(translationViewModel, actionModeMenuViewModel.clickedPoint.value)
+                    .show(supportFragmentManager, "translateDialog")
+
+            }
             ACTION_GPT -> {
                 gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                 if (gptViewModel.hasApiKey()) {

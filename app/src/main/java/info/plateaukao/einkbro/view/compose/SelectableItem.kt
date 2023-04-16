@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
@@ -18,6 +19,7 @@ fun SelectableText(
     modifier: Modifier,
     selected: Boolean,
     text: String,
+    textAlign: TextAlign = TextAlign.Start,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -28,6 +30,7 @@ fun SelectableText(
         style = MaterialTheme.typography.button,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
+        textAlign = textAlign,
         modifier = modifier
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .padding(horizontal = 6.dp, vertical = 6.dp)

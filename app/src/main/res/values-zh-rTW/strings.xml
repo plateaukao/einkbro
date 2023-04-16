@@ -358,7 +358,7 @@
     <string name="setting_title_chat_gpt">ChatGPT Integration</string>
     <string name="setting_title_edit_gpt_api_key">Input OpenAI Key</string>
     <string name="setting_summary_edit_gpt_api_key">Input key in order to use this feature.</string>
-    <string name="setting_title_edit_gpt_system_prompt">ChatGPT Prompt</string>
+    <string name="setting_title_edit_gpt_system_prompt">System Prompt</string>
     <string name="setting_summary_edit_gpt_prompt">Input prompt like: translate into English</string>
     <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
@@ -366,4 +366,5 @@
     <string name="dialog_touch_area_enable">Enable touch pagination</string>
     <string name="show_default_text_menu">Show Default Selected Text Menu</string>
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu.</string>
+    <string name="google_translate">Google Translate</string>
 </resources>
