@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -136,18 +137,21 @@ private fun GptResponse(gptViewModel: GptViewModel) {
             if (showRequest.value) {
                 Text(
                     text = requestMessage,
+                    color = MaterialTheme.colors.onBackground,
                     modifier = Modifier.padding(10.dp)
                 )
                 Divider()
             }
             Text(
                 text = responseMessage,
+                color = MaterialTheme.colors.onBackground,
                 modifier = Modifier.padding(10.dp)
             )
         }
         if (!showRequest.value) {
             Icon(
                 painter = painterResource(id = R.drawable.icon_arrow_down_gest),
+                tint = MaterialTheme.colors.onBackground,
                 contentDescription = "Info Icon",
                 modifier = Modifier
                     .size(32.dp)

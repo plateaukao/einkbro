@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -157,6 +158,7 @@ private fun TranslateResponse(
                     id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_arrow_down_gest
                 ),
                 contentDescription = "Info Icon",
+                tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
                     .size(32.dp)
                     .clickable { showRequest.value = !showRequest.value }
@@ -165,12 +167,14 @@ private fun TranslateResponse(
         if (showRequest.value) {
             Text(
                 text = requestMessage,
+                color = MaterialTheme.colors.onBackground,
                 modifier = Modifier.padding(10.dp)
             )
             Divider()
         }
         Text(
             text = responseMessage,
+            color = MaterialTheme.colors.onBackground,
             modifier = Modifier.padding(10.dp)
         )
     }
