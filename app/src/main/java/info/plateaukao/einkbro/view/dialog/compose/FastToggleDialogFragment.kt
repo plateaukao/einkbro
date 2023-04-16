@@ -107,14 +107,6 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             onClicked(false)
         }
 
-        ToggleItem(
-            state = config.enableImageAdjustment,
-            titleResId = R.string.image_adjust, iconResId = R.drawable.icon_image
-        ) {
-            config::enableImageAdjustment.toggle()
-            onClicked(false)
-        }
-
         Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
 
         ToggleItem(
