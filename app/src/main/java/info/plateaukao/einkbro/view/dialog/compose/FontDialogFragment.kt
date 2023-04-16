@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.view.dialog.compose
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -159,7 +160,9 @@ private fun MainFontDialog(
                             stringResource(id = R.string.nothing)
                         }
                         SelectableText(
-                            modifier = Modifier.padding(horizontal = 1.dp, vertical = 5.dp).weight(1f),
+                            modifier = Modifier
+                                .padding(horizontal = 1.dp, vertical = 5.dp)
+                                .weight(1f),
                             selected = isSelect,
                             text = stringResource(id = fontType.resId) + " ($fontName)",
                         ) {
@@ -194,10 +197,15 @@ fun FontDialogButtonBar(
     ) {
         HorizontalSeparator()
         TextButton(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier
+                .wrapContentWidth()
+                .fillMaxWidth(),
             onClick = okAction
         ) {
-            Text(stringResource(id = android.R.string.ok), color = MaterialTheme.colors.onBackground)
+            Text(
+                stringResource(id = android.R.string.ok),
+                color = MaterialTheme.colors.onBackground
+            )
         }
     }
 }
