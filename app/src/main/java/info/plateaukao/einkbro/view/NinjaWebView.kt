@@ -714,6 +714,10 @@ open class NinjaWebView(
         evaluateJavascript(str, null)
     }
 
+    suspend fun googleTranslateByParagraph() {
+        getRawHtml()
+    }
+
     private fun injectGoogleTranslateV2Js(): String =
         String.format(
             injectGoogleTranslateV2JsFormat,

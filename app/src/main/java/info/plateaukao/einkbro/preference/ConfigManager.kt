@@ -364,6 +364,7 @@ class ConfigManager(
         return iconListString.split(",").map { ToolbarAction.fromOrdinal(it.toInt()) }
     }
 
+    @Suppress("DEPRECATION")
     private fun getDefaultTranslationLanguage(): TranslationLanguage {
         val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales.get(0)
@@ -576,13 +577,14 @@ enum class FabPosition {
 }
 
 enum class TranslationMode(val labelResId: Int) {
-    ONYX(0),
+    ONYX(R.string.onyx),
     GOOGLE(R.string.google_text),
     PAPAGO(R.string.papago_text),
     PAPAGO_URL(R.string.papago_full_page),
     GOOGLE_URL(R.string.google_full_page),
     PAPAGO_DUAL(R.string.papago_dual_pane),
     GOOGLE_IN_PLACE(R.string.google_in_place),
+    TRANSLATE_BY_PARAGRAPH(R.string.translate_by_paragraph)
 }
 
 enum class FontType(val resId: Int) {

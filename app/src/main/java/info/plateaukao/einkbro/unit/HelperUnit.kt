@@ -262,4 +262,13 @@ object HelperUnit {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(nonNullUrl))
         activity.startActivity(Intent.createChooser(intent, title))
     }
+
+    fun loadAssetFileToString(context: Context, filename: String): String {
+        val inputStream = context.assets.open(filename)
+        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+        val stringBuilder = StringBuilder()
+        bufferedReader.useLines { lines -> lines.forEach { stringBuilder.append(it) } }
+
+        return stringBuilder.toString()
+    }
 }
