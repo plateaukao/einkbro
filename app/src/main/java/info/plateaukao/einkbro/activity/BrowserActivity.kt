@@ -1868,16 +1868,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (!actionModeMenuViewModel.isInActionMode()) {
             actionModeMenuViewModel.updateActionMode(mode)
 
-            lifecycleScope.launch {
-                actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
-                actionModeMenuViewModel.showActionModeDialogFragment(
-                    this@BrowserActivity,
-                    supportFragmentManager,
-                    packageManager
-                )
+            if (!config.showDefaultActionMenu) {
+                lifecycleScope.launch {
+                    actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
+                    actionModeMenuViewModel.showActionModeDialogFragment(
+                        this@BrowserActivity,
+                        supportFragmentManager,
+                        packageManager
+                    )
+                }
             }
         }
-        mode.menu.clear()
+
+        if (!config.showDefaultActionMenu) {
+            mode.menu.clear()
+        }
     }
 
 

@@ -28,13 +28,9 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.AdBlock
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyLink
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyText
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.NewTabBackground
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.NewTabForeground
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveBookmark
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.ShareLink
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SplitScreen
 import java.net.URLDecoder
 
 
@@ -108,27 +104,26 @@ private fun ContextMenuItems(
             modifier = Modifier
                 .width(IntrinsicSize.Max)
                 .horizontalScroll(rememberScrollState()),
-//            horizontalArrangement = Arrangement.End
         ) {
-            ContextMenuItem(R.string.split_screen, R.drawable.ic_split_screen) {
-                onClicked(
-                    SplitScreen
-                )
-            }
-            ContextMenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) {
-                onClicked(
-                    ShareLink
-                )
-            }
-            ContextMenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
             ContextMenuItem(R.string.main_menu_new_tabOpen, R.drawable.icon_tab_plus) {
                 onClicked(
-                    NewTabForeground
+                    ContextMenuItemType.NewTabForeground
                 )
             }
             ContextMenuItem(R.string.main_menu_new_tab, R.drawable.icon_tab_unselected) {
                 onClicked(
-                    NewTabBackground
+                    ContextMenuItemType.NewTabBackground
+                )
+            }
+            ContextMenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
+            ContextMenuItem(R.string.split_screen, R.drawable.ic_split_screen) {
+                onClicked(
+                    ContextMenuItemType.SplitScreen
+                )
+            }
+            ContextMenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) {
+                onClicked(
+                    ContextMenuItemType.ShareLink
                 )
             }
         }

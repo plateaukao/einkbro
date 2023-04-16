@@ -57,7 +57,7 @@ class ConfigManager(
     var restartChanged by BooleanPreference(sp, K_RESTART_CHANGED, false)
     var autoFillForm by BooleanPreference(sp, K_AUTO_FILL, true)
     var shouldTrimInputUrl by BooleanPreference(sp, K_TRIM_INPUT_URL, false)
-    var enableZoom by BooleanPreference(sp, K_ENABLE_ZOOM, false)
+    var enableZoom by BooleanPreference(sp, K_ENABLE_ZOOM, true)
     var shouldPruneQueryParameters by BooleanPreference(sp, K_PRUNE_QUERY_PARAMETERS, false)
     var translationPanelSwitched by BooleanPreference(sp, K_TRANSLATE_PANEL_SWITCHED, false)
     var translationScrollSync by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
@@ -87,6 +87,8 @@ class ConfigManager(
 
     var showShareSaveMenu by BooleanPreference(sp, K_SHOW_SHARE_SAVE_MENU, false)
     var showContentMenu by BooleanPreference(sp, K_SHOW_CONTENT_MENU, false)
+
+    var showDefaultActionMenu by BooleanPreference(sp, K_SHOW_DEFAULT_ACTION_MENU, false)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -478,6 +480,8 @@ class ConfigManager(
         const val K_GPT_API_KEY = "sp_gpt_api_key"
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
         const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
+
+        const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"

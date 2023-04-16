@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
 import android.view.ActionMode
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
@@ -87,8 +88,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             0,
             MenuInfo(
-                "Copy", //R.string.menu_browser,
-                icon = context.getDrawable(R.drawable.ic_copy),
+                context.getString(android.R.string.copy),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
                 action = {
                     ShareUtil.copyToClipboard(context, selectedText.value)
                 }
@@ -98,9 +99,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             menuInfos.add(
                 0,
                 MenuInfo(
-
-                    "GPT", //R.string.menu_gpt,
-                    icon = context.getDrawable(R.drawable.ic_chat_gpt),
+                    context.getString(R.string.menu_gpt),
+                    icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
                     intent = Intent(context, BrowserActivity::class.java).apply {
                         action = ACTION_GPT
                     }

@@ -290,6 +290,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_enable_zoom,
             config::enableZoom,
         ),
+        BooleanSettingItem(
+            R.string.show_default_text_menu,
+            R.drawable.ic_menu,
+            R.string.setting_summary_show_default_text_menu,
+            config::showDefaultActionMenu,
+        ),
         ValueSettingItem(
             R.string.setting_title_page_left_value,
             R.drawable.ic_page_height,
