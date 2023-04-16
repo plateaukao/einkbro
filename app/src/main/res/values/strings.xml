@@ -292,7 +292,7 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="setting_summary_dark_mode">Support dark mode</string>
     <string name="hie_touch_area_when_input">disable when typing</string>
-    <string name="switch_touch_area_action">switch touch area action</string>
+    <string name="switch_touch_area_action">switch up/down direction</string>
     <string name="no_previous_page">no previous page!</string>
     <string name="menu_open_epub">open epub</string>
     <string name="setting_multitouch_use_title">Use two finger swipe</string>
@@ -431,4 +431,5 @@
     <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix, e.g., Translate following content to English:</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
     <string name="gpt_api_key_not_set">Add OpenAI Key in Settings.</string>
+    <string name="dialog_touch_area_enable">Enable touch pagination</string>
 </resources>

@@ -237,7 +237,7 @@
     <string name="dark_mode">黑暗模式</string>
     <string name="setting_summary_dark_mode">支援黑暗模式</string>
     <string name="hie_touch_area_when_input">輸入時隱藏點擊區域</string>
-    <string name="switch_touch_area_action">點擊翻頁功能互換</string>
+    <string name="switch_touch_area_action">上下方向互換</string>
     <string name="no_previous_page">沒有前一頁</string>
     <string name="menu_open_epub">開啟已存 epub</string>
     <string name="setting_multitouch_use_title">使用兩指手勢</string>
@@ -363,4 +363,5 @@
     <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
     <string name="gpt_api_key_not_set">Add OpenAI Key in Settings.</string>
+    <string name="dialog_touch_area_enable">Enable touch pagination</string>
 </resources>

@@ -82,16 +82,12 @@ fun TouchAreaContent(
     onCloseClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
-        Text(
-            modifier = Modifier
-                .padding(6.dp)
-                .fillMaxWidth(),
-            text = stringResource(R.string.title_touch_area),
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h6,
-            textAlign = TextAlign.Center,
-        )
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
             TouchAreaItem(
                 state = touchAreaType == Left,
                 titleResId = R.string.touch_left_side,
@@ -139,7 +135,7 @@ fun TouchAreaContent(
                 modifier = Modifier
                     .padding(10.dp)
                     .weight(1f),
-                text = stringResource(R.string.switch_touch_area_action),
+                text = stringResource(R.string.dialog_touch_area_enable),
                 color = MaterialTheme.colors.onBackground,
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Start,

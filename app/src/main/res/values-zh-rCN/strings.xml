@@ -435,4 +435,5 @@
     <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
     <string name="gpt_api_key_not_set">Add OpenAI Key in Settings.</string>
+    <string name="dialog_touch_area_enable">Enable touch pagination</string>
 </resources>
