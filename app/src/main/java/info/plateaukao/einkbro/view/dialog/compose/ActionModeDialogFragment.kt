@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -114,7 +113,7 @@ private fun ActionModeMenu(
         columns = GridCells.Fixed(4),
         modifier = Modifier
             .wrapContentHeight()
-            .wrapContentWidth()
+            .width(280.dp)
     ) {
         items(menuInfos.size) { index ->
             val info = menuInfos[index]
