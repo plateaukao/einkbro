@@ -18,6 +18,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.NinjaToast
@@ -105,19 +106,14 @@ class TwoPaneController(
 
         translationViewBinding.expandedButton.setOnClickListener { showControlButtons() }
 
-        updateLanguageLabel(config.translationLanguage)
+        val languageView = translationViewBinding.translationLanguage
+        ViewUnit.updateLanguageLabel(languageView, config.translationLanguage)
         translationViewBinding.translationLanguage.setOnClickListener {
             TranslationLanguageDialog(activity).show { translationLanguage ->
-                updateLanguageLabel(translationLanguage)
+                ViewUnit.updateLanguageLabel(languageView, translationLanguage)
                 translateWithNewLanguage(translationLanguage)
             }
         }
-    }
-
-    private fun updateLanguageLabel(translationLanguage: TranslationLanguage) {
-        val languageString = translationLanguage.value
-        val language = languageString.split("-").last()
-        translationViewBinding.translationLanguage.text = language
     }
 
     private fun hideControlButtons() {
@@ -194,9 +190,7 @@ class TwoPaneController(
         }
     }
 
-    //fun showTranslation(text: String) = launchTranslateWindow(text)
-
-    fun setOrientation(orientation: Orientation) {
+    private fun setOrientation(orientation: Orientation) {
         config.translationOrientation = orientation
         twoPaneLayout.setOrientation(orientation)
     }

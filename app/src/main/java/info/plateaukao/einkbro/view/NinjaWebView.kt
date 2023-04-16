@@ -65,6 +65,8 @@ open class NinjaWebView(
     private val javascript: Javascript by inject()
     private val cookie: Cookie by inject()
 
+    var isTranslatePage = false
+
     var incognito: Boolean = false
         set(value) {
             field = value

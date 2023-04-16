@@ -362,7 +362,7 @@
     <string name="setting_summary_plus_behavior">When adding a new tab, what should be displayed.</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
     <string name="setting_summary_translated_langs">Customize the languages for translation (e.g.: en,fr,zh-TW,zh-CN)</string>
-    <string name="setting_title_translated_langs">Preferred Translated Languages</string>
+    <string name="setting_title_translated_langs">Translated Languages for Google Translate</string>
     <string name="menu">Menu</string>
     <string name="copy_text">copy text</string>
     <string name="menu_tts">Read content</string>
