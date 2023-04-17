@@ -9,20 +9,18 @@ import org.koin.core.component.KoinComponent
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class ListSettingDialog(
+class ListSettingWithNameDialog(
     private val context: Context,
     private val titleId: Int,
-    private val nameResIds: List<Int>,
+    private val names: List<String>,
     private val defaultValue: Int
 ) : KoinComponent {
-
     suspend fun show() = suspendCoroutine<Int?> { continuation ->
-        val names = nameResIds.map { context.resources.getString(it) }.toTypedArray()
 
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setTitle(context.resources.getString(titleId))
             setSingleChoiceItems(
-                names,
+                names.toTypedArray(),
                 defaultValue
             ) { dialog, selectedIndex ->
                 dialog.dismiss()
@@ -34,3 +32,16 @@ class ListSettingDialog(
         }
     }
 }
+
+class ListSettingDialog(
+    private val context: Context,
+    private val titleId: Int,
+    private val nameResIds: List<Int>,
+    private val defaultValue: Int
+) {
+    suspend fun show(): Int? {
+        val names = nameResIds.map { context.resources.getString(it) }
+        return ListSettingWithNameDialog(context, titleId, names, defaultValue).show()
+    }
+}
+
