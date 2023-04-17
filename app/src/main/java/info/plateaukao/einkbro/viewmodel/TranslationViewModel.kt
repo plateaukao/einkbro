@@ -5,11 +5,16 @@ import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.util.TranslationLanguage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -55,30 +60,43 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
+    val scope = CoroutineScope(newFixedThreadPoolContext(10, "requests"))
+
     suspend fun translateByParagraph(html: String): String {
         val parsedHtml = Jsoup.parse(html)
-        traverseNodes(parsedHtml) { node ->
-            val translation =
-                translateRepository.gTranslate(node.text(), config.translationLanguage.value)
-            node.append("<br><br>$translation")
+        val nodesWithText = fetchNodesWithText(parsedHtml)
+        withContext(scope.coroutineContext) {
+            nodesWithText.forEach { node ->
+                async {
+                    val translation =
+                        translateRepository.gTranslate(
+                            node.text(),
+                            config.translationLanguage.value
+                        )
+                    node.append("<br><br>$translation")
+                }.await()
+            }
         }
+
         return parsedHtml.toString()
     }
 
-    private suspend fun traverseNodes(
+    private fun fetchNodesWithText(
         element: Element,
-        action: suspend (Element) -> Unit
-    ) {
+    ): List<Element> {
+        val result = mutableListOf<Element>()
         for (child in element.children()) {
             if ((child.children().size == 0 && child.text().isNotBlank()) ||
                 child.tagName() == "p"
             ) {
                 if (child.text().isNotEmpty()) {
-                    action(child)
+                    result += child
                 }
             } else {
-                traverseNodes(child, action)
+                result += fetchNodesWithText(child)
             }
         }
+        return result
     }
 }
