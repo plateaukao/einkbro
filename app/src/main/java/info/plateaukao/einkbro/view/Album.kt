@@ -13,6 +13,8 @@ data class Album(
 ) {
     var isLoaded = false
 
+    var isTranslatePage = false
+
     var albumTitle: String by mutableStateOf("")
 
     var bitmap: Bitmap? by mutableStateOf(null)

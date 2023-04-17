@@ -291,7 +291,16 @@ private fun TabItem(
             .padding(4.dp),
         horizontalArrangement = Arrangement.Center
     ) {
-        if (tabInfo.favicon != null) {
+        if (tabInfo.isTranslatePage) {
+            Icon(
+                modifier = Modifier
+                    .size(36.dp)
+                    .padding(end = 5.dp),
+                painter = painterResource(id = R.drawable.ic_translate),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground
+            )
+        } else if (tabInfo.favicon != null) {
             Image(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -335,7 +344,8 @@ private fun TabItem(
 data class TabInfo(
     val url: String,
     val title: String,
-    val favicon: Bitmap? = null
+    val favicon: Bitmap? = null,
+    val isTranslatePage: Boolean
 )
 
 @Composable
@@ -446,6 +456,7 @@ private fun Album.toTabInfo(): TabInfo =
     TabInfo(
         title = this.albumTitle,
         url = this.getUrl(),
-        favicon = this.bitmap
+        favicon = this.bitmap,
+        isTranslatePage = this.isTranslatePage
     )
 

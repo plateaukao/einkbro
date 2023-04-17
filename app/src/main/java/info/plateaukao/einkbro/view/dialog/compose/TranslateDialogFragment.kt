@@ -32,11 +32,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
+import kotlinx.coroutines.launch
 
 class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
@@ -50,10 +52,16 @@ class TranslateDialogFragment(
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             TranslateResponse(translationViewModel) {
-                TranslationLanguageDialog(requireActivity()).show { translationLanguage ->
-                    translationViewModel.updateTranslationLanguage(translationLanguage)
-                }
+                changeTranslationLanguage()
             }
+        }
+    }
+
+    private fun changeTranslationLanguage() {
+        lifecycleScope.launch {
+            val translationLanguage =
+                TranslationLanguageDialog(requireActivity()).show() ?: return@launch
+            translationViewModel.updateTranslationLanguage(translationLanguage)
         }
     }
 

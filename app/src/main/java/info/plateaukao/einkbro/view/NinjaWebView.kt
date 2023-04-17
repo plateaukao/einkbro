@@ -66,6 +66,12 @@ open class NinjaWebView(
     private val cookie: Cookie by inject()
 
     var isTranslatePage = false
+        set(value) {
+            field = value
+            if (value) {
+                album.isTranslatePage = true
+            }
+        }
 
     var incognito: Boolean = false
         set(value) {
@@ -336,6 +342,7 @@ open class NinjaWebView(
     }
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
+
     private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)
 

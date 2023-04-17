@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
+import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.databinding.TranslationPageIndexBinding
 import info.plateaukao.einkbro.databinding.TranslationPanelBinding
@@ -27,12 +28,14 @@ import info.plateaukao.einkbro.view.NinjaWebView.OnScrollChangeListener
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.TwoPaneLayout
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.lang.Math.abs
 
 class TwoPaneController(
     private val activity: Activity,
+    private val lifecycleScope: LifecycleCoroutineScope,
     private val translationViewBinding: TranslationPanelBinding,
     private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
@@ -109,7 +112,9 @@ class TwoPaneController(
         val languageView = translationViewBinding.translationLanguage
         ViewUnit.updateLanguageLabel(languageView, config.translationLanguage)
         translationViewBinding.translationLanguage.setOnClickListener {
-            TranslationLanguageDialog(activity).show { translationLanguage ->
+            lifecycleScope.launch {
+                val translationLanguage =
+                    TranslationLanguageDialog(activity).show() ?: return@launch
                 ViewUnit.updateLanguageLabel(languageView, translationLanguage)
                 translateWithNewLanguage(translationLanguage)
             }

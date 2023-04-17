@@ -441,4 +441,5 @@
     <string name="google_translate">Google Translate</string>
     <string name="translate_by_paragraph">Google by paragraph</string>
     <string name="translate_processing">Processing...</string>
+    <string name="translation_language">Translation Language</string>
 </resources>

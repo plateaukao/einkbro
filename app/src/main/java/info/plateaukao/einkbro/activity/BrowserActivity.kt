@@ -268,13 +268,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         languageLabelView = findViewById(R.id.translation_language)
         ViewUnit.updateLanguageLabel(languageLabelView!!, config.translationLanguage)
         languageLabelView?.setOnClickListener {
-            TranslationLanguageDialog(this).show { translationLanguage ->
+            lifecycleScope.launch {
+                val translationLanguage =
+                    TranslationLanguageDialog(this@BrowserActivity).show() ?: return@launch
                 ViewUnit.updateLanguageLabel(languageLabelView!!, translationLanguage)
                 translateByParagraph()
             }
         }
-
-
     }
 
     override fun isAtTop(): Boolean = ninjaWebView.isAtTop()
@@ -671,6 +671,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (!isTwoPaneControllerInitialized()) {
             twoPaneController = TwoPaneController(
                 this,
+                lifecycleScope,
                 binding.subContainer,
                 binding.twoPanelLayout,
                 { showTranslation() },
