@@ -274,7 +274,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 val translationLanguage =
                     TranslationLanguageDialog(this@BrowserActivity).show() ?: return@launch
                 ViewUnit.updateLanguageLabel(languageLabelView!!, translationLanguage)
-                translateByParagraph()
+                translateByParagraph(ninjaWebView.translateApi)
             }
         }
     }
@@ -680,12 +680,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 { showTranslation() },
                 { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
                 { url -> ninjaWebView.loadUrl(url) },
-                { translateByParagraph() }
+                this::translateByParagraph
             )
         }
     }
 
-    private fun translateByParagraph() {
+    private fun translateByParagraph(translateApi: TRANSLATE_API) {
         lifecycleScope.launch {
             val currentUrl = ninjaWebView.url
 
@@ -699,6 +699,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 addAlbum("", "")
                 // set it to translate mode
                 ninjaWebView.isTranslatePage = true
+                ninjaWebView.translateApi = translateApi
                 // set its raw html to be the same as original WebView
                 ninjaWebView.rawHtmlCache = htmlCache
                 // show the language label
@@ -712,7 +713,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             translateModeWebView.loadData(processingHtml, "text/html", "utf-8")
 
             val translatedHtml = translationViewModel
-                .translateByParagraph(translateModeWebView.rawHtmlCache!!) {
+                .translateByParagraph(translateModeWebView.rawHtmlCache!!, translateApi) {
                     if (ninjaWebView.isTranslatePage) {
                         updateProgress(it)
                     }

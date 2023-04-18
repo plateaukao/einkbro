@@ -54,6 +54,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.PAPAGO -> callPapagoTranslate(userMessage)
         }
     }
+
     private fun callGoogleTranslate(userMessage: String? = null) {
         if (userMessage != null) {
             _inputMessage.value = userMessage
@@ -88,18 +89,29 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     @OptIn(DelicateCoroutinesApi::class)
     val scope = CoroutineScope(newFixedThreadPoolContext(10, "requests"))
 
-    suspend fun translateByParagraph(html: String, updateProgress: (Int) -> Unit): String {
+    suspend fun translateByParagraph(
+        html: String,
+        translateApi: TRANSLATE_API,
+        updateProgress: (Int) -> Unit
+    ): String {
         val parsedHtml = Jsoup.parse(html)
         val nodesWithText = fetchNodesWithText(parsedHtml)
         var completeCount = 0
         withContext(scope.coroutineContext) {
             nodesWithText.forEach { node ->
                 async {
-                    val translation =
+                    val translation = if (translateApi == TRANSLATE_API.PAPAGO) {
+                        translateRepository.pTranslate(
+                            node.text(),
+                            config.translationLanguage.value,
+                            "ko"
+                        )
+                    } else {
                         translateRepository.gTranslate(
                             node.text(),
                             config.translationLanguage.value
                         )
+                    }
                     node.append("<br><br>$translation")
                     completeCount++
                     withContext(Dispatchers.Main) {

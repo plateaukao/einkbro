@@ -443,4 +443,5 @@
     <string name="translate_papago">Naver Papago API secret</string>
     <string name="translate_papago_summary">If you want to use Naver Papago translate service, please enter your API secret.</string>
     <string name="papago">Papago</string>
+    <string name="papago_translate_by_paragraph">Papago by Paragrah</string>
 </resources>
