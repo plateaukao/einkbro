@@ -435,7 +435,7 @@
     <string name="show_default_text_menu">Show Default Selected Text Menu</string>
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu.</string>
     <string name="google_translate">Google Translate</string>
-    <string name="translate_by_paragraph">Google by paragraph</string>
+    <string name="translate_by_paragraph">Translate by Paragraph</string>
     <string name="onyx">onyx</string>
     <string name="translate_processing">Processing...</string>
     <string name="translation_language">Translation Language</string>

@@ -63,9 +63,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     @OptIn(DelicateCoroutinesApi::class)
     val scope = CoroutineScope(newFixedThreadPoolContext(10, "requests"))
 
-    suspend fun translateByParagraph(html: String): String {
+    suspend fun translateByParagraph(html: String, updateProgress: (Int) -> Unit): String {
         val parsedHtml = Jsoup.parse(html)
         val nodesWithText = fetchNodesWithText(parsedHtml)
+        var completeCount = 0
         withContext(scope.coroutineContext) {
             nodesWithText.forEach { node ->
                 async {
@@ -75,6 +76,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                             config.translationLanguage.value
                         )
                     node.append("<br><br>$translation")
+                    completeCount++
+                    withContext(Dispatchers.Main) {
+                        updateProgress(completeCount * 100 / nodesWithText.size)
+                    }
                 }.await()
             }
         }
