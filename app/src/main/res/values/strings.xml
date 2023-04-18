@@ -439,4 +439,8 @@
     <string name="onyx">onyx</string>
     <string name="translate_processing">Processing...</string>
     <string name="translation_language">Translation Language</string>
+    <string name="misc">Misc</string>
+    <string name="translate_papago">Naver Papago API secret</string>
+    <string name="translate_papago_summary">If you want to use Naver Papago translate service, please enter your API secret.</string>
+    <string name="papago">Papago</string>
 </resources>

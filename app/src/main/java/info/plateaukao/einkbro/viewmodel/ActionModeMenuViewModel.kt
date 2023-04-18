@@ -17,6 +17,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
+import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
 import info.plateaukao.einkbro.view.dialog.compose.ActionModeDialogFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -86,6 +87,18 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
         val menuInfos = resolveInfos.map { it.toMenuInfo(packageManager) }.toMutableList()
 
+        if (configManager.papagoApiSecret.isNotEmpty()) {
+            menuInfos.add(
+                0,
+                MenuInfo(
+                    context.getString(R.string.papago),
+                    icon = ContextCompat.getDrawable(context, R.drawable.ic_papago),
+                    intent = Intent(context, BrowserActivity::class.java).apply {
+                        action = ACTION_PTRANSLATE
+                    }
+                )
+            )
+        }
         menuInfos.add(
             0,
             MenuInfo(

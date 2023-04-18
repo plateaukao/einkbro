@@ -31,11 +31,13 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import kotlinx.coroutines.launch
 
 class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
+    private val translateApi: TRANSLATE_API,
     private val anchorPoint: Point,
 ) : DraggableComposeDialogFragment() {
 
@@ -51,7 +53,7 @@ class TranslateDialogFragment(
         lifecycleScope.launch {
             val translationLanguage =
                 TranslationLanguageDialog(requireActivity()).show() ?: return@launch
-            translationViewModel.updateTranslationLanguage(translationLanguage)
+            translationViewModel.updateTranslationLanguage(translateApi, translationLanguage)
         }
     }
 
@@ -63,7 +65,7 @@ class TranslateDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         setupDialogPosition(anchorPoint)
 
-        translationViewModel.query()
+        translationViewModel.translate(translateApi)
         return view
     }
 }

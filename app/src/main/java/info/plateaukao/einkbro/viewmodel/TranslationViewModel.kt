@@ -39,13 +39,22 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         _responseMessage.value = "..."
     }
 
-    fun updateTranslationLanguage(language: TranslationLanguage) {
+    fun updateTranslationLanguage(translateApi: TRANSLATE_API, language: TranslationLanguage) {
         _translationLanguage.value = language
         _responseMessage.value = "..."
-        query(_inputMessage.value)
+        when (translateApi) {
+            TRANSLATE_API.GOOGLE -> callGoogleTranslate()
+            TRANSLATE_API.PAPAGO -> callPapagoTranslate()
+        }
     }
 
-    fun query(userMessage: String? = null) {
+    fun translate(translateApi: TRANSLATE_API, userMessage: String? = null) {
+        when (translateApi) {
+            TRANSLATE_API.GOOGLE -> callGoogleTranslate(userMessage)
+            TRANSLATE_API.PAPAGO -> callPapagoTranslate(userMessage)
+        }
+    }
+    private fun callGoogleTranslate(userMessage: String? = null) {
         if (userMessage != null) {
             _inputMessage.value = userMessage
         }
@@ -54,7 +63,23 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             _responseMessage.value =
                 translateRepository.gTranslate(
                     _inputMessage.value,
-                    targetLanguage = config.translationLanguage.value
+                    targetLanguage = config.translationLanguage.value,
+                )
+                    ?: "Something went wrong."
+        }
+    }
+
+    private fun callPapagoTranslate(userMessage: String? = null) {
+        if (userMessage != null) {
+            _inputMessage.value = userMessage
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _responseMessage.value =
+                translateRepository.pTranslate(
+                    _inputMessage.value,
+                    targetLanguage = config.translationLanguage.value,
+                    sourceLanguage = "ko"
                 )
                     ?: "Something went wrong."
         }
@@ -104,4 +129,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
         return result
     }
+}
+
+enum class TRANSLATE_API {
+    GOOGLE, PAPAGO
 }
