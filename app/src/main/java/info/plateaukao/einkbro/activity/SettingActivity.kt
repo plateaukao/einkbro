@@ -144,6 +144,15 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                 1
                             )
                         }
+                        composable(Misc.name) {
+                            SettingScreen(
+                                navController,
+                                miscSettingItems,
+                                dialogManager,
+                                action,
+                                1
+                            )
+                        }
                         composable(ChatGPT.name) {
                             SettingScreen(
                                 navController,
@@ -233,11 +242,6 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_backup,
             destination = Backup
         ),
-        ActionSettingItem(R.string.setting_title_pdf_paper_size, R.drawable.ic_pdf) {
-            PrinterDocumentPaperSizeDialog(
-                this
-            ).show()
-        },
         NavigateSettingItem(
             R.string.setting_title_start_control,
             R.drawable.icon_earth,
@@ -254,15 +258,9 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             destination = Search
         ),
         NavigateSettingItem(
-            R.string.setting_title_userAgent,
-            R.drawable.icon_useragent,
-            destination = UserAgent
-        ),
-        ValueSettingItem(
-            R.string.setting_title_edit_homepage,
-            R.drawable.ic_home,
-            config = config::favoriteUrl,
-            showValue = false
+            R.string.misc,
+            R.drawable.icon_dots,
+            destination = Misc
         ),
         NavigateSettingItem(
             R.string.setting_title_chat_gpt,
@@ -626,6 +624,31 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         }
     )
 
+    private val miscSettingItems = listOf(
+        NavigateSettingItem(
+            R.string.setting_title_userAgent,
+            R.drawable.icon_useragent,
+            destination = UserAgent
+        ),
+        ValueSettingItem(
+            R.string.setting_title_edit_homepage,
+            R.drawable.ic_home,
+            config = config::favoriteUrl,
+            showValue = false
+        ),
+        ActionSettingItem(R.string.setting_title_pdf_paper_size, R.drawable.ic_pdf) {
+            PrinterDocumentPaperSizeDialog(
+                this
+            ).show()
+        },
+        ValueSettingItem(
+            R.string.translate_papago,
+            R.drawable.ic_papago,
+            R.string.translate_papago_summary,
+            config = config::papagoApiSecret,
+            showValue = false
+        ),
+    )
     private val userAgentSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_userAgent_toggle,
@@ -779,7 +802,8 @@ enum class SettingRoute(@StringRes val titleId: Int) {
     UserAgent(R.string.setting_title_userAgent),
     Search(R.string.setting_title_search),
     About(R.string.title_about),
-    ChatGPT(R.string.setting_title_chat_gpt);
+    ChatGPT(R.string.setting_title_chat_gpt),
+    Misc(R.string.misc);
 }
 
 @Composable

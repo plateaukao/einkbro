@@ -62,6 +62,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
+import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
 import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
@@ -80,6 +81,7 @@ import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
+import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -753,10 +755,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                 TranslateDialogFragment(
                     translationViewModel,
+                    TRANSLATE_API.GOOGLE,
                     actionModeMenuViewModel.clickedPoint.value
                 )
                     .show(supportFragmentManager, "translateDialog")
+            }
 
+            ACTION_PTRANSLATE -> {
+                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                TranslateDialogFragment(
+                    translationViewModel,
+                    TRANSLATE_API.PAPAGO,
+                    actionModeMenuViewModel.clickedPoint.value
+                )
+                    .show(supportFragmentManager, "translateDialog")
             }
 
             ACTION_GPT -> {
