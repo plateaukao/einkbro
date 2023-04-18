@@ -485,29 +485,24 @@ open class NinjaWebView(
         browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
     }
 
+    var rawHtmlCache: String? = null
     suspend fun getRawHtml() = suspendCoroutine { continuation ->
         if (!isReaderModeOn) {
             injectMozReaderModeJs(false)
             evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
-                continuation.resume(
-                    processedHtml.substring(
-                        1,
-                        processedHtml.length - 1
-                    )
-                ) // handle prefix/postfix "
+                val rawHtml = processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
+                rawHtmlCache = rawHtml
+                continuation.resume(rawHtml)
             }
         } else {
             evaluateJavascript(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
             ) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
-                continuation.resume(
-                    processedHtml.substring(
-                        1,
-                        processedHtml.length - 1
-                    )
-                ) // handle prefix/postfix "
+                val rawHtml = processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
+                rawHtmlCache = rawHtml
+                continuation.resume(rawHtml)
             }
         }
     }

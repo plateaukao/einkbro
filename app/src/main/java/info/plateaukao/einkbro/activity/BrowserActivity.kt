@@ -682,31 +682,43 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private var htmlToBeTranslated = ""
     private fun translateByParagraph() {
         lifecycleScope.launch {
             val currentUrl = ninjaWebView.url
-            if (!ninjaWebView.isTranslatePage) {
-                htmlToBeTranslated = ninjaWebView.getRawHtml()
+
+            // assume it's current one
+            var translateModeWebView = if (ninjaWebView.isTranslatePage) {
+                ninjaWebView
+            } else {
+                // get html from original WebView
+                val htmlCache = ninjaWebView.getRawHtml()
+                // create a new WebView
                 addAlbum("", "")
+                // set it to translate mode
+                ninjaWebView.isTranslatePage = true
+                // set its raw html to be the same as original WebView
+                ninjaWebView.rawHtmlCache = htmlCache
+                // show the language label
+                languageLabelView?.visibility = VISIBLE
+                ninjaWebView
             }
 
             val processingHtml = HelperUnit.loadAssetFileToString(
                 this@BrowserActivity, "translate_processing.html"
             ).format(getString(R.string.translate_processing))
-            ninjaWebView.loadData(processingHtml, "text/html", "utf-8")
+            translateModeWebView.loadData(processingHtml, "text/html", "utf-8")
 
-            val translatedHtml = translationViewModel.translateByParagraph(htmlToBeTranslated)
-            ninjaWebView.loadDataWithBaseURL(
-                currentUrl,
-                translatedHtml,
-                "text/html",
-                "utf-8",
-                null
+            val translatedHtml = translationViewModel.translateByParagraph(
+                translateModeWebView.rawHtmlCache!!
             )
-            if (!ninjaWebView.isTranslatePage) {
-                ninjaWebView.isTranslatePage = true
-                languageLabelView?.visibility = VISIBLE
+            if (translateModeWebView.isAttachedToWindow) {
+                translateModeWebView.loadDataWithBaseURL(
+                    currentUrl,
+                    translatedHtml,
+                    "text/html",
+                    "utf-8",
+                    null
+                )
             }
         }
     }
