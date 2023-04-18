@@ -546,7 +546,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         } else if (!composeToolbarViewController.isDisplayed()) {
             composeToolbarViewController.show()
         } else {
-            if (ninjaWebView.canGoBack()) {
+            // disable back key when it's translate mode web page
+            if (!ninjaWebView.isTranslatePage && ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
                 if (config.closeTabWhenNoMoreBackHistory) {
@@ -708,9 +709,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ).format(getString(R.string.translate_processing))
             translateModeWebView.loadData(processingHtml, "text/html", "utf-8")
 
-            val translatedHtml = translationViewModel.translateByParagraph(
-                translateModeWebView.rawHtmlCache!!
-            )
+            val translatedHtml = translationViewModel
+                .translateByParagraph(translateModeWebView.rawHtmlCache!!) {
+                    if (ninjaWebView.isTranslatePage) {
+                        updateProgress(it)
+                    }
+                }
             if (translateModeWebView.isAttachedToWindow) {
                 translateModeWebView.loadDataWithBaseURL(
                     currentUrl,
