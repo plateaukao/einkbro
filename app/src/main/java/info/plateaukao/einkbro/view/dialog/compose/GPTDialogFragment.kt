@@ -73,14 +73,19 @@ private fun GptResponse(gptViewModel: GptViewModel) {
                 Text(
                     text = requestMessage,
                     color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(10.dp),
                 )
                 Divider()
             }
             Text(
                 text = responseMessage,
                 color = MaterialTheme.colors.onBackground,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(
+                    top = if (!showRequest.value) 25.dp else 10.dp,
+                    bottom = 10.dp,
+                    start = 10.dp,
+                    end = 10.dp
+                ),
             )
         }
         if (!showRequest.value) {
