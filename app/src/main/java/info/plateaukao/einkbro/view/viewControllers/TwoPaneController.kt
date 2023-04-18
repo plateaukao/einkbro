@@ -28,6 +28,7 @@ import info.plateaukao.einkbro.view.NinjaWebView.OnScrollChangeListener
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.TwoPaneLayout
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -41,7 +42,7 @@ class TwoPaneController(
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
     private val loadTranslationUrl: (String) -> Unit,
-    private val translateByParagraph: () -> Unit,
+    private val translateByParagraph: (TRANSLATE_API) -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val webView: NinjaWebView by lazy {
@@ -183,8 +184,9 @@ class TwoPaneController(
             }
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
-            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph()
+            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
             TranslationMode.ONYX -> Unit
+            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
         }
     }
 
@@ -249,6 +251,9 @@ class TwoPaneController(
     fun showTranslationConfigDialog() {
         val enumValues: List<TranslationMode> = TranslationMode.values().toMutableList().apply {
             removeAt(0) // remove onyx
+            if (config.papagoApiSecret.isBlank()) {
+                remove(TranslationMode.PAPAGO)
+            }
         }
 
         val translationModeArray =

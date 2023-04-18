@@ -29,6 +29,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
+import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.apache.commons.text.StringEscapeUtils
@@ -65,6 +66,7 @@ open class NinjaWebView(
     private val javascript: Javascript by inject()
     private val cookie: Cookie by inject()
 
+    var translateApi: TRANSLATE_API = TRANSLATE_API.GOOGLE
     var isTranslatePage = false
         set(value) {
             field = value
