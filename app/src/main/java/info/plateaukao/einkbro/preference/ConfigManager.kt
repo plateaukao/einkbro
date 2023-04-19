@@ -185,6 +185,15 @@ class ConfigManager(
             sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) }
         }
 
+    var sourceLanguage: TranslationLanguage
+        get() = TranslationLanguage.values()[sp.getInt(
+            K_SOURCE_LANGUAGE,
+            getDefaultTranslationLanguage().ordinal
+        )]
+        set(value) {
+            sp.edit { putInt(K_SOURCE_LANGUAGE, value.ordinal) }
+        }
+
     var translationOrientation: Orientation
         get() = Orientation.values()[sp.getInt(
             K_TRANSLATE_ORIENTATION,
@@ -405,6 +414,7 @@ class ConfigManager(
         const val K_KEEP_AWAKE = "sp_screen_awake"
         const val K_DESKTOP = "sp_desktop"
         const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
+        const val K_SOURCE_LANGUAGE = "sp_source_language"
         const val K_TRANSLATE_ORIENTATION = "sp_translate_orientation"
         const val K_TRANSLATE_PANEL_SWITCHED = "sp_translate_panel_switched"
         const val K_TRANSLATE_SCROLL_SYNC = "sp_translate_scroll_sync"
