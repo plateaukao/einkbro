@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.view.handlers
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
@@ -84,5 +85,8 @@ class ToolbarActionHandler(
         ToolbarAction.Tts -> browserController.toggleTtsRead()
         ToolbarAction.TOC -> browserController.showTocDialog()
         ToolbarAction.PageInfo -> Unit
+        ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
+        ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)
+        ToolbarAction.PapagoByParagraph -> browserController.translate(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
     }
 }

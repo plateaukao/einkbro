@@ -72,7 +72,19 @@ enum class ToolbarAction(
             R.drawable.ic_tts
         )
     ),
-    PageInfo(iconResId = R.drawable.ic_page_count, titleResId = R.string.page_count);
+    PageInfo(iconResId = R.drawable.ic_page_count, titleResId = R.string.page_count),
+    GoogleInPlace(
+        iconResId = R.drawable.ic_translate_google,
+        titleResId = R.string.google_in_place
+    ),
+    TranslateByParagraph(
+        iconResId = R.drawable.ic_translate_paragraph,
+        titleResId = R.string.inter_translate
+    ),
+    PapagoByParagraph(
+        iconResId = R.drawable.ic_papago,
+        titleResId = R.string.papago
+    );
 
 
     companion object {
