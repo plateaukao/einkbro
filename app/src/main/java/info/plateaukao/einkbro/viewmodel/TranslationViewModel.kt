@@ -34,6 +34,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val _translationLanguage = MutableStateFlow(config.translationLanguage)
     val translationLanguage: StateFlow<TranslationLanguage> = _translationLanguage.asStateFlow()
 
+    private val _sourceLanguage = MutableStateFlow(config.sourceLanguage)
+    val sourceLanguage: StateFlow<TranslationLanguage> = _sourceLanguage.asStateFlow()
+
     fun updateInputMessage(userMessage: String) {
         _inputMessage.value = StringEscapeUtils.unescapeJava(userMessage)
         _responseMessage.value = "..."
@@ -41,6 +44,15 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     fun updateTranslationLanguage(translateApi: TRANSLATE_API, language: TranslationLanguage) {
         _translationLanguage.value = language
+        _responseMessage.value = "..."
+        when (translateApi) {
+            TRANSLATE_API.GOOGLE -> callGoogleTranslate()
+            TRANSLATE_API.PAPAGO -> callPapagoTranslate()
+        }
+    }
+
+    fun updateSourceLanguage(translateApi: TRANSLATE_API, language: TranslationLanguage) {
+        _sourceLanguage.value = language
         _responseMessage.value = "..."
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
@@ -80,7 +92,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                 translateRepository.ppTranslate(
                     _inputMessage.value,
                     targetLanguage = config.translationLanguage.value,
-                    sourceLanguage = "ko"
+                    sourceLanguage = config.sourceLanguage.value
                 )
                     ?: "Something went wrong."
         }
@@ -104,7 +116,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                         translateRepository.ppTranslate(
                             node.text(),
                             config.translationLanguage.value,
-                            "ko"
+                            config.sourceLanguage.value
                         )
                     } else {
                         translateRepository.gTranslate(

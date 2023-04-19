@@ -38,6 +38,15 @@ class ToolbarActionHandler(
                 .show(activity.supportFragmentManager, "TtsSettingDialog")
 
         ToolbarAction.Font -> browserController.toggleReaderMode()
+        ToolbarAction.InputUrl -> {
+            // toggle papago translate
+            if (config.papagoApiSecret.isBlank()) {
+                config.papagoApiSecret = "123"
+            } else {
+                config.papagoApiSecret = ""
+            }
+        }
+
         else -> {}
     }
 

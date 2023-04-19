@@ -43,9 +43,12 @@ class TranslateDialogFragment(
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            TranslateResponse(translationViewModel) {
-                changeTranslationLanguage()
-            }
+            TranslateResponse(
+                translationViewModel,
+                translateApi,
+                { changeTranslationLanguage() },
+                { changeSourceLanguage() }
+            )
         }
     }
 
@@ -54,6 +57,15 @@ class TranslateDialogFragment(
             val translationLanguage =
                 TranslationLanguageDialog(requireActivity()).show() ?: return@launch
             translationViewModel.updateTranslationLanguage(translateApi, translationLanguage)
+        }
+    }
+
+    private fun changeSourceLanguage() {
+        lifecycleScope.launch {
+            val translationLanguage =
+                TranslationLanguageDialog(requireActivity()).showPapagoSourceLanguage()
+                    ?: return@launch
+            translationViewModel.updateSourceLanguage(translateApi, translationLanguage)
         }
     }
 
@@ -73,11 +85,14 @@ class TranslateDialogFragment(
 @Composable
 private fun TranslateResponse(
     translationViewModel: TranslationViewModel,
-    onLanguageClick: () -> Unit
+    translateApi: TRANSLATE_API,
+    onTargetLanguageClick: () -> Unit,
+    onSourceLanguageClick: () -> Unit
 ) {
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
     val targetLanguage by translationViewModel.translationLanguage.collectAsState()
+    val sourceLanguage by translationViewModel.sourceLanguage.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
     Column(
@@ -89,6 +104,18 @@ private fun TranslateResponse(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            if (translateApi == TRANSLATE_API.PAPAGO) {
+                SelectableText(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp),
+                    selected = true,
+                    text = sourceLanguage.language,
+                    textAlign = TextAlign.Center,
+                    onClick = onSourceLanguageClick
+                )
+            }
+
             SelectableText(
                 modifier = Modifier
                     .weight(1f)
@@ -96,7 +123,7 @@ private fun TranslateResponse(
                 selected = true,
                 text = targetLanguage.language,
                 textAlign = TextAlign.Center,
-                onClick = onLanguageClick
+                onClick = onTargetLanguageClick
             )
             Icon(
                 painter = painterResource(
