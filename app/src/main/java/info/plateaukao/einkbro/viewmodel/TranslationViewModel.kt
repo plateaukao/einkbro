@@ -77,7 +77,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
-                translateRepository.pTranslate(
+                translateRepository.ppTranslate(
                     _inputMessage.value,
                     targetLanguage = config.translationLanguage.value,
                     sourceLanguage = "ko"
@@ -101,7 +101,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             nodesWithText.forEach { node ->
                 async {
                     val translation = if (translateApi == TRANSLATE_API.PAPAGO) {
-                        translateRepository.pTranslate(
+                        translateRepository.ppTranslate(
                             node.text(),
                             config.translationLanguage.value,
                             "ko"

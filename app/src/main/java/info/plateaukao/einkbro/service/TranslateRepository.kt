@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.service
 
+import android.util.Base64
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -11,8 +12,11 @@ import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.UUID
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
 
-class TranslateRepository:KoinComponent {
+class TranslateRepository : KoinComponent {
     private val client = OkHttpClient()
     private val config: ConfigManager by inject()
 
@@ -77,5 +81,85 @@ class TranslateRepository:KoinComponent {
                 }
             }
         }
+    }
+
+    private fun getAuthKey(): String? {
+        val url = "https://papago.naver.com"
+        val response = client.newCall(Request.Builder().url(url).build()).execute()
+        val html = response.body?.string() ?: return null
+
+        val pattern1 = "/vendors~main.*chunk.js".toRegex()
+
+        var path = ""
+        Jsoup.parse(html).getElementsByTag("script").forEach { element ->
+            val matchedElement = pattern1.find(element.toString())
+            if (matchedElement != null) {
+                path = matchedElement.value
+            }
+        }
+
+        val jsUrl = "$url$path"
+        val rest = client.newCall(Request.Builder().url(jsUrl).build()).execute()
+        val org = rest.body?.string() ?: return null
+        val pattern2 = "AUTH_KEY:\\s*\"[\\w.]+\"".toRegex()
+
+        return pattern2.find(org)?.value?.split("\"")?.get(1)
+    }
+
+    private var authKey: String? = null
+    suspend fun ppTranslate(
+        text: String,
+        targetLanguage: String = "en",
+        sourceLanguage: String = "auto",
+    ): String? {
+        if (authKey == null) {
+            authKey = getAuthKey()
+        }
+        val key = authKey?.toByteArray(Charsets.UTF_8) ?: return ""
+
+        val guid = UUID.randomUUID()
+        val timestamp = System.currentTimeMillis()
+        val code = "$guid\n$API_URL\n$timestamp".toByteArray(Charsets.UTF_8)
+        val hmac = Mac.getInstance("HmacMD5")
+        val secretKeySpec = SecretKeySpec(key, "HmacMD5")
+        hmac.init(secretKeySpec)
+        val token = Base64.encodeToString(hmac.doFinal(code), Base64.DEFAULT)
+
+        return withContext(IO) {
+            val request = Request.Builder()
+                .url(API_URL)
+                .addHeader("device-type", "pc")
+                .addHeader("x-apigw-partnerid", "papago")
+                .addHeader("Origin", "https://papago.naver.com")
+                .addHeader("Sec-Fetch-Site", "same-origin")
+                .addHeader("Sec-Fetch-Mode", "cors")
+                .addHeader("Sec-Fetch-Dest", "empty")
+                .addHeader("Authorization", "PPG $guid:$token".replace("\n", ""))
+                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                .addHeader("Timestamp", timestamp.toString())
+                .post(
+                    FormBody.Builder()
+                        .add("source", sourceLanguage)
+                        .add("target", targetLanguage)
+                        .add("text", text)
+                        .build()
+                )
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) return@use null
+
+                try {
+                    val body = JSONObject(response.body?.string() ?: return@use null)
+                    body.getString("translatedText")
+                } catch (e: Exception) {
+                    null
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val API_URL = "https://papago.naver.com/apis/n2mt/translate"
     }
 }
