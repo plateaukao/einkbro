@@ -188,7 +188,7 @@ class ConfigManager(
     var sourceLanguage: TranslationLanguage
         get() = TranslationLanguage.values()[sp.getInt(
             K_SOURCE_LANGUAGE,
-            getDefaultTranslationLanguage().ordinal
+            TranslationLanguage.KO.ordinal
         )]
         set(value) {
             sp.edit { putInt(K_SOURCE_LANGUAGE, value.ordinal) }

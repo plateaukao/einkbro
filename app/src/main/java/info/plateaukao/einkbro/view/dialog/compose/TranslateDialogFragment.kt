@@ -114,6 +114,10 @@ private fun TranslateResponse(
                     textAlign = TextAlign.Center,
                     onClick = onSourceLanguageClick
                 )
+                Text(
+                    text = "→",
+                    color = MaterialTheme.colors.onBackground,
+                )
             }
 
             SelectableText(
