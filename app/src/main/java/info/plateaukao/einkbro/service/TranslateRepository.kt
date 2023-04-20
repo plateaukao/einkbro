@@ -6,12 +6,19 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import okhttp3.FormBody
 import okhttp3.HttpUrl
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.File
+import java.io.FileOutputStream
+import java.security.InvalidKeyException
+import java.security.NoSuchAlgorithmException
 import java.util.UUID
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -159,6 +166,7 @@ class TranslateRepository : KoinComponent {
         }
     }
 
+
 //    suspend fun pDetectLanguage(text: String): String? {
 //        if (authKey == null) {
 //            authKey = getAuthKey()
@@ -205,8 +213,115 @@ class TranslateRepository : KoinComponent {
 //        }
 //    }
 
+    private val sid: String by lazy { "${P_IMAGE_API_VERSION}${UUID.randomUUID()}" }
+
+    private fun signUrl(url: String): Signature {
+        val ts = System.currentTimeMillis()
+
+        val urlToSign = url.take(255)
+        val data = "$urlToSign$ts".toByteArray()
+
+        val hmac: Mac = try {
+            Mac.getInstance("HmacSHA1")
+        } catch (e: NoSuchAlgorithmException) {
+            throw RuntimeException("Failed to get HmacSHA1 Mac instance", e)
+        }
+        val keySpec = SecretKeySpec(config.imageApiKey.toByteArray(), "HmacSHA1")
+        try {
+            hmac.init(keySpec)
+        } catch (e: InvalidKeyException) {
+            throw RuntimeException("Failed to initialize HMAC", e)
+        }
+        val result = hmac.doFinal(data)
+
+        val encodedMsg = Base64.encodeToString(result, Base64.NO_WRAP)
+
+        return Signature(ts, encodedMsg)
+    }
+
+    suspend fun translateImage(
+        url: String,
+        srcLang: String,
+        dstLang: String,
+        langDetect: Boolean,
+    ): ImageTranslateResult? {
+        val file = downloadImage(url) ?: return null
+
+        val sig = signUrl(IMAGE_API_URL)
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("lang", "ko")
+            .addFormDataPart("upload", "true")
+            .addFormDataPart("sid", sid)
+            .addFormDataPart(
+                "image", file.name,
+                file.asRequestBody("image/*".toMediaType())
+            )
+            .addFormDataPart("source", srcLang)
+            .addFormDataPart("target", dstLang)
+            .addFormDataPart("langDetect", if (langDetect) "true" else "false")
+            .addFormDataPart("imageId", "")
+            .addFormDataPart("reqType", "")
+            .build()
+
+        val finalUrl = HttpUrl.Builder()
+            .scheme("https")
+            .host("apis.naver.com")
+            .addPathSegments("papago/papago_app/ocr/detect")
+            .addQueryParameter("msgpad", sig.ts.toString())
+            .addQueryParameter("md", sig.msg)
+            .build().toString()
+        val request = Request.Builder()
+            .url(finalUrl)
+            .post(requestBody)
+            .build()
+
+        return withContext(IO) {
+            client.newCall(request)
+                .execute()
+                .use { response ->
+                    if (!response.isSuccessful) null
+                    else {
+                        response.body?.let {
+                            val jsonObject = JSONObject(it.string())
+                            ImageTranslateResult(
+                                jsonObject.getString("imageId"),
+                                jsonObject.getString("renderedImage")
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private suspend fun downloadImage(url: String): File? {
+        return withContext(IO) {
+            val file = File.createTempFile("image", ".jpg")
+            val request = Request.Builder().url(url).build()
+            client.newCall(request)
+                .execute().use { response ->
+                    val inputStream = response.body?.byteStream()
+                    val outputStream = FileOutputStream(file)
+                    inputStream?.copyTo(outputStream)
+                    inputStream?.close()
+                    outputStream.close()
+                    file
+                }
+        }
+    }
+
     companion object {
+        const val P_IMAGE_API_VERSION = "1.9.9"
         private const val API_URL = "https://papago.naver.com/apis/n2mt/translate"
+        private const val IMAGE_API_URL = "https://apis.naver.com/papago/papago_app/ocr/detect"
         private const val DETECT_LANGUAGE_URL = "https://papago.naver.com/apis/langs/dect"
     }
 }
+
+data class Signature(val ts: Long, val msg: String)
+
+data class ImageTranslateResult(
+    val imageId: String,
+    val renderedImage: String
+)
+

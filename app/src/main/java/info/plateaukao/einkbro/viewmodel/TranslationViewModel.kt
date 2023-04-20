@@ -99,7 +99,21 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    val scope = CoroutineScope(newFixedThreadPoolContext(10, "requests"))
+    val scope = CoroutineScope(newFixedThreadPoolContext(5, "requests"))
+
+    suspend fun translateImage(
+        url: String,
+        sourceLanguage: TranslationLanguage,
+        targetLanguage: TranslationLanguage,
+    ): String? {
+        val result = translateRepository.translateImage(
+            url,
+            sourceLanguage.value,
+            targetLanguage.value,
+            true,
+        )
+        return result?.renderedImage
+    }
 
     suspend fun translateByParagraph(
         html: String,

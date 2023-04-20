@@ -63,6 +63,7 @@ import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
+import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
 import info.plateaukao.einkbro.view.compose.SearchBarView
@@ -1723,6 +1724,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ContextMenuDialogFragment(
                     url,
                     linkImageUrl.isNotBlank(),
+                    config.imageApiKey.isNotBlank(),
                     point
                 ) {
                     this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
@@ -1760,6 +1762,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ContextMenuItemType.SaveBookmark -> saveBookmark(url, title)
             ContextMenuItemType.SplitScreen -> toggleSplitScreen(url)
             ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
+            ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
             ContextMenuItemType.SaveAs -> {
                 if (url.startsWith("data:image")) {
                     saveFile(url)
@@ -1770,6 +1773,27 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         dialogManager.showSaveFileDialog(url = url, saveFile = this::saveFile)
                     }
                 }
+            }
+        }
+    }
+
+    private fun translateImage(url: String) {
+        lifecycleScope.launch {
+            val base64String = translationViewModel.translateImage(
+                url,
+                TranslationLanguage.KO,
+                config.translationLanguage,
+            )
+            if (base64String != null) {
+                //addAlbum(url = "data:image/png;base64,$it")
+                addAlbum()
+                ninjaWebView.loadData(
+                    "<html><body><img src=\"data:image/jpeg;base64,$base64String\"</body></html>",
+                    "text/html",
+                    "utf-8"
+                )
+            } else {
+                NinjaToast.show(this@BrowserActivity, "Failed to translate image")
             }
         }
     }

@@ -148,6 +148,7 @@ class ConfigManager(
         "Translate following content to English:"
     )
     var papagoApiSecret by StringPreference(sp, K_PAPAGO_API_SECRET, "")
+    var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
 
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
@@ -493,6 +494,7 @@ class ConfigManager(
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
         const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
         const val K_PAPAGO_API_SECRET = "sp_papago_api_secret"
+        const val K_IMAGE_API_KEY = "sp_image_api_key"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 

@@ -446,4 +446,6 @@
     <string name="papago_translate_by_paragraph">Papago by Paragraph</string>
     <string name="source_language">Source Language</string>
     <string name="inter_translate">Inter-translate</string>
+    <string name="translate_image_key">Key for translate image</string>
+    <string name="translate_image_key_summary">Input necessary key to show image translate feature.</string>
 </resources>
