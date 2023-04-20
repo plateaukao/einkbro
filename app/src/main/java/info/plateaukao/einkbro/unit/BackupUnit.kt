@@ -139,17 +139,15 @@ class BackupUnit(
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Bookmarks are imported", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            } catch (e: SecurityException) {
-                e.printStackTrace()
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
+                if (e is SecurityException) {
+                    config.bookmarkSyncUrl = ""
                 }
-                config.bookmarkSyncUrl = ""
             }
         }
     }
@@ -169,7 +167,7 @@ class BackupUnit(
                         Toast.makeText(context, "Bookmarks are exported", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 if (showToast) {
                     withContext(Dispatchers.Main) {
@@ -177,12 +175,9 @@ class BackupUnit(
                             .show()
                     }
                 }
-            } catch (e: SecurityException) {
-                e.printStackTrace()
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT).show()
+                if (e is SecurityException) {
+                    config.bookmarkSyncUrl = ""
                 }
-                config.bookmarkSyncUrl = ""
             }
         }
     }
