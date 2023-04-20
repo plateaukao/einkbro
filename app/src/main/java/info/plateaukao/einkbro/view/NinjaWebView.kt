@@ -479,12 +479,16 @@ open class NinjaWebView(
     }
 
     fun updatePageInfo() {
-        val info = if (isVerticalRead) {
-            "${ceil((scrollX + 1).toDouble() / shiftOffset()).toInt()}/${computeHorizontalScrollRange() / shiftOffset()}"
-        } else {
-            "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/${computeVerticalScrollRange() / shiftOffset()}"
+        try {
+            val info = if (isVerticalRead) {
+                "${ceil((scrollX + 1).toDouble() / shiftOffset()).toInt()}/${computeHorizontalScrollRange() / shiftOffset()}"
+            } else {
+                "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/${computeVerticalScrollRange() / shiftOffset()}"
+            }
+            browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
+        } catch (e: ArithmeticException) { // prevent divide by zero
+            browserController?.updatePageInfo("-/-")
         }
-        browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
     }
 
     var rawHtmlCache: String? = null
