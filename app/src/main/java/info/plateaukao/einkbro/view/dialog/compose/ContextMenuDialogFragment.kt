@@ -31,12 +31,14 @@ import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyText
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveBookmark
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.TranslateImage
 import java.net.URLDecoder
 
 
 class ContextMenuDialogFragment(
     private val url: String,
     private val shouldShowAdBlock: Boolean,
+    private val shouldShowTranslateImage: Boolean,
     private val anchorPoint: Point,
     private val itemClicked: (ContextMenuItemType) -> Unit
 ) : ComposeDialogFragment() {
@@ -47,7 +49,7 @@ class ContextMenuDialogFragment(
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            ContextMenuItems(url, shouldShowAdBlock) { item ->
+            ContextMenuItems(url, shouldShowAdBlock, shouldShowTranslateImage) { item ->
                 dialog?.dismiss()
                 itemClicked(item)
             }
@@ -84,6 +86,7 @@ class ContextMenuDialogFragment(
 private fun ContextMenuItems(
     url: String = "",
     shouldShowAdBlock: Boolean = true,
+    shouldShowTranslateImage: Boolean = false,
     onClicked: (ContextMenuItemType) -> Unit
 ) {
     Column(
@@ -134,10 +137,14 @@ private fun ContextMenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.Center
         ) {
-            ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark) {
-                onClicked(
-                    SaveBookmark
-                )
+            if (shouldShowTranslateImage) {
+                ContextMenuItem(R.string.translate, R.drawable.ic_translate) {
+                    onClicked(TranslateImage)
+                }
+            } else {
+                ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark) {
+                    onClicked(SaveBookmark)
+                }
             }
             ContextMenuItem(R.string.menu_save_as, R.drawable.icon_menu_save) { onClicked(SaveAs) }
             ContextMenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
@@ -169,7 +176,7 @@ enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
     ShareLink, CopyLink, CopyText, OpenWith,
     SaveBookmark, SaveAs,
-    SplitScreen, AdBlock
+    SplitScreen, AdBlock, TranslateImage
 }
 
 @Preview

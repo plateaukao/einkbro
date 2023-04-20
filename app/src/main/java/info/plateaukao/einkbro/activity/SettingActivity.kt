@@ -648,6 +648,13 @@ class SettingActivity : ComponentActivity(), KoinComponent {
 //            config = config::papagoApiSecret,
 //            showValue = false
 //        ),
+        ValueSettingItem(
+            R.string.translate_image_key,
+            R.drawable.ic_papago,
+            R.string.translate_image_key_summary,
+            config = config::imageApiKey,
+            showValue = false
+        ),
     )
     private val userAgentSettingItems = listOf(
         BooleanSettingItem(
