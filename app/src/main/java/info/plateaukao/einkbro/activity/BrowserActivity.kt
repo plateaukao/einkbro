@@ -63,7 +63,6 @@ import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
-import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
 import info.plateaukao.einkbro.view.compose.SearchBarView
@@ -1444,7 +1443,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun updateProgress(progress: Int) {
-        DebugT("updateProgress:$progress")
         progressBar.progress = progress
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
