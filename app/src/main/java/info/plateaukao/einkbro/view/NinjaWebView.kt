@@ -27,7 +27,6 @@ import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
-import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.GlobalScope
@@ -120,6 +119,10 @@ open class NinjaWebView(
         isVerticalRead = false
         isReaderModeOn = false
         super.goBack()
+        // mechanism to handle back button press with redirect behavior
+        if (webViewClient.popLastPageUrl() != null) {
+            super.goBack()
+        }
     }
 
     interface OnScrollChangeListener {
@@ -303,7 +306,6 @@ open class NinjaWebView(
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
         album.isLoaded = true
-        dTLoadUrl = DebugT("loadUrl")
 
         if (url.startsWith("javascript:") || url.startsWith("content:")) {
             // Daniel
@@ -497,7 +499,8 @@ open class NinjaWebView(
             injectMozReaderModeJs(false)
             evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
-                val rawHtml = processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
+                val rawHtml =
+                    processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
                 rawHtmlCache = rawHtml
                 continuation.resume(rawHtml)
             }
@@ -506,7 +509,8 @@ open class NinjaWebView(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
             ) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
-                val rawHtml = processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
+                val rawHtml =
+                    processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
                 rawHtmlCache = rawHtml
                 continuation.resume(rawHtml)
             }
@@ -943,5 +947,3 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
         initAlbum()
     }
 }
-
-var dTLoadUrl: DebugT? = null
