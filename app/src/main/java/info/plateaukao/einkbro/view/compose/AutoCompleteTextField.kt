@@ -73,8 +73,13 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
     }
 
     fun getFocus() {
-        focusRequester.requestFocus()
-        postDelayed({ ViewUnit.showKeyboard(context as Activity) }, 400)
+        // try catch for IllegalStateException: FocusRequester is already active
+        try {
+            focusRequester.requestFocus()
+            postDelayed({ ViewUnit.showKeyboard(context as Activity) }, 400)
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
     }
 }
 

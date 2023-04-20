@@ -149,10 +149,10 @@ class AdBlockV2(
 
     @SuppressLint("ConstantLocale")
     private fun getHostsDate(file: File): String {
-        if (!file.exists()) {
-            return ""
-        }
         try {
+            if (!file.exists()) {
+                return ""
+            }
             FileReader(file).use { fileReader ->
                 BufferedReader(fileReader).use { reader ->
                     var line: String
@@ -164,7 +164,7 @@ class AdBlockV2(
                     return ""
                 }
             }
-        } catch (exception: IOException) {
+        } catch (exception: Exception) {
             Log.w("browser", "Error getting hosts date", exception)
         }
         return ""
