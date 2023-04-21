@@ -138,7 +138,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                             config.translationLanguage.value
                         )
                     }
-                    node.append("<br><br>$translation")
+                    node.append("<br><p style=\"border: 1px dashed black;\">$translation</p>")
                     completeCount++
                     withContext(Dispatchers.Main) {
                         updateProgress(completeCount * 100 / nodesWithText.size)
