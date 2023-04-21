@@ -1787,6 +1787,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (base64String != null) {
                 //addAlbum(url = "data:image/png;base64,$it")
                 addAlbum()
+                ninjaWebView.isTranslatePage = true
                 ninjaWebView.loadData(
                     "<html><body><img src=\"data:image/jpeg;base64,$base64String\"</body></html>",
                     "text/html",
