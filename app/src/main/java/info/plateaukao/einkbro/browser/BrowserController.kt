@@ -8,6 +8,7 @@ import android.view.View
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import info.plateaukao.einkbro.preference.TranslationMode
+import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 
 interface BrowserController {
     fun updateProgress(progress: Int)
@@ -77,4 +78,5 @@ interface BrowserController {
     fun handlePocketRequestToken(requestToken: String)
 
     fun translate(translationMode: TranslationMode)
+    fun configureTranslationLanguage(translateApi: TRANSLATE_API)
 }

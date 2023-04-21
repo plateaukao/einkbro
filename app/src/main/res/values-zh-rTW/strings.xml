@@ -376,4 +376,5 @@
     <string name="source_language">Source Language</string>
     <string name="inter_translate">Inter-translate</string>
     <string name="translate_image_key">Key for translate image</string>
+    <string name="papago_language_setting">語言設定</string>
 </resources>

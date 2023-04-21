@@ -42,8 +42,11 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         _responseMessage.value = "..."
     }
 
-    fun updateTranslationLanguage(translateApi: TRANSLATE_API, language: TranslationLanguage) {
+    fun updateTranslationLanguage(language: TranslationLanguage) {
         _translationLanguage.value = language
+    }
+    fun updateTranslationLanguageAndGo(translateApi: TRANSLATE_API, language: TranslationLanguage) {
+        updateTranslationLanguage(language)
         _responseMessage.value = "..."
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
@@ -51,8 +54,11 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    fun updateSourceLanguage(translateApi: TRANSLATE_API, language: TranslationLanguage) {
+    fun updateSourceLanguage(language: TranslationLanguage) {
         _sourceLanguage.value = language
+    }
+    fun updateSourceLanguageAndGo(translateApi: TRANSLATE_API, language: TranslationLanguage) {
+        updateSourceLanguage(language)
         _responseMessage.value = "..."
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()

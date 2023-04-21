@@ -268,12 +268,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         languageLabelView = findViewById(R.id.translation_language)
-        ViewUnit.updateLanguageLabel(languageLabelView!!, config.translationLanguage)
+        lifecycleScope.launch {
+            translationViewModel.translationLanguage.collect {
+                ViewUnit.updateLanguageLabel(languageLabelView!!, it)
+            }
+        }
+
         languageLabelView?.setOnClickListener {
             lifecycleScope.launch {
                 val translationLanguage =
                     TranslationLanguageDialog(this@BrowserActivity).show() ?: return@launch
-                ViewUnit.updateLanguageLabel(languageLabelView!!, translationLanguage)
+                translationViewModel.updateTranslationLanguage(translationLanguage)
                 translateByParagraph(ninjaWebView.translateApi)
             }
         }
@@ -336,6 +341,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             TranslationMode.GOOGLE_IN_PLACE -> ninjaWebView.addGoogleTranslation()
             else -> Unit
         }
+    }
+
+    override fun configureTranslationLanguage(translateApi: TRANSLATE_API) {
+        LanguageSettingDialogFragment(translateApi, translationViewModel) {
+            if (translateApi == TRANSLATE_API.GOOGLE) {
+                translateByParagraph(TRANSLATE_API.GOOGLE)
+            } else {
+                translateByParagraph(TRANSLATE_API.PAPAGO)
+            }
+        }
+            .show(supportFragmentManager, "LanguageSettingDialog")
     }
 
     private fun initLaunchers() {

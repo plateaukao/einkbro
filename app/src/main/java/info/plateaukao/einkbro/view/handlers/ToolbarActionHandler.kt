@@ -10,6 +10,7 @@ import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
+import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -47,6 +48,10 @@ class ToolbarActionHandler(
                 config.papagoApiSecret = ""
             }
         }
+
+        ToolbarAction.TranslateByParagraph -> browserController.configureTranslationLanguage(TRANSLATE_API.GOOGLE)
+
+        ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(TRANSLATE_API.PAPAGO)
 
         else -> {}
     }
