@@ -138,7 +138,7 @@ private fun ContextMenuItems(
             horizontalArrangement = Arrangement.Center
         ) {
             if (shouldShowTranslateImage) {
-                ContextMenuItem(R.string.translate, R.drawable.ic_translate) {
+                ContextMenuItem(R.string.translate, R.drawable.ic_papago) {
                     onClicked(TranslateImage)
                 }
             } else {
