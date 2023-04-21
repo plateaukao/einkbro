@@ -56,7 +56,7 @@ class TranslateDialogFragment(
         lifecycleScope.launch {
             val translationLanguage =
                 TranslationLanguageDialog(requireActivity()).show() ?: return@launch
-            translationViewModel.updateTranslationLanguage(translateApi, translationLanguage)
+            translationViewModel.updateTranslationLanguageAndGo(translateApi, translationLanguage)
         }
     }
 
@@ -65,7 +65,7 @@ class TranslateDialogFragment(
             val translationLanguage =
                 TranslationLanguageDialog(requireActivity()).showPapagoSourceLanguage()
                     ?: return@launch
-            translationViewModel.updateSourceLanguage(translateApi, translationLanguage)
+            translationViewModel.updateSourceLanguageAndGo(translateApi, translationLanguage)
         }
     }
 

@@ -448,4 +448,5 @@
     <string name="inter_translate">Inter-translate</string>
     <string name="translate_image_key">Key for translate image</string>
     <string name="translate_image_key_summary">Input necessary key to show image translate feature.</string>
+    <string name="papago_language_setting">Language Setting</string>
 </resources>

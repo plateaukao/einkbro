@@ -173,7 +173,11 @@ fun ToolbarToggleItem(
 }
 
 @Composable
-fun DialogButtonBar(dismissAction: () -> Unit, okAction: () -> Unit) {
+fun DialogButtonBar(
+    okResId: Int = android.R.string.ok,
+    dismissAction: () -> Unit,
+    okAction: () -> Unit
+) {
     Row(
         modifier = Modifier
             .width(IntrinsicSize.Max)
@@ -194,7 +198,7 @@ fun DialogButtonBar(dismissAction: () -> Unit, okAction: () -> Unit) {
             modifier = Modifier.wrapContentWidth(),
             onClick = { dismissAction(); okAction() }) {
             Text(
-                stringResource(id = android.R.string.ok),
+                stringResource(okResId),
                 color = MaterialTheme.colors.onBackground
             )
         }
@@ -217,7 +221,7 @@ private fun previewToolBar() {
                 {},
                 { _, _ -> }
             )
-            DialogButtonBar({}, {})
+            DialogButtonBar(0, {}, {})
         }
     }
 }
