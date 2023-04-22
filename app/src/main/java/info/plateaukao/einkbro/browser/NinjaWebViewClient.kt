@@ -4,7 +4,6 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -33,7 +32,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import java.util.Stack
 
 
 class NinjaWebViewClient(
@@ -50,51 +48,11 @@ class NinjaWebViewClient(
     private var hasAdBlock: Boolean = true
     var book: Book? = null
 
-    private val urlStack = Stack<String>()
-    private var isLoading = false
-    private var urlBeforeRedirect: String? = null
-
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
     }
 
-    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        super.onPageStarted(view, url, favicon)
-
-        if (isLoading && urlStack.size > 0) {
-            urlBeforeRedirect = urlStack.pop();
-        }
-
-        url?.let { recordUrl(it) }
-        isLoading = true;
-    }
-
-    private fun recordUrl(url: String) {
-        if (url.isNotEmpty() && !url.equals(getLastPageUrl(), ignoreCase = true)) {
-            urlStack.push(url)
-        } else if (urlBeforeRedirect?.isNotEmpty() == true) {
-            urlStack.push(urlBeforeRedirect)
-            urlBeforeRedirect = null
-        }
-    }
-
-    fun popLastPageUrl(): String? {
-        if (urlStack.size >= 2) {
-            urlStack.pop() //pop current page url
-            return urlStack.pop()
-        }
-        return null
-    }
-
-    @Synchronized
-    private fun getLastPageUrl(): String? =
-        if (urlStack.size > 0) urlStack.peek() else null
-
     override fun onPageFinished(view: WebView, url: String) {
-        if (isLoading || url.startsWith("about:")) {
-            isLoading = false
-        }
-
         ninjaWebView.updateCssStyle()
 
         webContentPostProcessor.postProcess(ninjaWebView, url)
@@ -141,9 +99,6 @@ class NinjaWebViewClient(
             val title = item.title
             val url = item.url
             Log.d("NinjaWebViewClient", "Title: $title - URL: $url")
-        }
-        urlStack.forEach {
-            Log.d("NinjaWebViewClient", "urlStack: $it")
         }
 
         // handle pocket authentication
