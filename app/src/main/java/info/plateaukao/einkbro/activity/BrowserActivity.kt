@@ -354,6 +354,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             .show(supportFragmentManager, "LanguageSettingDialog")
     }
 
+    override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
+
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
         customFontResultLauncher =
