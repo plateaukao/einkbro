@@ -1796,19 +1796,24 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun translateImage(url: String) {
         lifecycleScope.launch {
             val base64String = translationViewModel.translateImage(
+                ninjaWebView.url ?: "",
                 url,
                 TranslationLanguage.KO,
                 config.translationLanguage,
             )
             if (base64String != null) {
                 //addAlbum(url = "data:image/png;base64,$it")
-                addAlbum()
-                ninjaWebView.isTranslatePage = true
-                ninjaWebView.loadData(
-                    "<html><body><img src=\"data:image/jpeg;base64,$base64String\"</body></html>",
-                    "text/html",
-                    "utf-8"
-                )
+                val translatedImageHtml = HelperUnit.loadAssetFileToString(
+                    this@BrowserActivity, "translated_image.html"
+                ).replace("%%", base64String)
+                if (config.showTranslatedImageToSecondPanel) {
+                    maybeInitTwoPaneController()
+                    twoPaneController.showSecondPaneWithData(translatedImageHtml)
+                } else {
+                    addAlbum()
+                    ninjaWebView.isTranslatePage = true
+                    ninjaWebView.loadData(translatedImageHtml, "text/html", "utf-8")
+                }
             } else {
                 NinjaToast.show(this@BrowserActivity, "Failed to translate image")
             }
@@ -1967,7 +1972,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        twoPaneController.showSecondPane(url ?: ninjaWebView.url.orEmpty())
+        twoPaneController.showSecondPaneWithUrl(url ?: ninjaWebView.url.orEmpty())
     }
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
