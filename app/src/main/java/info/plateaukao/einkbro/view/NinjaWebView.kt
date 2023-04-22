@@ -119,10 +119,6 @@ open class NinjaWebView(
         isVerticalRead = false
         isReaderModeOn = false
         super.goBack()
-        // mechanism to handle back button press with redirect behavior
-        if (webViewClient.popLastPageUrl() != null) {
-            super.goBack()
-        }
     }
 
     interface OnScrollChangeListener {
