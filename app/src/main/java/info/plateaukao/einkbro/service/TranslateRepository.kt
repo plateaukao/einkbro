@@ -23,6 +23,7 @@ import java.util.UUID
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
+
 class TranslateRepository : KoinComponent {
     private val client = OkHttpClient()
     private val config: ConfigManager by inject()
@@ -240,12 +241,13 @@ class TranslateRepository : KoinComponent {
     }
 
     suspend fun translateImage(
+        referer: String,
         url: String,
         srcLang: String,
         dstLang: String,
         langDetect: Boolean,
     ): ImageTranslateResult? {
-        val file = downloadImage(url) ?: return null
+        val file = downloadImage(url, referer) ?: return null
 
         val sig = signUrl(IMAGE_API_URL)
         val requestBody = MultipartBody.Builder()
@@ -294,10 +296,17 @@ class TranslateRepository : KoinComponent {
         }
     }
 
-    private suspend fun downloadImage(url: String): File? {
+    private suspend fun downloadImage(url: String, referer: String): File? {
         return withContext(IO) {
             val file = File.createTempFile("image", ".jpg")
-            val request = Request.Builder().url(url).build()
+            val request = Request.Builder().url(url)
+                .addHeader(
+                    "User-Agent",
+                    "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Mobile Safari/537.36"
+                )
+                .addHeader("Accept-Language", "en-US,en;q=0.9")
+                .addHeader("Referer", referer)
+                .build()
             client.newCall(request)
                 .execute().use { response ->
                     val inputStream = response.body?.byteStream()

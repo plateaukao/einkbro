@@ -108,11 +108,13 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     val scope = CoroutineScope(newFixedThreadPoolContext(5, "requests"))
 
     suspend fun translateImage(
+        referer: String,
         url: String,
         sourceLanguage: TranslationLanguage,
         targetLanguage: TranslationLanguage,
     ): String? {
         val result = translateRepository.translateImage(
+            referer,
             url,
             sourceLanguage.value,
             targetLanguage.value,

@@ -151,7 +151,7 @@ class TwoPaneController(
         return builder.build()
     }
 
-    fun showSecondPane(url: String) {
+    private fun showSecondPane() {
         if (!isWebViewAdded) {
             addWebView()
             isWebViewAdded = true
@@ -160,7 +160,15 @@ class TwoPaneController(
         translationViewBinding.translationLanguage.visibility = GONE
         translationViewBinding.linkHere.visibility = VISIBLE
         twoPaneLayout.shouldShowSecondPane = true
+    }
 
+    fun showSecondPaneWithData(data: String) {
+        showSecondPane()
+        webView.loadData(data, "text/html", "utf-8")
+    }
+
+    fun showSecondPaneWithUrl(url: String) {
+        showSecondPane()
         webView.loadUrl(url)
     }
 
