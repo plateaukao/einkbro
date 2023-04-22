@@ -26,5 +26,6 @@ class GestureHandler(
         GestureType.Fullscreen -> browserController.fullscreen()
         GestureType.Refresh -> browserController.refreshAction()
         GestureType.Menu -> browserController.showMenuDialog()
+        GestureType.TouchPagination -> browserController.toggleTouchPagination()
     }
 }

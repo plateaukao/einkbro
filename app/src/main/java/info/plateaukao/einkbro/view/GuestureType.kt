@@ -19,10 +19,12 @@ enum class GestureType(val value: String, val resId: Int) {
     Back("14", R.string.back),
     Fullscreen("15", R.string.fullscreen),
     Refresh("16", R.string.refresh),
-    Menu("17", R.string.menu);
+    Menu("17", R.string.menu),
+    TouchPagination("18", R.string.toggle_touch_turn_page);
 
     companion object {
-        fun from(value: String): GestureType = values().firstOrNull { it.value == value } ?: NothingHappen
+        fun from(value: String): GestureType =
+            values().firstOrNull { it.value == value } ?: NothingHappen
     }
 
 }

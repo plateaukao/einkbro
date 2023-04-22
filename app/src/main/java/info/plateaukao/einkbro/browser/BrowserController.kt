@@ -79,4 +79,5 @@ interface BrowserController {
 
     fun translate(translationMode: TranslationMode)
     fun configureTranslationLanguage(translateApi: TRANSLATE_API)
+    fun toggleTouchPagination()
 }

@@ -47,7 +47,8 @@ class TranslateDialogFragment(
                 translationViewModel,
                 translateApi,
                 { changeTranslationLanguage() },
-                { changeSourceLanguage() }
+                { changeSourceLanguage() },
+                { dismiss() }
             )
         }
     }
@@ -87,7 +88,8 @@ private fun TranslateResponse(
     translationViewModel: TranslationViewModel,
     translateApi: TRANSLATE_API,
     onTargetLanguageClick: () -> Unit,
-    onSourceLanguageClick: () -> Unit
+    onSourceLanguageClick: () -> Unit,
+    closeClick: () -> Unit = { },
 ) {
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
@@ -131,13 +133,21 @@ private fun TranslateResponse(
             )
             Icon(
                 painter = painterResource(
-                    id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_arrow_down_gest
+                    id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
                 ),
                 contentDescription = "Info Icon",
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
                     .size(32.dp)
                     .clickable { showRequest.value = !showRequest.value }
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.icon_close),
+                contentDescription = "Close Icon",
+                tint = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable { closeClick() }
             )
         }
         if (showRequest.value) {
