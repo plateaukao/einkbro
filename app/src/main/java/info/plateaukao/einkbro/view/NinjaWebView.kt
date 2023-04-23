@@ -92,12 +92,14 @@ open class NinjaWebView(
     }
 
     fun updateCssStyle() {
+        val fontType = if (isReaderModeOn) config.readerFontType else config.fontType
+
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
                 (if (config.blackFontStyle) makeTextBlackCss else "") +
-                (if (config.fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
-                (if (config.fontType == FontType.SERIF) serifFontCss else "") +
+                (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
+                (if (fontType == FontType.SERIF) serifFontCss else "") +
                 (if (config.whiteBackground) whiteBackgroundCss else "") +
-                (if (config.fontType == FontType.CUSTOM) customFontCss else "") +
+                (if (fontType == FontType.CUSTOM) customFontCss else "") +
                 // all css are purgsed by epublib. need to add it back if it's epub reader mode
                 if (isEpubReaderMode) String(
                     getByteArrayFromAsset("readerview.css"),
@@ -112,12 +114,14 @@ open class NinjaWebView(
         settings.cacheMode = WebSettings.LOAD_DEFAULT
         isVerticalRead = false
         isReaderModeOn = false
+        settings.textZoom = config.fontSize
         super.reload()
     }
 
     override fun goBack() {
         isVerticalRead = false
         isReaderModeOn = false
+        settings.textZoom = config.fontSize
         super.goBack()
     }
 
@@ -579,8 +583,10 @@ open class NinjaWebView(
                     getRawTextAction
                 )
             }
+            settings.textZoom = config.readerFontSize
         } else {
             disableReaderMode(isVertical)
+            settings.textZoom = config.fontSize
         }
     }
 

@@ -476,7 +476,11 @@ object BrowserUnit : KoinComponent {
     }
 
 
-    fun handleFontSelectionResult(context: Context, activityResult: ActivityResult) {
+    fun handleFontSelectionResult(
+        context: Context,
+        activityResult: ActivityResult,
+        isReaderMode: Boolean = false
+    ) {
         if (activityResult.data == null || activityResult.resultCode != Activity.RESULT_OK) return
         val uri = activityResult.data?.data ?: return
 
@@ -484,7 +488,11 @@ object BrowserUnit : KoinComponent {
         context.contentResolver?.takePersistableUriPermission(uri, takeFlags)
 
         val file = File(uri.path)
-        config.customFontInfo = CustomFontInfo(file.name, uri.toString())
+        if (isReaderMode) {
+            config.readerCustomFontInfo = CustomFontInfo(file.name, uri.toString())
+        } else {
+            config.customFontInfo = CustomFontInfo(file.name, uri.toString())
+        }
     }
 
     fun stripUrlQuery(url: String): String {
