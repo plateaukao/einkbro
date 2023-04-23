@@ -43,6 +43,17 @@ object ViewUnit {
         return bitmap
     }
 
+    fun captureDrawingCache(view: View): Bitmap {
+        view.isDrawingCacheEnabled = true
+        view.destroyDrawingCache()
+        view.buildDrawingCache()
+        var bitmap: Bitmap? = null
+        while (bitmap == null) {
+            bitmap = view.drawingCache
+        }
+        return bitmap
+    }
+
     @JvmStatic
     fun capture(view: View, width: Float, height: Float): Bitmap {
         val bitmap = Bitmap.createBitmap(width.toInt(), height.toInt(), Bitmap.Config.ARGB_8888)
@@ -110,7 +121,8 @@ object ViewUnit {
                 window.insetsController?.let {
                     it.hide(WindowInsets.Type.statusBars())
                     it.hide(WindowInsets.Type.navigationBars())
-                    it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                    it.systemBarsBehavior =
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 }
             } else {
                 window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -119,9 +131,10 @@ object ViewUnit {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.let {
                     it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                    it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                    it.systemBarsBehavior =
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 }
-            } else  {
+            } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             }
         }

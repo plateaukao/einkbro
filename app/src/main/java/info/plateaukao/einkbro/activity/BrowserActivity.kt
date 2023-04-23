@@ -337,7 +337,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun translate(translationMode: TranslationMode) {
         when (translationMode) {
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+            //TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateWebView()
             TranslationMode.GOOGLE_IN_PLACE -> ninjaWebView.addGoogleTranslation()
             else -> Unit
         }
@@ -1791,6 +1792,31 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         dialogManager.showSaveFileDialog(url = url, saveFile = this::saveFile)
                     }
                 }
+            }
+        }
+    }
+
+    private fun translateWebView() {
+        lifecycleScope.launch {
+            val base64String = translationViewModel.translateWebView(
+                ninjaWebView,
+                config.sourceLanguage,
+                config.translationLanguage,
+            )
+            if (base64String != null) {
+                val translatedImageHtml = HelperUnit.loadAssetFileToString(
+                    this@BrowserActivity, "translated_image.html"
+                ).replace("%%", base64String)
+                if (config.showTranslatedImageToSecondPanel) {
+                    maybeInitTwoPaneController()
+                    twoPaneController.showSecondPaneWithData(translatedImageHtml)
+                } else {
+                    addAlbum()
+                    ninjaWebView.isTranslatePage = true
+                    ninjaWebView.loadData(translatedImageHtml, "text/html", "utf-8")
+                }
+            } else {
+                NinjaToast.show(this@BrowserActivity, "Failed to translate image")
             }
         }
     }
