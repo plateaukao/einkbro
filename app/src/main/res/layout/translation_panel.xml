@@ -1,47 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="2dp"
+    android:background="@color/color_transparent"
     android:paddingRight="2dp"
-    android:background="@color/color_transparent">
-
-    <HorizontalScrollView
-        android:id="@+id/page_scroller"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/controls_container"
-        android:layout_alignParentBottom="true">
-        <LinearLayout
-            android:id="@+id/page_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:orientation="horizontal">
-        </LinearLayout>
-    </HorizontalScrollView>
+    android:paddingBottom="2dp">
 
     <ImageButton
         android:id="@+id/expanded_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/icon_info"
-        app:tint="?attr/colorControlNormal"
-        android:background="@drawable/background_with_border"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/background_with_border"
+        android:src="@drawable/icon_info"
         android:visibility="invisible"
-        />
+        app:tint="?attr/colorControlNormal" />
+
     <LinearLayout
         android:id="@+id/controls_container"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
         <ImageButton
             android:id="@+id/translation_orientation"
             android:layout_width="40dp"
@@ -49,63 +34,63 @@
             android:layout_margin="0.5dp"
             android:background="@drawable/background_with_border"
             android:src="@drawable/ic_rotate"
-            app:tint="?attr/colorControlNormal"/>
+            app:tint="?attr/colorControlNormal" />
+
         <ImageButton
             android:id="@+id/link_here"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:src="@drawable/ic_link_here"
-            app:tint="?attr/colorControlNormal"
             android:background="@drawable/background_with_border"
-            />
+            android:src="@drawable/ic_link_here"
+            app:tint="?attr/colorControlNormal" />
+
         <ImageButton
             android:id="@+id/sync_scroll"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:src="@drawable/ic_sync_scroll"
-            app:tint="?attr/colorControlNormal"
             android:background="@drawable/background_with_border"
-            />
+            android:src="@drawable/ic_sync_scroll"
+            app:tint="?attr/colorControlNormal" />
+
         <TextView
             android:id="@+id/translation_language"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:tint="?attr/colorControlNormal"
             android:background="@drawable/background_with_border"
-            android:textAlignment="center"
             android:gravity="center"
+            android:textAlignment="center"
             android:textSize="16sp"
-            tools:text="zh"
-            />
+            android:tint="?attr/colorControlNormal"
+            tools:text="zh" />
+
         <ImageButton
             android:id="@+id/translation_font_plus"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:src="@drawable/ic_font_increase"
-            app:tint="?attr/colorControlNormal"
             android:background="@drawable/background_with_border"
-            />
+            android:src="@drawable/ic_font_increase"
+            app:tint="?attr/colorControlNormal" />
+
         <ImageButton
             android:id="@+id/translation_font_minus"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:src="@drawable/ic_font_decrease"
-            app:tint="?attr/colorControlNormal"
             android:background="@drawable/background_with_border"
-            />
+            android:src="@drawable/ic_font_decrease"
+            app:tint="?attr/colorControlNormal" />
+
         <ImageButton
             android:id="@+id/translation_close"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:src="@drawable/icon_close"
-            app:tint="?attr/colorControlNormal"
             android:background="@drawable/background_with_border"
-            />
+            android:src="@drawable/icon_close"
+            app:tint="?attr/colorControlNormal" />
     </LinearLayout>
 </RelativeLayout>
