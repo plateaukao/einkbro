@@ -2,18 +2,14 @@ package info.plateaukao.einkbro.view.viewControllers
 
 import android.app.Activity
 import android.net.Uri
-import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.children
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.databinding.TranslationPageIndexBinding
 import info.plateaukao.einkbro.databinding.TranslationPanelBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
@@ -58,11 +54,7 @@ class TwoPaneController(
         }
     }
 
-    private val pageContainer: ViewGroup = translationViewBinding.pageContainer
-
     private var isWebViewAdded: Boolean = false
-
-    private var pageTextList: List<String> = listOf()
 
     init {
         twoPaneLayout.setOrientation(config.translationOrientation)
@@ -79,8 +71,7 @@ class TwoPaneController(
             )
         }
         translationViewBinding.translationClose.setOnLongClickListener {
-            webView.url?.let { loadTranslationUrl(it) }
-            toggleTranslationWindow(false)
+            hideControlButtons()
             true
         }
 
@@ -123,13 +114,11 @@ class TwoPaneController(
     }
 
     private fun hideControlButtons() {
-        translationViewBinding.pageScroller.visibility = INVISIBLE
         translationViewBinding.controlsContainer.visibility = INVISIBLE
         translationViewBinding.expandedButton.visibility = VISIBLE
     }
 
     private fun showControlButtons() {
-        translationViewBinding.pageScroller.visibility = VISIBLE
         translationViewBinding.controlsContainer.visibility = VISIBLE
         translationViewBinding.expandedButton.visibility = INVISIBLE
     }
@@ -182,18 +171,11 @@ class TwoPaneController(
         when (config.translationMode) {
             TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
             TranslationMode.PAPAGO_URL, TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
-
-            TranslationMode.PAPAGO, TranslationMode.GOOGLE -> {
-                if (!webView.isReaderModeOn) {
-                    webView.toggleReaderMode { launchTranslateWindow(it.purify()) }
-                } else {
-                    launchTranslateWindow(webView.getRawText().purify())
-                }
-            }
+            TranslationMode.ONYX, TranslationMode.PAPAGO, TranslationMode.GOOGLE ->
+                NinjaToast.showShort(activity, "No more supported")
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-            TranslationMode.ONYX -> Unit
             TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
         }
     }
@@ -242,25 +224,23 @@ class TwoPaneController(
 
         // handle translate url
         if (config.translationMode == TranslationMode.PAPAGO_URL) {
-            updatePageViews(1)
             translateUrl(buildPUrlTranslateUrl(text))
             return
         } else if (config.translationMode == TranslationMode.GOOGLE_URL) {
-            updatePageViews(1)
             translateUrl(buildGUrlTranslateUrl(text))
             return
         }
 
-        pageTextList = parseTextToSegments(text)
-        updatePageViews(pageTextList.size)
-        translatePage(0)
     }
 
     fun showTranslationConfigDialog() {
         val enumValues: List<TranslationMode> = TranslationMode.values().toMutableList().apply {
-            removeAt(0) // remove onyx
+            // remove not supported translation modes
+            remove(TranslationMode.ONYX)
+            remove(TranslationMode.PAPAGO)
+            remove(TranslationMode.GOOGLE)
             if (config.papagoApiSecret.isBlank()) {
-                remove(TranslationMode.PAPAGO)
+                remove(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
             }
         }
 
@@ -284,49 +264,9 @@ class TwoPaneController(
     private fun String.purify(): String =
         this.replace("\\u003C", "<").replace("\\n", "\n").replace("\\t", "  ").replace("\\\"", "\"")
 
-    private fun updatePageViews(size: Int) {
-        if (size == 1) {
-            pageContainer.visibility = GONE
-            return
-        }
-
-        pageContainer.visibility = VISIBLE
-        pageContainer.removeAllViews()
-
-        (pageTextList.indices).forEach { index ->
-            val textView = TranslationPageIndexBinding.inflate(LayoutInflater.from(activity)).root
-            textView.text = (index + 1).toString()
-            textView.tag = index
-            val params = LinearLayout.LayoutParams(40.dp(activity), 40.dp(activity))
-            textView.setOnClickListener { translatePage(index) }
-            pageContainer.addView(textView, params)
-        }
-        pageContainer.requestLayout()
-    }
-
     private fun translateUrl(url: String) {
         webView.loadUrl(url)
     }
-
-    private fun translatePage(selectedPageIndex: Int) {
-        val text = pageTextList[selectedPageIndex]
-        val url = when (config.translationMode) {
-            TranslationMode.GOOGLE -> buildGTranslateUrl(text)
-            TranslationMode.PAPAGO -> buildPTranslateUrl(text)
-            else -> ""
-        }
-
-        webView.loadUrl(url)
-
-        pageContainer.children.iterator().forEach { pageIndexView ->
-            pageIndexView.setBackgroundResource(
-                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.background_with_border
-            )
-        }
-    }
-
-    private fun parseTextToSegments(text: String): List<String> =
-        text.chunked(TRANSLATION_TEXT_THRESHOLD)
 
     private fun addWebView(): NinjaWebView {
         val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
