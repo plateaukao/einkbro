@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.service
 
+import android.graphics.Bitmap
 import android.util.Base64
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers.IO
@@ -10,11 +11,14 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.security.InvalidKeyException
@@ -240,32 +244,41 @@ class TranslateRepository : KoinComponent {
         return Signature(ts, encodedMsg)
     }
 
-    suspend fun translateImage(
-        referer: String,
-        url: String,
+    suspend fun translateBitmap(
+        bitmap: Bitmap,
         srcLang: String,
         dstLang: String,
         langDetect: Boolean,
     ): ImageTranslateResult? {
-        val file = downloadImage(url, referer) ?: return null
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
 
+        val builder = createMultipartBuilder(srcLang, dstLang, langDetect)
+        builder.addFormDataPart(
+            "image", "image.jpg",
+            byteArray.toRequestBody("image/*".toMediaType())
+        )
+        return getImageTranslateResult(builder.build())
+    }
+
+    private fun createMultipartBuilder(
+        srcLang: String,
+        dstLang: String,
+        langDetect: Boolean,
+    ): MultipartBody.Builder = MultipartBody.Builder()
+        .setType(MultipartBody.FORM)
+        .addFormDataPart("lang", "ko")
+        .addFormDataPart("upload", "true")
+        .addFormDataPart("sid", sid)
+        .addFormDataPart("source", srcLang)
+        .addFormDataPart("target", dstLang)
+        .addFormDataPart("langDetect", if (langDetect) "true" else "false")
+        .addFormDataPart("imageId", "")
+        .addFormDataPart("reqType", "")
+
+    private suspend fun getImageTranslateResult(requestBody: RequestBody): ImageTranslateResult? {
         val sig = signUrl(IMAGE_API_URL)
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("lang", "ko")
-            .addFormDataPart("upload", "true")
-            .addFormDataPart("sid", sid)
-            .addFormDataPart(
-                "image", file.name,
-                file.asRequestBody("image/*".toMediaType())
-            )
-            .addFormDataPart("source", srcLang)
-            .addFormDataPart("target", dstLang)
-            .addFormDataPart("langDetect", if (langDetect) "true" else "false")
-            .addFormDataPart("imageId", "")
-            .addFormDataPart("reqType", "")
-            .build()
-
         val finalUrl = HttpUrl.Builder()
             .scheme("https")
             .host("apis.naver.com")
@@ -294,6 +307,23 @@ class TranslateRepository : KoinComponent {
                     }
                 }
         }
+
+    }
+
+    suspend fun translateImageFromUrl(
+        referer: String,
+        url: String,
+        srcLang: String,
+        dstLang: String,
+        langDetect: Boolean,
+    ): ImageTranslateResult? {
+        val file = downloadImage(url, referer) ?: return null
+        val builder = createMultipartBuilder(srcLang, dstLang, langDetect)
+        builder.addFormDataPart(
+            "image", file.name,
+            file.asRequestBody("image/*".toMediaType())
+        )
+        return getImageTranslateResult(builder.build())
     }
 
     private suspend fun downloadImage(url: String, referer: String): File? {
