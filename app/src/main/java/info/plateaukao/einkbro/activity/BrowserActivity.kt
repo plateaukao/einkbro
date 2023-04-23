@@ -373,7 +373,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun handleFontSelectionResult(result: ActivityResult) {
         if (result.resultCode != RESULT_OK) return
-        BrowserUnit.handleFontSelectionResult(this, result)
+        BrowserUnit.handleFontSelectionResult(this, result, ninjaWebView.isReaderModeOn)
     }
 
     private fun handleWebViewFileChooser(result: ActivityResult) {
@@ -497,8 +497,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         overridePendingTransition(0, 0)
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
-        if (config.customFontChanged && config.fontType == FontType.CUSTOM) {
-            ninjaWebView.reload()
+        if (config.customFontChanged &&
+            (config.fontType == FontType.CUSTOM || config.readerFontType == FontType.CUSTOM)
+        ) {
+            if (!ninjaWebView.isReaderModeOn) {
+                ninjaWebView.reload()
+            } else {
+                ninjaWebView.updateCssStyle()
+            }
             config.customFontChanged = false
         }
         if (!config.continueMedia) {
@@ -685,17 +691,36 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun updateTouchView() = composeToolbarViewController.updateIcons()
 
     // Methods
-    override fun showFontSizeChangeDialog() =
-        FontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
-
-    private fun changeFontSize(size: Int) {
-        config.fontSize = size
+    override fun showFontSizeChangeDialog() {
+        if (ninjaWebView.isReaderModeOn) {
+            ReaderFontDialogFragment { openCustomFontPicker() }.show(
+                supportFragmentManager,
+                "font_dialog"
+            )
+        } else {
+            FontDialogFragment { openCustomFontPicker() }.show(
+                supportFragmentManager,
+                "font_dialog"
+            )
+        }
     }
 
-    override fun increaseFontSize() = changeFontSize(config.fontSize + 20)
+    private fun changeFontSize(size: Int) {
+        if (ninjaWebView.isReaderModeOn) {
+            config.readerFontSize = size
+        } else {
+            config.fontSize = size
+        }
+    }
+
+    override fun increaseFontSize() {
+        val fontSize = if (ninjaWebView.isReaderModeOn) config.readerFontSize else config.fontSize
+        changeFontSize(fontSize + 20)
+    }
 
     override fun decreaseFontSize() {
-        if (config.fontSize > 50) changeFontSize(config.fontSize - 20)
+        val fontSize = if (ninjaWebView.isReaderModeOn) config.readerFontSize else config.fontSize
+        if (fontSize > 50) changeFontSize(fontSize - 20)
     }
 
     private fun maybeInitTwoPaneController() {
@@ -1035,8 +1060,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
 
+                ConfigManager.K_READER_FONT_TYPE -> {
+                    if (config.fontType == FontType.SYSTEM_DEFAULT) {
+                        ninjaWebView.reload()
+                    } else {
+                        ninjaWebView.updateCssStyle()
+                    }
+                }
+
                 ConfigManager.K_FONT_SIZE -> {
                     ninjaWebView.settings.textZoom = config.fontSize
+                }
+
+                ConfigManager.K_READER_FONT_SIZE -> {
+                    if (ninjaWebView.isReaderModeOn) {
+                        ninjaWebView.settings.textZoom = config.readerFontSize
+                    }
                 }
 
                 ConfigManager.K_BOLD_FONT -> {
@@ -1069,6 +1108,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_CUSTOM_FONT -> {
                     if (config.fontType == FontType.CUSTOM) {
+                        ninjaWebView.updateCssStyle()
+                    }
+                }
+
+                ConfigManager.K_READER_CUSTOM_FONT -> {
+                    if (config.readerFontType == FontType.CUSTOM && ninjaWebView.isReaderModeOn) {
                         ninjaWebView.updateCssStyle()
                     }
                 }

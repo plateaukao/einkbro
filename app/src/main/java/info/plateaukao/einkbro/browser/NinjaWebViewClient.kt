@@ -249,7 +249,11 @@ class NinjaWebViewClient(
 
     private fun processCustomFontRequest(uri: Uri): WebResourceResponse? {
         if (uri.path?.contains("mycustomfont") == true) {
-            val fontUri = config.customFontInfo?.url?.toUri() ?: return null
+            val fontUri = if (!ninjaWebView.isReaderModeOn) {
+                config.customFontInfo?.url?.toUri() ?: return null
+            } else {
+                config.readerCustomFontInfo?.url?.toUri() ?: return null
+            }
 
             try {
                 val inputStream = context.contentResolver.openInputStream(fontUri)

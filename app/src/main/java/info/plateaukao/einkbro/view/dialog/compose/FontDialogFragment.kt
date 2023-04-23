@@ -72,14 +72,14 @@ class FontDialogFragment(
     }
 }
 
-private val fontSizeList1 = listOf(
+val fontSizeList1 = listOf(
     75,
     90,
     100,
     110,
 )
 
-private val fontSizeList2 = listOf(
+val fontSizeList2 = listOf(
     125,
     150,
     175,
@@ -87,7 +87,7 @@ private val fontSizeList2 = listOf(
 )
 
 @Composable
-private fun MainFontDialog(
+fun MainFontDialog(
     selectedFontSizeValue: Int,
     selectedFontType: FontType,
     customFontName: String,

@@ -90,7 +90,11 @@ class ConfigManager(
 
     var showDefaultActionMenu by BooleanPreference(sp, K_SHOW_DEFAULT_ACTION_MENU, false)
 
-    var showTranslatedImageToSecondPanel by BooleanPreference(sp, K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL, true)
+    var showTranslatedImageToSecondPanel by BooleanPreference(
+        sp,
+        K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL,
+        true
+    )
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -106,6 +110,11 @@ class ConfigManager(
         get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
         set(value) {
             sp.edit { putString(K_FONT_SIZE, value.toString()) }
+        }
+    var readerFontSize: Int
+        get() = sp.getString(K_READER_FONT_SIZE, fontSize.toString())?.toInt() ?: fontSize
+        set(value) {
+            sp.edit { putString(K_READER_FONT_SIZE, value.toString()) }
         }
 
     var ttsSpeedValue: Int
@@ -232,6 +241,14 @@ class ConfigManager(
                 customFontChanged = true
             }
         }
+    var readerCustomFontInfo: CustomFontInfo?
+        get() = sp.getString(K_READER_CUSTOM_FONT, "")?.toCustomFontInfo()
+        set(value) {
+            sp.edit { putString(K_READER_CUSTOM_FONT, value?.toSerializedString() ?: "") }
+            if (fontType == FontType.CUSTOM) {
+                customFontChanged = true
+            }
+        }
 
     var recentBookmarks: List<RecentBookmark>
         get() {
@@ -330,6 +347,9 @@ class ConfigManager(
     var fontType: FontType
         get() = FontType.values()[sp.getInt(K_FONT_TYPE, 0)]
         set(value) = sp.edit { putInt(K_FONT_TYPE, value.ordinal) }
+    var readerFontType: FontType
+        get() = FontType.values()[sp.getInt(K_READER_FONT_TYPE, fontType.ordinal)]
+        set(value) = sp.edit { putInt(K_READER_FONT_TYPE, value.ordinal) }
 
     var translationMode: TranslationMode
         get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, 6)]
@@ -400,6 +420,7 @@ class ConfigManager(
         const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"
         const val K_FONT_SIZE = "sp_fontSize"
+        const val K_READER_FONT_SIZE = "sp_reader_fontSize"
         const val K_TTS_SPEED_VALUE = "sp_tts_speed"
         const val K_FAVORITE_URL = "favoriteURL"
         const val K_VOLUME_PAGE_TURN = "volume_page_turn"
@@ -434,8 +455,10 @@ class ConfigManager(
         const val K_SAVED_EPUBS = "sp_saved_epubs"
         const val K_MULTITOUCH = "sp_multitouch"
         const val K_CUSTOM_FONT = "sp_custom_font"
+        const val K_READER_CUSTOM_FONT = "sp_reader_custom_font"
         const val K_CUSTOM_FONT_CHANGED = "sp_custom_font_changed"
         const val K_FONT_TYPE = "sp_font_type"
+        const val K_READER_FONT_TYPE = "sp_reader_font_type"
         const val K_TOOLBAR_TOP = "sp_toolbar_top"
         const val K_VI_BINDING = "sp_enable_vi_binding"
         const val K_MEDIA_CONTINUE = "sp_media_continue"
@@ -500,7 +523,8 @@ class ConfigManager(
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 
-        const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL = "sp_show_translated_image_to_second_panel"
+        const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
+            "sp_show_translated_image_to_second_panel"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
