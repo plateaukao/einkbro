@@ -10,13 +10,11 @@ import info.plateaukao.einkbro.util.TranslationLanguage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
-import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -149,31 +147,37 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     ): String {
         val parsedHtml = Jsoup.parse(html)
         val nodesWithText = fetchNodesWithText(parsedHtml)
-        var completeCount = 0
-        withContext(scope.coroutineContext) {
-            nodesWithText.forEach { node ->
-                async {
-                    val translation = if (translateApi == TRANSLATE_API.PAPAGO) {
-                        translateRepository.ppTranslate(
-                            node.text(),
-                            config.translationLanguage.value,
-                            config.sourceLanguage.value
-                        )
-                    } else {
-                        translateRepository.gTranslate(
-                            node.text(),
-                            config.translationLanguage.value
-                        )
-                    }
-                    node.addClass("to-translate")
-                    node.append("<p class=\"translated\" style=\"border: 1px dashed black;\">$translation</p>")
-                    completeCount++
-                    withContext(Dispatchers.Main) {
-                        updateProgress(completeCount * 100 / nodesWithText.size)
-                    }
-                }.await()
-            }
+        nodesWithText.forEach { node ->
+            node.addClass("to-translate")
+            //node.append("<p class=\"translated\" style=\"border: 1px dashed black;\">")
+            val element = Element("p").attr("style", "border: 1px dashed black;")
+            node.after(element)
         }
+//        var completeCount = 0
+//        withContext(scope.coroutineContext) {
+//            nodesWithText.forEach { node ->
+//                async {
+//                    val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
+//                        translateRepository.ppTranslate(
+//                            node.text(),
+//                            config.translationLanguage.value,
+//                            config.sourceLanguage.value
+//                        )
+//                    } else {
+//                        translateRepository.gTranslate(
+//                            node.text(),
+//                            config.translationLanguage.value
+//                        )
+//                    }
+//                    node.addClass("to-translate")
+//                    node.append("<p class=\"translated\" style=\"border: 1px dashed black;\">$translatedString</p>")
+//                    completeCount++
+//                    withContext(Dispatchers.Main) {
+//                        updateProgress(completeCount * 100 / nodesWithText.size)
+//                    }
+//                }.await()
+//            }
+//        }
         return parsedHtml.toString()
     }
 
@@ -183,7 +187,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         val result = mutableListOf<Element>()
         for (child in element.children()) {
             if ((child.children().size == 0 && child.text().isNotBlank()) ||
-                child.tagName() == "p"
+                child.tagName() in listOf("p", "h1", "h2", "h3", "h4", "h5", "h6")
             ) {
                 if (child.text().isNotEmpty()) {
                     result += child

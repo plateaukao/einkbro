@@ -12,6 +12,7 @@ import android.util.Base64
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.webkit.CookieManager
+import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.viewbinding.BuildConfig
@@ -25,12 +26,16 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.TranslationMode
+import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -151,6 +156,11 @@ open class NinjaWebView(
         setDownloadListener(downloadListener)
 
         updateDarkMode()
+        setupJsWebInterface()
+    }
+
+    private fun setupJsWebInterface() {
+        addJavascriptInterface(JsWebInterface(context, this), "androidApp")
     }
 
     private fun updateDarkMode() {
@@ -594,6 +604,7 @@ open class NinjaWebView(
         evaluateJavascript(textNodesMonitorJs, null)
     }
 
+
     private fun disableReaderMode(isVertical: Boolean = false) {
         val verticalCssString = if (isVertical) {
             "var style = document.createElement('style');" +
@@ -795,13 +806,23 @@ open class NinjaWebView(
             """
 
         const val textNodesMonitorJs = """
+            //const bridge = window.android = new androidApp(context, webView);
+            
+            function myCallback(elementId, responseString) {
+                console.log("Element ID:", elementId, "Response string:", responseString);
+            }
+            
             // Create a new IntersectionObserver object
             const observer = new IntersectionObserver((entries) => {
               entries.forEach((entry) => {
                 // Check if the target node is currently visible
                 if (entry.isIntersecting) {
-                  // The target node is visible
                   console.log('Node is visible:', entry.target.textContent);
+                  const nextNode = entry.target.nextElementSibling;
+                          //nextNode.textContent = result;
+                  if (nextNode) {
+                      androidApp.getTranslation(entry.target.textContent, entry.target.id, "myCallback");
+                  }
                 } else {
                   // The target node is not visible
                   console.log('Node is not visible');
@@ -974,5 +995,25 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
     init {
         initAlbum()
+    }
+}
+
+class JsWebInterface(private val context: Context, private val webView: WebView) : KoinComponent {
+    private val translateRepository: TranslateRepository by inject()
+    private val configManager: ConfigManager by inject()
+
+    @JavascriptInterface
+    fun getTranslation(originalText: String, elementId: Int, callback: String) {
+        GlobalScope.launch(IO) {
+            val translatedText = translateRepository.gTranslate(
+                originalText,
+                configManager.translationLanguage.value
+            )
+            withContext(Main) {
+                webView.post {
+                    webView.evaluateJavascript("$callback($elementId, '$translatedText')", null)
+                }
+            }
+        }
     }
 }
