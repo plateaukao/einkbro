@@ -140,45 +140,17 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return result?.renderedImage
     }
 
-    suspend fun translateByParagraph(
-        html: String,
-        translateApi: TRANSLATE_API,
-        updateProgress: (Int) -> Unit
-    ): String {
+    fun translateByParagraph(html: String): String {
         val parsedHtml = Jsoup.parse(html)
         val nodesWithText = fetchNodesWithText(parsedHtml)
         nodesWithText.forEachIndexed { index, node ->
+            // for monitoring visibility
             node.addClass("to-translate")
+            // for locating element's position
             node.id(index.toString())
-            //node.append("<p class=\"translated\" style=\"border: 1px dashed black;\">")
-            val element = Element("p").attr("style", "border: 1px dashed black;")
-            node.after(element)
+            // for later inserting translated text
+            node.after(Element("p"))
         }
-//        var completeCount = 0
-//        withContext(scope.coroutineContext) {
-//            nodesWithText.forEach { node ->
-//                async {
-//                    val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
-//                        translateRepository.ppTranslate(
-//                            node.text(),
-//                            config.translationLanguage.value,
-//                            config.sourceLanguage.value
-//                        )
-//                    } else {
-//                        translateRepository.gTranslate(
-//                            node.text(),
-//                            config.translationLanguage.value
-//                        )
-//                    }
-//                    node.addClass("to-translate")
-//                    node.append("<p class=\"translated\" style=\"border: 1px dashed black;\">$translatedString</p>")
-//                    completeCount++
-//                    withContext(Dispatchers.Main) {
-//                        updateProgress(completeCount * 100 / nodesWithText.size)
-//                    }
-//                }.await()
-//            }
-//        }
         return parsedHtml.toString()
     }
 

@@ -766,11 +766,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             translateModeWebView.loadData(processingHtml, "text/html", "utf-8")
 
             val translatedHtml = translationViewModel
-                .translateByParagraph(translateModeWebView.rawHtmlCache!!, translateApi) {
-                    if (ninjaWebView.isTranslatePage) {
-                        updateProgress(it)
-                    }
-                }
+                .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
             if (translateModeWebView.isAttachedToWindow) {
                 translateModeWebView.loadDataWithBaseURL(
                     currentUrl,
