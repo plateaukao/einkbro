@@ -337,8 +337,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun translate(translationMode: TranslationMode) {
         when (translationMode) {
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-            //TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
-            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateWebView()
+            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+            //TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateWebView()
             TranslationMode.GOOGLE_IN_PLACE -> ninjaWebView.addGoogleTranslation()
             else -> Unit
         }
@@ -779,6 +779,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     "utf-8",
                     null
                 )
+                translateModeWebView.postDelayed({
+                    translateModeWebView.injectTextNodesMonitoring()
+                }, 1000)
             }
         }
     }

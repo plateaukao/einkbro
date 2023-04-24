@@ -590,6 +590,10 @@ open class NinjaWebView(
         }
     }
 
+    fun injectTextNodesMonitoring() {
+        evaluateJavascript(textNodesMonitorJs, null)
+    }
+
     private fun disableReaderMode(isVertical: Boolean = false) {
         val verticalCssString = if (isVertical) {
             "var style = document.createElement('style');" +
@@ -790,6 +794,29 @@ open class NinjaWebView(
             })()
             """
 
+        const val textNodesMonitorJs = """
+            // Create a new IntersectionObserver object
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                // Check if the target node is currently visible
+                if (entry.isIntersecting) {
+                  // The target node is visible
+                  console.log('Node is visible:', entry.target.textContent);
+                } else {
+                  // The target node is not visible
+                  console.log('Node is not visible');
+                }
+              });
+            });
+
+            // Select all elements with class name 'to-translate'
+            const targetNodes = document.querySelectorAll('.to-translate');
+
+            // Loop through each target node and start observing it
+            targetNodes.forEach((targetNode) => {
+              observer.observe(targetNode);
+            });
+        """
         private const val replaceWithReaderModeBodyJs = """
             var documentClone = document.cloneNode(true);
             var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
