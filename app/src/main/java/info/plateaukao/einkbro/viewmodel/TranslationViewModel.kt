@@ -147,8 +147,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     ): String {
         val parsedHtml = Jsoup.parse(html)
         val nodesWithText = fetchNodesWithText(parsedHtml)
-        nodesWithText.forEach { node ->
+        nodesWithText.forEachIndexed { index, node ->
             node.addClass("to-translate")
+            node.id(index.toString())
             //node.append("<p class=\"translated\" style=\"border: 1px dashed black;\">")
             val element = Element("p").attr("style", "border: 1px dashed black;")
             node.after(element)
