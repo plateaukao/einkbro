@@ -166,7 +166,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                         )
                     }
                     node.addClass("to-translate")
-                    node.append("<br><p style=\"border: 1px dashed black;\">$translation</p>")
+                    node.append("<p class=\"translated\" style=\"border: 1px dashed black;\">$translation</p>")
                     completeCount++
                     withContext(Dispatchers.Main) {
                         updateProgress(completeCount * 100 / nodesWithText.size)
@@ -174,7 +174,6 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                 }.await()
             }
         }
-
         return parsedHtml.toString()
     }
 
