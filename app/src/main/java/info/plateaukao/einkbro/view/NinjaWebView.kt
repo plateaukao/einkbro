@@ -810,7 +810,9 @@ open class NinjaWebView(
             
             function myCallback(elementId, responseString) {
                 //console.log("Element ID:", elementId, "Response string:", responseString);
-                document.getElementById(elementId).nextElementSibling.textContent = responseString;
+                node = document.getElementById(elementId).nextElementSibling
+                node.textContent = responseString;
+                node.style = "border: 1px dashed black;";
             }
             
             // Create a new IntersectionObserver object
@@ -821,7 +823,7 @@ open class NinjaWebView(
                   //console.log('Node is visible:', entry.target.textContent);
                   const nextNode = entry.target.nextElementSibling;
                           //nextNode.textContent = result;
-                  if (nextNode) {
+                  if (nextNode && nextNode.textContent === "") {
                       androidApp.getTranslation(entry.target.textContent, entry.target.id, "myCallback");
                   }
                 } else {
@@ -1021,7 +1023,7 @@ class JsWebInterface(private val context: Context, private val webView: NinjaWeb
                 )
             }
             withContext(Main) {
-                webView.post {
+                if (webView.isAttachedToWindow) {
                     webView.evaluateJavascript("$callback('$elementId', '$translatedString')", null)
                 }
             }
