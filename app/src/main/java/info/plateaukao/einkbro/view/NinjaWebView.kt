@@ -809,7 +809,8 @@ open class NinjaWebView(
             //const bridge = window.android = new androidApp(context, webView);
             
             function myCallback(elementId, responseString) {
-                console.log("Element ID:", elementId, "Response string:", responseString);
+                //console.log("Element ID:", elementId, "Response string:", responseString);
+                document.getElementById(elementId).nextElementSibling.textContent = responseString;
             }
             
             // Create a new IntersectionObserver object
@@ -817,7 +818,7 @@ open class NinjaWebView(
               entries.forEach((entry) => {
                 // Check if the target node is currently visible
                 if (entry.isIntersecting) {
-                  console.log('Node is visible:', entry.target.textContent);
+                  //console.log('Node is visible:', entry.target.textContent);
                   const nextNode = entry.target.nextElementSibling;
                           //nextNode.textContent = result;
                   if (nextNode) {
@@ -998,20 +999,30 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
     }
 }
 
-class JsWebInterface(private val context: Context, private val webView: WebView) : KoinComponent {
-    private val translateRepository: TranslateRepository by inject()
+class JsWebInterface(private val context: Context, private val webView: NinjaWebView) :
+    KoinComponent {
+    private val translateRepository: TranslateRepository = TranslateRepository()
     private val configManager: ConfigManager by inject()
 
     @JavascriptInterface
-    fun getTranslation(originalText: String, elementId: Int, callback: String) {
+    fun getTranslation(originalText: String, elementId: String, callback: String) {
+        val translateApi = webView.translateApi
         GlobalScope.launch(IO) {
-            val translatedText = translateRepository.gTranslate(
-                originalText,
-                configManager.translationLanguage.value
-            )
+            val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
+                translateRepository.ppTranslate(
+                    originalText,
+                    configManager.translationLanguage.value,
+                    configManager.sourceLanguage.value
+                )
+            } else {
+                translateRepository.gTranslate(
+                    originalText,
+                    configManager.translationLanguage.value
+                )
+            }
             withContext(Main) {
                 webView.post {
-                    webView.evaluateJavascript("$callback($elementId, '$translatedText')", null)
+                    webView.evaluateJavascript("$callback('$elementId', '$translatedString')", null)
                 }
             }
         }
