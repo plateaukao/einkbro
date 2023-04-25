@@ -1,12 +1,15 @@
 package info.plateaukao.einkbro.browser
 
+import android.app.Application
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.NinjaWebView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class WebContentPostProcessor : KoinComponent {
     private val configManager: ConfigManager by inject()
+    private val application: Application by inject()
 
     fun postProcess(ninjaWebView: NinjaWebView, url: String) {
         if (url.startsWith("data:text/html")) return
@@ -19,8 +22,19 @@ class WebContentPostProcessor : KoinComponent {
             }
         }
 
-        if (configManager.enableZoom) {
-            ninjaWebView.evaluateJavascript(enableZoomJs, null)
+        if (configManager.desktop || configManager.enableZoom) {
+            val context = application.applicationContext
+            val width =
+                if (ViewUnit.getWindowWidth(context) < 1024) "1024" else ViewUnit.getWindowWidth(
+                    context
+                ).toString()
+            ninjaWebView.evaluateJavascript(
+                zoomAndDesktopTemplateJs.format(
+                    if (configManager.enableZoom) enableZoomJs else "",
+                    if (configManager.desktop) "width=$width" else ""
+                ),
+                null
+            )
         }
 
         if (configManager.enableVideoAutoFullscreen) {
@@ -75,8 +89,10 @@ new PerformanceObserver((entryList) => {
 document.addEventListener('scroll', () => getAds().forEach(hideAd));
             })()
         """
-        private const val enableZoomJs =
-            "javascript:document.getElementsByName('viewport')[0].setAttribute('content', 'initial-scale=1,maximum-scale=10.0');"
+        private const val zoomAndDesktopTemplateJs =
+            "javascript:document.getElementsByName('viewport')[0].setAttribute('content', '%s%s');"
+        private const val enableZoomJs = "initial-scale=1,maximum-scale=10.0,"
+        private const val enableDesktopJs = "width=1024"
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
               function removeItems() {
