@@ -111,7 +111,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                 gestureSettingItems,
                                 dialogManager,
                                 action,
-                                1
+                                2
                             )
                         }
                         composable(Backup.name) {

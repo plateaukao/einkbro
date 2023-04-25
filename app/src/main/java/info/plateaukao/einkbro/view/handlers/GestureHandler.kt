@@ -11,7 +11,7 @@ class GestureHandler(
     fun handle(gesture: GestureType) = when (gesture) {
         GestureType.NothingHappen -> Unit
         GestureType.Forward -> browserController.goForward()
-        GestureType.Backward ->  browserController.handleBackKey()
+        GestureType.Backward -> browserController.handleBackKey()
         GestureType.ScrollToTop -> browserController.jumpToTop()
         GestureType.ScrollToBottom -> browserController.jumpToBottom()
         GestureType.ToLeftTab -> browserController.gotoLeftTab()
