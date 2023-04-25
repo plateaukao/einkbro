@@ -83,3 +83,4 @@ EinkBro is designed to fit Eink devices' needs; no unnecessary UI transitions an
      height="80">](https://jb.gg/OpenSourceSupport)   
      
 <div>App icon is made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+<a href="https://www.flaticon.com/free-icons/language" title="language icons">Language icons created by Those Icons - Flaticon</a>
