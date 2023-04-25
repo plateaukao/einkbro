@@ -7,6 +7,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
+import info.plateaukao.einkbro.view.NinjaWebView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
+import org.jsoup.nodes.DataNode
 import org.jsoup.nodes.Element
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -151,6 +153,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             // for later inserting translated text
             node.after(Element("p"))
         }
+        // add observer
+        val script: Element = parsedHtml.createElement("script")
+        script.attr("type", "text/javascript")
+        script.appendChild(DataNode(NinjaWebView.textNodesMonitorJs))
+        parsedHtml.body().appendChild(script)
+
         return parsedHtml.toString()
     }
 
