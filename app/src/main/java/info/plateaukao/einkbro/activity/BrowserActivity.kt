@@ -760,11 +760,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ninjaWebView
             }
 
-            val processingHtml = HelperUnit.loadAssetFileToString(
-                this@BrowserActivity, "translate_processing.html"
-            ).format(getString(R.string.translate_processing))
-            translateModeWebView.loadData(processingHtml, "text/html", "utf-8")
-
             val translatedHtml = translationViewModel
                 .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
             if (translateModeWebView.isAttachedToWindow) {
@@ -775,9 +770,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     "utf-8",
                     null
                 )
-                translateModeWebView.postDelayed({
-                    translateModeWebView.injectTextNodesMonitoring()
-                }, 1000)
             }
         }
     }

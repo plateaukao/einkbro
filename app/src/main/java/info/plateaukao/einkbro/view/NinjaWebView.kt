@@ -810,9 +810,9 @@ open class NinjaWebView(
             
             function myCallback(elementId, responseString) {
                 //console.log("Element ID:", elementId, "Response string:", responseString);
-                node = document.getElementById(elementId).nextElementSibling
+                node = document.getElementById(elementId).nextElementSibling;
                 node.textContent = responseString;
-                node.style = "border: 1px dashed black;";
+                node.style = "border: 1px dashed black; padding: 5px;";
             }
             
             // Create a new IntersectionObserver object
@@ -828,7 +828,7 @@ open class NinjaWebView(
                   }
                 } else {
                   // The target node is not visible
-                  console.log('Node is not visible');
+                  //console.log('Node is not visible');
                 }
               });
             });
