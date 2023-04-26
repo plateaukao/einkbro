@@ -62,6 +62,7 @@ class TwoPaneController(
             twoPaneLayout.switchPanels()
         }
 
+
         translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
 
@@ -74,6 +75,11 @@ class TwoPaneController(
             hideControlButtons()
             true
         }
+
+        translationViewBinding.translationOrientation.setImageResource(
+            if (twoPaneLayout.getOrientation() == Orientation.Vertical) R.drawable.ic_split_screen
+            else R.drawable.ic_split_screen_vertical
+        )
 
         translationViewBinding.translationOrientation.setOnClickListener {
             val orientation =
@@ -190,6 +196,10 @@ class TwoPaneController(
     private fun setOrientation(orientation: Orientation) {
         config.translationOrientation = orientation
         twoPaneLayout.setOrientation(orientation)
+        translationViewBinding.translationOrientation.setImageResource(
+            if (twoPaneLayout.getOrientation() == Orientation.Vertical) R.drawable.ic_split_screen
+            else R.drawable.ic_split_screen_vertical
+        )
     }
 
     private fun updateSyncScrollView(shouldSyncScroll: Boolean = false) {
