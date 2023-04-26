@@ -853,6 +853,7 @@ open class NinjaWebView(
             // change font type
             var bodyClasses = document.body.classList;
             bodyClasses.add("serif");
+            document.getElementsByName('viewport')[0].setAttribute('content', 'width=device-width');
         """
 
         private const val getReaderModeBodyHtmlJs = """
