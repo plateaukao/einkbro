@@ -407,7 +407,28 @@ object BrowserUnit : KoinComponent {
                 contentDisposition.length - 1
             )
         }
-        return URLUtil.guessFileName(url, contentDisposition, mimeType)
+
+        var filename = URLUtil.guessFileName(url, contentDisposition, mimeType)
+        if (filename.endsWith(".bin")) {
+            var decodedUrl: String? = Uri.decode(url)
+            if (decodedUrl != null) {
+                val queryIndex = decodedUrl.indexOf('?')
+                // If there is a query string strip it, same as desktop browsers
+                if (queryIndex > 0) {
+                    decodedUrl = decodedUrl.substring(0, queryIndex)
+                }
+                if (!decodedUrl.endsWith("/")) {
+                    val index = decodedUrl.lastIndexOf('/') + 1
+                    if (index > 0) {
+                        filename = decodedUrl.substring(index)
+                        if (filename.indexOf('.') < 0) {
+                            filename += "bin"
+                        }
+                    }
+                }
+            }
+        }
+        return filename
     }
 
 
