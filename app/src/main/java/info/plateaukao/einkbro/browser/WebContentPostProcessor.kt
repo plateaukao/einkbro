@@ -22,12 +22,9 @@ class WebContentPostProcessor : KoinComponent {
             }
         }
 
-        if (configManager.desktop || configManager.enableZoom) {
+        if (!ninjaWebView.isReaderModeOn && (configManager.desktop || configManager.enableZoom)) {
             val context = application.applicationContext
-            val width =
-                if (ViewUnit.getWindowWidth(context) < 1024) "1024" else ViewUnit.getWindowWidth(
-                    context
-                ).toString()
+            val width = if (ViewUnit.getWindowWidth(context) < 800) "800" else "device-width"
             ninjaWebView.evaluateJavascript(
                 zoomAndDesktopTemplateJs.format(
                     if (configManager.enableZoom) enableZoomJs else "",
