@@ -8,12 +8,9 @@ import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -79,6 +76,7 @@ import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import info.plateaukao.einkbro.viewmodel.GptViewModel
+import info.plateaukao.einkbro.viewmodel.PocketShareState
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -111,7 +109,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // Others
     private var downloadReceiver: BroadcastReceiver? = null
-    private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
     private val ttsManager: TtsManager by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
@@ -267,6 +264,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         listenKeyboardShowHide()
 
+        setupLanguageLabel()
+    }
+
+    private fun setupLanguageLabel() {
         languageLabelView = findViewById(R.id.translation_language)
         lifecycleScope.launch {
             translationViewModel.translationLanguage.collect {
@@ -293,35 +294,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun toggleVerticalRead() = ninjaWebView.toggleVerticalRead()
     override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
 
-    private var urlToBeAdded: String = ""
     override fun addToPocket(url: String) {
-        // if Pocket app is installed, share to it
-        if (pocketViewModel.shareToPocketApp(this, url)) return
-
-        // need to handle the case where the user is not logged in
-        if (!pocketViewModel.isPocketLoggedIn()) {
-            urlToBeAdded = url
-            lifecycleScope.launch {
-                val authUrl = pocketViewModel.getAuthUrl()
-                addNewTab(authUrl)
-            }
-            return
-        }
-
         lifecycleScope.launch {
-            val resolvedUrl = pocketViewModel.addUrlToPocket(url)
-            if (resolvedUrl == null) {
-                NinjaToast.showShort(this@BrowserActivity, "Failed")
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    "Added",
-                    Snackbar.LENGTH_LONG
-                ).apply {
-                    setAction("Go to Pocket article url") {
-                        addNewTab(resolvedUrl)
-                    }
-                }.show()
+            when (val sharedState =
+                pocketViewModel.shareToPocketWithLoginCheck(this@BrowserActivity, url)) {
+                is PocketShareState.SharedByEinkBro -> {
+                    Snackbar.make(binding.root, "Added", Snackbar.LENGTH_LONG).apply {
+                        setAction("Go to Pocket article url") {
+                            addNewTab(sharedState.pocketUrl)
+                        }
+                    }.show()
+                }
+
+                is PocketShareState.NeedLogin -> addNewTab(sharedState.authUrl)
+                PocketShareState.Failed -> NinjaToast.showShort(this@BrowserActivity, "Failed")
+                PocketShareState.SharedByPocketApp -> Unit // done by pocket app
             }
         }
     }
@@ -329,8 +316,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun handlePocketRequestToken(requestToken: String) {
         lifecycleScope.launch {
             pocketViewModel.getAndSaveAccessToken()
-            addToPocket(urlToBeAdded)
-            urlToBeAdded = ""
+            addToPocket(pocketViewModel.urlToBeAdded)
         }
     }
 
@@ -2118,21 +2104,4 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         private const val TAG = "BrowserActivity"
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
-}
-
-data class MenuInfo(
-    val title: String,
-    val icon: Drawable? = null,
-    val intent: Intent? = null,
-    val action: (() -> Unit)? = null
-)
-
-fun ResolveInfo.toMenuInfo(pm: PackageManager): MenuInfo {
-    val title = loadLabel(pm).toString()
-    val icon = loadIcon(pm)
-    val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
-        type = "text/plain"
-        setClassName(activityInfo.packageName, activityInfo.name)
-    }
-    return MenuInfo(title, icon, intent)
 }
