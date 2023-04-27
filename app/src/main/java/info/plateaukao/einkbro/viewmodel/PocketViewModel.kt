@@ -20,7 +20,25 @@ class PocketViewModel : KoinComponent, ViewModel() {
 
     private var requestToken: String = ""
 
-    fun shareToPocketApp(context: Context, url: String): Boolean {
+    var urlToBeAdded: String = ""
+
+    suspend fun shareToPocketWithLoginCheck(
+        context: Context,
+        url: String,
+    ): PocketShareState {
+        if (shareToPocketApp(context, url)) return PocketShareState.SharedByPocketApp
+
+        if (!isPocketLoggedIn()) {
+            urlToBeAdded = url
+            val authUrl = getAuthUrl()
+            return PocketShareState.NeedLogin(authUrl)
+        }
+
+        val resolvedUrl = addUrlToPocket(url) ?: return PocketShareState.Failed
+        return PocketShareState.SharedByEinkBro(resolvedUrl)
+    }
+
+    private fun shareToPocketApp(context: Context, url: String): Boolean {
         if (IntentUnit.isPocketInstalled(context)) {
             return try {
                 val intent = Intent().apply {
@@ -44,11 +62,11 @@ class PocketViewModel : KoinComponent, ViewModel() {
         }
     }
 
-    fun isPocketLoggedIn(): Boolean {
+    private fun isPocketLoggedIn(): Boolean {
         return configManager.pocketAccessToken.isNotBlank()
     }
 
-    suspend fun getAuthUrl(): String {
+    private suspend fun getAuthUrl(): String {
         return suspendCancellableCoroutine { continuation ->
             pocketNetwork.getRequestToken { requestToken ->
                 this.requestToken = requestToken
@@ -68,11 +86,18 @@ class PocketViewModel : KoinComponent, ViewModel() {
         }
     }
 
-    suspend fun addUrlToPocket(url: String, title: String? = null, tags: String? = null): String? {
+    private suspend fun addUrlToPocket(url: String, title: String? = null, tags: String? = null): String? {
         return pocketNetwork.addUrlToPocket(configManager.pocketAccessToken, url, title, tags)
     }
 }
 
-class PocketViewModelFactory() : ViewModelProvider.NewInstanceFactory() {
+sealed class PocketShareState {
+    object SharedByPocketApp: PocketShareState()
+    object Failed: PocketShareState()
+    data class SharedByEinkBro(val pocketUrl: String): PocketShareState()
+    data class NeedLogin(val authUrl: String): PocketShareState()
+}
+
+class PocketViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = PocketViewModel() as T
 }

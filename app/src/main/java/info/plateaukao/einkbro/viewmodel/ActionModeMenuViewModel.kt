@@ -11,13 +11,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.BrowserActivity
-import info.plateaukao.einkbro.activity.MenuInfo
-import info.plateaukao.einkbro.activity.toMenuInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
+import info.plateaukao.einkbro.view.data.MenuInfo
+import info.plateaukao.einkbro.view.data.toMenuInfo
 import info.plateaukao.einkbro.view.dialog.compose.ActionModeDialogFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

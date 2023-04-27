@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import info.plateaukao.einkbro.activity.MenuInfo
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import kotlinx.coroutines.launch
 
