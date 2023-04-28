@@ -160,7 +160,7 @@ open class NinjaWebView(
     }
 
     private fun setupJsWebInterface() {
-        addJavascriptInterface(JsWebInterface(context, this), "androidApp")
+        addJavascriptInterface(JsWebInterface(this), "androidApp")
     }
 
     private fun updateDarkMode() {
@@ -1002,20 +1002,27 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
     }
 }
 
-class JsWebInterface(private val context: Context, private val webView: NinjaWebView) :
+class JsWebInterface(private val webView: NinjaWebView) :
     KoinComponent {
     private val translateRepository: TranslateRepository = TranslateRepository()
     private val configManager: ConfigManager by inject()
 
+    private var detectedLanguage: String = ""
+
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
         val translateApi = webView.translateApi
+
         GlobalScope.launch(IO) {
+            if (detectedLanguage.isEmpty()) {
+                detectedLanguage = translateRepository.pDetectLanguage(originalText)
+                    ?: configManager.sourceLanguage.value
+            }
             val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
                 translateRepository.ppTranslate(
                     originalText,
                     configManager.translationLanguage.value,
-                    configManager.sourceLanguage.value
+                    detectedLanguage,
                 )
             } else {
                 translateRepository.gTranslate(

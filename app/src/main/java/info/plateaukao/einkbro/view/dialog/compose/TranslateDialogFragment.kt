@@ -45,9 +45,7 @@ class TranslateDialogFragment(
         MyTheme {
             TranslateResponse(
                 translationViewModel,
-                translateApi,
                 { changeTranslationLanguage() },
-                { changeSourceLanguage() },
                 { dismiss() }
             )
         }
@@ -58,15 +56,6 @@ class TranslateDialogFragment(
             val translationLanguage =
                 TranslationLanguageDialog(requireActivity()).show() ?: return@launch
             translationViewModel.updateTranslationLanguageAndGo(translateApi, translationLanguage)
-        }
-    }
-
-    private fun changeSourceLanguage() {
-        lifecycleScope.launch {
-            val translationLanguage =
-                TranslationLanguageDialog(requireActivity()).showPapagoSourceLanguage()
-                    ?: return@launch
-            translationViewModel.updateSourceLanguageAndGo(translateApi, translationLanguage)
         }
     }
 
@@ -86,15 +75,12 @@ class TranslateDialogFragment(
 @Composable
 private fun TranslateResponse(
     translationViewModel: TranslationViewModel,
-    translateApi: TRANSLATE_API,
     onTargetLanguageClick: () -> Unit,
-    onSourceLanguageClick: () -> Unit,
     closeClick: () -> Unit = { },
 ) {
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
     val targetLanguage by translationViewModel.translationLanguage.collectAsState()
-    val sourceLanguage by translationViewModel.sourceLanguage.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
     Column(
@@ -106,22 +92,6 @@ private fun TranslateResponse(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (translateApi == TRANSLATE_API.PAPAGO) {
-                SelectableText(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(10.dp),
-                    selected = true,
-                    text = sourceLanguage.language,
-                    textAlign = TextAlign.Center,
-                    onClick = onSourceLanguageClick
-                )
-                Text(
-                    text = "→",
-                    color = MaterialTheme.colors.onBackground,
-                )
-            }
-
             SelectableText(
                 modifier = Modifier
                     .weight(1f)

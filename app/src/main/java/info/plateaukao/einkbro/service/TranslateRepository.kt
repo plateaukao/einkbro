@@ -171,6 +171,50 @@ class TranslateRepository : KoinComponent {
         }
     }
 
+    suspend fun pDetectLanguage(text: String): String? {
+        if (authKey == null) {
+            authKey = getAuthKey()
+        }
+        val key = authKey?.toByteArray(Charsets.UTF_8) ?: return ""
+
+        val guid = UUID.randomUUID()
+        val timestamp = System.currentTimeMillis()
+        val code = "$guid\n$DETECT_LANGUAGE_URL\n$timestamp".toByteArray(Charsets.UTF_8)
+        val hmac = Mac.getInstance("HmacMD5")
+        val secretKeySpec = SecretKeySpec(key, "HmacMD5")
+        hmac.init(secretKeySpec)
+        val token = Base64.encodeToString(hmac.doFinal(code), Base64.DEFAULT)
+
+        return withContext(IO) {
+            val request = Request.Builder()
+                .url(DETECT_LANGUAGE_URL)
+                .addHeader("device-type", "pc")
+                .addHeader("x-apigw-partnerid", "papago")
+                .addHeader("Origin", "https://papago.naver.com")
+                .addHeader("Referer", "https://papago.naver.com")
+                .addHeader("Authorization", "PPG $guid:$token".replace("\n", ""))
+                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                .addHeader("Timestamp", timestamp.toString())
+                .post(
+                    FormBody.Builder()
+                        .add("query", text)
+                        .build()
+                )
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) return@use null
+
+                try {
+                    val body = JSONObject(response.body?.string() ?: return@use null)
+                    body.getString("langCode")
+                } catch (e: Exception) {
+                    null
+                }
+            }
+        }
+    }
+
 
 //    suspend fun pDetectLanguage(text: String): String? {
 //        if (authKey == null) {
