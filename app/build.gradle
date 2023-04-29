@@ -121,7 +121,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-drawablepainter:0.31.0-alpha"
 
     // reorder lazylist
-    implementation "org.burnoutcrew.composereorderable:reorderable:0.9.0"
+    implementation "org.burnoutcrew.composereorderable:reorderable:0.9.6"
 
     // okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
