@@ -22,7 +22,7 @@ class WebContentPostProcessor : KoinComponent {
             }
         }
 
-        if (!ninjaWebView.isReaderModeOn && (configManager.desktop || configManager.enableZoom)) {
+        if (!ninjaWebView.shouldUseReaderFont() && (configManager.desktop || configManager.enableZoom)) {
             val context = application.applicationContext
             val width = if (ViewUnit.getWindowWidth(context) < 800) "800" else "device-width"
             ninjaWebView.evaluateJavascript(
@@ -36,6 +36,12 @@ class WebContentPostProcessor : KoinComponent {
 
         if (configManager.enableVideoAutoFullscreen) {
             ninjaWebView.evaluateJavascript(videoAutoFullscreen, null)
+        }
+
+        if (ninjaWebView.shouldUseReaderFont()) {
+            ninjaWebView.settings.textZoom = configManager.readerFontSize
+        } else {
+            ninjaWebView.settings.textZoom = configManager.fontSize
         }
     }
 

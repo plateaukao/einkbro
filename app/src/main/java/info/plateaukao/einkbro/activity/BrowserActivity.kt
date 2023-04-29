@@ -359,7 +359,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun handleFontSelectionResult(result: ActivityResult) {
         if (result.resultCode != RESULT_OK) return
-        BrowserUnit.handleFontSelectionResult(this, result, ninjaWebView.isReaderModeOn)
+        BrowserUnit.handleFontSelectionResult(this, result, ninjaWebView.shouldUseReaderFont())
     }
 
     private fun handleWebViewFileChooser(result: ActivityResult) {
@@ -486,7 +486,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (config.customFontChanged &&
             (config.fontType == FontType.CUSTOM || config.readerFontType == FontType.CUSTOM)
         ) {
-            if (!ninjaWebView.isReaderModeOn) {
+            if (!ninjaWebView.shouldUseReaderFont()) {
                 ninjaWebView.reload()
             } else {
                 ninjaWebView.updateCssStyle()
@@ -678,7 +678,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // Methods
     override fun showFontSizeChangeDialog() {
-        if (ninjaWebView.isReaderModeOn) {
+        if (ninjaWebView.shouldUseReaderFont()) {
             ReaderFontDialogFragment { openCustomFontPicker() }.show(
                 supportFragmentManager,
                 "font_dialog"
@@ -692,7 +692,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun changeFontSize(size: Int) {
-        if (ninjaWebView.isReaderModeOn) {
+        if (ninjaWebView.shouldUseReaderFont()) {
             config.readerFontSize = size
         } else {
             config.fontSize = size
@@ -700,12 +700,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun increaseFontSize() {
-        val fontSize = if (ninjaWebView.isReaderModeOn) config.readerFontSize else config.fontSize
+        val fontSize =
+            if (ninjaWebView.shouldUseReaderFont()) config.readerFontSize else config.fontSize
         changeFontSize(fontSize + 20)
     }
 
     override fun decreaseFontSize() {
-        val fontSize = if (ninjaWebView.isReaderModeOn) config.readerFontSize else config.fontSize
+        val fontSize =
+            if (ninjaWebView.shouldUseReaderFont()) config.readerFontSize else config.fontSize
         if (fontSize > 50) changeFontSize(fontSize - 20)
     }
 
@@ -1038,7 +1040,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_READER_FONT_TYPE -> {
-                    if (config.fontType == FontType.SYSTEM_DEFAULT) {
+                    if (config.readerFontType == FontType.SYSTEM_DEFAULT) {
                         ninjaWebView.reload()
                     } else {
                         ninjaWebView.updateCssStyle()
@@ -1050,7 +1052,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_READER_FONT_SIZE -> {
-                    if (ninjaWebView.isReaderModeOn) {
+                    if (ninjaWebView.shouldUseReaderFont()) {
                         ninjaWebView.settings.textZoom = config.readerFontSize
                     }
                 }
@@ -1090,7 +1092,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_READER_CUSTOM_FONT -> {
-                    if (config.readerFontType == FontType.CUSTOM && ninjaWebView.isReaderModeOn) {
+                    if (config.readerFontType == FontType.CUSTOM && ninjaWebView.shouldUseReaderFont()) {
                         ninjaWebView.updateCssStyle()
                     }
                 }
