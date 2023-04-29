@@ -151,6 +151,15 @@
                 <data android:pathPattern=".*\\.mht" />
                 <data android:pathPattern=".*\\.mhtml" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="application/x-subrip" />
+                <data android:pathPattern=".*\\.srt" />
+            </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
