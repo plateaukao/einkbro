@@ -21,6 +21,7 @@ package info.plateaukao.einkbro.unit
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -57,9 +58,13 @@ object HelperUnit {
     fun needGrantStoragePermission(activity: Activity): Boolean {
         @SuppressLint("NewApi")
         if (Build.VERSION.SDK_INT in 23..28) {
-            val hasWriteExternalStoragePermission = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val hasWriteExternalStoragePermission =
+                activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             if (hasWriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                activity.requestPermissions( arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_ASK_PERMISSIONS )
+                activity.requestPermissions(
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_CODE_ASK_PERMISSIONS
+                )
                 return true
             }
         }
@@ -69,9 +74,13 @@ object HelperUnit {
     @JvmStatic
     fun grantPermissionsMicrophone(activity: Activity) {
         if (Build.VERSION.SDK_INT >= 23) {
-            val hasRecordAudioPermission = activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+            val hasRecordAudioPermission =
+                activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
             if (hasRecordAudioPermission != PackageManager.PERMISSION_GRANTED) {
-                activity.requestPermissions( arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_CODE_ASK_PERMISSIONS_1 )
+                activity.requestPermissions(
+                    arrayOf(Manifest.permission.RECORD_AUDIO),
+                    REQUEST_CODE_ASK_PERMISSIONS_1
+                )
             }
         }
     }
@@ -79,7 +88,8 @@ object HelperUnit {
     @JvmStatic
     fun grantPermissionsLoc(activity: Activity) {
         if (Build.VERSION.SDK_INT >= 23) {
-            val hasAccessFineLocation = activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            val hasAccessFineLocation =
+                activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
             if (hasAccessFineLocation != PackageManager.PERMISSION_GRANTED) {
                 DialogManager(activity).showOkCancelDialog(
                     messageResId = R.string.setting_summary_location,
@@ -117,10 +127,11 @@ object HelperUnit {
         val url = url ?: return
         val uri = convertUrlToAppScheme(url)
         try {
-            val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
-                action = Intent.ACTION_VIEW
-                data = uri
-            } ?: return
+            val intent =
+                context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+                    action = Intent.ACTION_VIEW
+                    data = uri
+                } ?: return
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
                 val installer = Intent().apply {
@@ -130,13 +141,20 @@ object HelperUnit {
                     if (bitmap != null) {
                         putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap)
                     } else {
-                        putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context.applicationContext, R.drawable.qc_bookmarks))
+                        putExtra(
+                            Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                            Intent.ShortcutIconResource.fromContext(
+                                context.applicationContext,
+                                R.drawable.qc_bookmarks
+                            )
+                        )
                     }
                 }
 
                 context.sendBroadcast(installer)
             } else {
-                val shortcutManager = context.getSystemService(ShortcutManager::class.java) ?: return
+                val shortcutManager =
+                    context.getSystemService(ShortcutManager::class.java) ?: return
                 var icon: Icon = if (bitmap != null) {
                     Icon.createWithBitmap(bitmap)
                 } else {
@@ -145,11 +163,11 @@ object HelperUnit {
 
                 if (shortcutManager.isRequestPinShortcutSupported) {
                     val pinShortcutInfo = ShortcutInfo.Builder(context, uri.toString())
-                            .setShortLabel(title!!)
-                            .setLongLabel(title)
-                            .setIcon(icon)
-                            .setIntent(intent)
-                            .build()
+                        .setShortLabel(title!!)
+                        .setLongLabel(title)
+                        .setIcon(icon)
+                        .setIntent(intent)
+                        .build()
                     shortcutManager.requestPinShortcut(pinShortcutInfo, null)
                 } else {
                     println("failed_to_add")
@@ -187,6 +205,36 @@ object HelperUnit {
             }
         }
         return tempFile.absolutePath
+    }
+
+    fun readContentAsStringList(contentResolver: ContentResolver, contentUri: Uri): List<String> {
+        contentResolver.openInputStream(contentUri).use { inputStream ->
+            BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                val lines = mutableListOf<String>()
+                var line: String? = reader.readLine()
+                while (line != null) {
+                    lines.add(line)
+                    line = reader.readLine()
+                }
+                return lines
+            }
+        }
+    }
+
+    fun srtToHtml(lines: List<String>): String {
+        val subtitles = mutableListOf<String>()
+
+        for (line in lines) {
+            if (line.isBlank() ||
+                line.matches(Regex("\\d+")) ||
+                line.contains(" --> ")
+            ) {
+            } else {
+                subtitles.add(line)
+            }
+        }
+
+        return subtitles.joinToString(separator = "") { "<p>${it}</p>" }
     }
 
     @JvmStatic

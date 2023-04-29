@@ -752,7 +752,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
             if (translateModeWebView.isAttachedToWindow) {
                 translateModeWebView.loadDataWithBaseURL(
-                    currentUrl,
+                    if (!ninjaWebView.isPlainText) currentUrl else null,
                     translatedHtml,
                     "text/html",
                     "utf-8",
@@ -849,10 +849,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     val mimeType = contentResolver.getType(viewUri)
                     Log.d(TAG, "mimeType: $mimeType")
                     if (mimeType.equals("application/octet-stream")) {
+                        // mht
                         HelperUnit.getCachedPathFromURI(this, viewUri)?.let {
                             addAlbum(url = "file://$it")
                         }
+                    } else if (mimeType.equals("application/x-subrip")) {
+                        // srt
+                        addAlbum()
+                        val stringList =
+                            HelperUnit.readContentAsStringList(contentResolver, viewUri)
+                        val htmlContent = HelperUnit.srtToHtml(stringList)
+                        ninjaWebView.isPlainText = true
+                        ninjaWebView.rawHtmlCache = htmlContent
+                        ninjaWebView.loadData(htmlContent, "text/html", "utf-8")
+
                     } else {
+                        // epub
                         epubManager.showEpubReader(viewUri)
                         finish()
                     }

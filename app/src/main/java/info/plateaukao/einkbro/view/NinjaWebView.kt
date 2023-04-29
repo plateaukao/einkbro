@@ -34,6 +34,7 @@ import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
@@ -43,6 +44,7 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
+import java.util.concurrent.Semaphore
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.ceil
@@ -78,6 +80,7 @@ open class NinjaWebView(
                 album.isTranslatePage = true
             }
         }
+    var isPlainText = false
 
     var incognito: Boolean = false
         set(value) {
@@ -511,7 +514,9 @@ open class NinjaWebView(
 
     var rawHtmlCache: String? = null
     suspend fun getRawHtml() = suspendCoroutine { continuation ->
-        if (!isReaderModeOn) {
+        if (isPlainText && rawHtmlCache != null) {
+            continuation.resume(rawHtmlCache!!)
+        } else if (!isReaderModeOn) {
             injectMozReaderModeJs(false)
             evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
@@ -754,9 +759,9 @@ open class NinjaWebView(
         evaluateJavascript(str, null)
     }
 
-    suspend fun googleTranslateByParagraph() {
-        getRawHtml()
-    }
+//    suspend fun googleTranslateByParagraph() {
+//        getRawHtml()
+//    }
 
     private fun injectGoogleTranslateV2Js(): String =
         String.format(
@@ -1018,11 +1023,15 @@ class JsWebInterface(private val webView: NinjaWebView) :
 
     private var detectedLanguage: String = ""
 
+    // to control the translation request threshold
+    private val semaphore = Semaphore(4)
+
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
         val translateApi = webView.translateApi
 
         GlobalScope.launch(IO) {
+            semaphore.acquire()
             if (detectedLanguage.isEmpty()) {
                 detectedLanguage = translateRepository.pDetectLanguage(originalText)
                     ?: configManager.sourceLanguage.value
@@ -1044,6 +1053,8 @@ class JsWebInterface(private val webView: NinjaWebView) :
                     webView.evaluateJavascript("$callback('$elementId', '$translatedString')", null)
                 }
             }
+            delay(1000)
+            semaphore.release()
         }
     }
 }
