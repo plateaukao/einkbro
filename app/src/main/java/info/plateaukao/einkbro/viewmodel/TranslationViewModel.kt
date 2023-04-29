@@ -8,14 +8,11 @@ import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.NinjaWebView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newFixedThreadPoolContext
 import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.DataNode
@@ -110,8 +107,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    val scope = CoroutineScope(newFixedThreadPoolContext(5, "requests"))
+//    @OptIn(DelicateCoroutinesApi::class)
+//    val scope = CoroutineScope(newFixedThreadPoolContext(5, "requests"))
 
     suspend fun translateWebView(
         view: View,
