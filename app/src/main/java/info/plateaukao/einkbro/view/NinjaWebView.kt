@@ -97,14 +97,14 @@ open class NinjaWebView(
     }
 
     fun updateCssStyle() {
-        val fontType = if (isReaderModeOn) config.readerFontType else config.fontType
+        val fontType = if (shouldUseReaderFont()) config.readerFontType else config.fontType
 
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
                 (if (config.blackFontStyle) makeTextBlackCss else "") +
                 (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
                 (if (fontType == FontType.SERIF) serifFontCss else "") +
                 (if (config.whiteBackground) whiteBackgroundCss else "") +
-                (if (fontType == FontType.CUSTOM) customFontCss else "") +
+                (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
                 // all css are purgsed by epublib. need to add it back if it's epub reader mode
                 if (isEpubReaderMode) String(
                     getByteArrayFromAsset("readerview.css"),
@@ -113,6 +113,12 @@ open class NinjaWebView(
         if (cssStyle.isNotBlank()) {
             injectCss(cssStyle.toByteArray())
         }
+    }
+
+    private var fontNum = 0
+    private fun getCustomFontCss(): String {
+        return customFontCss.replace("mycustomfont", "mycustomfont${++fontNum}")
+            .replace("fontfamily", "fontfamily${fontNum}")
     }
 
     override fun reload() {
@@ -573,6 +579,8 @@ open class NinjaWebView(
         toggleReaderMode(true)
     }
 
+    fun shouldUseReaderFont(): Boolean = isReaderModeOn || isTranslatePage
+
     var isReaderModeOn = false
     fun toggleReaderMode(
         isVertical: Boolean = false,
@@ -594,6 +602,7 @@ open class NinjaWebView(
                 )
             }
             settings.textZoom = config.readerFontSize
+            updateCssStyle()
         } else {
             disableReaderMode(isVertical)
             settings.textZoom = config.fontSize
@@ -924,13 +933,13 @@ open class NinjaWebView(
 
         private const val customFontCss = """
             @font-face {
-                 font-family: customfont;
+                 font-family: fontfamily;
                  font-weight: 400;
                  font-display: swap;
                  src: url('mycustomfont');
             }
             body {
-              font-family: customfont !important;
+              font-family: fontfamily !important;
             }
         """
 

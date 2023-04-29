@@ -1,5 +1,10 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -9,16 +14,28 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 class ReaderFontDialogFragment(
     private val onFontCustomizeClick: () -> Unit
 ) : ComposeDialogFragment() {
+    private val customFontNameState: MutableState<String> =
+        mutableStateOf(config.readerCustomFontInfo?.name ?: "")
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        config.registerOnSharedPreferenceChangeListener { _, key ->
+            if (key == ConfigManager.K_READER_CUSTOM_FONT) {
+                customFontNameState.value = config.readerCustomFontInfo?.name ?: ""
+            }
+        }
+        return view
+    }
+
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
                 val customFontName =
-                    remember { mutableStateOf(config.readerCustomFontInfo?.name ?: "") }
-                config.registerOnSharedPreferenceChangeListener { _, key ->
-                    if (key == ConfigManager.K_READER_CUSTOM_FONT) {
-                        customFontName.value = config.readerCustomFontInfo?.name ?: ""
-                    }
-                }
+                    remember { customFontNameState }
                 MainFontDialog(
                     selectedFontSizeValue = config.readerFontSize,
                     selectedFontType = config.readerFontType,
@@ -35,14 +52,7 @@ class ReaderFontDialogFragment(
                             dismiss()
                         }
                     },
-                    onFontCustomizeClick = {
-                        onFontCustomizeClick()
-                        config.registerOnSharedPreferenceChangeListener { _, key ->
-                            if (key == ConfigManager.K_READER_CUSTOM_FONT) {
-                                customFontName.value = config.readerCustomFontInfo?.name ?: ""
-                            }
-                        }
-                    },
+                    onFontCustomizeClick = { onFontCustomizeClick() },
                     okAction = { dismiss() },
                 )
             }
