@@ -31,10 +31,12 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
+import android.provider.OpenableColumns
 import android.text.Html
 import android.text.SpannableString
 import android.text.util.Linkify
 import android.view.View
+import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -318,5 +320,32 @@ object HelperUnit {
         bufferedReader.useLines { lines -> lines.forEach { stringBuilder.append(it) } }
 
         return stringBuilder.toString()
+    }
+
+    fun getFileInfoFromContentUri(context: Context, contentUri: Uri): Pair<String?, String?> {
+        var fileName: String? = null
+        var mimeType: String? = null
+
+        val cursor = context.contentResolver.query(contentUri, null, null, null, null)
+        cursor?.let {
+            if (it.moveToFirst()) {
+                val displayNameColumnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                val mimeTypeColumnIndex = it.getColumnIndex(MimeTypeMap.getSingleton().getExtensionFromMimeType(it.getString(it.getColumnIndexOrThrow("mime_type"))))
+
+                fileName = if (displayNameColumnIndex != -1)
+                    it.getString(displayNameColumnIndex)
+                else {
+                    contentUri.path?.split("/")?.last()
+                }
+                mimeType = if (mimeTypeColumnIndex != -1)
+                    it.getString(mimeTypeColumnIndex)
+                else {
+                    context.contentResolver.getType(contentUri)
+                }
+            }
+            it.close()
+        }
+
+        return Pair(fileName, mimeType)
     }
 }
