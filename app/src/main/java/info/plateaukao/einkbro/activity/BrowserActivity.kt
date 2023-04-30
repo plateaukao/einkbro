@@ -63,7 +63,6 @@ import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
-import info.plateaukao.einkbro.view.compose.SearchBarView
 import info.plateaukao.einkbro.view.dialog.*
 import info.plateaukao.einkbro.view.dialog.compose.*
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
@@ -101,7 +100,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var languageLabelView: TextView? = null
 
     // Layouts
-    private lateinit var searchPanel: SearchBarView
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
 
@@ -264,10 +262,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         listenKeyboardShowHide()
 
-        setupLanguageLabel()
+        initLanguageLabel()
     }
 
-    private fun setupLanguageLabel() {
+    private fun initLanguageLabel() {
         languageLabelView = findViewById(R.id.translation_language)
         lifecycleScope.launch {
             translationViewModel.translationLanguage.collect {
@@ -1229,8 +1227,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun initSearchPanel() {
-        searchPanel = binding.mainSearchPanel
-        searchPanel.apply {
+        with(binding.mainSearchPanel) {
             onTextChanged = { (currentAlbumController as NinjaWebView?)?.findAllAsync(it) }
             onCloseClick = { hideSearchPanel() }
             onUpClick = { searchUp(it) }
@@ -1918,7 +1915,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (!searchOnSite) {
             showStatusBar()
             fabImageViewController.hide()
-            searchPanel.visibility = INVISIBLE
+            binding.mainSearchPanel.visibility = INVISIBLE
             binding.appBar.visibility = VISIBLE
             binding.contentSeparator.visibility = VISIBLE
             binding.inputUrl.visibility = INVISIBLE
@@ -1932,7 +1929,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (config.fabPosition != FabPosition.NotShow) {
                 fabImageViewController.show()
             }
-            searchPanel.visibility = INVISIBLE
+            binding.mainSearchPanel.visibility = INVISIBLE
             binding.appBar.visibility = GONE
             binding.contentSeparator.visibility = GONE
             hideStatusBar()
@@ -1966,8 +1963,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showSearchPanel() {
         searchOnSite = true
         fabImageViewController.hide()
-        searchPanel.visibility = VISIBLE
-        searchPanel.getFocus()
+        binding.mainSearchPanel.visibility = VISIBLE
+        binding.mainSearchPanel.getFocus()
         binding.appBar.visibility = VISIBLE
         binding.contentSeparator.visibility = VISIBLE
         showKeyboard()
