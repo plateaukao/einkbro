@@ -29,7 +29,7 @@ class EpubReaderActivity: BrowserActivity() {
     override fun showTocDialog() {
         epubReader.showTocDialog()
     }
-        override fun dispatchIntent(intent: Intent) {
+    override fun dispatchIntent(intent: Intent) {
         val epubUri= intent.data ?: return
         val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
 
