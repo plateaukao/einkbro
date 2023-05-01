@@ -812,33 +812,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
 
-            "", Intent.ACTION_MAIN -> { // initial case
-                if (currentAlbumController == null) { // newly opened Activity
-                    if ((shouldLoadTabState || config.shouldSaveTabs) &&
-                        config.savedAlbumInfoList.isNotEmpty()
-                    ) {
-                        // fix current album index is larger than album size
-                        if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
-                            config.currentAlbumIndex = config.savedAlbumInfoList.size - 1
-                        }
-                        val albumList = config.savedAlbumInfoList.toList()
-                        var savedIndex = config.currentAlbumIndex
-                        // fix issue
-                        if (savedIndex == -1) savedIndex = 0
-                        Log.w(TAG, "savedIndex:$savedIndex")
-                        Log.w(TAG, "albumList:$albumList")
-                        albumList.forEachIndexed { index, albumInfo ->
-                            addAlbum(
-                                title = albumInfo.title,
-                                url = albumInfo.url,
-                                foreground = (index == savedIndex)
-                            )
-                        }
-                    } else {
-                        addAlbum()
-                    }
-                }
-            }
+            "", Intent.ACTION_MAIN -> initSavedTabs { addAlbum() }
 
             ACTION_VIEW -> {
                 // if webview for that url already exists, show the original tab, otherwise, create new
@@ -848,7 +822,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     val mimeType = contentResolver.getType(viewUri)
                     Log.d(TAG, "mimeType: $mimeType")
                     if (filename?.endsWith(".srt") == true ||
-                        mimeType.equals("application/x-subrip")) {
+                        mimeType.equals("application/x-subrip")
+                    ) {
                         // srt
                         addAlbum()
                         val stringList =
@@ -874,9 +849,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
 
-            Intent.ACTION_WEB_SEARCH -> addAlbum(
-                url = intent.getStringExtra(SearchManager.QUERY) ?: ""
-            )
+            Intent.ACTION_WEB_SEARCH -> {
+                initSavedTabs()
+                addAlbum(url = intent.getStringExtra(SearchManager.QUERY) ?: "")
+            }
 
             "sc_history" -> {
                 addAlbum(); openHistoryPage()
@@ -891,10 +867,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
 
             Intent.ACTION_SEND -> {
+                initSavedTabs()
                 addAlbum(url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: "")
             }
 
             Intent.ACTION_PROCESS_TEXT -> {
+                initSavedTabs()
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
                 val url = config.customProcessTextUrl + text
                 addAlbum(url = url)
@@ -902,6 +880,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             "colordict.intent.action.PICK_RESULT",
             "colordict.intent.action.SEARCH" -> {
+                initSavedTabs()
                 val text = intent.getStringExtra("EXTRA_QUERY") ?: return
                 val url = config.customProcessTextUrl + text
                 if (this::ninjaWebView.isInitialized) {
@@ -916,6 +895,34 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
         getIntent().action = ""
+    }
+
+    private fun initSavedTabs(whenNoSavedTabs: (() -> Unit)? = null) {
+        if (currentAlbumController == null) { // newly opened Activity
+            if ((shouldLoadTabState || config.shouldSaveTabs) &&
+                config.savedAlbumInfoList.isNotEmpty()
+            ) {
+                // fix current album index is larger than album size
+                if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
+                    config.currentAlbumIndex = config.savedAlbumInfoList.size - 1
+                }
+                val albumList = config.savedAlbumInfoList.toList()
+                var savedIndex = config.currentAlbumIndex
+                // fix issue
+                if (savedIndex == -1) savedIndex = 0
+//                Log.w(TAG, "savedIndex:$savedIndex")
+//                Log.w(TAG, "albumList:$albumList")
+                albumList.forEachIndexed { index, albumInfo ->
+                    addAlbum(
+                        title = albumInfo.title,
+                        url = albumInfo.url,
+                        foreground = (index == savedIndex)
+                    )
+                }
+            } else {
+                whenNoSavedTabs?.invoke()
+            }
+        }
     }
 
     private fun updateAppbarPosition() {
