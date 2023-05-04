@@ -36,6 +36,8 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
 import org.koin.core.component.KoinComponent
@@ -1024,17 +1026,23 @@ class JsWebInterface(private val webView: NinjaWebView) :
     private var detectedLanguage: String = ""
 
     // to control the translation request threshold
-    private val semaphore = Semaphore(4)
+    private val semaphoreForTranslate = Semaphore(4)
+
+    private val mutexForDetectLanguage = Mutex()
 
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
         val translateApi = webView.translateApi
 
         GlobalScope.launch(IO) {
-            semaphore.acquire()
+            semaphoreForTranslate.acquire()
             if (detectedLanguage.isEmpty()) {
-                detectedLanguage = translateRepository.pDetectLanguage(originalText)
-                    ?: configManager.sourceLanguage.value
+                mutexForDetectLanguage.withLock {
+                    if (detectedLanguage.isEmpty()) {
+                        detectedLanguage = translateRepository.pDetectLanguage(originalText)
+                            ?: configManager.sourceLanguage.value
+                    }
+                }
             }
             val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
                 translateRepository.ppTranslate(
@@ -1054,7 +1062,7 @@ class JsWebInterface(private val webView: NinjaWebView) :
                 }
             }
             delay(1000)
-            semaphore.release()
+            semaphoreForTranslate.release()
         }
     }
 }
