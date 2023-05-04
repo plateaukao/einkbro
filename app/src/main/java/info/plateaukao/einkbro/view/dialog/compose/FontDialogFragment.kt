@@ -172,7 +172,7 @@ fun MainFontDialog(
                             onClick = onFontCustomizeClick,
                         ) {
                             Icon(
-                                tint = MaterialTheme.colors.onPrimary,
+                                tint = MaterialTheme.colors.onBackground,
                                 imageVector = Icons.Default.Settings,
                                 contentDescription = stringResource(id = R.string.settings),
                             )
