@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
+
 
 android {
     compileSdk 33
@@ -125,10 +127,5 @@ dependencies {
 
     // okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-
-    // gpt
-    implementation("com.aallam.openai:openai-client:3.2.0")
-    implementation("io.ktor:ktor-client-android:2.2.4")
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
-
 }
