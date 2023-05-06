@@ -2,14 +2,10 @@ package info.plateaukao.einkbro.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aallam.openai.api.BetaOpenAI
-import com.aallam.openai.api.chat.ChatCompletionRequest
-import com.aallam.openai.api.chat.ChatMessage
-import com.aallam.openai.api.chat.ChatRole
-import com.aallam.openai.api.model.ModelId
-import com.aallam.openai.client.OpenAI
-import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.service.ChatMessage
+import info.plateaukao.einkbro.service.ChatRole
+import info.plateaukao.einkbro.service.OpenAiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,11 +15,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 
-@OptIn(BetaOpenAI::class)
 class GptViewModel : ViewModel(), KoinComponent {
     private val config: ConfigManager by inject()
 
-    private val openai: OpenAI by lazy { OpenAI(config.gptApiKey) }
+    private val openaiRepository: OpenAiRepository
+            by lazy { OpenAiRepository(config.gptApiKey) }
 
     private val _responseMessage = MutableStateFlow("")
     val responseMessage: StateFlow<String> = _responseMessage.asStateFlow()
@@ -49,29 +45,27 @@ class GptViewModel : ViewModel(), KoinComponent {
         }
         messages.add("${config.gptUserPromptPrefix}${_inputMessage.value}".toUserMessage())
 
-        val chatCompletionRequest = ChatCompletionRequest(
-            model = ModelId("gpt-3.5-turbo"),
-            messages = messages
-        )
 
         viewModelScope.launch(Dispatchers.IO) {
-            if (!BuildConfig.DEBUG) {
-                val response = openai.chatCompletion(chatCompletionRequest)
-                _responseMessage.value = response.choices.first().message?.content ?: ""
+            val chatCompletion = openaiRepository.chatCompletion(messages)
+            if (chatCompletion?.choices?.isEmpty() == true) {
+                _responseMessage.value = "No response"
+                return@launch
             } else {
-                _responseMessage.value = "12345"
+                val responseContent = chatCompletion?.choices
+                    ?.firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
+                    ?: "No response."
+                _responseMessage.value = responseContent
             }
         }
     }
 }
 
-@OptIn(BetaOpenAI::class)
 fun String.toUserMessage() = ChatMessage(
     role = ChatRole.User,
     content = this
 )
 
-@OptIn(BetaOpenAI::class)
 fun String.toSystemMessage() = ChatMessage(
     role = ChatRole.System,
     content = this
