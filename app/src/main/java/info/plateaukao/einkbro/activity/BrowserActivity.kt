@@ -1152,7 +1152,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     ninjaWebView.reload()
                 }
 
-                ConfigManager.K_ENABLE_TOUCH -> updateTouchView()
+                ConfigManager.K_ENABLE_TOUCH -> {
+                    updateTouchView()
+                    touchController.toggleTouchPageTurn(config.enableTouchTurn)
+                }
             }
         }
 
