@@ -29,8 +29,6 @@ appId: info.plateaukao.einkbro
 - tapOn: "Backup"
 - takeScreenshot: BackupSettingsScreen
 - back
-- tapOn: "Printed pdf paper size"
-- back
 - tapOn: "Start Control"
 - takeScreenshot: StartControlSettingsScreen
 - back
@@ -40,9 +38,14 @@ appId: info.plateaukao.einkbro
 - tapOn: "Search"
 - takeScreenshot: SearchSettingsScreen
 - back
+- tapOn: "Misc"
+- takeScreenshot: MiscSettingScreen
+- tapOn: "Printed pdf paper size"
+- back
 - tapOn: "Custom user agent"
 - back
 - tapOn: "Edit Home Url"
+- back
 - back
 - tapOn:
       text: "About EinkBro.*"
