@@ -18,7 +18,12 @@ import kotlin.coroutines.suspendCoroutine
 class OpenAiRepository(
     private val apiKey: String
 ) : KoinComponent {
-    private val client = OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).build()
+    private val client = OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .build()
+
     private val json = Json { ignoreUnknownKeys = true }
 
     suspend fun chatCompletion(
@@ -39,9 +44,13 @@ class OpenAiRepository(
             }
 
             val responseString = response.body?.string() ?: ""
-            val chatCompletion = json.decodeFromString<ChatCompletion>(responseString)
-            Log.d("OpenAiRepository", "chatCompletion: $chatCompletion")
-            continuation.resume(chatCompletion)
+            try {
+                val chatCompletion = json.decodeFromString<ChatCompletion>(responseString)
+                Log.d("OpenAiRepository", "chatCompletion: $chatCompletion")
+                continuation.resume(chatCompletion)
+            } catch (e: Exception) {
+                continuation.resume(null)
+            }
         }
     }
 

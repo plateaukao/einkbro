@@ -48,13 +48,13 @@ class GptViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch(Dispatchers.IO) {
             val chatCompletion = openaiRepository.chatCompletion(messages)
-            if (chatCompletion?.choices?.isEmpty() == true) {
-                _responseMessage.value = "No response"
+            if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
+                _responseMessage.value = "Something went wrong."
                 return@launch
             } else {
-                val responseContent = chatCompletion?.choices
-                    ?.firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
-                    ?: "No response."
+                val responseContent = chatCompletion.choices
+                    .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
+                    ?: "Something went wrong."
                 _responseMessage.value = responseContent
             }
         }
