@@ -81,7 +81,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
-                translateRepository.gTranslate(
+                translateRepository.gTranslateWithApi(
                     _inputMessage.value,
                     targetLanguage = config.translationLanguage.value,
                 )

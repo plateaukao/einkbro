@@ -1051,7 +1051,7 @@ class JsWebInterface(private val webView: NinjaWebView) :
                     detectedLanguage,
                 )
             } else {
-                translateRepository.gTranslate(
+                translateRepository.gTranslateWithApi(
                     originalText,
                     configManager.translationLanguage.value
                 )
