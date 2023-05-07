@@ -14,6 +14,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.koin.core.component.KoinComponent
@@ -32,7 +33,7 @@ class TranslateRepository : KoinComponent {
     private val client = OkHttpClient()
     private val config: ConfigManager by inject()
 
-    suspend fun gTranslate(
+    suspend fun gTranslateWithWeb(
         text: String,
         targetLanguage: String = "en",
         sourceLanguage: String = "auto",
@@ -56,6 +57,44 @@ class TranslateRepository : KoinComponent {
                     .body()
                     .getElementsByClass("result-container")
                     .first()?.text()
+            }
+        }
+    }
+
+    suspend fun gTranslateWithApi(
+        text: String,
+        targetLanguage: String = "en",
+        sourceLanguage: String = "auto",
+    ): String? {
+        return withContext(IO) {
+            val url = HttpUrl.Builder()
+                .scheme("https")
+                .host("translate.googleapis.com")
+                .addPathSegment("translate_a")
+                .addPathSegment("single")
+                .addQueryParameter("client", "gtx")
+                .addQueryParameter("tl", targetLanguage)
+                .addQueryParameter("sl", sourceLanguage)
+                .addQueryParameter("dt", "t")
+                .addQueryParameter("q", text)
+                .build()
+
+            val request = Request.Builder()
+                .url(url)
+                .addHeader("User-Agent", "Mozilla/5.0")
+                .addHeader("Referer", "https://translate.google.com/")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                val body = response.body?.string() ?: return@use null
+
+                val result = StringBuilder()
+                val array: JSONArray = JSONArray(body).get(0) as JSONArray
+                for (i in 0 until array.length()) {
+                    val item = array[i] as JSONArray
+                    result.append(item[0].toString())
+                }
+                result.toString()
             }
         }
     }
