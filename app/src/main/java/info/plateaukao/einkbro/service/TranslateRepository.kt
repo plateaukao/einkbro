@@ -88,13 +88,17 @@ class TranslateRepository : KoinComponent {
             client.newCall(request).execute().use { response ->
                 val body = response.body?.string() ?: return@use null
 
-                val result = StringBuilder()
-                val array: JSONArray = JSONArray(body).get(0) as JSONArray
-                for (i in 0 until array.length()) {
-                    val item = array[i] as JSONArray
-                    result.append(item[0].toString())
+                try {
+                    val result = StringBuilder()
+                    val array: JSONArray = JSONArray(body).get(0) as JSONArray
+                    for (i in 0 until array.length()) {
+                        val item = array[i] as JSONArray
+                        result.append(item[0].toString())
+                    }
+                    result.toString()
+                } catch (e: Exception) {
+                    null
                 }
-                result.toString()
             }
         }
     }
