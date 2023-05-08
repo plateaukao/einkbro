@@ -118,7 +118,9 @@ elements[i].style.color='white';
         processTextSelection {
             val text = selectedTextInfo?.text ?: return@processTextSelection
             val clip = ClipData.newPlainText("Copied Text", text)
-            (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(clip)
+            (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
+                clip
+            )
 
             NinjaToast.showShort(context, "text s copied")
         }
@@ -134,11 +136,12 @@ elements[i].style.color='white';
         }
     }
 
-    override fun startActionMode(callback: ActionMode.Callback, ModeType: Int): ActionMode? {
-        val parent = parent ?: return null
-        actionModeCallback = SelectActionModeCallback()
-        return parent.startActionModeForChild(this, actionModeCallback)
-    }
+    // don't use it when action menu is customized
+//    override fun startActionMode(callback: ActionMode.Callback, ModeType: Int): ActionMode? {
+//        val parent = parent ?: return null
+//        actionModeCallback = SelectActionModeCallback()
+//        return parent.startActionModeForChild(this, actionModeCallback)
+//    }
 
     init {
 //        setOnTouchListener(OnTouchListener { _, event ->
@@ -272,7 +275,8 @@ elements[i].style.color='white';
                 .replace("\\\\\\\"".toRegex(), "\\\\\"")
                 .replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
             selectedTextInfo =
-                SelectedTextInfo.from(parseJson, chapterNumber, value) ?: return@evaluateJavascript // TODO: show error
+                SelectedTextInfo.from(parseJson, chapterNumber, value)
+                    ?: return@evaluateJavascript // TODO: show error
             postAction?.invoke()
             exitSelectionMode()
         }
@@ -289,7 +293,8 @@ elements[i].style.color='white';
                     val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
                     if (!File(epubTempExtractionLocation).exists()) File(epubTempExtractionLocation).mkdirs()
                     val dir1 = File(epubTempExtractionLocation + File.separator + "OEBPS")
-                    val resourceFolder = book.opfResource.href.replace("content.opf", "").replace("/", "")
+                    val resourceFolder =
+                        book.opfResource.href.replace("content.opf", "").replace("/", "")
                     val dir2 = File(epubTempExtractionLocation + File.separator + resourceFolder)
                     resourceLocation = if (dir1.exists() && dir1.isDirectory) {
                         "file://" + epubTempExtractionLocation + File.separator + "OEBPS" + File.separator
@@ -379,7 +384,13 @@ elements[i].style.color='white';
             this.chapterNumber = chapterNumber
             this.progress = progress
         }
-        loadDataWithBaseURL(resourceLocation, chapterList[this.chapterNumber].content, "text/html", "utf-8", null)
+        loadDataWithBaseURL(
+            resourceLocation,
+            chapterList[this.chapterNumber].content,
+            "text/html",
+            "utf-8",
+            null
+        )
 
         if (progress == 0F) {
             scrollY = 0
@@ -465,8 +476,16 @@ elements[i].style.color='white';
             progress = (this.scrollY + pageHeight).toFloat() / totalHeight
             pageNumber = ((this.scrollY + pageHeight) / pageHeight)
             scrollY = pageNumber * pageHeight
-            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
-            Log.d("EpubReaderProgress", progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight)
+            listener.onPageChangeListener(
+                this.chapterNumber,
+                this.pageNumber,
+                getProgressStart(),
+                getProgressEnd()
+            )
+            Log.d(
+                "EpubReaderProgress",
+                progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight
+            )
             loading = false
         } else {
             nextChapter()
@@ -482,14 +501,24 @@ elements[i].style.color='white';
             progress = (this.scrollY - pageHeight).toFloat() / totalHeight
             pageNumber = ((this.scrollY - pageHeight) / pageHeight)
             scrollY = pageNumber * pageHeight
-            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
+            listener.onPageChangeListener(
+                this.chapterNumber,
+                this.pageNumber,
+                getProgressStart(),
+                getProgressEnd()
+            )
             loading = false
         } else if (this.scrollY > 0) {
             loading = true
             progress = 0f
             pageNumber = 0
             scrollY = pageNumber * pageHeight
-            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
+            listener.onPageChangeListener(
+                this.chapterNumber,
+                this.pageNumber,
+                getProgressStart(),
+                getProgressEnd()
+            )
             loading = false
         } else {
             previousChapter()
@@ -501,7 +530,12 @@ elements[i].style.color='white';
             loading = true
             gotoPosition(chapterNumber + 1, 0f)
             listener.onChapterChangeListener(chapterNumber)
-            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
+            listener.onPageChangeListener(
+                this.chapterNumber,
+                this.pageNumber,
+                getProgressStart(),
+                getProgressEnd()
+            )
             loading = false
         } else if (chapterList.size <= chapterNumber + 1) {
             listener.onBookEndReached()
@@ -513,7 +547,12 @@ elements[i].style.color='white';
             loading = true
             gotoPosition(chapterNumber - 1, 1f)
             listener.onChapterChangeListener(chapterNumber)
-            listener.onPageChangeListener(chapterNumber, pageNumber, getProgressStart(), getProgressEnd())
+            listener.onPageChangeListener(
+                chapterNumber,
+                pageNumber,
+                getProgressStart(),
+                getProgressEnd()
+            )
             loading = false
         } else if (chapterNumber - 1 < 0) {
             listener.onBookStartReached()
