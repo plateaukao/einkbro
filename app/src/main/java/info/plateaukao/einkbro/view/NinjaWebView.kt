@@ -75,7 +75,7 @@ open class NinjaWebView(
     private val cookie: Cookie by inject()
 
     var translateApi: TRANSLATE_API = TRANSLATE_API.GOOGLE
-    var isTranslatePage = false
+    override var isTranslatePage = false
         set(value) {
             field = value
             if (value) {
