@@ -518,7 +518,7 @@ open class NinjaWebView(
     suspend fun getRawHtml() = suspendCoroutine { continuation ->
         if (isPlainText && rawHtmlCache != null) {
             continuation.resume(rawHtmlCache!!)
-        } else if (!isReaderModeOn) {
+        } else if (!isReaderModeOn && !isTranslatePage) {
             injectMozReaderModeJs(false)
             evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
@@ -534,7 +534,8 @@ open class NinjaWebView(
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
                 val rawHtml =
                     processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
-                rawHtmlCache = rawHtml
+                // keep html cache when it's still null
+                rawHtmlCache = rawHtmlCache ?: rawHtml
                 continuation.resume(rawHtml)
             }
         }
