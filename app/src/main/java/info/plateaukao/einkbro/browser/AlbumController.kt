@@ -7,6 +7,9 @@ interface AlbumController {
     var albumTitle: String
     val albumUrl: String
     var initAlbumUrl: String
+
+    var isTranslatePage: Boolean
+
     fun activate()
     fun deactivate()
 

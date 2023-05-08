@@ -1386,8 +1386,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun updateSavedAlbumInfo() {
         val albumControllers = browserContainer.list()
         val albumInfoList = albumControllers
+            .filter { !it.isTranslatePage }
             .filter {
-                (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) || it.initAlbumUrl.isNotBlank()
+                (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) ||
+                        it.initAlbumUrl.isNotBlank()
             }
             .map { controller ->
                 AlbumInfo(
