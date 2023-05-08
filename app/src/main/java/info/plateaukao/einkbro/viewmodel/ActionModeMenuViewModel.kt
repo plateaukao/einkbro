@@ -10,12 +10,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ShareUtil
-import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
-import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
-import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
 import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.view.data.toMenuInfo
 import info.plateaukao.einkbro.view.dialog.compose.ActionModeDialogFragment
@@ -34,6 +30,10 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
     private val _selectedText = MutableStateFlow("")
     val selectedText: StateFlow<String> = _selectedText.asStateFlow()
+
+    private val _actionModeMenuState =
+        MutableStateFlow(ActionModeMenuState.Idle as ActionModeMenuState)
+    val actionModeMenuState: StateFlow<ActionModeMenuState> = _actionModeMenuState.asStateFlow()
 
     fun isInActionMode(): Boolean = actionMode != null
 
@@ -93,8 +93,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 MenuInfo(
                     context.getString(R.string.papago),
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_papago),
-                    intent = Intent(context, BrowserActivity::class.java).apply {
-                        action = ACTION_PTRANSLATE
+                    action = {
+                        _actionModeMenuState.value = ActionModeMenuState.Papago
                     }
                 )
             )
@@ -104,8 +104,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             MenuInfo(
                 context.getString(R.string.google_translate),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_translate),
-                intent = Intent(context, BrowserActivity::class.java).apply {
-                    action = ACTION_GTRANSLATE
+                action = {
+                    _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate
                 }
             )
         )
@@ -116,8 +116,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 MenuInfo(
                     context.getString(R.string.menu_gpt),
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
-                    intent = Intent(context, BrowserActivity::class.java).apply {
-                        action = ACTION_GPT
+                    action = {
+                        _actionModeMenuState.value = ActionModeMenuState.Gpt
                     }
                 )
             )
@@ -137,4 +137,11 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         return menuInfos
     }
 
+}
+
+sealed class ActionModeMenuState {
+    object Idle : ActionModeMenuState()
+    object Gpt : ActionModeMenuState()
+    object GoogleTranslate : ActionModeMenuState()
+    object Papago : ActionModeMenuState()
 }

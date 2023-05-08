@@ -49,9 +49,9 @@ class ActionModeDialogFragment(
     private val onDismiss: () -> Unit = {},
 ) : ComposeDialogFragment() {
 
-    init {
-        shouldShowInCenter = true
-    }
+//    init {
+//        shouldShowInCenter = true
+//    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun setupComposeView() = composeView.setContent {

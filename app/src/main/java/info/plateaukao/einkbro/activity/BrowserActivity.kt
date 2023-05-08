@@ -57,9 +57,6 @@ import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
-import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GPT
-import info.plateaukao.einkbro.util.Constants.Companion.ACTION_GTRANSLATE
-import info.plateaukao.einkbro.util.Constants.Companion.ACTION_PTRANSLATE
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
@@ -70,6 +67,10 @@ import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
 import info.plateaukao.einkbro.view.viewControllers.*
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.GoogleTranslate
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
@@ -249,6 +250,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initInputBar()
         initOverview()
         initTouchArea()
+        initActionModeViewModel()
 
         downloadReceiver = createDownloadReceiver(this)
         registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
@@ -263,6 +265,38 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         initLanguageLabel()
+    }
+
+    private fun initActionModeViewModel() {
+        lifecycleScope.launch {
+            actionModeMenuViewModel.actionModeMenuState.collect { state ->
+                val point = actionModeMenuViewModel.clickedPoint.value
+                when (state) {
+                    GoogleTranslate, Papago -> {
+                        val api =
+                            if (GoogleTranslate == state) TRANSLATE_API.GOOGLE else TRANSLATE_API.PAPAGO
+                        translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                        TranslateDialogFragment(translationViewModel, api, point)
+                            .show(supportFragmentManager, "translateDialog")
+                    }
+
+                    Gpt -> {
+                        gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                        if (gptViewModel.hasApiKey()) {
+                            GPTDialogFragment(
+                                gptViewModel,
+                                actionModeMenuViewModel.clickedPoint.value
+                            )
+                                .show(supportFragmentManager, "contextMenu")
+                        } else {
+                            NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
+                        }
+                    }
+
+                    ActionModeMenuState.Idle -> Unit
+                }
+            }
+        }
     }
 
     private fun initLanguageLabel() {
@@ -782,36 +816,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         when (intent.action) {
-            ACTION_GTRANSLATE -> {
-                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                TranslateDialogFragment(
-                    translationViewModel,
-                    TRANSLATE_API.GOOGLE,
-                    actionModeMenuViewModel.clickedPoint.value
-                )
-                    .show(supportFragmentManager, "translateDialog")
-            }
-
-            ACTION_PTRANSLATE -> {
-                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                TranslateDialogFragment(
-                    translationViewModel,
-                    TRANSLATE_API.PAPAGO,
-                    actionModeMenuViewModel.clickedPoint.value
-                )
-                    .show(supportFragmentManager, "translateDialog")
-            }
-
-            ACTION_GPT -> {
-                gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                if (gptViewModel.hasApiKey()) {
-                    GPTDialogFragment(gptViewModel, actionModeMenuViewModel.clickedPoint.value)
-                        .show(supportFragmentManager, "contextMenu")
-                } else {
-                    NinjaToast.show(this, R.string.gpt_api_key_not_set)
-                }
-            }
-
             "", Intent.ACTION_MAIN -> initSavedTabs { addAlbum() }
 
             ACTION_VIEW -> {
