@@ -450,4 +450,6 @@
     <string name="translate_image_key_summary">Input necessary key to show image translate feature.</string>
     <string name="papago_language_setting">Language Setting</string>
     <string name="toggle_touch_turn_page">toggle touch turn page</string>
+    <string name="use_it_on_dict_search">Use it on dict search</string>
+    <string name="setting_summary_search_in_dict">when searching in readers, use ChatGPT to search results</string>
 </resources>

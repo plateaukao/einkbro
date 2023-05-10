@@ -10,6 +10,8 @@ class Constants {
         const val MIME_TYPE_FONT = "application/x-font-ttf"
         // from https://github.com/Smile4ever/Neat-URL
 
+        const val ACTION_DICT = "action.dict"
+
         const val NEAT_URL_DATA = """
             {
     "categories": [

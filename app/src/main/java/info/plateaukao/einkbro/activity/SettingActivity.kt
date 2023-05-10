@@ -690,6 +690,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_edit_gpt_user_prompt,
             config::gptUserPromptPrefix
         ),
+        BooleanSettingItem(
+            R.string.use_it_on_dict_search,
+            R.drawable.icon_search,
+            R.string.setting_summary_search_in_dict,
+            config::externalSearchWithGpt
+        )
     )
 
     private val startSettingItems = listOf(

@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.content.DialogInterface
 import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,11 +35,13 @@ import info.plateaukao.einkbro.viewmodel.GptViewModel
 class GPTDialogFragment(
     private val gptViewModel: GptViewModel,
     private val anchorPoint: Point,
+    private val hasBackgroundColor: Boolean = false,
+    private val onDismissed: () -> Unit = {}
 ) : DraggableComposeDialogFragment() {
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            GptResponse(gptViewModel)
+            GptResponse(gptViewModel, hasBackgroundColor)
         }
     }
 
@@ -51,12 +54,21 @@ class GPTDialogFragment(
         setupDialogPosition(anchorPoint)
 
         gptViewModel.query()
+        if (hasBackgroundColor) {
+            dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
+        }
         return view
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+
+        onDismissed()
     }
 }
 
 @Composable
-private fun GptResponse(gptViewModel: GptViewModel) {
+private fun GptResponse(gptViewModel: GptViewModel, hasBackgroundColor: Boolean) {
     val requestMessage by gptViewModel.inputMessage.collectAsState()
     val responseMessage by gptViewModel.responseMessage.collectAsState()
     val showRequest = remember { mutableStateOf(false) }

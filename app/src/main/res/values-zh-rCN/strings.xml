@@ -451,4 +451,6 @@
     <string name="translate_image_key_summary">输入必要的关键字以显示图像翻译功能。</string>
     <string name="papago_language_setting">语言设置</string>
     <string name="toggle_touch_turn_page">切换触摸翻页</string>
+    <string name="use_it_on_dict_search">Use it on dict search</string>
+    <string name="setting_summary_search_in_dict">when searching in readers, use ChatGPT to search results</string>
 </resources>
