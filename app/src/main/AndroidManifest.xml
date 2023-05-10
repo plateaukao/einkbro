@@ -8,11 +8,12 @@
 
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT" />
+
             <data android:mimeType="text/plain" />
         </intent>
-
         <intent>
             <action android:name="android.intent.action.VIEW" />
+
             <data android:scheme="https" />
         </intent>
         <intent>
@@ -47,21 +48,34 @@
     <uses-permission android:name="android.permission.AUDIO_CAPTURE" />
 
     <application
-        android:name="info.plateaukao.einkbro.EinkBroApplication"
+        android:name=".EinkBroApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name="info.plateaukao.einkbro.activity.SettingActivity"
+            android:name=".activity.DictActivity"
+            android:theme="@style/TransparentActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="colordict.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="colordict.intent.action.PICK_RESULT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.SettingActivity"
             android:exported="false"
             android:label="@string/title_activity_setting"
             android:theme="@style/AppTheme">
@@ -70,12 +84,12 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="info.plateaukao.einkbro.activity.ExtraBrowserActivity"
+            android:name=".activity.ExtraBrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" /> <!-- BrowserActivity -->
         <activity
-            android:name="info.plateaukao.einkbro.activity.BrowserActivity"
+            android:name=".activity.BrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -112,16 +126,6 @@
                 <action android:name="sc_history" />
                 <action android:name="notification" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="colordict.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="colordict.intent.action.PICK_RESULT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
             <intent-filter
                 android:order="1"
                 android:priority="1">
@@ -133,6 +137,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
@@ -153,6 +158,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="file" />
@@ -169,7 +175,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name="info.plateaukao.einkbro.activity.EpubReaderActivity"
+            android:name=".activity.EpubReaderActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -189,11 +195,11 @@
             </intent-filter>
         </activity> <!-- Settings -->
         <activity
-            android:name="info.plateaukao.einkbro.activity.WhiteListActivity"
+            android:name=".activity.WhiteListActivity"
             android:label="@string/setting_title_whitelist" />
 
         <service
-            android:name="info.plateaukao.einkbro.service.ClearService"
+            android:name=".service.ClearService"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name" /> <!-- android:authorities="info.plateaukao.einkbro.debug.fileprovider" -->
         <provider

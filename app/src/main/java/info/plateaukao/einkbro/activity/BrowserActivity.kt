@@ -57,6 +57,7 @@ import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
+import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
@@ -882,10 +883,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 addAlbum(url = url)
             }
 
-            "colordict.intent.action.PICK_RESULT",
-            "colordict.intent.action.SEARCH" -> {
-                initSavedTabs()
+            ACTION_DICT -> {
                 val text = intent.getStringExtra("EXTRA_QUERY") ?: return
+                initSavedTabs()
                 val url = config.customProcessTextUrl + text
                 if (this::ninjaWebView.isInitialized) {
                     ninjaWebView.loadUrl(url)

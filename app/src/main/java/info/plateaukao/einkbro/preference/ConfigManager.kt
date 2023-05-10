@@ -96,6 +96,8 @@ class ConfigManager(
         true
     )
 
+    var externalSearchWithGpt by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_GPT, false)
+
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
@@ -522,6 +524,8 @@ class ConfigManager(
         const val K_IMAGE_API_KEY = "sp_image_api_key"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
+
+        const val K_EXTERNAL_SEARCH_WITH_GPT = "sp_external_search_with_gpt"
 
         const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
             "sp_show_translated_image_to_second_panel"
