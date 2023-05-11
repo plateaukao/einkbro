@@ -279,6 +279,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                         TranslateDialogFragment(translationViewModel, api, point)
                             .show(supportFragmentManager, "translateDialog")
+                        actionModeMenuViewModel.resetActionModeMenuState()
                     }
 
                     Gpt -> {
@@ -292,6 +293,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         } else {
                             NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
                         }
+                        actionModeMenuViewModel.resetActionModeMenuState()
                     }
 
                     ActionModeMenuState.Idle -> Unit

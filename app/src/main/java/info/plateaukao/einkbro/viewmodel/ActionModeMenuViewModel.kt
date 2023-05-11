@@ -137,6 +137,10 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         return menuInfos
     }
 
+    fun resetActionModeMenuState() {
+        _actionModeMenuState.value = ActionModeMenuState.Idle
+    }
+
 }
 
 sealed class ActionModeMenuState {
