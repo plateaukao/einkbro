@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
@@ -85,11 +88,15 @@ private fun TranslateResponse(
 
     Column(
         modifier = Modifier
+            .defaultMinSize(minWidth = 200.dp)
             .wrapContentHeight()
-            .wrapContentWidth(),
+            .width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
+            modifier = Modifier
+                .wrapContentHeight()
+                .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SelectableText(
