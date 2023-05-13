@@ -55,8 +55,8 @@
     <string name="setting_title_remote">Remote content</string>
     <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
         Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
-    <string name="setting_title_save_data">\'儲存資料\' 需求</string>
-    <string name="setting_summary_save_data">告訴網站你傾向於儲存資料。下次可能會載入得比較快</string>
+    <string name="setting_title_save_data">節省資料轉輸</string>
+    <string name="setting_summary_save_data">告訴網站你傾向於節省頻寬，圖檔會小一點</string>
     <!-- browser start -->
     <string name="setting_title_images">圖片</string>
     <string name="setting_summary_images">支援下載網路圖片。如果關閉，可以節省網路流量，網頁載入也會比較快</string>

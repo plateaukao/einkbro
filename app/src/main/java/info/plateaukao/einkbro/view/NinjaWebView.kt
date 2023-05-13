@@ -104,17 +104,18 @@ open class NinjaWebView(
     fun updateCssStyle() {
         val fontType = if (shouldUseReaderFont()) config.readerFontType else config.fontType
 
-        val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
-                (if (config.blackFontStyle) makeTextBlackCss else "") +
-                (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
-                (if (fontType == FontType.SERIF) serifFontCss else "") +
-                (if (config.whiteBackground) whiteBackgroundCss else "") +
-                (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
-                // all css are purgsed by epublib. need to add it back if it's epub reader mode
-                if (isEpubReaderMode) String(
-                    getByteArrayFromAsset("readerview.css"),
-                    Charsets.UTF_8
-                ) else ""
+        val cssStyle =
+            (if (config.blackFontStyle) makeTextBlackCss else "") +
+                    (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
+                    (if (fontType == FontType.SERIF) serifFontCss else "") +
+                    (if (config.whiteBackground) whiteBackgroundCss else "") +
+                    (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
+                    (if (config.boldFontStyle) boldFontCss else "") +
+                    // all css are purgsed by epublib. need to add it back if it's epub reader mode
+                    if (isEpubReaderMode) String(
+                        getByteArrayFromAsset("readerview.css"),
+                        Charsets.UTF_8
+                    ) else ""
         if (cssStyle.isNotBlank()) {
             injectCss(cssStyle.toByteArray())
         }
@@ -290,13 +291,10 @@ open class NinjaWebView(
         }
     }
 
-    val requestHeaders: HashMap<String, String>
-        get() {
-            val requestHeaders = HashMap<String, String>()
-            requestHeaders["DNT"] = "1"
-            requestHeaders["Save-Data"] = "on"
-            return requestHeaders
-        }
+    val requestHeaders: HashMap<String, String> = HashMap<String, String>().apply {
+        "DNT" to "1"
+        "Save-Data" to  if (config.enableSaveData) "on" else "off"
+    }
 
     /* continue playing if preference is set */
     override fun onWindowVisibilityChanged(visibility: Int) {
