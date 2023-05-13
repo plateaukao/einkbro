@@ -71,8 +71,8 @@
     <string name="setting_summary_remote">启用并非直接来自您正在访问网站的远程内容。
         禁用此功能访问网站时更安全、更快并节省数据流量，但有些内容将不再显示</string>
 
-    <string name="setting_title_save_data">请求 \'保存数据\'</string>
-    <string name="setting_summary_save_data">告诉网站您希望保存数据，受支持的网站下次访问加载速度更快。</string>
+    <string name="setting_title_save_data">请求 \'節省数据\'</string>
+    <string name="setting_summary_save_data">告诉网站您希望節省数据，受支持的网站下次访问加载速度更快。</string>
 
 
     <!-- browser start -->
