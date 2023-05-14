@@ -177,17 +177,27 @@ private fun MenuItems(
                 MenuItem(R.string.menu_save_pdf, R.drawable.ic_pdf) { onClicked(SavePdf) }
             }
         } else {
-            Icon(
-                painter = painterResource(id = R.drawable.icon_arrow_down_gest),
-                contentDescription = null,
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        currentShowShare = !currentShowShare
-                        toggleShareSaveMenu()
-                    },
-                tint = MaterialTheme.colors.onBackground,
-            )
+                    .wrapContentWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MenuItem(
+                    R.string.menu_add_to_pocket,
+                    R.drawable.ic_pocket
+                ) { onClicked(AddToPocket) }
+                MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
+                MenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
+                MenuItem(
+                    R.string.menu_share_link,
+                    R.drawable.icon_menu_share
+                ) { onClicked(ShareLink) }
+                MenuItem(
+                    R.string.menu_expand_menu,
+                    R.drawable.icon_arrow_right_gest,
+                ) { currentShowShare = true; toggleShareSaveMenu() }
+            }
         }
         HorizontalSeparator()
         Text(
@@ -255,17 +265,31 @@ private fun MenuItems(
                 ) { onClicked(MenuItemType.FontSize) }
             }
         } else {
-            Icon(
-                painter = painterResource(id = R.drawable.icon_arrow_down_gest),
-                contentDescription = null,
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        currentShowContent = !currentShowContent
-                        toggleContentMenu()
-                    },
-                tint = MaterialTheme.colors.onBackground,
-            )
+                    .wrapContentWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MenuItem(
+                    R.string.translate,
+                    R.drawable.ic_translate
+                ) { onClicked(MenuItemType.Translate) }
+                MenuItem(
+                    R.string.reader_mode,
+                    R.drawable.ic_reader
+                ) { onClicked(MenuItemType.ReaderMode) }
+                val whiteRes =
+                    if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
+                MenuItem(R.string.white_background, whiteRes) { onClicked(MenuItemType.WhiteBknd) }
+                val boldRes =
+                    if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
+                MenuItem(R.string.bold_font, boldRes) { onClicked(MenuItemType.BoldFont) }
+                MenuItem(
+                    R.string.menu_expand_menu,
+                    R.drawable.icon_arrow_right_gest,
+                ) { currentShowContent = true; toggleContentMenu() }
+            }
         }
         HorizontalSeparator()
         Row(
