@@ -453,4 +453,5 @@
     <string name="toggle_touch_turn_page">切换触摸翻页</string>
     <string name="use_it_on_dict_search">Use it on dict search</string>
     <string name="setting_summary_search_in_dict">when searching in readers, use ChatGPT to search results</string>
+    <string name="menu_expand_menu">Expand submenu</string>
 </resources>

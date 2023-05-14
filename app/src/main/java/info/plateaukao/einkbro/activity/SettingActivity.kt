@@ -793,7 +793,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Cookie)) },
         BooleanSettingItem(
             R.string.setting_title_save_data,
-            R.drawable.ic_block,
+            R.drawable.ic_save_data,
             R.string.setting_summary_save_data,
             config::enableSaveData
         ),

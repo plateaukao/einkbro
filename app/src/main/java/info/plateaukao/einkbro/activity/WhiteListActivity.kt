@@ -84,7 +84,10 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
                                     )
                                 }
                                 IconButton(onClick = {
-                                    whitelistType.addDomain(lifecycleScope, dialogManager) { whitelist.value += it }
+                                    whitelistType.addDomain(
+                                        lifecycleScope,
+                                        dialogManager
+                                    ) { whitelist.value += it }
                                 }) {
                                     Icon(
                                         tint = MaterialTheme.colors.onPrimary,
@@ -106,11 +109,12 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
         }
     }
 
-    private fun getWhitelistType(): BaseWhiteListType = when (intent.getSerializableExtra(TYPE) as WhiteListType) {
-        WhiteListType.Adblock -> WhiteListTypeAdblock()
-        WhiteListType.Javascript -> BaseWhiteListTypeJavascript()
-        WhiteListType.Cookie -> BaseWhiteListTypeCookie()
-    }
+    private fun getWhitelistType(): BaseWhiteListType =
+        when (intent.getSerializableExtra(TYPE) as WhiteListType) {
+            WhiteListType.Adblock -> WhiteListTypeAdblock()
+            WhiteListType.Javascript -> BaseWhiteListTypeJavascript()
+            WhiteListType.Cookie -> BaseWhiteListTypeCookie()
+        }
 
     companion object {
         private const val TYPE = "type"
