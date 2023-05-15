@@ -1955,7 +1955,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun hideSearchPanel() {
-        ninjaWebView.clearMatches()
+        if (this::ninjaWebView.isInitialized) {
+            ninjaWebView.clearMatches()
+        }
         searchOnSite = false
         hideKeyboard()
         showToolbar()

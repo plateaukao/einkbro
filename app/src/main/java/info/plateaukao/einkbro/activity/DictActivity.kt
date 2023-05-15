@@ -20,33 +20,59 @@ class DictActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
 
-        if (intent.action in
-            listOf("colordict.intent.action.PICK_RESULT", "colordict.intent.action.SEARCH")
-        ) {
-            if (!config.externalSearchWithGpt) {
-                val newIntent = Intent(this, BrowserActivity::class.java).apply {
-                    action = ACTION_DICT
-                    putExtra("EXTRA_QUERY", intent.getStringExtra("EXTRA_QUERY"))
-                }
-                startActivity(newIntent)
-                finish()
-            } else {
-                val text = intent.getStringExtra("EXTRA_QUERY") ?: return
-                gptViewModel.updateInputMessage(text)
-                if (gptViewModel.hasApiKey()) {
-                    GPTDialogFragment(
-                        gptViewModel,
-                        Point(50, 50),
-                        hasBackgroundColor = true,
-                        onDismissed = { finish(); overridePendingTransition(0, 0) }
-                    )
-                        .show(supportFragmentManager, "contextMenu")
-                    monitorFragmentStack()
+        when (intent.action) {
+            in listOf("colordict.intent.action.PICK_RESULT", "colordict.intent.action.SEARCH") -> {
+                if (!config.externalSearchWithGpt) {
+                    forwardDictIntentAndFinish()
                 } else {
-                    NinjaToast.show(this, R.string.gpt_api_key_not_set)
+                    val text = intent.getStringExtra("EXTRA_QUERY") ?: return
+                    searchWithGpt(text)
+                }
+            }
+
+            Intent.ACTION_PROCESS_TEXT -> {
+                if (!config.externalSearchWithGpt) {
+                    forwardProcessTextIntentAndFinish()
+                } else {
+                    val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
+                    searchWithGpt(text)
                 }
             }
         }
+    }
+
+    private fun searchWithGpt(text: String) {
+        gptViewModel.updateInputMessage(text)
+        if (gptViewModel.hasApiKey()) {
+            GPTDialogFragment(
+                gptViewModel,
+                Point(50, 50),
+                hasBackgroundColor = true,
+                onDismissed = { finish(); overridePendingTransition(0, 0) }
+            )
+                .show(supportFragmentManager, "contextMenu")
+            monitorFragmentStack()
+        } else {
+            NinjaToast.show(this, R.string.gpt_api_key_not_set)
+        }
+    }
+
+    private fun forwardDictIntentAndFinish() {
+        val newIntent = Intent(this, BrowserActivity::class.java).apply {
+            action = ACTION_DICT
+            putExtra("EXTRA_QUERY", intent.getStringExtra("EXTRA_QUERY"))
+        }
+        startActivity(newIntent)
+        finish()
+    }
+
+    private fun forwardProcessTextIntentAndFinish() {
+        val newIntent = Intent(this, BrowserActivity::class.java).apply {
+            action = Intent.ACTION_PROCESS_TEXT
+            putExtra(Intent.EXTRA_PROCESS_TEXT, intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT))
+        }
+        startActivity(newIntent)
+        finish()
     }
 
     private fun monitorFragmentStack() {
