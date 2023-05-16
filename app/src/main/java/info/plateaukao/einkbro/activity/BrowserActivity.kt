@@ -191,15 +191,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val browserContainer: BrowserContainer = BrowserContainer()
 
-    private val touchController: TouchAreaViewController by lazy {
-        TouchAreaViewController(
-            rootView = binding.root,
-            pageUpAction = { ninjaWebView.pageUpWithNoAnimation() },
-            pageTopAction = { ninjaWebView.jumpToTop() },
-            pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
-            pageBottomAction = { ninjaWebView.jumpToBottom() },
-        )
-    }
+    private lateinit var touchController: TouchAreaViewController
 
     private lateinit var twoPaneController: TwoPaneController
 
@@ -253,6 +245,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initTouchArea()
         initActionModeViewModel()
 
+        initTouchAreaViewController()
+
         downloadReceiver = createDownloadReceiver(this)
         registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
         dispatchIntent(intent)
@@ -266,6 +260,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         initLanguageLabel()
+    }
+
+    private fun initTouchAreaViewController() {
+        touchController = TouchAreaViewController(
+            rootView = binding.root,
+            pageUpAction = { ninjaWebView.pageUpWithNoAnimation() },
+            pageTopAction = { ninjaWebView.jumpToTop() },
+            pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
+            pageBottomAction = { ninjaWebView.jumpToBottom() },
+        )
     }
 
     private fun initActionModeViewModel() {

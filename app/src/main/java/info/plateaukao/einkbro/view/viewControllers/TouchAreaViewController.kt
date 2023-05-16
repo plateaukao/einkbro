@@ -183,9 +183,11 @@ class TouchAreaViewController(
         if (enabled) showTouchAreaHint()
     }
 
+    private var disabledTemporarily = false
     fun maybeDisableTemporarily() {
         if (config.enableTouchTurn && config.touchAreaHint && config.hideTouchAreaWhenInput) {
             if (this::touchAreaPageUp.isInitialized) {
+                disabledTemporarily = true
                 with(touchAreaPageUp) {
                     visibility = View.GONE
                     setOnLongClickListener(null)
@@ -205,7 +207,13 @@ class TouchAreaViewController(
     }
 
     fun maybeEnableAgain() {
-        if (config.enableTouchTurn && config.touchAreaHint && config.hideTouchAreaWhenInput) {
+        if (
+            disabledTemporarily &&
+            config.enableTouchTurn &&
+            config.touchAreaHint &&
+            config.hideTouchAreaWhenInput
+        ) {
+            disabledTemporarily = false
             updateTouchAreaType()
         }
     }
