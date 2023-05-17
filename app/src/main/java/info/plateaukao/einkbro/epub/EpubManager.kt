@@ -107,7 +107,6 @@ class EpubManager(private val context: Context): KoinComponent {
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         activityResultLauncher.launch(intent)
-        //(context as Activity).startActivityForResult(intent, BrowserActivity.WRITE_EPUB_REQUEST_CODE)
     }
 
     private suspend fun internalSaveEpub(
