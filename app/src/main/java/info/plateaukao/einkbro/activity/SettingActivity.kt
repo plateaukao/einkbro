@@ -277,6 +277,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
 
     private val uiSettingItems = listOf(
         BooleanSettingItem(
+            R.string.hide_statusbar,
+            R.drawable.ic_page_height,
+            R.string.setting_summary_hide_statusbar,
+            config::hideStatusbar,
+        ),
+        BooleanSettingItem(
             R.string.desktop_mode,
             R.drawable.icon_desktop,
             R.string.setting_summary_desktop,

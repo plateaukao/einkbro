@@ -100,6 +100,8 @@ class ConfigManager(
 
     var enableSaveData by BooleanPreference(sp, K_ENABLE_SAVE_DATA, true)
 
+    var hideStatusbar by BooleanPreference(sp, K_HIDE_STATUSBAR, false)
+
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
@@ -529,6 +531,7 @@ class ConfigManager(
 
         const val K_EXTERNAL_SEARCH_WITH_GPT = "sp_external_search_with_gpt"
         const val K_ENABLE_SAVE_DATA = "sp_enable_save_data"
+        const val K_HIDE_STATUSBAR = "sp_hide_statusbar"
 
         const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
             "sp_show_translated_image_to_second_panel"

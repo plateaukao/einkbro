@@ -217,11 +217,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    // Overrides
     override fun onCreate(savedInstanceState: Bundle?) {
         // workaround for crash issue
         // Caused by java.lang.NoSuchMethodException:
         super.onCreate(null)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         savedInstanceState?.let {
@@ -260,6 +260,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         initLanguageLabel()
+
+        if (config.hideStatusbar) {
+            hideStatusBar()
+        }
     }
 
     private fun initTouchAreaViewController() {
@@ -1051,6 +1055,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val preferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             when (key) {
+                ConfigManager.K_HIDE_STATUSBAR -> {
+                    if (config.hideStatusbar) {
+                        hideStatusBar()
+                    } else {
+                        showStatusBar()
+                    }
+                }
+
                 ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
                 ConfigManager.K_TOOLBAR_ICONS -> {
                     composeToolbarViewController.updateIcons()
@@ -1977,6 +1989,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun showStatusBar() {
+        if (config.hideStatusbar) return
+
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(true)
