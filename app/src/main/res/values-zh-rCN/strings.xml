@@ -454,4 +454,6 @@
     <string name="use_it_on_dict_search">Use it on dict search</string>
     <string name="setting_summary_search_in_dict">when searching in readers, use ChatGPT to search results</string>
     <string name="menu_expand_menu">Expand submenu</string>
+    <string name="hide_statusbar">Hide statusbar</string>
+    <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
 </resources>
