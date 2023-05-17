@@ -327,23 +327,29 @@ object HelperUnit {
         var mimeType: String? = null
 
         val cursor = context.contentResolver.query(contentUri, null, null, null, null)
-        cursor?.let {
-            if (it.moveToFirst()) {
-                val displayNameColumnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                val mimeTypeColumnIndex = it.getColumnIndex(MimeTypeMap.getSingleton().getExtensionFromMimeType(it.getString(it.getColumnIndexOrThrow("mime_type"))))
+        cursor?.use {
+            try {
+                if (it.moveToFirst()) {
+                    val displayNameColumnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    val mimeTypeColumnIndex = it.getColumnIndex(
+                        MimeTypeMap.getSingleton()
+                            .getExtensionFromMimeType(it.getString(it.getColumnIndexOrThrow("mime_type")))
+                    )
 
-                fileName = if (displayNameColumnIndex != -1)
-                    it.getString(displayNameColumnIndex)
-                else {
-                    contentUri.path?.split("/")?.last()
+                    fileName = if (displayNameColumnIndex != -1)
+                        it.getString(displayNameColumnIndex)
+                    else {
+                        contentUri.path?.split("/")?.last()
+                    }
+                    mimeType = if (mimeTypeColumnIndex != -1)
+                        it.getString(mimeTypeColumnIndex)
+                    else {
+                        context.contentResolver.getType(contentUri)
+                    }
                 }
-                mimeType = if (mimeTypeColumnIndex != -1)
-                    it.getString(mimeTypeColumnIndex)
-                else {
-                    context.contentResolver.getType(contentUri)
-                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            it.close()
         }
 
         return Pair(fileName, mimeType)
