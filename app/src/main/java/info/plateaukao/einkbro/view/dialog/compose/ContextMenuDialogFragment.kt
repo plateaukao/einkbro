@@ -100,7 +100,7 @@ private fun ContextMenuItems(
             Modifier.padding(4.dp),
             color = MaterialTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
-            maxLines = 3,
+            maxLines = 1,
         )
         HorizontalSeparator()
         Row(
