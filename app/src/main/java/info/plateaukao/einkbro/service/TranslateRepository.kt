@@ -165,7 +165,7 @@ class TranslateRepository : KoinComponent {
     suspend fun ppTranslate(
         text: String,
         targetLanguage: String = "en",
-        sourceLanguage: String = "ko",
+        sourceLanguage: String = "auto",
     ): String? {
         if (authKey == null) {
             authKey = getAuthKey()
