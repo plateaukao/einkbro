@@ -95,20 +95,14 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            val sourceLanguage = translateRepository.pDetectLanguage(_inputMessage.value)
-                ?: config.sourceLanguage.value
             _responseMessage.value =
                 translateRepository.ppTranslate(
                     _inputMessage.value,
                     targetLanguage = config.translationLanguage.value,
-                    sourceLanguage = sourceLanguage
                 )
                     ?: "Something went wrong."
         }
     }
-
-//    @OptIn(DelicateCoroutinesApi::class)
-//    val scope = CoroutineScope(newFixedThreadPoolContext(5, "requests"))
 
     suspend fun translateWebView(
         view: View,

@@ -36,8 +36,6 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
 import org.koin.core.component.KoinComponent
@@ -293,7 +291,7 @@ open class NinjaWebView(
 
     val requestHeaders: HashMap<String, String> = HashMap<String, String>().apply {
         "DNT" to "1"
-        "Save-Data" to  if (config.enableSaveData) "on" else "off"
+        "Save-Data" to if (config.enableSaveData) "on" else "off"
     }
 
     /* continue playing if preference is set */
@@ -1022,12 +1020,8 @@ class JsWebInterface(private val webView: NinjaWebView) :
     private val translateRepository: TranslateRepository = TranslateRepository()
     private val configManager: ConfigManager by inject()
 
-    private var detectedLanguage: String = ""
-
     // to control the translation request threshold
     private val semaphoreForTranslate = Semaphore(4)
-
-    private val mutexForDetectLanguage = Mutex()
 
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
@@ -1035,19 +1029,10 @@ class JsWebInterface(private val webView: NinjaWebView) :
 
         GlobalScope.launch(IO) {
             semaphoreForTranslate.acquire()
-            if (detectedLanguage.isEmpty()) {
-                mutexForDetectLanguage.withLock {
-                    if (detectedLanguage.isEmpty()) {
-                        detectedLanguage = translateRepository.pDetectLanguage(originalText)
-                            ?: configManager.sourceLanguage.value
-                    }
-                }
-            }
             val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
                 translateRepository.ppTranslate(
                     originalText,
                     configManager.translationLanguage.value,
-                    detectedLanguage,
                 )
             } else {
                 translateRepository.gTranslateWithApi(
