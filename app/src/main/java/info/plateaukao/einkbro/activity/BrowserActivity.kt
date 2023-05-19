@@ -245,7 +245,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initTouchArea()
         initActionModeViewModel()
 
-        initTouchAreaViewController()
 
         downloadReceiver = createDownloadReceiver(this)
         registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
@@ -260,6 +259,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         initLanguageLabel()
+
+        initTouchAreaViewController()
 
         if (config.hideStatusbar) {
             hideStatusBar()

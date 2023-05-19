@@ -185,7 +185,7 @@ class ConfigManager(
     var touchAreaType: TouchAreaType
         get() = TouchAreaType.values()[sp.getInt(K_TOUCH_AREA_TYPE, 0)]
         set(value) {
-            sp.edit { putInt(K_TOUCH_AREA_TYPE, value.ordinal) }
+            sp.edit(true) { putInt(K_TOUCH_AREA_TYPE, value.ordinal) }
         }
 
     var pdfPaperSize: PaperSize
