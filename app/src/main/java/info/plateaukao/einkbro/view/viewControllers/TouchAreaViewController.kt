@@ -1,7 +1,7 @@
 package info.plateaukao.einkbro.view.viewControllers
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
@@ -26,8 +26,8 @@ class TouchAreaViewController(
 
     private val config: ConfigManager by inject()
 
-    private val touchAreaChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+    private val touchAreaChangeListener: OnSharedPreferenceChangeListener by lazy {
+        OnSharedPreferenceChangeListener { _, key ->
             if (key == ConfigManager.K_TOUCH_HINT) {
                 if (config.touchAreaHint) {
                     showTouchAreaHint()
@@ -44,14 +44,19 @@ class TouchAreaViewController(
                 config.touchAreaCustomizeY = 0
             }
         }
+    }
 
     init {
-        config.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
         updateTouchAreaType()
         if (config.touchAreaCustomizeY != 0) {
             rootView.post {
                 updateTouchAreaCustomizeY(config.touchAreaCustomizeY)
             }
+        }
+        // after optimization, don't know why registration is gone.
+        // do it after controller is created.
+        rootView.post {
+            config.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
         }
     }
 
