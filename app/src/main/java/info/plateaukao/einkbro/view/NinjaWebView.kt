@@ -34,7 +34,6 @@ import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
@@ -1042,10 +1041,12 @@ class JsWebInterface(private val webView: NinjaWebView) :
             }
             withContext(Main) {
                 if (webView.isAttachedToWindow) {
-                    webView.evaluateJavascript("$callback('$elementId', '$translatedString')", null)
+                    webView.evaluateJavascript(
+                        "$callback('$elementId', '$translatedString')",
+                        null
+                    )
                 }
             }
-            delay(1000)
             semaphoreForTranslate.release()
         }
     }
