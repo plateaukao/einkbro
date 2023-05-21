@@ -160,6 +160,14 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     ): List<Element> {
         val result = mutableListOf<Element>()
         for (child in element.children()) {
+            // by pass non-necessary element
+            if (child.attr("data-tiara-action-name") == "헤드글씨크기_클릭" ||
+                child.text() == "original link"
+            ) {
+                child.text("")
+                break
+            }
+
             if ((child.children().size == 0 && child.text().isNotBlank()) ||
                 child.tagName() in listOf("p", "h1", "h2", "h3", "h4", "h5", "h6")
             ) {
