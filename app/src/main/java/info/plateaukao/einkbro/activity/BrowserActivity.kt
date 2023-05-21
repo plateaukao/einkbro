@@ -21,6 +21,8 @@ import android.os.Message
 import android.util.Log
 import android.view.*
 import android.view.KeyEvent.ACTION_DOWN
+import android.view.KeyEvent.KEYCODE_DPAD_LEFT
+import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.Menu
 import android.view.View.*
 import android.webkit.CookieManager
@@ -274,6 +276,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             pageTopAction = { ninjaWebView.jumpToTop() },
             pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
             pageBottomAction = { ninjaWebView.jumpToBottom() },
+            keyLeftAction = {
+                ninjaWebView.dispatchKeyEvent(
+                    KeyEvent(
+                        ACTION_DOWN,
+                        KEYCODE_DPAD_LEFT
+                    )
+                )
+            },
+            keyRightAction = {
+                ninjaWebView.dispatchKeyEvent(
+                    KeyEvent(
+                        ACTION_DOWN,
+                        KEYCODE_DPAD_RIGHT
+                    )
+                )
+            },
         )
     }
 

@@ -19,6 +19,8 @@ class TouchAreaViewController(
     private val pageTopAction: () -> Unit,
     private val pageDownAction: () -> Unit,
     private val pageBottomAction: () -> Unit,
+    private val keyLeftAction: () -> Unit,
+    private val keyRightAction: () -> Unit,
 ) : KoinComponent {
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
@@ -141,11 +143,23 @@ class TouchAreaViewController(
 
         with(touchAreaPageUp) {
             setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
-            setOnLongClickListener { if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true }
+            setOnLongClickListener {
+                if (config.longClickAsArrowKey) {
+                    keyLeftAction()
+                    return@setOnLongClickListener true
+                }
+                if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true
+            }
         }
         with(touchAreaPageDown) {
             setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
-            setOnLongClickListener { if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true }
+            setOnLongClickListener {
+                if (config.longClickAsArrowKey) {
+                    keyRightAction()
+                    return@setOnLongClickListener true
+                }
+                if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true
+            }
         }
         with(touchAreaDragCustomize) {
             setOnTouchListener { view, event -> customOnTouch(view, event) }

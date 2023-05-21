@@ -63,6 +63,7 @@ class ConfigManager(
     var translationScrollSync by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
     var twoPanelLinkHere by BooleanPreference(sp, K_TWO_PANE_LINK_HERE, false)
     var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
+    var longClickAsArrowKey by BooleanPreference(sp, K_TOUCH_AREA_ARROW_KEY, false)
     var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
     var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
@@ -457,6 +458,7 @@ class ConfigManager(
         const val K_DARK_MODE = "sp_dark_mode"
         const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
         const val K_TOUCH_AREA_ACTION_SWITCH = "sp_touch_area_action_switch"
+        const val K_TOUCH_AREA_ARROW_KEY = "sp_touch_area_arrow_key"
         const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"
         const val K_SAVED_EPUBS = "sp_saved_epubs"
         const val K_MULTITOUCH = "sp_multitouch"

@@ -383,4 +383,5 @@
     <string name="menu_expand_menu">展開選單</string>
     <string name="hide_statusbar">Hide statusbar</string>
     <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
+    <string name="enable_touch_area_as_arrow_key">As left/right key</string>
 </resources>

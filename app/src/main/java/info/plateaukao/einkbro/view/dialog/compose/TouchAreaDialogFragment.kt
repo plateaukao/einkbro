@@ -58,10 +58,12 @@ class TouchAreaDialogFragment() : ComposeDialogFragment(), KoinComponent {
                 showHint = config.touchAreaHint,
                 hideTouchWhenType = config.hideTouchAreaWhenInput,
                 switchTouchArea = config.switchTouchAreaAction,
+                enableTouchAreaAsArrowKey = config.longClickAsArrowKey,
                 onShowHintClick = { config::touchAreaHint.toggle() },
                 onHideWhenTypeClick = { config::hideTouchAreaWhenInput.toggle() },
                 onSwitchAreaClick = { config::switchTouchAreaAction.toggle() },
                 onCloseClick = { dismiss() },
+                onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() }
             )
         }
     }
@@ -76,10 +78,12 @@ fun TouchAreaContent(
     showHint: Boolean = true,
     hideTouchWhenType: Boolean = true,
     switchTouchArea: Boolean = false,
+    enableTouchAreaAsArrowKey: Boolean = false,
     onShowHintClick: () -> Unit = {},
     onHideWhenTypeClick: () -> Unit = {},
     onSwitchAreaClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
+    onAsArrowKeyClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
         Row(
@@ -127,6 +131,11 @@ fun TouchAreaContent(
             titleResId = R.string.switch_touch_area_action,
             iconResId = -1,
             onClicked = { onSwitchAreaClick() })
+        ToggleItem(
+            state = enableTouchAreaAsArrowKey,
+            titleResId = R.string.enable_touch_area_as_arrow_key,
+            iconResId = -1,
+            onClicked = { onAsArrowKeyClick() })
 
         Spacer(modifier = Modifier.height(10.dp))
 
