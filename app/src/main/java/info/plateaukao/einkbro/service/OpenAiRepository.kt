@@ -82,7 +82,8 @@ data class ChatUsage(
 @Serializable
 data class ChatRequest(
     val model: String,
-    val messages: List<ChatMessage>
+    val messages: List<ChatMessage>,
+    val temperature: Double = 0.5,
 )
 
 @Serializable

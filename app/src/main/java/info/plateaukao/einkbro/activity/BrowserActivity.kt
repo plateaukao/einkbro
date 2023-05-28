@@ -314,7 +314,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         if (gptViewModel.hasApiKey()) {
                             GPTDialogFragment(
                                 gptViewModel,
-                                actionModeMenuViewModel.clickedPoint.value
+                                actionModeMenuViewModel.clickedPoint.value,
+                                onTranslateClick = {
+                                    translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                                    TranslateDialogFragment(
+                                        translationViewModel,
+                                        TRANSLATE_API.GOOGLE,
+                                        point
+                                    )
+                                        .show(supportFragmentManager, "translateDialog")
+                                }
                             )
                                 .show(supportFragmentManager, "contextMenu")
                         } else {
