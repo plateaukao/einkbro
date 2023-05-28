@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -36,12 +39,15 @@ class GPTDialogFragment(
     private val gptViewModel: GptViewModel,
     private val anchorPoint: Point,
     private val hasBackgroundColor: Boolean = false,
+    private val onTranslateClick: () -> Unit = {},
     private val onDismissed: () -> Unit = {}
 ) : DraggableComposeDialogFragment() {
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            GptResponse(gptViewModel, hasBackgroundColor)
+            GptResponse(gptViewModel, hasBackgroundColor, onTranslateClick) {
+                dismiss()
+            }
         }
     }
 
@@ -68,7 +74,12 @@ class GPTDialogFragment(
 }
 
 @Composable
-private fun GptResponse(gptViewModel: GptViewModel, hasBackgroundColor: Boolean) {
+private fun GptResponse(
+    gptViewModel: GptViewModel,
+    hasBackgroundColor: Boolean,
+    onTranslateClick: () -> Unit = {},
+    closeClick: () -> Unit = {}
+) {
     val requestMessage by gptViewModel.inputMessage.collectAsState()
     val responseMessage by gptViewModel.responseMessage.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
@@ -81,6 +92,43 @@ private fun GptResponse(gptViewModel: GptViewModel, hasBackgroundColor: Boolean)
                 .wrapContentWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_translate),
+                    contentDescription = "Translate Icon",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .padding(5.dp)
+                        .clickable { onTranslateClick(); closeClick() }
+                )
+                Icon(
+                    painter = painterResource(
+                        id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
+                    ),
+                    contentDescription = "Info Icon",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .padding(5.dp)
+                        .clickable { showRequest.value = !showRequest.value }
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_close),
+                    contentDescription = "Close Icon",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .padding(5.dp)
+                        .clickable { closeClick() }
+                )
+            }
             if (showRequest.value) {
                 Text(
                     text = requestMessage,
@@ -98,17 +146,6 @@ private fun GptResponse(gptViewModel: GptViewModel, hasBackgroundColor: Boolean)
                     start = 10.dp,
                     end = 10.dp
                 ),
-            )
-        }
-        if (!showRequest.value) {
-            Icon(
-                painter = painterResource(id = R.drawable.icon_arrow_down_gest),
-                tint = MaterialTheme.colors.onBackground,
-                contentDescription = "Info Icon",
-                modifier = Modifier
-                    .size(32.dp)
-                    .align(Alignment.TopEnd)
-                    .clickable { showRequest.value = true }
             )
         }
     }
