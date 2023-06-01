@@ -2,7 +2,10 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Intent
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import info.plateaukao.einkbro.R
@@ -19,6 +22,8 @@ class DictActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
+
+        hideStatusBar()
 
         when (intent.action) {
             in listOf("colordict.intent.action.PICK_RESULT", "colordict.intent.action.SEARCH") -> {
@@ -80,6 +85,14 @@ class DictActivity : AppCompatActivity() {
             if (supportFragmentManager.backStackEntryCount == 0) {
                 finish()
             }
+        }
+    }
+
+    private fun hideStatusBar() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.systemBars())
+            window.setDecorFitsSystemWindows(false)
         }
     }
 }
