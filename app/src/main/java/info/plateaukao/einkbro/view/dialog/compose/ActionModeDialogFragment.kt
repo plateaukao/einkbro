@@ -129,7 +129,7 @@ private fun ActionModeMenu(
             val info = menuInfos[index]
             ActionMenuItem(info.title, info.icon) {
                 info.action?.invoke()
-                onClicked(info.intent)
+                if (info.intent != null || info.closeMenu) onClicked(info.intent)
             }
         }
     }

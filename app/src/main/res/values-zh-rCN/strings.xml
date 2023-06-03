@@ -459,4 +459,5 @@
     <string name="enable_touch_area_as_arrow_key">As left/right key</string>
     <string name="setting_title_chat_stream">Reply in stream</string>
     <string name="setting_summary_chat_stream">Response will be displayed character by character, so that it\'s faster.</string>
+    <string name="re_select">reselect text</string>
 </resources>
