@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -63,6 +62,7 @@ class GPTDialogFragment(
         if (hasBackgroundColor) {
             dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
         }
+
         return view
     }
 
@@ -80,6 +80,7 @@ private fun GptResponse(
     onTranslateClick: () -> Unit = {},
     closeClick: () -> Unit = {}
 ) {
+    val showControls by gptViewModel.showControls.collectAsState()
     val requestMessage by gptViewModel.inputMessage.collectAsState()
     val responseMessage by gptViewModel.responseMessage.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
@@ -89,46 +90,9 @@ private fun GptResponse(
             modifier = Modifier
                 .defaultMinSize(minWidth = 200.dp)
                 .wrapContentHeight()
-                .wrapContentWidth(),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_translate),
-                    contentDescription = "Translate Icon",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .padding(5.dp)
-                        .clickable { onTranslateClick(); closeClick() }
-                )
-                Icon(
-                    painter = painterResource(
-                        id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
-                    ),
-                    contentDescription = "Info Icon",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .padding(5.dp)
-                        .clickable { showRequest.value = !showRequest.value }
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_close),
-                    contentDescription = "Close Icon",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .padding(5.dp)
-                        .clickable { closeClick() }
-                )
-            }
             if (showRequest.value) {
                 Text(
                     text = requestMessage,
@@ -140,13 +104,66 @@ private fun GptResponse(
             Text(
                 text = responseMessage,
                 color = MaterialTheme.colors.onBackground,
-                modifier = Modifier.padding(
-                    top = if (!showRequest.value) 25.dp else 10.dp,
-                    bottom = 10.dp,
-                    start = 10.dp,
-                    end = 10.dp
-                ),
+                modifier = Modifier
+                    .padding(
+                        top = if (!showRequest.value) 5.dp else 10.dp,
+                        bottom = 10.dp,
+                        start = 10.dp,
+                        end = 10.dp
+                    )
+                    .align(Alignment.Start)
             )
+            if (showControls) {
+                Row(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_refresh),
+                        contentDescription = "Retry Icon",
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(5.dp)
+                            .clickable {
+                                gptViewModel.updateInputMessage(gptViewModel.inputMessage.value)
+                                gptViewModel.query()
+                            }
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_translate),
+                        contentDescription = "Translate Icon",
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(5.dp)
+                            .clickable { onTranslateClick(); closeClick() }
+                    )
+                    Icon(
+                        painter = painterResource(
+                            id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
+                        ),
+                        contentDescription = "Info Icon",
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(5.dp)
+                            .clickable { showRequest.value = !showRequest.value }
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_close),
+                        contentDescription = "Close Icon",
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(5.dp)
+                            .clickable { closeClick() }
+                    )
+                }
+            }
         }
     }
 }
