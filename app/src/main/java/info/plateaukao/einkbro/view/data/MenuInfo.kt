@@ -9,6 +9,7 @@ data class MenuInfo(
     val title: String,
     val icon: Drawable? = null,
     val intent: Intent? = null,
+    val closeMenu: Boolean = true,
     val action: (() -> Unit)? = null
 )
 

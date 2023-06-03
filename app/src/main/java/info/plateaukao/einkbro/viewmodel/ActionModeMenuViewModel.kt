@@ -51,6 +51,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         packageManager: PackageManager
     ) {
         if (fragment != null && fragment?.isAdded == true) {
+            _showMenu.value = true
             return
         }
         fragment = ActionModeDialogFragment(
@@ -101,9 +102,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 MenuInfo(
                     context.getString(R.string.papago),
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_papago),
-                    action = {
-                        _actionModeMenuState.value = ActionModeMenuState.Papago
-                    }
+                    action = { _actionModeMenuState.value = ActionModeMenuState.Papago }
                 )
             )
         }
@@ -112,9 +111,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             MenuInfo(
                 context.getString(R.string.google_translate),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_translate),
-                action = {
-                    _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate
-                }
+                action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
             )
         )
 
@@ -124,9 +121,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 MenuInfo(
                     context.getString(R.string.menu_gpt),
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
-                    action = {
-                        _actionModeMenuState.value = ActionModeMenuState.Gpt
-                    }
+                    action = { _actionModeMenuState.value = ActionModeMenuState.Gpt }
                 )
             )
         }
@@ -136,9 +131,16 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             MenuInfo(
                 context.getString(android.R.string.copy),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
-                action = {
-                    ShareUtil.copyToClipboard(context, selectedText.value)
-                }
+                action = { ShareUtil.copyToClipboard(context, selectedText.value) }
+            )
+        )
+
+        menuInfos.add(
+            MenuInfo(
+                context.getString(R.string.re_select),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
+                closeMenu = false,
+                action = { _showMenu.value = false }
             )
         )
 

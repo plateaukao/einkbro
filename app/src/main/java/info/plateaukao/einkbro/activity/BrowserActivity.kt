@@ -2142,6 +2142,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             actionModeMenuViewModel.updateActionMode(mode)
 
             if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
+                mode.hide(1000000)
                 lifecycleScope.launch {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
                     actionModeMenuViewModel.showActionModeDialogFragment(
@@ -2180,6 +2181,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onActionModeFinished(mode: ActionMode?) {
         super.onActionModeFinished(mode)
+        mode?.hide(1000000)
         actionModeMenuViewModel.updateActionMode(null)
     }
 
