@@ -32,6 +32,7 @@ class OpenAiRepository(
     fun chatStream(
         messages: List<ChatMessage>,
         appendResponseAction: (String) -> Unit,
+        doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
         val request = createRequest(messages, true)
@@ -40,12 +41,18 @@ class OpenAiRepository(
             override fun onEvent(
                 eventSource: EventSource, id: String?, type: String?, data: String
             ) {
-                if (data == null || data.isEmpty() || data == "[DONE]") return
+                if(data == "[DONE]") {
+                    doneAction()
+                    eventSource.cancel()
+                    return
+                }
+                if (data == null || data.isEmpty()) return
                 try {
                     val chatCompletion = json.decodeFromString<ChatCompletionDelta>(data)
                     appendResponseAction(chatCompletion.choices.first().delta.content ?: "")
                 } catch (e: Exception) {
                     failureAction()
+                    eventSource.cancel()
                 }
             }
         })

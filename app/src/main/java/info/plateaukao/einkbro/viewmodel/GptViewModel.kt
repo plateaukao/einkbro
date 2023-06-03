@@ -21,6 +21,9 @@ class GptViewModel : ViewModel(), KoinComponent {
     private val openaiRepository: OpenAiRepository
             by lazy { OpenAiRepository(config.gptApiKey) }
 
+    private val _showControls = MutableStateFlow(false)
+    val showControls: StateFlow<Boolean> = _showControls.asStateFlow()
+
     private val _responseMessage = MutableStateFlow("")
     val responseMessage: StateFlow<String> = _responseMessage.asStateFlow()
 
@@ -54,7 +57,11 @@ class GptViewModel : ViewModel(), KoinComponent {
                     if (_responseMessage.value == "...") _responseMessage.value = it
                     else _responseMessage.value += it
                 },
-                failureAction = { _responseMessage.value = "Something went wrong." }
+                doneAction = { _showControls.value = true },
+                failureAction = {
+                    _responseMessage.value = "Something went wrong."
+                    _showControls.value = true
+                }
             )
             return
         }
