@@ -10,6 +10,8 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.sse.EventSource
+import okhttp3.sse.EventSources
 import org.koin.core.component.KoinComponent
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
@@ -23,21 +25,36 @@ class OpenAiRepository(
         .readTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
         .build()
+    private val factory by lazy { EventSources.createFactory(client) }
 
     private val json = Json { ignoreUnknownKeys = true }
+
+    fun chatStream(
+        messages: List<ChatMessage>,
+        appendResponseAction: (String) -> Unit,
+        failureAction: () -> Unit,
+    ) {
+        val request = createRequest(messages, true)
+
+        factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
+            override fun onEvent(
+                eventSource: EventSource, id: String?, type: String?, data: String
+            ) {
+                if (data == null || data.isEmpty() || data == "[DONE]") return
+                try {
+                    val chatCompletion = json.decodeFromString<ChatCompletionDelta>(data)
+                    appendResponseAction(chatCompletion.choices.first().delta.content ?: "")
+                } catch (e: Exception) {
+                    failureAction()
+                }
+            }
+        })
+    }
 
     suspend fun chatCompletion(
         messages: List<ChatMessage>
     ): ChatCompletion? = suspendCoroutine { continuation ->
-        val request = Request.Builder()
-            .url(endpoint)
-            .post(
-                json.encodeToString(ChatRequest("gpt-3.5-turbo", messages))
-                    .toRequestBody(mediaType)
-            )
-            .header("Authorization", "Bearer $apiKey")
-            .build()
-
+        val request = createRequest(messages)
         client.newCall(request).execute().use { response ->
             if (response.code != 200 || response.body == null) {
                 return@use continuation.resume(null)
@@ -54,6 +71,18 @@ class OpenAiRepository(
         }
     }
 
+    private fun createRequest(
+        messages: List<ChatMessage>,
+        stream: Boolean = false,
+    ): Request = Request.Builder()
+        .url(endpoint)
+        .post(
+            json.encodeToString(ChatRequest("gpt-3.5-turbo", messages, stream))
+                .toRequestBody(mediaType)
+        )
+        .header("Authorization", "Bearer $apiKey")
+        .build()
+
     companion object {
         private const val endpoint = "https://api.openai.com/v1/chat/completions"
         private val mediaType = "application/json; charset=utf-8".toMediaType()
@@ -66,7 +95,15 @@ data class ChatCompletion(
     val created: Int,
     val model: String,
     val choices: List<ChatChoice>,
-    val usage: ChatUsage,
+    val usage: ChatUsage = ChatUsage(0, 0, 0)
+)
+
+@Serializable
+data class ChatCompletionDelta(
+    val id: String,
+    val created: Int,
+    val model: String,
+    val choices: List<ChatChoiceDelta>,
 )
 
 @Serializable
@@ -83,13 +120,26 @@ data class ChatUsage(
 data class ChatRequest(
     val model: String,
     val messages: List<ChatMessage>,
+    val stream: Boolean = false,
     val temperature: Double = 0.5,
+)
+
+@Serializable
+data class ChatChoiceDelta(
+    val index: Int,
+    val delta: ChatDelta,
+    @kotlinx.serialization.Transient
+    @SerialName("finish_reason")
+    val finishReason: String? = null,
 )
 
 @Serializable
 data class ChatChoice(
     val index: Int,
-    val message: ChatMessage
+    val message: ChatMessage,
+    @kotlinx.serialization.Transient
+    @SerialName("finish_reason")
+    val finishReason: String? = null,
 )
 
 enum class ChatRole {
@@ -102,6 +152,11 @@ enum class ChatRole {
     @SerialName("assistant")
     Assistant
 }
+
+@Serializable
+data class ChatDelta(
+    val content: String? = null,
+)
 
 @Serializable
 data class ChatMessage(
