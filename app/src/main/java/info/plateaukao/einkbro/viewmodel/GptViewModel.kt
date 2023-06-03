@@ -50,7 +50,10 @@ class GptViewModel : ViewModel(), KoinComponent {
         if (config.enableOpenAiStream) {
             openaiRepository.chatStream(
                 messages,
-                appendResponseAction = { _responseMessage.value += it },
+                appendResponseAction = {
+                    if (_responseMessage.value == "...") _responseMessage.value = it
+                    else _responseMessage.value += it
+                },
                 failureAction = { _responseMessage.value = "Something went wrong." }
             )
             return

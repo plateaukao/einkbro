@@ -1430,6 +1430,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 actionModeMenuViewModel.updateClickedPoint(
                     Point(motionEvent.x.toInt(), motionEvent.y.toInt())
                 )
+                Log.d("onLongPress", "onLongPress")
+            }
+
+            override fun onMoveDone(motionEvent: MotionEvent) {
+                actionModeMenuViewModel.show()
+                Log.d("onMoveDone", "onMoveDone")
             }
         }.apply { lifecycle.addObserver(this) }
 
