@@ -708,6 +708,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_search,
             R.string.setting_summary_search_in_dict,
             config::externalSearchWithGpt
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_chat_stream,
+            R.drawable.ic_chat,
+            R.string.setting_summary_chat_stream,
+            config::enableOpenAiStream
         )
     )
 
