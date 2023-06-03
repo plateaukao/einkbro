@@ -46,6 +46,17 @@ class GptViewModel : ViewModel(), KoinComponent {
         messages.add("${config.gptUserPromptPrefix}${_inputMessage.value}".toUserMessage())
 
 
+        // stream case
+        if (config.enableOpenAiStream) {
+            openaiRepository.chatStream(
+                messages,
+                appendResponseAction = { _responseMessage.value += it },
+                failureAction = { _responseMessage.value = "Something went wrong." }
+            )
+            return
+        }
+
+        // normal case: too slow!!!
         viewModelScope.launch(Dispatchers.IO) {
             val chatCompletion = openaiRepository.chatCompletion(messages)
             if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
