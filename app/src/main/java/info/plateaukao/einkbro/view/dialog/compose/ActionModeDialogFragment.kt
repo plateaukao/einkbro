@@ -82,6 +82,15 @@ class ActionModeDialogFragment(
                 updateDialogPosition(anchorPoint)
             }
         }
+        lifecycleScope.launch {
+            actionModeMenuViewModel.showMenu.collect { show ->
+                if (show) {
+                    dialog?.show()
+                } else {
+                    dialog?.hide()
+                }
+            }
+        }
 
         dialog?.setOnDismissListener { onDismiss() }
 
@@ -99,6 +108,7 @@ class ActionModeDialogFragment(
             }
             window.attributes = params
         }
+        dialog?.hide()
     }
 
     private fun Point.isValid() = x != 0 && y != 0

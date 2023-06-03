@@ -28,6 +28,9 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     private val _clickedPoint = MutableStateFlow(Point(0, 0))
     val clickedPoint: StateFlow<Point> = _clickedPoint.asStateFlow()
 
+    private val _showMenu = MutableStateFlow(false)
+    val showMenu: StateFlow<Boolean> = _showMenu.asStateFlow()
+
     private val _selectedText = MutableStateFlow("")
     val selectedText: StateFlow<String> = _selectedText.asStateFlow()
 
@@ -73,6 +76,11 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
     fun updateClickedPoint(point: Point) {
         _clickedPoint.value = point
+        _showMenu.value = false
+    }
+
+    fun show() {
+        _showMenu.value = true
     }
 
     private fun getAllProcessTextMenuInfos(
