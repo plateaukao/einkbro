@@ -41,6 +41,7 @@ class GptViewModel : ViewModel(), KoinComponent {
         if (userMessage != null) {
             _inputMessage.value = userMessage
         }
+        _showControls.value = false
 
         val messages = mutableListOf<ChatMessage>()
         if (config.gptSystemPrompt.isNotBlank()) {
