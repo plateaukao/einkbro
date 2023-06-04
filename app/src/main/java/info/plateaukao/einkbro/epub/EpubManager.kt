@@ -56,7 +56,7 @@ class EpubManager(private val context: Context): KoinComponent {
                     show()
                 }
 
-                val rawHtml = ninjaWebView.getRawHtml()
+                val rawHtml = ninjaWebView.getRawReaderHtml()
                 internalSaveEpub(
                         isNewFile,
                         fileUri,
