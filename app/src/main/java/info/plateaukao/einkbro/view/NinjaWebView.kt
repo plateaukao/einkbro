@@ -72,6 +72,8 @@ open class NinjaWebView(
     private val clickHandler: NinjaClickHandler
 
     var shouldHideTranslateContext: Boolean = false
+
+    var baseUrl: String? = null
     protected var isEpubReaderMode = false
     private val cookieManager: CookieManager = CookieManager.getInstance()
 
@@ -398,8 +400,9 @@ open class NinjaWebView(
             update(value)
         }
 
+    // if url is with prefix data, maybe it's translated data, need to use base url instead
     override val albumUrl: String
-        get() = url ?: ""
+        get() = (if (url?.startsWith("data") == true) baseUrl else url) ?: ""
 
     override var initAlbumUrl: String = ""
     override fun activate() {
@@ -591,7 +594,7 @@ open class NinjaWebView(
     }
 
     var rawHtmlCache: String? = null
-    suspend fun getRawHtml() = suspendCoroutine { continuation ->
+    suspend fun getRawReaderHtml() = suspendCoroutine { continuation ->
         if (isPlainText && rawHtmlCache != null) {
             continuation.resume(rawHtmlCache!!)
         } else if (!isReaderModeOn && !isTranslatePage) {
@@ -614,6 +617,23 @@ open class NinjaWebView(
                 rawHtmlCache = rawHtmlCache ?: rawHtml
                 continuation.resume(rawHtml)
             }
+        }
+    }
+
+    suspend fun getRawHtml() = suspendCoroutine { continuation ->
+        if (rawHtmlCache != null) {
+            continuation.resume(rawHtmlCache)
+            return@suspendCoroutine
+        }
+
+        evaluateJavascript(
+            "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
+        ) { html ->
+            val processedHtml = StringEscapeUtils.unescapeJava(html)
+            val rawHtml =
+                processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
+            rawHtmlCache = rawHtml
+            continuation.resume(rawHtml)
         }
     }
 
