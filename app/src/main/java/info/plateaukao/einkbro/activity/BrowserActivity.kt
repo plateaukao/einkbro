@@ -1070,6 +1070,34 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun translateByParagraph(translateApi: TRANSLATE_API) {
+        val translateModeWebView = ninjaWebView
+        if (ninjaWebView.url?.startsWith("data") != true) {
+            translateModeWebView.baseUrl = ninjaWebView.url
+        }
+        val currentUrl = ninjaWebView.url
+        lifecycleScope.launch {
+            val htmlCache = ninjaWebView.getRawHtml()
+
+            translateModeWebView.translateApi = translateApi
+            // set its raw html to be the same as original WebView
+            // show the language label
+
+            val translatedHtml = translationViewModel
+                .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
+            if (translateModeWebView.isAttachedToWindow) {
+                translateModeWebView.loadDataWithBaseURL(
+                    if (!ninjaWebView.isPlainText) translateModeWebView.baseUrl else null,
+                    translatedHtml,
+                    "text/html",
+                    "utf-8",
+                    null
+                )
+            }
+            languageLabelView?.visibility = VISIBLE
+        }
+    }
+
+    private fun translateByParagraphOld(translateApi: TRANSLATE_API) {
         lifecycleScope.launch {
             val currentUrl = ninjaWebView.url
 
@@ -1078,7 +1106,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ninjaWebView
             } else {
                 // get html from original WebView
-                val htmlCache = ninjaWebView.getRawHtml()
+                val htmlCache = ninjaWebView.getRawReaderHtml()
                 // create a new WebView
                 addAlbum("", "")
                 // set it to translate mode
@@ -1754,6 +1782,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val albumControllers = browserContainer.list()
         val albumInfoList = albumControllers
             .filter { !it.isTranslatePage }
+            .filter { !it.albumUrl.startsWith("data") }
             .filter {
                 (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) ||
                         it.initAlbumUrl.isNotBlank()
