@@ -723,8 +723,10 @@ open class NinjaWebView(
         }
     }
 
-    fun injectTextNodesMonitoring() {
-        evaluateJavascript(textNodesMonitorJs, null)
+    fun translateByParagraphInPlace() {
+        evaluateJavascript(translateParagraphJs) {
+            evaluateJavascript(textNodesMonitorJs, null)
+        }
     }
 
     fun addSelectionChangeListener() {
@@ -753,7 +755,6 @@ open class NinjaWebView(
             evaluateJavascript(String.format(selectionHighlightJs, className), null)
         }
     }
-
 
     private fun disableReaderMode(isVertical: Boolean = false) {
         val verticalCssString = if (isVertical) {
@@ -895,10 +896,6 @@ open class NinjaWebView(
         evaluateJavascript(str, null)
     }
 
-//    suspend fun googleTranslateByParagraph() {
-//        getRawHtml()
-//    }
-
     private fun injectGoogleTranslateV2Js(): String =
         String.format(
             injectGoogleTranslateV2JsFormat,
@@ -966,7 +963,7 @@ open class NinjaWebView(
             }
             
             // Create a new IntersectionObserver object
-            const observer = new IntersectionObserver((entries) => {
+            observer = new IntersectionObserver((entries) => {
               entries.forEach((entry) => {
                 // Check if the target node is currently visible
                 if (entry.isIntersecting) {
@@ -984,7 +981,7 @@ open class NinjaWebView(
             });
 
             // Select all elements with class name 'to-translate'
-            const targetNodes = document.querySelectorAll('.to-translate');
+            targetNodes = document.querySelectorAll('.to-translate');
 
             // Loop through each target node and start observing it
             targetNodes.forEach((targetNode) => {
@@ -1291,6 +1288,74 @@ function getSafeRanges(dangerous) {
 highlightSelection();
             })();
             """
+        private val translateParagraphJs = """
+            function fetchNodesWithText(element) {
+              var result = [];
+              for (var i = 0; i < element.children.length; i++) {
+                var child = element.children[i];
+                // bypass non-necessary element
+                if (
+                  child.getAttribute("data-tiara-action-name") === "헤드글씨크기_클릭" ||
+                  child.innerText === "original link"
+                ) {
+                  break;
+                }
+                if(child.tagName === "SCRIPT") {
+                  break;
+                }
+
+                if (
+                  ["p", "h1", "h2", "h3", "h4", "h5", "h6", "span"].includes(child.tagName.toLowerCase()) ||
+                  (child.children.length == 0 && child.innerText != "")
+                ) {
+                  if (child.innerText !== "") {
+                    injectTranslateTag(child);
+                    //console.log(child.textContent);
+                    result.push(child);
+                  }
+                } else {
+                  result.push(fetchNodesWithText(child));
+                }
+              }
+              return result;
+            }
+            
+            function generateUUID() {
+              var timestamp = new Date().getTime();
+              const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const random = (timestamp + Math.random() * 16) % 16 | 0;
+                timestamp = Math.floor(timestamp / 16);
+                return (c === 'x' ? random : (random & 0x3 | 0x8)).toString(16);
+              });
+
+              return uuid;
+            }
+            
+            function injectTranslateTag(node) {
+                // for monitoring visibility
+                node.className += " to-translate";
+                // for locating element's position
+                node.id = generateUUID().toString();
+                // for later inserting translated text
+               var pElement = document.createElement("p");
+               try {
+                 //node.after(pElement);
+                 node.parentNode.insertBefore(pElement, node.nextSibling);
+               } catch(error) {
+                //console.log(node.textContent);
+                //console.log(error);
+               }
+            }
+            
+            if (!document.body.classList.contains("translated")) {
+                document.body.classList.add("translated");
+                document.innerHTMLCache = document.body.innerHTML;
+            } else {
+                document.body.innerHTML = document.innerHTMLCache;
+            }
+            
+            fetchNodesWithText(document.body);
+        """.trimIndent()
     }
 
     init {
