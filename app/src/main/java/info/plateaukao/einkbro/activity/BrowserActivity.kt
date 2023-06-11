@@ -1070,34 +1070,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun translateByParagraph(translateApi: TRANSLATE_API) {
-        val translateModeWebView = ninjaWebView
-        if (ninjaWebView.url?.startsWith("data") != true) {
-            translateModeWebView.baseUrl = ninjaWebView.url
+        if (config.enableInplaceParagraphTranslate) {
+            translateByParagraphInPlace(translateApi)
+        } else {
+            translateByParagraphInReaderMode(translateApi)
         }
-        val currentUrl = ninjaWebView.url
+    }
+
+    private fun translateByParagraphInPlace(translateApi: TRANSLATE_API) {
         lifecycleScope.launch {
-            val htmlCache = ninjaWebView.getRawHtml()
-
-            translateModeWebView.translateApi = translateApi
-            // set its raw html to be the same as original WebView
-            // show the language label
-
-            val translatedHtml = translationViewModel
-                .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
-            if (translateModeWebView.isAttachedToWindow) {
-                translateModeWebView.loadDataWithBaseURL(
-                    if (!ninjaWebView.isPlainText) translateModeWebView.baseUrl else null,
-                    translatedHtml,
-                    "text/html",
-                    "utf-8",
-                    null
-                )
-            }
+            ninjaWebView.translateApi = translateApi
+            ninjaWebView.translateByParagraphInPlace()
             languageLabelView?.visibility = VISIBLE
         }
     }
 
-    private fun translateByParagraphOld(translateApi: TRANSLATE_API) {
+    private fun translateByParagraphInReaderMode(translateApi: TRANSLATE_API) {
         lifecycleScope.launch {
             val currentUrl = ninjaWebView.url
 

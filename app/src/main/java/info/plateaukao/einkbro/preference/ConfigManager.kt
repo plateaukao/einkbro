@@ -119,6 +119,8 @@ class ConfigManager(
     )
 
     var showActionMenuIcons by BooleanPreference(sp, K_SHOW_ACTION_MENU_ICONS, true)
+    var enableInplaceParagraphTranslate by
+    BooleanPreference(sp, K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE, true)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -676,6 +678,8 @@ class ConfigManager(
         const val K_SHOW_NEXT_AFTER_REMOVE_TAB = "sp_show_previous_after_remove_tab"
 
         const val K_SHOW_ACTION_MENU_ICONS = "sp_show_action_menu_icons"
+
+        const val K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE = "sp_enable_in_place_paragraph_translate"
 
         const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
             "sp_show_translated_image_to_second_panel"
