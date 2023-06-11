@@ -105,6 +105,9 @@ class ConfigManager(
 
     var enableOpenAiStream by BooleanPreference(sp, K_ENABLE_OPEN_AI_STREAM, true)
 
+    var enableInplaceParagraphTranslate by
+    BooleanPreference(sp, K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE, true)
+
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
@@ -538,6 +541,8 @@ class ConfigManager(
         const val K_HIDE_STATUSBAR = "sp_hide_statusbar"
 
         const val K_ENABLE_OPEN_AI_STREAM = "sp_enable_open_ai_stream"
+
+        const val K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE = "sp_enable_in_place_paragraph_translate"
 
         const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
             "sp_show_translated_image_to_second_panel"
