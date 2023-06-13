@@ -374,7 +374,7 @@
     <string name="read_speed">读取速度</string>
     <string name="toast_send_link_failed">发送链接失败</string>
     <string name="toast_receive_link_failed">接收链接失败。</string>
-    <string name="setting_summary_search_engine">选择搜索引擎</string>
+    <string name="setting_summary_search_engine">请输入自定义搜索引擎</string>
     <string name="setting_summary_custom_process_text_url">当您在另一应用程序中选择文本时，可以使用此URL前缀在浏览器中进行搜索。</string>
     <string name="not_supported">未支持。</string>
 
@@ -423,8 +423,8 @@
     <string name="setting_summary_userAgent">在此输入自定义用户代理字符串。</string>
     <string name="setting_summary_userAgent_toggle">启用自定义用户代理</string>
     <string name="menu_add_to_pocket">添加到Pocket</string>
-    <string name="content_adjustment">重排版</string>
-    <string name="share_save"><![CDATA[分享或保存]]></string>
+    <string name="content_adjustment">重排类</string>
+    <string name="share_save"><![CDATA[分享保存类]]></string>
 
     <string name="menu_gpt">ChatGPT</string>
     <string name="setting_title_chat_gpt">ChatGPT集成</string>
@@ -442,7 +442,7 @@
     <string name="translate_by_paragraph">按段落搜索</string>
     <string name="translate_processing">正在处理...</string>
     <string name="translation_language">翻译语言</string>
-    <string name="misc">杂项</string>
+    <string name="misc">其他项</string>
     <string name="translate_papago">Naver Papago API 令牌</string>
     <string name="translate_papago_summary">如果想使用 Naver Papago 翻译服务，请输入您的 API 令牌。</string>
     <string name="source_language">源语言</string>
@@ -451,13 +451,13 @@
     <string name="translate_image_key_summary">输入必要的关键字以显示图像翻译功能。</string>
     <string name="papago_language_setting">语言设置</string>
     <string name="toggle_touch_turn_page">切换触摸翻页</string>
-    <string name="use_it_on_dict_search">Use it on dict search</string>
-    <string name="setting_summary_search_in_dict">when searching in readers, use ChatGPT to search results</string>
-    <string name="menu_expand_menu">Expand submenu</string>
-    <string name="hide_statusbar">Hide statusbar</string>
-    <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
-    <string name="enable_touch_area_as_arrow_key">As left/right key</string>
-    <string name="setting_title_chat_stream">Reply in stream</string>
-    <string name="setting_summary_chat_stream">Response will be displayed character by character, so that it\'s faster.</string>
-    <string name="re_select">reselect text</string>
+    <string name="use_it_on_dict_search">在字典搜索中使用</string>
+    <string name="setting_summary_search_in_dict">在读卡器中搜索时，使用ChatGPT搜索结果</string>
+    <string name="menu_expand_menu">扩展\n子菜单</string>
+    <string name="hide_statusbar">隐藏状态栏</string>
+    <string name="setting_summary_hide_statusbar">始终隐藏状态栏</string>
+    <string name="enable_touch_area_as_arrow_key">作为左/右键</string>
+    <string name="setting_title_chat_stream">在信息流中回复</string>
+    <string name="setting_summary_chat_stream">响应将逐字符显示，因此速度更快。</string>
+    <string name="re_select">重选文本</string>
 </resources>
