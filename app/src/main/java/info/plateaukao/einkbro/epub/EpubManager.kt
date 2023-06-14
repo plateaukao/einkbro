@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.unit.BrowserUnit.getResourceFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaWebView
@@ -31,11 +32,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
 import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
 
 
-class EpubManager(private val context: Context): KoinComponent {
+class EpubManager(private val context: Context) : KoinComponent {
     private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
     private val config: ConfigManager by inject()
 
@@ -45,7 +44,8 @@ class EpubManager(private val context: Context): KoinComponent {
         ninjaWebView: NinjaWebView,
     ) {
         activity.lifecycleScope.launch(Dispatchers.Main) {
-            val isNewFile = (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
+            val isNewFile =
+                (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
 
             val bookName = if (isNewFile) getBookName() else ""
             val chapterName = getChapterName(ninjaWebView.title)
@@ -58,30 +58,30 @@ class EpubManager(private val context: Context): KoinComponent {
 
                 val rawHtml = ninjaWebView.getRawHtml()
                 internalSaveEpub(
-                        isNewFile,
-                        fileUri,
-                        rawHtml,
-                        bookName,
-                        chapterName,
-                        ninjaWebView.url ?: "",
-                        { savedBookName ->
-                            progressDialog.dismiss()
-                            HelperUnit.openEpubToLastChapter(activity, fileUri)
+                    isNewFile,
+                    fileUri,
+                    rawHtml,
+                    bookName,
+                    chapterName,
+                    ninjaWebView.url ?: "",
+                    { savedBookName ->
+                        progressDialog.dismiss()
+                        HelperUnit.openEpubToLastChapter(activity, fileUri)
 
-                            // save epub file info to preference
-                            val bookUri = fileUri.toString()
-                            if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
-                                config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
-                            }
-                        },
-                        { progressDialog.dismiss() }
+                        // save epub file info to preference
+                        val bookUri = fileUri.toString()
+                        if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
+                            config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
+                        }
+                    },
+                    { progressDialog.dismiss() }
                 )
             }
         }
     }
 
     suspend fun getChapterName(defaultTitle: String?): String? {
-        var chapterName = defaultTitle?: "no title"
+        var chapterName = defaultTitle ?: "no title"
         return TextInputDialog(
             context,
             context.getString(R.string.title),
@@ -110,14 +110,14 @@ class EpubManager(private val context: Context): KoinComponent {
     }
 
     private suspend fun internalSaveEpub(
-            isNew: Boolean,
-            fileUri: Uri,
-            html: String,
-            bookName: String,
-            chapterName: String,
-            currentUrl: String,
-            doneAction: (String) -> Unit,
-            errorAction: () -> Unit
+        isNew: Boolean,
+        fileUri: Uri,
+        html: String,
+        bookName: String,
+        chapterName: String,
+        currentUrl: String,
+        doneAction: (String) -> Unit,
+        errorAction: () -> Unit
     ) {
         val webUri = Uri.parse(currentUrl)
         val domain = webUri.host ?: "EinkBro"
@@ -130,9 +130,16 @@ class EpubManager(private val context: Context): KoinComponent {
                 val chapterIndex = book.tableOfContents.allUniqueResources.size + 1
                 val chapterFileName = "chapter$chapterIndex.html"
 
-                val (processedHtml, imageMap) = processHtmlString(html, chapterIndex, "${webUri.scheme}://${webUri.host}/")
+                val (processedHtml, imageMap) = processHtmlString(
+                    html,
+                    chapterIndex,
+                    "${webUri.scheme}://${webUri.host}/"
+                )
 
-                book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
+                book.addSection(
+                    chapterName,
+                    Resource(processedHtml.byteInputStream(), chapterFileName)
+                )
 
                 saveImageResources(book, imageMap)
 
@@ -147,10 +154,10 @@ class EpubManager(private val context: Context): KoinComponent {
         if (!hasSavedSuccess) {
             errorAction()
             dialogManager.showOkCancelDialog(
-                    messageResId = R.string.cannot_open_file,
-                    okAction = {},
-                    showInCenter = true,
-                    showNegativeButton = false,
+                messageResId = R.string.cannot_open_file,
+                okAction = {},
+                showInCenter = true,
+                showNegativeButton = false,
             )
         }
     }
@@ -169,11 +176,12 @@ class EpubManager(private val context: Context): KoinComponent {
 
     private fun openBook(uri: Uri): Book? {
         try {
-            val takeFlags: Int = (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            val takeFlags: Int =
+                (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             context.contentResolver.takePersistableUriPermission(uri, takeFlags)
 
             val epubInputStream: InputStream = context.contentResolver.openInputStream(uri)
-                    ?: return createBook("", "EinkBro")
+                ?: return createBook("", "EinkBro")
 
             return EpubReader().readEpub(epubInputStream)
         } catch (e: IOException) {
@@ -193,7 +201,11 @@ class EpubManager(private val context: Context): KoinComponent {
         }
     }
 
-    private fun processHtmlString(html: String, chapterIndex: Int, baseUri: String): Pair<String, Map<String, String>> {
+    private fun processHtmlString(
+        html: String,
+        chapterIndex: Int,
+        baseUri: String
+    ): Pair<String, Map<String, String>> {
         val doc = Jsoup.parse(html, baseUri)
         doc.head().allElements.select("link").remove()
         doc.head().allElements.select("meta").remove()
@@ -217,32 +229,14 @@ class EpubManager(private val context: Context): KoinComponent {
 
     private suspend fun saveImageResources(book: Book, map: Map<String, String>) {
         map.entries.forEach { entry ->
-            book.addResource(Resource(null, getResourceFromUrl(entry.value), entry.key, MediatypeService.JPG))
+            book.addResource(
+                Resource(
+                    null,
+                    getResourceFromUrl(entry.value),
+                    entry.key,
+                    MediatypeService.JPG
+                )
+            )
         }
     }
-
-    private suspend fun getResourceFromUrl(url: String): ByteArray {
-        var byteArray: ByteArray = "".toByteArray()
-        withContext(Dispatchers.IO) {
-            try {
-                val connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection
-                connection.addRequestProperty("User-Agent", "Mozilla/4.76")
-                connection.connect()
-                if (connection.responseCode != HttpURLConnection.HTTP_OK) {
-                    if (isRedirect(connection.responseCode)) {
-                        val redirectUrl = connection.getHeaderField("Location")
-                        byteArray = getResourceFromUrl(redirectUrl)
-                    }
-                } else {
-                    byteArray = connection.inputStream.readBytes()
-                    connection.inputStream.close()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        return byteArray
-    }
-
-    private fun isRedirect(responseCode: Int): Boolean = responseCode in 301..399
 }

@@ -42,6 +42,8 @@ import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.*
+import java.net.HttpURLConnection
+import java.net.URL
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.*
@@ -649,4 +651,28 @@ object BrowserUnit : KoinComponent {
             </html>
         """.trimIndent()
     }
+
+    suspend fun getResourceFromUrl(url: String): ByteArray {
+        var byteArray: ByteArray = "".toByteArray()
+        withContext(Dispatchers.IO) {
+            try {
+                val connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection
+                connection.addRequestProperty("User-Agent", "Mozilla/4.76")
+                connection.connect()
+                if (connection.responseCode != HttpURLConnection.HTTP_OK) {
+                    if (isRedirect(connection.responseCode)) {
+                        val redirectUrl = connection.getHeaderField("Location")
+                        byteArray = getResourceFromUrl(redirectUrl)
+                    }
+                } else {
+                    byteArray = connection.inputStream.readBytes()
+                    connection.inputStream.close()
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return byteArray
+    }
+    private fun isRedirect(responseCode: Int): Boolean = responseCode in 301..399
 }

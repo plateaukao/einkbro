@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.caption.TimedText
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -27,6 +28,8 @@ import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -47,6 +50,10 @@ class NinjaWebViewClient(
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
     var book: Book? = null
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
 
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
@@ -214,6 +221,41 @@ class NinjaWebViewClient(
         val url = uri.toString()
         if (hasAdBlock && !adBlock.isWhite(url) && adBlock.isAd(url)) {
             return adTxtResponse
+        }
+
+        if (url.contains("timedtext")) {
+            val newUrl = "$url&tlang=zh-Hant"
+            val oldCaption = runBlocking { BrowserUnit.getResourceFromUrl(url) }
+            val newCaption = runBlocking { BrowserUnit.getResourceFromUrl(newUrl) }
+            val oldCaptionJson = json.decodeFromString(TimedText.serializer(), String(oldCaption))
+            val newCaptionJson = json.decodeFromString(TimedText.serializer(), String(newCaption))
+            oldCaptionJson.wsWinStyles.forEach {
+                if (it.mhModeHint != null) {
+                    it.mhModeHint = 0
+                }
+                if (it.sdScrollDir != null) {
+                    it.sdScrollDir = 0
+                }
+            }
+            oldCaptionJson.events.forEach { event ->
+                if (event.segs != null && event.segs.size > 0) {
+                    val first = event.segs.first()
+                    first.utf8 = event.segs.map { it.utf8 }.reduce { acc, s -> acc + s }
+                    first.utf8 += "\n" +
+                            newCaptionJson.events.firstOrNull { it.tStartMs == event.tStartMs }?.segs?.map { it.utf8 }
+                                ?.reduce { acc, str -> acc + str }
+                        ?: ""
+                    event.segs.clear()
+                    event.segs.add(first)
+                }
+            }
+            return WebResourceResponse(
+                "application/json",
+                "UTF-8",
+                ByteArrayInputStream(
+                    json.encodeToString(TimedText.serializer(), oldCaptionJson).toByteArray()
+                )
+            )
         }
 
         if (!config.cookies) {
