@@ -756,6 +756,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
 //            showValue = false
 //        ),
         DividerSettingItem(),
+        BooleanSettingItem(
+            R.string.setting_title_enable_inplace_translate,
+            R.drawable.ic_translate,
+            R.string.setting_summary_enable_inplace_translate,
+            config::enableInplaceParagraphTranslate
+        ),
         ValueSettingItem(
             R.string.setting_title_translated_langs,
             R.drawable.ic_translate,

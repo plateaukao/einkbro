@@ -51,11 +51,7 @@ import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.ByteArrayInputStream
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
-import java.io.UnsupportedEncodingException
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLDecoder
@@ -730,10 +726,7 @@ object BrowserUnit : KoinComponent {
                 e.printStackTrace()
             }
         }
-        val body = Jsoup.parse(String(byteArray)).body()
         return byteArray
     }
-
-
     private fun isRedirect(responseCode: Int): Boolean = responseCode in 301..399
 }
