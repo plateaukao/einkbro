@@ -437,4 +437,6 @@
     <string name="setting_title_use_custom_gpt_url">Use Alternative Server</string>
     <string name="setting_title_custom_gpt_url">Custom Host Url</string>
     <string name="setting_summary_custom_gpt_url">Input alternative openAI server url</string>
+    <string name="setting_title_enable_inplace_translate">Tranalate paragraphs in current tab</string>
+    <string name="setting_summary_enable_inplace_translate">Show paragraph translation in current tab</string>
 </resources>
