@@ -460,4 +460,6 @@
     <string name="setting_title_chat_stream">在信息流中回复</string>
     <string name="setting_summary_chat_stream">响应将逐字符显示，因此速度更快。</string>
     <string name="re_select">重选文本</string>
+    <string name="setting_dual_caption">Dual Caption for Youtube</string>
+    <string name="setting_summary_dual_caption">select language for second caption</string>
 </resources>

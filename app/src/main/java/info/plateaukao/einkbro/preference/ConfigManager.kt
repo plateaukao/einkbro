@@ -170,6 +170,8 @@ class ConfigManager(
     var papagoApiSecret by StringPreference(sp, K_PAPAGO_API_SECRET, "")
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
 
+    var dualCaptionLocale by StringPreference(sp, K_DUAL_CAPTION_LOCALE, "")
+
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
     var multitouchLeft by GestureTypePreference(sp, K_MULTITOUCH_LEFT)
@@ -530,6 +532,7 @@ class ConfigManager(
         const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
         const val K_PAPAGO_API_SECRET = "sp_papago_api_secret"
         const val K_IMAGE_API_KEY = "sp_image_api_key"
+        const val K_DUAL_CAPTION_LOCALE = "sp_dual_caption_locale"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 

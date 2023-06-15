@@ -387,4 +387,6 @@
     <string name="setting_title_chat_stream">Reply in stream</string>
     <string name="setting_summary_chat_stream">Response will be displayed character by character, so that it\'s faster.</string>
     <string name="re_select">reselect text</string>
+    <string name="setting_dual_caption">Dual Caption for Youtube</string>
+    <string name="setting_summary_dual_caption">select language for second caption</string>
 </resources>
