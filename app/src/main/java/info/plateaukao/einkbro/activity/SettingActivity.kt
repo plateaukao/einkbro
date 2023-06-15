@@ -37,6 +37,7 @@ import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
+import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -668,6 +669,15 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             config = config::imageApiKey,
             showValue = false
         ),
+        ActionSettingItem(
+            R.string.setting_dual_caption,
+            R.drawable.icon_arrow_up_gest,
+            R.string.setting_summary_dual_caption,
+        ) {
+            lifecycleScope.launch {
+                TranslationLanguageDialog(this@SettingActivity).showDualCaptionLocale()
+            }
+        },
     )
     private val userAgentSettingItems = listOf(
         BooleanSettingItem(

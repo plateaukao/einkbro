@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.util
 
+
 enum class TranslationLanguage(val value: String, val language: String) {
     ZH_TW("zh-TW", "Chinese (Traditional)"),
     ZH_CN("zh-CN", "Chinese (Simplified)"),

@@ -24,6 +24,29 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
         return config.translationLanguage
     }
 
+    suspend fun showDualCaptionLocale() {
+        // add support for "None" option
+        val languages = TranslationLanguage.values().map { it.language }
+            .toMutableList().apply { add(0, "None") }
+
+        val selectedIndex = ListSettingWithNameDialog(
+            context,
+            R.string.setting_dual_caption,
+            languages,
+            getDualCaptionIndex(config.dualCaptionLocale)
+        ).show() ?: return
+
+        if (selectedIndex == 0) {
+            config.dualCaptionLocale = ""
+        } else {
+            config.dualCaptionLocale = TranslationLanguage.values()[selectedIndex - 1].value
+        }
+    }
+
+    private fun getDualCaptionIndex(locale: String): Int =
+        if (locale.isEmpty()) 0
+        else TranslationLanguage.values().indexOfFirst { it.value == locale } + 1
+
     suspend fun showPapagoSourceLanguage(): TranslationLanguage? {
         val languages = listOf(
             TranslationLanguage.KO,
