@@ -167,9 +167,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                 child.text("")
                 break
             }
-
             if ((child.children().size == 0 && child.text().isNotBlank()) ||
-                child.tagName() in listOf("p", "h1", "h2", "h3", "h4", "h5", "h6")
+                child.tagName() in listOf("p", "h1", "h2", "h3", "h4", "h5", "h6", "em")
             ) {
                 if (child.text().isNotEmpty()) {
                     result += child
