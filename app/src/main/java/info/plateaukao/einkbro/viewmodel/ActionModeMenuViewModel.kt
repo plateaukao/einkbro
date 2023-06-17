@@ -105,6 +105,15 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                     action = { _actionModeMenuState.value = ActionModeMenuState.Papago }
                 )
             )
+            menuInfos.add(
+                0,
+                MenuInfo(
+                    context.getString(R.string.naver_translate),
+                    icon = ContextCompat.getDrawable(context, R.drawable.icon_search),
+                    action = { _actionModeMenuState.value = ActionModeMenuState.Naver }
+                )
+            )
+
         }
         menuInfos.add(
             0,
@@ -114,7 +123,6 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
             )
         )
-
         if (configManager.gptApiKey.isNotEmpty()) {
             menuInfos.add(
                 0,
@@ -158,4 +166,5 @@ sealed class ActionModeMenuState {
     object Gpt : ActionModeMenuState()
     object GoogleTranslate : ActionModeMenuState()
     object Papago : ActionModeMenuState()
+    object Naver : ActionModeMenuState()
 }

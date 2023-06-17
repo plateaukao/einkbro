@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TranslateRepository
+import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.NinjaWebView
@@ -51,6 +52,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
+            TRANSLATE_API.NAVER -> callNaverDict()
         }
     }
 
@@ -64,6 +66,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
+            else -> {}
         }
     }
 
@@ -71,6 +74,27 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate(userMessage)
             TRANSLATE_API.PAPAGO -> callPapagoTranslate(userMessage)
+            TRANSLATE_API.NAVER -> callNaverDict(userMessage)
+        }
+    }
+
+    private fun callNaverDict(userMessage: String? = null) {
+        if (userMessage != null) {
+            _inputMessage.value = userMessage
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val byteArray =
+                BrowserUnit.getResourceFromUrl("https://dict.naver.com/search.dict?target=dic&dicQuery=${_inputMessage.value}")
+            val document = Jsoup.parse(String(byteArray))
+            val container = document.body().getElementById("content")
+            var content = ""
+            content += container?.getElementsByClass("cn_dic_section")?.html() ?: ""
+            content += container?.getElementsByClass("hanja_dic_section")?.html() ?: ""
+            content += container?.getElementsByClass("jp_dic_section")?.html() ?: ""
+            content += container?.getElementsByClass("en_dic_section")?.html() ?: ""
+            content += container?.getElementsByClass("ko_dic_section")?.html() ?: ""
+            _responseMessage.value = content
         }
     }
 
@@ -182,5 +206,5 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO
+    GOOGLE, PAPAGO, NAVER
 }

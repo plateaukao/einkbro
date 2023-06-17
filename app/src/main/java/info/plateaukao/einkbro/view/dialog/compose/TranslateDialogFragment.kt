@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,11 +26,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -37,6 +41,7 @@ import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import kotlinx.coroutines.launch
+
 
 class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
@@ -48,9 +53,11 @@ class TranslateDialogFragment(
         MyTheme {
             TranslateResponse(
                 translationViewModel,
-                { changeTranslationLanguage() },
-                { dismiss() }
-            )
+                translateApi,
+                showExtraIcons = config.papagoApiSecret.isNotBlank(),
+                this::changeTranslationLanguage,
+                this::changeTranslationMethod,
+            ) { dismiss() }
         }
     }
 
@@ -59,6 +66,14 @@ class TranslateDialogFragment(
             val translationLanguage =
                 TranslationLanguageDialog(requireActivity()).show() ?: return@launch
             translationViewModel.updateTranslationLanguageAndGo(translateApi, translationLanguage)
+        }
+    }
+
+    private fun changeTranslationMethod(newTranslateApi: TRANSLATE_API) {
+        lifecycleScope.launch {
+            translationViewModel.updateTranslationLanguageAndGo(
+                newTranslateApi, translationViewModel.translationLanguage.value
+            )
         }
     }
 
@@ -78,12 +93,16 @@ class TranslateDialogFragment(
 @Composable
 private fun TranslateResponse(
     translationViewModel: TranslationViewModel,
+    translateApi: TRANSLATE_API,
+    showExtraIcons: Boolean,
     onTargetLanguageClick: () -> Unit,
+    changeTranslationMethod: (TRANSLATE_API) -> Unit,
     closeClick: () -> Unit = { },
 ) {
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
     val targetLanguage by translationViewModel.translationLanguage.collectAsState()
+    var translateApiState by remember { mutableStateOf(translateApi) }
     val showRequest = remember { mutableStateOf(false) }
 
     Column(
@@ -108,6 +127,41 @@ private fun TranslateResponse(
                 textAlign = TextAlign.Center,
                 onClick = onTargetLanguageClick
             )
+            if (showExtraIcons) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_translate_google),
+                    contentDescription = "Google Translate Icon",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clickable {
+                            translateApiState = TRANSLATE_API.GOOGLE
+                            changeTranslationMethod(TRANSLATE_API.GOOGLE)
+                        }
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_papago),
+                    contentDescription = "Papago Translate Icon",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clickable {
+                            translateApiState = TRANSLATE_API.PAPAGO
+                            changeTranslationMethod(TRANSLATE_API.PAPAGO)
+                        }
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_search),
+                    contentDescription = "Naver dict icon",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clickable {
+                            translateApiState = TRANSLATE_API.NAVER
+                            changeTranslationMethod(TRANSLATE_API.NAVER)
+                        }
+                )
+            }
             Icon(
                 painter = painterResource(
                     id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
@@ -135,10 +189,33 @@ private fun TranslateResponse(
             )
             Divider()
         }
-        Text(
-            text = responseMessage,
-            color = MaterialTheme.colors.onBackground,
-            modifier = Modifier.padding(10.dp)
-        )
+        if (translateApiState == TRANSLATE_API.NAVER) {
+            WebResultView(responseMessage)
+        } else {
+            Text(
+                text = responseMessage,
+                color = MaterialTheme.colors.onBackground,
+                modifier = Modifier.padding(10.dp)
+            )
+        }
     }
+}
+
+@Composable
+private fun WebResultView(webContent: String) {
+    AndroidView(
+        factory = { context -> WebView(context) },
+        modifier = Modifier
+            .height(400.dp)
+            .width(400.dp),
+        update = { webView ->
+            webView.loadDataWithBaseURL(
+                "https://dict.naver.com",
+                webContent,
+                "text/html",
+                "utf-8",
+                null
+            )
+        }
+    )
 }
