@@ -42,9 +42,12 @@ class DualCaptionProcessor:KoinComponent {
                 if (event.segs != null && event.segs.size > 0) {
                     val first = event.segs.first()
                     first.utf8 = event.segs.map { it.utf8 }.reduce { acc, s -> acc + s }
-                    first.utf8 += ("\n" +
-                            newCaptionJson.events.firstOrNull { it.tStartMs == event.tStartMs }?.segs?.map { it.utf8 }
-                                ?.reduce { acc, str -> acc + str })
+
+                    val newCaptionSeg = newCaptionJson.events.firstOrNull { it.tStartMs == event.tStartMs }?.segs
+                    if (!newCaptionSeg.isNullOrEmpty()) {
+                        first.utf8 += ("\n" +
+                                newCaptionSeg.map { it.utf8 }.reduce { acc, str -> acc + str })
+                    }
                     event.segs.clear()
                     event.segs.add(first)
                 }
