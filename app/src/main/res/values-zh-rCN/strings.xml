@@ -462,4 +462,5 @@
     <string name="re_select">重选文本</string>
     <string name="setting_dual_caption">Dual Caption for Youtube</string>
     <string name="setting_summary_dual_caption">select language for second caption</string>
+    <string name="naver_translate">Naver Translate</string>
 </resources>

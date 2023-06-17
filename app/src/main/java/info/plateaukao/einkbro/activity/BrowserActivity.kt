@@ -73,6 +73,7 @@ import info.plateaukao.einkbro.view.viewControllers.*
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.GoogleTranslate
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Naver
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
@@ -300,9 +301,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             actionModeMenuViewModel.actionModeMenuState.collect { state ->
                 val point = actionModeMenuViewModel.clickedPoint.value
                 when (state) {
-                    GoogleTranslate, Papago -> {
+                    GoogleTranslate, Papago, Naver -> {
                         val api =
-                            if (GoogleTranslate == state) TRANSLATE_API.GOOGLE else TRANSLATE_API.PAPAGO
+                            if (GoogleTranslate == state) TRANSLATE_API.GOOGLE
+                            else if (Papago == state) TRANSLATE_API.PAPAGO
+                            else TRANSLATE_API.NAVER
+
                         translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                         TranslateDialogFragment(translationViewModel, api, point)
                             .show(supportFragmentManager, "translateDialog")
