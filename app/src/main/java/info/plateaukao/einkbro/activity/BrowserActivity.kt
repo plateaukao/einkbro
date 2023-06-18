@@ -714,15 +714,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun hideOverview() = overviewDialogController.hide()
 
-    private var isRotated: Boolean = false
-    override fun rotateScreen() {
-        isRotated = !isRotated
-        requestedOrientation = if (!isRotated) {
-            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        } else {
-            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
-    }
+    override fun rotateScreen() = IntentUnit.rotateScreen(this)
 
     override fun saveBookmark(url: String?, title: String?) {
         val currentUrl = url ?: ninjaWebView.url ?: return
