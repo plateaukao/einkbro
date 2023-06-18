@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -88,4 +90,23 @@ object IntentUnit {
         } catch (e: Exception) {
             false
         }
+
+    private var isRotated: Boolean = false
+    fun rotateScreen(activity: Activity) {
+        isRotated = !isRotated
+        if (!Build.MANUFACTURER.equals("ONYX")) {
+            activity.requestedOrientation = if (!isRotated) {
+                ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            } else {
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            }
+        } else {
+            val intent = Intent().apply {
+                action = "com.onyx.action.ROTATION"
+                putExtra("rotation", if (isRotated) 1 else 0)
+                putExtra("args_rotate_by", 2)
+            }
+            activity.sendBroadcast(intent)
+        }
+    }
 }
