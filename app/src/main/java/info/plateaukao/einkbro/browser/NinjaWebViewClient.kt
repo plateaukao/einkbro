@@ -112,8 +112,9 @@ class NinjaWebViewClient(
         }
 
         if (url.startsWith("http")) {
-            webView.loadUrl(url, ninjaWebView.requestHeaders)
-            return true
+//            webView.loadUrl(url, ninjaWebView.requestHeaders)
+//            return true
+            return false
         }
 
         val packageManager = context.packageManager
