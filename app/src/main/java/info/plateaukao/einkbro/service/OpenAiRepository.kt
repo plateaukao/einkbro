@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.service
 
 import android.util.Log
+import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -13,6 +14,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSources
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -20,6 +22,9 @@ import kotlin.coroutines.suspendCoroutine
 class OpenAiRepository(
     private val apiKey: String
 ) : KoinComponent {
+
+    private val config: ConfigManager by inject()
+
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
@@ -84,7 +89,7 @@ class OpenAiRepository(
     ): Request = Request.Builder()
         .url(endpoint)
         .post(
-            json.encodeToString(ChatRequest("gpt-3.5-turbo", messages, stream))
+            json.encodeToString(ChatRequest(config.gptModel, messages, stream))
                 .toRequestBody(mediaType)
         )
         .header("Authorization", "Bearer $apiKey")
