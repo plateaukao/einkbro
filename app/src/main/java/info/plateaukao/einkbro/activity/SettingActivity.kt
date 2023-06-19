@@ -713,6 +713,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_edit_gpt_user_prompt,
             config::gptUserPromptPrefix
         ),
+        ValueSettingItem(
+            R.string.setting_title_gpt_model_name,
+            R.drawable.ic_chat_gpt,
+            R.string.setting_summary_gpt_model_name,
+            config::gptModel
+        ),
         BooleanSettingItem(
             R.string.use_it_on_dict_search,
             R.drawable.icon_search,
