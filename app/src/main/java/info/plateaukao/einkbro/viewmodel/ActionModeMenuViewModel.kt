@@ -142,7 +142,15 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 action = { ShareUtil.copyToClipboard(context, selectedText.value) }
             )
         )
-
+        if (configManager.splitSearchString.isNotEmpty()) {
+            menuInfos.add(
+                MenuInfo(
+                    context.getString(R.string.split_search),
+                    icon = ContextCompat.getDrawable(context, R.drawable.ic_split_screen),
+                    action = { _actionModeMenuState.value = ActionModeMenuState.SplitSearch }
+                )
+            )
+        }
         menuInfos.add(
             MenuInfo(
                 context.getString(R.string.re_select),
@@ -167,4 +175,5 @@ sealed class ActionModeMenuState {
     object GoogleTranslate : ActionModeMenuState()
     object Papago : ActionModeMenuState()
     object Naver : ActionModeMenuState()
+    object SplitSearch: ActionModeMenuState()
 }

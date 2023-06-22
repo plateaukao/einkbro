@@ -348,9 +348,9 @@
     <string name="settings_title_back_key_behavior">返回鍵行為</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history.</string>
     <string name="page_count">頁數資訊</string>
-    <string name="setting_title_userAgent_toggle">Enable Custom UserAgent</string>
-    <string name="setting_summary_userAgent">Input custom useragent strings here.</string>
-    <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
+    <string name="setting_title_userAgent_toggle">自訂 UserAgent</string>
+    <string name="setting_summary_userAgent">輸入想要的 Useragent 字串</string>
+    <string name="setting_summary_userAgent_toggle">啟用自訂的 Useragent</string>
     <string name="menu_add_to_pocket">加到 Pocket</string>
     <string name="content_adjustment">網頁內容調整</string>
     <string name="share_save">分享或儲存</string>
@@ -366,8 +366,8 @@
     <string name="dialog_touch_area_enable">啟動點擊翻頁</string>
     <string name="show_default_text_menu">顯示預設文字選取功能清單</string>
     <string name="setting_summary_show_default_text_menu">選取文字後，將顯示預設的功能清單</string>
-    <string name="google_translate">Google Translate</string>
-    <string name="translate_by_paragraph">Translate by Paragraph</string>
+    <string name="google_translate">Google翻譯</string>
+    <string name="translate_by_paragraph">依段落翻譯</string>
     <string name="translate_processing">網頁處理中...</string>
     <string name="translation_language">翻譯的語言</string>
     <string name="misc">其他</string>
@@ -390,6 +390,7 @@
     <string name="setting_dual_caption">Youtube雙語字幕</string>
     <string name="setting_summary_dual_caption">選擇第二字幕的語言</string>
     <string name="naver_translate">Naver Translate</string>
-    <string name="setting_title_gpt_model_name">ChatGPT Model Name</string>
-    <string name="setting_summary_gpt_model_name">Default is gpt-3.5-turbo. Fill other model name if necessary.</string>
+    <string name="setting_title_gpt_model_name">ChatGPT Model 名稱</string>
+    <string name="setting_summary_gpt_model_name">預設是gpt-3.5-turbo。可填入其他支援的Model名稱</string>
+    <string name="split_search">分割視窗搜尋</string>
 </resources>
