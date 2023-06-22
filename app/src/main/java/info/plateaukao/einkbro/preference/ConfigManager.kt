@@ -171,6 +171,13 @@ class ConfigManager(
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
 
+    //var splitSearchString by StringPreference(sp, K_SPLIT_SEARCH_STRING, "https://zh.dict.naver.com/#/search?range=all&query=%s")
+    var splitSearchString by StringPreference(
+        sp,
+        K_SPLIT_SEARCH_STRING,
+        "https://jisho.org/search/%s"
+    )
+
     var dualCaptionLocale by StringPreference(sp, K_DUAL_CAPTION_LOCALE, "")
 
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
@@ -535,6 +542,7 @@ class ConfigManager(
         const val K_IMAGE_API_KEY = "sp_image_api_key"
         const val K_DUAL_CAPTION_LOCALE = "sp_dual_caption_locale"
         const val K_GPT_MODEL = "sp_gp_model"
+        const val K_SPLIT_SEARCH_STRING = "sp_split_search_prefix"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 

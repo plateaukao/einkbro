@@ -75,6 +75,7 @@ import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.GoogleTranslate
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Naver
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SplitSearch
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
@@ -332,6 +333,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                                 .show(supportFragmentManager, "contextMenu")
                         } else {
                             NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
+                        }
+                        actionModeMenuViewModel.resetActionModeMenuState()
+                    }
+
+                    SplitSearch -> {
+                        val selectedText = actionModeMenuViewModel.selectedText.value
+                        if (selectedText != null) {
+                            toggleSplitScreen(config.splitSearchString.format(selectedText))
                         }
                         actionModeMenuViewModel.resetActionModeMenuState()
                     }
