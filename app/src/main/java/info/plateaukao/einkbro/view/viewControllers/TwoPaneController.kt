@@ -39,6 +39,7 @@ class TwoPaneController(
     private val onTranslationClosed: () -> Unit,
     private val loadTranslationUrl: (String) -> Unit,
     private val translateByParagraph: (TRANSLATE_API) -> Unit,
+    private val translateByScreen: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val webView: NinjaWebView by lazy {
@@ -183,6 +184,7 @@ class TwoPaneController(
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
             TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+            TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateByScreen()
         }
     }
 
@@ -251,6 +253,7 @@ class TwoPaneController(
             remove(TranslationMode.GOOGLE)
             if (config.papagoApiSecret.isBlank()) {
                 remove(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
+                remove(TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN)
             }
         }
 
