@@ -12,7 +12,6 @@ import android.util.Base64
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.webkit.CookieManager
-import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.viewbinding.BuildConfig
@@ -26,16 +25,12 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.TranslationMode
-import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -43,7 +38,6 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
-import java.util.concurrent.Semaphore
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.ceil
@@ -925,12 +919,12 @@ open class NinjaWebView(
                     "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
                     "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
                     "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap');" +
-                    "body {\n" +
+                    "* {\n" +
                     "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
                     //"font-family: serif !important;\n" +
                     "}\n"
         private const val serifFontCss =
-            "body {\n" +
+            "* {\n" +
                     "font-family: serif !important;\n" +
                     "}\n"
 
@@ -941,7 +935,7 @@ open class NinjaWebView(
                  font-display: swap;
                  src: url('mycustomfont');
             }
-            body {
+            * {
               font-family: fontfamily !important;
             }
         """
@@ -1011,43 +1005,5 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
     init {
         initAlbum()
-    }
-}
-
-class JsWebInterface(private val webView: NinjaWebView) :
-    KoinComponent {
-    private val translateRepository: TranslateRepository = TranslateRepository()
-    private val configManager: ConfigManager by inject()
-
-    // to control the translation request threshold
-    private val semaphoreForTranslate = Semaphore(4)
-
-    @JavascriptInterface
-    fun getTranslation(originalText: String, elementId: String, callback: String) {
-        val translateApi = webView.translateApi
-
-        GlobalScope.launch(IO) {
-            semaphoreForTranslate.acquire()
-            val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
-                translateRepository.ppTranslate(
-                    originalText,
-                    configManager.translationLanguage.value,
-                )
-            } else {
-                translateRepository.gTranslateWithApi(
-                    originalText,
-                    configManager.translationLanguage.value
-                )
-            }
-            withContext(Main) {
-                if (webView.isAttachedToWindow) {
-                    webView.evaluateJavascript(
-                        "$callback('$elementId', '$translatedString')",
-                        null
-                    )
-                }
-            }
-            semaphoreForTranslate.release()
-        }
     }
 }
