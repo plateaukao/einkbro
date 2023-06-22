@@ -408,7 +408,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         when (translationMode) {
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
             TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
-            //TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateWebView()
+            TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateWebView()
             TranslationMode.GOOGLE_IN_PLACE -> ninjaWebView.addGoogleTranslation()
             else -> Unit
         }
@@ -797,7 +797,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 { showTranslation() },
                 { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
                 { url -> ninjaWebView.loadUrl(url) },
-                this::translateByParagraph
+                this::translateByParagraph,
+                this::translateWebView
             )
         }
     }
