@@ -36,6 +36,7 @@ import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.DomainInterface
 import info.plateaukao.einkbro.browser.Javascript
+import info.plateaukao.einkbro.search.SplitSearchListType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.launch
@@ -114,6 +115,7 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
             WhiteListType.Adblock -> WhiteListTypeAdblock()
             WhiteListType.Javascript -> BaseWhiteListTypeJavascript()
             WhiteListType.Cookie -> BaseWhiteListTypeCookie()
+            WhiteListType.SplitSearch -> SplitSearchListType()
         }
 
     companion object {
@@ -130,7 +132,8 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
 enum class WhiteListType {
     Adblock,
     Cookie,
-    Javascript
+    Javascript,
+    SplitSearch
 }
 
 
@@ -186,7 +189,7 @@ abstract class BaseWhiteListType {
     abstract val titleId: Int
     abstract val domainHandler: DomainInterface
     fun getDomains(): List<String> = domainHandler.getDomains()
-    fun addDomain(
+    open fun addDomain(
         lifecycleScope: LifecycleCoroutineScope,
         dialogManager: DialogManager,
         postAction: (String) -> Unit

@@ -15,6 +15,8 @@ import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.koin.core.component.KoinComponent
 import java.util.Locale
 import kotlin.properties.ReadWriteProperty
@@ -410,6 +412,40 @@ class ConfigManager(
             sp.edit { putString(K_FAB_POSITION_LAND, "${value.x},${value.y}") }
         }
 
+    var splitSearchItemInfoList: List<SplitSearchItemInfo>
+        get() {
+            val str = sp.getString(K_SPLIT_SEARCH_ITEMS, "") ?: ""
+            return if (str.isBlank()) emptyList()
+            else str.split("###").mapNotNull {
+                decodeFromString(SplitSearchItemInfo.serializer(), it)
+            }
+        }
+        private set(value) {
+            sp.edit {
+                putString(K_SPLIT_SEARCH_ITEMS,
+                    value.joinToString("###") {
+                        Json.encodeToString(SplitSearchItemInfo.serializer(), it)
+                    }
+                )
+            }
+        }
+
+    fun addSplitSearchItem(item: SplitSearchItemInfo) {
+        val list = splitSearchItemInfoList.toMutableList()
+        list.add(item)
+        splitSearchItemInfoList = list
+    }
+
+    fun deleteSplitSearchItem(item: SplitSearchItemInfo) {
+        val list = splitSearchItemInfoList.toMutableList()
+        list.remove(item)
+        splitSearchItemInfoList = list
+    }
+
+    fun deleteAllSplitSearchItems() {
+        splitSearchItemInfoList = emptyList()
+    }
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -563,6 +599,8 @@ class ConfigManager(
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"
 
         private const val RECENT_BOOKMARK_LIST_SIZE = 10
+
+        private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =

@@ -393,4 +393,9 @@
     <string name="setting_title_gpt_model_name">ChatGPT Model 名稱</string>
     <string name="setting_summary_gpt_model_name">預設是gpt-3.5-turbo。可填入其他支援的Model名稱</string>
     <string name="split_search">分割視窗搜尋</string>
+    <string name="split_search_settings">Split Search Settings</string>
+    <string name="setting_title_split_search_setting">Split Search Setting</string>
+    <string name="setting_summary_split_search_setting">Custom search and open results in split screen</string>
+    <string name="description_split_screen_string_pattern">custom search url with keyword position as %s</string>
+    <string name="description_split_screen_title">Input the name to be shown on context menu</string>
 </resources>
