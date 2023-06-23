@@ -337,11 +337,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         actionModeMenuViewModel.resetActionModeMenuState()
                     }
 
-                    SplitSearch -> {
+                    is SplitSearch -> {
                         val selectedText = actionModeMenuViewModel.selectedText.value
-                        if (selectedText != null) {
-                            toggleSplitScreen(config.splitSearchString.format(selectedText))
-                        }
+                        toggleSplitScreen(state.stringFromat.format(selectedText))
+
                         actionModeMenuViewModel.resetActionModeMenuState()
                     }
 
