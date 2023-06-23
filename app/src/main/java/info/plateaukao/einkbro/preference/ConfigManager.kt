@@ -173,13 +173,6 @@ class ConfigManager(
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
 
-    //var splitSearchString by StringPreference(sp, K_SPLIT_SEARCH_STRING, "https://zh.dict.naver.com/#/search?range=all&query=%s")
-    var splitSearchString by StringPreference(
-        sp,
-        K_SPLIT_SEARCH_STRING,
-        "https://jisho.org/search/%s"
-    )
-
     var dualCaptionLocale by StringPreference(sp, K_DUAL_CAPTION_LOCALE, "")
 
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
