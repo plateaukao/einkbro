@@ -19,7 +19,6 @@ import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
-import info.plateaukao.einkbro.view.dialog.SendLinkDialog
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
@@ -54,9 +53,11 @@ class MenuActionHandler(
             "toolbar_config"
         )
 
-        MenuItemType.ReceiveData -> showReceiveDataDialog(ninjaWebView)
-        MenuItemType.SendLink ->
-            SendLinkDialog(activity, activity.lifecycleScope).show(ninjaWebView.url.orEmpty())
+//        MenuItemType.ReceiveData -> showReceiveDataDialog(ninjaWebView)
+//        MenuItemType.SendLink ->
+//            SendLinkDialog(activity, activity.lifecycleScope).show(ninjaWebView.url.orEmpty())
+        MenuItemType.ReceiveData -> browserController.toggleReceiveLink()
+        MenuItemType.SendLink -> browserController.toggleSendLink()
 
         MenuItemType.ShareLink ->
             IntentUnit.share(activity, ninjaWebView.title, ninjaWebView.url)
