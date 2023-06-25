@@ -4,6 +4,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
 
+def getCurrentTimestamp() {
+    return new Date().format('MMddHHmmss')
+}
+
 android {
     compileSdk 33
     buildToolsVersion = '33.0.0'
@@ -12,8 +16,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 100801
-        versionName "10.8.1"
+        versionCode 10_09_00
+        versionName "10.9.0-${getCurrentTimestamp()}"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -22,6 +26,7 @@ android {
             }
         }
     }
+
 
     buildTypes {
         release {
