@@ -25,6 +25,7 @@ class ReceiveDataDialog(
                 dialog.dismiss()
                 afterAction(it)
             }
+            ShareUtil.stopBroadcast()
         }
     }
 }

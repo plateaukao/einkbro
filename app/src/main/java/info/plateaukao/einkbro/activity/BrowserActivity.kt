@@ -434,6 +434,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
 
+    private var isSendingLink: Boolean = false
+    override fun toggleSendLink() {
+        isSendingLink = !isSendingLink
+        if (!isSendingLink) {
+            ShareUtil.stopBroadcast()
+        }
+    }
+
+    private var isReceivingLink: Boolean = false
+    override fun toggleReceiveLink() {
+        isReceivingLink = !isReceivingLink
+        if (isReceivingLink) {
+            ShareUtil.startReceiving(lifecycleScope) { url ->
+                runOnUiThread {
+                    ninjaWebView.loadUrl(url)
+                }
+            }
+        } else {
+            ShareUtil.stopBroadcast()
+        }
+    }
+
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
         customFontResultLauncher =
@@ -2153,6 +2175,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
         super.onActionModeStarted(mode)
+        // check isSendingLink
+        if (isSendingLink && !isTextEditMode(mode.menu)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mode.hide(1000000)
+            }
+            mode.menu.clear()
+            mode.finish()
+
+            lifecycleScope.launch {
+                val keyword = ninjaWebView.getSelectedText()
+                val url = config.splitSearchItemInfoList.first().stringPattern.format(keyword)
+                ShareUtil.startBroadcastingUrl(lifecycleScope, url)
+            }
+            return
+        }
+
         // check split search state
         if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu) && isInSplitSearchMode()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

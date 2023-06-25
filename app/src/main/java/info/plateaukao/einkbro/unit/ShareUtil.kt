@@ -7,10 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.NinjaToast
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
-import java.net.*
+import java.net.DatagramPacket
+import java.net.InetAddress
+import java.net.MulticastSocket
+import java.net.SocketException
 
 object ShareUtil : KoinComponent {
     private const val multicastIp = "239.10.10.100"
@@ -28,29 +34,35 @@ object ShareUtil : KoinComponent {
         NinjaToast.show(context, R.string.toast_copy_successful)
     }
 
+    private var bytesToBeSent = ByteArray(0)
     fun startBroadcastingUrl(lifecycleCoroutineScope: LifecycleCoroutineScope, url: String) {
-        broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
-            try {
-                socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
-                val bytes = url.toByteArray()
-                while (true) {
-                    socket?.send(DatagramPacket(bytes, bytes.size, group, multicastPort))
-                    delay(broadcastIntervalInMilli) // 1 second
+        if (broadcastJob != null && socket?.isConnected == true) {
+            bytesToBeSent = url.toByteArray()
+        } else {
+            broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
+                try {
+                    socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
+                    bytesToBeSent = url.toByteArray()
+                    while (true) {
+                        socket?.send(DatagramPacket(bytesToBeSent, bytesToBeSent.size, group, multicastPort))
+                        delay(broadcastIntervalInMilli) // 1 second
+                    }
+                } catch (exception: Exception) {
+                    exception.printStackTrace()
                 }
-            } catch (exception: Exception) {
-                exception.printStackTrace()
             }
         }
     }
 
     fun stopBroadcast() {
+        broadcastJob?.cancel()
+        broadcastJob = null
         socket?.leaveGroup(group)
         socket?.close()
         socket = null
-        broadcastJob?.cancel()
-        broadcastJob = null
     }
 
+    private var receivedString = ""
     fun startReceiving(
         lifecycleCoroutineScope: LifecycleCoroutineScope,
         receivedAction: (String) -> Unit
@@ -60,19 +72,26 @@ object ShareUtil : KoinComponent {
         broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
             try {
                 socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
-                socket?.receive(receivePacket)
             } catch (exception: SocketException) {
-                // closed before receiving data
                 return@launch
             }
-            val receivedString = String(receivePacket.data, 0, receivePacket.length)
-            val processedString = if (receivedString.startsWith("http")) {
-                receivedString // EinkBro case
-            } else {
-                handleSharikScenario(receivePacket.address.toString(), receivedString)
+            while(true) {
+                try {
+                    socket?.receive(receivePacket)
+                } catch (exception: SocketException) {
+                    return@launch
+                }
+                val newString = String(receivePacket.data, 0, receivePacket.length)
+                if (receivedString == newString) continue
+                else receivedString = newString
+
+                val processedString = if (receivedString.startsWith("http")) {
+                    receivedString // EinkBro case
+                } else {
+                    handleSharikScenario(receivePacket.address.toString(), receivedString)
+                }
+                receivedAction(processedString)
             }
-            receivedAction(processedString)
-            stopBroadcast()
         }
     }
 
