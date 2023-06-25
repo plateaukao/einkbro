@@ -180,5 +180,5 @@ sealed class ActionModeMenuState {
     object GoogleTranslate : ActionModeMenuState()
     object Papago : ActionModeMenuState()
     object Naver : ActionModeMenuState()
-    class SplitSearch(val stringFromat: String): ActionModeMenuState()
+    class SplitSearch(val stringFormat: String): ActionModeMenuState()
 }

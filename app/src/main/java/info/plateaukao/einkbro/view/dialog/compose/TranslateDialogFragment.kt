@@ -207,7 +207,8 @@ private fun WebResultView(webContent: String) {
         factory = { context -> WebView(context) },
         modifier = Modifier
             .height(400.dp)
-            .width(400.dp),
+            .width(400.dp)
+            .padding(2.dp),
         update = { webView ->
             webView.loadDataWithBaseURL(
                 "https://dict.naver.com",
