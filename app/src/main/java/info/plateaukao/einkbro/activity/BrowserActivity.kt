@@ -91,6 +91,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.File
+import java.net.URLEncoder
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -340,7 +341,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     is SplitSearch -> {
                         splitSearchState = state
                         val selectedText = actionModeMenuViewModel.selectedText.value
-                        toggleSplitScreen(state.stringFromat.format(selectedText))
+                        toggleSplitScreen(
+                            state.stringFromat.format(
+                                URLEncoder.encode(selectedText, "UTF-8")
+                            )
+                        )
 
                         actionModeMenuViewModel.resetActionModeMenuState()
                     }
@@ -2158,7 +2163,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             mode.menu.clear()
 
             lifecycleScope.launch {
-                toggleSplitScreen(splitSearchState?.stringFromat?.format(ninjaWebView.getSelectedText()))
+                toggleSplitScreen(
+                    splitSearchState?.stringFromat?.format(
+                        URLEncoder.encode(ninjaWebView.getSelectedText(), "UTF-8")
+                    )
+                )
             }
 
             mode.finish()
