@@ -342,7 +342,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         splitSearchState = state
                         val selectedText = actionModeMenuViewModel.selectedText.value
                         toggleSplitScreen(
-                            state.stringFromat.format(
+                            state.stringFormat.format(
                                 URLEncoder.encode(selectedText, "UTF-8")
                             )
                         )
@@ -2164,7 +2164,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             lifecycleScope.launch {
                 toggleSplitScreen(
-                    splitSearchState?.stringFromat?.format(
+                    splitSearchState?.stringFormat?.format(
                         URLEncoder.encode(ninjaWebView.getSelectedText(), "UTF-8")
                     )
                 )

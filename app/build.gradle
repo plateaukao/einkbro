@@ -5,7 +5,7 @@ apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
 
 def getCurrentTimestamp() {
-    return new Date().format('MMddHHmmss')
+    return new Date().format('MMddHHmm')
 }
 
 android {
