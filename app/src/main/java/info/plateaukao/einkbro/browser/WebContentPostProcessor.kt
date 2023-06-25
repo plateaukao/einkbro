@@ -94,8 +94,8 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
         """
         private const val zoomAndDesktopTemplateJs =
             "javascript:document.getElementsByName('viewport')[0].setAttribute('content', '%s%s');"
+
         private const val enableZoomJs = "initial-scale=1,maximum-scale=10.0,"
-        private const val enableDesktopJs = "width=1024"
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
               function removeItems() {

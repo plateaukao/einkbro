@@ -338,6 +338,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
 
                     is SplitSearch -> {
+                        splitSearchState = state
                         val selectedText = actionModeMenuViewModel.selectedText.value
                         toggleSplitScreen(state.stringFromat.format(selectedText))
 
@@ -349,6 +350,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
     }
+
+    private var splitSearchState: SplitSearch? = null
+    private fun isInSplitSearchMode(): Boolean =
+        splitSearchState != null && twoPaneController.isSecondPaneDisplayed()
 
     private fun initLanguageLabel() {
         languageLabelView = findViewById(R.id.translation_language)
@@ -2109,6 +2114,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         maybeInitTwoPaneController()
         if (twoPaneController.isSecondPaneDisplayed() && url == null) {
             twoPaneController.hideSecondPane()
+            // reset split search state
+            splitSearchState = null
             return
         }
 
@@ -2143,11 +2150,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
         super.onActionModeStarted(mode)
+        // check split search state
+        if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu) && isInSplitSearchMode()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mode.hide(1000000)
+            }
+            mode.menu.clear()
+
+            lifecycleScope.launch {
+                toggleSplitScreen(splitSearchState?.stringFromat?.format(ninjaWebView.getSelectedText()))
+            }
+
+            mode.finish()
+            return
+        }
+
         if (!actionModeMenuViewModel.isInActionMode()) {
             actionModeMenuViewModel.updateActionMode(mode)
 
             if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
-                mode.hide(1000000)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    mode.hide(1000000)
+                }
                 lifecycleScope.launch {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
                     actionModeMenuViewModel.showActionModeDialogFragment(
