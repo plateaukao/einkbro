@@ -873,6 +873,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             "", Intent.ACTION_MAIN -> initSavedTabs { addAlbum() }
 
             ACTION_VIEW -> {
+                initSavedTabs()
                 // if webview for that url already exists, show the original tab, otherwise, create new
                 val viewUri = intent.data?.toNormalScheme() ?: Uri.parse(config.favoriteUrl)
                 if (viewUri.scheme == "content") {
