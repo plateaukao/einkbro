@@ -18,6 +18,7 @@ class SendLinkDialog(
             setView(ProgressBar(context))
             setNeutralButton(R.string.done) { _, _ -> ShareUtil.stopBroadcast() }
             setTitle(R.string.menu_send_link)
+            setOnDismissListener { ShareUtil.stopBroadcast() }
         }.show()
     }
 }

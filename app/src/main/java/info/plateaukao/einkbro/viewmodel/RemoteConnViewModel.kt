@@ -14,7 +14,7 @@ class RemoteConnViewModel : ViewModel(), KoinComponent {
     private val config: ConfigManager by inject()
 
     var isSendingTextSearch: Boolean = false
-    private var isReceivingLink: Boolean = false
+    var isReceivingLink: Boolean = false
 
     private val _remoteConnected = MutableStateFlow(false)
     val remoteConnected: StateFlow<Boolean> = _remoteConnected.asStateFlow()

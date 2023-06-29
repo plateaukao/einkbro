@@ -18,6 +18,9 @@ class ReceiveDataDialog(
             setView(ProgressBar(context))
             setPositiveButton(R.string.done) { _, _ -> ShareUtil.stopBroadcast() }
             setTitle(R.string.menu_receive)
+            setOnDismissListener {
+                afterAction("")
+            }
         }.show()
 
         ShareUtil.startReceiving(lifecycleCoroutineScope) {
