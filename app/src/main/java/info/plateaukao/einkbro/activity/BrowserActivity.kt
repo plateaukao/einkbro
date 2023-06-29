@@ -2206,8 +2206,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             lifecycleScope.launch {
                 val keyword = ninjaWebView.getSelectedText()
-                val url = config.splitSearchItemInfoList.first().stringPattern.format(keyword)
-                ShareUtil.startBroadcastingUrl(lifecycleScope, url)
+                remoteConnViewModel.sendTextSearch(keyword)
             }
             return
         }

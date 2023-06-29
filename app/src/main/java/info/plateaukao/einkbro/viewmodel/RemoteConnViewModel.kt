@@ -2,17 +2,27 @@ package info.plateaukao.einkbro.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class RemoteConnViewModel : ViewModel() {
+class RemoteConnViewModel : ViewModel(), KoinComponent {
+    private val config: ConfigManager by inject()
+
     var isSendingTextSearch: Boolean = false
     private var isReceivingLink: Boolean = false
 
     private val _remoteConnected = MutableStateFlow(false)
     val remoteConnected: StateFlow<Boolean> = _remoteConnected.asStateFlow()
+
+    fun sendTextSearch(text: String) {
+        val url = config.splitSearchItemInfoList.first().stringPattern.format(text)
+        ShareUtil.startBroadcastingUrl(viewModelScope, url, 10)
+    }
 
     fun toggleTextSearch() {
         isSendingTextSearch = !isSendingTextSearch
