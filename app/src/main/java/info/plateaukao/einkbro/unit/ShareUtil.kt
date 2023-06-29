@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.NinjaToast
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -64,7 +65,7 @@ object ShareUtil : KoinComponent {
 
     private var receivedString = ""
     fun startReceiving(
-        lifecycleCoroutineScope: LifecycleCoroutineScope,
+        lifecycleCoroutineScope: CoroutineScope,
         receivedAction: (String) -> Unit
     ) {
         val receiveData = ByteArray(4096)

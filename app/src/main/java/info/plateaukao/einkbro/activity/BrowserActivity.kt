@@ -84,6 +84,7 @@ import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.PocketShareState
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
+import info.plateaukao.einkbro.viewmodel.RemoteConnViewModel
 import info.plateaukao.einkbro.viewmodel.SplitSearchViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
@@ -92,7 +93,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.File
-import java.net.URLEncoder
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -123,6 +123,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val translationViewModel: TranslationViewModel by viewModels()
 
     private val splitSearchViewModel: SplitSearchViewModel by viewModels()
+
+    private val remoteConnViewModel: RemoteConnViewModel by viewModels()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -270,8 +272,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         initTouchAreaViewController()
 
+        initTextSearchButton()
+
         if (config.hideStatusbar) {
             hideStatusBar()
+        }
+    }
+
+    private fun initTextSearchButton() {
+        val remoteTextSearch = findViewById<View>(R.id.remote_text_search)
+        remoteTextSearch.setOnClickListener {
+            remoteConnViewModel.reset()
+        }
+        lifecycleScope.launch {
+            remoteConnViewModel.remoteConnected.collect { connected ->
+                remoteTextSearch.isVisible = connected
+            }
         }
     }
 
@@ -434,25 +450,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
 
-    private var isSendingLink: Boolean = false
-    override fun toggleSendLink() {
-        isSendingLink = !isSendingLink
-        if (!isSendingLink) {
-            ShareUtil.stopBroadcast()
+    override fun sendToRemote(text: String) {
+        if (remoteConnViewModel.isSendingTextSearch) {
+            remoteConnViewModel.toggleTextSearch()
+            NinjaToast.show(this, R.string.send_to_remote_terminate)
+            return
+        }
+
+        lifecycleScope.launch {
+            val selectedIndex = dialogManager.getSelectedOption(
+                R.string.send_type,
+                listOf(R.string.current_url, R.string.text_selection_search), 0
+            )
+            when (selectedIndex) {
+                0 -> SendLinkDialog(this@BrowserActivity, lifecycleScope).show(text)
+                1 -> remoteConnViewModel.toggleTextSearch()
+            }
         }
     }
 
-    private var isReceivingLink: Boolean = false
-    override fun toggleReceiveLink() {
-        isReceivingLink = !isReceivingLink
-        if (isReceivingLink) {
-            ShareUtil.startReceiving(lifecycleScope) { url ->
-                runOnUiThread {
-                    ninjaWebView.loadUrl(url)
-                }
-            }
-        } else {
-            ShareUtil.stopBroadcast()
+    override fun toggleReceiveLink() = remoteConnViewModel.toggleReceiveLink { url ->
+        runOnUiThread {
+            ninjaWebView.loadUrl(url)
         }
     }
 
@@ -2176,7 +2195,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun onActionModeStarted(mode: ActionMode) {
         super.onActionModeStarted(mode)
         // check isSendingLink
-        if (isSendingLink && !isTextEditMode(mode.menu)) {
+        if (remoteConnViewModel.isSendingTextSearch &&
+            !isTextEditMode(mode.menu)
+        ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 mode.hide(1000000)
             }
@@ -2191,7 +2212,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        // check split search state
         if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu) && isInSplitSearchMode()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 mode.hide(1000000)
