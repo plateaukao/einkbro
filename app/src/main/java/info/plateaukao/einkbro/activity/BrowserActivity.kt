@@ -84,6 +84,7 @@ import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.PocketShareState
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
+import info.plateaukao.einkbro.viewmodel.SplitSearchViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import kotlinx.coroutines.Dispatchers
@@ -120,6 +121,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val gptViewModel: GptViewModel by viewModels()
     private val translationViewModel: TranslationViewModel by viewModels()
+
+    private val splitSearchViewModel: SplitSearchViewModel by viewModels()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -339,13 +342,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
 
                     is SplitSearch -> {
-                        splitSearchState = state
+                        splitSearchViewModel.state = state
                         val selectedText = actionModeMenuViewModel.selectedText.value
-                        toggleSplitScreen(
-                            state.stringFormat.format(
-                                URLEncoder.encode(selectedText, "UTF-8")
-                            )
-                        )
+                        toggleSplitScreen(splitSearchViewModel.getUrl(selectedText))
 
                         actionModeMenuViewModel.resetActionModeMenuState()
                     }
@@ -356,9 +355,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private var splitSearchState: SplitSearch? = null
     private fun isInSplitSearchMode(): Boolean =
-        splitSearchState != null && twoPaneController.isSecondPaneDisplayed()
+        splitSearchViewModel.state != null && twoPaneController.isSecondPaneDisplayed()
 
     private fun initLanguageLabel() {
         languageLabelView = findViewById(R.id.translation_language)
@@ -2120,8 +2118,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         maybeInitTwoPaneController()
         if (twoPaneController.isSecondPaneDisplayed() && url == null) {
             twoPaneController.hideSecondPane()
-            // reset split search state
-            splitSearchState = null
+            splitSearchViewModel.reset()
             return
         }
 
@@ -2164,11 +2161,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             mode.menu.clear()
 
             lifecycleScope.launch {
-                toggleSplitScreen(
-                    splitSearchState?.stringFormat?.format(
-                        URLEncoder.encode(ninjaWebView.getSelectedText(), "UTF-8")
-                    )
-                )
+                toggleSplitScreen(splitSearchViewModel.getUrl(ninjaWebView.getSelectedText()))
             }
 
             mode.finish()
