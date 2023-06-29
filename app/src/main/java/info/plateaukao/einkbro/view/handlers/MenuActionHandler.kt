@@ -57,7 +57,7 @@ class MenuActionHandler(
 //        MenuItemType.SendLink ->
 //            SendLinkDialog(activity, activity.lifecycleScope).show(ninjaWebView.url.orEmpty())
         MenuItemType.ReceiveData -> browserController.toggleReceiveLink()
-        MenuItemType.SendLink -> browserController.toggleSendLink()
+        MenuItemType.SendLink -> browserController.sendToRemote(ninjaWebView.url.orEmpty())
 
         MenuItemType.ShareLink ->
             IntentUnit.share(activity, ninjaWebView.title, ninjaWebView.url)

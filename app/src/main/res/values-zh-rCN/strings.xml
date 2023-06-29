@@ -471,4 +471,8 @@
     <string name="setting_summary_split_search_setting">Custom search and open results in split screen</string>
     <string name="description_split_screen_string_pattern">custom search url with keyword position as %s</string>
     <string name="description_split_screen_title">Input the name to be shown on context menu</string>
+    <string name="send_type">Send Type</string>
+    <string name="current_url">Current Url</string>
+    <string name="text_selection_search">Text Selection Search</string>
+    <string name="send_to_remote_terminate">Terminate remote text search</string>
 </resources>

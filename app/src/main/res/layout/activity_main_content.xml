@@ -174,7 +174,7 @@
         android:id="@+id/translation_language"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="0.5dp"
         android:background="@drawable/background_with_border"
@@ -184,4 +184,15 @@
         android:tint="?attr/colorControlNormal"
         android:visibility="gone"
         tools:text="zh" />
+
+    <ImageButton
+        android:id="@+id/remote_text_search"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="0.5dp"
+        android:background="@drawable/background_with_border"
+        android:src="@drawable/icon_search"
+        app:tint="?attr/colorControlNormal" />
 </RelativeLayout>
