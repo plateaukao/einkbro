@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.NinjaToast
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +35,11 @@ object ShareUtil : KoinComponent {
     }
 
     private var bytesToBeSent = ByteArray(0)
-    fun startBroadcastingUrl(lifecycleCoroutineScope: LifecycleCoroutineScope, url: String) {
+    fun startBroadcastingUrl(
+        lifecycleCoroutineScope: CoroutineScope,
+        url: String,
+        times: Int = 999
+    ) {
         if (broadcastJob != null && socket?.isConnected == true) {
             bytesToBeSent = url.toByteArray()
         } else {
@@ -44,7 +47,7 @@ object ShareUtil : KoinComponent {
                 try {
                     socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
                     bytesToBeSent = url.toByteArray()
-                    while (true) {
+                    repeat(times) {
                         socket?.send(DatagramPacket(bytesToBeSent, bytesToBeSent.size, group, multicastPort))
                         delay(broadcastIntervalInMilli) // 1 second
                     }
