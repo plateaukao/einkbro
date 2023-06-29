@@ -402,4 +402,6 @@
     <string name="current_url">Current Url</string>
     <string name="text_selection_search">Text Selection Search</string>
     <string name="send_to_remote_terminate">Terminate remote text search</string>
+    <string name="receive_link_terminate">Terminate receiving link</string>
+    <string name="receive_once">receive once</string>
 </resources>

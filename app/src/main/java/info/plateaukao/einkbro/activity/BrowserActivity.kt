@@ -42,6 +42,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
@@ -280,12 +281,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun initTextSearchButton() {
-        val remoteTextSearch = findViewById<View>(R.id.remote_text_search)
+        val remoteTextSearch = findViewById<ImageButton>(R.id.remote_text_search)
         remoteTextSearch.setOnClickListener {
             remoteConnViewModel.reset()
         }
         lifecycleScope.launch {
             remoteConnViewModel.remoteConnected.collect { connected ->
+                remoteTextSearch.setImageResource(
+                    if (remoteConnViewModel.isSendingTextSearch) R.drawable.ic_send
+                    else R.drawable.ic_receive
+                )
                 remoteTextSearch.isVisible = connected
             }
         }
@@ -469,10 +474,33 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun toggleReceiveLink() = remoteConnViewModel.toggleReceiveLink { url ->
-        runOnUiThread {
-            ninjaWebView.loadUrl(url)
+    override fun toggleReceiveLink() {
+        if (remoteConnViewModel.isReceivingLink) {
+            remoteConnViewModel.toggleReceiveLink {}
+            NinjaToast.show(this, R.string.receive_link_terminate)
+            return
         }
+
+        lifecycleScope.launch {
+            val selectedIndex = dialogManager.getSelectedOption(
+                R.string.send_type,
+                listOf(R.string.receive_once, R.string.text_selection_search), 0
+            )
+            when (selectedIndex) {
+                0 -> ReceiveDataDialog(this@BrowserActivity, lifecycleScope).show {
+                    ShareUtil.startReceiving(lifecycleScope) {
+                        ShareUtil.stopBroadcast()
+                    }
+                }
+
+                1 -> remoteConnViewModel.toggleReceiveLink { url ->
+                    runOnUiThread {
+                        ninjaWebView.loadUrl(url)
+                    }
+                }
+            }
+        }
+
     }
 
     private fun initLaunchers() {
