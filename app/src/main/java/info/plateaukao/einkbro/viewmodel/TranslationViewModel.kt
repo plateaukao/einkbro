@@ -183,22 +183,45 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         element: Element,
     ): List<Element> {
         val result = mutableListOf<Element>()
-        for (child in element.children()) {
+        for (node in element.textNodes()) {
+            if (node.text().isNotBlank()) {
+                val textElement = Element("p").apply { text(node.text()) }
+                node.replaceWith(textElement)
+                result += textElement
+            }
+        }
+        for (node in element.children()) {
             // by pass non-necessary element
-            if (child.attr("data-tiara-action-name") == "헤드글씨크기_클릭" ||
-                child.text() == "original link"
+            if (node.attr("data-tiara-action-name") == "헤드글씨크기_클릭" ||
+                node.text() == "original link"
             ) {
-                child.text("")
+                node.text("")
                 break
             }
-            if ((child.children().size == 0 && child.text().isNotBlank()) ||
-                child.tagName() in listOf("p", "h1", "h2", "h3", "h4", "h5", "h6", "em")
+            if (node.tagName().toLowerCase() in listOf("head")) {
+                continue
+            }
+            if ((node.children().size == 0 && node.text().isNotBlank()) ||
+                node.tagName().toLowerCase() in listOf(
+                    "p",
+                    "h1",
+                    "h2",
+                    "h3",
+                    "h4",
+                    "h5",
+                    "h6",
+                    "em"
+                )
             ) {
-                if (child.text().isNotEmpty()) {
-                    result += child
+                // filter image cases
+                if (node.children().map { it.tagName() }.any { it.toLowerCase() == "img" }) {
+                    continue
+                }
+                if (node.text().isNotEmpty()) {
+                    result += node
                 }
             } else {
-                result += fetchNodesWithText(child)
+                result += fetchNodesWithText(node)
             }
         }
         return result
