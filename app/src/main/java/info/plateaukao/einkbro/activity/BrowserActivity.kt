@@ -1344,7 +1344,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             },
             onHistoryChanged = { },
             splitScreenAction = { url -> toggleSplitScreen(url) },
-            addEmptyTabAction = { addAlbum(getString(R.string.app_name), ""); focusOnInput() }
+            addEmptyTabAction = { newATab() }
         )
     }
 
