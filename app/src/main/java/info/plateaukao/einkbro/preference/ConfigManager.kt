@@ -107,6 +107,8 @@ class ConfigManager(
 
     var enableOpenAiStream by BooleanPreference(sp, K_ENABLE_OPEN_AI_STREAM, true)
 
+    var isExternalSearchInSameTab by BooleanPreference(sp, K_EXTERNAL_SEARCH_IN_SAME_TAB, false)
+
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
@@ -580,6 +582,8 @@ class ConfigManager(
         const val K_HIDE_STATUSBAR = "sp_hide_statusbar"
 
         const val K_ENABLE_OPEN_AI_STREAM = "sp_enable_open_ai_stream"
+
+        const val K_EXTERNAL_SEARCH_IN_SAME_TAB = "sp_external_search_in_same_tab"
 
         const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
             "sp_show_translated_image_to_second_panel"

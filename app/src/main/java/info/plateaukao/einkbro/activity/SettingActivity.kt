@@ -593,7 +593,13 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_split_search_setting
         ) {
             startActivity(WhiteListActivity.createIntent(this, WhiteListType.SplitSearch))
-        }
+        },
+        BooleanSettingItem(
+            R.string.setting_title_search_in_same_tab,
+            R.drawable.icon_search,
+            R.string.setting_summary_search_in_same_tab,
+            config::isExternalSearchInSameTab,
+        ),
     )
 
     private val dataSettingItems = listOf(
