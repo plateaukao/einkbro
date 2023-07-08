@@ -477,4 +477,6 @@
     <string name="send_to_remote_terminate">Terminate remote text search</string>
     <string name="receive_link_terminate">Terminate receiving link</string>
     <string name="receive_once">receive once</string>
+    <string name="setting_title_search_in_same_tab">"Tab for External Search "</string>
+    <string name="setting_summary_search_in_same_tab">Use same tab for extrenal search</string>
 </resources>

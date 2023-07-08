@@ -977,7 +977,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             Intent.ACTION_WEB_SEARCH -> {
                 initSavedTabs()
-                addAlbum(url = intent.getStringExtra(SearchManager.QUERY) ?: "")
+                val searchedKeyword = intent.getStringExtra(SearchManager.QUERY) ?: ""
+                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
+                    ninjaWebView.loadUrl(searchedKeyword)
+                } else {
+                    addAlbum(url = searchedKeyword)
+                }
             }
 
             "sc_history" -> {
@@ -994,21 +999,30 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             Intent.ACTION_SEND -> {
                 initSavedTabs()
-                addAlbum(url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: "")
+                val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
+                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
+                    ninjaWebView.loadUrl(sentKeyword)
+                } else {
+                    addAlbum(url = sentKeyword)
+                }
             }
 
             Intent.ACTION_PROCESS_TEXT -> {
                 initSavedTabs()
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
                 val url = config.customProcessTextUrl + text
-                addAlbum(url = url)
+                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
+                    ninjaWebView.loadUrl(url)
+                } else {
+                    addAlbum(url = url)
+                }
             }
 
             ACTION_DICT -> {
                 val text = intent.getStringExtra("EXTRA_QUERY") ?: return
                 initSavedTabs()
                 val url = config.customProcessTextUrl + text
-                if (this::ninjaWebView.isInitialized) {
+                if (this::ninjaWebView.isInitialized && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
                     addAlbum(url = url)
