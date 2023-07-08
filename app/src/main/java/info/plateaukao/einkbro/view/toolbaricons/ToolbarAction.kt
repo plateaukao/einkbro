@@ -84,6 +84,10 @@ enum class ToolbarAction(
     PapagoByParagraph(
         iconResId = R.drawable.ic_papago,
         titleResId = R.string.papago
+    ),
+    MoveToBackground(
+        iconResId = R.drawable.ic_minimize,
+        titleResId = R.string.move_to_background
     );
 
 

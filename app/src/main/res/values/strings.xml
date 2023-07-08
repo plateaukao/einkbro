@@ -479,4 +479,5 @@
     <string name="receive_once">receive once</string>
     <string name="setting_title_search_in_same_tab">"Tab for External Search "</string>
     <string name="setting_summary_search_in_same_tab">Use same tab for extrenal search</string>
+    <string name="move_to_background">Minimize</string>
 </resources>

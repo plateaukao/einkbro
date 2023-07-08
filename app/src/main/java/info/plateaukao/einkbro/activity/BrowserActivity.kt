@@ -1000,10 +1000,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Intent.ACTION_SEND -> {
                 initSavedTabs()
                 val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
+                val url = config.customProcessTextUrl + sentKeyword
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
-                    ninjaWebView.loadUrl(sentKeyword)
+                    ninjaWebView.loadUrl(url)
                 } else {
-                    addAlbum(url = sentKeyword)
+                    addAlbum(url = url)
                 }
             }
 
