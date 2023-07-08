@@ -399,11 +399,12 @@
     <string name="description_split_screen_string_pattern">custom search url with keyword position as %s</string>
     <string name="description_split_screen_title">Input the name to be shown on context menu</string>
     <string name="send_type">Send Type</string>
-    <string name="current_url">Current Url</string>
+    <string name="current_url">目前網址</string>
     <string name="text_selection_search">Text Selection Search</string>
     <string name="send_to_remote_terminate">Terminate remote text search</string>
     <string name="receive_link_terminate">Terminate receiving link</string>
-    <string name="receive_once">receive once</string>
-    <string name="setting_title_search_in_same_tab">"Tab for External Search "</string>
-    <string name="setting_summary_search_in_same_tab">Use same tab for extrenal search</string>
+    <string name="receive_once">僅接收一次</string>
+    <string name="setting_title_search_in_same_tab">搜尋於同個分頁</string>
+    <string name="setting_summary_search_in_same_tab">外部來的搜尋會顯示於同個分頁</string>
+    <string name="move_to_background">回到前畫面</string>
 </resources>

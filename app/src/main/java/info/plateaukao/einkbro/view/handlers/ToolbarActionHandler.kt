@@ -82,6 +82,7 @@ class ToolbarActionHandler(
         ToolbarAction.RotateScreen -> browserController.rotateScreen()
         ToolbarAction.Translation -> browserController.showTranslation()
         ToolbarAction.CloseTab -> browserController.removeAlbum()
+        ToolbarAction.MoveToBackground-> activity.moveTaskToBack(true)
         ToolbarAction.InputUrl -> browserController.focusOnInput()
         ToolbarAction.NewTab -> browserController.newATab()
         ToolbarAction.Desktop -> config::desktop.toggle()
