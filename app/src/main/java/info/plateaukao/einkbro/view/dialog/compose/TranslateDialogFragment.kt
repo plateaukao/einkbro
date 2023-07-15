@@ -22,6 +22,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +41,7 @@ import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -49,6 +51,8 @@ class TranslateDialogFragment(
     private val anchorPoint: Point,
 ) : DraggableComposeDialogFragment() {
 
+    private val webView: WebView by lazy { WebView(requireContext()) }
+
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             TranslateResponse(
@@ -57,9 +61,12 @@ class TranslateDialogFragment(
                 showExtraIcons = config.papagoApiSecret.isNotBlank(),
                 this::changeTranslationLanguage,
                 this::changeTranslationMethod,
+                this::getTranslationWebView,
             ) { dismiss() }
         }
     }
+
+    private fun getTranslationWebView() = webView
 
     private fun changeTranslationLanguage() {
         lifecycleScope.launch {
@@ -97,6 +104,7 @@ private fun TranslateResponse(
     showExtraIcons: Boolean,
     onTargetLanguageClick: () -> Unit,
     changeTranslationMethod: (TRANSLATE_API) -> Unit,
+    getTranslationWebView: () -> WebView,
     closeClick: () -> Unit = { },
 ) {
     val requestMessage by translationViewModel.inputMessage.collectAsState()
@@ -189,8 +197,8 @@ private fun TranslateResponse(
             )
             Divider()
         }
-        if (translateApiState == TRANSLATE_API.NAVER) {
-            WebResultView(responseMessage)
+        if (translateApiState == TRANSLATE_API.NAVER && responseMessage != "...") {
+            WebResultView(getTranslationWebView(), responseMessage)
         } else {
             Text(
                 text = responseMessage,
@@ -202,21 +210,32 @@ private fun TranslateResponse(
 }
 
 @Composable
-private fun WebResultView(webContent: String) {
+private fun WebResultView(webView: WebView, webContent: String) {
     AndroidView(
-        factory = { context -> WebView(context) },
+        factory = { webView },
         modifier = Modifier
             .height(400.dp)
             .width(400.dp)
             .padding(2.dp),
-        update = { webView ->
-            webView.loadDataWithBaseURL(
-                "https://dict.naver.com",
-                webContent,
-                "text/html",
-                "utf-8",
-                null
-            )
-        }
+//        update = { view ->
+//            view.loadDataWithBaseURL(
+//                "https://dict.naver.com",
+//                webContent,
+//                "text/html",
+//                "utf-8",
+//                null
+//            )
+//        }
     )
+
+    LaunchedEffect(webContent) {
+        delay(1)
+        webView.loadDataWithBaseURL(
+            "https://dict.naver.com",
+            webContent,
+            "text/html",
+            "utf-8",
+            null
+        )
+    }
 }
