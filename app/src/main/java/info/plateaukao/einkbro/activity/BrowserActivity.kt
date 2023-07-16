@@ -1763,7 +1763,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
         customView?.keepScreenOn = true
         (currentAlbumController as View?)?.visibility = GONE
-        ViewUnit.setCustomFullscreen(window, true)
+        ViewUnit.setCustomFullscreen(window, true, config.hideStatusbar)
         if (view is FrameLayout) {
             if (view.focusedChild is VideoView) {
                 videoView = view.focusedChild as VideoView
@@ -1784,7 +1784,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
         (currentAlbumController as View).visibility = VISIBLE
-        ViewUnit.setCustomFullscreen(window, false)
+        ViewUnit.setCustomFullscreen(window, false, config.hideStatusbar)
         fullscreenHolder = null
         customView = null
 
