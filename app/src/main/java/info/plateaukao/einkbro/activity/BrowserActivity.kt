@@ -42,7 +42,6 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
@@ -81,6 +80,7 @@ import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
+import info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel
 import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.PocketShareState
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
@@ -126,6 +126,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val splitSearchViewModel: SplitSearchViewModel by viewModels()
 
     private val remoteConnViewModel: RemoteConnViewModel by viewModels()
+
+    private val externalSearchViewModel: ExternalSearchViewModel by viewModels()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -274,9 +276,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initTouchAreaViewController()
 
         initTextSearchButton()
+        initExternalSearchCloseButton()
 
         if (config.hideStatusbar) {
             hideStatusBar()
+        }
+    }
+
+    private fun initExternalSearchCloseButton() {
+        val externalSearchCloseButton = findViewById<ImageButton>(R.id.external_search_close)
+        externalSearchCloseButton.setOnClickListener {
+            moveTaskToBack(true)
+            externalSearchViewModel.toggleButtonVisibility(false)
+        }
+        lifecycleScope.launch {
+            externalSearchViewModel.showButton.collect { show ->
+                externalSearchCloseButton.visibility = if (show) VISIBLE else INVISIBLE
+            }
         }
     }
 
@@ -791,6 +807,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         languageLabelView?.visibility =
             (if (ninjaWebView.isTranslatePage) VISIBLE else GONE)
+
+        // when showing a new album, should turn off externalSearch button visibility
+        externalSearchViewModel.toggleButtonVisibility(false)
     }
 
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
@@ -1017,6 +1036,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 } else {
                     addAlbum(url = url)
                 }
+                // set minimize button visible
+                externalSearchViewModel.toggleButtonVisibility(true)
             }
 
             ACTION_DICT -> {
@@ -2313,7 +2334,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onActionModeFinished(mode: ActionMode?) {
         super.onActionModeFinished(mode)
-        mode?.hide(1000000)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mode?.hide(1000000)
+        }
         actionModeMenuViewModel.updateActionMode(null)
     }
 
