@@ -115,7 +115,7 @@ object ViewUnit {
         return (this * (metrics.densityDpi / 160f)).toInt()
     }
 
-    fun setCustomFullscreen(window: Window, fullscreen: Boolean) {
+    fun setCustomFullscreen(window: Window, fullscreen: Boolean, keepHideStatusbar: Boolean = false) {
         if (fullscreen) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.let {
@@ -130,7 +130,10 @@ object ViewUnit {
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.let {
-                    it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                    if (keepHideStatusbar)
+                        it.show(WindowInsets.Type.navigationBars())
+                    else
+                        it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
                     it.systemBarsBehavior =
                         WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 }
