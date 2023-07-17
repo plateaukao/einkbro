@@ -2,10 +2,26 @@
 
 package info.plateaukao.einkbro.view.compose
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -31,7 +47,11 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.*
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Desktop
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.NewTab
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.PageInfo
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TabCount
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Title
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 
 
@@ -166,6 +186,10 @@ fun ComposedIconBar(
                     modifier = Modifier
                         .padding(2.dp)
                         .defaultMinSize(minWidth = 46.dp)
+                        .combinedClickable {
+                            onClick(toolbarAction)
+                            onLongClick?.invoke(toolbarAction)
+                        }
                 )
 
                 else -> ToolbarIcon(toolbarActionInfo, onClick, onLongClick)

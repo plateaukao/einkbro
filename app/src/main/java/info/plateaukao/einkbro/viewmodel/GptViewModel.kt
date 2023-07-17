@@ -37,17 +37,21 @@ class GptViewModel : ViewModel(), KoinComponent {
         _responseMessage.value = "..."
     }
 
-    fun query(userMessage: String? = null) {
+    fun query(
+        userMessage: String? = null,
+        systemPrompt: String = config.gptSystemPrompt,
+        userPromptPrefix: String = config.gptUserPromptPrefix
+    ) {
         if (userMessage != null) {
             _inputMessage.value = userMessage
         }
         _showControls.value = false
 
         val messages = mutableListOf<ChatMessage>()
-        if (config.gptSystemPrompt.isNotBlank()) {
-            messages.add(config.gptSystemPrompt.toSystemMessage())
+        if (systemPrompt.isNotBlank()) {
+            messages.add(systemPrompt.toSystemMessage())
         }
-        messages.add("${config.gptUserPromptPrefix}${_inputMessage.value}".toUserMessage())
+        messages.add("${userPromptPrefix}${_inputMessage.value}".toUserMessage())
 
 
         // stream case

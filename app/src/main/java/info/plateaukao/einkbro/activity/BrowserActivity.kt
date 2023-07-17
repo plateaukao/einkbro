@@ -359,6 +359,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                         if (gptViewModel.hasApiKey()) {
                             GPTDialogFragment(
+                                false,
                                 gptViewModel,
                                 actionModeMenuViewModel.clickedPoint.value,
                                 onTranslateClick = {
@@ -486,6 +487,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             when (selectedIndex) {
                 0 -> SendLinkDialog(this@BrowserActivity, lifecycleScope).show(text)
                 1 -> remoteConnViewModel.toggleTextSearch()
+            }
+        }
+    }
+
+    override fun summarizeContent() {
+        if (config.gptApiKey.isNotBlank()) {
+            lifecycleScope.launch {
+                gptViewModel.updateInputMessage(ninjaWebView.getRawText())
+                GPTDialogFragment(
+                    true,
+                    gptViewModel,
+                    actionModeMenuViewModel.clickedPoint.value,
+                    onTranslateClick = { }
+                )
+                    .show(supportFragmentManager, "contextMenu")
             }
         }
     }

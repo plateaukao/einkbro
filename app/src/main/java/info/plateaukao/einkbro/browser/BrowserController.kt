@@ -82,6 +82,7 @@ interface BrowserController {
     fun toggleTouchPagination()
 
     fun sendToRemote(text: String)
-
     fun toggleReceiveLink()
+
+    fun summarizeContent()
 }
