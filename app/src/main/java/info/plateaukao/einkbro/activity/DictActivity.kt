@@ -50,10 +50,11 @@ class DictActivity : AppCompatActivity() {
         gptViewModel.updateInputMessage(text)
         if (gptViewModel.hasApiKey()) {
             GPTDialogFragment(
+                false,
                 gptViewModel,
                 Point(50, 50),
                 hasBackgroundColor = true,
-                onDismissed = { finish(); overridePendingTransition(0, 0) }
+                onDismissed = { finish(); overridePendingTransition(0, 0) },
             )
                 .show(supportFragmentManager, "contextMenu")
             monitorFragmentStack()

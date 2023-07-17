@@ -1,5 +1,7 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Point
 import android.os.Bundle
@@ -27,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
@@ -35,6 +38,7 @@ import info.plateaukao.einkbro.viewmodel.GptViewModel
 
 
 class GPTDialogFragment(
+    private val isSummarization: Boolean = false,
     private val gptViewModel: GptViewModel,
     private val anchorPoint: Point,
     private val hasBackgroundColor: Boolean = false,
@@ -58,7 +62,15 @@ class GPTDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         setupDialogPosition(anchorPoint)
 
-        gptViewModel.query()
+        if (isSummarization) {
+            gptViewModel.query(
+                systemPrompt = "將內容摘要成繁體中文重點(在300字內)",
+                userPromptPrefix = ""
+            )
+        } else {
+            gptViewModel.query()
+        }
+
         if (hasBackgroundColor) {
             dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
         }
@@ -84,6 +96,9 @@ private fun GptResponse(
     val requestMessage by gptViewModel.inputMessage.collectAsState()
     val responseMessage by gptViewModel.responseMessage.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
+
+    val clipboardManager =
+        LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     Box {
         Column(
@@ -132,6 +147,15 @@ private fun GptResponse(
                                 gptViewModel.updateInputMessage(gptViewModel.inputMessage.value)
                                 gptViewModel.query()
                             }
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_copy),
+                        contentDescription = "Copy text",
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(5.dp)
+                            .clickable { clipboardManager.text = responseMessage }
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_translate),

@@ -48,11 +48,8 @@ class ToolbarActionHandler(
                 config.papagoApiSecret = ""
             }
         }
-
         ToolbarAction.TranslateByParagraph -> browserController.configureTranslationLanguage(TRANSLATE_API.GOOGLE)
-
         ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(TRANSLATE_API.PAPAGO)
-
         else -> {}
     }
 
@@ -90,7 +87,7 @@ class ToolbarActionHandler(
         ToolbarAction.DuplicateTab -> browserController.duplicateTab()
         ToolbarAction.Tts -> browserController.toggleTtsRead()
         ToolbarAction.TOC -> browserController.showTocDialog()
-        ToolbarAction.PageInfo -> Unit
+        ToolbarAction.PageInfo -> browserController.summarizeContent()
         ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
         ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)
         ToolbarAction.PapagoByParagraph -> browserController.translate(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
