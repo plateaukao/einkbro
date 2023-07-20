@@ -64,8 +64,8 @@ class GPTDialogFragment(
 
         if (isSummarization) {
             gptViewModel.query(
-                systemPrompt = "將內容摘要成繁體中文重點(在300字內)",
-                userPromptPrefix = ""
+                systemPrompt = "",
+                userPromptPrefix = config.gptUserPromptForWebPage
             )
         } else {
             gptViewModel.query()
