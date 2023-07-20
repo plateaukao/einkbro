@@ -171,6 +171,11 @@ class ConfigManager(
         K_GPT_USER_PROMPT_PREFIX,
         "Translate following content to English:"
     )
+    var gptUserPromptForWebPage by StringPreference(
+        sp,
+        K_GPT_USER_PROMPT_WEB_PAGE,
+        "Summarize in 300 words:"
+    )
     var papagoApiSecret by StringPreference(sp, K_PAPAGO_API_SECRET, "")
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
@@ -569,6 +574,7 @@ class ConfigManager(
         const val K_GPT_API_KEY = "sp_gpt_api_key"
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
         const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
+        const val K_GPT_USER_PROMPT_WEB_PAGE = "sp_gpt_user_prompt_web_page"
         const val K_PAPAGO_API_SECRET = "sp_papago_api_secret"
         const val K_IMAGE_API_KEY = "sp_image_api_key"
         const val K_DUAL_CAPTION_LOCALE = "sp_dual_caption_locale"

@@ -758,6 +758,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_gpt_model_name,
             config::gptModel
         ),
+        ValueSettingItem(
+            R.string.setting_title_gpt_prompt_for_web_page,
+            R.drawable.ic_chat_gpt,
+            R.string.setting_summary_gpt_prompt_for_web_page,
+            config::gptUserPromptForWebPage
+        ),
         BooleanSettingItem(
             R.string.use_it_on_dict_search,
             R.drawable.icon_search,
@@ -929,9 +935,4 @@ fun EinkBroAppBar(
             }
         }
     )
-}
-
-@Composable
-fun MyText(textId: Int) {
-    Text(stringResource(textId), color = MaterialTheme.colors.onBackground)
 }

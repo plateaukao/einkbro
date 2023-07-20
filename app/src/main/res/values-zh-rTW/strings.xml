@@ -407,4 +407,6 @@
     <string name="setting_title_search_in_same_tab">搜尋於同個分頁</string>
     <string name="setting_summary_search_in_same_tab">外部來的搜尋會顯示於同個分頁</string>
     <string name="move_to_background">回到前畫面</string>
+    <string name="setting_title_gpt_prompt_for_web_page">Prompt for Fulltext</string>
+    <string name="setting_summary_gpt_prompt_for_web_page">Input prompt to process web page full content. For example (summarize it in 300 words:)</string>
 </resources>

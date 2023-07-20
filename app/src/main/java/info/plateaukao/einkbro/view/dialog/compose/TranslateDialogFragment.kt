@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
     private val translateApi: TRANSLATE_API,
-    private val anchorPoint: Point,
+    private val anchorPoint: Point? = null,
 ) : DraggableComposeDialogFragment() {
 
     private val webView: WebView by lazy { WebView(requireContext()) }
@@ -90,7 +90,7 @@ class TranslateDialogFragment(
         savedInstanceState: Bundle?
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        setupDialogPosition(anchorPoint)
+        anchorPoint?.let {  setupDialogPosition(it) }
 
         translationViewModel.translate(translateApi)
         return view
