@@ -25,7 +25,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     private val configManager: ConfigManager by inject()
 
     private var actionMode: ActionMode? = null
-    private val _clickedPoint = MutableStateFlow(Point(0, 0))
+    private val _clickedPoint = MutableStateFlow(Point(100, 100))
     val clickedPoint: StateFlow<Point> = _clickedPoint.asStateFlow()
 
     private val _showMenu = MutableStateFlow(false)
