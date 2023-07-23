@@ -520,16 +520,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
             when (selectedIndex) {
                 0 -> ReceiveDataDialog(this@BrowserActivity, lifecycleScope).show {
-                    ShareUtil.startReceiving(lifecycleScope) {
-                        ShareUtil.stopBroadcast()
+                    ShareUtil.startReceiving(lifecycleScope) { url ->
+                        if (url.isNotBlank()) {
+                            ninjaWebView.loadUrl(url)
+                            ShareUtil.stopBroadcast()
+                        }
                     }
                 }
 
-                1 -> remoteConnViewModel.toggleReceiveLink { url ->
-                    runOnUiThread {
-                        ninjaWebView.loadUrl(url)
-                    }
-                }
+                1 -> remoteConnViewModel.toggleReceiveLink { ninjaWebView.loadUrl(it) }
             }
         }
 
