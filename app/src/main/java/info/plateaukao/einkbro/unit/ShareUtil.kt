@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import java.net.DatagramPacket
@@ -66,13 +67,14 @@ object ShareUtil : KoinComponent {
         socket = null
     }
 
-    private var receivedString = ""
     fun startReceiving(
         lifecycleCoroutineScope: CoroutineScope,
         receivedAction: (String) -> Unit
     ) {
+        var receivedString = ""
         val receiveData = ByteArray(4096)
         val receivePacket = DatagramPacket(receiveData, receiveData.size)
+
         broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
             try {
                 socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
@@ -86,20 +88,23 @@ object ShareUtil : KoinComponent {
                     return@launch
                 }
                 val newString = String(receivePacket.data, 0, receivePacket.length)
-                if (receivedString == newString) continue
-                else receivedString = newString
+                if (receivedString != newString) {
+                    receivedString = newString
 
-                val processedString = if (receivedString.startsWith("http")) {
-                    receivedString // EinkBro case
-                } else {
-                    handleSharikScenario(receivePacket.address.toString(), receivedString)
+                    val processedString = if (receivedString.startsWith("http")) {
+                        receivedString // EinkBro case
+                    } else {
+                        convertSharikResponse(receivePacket.address.toString(), receivedString)
+                    }
+                    withContext(Dispatchers.Main) {
+                        receivedAction(processedString)
+                    }
                 }
-                receivedAction(processedString)
             }
         }
     }
 
-    private fun handleSharikScenario(address: String, jsonString: String): String {
+    private fun convertSharikResponse(address: String, jsonString: String): String {
         val jsonObject = JSONObject(jsonString)
         val type = jsonObject.getString("type")
         val port = jsonObject.getString("port")
