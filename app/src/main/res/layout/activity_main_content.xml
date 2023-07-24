@@ -68,7 +68,7 @@
         android:id="@+id/touch_area_bottom_drag"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/touch_area_middle_right"
+        android:layout_alignLeft="@+id/touch_area_bottom_right"
         android:layout_alignTop="@+id/touch_area_bottom_right"
         android:layout_marginLeft="-20dp"
         android:layout_marginTop="-20dp"
@@ -195,6 +195,7 @@
         android:background="@drawable/background_with_border"
         android:src="@drawable/icon_search"
         app:tint="?attr/colorControlNormal" />
+
     <ImageButton
         android:id="@+id/external_search_close"
         android:layout_width="40dp"
@@ -202,8 +203,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="0.5dp"
-        android:visibility="invisible"
         android:background="@drawable/background_with_border"
         android:src="@drawable/ic_minimize"
+        android:visibility="invisible"
         app:tint="?attr/colorControlNormal" />
 </RelativeLayout>
