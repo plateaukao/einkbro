@@ -1,3 +1,78 @@
+### 10.5.0
+* Reader mode font configuration (not stable yet)
+* Support reading subtitle format srt file.
+* Support Android monochrome App icon
+
+### 10.4.0
+## Feature
+* separate reader mode font setting from normal browsing (beta)
+* translate web content only when content is visible in "translate by paragraph" mode
+## Fix
+* crash in inputting url address
+* import bookmarks failure
+* page info divide by zero
+* bookmark manager crash
+* gesture setting is gone
+
+### 10.3.0
+* Support paragraph-by-paragraph translation
+* Add popular translation method to toolbar actions
+
+### 10.2.0
+* Add Translate feature in text selection dialog.
+* Fix when long click on text field, the paste function is not available.
+
+|Figure 1| Figure 2|
+|--|--|
+|![image](https://user-images.githubusercontent.com/4084738/232300452-46b1a867-30b8-4006-9491-66fd180865de.png)|![image](https://user-images.githubusercontent.com/4084738/232300518-9a051d63-01c0-4e59-9a16-6c954851a285.png)|
+
+### 10.1.0
+## Feature
+1. Integrate ChatGPT feature (If API key is setup in Settings > ChatGPT integration, after text selection, it will show a `ChatGPT` icon)
+2. New menu style after text selection (can be turned off in Settings > UI)
+3.  If Pocket app is installed, its UI will be used.
+4. Add Indonesian language support (thanks to amsitlab)
+5. New UI for touch area dialog
+
+|Feature 1, 2| Feature 1|
+|-|-|
+| ![image](https://user-images.githubusercontent.com/4084738/232273619-70c61d22-b1a2-4dcf-ad0e-bd5969d161a5.png) | ![image](https://user-images.githubusercontent.com/4084738/232273671-9bc73340-35b2-4799-880c-66cb9b2cd772.png) |
+|Feature 5|Feature 1|
+|![image](https://user-images.githubusercontent.com/4084738/232273758-c88e4f65-6f2e-4da8-b733-4c2e4978f651.png)|![image](https://user-images.githubusercontent.com/4084738/232274383-2c59bffd-89ab-40a2-ba91-2b5209451bc5.png)|
+
+## Fix 
+* Enter/back fullscreen mode won't cause screen too big.
+* Remove beta feature: image adjustment
+
+### 10.0.0
+* Feature: Add Pocket support. Now you can add web url to pocket from menu.
+* UI: fold menu items to make it not so frightening. Users can expand it if they use some functions more often.
+* Fix: now the whitelist for adblock domains, and Javascript are working.
+* Fix: update page info when scrolling web content.
+
+![image](https://user-images.githubusercontent.com/4084738/231217539-0669eb49-3e29-4968-a15a-bafb17cf7514.png)
+
+![image](https://user-images.githubusercontent.com/4084738/231217595-3f984520-c29d-4d01-af0c-f7984af2bbd9.png)
+
+![image](https://user-images.githubusercontent.com/4084738/231217653-ca65f447-f415-44b2-a62b-6c58863dbfd2.png)
+
+### 9.23.0
+* click on tab to scroll to top
+* click on tab again to reload
+
+### 9.22.0
+* Enhance user agent setting. You could use to configure proper user agent strings so that it can pass cloudflare captcha check.
+For example, input following string: `Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.50 Mobile Safari/537.36`
+* Add page info feature to toolbar (you can add it in toolbar configuration)
+
+### 9.21.0
+* Add client certificate authentication support
+* Fine tune black text feature
+* Modify manual link
+* Add an option to show "no more history" and do not close current tab
+* Fix: pagedown overscroll issue
+* Fix: if url parameters are without value, it should be kept as is.
+
 ### 9.20.0
 * Support maestro to run automation scripts.
 * Add an option to set all text color in black.
