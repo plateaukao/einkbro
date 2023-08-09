@@ -172,6 +172,17 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
             document.querySelector(".btn-content button.cancel").click();
         """
 
+        private const val huxiuJs = """
+            document.querySelector(".bottom-open-app-btn").remove();
+            document.querySelector(".qr_code_pc").remove();
+            document.querySelector(".guide-wrap").remove();
+            document.querySelector("#related-article-wrap").remove();
+            document.querySelector(".article-introduce-info").remove();
+            document.querySelector(".article-recommend-wrap").remove();
+            document.querySelector(".placeholder-line").remove();
+            document.querySelector(".hot-so-wrap").remove();
+        """
+        
         private const val redditJs = """
             javascript:(function() {
                 localStorage.setItem('bannerLastClosed', new Date());
@@ -210,6 +221,7 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
             "facebook.com" to facebookHideSponsoredPostsJs,
             "zhihu.com" to zhihuDisablePopupJs,
             "jianshu.com" to jianshuJs,
+            "huxiu.com" to huxiuJs,
             "twitter.com" to twitterJs,
             "reddit.com" to redditJs,
         )
