@@ -482,4 +482,6 @@
     <string name="move_to_background">Minimize</string>
     <string name="setting_title_gpt_prompt_for_web_page">Prompt for Fulltext</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Input prompt to process web page full content. For example (summarize it in 300 words:)</string>
+    <string name="setting_title_next_tab">Goto next tab</string>
+    <string name="setting_summary_next_tab">Show next tab when current one is closed. (otherwise show previous one)</string>
 </resources>
