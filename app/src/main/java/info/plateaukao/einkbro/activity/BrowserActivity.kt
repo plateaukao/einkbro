@@ -96,6 +96,7 @@ import org.koin.android.ext.android.inject
 import java.io.File
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -1645,14 +1646,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 browserContainer.remove(albumController)
                 // only refresh album when the delete one is current one
                 if (removeIndex == currentIndex) {
-                    val newIndex = max(0, removeIndex - 1)
-                    showAlbum(browserContainer[newIndex])
+                    showAlbum(browserContainer[getNextAlbumIndexAfterRemoval(removeIndex)])
                 }
                 updateWebViewCount()
             }
         }
         updateSavedAlbumInfo()
     }
+
+    private fun getNextAlbumIndexAfterRemoval(removeIndex: Int): Int =
+        if (config.shouldShowNextAfterRemoveTab) min(browserContainer.size() - 1, removeIndex)
+        else max(0, removeIndex - 1)
 
     private fun updateTitle() {
         if (!this::ninjaWebView.isInitialized) return

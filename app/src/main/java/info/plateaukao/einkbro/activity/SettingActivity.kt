@@ -404,6 +404,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             config::enableWebBkgndLoad,
         ),
         BooleanSettingItem(
+            R.string.setting_title_next_tab,
+            R.drawable.icon_tab_plus,
+            R.string.setting_summary_next_tab,
+            config::shouldShowNextAfterRemoveTab,
+        ),
+        BooleanSettingItem(
             R.string.settings_title_back_key_behavior,
             R.drawable.icon_arrow_left_gest,
             R.string.settings_summary_back_key_behavior,
