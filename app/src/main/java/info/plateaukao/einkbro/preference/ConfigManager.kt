@@ -112,7 +112,7 @@ class ConfigManager(
     var shouldShowNextAfterRemoveTab by BooleanPreference(
         sp,
         K_SHOW_NEXT_AFTER_REMOVE_TAB,
-        true
+        false
     )
 
     var isIncognitoMode: Boolean
