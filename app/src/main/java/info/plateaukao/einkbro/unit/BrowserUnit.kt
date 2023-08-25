@@ -11,12 +11,20 @@ import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.URLUtil
 import android.webkit.WebView
-import android.webkit.WebView.HitTestResult.*
+import android.webkit.WebView.HitTestResult.ANCHOR_TYPE
+import android.webkit.WebView.HitTestResult.IMAGE_ANCHOR_TYPE
+import android.webkit.WebView.HitTestResult.IMAGE_TYPE
+import android.webkit.WebView.HitTestResult.SRC_ANCHOR_TYPE
+import android.webkit.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -41,12 +49,18 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.*
+import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLDecoder
 import java.net.URLEncoder
-import java.util.*
+import java.util.Base64
+import java.util.Locale
+import java.util.Objects
 import java.util.regex.Pattern
 
 object BrowserUnit : KoinComponent {
@@ -62,6 +76,7 @@ object BrowserUnit : KoinComponent {
     private const val SEARCH_ENGINE_BAIDU = "https://www.baidu.com/s?wd="
     private const val SEARCH_ENGINE_QWANT = "https://www.qwant.com/?q="
     private const val SEARCH_ENGINE_ECOSIA = "https://www.ecosia.org/search?q="
+    private const val SEARCH_ENGINE_YANDEX = "https://yandex.com/search/?text="
     private const val SEARCH_ENGINE_STARTPAGE_DE =
         "https://startpage.com/do/search?lui=deu&language=deutsch&query="
     private const val SEARCH_ENGINE_SEARX = "https://searx.me/?q="
@@ -267,6 +282,7 @@ object BrowserUnit : KoinComponent {
             7 -> SEARCH_ENGINE_QWANT + query
             8 -> SEARCH_ENGINE_ECOSIA + query
             9 -> config.searchEngineUrl + query
+            10 -> SEARCH_ENGINE_YANDEX + query
             5 -> SEARCH_ENGINE_GOOGLE + query
             4 -> SEARCH_ENGINE_DUCKDUCKGO + query
             else -> SEARCH_ENGINE_GOOGLE + query

@@ -579,6 +579,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                 R.string.setting_summary_search_engine_qwant,
                 R.string.setting_summary_search_engine_ecosia,
                 R.string.setting_title_searchEngine,
+                R.string.setting_summary_search_engine_yandex,
             )
         ),
         ValueSettingItem(
