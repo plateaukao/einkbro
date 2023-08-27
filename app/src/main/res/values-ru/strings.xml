@@ -42,7 +42,7 @@
 
     <!-- Dialog -->
     <string name="dialog_title_hint">Заголовок:</string>
-    <string name="dialog_URL_hint">URL:</string>
+    <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Расширение (например: \".jpg\"):</string>
     <string name="dialog_title_download">Вы хотите загрузить файл?</string>
     <string name="dialog_content_resubmission">Хотели бы вы повторно отправить свои данные?</string>
@@ -287,7 +287,7 @@
     <string name="setting_summary_screen_awake">Держать экран постоянно включенным.</string>
     <string name="middle">По центру</string>
     <string name="bottom">Внизу</string>
-    <string name="input_URL">Введите URL</string>
+    <string name="input_url">Введите URL</string>
     <string name="setting_title_useUpDown">Использовать клавиши Вверх/Вниз</string>
     <string name="setting_summary_useUpDownKey">Использовать клавиши Вверх/Вниз для прокрутки страниц. Полезно для Bluetooth-устройств.</string>
     <string name="setting_title_process_text">Пользоваткльский URL для поиска из других приложений</string>
@@ -345,8 +345,8 @@
     <string name="title_about">О программе</string>
     <string name="setting_title_auto_fill_form">Автоматически заполнять формы</string>
     <string name="setting_summary_auto_fill_form">Если включено, формы будут автоматически заполняться.</string>
-    <string name="setting_title_trim_input_URL">Обрезатьвведённый текст</string>
-    <string name="setting_summary_trim_input_URL">Убирать текст без префикса http в строке ввода</string>
+    <string name="setting_title_trim_input_url">Обрезатьвведённый текст</string>
+    <string name="setting_summary_trim_input_url">Убирать текст без префикса http в строке ввода</string>
     <string name="no_bookmarks">Long press bookmarks icon to add some bookmarks.</string>
     <string name="always_enable_zoom">Масштабирование содержимого для всех сайтов</string>
     <string name="setting_summary_enable_zoom">Принудительно масштабировать содержимое некоторых веб-сайтов.</string>
@@ -373,10 +373,10 @@
     <string name="read_speed">Скорость чтения</string>
     <string name="toast_send_link_failed">Ошибка отправки ссылки</string>
     <string name="toast_receive_link_failed">Ошибка получения ссылки</string>
-    <string name="setting_summary_custom_process_text_URL">Когда вы выделяете текст в другом приложении, вы можете найти его через браузер с этим URL-префиксом.</string>
+    <string name="setting_summary_custom_process_text_url">Когда вы выделяете текст в другом приложении, вы можете найти его через браузер с этим URL-префиксом.</string>
     <string name="not_supported">Не поддерживается</string>
 
-    <string name="plus_start_input_URL">Начать Ввод URL</string>
+    <string name="plus_start_input_url">Начать Ввод URL</string>
     <string name="plus_show_homepage">Показать статую страницу</string>
     <string name="plus_show_bookmarks">Показать Недавние Закладки</string>
     <string name="dark_mode_follow_system">Как в системе</string>
@@ -396,7 +396,7 @@
     <string name="google_in_place">Google: На Месте</string>
     <string name="setting_title_update_AdBlock">Обновить конфигурацию AdBlock</string>
     <string name="setting_summary_update_AdBlock">Запустить обновление сайтов AdBlock.</string>
-    <string name="setting_title_AdBlock_URL">URL списка AdBlock</string>
+    <string name="setting_title_AdBlock_url">URL списка AdBlock</string>
     <string name="setting_summary_AdBlock_URL">Если вы хотите использовать другую конфигурацию AdBlock, отредактируйте данный URL.</string>
     <string name="setting_title_AdBlock_auto_update">Автообновление AdBlock</string>
     <string name="setting_summary_AdBlock_auto_update">Автоматически обновлять конфигурацию AdBlock каждую неделю.</string>
@@ -474,7 +474,7 @@
     <string name="description_split_screen_string_pattern">Пользовательский URL для поиска с %s в качестве позиции ключевого слова</string>
     <string name="description_split_screen_title">Введите название, которое будет отображаться как заголовок контекстного меню</string>
     <string name="send_type">Тип Отправки</string>
-    <string name="current_URL">Текущий URL</string>
+    <string name="current_url">Текущий URL</string>
     <string name="text_selection_search">Поиск по выделенному фрагменту</string>
     <string name="send_to_remote_terminate">Удалённый поиск остановлен</string>
     <string name="receive_link_terminate">Получение ссылки остановлено</string>
