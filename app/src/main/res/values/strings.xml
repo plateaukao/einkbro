@@ -32,7 +32,7 @@
 
     <string name="menu_save_screenshot">Save screenshot</string>
     <string name="menu_save_bookmark">Save as bookmark</string>
-    <string name="menu_save_as">Save as …</string>
+    <string name="menu_save_as">Save as…</string>
     <string name="menu_save_pdf">Save as PDF</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
 
@@ -57,13 +57,13 @@
     <string name="setting_summary_search_engine">Choose a search engine</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
-    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_startpage">Startpage</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="setting_summary_search_engine_rambler">Rambler</string>
-    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_startpage_de">Startpage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
@@ -98,7 +98,7 @@
         loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
     <string name="setting_title_whitelistJS">JavaScript whitelist</string>
     <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
-        trust to use javascript.</string>
+        trust to use JavaScript.</string>
 
     <string name="setting_title_adblock">AdBlock</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
@@ -122,7 +122,7 @@
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>
     <string name="clear_title_history">Clear History</string>
-    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local webview storage\"</string>
+    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local WebView storage\"</string>
 
     <string name="clear_title_deleteDatabase">Delete database</string>
     <string name="clear_summary_deleteDatabase">Delete the whole database (start page, bookmarks, history and all whitelists).</string>
