@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+
+    <!-- App -->
+    <string name="app_name">EinkBro</string>
+    <string name="list_empty">ᱱᱤᱛᱚᱜᱟᱜ ᱞᱤᱥᱴᱤ ᱫᱚ ᱠᱷᱟᱹᱞᱤ ᱜᱮᱭᱟ ᱾</string>
+    <string name="bookmarks">ᱵᱩᱠᱢᱟᱨᱠ ᱠᱚ</string>
+    <string name="album_title_history">ᱱᱟᱜᱟᱢ</string>
+    <string name="album_title_home">ᱚᱲᱟᱜ</string>
+    <string name="search_hint">ᱥᱮᱸᱫᱽᱨᱟ</string>
+
+
+    <!-- Menu -->
+    <string name="main_menu_new_tab">ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ ᱨᱮ ᱱᱚᱶᱟ ᱴᱮᱵᱽ</string>
+    <string name="main_menu_new_tabOpen">ᱱᱟᱶᱟ ᱴᱮᱵᱽ</string>
+    <string name="main_omnibox_input_hint">URL ᱥᱮᱸᱫᱽᱨᱟᱭ ᱢᱮ ᱥᱮ ᱚᱞ ᱢᱮ</string>
+    <string name="menu_open_with">ᱥᱟᱶ ᱞᱤᱝᱠ ᱡᱷᱤᱡᱽ ᱢᱮ...</string>
+
+    <string name="menu_quit">ᱵᱟᱹᱜᱤ</string>
+    <string name="menu_openFav">ᱠᱩᱥᱤᱭᱟᱜ ᱡᱷᱤᱡᱽ ᱢᱮ</string>
+    <string name="menu_delete">ᱢᱮᱴᱟᱣ ᱢᱮ</string>
+    <string name="menu_delete_list">ᱞᱤᱥᱴᱤ ᱢᱮᱴᱟᱣ ᱢᱮ</string>
+    <string name="menu_edit">ᱥᱟᱯᱲᱟᱣ</string>
+    <string name="menu_closeTab">ᱴᱮᱵᱽ ᱵᱚᱸᱫᱚᱭ ᱢᱮ</string>
+    <string name="menu_download">ᱰᱟᱩᱱᱞᱚᱰ ᱠᱚ ᱠᱷᱩᱞᱟᱹᱭ ᱢᱮ</string>
+    <string name="menu_fav">ᱚᱲᱟᱜ ᱞᱮᱠᱟ ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
+    <string name="menu_sc">ᱚᱲᱟᱜ ᱥᱠᱨᱤᱱ ᱨᱮ ᱠᱷᱟᱴᱚᱢᱟᱪᱷᱟ</string>
+
+    <string name="menu_share_link">ᱞᱤᱝᱠ ᱦᱟᱹᱴᱤᱧ ᱢᱮ</string>
+
+    <string name="menu_save_screenshot">ᱥᱠᱨᱤᱱᱥᱚᱴ ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
+    <string name="menu_save_bookmark">ᱵᱩᱠᱢᱟᱨᱠ ᱞᱮᱠᱟ ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
+    <string name="menu_save_as">ᱞᱮᱠᱟ ᱥᱟᱧᱪᱟᱣ …</string>
+    <string name="menu_save_pdf">PDF ᱞᱮᱠᱷᱟ ᱥᱟᱺᱪᱟᱣ ᱢᱮ</string>
+    <string name="menu_shareClipboard">ᱨᱮᱴᱚᱯᱵᱚᱰᱨᱮ ᱨᱮ ᱱᱚᱠᱚᱞᱮᱱᱟ!</string>
+
+    <string name="menu_other_searchSite">ᱥᱟᱭᱤᱴ ᱨᱮ ᱥᱮᱸᱫᱽᱨᱟᱭ ᱢᱮ</string>
+    <string name="menu_other_info">EinkBro ᱵᱟᱵᱚᱛ</string>
+
+    <!-- Dialog -->
+    <string name="dialog_title_hint">ᱧᱩᱛᱩᱢ:</string>
+    <string name="dialog_url_hint">URL:</string>
+    <string name="dialog_extension_hint">ᱯᱟᱥᱱᱟᱣ ( ᱡᱮᱞᱠᱟᱺ \".jpg\"):</string>
+    <string name="dialog_title_download">ᱪᱮᱫ ᱟᱢ ᱨᱮᱫᱽ ᱰᱟᱩᱱᱞᱚᱰ ᱥᱟᱱᱟᱢ ᱠᱟᱱᱟ ᱥᱮ ?</string>
+    <string name="dialog_content_resubmission">ᱪᱮᱫ ᱟᱢ ᱟᱢᱟᱜ ᱨᱮᱫᱽ ᱫᱩᱦᱲᱟᱹ ᱡᱚᱢᱟ ᱥᱟᱱᱟᱢ ᱠᱟᱱᱟ ᱥᱮ ?</string>
+
+    <!-- Settings -->
+    <string name="setting_label">ᱥᱟᱡᱟᱣᱠᱚ</string>
+
+    <!-- Browser setting -->
+    <string name="setting_title_clear_control">ᱰᱟᱴᱟ ᱠᱚᱵᱽᱡᱟ</string>
+    <string name="setting_title_start_control">ᱠᱚᱵᱚᱡᱽ ᱮᱛᱦᱚᱵ ᱢᱮ</string>
+
+    <string name="setting_title_search_engine">ᱥᱮᱸᱫᱽᱨᱟ ᱤᱧᱡᱤᱱ</string>
+    <string name="setting_summary_search_engine">ᱢᱤᱫᱴᱟᱹᱝ ᱥᱮᱸᱫᱽᱨᱟ ᱤᱧᱡᱤᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_yandex">Yandex</string>
+    <string name="setting_summary_search_engine_rambler">Rambler</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
+    <string name="setting_summary_search_engine_ecosia">Ecosia</string>
+
+    <string name="setting_title_font_size">ᱪᱤᱠᱤ ᱢᱮᱯ</string>
+    <string name="setting_summary_font_size">ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚ ᱫᱮᱠᱷᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱪᱤᱠᱤ ᱢᱟᱯ ᱵᱚᱫᱚᱞ ᱢᱮ ᱾</string>
+
+
+    <string name="setting_title_remote">ᱡᱷᱟᱹᱞ ᱡᱤᱱᱤᱥ</string>
+    <string name="setting_summary_remote">ᱟᱢ ᱡᱟᱦᱟᱸ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱮᱢ ᱧᱮᱞᱮᱫᱟᱢ ᱚᱱᱟ ᱠᱷᱚᱱ ᱫᱟᱨᱟᱢ ᱥᱟᱦᱴᱟ ᱥᱮᱞᱮᱫᱽ ᱢᱮ ᱾ ᱱᱚᱶᱟ ᱵᱚᱸᱫ ᱞᱮᱠᱷᱟᱱ ᱟᱢᱟᱜ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱞᱮᱣᱮᱞ, ᱛᱮᱡᱽ ᱟᱨ ᱰᱮᱴᱟ ᱵᱷᱚᱞᱭᱩᱢ ᱠᱚ ᱥᱟᱧᱪᱟᱣᱜᱼᱟ, ᱢᱮᱱᱠᱷᱟᱱ ᱛᱤᱱᱟᱹᱜ ᱜᱟᱱ ᱡᱤᱱᱤᱥᱠᱚ ᱫᱚ ᱵᱟᱭ ᱫᱮᱠᱷᱟᱣᱟᱭ ᱾</string>
+
+    <string name="setting_title_save_data">\'ᱰᱟᱴᱟ ᱥᱟᱺᱪᱟᱣ\' ᱞᱟᱹᱜᱤᱫ ᱱᱮᱦᱚᱨ</string>
+    <string name="setting_summary_save_data">ᱵᱟᱛᱟᱣ ᱢᱮ ᱡᱟᱦᱟᱸ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱨᱮ ᱟᱢ ᱰᱟᱴᱟ ᱥᱟᱧᱪᱟᱣ ᱥᱟᱱᱟᱢ ᱠᱟᱱᱟ ᱾ ᱥᱚᱫᱚᱫ ᱠᱟᱱ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚ ᱞᱚᱜᱚᱱ ᱞᱟᱫᱮᱜᱼᱟ ᱾</string>
+
+
+    <!-- Browser start -->
+    <string name="setting_title_images">ᱪᱤᱛᱟᱹᱨ ᱠᱚ</string>
+    <string name="setting_summary_images">ᱱᱮᱴᱳᱣᱟᱨᱠ ᱪᱤᱛᱟᱹᱨ ᱠᱚ ᱮᱢᱪᱷᱚᱭ ᱢᱮ ᱾ ᱢᱳᱵᱟᱭᱤᱞ ᱰᱟᱴᱟ ᱥᱟᱧᱪᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱟᱨ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚ ᱞᱚᱜᱚᱱ ᱞᱳᱰ ᱞᱟᱹᱜᱤᱫ ᱵᱚᱸᱫ ᱛᱮ ᱦᱩᱦᱩᱜᱼᱟ ᱾</string>
+    <string name="setting_title_cookie">ᱠᱩᱠᱤ ᱠᱚ</string>
+    <string name="setting_summary_cookie">ᱠᱩᱠᱤᱡᱽ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ ᱾ ᱠᱩᱠᱤ ᱠᱚᱫᱚ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ ᱦᱩᱰᱤᱧ ᱚᱞ ᱨᱮᱫᱽ, ᱡᱟᱦᱟᱸ ᱠᱚᱫᱚ ᱟᱢᱟᱜ ᱥᱟᱫᱷᱚᱱ ᱨᱮ ᱫᱚᱦᱚ ᱠᱟᱛᱮ ᱛᱟᱦᱮᱸᱱᱟ ᱾ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚ ᱵᱮᱵᱷᱟᱨᱟᱠᱚ, ᱡᱮᱢᱚᱱ, ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱥᱟᱡᱟᱣ ᱠᱚ ᱫᱚᱦᱚ ᱞᱟᱹᱜᱤᱫ (ᱡᱮᱢᱚᱱ ᱾ ᱥᱮᱸᱫᱽᱨᱟ ᱥᱟᱡᱟᱣ ᱠᱚ) ᱾ ᱢᱮᱱᱠᱷᱟᱱ ᱱᱚᱶᱟ ᱠᱚᱫᱚ ᱱᱤᱡᱚᱨ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱰᱟᱴᱟ ᱡᱟᱣᱨᱟ ᱞᱟᱹᱜᱤᱫ ᱦᱚᱸ ᱵᱮᱣᱦᱟᱨ ᱦᱩᱭ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾ ᱛᱮᱥᱟᱨ ᱯᱟᱴᱤ ᱠᱩᱠᱤᱡᱽ (ᱩᱱᱠᱩ ᱰᱷᱟᱶᱨᱟ ᱞᱟᱹᱜᱤᱫ ᱠᱚ ᱵᱮᱵᱷᱟᱨ ᱟ) ᱫᱚ ᱡᱟᱹᱣᱜᱮ ᱵᱚᱸᱫ ᱛᱟᱦᱮᱸᱱᱟ ᱾</string>
+    <string name="setting_summary_cookie_delete">ᱡᱩᱫᱤ ᱱᱚᱶᱟ ᱮᱢ ᱨᱮ ᱛᱟᱦᱮᱸᱱᱟ, ᱡᱚᱛᱚ ᱠᱩᱠᱤ ᱠᱚ ᱢᱮᱴᱟᱣᱜᱼᱟ, ᱚᱱᱟ ᱥᱟᱶᱛᱮ ᱵᱷᱚᱨᱥᱟ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱨᱮᱱᱟᱜ ᱠᱩᱠᱤ ᱠᱚᱦᱚᱸ ᱾</string>
+    <string name="setting_title_whitelistCookie">ᱠᱩᱠᱤ ᱣᱟᱭᱤᱴᱞᱤᱥᱴ</string>
+    <string name="setting_summary_whitelistCookie">ᱡᱩᱫᱤ ᱟᱢ ᱠᱩᱠᱤ ᱠᱚ ᱵᱚᱸᱫᱚᱭ ᱟ, ᱟᱢ ᱱᱚᱶᱟ ᱣᱟᱭᱤᱴᱞᱤᱥᱴ ᱵᱮᱵᱷᱟᱨ ᱫᱟᱲᱮᱭᱟᱜ ᱟᱢ ᱡᱟᱦᱟᱸ ᱛᱮ ᱟᱢ ᱵᱷᱚᱨᱥᱟ ᱮᱫ ᱡᱟᱦᱟᱸ ᱥᱟᱭᱤᱴ ᱨᱮ ᱠᱩᱠᱤᱡᱽ ᱥᱟᱧᱪᱟᱣ ᱪᱷᱚ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱢ ᱾</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">JavaScript ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ ᱾ ᱟᱭᱢᱟᱸ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚᱣᱟᱜ ᱠᱟᱹᱢᱤ ᱞᱟᱹᱜᱤᱫ JavaScript ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ (ᱢᱮᱱᱩ,ᱪᱤᱛᱟᱹᱨ ᱞᱚᱰ ᱟᱨ ᱪᱤᱛᱟᱹᱨ ᱠᱚ ᱩᱫᱩᱜ, ...) ᱾ ᱢᱮᱱᱠᱷᱟᱱ ᱱᱩᱠᱩ ᱦᱚᱸ ᱢᱤᱫ ᱚᱥᱵᱤᱫᱷᱟ ᱨᱮ ᱢᱮᱱᱟᱜ ᱠᱟᱫ ᱠᱚᱣᱟ ᱟᱨ ᱡᱟᱨᱯᱟ ᱞᱟᱹᱜᱤᱫ ᱠᱚ ᱵᱮᱵᱷᱟᱨ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾</string>
+    <string name="setting_title_whitelistJS">JavaScript ᱣᱟᱭᱤᱴᱞᱤᱥᱴ</string>
+    <string name="setting_summary_whitelistJS">ᱡᱩᱫᱤ ᱟᱢ JavaScript ᱵᱚᱸᱫᱚᱭ ᱠᱷᱟᱱ, ᱟᱢ ᱱᱚᱶᱟ ᱣᱟᱭᱤᱴᱞᱤᱥᱴ ᱵᱮᱵᱷᱟᱨ ᱫᱟᱲᱮᱭᱟᱜ ᱟ ᱡᱟᱦᱟᱸ ᱛᱮ ᱟᱢᱟᱜ ᱥᱟᱭᱤᱴ javascript ᱵᱮᱵᱷᱟᱨ ᱪᱷᱚ ᱫᱟᱲᱮ ᱠᱚᱣᱟᱢ ᱾</string>
+
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">AdBlock ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ ᱡᱟᱦᱟᱸ ᱫᱚ ᱵᱚᱱᱴᱷᱤᱠ ᱰᱷᱟᱶᱨᱟ ᱠᱚ ᱵᱞᱚᱠ ᱟ ᱾ ᱾ ᱱᱚᱶᱟ ᱮᱢ ᱞᱮᱠᱷᱟᱱ ᱥᱟᱭᱤᱴ ᱠᱚᱦᱚᱸ ᱞᱚᱜᱚᱱ ᱞᱟᱫᱮᱜᱼᱟ ᱾</string>
+    <string name="setting_title_whitelist">AdBlock ᱣᱟᱭᱤᱴᱞᱤᱥᱴ</string>
+    <string name="setting_summary_whitelist">ᱱᱚᱶᱟ ᱥᱟᱭᱤᱴ ᱠᱚ ᱨᱮ ᱰᱷᱟᱶᱨᱟ ᱮᱢ ᱞᱟᱹᱜᱤᱫ ᱦᱮᱸᱥᱮᱨᱤᱭᱟᱹ ᱪᱷᱚᱭ ᱢᱮ ᱾ AdBlock ᱮᱠᱴᱤᱵᱽ ᱟᱠᱟᱱ ᱠᱷᱟᱱ ᱟᱭᱢᱟ ᱥᱟᱭᱤᱴ ᱠᱚ ᱫᱚ ᱵᱟᱝ ᱠᱟᱹᱢᱤᱭᱟ ᱾</string>
+
+    <string name="setting_title_location">ᱡᱟᱭᱜᱟ</string>
+    <string name="setting_summary_location">ᱟᱢᱟᱜ ᱡᱟᱭᱜᱟ ᱟᱫᱮᱨ ᱪᱷᱚ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱮᱢᱟ ᱠᱚᱢ ᱾ ᱛᱤᱱᱟᱹᱝ ᱜᱟᱱ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ (ᱡᱮᱞᱮᱠᱟ ᱥᱚᱱᱚᱡᱷᱮ ᱞᱟᱹᱜᱤᱫ Google Maps) ᱨᱮ ᱱᱚᱶᱟ ᱮᱢᱪᱷᱚ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ ᱾</string>
+
+    <string name="setting_title_history">ᱱᱟᱜᱟᱢ</string>
+    <string name="setting_summary_history">ᱧᱮᱞ ᱟᱠᱟᱱ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱨᱮᱱᱟᱜ ᱱᱟᱜᱟᱢ ᱥᱟᱧᱪᱟᱣ ᱢᱮ ᱾</string>
+
+
+    <!-- Browser clear -->
+    <string name="data_summary">ᱡᱚᱛᱚ ᱨᱮᱫᱽ ᱠᱚ "Android/data/info.plateaukao.einkbro/files/browser_backup/" ᱨᱮ ᱵᱷᱮᱡᱟᱜᱼᱟ ᱡᱟᱦᱟᱸ ᱫᱚ ᱟᱢᱟᱜ SD ᱠᱟᱨᱰᱨᱮ ᱥᱟᱧᱪᱟᱣ ᱠᱟᱛᱮ ᱛᱟᱦᱮᱸᱱᱟ ᱾ ᱱᱚᱶᱟ ᱯᱚᱪᱚᱢ ᱫᱚ ᱢᱮᱴᱟᱣᱜᱼᱟ, ᱡᱩᱫᱤ ᱟᱢ EinkBro ᱚᱰᱚᱠ ᱜᱤᱰᱤ ᱠᱷᱟᱱ ᱾ ᱢᱮᱱᱠᱷᱟᱱ ᱡᱟᱭᱜᱟ ᱵᱟᱧᱪᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱜᱷᱤᱲ ᱜᱮ ᱵᱮᱠᱚᱯᱷ ᱠᱚᱨᱟᱣ ᱢᱮ ᱾</string>
+    <string name="clear_title_quit">ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱵᱚᱸᱫ ᱞᱮᱠᱷᱟᱱ ᱪᱷᱟᱯᱟᱭ ᱢᱮ</string>
+    <string name="clear_summary_quit">ᱡᱟᱦᱟᱸ ᱛᱤᱥ ᱟᱢ EinkBro ᱠᱷᱚᱱ ᱪᱟᱞᱟᱜᱼᱟ ᱟᱢᱟᱜ ᱡᱚᱛᱚ ᱪᱤᱱᱦᱟᱹ ᱟᱠᱟᱱ ᱰᱟᱴᱟ ᱠᱚ ᱢᱮᱴᱟᱣᱜᱼᱟ ᱾</string>
+    <string name="clear_title_cache">ᱠᱮᱪ ᱥᱟᱯᱷᱟᱭ ᱢᱮ</string>
+    <string name="clear_title_cookie">ᱠᱩᱠᱤᱡᱽ ᱥᱟᱯᱷᱟᱭ ᱢᱮ</string>
+    <string name="clear_title_history">ᱦᱤᱛᱟᱹᱞ ᱯᱷᱟᱨᱪᱟᱭ ᱢᱮ</string>
+    <string name="clear_title_indexedDB">\"indexed databases\" ᱟᱨ \"local webview storage\" ᱯᱷᱟᱨᱪᱟᱭ ᱢᱮ</string>
+
+    <string name="clear_title_deleteDatabase">ᱰᱟᱴᱟᱵᱮᱥ ᱢᱮᱴᱟᱣ ᱢᱮ</string>
+    <string name="clear_summary_deleteDatabase">ᱡᱚᱛᱚ ᱰᱟᱴᱟᱵᱮᱥ ᱢᱮᱴᱟᱣ ᱢᱮ (ᱮᱛᱵᱚᱵ ᱥᱟᱦᱴᱟ, ᱵᱩᱠᱢᱟᱨᱠᱠᱚ, ᱱᱟᱜᱟᱢ ᱟᱨ ᱡᱷᱚᱛᱚ ᱣᱟᱭᱴᱞᱤᱥᱴ) ᱾</string>
+
+
+    <!-- App setting -->
+    <string name="setting_title_ui">UI</string>
+
+    <string name="setting_title_data">ᱵᱮᱠᱚᱯᱷ</string>
+
+    <string name="setting_title_fav">ᱠᱩᱥᱤᱭᱟᱜ</string>
+
+    <string name="setting_title_searchEngine">ᱱᱤᱡᱮᱭᱟᱜ ᱥᱮᱸᱫᱽᱨᱟᱭ ᱤᱧᱡᱤᱱ</string>
+
+    <string name="setting_title_userAgent">ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱮᱡᱮᱱᱴ</string>
+
+    <!-- App behavior -->
+        <string name="setting_title_toolbar">ᱦᱟᱹᱛᱤᱭᱟᱹᱨ ᱵᱟᱨ</string>
+    <string name="setting_title_hideToolbar">ᱦᱟᱹᱛᱤᱭᱟᱹᱨᱵᱟᱨ ᱩᱠᱩᱭ ᱢᱮ</string>
+    <string name="setting_summary_hide">ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚᱨᱮ ᱥᱠᱨᱳᱞ ᱡᱷᱚᱜ ᱯᱩᱨᱟ ᱥᱠᱨᱤᱱ ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾ ᱡᱩᱫᱤ ᱟᱢ ᱛᱟᱭᱚᱢ ᱵᱩᱛᱟᱹᱢ ᱚᱛᱟ ᱠᱷᱟᱱ ᱯᱩᱨᱟ ᱥᱠᱨᱤᱱ ᱢᱳᱰ ᱟᱲᱟᱜ ᱟᱢ ᱾</string>
+
+    <string name="setting_title_theme">UI</string>
+    <string name="setting_title_behavior">ᱵᱮᱵᱷᱟᱨ</string>
+
+    <string name="setting_title_toolbarShow">ᱯᱩᱭᱞᱩ ᱴᱩᱞᱵᱟᱨ</string>
+    <string name="setting_summary_toolbarShow">ᱱᱟᱜᱟᱢ ᱨᱮ ᱪᱟᱞᱟᱜ ᱢᱟᱲᱟᱝ ᱛᱮ, ᱛᱟᱭᱚᱢ ᱥᱮᱫ ᱚᱛᱟ ᱞᱮᱠᱷᱟᱱ ᱨᱩᱣᱟᱹᱲ ᱞᱮᱠᱷᱟᱱ ᱴᱩᱞᱵᱟᱨ ᱧᱮᱞᱚᱜᱼᱟ ᱾</string>
+
+    <string name="setting_title_nav">ᱱᱮᱵᱤᱜᱮᱥᱚᱱ ᱵᱩᱛᱟᱹᱢ</string>
+    <string name="setting_title_nav_pos">ᱯᱟᱭᱨᱟ ᱠᱟᱱ ᱵᱩᱛᱟᱹᱢ ᱡᱟᱭᱜᱟ</string>
+    <string name="setting_summary_nav_pos">\"Navigation Button\" ᱚᱠᱟ ᱨᱮ ᱫᱚᱦᱚ ᱦᱩᱭᱩᱜ ᱟ ᱚᱱᱟ ᱞᱟᱹᱭ ᱢᱮ ᱾</string>
+    <string name="setting_summary_nav_pos_right">ᱡᱚᱡᱚᱢ ᱥᱮᱫ</string>
+    <string name="setting_summary_nav_pos_left">ᱞᱮᱝᱜᱟ</string>
+    <string name="setting_summary_nav_pos_center">ᱛᱟᱞᱟ</string>
+    <string name="setting_summary_nav_pos_not_show">ᱵᱟᱝ ᱫᱮᱠᱷᱟᱣ</string>
+    <string name="setting_summary_nav_pos_custom">ᱠᱚᱥᱴᱚᱢ</string>
+
+    <string name="setting_summary_tab">\"Overview\" ᱨᱮᱭᱟᱜ ᱮᱛᱚᱦᱚᱵ ᱨᱮ ᱪᱮᱫ ᱫᱮᱠᱷᱟᱣ ᱦᱩᱭᱩᱜ-ᱟ? (ᱮᱛᱦᱚᱵ ᱥᱟᱦᱴᱟ, ᱟᱢᱟᱜ ᱵᱩᱠᱢᱟᱨᱠ...)</string>
+
+    <string name="setting_title_confirm_tab_close">ᱴᱮᱵᱽ ᱵᱚᱸᱫ ᱴᱷᱟᱹᱣᱠᱟᱹᱭ ᱢᱮ</string>
+    <string name="setting_summary_confirm_tab_close">ᱢᱤᱫ ᱴᱮᱵᱽ ᱵᱚᱸᱫ ᱡᱷᱚᱜ ᱰᱟᱭᱞᱚᱜᱽ ᱴᱷᱟᱹᱣᱠᱟᱹᱭ ᱢᱮ ᱾</string>
+
+    <string name="setting_overView">ᱧᱮᱱᱮᱞ</string>
+
+    <string name="setting_title_saveTabs">ᱛᱟᱵᱽ ᱠᱚ ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
+    <string name="setting_summary_saveTabs">ᱴᱮᱵᱽ ᱠᱚ ᱥᱟᱧᱪᱟᱣ ᱢᱮ ᱡᱟᱦᱟᱸ ᱛᱮ ᱩᱱᱠᱩ ᱫᱚ ᱟᱨ ᱢᱤᱫ ᱫᱷᱟᱣ ᱠᱚ ᱩᱫᱩᱜ ᱫᱟᱲᱮᱭᱟᱜ ᱟ.</string>
+
+    <!-- Gestures -->
+        <string name="setting_gestures">ᱜᱚᱥᱪᱚᱨ</string>
+    <string name="setting_gestures_use_title">ᱜᱚᱥᱪᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
+    <string name="setting_gestures_use_summary">\"Navigation button\" ᱨᱮ ᱜᱚᱥᱪᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾</string>
+
+    <string name="setting_gesture_up">ᱪᱮᱛᱟᱱ ᱠᱷᱚᱥᱨᱚᱫ ᱢᱮ</string>
+    <string name="setting_gesture_down">ᱞᱟᱛᱟᱨ ᱠᱷᱚᱥᱨᱚᱫ ᱢᱮ</string>
+    <string name="setting_gesture_left">ᱞᱮᱝᱜᱟᱛᱤ ᱥᱮᱫ ᱠᱷᱚᱥᱨᱚᱫ ᱢᱮ</string>
+    <string name="setting_gesture_right">ᱡᱚᱡᱚᱢᱛᱤ ᱥᱮᱫ ᱠᱷᱚᱥᱨᱚᱫ ᱢᱮ</string>
+
+    <string name="nothing">ᱪᱮᱫ ᱦᱚᱸ ᱵᱟᱝ</string>
+    <string name="forward_in_history">ᱱᱟᱜᱟᱢ ᱨᱮ ᱴᱷᱮᱞᱟᱣ</string>
+    <string name="back_in_history">ᱱᱟᱜᱟᱢ ᱨᱮ ᱨᱩᱣᱟᱹᱲ ᱢᱮ</string>
+    <string name="scroll_to_top">ᱪᱮᱛᱟᱱ ᱨᱮ ᱩᱪᱟᱹᱲ ᱢᱮ</string>
+    <string name="scroll_to_bottom">ᱞᱟᱛᱟᱨ ᱨᱮ ᱪᱟᱞᱟᱜ ᱢᱮ</string>
+    <string name="switch_to_left_tab">ᱞᱮᱝᱜᱟᱛᱤ ᱴᱮᱵᱽ ᱪᱟᱞᱟᱜ ᱢᱮ</string>
+    <string name="switch_to_right_tab">ᱡᱚᱡᱚᱢᱛᱤ ᱴᱮᱵᱽ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ</string>
+    <string name="show_overview">ᱢᱩᱬᱩᱛ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="open_new_tab">ᱱᱟᱶᱟ ᱴᱮᱵᱽ ᱡᱷᱤᱡᱽ ᱢᱮ</string>
+    <string name="close_tab">ᱴᱮᱵᱽ ᱵᱚᱸᱫᱚᱭ ᱢᱮ</string>
+    <string name="page_up">ᱥᱟᱦᱴᱟ ᱪᱮᱛᱟᱱ ᱢᱮ</string>
+    <string name="page_down">ᱥᱟᱦᱴᱟ ᱞᱟᱛᱟᱨ ᱢᱮ</string>
+
+    <!-- Data -->
+    <string name="export_whitelistAdBlock">AdBlock ᱣᱟᱭᱤᱴᱞᱤᱥᱴ ᱵᱷᱮᱡᱟᱭ ᱢᱮ</string>
+
+    <string name="export_whitelistJS">JavaScript ᱣᱟᱭᱤᱴᱞᱤᱥᱴ ᱵᱷᱮᱡᱟᱭ ᱢᱮ</string>
+
+    <string name="export_whitelistCookie">Cookie ᱣᱟᱭᱤᱴᱞᱤᱥᱴ ᱵᱷᱮᱡᱟᱭ ᱢᱮ</string>
+
+    <string name="setting_title_export_appData">ᱮᱯ ᱰᱮᱴᱟ ᱵᱷᱮᱡᱟᱭ ᱢᱮ</string>
+        <string name="setting_summary_export_appData">ᱮᱯ ᱰᱮᱴᱟ (ᱱᱟᱜᱟᱢ, ᱵᱩᱠᱢᱟᱨᱠᱠᱚ) ᱟᱨ ᱟᱢᱟᱜ ᱱᱤᱡᱮᱨᱟᱜ ᱥᱟᱡᱟᱣᱠᱚ ᱵᱷᱮᱡᱟᱭ ᱢᱮ ᱾</string>
+    <string name="setting_title_import_appData">ᱮᱯ ᱰᱟᱴᱟ ᱟᱹᱜᱩᱭ ᱢᱮ</string>
+    <string name="setting_summary_import_appData">ᱢᱟᱲᱟᱝ ᱛᱮ ᱵᱷᱮᱡᱟ ᱟᱠᱟᱱ ᱰᱟᱴᱟ ᱥᱟᱶ ᱢᱤᱫ zip ᱨᱮᱫᱽ ᱵᱟᱪᱷᱟᱣ ᱠᱟᱛᱮ ᱮᱯ ᱰᱟᱴᱟ ᱟᱹᱜᱩᱭᱢᱮ ᱾</string>
+    
+    <string name="title_appData">ᱮᱯ ᱰᱮᱴᱟ</string>
+    <string name="hint_database">ᱱᱚᱶᱟ ᱫᱚ ᱟᱢᱟᱜ ᱡᱷᱚᱛᱚ ᱡᱤᱱᱤᱥ ᱠᱚ ᱢᱮᱴᱟᱣ ᱟᱭ ᱾ ᱢᱟᱲᱟᱝ ᱥᱮᱫᱚᱜᱟᱢ ᱥᱮ ?</string>
+
+    <!-- Others setting -->
+    <string name="setting_title_license">ᱞᱟᱭᱥᱮᱱᱥ</string>
+
+    <!-- Toast -->
+    <string name="toast_add_whitelist_successful">ᱰᱚᱢᱮᱱ ᱨᱟᱹᱥ ᱞᱮᱠᱟᱛᱮ ᱥᱮᱞᱮᱫ ᱦᱩᱭᱮᱱᱟ</string>
+    <string name="toast_copy_successful">ᱨᱟᱹᱥ ᱞᱮᱠᱟᱛᱮ ᱱᱚᱠᱚᱞ ᱮᱱᱟ</string>
+    <string name="toast_delete_successful">ᱨᱟᱹᱥ ᱞᱮᱠᱟᱛᱮ ᱢᱮᱴᱟᱣ ᱮᱱᱟ</string>
+    <string name="toast_domain_already_exists">ᱰᱳᱢᱮᱱ ᱢᱟᱲᱟᱝ ᱠᱷᱚᱱ ᱢᱮᱱᱟᱜ ᱠᱟᱫᱟ</string>
+
+    <string name="toast_export_successful">ᱞᱮᱠᱟᱛᱮ ᱵᱷᱮᱡᱟ ᱠᱟᱱᱟ: </string>
+    <string name="toast_export_failed">ᱵᱷᱮᱡᱟ ᱨᱮ ᱰᱤᱜᱟᱹᱣ ᱮᱱᱟ</string>
+    <string name="toast_import_successful">ᱟᱹᱜᱩ ᱞᱮᱠᱷᱟ: </string>
+    <string name="toast_import_failed">ᱟᱹᱜᱩ ᱨᱮ ᱰᱤᱜᱟᱹᱣ ᱦᱩᱭᱮᱱᱟ</string>
+
+    <string name="toast_input_empty">ᱟᱢ ᱡᱟᱦᱟᱸᱱ ᱡᱤᱱᱤᱥ ᱵᱟᱝᱢ ᱚᱞ ᱟᱠᱟᱫᱟ</string>
+    <string name="toast_invalid_domain">ᱵᱷᱩᱞ ᱰᱚᱢᱮᱱ</string>
+    <string name="toast_load_error">ᱱᱚᱶᱟ URL ᱫᱚ ᱞᱟᱫᱮ ᱵᱟᱭ ᱜᱚᱱᱚᱜ ᱠᱟᱱᱟ</string>
+    <string name="toast_share_failed">ᱱᱚᱶᱟ ᱥᱟᱦᱴᱟ ᱦᱟᱹᱴᱤᱧ ᱵᱟᱭ ᱜᱟᱱᱚᱜ ᱠᱟᱱᱟ</string>
+
+    <string name="toast_start_download">ᱰᱟᱣᱩᱱᱞᱚᱰ ᱮᱛᱚᱦᱚᱵᱚᱜ ᱠᱟᱱᱟ</string>
+    <string name="toast_wait_a_minute">ᱢᱤᱫ ᱫᱷᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱫᱟᱭᱟᱠᱟᱛᱮ ᱛᱟᱹᱝᱜᱤ ᱢᱮ</string>
+    <string name="toast_error">ᱮᱦᱮ, ᱪᱮᱫ ᱪᱷᱚᱸ ᱢᱤᱫᱴᱟᱹᱝ ᱵᱷᱩᱞ ᱦᱩᱭᱮᱱᱟ...</string>
+    <string name="toast_edit_successful">ᱨᱟᱹᱥ ᱞᱮᱠᱟᱛᱮ ᱥᱟᱧᱪᱟᱣ ᱮᱱᱟ!</string>
+    <string name="toast_webview_forward">ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱥᱟᱭᱤᱴᱫᱚ ᱞᱟᱫᱮ ᱵᱟᱭ ᱜᱟᱱ ᱞᱮᱱᱟ</string>
+    <string name="toast_restart">ᱵᱚᱫᱚᱞᱠᱚ ᱫᱚᱦᱚ ᱞᱟᱹᱜᱤᱫ ᱟᱢ EinkBro ᱫᱩᱦᱲᱟᱹ ᱮᱛᱵᱚᱵ ᱛᱮ ᱦᱩᱭᱟᱢᱟ ᱾ ᱱᱤᱛᱚᱜ ᱵᱚᱸᱫᱚᱭ ᱟ ᱥᱮ ?</string>
+    <string name="toast_close_tab">ᱟᱢ ᱱᱮᱛᱚᱜᱟᱜ ᱴᱮᱵᱽ ᱵᱚᱸᱫᱜ ᱥᱟᱱᱟᱢ ᱠᱟᱱᱟ ᱥᱮ ?</string>
+    <string name="toast_downloadComplete">ᱰᱟᱣᱩᱱᱞᱚᱰ ᱪᱟᱵᱟᱭᱮᱱᱟ ᱾ ᱨᱮᱫ ᱡᱷᱤᱡᱽᱟᱢ ᱥᱮ ?</string>
+    <string name="toast_backup">ᱰᱟᱴᱟ ᱵᱮᱠᱤᱯ ᱛᱮᱭᱟᱨᱟᱢ ᱥᱮ ? ᱱᱚᱶᱟ ᱫᱚ ᱢᱟᱨᱮ ᱵᱮᱠ-ᱟᱯᱷ ᱪᱮᱛᱟᱱ ᱨᱮ ᱚᱞ ᱟ ᱾</string>
+
+
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">ᱯᱷᱟᱨᱪᱟ</string>
+    <string name="whitelist_edit_hint">ᱰᱚᱢᱮᱱ</string>
+    <string name="whitelist_add">ᱥᱮᱞᱮᱫᱽ ᱢᱮ</string>
+
+    <string name="setting_summary_desktop">ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱨᱮᱱᱟᱜ ᱰᱮᱠᱥᱠᱴᱚᱯ ᱢᱳᱰ ᱨᱮ ᱥᱚᱦᱚᱫ ᱮᱢᱟᱭ</string>
+    <string name="history">ᱱᱟᱜᱟᱢ</string>
+    <string name="location">ᱡᱟᱭᱜᱟ</string>
+    <string name="media_continue">ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ ᱯᱞᱮ</string>
+    <string name="show_touch_area_hint">ᱴᱟᱪ ᱮᱨᱤᱭᱟ ᱵᱚᱰᱚᱨ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="touch_left_side">ᱞᱮᱝᱜᱟ</string>
+    <string name="touch_right_side">ᱡᱚᱡᱚᱢ ᱥᱮᱫ</string>
+    <string name="bold_font">ᱵᱚᱞᱰ ᱪᱤᱠᱤ</string>
+    <string name="white_background">ᱯᱩᱸᱰ ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ</string>
+    <string name="setting_summary_bold_font">ᱵᱚᱞᱰ ᱪᱤᱠᱤ ᱥᱴᱟᱭᱤᱞ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ (ᱱᱤᱛᱚᱜᱟᱜ ᱥᱟᱦᱴᱟ ᱫᱩᱦᱲᱟᱹ ᱞᱟᱫᱮ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ)</string>
+    <string name="desktop_mode">ᱰᱮᱠᱥᱴᱚᱯ ᱢᱳᱰ</string>
+    <string name="setting_title_page_left_value">ᱥᱟᱦᱴᱟ ᱨᱤᱡᱚᱨᱵ ᱩᱥᱩᱞ</string>
+    <string name="setting_summary_page_left_value">ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱥᱟᱦᱴᱟ ᱨᱮ ᱩᱪᱟᱹᱲᱚᱜ ᱞᱟᱹᱜᱤᱫ ᱛᱤᱱᱟᱹᱜ ᱩᱥᱩᱞ ᱫᱚᱦᱚ ᱛᱮ ᱦᱩᱭᱩᱜᱼᱟ ᱾</string>
+    <string name="setting_title_pdf_paper_size">ᱪᱷᱟᱯᱟ PDF ᱥᱟᱦᱴᱟ ᱢᱟᱯ</string>
+    <string name="vertical_read">ᱥᱤᱫᱷ</string>
+    <string name="reader_mode">ᱯᱟᱲᱦᱟᱣ ᱢᱳᱰ</string>
+    <string name="touch_area_setting">ᱴᱚᱪ ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="toolbar_setting">ᱦᱟᱹᱛᱤᱭᱟᱨᱵᱟᱨ ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="menu_save_epub">EPUB ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
+    <string name="saving_epub">EPUB ᱥᱟᱧᱪᱟᱣᱜ ᱠᱟᱱᱟ</string>
+    <string name="menu_open_epub">EPUB ᱠᱷᱩᱞᱟᱹᱭ ᱢᱮ</string>
+    <string name="new_epub_or_from_picker">ᱱᱟᱣᱟ EPUB ᱟᱨᱵᱟᱝ picker ᱠᱷᱚᱱ</string>
+    <string name="title">ᱪᱟᱯᱴᱚᱨ ᱨᱮᱱᱟᱜ ᱧᱩᱛᱩᱢ</string>
+    <string name="title_in_toc">ᱡᱤᱱᱤᱥ ᱨᱮᱭᱟᱜ ᱥᱩᱪᱤ ᱨᱮ ᱪᱟᱯᱴᱚᱨ ᱧᱩᱛᱩᱢ</string>
+    <string name="book_name">ᱯᱚᱛᱚᱵ ᱧᱩᱛᱩᱢ</string>
+    <string name="book_name_description">ᱯᱚᱛᱚᱵ ᱧᱩᱛᱩᱢ ᱚᱞ ᱢᱮ</string>
+    <string name="volume_page_turn">ᱵᱷᱚᱞᱭᱩᱢ ᱪᱟᱹᱵᱤ</string>
+    <string name="folder_name">ᱯᱚᱪᱚᱢ ᱧᱩᱛᱩᱢ ᱵᱩᱠᱢᱟᱨᱠ ᱢᱮ</string>
+    <string name="folder_name_description">ᱯᱚᱪᱚᱢ ᱧᱩᱛᱩᱢ ᱵᱩᱠᱢᱟᱨᱠ ᱢᱮ ᱠᱷᱚᱧᱡᱟᱭ ᱢᱮ</string>
+    <string name="setting_title_export_bookmarks">ᱵᱷᱩᱠᱢᱟᱨᱠ ᱵᱷᱮᱡᱟᱭ ᱢᱮ</string>
+    <string name="setting_title_import_bookmarks">ᱵᱩᱠᱢᱟᱨᱠᱠᱚ ᱟᱹᱜᱩᱭ ᱢᱮ</string>
+    <string name="setting_title_incognito">ᱤᱱᱠᱳᱜᱱᱤᱴᱳ ᱢᱳᱰ</string>
+    <string name="back">ᱛᱟᱭᱚᱢ</string>
+    <string name="refresh">ᱱᱟᱶᱟ ᱟᱹᱨᱩ</string>
+    <string name="touch_turn_page">ᱡᱚᱴᱮᱫ ᱯᱚᱞᱴᱟᱣ ᱥᱟᱦᱴᱟ</string>
+    <string name="tab_preview">ᱴᱮᱵᱽ ᱧᱮᱞᱵᱤᱲᱟᱹᱣ</string>
+    <string name="font_size">ᱪᱤᱠᱤ ᱢᱟᱯ</string>
+    <string name="settings">ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="toolbars">ᱦᱟᱹᱛᱤᱭᱟᱨᱵᱟᱨ ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="font_size_increase">ᱪᱤᱠᱤ ᱢᱟᱯ ᱰᱷᱮᱨᱪᱷᱚ</string>
+    <string name="font_size_decrease">ᱪᱤᱠᱤ ᱢᱟᱯ ᱠᱚᱢᱪᱷᱚ</string>
+    <string name="fullscreen">ᱯᱩᱨᱟᱹ ᱥᱠᱨᱤᱱ</string>
+    <string name="forward">ᱞᱟᱦᱟ</string>
+    <string name="rotate">ᱟᱹᱪᱩᱨ ᱢᱮ</string>
+    <string name="translate">ᱛᱚᱨᱡᱚᱢᱟ</string>
+    <string name="toolbar_title">ᱧᱩᱛᱩᱢ</string>
+    <string name="setting_title_screen_awake">ᱥᱠᱨᱤᱱ ᱮᱠᱴᱤᱵᱽ ᱫᱚᱦᱚᱭ ᱢᱮ</string>
+    <string name="setting_summary_screen_awake">ᱡᱟᱹᱣᱜᱮ ᱥᱠᱨᱤᱱ ᱮᱠᱴᱤᱵᱽ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾</string>
+    <string name="middle">ᱛᱟᱞᱟᱨᱮ</string>
+    <string name="bottom">ᱞᱟᱛᱟᱨ</string>
+    <string name="input_url">URL ᱟᱫᱮᱨ</string>
+    <string name="setting_title_useUpDown">ᱪᱮᱛᱟᱱ/ᱞᱟᱛᱟᱨ ᱪᱟᱹᱵᱤ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
+    <string name="setting_summary_useUpDownKey">ᱪᱮᱛᱟᱱ/ᱞᱟᱛᱟᱨ ᱪᱟᱹᱵᱤ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱥᱟᱦᱴᱟ ᱯᱚᱞᱴᱟᱣ ᱢᱮ ᱾ bluetooth ᱥᱟᱫᱷᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱵᱷᱟᱹᱜᱤ ᱜᱮᱭᱟ ᱾</string>
+    <string name="setting_title_process_text">ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ ᱵᱚᱦᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ URL</string>
+    <string name="split_screen">ᱥᱠᱨᱤᱱ ᱵᱷᱟᱜᱽ ᱢᱮ</string>
+    <string name="dark_mode">ᱧᱩᱛ ᱢᱳᱰ</string>
+    <string name="setting_summary_dark_mode">ᱧᱩᱛ ᱢᱳᱰ ᱥᱮᱴ ᱢᱮ</string>
+    <string name="hie_touch_area_when_input">ᱚᱞ ᱚᱠᱛᱚ ᱡᱷᱚᱜ ᱵᱮᱸᱫᱚᱭ ᱢᱮ</string>
+    <string name="switch_touch_area_action">ᱪᱮᱛᱟᱱ/ᱞᱟᱛᱟᱨ ᱥᱮᱫ ᱵᱚᱫᱚᱞ ᱢᱮ</string>
+    <string name="no_previous_page">ᱢᱟᱲᱟᱝ ᱥᱟᱦᱴᱟ ᱵᱟᱹᱱᱩᱜᱼᱟ!</string>
+    <string name="setting_multitouch_use_title">ᱵᱟᱨᱭᱟ ᱠᱟ.ᱴᱩᱵ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱩᱪᱟᱹᱲ ᱢᱮ</string>
+    <string name="setting_multitouch_use_summary">ᱠᱟᱹᱢᱤ ᱠᱚ ᱪᱟᱞᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱣᱮᱵᱽ ᱡᱤᱱᱤᱥ ᱨᱮ ᱵᱟᱨᱭᱟ ᱠᱟᱹᱴᱩᱵ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱠᱷᱚᱥᱚᱫ ᱢᱮᱹ</string>
+    <string name="setting_title_two_finger_swipe">ᱵᱟᱨᱭᱟ ᱠᱟᱹᱴᱩᱵ ᱠᱷᱚᱥᱨᱚᱫ</string>
+    <string name="font_custom">ᱢᱚᱱᱮᱛᱮᱭᱟᱜ ᱪᱤᱠᱤ ᱨᱮᱫ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+    <string name="translation_mode">ᱛᱚᱨᱡᱚᱢᱟ ᱢᱳᱰ</string>
+
+
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="system_default">ᱢᱩᱞ</string>
+    <string name="serif">Serif</string>
+    <string name="googleserif">Google Serif</string>
+    <string name="custom_font">ᱠᱚᱥᱴᱚᱢ</string>
+    <string name="setting_title_font">ᱪᱤᱠᱤ</string>
+    <string name="font_type">ᱯᱷᱚᱱᱴ ᱯᱨᱚᱠᱟᱨ</string>
+    <string name="menu_quickToggle">ᱞᱚᱜᱚᱱ ᱩᱪᱟᱹᱲ</string>
+    <string name="setting_title_toolbar_top">ᱪᱮᱛᱟᱱ ᱨᱮ ᱴᱩᱞᱵᱟᱨ</string>
+    <string name="setting_summary_toolbar_top">ᱥᱠᱨᱤᱱ ᱪᱮᱛᱟᱱ ᱨᱮ ᱴᱩᱞᱵᱟᱨ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_title_vi_binding">Vi ᱪᱟᱹᱵᱤ ᱛᱚᱞ</string>
+    <string name="setting_summary_vi_binding">ᱞᱚᱜᱚᱱ ᱠᱟᱹᱴᱷᱤ ᱵᱚᱰ ᱥᱚᱱᱚᱡᱷᱮ ᱞᱟᱹᱜᱤᱫ ᱛᱮ Vi ᱪᱟᱹᱵᱤ ᱛᱚᱞ ᱮᱢᱪᱷᱚᱭ ᱢᱮ ᱾</string>
+    <string name="edit_custom_font">ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ ᱪᱤᱠᱤ ᱥᱟᱯᱲᱟᱣ ᱢᱮ</string>
+    <string name="cannot_open_file">ᱨᱮᱫᱽ ᱠᱷᱩᱞᱟᱹ ᱵᱟᱭ ᱜᱟᱱᱚᱜᱼᱟ ᱾ ᱨᱮᱫᱽ ᱵᱟᱪᱷᱟᱣᱤᱭᱟᱹ ᱠᱷᱚᱱ ᱫᱟᱭᱟᱠᱟᱛᱮ ᱫᱩᱦᱲᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ ᱾</string>
+    <string name="setting_recent_bookmarks">ᱱᱤᱛᱚᱜᱟᱜ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱱ ᱵᱩᱠᱢᱟᱨᱠᱠᱚ ᱫᱮᱠᱷᱟᱣᱢᱮ</string>
+    <string name="setting_summary_recent_bookmarks">ᱢᱤᱫᱴᱮᱱ ᱱᱟᱣᱟ ᱛᱟᱵᱽ ᱚᱰᱚᱠ ᱡᱷᱚᱜ ᱱᱤᱛᱚᱜᱟᱜ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱱ ᱵᱩᱠᱢᱟᱨᱠᱠᱚ ᱫᱮᱠᱷᱟᱣᱢᱮ ᱾</string>
+    <string name="setting_clear_recent_bookmarks">ᱱᱤᱛᱚᱜᱟᱜ ᱵᱩᱠᱢᱟᱨᱠ ᱞᱤᱥᱴᱤ ᱢᱮᱴᱟᱣᱢᱮ</string>
+    <string name="setting_summary_clear_recent_bookmarks">ᱱᱤᱛᱚᱜᱟᱜ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱱ ᱵᱩᱠᱢᱟᱨᱠ ᱞᱤᱥᱴᱤ ᱢᱮᱴᱟᱣᱢᱮ</string>
+    <string name="recently_used_bookmarks">ᱱᱮᱛᱟᱨ ᱵᱮᱵᱷᱟᱨ ᱟᱠᱟᱱ ᱵᱷᱩᱠᱢᱟᱨᱠᱠᱚ</string>
+    <string name="menu_send_link">ᱞᱤᱝᱠ ᱠᱩᱞ ᱢᱮ</string>
+    <string name="done">ᱩᱪᱟᱹᱲ ᱦᱩᱭ ᱞᱮᱱᱠᱷᱟᱱ ᱵᱚᱸᱫᱚᱭ ᱢᱮ</string>
+    <string name="menu_receive">ᱰᱮᱴᱟ ᱟᱛᱟᱝ ᱢᱮ</string>
+    <string name="copy_link">ᱞᱤᱝᱠ ᱱᱚᱠᱚᱞ ᱢᱮ</string>
+    <string name="setting_title_background_loading">ᱠᱟᱹᱢᱤᱵᱟᱝ ᱛᱟᱦᱮᱸᱱ ᱠᱟᱱ ᱴᱮᱵᱽᱠᱚ ᱞᱚᱰᱚᱜ ᱠᱟᱱᱟ</string>
+    <string name="setting_summary_background_loading">ᱡᱩᱫᱤ ᱴᱮᱵᱽ ᱫᱚ ᱮᱠᱴᱤᱵᱮᱴ ᱵᱟᱹᱱᱩᱜ ᱟᱹᱱᱤᱡ, ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ ᱨᱮ ᱡᱤᱱᱤᱥ ᱞᱚᱰᱚᱜ ᱠᱟᱱᱟ ᱾</string>
+    <string name="dialog_content_ssl_error">ᱱᱚᱶᱟ ᱥᱟᱭᱤᱴ ᱨᱮᱭᱟᱜ ᱯᱚᱨᱢᱟᱱ ᱥᱟᱠᱟᱢ ᱫᱚ ᱵᱷᱚᱨᱥᱟ ᱵᱟᱹᱱᱩᱜ ᱠᱟᱫᱼᱟ ᱾ ᱡᱟᱦᱟᱸ ᱞᱮᱠᱟᱛᱮ ᱞᱟᱦᱟᱜ ᱟ ᱥᱮ ?</string>
+    <string name="setting_title_search">ᱥᱮᱸᱫᱽᱨᱟ</string>
+    <string name="dialog_toc_title">ᱡᱤᱱᱤᱥ ᱨᱮᱭᱟᱜ ᱴᱮᱵᱤᱞ</string>
+    <string name="latest_release">ᱱᱮᱛᱟᱨᱟᱜ ᱨᱤᱞᱤᱡᱽ</string>
+    <string name="project_site">ᱯᱟᱱᱛᱷᱟ ᱥᱟᱭᱤᱴ</string>
+    <string name="facebook_groups">Facebook ᱜᱽᱨᱩᱯᱠᱚ</string>
+    <string name="changelogs">ᱪᱮᱫ ᱱᱟᱶᱟ ᱢᱮᱱᱟᱼᱟ</string>
+    <string name="medium_articles">Medium ᱚᱱᱚᱞᱠᱚ</string>
+    <string name="contributors">ᱮᱱᱮᱢᱤᱭᱟᱹ</string>
+    <string name="turn_on">ᱪᱟᱹᱞᱩ</string>
+    <string name="turn_off">ᱵᱚᱸᱫᱚ</string>
+    <string name="title_touch_area">ᱡᱚᱴᱮᱫ ᱡᱟᱭᱜᱟ</string>
+    <string name="title_about">ᱵᱟᱵᱚᱛ</string>
+    <string name="setting_title_auto_fill_form">ᱟᱡ ᱛᱮ ᱯᱮᱨᱮᱡ ᱯᱷᱚᱨᱢ ᱰᱟᱴᱟ</string>
+    <string name="setting_summary_auto_fill_form">ᱡᱩᱫᱤ ᱮᱢ ᱠᱟᱱ ᱠᱷᱟᱱ ᱟᱡ ᱛᱮ ᱯᱷᱚᱨᱢ ᱯᱮᱨᱮᱡ ᱢᱮ ᱾</string>
+    <string name="setting_title_trim_input_url">ᱟᱫᱮᱨ ᱠᱟᱱ ᱚᱞ ᱡᱤᱱᱤᱥ ᱠᱟᱴᱨᱚᱵ ᱢᱮ</string>
+    <string name="setting_summary_trim_input_url">ᱟᱫᱮᱨ ᱠᱟᱱ ᱚᱞ ᱡᱤᱱᱤᱥ ᱨᱮ ᱵᱤᱱ-http ᱢᱟᱲᱟᱝ ᱨᱮ ᱞᱟᱜᱟᱣᱜ ᱴᱷᱟᱣ ᱚᱪᱚᱜᱽ ᱢᱮ</string>
+    <string name="no_bookmarks">ᱛᱤᱱᱟᱹᱜ ᱜᱟᱱ ᱵᱩᱠᱢᱟᱨᱠᱠᱚ ᱥᱮᱫᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱛᱮ ᱵᱩᱠᱢᱟᱨᱠ ᱪᱤᱱᱦᱟᱹ ᱨᱮ ᱡᱩᱨ ᱚᱛᱟᱭ ᱢᱮ ᱾</string>
+    <string name="always_enable_zoom">ᱡᱚᱛᱚ ᱚᱠᱛᱚ ᱨᱮ ᱡᱤᱱᱤᱥ ᱢᱟᱯ ᱰᱷᱮᱨ ᱪᱷᱚᱭ ᱢᱮ</string>
+    <string name="setting_summary_enable_zoom">ᱡᱟᱦᱟᱛᱤᱱᱟᱹᱜ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱡᱤᱱᱤᱥ ᱠᱟᱛᱷᱟ ᱠᱚ ᱢᱟᱨᱟᱝ ᱦᱚᱪᱚᱭ ᱢᱮ ᱾</string>
+    <string name="setting_title_debug">WebView ᱰᱮᱵᱩᱜᱽ ᱢᱮ</string>
+    <string name="setting_summary_debug">WebView ᱰᱤᱵᱩᱜᱽ ᱞᱟᱹᱜᱤᱫ ᱱᱚᱶᱟ ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ ᱮᱢ ᱢᱮ ᱾</string>
+    <string name="setting_title_prune_query_parameter">URL ᱨᱮ ᱯᱨᱩᱱ ᱴᱨᱟᱠᱤᱝ ᱠᱣᱮᱨᱤ ᱯᱟᱨᱟᱢᱤᱴᱚᱨ ᱠᱚ</string>
+    <string name="setting_summary_prune_query_parameter">utm_medium, utm_source, ᱮᱢᱟᱱ ᱞᱮᱠᱟᱱᱟᱜ ᱠᱩᱣᱮᱨᱤ ᱯᱟᱨᱟᱢᱤᱴᱚᱨ URL ᱠᱷᱚᱱ ᱚᱪᱚᱜᱽ ᱦᱩᱭᱩᱜᱼᱟ ᱾</string>
+    <string name="setting_title_show_tab_bar">ᱴᱮᱵᱽ ᱵᱟᱨ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_summary_show_tab_bar">ᱴᱩᱞᱵᱟᱨ ᱪᱮᱛᱟᱱ ᱨᱮ ᱴᱮᱵᱽ ᱵᱟᱨ ᱚᱞ ᱫᱮᱠᱷᱟᱣ  ᱢᱮ</string>
+    <string name="error_download_link_invalid">ᱰᱟᱩᱱᱞᱚᱰ ᱞᱤᱝᱠ ᱫᱚ ᱵᱟᱭ ᱴᱷᱤᱠ ᱟ ᱾</string>
+    <string name="duplicate_tab">ᱰᱩᱯᱞᱤᱠᱮᱴ ᱴᱮᱵᱽ</string>
+    <string name="password">ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ</string>
+    <string name="user_name">ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱧᱩᱛᱩᱢ</string>
+    <string name="authentication">ᱚᱛᱷᱮᱱᱴᱤᱠᱮᱥᱚᱱ</string>
+    <string name="twitter">Twitter</string>
+    <string name="setting_title_edit_homepage">ᱚᱲᱟᱜ URL ᱥᱟᱯᱲᱟᱣ ᱢᱮ</string>
+    <string name="setting_title_plus_behavior">ᱱᱟᱶᱟ ᱴᱮᱵᱽ ᱵᱮᱵᱷᱟᱨ</string>
+    <string name="setting_summary_plus_behavior">ᱢᱤᱫ ᱱᱟᱶᱟ ᱴᱮᱵᱽ ᱥᱮᱞᱮᱫ ᱞᱟᱦᱟ ᱨᱮ ᱪᱮᱫ ᱪᱮᱠᱟᱛᱮ ᱩᱫᱩᱜ ᱦᱩᱭᱩᱜᱼᱟ ᱾</string>
+        <string name="setting_title_translated_langs">Google ᱛᱚᱨᱡᱚᱢᱟ ᱞᱟᱹᱜᱤᱫ ᱯᱟᱹᱨᱥᱤᱠᱚ</string>
+    <string name="setting_summary_translated_langs">ᱛᱚᱨᱡᱚᱢᱟ ᱞᱟᱹᱜᱤᱫ ᱯᱟᱹᱨᱥᱤ ᱠᱚ ᱢᱚᱱᱮ ᱢᱮ (ᱡᱮᱞᱮᱠᱟ en, fr, de, zh-TW, zh-CN) ᱾</string>
+    <string name="menu">ᱢᱤᱱᱭᱩ</string>
+    <string name="copy_text">ᱚᱞ ᱱᱚᱠᱚᱞ ᱢᱮ</string>
+    <string name="menu_tts">ᱚᱞ ᱯᱟᱲᱦᱟᱣ</string>
+    <string name="read_speed">ᱯᱟᱲᱦᱟᱣ ᱨᱮᱱᱟᱜ ᱜᱚᱛᱤ</string>
+    <string name="toast_send_link_failed">ᱞᱤᱝᱠ ᱵᱷᱮᱡᱟ ᱰᱤᱜᱟᱹᱣ ᱮᱱᱟ</string>
+    <string name="toast_receive_link_failed">ᱧᱟᱢᱚᱜ ᱞᱤᱝᱠ ᱰᱤᱜᱟᱹᱣ ᱮᱱᱟ</string>
+    <string name="setting_summary_custom_process_text_url">ᱡᱚᱠᱷᱚᱱ ᱟᱢ ᱮᱴᱟᱜ ᱮᱯ ᱨᱮ ᱚᱞ ᱵᱟᱪᱷᱟᱣ ᱮᱫᱟᱢ, ᱟᱢ ᱱᱚᱶᱟ URL ᱯᱨᱤᱯᱷᱤᱠᱥ ᱛᱮ ᱵᱽᱨᱟᱩᱡᱚᱨ ᱨᱮᱢ ᱥᱮᱸᱫᱽᱨᱟ ᱫᱟᱲᱮᱭᱟᱜ ᱟ ᱾</string>
+    <string name="not_supported">ᱵᱟᱝ ᱥᱚᱦᱮᱫ ᱟ</string>
+
+    <string name="plus_start_input_url">ᱟᱫᱮᱨ URL ᱮᱛᱦᱚᱵ ᱢᱮ</string>
+    <string name="plus_show_homepage">ᱚᱲᱟᱜ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="plus_show_bookmarks">ᱱᱮᱛᱟᱨᱟᱜ ᱵᱩᱠᱢᱟᱨᱠ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="dark_mode_follow_system">ᱯᱟᱧᱡᱟ ᱥᱤᱥᱴᱚᱢ</string>
+    <string name="dark_mode_force_on">ᱯᱷᱚᱨᱥ ᱮᱢ ᱪᱷᱚ</string>
+    <string name="dark_mode_disabled">ᱵᱚᱸᱫ</string>
+    <string name="title_activity_setting">ᱥᱟᱡᱟᱣᱠᱟᱹᱢᱤ</string>
+    <string name="setting_title_video_auto_fullscreen">ᱯᱩᱨᱟ ᱥᱠᱨᱤᱱ ᱨᱮ ᱵᱷᱤᱰᱤᱭᱳ ᱯᱞᱮ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ</string>
+    <string name="setting_summary_video_auto_fullscreen">ᱡᱚᱠᱷᱚᱱ ᱵᱷᱤᱰᱤᱭᱳ ᱮᱛᱚᱦᱚᱵᱚᱜᱼᱟ, ᱯᱩᱨᱟᱥᱠᱨᱤᱱ ᱨᱮ ᱟᱡ ᱛᱮ ᱢᱟᱯ ᱢᱮ ᱾</string>
+    <string name="setting_title_video_pip">ᱦᱩᱰᱤᱧ ᱡᱷᱚᱨᱠᱟ ᱨᱮ ᱣᱤᱰᱤᱭᱚ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_summary_video_pip">ᱡᱚᱠᱷᱚᱱ ᱵᱷᱤᱰᱤᱭᱳ ᱮᱱᱮᱡ ᱡᱷᱚᱜ ᱟᱨ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ, ᱵᱷᱤᱰᱤᱭᱳ ᱫᱮᱠᱷᱟᱣ ᱡᱷᱚᱜ ᱦᱩᱰᱤᱧ ᱡᱷᱚᱨᱠᱟ ᱛᱮ ᱞᱟᱦᱟᱜ ᱢᱮ ᱾</string>
+    <string name="empty_whitelist_hint">ᱢᱤᱫ ᱱᱟᱣᱟ ᱰᱳᱢᱮᱱ ᱥᱮᱞᱮᱫ ᱞᱟᱹᱜᱤᱫ ᱪᱮᱛᱟᱱ ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ</string>
+    <string name="google_text">Google ᱚᱞ ᱢᱳᱰ</string>
+    <string name="papago_text">Papago ᱚᱞ ᱢᱳᱰ</string>
+    <string name="papago_full_page">Papago ᱯᱩᱨᱟ ᱥᱟᱦᱴᱟ</string>
+    <string name="google_full_page">Google ᱡᱷᱚᱛᱚ ᱥᱟᱦᱴᱟ</string>
+    <string name="papago_dual_pane">Papago ᱰᱩᱣᱟᱞ ᱯᱮᱱ</string>
+    <string name="google_in_place">Google in-Place</string>
+    <string name="setting_title_update_adblock">AdBlock ᱡᱤᱱᱤᱥᱠᱚ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
+    <string name="setting_summary_update_adblock">ᱱᱤᱛᱚᱜ AdBlock ᱣᱮᱵᱥᱟᱭᱤᱴᱠᱚ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ ᱾</string>
+    <string name="setting_title_adblock_url">AdBlock ᱞᱤᱥᱴᱤ URL</string>
+    <string name="setting_summary_adblock_url">ᱡᱩᱫᱤ ᱟᱢ ᱮᱴᱟᱜ AdBlock ᱡᱤᱱᱤᱥ ᱵᱮᱵᱷᱟᱨᱮᱫᱟᱢ, ᱫᱟᱭᱟᱠᱟᱛᱮ ᱱᱚᱶᱟ URL ᱥᱟᱯᱲᱟᱣ ᱢᱮ ᱾</string>
+    <string name="setting_title_adblock_auto_update">ᱟᱡᱛᱮ AdBlock ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
+    <string name="setting_summary_adblock_auto_update">ᱦᱟᱴ ᱞᱮᱠᱟᱛᱮ AdBlock ᱟᱡ ᱛᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ ᱾</string>
+    <string name="toast_adblock_updated">AdBlock ᱫᱚ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱟᱠᱟᱱᱟ!</string>
+    <string name="toast_backup_successful">ᱵᱮᱠᱚᱯᱷ ᱨᱟᱹᱥ ᱞᱮᱠᱟᱛᱮ ᱦᱩᱭᱮᱱᱟ!</string>
+    <string name="setting_title_enable_ssl_error_dialog">SSL ᱵᱷᱩᱞ ᱰᱟᱭᱞᱚᱜᱽ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_summary_enable_ssl_error_dialog">SSL ᱨᱮ ᱡᱟᱦᱟᱸᱱᱟᱜ ᱵᱟᱹᱲᱤᱡ ᱦᱩᱭ ᱞᱮᱱ ᱠᱷᱟᱱ, ᱵᱷᱩᱞ ᱰᱟᱭᱞᱚᱜᱽ ᱫᱮᱠᱷᱟᱣ ᱢᱮ ᱾</string>
+    <string name="manual">ᱢᱟᱱᱩᱣᱟᱞ</string>
+    <string name="black_font">ᱦᱮᱸᱫᱮ ᱪᱤᱠᱤ</string>
+    <string name="image_adjust">ᱪᱤᱛᱟᱹᱨ ᱥᱟᱯᱲᱟᱣ</string>
+    <string name="bookmark_new_file">ᱱᱟᱣᱟ ᱨᱮᱫᱽ ᱛᱮᱭᱟᱨᱢᱮ</string>
+    <string name="bookmark_open_file">ᱢᱟᱲᱟᱝ ᱠᱷᱚᱱ ᱢᱮᱱᱟᱜ ᱨᱮᱫᱽ ᱞᱤᱝᱠᱢᱮ</string>
+    <string name="menu_save_archive">ᱟᱨᱠᱟᱭᱤᱵᱷ ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
+    <string name="setting_title_sync_bookmarks">ᱯᱩᱛᱷᱤᱪᱤᱱᱦᱟᱹᱠᱚ ᱟᱹᱭᱩᱨ ᱢᱤᱫ ᱢᱮ</string>
+    <string name="setting_title_setup_bookmarks_location">ᱯᱩᱛᱷᱤᱪᱤᱱᱦᱟᱹᱡᱟᱭᱜᱟ ᱥᱮᱴ ᱢᱮ</string>
+    <string name="setting_summary_setup_bookmarks_location">Google Drive ᱥᱮ ᱮᱴᱟᱜ ᱨᱮᱫᱽ ᱡᱟᱭᱜᱟ ᱨᱮ ᱢᱤᱫ ᱯᱷᱤᱞ ᱵᱟᱪᱷᱟᱣ ᱢᱮ ᱡᱟᱦᱟᱸ ᱫᱚ ᱨᱤᱢᱳᱴ ᱥᱤᱱᱠᱨᱚᱥᱚᱱ ᱥᱚᱦᱚᱫ ᱮᱫᱟ ᱾</string>
+    <string name="dialog_message_sync_bookmark_file">"ᱯᱩᱛᱷᱤᱪᱤᱱᱦᱟᱹ ᱥᱟᱸᱠᱨᱚᱱ ᱞᱟᱹᱜᱤᱫ, ᱟᱢ ᱥᱤᱥᱴᱮᱢ ᱯᱷᱤᱞ ᱯᱤᱠᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮᱜ Google ᱰᱨᱟᱭᱵᱷ ᱠᱷᱚᱱ ᱯᱩᱛᱷᱤᱪᱤᱱᱦᱟᱹ ᱯᱷᱤᱞ ᱵᱮᱱᱟᱣ ᱟᱨᱵᱟᱝ ᱮᱴᱟᱜ ᱥᱟᱸᱜᱤᱧ ᱥᱮᱵᱟ ᱥᱟᱶ ᱥᱟᱸᱠᱨᱚᱱ ᱟᱠᱟᱱ ᱢᱤᱫ ᱯᱷᱤᱞ ᱛᱮᱭᱟᱨ ᱟᱨᱵᱟᱝ ᱪᱟᱞᱟᱜ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ. "</string>
+    <string name="dialog_title_bookmark_sync">ᱵᱩᱠᱢᱟᱨᱠ ᱨᱮᱫᱽ ᱥᱟᱡᱟᱣ</string>
+    <string name="settings_title_back_key_behavior">ᱛᱟᱭᱚᱢ ᱪᱟᱹᱵᱤ ᱵᱮᱵᱷᱟᱨ</string>
+    <string name="settings_summary_back_key_behavior">ᱱᱟᱜᱟᱢ ᱨᱮ ᱯᱩᱭᱞᱩ ᱥᱟᱦᱴᱟ ᱨᱮ ᱛᱟᱦᱮᱸᱱ ᱠᱷᱟᱱ ᱜᱮ ᱴᱮᱵᱽ ᱵᱚᱸᱫᱚᱭ ᱢᱮ ᱾</string>
+    <string name="page_count">ᱥᱟᱦᱴᱟ ᱞᱮᱠᱷᱟ</string>
+    <string name="setting_title_userAgent_toggle">Custom UserAgent ᱮᱢᱪᱷᱚᱭ ᱢᱮ</string>
+    <string name="setting_summary_userAgent">ᱱᱚᱸᱰᱮ ᱠᱚᱥᱴᱚᱢ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱥᱴᱨᱤᱝ ᱟᱫᱮᱨ ᱢᱮ ᱾</string>
+    <string name="setting_summary_userAgent_toggle">ᱢᱚᱱᱮᱛᱮᱭᱟᱜ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱮᱡᱮᱱᱴ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ </string>
+    <string name="menu_add_to_pocket">Pocket ᱨᱮ ᱥᱮᱞᱮᱫᱽ ᱢᱮ</string>
+    <string name="content_adjustment">ᱡᱤᱱᱤᱥ ᱮᱰᱡᱚᱥᱴᱢᱮᱱᱴ</string>
+    <string name="share_save"><![CDATA[ᱦᱟᱹᱴᱤᱧ ᱟᱨ ᱥᱟᱧᱪᱟᱣ]]></string>
+    <string name="menu_gpt">ChatGPT</string>
+    <string name="setting_title_chat_gpt">ChatGPT ᱠᱷᱚᱧᱡᱟ</string>
+    <string name="setting_title_edit_gpt_api_key">OpenAI ᱪᱟᱹᱵᱤ ᱟᱫᱮᱨ</string>
+    <string name="setting_summary_edit_gpt_api_key">ᱱᱚᱣᱟ ᱯᱷᱤᱪᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱪᱟᱹᱵᱤ ᱾</string>
+    <string name="setting_title_edit_gpt_system_prompt">ᱪᱟᱴ ᱜᱤᱯᱴᱤ ᱥᱤᱥᱴᱮᱢ ᱯᱨᱚᱢᱯᱴ</string>
+    <string name="setting_summary_edit_gpt_prompt">ChatGPT ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫ ᱨᱳᱞ ᱥᱮᱴᱮᱨ ᱢᱮ, ᱡᱮᱞᱮᱠᱟ. "ᱟᱢ ᱫᱚ ᱢᱤᱫᱴᱮᱱ ᱛᱚᱨᱡᱚᱢᱤᱭᱟᱹ ᱠᱟᱱᱟᱢ" ᱾</string>
+    <string name="setting_title_edit_gpt_user_prompt_prefix">ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱯᱨᱚᱢᱯᱷᱤᱥ ᱯᱨᱤᱯᱷᱤᱠᱥ</string>
+    <string name="setting_summary_edit_gpt_user_prompt">ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱯᱨᱚᱢᱯᱴᱥ ᱯᱨᱤᱯᱤᱠᱥ ᱥᱟᱯᱲᱟᱣ ᱢᱮ, ᱡᱮᱞᱮᱠᱟ: \"ᱱᱚᱣᱟ ᱡᱤᱱᱤᱥ ᱤᱝᱞᱤᱥ ᱛᱮ ᱛᱚᱨᱡᱚᱢᱟ ᱢᱮ :\"</string>
+    <string name="gpt_api_key_not_set">ᱥᱟᱡᱟᱣ ᱨᱮ OpenAI ᱪᱟᱹᱵᱤ ᱥᱮᱞᱮᱫ ᱢᱮ ᱾</string>
+    <string name="dialog_touch_area_enable">ᱡᱚᱴᱮᱫ ᱯᱮᱡᱤᱱᱮᱥᱚᱱ ᱮᱢᱪᱷᱚᱭ ᱢᱮ</string>
+    <string name="show_default_text_menu">ᱢᱩᱞ ᱵᱟᱪᱷᱟᱣ ᱟᱠᱟᱱ ᱚᱞ ᱢᱮᱱᱩ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_summary_show_default_text_menu">ᱚᱞ ᱵᱟᱪᱷᱟᱣ ᱛᱟᱭᱚᱢ, ᱥᱤᱥᱴᱚᱢ ᱢᱩᱞ ᱢᱮᱱᱩ ᱫᱮᱠᱷᱟᱣ ᱢᱮ ᱾</string>
+    <string name="google_translate">ᱜᱩᱜᱚᱞ ᱛᱚᱨᱡᱚᱢᱟ</string>
+    <string name="translate_by_paragraph">ᱯᱟᱨᱟᱜᱽᱨᱟᱯᱷ ᱛᱮ ᱛᱚᱨᱡᱚᱢᱟᱭ ᱢᱮ</string>
+    <string name="onyx">Onyx</string>
+    <string name="translate_processing">ᱯᱨᱚᱥᱮᱥᱤᱝ...</string>
+    <string name="translation_language">ᱯᱟᱹᱨᱥᱤ ᱛᱚᱨᱡᱚᱢᱟ</string>
+    <string name="misc">ᱢᱤᱥᱠ</string>
+    <string name="translate_papago">Naver Papago API ᱜᱩᱯᱛ</string>
+    <string name="translate_papago_summary">ᱡᱩᱫᱤ ᱟᱢ Naver Papago ᱛᱚᱨᱡᱚᱢᱟ ᱥᱮᱵᱟ ᱵᱮᱵᱷᱟᱨᱮᱢ, ᱫᱟᱭᱟᱠᱟᱛᱮ ᱟᱢᱟᱜ API ᱟᱫᱮᱨ ᱢᱮ ᱾</string>
+    <string name="papago">Papago</string>
+    <string name="papago_translate_by_paragraph">Paragraph ᱛᱮ Papago</string>
+    <string name="source_language">ᱥᱨᱚᱛ ᱯᱟᱹᱨᱥᱤ</string>
+    <string name="inter_translate">Inter ᱛᱚᱨᱡᱚᱢᱟ</string>
+    <string name="translate_image_key">ᱪᱤᱛᱟᱹᱨ ᱛᱚᱨᱡᱚᱢᱟ ᱞᱟᱹᱜᱤᱫ ᱪᱟᱹᱵᱤ</string>
+    <string name="translate_image_key_summary">ᱪᱤᱛᱟᱹᱨ ᱛᱚᱨᱡᱚᱢᱟ ᱯᱷᱤᱪᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ ᱾</string>
+    <string name="papago_language_setting">ᱯᱟᱹᱨᱥᱤ ᱥᱟᱡᱟᱣ</string>
+    <string name="toggle_touch_turn_page">ᱡᱚᱴᱮᱫ ᱯᱟᱞᱴᱟᱣ ᱥᱟᱦᱴᱟ ᱩᱪᱟᱹᱲ ᱢᱮ</string>
+    <string name="use_it_on_dict_search">ᱟᱹᱲᱟᱹ ᱢᱩᱨᱟᱹᱭ ᱨᱮ ᱱᱚᱶᱟ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
+    <string name="setting_summary_search_in_dict">ᱯᱟᱲᱦᱟᱣᱤᱭᱟᱹ ᱠᱚᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱚᱠᱛᱚ ᱨᱮ, ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ ᱞᱟᱹᱜᱤᱫ ᱛᱮ ChatGPT ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾</string>
+    <string name="menu_expand_menu">ᱟᱨᱦᱚᱸ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="hide_statusbar">ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱩᱠᱩᱭ ᱢᱮ</string>
+    <string name="setting_summary_hide_statusbar">ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱡᱟᱹᱣᱜᱮ ᱩᱠᱩᱭ ᱢᱮ</string>
+    <string name="enable_touch_area_as_arrow_key">ᱞᱮᱝᱜᱟ/ᱡᱚᱡᱚᱢ ᱪᱟᱹᱵᱤ ᱞᱮᱠᱟᱛᱮ</string>
+    <string name="setting_title_chat_stream">Stream ᱨᱮ ᱛᱮᱞᱟ ᱮᱢ ᱢᱮ</string>
+    <string name="setting_summary_chat_stream">ᱛᱮᱞᱟ ᱫᱚ ᱪᱤᱠᱤ ᱛᱮ ᱪᱤᱠᱤ ᱧᱮᱞᱚᱜ-ᱟ, ᱚᱱᱟᱛᱮ ᱱᱚᱣᱟ ᱫᱚ ᱞᱚᱜᱚᱱ ᱜᱮᱭᱟ ᱾</string>
+    <string name="re_select">ᱚᱞ ᱪᱤᱠᱤ ᱫᱩᱦᱲᱟᱹ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_dual_caption">Youtube ᱞᱟᱹᱜᱤᱫ ᱵᱟᱨ ᱠᱮᱯᱥᱚᱱ</string>
+    <string name="setting_summary_dual_caption">ᱫᱚᱥᱟᱨ ᱠᱮᱯᱥᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱯᱟᱹᱨᱥᱤ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+    <string name="naver_translate">Naver ᱛᱚᱨᱡᱚᱢᱟ</string>
+    <string name="setting_title_gpt_model_name">ChatGPT ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ</string>
+    <string name="setting_summary_gpt_model_name">ᱢᱩᱞ ᱫᱚ gpt-3.5-turbo ᱠᱟᱱᱟ ᱾ ᱡᱩᱫᱤ ᱞᱟᱹᱠᱛᱤᱭᱟᱜ ᱠᱷᱟᱱ ᱮᱴᱟᱜ ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱚᱞ ᱢᱮ ᱾</string>
+    <string name="split_search">ᱵᱷᱟᱜᱽ ᱥᱮᱸᱫᱽᱨᱟ</string>
+    <string name="papago_translate_by_screen">Screen ᱞᱮᱠᱟᱛᱮ Papago</string>
+    <string name="split_search_settings">ᱵᱷᱟᱦᱽ ᱥᱮᱸᱫᱽᱨᱟ ᱥᱟᱡᱟᱣ ᱠᱚ</string>
+    <string name="setting_title_split_search_setting">ᱥᱯᱞᱤᱴ ᱥᱟᱨᱪ ᱥᱟᱡᱟᱣ</string>
+    <string name="setting_summary_split_search_setting">ᱱᱤᱡᱮᱛᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱟᱨ ᱛᱮᱞᱟ ᱵᱷᱟᱜᱽ ᱥᱠᱨᱤᱱ ᱨᱮ ᱠᱷᱩᱞᱟᱹᱜᱼᱟ ᱾</string>
+    <string name="description_split_screen_string_pattern">ᱱᱤᱡᱮᱛᱮᱭᱟᱜ ᱥᱮᱸᱫᱽᱨᱟ URL ᱥᱟᱶᱛᱮ ᱢᱩᱞᱟᱹᱲᱟᱹ ᱡᱟᱭᱜᱟ %s</string>
+    <string name="description_split_screen_title">ᱪᱮᱛᱟᱱ ᱢᱮᱱᱩ ᱧᱩᱛᱩᱢ ᱞᱮᱠᱟᱛᱮ ᱚᱞᱚᱜ ᱞᱟᱹᱜᱤᱫ ᱧᱩᱛᱩᱢ ᱮᱢ ᱢᱮ</string>
+    <string name="send_type">ᱵᱷᱮᱡᱟ ᱯᱨᱚᱠᱟᱨ</string>
+    <string name="current_url">ᱱᱤᱛᱚᱜᱟᱜ URL</string>
+    <string name="text_selection_search">ᱚᱞ ᱵᱟᱪᱷᱟᱣ ᱥᱮᱸᱫᱽᱨᱟ</string>
+    <string name="send_to_remote_terminate">ᱨᱤᱢᱚᱴ ᱚᱞ ᱥᱮᱸᱫᱽᱨᱟ ᱵᱚᱸᱫᱚᱭ ᱢᱮ</string>
+    <string name="receive_link_terminate">ᱟᱹᱛᱩᱨ ᱞᱤᱝᱠ ᱵᱚᱸᱫᱚᱭ ᱢᱮ</string>
+    <string name="receive_once">ᱢᱤᱫ ᱫᱷᱟᱣ ᱧᱟᱢ ᱢᱮ</string>
+    <string name="setting_title_search_in_same_tab">ᱵᱟᱦᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱞᱟᱹᱜᱤᱫ ᱴᱮᱵᱽ</string>
+    <string name="setting_summary_search_in_same_tab">ᱵᱟᱦᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱞᱟᱹᱜᱤᱫ ᱚᱱᱟ ᱴᱮᱵᱽ ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾</string>
+    <string name="move_to_background">ᱦᱩᱲᱤᱧ</string>
+    <string name="setting_title_gpt_prompt_for_web_page">ᱯᱩᱨᱟ ᱣᱮᱵᱽ ᱥᱟᱦᱴᱟ ᱠᱚ ᱞᱟᱹᱜᱤᱫ ᱴᱟᱴᱠᱟ</string>
+    <string name="setting_summary_gpt_prompt_for_web_page">ᱣᱮᱵᱽ ᱥᱟᱦᱴᱟ ᱨᱮᱱᱟᱜ ᱥᱟᱛᱟᱢ ᱯᱨᱚᱥᱮᱥ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱴᱟᱴᱠᱟ ᱫᱷᱟᱶᱨᱟ (ᱡᱮᱞᱮᱠᱟ: \"300 ᱟᱹᱲᱟᱹ ᱨᱮ ᱱᱚᱶᱟ ᱯᱷᱚᱴᱮᱞ ᱢᱮ:\")</string>
+    <string name="setting_title_next_tab">ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱩᱫᱩᱜ ᱢᱮ</string>
+    <string name="setting_summary_next_tab">ᱡᱚᱠᱷᱚᱱ ᱱᱤᱛᱚᱜᱟᱜ ᱴᱮᱵᱽ ᱫᱚ ᱵᱚᱸᱫ ᱟᱠᱟᱱᱟ ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣᱟ ᱢᱮ (ᱟᱨ ᱵᱟᱝ ᱠᱷᱟᱱ ᱢᱟᱲᱟᱝ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣ ᱢᱮ) ᱾</string>
+</resources>
