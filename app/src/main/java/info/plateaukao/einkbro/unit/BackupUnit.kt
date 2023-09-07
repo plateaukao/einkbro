@@ -21,6 +21,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -128,13 +131,17 @@ class BackupUnit(
     fun importBookmarks(uri: Uri) {
         GlobalScope.launch {
             try {
-                context.contentResolver.openInputStream(uri).use {
-                    val jsonString = it?.bufferedReader()?.readText() ?: ""
-                    val bookmarks = JSONArray(jsonString).toJSONObjectList()
-                        .map { json -> json.toBookmark() }
-                    if (bookmarks.isNotEmpty()) {
-                        bookmarkManager.overwriteBookmarks(bookmarks)
-                    }
+                val contentString = getFileContentString(uri)
+                // detect if the content is a json array
+                val bookmarks = if (contentString.startsWith("[")) {
+                    JSONArray(contentString).toJSONObjectList().map { json -> json.toBookmark() }
+                } else {
+                    //parseHtmlToBookmarkList(contentString)
+                    parse(contentString)
+                }
+
+                if (bookmarks.isNotEmpty()) {
+                    bookmarkManager.overwriteBookmarks(bookmarks)
                 }
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Bookmarks are imported", Toast.LENGTH_SHORT).show()
@@ -150,6 +157,96 @@ class BackupUnit(
                 }
             }
         }
+    }
+
+    private suspend fun getFileContentString(uri: Uri): String {
+        return withContext(Dispatchers.IO) {
+            context.contentResolver.openInputStream(uri).use {
+                it?.bufferedReader()?.readText() ?: ""
+            }
+        }
+    }
+
+    private fun parseHtmlToBookmarkList(html: String): List<Bookmark> {
+        val doc = Jsoup.parse(html)
+        val bookmarkList = mutableListOf<Bookmark>()
+        val bookmarkElements = doc.select("a")
+        for (bookmarkElement in bookmarkElements) {
+            val bookmark = Bookmark(
+                bookmarkElement.text(),
+                bookmarkElement.attr("href"),
+            )
+            bookmarkList.add(bookmark)
+        }
+        return bookmarkList
+    }
+
+    private var recordId = 0
+    fun parse(html: String): List<Bookmark> {
+        val doc = Jsoup.parse(html)
+        val bookmarks = dlElement(doc.select("DL").first()!!.children(), recordId)
+        recordId = 0
+        return bookmarks
+    }
+
+    private fun dlElement(elements: Elements, parentId: Int): List<Bookmark> {
+        val bookmarkList = mutableListOf<Bookmark>()
+        for (elem in elements) {
+            when (elem.nodeName().toUpperCase()) {
+                "DT" -> bookmarkList.addAll(dtElement(elem.children(), parentId))
+                "DL" -> bookmarkList.addAll(dlElement(elem.children(), parentId))
+                "P" -> continue
+                else -> {}
+            }
+        }
+        return bookmarkList
+    }
+
+    private var currentFolderId = 0
+    private fun dtElement(elements: Elements, parentId: Int): List<Bookmark> {
+        val bookmarkList = mutableListOf<Bookmark>()
+        for (elem in elements) {
+            when (elem.nodeName().toUpperCase()) {
+                "H3" -> {
+                    currentFolderId = ++recordId
+                    bookmarkList.add(
+                        Bookmark(
+                            elem.text(),
+                            "",
+                            true,
+                            parentId,
+                        ).apply { id = currentFolderId }
+                    )
+                }
+
+                "A" -> bookmarkList.add(
+                    Bookmark(
+                        elem.text(),
+                        elem.attr("href"),
+                        false,
+                        parentId,
+                    ).apply { id = ++recordId }
+                )
+
+                "DL" -> bookmarkList.addAll(dlElement(elem.children(), currentFolderId))
+                "P" -> continue
+                else -> {}
+            }
+        }
+        return bookmarkList
+    }
+
+    private fun elementToBookmarks(element: Element): List<Bookmark> {
+        val bookmarkList = mutableListOf<Bookmark>()
+        val bookmarkElements = element.select("a")
+        for (bookmarkElement in bookmarkElements) {
+            val bookmark = Bookmark(
+                bookmarkElement.text(),
+                bookmarkElement.attr("href"),
+            )
+            bookmarkList.add(bookmark)
+        }
+        return bookmarkList
     }
 
     private fun JSONArray.toJSONObjectList() =
