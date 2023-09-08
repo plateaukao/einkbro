@@ -69,6 +69,7 @@ fun ComposedToolbar(
     onIconClick: (ToolbarAction) -> Unit,
     onIconLongClick: ((ToolbarAction) -> Unit)? = null,
     albumList: MutableState<List<Album>>,
+    albumFocusIndex: MutableState<Int>,
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
 ) {
@@ -89,6 +90,7 @@ fun ComposedToolbar(
                 PreviewTabs(
                     Modifier.weight(1f),
                     albumList = albumList.value,
+                    albumFocusIndex = albumFocusIndex,
                     onClick = onAlbumClick,
                     closeAction = onAlbumLongClick,
                     showHorizontal = true

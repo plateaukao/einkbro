@@ -9,9 +9,11 @@ import android.util.AttributeSet
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -33,6 +35,7 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.dialog.compose.ActionIcon
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.math.max
@@ -45,6 +48,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
     private val bookmarkManager: BookmarkManager by inject()
 
     var albumList = mutableStateOf(listOf<Album>())
+    var albumFocusIndex = mutableStateOf(0)
     var isHistoryOpen by mutableStateOf(false)
     var shouldReverse by mutableStateOf(true)
     var shouldShowTwoColumns by mutableStateOf(false)
@@ -73,6 +77,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
                 shouldReverseHistory = shouldReverse,
                 shouldShowTwoColumns = shouldShowTwoColumns,
                 albumList = albumList,
+                albumFocusIndex = albumFocusIndex,
                 onTabIconClick = onTabIconClick,
                 onTabClick = onTabClick,
                 onTabLongClick = onTabLongClick,
@@ -99,6 +104,7 @@ fun HistoryAndTabs(
     shouldReverseHistory: Boolean = false,
 
     albumList: MutableState<List<Album>>,
+    albumFocusIndex: MutableState<Int>,
     onTabIconClick: () -> Unit,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
@@ -146,6 +152,7 @@ fun HistoryAndTabs(
             shouldShowTwoColumns,
             shouldReverseHistory,
             albumList,
+            albumFocusIndex,
             onTabClick,
             onTabLongClick,
             bookmarkManager,
@@ -176,6 +183,7 @@ private fun MainContent(
     shouldShowTwoColumns: Boolean,
     shouldReverse: Boolean,
     albumList: MutableState<List<Album>>,
+    albumFocusIndex: MutableState<Int>,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
     bookmarkManager: BookmarkManager?,
@@ -188,6 +196,7 @@ private fun MainContent(
             modifier = modifier,
             shouldShowTwoColumns = shouldShowTwoColumns,
             albumList = albumList.value,
+            albumFocusIndex = albumFocusIndex,
             onClick = onTabClick,
             closeAction = {
                 onTabLongClick.invoke(it)
@@ -214,6 +223,7 @@ fun PreviewTabs(
     modifier: Modifier = Modifier,
     shouldShowTwoColumns: Boolean = false,
     albumList: List<Album>,
+    albumFocusIndex: MutableState<Int>,
     onClick: (Album) -> Unit,
     closeAction: (Album) -> Unit,
     showHorizontal: Boolean = false
@@ -228,7 +238,9 @@ fun PreviewTabs(
             )
             else maxItemWidth
 
-        LazyRow(modifier = modifier) {
+        val listState = rememberLazyListState()
+        val coroutineScope = rememberCoroutineScope()
+        LazyRow(modifier = modifier, state = listState) {
             items(albumList.size) { index ->
                 val album = albumList[index]
                 val interactionSource = remember { MutableInteractionSource() }
@@ -245,6 +257,9 @@ fun PreviewTabs(
                     album = album
                 ) { closeAction(album) }
             }
+        }
+        LaunchedEffect(true) {
+            coroutineScope.launch { listState.scrollToItem(albumFocusIndex.value) }
         }
     } else {
         LazyVerticalGrid(
@@ -269,6 +284,19 @@ fun PreviewTabs(
                     closeAction(album)
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun scrollToFocusedItem(
+    listState: LazyListState,
+    albumFocusIndex: Int
+) {
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(true) {
+        scope.launch {
+            listState.scrollToItem(albumFocusIndex)
         }
     }
 }
@@ -436,6 +464,7 @@ fun PreviewHistoryAndTabs() {
         shouldShowTwoColumns = false,
         shouldReverseHistory = false,
         albumList = albumList,
+        albumFocusIndex = mutableStateOf(0),
         onTabIconClick = {},
         onTabClick = {},
         onTabLongClick = {},

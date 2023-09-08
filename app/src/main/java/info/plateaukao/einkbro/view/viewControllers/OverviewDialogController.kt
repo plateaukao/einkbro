@@ -30,6 +30,7 @@ import org.koin.core.component.inject
 class OverviewDialogController(
     private val context: Context,
     private val albumList: MutableState<List<Album>>,
+    private val albumFocusIndex: MutableState<Int>,
     private val composeView: HistoryAndTabsView,
     private val gotoUrlAction: (String) -> Unit,
     private val addTabAction: (String, String, Boolean) -> Unit,
@@ -60,6 +61,7 @@ class OverviewDialogController(
             shouldReverse = !config.isToolbarOnTop
             shouldShowTwoColumns = isWideLayout()
             albumList = currentAlbumList
+            albumFocusIndex = albumFocusIndex
             onTabIconClick = { openHomePage() }
             onTabClick = { hide(); it.showOrJumpToTop() }
             onTabLongClick = { it.remove() }
@@ -75,6 +77,10 @@ class OverviewDialogController(
             launchNewBrowserAction =
                 { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
         }
+    }
+
+    fun showAlbum(index: Int){
+        albumFocusIndex.value = index
     }
 
     private fun clickHistoryItem(record: Record) {
