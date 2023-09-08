@@ -59,10 +59,6 @@ class ComposeToolbarViewController(
 
     private var isReader: Boolean = false
 
-    fun showTabbar(shouldShow: Boolean) {
-        toolbarComposeView.shouldShowTabs = shouldShow
-    }
-
     init {
         toolbarComposeView.apply {
             val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
@@ -78,6 +74,10 @@ class ComposeToolbarViewController(
         toolbarComposeView.onTabLongClick = onTabLongClick
     }
 
+    fun showTabbar(shouldShow: Boolean) {
+        toolbarComposeView.shouldShowTabs = shouldShow
+    }
+
     fun isDisplayed(): Boolean = toolbarComposeView.visibility == VISIBLE
 
     fun show() = toggleIconsOnOmnibox(true)
@@ -89,7 +89,8 @@ class ComposeToolbarViewController(
     }
 
     fun updatePageInfo(text: String) {
-        toolbarComposeView.pageInfo = text
+        val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
+        if (iconEnums.contains(PageInfo)) toolbarComposeView.pageInfo = text
     }
 
     fun updateRefresh(isLoadingWeb: Boolean) {
@@ -135,6 +136,10 @@ class ComposeToolbarViewController(
     fun updateTitle(title: String) {
         toolbarComposeView.title = title
     }
+
+    fun updateFocusIndex(index: Int) {
+        toolbarComposeView.albumFocusIndex.value = index
+    }
 }
 
 class ToolbarComposeView @JvmOverloads constructor(
@@ -155,6 +160,7 @@ class ToolbarComposeView @JvmOverloads constructor(
     var onTabLongClick: (Album) -> Unit = {}
 
     var albumList = mutableStateOf(listOf<Album>())
+    var albumFocusIndex = mutableStateOf(0)
 
     @Composable
     override fun Content() {
@@ -169,6 +175,7 @@ class ToolbarComposeView @JvmOverloads constructor(
                 onIconClick = onItemClick,
                 onIconLongClick = onItemLongClick,
                 albumList = albumList,
+                albumFocusIndex = albumFocusIndex,
                 onAlbumClick = onTabClick,
                 onAlbumLongClick = onTabLongClick,
             )

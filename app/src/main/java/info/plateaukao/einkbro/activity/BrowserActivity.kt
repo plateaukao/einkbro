@@ -826,6 +826,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         // when showing a new album, should turn off externalSearch button visibility
         externalSearchViewModel.toggleButtonVisibility(false)
+        runOnUiThread {
+            composeToolbarViewController.updateFocusIndex(
+                albumViewModel.albums.value.indexOfFirst { it.isActivated }
+            )
+        }
     }
 
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
@@ -1386,6 +1391,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         overviewDialogController = OverviewDialogController(
             this,
             albumViewModel.albums,
+            albumViewModel.focusIndex,
             binding.layoutOverview,
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
