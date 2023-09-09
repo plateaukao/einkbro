@@ -29,9 +29,7 @@ import nl.siegmann.epublib.epub.EpubWriter
 import nl.siegmann.epublib.service.MediatypeService
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 import org.jsoup.nodes.Entities
-import org.jsoup.nodes.Node
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
@@ -217,9 +215,12 @@ class EpubManager(private val context: Context) : KoinComponent {
             select("script").forEach { it.remove() }
             select("style").forEach { it.remove() }
         }
+
         doc.select("html").attr("xmlns", "http://www.w3.org/1999/xhtml")
         // for medium
-        doc.select("source").forEach { it.remove() }
+//        if (baseUri.contains("medium")) {
+//            doc.select("source").forEach { it.remove() }
+//        }
 
         val imageKeyUrlMap = mutableMapOf<String, String>()
         doc.select("img").forEachIndexed { index, element ->
