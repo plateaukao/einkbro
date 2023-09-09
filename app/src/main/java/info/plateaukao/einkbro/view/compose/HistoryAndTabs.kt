@@ -258,8 +258,13 @@ fun PreviewTabs(
                 ) { closeAction(album) }
             }
         }
-        LaunchedEffect(true) {
-            coroutineScope.launch { listState.scrollToItem(albumFocusIndex.value) }
+        LaunchedEffect(albumFocusIndex.value) {
+            if (
+                !listState.layoutInfo.visibleItemsInfo.map { it.index }
+                    .contains(albumFocusIndex.value)
+            ) {
+                coroutineScope.launch { listState.scrollToItem(albumFocusIndex.value) }
+            }
         }
     } else {
         LazyVerticalGrid(
