@@ -178,6 +178,7 @@
     <string name="whitelist_menu_clear">Effacer</string>
     <string name="whitelist_edit_hint">Domaine</string>
     <string name="whitelist_add">Ajouté</string>
+    <string name="touch_area_long">Two sides</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->

@@ -169,6 +169,7 @@
     <string name="whitelist_menu_clear">Elimina</string>
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Aggiungi</string>
+    <string name="touch_area_long">Two sides</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->

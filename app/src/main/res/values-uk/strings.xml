@@ -169,6 +169,7 @@
     <string name="whitelist_menu_clear">Очистити</string>
     <string name="whitelist_edit_hint">Домен</string>
     <string name="whitelist_add">Додати</string>
+    <string name="touch_area_long">Two sides</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->

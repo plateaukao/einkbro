@@ -481,4 +481,5 @@
     <string name="setting_summary_gpt_prompt_for_web_page">ᱣᱮᱵᱽ ᱥᱟᱦᱴᱟ ᱨᱮᱱᱟᱜ ᱥᱟᱛᱟᱢ ᱯᱨᱚᱥᱮᱥ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱴᱟᱴᱠᱟ ᱫᱷᱟᱶᱨᱟ (ᱡᱮᱞᱮᱠᱟ: \"300 ᱟᱹᱲᱟᱹ ᱨᱮ ᱱᱚᱶᱟ ᱯᱷᱚᱴᱮᱞ ᱢᱮ:\")</string>
     <string name="setting_title_next_tab">ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱩᱫᱩᱜ ᱢᱮ</string>
     <string name="setting_summary_next_tab">ᱡᱚᱠᱷᱚᱱ ᱱᱤᱛᱚᱜᱟᱜ ᱴᱮᱵᱽ ᱫᱚ ᱵᱚᱸᱫ ᱟᱠᱟᱱᱟ ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣᱟ ᱢᱮ (ᱟᱨ ᱵᱟᱝ ᱠᱷᱟᱱ ᱢᱟᱲᱟᱝ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣ ᱢᱮ) ᱾</string>
+    <string name="touch_area_long">Two sides</string>
 </resources>

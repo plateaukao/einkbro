@@ -102,6 +102,13 @@ fun TouchAreaContent(
                 titleResId = R.string.touch_right_side,
                 iconResId = R.drawable.ic_touch_right
             ) { onTouchTypeClick(Right) }
+        }
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
             TouchAreaItem(
                 state = touchAreaType == MiddleLeftRight,
                 titleResId = R.string.middle,
@@ -112,6 +119,11 @@ fun TouchAreaContent(
                 titleResId = R.string.bottom,
                 iconResId = R.drawable.ic_touch_left_right
             ) { onTouchTypeClick(BottomLeftRight) }
+            TouchAreaItem(
+                state = touchAreaType == TouchAreaType.Long,
+                titleResId = R.string.touch_area_long,
+                iconResId = R.drawable.ic_touch_long
+            ) { onTouchTypeClick(TouchAreaType.Long) }
         }
 
         Spacer(modifier = Modifier.height(10.dp))

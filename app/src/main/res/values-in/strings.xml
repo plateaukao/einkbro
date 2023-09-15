@@ -423,4 +423,5 @@
     <string name="menu_add_to_pocket">Tambah ke Pocket</string>
     <string name="content_adjustment">Penyesuaian konten</string>
     <string name="share_save"><![CDATA[Bagi & Simpan]]></string>
+    <string name="touch_area_long">Two sides</string>
 </resources>

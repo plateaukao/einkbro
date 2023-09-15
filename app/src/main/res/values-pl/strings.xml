@@ -170,6 +170,7 @@
     <string name="whitelist_menu_clear">Wymaż</string>
     <string name="whitelist_edit_hint">Adres</string>
     <string name="whitelist_add">Dodaj</string>
+    <string name="touch_area_long">Two sides</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
