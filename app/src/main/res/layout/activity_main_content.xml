@@ -22,6 +22,17 @@
         android:visibility="invisible" />
 
     <View
+        android:id="@+id/touch_area_long_left"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginBottom="-5dp"
+        android:background="@drawable/touch_area_border"
+        android:visibility="invisible" />
+
+    <View
         android:id="@+id/touch_area_bottom_left"
         android:layout_width="150dp"
         android:layout_height="250dp"
@@ -39,6 +50,19 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="-2dp"
+        android:background="@drawable/touch_area_border"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/touch_area_long_right"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="-5dp"
+        android:layout_marginRight="-5dp"
+        android:layout_marginBottom="-5dp"
         android:background="@drawable/touch_area_border"
         android:visibility="invisible" />
 

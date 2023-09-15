@@ -486,4 +486,5 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Введите запрос, при котором будет обработано полное содержание страницы (например: \"Вкратце изложи содежание страницы в 300 слов:\").</string>
     <string name="setting_title_next_tab">Показывать Следующую Вкладку</string>
     <string name="setting_summary_next_tab">Показывать следующую вкладку при закрытии предыдущей (в противном случае показывать предыдущую вкладку).</string>
+    <string name="touch_area_long">Two sides</string>
 </resources>

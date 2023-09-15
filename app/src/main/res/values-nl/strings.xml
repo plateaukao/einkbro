@@ -177,6 +177,7 @@
     <string name="whitelist_menu_clear">Wissen</string>
     <string name="whitelist_edit_hint">Domein</string>
     <string name="whitelist_add">Toevoegen</string>
+    <string name="touch_area_long">Two sides</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
