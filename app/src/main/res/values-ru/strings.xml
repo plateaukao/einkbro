@@ -487,4 +487,6 @@
     <string name="setting_title_next_tab">Показывать Следующую Вкладку</string>
     <string name="setting_summary_next_tab">Показывать следующую вкладку при закрытии предыдущей (в противном случае показывать предыдущую вкладку).</string>
     <string name="touch_area_long">Two sides</string>
+    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
 </resources>

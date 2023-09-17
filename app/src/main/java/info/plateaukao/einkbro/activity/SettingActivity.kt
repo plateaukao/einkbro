@@ -599,7 +599,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_edit,
             R.string.setting_summary_split_search_setting
         ) {
-            startActivity(WhiteListActivity.createIntent(this, WhiteListType.SplitSearch))
+            startActivity(DataListActivity.createIntent(this, WhiteListType.SplitSearch))
         },
         BooleanSettingItem(
             R.string.setting_title_search_in_same_tab,
@@ -747,6 +747,11 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_edit_gpt_api_key,
             config::gptApiKey
         ),
+        ActionSettingItem(
+            R.string.setting_title_gpt_action_list,
+            R.drawable.icon_list,
+            R.string.setting_summary_gpt_action_list,
+        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
         ValueSettingItem(
             R.string.setting_title_edit_gpt_system_prompt,
             R.drawable.icon_edit,
@@ -838,7 +843,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_whitelist,
             R.drawable.icon_list,
             R.string.setting_summary_whitelist,
-        ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Adblock)) },
+        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
         ActionSettingItem(
             R.string.setting_title_update_adblock,
             R.drawable.ic_receive,
@@ -866,7 +871,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_whitelistJS,
             R.drawable.icon_list,
             R.string.setting_summary_whitelistJS,
-        ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Javascript)) },
+        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Javascript)) },
         BooleanSettingItem(
             R.string.setting_title_cookie,
             R.drawable.icon_cookie,
@@ -877,7 +882,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_whitelistCookie,
             R.drawable.icon_list,
             R.string.setting_summary_whitelistCookie,
-        ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Cookie)) },
+        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Cookie)) },
         BooleanSettingItem(
             R.string.setting_title_save_data,
             R.drawable.ic_save_data,

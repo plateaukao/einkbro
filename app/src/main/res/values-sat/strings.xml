@@ -482,4 +482,6 @@
     <string name="setting_title_next_tab">ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱩᱫᱩᱜ ᱢᱮ</string>
     <string name="setting_summary_next_tab">ᱡᱚᱠᱷᱚᱱ ᱱᱤᱛᱚᱜᱟᱜ ᱴᱮᱵᱽ ᱫᱚ ᱵᱚᱸᱫ ᱟᱠᱟᱱᱟ ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣᱟ ᱢᱮ (ᱟᱨ ᱵᱟᱝ ᱠᱷᱟᱱ ᱢᱟᱲᱟᱝ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣ ᱢᱮ) ᱾</string>
     <string name="touch_area_long">Two sides</string>
+    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
 </resources>

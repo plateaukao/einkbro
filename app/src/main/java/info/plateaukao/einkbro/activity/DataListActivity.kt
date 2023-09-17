@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class WhiteListActivity : ComponentActivity(), KoinComponent {
+class DataListActivity : ComponentActivity(), KoinComponent {
 
     private lateinit var whitelistType: BaseWhiteListType
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
@@ -122,7 +122,7 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
         private const val TYPE = "type"
         fun createIntent(context: Context, type: WhiteListType) = Intent(
             context,
-            WhiteListActivity::class.java
+            DataListActivity::class.java
         ).apply {
             putExtra(TYPE, type)
         }

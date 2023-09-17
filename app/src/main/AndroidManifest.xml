@@ -195,7 +195,7 @@
             </intent-filter>
         </activity> <!-- Settings -->
         <activity
-            android:name=".activity.WhiteListActivity"
+            android:name=".activity.DataListActivity"
             android:label="@string/setting_title_whitelist" />
 
         <service
