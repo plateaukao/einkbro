@@ -33,12 +33,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptViewModel
 
 
 class GPTDialogFragment(
-    private val isSummarization: Boolean = false,
+    private val gptActionInfo: ChatGPTActionInfo,
     private val gptViewModel: GptViewModel,
     private val anchorPoint: Point,
     private val hasBackgroundColor: Boolean = false,
@@ -62,14 +63,8 @@ class GPTDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         setupDialogPosition(anchorPoint)
 
-        if (isSummarization) {
-            gptViewModel.query(
-                systemPrompt = "",
-                userPromptPrefix = config.gptUserPromptForWebPage
-            )
-        } else {
-            gptViewModel.query()
-        }
+        gptViewModel.gptActionInfo = gptActionInfo
+        gptViewModel.query()
 
         if (hasBackgroundColor) {
             dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
