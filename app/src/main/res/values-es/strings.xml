@@ -167,6 +167,8 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Añadir</string>
     <string name="touch_area_long">Two sides</string>
+    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->

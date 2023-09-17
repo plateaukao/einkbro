@@ -485,4 +485,6 @@
     <string name="setting_title_next_tab">Goto next tab</string>
     <string name="setting_summary_next_tab">Show next tab when current one is closed. (otherwise show previous one)</string>
     <string name="touch_area_long">Two sides</string>
+    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
 </resources>

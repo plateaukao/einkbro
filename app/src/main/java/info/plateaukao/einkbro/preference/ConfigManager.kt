@@ -724,40 +724,4 @@ enum class NewTabBehavior {
     START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS
 }
 
-data class AlbumInfo(
-    val title: String,
-    val url: String
-) {
-    fun toSerializedString(): String = "$title::$url"
-}
-
-data class CustomFontInfo(
-    val name: String,
-    val url: String
-) {
-    fun toSerializedString(): String = "$name::$url"
-}
-
-data class RecentBookmark(val name: String, val url: String, var count: Int) {
-    fun toSerializedString(): String = "$name::$url::$count"
-}
-
-private fun String.toRecentBookmark(): RecentBookmark? {
-    val segments = this.split("::", limit = 3)
-    if (segments.size != 3) return null
-    return RecentBookmark(segments[0], segments[1], segments[2].toInt())
-}
-
-private fun String.toAlbumInfo(): AlbumInfo? {
-    val segments = this.split("::", limit = 2)
-    if (segments.size != 2) return null
-    return AlbumInfo(segments[0], segments[1])
-}
-
-private fun String.toCustomFontInfo(): CustomFontInfo? {
-    val segments = this.split("::", limit = 2)
-    if (segments.size != 2) return null
-    return CustomFontInfo(segments[0], segments[1])
-}
-
 fun KMutableProperty0<Boolean>.toggle() = set(!get())

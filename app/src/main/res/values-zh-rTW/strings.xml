@@ -412,4 +412,6 @@
     <string name="setting_title_next_tab">顯示下個分頁</string>
     <string name="setting_summary_next_tab">當分頁被關閉時，顯示下個分頁(未勾選則顯示前分頁)</string>
     <string name="touch_area_long">兩側</string>
+    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
 </resources>

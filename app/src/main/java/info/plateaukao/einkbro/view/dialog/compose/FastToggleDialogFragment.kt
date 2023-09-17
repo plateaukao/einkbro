@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.WhiteListActivity
+import info.plateaukao.einkbro.activity.DataListActivity
 import info.plateaukao.einkbro.activity.WhiteListType
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.toggle
@@ -64,7 +64,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             titleResId = R.string.setting_title_adblock, iconResId = R.drawable.ic_block,
             onEditAction = {
                 context.startActivity(
-                    WhiteListActivity.createIntent(
+                    DataListActivity.createIntent(
                         context,
                         WhiteListType.Adblock
                     )
@@ -79,7 +79,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             titleResId = R.string.setting_title_javascript, iconResId = R.drawable.icon_java,
             onEditAction = {
                 context.startActivity(
-                    WhiteListActivity.createIntent(
+                    DataListActivity.createIntent(
                         context,
                         WhiteListType.Javascript
                     )
@@ -93,7 +93,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             state = config.cookies,
             titleResId = R.string.setting_title_cookie, iconResId = R.drawable.icon_cookie,
             onEditAction = {
-                context.startActivity(WhiteListActivity.createIntent(context, WhiteListType.Cookie))
+                context.startActivity(DataListActivity.createIntent(context, WhiteListType.Cookie))
             }
         ) {
             config::cookies.toggle()
