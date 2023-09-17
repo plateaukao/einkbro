@@ -15,6 +15,8 @@ import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.koin.core.component.KoinComponent
@@ -436,6 +438,7 @@ class ConfigManager(
             }
         }
 
+
     fun addSplitSearchItem(item: SplitSearchItemInfo) {
         val list = splitSearchItemInfoList.toMutableList()
         list.add(item)
@@ -451,6 +454,38 @@ class ConfigManager(
     fun deleteAllSplitSearchItems() {
         splitSearchItemInfoList = emptyList()
     }
+
+    var gptActionList: List<ChatGPTActionInfo>
+        get() {
+            val str = sp.getString(K_GPT_ACTION_ITEMS, "") ?: ""
+            return if (str.isBlank()) emptyList()
+            else str.convertToDataClass<List<ChatGPTActionInfo>>()
+        }
+        set(value) {
+            sp.edit {
+                putString(
+                    K_GPT_ACTION_ITEMS,
+                    Json.encodeToString(value)
+                )
+            }
+        }
+    fun addGptAction(action: ChatGPTActionInfo) {
+        gptActionList = gptActionList.toMutableList().apply { add(action) }
+    }
+
+    fun deleteGptAction(action: ChatGPTActionInfo) {
+        gptActionList = gptActionList.toMutableList().apply { remove(action) }
+    }
+
+    fun deleteAllGptActions() {
+        gptActionList = emptyList()
+    }
+
+
+    private inline fun <reified R : Any> String.convertToDataClass() =
+        Json {
+            ignoreUnknownKeys = true
+        }.decodeFromString<R>(this)
 
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
@@ -612,6 +647,7 @@ class ConfigManager(
         private const val RECENT_BOOKMARK_LIST_SIZE = 10
 
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
+        private const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =

@@ -751,7 +751,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_gpt_action_list,
             R.drawable.icon_list,
             R.string.setting_summary_gpt_action_list,
-        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
+        ) { startActivity(GptActionsActivity.createIntent(this)) },
         ValueSettingItem(
             R.string.setting_title_edit_gpt_system_prompt,
             R.drawable.icon_edit,

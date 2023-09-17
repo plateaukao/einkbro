@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.view.data.MenuInfo
@@ -123,15 +124,20 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
             )
         )
-        if (configManager.gptApiKey.isNotEmpty()) {
-            menuInfos.add(
-                0,
-                MenuInfo(
-                    context.getString(R.string.menu_gpt),
-                    icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
-                    action = { _actionModeMenuState.value = ActionModeMenuState.Gpt }
+        if (configManager.gptApiKey.isNotEmpty() && configManager.gptActionList.isNotEmpty()) {
+            configManager.gptActionList.forEach { actionInfo ->
+                menuInfos.add(
+                    0,
+                    MenuInfo(
+                        actionInfo.name,
+                        icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
+                        action = {
+                            _actionModeMenuState.value =
+                                ActionModeMenuState.Gpt(actionInfo)
+                        }
+                    )
                 )
-            )
+            }
         }
 
         menuInfos.add(
@@ -176,9 +182,9 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
 sealed class ActionModeMenuState {
     object Idle : ActionModeMenuState()
-    object Gpt : ActionModeMenuState()
+    class Gpt(val gptAction: ChatGPTActionInfo) : ActionModeMenuState()
     object GoogleTranslate : ActionModeMenuState()
     object Papago : ActionModeMenuState()
     object Naver : ActionModeMenuState()
-    class SplitSearch(val stringFormat: String): ActionModeMenuState()
+    class SplitSearch(val stringFormat: String) : ActionModeMenuState()
 }

@@ -197,6 +197,8 @@
         <activity
             android:name=".activity.DataListActivity"
             android:label="@string/setting_title_whitelist" />
+        <activity
+            android:name=".activity.GptActionsActivity"/>
 
         <service
             android:name=".service.ClearService"

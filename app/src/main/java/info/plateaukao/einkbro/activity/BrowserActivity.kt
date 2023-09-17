@@ -356,11 +356,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         actionModeMenuViewModel.resetActionModeMenuState()
                     }
 
-                    Gpt -> {
+                    is Gpt -> {
                         gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                         if (gptViewModel.hasApiKey()) {
                             GPTDialogFragment(
-                                false,
+                                gptActionInfo = state.gptAction,
                                 gptViewModel,
                                 actionModeMenuViewModel.clickedPoint.value,
                                 onTranslateClick = {
@@ -497,7 +497,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             lifecycleScope.launch {
                 gptViewModel.updateInputMessage(ninjaWebView.getRawText())
                 GPTDialogFragment(
-                    true,
+                    gptActionInfo = ChatGPTActionInfo(systemMessage = "summarize to 100 words."),
                     gptViewModel,
                     actionModeMenuViewModel.clickedPoint.value,
                     onTranslateClick = { }

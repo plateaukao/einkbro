@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.ChatMessage
 import info.plateaukao.einkbro.service.ChatRole
@@ -16,6 +17,7 @@ import org.koin.core.component.inject
 
 
 class GptViewModel : ViewModel(), KoinComponent {
+    var gptActionInfo = ChatGPTActionInfo("ChatGPT", "", "")
     private val config: ConfigManager by inject()
 
     private val openaiRepository: OpenAiRepository
@@ -39,8 +41,6 @@ class GptViewModel : ViewModel(), KoinComponent {
 
     fun query(
         userMessage: String? = null,
-        systemPrompt: String = config.gptSystemPrompt,
-        userPromptPrefix: String = config.gptUserPromptPrefix
     ) {
         if (userMessage != null) {
             _inputMessage.value = userMessage
@@ -48,10 +48,10 @@ class GptViewModel : ViewModel(), KoinComponent {
         _showControls.value = false
 
         val messages = mutableListOf<ChatMessage>()
-        if (systemPrompt.isNotBlank()) {
-            messages.add(systemPrompt.toSystemMessage())
+        if (gptActionInfo.systemMessage.isNotBlank()) {
+            messages.add(gptActionInfo.systemMessage.toSystemMessage())
         }
-        messages.add("${userPromptPrefix}${_inputMessage.value}".toUserMessage())
+        messages.add("${gptActionInfo.userMessage}${_inputMessage.value}".toUserMessage())
 
 
         // stream case
