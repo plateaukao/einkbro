@@ -85,16 +85,15 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch(Dispatchers.IO) {
             val byteArray =
-                BrowserUnit.getResourceFromUrl("https://dict.naver.com/search.dict?target=dic&dicQuery=${_inputMessage.value}")
+                BrowserUnit.getResourceFromUrl("https://dict.naver.com/dict.search?query=${_inputMessage.value}")
             val document = Jsoup.parse(String(byteArray))
-            val container = document.body().getElementById("content")
+            val container = document.getElementById("contents")
             var content = ""
-            content += container?.getElementsByClass("cn_dic_section")?.html() ?: ""
-            content += container?.getElementsByClass("hanja_dic_section")?.html() ?: ""
-            content += container?.getElementsByClass("jp_dic_section")?.html() ?: ""
-            content += container?.getElementsByClass("en_dic_section")?.html() ?: ""
-            content += container?.getElementsByClass("ko_dic_section")?.html() ?: ""
-            _responseMessage.value = content
+            content += container?.getElementsByClass("section")?.html() ?: ""
+            //_responseMessage.value = content
+            //_responseMessage.value = String(byteArray)
+            _responseMessage.value =
+                "https://ja.dict.naver.com/#/search?query=${_inputMessage.value}"
         }
     }
 
