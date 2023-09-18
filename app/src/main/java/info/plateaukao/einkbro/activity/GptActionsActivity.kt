@@ -5,13 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -20,6 +21,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -34,12 +36,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogWindowProvider
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.SelectableText
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -172,12 +177,15 @@ fun GptActionListContent(
                         Modifier.padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        SelectableText(
                             modifier = Modifier
                                 .weight(1f)
-                                .clickable { editAction(index) },
+                                .padding(horizontal = 1.dp, vertical = 3.dp),
+                            selected = false,
                             text = gptAction.name
-                        )
+                        ) {
+                            editAction(index)
+                        }
                         IconButton(onClick = {
                             deleteAction(list.value[index])
                         }) {
@@ -218,20 +226,45 @@ fun GptActionDialog(
 
     if (showDialog) {
         AlertDialog(
+            modifier = Modifier
+                .padding(2.dp)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colors.onBackground,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(2.dp),
             title = { Text("Action Setting") },
             text = {
+                // set dim amount to 0 to avoid dialog window's dim
+                (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
                 Column {
                     TextField(
+                        modifier = Modifier.padding(2.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            textColor = MaterialTheme.colors.onBackground,
+                            backgroundColor = MaterialTheme.colors.background,
+                        ),
                         value = name.value,
                         onValueChange = { name.value = it },
                         label = { Text("name") }
                     )
                     TextField(
+                        modifier = Modifier.padding(2.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            textColor = MaterialTheme.colors.onBackground,
+                            backgroundColor = MaterialTheme.colors.background,
+                        ),
                         value = systemPrompt.value,
                         onValueChange = { systemPrompt.value = it },
                         label = { Text("system prompt") }
                     )
                     TextField(
+                        modifier = Modifier.padding(2.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            textColor = MaterialTheme.colors.onBackground,
+                            backgroundColor = MaterialTheme.colors.background,
+                        ),
                         value = userPrompt.value,
                         onValueChange = { userPrompt.value = it },
                         label = { Text("user prompt") }
@@ -245,7 +278,10 @@ fun GptActionDialog(
                         okAction(name.value, systemPrompt.value, userPrompt.value)
                     }
                 ) {
-                    Text("OK")
+                    Text(
+                        stringResource(id = android.R.string.ok),
+                        color = MaterialTheme.colors.onBackground
+                    )
                 }
             }
         )
