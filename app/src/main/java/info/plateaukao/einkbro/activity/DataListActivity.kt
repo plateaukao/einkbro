@@ -61,7 +61,7 @@ class DataListActivity : ComponentActivity(), KoinComponent {
                             title = {
                                 Text(
                                     stringResource(whitelistType.titleId),
-                                    color = MaterialTheme.colors.onPrimary
+                                    color = MaterialTheme.colors.onPrimary,
                                 )
                             },
                             navigationIcon = {
