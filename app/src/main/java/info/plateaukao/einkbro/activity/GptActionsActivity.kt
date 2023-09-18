@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,13 +40,11 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.DialogManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class GptActionsActivity : ComponentActivity(), KoinComponent {
     private val config: ConfigManager by inject()
-    private val dialogManager: DialogManager by lazy { DialogManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +52,7 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
         setContent {
             val actionList = remember { mutableStateOf(config.gptActionList) }
             var showDialog by remember { mutableStateOf(false) }
+            var editActionIndex by remember { mutableStateOf(-1) }
 
             MyTheme {
                 Scaffold(
@@ -85,6 +85,7 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                                     )
                                 }
                                 IconButton(onClick = {
+                                    editActionIndex = -1
                                     showDialog = true
                                 }) {
                                     Icon(
@@ -99,7 +100,11 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                 ) { innerPadding ->
                     GptActionListContent(
                         modifier = Modifier.padding(innerPadding),
-                        actionList
+                        actionList,
+                        editAction = { index ->
+                            editActionIndex = index
+                            showDialog = true
+                        },
                     ) {
                         actionList.value = actionList.value.toMutableList().apply { remove(it) }
                         config.deleteGptAction(it)
@@ -108,9 +113,17 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
             }
             GptActionDialog(
                 showDialog,
+                editActionIndex,
+                if (editActionIndex >= 0) actionList.value[editActionIndex] else null,
                 okAction = { name, systemMessage, userMessage ->
                     actionList.value = actionList.value.toMutableList().apply {
-                        add(ChatGPTActionInfo(name, systemMessage, userMessage))
+                        if (editActionIndex >= 0)
+                            set(
+                                editActionIndex,
+                                ChatGPTActionInfo(name, systemMessage, userMessage)
+                            )
+                        else
+                            add(ChatGPTActionInfo(name, systemMessage, userMessage))
                     }
                     config.gptActionList = actionList.value
                     showDialog = false
@@ -132,6 +145,7 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
 fun GptActionListContent(
     modifier: Modifier = Modifier,
     list: MutableState<List<ChatGPTActionInfo>>,
+    editAction: (Int) -> Unit, // edit action with index
     deleteAction: (ChatGPTActionInfo) -> Unit = {}
 ) {
     if (list.value.isEmpty()) {
@@ -158,7 +172,12 @@ fun GptActionListContent(
                         Modifier.padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(modifier = Modifier.weight(1f), text = gptAction.name)
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { editAction(index) },
+                            text = gptAction.name
+                        )
                         IconButton(onClick = {
                             deleteAction(list.value[index])
                         }) {
@@ -178,12 +197,24 @@ fun GptActionListContent(
 @Composable
 fun GptActionDialog(
     showDialog: Boolean,
+    editActionIndex: Int,
+    action: ChatGPTActionInfo? = null,
     okAction: (String, String, String) -> Unit,
     dismissAction: () -> Unit
 ) {
     val name = remember { mutableStateOf("") }
     val systemPrompt = remember { mutableStateOf("") }
     val userPrompt = remember { mutableStateOf("") }
+
+    if (editActionIndex >= 0 && action != null) {
+        name.value = action.name
+        systemPrompt.value = action.systemMessage
+        userPrompt.value = action.userMessage
+    } else {
+        name.value = ""
+        systemPrompt.value = ""
+        userPrompt.value = ""
+    }
 
     if (showDialog) {
         AlertDialog(
