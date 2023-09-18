@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
@@ -51,7 +52,9 @@ class TranslateDialogFragment(
     private val anchorPoint: Point? = null,
 ) : DraggableComposeDialogFragment() {
 
-    private val webView: WebView by lazy { WebView(requireContext()) }
+    private val webView: WebView by lazy {
+        BrowserUnit.createNaverDictWebView(requireContext())
+    }
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
@@ -90,7 +93,7 @@ class TranslateDialogFragment(
         savedInstanceState: Bundle?
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        anchorPoint?.let {  setupDialogPosition(it) }
+        anchorPoint?.let { setupDialogPosition(it) }
 
         translationViewModel.translate(translateApi)
         return view
@@ -217,25 +220,11 @@ private fun WebResultView(webView: WebView, webContent: String) {
             .height(400.dp)
             .width(400.dp)
             .padding(2.dp),
-//        update = { view ->
-//            view.loadDataWithBaseURL(
-//                "https://dict.naver.com",
-//                webContent,
-//                "text/html",
-//                "utf-8",
-//                null
-//            )
-//        }
     )
 
     LaunchedEffect(webContent) {
         delay(1)
-        webView.loadDataWithBaseURL(
-            "https://dict.naver.com",
-            webContent,
-            "text/html",
-            "utf-8",
-            null
-        )
+        val headers = HashMap<String, String>().apply { put("accept-language", "zh-TW,zh") }
+        webView.loadUrl(webContent, headers)
     }
 }

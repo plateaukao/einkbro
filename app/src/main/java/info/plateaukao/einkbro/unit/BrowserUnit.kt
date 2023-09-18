@@ -25,6 +25,7 @@ import android.webkit.WebView.HitTestResult.IMAGE_ANCHOR_TYPE
 import android.webkit.WebView.HitTestResult.IMAGE_TYPE
 import android.webkit.WebView.HitTestResult.SRC_ANCHOR_TYPE
 import android.webkit.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
+import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -47,6 +48,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import org.jsoup.Jsoup
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
@@ -203,7 +205,38 @@ object BrowserUnit : KoinComponent {
         }
     }
 
+    fun createNaverDictWebView(context: Context): WebView {
+        return WebView(context).apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    view?.let {
+                        view.evaluateJavascript(
+                            """ 
+                            document.getElementById("bookmark").remove();
+                            document.getElementsByClassName("gnb_wrap")[0].remove();
+                            document.getElementsByClassName("search_wrap")[0].remove();
+                            document.getElementsByClassName("search_area")[0].remove();
+                        """.trimIndent(), null
+                        )
+                    }
+                    view?.postDelayed(
+                        {
+                            view.evaluateJavascript(
+                                """ 
+                            document.getElementById("_id_mobile_ad").remove();
+                        """.trimIndent(), null
+                            )
 
+                        },
+                        1000
+                    )
+                }
+            }
+        }
+    }
     @JvmStatic
     fun isURL(url: String?): Boolean {
         var url = url ?: return false
@@ -688,7 +721,10 @@ object BrowserUnit : KoinComponent {
                 e.printStackTrace()
             }
         }
+        val body = Jsoup.parse(String(byteArray)).body()
         return byteArray
     }
+
+
     private fun isRedirect(responseCode: Int): Boolean = responseCode in 301..399
 }
