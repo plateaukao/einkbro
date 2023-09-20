@@ -3,30 +3,40 @@ package info.plateaukao.einkbro.view.viewControllers
 import android.annotation.SuppressLint
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Color
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.NinjaWebView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 
 class TouchAreaViewController(
     private val rootView: View,
-    private val pageUpAction: () -> Unit,
-    private val pageTopAction: () -> Unit,
-    private val pageDownAction: () -> Unit,
-    private val pageBottomAction: () -> Unit,
-    private val keyLeftAction: () -> Unit,
-    private val keyRightAction: () -> Unit,
+    private val ninjaWebView: NinjaWebView,
 ) : KoinComponent {
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
     private lateinit var touchAreaDragCustomize: View
 
     private val config: ConfigManager by inject()
+
+    private val pageUpAction = { ninjaWebView.pageUpWithNoAnimation() }
+    private val pageTopAction = { ninjaWebView.jumpToTop() }
+    private val pageDownAction = { ninjaWebView.pageDownWithNoAnimation() }
+    private val pageBottomAction = { ninjaWebView.jumpToBottom() }
+    private val keyLeftAction = {
+        ninjaWebView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT ))
+    }
+    private val keyRightAction = {
+        ninjaWebView.dispatchKeyEvent(
+            KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT ))
+    }
 
     private val touchAreaChangeListener: OnSharedPreferenceChangeListener by lazy {
         OnSharedPreferenceChangeListener { _, key ->

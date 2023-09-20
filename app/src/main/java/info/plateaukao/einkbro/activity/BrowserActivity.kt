@@ -2,11 +2,16 @@ package info.plateaukao.einkbro.activity
 
 import android.annotation.SuppressLint
 import android.app.DownloadManager
-import android.app.DownloadManager.*
+import android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE
+import android.app.DownloadManager.Request
 import android.app.PictureInPictureParams
 import android.app.SearchManager
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.ClipboardManager
+import android.content.Intent
 import android.content.Intent.ACTION_VIEW
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Point
@@ -19,22 +24,32 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Message
 import android.util.Log
-import android.view.*
+import android.view.ActionMode
+import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
-import android.view.KeyEvent.KEYCODE_DPAD_LEFT
-import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.Menu
-import android.view.View.*
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.VideoView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.*
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -53,23 +68,56 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
-import info.plateaukao.einkbro.preference.*
+import info.plateaukao.einkbro.preference.AlbumInfo
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
+import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.DarkMode
+import info.plateaukao.einkbro.preference.FabPosition
+import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.preference.NewTabBehavior
+import info.plateaukao.einkbro.preference.TranslationMode
+import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
-import info.plateaukao.einkbro.unit.*
+import info.plateaukao.einkbro.unit.BackupUnit
+import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
+import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
+import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
-import info.plateaukao.einkbro.view.*
-import info.plateaukao.einkbro.view.GestureType.*
-import info.plateaukao.einkbro.view.dialog.*
-import info.plateaukao.einkbro.view.dialog.compose.*
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
+import info.plateaukao.einkbro.view.MultitouchListener
+import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.SwipeTouchListener
+import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
+import info.plateaukao.einkbro.view.dialog.DialogManager
+import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
+import info.plateaukao.einkbro.view.dialog.SendLinkDialog
+import info.plateaukao.einkbro.view.dialog.TextInputDialog
+import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
+import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
+import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.GPTDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
-import info.plateaukao.einkbro.view.viewControllers.*
+import info.plateaukao.einkbro.view.viewControllers.ComposeToolbarViewController
+import info.plateaukao.einkbro.view.viewControllers.FabImageViewController
+import info.plateaukao.einkbro.view.viewControllers.OverviewDialogController
+import info.plateaukao.einkbro.view.viewControllers.TouchAreaViewController
+import info.plateaukao.einkbro.view.viewControllers.TwoPaneController
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.GoogleTranslate
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
@@ -314,29 +362,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun initTouchAreaViewController() {
-        touchController = TouchAreaViewController(
-            rootView = binding.root,
-            pageUpAction = { ninjaWebView.pageUpWithNoAnimation() },
-            pageTopAction = { ninjaWebView.jumpToTop() },
-            pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
-            pageBottomAction = { ninjaWebView.jumpToBottom() },
-            keyLeftAction = {
-                ninjaWebView.dispatchKeyEvent(
-                    KeyEvent(
-                        ACTION_DOWN,
-                        KEYCODE_DPAD_LEFT
-                    )
-                )
-            },
-            keyRightAction = {
-                ninjaWebView.dispatchKeyEvent(
-                    KeyEvent(
-                        ACTION_DOWN,
-                        KEYCODE_DPAD_RIGHT
-                    )
-                )
-            },
-        )
+        touchController = TouchAreaViewController(binding.root, ninjaWebView)
     }
 
     private fun initActionModeViewModel() {
@@ -2326,7 +2352,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     actionModeMenuViewModel.showActionModeDialogFragment(
                         this@BrowserActivity,
                         supportFragmentManager,
-                        packageManager
                     )
                 }
             }

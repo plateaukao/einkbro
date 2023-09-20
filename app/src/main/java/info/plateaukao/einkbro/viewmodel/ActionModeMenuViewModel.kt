@@ -49,7 +49,6 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     fun showActionModeDialogFragment(
         context: Context,
         supportFragmentManager: FragmentManager,
-        packageManager: PackageManager
     ) {
         if (fragment != null && fragment?.isAdded == true) {
             _showMenu.value = true
@@ -57,7 +56,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         }
         fragment = ActionModeDialogFragment(
             this,
-            getAllProcessTextMenuInfos(context, packageManager)
+            getAllProcessTextMenuInfos(context, context.packageManager)
         ) {
             finishActionMode()
         }.apply {
