@@ -18,7 +18,7 @@ import java.util.TimerTask
 
 class TouchAreaViewController(
     private val rootView: View,
-    private val ninjaWebView: NinjaWebView,
+    ninjaWebView: () -> NinjaWebView,
 ) : KoinComponent {
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
@@ -26,15 +26,15 @@ class TouchAreaViewController(
 
     private val config: ConfigManager by inject()
 
-    private val pageUpAction = { ninjaWebView.pageUpWithNoAnimation() }
-    private val pageTopAction = { ninjaWebView.jumpToTop() }
-    private val pageDownAction = { ninjaWebView.pageDownWithNoAnimation() }
-    private val pageBottomAction = { ninjaWebView.jumpToBottom() }
+    private val pageUpAction = { ninjaWebView().pageUpWithNoAnimation() }
+    private val pageTopAction = { ninjaWebView().jumpToTop() }
+    private val pageDownAction = { ninjaWebView().pageDownWithNoAnimation() }
+    private val pageBottomAction = { ninjaWebView().jumpToBottom() }
     private val keyLeftAction = {
-        ninjaWebView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT ))
+        ninjaWebView().dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT ))
     }
     private val keyRightAction = {
-        ninjaWebView.dispatchKeyEvent(
+        ninjaWebView().dispatchKeyEvent(
             KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT ))
     }
 

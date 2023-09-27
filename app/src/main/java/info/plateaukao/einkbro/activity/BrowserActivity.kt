@@ -362,7 +362,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun initTouchAreaViewController() {
-        touchController = TouchAreaViewController(binding.root, ninjaWebView)
+        touchController = TouchAreaViewController(binding.root) { ninjaWebView }
     }
 
     private fun initActionModeViewModel() {
