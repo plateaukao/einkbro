@@ -1834,7 +1834,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
         )
         customView?.keepScreenOn = true
-        (currentAlbumController as View?)?.visibility = GONE
+        (currentAlbumController as View?)?.visibility = INVISIBLE
         ViewUnit.setCustomFullscreen(window, true, config.hideStatusbar)
         if (view is FrameLayout) {
             if (view.focusedChild is VideoView) {
@@ -1852,7 +1852,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return false
         }
 
+        // fix when pressing back, the screen is whole black.
+        customViewCallback?.onCustomViewHidden()
+        customViewCallback = null
 
+        fullscreenHolder?.visibility = GONE
+        customView?.visibility = GONE
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
         (currentAlbumController as View).visibility = VISIBLE
@@ -1861,6 +1866,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         customView = null
 
         if (videoView != null) {
+            videoView?.visibility = GONE
             videoView?.setOnErrorListener(null)
             videoView?.setOnCompletionListener(null)
             videoView = null
