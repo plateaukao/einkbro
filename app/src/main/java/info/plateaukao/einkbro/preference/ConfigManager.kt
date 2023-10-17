@@ -458,7 +458,13 @@ class ConfigManager(
     var gptActionList: List<ChatGPTActionInfo>
         get() {
             val str = sp.getString(K_GPT_ACTION_ITEMS, "") ?: ""
-            return if (str.isBlank()) emptyList()
+            return if (str.isBlank()) {
+                if (gptSystemPrompt.isNotBlank() || gptUserPromptPrefix.isNotBlank()) {
+                    listOf(ChatGPTActionInfo(gptSystemPrompt, gptUserPromptPrefix))
+                } else {
+                    emptyList()
+                }
+            }
             else str.convertToDataClass<List<ChatGPTActionInfo>>()
         }
         set(value) {

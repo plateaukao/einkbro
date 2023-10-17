@@ -74,6 +74,9 @@ class ComposeToolbarViewController(
         toolbarComposeView.onTabLongClick = onTabLongClick
     }
 
+    private fun containsPageInfo(): Boolean = toolbarComposeView.toolbarActionInfoList
+        .map { it.toolbarAction }.contains(PageInfo)
+
     fun showTabbar(shouldShow: Boolean) {
         toolbarComposeView.shouldShowTabs = shouldShow
     }
@@ -89,8 +92,7 @@ class ComposeToolbarViewController(
     }
 
     fun updatePageInfo(text: String) {
-        val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
-        if (iconEnums.contains(PageInfo)) toolbarComposeView.pageInfo = text
+        if (containsPageInfo()) toolbarComposeView.pageInfo = text
     }
 
     fun updateRefresh(isLoadingWeb: Boolean) {
