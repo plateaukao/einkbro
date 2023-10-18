@@ -2009,11 +2009,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
+    private var motionEvent: MotionEvent? = null
+    private var point: Point? = null
     override fun onLongPress(message: Message, event: MotionEvent?) {
-        val point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
+        motionEvent = event
+        point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
         if (url.isBlank()) {
-            actionModeMenuViewModel.updateClickedPoint(point)
+            actionModeMenuViewModel.updateClickedPoint(point!!)
         } else {
             // case: image or link
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
@@ -2023,12 +2026,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     url,
                     linkImageUrl.isNotBlank(),
                     config.imageApiKey.isNotBlank(),
-                    point
+                    point!!,
                 ) {
                     this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
                 }.show(supportFragmentManager, "contextMenu")
             }
         }
+        point = Point(event?.rawX?.toInt() ?: 0, event?.rawY?.toInt() ?: 0)
     }
 
     private fun handleContextMenuItem(
@@ -2059,7 +2063,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ContextMenuItemType.SaveBookmark -> saveBookmark(url, title)
             ContextMenuItemType.SplitScreen -> toggleSplitScreen(url)
-            ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
+            //ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
+            ContextMenuItemType.AdBlock -> {
+                ninjaWebView.selectLinkText(point!!)
+            }
+
             ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
             ContextMenuItemType.SaveAs -> {
                 if (url.startsWith("data:image")) {

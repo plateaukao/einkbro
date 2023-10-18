@@ -11,7 +11,15 @@ import android.os.Message
 import android.security.KeyChain
 import android.util.Log
 import android.view.View
-import android.webkit.*
+import android.webkit.ClientCertRequest
+import android.webkit.CookieManager
+import android.webkit.HttpAuthHandler
+import android.webkit.SslErrorHandler
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -78,6 +86,20 @@ class NinjaWebViewClient(
         ) {
             addHistoryAction(ninjaWebView.albumTitle, url)
         }
+
+        // test
+        ninjaWebView.evaluateJavascript(
+            """
+                    const w=window;
+                    w.addEventListener('touchstart',wrappedOnDownFunc);
+                    function wrappedOnDownFunc(e){
+                        if(e.touches.length==1){
+                            w._touchTarget = e.touches[0].target;
+                        }
+                        console.log('hey touched something ' +w._touchTarget);
+                    }
+        """.trimIndent(), null
+        )
     }
 
     private fun isTranslationDomain(url: String): Boolean {

@@ -173,6 +173,7 @@
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="text_select">Select text</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
