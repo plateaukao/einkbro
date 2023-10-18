@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Point
 import android.net.Uri
 import android.os.Build
 import android.print.PrintDocumentAdapter
@@ -18,7 +19,15 @@ import androidx.viewbinding.BuildConfig
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.*
+import info.plateaukao.einkbro.browser.AlbumController
+import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.browser.Cookie
+import info.plateaukao.einkbro.browser.Javascript
+import info.plateaukao.einkbro.browser.JsWebInterface
+import info.plateaukao.einkbro.browser.NinjaClickHandler
+import info.plateaukao.einkbro.browser.NinjaDownloadListener
+import info.plateaukao.einkbro.browser.NinjaWebChromeClient
+import info.plateaukao.einkbro.browser.NinjaWebViewClient
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -37,7 +46,6 @@ import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.ceil
@@ -488,6 +496,70 @@ open class NinjaWebView(
     } else {
         scrollBy(0, -shiftOffset())
         scrollY = max(0, scrollY)
+    }
+
+    fun selectLinkText(point: Point) {
+        evaluateJavascript(
+            """
+            javascript:(function() {
+                    function selectTouchTarget(){
+                        var tt = w._touchTarget;
+                        if(tt){
+                            var hrefAttr = tt.getAttribute("href");
+                            tt.removeAttribute("href");
+                            w._hrefAttr = hrefAttr;
+                            
+                            var sel = w.getSelection();
+                            sel.removeAllRanges();
+                            
+                            sel.selectAllChildren(tt);
+//                            var range = document.createRange();
+//                            range.selectNodeContents(tt);
+//                            sel.addRange(range);
+                        }
+                    }
+                    function restoreTouchTarget(){
+                        var tt = window._touchTarget;
+                        if(tt){
+                            tt.setAttribute("href", w._hrefAttr);
+                        }
+                    }
+                    selectTouchTarget();
+            })()
+        """.trimIndent()
+        ) {
+            val downTime = System.currentTimeMillis()
+            val downEvent =
+                MotionEvent.obtain(
+                    downTime, downTime, KeyEvent.ACTION_DOWN,
+                    point.x.toFloat(), point.y.toFloat(), 0
+                )
+            dispatchTouchEvent(downEvent)
+            //downEvent.recycle()
+
+            val multipleEvent =
+                MotionEvent.obtain(
+                    downTime, downTime + 20, KeyEvent.ACTION_MULTIPLE,
+                    (point.x + 20).toFloat(), point.y.toFloat(), 0
+                )
+            dispatchTouchEvent(multipleEvent)
+            //multipleEvent.recycle()
+
+            val upEvent =
+                MotionEvent.obtain(
+                    downTime, downTime + 700, KeyEvent.ACTION_UP,
+                    point.x.toFloat(), point.y.toFloat(), 0
+                )
+            postDelayed(
+                {
+                    dispatchTouchEvent(upEvent)
+                    //upEvent.recycle()
+                }, 700
+            )
+//            postDelayed(
+//                { evaluateJavascript("restoreTouchTarget()", null) }, 1000
+//            )
+        }
     }
 
     fun updatePageInfo() {

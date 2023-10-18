@@ -150,10 +150,8 @@ private fun ContextMenuItems(
             ContextMenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
             ContextMenuItem(R.string.copy_text, R.drawable.ic_copy) { onClicked(CopyText) }
             if (shouldShowAdBlock) {
-                ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block) {
-                    onClicked(
-                        AdBlock
-                    )
+                ContextMenuItem(R.string.text_select, R.drawable.ic_reselect) {
+                    onClicked(AdBlock)
                 }
             }
         }
