@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
+import android.os.SystemClock
 import android.print.PrintDocumentAdapter
 import android.util.Base64
 import android.view.KeyEvent
@@ -498,6 +499,7 @@ open class NinjaWebView(
         scrollY = max(0, scrollY)
     }
 
+    var isSelectingText = false
     fun selectLinkText(point: Point) {
         evaluateJavascript(
             """
@@ -528,22 +530,14 @@ open class NinjaWebView(
             })()
         """.trimIndent()
         ) {
-            val downTime = System.currentTimeMillis()
+            isSelectingText = true
+            val downTime = SystemClock.uptimeMillis()
             val downEvent =
                 MotionEvent.obtain(
                     downTime, downTime, KeyEvent.ACTION_DOWN,
-                    point.x.toFloat(), point.y.toFloat(), 0
+                    (point.x + 30).toFloat(), point.y.toFloat(), 0
                 )
             dispatchTouchEvent(downEvent)
-            //downEvent.recycle()
-
-            val multipleEvent =
-                MotionEvent.obtain(
-                    downTime, downTime + 20, KeyEvent.ACTION_MULTIPLE,
-                    (point.x + 20).toFloat(), point.y.toFloat(), 0
-                )
-            dispatchTouchEvent(multipleEvent)
-            //multipleEvent.recycle()
 
             val upEvent =
                 MotionEvent.obtain(
@@ -553,7 +547,8 @@ open class NinjaWebView(
             postDelayed(
                 {
                     dispatchTouchEvent(upEvent)
-                    //upEvent.recycle()
+                    downEvent.recycle()
+                    upEvent.recycle()
                 }, 700
             )
 //            postDelayed(
