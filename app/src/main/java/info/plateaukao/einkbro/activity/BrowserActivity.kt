@@ -2012,6 +2012,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var motionEvent: MotionEvent? = null
     private var point: Point? = null
     override fun onLongPress(message: Message, event: MotionEvent?) {
+        if (ninjaWebView.isSelectingText) return
+
         motionEvent = event
         point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
@@ -2065,7 +2067,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ContextMenuItemType.SplitScreen -> toggleSplitScreen(url)
             //ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
             ContextMenuItemType.AdBlock -> {
-                ninjaWebView.selectLinkText(point!!)
+                ninjaWebView.post {
+                    ninjaWebView.selectLinkText(point!!)
+                }
             }
 
             ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
@@ -2402,6 +2406,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             mode?.hide(1000000)
         }
         actionModeMenuViewModel.updateActionMode(null)
+        ninjaWebView.isSelectingText = false
     }
 
     // - action mode handling
