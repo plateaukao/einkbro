@@ -252,7 +252,9 @@ open class NinjaWebView(
     }
 
     fun updateUserAgentString() {
-        val defaultUserAgentString = WebSettings.getDefaultUserAgent(context).replace("wv", "")
+        val defaultUserAgentString = WebSettings.getDefaultUserAgent(context)
+            .replace("wv", "")
+            .replace(Regex("Version/\\d+\\.\\d+\\s"), "")
         val prefix: String =
             defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
 
