@@ -2406,7 +2406,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             mode?.hide(1000000)
         }
         actionModeMenuViewModel.updateActionMode(null)
-        ninjaWebView.isSelectingText = false
     }
 
     // - action mode handling

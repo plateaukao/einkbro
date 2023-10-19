@@ -535,7 +535,7 @@ open class NinjaWebView(
             val downEvent =
                 MotionEvent.obtain(
                     downTime, downTime, KeyEvent.ACTION_DOWN,
-                    (point.x + 30).toFloat(), point.y.toFloat(), 0
+                    point.x.toFloat(), point.y.toFloat(), 0
                 )
             dispatchTouchEvent(downEvent)
 
@@ -551,9 +551,12 @@ open class NinjaWebView(
                     upEvent.recycle()
                 }, 700
             )
-//            postDelayed(
-//                { evaluateJavascript("restoreTouchTarget()", null) }, 1000
-//            )
+            postDelayed(
+                {
+                    //evaluateJavascript("restoreTouchTarget()", null)
+                    isSelectingText = false
+                }, 1000
+            )
         }
     }
 
