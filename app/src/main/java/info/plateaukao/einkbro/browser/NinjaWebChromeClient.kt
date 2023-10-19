@@ -7,8 +7,16 @@ import android.net.Uri
 import android.os.Message
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.*
-import android.webkit.WebView.*
+import android.webkit.CookieManager
+import android.webkit.GeolocationPermissions
+import android.webkit.PermissionRequest
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebView.WebViewTransport
+import android.webkit.WebViewClient
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.NinjaWebView
 
@@ -65,7 +73,9 @@ class NinjaWebChromeClient(
         val webSettings = webView.settings
         val defaultUserAgent = webSettings.userAgentString
 
-        webSettings.userAgentString = defaultUserAgent.replace("wv", "")
+        webSettings.userAgentString = defaultUserAgent
+            .replace("wv", "")
+            .replace(Regex("Version/\\d+\\.\\d+\\s"), "")
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         webSettings.allowFileAccessFromFileURLs = true
         webSettings.allowUniversalAccessFromFileURLs = true
