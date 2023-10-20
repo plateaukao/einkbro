@@ -27,10 +27,10 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.AdBlock
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyLink
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyText
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveBookmark
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SelectText
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.TranslateImage
 import java.net.URLDecoder
 
@@ -147,10 +147,10 @@ private fun ContextMenuItems(
                 }
             }
             ContextMenuItem(R.string.menu_save_as, R.drawable.icon_menu_save) { onClicked(SaveAs) }
-            ContextMenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
-            ContextMenuItem(R.string.copy_text, R.drawable.ic_copy) { onClicked(CopyText) }
+            ContextMenuItem(R.string.copy_link, R.drawable.ic_link) { onClicked(CopyLink) }
+            ContextMenuItem(R.string.text_select, R.drawable.ic_reselect) { onClicked(SelectText) }
             if (shouldShowAdBlock) {
-                ContextMenuItem(R.string.text_select, R.drawable.ic_reselect) {
+                ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block) {
                     onClicked(AdBlock)
                 }
             }
@@ -172,7 +172,7 @@ fun ContextMenuItem(
 
 enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
-    ShareLink, CopyLink, CopyText, OpenWith,
+    ShareLink, CopyLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
     SplitScreen, AdBlock, TranslateImage
 }

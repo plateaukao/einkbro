@@ -2056,7 +2056,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 BrowserUnit.stripUrlQuery(url)
             )
 
-            ContextMenuItemType.CopyText -> ShareUtil.copyToClipboard(this, title)
+            ContextMenuItemType.SelectText -> ninjaWebView.post {
+                ninjaWebView.selectLinkText(point!!)
+            }
             ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
                 this,
                 url,
@@ -2065,12 +2067,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ContextMenuItemType.SaveBookmark -> saveBookmark(url, title)
             ContextMenuItemType.SplitScreen -> toggleSplitScreen(url)
-            //ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
-            ContextMenuItemType.AdBlock -> {
-                ninjaWebView.post {
-                    ninjaWebView.selectLinkText(point!!)
-                }
-            }
+            ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
 
             ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
             ContextMenuItemType.SaveAs -> {
