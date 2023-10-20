@@ -379,7 +379,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                         TranslateDialogFragment(translationViewModel, api, point)
                             .show(supportFragmentManager, "translateDialog")
-                        actionModeMenuViewModel.resetActionModeMenuState()
+                        actionModeMenuViewModel.finish()
                     }
 
                     is Gpt -> {
@@ -403,7 +403,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         } else {
                             NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
                         }
-                        actionModeMenuViewModel.resetActionModeMenuState()
+                        actionModeMenuViewModel.finish()
                     }
 
                     is SplitSearch -> {
@@ -411,7 +411,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         val selectedText = actionModeMenuViewModel.selectedText.value
                         toggleSplitScreen(splitSearchViewModel.getUrl(selectedText))
 
-                        actionModeMenuViewModel.resetActionModeMenuState()
+                        actionModeMenuViewModel.finish()
                     }
 
                     ActionModeMenuState.Idle -> Unit
@@ -1594,14 +1594,30 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                actionModeMenuViewModel.updateClickedPoint(motionEvent.toRawPoint())
-                Log.d("onLongPress", "onLongPress")
+                actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
+                actionModeMenuViewModel.hide()
+                Log.d("touch", "onLongPress")
             }
 
             override fun onMoveDone(motionEvent: MotionEvent) {
-                actionModeMenuViewModel.show()
-                Log.d("onMoveDone", "onMoveDone")
+                actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
+                Log.d("touch", "onMoveDone")
             }
+
+//            override fun onTouchDown(motionEvent: MotionEvent) {
+//                Log.d("touch", "onTouchDown")
+//                if (actionModeMenuViewModel.isInActionMode()) {
+//                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
+//                }
+//            }
+//
+//            override fun onTouchUp(motionEvent: MotionEvent) {
+//                Log.d("touch", "onTouchUp")
+//                if (actionModeMenuViewModel.isInActionMode()) {
+//                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
+//                    actionModeMenuViewModel.show()
+//                }
+//            }
         }.apply { lifecycle.addObserver(this) }
 
     private fun updateSavedAlbumInfo() {
@@ -2010,13 +2026,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var motionEvent: MotionEvent? = null
     private var point: Point = Point(0, 0)
     override fun onLongPress(message: Message, event: MotionEvent?) {
+        Log.d("touch", "onLongPress")
         if (ninjaWebView.isSelectingText) return
 
         motionEvent = event
         point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
         if (url.isBlank()) {
-            actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toRawPoint())
+            actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
         } else {
             // case: image or link
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
@@ -2054,7 +2071,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
 
             ContextMenuItemType.SelectText -> ninjaWebView.post {
-                actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toRawPoint())
+                actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
                 ninjaWebView.selectLinkText(point)
             }
 
@@ -2322,6 +2339,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
+        Log.d("touch", "onActionModeStarted")
         super.onActionModeStarted(mode)
         // check isSendingLink
         if (remoteConnViewModel.isSendingTextSearch &&
@@ -2361,11 +2379,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     mode.hide(1000000)
                 }
+
                 lifecycleScope.launch {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
-                    actionModeMenuViewModel.showActionModeDialogFragment(
+                    actionModeMenuViewModel.showActionModeView(
                         this@BrowserActivity,
-                        supportFragmentManager,
+                        mainContentLayout
                     )
                 }
             }
@@ -2375,6 +2394,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             mode.menu.clear()
         }
     }
+
 
     private fun isTextEditMode(menu: Menu): Boolean {
         for (i in 0 until menu.size()) {
@@ -2388,7 +2408,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onPause() {
         super.onPause()
-        actionModeMenuViewModel.finishActionMode()
+        actionModeMenuViewModel.finish()
         if (!config.continueMedia && !isMeetPipCriteria()) {
             if (this::ninjaWebView.isInitialized) {
                 ninjaWebView.pauseTimers()
@@ -2397,6 +2417,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onActionModeFinished(mode: ActionMode?) {
+        Log.d("touch", "onActionModeFinished")
         super.onActionModeFinished(mode)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mode?.hide(1000000)
@@ -2412,4 +2433,5 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 }
 
+private fun MotionEvent.toPoint(): Point = Point(x.toInt(), y.toInt())
 private fun MotionEvent.toRawPoint(): Point = Point(rawX.toInt(), rawY.toInt())

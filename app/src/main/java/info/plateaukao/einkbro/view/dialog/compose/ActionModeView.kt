@@ -1,16 +1,11 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.Point
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import android.util.AttributeSet
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -32,86 +27,48 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
-import kotlinx.coroutines.launch
 
-class ActionModeDialogFragment(
-    private val actionModeMenuViewModel: ActionModeMenuViewModel,
-    private val menuInfos: List<MenuInfo>,
-    private val onDismiss: () -> Unit = {},
-) : ComposeDialogFragment() {
+class ActionModeView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+) : AbstractComposeView(context, attrs, defStyle) {
+    private lateinit var actionModeMenuViewModel: ActionModeMenuViewModel
+    private lateinit var menuInfos: List<MenuInfo>
 
-//    init {
-//        shouldShowInCenter = true
-//    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    override fun setupComposeView() = composeView.setContent {
+    @Composable
+    override fun Content() {
         val text by actionModeMenuViewModel.selectedText.collectAsState()
         MyTheme {
             ActionModeMenu(menuInfos) { intent ->
                 if (intent != null) {
-                    startActivity(intent.apply {
+                    context.startActivity(intent.apply {
                         putExtra(Intent.EXTRA_PROCESS_TEXT, text)
                         putExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, true)
                     })
                 }
 
-                actionModeMenuViewModel.finishActionMode()
+                actionModeMenuViewModel.finish()
             }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-
-        lifecycleScope.launch {
-            actionModeMenuViewModel.clickedPoint.collect { anchorPoint ->
-                updateDialogPosition(anchorPoint)
-            }
-        }
-        lifecycleScope.launch {
-            actionModeMenuViewModel.showMenu.collect { show ->
-                if (show) {
-                    dialog?.show()
-                } else {
-                    dialog?.hide()
-                }
-            }
-        }
-
-        dialog?.setOnDismissListener { onDismiss() }
-
-        return view
+    fun init(
+        actionModeMenuViewModel: ActionModeMenuViewModel,
+        menuInfos: List<MenuInfo>,
+    ) {
+        this.actionModeMenuViewModel = actionModeMenuViewModel
+        this.menuInfos = menuInfos
     }
-
-    private fun updateDialogPosition(position: Point) {
-        val window = dialog?.window ?: return
-        window.setGravity(Gravity.TOP or Gravity.LEFT)
-
-        if (position.isValid()) {
-            val params = window.attributes.apply {
-                x = position.x
-                y = position.y
-            }
-            window.attributes = params
-        }
-        dialog?.hide()
-    }
-
-    private fun Point.isValid() = x != 0 && y != 0
 }
 
 @Composable
@@ -122,8 +79,10 @@ private fun ActionModeMenu(
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         modifier = Modifier
+            .background(MaterialTheme.colors.background)
             .wrapContentHeight()
             .width(280.dp)
+            .border(1.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
     ) {
         items(menuInfos.size) { index ->
             val info = menuInfos[index]
