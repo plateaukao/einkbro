@@ -13,6 +13,7 @@ import android.print.PrintDocumentAdapter
 import android.util.Base64
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -506,60 +507,57 @@ open class NinjaWebView(
         evaluateJavascript(
             """
             javascript:(function() {
-                    function selectTouchTarget(){
-                        var tt = w._touchTarget;
-                        if(tt){
-                            var hrefAttr = tt.getAttribute("href");
-                            tt.removeAttribute("href");
-                            w._hrefAttr = hrefAttr;
-                            
-                            var sel = w.getSelection();
-                            sel.removeAllRanges();
-                            
-                            sel.selectAllChildren(tt);
-//                            var range = document.createRange();
-//                            range.selectNodeContents(tt);
-//                            sel.addRange(range);
-                        }
-                    }
-                    function restoreTouchTarget(){
-                        var tt = window._touchTarget;
-                        if(tt){
-                            tt.setAttribute("href", w._hrefAttr);
-                        }
-                    }
-                    selectTouchTarget();
+                 var tt = w._touchTarget;
+                 if(tt){
+                     var hrefAttr = tt.getAttribute("href");
+                     tt.removeAttribute("href");
+                     w._hrefAttr = hrefAttr;
+                     
+                     var sel = w.getSelection();
+                     sel.removeAllRanges();
+                 }
             })()
         """.trimIndent()
         ) {
-            isSelectingText = true
-            val downTime = SystemClock.uptimeMillis()
-            val downEvent =
-                MotionEvent.obtain(
-                    downTime, downTime, KeyEvent.ACTION_DOWN,
-                    point.x.toFloat(), point.y.toFloat(), 0
-                )
-            dispatchTouchEvent(downEvent)
-
-            val upEvent =
-                MotionEvent.obtain(
-                    downTime, downTime + 700, KeyEvent.ACTION_UP,
-                    point.x.toFloat(), point.y.toFloat(), 0
-                )
-            postDelayed(
-                {
-                    dispatchTouchEvent(upEvent)
-                    downEvent.recycle()
-                    upEvent.recycle()
-                }, 700
-            )
-            postDelayed(
-                {
-                    //evaluateJavascript("restoreTouchTarget()", null)
-                    isSelectingText = false
-                }, 1000
-            )
+            postDelayed({ simulateLongClick(point) }, 0)
         }
+    }
+
+    private fun simulateLongClick(point: Point) {
+        isSelectingText = true
+        val downTime = SystemClock.uptimeMillis()
+        val downEvent =
+            MotionEvent.obtain(
+                downTime, downTime, KeyEvent.ACTION_DOWN,
+                (point.x + 20).toFloat(), point.y.toFloat(), 0
+            )
+        (this.parent as ViewGroup).dispatchTouchEvent(downEvent)
+
+        val upEvent =
+            MotionEvent.obtain(
+                downTime, downTime + 700, KeyEvent.ACTION_UP,
+                point.x.toFloat(), point.y.toFloat(), 0
+            )
+        postDelayed(
+            {
+                (this.parent as ViewGroup).dispatchTouchEvent(upEvent)
+                downEvent.recycle()
+                upEvent.recycle()
+            }, 700
+        )
+        postDelayed(
+            {
+                evaluateJavascript(
+                    """
+                        var tt = w._touchTarget;
+                        if(tt){
+                            tt.setAttribute("href", w._hrefAttr);
+                        }
+                """.trimIndent(), null
+                )
+                isSelectingText = false
+            }, 1000
+        )
     }
 
     fun updatePageInfo() {

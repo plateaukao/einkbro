@@ -2034,7 +2034,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }.show(supportFragmentManager, "contextMenu")
             }
         }
-        point = Point(event?.rawX?.toInt() ?: 0, event?.rawY?.toInt() ?: 0)
+        point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
     }
 
     private fun handleContextMenuItem(
@@ -2057,8 +2057,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
 
             ContextMenuItemType.SelectText -> ninjaWebView.post {
+                actionModeMenuViewModel.updateClickedPoint(point!!)
                 ninjaWebView.selectLinkText(point!!)
             }
+
             ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
                 this,
                 url,
