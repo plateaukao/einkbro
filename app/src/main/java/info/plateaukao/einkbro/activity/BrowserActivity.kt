@@ -142,6 +142,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.File
+import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -1594,30 +1595,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
-                actionModeMenuViewModel.hide()
+                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(this@BrowserActivity, 8) ||
+                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(this@BrowserActivity, 8)) {
+                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
+                    actionModeMenuViewModel.hide()
+                }
                 Log.d("touch", "onLongPress")
             }
 
             override fun onMoveDone(motionEvent: MotionEvent) {
-                actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
+                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(this@BrowserActivity, 8) ||
+                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(this@BrowserActivity, 8)) {
+                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
+                }
+                actionModeMenuViewModel.show()
                 Log.d("touch", "onMoveDone")
             }
-
-//            override fun onTouchDown(motionEvent: MotionEvent) {
-//                Log.d("touch", "onTouchDown")
-//                if (actionModeMenuViewModel.isInActionMode()) {
-//                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
-//                }
-//            }
-//
-//            override fun onTouchUp(motionEvent: MotionEvent) {
-//                Log.d("touch", "onTouchUp")
-//                if (actionModeMenuViewModel.isInActionMode()) {
-//                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
-//                    actionModeMenuViewModel.show()
-//                }
-//            }
         }.apply { lifecycle.addObserver(this) }
 
     private fun updateSavedAlbumInfo() {

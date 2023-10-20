@@ -66,33 +66,40 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        actionModeView?.x = _clickedPoint.value.x.toFloat()
-        actionModeView?.y = _clickedPoint.value.y + ViewUnit.dpToPixel(context, 5)
-
+        actionModeView?.visibility = INVISIBLE
         viewGroup.addView(actionModeView)
-
-        actionModeView?.post { checkBoundary() }
+        actionModeView?.post {
+            updatePosition(clickedPoint.value)
+            actionModeView?.visibility = VISIBLE
+        }
 
         viewModelScope.launch {
-            clickedPoint.collect { anchorPoint ->
-                actionModeView?.x = anchorPoint.x.toFloat()
-                actionModeView?.y = (anchorPoint.y + ViewUnit.dpToPixel(context, 5))
-                actionModeView?.post { checkBoundary() }
-            }
+            clickedPoint.collect { updatePosition(it) }
         }
     }
 
-    private fun checkBoundary() {
+    private fun updatePosition(point: Point) {
         val view = actionModeView ?: return
+        val properPoint = getProperPosition(point)
+        view.x = properPoint.x.toFloat()
+        view.y = properPoint.y + ViewUnit.dpToPixel(view.context, 5)
+    }
+
+    private fun getProperPosition(point: Point): Point {
+        val view = actionModeView ?: return Point(0, 0)
         val parentWidth = (view.parent as View).width
         val parentHeight = (view.parent as View).height
 
+        val width = view.width
+        val height = view.height
         // Calculate the new position to ensure the view is within bounds
         val padding = ViewUnit.dpToPixel(view.context, 10)
-        view.x =
-            if (view.x + view.width + padding > parentWidth) parentWidth - view.width - padding else view.x
-        view.y =
-            if (view.y + view.height + padding > parentHeight) parentHeight - view.height - padding else view.y
+        val x =
+            if (point.x + width + padding > parentWidth) parentWidth - width - padding else point.x
+        val y =
+            if (point.y + height + padding > parentHeight) parentHeight - height - padding else point.y
+
+        return Point(x.toInt(), y.toInt())
     }
 
     fun finish() {
