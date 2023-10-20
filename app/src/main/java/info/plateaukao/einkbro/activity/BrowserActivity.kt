@@ -1594,9 +1594,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                actionModeMenuViewModel.updateClickedPoint(
-                    Point(motionEvent.x.toInt(), motionEvent.y.toInt())
-                )
+                actionModeMenuViewModel.updateClickedPoint(motionEvent.toRawPoint())
                 Log.d("onLongPress", "onLongPress")
             }
 
@@ -2010,7 +2008,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private var motionEvent: MotionEvent? = null
-    private var point: Point? = null
+    private var point: Point = Point(0, 0)
     override fun onLongPress(message: Message, event: MotionEvent?) {
         if (ninjaWebView.isSelectingText) return
 
@@ -2018,7 +2016,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
         if (url.isBlank()) {
-            actionModeMenuViewModel.updateClickedPoint(point!!)
+            actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toRawPoint())
         } else {
             // case: image or link
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
@@ -2028,13 +2026,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     url,
                     linkImageUrl.isNotBlank(),
                     config.imageApiKey.isNotBlank(),
-                    point!!,
+                    motionEvent!!.toRawPoint(),
                 ) {
                     this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
                 }.show(supportFragmentManager, "contextMenu")
             }
         }
-        point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
     }
 
     private fun handleContextMenuItem(
@@ -2057,8 +2054,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
 
             ContextMenuItemType.SelectText -> ninjaWebView.post {
-                actionModeMenuViewModel.updateClickedPoint(point!!)
-                ninjaWebView.selectLinkText(point!!)
+                actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toRawPoint())
+                ninjaWebView.selectLinkText(point)
             }
 
             ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
@@ -2414,3 +2411,5 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
 }
+
+private fun MotionEvent.toRawPoint(): Point = Point(rawX.toInt(), rawY.toInt())
