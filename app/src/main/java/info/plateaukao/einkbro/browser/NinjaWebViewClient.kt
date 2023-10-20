@@ -90,11 +90,21 @@ class NinjaWebViewClient(
         // test
         ninjaWebView.evaluateJavascript(
             """
+                    function findTargetWithA(e){
+                        var tt = e;
+                        while(tt){
+                            if(tt.tagName.toLowerCase() == "a"){
+                                break;
+                            }
+                            tt = tt.parentElement;
+                        }
+                        return tt;
+                    }
                     const w=window;
                     w.addEventListener('touchstart',wrappedOnDownFunc);
                     function wrappedOnDownFunc(e){
                         if(e.touches.length==1){
-                            w._touchTarget = e.touches[0].target;
+                            w._touchTarget = findTargetWithA(e.touches[0].target);
                         }
                         console.log('hey touched something ' +w._touchTarget);
                     }
