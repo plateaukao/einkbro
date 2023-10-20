@@ -5,20 +5,25 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
 import android.view.ActionMode
+import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.view.data.toMenuInfo
-import info.plateaukao.einkbro.view.dialog.compose.ActionModeDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ActionModeView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -28,9 +33,6 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     private var actionMode: ActionMode? = null
     private val _clickedPoint = MutableStateFlow(Point(100, 100))
     val clickedPoint: StateFlow<Point> = _clickedPoint.asStateFlow()
-
-    private val _showMenu = MutableStateFlow(false)
-    val showMenu: StateFlow<Boolean> = _showMenu.asStateFlow()
 
     private val _selectedText = MutableStateFlow("")
     val selectedText: StateFlow<String> = _selectedText.asStateFlow()
@@ -43,32 +45,63 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
     fun updateActionMode(actionMode: ActionMode?) {
         this.actionMode = actionMode
+        if (actionMode == null) {
+            finish()
+        }
     }
 
-    private var fragment: DialogFragment? = null
-    fun showActionModeDialogFragment(
+    private var actionModeView: View? = null
+    fun showActionModeView(
         context: Context,
-        supportFragmentManager: FragmentManager,
+        viewGroup: ViewGroup,
     ) {
-        if (fragment != null && fragment?.isAdded == true) {
-            _showMenu.value = true
-            return
+        actionModeView = ActionModeView(context = context).apply {
+            init(
+                actionModeMenuViewModel = this@ActionModeMenuViewModel,
+                menuInfos = getAllProcessTextMenuInfos(context, context.packageManager),
+            )
         }
-        fragment = ActionModeDialogFragment(
-            this,
-            getAllProcessTextMenuInfos(context, context.packageManager)
-        ) {
-            finishActionMode()
-        }.apply {
-            show(supportFragmentManager, "action_mode_dialog")
+
+        actionModeView?.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        actionModeView?.x = _clickedPoint.value.x.toFloat()
+        actionModeView?.y = _clickedPoint.value.y + ViewUnit.dpToPixel(context, 5)
+
+        viewGroup.addView(actionModeView)
+
+        actionModeView?.post { checkBoundary() }
+
+        viewModelScope.launch {
+            clickedPoint.collect { anchorPoint ->
+                actionModeView?.x = anchorPoint.x.toFloat()
+                actionModeView?.y = (anchorPoint.y + ViewUnit.dpToPixel(context, 5))
+                actionModeView?.post { checkBoundary() }
+            }
         }
     }
 
-    fun finishActionMode() {
+    private fun checkBoundary() {
+        val view = actionModeView ?: return
+        val parentWidth = (view.parent as View).width
+        val parentHeight = (view.parent as View).height
+
+        // Calculate the new position to ensure the view is within bounds
+        val padding = ViewUnit.dpToPixel(view.context, 10)
+        view.x =
+            if (view.x + view.width + padding > parentWidth) parentWidth - view.width - padding else view.x
+        view.y =
+            if (view.y + view.height + padding > parentHeight) parentHeight - view.height - padding else view.y
+    }
+
+    fun finish() {
         actionMode?.finish()
         actionMode = null
-        fragment?.dismiss()
-        fragment = null
+        if (actionModeView?.isAttachedToWindow == true) {
+            (actionModeView?.parent as? ViewGroup)?.removeView(actionModeView)
+            actionModeView = null
+        }
     }
 
     fun updateSelectedText(text: String) {
@@ -77,11 +110,14 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
     fun updateClickedPoint(point: Point) {
         _clickedPoint.value = point
-        _showMenu.value = false
+    }
+
+    fun hide() {
+        actionModeView?.visibility = INVISIBLE
     }
 
     fun show() {
-        _showMenu.value = true
+        actionModeView?.visibility = VISIBLE
     }
 
     private fun getAllProcessTextMenuInfos(
@@ -166,17 +202,12 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 context.getString(R.string.re_select),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
                 closeMenu = false,
-                action = { _showMenu.value = false }
+                action = { actionModeView?.visibility = INVISIBLE }
             )
         )
 
         return menuInfos
     }
-
-    fun resetActionModeMenuState() {
-        _actionModeMenuState.value = ActionModeMenuState.Idle
-    }
-
 }
 
 sealed class ActionModeMenuState {
