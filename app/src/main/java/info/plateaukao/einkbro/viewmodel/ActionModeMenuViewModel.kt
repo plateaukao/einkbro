@@ -83,7 +83,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     private fun updatePosition(point: Point) {
         val view = actionModeView ?: return
         val properPoint = getProperPosition(point)
-        view.x = properPoint.x.toFloat() + ViewUnit.dpToPixel(view.context, 10)
+        view.x = properPoint.x + ViewUnit.dpToPixel(view.context, 10)
         view.y = properPoint.y + ViewUnit.dpToPixel(view.context, 10)
     }
 
@@ -111,6 +111,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             (actionModeView?.parent as? ViewGroup)?.removeView(actionModeView)
             actionModeView = null
         }
+
+        _actionModeMenuState.value = ActionModeMenuState.Idle
     }
 
     fun updateSelectedText(text: String) {
