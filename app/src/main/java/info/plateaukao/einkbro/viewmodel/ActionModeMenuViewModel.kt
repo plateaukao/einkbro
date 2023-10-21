@@ -83,8 +83,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     private fun updatePosition(point: Point) {
         val view = actionModeView ?: return
         val properPoint = getProperPosition(point)
-        view.x = properPoint.x.toFloat()
-        view.y = properPoint.y + ViewUnit.dpToPixel(view.context, 5)
+        view.x = properPoint.x.toFloat() + ViewUnit.dpToPixel(view.context, 10)
+        view.y = properPoint.y + ViewUnit.dpToPixel(view.context, 10)
     }
 
     private fun getProperPosition(point: Point): Point {
