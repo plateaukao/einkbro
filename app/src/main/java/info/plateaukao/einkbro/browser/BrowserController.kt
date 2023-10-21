@@ -85,4 +85,6 @@ interface BrowserController {
     fun toggleReceiveLink()
 
     fun summarizeContent()
+
+    fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float)
 }

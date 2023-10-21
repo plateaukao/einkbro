@@ -534,6 +534,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
+        actionModeMenuViewModel.hide()
+    }
+
     override fun toggleReceiveLink() {
         if (remoteConnViewModel.isReceivingLink) {
             remoteConnViewModel.toggleReceiveLink {}
@@ -1595,8 +1599,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(this@BrowserActivity, 8) ||
-                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(this@BrowserActivity, 8)) {
+                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
+                        this@BrowserActivity,
+                        8
+                    ) ||
+                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
+                        this@BrowserActivity,
+                        8
+                    )
+                ) {
                     actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
                     actionModeMenuViewModel.hide()
                 }
@@ -1604,11 +1615,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
 
             override fun onMoveDone(motionEvent: MotionEvent) {
-                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(this@BrowserActivity, 8) ||
-                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(this@BrowserActivity, 8)) {
+                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
+                        this@BrowserActivity,
+                        8
+                    ) ||
+                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
+                        this@BrowserActivity,
+                        8
+                    )
+                ) {
                     actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
                 }
-                actionModeMenuViewModel.show()
                 Log.d("touch", "onMoveDone")
             }
         }.apply { lifecycle.addObserver(this) }

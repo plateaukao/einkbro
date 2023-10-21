@@ -55,19 +55,21 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         context: Context,
         viewGroup: ViewGroup,
     ) {
-        actionModeView = ActionModeView(context = context).apply {
-            init(
-                actionModeMenuViewModel = this@ActionModeMenuViewModel,
-                menuInfos = getAllProcessTextMenuInfos(context, context.packageManager),
+        if (actionModeView == null) {
+            actionModeView = ActionModeView(context = context).apply {
+                init(
+                    actionModeMenuViewModel = this@ActionModeMenuViewModel,
+                    menuInfos = getAllProcessTextMenuInfos(context, context.packageManager),
+                )
+            }
+            actionModeView?.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
             )
+            actionModeView?.visibility = INVISIBLE
+            viewGroup.addView(actionModeView)
         }
 
-        actionModeView?.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        actionModeView?.visibility = INVISIBLE
-        viewGroup.addView(actionModeView)
         actionModeView?.post {
             updatePosition(clickedPoint.value)
             actionModeView?.visibility = VISIBLE
