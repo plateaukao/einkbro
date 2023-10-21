@@ -57,7 +57,7 @@ class ActionModeView @JvmOverloads constructor(
                     })
                 }
 
-                actionModeMenuViewModel.finish()
+                actionModeMenuViewModel.updateActionMode(null)
             }
         }
     }

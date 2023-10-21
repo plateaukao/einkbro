@@ -111,6 +111,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             (actionModeView?.parent as? ViewGroup)?.removeView(actionModeView)
             actionModeView = null
         }
+
+        _actionModeMenuState.value = ActionModeMenuState.Idle
     }
 
     fun updateSelectedText(text: String) {
