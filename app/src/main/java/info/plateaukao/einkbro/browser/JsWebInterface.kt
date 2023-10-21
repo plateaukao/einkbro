@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.browser
 
+import android.util.Log
 import android.webkit.JavascriptInterface
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TranslateRepository
@@ -20,6 +21,12 @@ class JsWebInterface(private val webView: NinjaWebView) :
 
     // to control the translation request threshold
     private val semaphoreForTranslate = Semaphore(4)
+
+    @JavascriptInterface
+    fun getAnchorPosition(left: Float, top: Float, right: Float, bottom: Float) {
+        Log.d("touch", "rect: $left, $top, $right, $bottom")
+        webView.browserController?.updateSelectionRect(left, top, right, bottom)
+    }
 
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {

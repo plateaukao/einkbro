@@ -43,6 +43,9 @@ class WebContentPostProcessor : KoinComponent {
         } else {
             ninjaWebView.settings.textZoom = configManager.fontSize
         }
+
+        // text selection handling
+        ninjaWebView.addSelectionChangeListener()
     }
 
     companion object {

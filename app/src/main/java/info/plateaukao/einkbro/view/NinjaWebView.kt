@@ -680,6 +680,10 @@ open class NinjaWebView(
         evaluateJavascript(textNodesMonitorJs, null)
     }
 
+    fun addSelectionChangeListener() {
+        evaluateJavascript(textSelectionChangeJs, null)
+    }
+
 
     private fun disableReaderMode(isVertical: Boolean = false) {
         val verticalCssString = if (isVertical) {
@@ -1071,6 +1075,28 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
                 "input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {\n" +
                 "\tfont-weight:700 !important;\n" +
                 "}\n"
+
+        private const val textSelectionChangeJs = """
+            var selectedText = "";
+            document.addEventListener("selectionchange", function() {
+            var selection = window.getSelection();
+            var anchorNode = selection.anchorNode;
+            var anchorOffset = selection.anchorOffset;
+            
+            // Calculate the anchor position
+            var range = document.createRange();
+            range.setStart(anchorNode, anchorOffset);
+            var rect = range.getBoundingClientRect();
+            
+            // Send anchor position to Android
+            if (selection.toString() != selectedText) {
+                selectedText = selection.toString();
+                if (selectedText.length > 0) {
+                    androidApp.getAnchorPosition(rect.left, rect.top, rect.right, rect.bottom);
+                }
+            }
+        });
+        """
     }
 
     init {
