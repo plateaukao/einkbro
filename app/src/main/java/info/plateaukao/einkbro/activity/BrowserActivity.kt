@@ -142,7 +142,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.File
-import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -535,7 +534,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
+        Log.d("touch", "updateSelectionRect: $left, $top, $right, $bottom")
         actionModeMenuViewModel.hide()
+        actionModeMenuViewModel.updateClickedPoint(
+            Point(
+                ViewUnit.dpToPixel(this, right.toInt()).toInt(),
+                ViewUnit.dpToPixel(this, bottom.toInt()).toInt()
+            )
+        )
     }
 
     override fun toggleReceiveLink() {
@@ -1599,33 +1605,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
-                        this@BrowserActivity,
-                        8
-                    ) ||
-                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
-                        this@BrowserActivity,
-                        8
-                    )
-                ) {
-                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
-                    actionModeMenuViewModel.hide()
-                }
-                Log.d("touch", "onLongPress")
+                actionModeMenuViewModel.hide()
+                Log.d("touch", "onLongPress: ${motionEvent.x}, ${motionEvent.y}")
             }
 
             override fun onMoveDone(motionEvent: MotionEvent) {
-                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
-                        this@BrowserActivity,
-                        8
-                    ) ||
-                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
-                        this@BrowserActivity,
-                        8
-                    )
-                ) {
-                    actionModeMenuViewModel.updateClickedPoint(motionEvent.toPoint())
-                }
                 Log.d("touch", "onMoveDone")
             }
         }.apply { lifecycle.addObserver(this) }
@@ -2043,7 +2027,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
         if (url.isBlank()) {
-            actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
+            //actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
         } else {
             // case: image or link
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
@@ -2081,7 +2065,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
 
             ContextMenuItemType.SelectText -> ninjaWebView.post {
-                actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
+                //actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
                 ninjaWebView.selectLinkText(point)
             }
 
