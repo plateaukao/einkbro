@@ -142,6 +142,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.File
+import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -535,13 +536,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
         Log.d("touch", "updateSelectionRect: $left, $top, $right, $bottom")
-        actionModeMenuViewModel.hide()
-        actionModeMenuViewModel.updateClickedPoint(
-            Point(
-                ViewUnit.dpToPixel(this, right.toInt()).toInt(),
-                ViewUnit.dpToPixel(this, bottom.toInt()).toInt()
-            )
+        val newPoint = Point(
+            ViewUnit.dpToPixel(this, right.toInt()).toInt(),
+            ViewUnit.dpToPixel(this, bottom.toInt()).toInt()
         )
+        if (abs(newPoint.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
+                this@BrowserActivity,
+                15
+            ) ||
+            abs(newPoint.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
+                this@BrowserActivity,
+                15
+            )
+        ) {
+            actionModeMenuViewModel.hide()
+            actionModeMenuViewModel.updateClickedPoint(newPoint)
+        }
     }
 
     override fun toggleReceiveLink() {
@@ -1605,7 +1615,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                actionModeMenuViewModel.hide()
+                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
+                        this@BrowserActivity,
+                        15
+                    ) ||
+                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
+                        this@BrowserActivity,
+                        15
+                    )
+                ) {
+                    actionModeMenuViewModel.hide()
+                }
                 Log.d("touch", "onLongPress: ${motionEvent.x}, ${motionEvent.y}")
             }
 
