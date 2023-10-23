@@ -124,6 +124,7 @@ import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Naver
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SplitSearch
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Tts
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
@@ -415,6 +416,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         actionModeMenuViewModel.finish()
                     }
 
+                    is Tts -> {
+                        IntentUnit.tts(this@BrowserActivity, state.text)
+                        actionModeMenuViewModel.finish()
+                    }
+
                     ActionModeMenuState.Idle -> Unit
                 }
             }
@@ -550,8 +556,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
         ) {
             actionModeMenuViewModel.hide()
-            actionModeMenuViewModel.updateClickedPoint(newPoint)
         }
+        actionModeMenuViewModel.updateClickedPoint(newPoint)
     }
 
     override fun toggleReceiveLink() {
@@ -1609,24 +1615,31 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun createMultiTouchTouchListener(ninjaWebView: NinjaWebView): MultitouchListener =
         object : MultitouchListener(this@BrowserActivity, ninjaWebView) {
+            private var longPressStartPoint: Point? = null
             override fun onSwipeTop() = gestureHandler.handle(config.multitouchUp)
             override fun onSwipeBottom() = gestureHandler.handle(config.multitouchDown)
             override fun onSwipeRight() = gestureHandler.handle(config.multitouchRight)
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
-                if (abs(motionEvent.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
+                if (longPressStartPoint == null) {
+                    longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
+                    return
+                }
+                Log.d("touch", "onLongPress: ${motionEvent.x}, ${motionEvent.y} \n ${actionModeMenuViewModel.clickedPoint.value.x}, ${actionModeMenuViewModel.clickedPoint.value.y}")
+                if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(
                         this@BrowserActivity,
                         15
                     ) ||
-                    abs(motionEvent.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
+                    abs(motionEvent.y - (longPressStartPoint?.y ?: 0)) > ViewUnit.dpToPixel(
                         this@BrowserActivity,
                         15
                     )
                 ) {
                     actionModeMenuViewModel.hide()
+                    longPressStartPoint = null
+                    Log.d("touch", "onLongPress: hide")
                 }
-                Log.d("touch", "onLongPress: ${motionEvent.x}, ${motionEvent.y}")
             }
 
             override fun onMoveDone(motionEvent: MotionEvent) {
@@ -2047,7 +2060,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
         if (url.isBlank()) {
-            //actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
         } else {
             // case: image or link
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
@@ -2266,6 +2278,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun readArticle() {
+        if (Build.MODEL.startsWith("Pixel 8")) {
+            lifecycleScope.launch {
+                IntentUnit.tts(this@BrowserActivity, ninjaWebView.getRawText())
+            }
+            return
+        }
+
         TtsLanguageDialog(this).show { ttsLanguage ->
             lifecycleScope.launch {
                 ttsManager.readText(ttsLanguage, ninjaWebView.getRawText())

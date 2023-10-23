@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
+import android.os.Build
 import android.view.ActionMode
 import android.view.View
 import android.view.View.INVISIBLE
@@ -191,7 +192,10 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             MenuInfo(
                 context.getString(android.R.string.copy),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
-                action = { ShareUtil.copyToClipboard(context, selectedText.value) }
+                action = {
+                    ShareUtil.copyToClipboard(context, selectedText.value)
+                    finish()
+                }
             )
         )
         if (configManager.splitSearchItemInfoList.isNotEmpty()) {
@@ -207,6 +211,16 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                     )
                 )
             }
+        }
+        if (Build.MODEL.startsWith("Pixel 8")) {
+            menuInfos.add(
+                MenuInfo(
+                    "Read",
+                    icon = ContextCompat.getDrawable(context, R.drawable.ic_tts),
+                    closeMenu = false,
+                    action = { _actionModeMenuState.value = ActionModeMenuState.Tts(selectedText.value) }
+                )
+            )
         }
         menuInfos.add(
             MenuInfo(
@@ -228,4 +242,5 @@ sealed class ActionModeMenuState {
     object Papago : ActionModeMenuState()
     object Naver : ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
+    class Tts(val text: String) : ActionModeMenuState()
 }

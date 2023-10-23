@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.unit
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
@@ -35,6 +36,25 @@ object IntentUnit {
         val intent = Intent().apply {
             action = "com.android.settings.TTS_SETTINGS"
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        try {
+            activity.startActivity(intent)
+        } catch (e: Exception) {
+            NinjaToast.show(activity, "No Text to Speech settings found")
+        }
+    }
+
+    fun tts(activity: Activity, text: String) {
+        val intent = Intent("android.intent.action.PROCESS_TEXT").apply {
+            type = "text/plain"
+            component = ComponentName("com.google.android.marvin.talkback", "com.google.android.accessibility.selecttospeak.popup.SelectToSpeakPopupActivity")
+            putExtra("android.intent.extra.PROCESS_TEXT_READONLY", true)
+            putExtra(Intent.EXTRA_PROCESS_TEXT, text
+                .replace("\\n", "")
+                .replace("\\t", "")
+                .replace("\\\"", "")
+            )
+
         }
         try {
             activity.startActivity(intent)
