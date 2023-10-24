@@ -460,7 +460,7 @@ class ConfigManager(
             val str = sp.getString(K_GPT_ACTION_ITEMS, "") ?: ""
             return if (str.isBlank()) {
                 if (gptSystemPrompt.isNotBlank() || gptUserPromptPrefix.isNotBlank()) {
-                    listOf(ChatGPTActionInfo(gptSystemPrompt, gptUserPromptPrefix))
+                    listOf(ChatGPTActionInfo(systemMessage = gptSystemPrompt, userMessage = gptUserPromptPrefix))
                 } else {
                     emptyList()
                 }

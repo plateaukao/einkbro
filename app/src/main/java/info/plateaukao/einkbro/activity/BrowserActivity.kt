@@ -23,7 +23,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Message
-import android.util.Log
 import android.view.ActionMode
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
@@ -541,7 +540,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
-        Log.d("touch", "updateSelectionRect: $left, $top, $right, $bottom")
+        //Log.d("touch", "updateSelectionRect: $left, $top, $right, $bottom")
         val newPoint = Point(
             ViewUnit.dpToPixel(this, right.toInt()).toInt(),
             ViewUnit.dpToPixel(this, bottom.toInt()).toInt()
@@ -1039,7 +1038,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 if (viewUri.scheme == "content") {
                     val (filename, mimetype) = HelperUnit.getFileInfoFromContentUri(this, viewUri)
                     val mimeType = contentResolver.getType(viewUri)
-                    Log.d(TAG, "mimeType: $mimeType")
+                    //Log.d(TAG, "mimeType: $mimeType")
                     if (filename?.endsWith(".srt") == true ||
                         mimeType.equals("application/x-subrip")
                     ) {
@@ -1626,7 +1625,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
                     return
                 }
-                Log.d("touch", "onLongPress: ${motionEvent.x}, ${motionEvent.y} \n ${actionModeMenuViewModel.clickedPoint.value.x}, ${actionModeMenuViewModel.clickedPoint.value.y}")
+                //Log.d("touch", "onLongPress: ${motionEvent.x}, ${motionEvent.y} \n ${actionModeMenuViewModel.clickedPoint.value.x}, ${actionModeMenuViewModel.clickedPoint.value.y}")
                 if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(
                         this@BrowserActivity,
                         15
@@ -1638,12 +1637,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ) {
                     actionModeMenuViewModel.hide()
                     longPressStartPoint = null
-                    Log.d("touch", "onLongPress: hide")
+                    //Log.d("touch", "onLongPress: hide")
                 }
             }
 
             override fun onMoveDone(motionEvent: MotionEvent) {
-                Log.d("touch", "onMoveDone")
+                //Log.d("touch", "onMoveDone")
             }
         }.apply { lifecycle.addObserver(this) }
 
@@ -2053,7 +2052,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var motionEvent: MotionEvent? = null
     private var point: Point = Point(0, 0)
     override fun onLongPress(message: Message, event: MotionEvent?) {
-        Log.d("touch", "onLongPress")
+        //Log.d("touch", "onLongPress")
         if (ninjaWebView.isSelectingText) return
 
         motionEvent = event
@@ -2372,7 +2371,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
-        Log.d("touch", "onActionModeStarted")
+        //Log.d("touch", "onActionModeStarted")
         super.onActionModeStarted(mode)
         // check isSendingLink
         if (remoteConnViewModel.isSendingTextSearch &&
@@ -2450,7 +2449,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onActionModeFinished(mode: ActionMode?) {
-        Log.d("touch", "onActionModeFinished")
+        //Log.d("touch", "onActionModeFinished")
         super.onActionModeFinished(mode)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mode?.hide(1000000)
