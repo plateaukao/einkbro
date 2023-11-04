@@ -17,9 +17,9 @@ import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
-import androidx.viewbinding.BuildConfig
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserController

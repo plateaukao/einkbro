@@ -107,7 +107,8 @@ class BackupUnit(
                     if (zipEntry.name.endsWith(".db") ||
                         zipEntry.name.contains("einkbro_db")
                     ) "$DATABASE_PATH${zipEntry.name}"
-                    else "$SHARED_PREFS_PATH${zipEntry.name}"
+                    else "$SHARED_PREFS_PATH${zipEntry.name.replace("einkbro", "einkbro.pubu")}"
+                // need to use pubu file name for shared preferences
                 )
                 val fos = FileOutputStream(file)
                 val buffer = ByteArray(1024)
@@ -329,8 +330,8 @@ class BackupUnit(
 
 
     companion object {
-        private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
-        private const val SHARED_PREFS_PATH = "/data/data/info.plateaukao.einkbro/shared_prefs/"
+        private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro.pubu/databases/"
+        private const val SHARED_PREFS_PATH = "/data/data/info.plateaukao.einkbro.pubu/shared_prefs/"
     }
 }
 

@@ -46,6 +46,7 @@ import info.plateaukao.einkbro.activity.SettingRoute.Ui
 import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
 import info.plateaukao.einkbro.browser.AdBlockV2
+import info.plateaukao.einkbro.epub.EpubReaderView
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
@@ -217,6 +218,16 @@ class SettingActivity : ComponentActivity(), KoinComponent {
 
         if (config.hideStatusbar) {
             hideStatusBar()
+        }
+
+        dispatchIntent(intent)
+    }
+
+    private fun dispatchIntent(intent: Intent) {
+        val backupFileUri= intent.data ?: return
+
+        if (backupUnit.restoreBackupData( this, backupFileUri)) {
+            dialogManager.showRestartConfirmDialog()
         }
     }
 
@@ -619,7 +630,9 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_import_appData,
             R.drawable.icon_import,
             R.string.setting_summary_import_appData
-        ) { dialogManager.showImportBackupFilePicker() },
+        ) {
+            dialogManager.showImportBackupFilePicker()
+        },
         ActionSettingItem(
             R.string.setting_title_export_bookmarks,
             R.drawable.icon_bookmark,
