@@ -2372,7 +2372,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
         //Log.d("touch", "onActionModeStarted")
-        super.onActionModeStarted(mode)
+
         // check isSendingLink
         if (remoteConnViewModel.isSendingTextSearch &&
             !isTextEditMode(mode.menu)
@@ -2410,6 +2410,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     mode.hide(1000000)
+                    mode.menu.clear()
+                    mode.finish()
                 }
 
                 lifecycleScope.launch {
@@ -2424,6 +2426,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
             mode.menu.clear()
+        }
+
+        if (config.showDefaultActionMenu) {
+            super.onActionModeStarted(mode)
         }
     }
 
