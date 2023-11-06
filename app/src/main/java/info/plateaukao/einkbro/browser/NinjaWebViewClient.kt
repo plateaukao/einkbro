@@ -143,12 +143,6 @@ class NinjaWebViewClient(
             return true
         }
 
-        if (url.startsWith("http")) {
-//            webView.loadUrl(url, ninjaWebView.requestHeaders)
-//            return true
-            return false
-        }
-
         val packageManager = context.packageManager
         val browseIntent = Intent(Intent.ACTION_VIEW).setData(uri)
 
@@ -162,8 +156,12 @@ class NinjaWebViewClient(
             return true
         }
 
+        if (url.startsWith("http")) {
+            return false
+        }
 
-        if (browseIntent.resolveActivity(packageManager) != null) {
+
+            if (browseIntent.resolveActivity(packageManager) != null) {
             try {
                 context.startActivity(browseIntent)
                 return true
