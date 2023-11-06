@@ -44,6 +44,7 @@ class ActionModeView @JvmOverloads constructor(
 ) : AbstractComposeView(context, attrs, defStyle) {
     private lateinit var actionModeMenuViewModel: ActionModeMenuViewModel
     private lateinit var menuInfos: List<MenuInfo>
+    private lateinit var clearSelectionAction: () -> Unit
 
     @Composable
     override fun Content() {
@@ -56,7 +57,7 @@ class ActionModeView @JvmOverloads constructor(
                         putExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, true)
                     })
                 }
-
+                clearSelectionAction()
                 actionModeMenuViewModel.updateActionMode(null)
             }
         }
@@ -65,9 +66,11 @@ class ActionModeView @JvmOverloads constructor(
     fun init(
         actionModeMenuViewModel: ActionModeMenuViewModel,
         menuInfos: List<MenuInfo>,
+        clearSelectionAction: () -> Unit,
     ) {
         this.actionModeMenuViewModel = actionModeMenuViewModel
         this.menuInfos = menuInfos
+        this.clearSelectionAction = clearSelectionAction
     }
 }
 
@@ -88,7 +91,7 @@ private fun ActionModeMenu(
             val info = menuInfos[index]
             ActionMenuItem(info.title, info.icon) {
                 info.action?.invoke()
-                if (info.intent != null || info.closeMenu) onClicked(info.intent)
+                onClicked(info.intent)
             }
         }
     }
