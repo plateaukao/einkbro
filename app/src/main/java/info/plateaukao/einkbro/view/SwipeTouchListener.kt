@@ -19,6 +19,7 @@ open class SwipeTouchListener(ctx: Context?) : OnTouchListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean = gestureDetector.onTouchEvent(event)
 
+    @Suppress("NOTHING_TO_OVERRIDE", "ACCIDENTAL_OVERRIDE")
     private inner class GestureListener : SimpleOnGestureListener() {
         override fun onDown(e: MotionEvent): Boolean = false
 

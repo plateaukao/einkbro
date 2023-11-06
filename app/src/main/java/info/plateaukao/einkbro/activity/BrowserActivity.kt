@@ -184,9 +184,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = webView.title
         val url = webView.url
         return (title.isNullOrEmpty() || url.isNullOrEmpty()
-            || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-            || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-            || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
     }
 
     private var originalOrientation = 0
@@ -655,8 +655,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun isMeetPipCriteria() = config.enableVideoPip &&
-        fullscreenHolder != null &&
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+            fullscreenHolder != null &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun enterPipMode() {
@@ -1652,7 +1652,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             .filter { !it.isTranslatePage }
             .filter {
                 (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) ||
-                    it.initAlbumUrl.isNotBlank()
+                        it.initAlbumUrl.isNotBlank()
             }
             .map { controller ->
                 AlbumInfo(
@@ -2419,7 +2419,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     actionModeMenuViewModel.showActionModeView(
                         this@BrowserActivity,
                         binding.root
-                    )
+                    ) {
+                        ninjaWebView.removeTextSelection()
+                    }
                 }
             }
         }
@@ -2428,9 +2430,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             mode.menu.clear()
         }
 
-        if (config.showDefaultActionMenu) {
-            super.onActionModeStarted(mode)
-        }
+        super.onActionModeStarted(mode)
     }
 
 

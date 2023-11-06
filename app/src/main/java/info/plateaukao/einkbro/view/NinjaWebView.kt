@@ -502,6 +502,18 @@ open class NinjaWebView(
         scrollY = max(0, scrollY)
     }
 
+    fun removeTextSelection() {
+        evaluateJavascript(
+            """
+            javascript:(function() {
+                     var sel = w.getSelection();
+                     sel.removeAllRanges();
+                 }
+            )()
+        """.trimIndent()
+        ) {}
+    }
+
     var isSelectingText = false
     fun selectLinkText(point: Point) {
         evaluateJavascript(

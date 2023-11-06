@@ -52,15 +52,18 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     }
 
     private var actionModeView: View? = null
+    private var clearSelectionAction: (() -> Unit)? = null
     fun showActionModeView(
         context: Context,
         viewGroup: ViewGroup,
+        clearSelectionAction: () -> Unit
     ) {
         if (actionModeView == null) {
             actionModeView = ActionModeView(context = context).apply {
                 init(
                     actionModeMenuViewModel = this@ActionModeMenuViewModel,
                     menuInfos = getAllProcessTextMenuInfos(context, context.packageManager),
+                    clearSelectionAction = clearSelectionAction
                 )
             }
             actionModeView?.layoutParams = ViewGroup.LayoutParams(
@@ -218,7 +221,9 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                     "Read",
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_tts),
                     closeMenu = false,
-                    action = { _actionModeMenuState.value = ActionModeMenuState.Tts(selectedText.value) }
+                    action = {
+                        _actionModeMenuState.value = ActionModeMenuState.Tts(selectedText.value)
+                    }
                 )
             )
         }
