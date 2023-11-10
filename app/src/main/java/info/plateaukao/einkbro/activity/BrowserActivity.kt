@@ -16,6 +16,7 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -294,10 +295,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ViewCompat.setOnApplyWindowInsetsListener(
             binding.root
         ) { view, windowInsets ->
-            val insets: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            val params =
-                view.layoutParams as FrameLayout.LayoutParams
-            params.bottomMargin = insets.bottom
+            val insetsNavigationBar: Insets =
+                windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
+            val params = view.layoutParams as FrameLayout.LayoutParams
+
+            if (isKeyboardDisplaying()) {
+                params.bottomMargin = insetsKeyboard.bottom
+            } else {
+                params.bottomMargin = 0
+            }
+            view.layoutParams = params
             WindowInsetsCompat.CONSUMED
         }
 
@@ -334,8 +342,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
-        listenKeyboardShowHide()
-
         initLanguageLabel()
 
         initTouchAreaViewController()
@@ -346,6 +352,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (config.hideStatusbar) {
             hideStatusBar()
         }
+
+        listenKeyboardShowHide()
     }
 
     private fun initExternalSearchCloseButton() {
@@ -693,10 +701,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.inputUrl.bookmarkManager = bookmarkManager
     }
 
+    private fun isKeyboardDisplaying(): Boolean {
+        val rect = Rect()
+        binding.root.getWindowVisibleDisplayFrame(rect)
+        val heightDiff: Int = binding.root.rootView.height - rect.bottom
+        return heightDiff > binding.root.rootView.height * 0.15
+    }
+
     private fun listenKeyboardShowHide() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            val heightDiff: Int = binding.root.rootView.height - binding.root.height
-            if (heightDiff > 200) { // Value should be less than keyboard's height
+            if (isKeyboardDisplaying()) { // Value should be less than keyboard's height
                 touchController.maybeDisableTemporarily()
             } else {
                 touchController.maybeEnableAgain()
