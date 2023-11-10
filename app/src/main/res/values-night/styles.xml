@@ -3,6 +3,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <!--        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14</item>-->
         <item name="dragIcon">@drawable/ic_drag</item>
         <item name="android:textColor">@color/lightGray</item>

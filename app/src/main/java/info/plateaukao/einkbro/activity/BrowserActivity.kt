@@ -53,6 +53,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -286,6 +290,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onCreate(null)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            binding.root
+        ) { view, windowInsets ->
+            val insets: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val params =
+                view.layoutParams as FrameLayout.LayoutParams
+            params.bottomMargin = insets.bottom
+            WindowInsetsCompat.CONSUMED
+        }
+
 
         savedInstanceState?.let {
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
