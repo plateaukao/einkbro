@@ -565,9 +565,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
         //Log.d("touch", "updateSelectionRect: $left, $top, $right, $bottom")
+        // 10 for the selection indicator height
         val newPoint = Point(
             ViewUnit.dpToPixel(this, right.toInt()).toInt(),
-            ViewUnit.dpToPixel(this, bottom.toInt()).toInt()
+            ViewUnit.dpToPixel(this, bottom.toInt() + 16).toInt()
         )
         if (abs(newPoint.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
                 this@BrowserActivity,
