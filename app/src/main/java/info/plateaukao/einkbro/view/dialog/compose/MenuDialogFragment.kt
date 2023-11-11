@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -337,11 +339,12 @@ fun MenuItem(
         else -> 45.dp
     }
 
-    val fontSize = if (configuration.screenWidthDp > 500) 10.sp else 8.sp
+    val fontSize = if (!showIcon) 16.sp else if (configuration.screenWidthDp > 500) 10.sp else 8.sp
     Column(
         modifier = Modifier
             .width(width)
-            .height(if (!showIcon) 25.dp else if (isLargeType) 80.dp else 70.dp)
+            .height(if (isLargeType) 80.dp else 70.dp)
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .clickable(
                 indication = null,
                 interactionSource = interactionSource,

@@ -120,7 +120,8 @@ fun ActionMenuItem(
         else -> 45.dp
     }
 
-    val fontSize = if (configuration.screenWidthDp > 500) 10.sp else 8.sp
+    val fontSize = if (iconDrawable == null) 12.sp else
+        if (configuration.screenWidthDp > 500) 10.sp else 8.sp
     Column(
         modifier = Modifier
             .width(width)
