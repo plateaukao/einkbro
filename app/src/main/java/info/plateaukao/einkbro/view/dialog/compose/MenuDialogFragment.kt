@@ -349,7 +349,8 @@ fun MenuItem(
                 indication = null,
                 interactionSource = interactionSource,
             ) { onClicked() },
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = if (!showIcon) Arrangement.Center else Arrangement.Top
     ) {
         if (showIcon) {
             Icon(
@@ -367,7 +368,7 @@ fun MenuItem(
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,
             maxLines = 2,
-            lineHeight = fontSize,
+            lineHeight = if (!showIcon) 20.sp else 12.sp,
             fontSize = fontSize,
             color = MaterialTheme.colors.onBackground
         )

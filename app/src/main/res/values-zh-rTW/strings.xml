@@ -8,8 +8,8 @@
     <string name="album_title_home">首頁</string>
     <string name="search_hint">搜尋</string>
     <!-- Menu -->
-    <string name="main_menu_new_tab">新增分頁(背景)</string>
-    <string name="main_menu_new_tabOpen">新增分頁(前景)</string>
+    <string name="main_menu_new_tab">分頁\n(背景)</string>
+    <string name="main_menu_new_tabOpen">分頁\n(前景)</string>
     <string name="main_omnibox_input_hint">搜尋或輸入網址</string>
     <string name="menu_open_with">App開啟</string>
     <string name="menu_quit">離開</string>
@@ -366,7 +366,7 @@
     <string name="dialog_touch_area_enable">啟動點擊翻頁</string>
     <string name="show_default_text_menu">顯示預設文字選取功能清單</string>
     <string name="setting_summary_show_default_text_menu">選取文字後，將顯示預設的功能清單</string>
-    <string name="google_translate">Google翻譯</string>
+    <string name="google_translate">Google\n翻譯</string>
     <string name="translate_by_paragraph">依段落翻譯</string>
     <string name="translate_processing">網頁處理中...</string>
     <string name="translation_language">翻譯的語言</string>
@@ -386,7 +386,7 @@
     <string name="enable_touch_area_as_arrow_key">長按時送出左/右鍵</string>
     <string name="setting_title_chat_stream">逐步回傳結果</string>
     <string name="setting_summary_chat_stream">結果將會部分回傳，降低等待時間</string>
-    <string name="re_select">重新選取</string>
+    <string name="re_select">重新\n選取</string>
     <string name="setting_dual_caption">Youtube雙語字幕</string>
     <string name="setting_summary_dual_caption">選擇第二字幕的語言</string>
     <string name="naver_translate">Naver Translate</string>
