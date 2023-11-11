@@ -49,7 +49,12 @@ class ContextMenuDialogFragment(
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            ContextMenuItems(url, shouldShowAdBlock, shouldShowTranslateImage) { item ->
+            ContextMenuItems(
+                url,
+                shouldShowAdBlock,
+                shouldShowTranslateImage,
+                showIcons = config.showActionMenuIcons
+            ) { item ->
                 dialog?.dismiss()
                 itemClicked(item)
             }
@@ -87,6 +92,7 @@ private fun ContextMenuItems(
     url: String = "",
     shouldShowAdBlock: Boolean = true,
     shouldShowTranslateImage: Boolean = false,
+    showIcons: Boolean = true,
     onClicked: (ContextMenuItemType) -> Unit
 ) {
     Column(
@@ -108,23 +114,27 @@ private fun ContextMenuItems(
                 .width(IntrinsicSize.Max)
                 .horizontalScroll(rememberScrollState()),
         ) {
-            ContextMenuItem(R.string.main_menu_new_tabOpen, R.drawable.icon_tab_plus) {
+            ContextMenuItem(R.string.main_menu_new_tabOpen, R.drawable.icon_tab_plus, showIcons) {
                 onClicked(
                     ContextMenuItemType.NewTabForeground
                 )
             }
-            ContextMenuItem(R.string.main_menu_new_tab, R.drawable.icon_tab_unselected) {
+            ContextMenuItem(R.string.main_menu_new_tab, R.drawable.icon_tab_unselected, showIcons) {
                 onClicked(
                     ContextMenuItemType.NewTabBackground
                 )
             }
-            ContextMenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
-            ContextMenuItem(R.string.split_screen, R.drawable.ic_split_screen) {
+            ContextMenuItem(R.string.menu_open_with, R.drawable.icon_exit, showIcons) {
+                onClicked(
+                    OpenWith
+                )
+            }
+            ContextMenuItem(R.string.split_screen, R.drawable.ic_split_screen, showIcons) {
                 onClicked(
                     ContextMenuItemType.SplitScreen
                 )
             }
-            ContextMenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) {
+            ContextMenuItem(R.string.menu_share_link, R.drawable.icon_menu_share, showIcons) {
                 onClicked(
                     ContextMenuItemType.ShareLink
                 )
@@ -138,19 +148,31 @@ private fun ContextMenuItems(
             horizontalArrangement = Arrangement.Center
         ) {
             if (shouldShowTranslateImage) {
-                ContextMenuItem(R.string.translate, R.drawable.ic_papago) {
+                ContextMenuItem(R.string.translate, R.drawable.ic_papago, showIcons) {
                     onClicked(TranslateImage)
                 }
             } else {
-                ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark) {
+                ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark, showIcons) {
                     onClicked(SaveBookmark)
                 }
             }
-            ContextMenuItem(R.string.menu_save_as, R.drawable.icon_menu_save) { onClicked(SaveAs) }
-            ContextMenuItem(R.string.copy_link, R.drawable.ic_link) { onClicked(CopyLink) }
-            ContextMenuItem(R.string.text_select, R.drawable.ic_reselect) { onClicked(SelectText) }
+            ContextMenuItem(
+                R.string.menu_save_as,
+                R.drawable.icon_menu_save,
+                showIcons
+            ) { onClicked(SaveAs) }
+            ContextMenuItem(
+                R.string.copy_link,
+                R.drawable.ic_link,
+                showIcons
+            ) { onClicked(CopyLink) }
+            ContextMenuItem(R.string.text_select, R.drawable.ic_reselect, showIcons) {
+                onClicked(
+                    SelectText
+                )
+            }
             if (shouldShowAdBlock) {
-                ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block) {
+                ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block, showIcons) {
                     onClicked(AdBlock)
                 }
             }
@@ -162,11 +184,13 @@ private fun ContextMenuItems(
 fun ContextMenuItem(
     titleResId: Int,
     iconResId: Int,
+    showIcon: Boolean = false,
     onClicked: () -> Unit = {},
 ) = MenuItem(
     titleResId = titleResId,
     iconResId = iconResId,
     isLargeType = true,
+    showIcon = showIcon,
     onClicked = onClicked
 )
 

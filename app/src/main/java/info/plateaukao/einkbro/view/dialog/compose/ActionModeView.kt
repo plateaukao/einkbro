@@ -50,7 +50,10 @@ class ActionModeView @JvmOverloads constructor(
     override fun Content() {
         val text by actionModeMenuViewModel.selectedText.collectAsState()
         MyTheme {
-            ActionModeMenu(menuInfos) { intent ->
+            ActionModeMenu(
+                menuInfos,
+                actionModeMenuViewModel.showIcons,
+            ) { intent ->
                 if (intent != null) {
                     context.startActivity(intent.apply {
                         putExtra(Intent.EXTRA_PROCESS_TEXT, text)
@@ -77,6 +80,7 @@ class ActionModeView @JvmOverloads constructor(
 @Composable
 private fun ActionModeMenu(
     menuInfos: List<MenuInfo>,
+    showIcons: Boolean = true,
     onClicked: (Intent?) -> Unit,
 ) {
     LazyVerticalGrid(
@@ -89,7 +93,10 @@ private fun ActionModeMenu(
     ) {
         items(menuInfos.size) { index ->
             val info = menuInfos[index]
-            ActionMenuItem(info.title, info.icon) {
+            ActionMenuItem(
+                info.title,
+                if (showIcons) info.icon else null,
+            ) {
                 info.action?.invoke()
                 onClicked(info.intent)
             }
@@ -126,13 +133,15 @@ fun ActionMenuItem(
             ) { onClicked() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = rememberDrawablePainter(drawable = iconDrawable),
-            contentDescription = null,
-            modifier = Modifier
-                .size(44.dp)
-                .padding(horizontal = 6.dp),
-        )
+        if (iconDrawable != null) {
+            Image(
+                painter = rememberDrawablePainter(drawable = iconDrawable),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(44.dp)
+                    .padding(horizontal = 6.dp),
+            )
+        }
         Text(
             modifier = Modifier
                 .fillMaxWidth()

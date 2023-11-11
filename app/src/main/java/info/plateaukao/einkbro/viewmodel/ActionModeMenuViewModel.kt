@@ -42,6 +42,9 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         MutableStateFlow(ActionModeMenuState.Idle as ActionModeMenuState)
     val actionModeMenuState: StateFlow<ActionModeMenuState> = _actionModeMenuState.asStateFlow()
 
+    val showIcons: Boolean
+        get() = configManager.showActionMenuIcons
+
     fun isInActionMode(): Boolean = actionMode != null
 
     fun updateActionMode(actionMode: ActionMode?) {
