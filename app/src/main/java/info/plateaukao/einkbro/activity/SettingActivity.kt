@@ -334,6 +334,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_show_default_text_menu,
             config::showDefaultActionMenu,
         ),
+        BooleanSettingItem(
+            R.string.show_context_menu_icons,
+            R.drawable.ic_menu,
+            R.string.setting_summary_show_context_menu_icons,
+            config::showActionMenuIcons,
+        ),
         ValueSettingItem(
             R.string.setting_title_page_left_value,
             R.drawable.ic_page_height,

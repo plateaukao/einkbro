@@ -291,6 +291,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onCreate(null)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ViewCompat.setOnApplyWindowInsetsListener(
             binding.root

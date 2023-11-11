@@ -486,4 +486,6 @@
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
     <string name="text_select">Select text</string>
+    <string name="show_context_menu_icons">Show icons on action menus</string>
+    <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
 </resources>

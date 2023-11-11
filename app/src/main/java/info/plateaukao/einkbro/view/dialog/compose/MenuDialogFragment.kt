@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -325,6 +323,7 @@ fun MenuItem(
     titleResId: Int,
     iconResId: Int,
     isLargeType: Boolean = false,
+    showIcon: Boolean = true,
     onClicked: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -342,26 +341,26 @@ fun MenuItem(
     Column(
         modifier = Modifier
             .width(width)
-            .height(if (isLargeType) 80.dp else 70.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .height(if (!showIcon) 25.dp else if (isLargeType) 80.dp else 70.dp)
             .clickable(
                 indication = null,
                 interactionSource = interactionSource,
             ) { onClicked() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            painter = painterResource(id = iconResId), contentDescription = null,
-            modifier = Modifier
-                .size(if (isLargeType) 55.dp else 44.dp)
-                .padding(horizontal = 6.dp),
-            tint = MaterialTheme.colors.onBackground
-        )
+        if (showIcon) {
+            Icon(
+                painter = painterResource(id = iconResId), contentDescription = null,
+                modifier = Modifier
+                    .size(if (isLargeType) 55.dp else 44.dp)
+                    .padding(horizontal = 6.dp),
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(31.dp)
-                .offset(y = (-5).dp),
+                .offset(y = if (showIcon) (-5).dp else 0.dp),
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,
             maxLines = 2,
@@ -377,7 +376,7 @@ fun MenuItem(
 private fun PreviewItem() {
     MyTheme {
         Column {
-            MenuItem(R.string.title_appData, R.drawable.ic_copy) {}
+            MenuItem(R.string.title_appData, R.drawable.ic_copy, showIcon = false) {}
             MenuItem(R.string.title, R.drawable.ic_location) {}
         }
     }

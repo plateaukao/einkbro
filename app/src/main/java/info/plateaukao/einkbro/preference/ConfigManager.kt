@@ -117,6 +117,8 @@ class ConfigManager(
         false
     )
 
+    var showActionMenuIcons by BooleanPreference(sp, K_SHOW_ACTION_MENU_ICONS, true)
+
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
@@ -460,12 +462,16 @@ class ConfigManager(
             val str = sp.getString(K_GPT_ACTION_ITEMS, "") ?: ""
             return if (str.isBlank()) {
                 if (gptSystemPrompt.isNotBlank() || gptUserPromptPrefix.isNotBlank()) {
-                    listOf(ChatGPTActionInfo(systemMessage = gptSystemPrompt, userMessage = gptUserPromptPrefix))
+                    listOf(
+                        ChatGPTActionInfo(
+                            systemMessage = gptSystemPrompt,
+                            userMessage = gptUserPromptPrefix
+                        )
+                    )
                 } else {
                     emptyList()
                 }
-            }
-            else str.convertToDataClass<List<ChatGPTActionInfo>>()
+            } else str.convertToDataClass<List<ChatGPTActionInfo>>()
         }
         set(value) {
             sp.edit {
@@ -475,6 +481,7 @@ class ConfigManager(
                 )
             }
         }
+
     fun addGptAction(action: ChatGPTActionInfo) {
         gptActionList = gptActionList.toMutableList().apply { add(action) }
     }
@@ -640,6 +647,8 @@ class ConfigManager(
 
         const val K_SHOW_NEXT_AFTER_REMOVE_TAB = "sp_show_previous_after_remove_tab"
 
+        const val K_SHOW_ACTION_MENU_ICONS = "sp_show_action_menu_icons"
+
         const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
             "sp_show_translated_image_to_second_panel"
 
@@ -684,8 +693,9 @@ class BooleanPreference(
     override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
         sharedPreferences.getBoolean(key, defaultValue)
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
         sharedPreferences.edit { putBoolean(key, value) }
+    }
 }
 
 class IntPreference(

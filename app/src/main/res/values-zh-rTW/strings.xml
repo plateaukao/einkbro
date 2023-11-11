@@ -412,8 +412,10 @@
     <string name="setting_title_next_tab">顯示下個分頁</string>
     <string name="setting_summary_next_tab">當分頁被關閉時，顯示下個分頁(未勾選則顯示前分頁)</string>
     <string name="touch_area_long">兩側</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
-    <string name="text_select">Select text</string>
+    <string name="setting_title_gpt_action_list">ChatGPT 功能列表</string>
+    <string name="setting_summary_gpt_action_list">利用建立不同的提示詞，讓其提供各種結果</string>
+    <string name="gpt_actions_title">ChatGPT 操作設定</string>
+    <string name="text_select">選擇文字</string>
+    <string name="show_context_menu_icons">顯示功能選單上的圖案</string>
+    <string name="setting_summary_show_context_menu_icons">顯示或隱藏功能選單上的圖案</string>
 </resources>
