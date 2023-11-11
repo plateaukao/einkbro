@@ -1554,7 +1554,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var preloadedWebView: NinjaWebView? = null
 
-    open fun createNinjaWebView(): NinjaWebView = NinjaWebView(this, this)
+    open fun createNinjaWebView(): NinjaWebView = NinjaWebView(this, this).apply {
+        overScrollMode = View.OVER_SCROLL_NEVER
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     protected fun addAlbum(
