@@ -18,6 +18,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowInsetsCompat
 import info.plateaukao.einkbro.util.TranslationLanguage
 
 
@@ -115,9 +116,17 @@ object ViewUnit {
         return (this * (metrics.densityDpi / 160f)).toInt()
     }
 
-    fun setCustomFullscreen(window: Window, fullscreen: Boolean, keepHideStatusbar: Boolean = false) {
+    private var isNavigationBarDisplayed: Boolean? = null
+    fun setCustomFullscreen(
+        window: Window,
+        fullscreen: Boolean,
+        keepHideStatusbar: Boolean = false
+    ) {
         if (fullscreen) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (isNavigationBarDisplayed == null) isNavigationBarDisplayed =
+                    WindowInsetsCompat.toWindowInsetsCompat(window.decorView.rootWindowInsets)
+                        .isVisible(WindowInsetsCompat.Type.navigationBars())
                 window.insetsController?.let {
                     it.hide(WindowInsets.Type.statusBars())
                     it.hide(WindowInsets.Type.navigationBars())
@@ -130,12 +139,14 @@ object ViewUnit {
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.let {
-                    if (keepHideStatusbar)
+                    if (keepHideStatusbar && isNavigationBarDisplayed == true)
                         it.show(WindowInsets.Type.navigationBars())
-                    else
-                        it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                    it.systemBarsBehavior =
-                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                    else {
+                        if (isNavigationBarDisplayed == true)
+                            it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                        else
+                            it.show(WindowInsets.Type.statusBars())
+                    }
                 }
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
