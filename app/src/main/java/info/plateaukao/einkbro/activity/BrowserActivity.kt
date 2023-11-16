@@ -56,7 +56,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
@@ -292,8 +291,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        handleWindowInsets()
-
         savedInstanceState?.let {
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
         }
@@ -336,13 +333,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (config.hideStatusbar) {
             hideStatusBar()
         }
-
+        handleWindowInsets()
         listenKeyboardShowHide()
     }
 
     private fun handleWindowInsets() {
-        WindowCompat.setDecorFitsSystemWindows(window, !config.hideStatusbar)
-
         ViewCompat.setOnApplyWindowInsetsListener(
             binding.root
         ) { view, windowInsets ->
@@ -351,16 +346,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
             val params = view.layoutParams as FrameLayout.LayoutParams
 
-            if (isKeyboardDisplaying()) {
-                params.bottomMargin = insetsKeyboard.bottom
-            } else {
-                if (config.hideStatusbar && insetsNavigationBar.bottom > 0) {
-                    params.bottomMargin = insetsNavigationBar.bottom
+            if (config.hideStatusbar) {
+                if (isKeyboardDisplaying()) {
+                    params.bottomMargin = insetsKeyboard.bottom
                 } else {
-                    params.bottomMargin = 0
+                    if (insetsNavigationBar.bottom > 0) {
+                        params.bottomMargin = insetsNavigationBar.bottom
+                    } else {
+                        params.bottomMargin = 0
+                    }
                 }
+                view.layoutParams = params
             }
-            view.layoutParams = params
             WindowInsetsCompat.CONSUMED
         }
     }
@@ -1916,7 +1913,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
         customView?.keepScreenOn = true
         (currentAlbumController as View?)?.visibility = INVISIBLE
-        ViewUnit.setCustomFullscreen(window, true, config.hideStatusbar)
+        ViewUnit.setCustomFullscreen(
+            window,
+            true,
+            config.hideStatusbar,
+            ViewUnit.isEdgeToEdgeEnabled(resources)
+        )
         if (view is FrameLayout) {
             if (view.focusedChild is VideoView) {
                 videoView = view.focusedChild as VideoView
@@ -1942,7 +1944,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
         (currentAlbumController as View).visibility = VISIBLE
-        ViewUnit.setCustomFullscreen(window, false, config.hideStatusbar)
+        ViewUnit.setCustomFullscreen(
+            window,
+            false,
+            config.hideStatusbar,
+            ViewUnit.isEdgeToEdgeEnabled(resources)
+        )
         fullscreenHolder = null
         customView = null
 
