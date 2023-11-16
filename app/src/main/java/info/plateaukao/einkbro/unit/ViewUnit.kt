@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.unit
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -116,6 +117,15 @@ object ViewUnit {
         return (this * (metrics.densityDpi / 160f)).toInt()
     }
 
+    fun isEdgeToEdgeEnabled(resources: Resources): Boolean {
+        val resourceId: Int =
+            resources.getIdentifier("config_navBarInteractionMode", "integer", "android")
+        if (resourceId > 0) {
+            return resources.getInteger(resourceId) == 2
+        }
+        return false
+    }
+
     private var isNavigationBarDisplayed: Boolean? = null
     fun setCustomFullscreen(
         window: Window,
@@ -139,14 +149,16 @@ object ViewUnit {
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.let {
-                    if (keepHideStatusbar && isNavigationBarDisplayed == true)
-                        it.show(WindowInsets.Type.navigationBars())
-                    else {
-                        if (isNavigationBarDisplayed == true)
-                            it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                        else
-                            it.show(WindowInsets.Type.statusBars())
-                    }
+                    if (isNavigationBarDisplayed == true) it.show(WindowInsets.Type.navigationBars())
+                    if (!keepHideStatusbar) it.show(WindowInsets.Type.statusBars())
+//                    if (keepHideStatusbar) {
+//                        if (isNavigationBarDisplayed == true) it.show(WindowInsets.Type.navigationBars())
+//                    } else {
+//                        if (isNavigationBarDisplayed == true)
+//                            it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+//                        else
+//                            it.show(WindowInsets.Type.statusBars())
+//                    }
                 }
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
