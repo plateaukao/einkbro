@@ -130,7 +130,8 @@ object ViewUnit {
     fun setCustomFullscreen(
         window: Window,
         fullscreen: Boolean,
-        keepHideStatusbar: Boolean = false
+        keepHideStatusBar: Boolean,
+        hideNavigationBar: Boolean
     ) {
         if (fullscreen) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -149,16 +150,8 @@ object ViewUnit {
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.let {
-                    if (isNavigationBarDisplayed == true) it.show(WindowInsets.Type.navigationBars())
-                    if (!keepHideStatusbar) it.show(WindowInsets.Type.statusBars())
-//                    if (keepHideStatusbar) {
-//                        if (isNavigationBarDisplayed == true) it.show(WindowInsets.Type.navigationBars())
-//                    } else {
-//                        if (isNavigationBarDisplayed == true)
-//                            it.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-//                        else
-//                            it.show(WindowInsets.Type.statusBars())
-//                    }
+                    if (isNavigationBarDisplayed == true && !hideNavigationBar) it.show(WindowInsets.Type.navigationBars())
+                    if (!keepHideStatusBar) it.show(WindowInsets.Type.statusBars())
                 }
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
