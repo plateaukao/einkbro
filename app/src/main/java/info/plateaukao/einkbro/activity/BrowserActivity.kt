@@ -292,24 +292,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(
-            binding.root
-        ) { view, windowInsets ->
-            val insetsNavigationBar: Insets =
-                windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
-            val params = view.layoutParams as FrameLayout.LayoutParams
-
-            if (isKeyboardDisplaying()) {
-                params.bottomMargin = insetsKeyboard.bottom
-            } else {
-                params.bottomMargin = 0
-            }
-            view.layoutParams = params
-            WindowInsetsCompat.CONSUMED
-        }
-
+        handleWindowInsets()
 
         savedInstanceState?.let {
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
@@ -355,6 +338,31 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         listenKeyboardShowHide()
+    }
+
+    private fun handleWindowInsets() {
+        WindowCompat.setDecorFitsSystemWindows(window, !config.hideStatusbar)
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+            binding.root
+        ) { view, windowInsets ->
+            val insetsNavigationBar: Insets =
+                windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
+            val params = view.layoutParams as FrameLayout.LayoutParams
+
+            if (isKeyboardDisplaying()) {
+                params.bottomMargin = insetsKeyboard.bottom
+            } else {
+                if (config.hideStatusbar && insetsNavigationBar.bottom > 0) {
+                    params.bottomMargin = insetsNavigationBar.bottom
+                } else {
+                    params.bottomMargin = 0
+                }
+            }
+            view.layoutParams = params
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     private fun initExternalSearchCloseButton() {
@@ -2273,21 +2281,25 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun hideStatusBar() {
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.systemBars())
             window.setDecorFitsSystemWindows(false)
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+            if (ViewUnit.isEdgeToEdgeEnabled(resources))
+                window.insetsController?.hide(WindowInsets.Type.navigationBars())
             binding.root.setPadding(0, 0, 0, 0)
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
 
     private fun showStatusBar() {
         if (config.hideStatusbar) return
 
-        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(true)
-            window.insetsController?.show(WindowInsets.Type.systemBars())
+            window.insetsController?.show(WindowInsets.Type.statusBars())
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
 
