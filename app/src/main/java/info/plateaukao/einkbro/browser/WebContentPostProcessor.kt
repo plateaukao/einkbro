@@ -262,7 +262,7 @@ var sidebarExists = setInterval(function() {
         """
 
         val urlScriptMap = mapOf(
-            "facebook.com" to facebookHideSponsoredPostsJs,
+            //"facebook.com" to facebookHideSponsoredPostsJs,
             "zhihu.com" to zhihuDisablePopupJs,
             "jianshu.com" to jianshuJs,
             "huxiu.com" to huxiuJs,
