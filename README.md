@@ -1,6 +1,6 @@
 # EinkBro: Small Browser made for Eink devices 
 
-EinkBro is designed to fit Eink devices' needs; no unnecessary UI transitions and animations, clear B&W icons, useful features for eink reading experience. It's originated from [FOSS Browser](https://github.com/scoute-dich/browser), which is fully free/libre (as in freedom) Android app. 
+EinkBro is designed to fit Eink devices' needs; no unnecessary UI transitions and animations, clear B&W icons, useful features for eink reading experience. It's originated from [FOSS Browser](https://codeberg.org/Gaukler_Faun/FOSS_Browser), which is fully free/libre (as in freedom) Android app. 
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
