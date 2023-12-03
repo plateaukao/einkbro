@@ -40,7 +40,7 @@ class OpenAiRepository(
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
-        val request = createRequest(messages, true)
+        val request = createCompletionRequest(messages, true)
 
         factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
             override fun onEvent(
@@ -63,10 +63,25 @@ class OpenAiRepository(
         })
     }
 
+    suspend fun tts(text: String): ByteArray? = suspendCoroutine { continuation ->
+        val request = createTtsRequest(text)
+        client.newCall(request).execute().use { response ->
+            if (response.code != 200 || response.body == null) {
+                return@use continuation.resume(null)
+            }
+
+            try {
+                continuation.resume(response.body?.bytes())
+            } catch (e: Exception) {
+                continuation.resume(null)
+            }
+        }
+    }
+
     suspend fun chatCompletion(
         messages: List<ChatMessage>
     ): ChatCompletion? = suspendCoroutine { continuation ->
-        val request = createRequest(messages)
+        val request = createCompletionRequest(messages)
         client.newCall(request).execute().use { response ->
             if (response.code != 200 || response.body == null) {
                 return@use continuation.resume(null)
@@ -83,7 +98,7 @@ class OpenAiRepository(
         }
     }
 
-    private fun createRequest(
+    private fun createCompletionRequest(
         messages: List<ChatMessage>,
         stream: Boolean = false,
     ): Request = Request.Builder()
@@ -95,8 +110,22 @@ class OpenAiRepository(
         .header("Authorization", "Bearer $apiKey")
         .build()
 
+    private fun createTtsRequest(
+        text: String,
+        hd: Boolean = false,
+        speed: Double = 1.0,
+    ): Request = Request.Builder()
+        .url(ttsEndpoint)
+        .post(
+            json.encodeToString(TTSRequest(text))
+                .toRequestBody(mediaType)
+        )
+        .header("Authorization", "Bearer $apiKey")
+        .build()
+
     companion object {
         private const val endpoint = "https://api.openai.com/v1/chat/completions"
+        private const val ttsEndpoint = "https://api.openai.com/v1/audio/speech"
         private val mediaType = "application/json; charset=utf-8".toMediaType()
     }
 }
@@ -174,4 +203,13 @@ data class ChatDelta(
 data class ChatMessage(
     val content: String,
     val role: ChatRole
+)
+
+@Serializable
+data class TTSRequest(
+    val input: String,
+    val model: String = "tts-1",
+    val speed: Double = 1.0,
+    val voice: String = "alloy",
+    val format: String = "mp3"
 )
