@@ -141,6 +141,7 @@ import info.plateaukao.einkbro.viewmodel.RemoteConnViewModel
 import info.plateaukao.einkbro.viewmodel.SplitSearchViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -175,6 +176,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private val gptViewModel: GptViewModel by viewModels()
+    private val ttsViewModel: TtsViewModel by viewModels()
     private val translationViewModel: TranslationViewModel by viewModels()
 
     private val splitSearchViewModel: SplitSearchViewModel by viewModels()
@@ -2329,6 +2331,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun readArticle() {
+        if (config.useOpenAiTts && config.gptApiKey.isNotBlank()) {
+            lifecycleScope.launch {
+                //ttsViewModel.readText(this@BrowserActivity, ninjaWebView.getRawText());
+                ttsViewModel.readText(this@BrowserActivity, "one. two. three. four. five. six.")
+            }
+            return
+        }
+
         if (Build.MODEL.startsWith("Pixel 8")) {
             lifecycleScope.launch {
                 IntentUnit.tts(this@BrowserActivity, ninjaWebView.getRawText())
@@ -2336,12 +2346,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
+
         TtsLanguageDialog(this).show { ttsLanguage ->
             lifecycleScope.launch {
                 ttsManager.readText(ttsLanguage, ninjaWebView.getRawText())
                 delay(2000)
-                // TODO: use real status to do update
-                // wait for tts preparation
                 composeToolbarViewController.updateIcons()
 
                 if (ttsManager.isSpeaking()) {

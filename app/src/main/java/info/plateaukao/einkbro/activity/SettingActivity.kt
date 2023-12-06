@@ -759,18 +759,6 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_gpt_action_list,
         ) { startActivity(GptActionsActivity.createIntent(this)) },
         ValueSettingItem(
-            R.string.setting_title_edit_gpt_system_prompt,
-            R.drawable.icon_edit,
-            R.string.setting_summary_edit_gpt_prompt,
-            config::gptSystemPrompt
-        ),
-        ValueSettingItem(
-            R.string.setting_title_edit_gpt_user_prompt_prefix,
-            R.drawable.icon_edit,
-            R.string.setting_summary_edit_gpt_user_prompt,
-            config::gptUserPromptPrefix
-        ),
-        ValueSettingItem(
             R.string.setting_title_gpt_model_name,
             R.drawable.ic_chat_gpt,
             R.string.setting_summary_gpt_model_name,
@@ -787,6 +775,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_search,
             R.string.setting_summary_search_in_dict,
             config::externalSearchWithGpt
+        ),
+        BooleanSettingItem(
+            R.string.use_it_on_tts,
+            R.drawable.ic_tts,
+            R.string.setting_summary_use_gpt_for_tts,
+            config::useOpenAiTts
         ),
         BooleanSettingItem(
             R.string.setting_title_chat_stream,

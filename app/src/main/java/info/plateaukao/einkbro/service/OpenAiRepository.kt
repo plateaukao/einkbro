@@ -65,11 +65,11 @@ class OpenAiRepository(
 
     suspend fun tts(text: String): ByteArray? = suspendCoroutine { continuation ->
         val request = createTtsRequest(text)
+
         client.newCall(request).execute().use { response ->
             if (response.code != 200 || response.body == null) {
                 return@use continuation.resume(null)
             }
-
             try {
                 continuation.resume(response.body?.bytes())
             } catch (e: Exception) {
@@ -117,7 +117,11 @@ class OpenAiRepository(
     ): Request = Request.Builder()
         .url(ttsEndpoint)
         .post(
-            json.encodeToString(TTSRequest(text))
+            json.encodeToString(TTSRequest(
+                text,
+                if (hd) "tts-1-hd" else "tts-1",
+                "alloy"
+            ))
                 .toRequestBody(mediaType)
         )
         .header("Authorization", "Bearer $apiKey")
@@ -208,8 +212,8 @@ data class ChatMessage(
 @Serializable
 data class TTSRequest(
     val input: String,
-    val model: String = "tts-1",
+    val model: String,
+    val voice: String,
     val speed: Double = 1.0,
-    val voice: String = "alloy",
-    val format: String = "mp3"
+    val format: String = "aac"
 )
