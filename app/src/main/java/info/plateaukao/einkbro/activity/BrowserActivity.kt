@@ -2332,9 +2332,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun readArticle() {
         if (config.useOpenAiTts && config.gptApiKey.isNotBlank()) {
-            lifecycleScope.launch {
-                //ttsViewModel.readText(this@BrowserActivity, ninjaWebView.getRawText());
-                ttsViewModel.readText(this@BrowserActivity, "one. two. three. four. five. six.")
+            if (ttsViewModel.isSpeaking()) {
+                ttsViewModel.stop()
+            } else {
+                lifecycleScope.launch {
+                    ttsViewModel.readText(this@BrowserActivity, ninjaWebView.getRawText());
+                    //ttsViewModel.readText(this@BrowserActivity, "one. two. three. four. five. six.")
+                }
             }
             return
         }
