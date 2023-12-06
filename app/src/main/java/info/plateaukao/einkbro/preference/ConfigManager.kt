@@ -127,6 +127,8 @@ class ConfigManager(
             sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
         }
 
+    var useOpenAiTts by BooleanPreference(sp, K_USE_OPENAI_TTS, true)
+
     var pageReservedOffset: Int by IntPreference(sp, "sp_page_turn_left_value", 80)
 
     var fontSize: Int
@@ -634,6 +636,7 @@ class ConfigManager(
         const val K_DUAL_CAPTION_LOCALE = "sp_dual_caption_locale"
         const val K_GPT_MODEL = "sp_gp_model"
         const val K_SPLIT_SEARCH_STRING = "sp_split_search_prefix"
+        const val K_USE_OPENAI_TTS = "sp_use_openai_tts"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 
