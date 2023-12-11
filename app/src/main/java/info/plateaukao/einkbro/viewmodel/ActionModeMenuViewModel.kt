@@ -219,10 +219,9 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         }
         menuInfos.add(
             MenuInfo(
-                context.getString(R.string.re_select),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
-                closeMenu = false,
-                action = { actionModeView?.visibility = INVISIBLE }
+                context.getString(R.string.highlight),
+                icon = ContextCompat.getDrawable(context, R.drawable.icon_edit),
+                action = { _actionModeMenuState.value = ActionModeMenuState.Highlight }
             )
         )
 
@@ -238,4 +237,5 @@ sealed class ActionModeMenuState {
     object Naver : ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
     class Tts(val text: String) : ActionModeMenuState()
+    object Highlight : ActionModeMenuState()
 }
