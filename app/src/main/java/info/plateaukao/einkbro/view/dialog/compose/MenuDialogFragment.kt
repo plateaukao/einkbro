@@ -81,7 +81,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, AddToPocket
+    SaveArchive, AddToPocket, Highlights
 }
 
 @Composable
@@ -111,6 +111,7 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
+            MenuItem(R.string.menu_highlights, R.drawable.icon_edit) { onClicked(MenuItemType.Highlights) }
             MenuItem(R.string.menu_fav, R.drawable.ic_home_set) { onClicked(MenuItemType.SetHome) }
             MenuItem(R.string.menu_openFav, R.drawable.ic_home) { onClicked(OpenHome) }
             MenuItem(R.string.menu_closeTab, R.drawable.icon_close) { onClicked(CloseTab) }

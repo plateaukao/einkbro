@@ -421,4 +421,7 @@
     <string name="use_it_on_tts">使用 OpenAI TTS API</string>
     <string name="setting_summary_use_gpt_for_tts">使用 OpenAI 服務朗讀內容</string>
     <string name="highlight">劃重點</string>
+    <string name="menu_highlights">Highlights</string>
+    <string name="articles">Articles</string>
+    <string name="highlights">Highlights</string>
 </resources>

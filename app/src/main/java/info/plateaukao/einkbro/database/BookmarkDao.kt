@@ -57,11 +57,10 @@ val MIGRATION_2_3: Migration = object : Migration(2, 3) {
 @Dao
 interface ArticleDao {
     @Query("SELECT * FROM articles")
-    suspend fun getAllArticles(): List<Article>
+    fun getAllArticles(): Flow<List<Article>>
 
     @Query("SELECT * FROM articles WHERE url = :url")
-    suspend fun getArticleByUrl(url: String): Article? =
-        getAllArticles().firstOrNull { it.url == url }
+    suspend fun getArticleByUrl(url: String): Article?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(article: Article): Long
@@ -86,12 +85,13 @@ interface ArticleDao {
 @Dao
 interface HighlightDao {
     @Query("SELECT * FROM highlights")
-    suspend fun getAllHighlights(): List<Highlight>
+    fun getAllHighlights(): Flow<List<Highlight>>
 
     @Query("SELECT * FROM highlights WHERE articleId = :articleId")
-    suspend fun getHighlightsForArticle(articleId: Int): List<Highlight>
+    fun getHighlightsForArticle(articleId: Int): Flow<List<Highlight>>
 
-    suspend fun getHighlightsForArticle(article: Article): List<Highlight> =
+
+    fun getHighlightsForArticle(article: Article): Flow<List<Highlight>> =
         getHighlightsForArticle(article.id)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -191,7 +191,13 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     suspend fun deleteArticle(article: Article) = articleDao.delete(article)
 
-    suspend fun getAllArticles(): List<Article> = articleDao.getAllArticles()
+    fun getAllArticles(): Flow<List<Article>> = articleDao.getAllArticles()
+
+    fun getHighlightsForArticle(article: Article): Flow<List<Highlight>> =
+        highlightDao.getHighlightsForArticle(article)
+
+    fun getHighlightsForArticle(articleId: Int): Flow<List<Highlight>> =
+        highlightDao.getHighlightsForArticle(articleId)
 
     suspend fun getArticleByUrl(url: String): Article? = articleDao.getArticleByUrl(url)
 

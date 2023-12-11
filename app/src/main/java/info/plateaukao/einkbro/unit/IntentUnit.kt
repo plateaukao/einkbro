@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.ExtraBrowserActivity
+import info.plateaukao.einkbro.activity.HighlightsActivity
 import info.plateaukao.einkbro.activity.SettingActivity
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -65,6 +66,12 @@ object IntentUnit {
 
     fun gotoSettings(activity: Activity) {
         activity.startActivity(Intent(activity, SettingActivity::class.java).apply {
+            addFlags(FLAG_ACTIVITY_NO_ANIMATION)
+        })
+    }
+
+    fun gotoHighlights(activity: Activity) {
+        activity.startActivity(HighlightsActivity.createIntent(activity).apply {
             addFlags(FLAG_ACTIVITY_NO_ANIMATION)
         })
     }
