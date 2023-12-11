@@ -80,6 +80,7 @@ class MenuActionHandler(
             ninjaWebView.favicon
         )
 
+        MenuItemType.Highlights -> IntentUnit.gotoHighlights(activity)
         MenuItemType.SetHome -> config.favoriteUrl = ninjaWebView.url.orEmpty()
         MenuItemType.SaveBookmark -> browserController.saveBookmark()
         MenuItemType.OpenEpub -> openSavedEpub()

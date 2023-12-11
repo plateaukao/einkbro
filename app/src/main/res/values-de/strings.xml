@@ -177,6 +177,9 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="use_it_on_tts">Use OpenAI TTS Api</string>
     <string name="setting_summary_use_gpt_for_tts">Use OpenAI API to read web content</string>
     <string name="highlight">Highlight</string>
+    <string name="menu_highlights">Highlights</string>
+    <string name="articles">Articles</string>
+    <string name="highlights">Highlights</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->

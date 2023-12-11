@@ -96,7 +96,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                         testTagsAsResourceId = true
                     },
                     topBar = {
-                        EinkBroAppBar(
+                        SettingBar(
                             currentScreen = currentScreen,
                             navigateUp = {
                                 if (navController.previousBackStackEntry != null) navController.navigateUp()
@@ -926,7 +926,7 @@ enum class SettingRoute(@StringRes val titleId: Int) {
 }
 
 @Composable
-fun EinkBroAppBar(
+fun SettingBar(
     currentScreen: SettingRoute,
     navigateUp: () -> Unit,
 ) {
