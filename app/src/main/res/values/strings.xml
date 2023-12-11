@@ -262,9 +262,9 @@
     <string name="reader_mode">Reader mode</string>
     <string name="touch_area_setting">Touch setting</string>
     <string name="toolbar_setting">Toolbar setting</string>
-    <string name="menu_save_epub">Save EPUB</string>
+    <string name="menu_save_epub">Save\nEPUB</string>
     <string name="saving_epub">Saving EPUB</string>
-    <string name="menu_open_epub">Open EPUB</string>
+    <string name="menu_open_epub">Open\nEPUB</string>
     <string name="new_epub_or_from_picker">New EPUB or from picker</string>
     <string name="title">Chapter name</string>
     <string name="title_in_toc">Chapter name in Table of Contents</string>

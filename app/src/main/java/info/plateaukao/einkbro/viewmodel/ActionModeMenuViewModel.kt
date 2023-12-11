@@ -221,7 +221,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             MenuInfo(
                 context.getString(R.string.highlight),
                 icon = ContextCompat.getDrawable(context, R.drawable.icon_edit),
-                action = { _actionModeMenuState.value = ActionModeMenuState.Highlight }
+                action = { _actionModeMenuState.value = ActionModeMenuState.HighlightText }
             )
         )
 
@@ -237,5 +237,5 @@ sealed class ActionModeMenuState {
     object Naver : ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
     class Tts(val text: String) : ActionModeMenuState()
-    object Highlight : ActionModeMenuState()
+    object HighlightText : ActionModeMenuState()
 }

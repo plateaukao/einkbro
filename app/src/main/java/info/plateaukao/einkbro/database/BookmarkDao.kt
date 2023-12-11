@@ -2,7 +2,16 @@ package info.plateaukao.einkbro.database
 
 import android.content.Context
 import android.net.Uri
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -14,16 +23,85 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 
-@Database(entities = [Bookmark::class, FaviconInfo::class], version = 2)
+@Database(
+    entities = [
+        Bookmark::class,
+        FaviconInfo::class,
+        Highlight::class,
+        Article::class
+    ],
+    version = 3,
+    exportSchema = true
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun bookmarkDao(): BookmarkDao
     abstract fun faviconDao(): FaviconDao
+    abstract fun highlightDao(): HighlightDao
+    abstract fun articleDao(): ArticleDao
 }
 
 val MIGRATION_1_2: Migration = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS `favicons` (`domain` TEXT NOT NULL, `icon` BLOB, PRIMARY KEY(`domain`))")
     }
+}
+
+val MIGRATION_2_3: Migration = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE IF NOT EXISTS `highlights` (`articleId` INTEGER NOT NULL, `content` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`articleId`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `date` INTEGER NOT NULL, `tags` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
+        database.execSQL("CREATE INDEX IF NOT EXISTS `index_highlights_articleId` ON `highlights` (`articleId`)")
+    }
+}
+
+@Dao
+interface ArticleDao {
+    @Query("SELECT * FROM articles")
+    suspend fun getAllArticles(): List<Article>
+
+    @Query("SELECT * FROM articles WHERE url = :url")
+    suspend fun getArticleByUrl(url: String): Article? =
+        getAllArticles().firstOrNull { it.url == url }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(article: Article): Long
+
+    @Query("SELECT * FROM articles WHERE id = :id")
+    suspend fun getArticleById(id: Int): Article?
+
+    @Transaction
+    suspend fun insertAndGetArticle(article: Article): Article {
+        val id = insert(article)
+        return getArticleById(id.toInt())!!
+    }
+
+
+    @Delete
+    suspend fun delete(article: Article)
+
+    @Query("DELETE FROM articles")
+    suspend fun deleteAll()
+}
+
+@Dao
+interface HighlightDao {
+    @Query("SELECT * FROM highlights")
+    suspend fun getAllHighlights(): List<Highlight>
+
+    @Query("SELECT * FROM highlights WHERE articleId = :articleId")
+    suspend fun getHighlightsForArticle(articleId: Int): List<Highlight>
+
+    suspend fun getHighlightsForArticle(article: Article): List<Highlight> =
+        getHighlightsForArticle(article.id)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(highlight: Highlight)
+
+    @Delete
+    suspend fun delete(highlight: Highlight)
+
+    @Query("DELETE FROM highlights")
+    suspend fun deleteAll()
 }
 
 @Dao
@@ -88,11 +166,15 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(MIGRATION_1_2)
+        .addMigrations(MIGRATION_2_3)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
 
-    val faviconDao = database.faviconDao()
+    private val faviconDao = database.faviconDao()
+
+    private val highlightDao = database.highlightDao()
+    private val articleDao = database.articleDao()
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
@@ -103,6 +185,15 @@ class BookmarkManager(context: Context) : KoinComponent {
     private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
 
     private suspend fun getAllFavicons(): List<FaviconInfo> = faviconDao.getAllFavicons()
+
+    suspend fun insertArticle(article: Article): Article = articleDao.insertAndGetArticle(article)
+    suspend fun insertHighlight(highlight: Highlight) = highlightDao.insert(highlight)
+
+    suspend fun deleteArticle(article: Article) = articleDao.delete(article)
+
+    suspend fun getAllArticles(): List<Article> = articleDao.getAllArticles()
+
+    suspend fun getArticleByUrl(url: String): Article? = articleDao.getArticleByUrl(url)
 
     suspend fun insertFavicon(faviconInfo: FaviconInfo) {
         faviconDao.insert(faviconInfo)
