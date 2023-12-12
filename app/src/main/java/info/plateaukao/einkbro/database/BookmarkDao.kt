@@ -68,6 +68,9 @@ interface ArticleDao {
     @Query("SELECT * FROM articles WHERE id = :id")
     suspend fun getArticleById(id: Int): Article?
 
+    @Query("DELETE FROM articles WHERE id = :id")
+    suspend fun deleteArticleById(id: Int)
+
     @Transaction
     suspend fun insertAndGetArticle(article: Article): Article {
         val id = insert(article)
@@ -188,6 +191,8 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     suspend fun insertArticle(article: Article): Article = articleDao.insertAndGetArticle(article)
     suspend fun insertHighlight(highlight: Highlight) = highlightDao.insert(highlight)
+
+    suspend fun deleteArticle(articleId: Int) = articleDao.deleteArticleById(articleId)
 
     suspend fun deleteArticle(article: Article) = articleDao.delete(article)
 

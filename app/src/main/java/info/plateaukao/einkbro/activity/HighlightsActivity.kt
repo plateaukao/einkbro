@@ -5,10 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -23,8 +30,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,16 +44,18 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Article
-import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Highlight
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.viewmodel.HighlightViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class HighlightsActivity : ComponentActivity(), KoinComponent {
     private val config: ConfigManager by inject()
-    private val bookmarkManager: BookmarkManager by inject()
+    private val highlightViewModel: HighlightViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +64,6 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
         setContent {
             val navController: NavHostController = rememberNavController()
 
-            val actionList = remember { mutableStateOf(config.gptActionList) }
             var showDialog by remember { mutableStateOf(false) }
 
             MyTheme {
@@ -78,13 +90,15 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(HighlightsRoute.RouteArticles.name) {
-                            ArticlesScreen(navController, bookmarkManager)
+                            ArticlesScreen(navController, highlightViewModel) { article ->
+                                highlightViewModel.launchUrl(this@HighlightsActivity, article.url)
+                            }
                         }
                         composable("${HighlightsRoute.RouteHighlights.name}/{articleId}") { backStackEntry ->
                             HighlightsScreen(backStackEntry.arguments?.getString("articleId")
                                 ?.toInt() ?: 0,
                                 modifier = Modifier.padding(10.dp),
-                                bookmarkManager,
+                                highlightViewModel,
                                 deleteHighlight = {}
                             )
                         }
@@ -110,9 +124,10 @@ enum class HighlightsRoute(@StringRes val titleId: Int) {
 @Composable
 fun ArticlesScreen(
     navHostController: NavHostController,
-    bookmarkManager: BookmarkManager
+    highlightViewModel: HighlightViewModel,
+    onLinkClick: (Article) -> Unit
 ) {
-    val articles by bookmarkManager.getAllArticles().collectAsState(emptyList())
+    val articles by highlightViewModel.getAllArticles().collectAsState(emptyList())
     LazyColumn(
         modifier = Modifier.padding(10.dp),
         reverseLayout = true
@@ -120,37 +135,69 @@ fun ArticlesScreen(
         items(articles.size) { index ->
             val article = articles[index]
             ArticleItem(
-                modifier = Modifier.padding(bottom = 10.dp)
-                .clickable {
-                    navHostController.navigate("${HighlightsRoute.RouteHighlights.name}/${articles[index].id}")
-                },
+                modifier = Modifier.padding(vertical = 10.dp),
+                navHostController = navHostController,
                 article = article,
-                deleteArticle = {} // { a -> bookmarkManager.deleteArticle(a) }
+                onLinkClick = { onLinkClick(article) },
+                deleteArticle = {
+                    highlightViewModel.deleteArticle(article.id)
+                }
+            )
+            if (index < articles.lastIndex) Divider(thickness = 1.dp)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ArticleItem(
+    modifier: Modifier,
+    navHostController: NavHostController,
+    article: Article,
+    onLinkClick: () -> Unit = {},
+    deleteArticle: (Article) -> Unit
+) {
+    Column (
+        modifier = modifier.combinedClickable(
+            onClick = {
+                navHostController.navigate("${HighlightsRoute.RouteHighlights.name}/${article.id}")
+            },
+            onLongClick = { deleteArticle(article) }
+        )
+    ) {
+        Text(
+            modifier = modifier,
+            text = article.title
+        )
+        Row(
+            modifier = Modifier
+                .align(Alignment.End)
+                .clickable { onLinkClick() }
+        ) {
+            Icon(
+                modifier = Modifier.size(18.dp),
+                painter = painterResource(id = R.drawable.icon_exit),
+                contentDescription = "link",
+                tint = Color.Gray
+            )
+            Text(
+                text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(article.date),
+                style = MaterialTheme.typography.caption.copy(
+                    color = Color.Gray
+                )
             )
         }
     }
 }
 
 @Composable
-fun ArticleItem(
-    modifier: Modifier,
-    article: Article,
-    deleteArticle: (Article) -> Unit
-) {
-    Text(
-        modifier = modifier,
-        text = article.title
-    )
-}
-
-@Composable
 fun HighlightsScreen(
     articleId: Int,
     modifier: Modifier = Modifier,
-    bookmarkManager: BookmarkManager,
+    highlightViewModel: HighlightViewModel,
     deleteHighlight: (Highlight) -> Unit,
 ) {
-    val highlights by bookmarkManager.getHighlightsForArticle(articleId).collectAsState(emptyList())
+    val highlights by highlightViewModel.getHighlightsForArticle(articleId).collectAsState(emptyList())
     LazyColumn(
         modifier = modifier.padding(10.dp),
     ) {
@@ -159,6 +206,7 @@ fun HighlightsScreen(
                 highlight = highlights[index],
                 deleteHighlight = deleteHighlight,
             )
+            if (index < highlights.lastIndex) Divider(thickness = 1.dp)
         }
     }
 }
@@ -169,7 +217,7 @@ fun HighlightItem(
     deleteHighlight: (Highlight) -> Unit
 ) {
     Text(
-        modifier = Modifier.padding(bottom = 10.dp),
+        modifier = Modifier.padding(vertical = 10.dp),
         text = highlight.content
     )
 }
@@ -196,4 +244,36 @@ fun HighlightsBar(
             }
         }
     )
+}
+
+@Preview
+@Composable
+fun previewArticleItem() {
+    MyTheme {
+        ArticleItem(
+            modifier = Modifier,
+            article = Article(
+                title = "Hello",
+                url = "123",
+                date = System.currentTimeMillis(),
+                tags = ""
+            ),
+            navHostController = rememberNavController(),
+            deleteArticle = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun previewHighlightItem() {
+    MyTheme {
+        HighlightItem(
+            highlight = Highlight(
+                articleId = 1,
+                content = "Hello",
+            ),
+            deleteHighlight = {}
+        )
+    }
 }
