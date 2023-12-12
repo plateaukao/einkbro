@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.activity.ExtraBrowserActivity
 import info.plateaukao.einkbro.activity.HighlightsActivity
 import info.plateaukao.einkbro.activity.SettingActivity
@@ -74,6 +75,15 @@ object IntentUnit {
         activity.startActivity(HighlightsActivity.createIntent(activity).apply {
             addFlags(FLAG_ACTIVITY_NO_ANIMATION)
         })
+    }
+
+    fun launchUrl(activity: Activity, url: String) {
+        activity.startActivity(
+            Intent(activity, BrowserActivity::class.java).apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, url)
+            }
+        )
     }
 
     fun launchNewBrowser(activity: Activity, url: String) {
