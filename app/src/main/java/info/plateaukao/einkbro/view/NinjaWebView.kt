@@ -1150,7 +1150,8 @@ function highlightRange(range) {
   var newNode = document.createElement("div");
   newNode.setAttribute(
     "style",
-    "background-color: yellow; display: inline;"
+    //"text-decoration: underline !important; text-underline-offset: 3px;"
+    "background-color: yellow !important; display: inline;"
   );
   range.surroundContents(newNode);
 }
@@ -1225,7 +1226,7 @@ highlightSelection();
         initAlbum()
     }
 
-    private val invertPaint : Paint = Paint().apply {
+    private val invertPaint: Paint = Paint().apply {
         val colorMatrix = ColorMatrix(
             floatArrayOf(
                 -1f, 0f, 0f, 0f, 255f,
