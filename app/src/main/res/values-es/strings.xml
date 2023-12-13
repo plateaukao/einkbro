@@ -179,6 +179,7 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="menu_highlights">Highlights</string>
     <string name="articles">Articles</string>
     <string name="highlights">Highlights</string>
+    <string name="menu_invert_color">Invert color</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->

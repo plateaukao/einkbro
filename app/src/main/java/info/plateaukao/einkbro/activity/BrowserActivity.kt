@@ -1931,6 +1931,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
 
         }
+        ninjaWebView.toggleInvertColor(view!!)
+
         val decorView = window.decorView as FrameLayout
         decorView.addView(
             fullscreenHolder,

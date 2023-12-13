@@ -182,6 +182,7 @@
     <string name="menu_highlights">Highlights</string>
     <string name="articles">Articles</string>
     <string name="highlights">Highlights</string>
+    <string name="menu_invert_color">Invert color</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
