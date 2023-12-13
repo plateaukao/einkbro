@@ -99,7 +99,7 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
                                 ?.toInt() ?: 0,
                                 modifier = Modifier.padding(10.dp),
                                 highlightViewModel,
-                                deleteHighlight = {}
+                                deleteHighlight = { it -> highlightViewModel.deleteHighlight(it)}
                             )
                         }
                     }
@@ -211,13 +211,18 @@ fun HighlightsScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HighlightItem(
     highlight: Highlight,
     deleteHighlight: (Highlight) -> Unit
 ) {
     Text(
-        modifier = Modifier.padding(vertical = 10.dp),
+        modifier = Modifier.padding(vertical = 10.dp)
+            .combinedClickable(
+                onClick = {},
+                onLongClick = { deleteHighlight(highlight) }
+            ),
         text = highlight.content
     )
 }

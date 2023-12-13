@@ -81,7 +81,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, AddToPocket, Highlights
+    SaveArchive, AddToPocket, Highlights, InvertColor
 }
 
 @Composable
@@ -251,6 +251,7 @@ private fun MenuItems(
             ) {
                 val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
                 MenuItem(R.string.menu_tts, ttsRes) { onClicked(MenuItemType.Tts) }
+                MenuItem(R.string.menu_invert_color, R.drawable.ic_invert_color) { onClicked(MenuItemType.InvertColor) }
                 val whiteRes =
                     if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
                 MenuItem(R.string.white_background, whiteRes) { onClicked(MenuItemType.WhiteBknd) }

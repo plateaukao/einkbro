@@ -196,6 +196,9 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     suspend fun deleteArticle(article: Article) = articleDao.delete(article)
 
+    suspend fun deleteHighlight(highlight: Highlight) =
+        highlightDao.delete(highlight)
+
     fun getAllArticles(): Flow<List<Article>> = articleDao.getAllArticles()
 
     fun getHighlightsForArticle(article: Article): Flow<List<Highlight>> =

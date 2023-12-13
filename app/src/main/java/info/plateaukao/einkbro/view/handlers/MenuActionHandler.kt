@@ -88,6 +88,7 @@ class MenuActionHandler(
         MenuItemType.SavePdf -> printPDF(ninjaWebView)
 
         MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
+        MenuItemType.InvertColor -> ninjaWebView.toggleInvertColor()
         MenuItemType.WhiteBknd -> config::whiteBackground.toggle()
         MenuItemType.BoldFont -> config::boldFontStyle.toggle()
         MenuItemType.BlackFont -> config::blackFontStyle.toggle()

@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.Paint
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
@@ -13,6 +16,7 @@ import android.print.PrintDocumentAdapter
 import android.util.Base64
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebSettings
@@ -21,7 +25,15 @@ import androidx.viewbinding.BuildConfig
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.*
+import info.plateaukao.einkbro.browser.AlbumController
+import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.browser.Cookie
+import info.plateaukao.einkbro.browser.Javascript
+import info.plateaukao.einkbro.browser.JsWebInterface
+import info.plateaukao.einkbro.browser.NinjaClickHandler
+import info.plateaukao.einkbro.browser.NinjaDownloadListener
+import info.plateaukao.einkbro.browser.NinjaWebChromeClient
+import info.plateaukao.einkbro.browser.NinjaWebViewClient
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -1211,5 +1223,30 @@ highlightSelection();
 
     init {
         initAlbum()
+    }
+
+    private val invertPaint : Paint = Paint().apply {
+        val colorMatrix = ColorMatrix(
+            floatArrayOf(
+                -1f, 0f, 0f, 0f, 255f,
+                0f, -1f, 0f, 0f, 255f,
+                0f, 0f, -1f, 0f, 255f,
+                0f, 0f, 0f, 1f, 0f
+            )
+        )
+        colorFilter = ColorMatrixColorFilter(colorMatrix)
+    }
+
+    private var isInvertColor = false
+    fun toggleInvertColor(view: View = this) {
+        if (this == view) {
+            isInvertColor = !isInvertColor
+        }
+
+        if (isInvertColor) {
+            view.setLayerType(LAYER_TYPE_HARDWARE, invertPaint)
+        } else {
+            view.setLayerType(LAYER_TYPE_HARDWARE, null)
+        }
     }
 }
