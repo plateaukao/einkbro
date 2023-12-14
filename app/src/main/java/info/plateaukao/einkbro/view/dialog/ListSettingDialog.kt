@@ -16,7 +16,6 @@ class ListSettingWithNameDialog(
     private val defaultValue: Int
 ) : KoinComponent {
     suspend fun show() = suspendCoroutine<Int?> { continuation ->
-
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setTitle(context.resources.getString(titleId))
             setSingleChoiceItems(
@@ -31,6 +30,24 @@ class ListSettingWithNameDialog(
             it.window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
+
+   fun showBlocked(
+       action: (Int) -> Unit
+   ) {
+       AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
+           setTitle(context.resources.getString(titleId))
+           setSingleChoiceItems(
+               names.toTypedArray(),
+               defaultValue
+           ) { dialog, selectedIndex ->
+               dialog.dismiss()
+               action(selectedIndex)
+           }
+       }.create().also {
+           it.show()
+           it.window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
+       }
+   }
 }
 
 class ListSettingDialog(
@@ -42,6 +59,12 @@ class ListSettingDialog(
     suspend fun show(): Int? {
         val names = nameResIds.map { context.resources.getString(it) }
         return ListSettingWithNameDialog(context, titleId, names, defaultValue).show()
+    }
+    fun show(
+        action: (Int) -> Unit
+    ) {
+        val names = nameResIds.map { context.resources.getString(it) }
+        ListSettingWithNameDialog(context, titleId, names, defaultValue).showBlocked(action)
     }
 }
 

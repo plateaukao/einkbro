@@ -10,7 +10,8 @@ data class MenuInfo(
     val icon: Drawable? = null,
     val intent: Intent? = null,
     val closeMenu: Boolean = true,
-    val action: (() -> Unit)? = null
+    val action: (() -> Unit)? = null,
+    val longClickAction: (() -> Unit)? = null,
 )
 
 fun ResolveInfo.toMenuInfo(pm: PackageManager): MenuInfo {
