@@ -691,6 +691,19 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     )
 
     private val miscSettingItems = listOf(
+        ListSettingWithEnumItem(
+            R.string.setting_title_highlight_style,
+            R.drawable.icon_edit,
+            R.string.setting_summary_highlight_style,
+            config = config::highlightStyle,
+            options = listOf(
+                R.string.unserscore,
+                R.string.yellow,
+                R.string.green,
+                R.string.blue,
+                R.string.red,
+            )
+        ),
         NavigateSettingItem(
             R.string.setting_title_userAgent,
             R.drawable.icon_useragent,

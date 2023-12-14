@@ -388,6 +388,10 @@ class ConfigManager(
         get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, 6)]
         set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal) }
 
+    var highlightStyle: HighlightStyle
+        get() = HighlightStyle.values()[sp.getInt(K_HIGHLIGHT_STYLE, 0)]
+        set(value) = sp.edit { putInt(K_HIGHLIGHT_STYLE, value.ordinal) }
+
     var adSites: MutableSet<String>
         get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
         set(value) = sp.edit { putStringSet(K_ADBLOCK_SITES, value) }
@@ -637,6 +641,7 @@ class ConfigManager(
         const val K_GPT_MODEL = "sp_gp_model"
         const val K_SPLIT_SEARCH_STRING = "sp_split_search_prefix"
         const val K_USE_OPENAI_TTS = "sp_use_openai_tts"
+        const val K_HIGHLIGHT_STYLE = "sp_highlight_style"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 
@@ -777,6 +782,10 @@ enum class DarkMode {
 
 enum class NewTabBehavior {
     START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS
+}
+
+enum class HighlightStyle {
+    UNDERLINE, BACKGROUND_YELLOW, BACKGROUND_GREEN, BACKGROUND_BLUE, BACKGROUND_RED
 }
 
 fun KMutableProperty0<Boolean>.toggle() = set(!get())
