@@ -39,6 +39,7 @@ import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
@@ -701,7 +702,20 @@ open class NinjaWebView(
     }
 
     fun highlightTextSelection() {
-        evaluateJavascript(selectionHighlightJs, null)
+        val styleString = when(config.highlightStyle) {
+            HighlightStyle.UNDERLINE ->
+            "text-decoration: underline !important; text-underline-offset: 3px; display: inline;"
+            HighlightStyle.BACKGROUND_YELLOW ->
+                "background-color: yellow !important; display: inline;"
+            HighlightStyle.BACKGROUND_GREEN ->
+                "background-color: lightgreen !important; display: inline;"
+            HighlightStyle.BACKGROUND_BLUE ->
+                "background-color: lightblue !important; display: inline;"
+            HighlightStyle.BACKGROUND_RED ->
+                "background-color: red !important; display: inline;"
+        }
+
+        evaluateJavascript(String.format(selectionHighlightJs, styleString), null)
     }
 
 
@@ -1150,8 +1164,7 @@ function highlightRange(range) {
   var newNode = document.createElement("div");
   newNode.setAttribute(
     "style",
-    //"text-decoration: underline !important; text-underline-offset: 3px;"
-    "background-color: yellow !important; display: inline;"
+    "%s"
   );
   range.surroundContents(newNode);
 }
