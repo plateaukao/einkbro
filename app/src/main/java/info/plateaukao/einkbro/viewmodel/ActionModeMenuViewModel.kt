@@ -15,10 +15,12 @@ import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.view.data.toMenuInfo
+import info.plateaukao.einkbro.view.dialog.ListSettingDialog
 import info.plateaukao.einkbro.view.dialog.compose.ActionModeView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -221,7 +223,25 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             MenuInfo(
                 context.getString(R.string.highlight),
                 icon = ContextCompat.getDrawable(context, R.drawable.icon_edit),
-                action = { _actionModeMenuState.value = ActionModeMenuState.HighlightText }
+                action = { _actionModeMenuState.value = ActionModeMenuState.HighlightText },
+                longClickAction = {
+                    // configure highlight style, and then highlight texts with new style
+                    ListSettingDialog(
+                        context,
+                        R.string.highlight,
+                        listOf(
+                            R.string.unserscore,
+                            R.string.yellow,
+                            R.string.green,
+                            R.string.blue,
+                            R.string.red,
+                        ),
+                        configManager.highlightStyle.ordinal
+                    ).show {
+                        configManager.highlightStyle = HighlightStyle.values()[it]
+                        _actionModeMenuState.value = ActionModeMenuState.HighlightText
+                    }
+                }
             )
         )
 

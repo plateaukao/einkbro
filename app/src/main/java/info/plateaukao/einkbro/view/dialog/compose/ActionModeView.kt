@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
@@ -96,19 +97,25 @@ private fun ActionModeMenu(
             ActionMenuItem(
                 info.title,
                 if (showIcons) info.icon else null,
-            ) {
-                info.action?.invoke()
-                onClicked(info.intent)
-            }
+                onClicked = {
+                    info.action?.invoke()
+                    onClicked(info.intent)
+                },
+                onLongClicked = {
+                    info.longClickAction?.invoke()
+                }
+            )
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ActionMenuItem(
     title: String,
     iconDrawable: Drawable?,
     onClicked: () -> Unit = {},
+    onLongClicked: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -128,10 +135,13 @@ fun ActionMenuItem(
             .wrapContentHeight()
             .padding(8.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .clickable(
+            .combinedClickable(
                 indication = null,
                 interactionSource = interactionSource,
-            ) { onClicked() },
+                onClick = onClicked,
+                onLongClick = onLongClicked,
+            ),
+
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (iconDrawable != null) {
