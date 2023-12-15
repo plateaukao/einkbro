@@ -10,18 +10,18 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.view.data.toMenuInfo
-import info.plateaukao.einkbro.view.dialog.ListSettingDialog
 import info.plateaukao.einkbro.view.dialog.compose.ActionModeView
+import info.plateaukao.einkbro.view.dialog.compose.HighlightStyleDialogFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,7 +59,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     private var clearSelectionAction: (() -> Unit)? = null
     fun showActionModeView(
         context: Context,
-        viewGroup: ViewGroup,
+        parent: ViewGroup,
         clearSelectionAction: () -> Unit
     ) {
         if (actionModeView == null) {
@@ -75,7 +75,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             actionModeView?.visibility = INVISIBLE
-            viewGroup.addView(actionModeView)
+            parent.addView(actionModeView)
         }
 
         actionModeView?.post {
@@ -225,22 +225,18 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 icon = ContextCompat.getDrawable(context, R.drawable.icon_edit),
                 action = { _actionModeMenuState.value = ActionModeMenuState.HighlightText },
                 longClickAction = {
-                    // configure highlight style, and then highlight texts with new style
-                    ListSettingDialog(
-                        context,
-                        R.string.highlight,
-                        listOf(
-                            R.string.unserscore,
-                            R.string.yellow,
-                            R.string.green,
-                            R.string.blue,
-                            R.string.red,
-                        ),
-                        configManager.highlightStyle.ordinal
-                    ).show {
-                        configManager.highlightStyle = HighlightStyle.values()[it]
-                        _actionModeMenuState.value = ActionModeMenuState.HighlightText
-                    }
+                    hide()
+                    HighlightStyleDialogFragment(
+                        clickedPoint.value,
+                        okAction = { style ->
+                            _actionModeMenuState.value = ActionModeMenuState.Idle
+                            configManager.highlightStyle = style
+                            _actionModeMenuState.value = ActionModeMenuState.HighlightText
+                        },
+                        onDismissAction = {
+                            finish()
+                        }
+                    ).show((context as FragmentActivity).supportFragmentManager, "highlight")
                 }
             )
         )
