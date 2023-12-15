@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Build
 import android.print.PrintAttributes
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
@@ -784,8 +785,36 @@ enum class NewTabBehavior {
     START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS
 }
 
-enum class HighlightStyle {
-    UNDERLINE, BACKGROUND_YELLOW, BACKGROUND_GREEN, BACKGROUND_BLUE, BACKGROUND_RED
+enum class HighlightStyle(
+    val color: Color?,
+    val stringResId: Int,
+    val iconResId: Int,
+) {
+    UNDERLINE(
+        null,
+        R.string.underline,
+        R.drawable.ic_underscore,
+    ),
+    BACKGROUND_YELLOW(
+        Color.Yellow,
+        R.string.yellow,
+        R.drawable.ic_highlight_color,
+    ),
+    BACKGROUND_GREEN(
+        Color.Green,
+        R.string.green,
+        R.drawable.ic_highlight_color,
+    ),
+    BACKGROUND_BLUE(
+        Color.Blue,
+        R.string.blue,
+        R.drawable.ic_highlight_color,
+    ),
+    BACKGROUND_RED(
+        Color.Red,
+        R.string.red,
+        R.drawable.ic_highlight_color,
+    )
 }
 
 fun KMutableProperty0<Boolean>.toggle() = set(!get())

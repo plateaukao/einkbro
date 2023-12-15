@@ -47,6 +47,7 @@ import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
 import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.LinkSettingItem
@@ -693,16 +694,10 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val miscSettingItems = listOf(
         ListSettingWithEnumItem(
             R.string.setting_title_highlight_style,
-            R.drawable.icon_edit,
+            R.drawable.ic_highlight,
             R.string.setting_summary_highlight_style,
             config = config::highlightStyle,
-            options = listOf(
-                R.string.underscore,
-                R.string.yellow,
-                R.string.green,
-                R.string.blue,
-                R.string.red,
-            )
+            options = HighlightStyle.values().map { it.stringResId },
         ),
         NavigateSettingItem(
             R.string.setting_title_userAgent,

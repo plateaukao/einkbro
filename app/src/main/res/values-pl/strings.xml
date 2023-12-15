@@ -186,7 +186,7 @@
     <string name="menu_invert_color">Invert color</string>
     <string name="setting_title_highlight_style">Highlight Style</string>
     <string name="setting_summary_highlight_style">Choose a style for text highlight</string>
-    <string name="underscore">Unserscore</string>
+    <string name="underline">Underline</string>
     <string name="yellow">Yellow</string>
     <string name="green">Green</string>
     <string name="blue">Blue</string>

@@ -111,7 +111,10 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            MenuItem(R.string.menu_highlights, R.drawable.icon_edit) { onClicked(MenuItemType.Highlights) }
+            MenuItem(
+                R.string.menu_highlights,
+                R.drawable.ic_highlight
+            ) { onClicked(MenuItemType.Highlights) }
             MenuItem(R.string.menu_fav, R.drawable.ic_home_set) { onClicked(MenuItemType.SetHome) }
             MenuItem(R.string.menu_openFav, R.drawable.ic_home) { onClicked(OpenHome) }
             MenuItem(R.string.menu_closeTab, R.drawable.icon_close) { onClicked(CloseTab) }
@@ -251,7 +254,11 @@ private fun MenuItems(
             ) {
                 val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
                 MenuItem(R.string.menu_tts, ttsRes) { onClicked(MenuItemType.Tts) }
-                MenuItem(R.string.menu_invert_color, R.drawable.ic_invert_color) { onClicked(MenuItemType.InvertColor) }
+                MenuItem(R.string.menu_invert_color, R.drawable.ic_invert_color) {
+                    onClicked(
+                        MenuItemType.InvertColor
+                    )
+                }
                 val whiteRes =
                     if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
                 MenuItem(R.string.white_background, whiteRes) { onClicked(MenuItemType.WhiteBknd) }
