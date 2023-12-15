@@ -54,17 +54,20 @@ import info.plateaukao.einkbro.setting.LinkSettingItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.ListSettingWithStringItem
 import info.plateaukao.einkbro.setting.NavigateSettingItem
+import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.SettingScreen
 import info.plateaukao.einkbro.setting.ValueSettingItem
 import info.plateaukao.einkbro.setting.VersionSettingItem
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -205,7 +208,18 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                         composable(About.name) {
                             SettingScreen(
                                 navController,
-                                LinkSettingItem.values().toList(),
+                                mutableListOf<SettingItemInterface>().apply{
+                                    addAll(LinkSettingItem.values().toList())
+                                    add(ActionSettingItem(
+                                        R.string.setting_title_github_update,
+                                        R.drawable.ic_data,
+                                        R.string.setting_summary_github_update,
+                                    ) {
+                                        lifecycleScope.launch(Dispatchers.IO) {
+                                            HelperUnit.updateVersion(this@SettingActivity)
+                                        }
+                                    })
+                                },
                                 dialogManager,
                                 action,
                                 2

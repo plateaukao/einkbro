@@ -38,22 +38,35 @@ import android.text.util.Linkify
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.content.FileProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
-import java.io.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okio.IOException
+import org.json.JSONArray
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 
 object HelperUnit {
     private const val REQUEST_CODE_ASK_PERMISSIONS = 123
     private const val REQUEST_CODE_ASK_PERMISSIONS_1 = 1234
+
+    private val client = OkHttpClient()
+
 
     @JvmStatic
     // return true if need permissions
@@ -353,5 +366,56 @@ object HelperUnit {
         }
 
         return Pair(fileName, mimeType)
+    }
+
+    suspend fun updateVersion(context: Context) {
+        val url = "https://api.github.com/repos/plateaukao/einkbro/releases"
+        val request = Request.Builder().url(url).build()
+
+        client.newCall(request).execute().use { response ->
+            try {
+                val jsonArray = JSONArray(response.body!!.string())
+                val latestRelease = jsonArray.getJSONObject(0)
+                val tagName = latestRelease
+                    .getString("tag_name")
+                    .replace("v", "")
+                if(tagName > BuildConfig.VERSION_NAME) {
+                    val downloadUrl = latestRelease.getJSONArray("assets")
+                        .getJSONObject(0)
+                        .getString("browser_download_url")
+                    // download  apk
+                    val file = File.createTempFile("temp", ".apk", context.cacheDir)
+                    downloadApkFile(downloadUrl, file.absolutePath)
+                    val apkUri = FileProvider.getUriForFile(
+                        context,
+                        BuildConfig.APPLICATION_ID + ".fileprovider",
+                        file
+                    )
+
+                    // install it
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(apkUri, "application/vnd.android.package-archive")
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+
+                    context.startActivity(intent)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun downloadApkFile(apkUrl: String, destinationPath: String) {
+        val request = Request.Builder().url(apkUrl).build()
+        OkHttpClient().newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Failed to download file: $response")
+
+            val fos = FileOutputStream(destinationPath)
+            fos.use { outputStream ->
+                outputStream.write(response.body?.bytes())
+            }
+        }
     }
 }
