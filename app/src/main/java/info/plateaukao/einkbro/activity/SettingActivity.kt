@@ -697,7 +697,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_highlight_style,
             config = config::highlightStyle,
             options = listOf(
-                R.string.unserscore,
+                R.string.underscore,
                 R.string.yellow,
                 R.string.green,
                 R.string.blue,
