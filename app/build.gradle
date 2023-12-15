@@ -16,8 +16,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 26
         targetSdkVersion 33
-        versionCode 10_17_00
-        versionName "10.17.0"
+        versionCode 11_00_00
+        versionName "11.0.0"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
