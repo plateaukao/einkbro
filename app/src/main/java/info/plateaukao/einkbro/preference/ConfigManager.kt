@@ -86,7 +86,7 @@ class ConfigManager(
     var enableVideoAutoFullscreen by BooleanPreference(sp, K_ENABLE_VIDEO_AUTO_FULLSCREEN, false)
     var enableVideoPip by BooleanPreference(sp, K_ENABLE_VIDEO_PIP, false)
     var autoUpdateAdblock by BooleanPreference(sp, K_AUTO_UPDATE_ADBLOCK, false)
-    var enableCertificateErrorDialog by BooleanPreference(sp, CERTIFICATE_ERROR_DIALOG, false)
+    var enableCertificateErrorDialog by BooleanPreference(sp, CERTIFICATE_ERROR_DIALOG, true)
     var closeTabWhenNoMoreBackHistory by BooleanPreference(sp, K_CLOSE_TAB_WHEN_BACK, true)
     var enableCustomUserAgent by BooleanPreference(sp, K_ENABLE_CUSTOM_USER_AGENT, false)
 

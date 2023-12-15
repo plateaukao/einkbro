@@ -358,21 +358,23 @@ class NinjaWebViewClient(
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-        var message = """"SSL Certificate error.""""
+        val title = "An Error Occurred!!!"
+        var message =
+            "The page you are trying to view cannot be shown because the connection isn't private or the authenticity of the received data could not be verified. \n\nIf you want to take the risk and continue viewing the page, please press OK.\n\n\nReason: "
         when (error.primaryError) {
-            SslError.SSL_UNTRUSTED -> message = """"Certificate authority is not trusted.""""
-            SslError.SSL_EXPIRED -> message = """"Certificate has expired.""""
-            SslError.SSL_IDMISMATCH -> message = """"Certificate Hostname mismatch.""""
-            SslError.SSL_NOTYETVALID -> message = """"Certificate is not yet valid.""""
-            SslError.SSL_DATE_INVALID -> message = """"Certificate date is invalid.""""
-            SslError.SSL_INVALID -> message = """"Certificate is invalid.""""
+            SslError.SSL_UNTRUSTED -> message += """"Certificate authority is not trusted.""""
+            SslError.SSL_EXPIRED -> message += """"Certificate has expired.""""
+            SslError.SSL_IDMISMATCH -> message += """"Certificate Hostname mismatch.""""
+            SslError.SSL_NOTYETVALID -> message += """"Certificate is not yet valid.""""
+            SslError.SSL_DATE_INVALID -> message += """"Certificate date is invalid.""""
+            SslError.SSL_INVALID -> message += """"Certificate is invalid.""""
         }
 
-        val text = """$message - ${context.getString(R.string.dialog_content_ssl_error)}"""
         Log.e(TAG, "onReceivedSslError: $message")
         if (config.enableCertificateErrorDialog) {
             dialogManager.showOkCancelDialog(
-                message = text,
+                title = title,
+                message = message,
                 showInCenter = true,
                 okAction = { handler.proceed() },
                 cancelAction = { handler.cancel() }
