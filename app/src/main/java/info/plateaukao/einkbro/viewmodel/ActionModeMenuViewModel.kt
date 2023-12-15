@@ -222,7 +222,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             MenuInfo(
                 context.getString(R.string.highlight),
-                icon = ContextCompat.getDrawable(context, R.drawable.icon_edit),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_highlight),
                 action = { _actionModeMenuState.value = ActionModeMenuState.HighlightText },
                 longClickAction = {
                     hide()

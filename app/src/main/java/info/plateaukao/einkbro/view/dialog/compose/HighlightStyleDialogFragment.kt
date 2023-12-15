@@ -8,17 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.preference.HighlightStyle
@@ -65,71 +64,26 @@ private fun HighlightStyleContent(
     onOk: (HighlightStyle) -> Unit,
 ) {
     Row {
-        TextButton(
-            modifier = Modifier
-                .padding(6.dp)
-                .size(40.dp)
-                .border(
-                    if (style == HighlightStyle.UNDERLINE) 1.dp else 0.dp,
-                    MaterialTheme.colors.onBackground
+        HighlightStyle.values().map { highlightStyle ->
+            IconButton(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(40.dp)
+                    .border(
+                        1.dp,
+                        if (style == highlightStyle) MaterialTheme.colors.onBackground else Color.Transparent
+                    )
+                    .background(MaterialTheme.colors.background),
+                onClick = { onOk(highlightStyle) }
+            ) {
+                Icon(
+                    modifier = Modifier.size(30.dp),
+                    painter = painterResource(id = highlightStyle.iconResId),
+                    contentDescription = null,
+                    tint = highlightStyle.color ?: MaterialTheme.colors.onBackground
                 )
-                .background(MaterialTheme.colors.background),
-            onClick = { onOk(HighlightStyle.UNDERLINE) }
-        ) {
-            Text("__")
+            }
         }
-        Box(
-            modifier = Modifier
-                .padding(6.dp)
-                .size(40.dp)
-                .border(
-                    if (style == HighlightStyle.BACKGROUND_YELLOW) 2.dp else 0.dp,
-                    MaterialTheme.colors.onBackground
-                )
-                .background(Color.Yellow)
-                .clickable {
-                    onOk(HighlightStyle.BACKGROUND_YELLOW)
-                }
-        )
-        Box(
-            modifier = Modifier
-                .padding(6.dp)
-                .size(40.dp)
-                .border(
-                    if (style == HighlightStyle.BACKGROUND_GREEN) 2.dp else 0.dp,
-                    MaterialTheme.colors.onBackground
-                )
-                .background(Color.Green)
-                .clickable {
-                    onOk(HighlightStyle.BACKGROUND_GREEN)
-                }
-        )
-        Box(
-            modifier = Modifier
-                .padding(6.dp)
-                .size(40.dp)
-                .border(
-                    if (style == HighlightStyle.BACKGROUND_BLUE) 2.dp else 0.dp,
-                    MaterialTheme.colors.onBackground
-                )
-                .background(Color.Blue)
-                .clickable {
-                    onOk(HighlightStyle.BACKGROUND_BLUE)
-                }
-        )
-        Box(
-            modifier = Modifier
-                .padding(6.dp)
-                .size(40.dp)
-                .border(
-                    if (style == HighlightStyle.BACKGROUND_RED) 2.dp else 0.dp,
-                    MaterialTheme.colors.onBackground
-                )
-                .background(Color.Red)
-                .clickable {
-                    onOk(HighlightStyle.BACKGROUND_RED)
-                }
-        )
     }
 }
 
