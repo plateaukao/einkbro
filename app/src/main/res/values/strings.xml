@@ -86,7 +86,7 @@
     websites faster.</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
-    use them, for instance, to store user settings (e. g. search settings). But they could also be used to collect personal
+    use them, for instance, to store user settings (e.g. search settings). But they could also be used to collect personal
         user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
     <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted, including cookies of trusted websites.</string>
     <string name="setting_title_whitelistCookie">Cookie whitelist</string>
@@ -360,7 +360,7 @@
     <string name="setting_title_debug">Debug WebView</string>
     <string name="setting_summary_debug">Enable this option to be able to debug WebView.</string>
     <string name="setting_title_prune_query_parameter">Prune tracking query parameters in URL</string>
-    <string name="setting_summary_prune_query_parameter">Query parameters like utm_medium, utm_source, etc will be removed from URL.</string>
+    <string name="setting_summary_prune_query_parameter">Query parameters like utm_medium, utm_source, etc. will be removed from URL.</string>
     <string name="setting_title_show_tab_bar">Show tab bar</string>
     <string name="setting_summary_show_tab_bar">Always show tab bar above toolbar</string>
     <string name="error_download_link_invalid">Download link is not valid.</string>
@@ -487,7 +487,7 @@
     <string name="receive_link_terminate">Terminate receiving link</string>
     <string name="receive_once">Receive once</string>
     <string name="setting_title_search_in_same_tab">Tab for External Search</string>
-    <string name="setting_summary_search_in_same_tab">Use same tab for extrenal search.</string>
+    <string name="setting_summary_search_in_same_tab">Use same tab for external search.</string>
     <string name="move_to_background">Minimize</string>
     <string name="setting_title_gpt_prompt_for_web_page">Prompt for Full Web Page Content</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Input prompt to process web page full content (for instance: \"Summarize it in 300 words:\").</string>
