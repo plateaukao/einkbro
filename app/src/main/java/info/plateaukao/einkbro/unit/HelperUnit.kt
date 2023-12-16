@@ -48,6 +48,8 @@ import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
@@ -379,7 +381,11 @@ object HelperUnit {
                 val tagName = latestRelease
                     .getString("tag_name")
                     .replace("v", "")
-                if(tagName > BuildConfig.VERSION_NAME) {
+                if (tagName > BuildConfig.VERSION_NAME) {
+                    withContext(Dispatchers.Main) {
+                        NinjaToast.show(context, "Start downloading...")
+                    }
+
                     val downloadUrl = latestRelease.getJSONArray("assets")
                         .getJSONObject(0)
                         .getString("browser_download_url")
@@ -400,9 +406,16 @@ object HelperUnit {
                     }
 
                     context.startActivity(intent)
+                } else {
+                    withContext(Dispatchers.Main) {
+                        NinjaToast.show(context, "Already up to date")
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    NinjaToast.show(context, "Something went wrong")
+                }
             }
         }
     }
