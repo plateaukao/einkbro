@@ -215,7 +215,10 @@ object HelperUnit {
     }
 
     fun getCachedPathFromURI(context: Context, contentURI: Uri): String {
-        val tempFile = File(context.filesDir.absolutePath + "/temp.mht")
+        //val tempFile = File(context.filesDir.absolutePath + "/temp.mht")
+        val tempFile = File.createTempFile("tempfile", ".mht", context.cacheDir)
+        tempFile.deleteOnExit()
+
         context.contentResolver.openInputStream(contentURI)?.use { inputStream ->
             tempFile.outputStream().use { outputStream ->
                 inputStream.copyTo(outputStream)
@@ -346,16 +349,17 @@ object HelperUnit {
             try {
                 if (it.moveToFirst()) {
                     val displayNameColumnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    val mimeTypeColumnIndex = it.getColumnIndex(
-                        MimeTypeMap.getSingleton()
-                            .getExtensionFromMimeType(it.getString(it.getColumnIndexOrThrow("mime_type")))
-                    )
 
                     fileName = if (displayNameColumnIndex != -1)
                         it.getString(displayNameColumnIndex)
                     else {
                         contentUri.path?.split("/")?.last()
                     }
+
+                    val mimeTypeColumnIndex = it.getColumnIndex(
+                        MimeTypeMap.getSingleton()
+                            .getExtensionFromMimeType(it.getString(it.getColumnIndexOrThrow("mime_type")))
+                    )
                     mimeType = if (mimeTypeColumnIndex != -1)
                         it.getString(mimeTypeColumnIndex)
                     else {
