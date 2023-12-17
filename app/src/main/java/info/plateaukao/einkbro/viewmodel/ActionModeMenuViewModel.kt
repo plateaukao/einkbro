@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.data.MenuInfo
@@ -223,15 +224,20 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             MenuInfo(
                 context.getString(R.string.highlight),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_highlight),
-                action = { _actionModeMenuState.value = ActionModeMenuState.HighlightText },
+                action = {
+                    _actionModeMenuState.value =
+                        ActionModeMenuState.HighlightText(configManager.highlightStyle)
+                },
                 longClickAction = {
                     hide()
                     HighlightStyleDialogFragment(
                         clickedPoint.value,
                         okAction = { style ->
                             _actionModeMenuState.value = ActionModeMenuState.Idle
-                            configManager.highlightStyle = style
-                            _actionModeMenuState.value = ActionModeMenuState.HighlightText
+                            if (style != HighlightStyle.BACKGROUND_NONE) {
+                                configManager.highlightStyle = style
+                            }
+                            _actionModeMenuState.value = ActionModeMenuState.HighlightText(style)
                         },
                         onDismissAction = {
                             finish()
@@ -253,5 +259,5 @@ sealed class ActionModeMenuState {
     object Naver : ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
     class Tts(val text: String) : ActionModeMenuState()
-    object HighlightText : ActionModeMenuState()
+    class HighlightText(val highlightStyle: HighlightStyle) : ActionModeMenuState()
 }

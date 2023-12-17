@@ -208,7 +208,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                         composable(About.name) {
                             SettingScreen(
                                 navController,
-                                mutableListOf<SettingItemInterface>().apply{
+                                mutableListOf<SettingItemInterface>().apply {
                                     addAll(LinkSettingItem.values().toList())
                                     add(ActionSettingItem(
                                         R.string.setting_title_github_update,
@@ -711,7 +711,8 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.ic_highlight,
             R.string.setting_summary_highlight_style,
             config = config::highlightStyle,
-            options = HighlightStyle.values().map { it.stringResId },
+            options = HighlightStyle.values().filter { it != HighlightStyle.BACKGROUND_NONE }
+                .map { it.stringResId },
         ),
         NavigateSettingItem(
             R.string.setting_title_userAgent,

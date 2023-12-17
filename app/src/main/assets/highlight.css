@@ -1,0 +1,27 @@
+/* highlight.js */
+
+.highlight_underline {
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+    display: inline;
+}
+
+.highlight_yellow {
+    background-color: yellow !important;
+    display: inline;
+}
+
+.highlight_green {
+    background-color: lightgreen !important;
+    display: inline;
+}
+
+.highlight_blue {
+    background-color: lightblue !important;
+    display: inline;
+}
+
+.highlight_pink {
+    background-color: pink !important;
+    display: inline;
+}
