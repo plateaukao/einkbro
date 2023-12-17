@@ -1116,6 +1116,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         ninjaWebView.loadData(htmlContent, "text/html", "utf-8")
 
                     } else if (mimeType.equals("application/octet-stream")) {
+                        HelperUnit.getCachedPathFromURI(this, viewUri)?.let {
+                            addAlbum(url = "file://$it")
+                        }
+                    } else if (filename?.endsWith(".mht") == true) {
                         // mht
                         HelperUnit.getCachedPathFromURI(this, viewUri)?.let {
                             addAlbum(url = "file://$it")
