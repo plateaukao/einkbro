@@ -701,21 +701,27 @@ open class NinjaWebView(
         evaluateJavascript(textSelectionChangeJs, null)
     }
 
-    fun highlightTextSelection() {
-        val styleString = when(config.highlightStyle) {
-            HighlightStyle.UNDERLINE ->
-            "text-decoration: underline !important; text-underline-offset: 3px; display: inline;"
-            HighlightStyle.BACKGROUND_YELLOW ->
-                "background-color: yellow !important; display: inline;"
-            HighlightStyle.BACKGROUND_GREEN ->
-                "background-color: lightgreen !important; display: inline;"
-            HighlightStyle.BACKGROUND_BLUE ->
-                "background-color: lightblue !important; display: inline;"
-            HighlightStyle.BACKGROUND_RED ->
-                "background-color: red !important; display: inline;"
+    private var isHighlightCssInjected = false
+    fun highlightTextSelection(highlightStyle: HighlightStyle) {
+        if (!isHighlightCssInjected) {
+            injectCss(getByteArrayFromAsset("highlight.css"))
+            isHighlightCssInjected = true
         }
 
-        evaluateJavascript(String.format(selectionHighlightJs, styleString), null)
+        if (highlightStyle == HighlightStyle.BACKGROUND_NONE) {
+            evaluateJavascript(removeHighlightJs, null)
+        } else {
+            val className = when (highlightStyle) {
+                HighlightStyle.UNDERLINE -> "highlight_underline"
+                HighlightStyle.BACKGROUND_YELLOW -> "highlight_yellow"
+                HighlightStyle.BACKGROUND_GREEN -> "highlight_green"
+                HighlightStyle.BACKGROUND_BLUE -> "highlight_blue"
+                HighlightStyle.BACKGROUND_PINK -> "highlight_pink"
+                else -> ""
+            }
+
+            evaluateJavascript(String.format(selectionHighlightJs, className), null)
+        }
     }
 
 
@@ -1150,6 +1156,31 @@ document.addEventListener("selectionchange", function() {
     });
         """
 
+        private const val removeHighlightJs = """
+            javascript:(function() {
+            function removeHighlightFromSelection() {
+    const selection = window.getSelection();
+    // 檢查是否有選取範圍
+    if (!selection.rangeCount) return;
+    const range = selection.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+    // 確保範圍是在一個元素內部
+    const parentElement = container.nodeType === 3 ? container.parentNode : container;
+
+    // 查找所有的 highlight divs
+    const highlights = parentElement.parentNode.querySelectorAll('div.highlight_underline, div.highlight_yellow, div.highlight_green, div.highlight_blue, div.highlight_pink');
+
+    // 移除每個 highlight div 的外部 HTML
+    highlights.forEach(highlight => {
+        highlight.outerHTML = highlight.innerHTML;
+    });
+}
+
+// 綁定一個按鈕來觸發這個函數
+removeHighlightFromSelection();
+            })()
+        """
+
         private const val selectionHighlightJs = """
             javascript:(function() {
                 function highlightSelection() {
@@ -1162,10 +1193,7 @@ document.addEventListener("selectionchange", function() {
 
 function highlightRange(range) {
   var newNode = document.createElement("div");
-  newNode.setAttribute(
-    "style",
-    "%s"
-  );
+  newNode.className = "%s"
   range.surroundContents(newNode);
 }
 

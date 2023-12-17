@@ -810,10 +810,15 @@ enum class HighlightStyle(
         R.string.blue,
         R.drawable.ic_highlight_color,
     ),
-    BACKGROUND_RED(
+    BACKGROUND_PINK(
         Color.Red,
-        R.string.red,
+        R.string.pink,
         R.drawable.ic_highlight_color,
+    ),
+    BACKGROUND_NONE(
+        null,
+    R.string.menu_delete,
+    R.drawable.icon_delete,
     )
 }
 

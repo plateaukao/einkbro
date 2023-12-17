@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -63,7 +65,8 @@ private fun HighlightStyleContent(
     style: HighlightStyle,
     onOk: (HighlightStyle) -> Unit,
 ) {
-    Row {
+    val scrollState = rememberScrollState()
+    Row(modifier = Modifier.horizontalScroll(scrollState)) {
         HighlightStyle.values().map { highlightStyle ->
             IconButton(
                 modifier = Modifier

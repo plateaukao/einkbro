@@ -79,6 +79,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FabPosition
 import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.NewTabBehavior
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
@@ -405,9 +406,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             actionModeMenuViewModel.actionModeMenuState.collect { state ->
                 val point = actionModeMenuViewModel.clickedPoint.value
                 when (state) {
-                    HighlightText -> {
+                    is HighlightText -> {
                         lifecycleScope.launch {
-                            highlightText()
+                            highlightText(state.highlightStyle)
                             actionModeMenuViewModel.finish()
                         }
                     }
@@ -466,9 +467,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private suspend fun highlightText() {
+    private suspend fun highlightText(highlightStyle: HighlightStyle) {
         // work on UI first
-        ninjaWebView.highlightTextSelection()
+        ninjaWebView.highlightTextSelection(highlightStyle)
 
         // work on db saving
         val url = ninjaWebView.url ?: ""
