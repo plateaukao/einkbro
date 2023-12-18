@@ -213,10 +213,17 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                     add(ActionSettingItem(
                                         R.string.setting_title_github_update,
                                         R.drawable.ic_data,
-                                        R.string.setting_summary_github_update,
                                     ) {
                                         lifecycleScope.launch(Dispatchers.IO) {
-                                            HelperUnit.updateVersion(this@SettingActivity)
+                                            HelperUnit.upgradeToLatestRelease(this@SettingActivity)
+                                        }
+                                    })
+                                    add(ActionSettingItem(
+                                        R.string.setting_title_github_snapshot,
+                                        R.drawable.ic_data,
+                                    ) {
+                                        lifecycleScope.launch(Dispatchers.IO) {
+                                            HelperUnit.upgradeFromSnapshot(this@SettingActivity)
                                         }
                                     })
                                 },

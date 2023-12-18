@@ -57,10 +57,12 @@ import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
+import java.io.InputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.zip.ZipInputStream
 
 
 object HelperUnit {
@@ -374,7 +376,19 @@ object HelperUnit {
         return Pair(fileName, mimeType)
     }
 
-    suspend fun updateVersion(context: Context) {
+    suspend fun upgradeToLatestRelease(context: Context) {
+        if (isAppInstalledFromPlayStore(context)) {
+            withContext(Dispatchers.Main) {
+                // launch play store with my app page
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+                    setPackage("com.android.vending")
+                }
+                context.startActivity(intent)
+            }
+            return
+        }
+
         val url = "https://api.github.com/repos/plateaukao/einkbro/releases"
         val request = Request.Builder().url(url).build()
 
@@ -393,23 +407,10 @@ object HelperUnit {
                     val downloadUrl = latestRelease.getJSONArray("assets")
                         .getJSONObject(0)
                         .getString("browser_download_url")
-                    // download  apk
+
                     val file = File.createTempFile("temp", ".apk", context.cacheDir)
                     downloadApkFile(downloadUrl, file.absolutePath)
-                    val apkUri = FileProvider.getUriForFile(
-                        context,
-                        BuildConfig.APPLICATION_ID + ".fileprovider",
-                        file
-                    )
-
-                    // install it
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(apkUri, "application/vnd.android.package-archive")
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    }
-
-                    context.startActivity(intent)
+                    installApkFromFile(context, file)
                 } else {
                     withContext(Dispatchers.Main) {
                         NinjaToast.show(context, "Already up to date")
@@ -424,6 +425,22 @@ object HelperUnit {
         }
     }
 
+    private fun installApkFromFile(context: Context, file: File) {
+        val apkUri = FileProvider.getUriForFile(
+            context,
+            BuildConfig.APPLICATION_ID + ".fileprovider",
+            file
+        )
+
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(apkUri, "application/vnd.android.package-archive")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }
+
+        context.startActivity(intent)
+    }
+
     private fun downloadApkFile(apkUrl: String, destinationPath: String) {
         val request = Request.Builder().url(apkUrl).build()
         OkHttpClient().newCall(request).execute().use { response ->
@@ -433,6 +450,66 @@ object HelperUnit {
             fos.use { outputStream ->
                 outputStream.write(response.body?.bytes())
             }
+        }
+    }
+
+    suspend fun upgradeFromSnapshot(context: Context) {
+        val url = "https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip"
+        val request = Request.Builder().url(url).build()
+        try {
+            withContext(Dispatchers.Main) {
+                NinjaToast.show(context, "start downloading...")
+            }
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Failed to download file: $response")
+
+                val inputStream = response.body?.byteStream()
+                extractApkAndInstall(inputStream, context)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            withContext(Dispatchers.Main) {
+                NinjaToast.show(context, "Something went wrong")
+            }
+        }
+    }
+
+    // may throw error
+    private fun extractApkAndInstall(inputStream: InputStream?, context: Context) {
+        val zipInputStream = ZipInputStream(inputStream)
+
+        var zipEntry = zipInputStream.nextEntry
+        while (zipEntry != null) {
+            if (zipEntry.name == "app-release.apk") {
+                //val tempFile = File.createTempFile("app-release", ".apk", context.cacheDir)
+                val tempFile = File("${context.cacheDir.absolutePath}/app.apk")
+                if (tempFile.exists()) {
+                    tempFile.delete()
+                }
+                tempFile.createNewFile()
+                tempFile.deleteOnExit()
+                FileOutputStream(tempFile).use { fos -> zipInputStream.copyTo(fos) }
+
+                installApkFromFile(context, tempFile)
+
+                break
+            }
+            zipEntry = zipInputStream.nextEntry
+        }
+        zipInputStream.closeEntry()
+        zipInputStream.close()
+    }
+
+    private fun isAppInstalledFromPlayStore(context: Context): Boolean {
+        val packageName = context.packageName
+        val pm = context.packageManager
+
+        return try {
+            val installerPackageName = pm.getInstallerPackageName(packageName)
+            "com.android.vending" == installerPackageName
+        } catch (e: IllegalArgumentException) {
+            false
         }
     }
 }
