@@ -195,8 +195,7 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update from Github</string>
-    <string name="setting_summary_github_update">Update version from Github</string>
+    <string name="setting_title_github_update">Update to Latest Release</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
