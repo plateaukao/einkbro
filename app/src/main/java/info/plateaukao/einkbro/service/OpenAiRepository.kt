@@ -46,7 +46,7 @@ class OpenAiRepository(
             override fun onEvent(
                 eventSource: EventSource, id: String?, type: String?, data: String
             ) {
-                if(data == "[DONE]") {
+                if (data == "[DONE]") {
                     doneAction()
                     eventSource.cancel()
                     return
@@ -102,7 +102,7 @@ class OpenAiRepository(
         messages: List<ChatMessage>,
         stream: Boolean = false,
     ): Request = Request.Builder()
-        .url(endpoint)
+        .url("${getCurrentServerUrl()}$completionPath")
         .post(
             json.encodeToString(ChatRequest(config.gptModel, messages, stream))
                 .toRequestBody(mediaType)
@@ -110,26 +110,36 @@ class OpenAiRepository(
         .header("Authorization", "Bearer $apiKey")
         .build()
 
+    private fun getCurrentServerUrl(): String {
+        return if (config.useCustomGptUrl && config.gptUrl.isNotBlank()) {
+            config.gptUrl
+        } else {
+            "https://api.openai.com"
+        }
+    }
+
     private fun createTtsRequest(
         text: String,
         hd: Boolean = false,
         speed: Double = 1.0,
     ): Request = Request.Builder()
-        .url(ttsEndpoint)
+        .url("${getCurrentServerUrl()}$ttsPath")
         .post(
-            json.encodeToString(TTSRequest(
-                text,
-                if (hd) "tts-1-hd" else "tts-1",
-                "alloy"
-            ))
+            json.encodeToString(
+                TTSRequest(
+                    text,
+                    if (hd) "tts-1-hd" else "tts-1",
+                    "alloy"
+                )
+            )
                 .toRequestBody(mediaType)
         )
         .header("Authorization", "Bearer $apiKey")
         .build()
 
     companion object {
-        private const val endpoint = "https://api.openai.com/v1/chat/completions"
-        private const val ttsEndpoint = "https://api.openai.com/v1/audio/speech"
+        private const val completionPath = "/v1/chat/completions"
+        private const val ttsPath = "/v1/audio/speech"
         private val mediaType = "application/json; charset=utf-8".toMediaType()
     }
 }

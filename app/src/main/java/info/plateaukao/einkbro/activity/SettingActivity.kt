@@ -817,7 +817,19 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.ic_chat,
             R.string.setting_summary_chat_stream,
             config::enableOpenAiStream
-        )
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_use_custom_gpt_url,
+            R.drawable.ic_chat,
+            R.string.setting_summary_use_custom_gpt_url,
+            config::useCustomGptUrl
+        ),
+        ValueSettingItem(
+            R.string.setting_title_custom_gpt_url,
+            R.drawable.ic_chat,
+            R.string.setting_summary_custom_gpt_url,
+            config::gptUrl
+        ),
     )
 
     private val startSettingItems = listOf(

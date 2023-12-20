@@ -192,6 +192,8 @@ class ConfigManager(
     var papagoApiSecret by StringPreference(sp, K_PAPAGO_API_SECRET, "")
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
+    var gptUrl by StringPreference(sp, K_GPT_SERVER_URL, "https://api.openai.com")
+    var useCustomGptUrl by BooleanPreference(sp, K_USE_CUSTOM_GPT_URL, false)
 
     var dualCaptionLocale by StringPreference(sp, K_DUAL_CAPTION_LOCALE, "")
 
@@ -672,6 +674,9 @@ class ConfigManager(
 
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
         private const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
+
+        private const val K_GPT_SERVER_URL = "sp_gpt_server_url"
+        private const val K_USE_CUSTOM_GPT_URL = "sp_use_custom_gpt_url"
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =

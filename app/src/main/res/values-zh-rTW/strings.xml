@@ -434,4 +434,7 @@
     <string name="pink">Pink</string>
     <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="setting_title_github_snapshot">Update with Snapshot</string>
+    <string name="setting_title_use_custom_gpt_url">Use Alternative Server</string>
+    <string name="setting_title_custom_gpt_url">Custom Host Url</string>
+    <string name="setting_summary_custom_gpt_url">Input alternative openAI server url</string>
 </resources>
