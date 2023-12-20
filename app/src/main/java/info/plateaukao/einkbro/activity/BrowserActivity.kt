@@ -2084,6 +2084,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
 
+                KeyEvent.KEYCODE_F -> fullscreen()
+
                 else -> return false
             }
         }

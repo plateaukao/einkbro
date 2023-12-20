@@ -660,7 +660,11 @@ open class NinjaWebView(
     protected var isVerticalRead = false
     fun toggleVerticalRead() {
         isVerticalRead = !isVerticalRead
-        toggleReaderMode(true)
+        if (isVerticalRead) {
+            toggleReaderMode(true)
+        } else {
+            reload()
+        }
     }
 
     fun shouldUseReaderFont(): Boolean = isReaderModeOn || isTranslatePage
