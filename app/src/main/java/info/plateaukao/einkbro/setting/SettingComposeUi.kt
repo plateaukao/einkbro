@@ -42,6 +42,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.DialogManager
+import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import kotlinx.coroutines.launch
 
 @Composable
@@ -104,6 +105,27 @@ fun SettingItemUi(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun DividerSettingItemUi(
+    supportTwoSpan: Boolean = false,
+) {
+    if (!supportTwoSpan) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(6.dp)
+        ) {
+            HorizontalSeparator()
+        }
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(16.dp)
+        )
     }
 }
 
@@ -245,8 +267,9 @@ fun SettingScreen(
         columns = GridCells.Fixed(columnCount),
     ) {
         val showBorder = columnCount == 2
+        val supportTwoSpan = columnCount == 2
         settings.forEach { setting ->
-            item(span = { GridItemSpan(setting.span) }) {
+            item(span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) }) {
                 when (setting) {
                     is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder) {
                         navController.navigate(
@@ -266,6 +289,8 @@ fun SettingScreen(
                         showBorder,
                         setting.showValue
                     )
+
+                    is DividerSettingItem -> DividerSettingItemUi(supportTwoSpan)
 
                     is ListSettingWithEnumItem<*> -> ListSettingItemUi(
                         setting,

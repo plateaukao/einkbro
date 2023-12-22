@@ -11,6 +11,13 @@ interface SettingItemInterface {
     val span: Int
 }
 
+class DividerSettingItem : SettingItemInterface {
+    override val titleResId: Int = 0
+    override val summaryResId: Int = 0
+    override val iconId: Int = 0
+    override val span: Int = 2
+}
+
 class BooleanSettingItem(
     override val titleResId: Int,
     override val iconId: Int,

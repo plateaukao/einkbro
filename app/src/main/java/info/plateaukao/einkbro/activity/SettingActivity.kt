@@ -50,6 +50,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
+import info.plateaukao.einkbro.setting.DividerSettingItem
 import info.plateaukao.einkbro.setting.LinkSettingItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.ListSettingWithStringItem
@@ -210,6 +211,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                 navController,
                                 mutableListOf<SettingItemInterface>().apply {
                                     addAll(LinkSettingItem.values().toList())
+                                    add(DividerSettingItem())
                                     add(ActionSettingItem(
                                         R.string.setting_title_github_update,
                                         R.drawable.ic_data,
@@ -226,6 +228,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                             HelperUnit.upgradeFromSnapshot(this@SettingActivity)
                                         }
                                     })
+                                    add(DividerSettingItem())
                                 },
                                 dialogManager,
                                 action,
@@ -293,6 +296,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.gesture_tap,
             destination = Gesture
         ),
+        DividerSettingItem(),
         NavigateSettingItem(
             R.string.setting_title_data,
             R.drawable.icon_backup,
@@ -313,6 +317,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_search,
             destination = Search
         ),
+        DividerSettingItem(),
         NavigateSettingItem(
             R.string.misc,
             R.drawable.icon_dots,
@@ -362,17 +367,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_show_context_menu_icons,
             config::showActionMenuIcons,
         ),
+        DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_page_left_value,
             R.drawable.ic_page_height,
             R.string.setting_summary_page_left_value,
             config::pageReservedOffset
-        ),
-        ValueSettingItem(
-            R.string.setting_title_translated_langs,
-            R.drawable.ic_translate,
-            R.string.setting_summary_translated_langs,
-            config::preferredTranslateLanguageString
         ),
         ListSettingWithEnumItem(
             R.string.dark_mode,
@@ -558,6 +558,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             config = config::multitouchRight,
             options = GestureType.values().map { it.resId },
         ),
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_gestures_use_title,
             R.drawable.ic_touch_disabled,
@@ -610,6 +611,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                 R.string.setting_summary_search_engine_yandex,
             )
         ),
+        DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_searchEngine,
             R.drawable.icon_edit,
@@ -622,6 +624,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_custom_process_text_url,
             config = config::processTextUrl,
         ),
+        DividerSettingItem(),
         ActionSettingItem(
             R.string.setting_title_split_search_setting,
             R.drawable.icon_edit,
@@ -648,6 +651,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_import,
             R.string.setting_summary_import_appData
         ) { dialogManager.showImportBackupFilePicker() },
+        DividerSettingItem(),
         ActionSettingItem(
             R.string.setting_title_export_bookmarks,
             R.drawable.icon_bookmark,
@@ -744,6 +748,13 @@ class SettingActivity : ComponentActivity(), KoinComponent {
 //            config = config::papagoApiSecret,
 //            showValue = false
 //        ),
+        DividerSettingItem(),
+        ValueSettingItem(
+            R.string.setting_title_translated_langs,
+            R.drawable.ic_translate,
+            R.string.setting_summary_translated_langs,
+            config::preferredTranslateLanguageString
+        ),
         ValueSettingItem(
             R.string.translate_image_key,
             R.drawable.ic_papago,
@@ -783,6 +794,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_edit_gpt_api_key,
             config::gptApiKey
         ),
+        DividerSettingItem(),
         ActionSettingItem(
             R.string.setting_title_gpt_action_list,
             R.drawable.icon_list,
@@ -800,6 +812,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_gpt_prompt_for_web_page,
             config::gptUserPromptForWebPage
         ),
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.use_it_on_dict_search,
             R.drawable.icon_search,
@@ -818,6 +831,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_chat_stream,
             config::enableOpenAiStream
         ),
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_use_custom_gpt_url,
             R.drawable.ic_chat,
@@ -869,6 +883,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_location,
             config::shareLocation
         ),
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_adblock,
             R.drawable.ic_block,
@@ -903,6 +918,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_adblock_url,
             config = config::adblockHostUrl,
         ),
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_javascript,
             R.drawable.icon_java,
@@ -914,6 +930,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_list,
             R.string.setting_summary_whitelistJS,
         ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Javascript)) },
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_cookie,
             R.drawable.icon_cookie,
@@ -925,6 +942,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_list,
             R.string.setting_summary_whitelistCookie,
         ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Cookie)) },
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_save_data,
             R.drawable.ic_save_data,
