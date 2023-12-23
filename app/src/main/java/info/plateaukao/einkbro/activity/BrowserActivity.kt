@@ -6,11 +6,14 @@ import android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE
 import android.app.DownloadManager.Request
 import android.app.PictureInPictureParams
 import android.app.SearchManager
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.ClipboardManager
+import android.content.Intent
 import android.content.Intent.ACTION_VIEW
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.Rect
@@ -96,7 +99,14 @@ import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.SwipeTouchListener
-import info.plateaukao.einkbro.view.dialog.*
+import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
+import info.plateaukao.einkbro.view.dialog.DialogManager
+import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
+import info.plateaukao.einkbro.view.dialog.SendLinkDialog
+import info.plateaukao.einkbro.view.dialog.ShortcutEditDialog
+import info.plateaukao.einkbro.view.dialog.TextInputDialog
+import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
 import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
@@ -974,25 +984,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun createShortcut() {
         val currentUrl = ninjaWebView.url ?: return
-        val nonNullTitle = HelperUnit.secString(ninjaWebView.title)
-        try {
-            lifecycleScope.launch {
-                ShortcutEditDialog(
-                    this@BrowserActivity,
-                    nonNullTitle,
-                    currentUrl,
-                    ninjaWebView.favicon,
-                    {
-                        hideKeyboard()
-                        NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                    },
-                    { hideKeyboard() }
-                ).show()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            NinjaToast.show(this, R.string.toast_error)
-        }
+        ShortcutEditDialog(
+            this@BrowserActivity,
+            HelperUnit.secString(ninjaWebView.title),
+            currentUrl,
+            ninjaWebView.favicon,
+            {
+                hideKeyboard()
+                NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
+            },
+            { hideKeyboard() }
+        ).show()
     }
 
     override fun toggleTouchTurnPageFeature() = config::enableTouchTurn.toggle()

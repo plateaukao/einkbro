@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import info.plateaukao.einkbro.databinding.DialogEditBookmarkBinding
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.databinding.DialogEditBookmarkBinding
 import info.plateaukao.einkbro.view.NinjaToast
 import kotlinx.coroutines.launch
 
@@ -39,7 +39,7 @@ class BookmarkEditDialog(
 
         updateFolderSpinner(binding)
 
-        DialogManager(activity).showOkCancelDialog(
+        dialogManager.showOkCancelDialog(
                 title = activity.getString(info.plateaukao.einkbro.R.string.menu_save_bookmark),
                 view = binding.root,
                 okAction = { upsertBookmark(binding, lifecycleScope) },

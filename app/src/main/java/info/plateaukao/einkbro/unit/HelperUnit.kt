@@ -152,45 +152,24 @@ object HelperUnit {
                     data = uri
                 } ?: return
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
-                val installer = Intent().apply {
-                    action = "com.android.launcher.action.INSTALL_SHORTCUT"
-                    putExtra("android.intent.extra.shortcut.INTENT", intent)
-                    putExtra("android.intent.extra.shortcut.NAME", title)
-                    if (bitmap != null) {
-                        putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap)
-                    } else {
-                        putExtra(
-                            Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                            Intent.ShortcutIconResource.fromContext(
-                                context.applicationContext,
-                                R.drawable.qc_bookmarks
-                            )
-                        )
-                    }
-                }
-
-                context.sendBroadcast(installer)
+            val shortcutManager =
+                context.getSystemService(ShortcutManager::class.java) ?: return
+            var icon: Icon = if (bitmap != null) {
+                Icon.createWithBitmap(bitmap)
             } else {
-                val shortcutManager =
-                    context.getSystemService(ShortcutManager::class.java) ?: return
-                var icon: Icon = if (bitmap != null) {
-                    Icon.createWithBitmap(bitmap)
-                } else {
-                    Icon.createWithResource(context, R.drawable.qc_bookmarks)
-                }
+                Icon.createWithResource(context, R.drawable.qc_bookmarks)
+            }
 
-                if (shortcutManager.isRequestPinShortcutSupported) {
-                    val pinShortcutInfo = ShortcutInfo.Builder(context, uri.toString())
-                        .setShortLabel(title!!)
-                        .setLongLabel(title)
-                        .setIcon(icon)
-                        .setIntent(intent)
-                        .build()
-                    shortcutManager.requestPinShortcut(pinShortcutInfo, null)
-                } else {
-                    println("failed_to_add")
-                }
+            if (shortcutManager.isRequestPinShortcutSupported) {
+                val pinShortcutInfo = ShortcutInfo.Builder(context, uri.toString())
+                    .setShortLabel(title!!)
+                    .setLongLabel(title)
+                    .setIcon(icon)
+                    .setIntent(intent)
+                    .build()
+                shortcutManager.requestPinShortcut(pinShortcutInfo, null)
+            } else {
+                println("failed_to_add")
             }
         } catch (e: Exception) {
             println("failed_to_add")
