@@ -1,5 +1,7 @@
 package info.plateaukao.einkbro.browser
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Message
 import android.view.KeyEvent
@@ -35,6 +37,7 @@ interface BrowserController {
     fun toggleSplitScreen(url: String? = null)
     fun showTranslation()
     fun saveBookmark(url: String? = null, title: String? = null)
+    fun createShortcut()
     fun showSaveEpubDialog()
     fun showFontSizeChangeDialog()
     fun showSearchPanel()

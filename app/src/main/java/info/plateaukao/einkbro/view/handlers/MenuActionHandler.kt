@@ -73,12 +73,7 @@ class MenuActionHandler(
             BrowserUnit.stripUrlQuery(ninjaWebView.url ?: "")
         )
 
-        MenuItemType.Shortcut -> HelperUnit.createShortcut(
-            activity,
-            ninjaWebView.title,
-            ninjaWebView.url,
-            ninjaWebView.favicon
-        )
+        MenuItemType.Shortcut -> browserController.createShortcut()
 
         MenuItemType.Highlights -> IntentUnit.gotoHighlights(activity)
         MenuItemType.SetHome -> config.favoriteUrl = ninjaWebView.url.orEmpty()
