@@ -13,7 +13,7 @@ jobs:
             fileName: "android_keystore.keystore"
             encodedString: ${{ secrets.KEYSTORE }}
       - name: Build the app
-        run: ./gradlew assembleRelease -Pandroid.injected.signing.store.file=${{ steps.android_keystore.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
+        run: ./gradlew assembleRelease -PshowUpdateButton=true -Pandroid.injected.signing.store.file=${{ steps.android_keystore.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
