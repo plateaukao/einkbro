@@ -30,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute.About
 import info.plateaukao.einkbro.activity.SettingRoute.Backup
@@ -212,22 +213,24 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                 mutableListOf<SettingItemInterface>().apply {
                                     addAll(LinkSettingItem.values().toList())
                                     add(DividerSettingItem())
-                                    add(ActionSettingItem(
-                                        R.string.setting_title_github_update,
-                                        R.drawable.ic_data,
-                                    ) {
-                                        lifecycleScope.launch(Dispatchers.IO) {
-                                            HelperUnit.upgradeToLatestRelease(this@SettingActivity)
-                                        }
-                                    })
-                                    add(ActionSettingItem(
-                                        R.string.setting_title_github_snapshot,
-                                        R.drawable.ic_data,
-                                    ) {
-                                        lifecycleScope.launch(Dispatchers.IO) {
-                                            HelperUnit.upgradeFromSnapshot(this@SettingActivity)
-                                        }
-                                    })
+                                    if (BuildConfig.showUpdateButton) {
+                                        add(ActionSettingItem(
+                                            R.string.setting_title_github_update,
+                                            R.drawable.ic_data,
+                                        ) {
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                HelperUnit.upgradeToLatestRelease(this@SettingActivity)
+                                            }
+                                        })
+                                        add(ActionSettingItem(
+                                            R.string.setting_title_github_snapshot,
+                                            R.drawable.ic_data,
+                                        ) {
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                HelperUnit.upgradeFromSnapshot(this@SettingActivity)
+                                            }
+                                        })
+                                    }
                                     add(DividerSettingItem())
                                 },
                                 dialogManager,

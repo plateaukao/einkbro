@@ -4,8 +4,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
 
-def getCurrentTimestamp() {
+static def getCurrentTimestamp() {
     return new Date().format('MMddHHmm')
+}
+
+def showUpdateButton() {
+    def value = project.getProperties().get("showUpdateButton")
+    return value != null ? value : "false"
 }
 
 android {
@@ -16,11 +21,12 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 26
         targetSdkVersion 33
-        versionCode 11_01_00
-        versionName "11.1.0"
+        versionCode 11_02_00
+        versionName "11.2.0"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
+        buildConfigField("boolean", "showUpdateButton", showUpdateButton())
 
         javaCompileOptions {
             annotationProcessorOptions {
