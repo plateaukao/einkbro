@@ -646,7 +646,12 @@ open class NinjaWebView(
         return if (isVerticalRead) {
             width - 40.dp(context)
         } else {
-            height - config.pageReservedOffset.dp(context)
+            if (config.pageReservedOffset.endsWith('%')) {
+                var offsetPercent = config.pageReservedOffset.take(config.pageReservedOffset.length - 1).toInt();
+                height - height * offsetPercent / 100;
+            } else {
+                height - config.pageReservedOffset.toInt().dp(context);
+            }
         }
     }
 

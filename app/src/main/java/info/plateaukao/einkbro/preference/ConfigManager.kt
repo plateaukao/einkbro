@@ -130,7 +130,7 @@ class ConfigManager(
 
     var useOpenAiTts by BooleanPreference(sp, K_USE_OPENAI_TTS, true)
 
-    var pageReservedOffset: Int by IntPreference(sp, "sp_page_turn_left_value", 80)
+    var pageReservedOffset: String by StringPreference(sp, "sp_page_turn_left_value", "10%")
 
     var fontSize: Int
         get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
