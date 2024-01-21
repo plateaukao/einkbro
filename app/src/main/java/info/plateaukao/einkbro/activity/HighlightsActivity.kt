@@ -15,21 +15,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +40,7 @@ import info.plateaukao.einkbro.viewmodel.HighlightViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
 class HighlightsActivity : ComponentActivity(), KoinComponent {
     private val config: ConfigManager by inject()
@@ -253,7 +242,7 @@ fun HighlightsBar(
 
 @Preview
 @Composable
-fun previewArticleItem() {
+fun PreviewArticleItem() {
     MyTheme {
         ArticleItem(
             modifier = Modifier,
@@ -271,7 +260,7 @@ fun previewArticleItem() {
 
 @Preview
 @Composable
-fun previewHighlightItem() {
+fun PreviewHighlightItem() {
     MyTheme {
         HighlightItem(
             highlight = Highlight(

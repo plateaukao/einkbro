@@ -256,7 +256,7 @@
     <string name="setting_summary_bold_font">Apply bold font style (need to reload current page)</string>
     <string name="desktop_mode">Desktop mode</string>
     <string name="setting_title_page_left_value">Page Reserved Height</string>
-    <string name="setting_summary_page_left_value">How much height should be reserved when turning to next page</string>
+    <string name="setting_summary_page_left_value">How much height should be reserved when turning to next page(e.g., 50, or 10%)</string>
     <string name="setting_title_pdf_paper_size">Printed PDF paper size</string>
     <string name="vertical_read">Vertical</string>
     <string name="reader_mode">Reader mode</string>

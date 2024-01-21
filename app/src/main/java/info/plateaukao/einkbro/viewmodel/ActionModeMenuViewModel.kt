@@ -201,7 +201,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 context.getString(android.R.string.copy),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
                 action = {
-                    ShareUtil.copyToClipboard(context, selectedText.value)
+                    val processedText = selectedText.value.replace("\\n", "\n")
+                    ShareUtil.copyToClipboard(context, processedText)
                     finish()
                 }
             )
