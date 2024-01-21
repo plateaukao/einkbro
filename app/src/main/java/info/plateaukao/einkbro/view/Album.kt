@@ -34,8 +34,8 @@ data class Album(
         }
     }
 
-    fun remove() {
-        browserController?.removeAlbum(albumController)
+    fun remove(showHomePage: Boolean = false) {
+        browserController?.removeAlbum(albumController, showHomePage)
     }
 
     fun getUrl(): String = albumController.albumUrl

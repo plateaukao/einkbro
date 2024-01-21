@@ -413,6 +413,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             actionModeMenuViewModel.finish()
                         }
                     }
+
                     GoogleTranslate, Papago, Naver -> {
                         val api =
                             if (GoogleTranslate == state) TRANSLATE_API.GOOGLE
@@ -477,8 +478,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = ninjaWebView.title ?: ""
         val article = Article(title, url, System.currentTimeMillis(), "")
 
-        val articleInDb = bookmarkManager.getArticleByUrl(url) ?:
-            bookmarkManager.insertArticle(article)
+        val articleInDb =
+            bookmarkManager.getArticleByUrl(url) ?: bookmarkManager.insertArticle(article)
 
         val selectedText = actionModeMenuViewModel.selectedText.value
         val highlight = Highlight(articleInDb.id, selectedText)
@@ -1794,9 +1795,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun removeAlbum(albumController: AlbumController) {
+    override fun removeAlbum(albumController: AlbumController, showHome: Boolean) {
         if (browserContainer.size() <= 1) {
-            finish()
+            if (!showHome) {
+                finish()
+            } else {
+                ninjaWebView.loadUrl(config.favoriteUrl)
+            }
         } else {
             closeTabConfirmation {
                 albumViewModel.removeAlbum(albumController.album)
@@ -1895,7 +1900,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             isWideLayout = ViewUnit.isWideLayout(this@BrowserActivity)
             shouldReverse = !config.isToolbarOnTop
             hasCopiedText = getClipboardText().isNotEmpty()
-            lifecycleScope.launch { binding.inputUrl.recordList.value = recordDb.listEntries(false) }
+            lifecycleScope.launch {
+                binding.inputUrl.recordList.value = recordDb.listEntries(false)
+            }
         }
 
 

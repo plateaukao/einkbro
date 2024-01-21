@@ -73,7 +73,8 @@ class OverviewDialogController(
             addIncognitoTab = addIncognitoTabAction
             addTab = { hide(); addEmptyTabAction() }
             closePanel = { hide() }
-            onDeleteAction = { hide(); deleteAllItems() }
+            onDeleteAllHistoryAction = { hide(); deleteAllItems() }
+            onCloseAllTabs = { hide(); closeAllTabs() }
             launchNewBrowserAction =
                 { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
         }
@@ -140,6 +141,13 @@ class OverviewDialogController(
                 hide()
                 onHistoryChanged()
             })
+    }
+
+    private fun closeAllTabs() {
+        albumList.value.listIterator().forEach {
+            it.remove(true)
+        }
+
     }
 
     private fun showHistoryContextMenu(record: Record) {
