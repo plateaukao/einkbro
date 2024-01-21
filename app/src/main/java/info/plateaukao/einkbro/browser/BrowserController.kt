@@ -1,7 +1,5 @@
 package info.plateaukao.einkbro.browser
 
-import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Message
 import android.view.KeyEvent
@@ -19,7 +17,8 @@ interface BrowserController {
     fun isAtTop(): Boolean
     fun isCurrentAlbum(albumController: AlbumController): Boolean
     fun showAlbum(albumController: AlbumController)
-    fun removeAlbum(albumController: AlbumController)
+    // showHomePage: true -> show home page if it's the last tab
+    fun removeAlbum(albumController: AlbumController, showHomePage: Boolean = false)
     fun removeAlbum()
     fun updateAlbum(url: String?)
     fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
