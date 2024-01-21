@@ -51,7 +51,7 @@ class OpenAiRepository(
                     eventSource.cancel()
                     return
                 }
-                if (data == null || data.isEmpty()) return
+                if (data.isEmpty()) return
                 try {
                     val chatCompletion = json.decodeFromString<ChatCompletionDelta>(data)
                     appendResponseAction(chatCompletion.choices.first().delta.content ?: "")

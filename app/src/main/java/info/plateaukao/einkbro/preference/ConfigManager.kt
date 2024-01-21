@@ -130,7 +130,9 @@ class ConfigManager(
 
     var useOpenAiTts by BooleanPreference(sp, K_USE_OPENAI_TTS, true)
 
-    var pageReservedOffset: String by StringPreference(sp, "sp_page_turn_left_value", "10%")
+    var pageReservedOffset: Int by IntPreference(sp, K_PRESERVE_HEIGHT, 80)
+
+    var pageReservedOffsetInString: String by StringPreference(sp, K_PRESERVE_HEIGHT_IN_STRING, pageReservedOffset.toString())
 
     var fontSize: Int
         get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
@@ -665,6 +667,9 @@ class ConfigManager(
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+
+        private val K_PRESERVE_HEIGHT = "sp_page_turn_left_value"
+        private val K_PRESERVE_HEIGHT_IN_STRING = "sp_page_turn_left_value_in_string"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"

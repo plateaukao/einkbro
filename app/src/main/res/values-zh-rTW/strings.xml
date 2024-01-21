@@ -188,7 +188,7 @@
     <string name="setting_summary_bold_font">加粗字體，提高可讀性(需要重新載入網頁)</string>
     <string name="desktop_mode">桌面版網站</string>
     <string name="setting_title_page_left_value">翻頁時保留的畫面長度</string>
-    <string name="setting_summary_page_left_value">翻頁時，可保留部分畫面內容，請設定要保留的長度。如不需要可以設為 0</string>
+    <string name="setting_summary_page_left_value">翻頁時，可保留部分畫面內容，請設定要保留的長度(或 10%)。如不需要可以設為 0</string>
     <string name="setting_title_pdf_paper_size">PDF紙張大小</string>
     <string name="vertical_read">直排閱讀</string>
     <string name="reader_mode">閱讀模式</string>
