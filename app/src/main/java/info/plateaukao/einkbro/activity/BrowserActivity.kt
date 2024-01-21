@@ -1895,7 +1895,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             isWideLayout = ViewUnit.isWideLayout(this@BrowserActivity)
             shouldReverse = !config.isToolbarOnTop
             hasCopiedText = getClipboardText().isNotEmpty()
-            lifecycleScope.launch { binding.inputUrl.recordList.value = recordDb.listEntries(true) }
+            lifecycleScope.launch { binding.inputUrl.recordList.value = recordDb.listEntries(false) }
         }
 
 
