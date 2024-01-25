@@ -851,7 +851,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun handleVolumeDownKey(): Boolean {
         return if (config.volumePageTurn) {
-            ninjaWebView.pageDownWithNoAnimation()
+            if (ninjaWebView.isVerticalRead) {
+                ninjaWebView.pageUpWithNoAnimation()
+            } else {
+                ninjaWebView.pageDownWithNoAnimation()
+            }
             true
         } else {
             false
@@ -860,7 +864,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun handleVolumeUpKey(): Boolean {
         return if (config.volumePageTurn) {
-            ninjaWebView.pageUpWithNoAnimation()
+            if (ninjaWebView.isVerticalRead) {
+                ninjaWebView.pageDownWithNoAnimation()
+            } else {
+                ninjaWebView.pageUpWithNoAnimation()
+            }
             true
         } else {
             false

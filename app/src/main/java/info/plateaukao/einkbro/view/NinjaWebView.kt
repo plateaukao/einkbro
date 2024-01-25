@@ -663,7 +663,7 @@ open class NinjaWebView(
             super.dispatchKeyEvent(event)
         }
 
-    protected var isVerticalRead = false
+    var isVerticalRead = false
     fun toggleVerticalRead() {
         isVerticalRead = !isVerticalRead
         if (isVerticalRead) {
