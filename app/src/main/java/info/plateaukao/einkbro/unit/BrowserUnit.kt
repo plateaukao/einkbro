@@ -237,6 +237,7 @@ object BrowserUnit : KoinComponent {
             }
         }
     }
+
     @JvmStatic
     fun isURL(url: String?): Boolean {
         var url = url ?: return false
@@ -378,7 +379,7 @@ object BrowserUnit : KoinComponent {
             return
         }
         val request = DownloadManager.Request(Uri.parse(url)).apply {
-            addRequestHeader("Cookie", cookie)
+            if (cookie != null) addRequestHeader("Cookie", cookie)
             setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             setTitle(filename)
             setMimeType(mimeType)
@@ -443,7 +444,7 @@ object BrowserUnit : KoinComponent {
         return dir != null && dir.delete()
     }
 
-    private fun guessFilename(url: String, contentDisposition: String, mimeType: String): String {
+    fun guessFilename(url: String, contentDisposition: String, mimeType: String): String {
         val prefix = "filename*=utf-8''"
         val decodedContentDescription = URLDecoder.decode(contentDisposition)
         if (decodedContentDescription.toLowerCase().contains(prefix)) {
@@ -456,6 +457,14 @@ object BrowserUnit : KoinComponent {
             return contentDisposition.substring(
                 index + anotherPrefix.length,
                 contentDisposition.length - 1
+            )
+        }
+        val anotherPrefix2 = "filename="
+        if (contentDisposition.contains(anotherPrefix2)) {
+            val index = contentDisposition.indexOf(anotherPrefix2)
+            return contentDisposition.substring(
+                index + anotherPrefix2.length,
+                contentDisposition.length
             )
         }
 
