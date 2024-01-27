@@ -14,15 +14,15 @@ def showUpdateButton() {
 }
 
 android {
-    compileSdk 33
-    buildToolsVersion = '33.0.0'
+    compileSdk 34
+    buildToolsVersion = '34.0.0'
 
     defaultConfig {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 26
-        targetSdkVersion 33
-        versionCode 11_02_00
-        versionName "11.2.0"
+        targetSdkVersion 34
+        versionCode 11_03_00
+        versionName "11.3.0"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
