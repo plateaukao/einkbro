@@ -321,7 +321,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
 
         downloadReceiver = createDownloadReceiver(this)
-        registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE),
+                RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
+        }
+
         dispatchIntent(intent)
         // after dispatching intent, the value should be reset to false
         shouldLoadTabState = false
