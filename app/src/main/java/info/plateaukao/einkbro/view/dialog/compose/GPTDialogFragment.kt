@@ -39,9 +39,9 @@ import info.plateaukao.einkbro.viewmodel.GptViewModel
 
 
 class GPTDialogFragment(
-    private val gptActionInfo: ChatGPTActionInfo,
     private val gptViewModel: GptViewModel,
     private val anchorPoint: Point,
+    private val gptActionInfo: ChatGPTActionInfo? = null,
     private val hasBackgroundColor: Boolean = false,
     private val onTranslateClick: () -> Unit = {},
     private val onDismissed: () -> Unit = {}
@@ -49,10 +49,23 @@ class GPTDialogFragment(
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            GptResponse(gptViewModel, hasBackgroundColor, onTranslateClick) {
+            GptResponse(
+                gptViewModel, hasBackgroundColor,
+                this::switchGptAction,
+                onTranslateClick
+            ) {
                 dismiss()
             }
         }
+    }
+
+    private fun switchGptAction(gptViewModel: GptViewModel) {
+        val gptActionList = config.gptActionList
+        val index = gptActionList.indexOf(gptViewModel.gptActionInfo)
+        gptViewModel.gptActionInfo = gptActionList[(index + 1) % gptActionList.size]
+        config.gptActionForExternalSearch = gptViewModel.gptActionInfo
+        gptViewModel.updateInputMessage(gptViewModel.inputMessage.value)
+        gptViewModel.query()
     }
 
     override fun onCreateView(
@@ -63,7 +76,8 @@ class GPTDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         setupDialogPosition(anchorPoint)
 
-        gptViewModel.gptActionInfo = gptActionInfo
+        gptViewModel.gptActionInfo =
+            gptActionInfo ?: config.gptActionForExternalSearch ?: config.gptActionList.first()
         gptViewModel.query()
 
         if (hasBackgroundColor) {
@@ -84,9 +98,11 @@ class GPTDialogFragment(
 private fun GptResponse(
     gptViewModel: GptViewModel,
     hasBackgroundColor: Boolean,
+    onChangeGptAction: (GptViewModel) -> Unit,
     onTranslateClick: () -> Unit = {},
     closeClick: () -> Unit = {}
 ) {
+    val iconSize = 40.dp
     val showControls by gptViewModel.showControls.collectAsState()
     val requestMessage by gptViewModel.inputMessage.collectAsState()
     val responseMessage by gptViewModel.responseMessage.collectAsState()
@@ -136,7 +152,7 @@ private fun GptResponse(
                         contentDescription = "Retry Icon",
                         tint = MaterialTheme.colors.onBackground,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(iconSize)
                             .padding(5.dp)
                             .clickable {
                                 gptViewModel.updateInputMessage(gptViewModel.inputMessage.value)
@@ -148,16 +164,25 @@ private fun GptResponse(
                         contentDescription = "Copy text",
                         tint = MaterialTheme.colors.onBackground,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(iconSize)
                             .padding(5.dp)
                             .clickable { clipboardManager.text = responseMessage }
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_chat_gpt),
+                        contentDescription = "Translate Icon",
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .size(iconSize)
+                            .padding(5.dp)
+                            .clickable { onChangeGptAction(gptViewModel) }
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_translate),
                         contentDescription = "Translate Icon",
                         tint = MaterialTheme.colors.onBackground,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(iconSize)
                             .padding(5.dp)
                             .clickable { onTranslateClick(); closeClick() }
                     )
@@ -168,7 +193,7 @@ private fun GptResponse(
                         contentDescription = "Info Icon",
                         tint = MaterialTheme.colors.onBackground,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(iconSize)
                             .padding(5.dp)
                             .clickable { showRequest.value = !showRequest.value }
                     )
@@ -177,7 +202,7 @@ private fun GptResponse(
                         contentDescription = "Close Icon",
                         tint = MaterialTheme.colors.onBackground,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(iconSize)
                             .padding(5.dp)
                             .clickable { closeClick() }
                     )

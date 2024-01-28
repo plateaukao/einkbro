@@ -54,7 +54,6 @@ class DictActivity : AppCompatActivity() {
         gptViewModel.updateInputMessage(text)
         if (gptViewModel.hasApiKey()) {
             GPTDialogFragment(
-                gptActionInfo = config.gptActionList.first(),
                 gptViewModel,
                 Point(50, 50),
                 hasBackgroundColor = true,

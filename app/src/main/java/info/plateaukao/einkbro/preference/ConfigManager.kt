@@ -493,6 +493,21 @@ class ConfigManager(
             }
         }
 
+    var gptActionForExternalSearch: ChatGPTActionInfo?
+        get() {
+            val str = sp.getString(K_GPT_ACTION_EXTERNAL, "") ?: ""
+            return if (str.isBlank()) null
+            else str.convertToDataClass<ChatGPTActionInfo>()
+        }
+        set(value) {
+            sp.edit {
+                putString(
+                    K_GPT_ACTION_EXTERNAL,
+                    Json.encodeToString(value)
+                )
+            }
+        }
+
     fun addGptAction(action: ChatGPTActionInfo) {
         gptActionList = gptActionList.toMutableList().apply { add(action) }
     }
@@ -679,6 +694,7 @@ class ConfigManager(
 
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
         private const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
+        private const val K_GPT_ACTION_EXTERNAL = "sp_gpt_action_external"
 
         private const val K_GPT_SERVER_URL = "sp_gpt_server_url"
         private const val K_USE_CUSTOM_GPT_URL = "sp_use_custom_gpt_url"
