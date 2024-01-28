@@ -22,7 +22,7 @@ class ToolbarActionHandler(
 
     fun handleLongClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
         ToolbarAction.Back -> browserController.openHistoryPage(5)
-        ToolbarAction.Refresh -> browserController.fullscreen()
+        ToolbarAction.Refresh -> browserController.toggleFullscreen()
         ToolbarAction.Touch -> TouchAreaDialogFragment().show(
             activity.supportFragmentManager,
             "TouchAreaDialog"
@@ -74,7 +74,7 @@ class ToolbarActionHandler(
         ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
         ToolbarAction.IncreaseFont -> browserController.increaseFontSize()
         ToolbarAction.DecreaseFont -> browserController.decreaseFontSize()
-        ToolbarAction.FullScreen -> browserController.fullscreen()
+        ToolbarAction.FullScreen -> browserController.toggleFullscreen()
         ToolbarAction.Forward -> browserController.goForward()
         ToolbarAction.RotateScreen -> browserController.rotateScreen()
         ToolbarAction.Translation -> browserController.showTranslation()

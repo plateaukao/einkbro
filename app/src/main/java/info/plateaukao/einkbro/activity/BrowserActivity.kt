@@ -322,8 +322,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         downloadReceiver = createDownloadReceiver(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE),
-                RECEIVER_NOT_EXPORTED)
+            registerReceiver(
+                downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE),
+                RECEIVER_NOT_EXPORTED
+            )
         } else {
             registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
         }
@@ -1863,7 +1865,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
                 if (scrollY in (oldScrollY + 1)..cutoff) {
                     if (!keepToolbar) {
-                        fullscreen()
+                        toggleFullscreen()
                     } else {
                         keepToolbar = false
                     }
@@ -2121,7 +2123,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
 
-                KeyEvent.KEYCODE_F -> fullscreen()
+                KeyEvent.KEYCODE_F -> toggleFullscreen()
 
                 else -> return false
             }
@@ -2328,20 +2330,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     @SuppressLint("RestrictedApi")
     private fun showToolbar() {
-        if (!searchOnSite) {
-            showStatusBar()
-            fabImageViewController.hide()
-            binding.mainSearchPanel.visibility = INVISIBLE
-            binding.appBar.visibility = VISIBLE
-            binding.contentSeparator.visibility = VISIBLE
-            binding.inputUrl.visibility = INVISIBLE
-            composeToolbarViewController.show()
-            hideKeyboard()
-        }
+        if (searchOnSite) return
+
+        showStatusBar()
+        fabImageViewController.hide()
+        binding.mainSearchPanel.visibility = INVISIBLE
+        binding.appBar.visibility = VISIBLE
+        binding.contentSeparator.visibility = VISIBLE
+        binding.inputUrl.visibility = INVISIBLE
+        composeToolbarViewController.show()
+        hideKeyboard()
     }
 
-    override fun fullscreen() {
-        if (!searchOnSite) {
+    override fun toggleFullscreen() {
+        if (searchOnSite) return
+
+        if (binding.appBar.visibility == VISIBLE) {
             if (config.fabPosition != FabPosition.NotShow) {
                 fabImageViewController.show()
             }
@@ -2349,6 +2353,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             binding.appBar.visibility = GONE
             binding.contentSeparator.visibility = GONE
             hideStatusBar()
+        } else {
+            showToolbar()
         }
     }
 

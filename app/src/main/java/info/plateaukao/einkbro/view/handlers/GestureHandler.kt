@@ -23,7 +23,7 @@ class GestureHandler(
         GestureType.PageDown -> browserController.pageDown()
         GestureType.Bookmark -> browserController.openBookmarkPage()
         GestureType.Back -> browserController.handleBackKey()
-        GestureType.Fullscreen -> browserController.fullscreen()
+        GestureType.Fullscreen -> browserController.toggleFullscreen()
         GestureType.Refresh -> browserController.refreshAction()
         GestureType.Menu -> browserController.showMenuDialog()
         GestureType.TouchPagination -> browserController.toggleTouchPagination()

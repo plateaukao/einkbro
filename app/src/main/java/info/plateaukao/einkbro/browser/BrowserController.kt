@@ -44,7 +44,7 @@ interface BrowserController {
     //for tool bar long click
     fun openHistoryPage(amount: Int = 0)
     fun showTranslationConfigDialog()
-    fun fullscreen()
+    fun toggleFullscreen()
 
     // toolbar click
     fun focusOnInput()
