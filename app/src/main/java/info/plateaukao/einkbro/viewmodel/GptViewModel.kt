@@ -39,6 +39,10 @@ class GptViewModel : ViewModel(), KoinComponent {
         _responseMessage.value = "..."
     }
 
+    fun updateResponseMessage(message: String) {
+        _responseMessage.value = message
+    }
+
     fun query(
         userMessage: String? = null,
     ) {

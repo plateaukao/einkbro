@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -31,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -111,10 +114,13 @@ private fun GptResponse(
     val clipboardManager =
         LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
+    val scrollState = rememberScrollState()
+
     Box {
         Column(
             modifier = Modifier
                 .defaultMinSize(minWidth = 200.dp)
+                .verticalScroll(scrollState)
                 .wrapContentHeight()
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -209,6 +215,22 @@ private fun GptResponse(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun GptResponsePreview() {
+    val gptViewModel = GptViewModel()
+    gptViewModel.updateResponseMessage("Hello World\nHello World\n".repeat(100))
+    MyTheme {
+        GptResponse(
+            gptViewModel = gptViewModel,
+            hasBackgroundColor = false,
+            onChangeGptAction = {},
+            onTranslateClick = {},
+            closeClick = {}
+        )
     }
 }
 
