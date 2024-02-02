@@ -9,6 +9,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -114,7 +116,9 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                     NavHost(
                         navController = navController,
                         startDestination = Main.name,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        enterTransition = { EnterTransition.None },
+                        exitTransition = { ExitTransition.None },
                     ) {
                         val action = this@SettingActivity::handleLink
                         composable(Main.name) {
