@@ -11,7 +11,7 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
     private val config: ConfigManager by inject()
 
     suspend fun show(): TranslationLanguage? {
-        val languages = TranslationLanguage.values().map { it.language }
+        val languages = TranslationLanguage.entries.map { it.language }
 
         val selectedIndex = ListSettingWithNameDialog(
             context,
@@ -26,7 +26,7 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
 
     suspend fun showDualCaptionLocale() {
         // add support for "None" option
-        val languages = TranslationLanguage.values().map { it.language }
+        val languages = TranslationLanguage.entries.map { it.language }
             .toMutableList().apply { add(0, "None") }
 
         val selectedIndex = ListSettingWithNameDialog(
@@ -39,7 +39,7 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
         if (selectedIndex == 0) {
             config.dualCaptionLocale = ""
         } else {
-            config.dualCaptionLocale = TranslationLanguage.values()[selectedIndex - 1].value
+            config.dualCaptionLocale = TranslationLanguage.entries[selectedIndex - 1].value
         }
     }
 
