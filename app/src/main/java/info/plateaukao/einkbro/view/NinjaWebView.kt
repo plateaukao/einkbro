@@ -959,7 +959,7 @@ open class NinjaWebView(
                 //console.log("Element ID:", elementId, "Response string:", responseString);
                 node = document.getElementById(elementId).nextElementSibling;
                 node.textContent = responseString;
-                node.style = "border: 1px dashed ; padding: 5px; display: inline-block"
+                node.style = "border: 1px dashed lightgray; padding: 5px; display: inline-block"
             }
             
             // Create a new IntersectionObserver object
