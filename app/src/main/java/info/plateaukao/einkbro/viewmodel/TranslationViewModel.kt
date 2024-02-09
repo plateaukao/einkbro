@@ -169,7 +169,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             // for locating element's position
             node.id(index.toString())
             // for later inserting translated text
-            node.after(Element("p").apply { addClass("einkbro_translated") })
+            node.after(Element("p"))
         }
         // add observer
         val script: Element = parsedHtml.createElement("script")

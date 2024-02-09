@@ -1298,19 +1298,21 @@ highlightSelection();
                   child.getAttribute("data-tiara-action-name") === "헤드글씨크기_클릭" ||
                   child.innerText === "original link"
                 ) {
-                  break;
+                  continue;
                 }
                 if(child.tagName === "SCRIPT") {
-                  break;
+                  continue;
                 }
-
+                if (child.closest('a, img, button')) {
+                  continue;
+                }
                 if (
-                  ["p", "h1", "h2", "h3", "h4", "h5", "h6", "span"].includes(child.tagName.toLowerCase()) ||
+                  ["p", "h1", "h2", "h3", "h4", "h5", "h6", "span", "strong"].includes(child.tagName.toLowerCase()) ||
                   (child.children.length == 0 && child.innerText != "")
                 ) {
                   if (child.innerText !== "") {
                     injectTranslateTag(child);
-                    //console.log(child.textContent);
+                    console.log(child.textContent + "\n\n");
                     result.push(child);
                   }
                 } else {
