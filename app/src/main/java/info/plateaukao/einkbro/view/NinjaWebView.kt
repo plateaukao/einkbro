@@ -1303,7 +1303,7 @@ highlightSelection();
                 if(child.tagName === "SCRIPT") {
                   continue;
                 }
-                if (child.closest('a, img, button')) {
+                if (child.closest('img, button')) {
                   continue;
                 }
                 if (
