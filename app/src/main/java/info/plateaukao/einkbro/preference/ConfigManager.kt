@@ -211,25 +211,25 @@ class ConfigManager(
     var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
 
     var fabPosition: FabPosition
-        get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
+        get() = FabPosition.entries[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
             sp.edit { putString(K_NAV_POSITION, value.ordinal.toString()) }
         }
 
     var touchAreaType: TouchAreaType
-        get() = TouchAreaType.values()[sp.getInt(K_TOUCH_AREA_TYPE, 0)]
+        get() = TouchAreaType.entries[sp.getInt(K_TOUCH_AREA_TYPE, 0)]
         set(value) {
             sp.edit(true) { putInt(K_TOUCH_AREA_TYPE, value.ordinal) }
         }
 
     var pdfPaperSize: PaperSize
-        get() = PaperSize.values()[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
+        get() = PaperSize.entries[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
         set(value) {
             sp.edit { putInt("pdf_paper_size", value.ordinal) }
         }
 
     var translationLanguage: TranslationLanguage
-        get() = TranslationLanguage.values()[sp.getInt(
+        get() = TranslationLanguage.entries[sp.getInt(
             K_TRANSLATE_LANGUAGE,
             getDefaultTranslationLanguage().ordinal
         )]
@@ -238,7 +238,7 @@ class ConfigManager(
         }
 
     var sourceLanguage: TranslationLanguage
-        get() = TranslationLanguage.values()[sp.getInt(
+        get() = TranslationLanguage.entries[sp.getInt(
             K_SOURCE_LANGUAGE,
             TranslationLanguage.KO.ordinal
         )]
@@ -247,7 +247,7 @@ class ConfigManager(
         }
 
     var translationOrientation: Orientation
-        get() = Orientation.values()[sp.getInt(
+        get() = Orientation.entries[sp.getInt(
             K_TRANSLATE_ORIENTATION,
             Orientation.Horizontal.ordinal
         )]
@@ -385,18 +385,18 @@ class ConfigManager(
         }
 
     var fontType: FontType
-        get() = FontType.values()[sp.getInt(K_FONT_TYPE, 0)]
+        get() = FontType.entries[sp.getInt(K_FONT_TYPE, 0)]
         set(value) = sp.edit { putInt(K_FONT_TYPE, value.ordinal) }
     var readerFontType: FontType
-        get() = FontType.values()[sp.getInt(K_READER_FONT_TYPE, fontType.ordinal)]
+        get() = FontType.entries[sp.getInt(K_READER_FONT_TYPE, fontType.ordinal)]
         set(value) = sp.edit { putInt(K_READER_FONT_TYPE, value.ordinal) }
 
     var translationMode: TranslationMode
-        get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, 6)]
+        get() = TranslationMode.entries[sp.getInt(K_TRANSLATION_MODE, 6)]
         set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal) }
 
     var highlightStyle: HighlightStyle
-        get() = HighlightStyle.values()[sp.getInt(K_HIGHLIGHT_STYLE, 0)]
+        get() = HighlightStyle.entries[sp.getInt(K_HIGHLIGHT_STYLE, 0)]
         set(value) = sp.edit { putInt(K_HIGHLIGHT_STYLE, value.ordinal) }
 
     var adSites: MutableSet<String>
@@ -408,11 +408,11 @@ class ConfigManager(
         set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value)) }
 
     var darkMode: DarkMode
-        get() = DarkMode.values()[sp.getString(K_DARK_MODE, "2")?.toInt() ?: 2]
+        get() = DarkMode.entries[sp.getString(K_DARK_MODE, "2")?.toInt() ?: 2]
         set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
 
     var newTabBehavior: NewTabBehavior
-        get() = NewTabBehavior.values()[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
+        get() = NewTabBehavior.entries[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_NEW_TAB_BEHAVIOR, value.ordinal.toString()) }
 
     var fabCustomPosition: Point
