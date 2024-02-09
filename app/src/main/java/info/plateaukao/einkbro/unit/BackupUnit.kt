@@ -137,7 +137,7 @@ class BackupUnit(
                     JSONArray(contentString).toJSONObjectList().map { json -> json.toBookmark() }
                 } else {
                     //parseHtmlToBookmarkList(contentString)
-                    parse(contentString)
+                    parseChromeBookmarks(contentString)
                 }
 
                 if (bookmarks.isNotEmpty()) {
@@ -167,22 +167,8 @@ class BackupUnit(
         }
     }
 
-    private fun parseHtmlToBookmarkList(html: String): List<Bookmark> {
-        val doc = Jsoup.parse(html)
-        val bookmarkList = mutableListOf<Bookmark>()
-        val bookmarkElements = doc.select("a")
-        for (bookmarkElement in bookmarkElements) {
-            val bookmark = Bookmark(
-                bookmarkElement.text(),
-                bookmarkElement.attr("href"),
-            )
-            bookmarkList.add(bookmark)
-        }
-        return bookmarkList
-    }
-
     private var recordId = 0
-    fun parse(html: String): List<Bookmark> {
+    private fun parseChromeBookmarks(html: String): List<Bookmark> {
         val doc = Jsoup.parse(html)
         val bookmarks = dlElement(doc.select("DL").first()!!.children(), recordId)
         recordId = 0

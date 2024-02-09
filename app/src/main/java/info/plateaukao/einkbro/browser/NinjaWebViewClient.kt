@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.browser
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -123,10 +122,6 @@ class NinjaWebViewClient(
                 || url.contains("papago.naver.com") || url.contains("translate.google.com")
     }
 
-    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean =
-        handleUri(view, Uri.parse(url))
-
-    @TargetApi(Build.VERSION_CODES.N)
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
         handleUri(view, request.url)
 
