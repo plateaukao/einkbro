@@ -18,8 +18,10 @@ import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.DataNode
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.TextNode
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.Locale
 
 class TranslationViewModel : ViewModel(), KoinComponent {
     private val translateRepository = TranslateRepository()
@@ -167,7 +169,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             // for locating element's position
             node.id(index.toString())
             // for later inserting translated text
-            node.after(Element("p"))
+            node.after(Element("p").apply { addClass("einkbro_translated") })
         }
         // add observer
         val script: Element = parsedHtml.createElement("script")
@@ -183,7 +185,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     ): List<Element> {
         val result = mutableListOf<Element>()
         for (node in element.textNodes()) {
-            if (node.text().isNotBlank()) {
+            if (node.text().isNotBlank() && !node.hasUnwantedParent()) {
                 val textElement = Element("p").apply { text(node.text()) }
                 node.replaceWith(textElement)
                 result += textElement
@@ -197,11 +199,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                 node.text("")
                 break
             }
-            if (node.tagName().toLowerCase() in listOf("head")) {
-                continue
-            }
             if ((node.children().size == 0 && node.text().isNotBlank()) ||
-                node.tagName().toLowerCase() in listOf(
+                node.tagName().lowercase(Locale.ROOT) in listOf(
+                    "strong",
+                    "span",
                     "p",
                     "h1",
                     "h2",
@@ -212,10 +213,6 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     "em"
                 )
             ) {
-                // filter image cases
-                if (node.children().map { it.tagName() }.any { it.toLowerCase() == "img" }) {
-                    continue
-                }
                 if (node.text().isNotEmpty()) {
                     result += node
                 }
@@ -224,6 +221,26 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             }
         }
         return result
+    }
+
+    private fun Element.hasUnwantedParent(): Boolean {
+        if (this.tagName().lowercase() in listOf("img", "button", "head")) {
+            return true
+        }
+
+        var parent = this.parent()
+        while (parent != null) {
+            if (parent.tagName().lowercase() in listOf("img", "button", "head")) {
+                return true
+            }
+            parent = parent.parent()
+        }
+        return false
+    }
+
+    private fun TextNode.hasUnwantedParent(): Boolean {
+        val parentElement: Element? = this.parent() as? Element
+        return parentElement?.hasUnwantedParent() ?: false
     }
 }
 
