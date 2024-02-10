@@ -1300,10 +1300,7 @@ highlightSelection();
                 ) {
                   continue;
                 }
-                if(child.tagName === "SCRIPT") {
-                  continue;
-                }
-                if (child.closest('img, button')) {
+                if (child.closest('img, button, code') || child.tagName === "SCRIPT") {
                   continue;
                 }
                 if (
