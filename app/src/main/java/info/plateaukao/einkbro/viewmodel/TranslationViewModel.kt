@@ -213,7 +213,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     "em"
                 )
             ) {
-                if (node.text().isNotEmpty()) {
+                if (node.text().isNotEmpty() && !node.hasUnwantedParent()) {
                     result += node
                 }
             } else {
@@ -224,13 +224,13 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     private fun Element.hasUnwantedParent(): Boolean {
-        if (this.tagName().lowercase() in listOf("img", "button", "head")) {
+        if (this.tagName().lowercase() in listOf("img", "button", "head", "code")) {
             return true
         }
 
         var parent = this.parent()
         while (parent != null) {
-            if (parent.tagName().lowercase() in listOf("img", "button", "head")) {
+            if (parent.tagName().lowercase() in listOf("img", "button", "head", "code")) {
                 return true
             }
             parent = parent.parent()
