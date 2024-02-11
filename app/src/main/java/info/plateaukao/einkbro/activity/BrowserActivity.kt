@@ -379,13 +379,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initExternalSearchCloseButton() {
         val externalSearchCloseButton = findViewById<ImageButton>(R.id.external_search_close)
+        val externalSearchSwitchButton = findViewById<ImageButton>(R.id.external_search_switch)
         externalSearchCloseButton.setOnClickListener {
             moveTaskToBack(true)
-            externalSearchViewModel.toggleButtonVisibility(false)
+            externalSearchViewModel.setButtonVisibility(false)
+        }
+        externalSearchSwitchButton.setOnClickListener {
+            externalSearchViewModel.switchSearchItem()
+            ninjaWebView.loadUrl(externalSearchViewModel.generateSearchUrl())
         }
         lifecycleScope.launch {
             externalSearchViewModel.showButton.collect { show ->
                 externalSearchCloseButton.visibility = if (show) VISIBLE else INVISIBLE
+                if (externalSearchViewModel.hasMoreSearchItems()) {
+                    externalSearchSwitchButton.visibility = if (show) VISIBLE else INVISIBLE
+                }
             }
         }
     }
@@ -960,7 +968,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             (if (ninjaWebView.isTranslatePage) VISIBLE else GONE)
 
         // when showing a new album, should turn off externalSearch button visibility
-        externalSearchViewModel.toggleButtonVisibility(false)
+        externalSearchViewModel.setButtonVisibility(false)
         runOnUiThread {
             composeToolbarViewController.updateFocusIndex(
                 albumViewModel.albums.value.indexOfFirst { it.isActivated }
@@ -1221,25 +1229,27 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Intent.ACTION_PROCESS_TEXT -> {
                 initSavedTabs()
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
-                val url = config.customProcessTextUrl + text
+                val url = externalSearchViewModel.generateSearchUrl(text)
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
                     addAlbum(url = url)
                 }
                 // set minimize button visible
-                externalSearchViewModel.toggleButtonVisibility(true)
+                externalSearchViewModel.setButtonVisibility(true)
             }
 
             ACTION_DICT -> {
                 val text = intent.getStringExtra("EXTRA_QUERY") ?: return
                 initSavedTabs()
-                val url = config.customProcessTextUrl + text
-                if (this::ninjaWebView.isInitialized && config.isExternalSearchInSameTab) {
+                val url = externalSearchViewModel.generateSearchUrl(text)
+                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
                     addAlbum(url = url)
                 }
+                // set minimize button visible
+                externalSearchViewModel.setButtonVisibility(true)
             }
 
             else -> {

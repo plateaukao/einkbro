@@ -231,4 +231,15 @@
         android:src="@drawable/ic_minimize"
         android:visibility="invisible"
         app:tint="?attr/colorControlNormal" />
+    <ImageButton
+        android:id="@+id/external_search_switch"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/external_search_close"
+        android:layout_margin="0.5dp"
+        android:background="@drawable/background_with_border"
+        android:src="@drawable/icon_search"
+        android:visibility="invisible"
+        app:tint="?attr/colorControlNormal" />
 </RelativeLayout>

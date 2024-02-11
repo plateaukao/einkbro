@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.service
 
 import android.graphics.Bitmap
 import android.util.Base64
+import android.util.Log
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -201,15 +202,16 @@ class TranslateRepository : KoinComponent {
                 )
                 .build()
 
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) return@use null
+            try {
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) return@use null
 
-                try {
                     val body = JSONObject(response.body?.string() ?: return@use null)
                     body.getString("translatedText")
-                } catch (e: Exception) {
-                    null
                 }
+            } catch (e: Exception) {
+                Log.d("TranslateRepository", "ppTranslate: $e")
+                null
             }
         }
     }

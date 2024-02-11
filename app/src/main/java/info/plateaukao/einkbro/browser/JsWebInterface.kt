@@ -34,19 +34,20 @@ class JsWebInterface(private val webView: NinjaWebView) :
 
         GlobalScope.launch(Dispatchers.IO) {
             semaphoreForTranslate.acquire()
+            Log.d("JsWebInterface", "getTranslation: $originalText")
             val translatedString = if (translateApi == TRANSLATE_API.PAPAGO) {
                 translateRepository.ppTranslate(
                     originalText,
                     configManager.translationLanguage.value,
-                )
+                ) ?: ""
             } else {
                 translateRepository.gTranslateWithApi(
                     originalText,
                     configManager.translationLanguage.value
                 )
-            }
+            } ?: ""
             withContext(Dispatchers.Main) {
-                if (webView.isAttachedToWindow) {
+                if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
                     webView.evaluateJavascript(
                         "$callback('$elementId', '$translatedString')",
                         null
