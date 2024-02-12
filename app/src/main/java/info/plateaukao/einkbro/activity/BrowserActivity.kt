@@ -25,6 +25,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Message
 import android.view.ActionMode
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.Menu
@@ -152,6 +153,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.File
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.max
@@ -377,23 +379,34 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initExternalSearchCloseButton() {
-        val externalSearchCloseButton = findViewById<ImageButton>(R.id.external_search_close)
-        val externalSearchSwitchButton = findViewById<ImageButton>(R.id.external_search_switch)
-        externalSearchCloseButton.setOnClickListener {
+        binding.activityMainContent.externalSearchClose.setOnClickListener {
             moveTaskToBack(true)
             externalSearchViewModel.setButtonVisibility(false)
         }
-        externalSearchSwitchButton.setOnClickListener {
-            externalSearchViewModel.switchSearchItem()
-            ninjaWebView.loadUrl(externalSearchViewModel.generateSearchUrl())
+        val externalSearchContainer = binding.activityMainContent.externalSearchActionContainer
+        externalSearchViewModel.searchActions.forEach { action ->
+            val button = TextView(this).apply {
+                height = ViewUnit.dpToPixel(this@BrowserActivity, 40).toInt()
+                textSize = ViewUnit.dpToPixel(this@BrowserActivity, 10)
+                gravity = Gravity.CENTER
+                background = getDrawable(R.drawable.background_with_border)
+                text = action.title.take(2).uppercase(Locale.getDefault())
+                setOnClickListener {
+                    externalSearchViewModel.currentSearchAction = action
+                    ninjaWebView.loadUrl(
+                        externalSearchViewModel.generateSearchUrl(
+                            splitSearchItemInfo = action
+                        )
+                    )
+                }
+            }
+            externalSearchContainer.addView(button, 0)
         }
         lifecycleScope.launch {
             externalSearchViewModel.showButton.collect { show ->
-                externalSearchCloseButton.visibility = if (show) VISIBLE else INVISIBLE
-                if (externalSearchViewModel.hasMoreSearchItems()) {
-                    externalSearchSwitchButton.visibility = if (show) VISIBLE else INVISIBLE
-                }
+                externalSearchContainer.visibility = if (show) VISIBLE else INVISIBLE
             }
         }
     }
@@ -1218,7 +1231,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Intent.ACTION_SEND -> {
                 initSavedTabs()
                 val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
-                val url = config.customProcessTextUrl + sentKeyword
+                val url = externalSearchViewModel.generateSearchUrl(sentKeyword)
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
