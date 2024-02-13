@@ -462,7 +462,7 @@ class ConfigManager(
 
     fun deleteSplitSearchItem(item: SplitSearchItemInfo) {
         val list = splitSearchItemInfoList.toMutableList()
-        list.remove(item)
+        list.remove(list.first { it.title == item.title })
         splitSearchItemInfoList = list
     }
 

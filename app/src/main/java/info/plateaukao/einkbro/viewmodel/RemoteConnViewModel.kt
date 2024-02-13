@@ -19,8 +19,7 @@ class RemoteConnViewModel : ViewModel(), KoinComponent {
     private val _remoteConnected = MutableStateFlow(false)
     val remoteConnected: StateFlow<Boolean> = _remoteConnected.asStateFlow()
 
-    fun sendTextSearch(text: String) {
-        val url = config.splitSearchItemInfoList.first().stringPattern.format(text)
+    fun sendTextSearch(url: String) {
         ShareUtil.startBroadcastingUrl(viewModelScope, url, 10)
     }
 
