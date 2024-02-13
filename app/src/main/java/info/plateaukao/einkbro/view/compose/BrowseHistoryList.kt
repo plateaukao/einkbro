@@ -1,29 +1,38 @@
 package info.plateaukao.einkbro.view.compose
 
 import android.graphics.Bitmap
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import android.text.TextUtils
+import android.widget.TextView
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import info.plateaukao.einkbro.database.Record
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordType
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -100,16 +109,30 @@ private fun RecordItem(
                 tint = MaterialTheme.colors.onBackground
             )
         }
-        Text(
-            modifier = Modifier
-                .weight(1F)
-                .align(Alignment.CenterVertically),
-            text = record.title ?: "Unknown",
-            fontSize = 18.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colors.onBackground,
-        )
+        Box(
+            Modifier.weight(1F)
+                .align(Alignment.CenterVertically)
+        ) {
+            AndroidView(
+                factory = { context ->
+                    TextView(context).apply {
+                        maxLines = 1
+                        ellipsize = TextUtils.TruncateAt.MIDDLE
+                    }
+                },
+                update = { it.text = record.title ?: "Unknown" }
+            )
+        }
+//        Text(
+//            modifier = Modifier
+//                .weight(1F)
+//                .align(Alignment.CenterVertically),
+//            text = record.title ?: "Unknown",
+//            fontSize = 18.sp,
+//            maxLines = 1,
+//            overflow = TextOverflow.Ellipsis,
+//            color = MaterialTheme.colors.onBackground,
+//        )
         Text(
             modifier = Modifier
                 .wrapContentSize()
