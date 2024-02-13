@@ -20,6 +20,16 @@
             android:orientation="vertical"
             tools:ignore="UseCompoundDrawables">
 
+            <TextView
+                android:id="@+id/menu_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:textSize="16sp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                />
+
             <LinearLayout
                 android:id="@+id/menu_contextList_newTabOpen"
                 android:layout_width="match_parent"

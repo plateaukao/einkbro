@@ -155,6 +155,7 @@ class OverviewDialogController(
         val dialog = dialogManager.showOptionDialog(dialogView.root)
 
         with(dialogView) {
+            menuTitle.text = record.title
             menuContextListEdit.visibility = GONE
             menuContextListNewTab.setOnClickListener {
                 dialog.dismissWithAction {

@@ -3,10 +3,23 @@ package info.plateaukao.einkbro.view.dialog.compose
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -43,7 +56,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
 
 class BookmarksDialogFragment(
     private val lifecycleScope: LifecycleCoroutineScope,
@@ -137,6 +149,7 @@ class BookmarksDialogFragment(
             optionDialog.dismissWithAction { splitScreenAction(bookmark.url); dialog?.dismiss() }
         }
 
+        dialogView.menuTitle.text = bookmark.title
         dialogView.menuContextListEdit.visibility = View.VISIBLE
         dialogView.menuContextListNewTab.setOnClickListener {
             optionDialog.dismissWithAction {
