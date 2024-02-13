@@ -1300,7 +1300,11 @@ highlightSelection();
                 ) {
                   continue;
                 }
-                if (child.closest('img, button, code') || child.tagName === "SCRIPT") {
+                if (child.closest('img, button, code') || child.tagName === "SCRIPT"
+                      || child.classList.contains("screen_out")
+                      || child.classList.contains("blind")
+                      || child.classList.contains("ico_view")
+                ) {
                   continue;
                 }
                 if (
