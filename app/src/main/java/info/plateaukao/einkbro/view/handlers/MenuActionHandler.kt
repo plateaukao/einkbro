@@ -32,6 +32,11 @@ class MenuActionHandler(
     private val browserController = activity as BrowserController
     private val dialogManager by lazy { DialogManager(activity) }
 
+    fun handleLongClick(menuItemType: MenuItemType, ninjaWebView: NinjaWebView) = when (menuItemType) {
+        MenuItemType.Translate -> browserController.showTranslationConfigDialog(false)
+        else -> Unit
+    }
+
     fun handle(menuItemType: MenuItemType, ninjaWebView: NinjaWebView) = when (menuItemType) {
         MenuItemType.Tts -> browserController.toggleTtsRead()
         MenuItemType.QuickToggle -> browserController.showFastToggleDialog()

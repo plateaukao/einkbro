@@ -1,7 +1,9 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -55,7 +57,8 @@ import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Shortcut
 import org.koin.android.ext.android.inject
 
 class MenuDialogFragment(
-    private val itemClicked: (MenuItemType) -> Unit
+    private val itemClicked: (MenuItemType) -> Unit,
+    private val itemLongClicked: (MenuItemType) -> Unit
 ) : ComposeDialogFragment() {
     private val ttsManager: TtsManager by inject()
 
@@ -66,11 +69,10 @@ class MenuDialogFragment(
                 config.blackFontStyle, ttsManager.isSpeaking(),
                 config.showShareSaveMenu, config.showContentMenu,
                 { config::showShareSaveMenu.toggle() },
-                { config::showContentMenu.toggle() }
-            ) { item ->
-                dialog?.dismiss()
-                itemClicked(item)
-            }
+                { config::showContentMenu.toggle() },
+                { dialog?.dismiss(); itemClicked(it) },
+                { itemLongClicked(it) }
+            )
         }
     }
 }
@@ -94,7 +96,8 @@ private fun MenuItems(
     showContentMenu: Boolean,
     toggleShareSaveMenu: () -> Unit,
     toggleContentMenu: () -> Unit,
-    onClicked: (MenuItemType) -> Unit
+    onClicked: (MenuItemType) -> Unit,
+    onLongClicked: (MenuItemType) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -230,7 +233,8 @@ private fun MenuItems(
                 ) { onClicked(MenuItemType.SplitScreen) }
                 MenuItem(
                     R.string.translate,
-                    R.drawable.ic_translate
+                    R.drawable.ic_translate,
+                    onLongClicked = { onLongClicked(MenuItemType.Translate) },
                 ) { onClicked(MenuItemType.Translate) }
                 MenuItem(
                     R.string.vertical_read,
@@ -329,12 +333,14 @@ private fun MenuItems(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MenuItem(
     titleResId: Int,
     iconResId: Int,
     isLargeType: Boolean = false,
     showIcon: Boolean = true,
+    onLongClicked: () -> Unit = {},
     onClicked: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -354,10 +360,12 @@ fun MenuItem(
             .width(width)
             .height(if (isLargeType) 80.dp else 70.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .clickable(
-                indication = null,
+            .combinedClickable(
                 interactionSource = interactionSource,
-            ) { onClicked() },
+                indication = null,
+                onLongClick = { onLongClicked() },
+                onClick = { onClicked() },
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = if (!showIcon) Arrangement.Center else Arrangement.Top
     ) {
@@ -407,7 +415,8 @@ private fun PreviewMenuItems() {
             showShareSaveMenu = false,
             showContentMenu = false,
             {},
-            {}
+            {},
+            {},
         ) {}
     }
 }
