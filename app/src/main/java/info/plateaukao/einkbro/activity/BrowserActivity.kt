@@ -1169,7 +1169,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ACTION_VIEW -> {
                 initSavedTabs()
                 // if webview for that url already exists, show the original tab, otherwise, create new
-                val viewUri = intent.data?.toNormalScheme() ?: Uri.parse(config.favoriteUrl)
+                val viewUri = intent.data?.toNormalScheme() ?: return
                 if (viewUri.scheme == "content") {
                     val (filename, mimetype) = HelperUnit.getFileInfoFromContentUri(this, viewUri)
                     val mimeType = contentResolver.getType(viewUri)
