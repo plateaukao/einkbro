@@ -245,8 +245,8 @@ class TwoPaneController(
 
     }
 
-    fun showTranslationConfigDialog() {
-        val enumValues: List<TranslationMode> = TranslationMode.values().toMutableList().apply {
+    fun showTranslationConfigDialog(translateDirectly: Boolean) {
+        val enumValues: List<TranslationMode> = TranslationMode.entries.toMutableList().apply {
             // remove not supported translation modes
             remove(TranslationMode.ONYX)
             remove(TranslationMode.PAPAGO)
@@ -266,7 +266,7 @@ class TwoPaneController(
             setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
                 dialog.dismiss()
                 config.translationMode = enumValues[which]
-                showTranslationAction.invoke()
+                if (translateDirectly) showTranslationAction.invoke()
             }
         }.create().also {
             it.show()

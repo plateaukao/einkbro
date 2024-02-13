@@ -33,7 +33,7 @@ class ToolbarActionHandler(
         ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
         ToolbarAction.Settings -> browserController.showFastToggleDialog()
         ToolbarAction.Bookmark -> browserController.saveBookmark()
-        ToolbarAction.Translation -> browserController.showTranslationConfigDialog()
+        ToolbarAction.Translation -> browserController.showTranslationConfigDialog(true)
         ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
         ToolbarAction.Tts ->
             TtsSettingDialogFragment { IntentUnit.gotoSystemTtsSettings(activity) }

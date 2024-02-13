@@ -43,7 +43,8 @@ interface BrowserController {
     fun showWebArchiveFilePicker()
     //for tool bar long click
     fun openHistoryPage(amount: Int = 0)
-    fun showTranslationConfigDialog()
+    //
+    fun showTranslationConfigDialog(translateDirectly: Boolean)
     fun toggleFullscreen()
 
     // toolbar click

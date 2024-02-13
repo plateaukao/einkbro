@@ -1422,9 +1422,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun showTranslationConfigDialog() {
+    override fun showTranslationConfigDialog(translateDirectly: Boolean) {
         maybeInitTwoPaneController()
-        twoPaneController.showTranslationConfigDialog()
+        twoPaneController.showTranslationConfigDialog(translateDirectly)
     }
 
     private val preferenceChangeListener =
@@ -2499,8 +2499,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this) }
 
     override fun showMenuDialog() =
-        MenuDialogFragment { menuActionHandler.handle(it, ninjaWebView) }
-            .show(supportFragmentManager, "menu_dialog")
+        MenuDialogFragment(
+            { menuActionHandler.handle(it, ninjaWebView) },
+            { menuActionHandler.handleLongClick(it, ninjaWebView) }
+        ).show(supportFragmentManager, "menu_dialog")
 
     override fun showWebArchiveFilePicker() {
         val fileName = "${ninjaWebView.title}.mht"
