@@ -1231,7 +1231,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Intent.ACTION_SEND -> {
                 initSavedTabs()
                 val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
-                val url = externalSearchViewModel.generateSearchUrl(sentKeyword)
+                val url = if (BrowserUnit.isURL(sentKeyword)) sentKeyword else externalSearchViewModel.generateSearchUrl(sentKeyword)
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
@@ -1249,7 +1249,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     return
                 }
 
-                val url = externalSearchViewModel.generateSearchUrl(text)
+                val url = if (BrowserUnit.isURL(text)) text else externalSearchViewModel.generateSearchUrl(text)
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
