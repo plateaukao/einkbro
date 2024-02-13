@@ -272,9 +272,7 @@ fun SettingScreen(
             item(span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) }) {
                 when (setting) {
                     is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder) {
-                        navController.navigate(
-                            setting.destination.name
-                        )
+                        navController.navigate(setting.destination.name)
                     }
 
                     is ActionSettingItem -> SettingItemUi(

@@ -1242,6 +1242,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Intent.ACTION_PROCESS_TEXT -> {
                 initSavedTabs()
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
+
+                if (remoteConnViewModel.isSendingTextSearch) {
+                    remoteConnViewModel.sendTextSearch(externalSearchViewModel.generateSearchUrl(text))
+                    moveTaskToBack(true)
+                    return
+                }
+
                 val url = externalSearchViewModel.generateSearchUrl(text)
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
@@ -1254,6 +1261,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ACTION_DICT -> {
                 val text = intent.getStringExtra("EXTRA_QUERY") ?: return
+
+                if (remoteConnViewModel.isSendingTextSearch) {
+                    remoteConnViewModel.sendTextSearch(externalSearchViewModel.generateSearchUrl(text))
+                    moveTaskToBack(true)
+                    return
+                }
+
                 initSavedTabs()
                 val url = externalSearchViewModel.generateSearchUrl(text)
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
@@ -2560,23 +2574,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (remoteConnViewModel.isSendingTextSearch &&
             !isTextEditMode(mode.menu)
         ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mode.hide(1000000)
-            }
+            mode.hide(1000000)
             mode.menu.clear()
             mode.finish()
 
             lifecycleScope.launch {
                 val keyword = ninjaWebView.getSelectedText()
-                remoteConnViewModel.sendTextSearch(keyword)
+                remoteConnViewModel.sendTextSearch(externalSearchViewModel.generateSearchUrl(keyword))
             }
             return
         }
 
         if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu) && isInSplitSearchMode()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mode.hide(1000000)
-            }
+            mode.hide(1000000)
             mode.menu.clear()
 
             lifecycleScope.launch {
@@ -2591,11 +2601,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             actionModeMenuViewModel.updateActionMode(mode)
 
             if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mode.hide(1000000)
-                    mode.menu.clear()
-                    mode.finish()
-                }
+                mode.hide(1000000)
+                mode.menu.clear()
+                mode.finish()
 
                 lifecycleScope.launch {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())

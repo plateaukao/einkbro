@@ -121,7 +121,13 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                         exitTransition = { ExitTransition.None },
                     ) {
                         val action = this@SettingActivity::handleLink
-                        composable(Main.name) {
+                        composable(
+                            Main.name,
+                            enterTransition = { EnterTransition.None },
+                            exitTransition = { ExitTransition.None },
+                            popEnterTransition = { EnterTransition.None },
+                            popExitTransition = { ExitTransition.None },
+                        ) {
                             SettingScreen(navController, mainSettings, dialogManager, action, 2)
                         }
                         composable(Ui.name) {
@@ -729,7 +735,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.ic_highlight,
             R.string.setting_summary_highlight_style,
             config = config::highlightStyle,
-            options = HighlightStyle.values().filter { it != HighlightStyle.BACKGROUND_NONE }
+            options = HighlightStyle.entries.filter { it != HighlightStyle.BACKGROUND_NONE }
                 .map { it.stringResId },
         ),
         NavigateSettingItem(
