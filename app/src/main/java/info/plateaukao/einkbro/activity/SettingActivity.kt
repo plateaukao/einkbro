@@ -505,6 +505,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             config::useUpDownPageTurn,
         ),
         BooleanSettingItem(
+            R.string.setting_title_show_bookmarks_input_bar,
+            R.drawable.icon_edit,
+            R.string.setting_summary_show_bookmarks_input_bar,
+            config::showBookmarksInInputBar,
+        ),
+        BooleanSettingItem(
             R.string.setting_title_enable_ssl_error_dialog,
             R.drawable.icon_settings,
             R.string.setting_summary_enable_ssl_error_dialog,
