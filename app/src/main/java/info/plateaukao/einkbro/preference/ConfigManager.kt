@@ -90,6 +90,7 @@ class ConfigManager(
     var enableCertificateErrorDialog by BooleanPreference(sp, CERTIFICATE_ERROR_DIALOG, true)
     var closeTabWhenNoMoreBackHistory by BooleanPreference(sp, K_CLOSE_TAB_WHEN_BACK, true)
     var enableCustomUserAgent by BooleanPreference(sp, K_ENABLE_CUSTOM_USER_AGENT, false)
+    var showBookmarksInInputBar by BooleanPreference(sp, K_SHOW_BOOKMARKS_IN_INPUTBAR, false)
 
     var showShareSaveMenu by BooleanPreference(sp, K_SHOW_SHARE_SAVE_MENU, false)
     var showContentMenu by BooleanPreference(sp, K_SHOW_CONTENT_MENU, false)
@@ -635,6 +636,7 @@ class ConfigManager(
         const val K_ENABLE_CUSTOM_USER_AGENT = "sp_custom_user_agent"
         const val K_SHOW_SHARE_SAVE_MENU = "sp_show_share_save_menu"
         const val K_SHOW_CONTENT_MENU = "sp_show_content_menu"
+        const val K_SHOW_BOOKMARKS_IN_INPUTBAR = "sp_show_bookmarks_in_inputbar"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"

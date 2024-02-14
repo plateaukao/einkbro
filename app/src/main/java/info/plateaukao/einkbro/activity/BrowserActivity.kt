@@ -1231,7 +1231,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Intent.ACTION_SEND -> {
                 initSavedTabs()
                 val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
-                val url = if (BrowserUnit.isURL(sentKeyword)) sentKeyword else externalSearchViewModel.generateSearchUrl(sentKeyword)
+                val url =
+                    if (BrowserUnit.isURL(sentKeyword)) sentKeyword else externalSearchViewModel.generateSearchUrl(
+                        sentKeyword
+                    )
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
@@ -1244,12 +1247,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
 
                 if (remoteConnViewModel.isSendingTextSearch) {
-                    remoteConnViewModel.sendTextSearch(externalSearchViewModel.generateSearchUrl(text))
+                    remoteConnViewModel.sendTextSearch(
+                        externalSearchViewModel.generateSearchUrl(
+                            text
+                        )
+                    )
                     moveTaskToBack(true)
                     return
                 }
 
-                val url = if (BrowserUnit.isURL(text)) text else externalSearchViewModel.generateSearchUrl(text)
+                val url =
+                    if (BrowserUnit.isURL(text)) text else externalSearchViewModel.generateSearchUrl(
+                        text
+                    )
                 if (currentAlbumController != null && config.isExternalSearchInSameTab) {
                     ninjaWebView.loadUrl(url)
                 } else {
@@ -1263,7 +1273,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 val text = intent.getStringExtra("EXTRA_QUERY") ?: return
 
                 if (remoteConnViewModel.isSendingTextSearch) {
-                    remoteConnViewModel.sendTextSearch(externalSearchViewModel.generateSearchUrl(text))
+                    remoteConnViewModel.sendTextSearch(
+                        externalSearchViewModel.generateSearchUrl(
+                            text
+                        )
+                    )
                     moveTaskToBack(true)
                     return
                 }
@@ -1971,7 +1985,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             shouldReverse = !config.isToolbarOnTop
             hasCopiedText = getClipboardText().isNotEmpty()
             lifecycleScope.launch {
-                binding.inputUrl.recordList.value = recordDb.listEntries(false)
+                binding.inputUrl.recordList.value =
+                    recordDb.listEntries(config.showBookmarksInInputBar)
             }
         }
 
