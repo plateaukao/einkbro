@@ -190,7 +190,6 @@
         android:tint="@android:color/darker_gray"
         android:visibility="gone"
         app:borderWidth="1dp"
-        app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap"
         tools:visibility="visible" />
 
