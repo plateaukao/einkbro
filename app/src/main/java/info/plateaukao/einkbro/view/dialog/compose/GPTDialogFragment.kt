@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -114,13 +112,14 @@ private fun GptResponse(
     val clipboardManager =
         LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-    val scrollState = rememberScrollState()
+    // this will prevent dialog from dragging. need to find a better way
+    //val scrollState = rememberScrollState()
 
     Box {
         Column(
             modifier = Modifier
                 .defaultMinSize(minWidth = 200.dp)
-                .verticalScroll(scrollState)
+                //.verticalScroll(scrollState)
                 .wrapContentHeight()
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
