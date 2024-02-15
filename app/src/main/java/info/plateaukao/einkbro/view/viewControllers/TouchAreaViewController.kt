@@ -176,7 +176,7 @@ class TouchAreaViewController(
                     keyRightAction()
                     return@setOnLongClickListener true
                 }
-                if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true
+                if (!config.switchTouchAreaAction) pageBottomAction() else pageTopAction(); true
             }
         }
         with(touchAreaDragCustomize) {
