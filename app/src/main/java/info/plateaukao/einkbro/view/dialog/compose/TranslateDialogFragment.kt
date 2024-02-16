@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view.dialog.compose
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,12 +15,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -37,12 +38,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
@@ -57,6 +60,7 @@ class TranslateDialogFragment(
     private val translateApi: TRANSLATE_API,
     private val anchorPoint: Point? = null,
     private val gptActionInfo: ChatGPTActionInfo? = null,
+    private val closeAction: (() -> Unit)? =  null,
 ) : DraggableComposeDialogFragment() {
 
     private val webView: WebView by lazy {
@@ -73,8 +77,14 @@ class TranslateDialogFragment(
                 this::changeTranslationLanguage,
                 this::changeTranslationMethod,
                 this::getTranslationWebView,
-            ) { dismiss() }
+                closeAction ?: { dismiss() }
+            )
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        closeAction?.invoke()
     }
 
     private fun getTranslationWebView() = webView
@@ -103,6 +113,8 @@ class TranslateDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         anchorPoint?.let { setupDialogPosition(it) }
 
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
+
         translationViewModel.gptActionInfo =
             gptActionInfo ?: config.gptActionForExternalSearch ?: config.gptActionList.first()
 
@@ -125,7 +137,7 @@ private fun TranslateResponse(
     onTargetLanguageClick: () -> Unit,
     changeTranslationMethod: (TRANSLATE_API) -> Unit,
     getTranslationWebView: () -> WebView,
-    closeClick: () -> Unit = { },
+    closeClick: () -> Unit,
 ) {
     val iconSize = 40.dp
     val requestMessage by translationViewModel.inputMessage.collectAsState()
@@ -150,6 +162,15 @@ private fun TranslateResponse(
                 .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            if (ViewUnit.isTablet(LocalContext.current)) {
+                GptRow(
+                    iconSize,
+                    clipboardManager,
+                    responseMessage,
+                    gptActionList,
+                    translationViewModel
+                )
+            }
             SelectableText(
                 modifier = Modifier
                     .weight(1f)
@@ -159,18 +180,18 @@ private fun TranslateResponse(
                 textAlign = TextAlign.Start,
                 onClick = onTargetLanguageClick
             )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_translate_google),
+                contentDescription = "Google Translate Icon",
+                tint = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable {
+                        translateApiState = TRANSLATE_API.GOOGLE
+                        changeTranslationMethod(TRANSLATE_API.GOOGLE)
+                    }
+            )
             if (showExtraIcons) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_translate_google),
-                    contentDescription = "Google Translate Icon",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clickable {
-                            translateApiState = TRANSLATE_API.GOOGLE
-                            changeTranslationMethod(TRANSLATE_API.GOOGLE)
-                        }
-                )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_papago),
                     contentDescription = "Papago Translate Icon",
@@ -213,36 +234,14 @@ private fun TranslateResponse(
                     .clickable { closeClick() }
             )
         }
-        Row(
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_copy),
-                contentDescription = "Copy text",
-                tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .size(iconSize)
-                    .padding(5.dp)
-                    .clickable { clipboardManager.text = responseMessage }
+        if (!ViewUnit.isTablet(LocalContext.current)) {
+            GptRow(
+                iconSize,
+                clipboardManager,
+                responseMessage,
+                gptActionList,
+                translationViewModel
             )
-            gptActionList.map { gptActionInfo ->
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chat_gpt),
-                    contentDescription = "GPT Action Icon",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .size(iconSize)
-                        .padding(5.dp)
-                        .clickable {
-                            translationViewModel.gptActionInfo = gptActionInfo
-                            translationViewModel.queryGpt()
-                        }
-                )
-            }
         }
         if (showRequest.value) {
             Text(
@@ -259,6 +258,47 @@ private fun TranslateResponse(
                 text = responseMessage,
                 color = MaterialTheme.colors.onBackground,
                 modifier = Modifier.padding(10.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun GptRow(
+    iconSize: Dp,
+    clipboardManager: ClipboardManager,
+    responseMessage: String,
+    gptActionList: List<ChatGPTActionInfo>,
+    translationViewModel: TranslationViewModel
+) {
+    Row(
+        modifier = Modifier
+            .wrapContentHeight()
+            .wrapContentSize(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_copy),
+            contentDescription = "Copy text",
+            tint = MaterialTheme.colors.onBackground,
+            modifier = Modifier
+                .size(iconSize)
+                .padding(5.dp)
+                .clickable { clipboardManager.text = responseMessage }
+        )
+        gptActionList.map { gptActionInfo ->
+            Icon(
+                painter = painterResource(id = R.drawable.ic_chat_gpt),
+                contentDescription = "GPT Action Icon",
+                tint = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .size(iconSize)
+                    .padding(5.dp)
+                    .clickable {
+                        translationViewModel.gptActionInfo = gptActionInfo
+                        translationViewModel.queryGpt()
+                    }
             )
         }
     }
