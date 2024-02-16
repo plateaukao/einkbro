@@ -71,11 +71,19 @@ class MenuDialogFragment(
                 { config::showShareSaveMenu.toggle() },
                 { config::showContentMenu.toggle() },
                 { dialog?.dismiss(); itemClicked(it) },
-                { itemLongClicked(it) }
+                this::runItemLongClickAndDismiss
             )
         }
     }
+
+    private fun runItemLongClickAndDismiss(menuItemType: MenuItemType) {
+        itemLongClicked(menuItemType)
+        // need to use post to prevent the dialog from being dismissed before the long click action
+        // without this workaround, it will cause crash.
+        activity?.window?.decorView?.post { dialog?.dismiss() }
+    }
 }
+
 
 enum class MenuItemType {
     Tts, QuickToggle, OpenHome, CloseTab, Quit,
@@ -146,7 +154,8 @@ private fun MenuItems(
             ) {
                 MenuItem(
                     R.string.menu_receive,
-                    R.drawable.ic_receive
+                    R.drawable.ic_receive,
+                    onLongClicked = { onLongClicked(MenuItemType.ReceiveData) },
                 ) { onClicked(MenuItemType.ReceiveData) }
                 MenuItem(
                     R.string.menu_save_bookmark,
@@ -168,7 +177,8 @@ private fun MenuItems(
             ) {
                 MenuItem(
                     R.string.menu_send_link,
-                    R.drawable.ic_send
+                    R.drawable.ic_send,
+                    onLongClicked = { onLongClicked(MenuItemType.SendLink) },
                 ) { onClicked(MenuItemType.SendLink) }
                 MenuItem(
                     R.string.menu_add_to_pocket,
@@ -244,7 +254,11 @@ private fun MenuItems(
                     R.string.reader_mode,
                     R.drawable.ic_reader
                 ) { onClicked(MenuItemType.ReaderMode) }
-                MenuItem(R.string.touch_area_setting, R.drawable.ic_touch_disabled) {
+                MenuItem(
+                    R.string.touch_area_setting,
+                    R.drawable.ic_touch_disabled,
+                    onLongClicked = { onLongClicked(MenuItemType.TouchSetting) },
+                ) {
                     onClicked(
                         MenuItemType.TouchSetting
                     )

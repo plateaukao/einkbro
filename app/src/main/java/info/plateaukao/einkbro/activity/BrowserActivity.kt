@@ -583,6 +583,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
 
+    override fun toggleTextSearch() {
+        remoteConnViewModel.toggleTextSearch()
+    }
+
     override fun sendToRemote(text: String) {
         if (remoteConnViewModel.isSendingTextSearch) {
             remoteConnViewModel.toggleTextSearch()
@@ -590,16 +594,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        lifecycleScope.launch {
-            val selectedIndex = dialogManager.getSelectedOption(
-                R.string.send_type,
-                listOf(R.string.current_url, R.string.text_selection_search), 0
-            )
-            when (selectedIndex) {
-                0 -> SendLinkDialog(this@BrowserActivity, lifecycleScope).show(text)
-                1 -> remoteConnViewModel.toggleTextSearch()
-            }
-        }
+        SendLinkDialog(this, lifecycleScope).show(text)
     }
 
     override fun summarizeContent() {
@@ -638,6 +633,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         actionModeMenuViewModel.updateClickedPoint(newPoint)
     }
 
+    override fun toggleReceiveTextSearch() {
+        if (remoteConnViewModel.isReceivingLink) {
+            remoteConnViewModel.toggleReceiveLink {}
+        } else {
+            remoteConnViewModel.toggleReceiveLink { ninjaWebView.loadUrl(it) }
+        }
+    }
+
     override fun toggleReceiveLink() {
         if (remoteConnViewModel.isReceivingLink) {
             remoteConnViewModel.toggleReceiveLink {}
@@ -645,25 +648,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        lifecycleScope.launch {
-            val selectedIndex = dialogManager.getSelectedOption(
-                R.string.send_type,
-                listOf(R.string.receive_once, R.string.text_selection_search), 0
-            )
-            when (selectedIndex) {
-                0 -> ReceiveDataDialog(this@BrowserActivity, lifecycleScope).show {
-                    ShareUtil.startReceiving(lifecycleScope) { url ->
-                        if (url.isNotBlank()) {
-                            ninjaWebView.loadUrl(url)
-                            ShareUtil.stopBroadcast()
-                        }
-                    }
+        ReceiveDataDialog(this@BrowserActivity, lifecycleScope).show {
+            ShareUtil.startReceiving(lifecycleScope) { url ->
+                if (url.isNotBlank()) {
+                    ninjaWebView.loadUrl(url)
+                    ShareUtil.stopBroadcast()
                 }
-
-                1 -> remoteConnViewModel.toggleReceiveLink { ninjaWebView.loadUrl(it) }
             }
         }
-
     }
 
     private fun initLaunchers() {
