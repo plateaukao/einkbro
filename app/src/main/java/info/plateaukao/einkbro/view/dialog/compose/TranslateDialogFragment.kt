@@ -1,5 +1,7 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,12 +34,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
@@ -50,6 +56,7 @@ class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
     private val translateApi: TRANSLATE_API,
     private val anchorPoint: Point? = null,
+    private val gptActionInfo: ChatGPTActionInfo? = null,
 ) : DraggableComposeDialogFragment() {
 
     private val webView: WebView by lazy {
@@ -61,6 +68,7 @@ class TranslateDialogFragment(
             TranslateResponse(
                 translationViewModel,
                 translateApi,
+                config.gptActionList,
                 showExtraIcons = config.papagoApiSecret.isNotBlank(),
                 this::changeTranslationLanguage,
                 this::changeTranslationMethod,
@@ -95,7 +103,15 @@ class TranslateDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         anchorPoint?.let { setupDialogPosition(it) }
 
-        translationViewModel.translate(translateApi)
+        translationViewModel.gptActionInfo =
+            gptActionInfo ?: config.gptActionForExternalSearch ?: config.gptActionList.first()
+
+        if (translateApi == TRANSLATE_API.GPT) {
+            translationViewModel.queryGpt()
+        } else {
+            translationViewModel.translate(translateApi)
+        }
+
         return view
     }
 }
@@ -104,17 +120,22 @@ class TranslateDialogFragment(
 private fun TranslateResponse(
     translationViewModel: TranslationViewModel,
     translateApi: TRANSLATE_API,
+    gptActionList: List<ChatGPTActionInfo> = emptyList(),
     showExtraIcons: Boolean,
     onTargetLanguageClick: () -> Unit,
     changeTranslationMethod: (TRANSLATE_API) -> Unit,
     getTranslationWebView: () -> WebView,
     closeClick: () -> Unit = { },
 ) {
+    val iconSize = 40.dp
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
     val targetLanguage by translationViewModel.translationLanguage.collectAsState()
     var translateApiState by remember { mutableStateOf(translateApi) }
     val showRequest = remember { mutableStateOf(false) }
+
+    val clipboardManager =
+        LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     Column(
         modifier = Modifier
@@ -135,7 +156,7 @@ private fun TranslateResponse(
                     .padding(10.dp),
                 selected = true,
                 text = targetLanguage.language,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 onClick = onTargetLanguageClick
             )
             if (showExtraIcons) {
@@ -191,6 +212,37 @@ private fun TranslateResponse(
                     .size(32.dp)
                     .clickable { closeClick() }
             )
+        }
+        Row(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_copy),
+                contentDescription = "Copy text",
+                tint = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .size(iconSize)
+                    .padding(5.dp)
+                    .clickable { clipboardManager.text = responseMessage }
+            )
+            gptActionList.map { gptActionInfo ->
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_chat_gpt),
+                    contentDescription = "GPT Action Icon",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .size(iconSize)
+                        .padding(5.dp)
+                        .clickable {
+                            translationViewModel.gptActionInfo = gptActionInfo
+                            translationViewModel.queryGpt()
+                        }
+                )
+            }
         }
         if (showRequest.value) {
             Text(

@@ -12,16 +12,13 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.dialog.compose.GPTDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
-import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import org.koin.android.ext.android.inject
 
 class DictActivity : AppCompatActivity() {
     private val config: ConfigManager by inject()
-    private val gptViewModel: GptViewModel by viewModels()
     private val translationViewModel: TranslationViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,23 +48,13 @@ class DictActivity : AppCompatActivity() {
     }
 
     private fun searchWithGpt(text: String) {
-        gptViewModel.updateInputMessage(text)
-        if (gptViewModel.hasApiKey()) {
-            GPTDialogFragment(
-                gptViewModel,
+        translationViewModel.updateInputMessage(text)
+        if (translationViewModel.hasOpenAiApiKey()) {
+            TranslateDialogFragment(
+                translationViewModel,
+                TRANSLATE_API.GPT,
                 Point(50, 50),
-                hasBackgroundColor = true,
-                onDismissed = { finish(); overridePendingTransition(0, 0) },
-                onTranslateClick = {
-                    translationViewModel.updateInputMessage(text)
-                    TranslateDialogFragment(
-                        translationViewModel,
-                        TRANSLATE_API.GOOGLE,
-                    )
-                        .show(supportFragmentManager, "translateDialog")
-                }
-            )
-                .show(supportFragmentManager, "contextMenu")
+            ).show(supportFragmentManager, "contextMenu")
             monitorFragmentStack()
         } else {
             NinjaToast.show(this, R.string.gpt_api_key_not_set)
