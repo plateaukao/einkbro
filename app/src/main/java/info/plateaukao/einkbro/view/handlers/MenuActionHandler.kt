@@ -36,6 +36,7 @@ class MenuActionHandler(
         MenuItemType.Translate -> browserController.showTranslationConfigDialog(false)
         MenuItemType.ReceiveData -> browserController.toggleReceiveTextSearch()
         MenuItemType.SendLink -> browserController.toggleTextSearch()
+        MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
         else -> Unit
     }
 
