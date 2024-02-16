@@ -113,7 +113,6 @@ import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.GPTDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
@@ -139,7 +138,6 @@ import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel
-import info.plateaukao.einkbro.viewmodel.GptViewModel
 import info.plateaukao.einkbro.viewmodel.PocketShareState
 import info.plateaukao.einkbro.viewmodel.PocketViewModel
 import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
@@ -182,7 +180,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val ttsManager: TtsManager by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
-    private val gptViewModel: GptViewModel by viewModels()
     private val ttsViewModel: TtsViewModel by viewModels()
     private val translationViewModel: TranslationViewModel by viewModels()
 
@@ -456,21 +453,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
 
                     is Gpt -> {
-                        gptViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                        if (gptViewModel.hasApiKey()) {
-                            GPTDialogFragment(
-                                gptViewModel,
+                        translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                        if (translationViewModel.hasOpenAiApiKey()) {
+                            TranslateDialogFragment(
+                                translationViewModel,
+                                TRANSLATE_API.GPT,
                                 actionModeMenuViewModel.clickedPoint.value,
                                 gptActionInfo = state.gptAction,
-                                onTranslateClick = {
-                                    translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                                    TranslateDialogFragment(
-                                        translationViewModel,
-                                        TRANSLATE_API.GOOGLE,
-                                        point
-                                    )
-                                        .show(supportFragmentManager, "translateDialog")
-                                }
                             )
                                 .show(supportFragmentManager, "contextMenu")
                         } else {
@@ -616,12 +605,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun summarizeContent() {
         if (config.gptApiKey.isNotBlank()) {
             lifecycleScope.launch {
-                gptViewModel.updateInputMessage(ninjaWebView.getRawText())
-                GPTDialogFragment(
-                    gptViewModel,
+                translationViewModel.updateInputMessage(ninjaWebView.getRawText())
+                TranslateDialogFragment(
+                    translationViewModel,
+                    TRANSLATE_API.GPT,
                     actionModeMenuViewModel.clickedPoint.value,
                     gptActionInfo = ChatGPTActionInfo(systemMessage = "summarize to 100 words."),
-                    onTranslateClick = { }
                 )
                     .show(supportFragmentManager, "contextMenu")
             }

@@ -3,7 +3,11 @@ package info.plateaukao.einkbro.viewmodel
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.service.ChatMessage
+import info.plateaukao.einkbro.service.ChatRole
+import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit
@@ -24,8 +28,11 @@ import org.koin.core.component.inject
 import java.util.Locale
 
 class TranslationViewModel : ViewModel(), KoinComponent {
-    private val translateRepository = TranslateRepository()
     private val config: ConfigManager by inject()
+    private val translateRepository = TranslateRepository()
+
+    private val openAiRepository by lazy { OpenAiRepository(config.gptApiKey) }
+    var gptActionInfo = ChatGPTActionInfo("ChatGPT", "", "")
 
     private val _responseMessage = MutableStateFlow("")
     val responseMessage: StateFlow<String> = _responseMessage.asStateFlow()
@@ -38,6 +45,11 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     private val _sourceLanguage = MutableStateFlow(config.sourceLanguage)
     val sourceLanguage: StateFlow<TranslationLanguage> = _sourceLanguage.asStateFlow()
+
+    private val _showControls = MutableStateFlow(false)
+    val showControls: StateFlow<Boolean> = _showControls.asStateFlow()
+
+    fun hasOpenAiApiKey(): Boolean = config.gptApiKey.isNotBlank()
 
     fun updateInputMessage(userMessage: String) {
         _inputMessage.value = StringEscapeUtils.unescapeJava(userMessage)
@@ -55,6 +67,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
+            else -> Unit
         }
     }
 
@@ -77,6 +90,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate(userMessage)
             TRANSLATE_API.PAPAGO -> callPapagoTranslate(userMessage)
             TRANSLATE_API.NAVER -> callNaverDict(userMessage)
+            TRANSLATE_API.GPT -> queryGpt(userMessage)
         }
     }
 
@@ -158,6 +172,54 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             true,
         )
         return result?.renderedImage
+    }
+
+    fun queryGpt(
+        userMessage: String? = null,
+    ) {
+        _responseMessage.value = "..."
+        if (userMessage != null) {
+            _inputMessage.value = userMessage
+        }
+        _showControls.value = false
+
+        val messages = mutableListOf<ChatMessage>()
+        if (gptActionInfo.systemMessage.isNotBlank()) {
+            messages.add(gptActionInfo.systemMessage.toSystemMessage())
+        }
+        messages.add("${gptActionInfo.userMessage}${_inputMessage.value}".toUserMessage())
+
+
+        // stream case
+        if (config.enableOpenAiStream) {
+            openAiRepository.chatStream(
+                messages,
+                appendResponseAction = {
+                    if (_responseMessage.value == "...") _responseMessage.value = it
+                    else _responseMessage.value += it
+                },
+                doneAction = { _showControls.value = true },
+                failureAction = {
+                    _responseMessage.value = "Something went wrong."
+                    _showControls.value = true
+                }
+            )
+            return
+        }
+
+        // normal case: too slow!!!
+        viewModelScope.launch(Dispatchers.IO) {
+            val chatCompletion = openAiRepository.chatCompletion(messages)
+            if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
+                _responseMessage.value = "Something went wrong."
+                return@launch
+            } else {
+                val responseContent = chatCompletion.choices
+                    .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
+                    ?: "Something went wrong."
+                _responseMessage.value = responseContent
+            }
+        }
     }
 
     fun translateByParagraph(html: String): String {
@@ -242,8 +304,18 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         val parentElement: Element? = this.parent() as? Element
         return parentElement?.hasUnwantedParent() ?: false
     }
+
+    fun String.toUserMessage() = ChatMessage(
+        role = ChatRole.User,
+        content = this
+    )
+
+    fun String.toSystemMessage() = ChatMessage(
+        role = ChatRole.System,
+        content = this
+    )
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO, NAVER
+    GOOGLE, PAPAGO, NAVER, GPT
 }
