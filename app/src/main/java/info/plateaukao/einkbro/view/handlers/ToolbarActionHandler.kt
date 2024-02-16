@@ -36,8 +36,10 @@ class ToolbarActionHandler(
         ToolbarAction.Translation -> browserController.showTranslationConfigDialog(true)
         ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
         ToolbarAction.Tts ->
-            TtsSettingDialogFragment { IntentUnit.gotoSystemTtsSettings(activity) }
-                .show(activity.supportFragmentManager, "TtsSettingDialog")
+            TtsSettingDialogFragment (
+                gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(activity) },
+                showLocaleDialog = { browserController.showTtsLanguageDialog() }
+            ).show(activity.supportFragmentManager, "TtsSettingDialog")
 
         ToolbarAction.Font -> browserController.toggleReaderMode()
         ToolbarAction.InputUrl -> {

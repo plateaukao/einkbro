@@ -2479,15 +2479,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
 
-        TtsLanguageDialog(this).show { ttsLanguage ->
-            lifecycleScope.launch {
-                ttsManager.readText(ttsLanguage, ninjaWebView.getRawText())
-                delay(2000)
-                composeToolbarViewController.updateIcons()
+        lifecycleScope.launch {
+            ttsManager.readText(ninjaWebView.getRawText())
+            delay(2000)
+            composeToolbarViewController.updateIcons()
 
-                if (ttsManager.isSpeaking()) {
-                    speakingCompleteDetector()
-                }
+            if (ttsManager.isSpeaking()) {
+                speakingCompleteDetector()
             }
         }
     }
@@ -2510,6 +2508,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ttsManager.stopReading()
         } else {
             readArticle()
+        }
+    }
+
+    override fun showTtsLanguageDialog() {
+        TtsLanguageDialog(this).show(ttsManager.getAvailableLanguages()) {
+            config.ttsLocale = it
         }
     }
 

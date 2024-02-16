@@ -1017,7 +1017,7 @@ open class NinjaWebView(
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
                 var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
-                return article.textContent;
+                return article.title + ', ' + article.textContent;
             })()
         """
         private const val stripHeaderElementsJs = """
