@@ -86,6 +86,8 @@ interface BrowserController {
 
     fun sendToRemote(text: String)
     fun toggleReceiveLink()
+    fun toggleTextSearch()
+    fun toggleReceiveTextSearch()
 
     fun summarizeContent()
 

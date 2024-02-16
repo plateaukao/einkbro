@@ -34,6 +34,8 @@ class MenuActionHandler(
 
     fun handleLongClick(menuItemType: MenuItemType, ninjaWebView: NinjaWebView) = when (menuItemType) {
         MenuItemType.Translate -> browserController.showTranslationConfigDialog(false)
+        MenuItemType.ReceiveData -> browserController.toggleReceiveTextSearch()
+        MenuItemType.SendLink -> browserController.toggleTextSearch()
         else -> Unit
     }
 
@@ -58,9 +60,6 @@ class MenuActionHandler(
             "toolbar_config"
         )
 
-//        MenuItemType.ReceiveData -> showReceiveDataDialog(ninjaWebView)
-//        MenuItemType.SendLink ->
-//            SendLinkDialog(activity, activity.lifecycleScope).show(ninjaWebView.url.orEmpty())
         MenuItemType.ReceiveData -> browserController.toggleReceiveLink()
         MenuItemType.SendLink -> browserController.sendToRemote(ninjaWebView.url.orEmpty())
 
