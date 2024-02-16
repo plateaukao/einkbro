@@ -5,29 +5,31 @@ import android.speech.tts.TextToSpeech
 import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import java.util.Locale
 
 class TtsManager(
     private val context: Context
-): KoinComponent {
+) : KoinComponent {
     private val config: ConfigManager by inject()
 
     val tts: TextToSpeech by lazy {
         TextToSpeech(context) {
             if (it == TextToSpeech.SUCCESS) {
                 tts.language = Locale.getDefault()
-                tts.setSpeechRate(config.ttsSpeedValue/100f)
+                tts.setSpeechRate(config.ttsSpeedValue / 100f)
             }
         }
     }
 
     fun setSpeechRate(rate: Float): Int = tts.setSpeechRate(rate)
 
-    fun readText(locale: Locale, text: String) {
+    fun getAvailableLanguages(): List<Locale> = tts.availableLanguages.toList()
+
+    fun readText(text: String) {
         if (tts.isSpeaking) {
             tts.stop()
         }
-        tts.language = locale
+        tts.language = config.ttsLocale
 
         text.replace("\\n", "").replace("\\\"", "")
             .chunked(TextToSpeech.getMaxSpeechInputLength())

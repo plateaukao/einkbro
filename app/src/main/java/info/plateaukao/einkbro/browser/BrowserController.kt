@@ -32,6 +32,7 @@ interface BrowserController {
 
     // for menu actions
     fun toggleTtsRead()
+    fun showTtsLanguageDialog()
     fun showFastToggleDialog()
     fun toggleSplitScreen(url: String? = null)
     fun showTranslation()

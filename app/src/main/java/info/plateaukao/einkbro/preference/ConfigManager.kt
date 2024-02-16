@@ -137,6 +137,13 @@ class ConfigManager(
 
     var pageReservedOffsetInString: String by StringPreference(sp, K_PRESERVE_HEIGHT_IN_STRING, pageReservedOffset.toString())
 
+    private val K_TTS_LOCALE = "sp_tts_locale"
+    var ttsLocale: Locale
+        get() = Locale(sp.getString(K_TTS_LOCALE, Locale.getDefault().language) ?: Locale.getDefault().language)
+        set(value) {
+            sp.edit { putString(K_TTS_LOCALE, value.language) }
+        }
+
     var fontSize: Int
         get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
         set(value) {

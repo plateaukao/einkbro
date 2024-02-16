@@ -20,7 +20,7 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
             config.translationLanguage.ordinal
         ).show() ?: return null
 
-        config.translationLanguage = TranslationLanguage.values()[selectedIndex]
+        config.translationLanguage = TranslationLanguage.entries.toTypedArray()[selectedIndex]
         return config.translationLanguage
     }
 
