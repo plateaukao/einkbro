@@ -54,7 +54,9 @@ class DictActivity : AppCompatActivity() {
                 translationViewModel,
                 TRANSLATE_API.GPT,
                 Point(50, 50),
-            ).show(supportFragmentManager, "contextMenu")
+            ) {
+                finish()
+            }.show(supportFragmentManager, "contextMenu")
             monitorFragmentStack()
         } else {
             NinjaToast.show(this, R.string.gpt_api_key_not_set)
