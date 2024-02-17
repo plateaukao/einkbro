@@ -34,7 +34,6 @@ object ShareUtil : KoinComponent {
         clipboard.setPrimaryClip(clip)
         NinjaToast.show(context, R.string.toast_copy_successful)
     }
-
     private var bytesToBeSent = ByteArray(0)
     fun startBroadcastingUrl(
         lifecycleCoroutineScope: CoroutineScope,
