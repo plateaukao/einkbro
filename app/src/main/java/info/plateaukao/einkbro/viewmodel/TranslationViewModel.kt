@@ -47,11 +47,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val _sourceLanguage = MutableStateFlow(config.sourceLanguage)
     val sourceLanguage: StateFlow<TranslationLanguage> = _sourceLanguage.asStateFlow()
 
-    private val _translateMethod = MutableStateFlow(TRANSLATE_API.GOOGLE)
+    private val _translateMethod = MutableStateFlow(config.externalSearchMethod)
     val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
 
     fun updateTranslateMethod(translateApi: TRANSLATE_API) {
         _translateMethod.value = translateApi
+        config.externalSearchMethod = translateApi
     }
 
     fun hasOpenAiApiKey(): Boolean = config.gptApiKey.isNotBlank()
@@ -99,6 +100,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         userMessage: String? = null
     ) {
         _translateMethod.value = translateApi
+        config.externalSearchMethod = translateApi
         _responseMessage.value = "..."
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate(userMessage)
@@ -195,6 +197,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private fun queryGpt(
         userMessage: String? = null,
     ) {
+        _translateMethod.value = TRANSLATE_API.GPT
         _translateMethod.value = TRANSLATE_API.GPT
 
         if (userMessage != null) {

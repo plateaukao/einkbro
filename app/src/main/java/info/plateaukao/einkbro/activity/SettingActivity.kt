@@ -630,18 +630,24 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                 R.string.setting_summary_search_engine_yandex,
             )
         ),
-        DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_searchEngine,
             R.drawable.icon_edit,
             R.string.setting_summary_search_engine,
             config = config::searchEngineUrl,
         ),
+        DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_process_text,
             R.drawable.icon_edit,
             R.string.setting_summary_custom_process_text_url,
             config = config::processTextUrl,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_external_search_pop,
+            R.drawable.icon_search,
+            R.string.setting_summary_external_search_pop,
+            config::externalSearchWithPopUp,
         ),
         DividerSettingItem(),
         ActionSettingItem(

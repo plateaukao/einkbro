@@ -16,6 +16,7 @@ import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
+import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -104,6 +105,8 @@ class ConfigManager(
     )
 
     var externalSearchWithGpt by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_GPT, false)
+
+    var externalSearchWithPopUp by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_POPUP, false)
 
     var enableSaveData by BooleanPreference(sp, K_ENABLE_SAVE_DATA, true)
 
@@ -218,6 +221,12 @@ class ConfigManager(
     var navGestureLeft by GestureTypePreference(sp, K_GESTURE_NAV_LEFT)
     var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
 
+    private val K_EXTERNAL_SEARCH_METHOD = "sp_external_search_method"
+    var externalSearchMethod: TRANSLATE_API
+        get() = TRANSLATE_API.entries[sp.getInt(K_EXTERNAL_SEARCH_METHOD, 0)]
+        set(value) {
+            sp.edit { putInt(K_EXTERNAL_SEARCH_METHOD, value.ordinal) }
+        }
     var fabPosition: FabPosition
         get() = FabPosition.entries[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
@@ -677,6 +686,7 @@ class ConfigManager(
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 
         const val K_EXTERNAL_SEARCH_WITH_GPT = "sp_external_search_with_gpt"
+        const val K_EXTERNAL_SEARCH_WITH_POPUP = "sp_external_search_with_pop"
         const val K_ENABLE_SAVE_DATA = "sp_enable_save_data"
         const val K_HIDE_STATUSBAR = "sp_hide_statusbar"
 
