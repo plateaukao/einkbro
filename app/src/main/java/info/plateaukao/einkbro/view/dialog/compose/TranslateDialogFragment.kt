@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -37,9 +38,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -49,8 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.preference.ChatGPTActionInfo
-import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -63,25 +62,17 @@ import kotlinx.coroutines.launch
 
 class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
-    private val translateApi: TRANSLATE_API,
+    private val webView: WebView,
     private val anchorPoint: Point? = null,
-    private val gptActionInfo: ChatGPTActionInfo? = null,
     private val closeAction: (() -> Unit)? = null,
 ) : DraggableComposeDialogFragment() {
-
-    private val webView: WebView by lazy {
-        BrowserUnit.createNaverDictWebView(requireContext())
-    }
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             TranslateResponse(
                 translationViewModel,
-                translateApi,
-                config.gptActionList,
                 showExtraIcons = config.papagoApiSecret.isNotBlank(),
                 this::changeTranslationLanguage,
-                this::changeTranslationMethod,
                 this::getTranslationWebView,
                 closeAction ?: { dismiss() }
             )
@@ -99,15 +90,7 @@ class TranslateDialogFragment(
         lifecycleScope.launch {
             val translationLanguage =
                 TranslationLanguageDialog(requireActivity()).show() ?: return@launch
-            translationViewModel.updateTranslationLanguageAndGo(translateApi, translationLanguage)
-        }
-    }
-
-    private fun changeTranslationMethod(newTranslateApi: TRANSLATE_API) {
-        lifecycleScope.launch {
-            translationViewModel.updateTranslationLanguageAndGo(
-                newTranslateApi, translationViewModel.translationLanguage.value
-            )
+            translationViewModel.updateTranslationLanguageAndGo(translationLanguage)
         }
     }
 
@@ -121,14 +104,7 @@ class TranslateDialogFragment(
 
         dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
 
-        translationViewModel.gptActionInfo =
-            gptActionInfo ?: config.gptActionForExternalSearch ?: config.gptActionList.first()
-
-        if (translateApi == TRANSLATE_API.GPT) {
-            translationViewModel.queryGpt()
-        } else {
-            translationViewModel.translate(translateApi)
-        }
+        translationViewModel.translate()
 
         return view
     }
@@ -138,11 +114,8 @@ class TranslateDialogFragment(
 @Composable
 private fun TranslateResponse(
     translationViewModel: TranslationViewModel,
-    translateApi: TRANSLATE_API,
-    gptActionList: List<ChatGPTActionInfo> = emptyList(),
     showExtraIcons: Boolean,
     onTargetLanguageClick: () -> Unit,
-    changeTranslationMethod: (TRANSLATE_API) -> Unit,
     getTranslationWebView: () -> WebView,
     closeClick: () -> Unit,
 ) {
@@ -150,7 +123,7 @@ private fun TranslateResponse(
     val iconPadding = 5.dp
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
-    var translateApiState by remember { mutableStateOf(translateApi) }
+    val translateApiState by translationViewModel.translateMethod.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -180,7 +153,7 @@ private fun TranslateResponse(
             )
 
             if (ViewUnit.isTablet(LocalContext.current)) {
-                GptRow(gptActionList, translationViewModel)
+                GptRow(translationViewModel)
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_translate_google),
@@ -191,8 +164,7 @@ private fun TranslateResponse(
                     .padding(iconPadding)
                     .combinedClickable(
                         onClick = {
-                            translateApiState = TRANSLATE_API.GOOGLE
-                            changeTranslationMethod(TRANSLATE_API.GOOGLE)
+                            translationViewModel.translate(TRANSLATE_API.GOOGLE)
                         },
                         onLongClick = { onTargetLanguageClick() }
                     )
@@ -207,8 +179,7 @@ private fun TranslateResponse(
                         .padding(iconPadding)
                         .combinedClickable(
                             onClick = {
-                                translateApiState = TRANSLATE_API.PAPAGO
-                                changeTranslationMethod(TRANSLATE_API.PAPAGO)
+                                translationViewModel.translate(TRANSLATE_API.PAPAGO)
                             },
                             onLongClick = { onTargetLanguageClick() }
                         )
@@ -221,8 +192,7 @@ private fun TranslateResponse(
                         .size(iconSize)
                         .padding(iconPadding)
                         .clickable {
-                            translateApiState = TRANSLATE_API.NAVER
-                            changeTranslationMethod(TRANSLATE_API.NAVER)
+                            translationViewModel.translate(TRANSLATE_API.NAVER)
                         }
                 )
             }
@@ -248,7 +218,10 @@ private fun TranslateResponse(
             )
         }
         if (!ViewUnit.isTablet(LocalContext.current)) {
-            GptRow(gptActionList, translationViewModel)
+            GptRow(
+                translationViewModel,
+                modifier = Modifier.align(Alignment.End),
+            )
         }
         Column(
             modifier = Modifier
@@ -256,7 +229,10 @@ private fun TranslateResponse(
                 .wrapContentHeight()
                 .width(IntrinsicSize.Max)
                 .weight(1f)
-                .verticalScroll(scrollState),
+                .conditionalScroll(
+                    !translationViewModel.isWebViewStyle(),
+                    scrollState
+                ),
             horizontalAlignment = Alignment.End
         ) {
             if (showRequest.value) {
@@ -270,8 +246,12 @@ private fun TranslateResponse(
                 )
                 Divider()
             }
-            if (translateApiState == TRANSLATE_API.NAVER && responseMessage != "...") {
-                WebResultView(getTranslationWebView(), responseMessage)
+            if (translationViewModel.isWebViewStyle() && responseMessage != "...") {
+                WebResultView(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    getTranslationWebView(),
+                    responseMessage
+                )
             } else {
                 Text(
                     text = responseMessage,
@@ -289,21 +269,21 @@ private fun TranslateResponse(
 
 @Composable
 private fun GptRow(
-    gptActionList: List<ChatGPTActionInfo>,
-    translationViewModel: TranslationViewModel
+    translationViewModel: TranslationViewModel,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
     ) {
-        gptActionList.map { gptActionInfo ->
+        translationViewModel.getGptActionList().map { gptActionInfo ->
             ActionMenuItem(
                 gptActionInfo.name,
                 null,
                 onClicked = {
                     translationViewModel.gptActionInfo = gptActionInfo
-                    translationViewModel.queryGpt()
+                    translationViewModel.translate(TRANSLATE_API.GPT)
                 }
             )
         }
@@ -323,7 +303,7 @@ fun RoundedDragBar(width: Dp = 100.dp) {
                 .height(4.dp)
                 .align(Alignment.Center)
                 .background(
-                    color = MaterialTheme.colors.onBackground,
+                    color = Color.Gray,
                     shape = RoundedCornerShape(50) // Use a high value to ensure fully rounded corners
                 )
         )
@@ -331,13 +311,12 @@ fun RoundedDragBar(width: Dp = 100.dp) {
 }
 
 @Composable
-private fun WebResultView(webView: WebView, webContent: String) {
+private fun WebResultView(modifier: Modifier, webView: WebView, webContent: String) {
     AndroidView(
         factory = { webView },
-        modifier = Modifier
+        modifier = modifier
             .height(400.dp)
-            .width(400.dp)
-            .padding(2.dp),
+            .width(500.dp)
     )
 
     LaunchedEffect(webContent) {
@@ -360,16 +339,15 @@ fun PreviewTranslateResponse() {
     MyTheme {
         TranslateResponse(
             translationViewModel = TranslationViewModel(),
-            translateApi = TRANSLATE_API.GOOGLE,
             showExtraIcons = true,
-            gptActionList = listOf(
-                ChatGPTActionInfo("test1", "test1"),
-            ),
             onTargetLanguageClick = {},
-            changeTranslationMethod = {},
             getTranslationWebView = { WebView(context) },
             closeClick = {},
         )
     }
 }
 
+private fun Modifier.conditionalScroll(applyScroll: Boolean, scrollState: ScrollState): Modifier =
+    this.then(
+        if (applyScroll) Modifier.verticalScroll(scrollState) else Modifier
+    )

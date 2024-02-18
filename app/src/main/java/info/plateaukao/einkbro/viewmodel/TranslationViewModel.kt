@@ -32,7 +32,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val translateRepository = TranslateRepository()
 
     private val openAiRepository by lazy { OpenAiRepository(config.gptApiKey) }
-    var gptActionInfo = ChatGPTActionInfo("ChatGPT", "", "")
+    var gptActionInfo = config.gptActionForExternalSearch ?: config.gptActionList.firstOrNull()
+    ?: ChatGPTActionInfo()
 
     private val _responseMessage = MutableStateFlow("")
     val responseMessage: StateFlow<String> = _responseMessage.asStateFlow()
@@ -46,8 +47,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val _sourceLanguage = MutableStateFlow(config.sourceLanguage)
     val sourceLanguage: StateFlow<TranslationLanguage> = _sourceLanguage.asStateFlow()
 
-    private val _showControls = MutableStateFlow(false)
-    val showControls: StateFlow<Boolean> = _showControls.asStateFlow()
+    private val _translateMethod = MutableStateFlow(TRANSLATE_API.GOOGLE)
+    val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
+
+    fun updateTranslateMethod(translateApi: TRANSLATE_API) {
+        _translateMethod.value = translateApi
+    }
 
     fun hasOpenAiApiKey(): Boolean = config.gptApiKey.isNotBlank()
 
@@ -60,10 +65,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         _translationLanguage.value = language
     }
 
-    fun updateTranslationLanguageAndGo(translateApi: TRANSLATE_API, language: TranslationLanguage) {
+    fun updateTranslationLanguageAndGo(language: TranslationLanguage) {
         updateTranslationLanguage(language)
         _responseMessage.value = "..."
-        when (translateApi) {
+        when (_translateMethod.value) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
@@ -73,6 +78,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     fun updateSourceLanguage(language: TranslationLanguage) {
         _sourceLanguage.value = language
+    }
+
+    fun isWebViewStyle(): Boolean {
+        return _translateMethod.value == TRANSLATE_API.NAVER
     }
 
     fun updateSourceLanguageAndGo(translateApi: TRANSLATE_API, language: TranslationLanguage) {
@@ -85,13 +94,22 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    fun translate(translateApi: TRANSLATE_API, userMessage: String? = null) {
+    fun translate(
+        translateApi: TRANSLATE_API = _translateMethod.value,
+        userMessage: String? = null
+    ) {
+        _translateMethod.value = translateApi
+        _responseMessage.value = "..."
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate(userMessage)
             TRANSLATE_API.PAPAGO -> callPapagoTranslate(userMessage)
             TRANSLATE_API.NAVER -> callNaverDict(userMessage)
             TRANSLATE_API.GPT -> queryGpt(userMessage)
         }
+    }
+
+    fun getGptActionList(): List<ChatGPTActionInfo> {
+        return config.gptActionList
     }
 
     private fun callNaverDict(userMessage: String? = null) {
@@ -174,14 +192,14 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return result?.renderedImage
     }
 
-    fun queryGpt(
+    private fun queryGpt(
         userMessage: String? = null,
     ) {
-        _responseMessage.value = "..."
+        _translateMethod.value = TRANSLATE_API.GPT
+
         if (userMessage != null) {
             _inputMessage.value = userMessage
         }
-        _showControls.value = false
 
         val messages = mutableListOf<ChatMessage>()
         if (gptActionInfo.systemMessage.isNotBlank()) {
@@ -198,10 +216,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     if (_responseMessage.value == "...") _responseMessage.value = it
                     else _responseMessage.value += it
                 },
-                doneAction = { _showControls.value = true },
+                doneAction = { },
                 failureAction = {
                     _responseMessage.value = "Something went wrong."
-                    _showControls.value = true
                 }
             )
             return

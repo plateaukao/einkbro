@@ -39,6 +39,7 @@ import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
+import android.webkit.WebView
 import android.webkit.WebView.HitTestResult
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -220,6 +221,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private val albumViewModel: AlbumViewModel by viewModels()
+
+    private val externalSearchWebView: WebView by lazy {
+        BrowserUnit.createNaverDictWebView(this)
+    }
 
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
@@ -447,7 +452,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             else TRANSLATE_API.NAVER
 
                         translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                        TranslateDialogFragment(translationViewModel, api, point)
+                        translationViewModel.updateTranslateMethod(api)
+                        TranslateDialogFragment(translationViewModel, externalSearchWebView, point)
                             .show(supportFragmentManager, "translateDialog")
                         actionModeMenuViewModel.finish()
                     }
@@ -455,11 +461,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     is Gpt -> {
                         translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                         if (translationViewModel.hasOpenAiApiKey()) {
+                            translationViewModel.updateTranslateMethod(TRANSLATE_API.GPT)
+                            translationViewModel.gptActionInfo = state.gptAction
                             TranslateDialogFragment(
                                 translationViewModel,
-                                TRANSLATE_API.GPT,
+                                externalSearchWebView,
                                 actionModeMenuViewModel.clickedPoint.value,
-                                gptActionInfo = state.gptAction,
                             )
                                 .show(supportFragmentManager, "contextMenu")
                         } else {
@@ -600,14 +607,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun summarizeContent() {
         if (config.gptApiKey.isNotBlank()) {
             lifecycleScope.launch {
-                translationViewModel.updateInputMessage(ninjaWebView.getRawText())
+                with(translationViewModel) {
+                    updateInputMessage(ninjaWebView.getRawText())
+                    updateTranslateMethod(TRANSLATE_API.GPT)
+                    gptActionInfo = ChatGPTActionInfo(systemMessage = "summarize to 100 words.")
+                }
                 TranslateDialogFragment(
                     translationViewModel,
-                    TRANSLATE_API.GPT,
+                    externalSearchWebView,
                     actionModeMenuViewModel.clickedPoint.value,
-                    gptActionInfo = ChatGPTActionInfo(systemMessage = "summarize to 100 words."),
                 )
                     .show(supportFragmentManager, "contextMenu")
+
             }
         }
     }

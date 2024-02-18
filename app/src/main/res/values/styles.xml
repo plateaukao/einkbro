@@ -7,6 +7,7 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
