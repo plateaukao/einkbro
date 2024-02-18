@@ -64,6 +64,7 @@
         <activity
             android:name=".activity.DictActivity"
             android:theme="@style/TransparentActivity"
+            android:launchMode="singleInstance"
             android:exported="true">
             <intent-filter>
                 <action android:name="colordict.intent.action.SEARCH" />
