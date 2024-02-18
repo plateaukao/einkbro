@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -22,6 +24,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -38,9 +43,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -141,22 +147,24 @@ private fun TranslateResponse(
     closeClick: () -> Unit,
 ) {
     val iconSize = 40.dp
+    val iconPadding = 5.dp
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
     var translateApiState by remember { mutableStateOf(translateApi) }
     val showRequest = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
-            .defaultMinSize(minWidth = 300.dp)
-            .wrapContentHeight()
-            .width(IntrinsicSize.Max),
-        horizontalAlignment = Alignment.End
+            .padding(top = 6.dp, start = 6.dp, end = 6.dp)
+            .wrapContentWidth()
+            .height(IntrinsicSize.Max)
     ) {
         Row(
             modifier = Modifier
+                .align(Alignment.End)
                 .wrapContentHeight()
                 .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -167,7 +175,7 @@ private fun TranslateResponse(
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
                     .size(iconSize)
-                    .padding(5.dp)
+                    .padding(iconPadding)
                     .clickable { ShareUtil.copyToClipboard(context, responseMessage) }
             )
 
@@ -179,7 +187,8 @@ private fun TranslateResponse(
                 contentDescription = "Google Translate Icon",
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(iconSize)
+                    .padding(iconPadding)
                     .combinedClickable(
                         onClick = {
                             translateApiState = TRANSLATE_API.GOOGLE
@@ -194,7 +203,8 @@ private fun TranslateResponse(
                     contentDescription = "Papago Translate Icon",
                     tint = MaterialTheme.colors.onBackground,
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(iconSize)
+                        .padding(iconPadding)
                         .combinedClickable(
                             onClick = {
                                 translateApiState = TRANSLATE_API.PAPAGO
@@ -208,7 +218,8 @@ private fun TranslateResponse(
                     contentDescription = "Naver dict icon",
                     tint = MaterialTheme.colors.onBackground,
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(iconSize)
+                        .padding(iconPadding)
                         .clickable {
                             translateApiState = TRANSLATE_API.NAVER
                             changeTranslationMethod(TRANSLATE_API.NAVER)
@@ -222,7 +233,8 @@ private fun TranslateResponse(
                 contentDescription = "Info Icon",
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(iconSize)
+                    .padding(10.dp)
                     .clickable { showRequest.value = !showRequest.value }
             )
             Icon(
@@ -230,36 +242,48 @@ private fun TranslateResponse(
                 contentDescription = "Close Icon",
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(iconSize)
+                    .padding(iconPadding)
                     .clickable { closeClick() }
             )
         }
         if (!ViewUnit.isTablet(LocalContext.current)) {
             GptRow(gptActionList, translationViewModel)
         }
-        if (showRequest.value) {
-            Text(
-                text = requestMessage,
-                color = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
-            Divider()
+        Column(
+            modifier = Modifier
+                .defaultMinSize(minWidth = 300.dp)
+                .wrapContentHeight()
+                .width(IntrinsicSize.Max)
+                .weight(1f)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.End
+        ) {
+            if (showRequest.value) {
+                Text(
+                    text = requestMessage,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Start
+                )
+                Divider()
+            }
+            if (translateApiState == TRANSLATE_API.NAVER && responseMessage != "...") {
+                WebResultView(getTranslationWebView(), responseMessage)
+            } else {
+                Text(
+                    text = responseMessage,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Start
+                )
+            }
         }
-        if (translateApiState == TRANSLATE_API.NAVER && responseMessage != "...") {
-            WebResultView(getTranslationWebView(), responseMessage)
-        } else {
-            Text(
-                text = responseMessage,
-                color = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
-        }
+        RoundedDragBar()
     }
 }
 
@@ -268,8 +292,8 @@ private fun GptRow(
     gptActionList: List<ChatGPTActionInfo>,
     translationViewModel: TranslationViewModel
 ) {
-    val icon = ContextCompat.getDrawable(LocalContext.current, R.drawable.ic_chat_gpt)
     Row(
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
     ) {
@@ -282,19 +306,27 @@ private fun GptRow(
                     translationViewModel.queryGpt()
                 }
             )
-//            Icon(
-//                painter = painterResource(id = R.drawable.ic_chat_gpt),
-//                contentDescription = "GPT Action Icon",
-//                tint = MaterialTheme.colors.onBackground,
-//                modifier = Modifier
-//                    .size(iconSize)
-//                    .padding(5.dp)
-//                    .clickable {
-//                        translationViewModel.gptActionInfo = gptActionInfo
-//                        translationViewModel.queryGpt()
-//                    }
-//            )
         }
+    }
+}
+
+@Composable
+fun RoundedDragBar(width: Dp = 100.dp) {
+    Box(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+    ) {
+        Box(
+            modifier = Modifier
+                .width(width)
+                .height(4.dp)
+                .align(Alignment.Center)
+                .background(
+                    color = MaterialTheme.colors.onBackground,
+                    shape = RoundedCornerShape(50) // Use a high value to ensure fully rounded corners
+                )
+        )
     }
 }
 
@@ -314,3 +346,30 @@ private fun WebResultView(webView: WebView, webContent: String) {
         webView.loadUrl(webContent, headers)
     }
 }
+
+@Preview
+@Composable
+fun PreviewRoundedDragBar() {
+    RoundedDragBar()
+}
+
+@Preview
+@Composable
+fun PreviewTranslateResponse() {
+    val context = LocalContext.current
+    MyTheme {
+        TranslateResponse(
+            translationViewModel = TranslationViewModel(),
+            translateApi = TRANSLATE_API.GOOGLE,
+            showExtraIcons = true,
+            gptActionList = listOf(
+                ChatGPTActionInfo("test1", "test1"),
+            ),
+            onTargetLanguageClick = {},
+            changeTranslationMethod = {},
+            getTranslationWebView = { WebView(context) },
+            closeClick = {},
+        )
+    }
+}
+
