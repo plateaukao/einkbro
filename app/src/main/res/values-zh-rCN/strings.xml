@@ -515,4 +515,6 @@
     <string name="setting_title_show_bookmarks_input_bar">Show Bookmarks when Inputing url</string>
     <string name="setting_summary_show_bookmarks_input_bar">Show bookmark matches when typing text in input bar.</string>
     <string name="setting_tts_locale">Text-to-Speech Locale</string>
+    <string name="setting_title_external_search_pop">Use Popup for PROCESS_TEXT event</string>
+    <string name="setting_summary_external_search_pop">Search as a popup dictionary (suitable for reader apps dictionary integration)</string>
 </resources>

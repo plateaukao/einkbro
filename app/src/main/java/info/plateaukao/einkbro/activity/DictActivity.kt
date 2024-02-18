@@ -13,7 +13,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
-import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import org.koin.android.ext.android.inject
@@ -49,7 +48,7 @@ class DictActivity : AppCompatActivity() {
             }
 
             Intent.ACTION_PROCESS_TEXT -> {
-                if (!config.externalSearchWithGpt) {
+                if (!config.externalSearchWithGpt && !config.externalSearchWithPopUp) {
                     forwardProcessTextIntentAndFinish()
                 } else {
                     val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
@@ -61,20 +60,16 @@ class DictActivity : AppCompatActivity() {
 
     private fun searchWithPopup(text: String) {
         translationViewModel.updateInputMessage(text)
-        if (translationViewModel.hasOpenAiApiKey()) {
-            val fragment = TranslateDialogFragment(
-                translationViewModel,
-                webView,
-                Point(50, 50),
-            ) {
-                supportFragmentManager.popBackStack()
-            }
-            // add fragment to back stack
-            supportFragmentManager.beginTransaction().add(fragment, "contextMenu").addToBackStack(null).commit()
-            monitorFragmentStack()
-        } else {
-            NinjaToast.show(this, R.string.gpt_api_key_not_set)
+        val fragment = TranslateDialogFragment(
+            translationViewModel,
+            webView,
+            Point(50, 50),
+        ) {
+            supportFragmentManager.popBackStack()
         }
+        // add fragment to back stack
+        supportFragmentManager.beginTransaction().add(fragment, "contextMenu").addToBackStack(null).commit()
+        monitorFragmentStack()
     }
 
     private fun forwardDictIntentAndFinish() {
