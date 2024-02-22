@@ -732,6 +732,7 @@ object BrowserUnit : KoinComponent {
                     connection.inputStream.close()
                 }
             } catch (e: IOException) {
+                Log.w("browser", "Failed getting resource: $e")
                 e.printStackTrace()
             }
         }
