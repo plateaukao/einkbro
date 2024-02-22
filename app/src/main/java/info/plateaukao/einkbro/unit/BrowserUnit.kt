@@ -712,19 +712,22 @@ object BrowserUnit : KoinComponent {
         """.trimIndent()
     }
 
-    suspend fun getResourceFromUrl(url: String): ByteArray {
+    suspend fun getResourceAndMimetypeFromUrl(url: String, timeout: Int = 0): Pair<ByteArray, String> {
         var byteArray: ByteArray = "".toByteArray()
+        var mimeType: String = ""
         withContext(Dispatchers.IO) {
             try {
                 val connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection
                 connection.addRequestProperty("User-Agent", "Mozilla/4.76")
+                if (timeout > 0) connection.connectTimeout = timeout
                 connection.connect()
                 if (connection.responseCode != HttpURLConnection.HTTP_OK) {
                     if (isRedirect(connection.responseCode)) {
                         val redirectUrl = connection.getHeaderField("Location")
-                        byteArray = getResourceFromUrl(redirectUrl)
+                        byteArray = getResourceFromUrl(redirectUrl, timeout)
                     }
                 } else {
+                    mimeType = connection.contentType
                     byteArray = connection.inputStream.readBytes()
                     connection.inputStream.close()
                 }
@@ -732,7 +735,12 @@ object BrowserUnit : KoinComponent {
                 e.printStackTrace()
             }
         }
-        return byteArray
+        return Pair(byteArray, mimeType)
     }
+
+    suspend fun getResourceFromUrl(url: String, timeout: Int = 0): ByteArray {
+        return getResourceAndMimetypeFromUrl(url, timeout).first
+    }
+
     private fun isRedirect(responseCode: Int): Boolean = responseCode in 301..399
 }
