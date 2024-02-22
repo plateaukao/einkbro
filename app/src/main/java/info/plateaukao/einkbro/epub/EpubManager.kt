@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.documentfile.provider.DocumentFile
@@ -12,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.unit.BrowserUnit.getResourceFromUrl
+import info.plateaukao.einkbro.unit.BrowserUnit.getResourceAndMimetypeFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaWebView
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
 import nl.siegmann.epublib.domain.Book
+import nl.siegmann.epublib.domain.MediaType
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.epub.EpubWriter
@@ -137,14 +139,16 @@ class EpubManager(private val context: Context) : KoinComponent {
                     chapterIndex,
                     "${webUri.scheme}://${webUri.host}/"
                 )
-
+                Log.i(TAG, "Adding chapter $chapterIndex: $chapterName")
                 book.addSection(
                     chapterName,
                     Resource(processedHtml.byteInputStream(), chapterFileName)
                 )
 
+                Log.i(TAG, "Downloading " + imageMap.size + " images")
                 saveImageResources(book, imageMap)
 
+                Log.i(TAG, "Saving epub")
                 saveBook(book, fileUri)
 
                 doneAction.invoke(book.title)
@@ -225,9 +229,9 @@ class EpubManager(private val context: Context) : KoinComponent {
         val imageKeyUrlMap = mutableMapOf<String, String>()
         doc.select("img").forEachIndexed { index, element ->
             val imgUrl = element.attributes()["src"] ?: element.dataset()["src"] ?: ""
-            val extension = if (imgUrl.endsWith("png")) "png" else "jpg"
-            val newImageIndex = "img_${chapterIndex}_$index.$extension"
+            val newImageIndex = "img_${chapterIndex}_$index"
             element.attr("src", newImageIndex)
+            Log.d(TAG, "Mapped $newImageIndex to $imgUrl")
             imageKeyUrlMap[newImageIndex] = imgUrl
         }
 
@@ -239,14 +243,24 @@ class EpubManager(private val context: Context) : KoinComponent {
 
     private suspend fun saveImageResources(book: Book, map: Map<String, String>) {
         map.entries.forEach { entry ->
+            Log.i(TAG, "Loading ${entry.key}: ${entry.value}")
+            val (resource, mimeType) = getResourceAndMimetypeFromUrl(entry.value, timeout=5_000)
+            // Gotta have a default.
+            var mediaType: MediaType = MediatypeService.JPG
+            if (mimeType.isNotEmpty()) mediaType = MediatypeService.getMediaTypeByName(mimeType)
+            Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
             book.addResource(
-                Resource(
-                    null,
-                    getResourceFromUrl(entry.value),
-                    entry.key,
-                    if (entry.value.endsWith("png")) MediatypeService.PNG else MediatypeService.JPG
-                )
+                    Resource(
+                            null,
+                            resource,
+                            entry.key,
+                            mediaType
+                    )
             )
         }
+    }
+
+    companion object {
+        private const val TAG = "EpubManager"
     }
 }
