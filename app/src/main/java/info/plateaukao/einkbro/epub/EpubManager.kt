@@ -57,10 +57,15 @@ class EpubManager(private val context: Context) : KoinComponent {
             if (bookName != null && chapterName != null) {
                 val progressDialog = ProgressDialog(activity, R.style.TouchAreaDialog).apply {
                     setTitle(R.string.saving_epub)
+                    setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+                    isIndeterminate = false
+                    max = 100
                     show()
                 }
 
                 val rawHtml = ninjaWebView.getRawReaderHtml()
+                progressDialog.progress = 5
+
                 internalSaveEpub(
                     isNewFile,
                     fileUri,
@@ -68,6 +73,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                     bookName,
                     chapterName,
                     ninjaWebView.url ?: "",
+                    progressDialog,
                     { savedBookName ->
                         progressDialog.dismiss()
                         HelperUnit.openEpubToLastChapter(activity, fileUri)
@@ -120,6 +126,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         bookName: String,
         chapterName: String,
         currentUrl: String,
+        progressDialog: ProgressDialog,
         doneAction: (String) -> Unit,
         errorAction: () -> Unit
     ) {
@@ -145,9 +152,12 @@ class EpubManager(private val context: Context) : KoinComponent {
                     Resource(processedHtml.byteInputStream(), chapterFileName)
                 )
 
-                Log.i(TAG, "Downloading " + imageMap.size + " images")
-                saveImageResources(book, imageMap)
+                progressDialog.progress = 10
 
+                Log.i(TAG, "Downloading " + imageMap.size + " images")
+                saveImageResources(book, imageMap, progressDialog)
+
+                progressDialog.progress = 90
                 Log.i(TAG, "Saving epub")
                 saveBook(book, fileUri)
 
@@ -241,7 +251,14 @@ class EpubManager(private val context: Context) : KoinComponent {
         return Pair(doc.toString(), imageKeyUrlMap)
     }
 
-    private suspend fun saveImageResources(book: Book, map: Map<String, String>) {
+    private suspend fun saveImageResources(
+            book: Book,
+            map: Map<String, String>,
+            progressDialog: ProgressDialog,
+    ) {
+        // We progress from 10% to 90% here.
+        val progress_step = (80 / map.size).toInt()
+
         map.entries.forEach { entry ->
             Log.i(TAG, "Loading ${entry.key}: ${entry.value}")
             val (resource, mimeType) = getResourceAndMimetypeFromUrl(entry.value, timeout=5_000)
@@ -257,6 +274,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                             mediaType
                     )
             )
+            progressDialog.incrementProgressBy(progress_step)
         }
     }
 
