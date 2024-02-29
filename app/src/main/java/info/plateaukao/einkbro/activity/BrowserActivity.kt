@@ -1187,6 +1187,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         HelperUnit.getCachedPathFromURI(this, viewUri).let {
                             addAlbum(url = "file://$it")
                         }
+                    } else if (filename?.endsWith(".html") == true || mimeType.equals("text/html")) {
+                        // local html
+                        updateAlbum(url = viewUri.toString())
                     } else {
                         // epub
                         epubManager.showEpubReader(viewUri)
