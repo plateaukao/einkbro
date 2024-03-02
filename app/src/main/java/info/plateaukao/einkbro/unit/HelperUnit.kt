@@ -32,9 +32,6 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
-import android.text.Html
-import android.text.SpannableString
-import android.text.util.Linkify
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
@@ -69,7 +66,10 @@ object HelperUnit {
     private const val REQUEST_CODE_ASK_PERMISSIONS = 123
     private const val REQUEST_CODE_ASK_PERMISSIONS_1 = 1234
 
-    private val client = OkHttpClient()
+    private val client = OkHttpClient.Builder()
+        .followRedirects(true)
+        .followSslRedirects(true)
+        .build()
 
 
     @JvmStatic
@@ -92,34 +92,30 @@ object HelperUnit {
 
     @JvmStatic
     fun grantPermissionsMicrophone(activity: Activity) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            val hasRecordAudioPermission =
-                activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
-            if (hasRecordAudioPermission != PackageManager.PERMISSION_GRANTED) {
-                activity.requestPermissions(
-                    arrayOf(Manifest.permission.RECORD_AUDIO),
-                    REQUEST_CODE_ASK_PERMISSIONS_1
-                )
-            }
+        val hasRecordAudioPermission =
+            activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+        if (hasRecordAudioPermission != PackageManager.PERMISSION_GRANTED) {
+            activity.requestPermissions(
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                REQUEST_CODE_ASK_PERMISSIONS_1
+            )
         }
     }
 
     @JvmStatic
     fun grantPermissionsLoc(activity: Activity) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            val hasAccessFineLocation =
-                activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-            if (hasAccessFineLocation != PackageManager.PERMISSION_GRANTED) {
-                DialogManager(activity).showOkCancelDialog(
-                    messageResId = R.string.setting_summary_location,
-                    okAction = {
-                        activity.requestPermissions(
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                            REQUEST_CODE_ASK_PERMISSIONS_1
-                        )
-                    }
-                )
-            }
+        val hasAccessFineLocation =
+            activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (hasAccessFineLocation != PackageManager.PERMISSION_GRANTED) {
+            DialogManager(activity).showOkCancelDialog(
+                messageResId = R.string.setting_summary_location,
+                okAction = {
+                    activity.requestPermissions(
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_CODE_ASK_PERMISSIONS_1
+                    )
+                }
+            )
         }
     }
 
@@ -260,17 +256,6 @@ object HelperUnit {
                 ""
             }
         }
-    }
-
-    @JvmStatic
-    fun textSpannable(text: String?): SpannableString {
-        val s: SpannableString = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            SpannableString(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY))
-        } else {
-            SpannableString(Html.fromHtml(text))
-        }
-        Linkify.addLinks(s, Linkify.WEB_URLS)
-        return s
     }
 
     fun openEpubToLastChapter(activity: Activity, uri: Uri) {
@@ -444,6 +429,9 @@ object HelperUnit {
                 if (!response.isSuccessful) throw IOException("Failed to download file: $response")
 
                 val inputStream = response.body?.byteStream()
+                withContext(Dispatchers.Main) {
+                    NinjaToast.show(context, "Extracting zip...")
+                }
                 extractApkAndInstall(inputStream, context)
             }
         } catch (e: Exception) {
@@ -461,7 +449,6 @@ object HelperUnit {
         var zipEntry = zipInputStream.nextEntry
         while (zipEntry != null) {
             if (zipEntry.name == "app-release.apk") {
-                //val tempFile = File.createTempFile("app-release", ".apk", context.cacheDir)
                 val tempFile = File("${context.cacheDir.absolutePath}/app.apk")
                 if (tempFile.exists()) {
                     tempFile.delete()
