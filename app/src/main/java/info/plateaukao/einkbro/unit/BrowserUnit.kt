@@ -714,7 +714,7 @@ object BrowserUnit : KoinComponent {
 
     suspend fun getResourceAndMimetypeFromUrl(url: String, timeout: Int = 0): Pair<ByteArray, String> {
         var byteArray: ByteArray = "".toByteArray()
-        var mimeType: String = ""
+        var mimeType = ""
         withContext(Dispatchers.IO) {
             try {
                 val connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection

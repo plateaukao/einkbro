@@ -17,7 +17,11 @@ import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
 import nl.siegmann.epublib.domain.Book
@@ -33,6 +37,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.IOException
 import java.io.InputStream
+import java.util.concurrent.Executors
 
 
 class EpubManager(private val context: Context) : KoinComponent {
@@ -245,25 +250,41 @@ class EpubManager(private val context: Context) : KoinComponent {
         map: Map<String, String>,
         onProgressChanged: (Float) -> Unit,
     ) {
-        map.entries.forEachIndexed { index, entry ->
-            Log.i(TAG, "Loading ${entry.key}: ${entry.value}")
-            val (resource, mimeType) = getResourceAndMimetypeFromUrl(entry.value, timeout=5_000)
-            // Gotta have a default.
-            var mediaType: MediaType = MediatypeService.JPG
-            if (mimeType.isNotEmpty()) mediaType = MediatypeService.getMediaTypeByName(mimeType)
-            Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
-            book.addResource(
-                Resource(
-                    null,
-                    resource,
-                    entry.key,
-                    mediaType
-                )
-            )
+        val mutex = Mutex()
+        var processedImageCount = 0
 
-            onProgressChanged((index.toFloat() + 1) / map.size)
+        coroutineScope {
+            map.entries.forEach { entry ->
+                launch(saveImageDispatcher) {
+                    Log.i(TAG, "Loading ${entry.key}: ${entry.value}")
+                    val (resource, mimeType) = getResourceAndMimetypeFromUrl(
+                        entry.value,
+                        timeout = 5_000
+                    )
+                    // Gotta have a default.
+                    var mediaType: MediaType = MediatypeService.JPG
+                    if (mimeType.isNotEmpty()) mediaType =
+                        MediatypeService.getMediaTypeByName(mimeType)
+                    Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
+                    book.addResource(
+                        Resource(
+                            null,
+                            resource,
+                            entry.key,
+                            mediaType
+                        )
+                    )
+
+                    mutex.withLock { // Synchronize access to shared index
+                        processedImageCount++
+                        onProgressChanged(processedImageCount.toFloat() / map.size)
+                    }
+                }
+            }
         }
     }
+
+    private val saveImageDispatcher = Executors.newFixedThreadPool(4).asCoroutineDispatcher()
 
     companion object {
         private const val TAG = "EpubManager"
