@@ -503,4 +503,5 @@
     <string name="blue">ᱞᱤᱞ</string>
     <string name="pink">ᱜᱩᱞᱟᱹᱯ</string>
     <string name="setting_title_github_update">ᱱᱟᱶᱟ ᱨᱤᱞᱤᱡᱽ ᱛᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
+    <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
 </resources>

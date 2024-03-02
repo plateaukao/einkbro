@@ -678,7 +678,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         createWebArchivePickerLauncher =
             IntentUnit.createResultLauncher(this) { saveWebArchive(it) }
         writeEpubFilePickerLauncher =
-            IntentUnit.createResultLauncher(this) { saveEpub(it) }
+            IntentUnit.createResultLauncher(this) {
+                val uri = backupUnit.preprocessActivityResult(it) ?: return@createResultLauncher
+                saveEpub(uri)
+            }
         fileChooserLauncher =
             IntentUnit.createResultLauncher(this) { handleWebViewFileChooser(it) }
     }
@@ -705,9 +708,29 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         filePathCallback = null
     }
 
-    private fun saveEpub(result: ActivityResult) {
-        val uri = backupUnit.preprocessActivityResult(result) ?: return
-        epubManager.saveEpub(this, uri, ninjaWebView)
+    private fun saveEpub(uri: Uri) {
+        val progressDialog =
+            dialogManager.createProgressDialog(R.string.saving_epub).apply { show() }
+        epubManager.saveEpub(
+            this,
+            uri,
+            ninjaWebView,
+            {
+                progressDialog.progress = it
+                if (it == 100) {
+                    progressDialog.dismiss()
+                }
+            },
+            {
+                progressDialog.dismiss()
+                dialogManager.showOkCancelDialog(
+                    messageResId = R.string.cannot_save_epub,
+                    okAction = {},
+                    showInCenter = true,
+                    showNegativeButton = false,
+                )
+            }
+        )
     }
 
     private fun saveWebArchive(result: ActivityResult) {
@@ -2468,7 +2491,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (uri == null) {
             epubManager.showEpubFilePicker(writeEpubFilePickerLauncher)
         } else {
-            epubManager.saveEpub(this, uri, ninjaWebView)
+            saveEpub(uri)
         }
     }
 

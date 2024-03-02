@@ -445,4 +445,5 @@
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
     <string name="setting_title_github_update">Update to Latest Release</string>
+    <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
 </resources>

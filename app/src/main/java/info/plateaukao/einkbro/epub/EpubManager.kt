@@ -1,7 +1,5 @@
 package info.plateaukao.einkbro.epub
 
-import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -17,7 +15,6 @@ import info.plateaukao.einkbro.unit.BrowserUnit.getResourceAndMimetypeFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaWebView
-import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,13 +36,14 @@ import java.io.InputStream
 
 
 class EpubManager(private val context: Context) : KoinComponent {
-    private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
     private val config: ConfigManager by inject()
 
     fun saveEpub(
         activity: ComponentActivity,
         fileUri: Uri,
         ninjaWebView: NinjaWebView,
+        onProgressChanged: (Int) -> Unit,
+        onErrorAction: () -> Unit,
     ) {
         activity.lifecycleScope.launch(Dispatchers.Main) {
             val isNewFile =
@@ -55,16 +53,8 @@ class EpubManager(private val context: Context) : KoinComponent {
             val chapterName = getChapterName(ninjaWebView.title)
 
             if (bookName != null && chapterName != null) {
-                val progressDialog = ProgressDialog(activity, R.style.TouchAreaDialog).apply {
-                    setTitle(R.string.saving_epub)
-                    setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-                    isIndeterminate = false
-                    max = 100
-                    show()
-                }
-
                 val rawHtml = ninjaWebView.getRawReaderHtml()
-                progressDialog.progress = 5
+                onProgressChanged(5)
 
                 internalSaveEpub(
                     isNewFile,
@@ -73,9 +63,8 @@ class EpubManager(private val context: Context) : KoinComponent {
                     bookName,
                     chapterName,
                     ninjaWebView.url ?: "",
-                    progressDialog,
+                    onProgressChanged,
                     { savedBookName ->
-                        progressDialog.dismiss()
                         HelperUnit.openEpubToLastChapter(activity, fileUri)
 
                         // save epub file info to preference
@@ -84,14 +73,14 @@ class EpubManager(private val context: Context) : KoinComponent {
                             config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
                         }
                     },
-                    { progressDialog.dismiss() }
+                    onErrorAction,
                 )
             }
         }
     }
 
-    suspend fun getChapterName(defaultTitle: String?): String? {
-        var chapterName = defaultTitle ?: "no title"
+    private suspend fun getChapterName(defaultTitle: String?): String? {
+        val chapterName = defaultTitle ?: "no title"
         return TextInputDialog(
             context,
             context.getString(R.string.title),
@@ -100,7 +89,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         ).show()
     }
 
-    suspend fun getBookName(): String? {
+    private suspend fun getBookName(): String? {
         return TextInputDialog(
             context,
             context.getString(R.string.book_name),
@@ -126,7 +115,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         bookName: String,
         chapterName: String,
         currentUrl: String,
-        progressDialog: ProgressDialog,
+        onProgressChanged: (Int) -> Unit, // 0..100
         doneAction: (String) -> Unit,
         errorAction: () -> Unit
     ) {
@@ -152,29 +141,29 @@ class EpubManager(private val context: Context) : KoinComponent {
                     Resource(processedHtml.byteInputStream(), chapterFileName)
                 )
 
-                progressDialog.progress = 10
+                onProgressChanged(10)
 
                 Log.i(TAG, "Downloading " + imageMap.size + " images")
-                saveImageResources(book, imageMap, progressDialog)
+                saveImageResources(
+                    book,
+                    imageMap
+                ) {
+                    onProgressChanged(10 + (it * 80).toInt())
+                }
 
-                progressDialog.progress = 90
+                onProgressChanged(90)
                 Log.i(TAG, "Saving epub")
                 saveBook(book, fileUri)
 
                 doneAction.invoke(book.title)
 
                 hasSavedSuccess = true
+                onProgressChanged(100)
             }
         }
 
         if (!hasSavedSuccess) {
             errorAction()
-            dialogManager.showOkCancelDialog(
-                messageResId = R.string.cannot_open_file,
-                okAction = {},
-                showInCenter = true,
-                showNegativeButton = false,
-            )
         }
     }
 
@@ -252,14 +241,11 @@ class EpubManager(private val context: Context) : KoinComponent {
     }
 
     private suspend fun saveImageResources(
-            book: Book,
-            map: Map<String, String>,
-            progressDialog: ProgressDialog,
+        book: Book,
+        map: Map<String, String>,
+        onProgressChanged: (Float) -> Unit,
     ) {
-        // We progress from 10% to 90% here.
-        val progress_step = (80 / map.size).toInt()
-
-        map.entries.forEach { entry ->
+        map.entries.forEachIndexed { index, entry ->
             Log.i(TAG, "Loading ${entry.key}: ${entry.value}")
             val (resource, mimeType) = getResourceAndMimetypeFromUrl(entry.value, timeout=5_000)
             // Gotta have a default.
@@ -267,14 +253,15 @@ class EpubManager(private val context: Context) : KoinComponent {
             if (mimeType.isNotEmpty()) mediaType = MediatypeService.getMediaTypeByName(mimeType)
             Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
             book.addResource(
-                    Resource(
-                            null,
-                            resource,
-                            entry.key,
-                            mediaType
-                    )
+                Resource(
+                    null,
+                    resource,
+                    entry.key,
+                    mediaType
+                )
             )
-            progressDialog.incrementProgressBy(progress_step)
+
+            onProgressChanged((index.toFloat() + 1) / map.size)
         }
     }
 

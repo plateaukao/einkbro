@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view.dialog
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.view.Gravity
@@ -32,6 +33,14 @@ class DialogManager(
     private val config: ConfigManager by inject()
     private val inflater = LayoutInflater.from(activity)
 
+    fun createProgressDialog(
+        titleResId: Int,
+    ): ProgressDialog = ProgressDialog(activity, R.style.TouchAreaDialog).apply {
+        setTitle(titleResId)
+        setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        isIndeterminate = false
+        max = 100
+    }
     fun showSaveEpubDialog(shouldAddNewEpub: Boolean = true, onNextAction: (Uri?) -> Unit) {
         val binding = DialogSavedEpubListBinding.inflate(inflater)
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
