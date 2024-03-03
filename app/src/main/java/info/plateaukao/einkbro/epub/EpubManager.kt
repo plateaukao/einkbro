@@ -266,16 +266,15 @@ class EpubManager(private val context: Context) : KoinComponent {
                     if (mimeType.isNotEmpty()) mediaType =
                         MediatypeService.getMediaTypeByName(mimeType)
                     Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
-                    book.addResource(
-                        Resource(
-                            null,
-                            resource,
-                            entry.key,
-                            mediaType
+                    mutex.withLock { // Synchronize access to ebook and counter
+                        book.addResource(
+                                Resource(
+                                        null,
+                                        resource,
+                                        entry.key,
+                                        mediaType
+                                )
                         )
-                    )
-
-                    mutex.withLock { // Synchronize access to shared index
                         processedImageCount++
                         onProgressChanged(processedImageCount.toFloat() / map.size)
                     }
