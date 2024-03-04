@@ -234,9 +234,18 @@ class EpubManager(private val context: Context) : KoinComponent {
         doc.select("img").forEachIndexed { index, element ->
             val imgUrl = element.attributes()["src"] ?: element.dataset()["src"] ?: ""
             val newImageIndex = "img_${chapterIndex}_$index"
-            element.attr("src", newImageIndex)
-            Log.d(TAG, "Mapped $newImageIndex to $imgUrl")
-            imageKeyUrlMap[newImageIndex] = imgUrl
+            // Sadly, Reader mode does not remove all 1px tracking pixels, do this manually instead.
+            if (element.hasAttr("height")
+                    && element.hasAttr("width")
+                    && element.attr("height") == "1"
+                    && element.attr("width") == "1") {
+                Log.w(TAG, "Skipping 1px image $imgUrl")
+                element.clearAttributes()
+            } else {
+                Log.d(TAG, "Mapped $newImageIndex to $imgUrl")
+                element.attr("src", newImageIndex)
+                imageKeyUrlMap[newImageIndex] = imgUrl
+            }
         }
 
         // for generating html elements with end tag.
@@ -266,16 +275,15 @@ class EpubManager(private val context: Context) : KoinComponent {
                     if (mimeType.isNotEmpty()) mediaType =
                         MediatypeService.getMediaTypeByName(mimeType)
                     Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
-                    book.addResource(
-                        Resource(
-                            null,
-                            resource,
-                            entry.key,
-                            mediaType
+                    mutex.withLock { // Synchronize access to ebook and counter
+                        book.addResource(
+                                Resource(
+                                        null,
+                                        resource,
+                                        entry.key,
+                                        mediaType
+                                )
                         )
-                    )
-
-                    mutex.withLock { // Synchronize access to shared index
                         processedImageCount++
                         onProgressChanged(processedImageCount.toFloat() / map.size)
                     }
