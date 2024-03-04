@@ -32,6 +32,7 @@ import nl.siegmann.epublib.epub.EpubWriter
 import nl.siegmann.epublib.service.MediatypeService
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import org.jsoup.nodes.Entities
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -235,10 +236,7 @@ class EpubManager(private val context: Context) : KoinComponent {
             val imgUrl = element.attributes()["src"] ?: element.dataset()["src"] ?: ""
             val newImageIndex = "img_${chapterIndex}_$index"
             // Sadly, Reader mode does not remove all 1px tracking pixels, do this manually instead.
-            if (element.hasAttr("height")
-                    && element.hasAttr("width")
-                    && element.attr("height") == "1"
-                    && element.attr("width") == "1") {
+            if (element.isDummyImage()) {
                 Log.w(TAG, "Skipping 1px image $imgUrl")
                 element.clearAttributes()
             } else {
@@ -253,6 +251,12 @@ class EpubManager(private val context: Context) : KoinComponent {
         doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
         return Pair(doc.toString(), imageKeyUrlMap)
     }
+
+    private fun Element.isDummyImage(): Boolean =
+        hasAttr("height")
+                && hasAttr("width")
+                && attr("height") == "1"
+                && attr("width") == "1"
 
     private suspend fun saveImageResources(
         book: Book,
@@ -277,12 +281,12 @@ class EpubManager(private val context: Context) : KoinComponent {
                     Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
                     mutex.withLock { // Synchronize access to ebook and counter
                         book.addResource(
-                                Resource(
-                                        null,
-                                        resource,
-                                        entry.key,
-                                        mediaType
-                                )
+                            Resource(
+                                null,
+                                resource,
+                                entry.key,
+                                mediaType
+                            )
                         )
                         processedImageCount++
                         onProgressChanged(processedImageCount.toFloat() / map.size)
