@@ -1352,12 +1352,19 @@ highlightSelection();
             
             if (!document.body.classList.contains("translated")) {
                 document.body.classList.add("translated");
-                document.innerHTMLCache = document.body.innerHTML;
+                document.originalInnerHTML = document.body.innerHTML;
+                fetchNodesWithText(document.body);
             } else {
-                document.body.innerHTML = document.innerHTMLCache;
+                if (!document.body.classList.contains("translated_but_hide")) {
+                    document.translatedInnerHTML = document.body.innerHTML;
+                    document.body.innerHTML = document.originalInnerHTML;
+                    document.body.classList.add("translated_but_hide");
+                } else {
+                    document.body.innerHTML = document.translatedInnerHTML;
+                    document.body.classList.remove("translated_but_hide");
+                }
             }
             
-            fetchNodesWithText(document.body);
         """.trimIndent()
     }
 

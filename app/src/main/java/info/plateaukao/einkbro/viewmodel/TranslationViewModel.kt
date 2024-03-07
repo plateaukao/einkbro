@@ -198,7 +198,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         userMessage: String? = null,
     ) {
         _translateMethod.value = TRANSLATE_API.GPT
-        _translateMethod.value = TRANSLATE_API.GPT
+        config.gptActionForExternalSearch = gptActionInfo
 
         if (userMessage != null) {
             _inputMessage.value = userMessage
