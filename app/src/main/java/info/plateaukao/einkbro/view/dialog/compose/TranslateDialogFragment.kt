@@ -102,7 +102,7 @@ class TranslateDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         anchorPoint?.let { setupDialogPosition(it) }
 
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
+        //dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
 
         translationViewModel.translate()
 
@@ -123,7 +123,6 @@ private fun TranslateResponse(
     val iconPadding = 5.dp
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
-    val translateApiState by translationViewModel.translateMethod.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
     val context = LocalContext.current

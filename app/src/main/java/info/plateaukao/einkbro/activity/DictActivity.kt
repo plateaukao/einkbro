@@ -1,10 +1,12 @@
 package info.plateaukao.einkbro.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.webkit.WebView
 import androidx.activity.viewModels
@@ -66,10 +68,11 @@ class DictActivity : AppCompatActivity() {
             Point(50, 50),
         ) {
             supportFragmentManager.popBackStack()
+            moveTaskToBack(true)
         }
-        // add fragment to back stack
-        supportFragmentManager.beginTransaction().add(fragment, "contextMenu").addToBackStack(null).commit()
-        monitorFragmentStack()
+        supportFragmentManager.beginTransaction().add(fragment, "contextMenu").addToBackStack(null)
+            .commit()
+
     }
 
     private fun forwardDictIntentAndFinish() {
@@ -90,19 +93,17 @@ class DictActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun monitorFragmentStack() {
-        supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                moveTaskToBack(true)
-            }
-        }
-    }
-
     private fun hideStatusBar() {
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.systemBars())
+            val controller = window.insetsController
+            controller?.hide(WindowInsets.Type.statusBars())
+            controller?.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
             window.setDecorFitsSystemWindows(false)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.TRANSPARENT
         }
     }
 }
