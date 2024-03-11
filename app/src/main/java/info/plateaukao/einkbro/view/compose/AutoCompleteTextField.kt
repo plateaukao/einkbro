@@ -233,8 +233,11 @@ fun TextInput(
             textStyle = TextStyle.Default.copy(color = MaterialTheme.colors.onBackground),
             cursorBrush = SolidColor(MaterialTheme.colors.onBackground),
             onValueChange = { state.value = it },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { onValueSubmit(state.value.text) }),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search,
+                autoCorrect = false,
+                ),
+            keyboardActions = KeyboardActions(onSearch = { onValueSubmit(state.value.text) }),
         )
         if (state.value.text.isEmpty()) {
             Text(
