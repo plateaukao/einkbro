@@ -1932,7 +1932,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private var keepToolbar = false
     private fun scrollChange() {
         ninjaWebView.setScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
@@ -1950,11 +1949,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 val cutoff =
                     height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
                 if (scrollY in (oldScrollY + 1)..cutoff) {
-                    if (!keepToolbar) {
-                        toggleFullscreen()
-                    } else {
-                        keepToolbar = false
-                    }
+                    if (binding.appBar.visibility == VISIBLE) toggleFullscreen()
                 }
             }
         })
