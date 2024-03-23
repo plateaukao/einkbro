@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
-import android.os.Build
 import android.os.Message
 import android.security.KeyChain
 import android.util.Log
@@ -21,7 +20,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -224,7 +222,6 @@ class NinjaWebViewClient(
         }.show((context as FragmentActivity).supportFragmentManager, "AuthenticationDialog")
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceivedError(
         view: WebView?,
         request: WebResourceRequest?,
@@ -238,6 +235,7 @@ class NinjaWebViewClient(
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? =
         handleWebRequest(view, Uri.parse(url)) ?: super.shouldInterceptRequest(view, url)
 
@@ -271,10 +269,12 @@ class NinjaWebViewClient(
                 if (event.segs != null && event.segs.size > 0) {
                     val first = event.segs.first()
                     first.utf8 = event.segs.map { it.utf8 }.reduce { acc, s -> acc + s }
-                    first.utf8 += "\n" +
-                            newCaptionJson.events.firstOrNull { it.tStartMs == event.tStartMs }?.segs?.map { it.utf8 }
-                                ?.reduce { acc, str -> acc + str }
-                        ?: ""
+                    val newEvents =
+                        newCaptionJson.events.firstOrNull { it.tStartMs == event.tStartMs }?.segs?.map { it.utf8 }
+                    if (!newEvents.isNullOrEmpty()) {
+                        first.utf8 += ("\n" + newEvents.reduce { acc, str -> acc + str })
+
+                    }
                     event.segs.clear()
                     event.segs.add(first)
                 }
