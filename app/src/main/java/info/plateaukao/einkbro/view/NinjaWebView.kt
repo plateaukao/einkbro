@@ -322,6 +322,9 @@ open class NinjaWebView(
             return
         }
 
+        isTranslatePage = false
+        browserController?.resetTranslateUI()
+
         bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
             setAlbumCover(it)
         }
@@ -335,6 +338,9 @@ open class NinjaWebView(
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
         album.isLoaded = true
+
+        isTranslatePage = false
+        browserController?.resetTranslateUI()
 
         if (url.startsWith("javascript:") || url.startsWith("content:")) {
             // Daniel
@@ -723,7 +729,12 @@ open class NinjaWebView(
         }
     }
 
+    fun clearTranslationElements() {
+        evaluateJavascript(clearTranslationElementsJs, null)
+    }
+
     fun translateByParagraphInPlace() {
+        isTranslatePage = true
         evaluateJavascript(translateParagraphJs) {
             evaluateJavascript(textNodesMonitorJs, null)
         }
@@ -1288,6 +1299,12 @@ function getSafeRanges(dangerous) {
 highlightSelection();
             })();
             """
+        private val clearTranslationElementsJs = """
+            javascript:(function() {
+                document.body.innerHTML = document.originalInnerHTML;
+                document.body.classList.remove("translated");
+            })()
+        """.trimIndent()
         private val translateParagraphJs = """
             function fetchNodesWithText(element) {
               var result = [];

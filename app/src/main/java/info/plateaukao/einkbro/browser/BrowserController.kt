@@ -82,6 +82,9 @@ interface BrowserController {
     fun handlePocketRequestToken(requestToken: String)
 
     fun translate(translationMode: TranslationMode)
+
+    fun resetTranslateUI()
+
     fun configureTranslationLanguage(translateApi: TRANSLATE_API)
     fun toggleTouchPagination()
 
