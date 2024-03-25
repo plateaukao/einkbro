@@ -194,12 +194,7 @@ object ViewUnit {
         }
     }
 
-    fun isMultiWindowEnabled(activity: Activity): Boolean {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-            return false
-        }
-        return activity.isInMultiWindowMode
-    }
+    fun isMultiWindowEnabled(activity: Activity): Boolean = activity.isInMultiWindowMode
 
     fun updateLanguageLabel(textView: TextView, translationLanguage: TranslationLanguage) {
         val languageString = translationLanguage.value

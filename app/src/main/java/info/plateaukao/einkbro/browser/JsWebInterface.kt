@@ -6,6 +6,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ class JsWebInterface(private val webView: NinjaWebView) :
         webView.browserController?.updateSelectionRect(left, top, right, bottom)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
         val translateApi = webView.translateApi

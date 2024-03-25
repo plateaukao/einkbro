@@ -300,7 +300,8 @@ private fun MenuItems(
             ) {
                 MenuItem(
                     R.string.translate,
-                    R.drawable.ic_translate
+                    R.drawable.ic_translate,
+                    onLongClicked = { onLongClicked(MenuItemType.Translate) },
                 ) { onClicked(MenuItemType.Translate) }
                 MenuItem(
                     R.string.reader_mode,

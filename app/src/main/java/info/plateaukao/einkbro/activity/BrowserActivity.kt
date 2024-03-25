@@ -527,6 +527,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 val translationLanguage =
                     TranslationLanguageDialog(this@BrowserActivity).show() ?: return@launch
                 translationViewModel.updateTranslationLanguage(translationLanguage)
+                ninjaWebView.clearTranslationElements()
                 translateByParagraph(ninjaWebView.translateApi)
             }
         }
@@ -575,6 +576,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             TranslationMode.GOOGLE_IN_PLACE -> ninjaWebView.addGoogleTranslation()
             else -> Unit
         }
+    }
+
+    override fun resetTranslateUI() {
+        languageLabelView?.visibility = GONE
     }
 
     override fun configureTranslationLanguage(translateApi: TRANSLATE_API) {
@@ -1126,7 +1131,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             val currentUrl = ninjaWebView.url
 
             // assume it's current one
-            var translateModeWebView = if (ninjaWebView.isTranslatePage) {
+            val translateModeWebView = if (ninjaWebView.isTranslatePage) {
                 ninjaWebView
             } else {
                 // get html from original WebView

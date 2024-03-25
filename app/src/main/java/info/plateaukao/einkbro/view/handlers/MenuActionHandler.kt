@@ -33,7 +33,7 @@ class MenuActionHandler(
     private val dialogManager by lazy { DialogManager(activity) }
 
     fun handleLongClick(menuItemType: MenuItemType, ninjaWebView: NinjaWebView) = when (menuItemType) {
-        MenuItemType.Translate -> browserController.showTranslationConfigDialog(false)
+        MenuItemType.Translate -> browserController.showTranslationConfigDialog(true)
         MenuItemType.ReceiveData -> browserController.toggleReceiveTextSearch()
         MenuItemType.SendLink -> browserController.toggleTextSearch()
         MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
