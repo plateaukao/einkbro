@@ -25,7 +25,6 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
 import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.MediaType
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.epub.EpubWriter
@@ -274,10 +273,8 @@ class EpubManager(private val context: Context) : KoinComponent {
                         entry.value,
                         timeout = 5_000
                     )
-                    // Gotta have a default.
-                    var mediaType: MediaType = MediatypeService.JPG
-                    if (mimeType.isNotEmpty()) mediaType =
-                        MediatypeService.getMediaTypeByName(mimeType)
+                    val mediaType =
+                        MediatypeService.getMediaTypeByName(mimeType) ?: MediatypeService.JPG
                     Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
                     mutex.withLock { // Synchronize access to ebook and counter
                         book.addResource(
