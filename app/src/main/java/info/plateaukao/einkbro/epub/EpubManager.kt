@@ -252,10 +252,7 @@ class EpubManager(private val context: Context) : KoinComponent {
     }
 
     private fun Element.isDummyImage(): Boolean =
-        hasAttr("height")
-                && hasAttr("width")
-                && attr("height") == "1"
-                && attr("width") == "1"
+        attr("height") == "1" && attr("width") == "1"
 
     private suspend fun saveImageResources(
         book: Book,
