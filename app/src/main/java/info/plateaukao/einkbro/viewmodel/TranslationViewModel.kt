@@ -47,8 +47,15 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val _sourceLanguage = MutableStateFlow(config.sourceLanguage)
     val sourceLanguage: StateFlow<TranslationLanguage> = _sourceLanguage.asStateFlow()
 
+    private val _rotateResultScreen = MutableStateFlow(false)
+    val rotateResultScreen: StateFlow<Boolean> = _rotateResultScreen.asStateFlow()
+
     private val _translateMethod = MutableStateFlow(config.externalSearchMethod)
     val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
+
+    fun updateRotateResultScreen(rotate: Boolean) {
+        _rotateResultScreen.value = rotate
+    }
 
     fun updateTranslateMethod(translateApi: TRANSLATE_API) {
         _translateMethod.value = translateApi
