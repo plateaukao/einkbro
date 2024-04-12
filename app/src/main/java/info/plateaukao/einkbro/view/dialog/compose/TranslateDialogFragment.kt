@@ -40,6 +40,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -123,6 +124,7 @@ private fun TranslateResponse(
     val iconPadding = 5.dp
     val requestMessage by translationViewModel.inputMessage.collectAsState()
     val responseMessage by translationViewModel.responseMessage.collectAsState()
+    val rotateScreen by translationViewModel.rotateResultScreen.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -131,8 +133,16 @@ private fun TranslateResponse(
     Column(
         modifier = Modifier
             .padding(top = 6.dp, start = 6.dp, end = 6.dp)
-            .wrapContentWidth()
-            .height(IntrinsicSize.Max)
+            .run {
+                if (rotateScreen) {
+                    width(400.dp)
+                        .height(400.dp)
+                        .rotate(-90f)
+                } else {
+                    wrapContentWidth()
+                        .height(IntrinsicSize.Max)
+                }
+            }
     ) {
         Row(
             modifier = Modifier
@@ -204,7 +214,10 @@ private fun TranslateResponse(
                 modifier = Modifier
                     .size(iconSize)
                     .padding(10.dp)
-                    .clickable { showRequest.value = !showRequest.value }
+                    .combinedClickable(
+                        onClick = { showRequest.value = !showRequest.value },
+                        onLongClick = { translationViewModel.updateRotateResultScreen(!rotateScreen) }
+                    )
             )
             Icon(
                 painter = painterResource(id = R.drawable.icon_close),
@@ -238,9 +251,7 @@ private fun TranslateResponse(
                 Text(
                     text = requestMessage,
                     color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
                 Divider()
@@ -255,9 +266,7 @@ private fun TranslateResponse(
                 Text(
                     text = responseMessage,
                     color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
             }
