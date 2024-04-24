@@ -1,12 +1,15 @@
 package info.plateaukao.einkbro.unit
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
@@ -313,6 +316,33 @@ class BackupUnit(
         return uri
     }
 
+    fun exportHighlights(data: String, fileName: String? = null) {
+        val fullFileName = (fileName ?: "highlights") + ".html"
+        val fileContent = data.toByteArray()
+
+        val documentsDir =
+            context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+        try {
+            val file = File(documentsDir, fullFileName)
+            val fileOutputStream = FileOutputStream(file)
+            fileOutputStream.write(fileContent)
+            fileOutputStream.close()
+            shareFile(context as Activity, file)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun shareFile(activity: Activity, file: File) {
+        val uri = FileProvider.getUriForFile(activity, "${activity.packageName}.fileprovider", file)
+
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/html"
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        activity.startActivity(Intent.createChooser(intent, "Share via"))
+    }
+
 
     companion object {
         private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
@@ -343,3 +373,5 @@ private fun JSONObject.toBookmark(): Bookmark =
         optBoolean("isDirectory"),
         optInt("parent")
     ).apply { id = optInt("id") }
+
+

@@ -15,6 +15,10 @@ class HighlightViewModel : ViewModel(), KoinComponent {
 
     fun getAllArticles() = bookmarkManager.getAllArticles()
 
+    suspend fun getAllArticlesAsync() = bookmarkManager.getAllArticlesAsync()
+
+    suspend fun getArticle(articleId: Int) = bookmarkManager.getArticle(articleId)
+
     fun deleteArticle(articleId: Int) {
         viewModelScope.launch {
             bookmarkManager.deleteArticle(articleId)
@@ -22,6 +26,8 @@ class HighlightViewModel : ViewModel(), KoinComponent {
     }
     fun getHighlightsForArticle(articleId: Int) =
         bookmarkManager.getHighlightsForArticle(articleId)
+    suspend fun getHighlightsForArticleAsync(articleId: Int) =
+        bookmarkManager.getHighlightsForArticleAsync(articleId)
 
     fun launchUrl(activity: Activity, url: String) {
         IntentUnit.launchUrl(activity, url)

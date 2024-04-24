@@ -22,8 +22,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 24
         targetSdkVersion 34
-        versionCode 11_06_01
-        versionName "11.6.1"
+        versionCode 11_07_00
+        versionName "11.7.0"
 
         buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
