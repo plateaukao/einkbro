@@ -241,6 +241,7 @@ private fun TranslateResponse(
                 .wrapContentHeight()
                 .width(IntrinsicSize.Max)
                 .weight(1f)
+                .align(Alignment.Start)
                 .conditionalScroll(
                     !translationViewModel.isWebViewStyle(),
                     scrollState

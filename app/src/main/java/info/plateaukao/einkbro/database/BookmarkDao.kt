@@ -59,6 +59,9 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun getAllArticles(): Flow<List<Article>>
 
+    @Query("SELECT * FROM articles")
+    suspend fun getAllArticlesAsync(): List<Article>
+
     @Query("SELECT * FROM articles WHERE url = :url")
     suspend fun getArticleByUrl(url: String): Article?
 
@@ -93,9 +96,14 @@ interface HighlightDao {
     @Query("SELECT * FROM highlights WHERE articleId = :articleId")
     fun getHighlightsForArticle(articleId: Int): Flow<List<Highlight>>
 
+    @Query("SELECT * FROM highlights WHERE articleId = :articleId")
+    suspend fun getHighlightsForArticleIdAsync(articleId: Int): List<Highlight>
 
     fun getHighlightsForArticle(article: Article): Flow<List<Highlight>> =
         getHighlightsForArticle(article.id)
+
+    suspend fun getHighlightsForArticleAsync(articleId: Int): List<Highlight> =
+        getHighlightsForArticleIdAsync(articleId)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(highlight: Highlight)
@@ -200,9 +208,15 @@ class BookmarkManager(context: Context) : KoinComponent {
         highlightDao.delete(highlight)
 
     fun getAllArticles(): Flow<List<Article>> = articleDao.getAllArticles()
+    suspend fun getAllArticlesAsync(): List<Article> = articleDao.getAllArticlesAsync()
+
+    suspend fun getArticle(articleId: Int): Article? = articleDao.getArticleById(articleId)
 
     fun getHighlightsForArticle(article: Article): Flow<List<Highlight>> =
         highlightDao.getHighlightsForArticle(article)
+
+    suspend fun getHighlightsForArticleAsync(articleId: Int): List<Highlight> =
+        highlightDao.getHighlightsForArticleAsync(articleId)
 
     fun getHighlightsForArticle(articleId: Int): Flow<List<Highlight>> =
         highlightDao.getHighlightsForArticle(articleId)

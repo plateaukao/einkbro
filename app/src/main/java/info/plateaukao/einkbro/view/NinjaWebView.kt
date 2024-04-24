@@ -90,6 +90,7 @@ open class NinjaWebView(
                 album.isTranslatePage = true
             }
         }
+
     var isPlainText = false
 
     var incognito: Boolean = false
@@ -136,6 +137,7 @@ open class NinjaWebView(
     }
 
     override fun reload() {
+        isTranslatePage = false
         settings.cacheMode = WebSettings.LOAD_DEFAULT
         isVerticalRead = false
         isReaderModeOn = false
@@ -144,6 +146,7 @@ open class NinjaWebView(
     }
 
     override fun goBack() {
+        isTranslatePage = false
         isVerticalRead = false
         isReaderModeOn = false
         settings.textZoom = config.fontSize
@@ -734,7 +737,6 @@ open class NinjaWebView(
     }
 
     fun translateByParagraphInPlace() {
-        isTranslatePage = true
         evaluateJavascript(translateParagraphJs) {
             evaluateJavascript(textNodesMonitorJs, null)
         }
