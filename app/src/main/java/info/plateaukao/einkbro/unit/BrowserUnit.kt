@@ -522,7 +522,7 @@ object BrowserUnit : KoinComponent {
         resultLauncher.launch(intent)
     }
 
-    fun createWebArchiveFilePicker(resultLauncher: ActivityResultLauncher<Intent>, title: String) {
+    fun createFilePicker(resultLauncher: ActivityResultLauncher<Intent>, title: String) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_ANY

@@ -15,17 +15,38 @@ class HighlightViewModel : ViewModel(), KoinComponent {
 
     fun getAllArticles() = bookmarkManager.getAllArticles()
 
-    suspend fun getAllArticlesAsync() = bookmarkManager.getAllArticlesAsync()
+    private suspend fun getAllArticlesAsync() = bookmarkManager.getAllArticlesAsync()
 
     suspend fun getArticle(articleId: Int) = bookmarkManager.getArticle(articleId)
+
+    suspend fun dumpArticlesHighlights(): String {
+        val articles = getAllArticlesAsync()
+        var data = ""
+        articles.sortedByDescending { it.date }.forEach {
+            data += dumpSingleArticleHighlights(it.id) + "<br/><br/>"
+        }
+        return data
+    }
+
+    suspend fun dumpSingleArticleHighlights(articleId: Int): String {
+        val article = getArticle(articleId)
+        val articleTitle = article?.title ?: ""
+        val highlights = getHighlightsForArticleAsync(articleId)
+        var data = "<h2>$articleTitle</h2><hr/>"
+        data += highlights.joinToString("<br/><br/>") { it.content }
+        data += "<br/><br/>"
+        return data
+    }
 
     fun deleteArticle(articleId: Int) {
         viewModelScope.launch {
             bookmarkManager.deleteArticle(articleId)
         }
     }
+
     fun getHighlightsForArticle(articleId: Int) =
         bookmarkManager.getHighlightsForArticle(articleId)
+
     suspend fun getHighlightsForArticleAsync(articleId: Int) =
         bookmarkManager.getHighlightsForArticleAsync(articleId)
 

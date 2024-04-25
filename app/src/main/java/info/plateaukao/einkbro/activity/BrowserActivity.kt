@@ -2537,7 +2537,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun showWebArchiveFilePicker() {
         val fileName = "${ninjaWebView.title}.mht"
-        BrowserUnit.createWebArchiveFilePicker(createWebArchivePickerLauncher, fileName)
+        BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
     }
 
     override fun toggleTtsRead() {

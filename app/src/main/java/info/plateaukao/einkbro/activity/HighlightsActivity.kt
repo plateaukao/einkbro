@@ -2,9 +2,11 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -48,31 +50,43 @@ import androidx.navigation.compose.rememberNavController
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Highlight
-import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BackupUnit
+import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.viewmodel.HighlightViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class HighlightsActivity : ComponentActivity(), KoinComponent {
-    private val config: ConfigManager by inject()
     private val highlightViewModel: HighlightViewModel by viewModels()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
+
+    private lateinit var exportHighlightsLauncher: ActivityResultLauncher<Intent>
+
+    private var highlightsRoute = HighlightsRoute.RouteArticles
+    private fun showFileChooser(highlightsRoute: HighlightsRoute) {
+        this.highlightsRoute = highlightsRoute
+        BrowserUnit.createFilePicker(exportHighlightsLauncher, "highlights.html")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        exportHighlightsLauncher =
+            IntentUnit.createResultLauncher(this) {
+                it.data?.data?.let { uri -> exportHighlights(uri) }
+            }
+
 
         setContent {
             val navController: NavHostController = rememberNavController()
-
-            var showDialog by remember { mutableStateOf(false) }
 
             MyTheme {
                 val backStackEntry = navController.currentBackStackEntryAsState()
@@ -85,7 +99,7 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
                     topBar = {
                         HighlightsBar(
                             currentScreen = currentScreen,
-                            onClick = { exportHighlights(currentScreen) },
+                            onClick = { showFileChooser(currentScreen) },
                             navigateUp = {
                                 if (navController.previousBackStackEntry != null) navController.navigateUp()
                                 else finish()
@@ -108,7 +122,7 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
                                 ?.toInt() ?: 0,
                                 modifier = Modifier.padding(10.dp),
                                 highlightViewModel,
-                                deleteHighlight = { it -> highlightViewModel.deleteHighlight(it) }
+                                deleteHighlight = { highlightViewModel.deleteHighlight(it) }
                             )
                         }
                     }
@@ -117,25 +131,18 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
         }
     }
 
-    private fun exportHighlights(currentScreen: HighlightsRoute) {
+    private fun exportHighlights(uri: Uri) {
         highlightViewModel.viewModelScope.launch(Dispatchers.IO) {
-            if (currentScreen == HighlightsRoute.RouteArticles) {
-                var data = ""
-                highlightViewModel.getAllArticlesAsync().forEach { article ->
-                    val articleTitle = highlightViewModel.getArticle(article.id)?.title ?: ""
-                    val highlights = highlightViewModel.getHighlightsForArticleAsync(article.id)
-                    data += "<h1>$articleTitle</h1><br/><hr/><br/>"
-                    data += highlights.joinToString("<br/><br/>") { it.content }
-                    data += "<br/><br/>"
-                }
-                backupUnit.exportHighlights(data)
+            val data = if (highlightsRoute == HighlightsRoute.RouteArticles) {
+                highlightViewModel.dumpArticlesHighlights()
             } else {
-                val articleId = currentScreen.titleId
-                val articleTitle = highlightViewModel.getArticle(articleId)?.title ?: ""
-                val highlights = highlightViewModel.getHighlightsForArticleAsync(articleId)
-                var data = "<h1>$articleTitle</h1><hr><br/>"
-                data += highlights.joinToString("<br/><br/>") { it.content }
-                backupUnit.exportHighlights(data, articleTitle)
+                highlightViewModel.dumpSingleArticleHighlights(highlightsRoute.articleId)
+            }
+            backupUnit.exportHighlights(uri, data)
+
+            withContext(Dispatchers.Main) {
+                NinjaToast.show(this@HighlightsActivity, R.string.toast_backup_successful)
+                IntentUnit.showFile(this@HighlightsActivity, uri)
             }
         }
     }
@@ -148,7 +155,7 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
     }
 }
 
-enum class HighlightsRoute(@StringRes val titleId: Int) {
+enum class HighlightsRoute(@StringRes val articleId: Int) {
     RouteArticles(R.string.articles),
     RouteHighlights(R.string.highlights),
 }
@@ -290,7 +297,7 @@ fun HighlightsBar(
     TopAppBar(
         title = {
             Text(
-                stringResource(currentScreen.titleId),
+                stringResource(currentScreen.articleId),
                 color = MaterialTheme.colors.onPrimary
             )
         },

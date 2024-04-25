@@ -46,6 +46,14 @@ object IntentUnit {
         }
     }
 
+    fun showFile(activity: Activity, uri: Uri) {
+        val intent = Intent(ACTION_VIEW).apply {
+            setDataAndType(uri, "text/html")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        activity.startActivity(intent)
+    }
+
     fun tts(activity: Activity, text: String) {
         val intent = Intent("android.intent.action.PROCESS_TEXT").apply {
             type = "text/plain"

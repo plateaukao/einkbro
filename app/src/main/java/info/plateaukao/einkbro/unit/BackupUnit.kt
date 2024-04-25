@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Environment
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
@@ -316,20 +315,11 @@ class BackupUnit(
         return uri
     }
 
-    fun exportHighlights(data: String, fileName: String? = null) {
-        val fullFileName = (fileName ?: "highlights") + ".html"
+    fun exportHighlights(uri: Uri, data: String) {
         val fileContent = data.toByteArray()
 
-        val documentsDir =
-            context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        try {
-            val file = File(documentsDir, fullFileName)
-            val fileOutputStream = FileOutputStream(file)
-            fileOutputStream.write(fileContent)
-            fileOutputStream.close()
-            shareFile(context as Activity, file)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+            outputStream.write(fileContent)
         }
     }
 
