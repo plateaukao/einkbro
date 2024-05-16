@@ -102,6 +102,14 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    private fun extractContentInBrackets(input: String): String {
+        if (!config.shouldGetSelectedTextContextForGpt) return input
+
+        val regex = "<<(.*?)>>".toRegex()
+        val matchResult = regex.find(input)
+        return matchResult?.groups?.get(1)?.value ?: input
+    }
+
     fun translate(
         translateApi: TRANSLATE_API = _translateMethod.value,
         userMessage: String? = null
@@ -109,11 +117,16 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         _translateMethod.value = translateApi
         config.externalSearchMethod = translateApi
         _responseMessage.value = "..."
+
+        if (userMessage != null) {
+            _inputMessage.value = userMessage
+        }
+
         when (translateApi) {
-            TRANSLATE_API.GOOGLE -> callGoogleTranslate(userMessage)
-            TRANSLATE_API.PAPAGO -> callPapagoTranslate(userMessage)
-            TRANSLATE_API.NAVER -> callNaverDict(userMessage)
-            TRANSLATE_API.GPT -> queryGpt(userMessage)
+            TRANSLATE_API.GOOGLE -> callGoogleTranslate()
+            TRANSLATE_API.PAPAGO -> callPapagoTranslate()
+            TRANSLATE_API.NAVER -> callNaverDict()
+            TRANSLATE_API.GPT -> queryGpt()
         }
     }
 
@@ -121,14 +134,11 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return config.gptActionList
     }
 
-    private fun callNaverDict(userMessage: String? = null) {
-        if (userMessage != null) {
-            _inputMessage.value = userMessage
-        }
-
+    private fun callNaverDict() {
+        val message = extractContentInBrackets(_inputMessage.value)
         viewModelScope.launch(Dispatchers.IO) {
             val byteArray =
-                BrowserUnit.getResourceFromUrl("https://dict.naver.com/dict.search?query=${_inputMessage.value}")
+                BrowserUnit.getResourceFromUrl("https://dict.naver.com/dict.search?query=$message}")
             val document = Jsoup.parse(String(byteArray))
             val container = document.getElementById("contents")
             var content = ""
@@ -136,34 +146,28 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             //_responseMessage.value = content
             //_responseMessage.value = String(byteArray)
             _responseMessage.value =
-                "https://ja.dict.naver.com/#/search?query=${_inputMessage.value}"
+                "https://ja.dict.naver.com/#/search?query=$message}"
         }
     }
 
-    private fun callGoogleTranslate(userMessage: String? = null) {
-        if (userMessage != null) {
-            _inputMessage.value = userMessage
-        }
-
+    private fun callGoogleTranslate() {
+        val message = extractContentInBrackets(_inputMessage.value)
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
                 translateRepository.gTranslateWithApi(
-                    _inputMessage.value,
+                    message,
                     targetLanguage = config.translationLanguage.value,
                 )
                     ?: "Something went wrong."
         }
     }
 
-    private fun callPapagoTranslate(userMessage: String? = null) {
-        if (userMessage != null) {
-            _inputMessage.value = userMessage
-        }
-
+    private fun callPapagoTranslate() {
+        val message = extractContentInBrackets(_inputMessage.value)
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
                 translateRepository.ppTranslate(
-                    _inputMessage.value,
+                    message,
                     targetLanguage = config.translationLanguage.value,
                 )
                     ?: "Something went wrong."
@@ -201,15 +205,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return result?.renderedImage
     }
 
-    private fun queryGpt(
-        userMessage: String? = null,
-    ) {
+    private fun queryGpt() {
         _translateMethod.value = TRANSLATE_API.GPT
         config.gptActionForExternalSearch = gptActionInfo
-
-        if (userMessage != null) {
-            _inputMessage.value = userMessage
-        }
 
         val messages = mutableListOf<ChatMessage>()
         if (gptActionInfo.systemMessage.isNotBlank()) {
