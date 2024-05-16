@@ -62,6 +62,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
@@ -450,29 +451,49 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             if (GoogleTranslate == state) TRANSLATE_API.GOOGLE
                             else if (Papago == state) TRANSLATE_API.PAPAGO
                             else TRANSLATE_API.NAVER
-
-                        translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                         translationViewModel.updateTranslateMethod(api)
-                        TranslateDialogFragment(translationViewModel, externalSearchWebView, point)
-                            .show(supportFragmentManager, "translateDialog")
-                        actionModeMenuViewModel.finish()
-                    }
 
-                    is Gpt -> {
-                        translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                        if (translationViewModel.hasOpenAiApiKey()) {
-                            translationViewModel.updateTranslateMethod(TRANSLATE_API.GPT)
-                            translationViewModel.gptActionInfo = state.gptAction
+                        translationViewModel.viewModelScope.launch {
+                            if (!config.shouldGetSelectedTextContextForGpt) {
+                                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                            } else {
+                                val selectedTextWithContext =
+                                    ninjaWebView.getSelectedTextWithContext()
+                                translationViewModel.updateInputMessage(selectedTextWithContext)
+                            }
                             TranslateDialogFragment(
                                 translationViewModel,
                                 externalSearchWebView,
-                                actionModeMenuViewModel.clickedPoint.value,
+                                point
                             )
-                                .show(supportFragmentManager, "contextMenu")
-                        } else {
-                            NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
+                                .show(supportFragmentManager, "translateDialog")
+                            actionModeMenuViewModel.finish()
                         }
-                        actionModeMenuViewModel.finish()
+                    }
+
+                    is Gpt -> {
+                        translationViewModel.viewModelScope.launch {
+                            if (!config.shouldGetSelectedTextContextForGpt) {
+                                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                            } else {
+                                val selectedTextWithContext =
+                                    ninjaWebView.getSelectedTextWithContext()
+                                translationViewModel.updateInputMessage(selectedTextWithContext)
+                            }
+                            if (translationViewModel.hasOpenAiApiKey()) {
+                                translationViewModel.updateTranslateMethod(TRANSLATE_API.GPT)
+                                translationViewModel.gptActionInfo = state.gptAction
+                                TranslateDialogFragment(
+                                    translationViewModel,
+                                    externalSearchWebView,
+                                    actionModeMenuViewModel.clickedPoint.value,
+                                )
+                                    .show(supportFragmentManager, "contextMenu")
+                            } else {
+                                NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
+                            }
+                            actionModeMenuViewModel.finish()
+                        }
                     }
 
                     is SplitSearch -> {
@@ -2645,8 +2666,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 mode.finish()
 
                 lifecycleScope.launch {
-                    actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
-                    //actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedTextWithContext())
+                    if (!config.shouldGetSelectedTextContextForGpt)
+                        actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
                     actionModeMenuViewModel.showActionModeView(
                         this@BrowserActivity,
                         binding.root
