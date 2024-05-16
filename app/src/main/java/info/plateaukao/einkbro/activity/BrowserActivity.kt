@@ -2646,6 +2646,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 lifecycleScope.launch {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
+                    //actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedTextWithContext())
                     actionModeMenuViewModel.showActionModeView(
                         this@BrowserActivity,
                         binding.root

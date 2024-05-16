@@ -904,6 +904,13 @@ open class NinjaWebView(
         }
     }
 
+    suspend fun getSelectedTextWithContext(contextLength: Int = 10): String =
+        suspendCoroutine { continuation ->
+            evaluateJavascript(jsGetSelectedTextWithContext) { value ->
+                continuation.resume(value.substring(1, value.length - 1))
+            }
+        }
+
     fun addGoogleTranslation() {
         val str = injectGoogleTranslateV2Js()
         evaluateJavascript(str, null)
@@ -918,6 +925,37 @@ open class NinjaWebView(
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
+
+        private const val jsGetSelectedTextWithContext = """
+            javascript:(function() {
+    let contextLength = 50;
+    let selection = window.getSelection();
+    if (selection.rangeCount === 0) return "";
+
+    let range = selection.getRangeAt(0);
+    let startContainer = range.startContainer;
+    let endContainer = range.endContainer;
+
+    // Handle the case where the selected text spans multiple nodes
+    if (startContainer !== endContainer) {
+        return "";  // For simplicity, not handling multi-node selections here
+    }
+
+    let textContent = startContainer.textContent;
+    let startOffset = range.startOffset;
+    let endOffset = range.endOffset;
+
+    // Calculate the start and end positions for context
+    let contextStartPos = Math.max(0, startOffset - contextLength);
+    let contextEndPos = Math.min(textContent.length, endOffset + contextLength);
+
+    let previousContext = textContent.substring(contextStartPos, startOffset);
+    let nextContext = textContent.substring(endOffset, contextEndPos);
+
+    selectedText =  selection.toString();
+    return previousContext + "<<" + selectedText + ">>" + nextContext;
+            })()
+        """
 
         private const val secondPart =
             """setTimeout(
