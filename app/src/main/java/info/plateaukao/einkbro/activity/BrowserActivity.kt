@@ -98,6 +98,7 @@ import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
+import info.plateaukao.einkbro.util.urlUnification
 import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
@@ -1274,7 +1275,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             Intent.ACTION_SEND -> {
                 initSavedTabs()
-                val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
+                val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    ?.urlUnification() ?: ""
+
                 val url =
                     if (BrowserUnit.isURL(sentKeyword)) sentKeyword else externalSearchViewModel.generateSearchUrl(
                         sentKeyword
@@ -1497,7 +1500,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
-                ConfigManager.K_TOOLBAR_ICONS -> {
+                ConfigManager.K_TOOLBAR_ICONS,
+                -> {
                     composeToolbarViewController.updateIcons()
                 }
 
@@ -1602,7 +1606,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     ttsManager.setSpeechRate(config.ttsSpeedValue / 100f)
 
                 ConfigManager.K_CUSTOM_USER_AGENT,
-                ConfigManager.K_ENABLE_CUSTOM_USER_AGENT -> {
+                ConfigManager.K_ENABLE_CUSTOM_USER_AGENT,
+                -> {
                     ninjaWebView.updateUserAgentString()
                     ninjaWebView.reload()
                 }
@@ -1746,7 +1751,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         url: String = config.favoriteUrl,
         foreground: Boolean = true,
         incognito: Boolean = false,
-        enablePreloadWebView: Boolean = true
+        enablePreloadWebView: Boolean = true,
     ) {
         val newWebView = (preloadedWebView ?: createNinjaWebView()).apply {
             this.albumTitle = title
@@ -1766,15 +1771,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun maybeCreateNewPreloadWebView(
         enablePreloadWebView: Boolean,
-        newWebView: NinjaWebView
+        newWebView: NinjaWebView,
     ) {
         preloadedWebView = null
         if (enablePreloadWebView) {
             newWebView.postDelayed({
-                if (preloadedWebView == null) {
-                    preloadedWebView = createNinjaWebView()
-                }
-            }, 2000)
+                                       if (preloadedWebView == null) {
+                                           preloadedWebView = createNinjaWebView()
+                                       }
+                                   }, 2000)
         }
     }
 
@@ -2312,7 +2317,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         contextMenuItemType: ContextMenuItemType,
         title: String,
         url: String,
-        imageUrl: String
+        imageUrl: String,
     ) {
         when (contextMenuItemType) {
             ContextMenuItemType.NewTabForeground -> addAlbum(title, url)
