@@ -127,10 +127,11 @@ import info.plateaukao.einkbro.view.viewControllers.FabImageViewController
 import info.plateaukao.einkbro.view.viewControllers.OverviewDialogController
 import info.plateaukao.einkbro.view.viewControllers.TouchAreaViewController
 import info.plateaukao.einkbro.view.viewControllers.TwoPaneController
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.DeeplTranslate
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.GoogleTranslate
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.HighlightText
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Idle
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Naver
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SplitSearch
@@ -446,21 +447,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         }
                     }
 
-                    GoogleTranslate, Papago, Naver -> {
+                    GoogleTranslate, DeeplTranslate, Papago, Naver -> {
                         val api =
                             if (GoogleTranslate == state) TRANSLATE_API.GOOGLE
                             else if (Papago == state) TRANSLATE_API.PAPAGO
+                            else if (DeeplTranslate == state) TRANSLATE_API.DEEPL
                             else TRANSLATE_API.NAVER
                         translationViewModel.updateTranslateMethod(api)
 
                         translationViewModel.viewModelScope.launch {
-                            if (!config.shouldGetSelectedTextContextForGpt) {
-                                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                            } else {
-                                val selectedTextWithContext =
-                                    ninjaWebView.getSelectedTextWithContext()
-                                translationViewModel.updateInputMessage(selectedTextWithContext)
-                            }
+                            translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                            val selectedTextWithContext = ninjaWebView.getSelectedTextWithContext()
+                            translationViewModel.updateMessageWithContext(selectedTextWithContext)
                             TranslateDialogFragment(
                                 translationViewModel,
                                 externalSearchWebView,
@@ -473,13 +471,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                     is Gpt -> {
                         translationViewModel.viewModelScope.launch {
-                            if (!config.shouldGetSelectedTextContextForGpt) {
-                                translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                            } else {
-                                val selectedTextWithContext =
-                                    ninjaWebView.getSelectedTextWithContext()
-                                translationViewModel.updateInputMessage(selectedTextWithContext)
-                            }
+                            translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
+                            val selectedTextWithContext = ninjaWebView.getSelectedTextWithContext()
+                            translationViewModel.updateMessageWithContext(selectedTextWithContext)
                             if (translationViewModel.hasOpenAiApiKey()) {
                                 translationViewModel.updateTranslateMethod(TRANSLATE_API.GPT)
                                 translationViewModel.gptActionInfo = state.gptAction
@@ -509,7 +503,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         actionModeMenuViewModel.finish()
                     }
 
-                    ActionModeMenuState.Idle -> Unit
+                    Idle -> Unit
                 }
             }
         }
@@ -2666,8 +2660,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 mode.finish()
 
                 lifecycleScope.launch {
-                    if (!config.shouldGetSelectedTextContextForGpt)
-                        actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
+                    actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
                     actionModeMenuViewModel.showActionModeView(
                         this@BrowserActivity,
                         binding.root

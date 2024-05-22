@@ -136,12 +136,6 @@ class ConfigManager(
 
     var useOpenAiTts by BooleanPreference(sp, K_USE_OPENAI_TTS, true)
 
-    var shouldGetSelectedTextContextForGpt by BooleanPreference(
-        sp,
-        K_GET_SELECTED_TEXT_CONTEXT_FOR_GPT,
-        false
-    )
-
     var pageReservedOffset: Int by IntPreference(sp, K_PRESERVE_HEIGHT, 80)
 
     var pageReservedOffsetInString: String by StringPreference(sp, K_PRESERVE_HEIGHT_IN_STRING, pageReservedOffset.toString())
@@ -688,7 +682,6 @@ class ConfigManager(
         const val K_SPLIT_SEARCH_STRING = "sp_split_search_prefix"
         const val K_USE_OPENAI_TTS = "sp_use_openai_tts"
         const val K_HIGHLIGHT_STYLE = "sp_highlight_style"
-        const val K_GET_SELECTED_TEXT_CONTEXT_FOR_GPT = "sp_get_selected_text_context_for_gpt"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 

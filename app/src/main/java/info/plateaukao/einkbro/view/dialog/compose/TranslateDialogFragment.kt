@@ -166,7 +166,21 @@ private fun TranslateResponse(
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_translate_google),
-                contentDescription = "Google Translate Icon",
+                contentDescription = "Deepl Translate",
+                tint = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .size(iconSize)
+                    .padding(iconPadding)
+                    .combinedClickable(
+                        onClick = {
+                            translationViewModel.translate(TRANSLATE_API.DEEPL)
+                        },
+                        onLongClick = { onTargetLanguageClick() }
+                    )
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_translate_google),
+                contentDescription = "Google Translate",
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
                     .size(iconSize)
