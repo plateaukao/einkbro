@@ -41,6 +41,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val _inputMessage = MutableStateFlow("")
     val inputMessage: StateFlow<String> = _inputMessage.asStateFlow()
 
+    private val _messageWithContext = MutableStateFlow("")
+    val messageWithContext: StateFlow<String> = _messageWithContext.asStateFlow()
+
     private val _translationLanguage = MutableStateFlow(config.translationLanguage)
     val translationLanguage: StateFlow<TranslationLanguage> = _translationLanguage.asStateFlow()
 
@@ -64,6 +67,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     fun hasOpenAiApiKey(): Boolean = config.gptApiKey.isNotBlank()
 
+    fun updateMessageWithContext(userMessage: String) {
+        _messageWithContext.value = StringEscapeUtils.unescapeJava(userMessage)
+    }
+
     fun updateInputMessage(userMessage: String) {
         _inputMessage.value = StringEscapeUtils.unescapeJava(userMessage)
         _responseMessage.value = "..."
@@ -80,6 +87,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
+            TRANSLATE_API.DEEPL -> callDeepLTranslate()
             else -> Unit
         }
     }
@@ -102,14 +110,6 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private fun extractContentInBrackets(input: String): String {
-        if (!config.shouldGetSelectedTextContextForGpt) return input
-
-        val regex = "<<(.*?)>>".toRegex()
-        val matchResult = regex.find(input)
-        return matchResult?.groups?.get(1)?.value ?: input
-    }
-
     fun translate(
         translateApi: TRANSLATE_API = _translateMethod.value,
         userMessage: String? = null
@@ -127,6 +127,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
             TRANSLATE_API.GPT -> queryGpt()
+            TRANSLATE_API.DEEPL -> callDeepLTranslate()
         }
     }
 
@@ -135,7 +136,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     private fun callNaverDict() {
-        val message = extractContentInBrackets(_inputMessage.value)
+        val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
             val byteArray =
                 BrowserUnit.getResourceFromUrl("https://dict.naver.com/dict.search?query=$message}")
@@ -151,7 +152,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     private fun callGoogleTranslate() {
-        val message = extractContentInBrackets(_inputMessage.value)
+        val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
                 translateRepository.gTranslateWithApi(
@@ -162,8 +163,27 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    private fun callDeepLTranslate() {
+        val message = _inputMessage.value
+        viewModelScope.launch(Dispatchers.IO) {
+            val targetLanguage = if (config.translationLanguage == TranslationLanguage.ZH_TW ||
+                config.translationLanguage == TranslationLanguage.ZH_CN
+            ) {
+                "zh"
+            } else {
+                config.translationLanguage.value
+            }
+            _responseMessage.value =
+                translateRepository.deepLTranslate(
+                    message,
+                    targetLanguage = targetLanguage,
+                )
+                    ?: "Something went wrong."
+        }
+    }
+
     private fun callPapagoTranslate() {
-        val message = extractContentInBrackets(_inputMessage.value)
+        val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
                 translateRepository.ppTranslate(
@@ -213,8 +233,18 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         if (gptActionInfo.systemMessage.isNotBlank()) {
             messages.add(gptActionInfo.systemMessage.toSystemMessage())
         }
-        messages.add("${gptActionInfo.userMessage}${_inputMessage.value}".toUserMessage())
 
+        val promptPrefix = gptActionInfo.userMessage
+        val selectedText = if (promptPrefix.contains("<<") &&
+            promptPrefix.contains(">>") &&
+            _messageWithContext.value.contains("<<") &&
+            _messageWithContext.value.contains(">>")
+        ) {
+            _messageWithContext.value
+        } else {
+            _inputMessage.value
+        }
+        messages.add("$promptPrefix$selectedText".toUserMessage())
 
         // stream case
         if (config.enableOpenAiStream) {
@@ -342,5 +372,5 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO, NAVER, GPT
+    GOOGLE, PAPAGO, NAVER, GPT, DEEPL
 }

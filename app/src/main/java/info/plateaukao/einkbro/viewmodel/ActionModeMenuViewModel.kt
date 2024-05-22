@@ -175,8 +175,16 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(R.string.google_translate),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_translate_google),
                 action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
+            )
+        )
+        menuInfos.add(
+            0,
+            MenuInfo(
+                context.getString(R.string.deepl_translate),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                action = { _actionModeMenuState.value = ActionModeMenuState.DeeplTranslate }
             )
         )
         if (configManager.gptApiKey.isNotEmpty() && configManager.gptActionList.isNotEmpty()) {
@@ -256,6 +264,7 @@ sealed class ActionModeMenuState {
     object Idle : ActionModeMenuState()
     class Gpt(val gptAction: ChatGPTActionInfo) : ActionModeMenuState()
     object GoogleTranslate : ActionModeMenuState()
+    object DeeplTranslate : ActionModeMenuState()
     object Papago : ActionModeMenuState()
     object Naver : ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()

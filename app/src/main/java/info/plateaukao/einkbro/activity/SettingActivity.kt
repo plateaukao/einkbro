@@ -845,12 +845,6 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         DividerSettingItem(),
         BooleanSettingItem(
-            R.string.get_selected_text_context,
-            R.drawable.icon_search,
-            R.string.setting_get_selected_text_context,
-            config::shouldGetSelectedTextContextForGpt
-        ),
-        BooleanSettingItem(
             R.string.use_it_on_dict_search,
             R.drawable.icon_search,
             R.string.setting_summary_search_in_dict,

@@ -7,8 +7,10 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import okhttp3.FormBody
+import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,6 +27,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
+import java.util.Locale
 import java.util.UUID
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -58,6 +61,93 @@ class TranslateRepository : KoinComponent {
                     .body()
                     .getElementsByClass("result-container")
                     .first()?.text()
+            }
+        }
+    }
+
+    private fun getICount(translateText: String): Int {
+        return translateText.split("i").size - 1
+    }
+
+    private fun getRandomNumber(): Int {
+        val rand = (Math.random() * 99999).toInt() + 200000
+        return rand * 1000
+    }
+
+    private fun getTimeStamp(iCount: Int): Long {
+        val ts = System.currentTimeMillis()
+        return if (iCount != 0) {
+            val adjustedICount = iCount + 1
+            ts - (ts % adjustedICount) + adjustedICount
+        } else {
+            ts
+        }
+    }
+
+    private fun processPostData(postData: JSONObject, id: Int): String {
+        var postStr = postData.toString()
+
+        if ((id + 5) % 29 == 0 || (id + 3) % 13 == 0) {
+            postStr = postStr.replace("\"method\":\"", "\"method\" : \"")
+        } else {
+            postStr = postStr.replace("\"method\":\"", "\"method\": \"")
+        }
+
+        return postStr
+    }
+
+    suspend fun deepLTranslate(
+        text: String,
+        targetLanguage: String = "zh",
+        sourceLanguage: String = "auto",
+    ): String? {
+        val headers = Headers.Builder()
+            .add("content-type", "application/json")
+            .build()
+
+        val id = getRandomNumber()
+        val data = JSONObject().apply {
+            put("jsonrpc", "2.0")
+            put("method", "LMT_handle_texts")
+            put("id", id)
+            put("params", JSONObject().apply {
+                put("splitting", "newlines")
+                put("lang", JSONObject().apply {
+                    put("source_lang_user_selected", sourceLanguage.uppercase(Locale.getDefault()))
+                    put("target_lang", targetLanguage.uppercase(Locale.getDefault()))
+                })
+                put("texts", JSONArray().apply {
+                    put(JSONObject().apply {
+                        put("text", text)
+                        put("requestAlternatives", 1)
+                    })
+                })
+                put("timestamp", getTimeStamp(getICount(text)))
+            })
+        }
+
+        val body =
+            RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                processPostData(data, id)
+            )
+
+        val request = Request.Builder()
+            .url("https://www2.deepl.com/jsonrpc")
+            .headers(headers)
+            .post(body)
+            .build()
+
+        return withContext(IO) {
+            client.newCall(request).execute().use { response ->
+                val body = response.body?.string() ?: return@use null
+                try {
+                    val result = JSONObject(body).getJSONObject("result")
+                    return@use result.getJSONArray("texts").getJSONObject(0).getString("text")
+                } catch (e: Exception) {
+                    Log.d("TranslateRepository", "deepLTranslate: $e")
+                    return@use null
+                }
             }
         }
     }
