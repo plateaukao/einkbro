@@ -518,6 +518,4 @@
     <string name="setting_title_external_search_pop">Use Popup for PROCESS_TEXT event</string>
     <string name="setting_summary_external_search_pop">Search as a popup dictionary (suitable for reader apps dictionary integration)</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
-    <string name="get_selected_text_context">Get Context for Selected Text</string>
-    <string name="setting_get_selected_text_context"><![CDATA[Selected Text will be surrounded in <<>>]]></string>
 </resources>
