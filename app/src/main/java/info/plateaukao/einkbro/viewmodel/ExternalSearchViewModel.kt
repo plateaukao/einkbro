@@ -28,9 +28,8 @@ class ExternalSearchViewModel: ViewModel(), KoinComponent {
         splitSearchItemInfo: SplitSearchItemInfo = currentSearchAction,
     ): String {
         currentSearchText = searchText
-        val correctPattern =
-            if (splitSearchItemInfo.stringPattern.contains("%s")) splitSearchItemInfo.stringPattern
-            else "${splitSearchItemInfo.stringPattern}%s"
-        return correctPattern.format(URLEncoder.encode(searchText, "UTF-8"))
+        return if (splitSearchItemInfo.stringPattern.contains("%s"))
+            splitSearchItemInfo.stringPattern.format(URLEncoder.encode(searchText, "UTF-8"))
+        else "${splitSearchItemInfo.stringPattern}$searchText"
     }
 }
