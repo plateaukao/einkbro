@@ -4,6 +4,8 @@
 # generated files
 gen/
 
+.kotlin/
+
 # Local configuration file (sdk path, etc)
 local.properties
 

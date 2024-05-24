@@ -75,7 +75,6 @@ object HelperUnit {
     @JvmStatic
     // return true if need permissions
     fun needGrantStoragePermission(activity: Activity): Boolean {
-        @SuppressLint("NewApi")
         if (Build.VERSION.SDK_INT in 23..28) {
             val hasWriteExternalStoragePermission =
                 activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
