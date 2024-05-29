@@ -121,13 +121,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                         exitTransition = { ExitTransition.None },
                     ) {
                         val action = this@SettingActivity::handleLink
-                        composable(
-                            Main.name,
-                            enterTransition = { EnterTransition.None },
-                            exitTransition = { ExitTransition.None },
-                            popEnterTransition = { EnterTransition.None },
-                            popExitTransition = { ExitTransition.None },
-                        ) {
+                        composable(Main.name) {
                             SettingScreen(navController, mainSettings, dialogManager, action, 2)
                         }
                         composable(Ui.name) {
