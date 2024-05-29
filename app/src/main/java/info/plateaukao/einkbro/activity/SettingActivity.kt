@@ -9,8 +9,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -117,8 +118,8 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                         navController = navController,
                         startDestination = Main.name,
                         modifier = Modifier.padding(innerPadding),
-                        enterTransition = { EnterTransition.None },
-                        exitTransition = { ExitTransition.None },
+                        enterTransition = { fadeIn(animationSpec = tween(1)) },
+                        exitTransition = { fadeOut(animationSpec = tween(1)) },
                     ) {
                         val action = this@SettingActivity::handleLink
                         composable(Main.name) {
@@ -258,6 +259,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         overridePendingTransition(0, 0)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val uri = data?.data ?: return
