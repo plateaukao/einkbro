@@ -325,7 +325,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initTouchArea()
         initActionModeViewModel()
 
-
         downloadReceiver = createDownloadReceiver(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
@@ -1199,7 +1198,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         when (intent.action) {
-            "", Intent.ACTION_MAIN -> initSavedTabs { addAlbum() }
+            "", Intent.ACTION_MAIN -> {
+                initSavedTabs { addAlbum() }
+            }
 
             ACTION_VIEW -> {
                 initSavedTabs()
@@ -1258,9 +1259,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 addAlbum(); openHistoryPage()
             }
 
-            "sc_home" -> {
-                addAlbum(config.favoriteUrl)
-            }
+            "sc_home" -> addAlbum(config.favoriteUrl)
 
             "sc_bookmark" -> {
                 addAlbum(); openBookmarkPage()
@@ -1351,8 +1350,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 var savedIndex = config.currentAlbumIndex
                 // fix issue
                 if (savedIndex == -1) savedIndex = 0
-//                Log.w(TAG, "savedIndex:$savedIndex")
-//                Log.w(TAG, "albumList:$albumList")
                 albumList.forEachIndexed { index, albumInfo ->
                     addAlbum(
                         title = albumInfo.title,
@@ -2716,5 +2713,5 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 }
 
-private fun MotionEvent.toPoint(): Point = Point(x.toInt(), y.toInt())
+//private fun MotionEvent.toPoint(): Point = Point(x.toInt(), y.toInt())
 private fun MotionEvent.toRawPoint(): Point = Point(rawX.toInt(), rawY.toInt())
