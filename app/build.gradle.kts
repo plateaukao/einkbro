@@ -122,13 +122,13 @@ dependencies {
     // for dark mode
     implementation("androidx.webkit:webkit:1.10.0")
 
-    val koin_version = "3.1.2"
+    val koinVersion = "3.1.2"
     // Koin core features
-    implementation("io.insert-koin:koin-core:$koin_version")
+    implementation("io.insert-koin:koin-core:$koinVersion")
     // Koin test features
-    testImplementation("io.insert-koin:koin-test:$koin_version")
+    testImplementation("io.insert-koin:koin-test:$koinVersion")
     // Android
-    implementation("io.insert-koin:koin-android-compat:$koin_version")
+    implementation("io.insert-koin:koin-android-compat:$koinVersion")
 
     // memory leak detection
     //debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
