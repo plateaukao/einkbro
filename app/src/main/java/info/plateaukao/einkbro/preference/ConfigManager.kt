@@ -17,7 +17,6 @@ import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
@@ -823,7 +822,10 @@ enum class FontType(val resId: Int) {
     SYSTEM_DEFAULT(R.string.system_default),
     SERIF(R.string.serif),
     GOOGLE_SERIF(R.string.googleserif),
-    CUSTOM(R.string.custom_font)
+    CUSTOM(R.string.custom_font),
+    TC_WENKAI(R.string.wenkai_tc),
+    JA_MINCHO(R.string.mincho_ja),
+    KO_GAMJA(R.string.gamja_flower_ko)
 }
 
 enum class DarkMode {

@@ -116,6 +116,9 @@ open class NinjaWebView(
         val cssStyle =
             (if (config.blackFontStyle) makeTextBlackCss else "") +
                     (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
+                    (if (fontType == FontType.TC_WENKAI) wenKaiFontCss else "") +
+                    (if (fontType == FontType.JA_MINCHO) jaMinchoFontCss else "") +
+                    (if (fontType == FontType.KO_GAMJA) koGamjaFontCss else "") +
                     (if (fontType == FontType.SERIF) serifFontCss else "") +
                     (if (config.whiteBackground) whiteBackgroundCss else "") +
                     (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
@@ -1113,7 +1116,21 @@ open class NinjaWebView(
                     "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap');" +
                     "* {\n" +
                     "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
-                    //"font-family: serif !important;\n" +
+                    "}\n"
+        private const val wenKaiFontCss =
+            "@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400&display=swap');" +
+                    "* {\n" +
+                    "font-family: 'LXGW WenKai TC',serif !important;\n" +
+                    "}\n"
+        private const val jaMinchoFontCss =
+            "@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400&display=swap');" +
+                    "* {\n" +
+                    "font-family: 'Shippori Mincho',serif !important;\n" +
+                    "}\n"
+        private const val koGamjaFontCss =
+            "@import url('https://fonts.googleapis.com/css2?family=Gamja+Flower:wght@400&display=swap');" +
+                    "* {\n" +
+                    "font-family: 'Gamja Flower',serif !important;\n" +
                     "}\n"
         private const val serifFontCss =
             "* {\n" +

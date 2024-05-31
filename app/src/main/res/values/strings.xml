@@ -529,4 +529,7 @@
     <string name="setting_summary_external_search_pop">Search as a popup dictionary (suitable for reader apps dictionary integration)</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <string name="deepl_translate">DeepL</string>
+    <string name="wenkai_tc">WenKai(TC)</string>
+    <string name="mincho_ja">Mincho(JA)</string>
+    <string name="gamja_flower_ko">Gamja Flower(KO)</string>
 </resources>
