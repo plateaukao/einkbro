@@ -97,7 +97,8 @@ class DictActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val controller = window.insetsController
             controller?.hide(WindowInsets.Type.statusBars())
-            controller?.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller?.systemBarsBehavior =
+                WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
             window.setDecorFitsSystemWindows(false)
         } else {
