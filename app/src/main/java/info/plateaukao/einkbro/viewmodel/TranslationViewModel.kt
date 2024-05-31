@@ -31,7 +31,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val config: ConfigManager by inject()
     private val translateRepository = TranslateRepository()
 
-    private val openAiRepository by lazy { OpenAiRepository(config.gptApiKey) }
+    private lateinit var openAiRepository: OpenAiRepository
     var gptActionInfo = config.gptActionForExternalSearch ?: config.gptActionList.firstOrNull()
     ?: ChatGPTActionInfo()
 
@@ -135,6 +135,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return config.gptActionList
     }
 
+    fun cancel() {
+        if (this::openAiRepository.isInitialized) {
+            openAiRepository.cancel()
+        }
+    }
+
     private fun callNaverDict() {
         val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
@@ -226,6 +232,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     private fun queryGpt() {
+        if (!this::openAiRepository.isInitialized) {
+            openAiRepository = OpenAiRepository(config.gptApiKey)
+        }
+
         _translateMethod.value = TRANSLATE_API.GPT
         config.gptActionForExternalSearch = gptActionInfo
 

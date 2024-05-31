@@ -82,6 +82,7 @@ class TranslateDialogFragment(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        translationViewModel.cancel()
         closeAction?.invoke()
     }
 

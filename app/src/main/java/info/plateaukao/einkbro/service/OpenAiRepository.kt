@@ -4,7 +4,6 @@ import android.util.Log
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,6 +33,12 @@ class OpenAiRepository(
 
     private val json = Json { ignoreUnknownKeys = true }
 
+    private var eventSource: EventSource? = null
+    fun cancel() {
+        eventSource?.cancel()
+        eventSource = null
+    }
+
     fun chatStream(
         messages: List<ChatMessage>,
         appendResponseAction: (String) -> Unit,
@@ -42,13 +47,15 @@ class OpenAiRepository(
     ) {
         val request = createCompletionRequest(messages, true)
 
-        factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
+        eventSource?.cancel()
+        eventSource = factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
             override fun onEvent(
-                eventSource: EventSource, id: String?, type: String?, data: String
+                es: EventSource, id: String?, type: String?, data: String
             ) {
                 if (data == "[DONE]") {
                     doneAction()
-                    eventSource.cancel()
+                    es.cancel()
+                    eventSource = null
                     return
                 }
                 if (data.isEmpty()) return
@@ -57,7 +64,8 @@ class OpenAiRepository(
                     appendResponseAction(chatCompletion.choices.first().delta.content ?: "")
                 } catch (e: Exception) {
                     failureAction()
-                    eventSource.cancel()
+                    es.cancel()
+                    eventSource = null
                 }
             }
         })
