@@ -1,6 +1,8 @@
 package info.plateaukao.einkbro.service
 
 import android.util.Log
+import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.content
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.data.Content
 import info.plateaukao.einkbro.service.data.ContentPart
@@ -31,7 +33,7 @@ class OpenAiRepository : KoinComponent {
 
     private val config: ConfigManager by inject()
 
-    private val apiKey: String =  config.gptApiKey
+    private val apiKey: String = config.gptApiKey
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -42,13 +44,35 @@ class OpenAiRepository : KoinComponent {
 
     private val json = Json { ignoreUnknownKeys = true }
 
+    val generativeModel: GenerativeModel by lazy {
+        GenerativeModel(
+            // The Gemini 1.5 models are versatile and work with most use cases
+            modelName = "gemini-1.5-flash",
+            // Access your API key as a Build Configuration variable (see "Set up your API key" above)
+            apiKey = config.geminiApiKey
+        )
+    }
+
     private var eventSource: EventSource? = null
     fun cancel() {
         eventSource?.cancel()
         eventSource = null
     }
 
-    fun chatStream(
+    suspend fun chatStream(
+        messages: List<ChatMessage>,
+        appendResponseAction: (String) -> Unit,
+        doneAction: () -> Unit = {},
+        failureAction: () -> Unit,
+    ) {
+        if (config.useGeminiApi && config.geminiApiKey.isNotBlank()) {
+            geminiStream(messages, appendResponseAction, doneAction, failureAction)
+        } else {
+            chatGptStream(messages, appendResponseAction, doneAction, failureAction)
+        }
+    }
+
+    private fun chatGptStream(
         messages: List<ChatMessage>,
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
@@ -59,12 +83,12 @@ class OpenAiRepository : KoinComponent {
         eventSource?.cancel()
         eventSource = factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
             override fun onEvent(
-                es: EventSource, id: String?, type: String?, data: String
+                eventSource: EventSource, id: String?, type: String?, data: String
             ) {
                 if (data == "[DONE]") {
                     doneAction()
-                    es.cancel()
-                    eventSource = null
+                    eventSource.cancel()
+                    this@OpenAiRepository.eventSource = null
                     return
                 }
                 if (data.isEmpty()) return
@@ -73,11 +97,25 @@ class OpenAiRepository : KoinComponent {
                     appendResponseAction(chatCompletion.choices.first().delta.content ?: "")
                 } catch (e: Exception) {
                     failureAction()
-                    es.cancel()
-                    eventSource = null
+                    eventSource.cancel()
+                    this@OpenAiRepository.eventSource = null
                 }
             }
         })
+    }
+
+    private suspend fun geminiStream(
+        messages: List<ChatMessage>,
+        appendResponseAction: (String) -> Unit,
+        doneAction: () -> Unit = {},
+        failureAction: () -> Unit,
+    ) {
+        val inputContent = content {
+            messages.forEach { text(it.content) }
+        }
+        generativeModel.generateContentStream(inputContent).collect { chunk ->
+            appendResponseAction(chunk.text.orEmpty())
+        }
     }
 
     suspend fun tts(text: String): ByteArray? = suspendCoroutine { continuation ->
@@ -115,9 +153,34 @@ class OpenAiRepository : KoinComponent {
         }
     }
 
-    suspend fun queryGemini(contextMessage: String, apiKey: String): String {
-        val apiUrl =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=$apiKey"
+    suspend fun queryGemini(messages: List<ChatMessage>, apiKey: String): String {
+        val request = createGeminiRequest(messages, false)
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
+                if (!response.isSuccessful) {
+                    return@withContext "Error querying Gemini API: ${response.code}"
+                }
+
+                val responseBody =
+                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
+                val responseData = json.decodeFromString<ResponseData>(responseBody)
+                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
+                    ?: "No content available"
+            } catch (exception: Exception) {
+                "something wrong"
+            }
+        }
+    }
+
+    private fun createGeminiRequest(messages: List<ChatMessage>, isStream: Boolean): Request {
+        val apiPrefix = "https://generativelanguage.googleapis.com/v1beta/models/"
+        val model = "gemini-1.5-flash-latest"
+        val apiUrl = if (isStream)
+            "$apiPrefix$model:streamGenerateContent?key=${config.geminiApiKey}"
+        else
+            "$apiPrefix$model:generateContent?key=${config.geminiApiKey}"
+
         val json = Json { ignoreUnknownKeys = true }
 
         val headers = mapOf(
@@ -126,7 +189,7 @@ class OpenAiRepository : KoinComponent {
 
         val data = RequestData(
             contents = listOf(
-                Content(parts = listOf(ContentPart(text = contextMessage)))
+                Content(parts = listOf(ContentPart(text = messages.joinToString(" ") { it.content })))
             ),
             safety_settings = listOf(
                 SafetySetting(
@@ -148,30 +211,13 @@ class OpenAiRepository : KoinComponent {
         val requestBody =
             json.encodeToString(data).toRequestBody("application/json".toMediaTypeOrNull())
 
-        val request = Request.Builder()
+        return Request.Builder()
             .url(apiUrl)
             .post(requestBody)
             .apply {
                 headers.forEach { (key, value) -> addHeader(key, value) }
             }
             .build()
-
-        return withContext(Dispatchers.IO) {
-            try {
-                val response: Response = client.newCall(request).execute()
-                if (!response.isSuccessful) {
-                    return@withContext "Error querying Gemini API: ${response.code}"
-                }
-
-                val responseBody =
-                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
-                val responseData = json.decodeFromString<ResponseData>(responseBody)
-                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
-                    ?: "No content available"
-            } catch (exception: Exception) {
-                "something wrong"
-            }
-        }
     }
 
     private fun createCompletionRequest(

@@ -258,17 +258,19 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
         // stream case
         if (config.enableOpenAiStream) {
-            openAiRepository.chatStream(
-                messages,
-                appendResponseAction = {
-                    if (_responseMessage.value == "...") _responseMessage.value = it
-                    else _responseMessage.value += it
-                },
-                doneAction = { },
-                failureAction = {
-                    _responseMessage.value = "Something went wrong."
-                }
-            )
+            viewModelScope.launch(Dispatchers.IO) {
+                openAiRepository.chatStream(
+                    messages,
+                    appendResponseAction = {
+                        if (_responseMessage.value == "...") _responseMessage.value = it
+                        else _responseMessage.value += it
+                    },
+                    doneAction = { },
+                    failureAction = {
+                        _responseMessage.value = "Something went wrong."
+                    }
+                )
+            }
             return
         }
 
@@ -276,7 +278,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch(Dispatchers.IO) {
             if (config.useGeminiApi && config.geminiApiKey.isNotBlank()) {
                 val result = openAiRepository.queryGemini(
-                    messages.last().content,
+                    messages,
                     apiKey = config.geminiApiKey
                 )
                 _responseMessage.value = result
