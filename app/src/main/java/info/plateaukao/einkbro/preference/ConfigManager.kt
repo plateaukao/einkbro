@@ -188,6 +188,9 @@ class ConfigManager(
     var pocketAccessToken by StringPreference(sp, K_POCKET_ACCESS_TOKEN, "")
 
     var gptApiKey by StringPreference(sp, K_GPT_API_KEY, "")
+
+    var geminiApiKey by StringPreference(sp, K_GEMINI_API_KEY, "")
+
     var gptSystemPrompt by StringPreference(
         sp,
         K_GPT_SYSTEM_PROMPT,
@@ -208,6 +211,7 @@ class ConfigManager(
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
     var gptUrl by StringPreference(sp, K_GPT_SERVER_URL, "https://api.openai.com")
     var useCustomGptUrl by BooleanPreference(sp, K_USE_CUSTOM_GPT_URL, false)
+    var useGeminiApi by BooleanPreference(sp, K_USE_GEMINI_API, false)
 
     var dualCaptionLocale by StringPreference(sp, K_DUAL_CAPTION_LOCALE, "")
 
@@ -671,6 +675,7 @@ class ConfigManager(
 
         const val K_POCKET_ACCESS_TOKEN = "sp_pocket_access_token"
         const val K_GPT_API_KEY = "sp_gpt_api_key"
+        const val K_GEMINI_API_KEY = "sp_gemini_api_key"
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
         const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
         const val K_GPT_USER_PROMPT_WEB_PAGE = "sp_gpt_user_prompt_web_page"
@@ -720,6 +725,7 @@ class ConfigManager(
 
         private const val K_GPT_SERVER_URL = "sp_gpt_server_url"
         private const val K_USE_CUSTOM_GPT_URL = "sp_use_custom_gpt_url"
+        private const val K_USE_GEMINI_API = "sp_use_gemini_api"
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =
