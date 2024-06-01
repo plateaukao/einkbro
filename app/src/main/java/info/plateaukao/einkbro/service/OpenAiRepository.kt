@@ -7,7 +7,6 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.data.Content
 import info.plateaukao.einkbro.service.data.ContentPart
 import info.plateaukao.einkbro.service.data.RequestData
-import info.plateaukao.einkbro.service.data.ResponseData
 import info.plateaukao.einkbro.service.data.SafetySetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,7 +19,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSources
 import org.koin.core.component.KoinComponent
@@ -154,19 +152,22 @@ class OpenAiRepository : KoinComponent {
     }
 
     suspend fun queryGemini(messages: List<ChatMessage>, apiKey: String): String {
-        val request = createGeminiRequest(messages, false)
         return withContext(Dispatchers.IO) {
             try {
-                val response: Response = client.newCall(request).execute()
-                if (!response.isSuccessful) {
-                    return@withContext "Error querying Gemini API: ${response.code}"
-                }
-
-                val responseBody =
-                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
-                val responseData = json.decodeFromString<ResponseData>(responseBody)
-                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
-                    ?: "No content available"
+                generativeModel.generateContent(content {
+                    messages.forEach { text(it.content) }
+                }).text.orEmpty()
+                //val request = createGeminiRequest(messages, false)
+//                val response: Response = client.newCall(request).execute()
+//                if (!response.isSuccessful) {
+//                    return@withContext "Error querying Gemini API: ${response.code}"
+//                }
+//
+//                val responseBody =
+//                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
+//                val responseData = json.decodeFromString<ResponseData>(responseBody)
+//                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
+//                    ?: "No content available"
             } catch (exception: Exception) {
                 "something wrong"
             }
