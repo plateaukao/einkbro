@@ -26,7 +26,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
 
     private val openaiRepository: OpenAiRepository
-            by lazy { OpenAiRepository(config.gptApiKey) }
+            by lazy { OpenAiRepository() }
 
     fun hasApiKey(): Boolean = config.gptApiKey.isNotBlank()
 

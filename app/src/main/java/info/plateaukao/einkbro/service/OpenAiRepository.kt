@@ -2,14 +2,23 @@ package info.plateaukao.einkbro.service
 
 import android.util.Log
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.service.data.Content
+import info.plateaukao.einkbro.service.data.ContentPart
+import info.plateaukao.einkbro.service.data.RequestData
+import info.plateaukao.einkbro.service.data.ResponseData
+import info.plateaukao.einkbro.service.data.SafetySetting
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSources
 import org.koin.core.component.KoinComponent
@@ -18,11 +27,11 @@ import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class OpenAiRepository(
-    private val apiKey: String
-) : KoinComponent {
+class OpenAiRepository : KoinComponent {
 
     private val config: ConfigManager by inject()
+
+    private val apiKey: String =  config.gptApiKey
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -102,6 +111,65 @@ class OpenAiRepository(
                 continuation.resume(chatCompletion)
             } catch (e: Exception) {
                 continuation.resume(null)
+            }
+        }
+    }
+
+    suspend fun queryGemini(contextMessage: String, apiKey: String): String {
+        val apiUrl =
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=$apiKey"
+        val json = Json { ignoreUnknownKeys = true }
+
+        val headers = mapOf(
+            "Content-Type" to "application/json"
+        )
+
+        val data = RequestData(
+            contents = listOf(
+                Content(parts = listOf(ContentPart(text = contextMessage)))
+            ),
+            safety_settings = listOf(
+                SafetySetting(
+                    category = "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                    threshold = "BLOCK_ONLY_HIGH"
+                ),
+                SafetySetting(
+                    category = "HARM_CATEGORY_HATE_SPEECH",
+                    threshold = "BLOCK_ONLY_HIGH"
+                ),
+                SafetySetting(category = "HARM_CATEGORY_HARASSMENT", threshold = "BLOCK_ONLY_HIGH"),
+                SafetySetting(
+                    category = "HARM_CATEGORY_DANGEROUS_CONTENT",
+                    threshold = "BLOCK_ONLY_HIGH"
+                )
+            )
+        )
+
+        val requestBody =
+            json.encodeToString(data).toRequestBody("application/json".toMediaTypeOrNull())
+
+        val request = Request.Builder()
+            .url(apiUrl)
+            .post(requestBody)
+            .apply {
+                headers.forEach { (key, value) -> addHeader(key, value) }
+            }
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
+                if (!response.isSuccessful) {
+                    return@withContext "Error querying Gemini API: ${response.code}"
+                }
+
+                val responseBody =
+                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
+                val responseData = json.decodeFromString<ResponseData>(responseBody)
+                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
+                    ?: "No content available"
+            } catch (exception: Exception) {
+                "something wrong"
             }
         }
     }

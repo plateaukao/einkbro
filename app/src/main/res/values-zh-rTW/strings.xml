@@ -356,7 +356,7 @@
     <string name="share_save">分享或儲存</string>
     <string name="menu_gpt">GPT</string>
     <string name="setting_title_chat_gpt">ChatGPT 功能</string>
-    <string name="setting_title_edit_gpt_api_key">輸入 OpenAI Key</string>
+    <string name="setting_title_edit_gpt_api_key">OpenAI Key</string>
     <string name="setting_summary_edit_gpt_api_key">輸入 OpenAI Key 以使用相關的功能</string>
     <string name="setting_title_edit_gpt_system_prompt">系統提示詞</string>
     <string name="setting_summary_edit_gpt_prompt">輸入像是以下的提示詞: translate into English</string>
@@ -448,4 +448,8 @@
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
+    <string name="setting_title_use_gemini">Use Google Gemini Model</string>
+    <string name="setting_summary_use_gemini">Use Google Gemini 1.5 Flash model</string>
+    <string name="setting_title_gemini_key">Gemini Api Key</string>
+    <string name="setting_summary_gemini_key">Input Gemini API Key</string>
 </resources>

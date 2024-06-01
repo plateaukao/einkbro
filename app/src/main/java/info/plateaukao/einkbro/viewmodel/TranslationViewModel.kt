@@ -233,7 +233,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     private fun queryGpt() {
         if (!this::openAiRepository.isInitialized) {
-            openAiRepository = OpenAiRepository(config.gptApiKey)
+            openAiRepository = OpenAiRepository()
         }
 
         _translateMethod.value = TRANSLATE_API.GPT
@@ -274,15 +274,23 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
         // normal case: too slow!!!
         viewModelScope.launch(Dispatchers.IO) {
-            val chatCompletion = openAiRepository.chatCompletion(messages)
-            if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
-                _responseMessage.value = "Something went wrong."
-                return@launch
+            if (config.useGeminiApi && config.geminiApiKey.isNotBlank()) {
+                val result = openAiRepository.queryGemini(
+                    messages.last().content,
+                    apiKey = config.geminiApiKey
+                )
+                _responseMessage.value = result
             } else {
-                val responseContent = chatCompletion.choices
-                    .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
-                    ?: "Something went wrong."
-                _responseMessage.value = responseContent
+                val chatCompletion = openAiRepository.chatCompletion(messages)
+                if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
+                    _responseMessage.value = "Something went wrong."
+                    return@launch
+                } else {
+                    val responseContent = chatCompletion.choices
+                        .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
+                        ?: "Something went wrong."
+                    _responseMessage.value = responseContent
+                }
             }
         }
     }

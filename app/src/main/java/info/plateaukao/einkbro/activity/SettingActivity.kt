@@ -867,9 +867,22 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         ValueSettingItem(
             R.string.setting_title_custom_gpt_url,
-            R.drawable.ic_chat,
+            R.drawable.ic_earth,
             R.string.setting_summary_custom_gpt_url,
             config::gptUrl
+        ),
+        DividerSettingItem(),
+        BooleanSettingItem(
+            R.string.setting_title_use_gemini,
+            R.drawable.ic_chat,
+            R.string.setting_summary_use_gemini,
+            config::useGeminiApi
+        ),
+        ValueSettingItem(
+            R.string.setting_title_gemini_key,
+            R.drawable.ic_chat,
+            R.string.setting_summary_gemini_key,
+            config::geminiApiKey
         ),
     )
 
