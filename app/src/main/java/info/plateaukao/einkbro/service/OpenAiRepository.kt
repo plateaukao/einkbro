@@ -1,12 +1,15 @@
 package info.plateaukao.einkbro.service
 
 import android.util.Log
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.data.Content
 import info.plateaukao.einkbro.service.data.ContentPart
 import info.plateaukao.einkbro.service.data.RequestData
 import info.plateaukao.einkbro.service.data.ResponseData
 import info.plateaukao.einkbro.service.data.SafetySetting
+import info.plateaukao.einkbro.unit.HelperUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
@@ -52,7 +55,7 @@ class OpenAiRepository : KoinComponent {
 
     suspend fun chatStream(
         messages: List<ChatMessage>,
-        appendResponseAction: (String) -> Unit,
+        appendResponseAction: (AnnotatedString) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
@@ -65,7 +68,7 @@ class OpenAiRepository : KoinComponent {
 
     private fun chatGptStream(
         messages: List<ChatMessage>,
-        appendResponseAction: (String) -> Unit,
+        appendResponseAction: (AnnotatedString) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
@@ -84,8 +87,11 @@ class OpenAiRepository : KoinComponent {
                 }
                 if (data.isEmpty()) return
                 try {
-                    val chatCompletion = json.decodeFromString<ChatCompletionDelta>(data)
-                    appendResponseAction(chatCompletion.choices.first().delta.content ?: "")
+                    val chatCompletion =
+                        json.decodeFromString(ChatCompletionDelta.serializer(), data)
+                    appendResponseAction(buildAnnotatedString {
+                        chatCompletion.choices.first().delta.content ?: ""
+                    })
                 } catch (e: Exception) {
                     failureAction()
                     eventSource.cancel()
@@ -97,7 +103,7 @@ class OpenAiRepository : KoinComponent {
 
     private suspend fun geminiStream(
         messages: List<ChatMessage>,
-        appendResponseAction: (String) -> Unit,
+        appendResponseAction: (AnnotatedString) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
@@ -109,7 +115,7 @@ class OpenAiRepository : KoinComponent {
             }
             val inputStream = response.body?.byteStream() ?: return
             inputStream.source().buffer().use { source ->
-                var outputString = ""
+                var textPrefix = ""
                 while (!source.exhausted()) {
                     val chunk = source.readUtf8Line()
                     if (chunk == null) {
@@ -117,12 +123,21 @@ class OpenAiRepository : KoinComponent {
                         return
                     }
                     try {
-                        //Log.d("OpenAiRepository", "chunk: $chunk")
+                        Log.d("OpenAiRepository", "chunk: $chunk")
                         val textField = "\"text\": \""
                         if (chunk.contains(textField)) {
-                            appendResponseAction(
+                            var text =
                                 chunk.substringAfter(textField).substringBeforeLast("\"").unescape()
-                            )
+                            if (textPrefix.isNotBlank()) {
+                                text = textPrefix + text
+                                textPrefix = ""
+                            }
+                            if (text == "##") {
+                                textPrefix = "##"
+                                continue
+                            }
+                            val annotatedString = HelperUnit.parseMarkdown(text)
+                            appendResponseAction(annotatedString)
                         }
                     } catch (e: Exception) {
                         failureAction()
@@ -159,7 +174,8 @@ class OpenAiRepository : KoinComponent {
 
             val responseString = response.body?.string() ?: ""
             try {
-                val chatCompletion = json.decodeFromString<ChatCompletion>(responseString)
+                val chatCompletion =
+                    json.decodeFromString(ChatCompletion.serializer(), responseString)
                 Log.d("OpenAiRepository", "chatCompletion: $chatCompletion")
                 continuation.resume(chatCompletion)
             } catch (e: Exception) {
@@ -179,7 +195,7 @@ class OpenAiRepository : KoinComponent {
 
                 val responseBody =
                     response.body?.string() ?: return@withContext "Empty response from Gemini API"
-                val responseData = json.decodeFromString<ResponseData>(responseBody)
+                val responseData = json.decodeFromString(ResponseData.serializer(), responseBody)
                 responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
                     ?: "No content available"
             } catch (exception: Exception) {
