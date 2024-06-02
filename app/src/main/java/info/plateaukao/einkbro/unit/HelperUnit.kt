@@ -488,6 +488,7 @@ object HelperUnit {
         }
     }
 
+    private const val DEFAULT_FONT_SIZE = 18
     /**
      * Parses a given markdown text and converts it into an [AnnotatedString] with appropriate styles.
      * from: mdparserkitcore/src/main/java/com/daksh/mdparserkit/core/ParseMarkdown.kt
@@ -508,7 +509,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = 24.sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 10).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -519,7 +520,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = 20.sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 8).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -529,7 +530,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = 18.sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 6).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -539,7 +540,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = 16.sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 5).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -549,7 +550,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = 14.sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 4).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -559,7 +560,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = 12.sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 2).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -568,7 +569,7 @@ object HelperUnit {
                     val content = line.removePrefix("* ").removePrefix("- ").trim()
                     currentStyle = SpanStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
+                        fontSize = DEFAULT_FONT_SIZE.sp
                     )
                     resultBuilder.append(
                         AnnotatedString("• ", currentStyle)
@@ -581,7 +582,7 @@ object HelperUnit {
                     val startIndex = regex.find(line)?.range?.first ?: 0
                     currentStyle = SpanStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
+                        fontSize = DEFAULT_FONT_SIZE.sp
                     )
                     val annotatedString = buildAnnotatedString {
                         if (startIndex > 0) {
@@ -595,12 +596,12 @@ object HelperUnit {
                     textMarkDown(
                         inputText = line.substring(startIndex + 2, line.length),
                         resultBuilder = resultBuilder,
-                        fontSize = 14.sp
+                        fontSize = 16.sp
                     )
                 }
                 // Remaining Text
                 else -> {
-                    textMarkDown(line, resultBuilder, fontSize = 14.sp)
+                    textMarkDown(line, resultBuilder, fontSize = DEFAULT_FONT_SIZE.sp)
                 }
             } // Appending new line
             resultBuilder.append("\n")
