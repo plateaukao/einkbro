@@ -47,6 +47,8 @@ import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
@@ -474,6 +476,17 @@ object HelperUnit {
             val installerPackageName = pm.getInstallerPackageName(packageName)
             "com.android.vending" == installerPackageName
         } catch (e: IllegalArgumentException) {
+            false
+        }
+    }
+
+    fun isValidJson(jsonString: String): Boolean {
+        return try {
+            // 尝试解析字符串为JsonElement，如果成功则说明是有效的JSON
+            Json.parseToJsonElement(jsonString)
+            true
+        } catch (e: SerializationException) {
+            // 捕获解析异常，说明不是有效的JSON
             false
         }
     }
