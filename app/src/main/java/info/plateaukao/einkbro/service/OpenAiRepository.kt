@@ -2,7 +2,6 @@ package info.plateaukao.einkbro.service
 
 import android.util.Log
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.buildAnnotatedString
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.data.Content
 import info.plateaukao.einkbro.service.data.ContentPart
@@ -89,9 +88,9 @@ class OpenAiRepository : KoinComponent {
                 try {
                     val chatCompletion =
                         json.decodeFromString(ChatCompletionDelta.serializer(), data)
-                    appendResponseAction(buildAnnotatedString {
-                        chatCompletion.choices.first().delta.content ?: ""
-                    })
+                    appendResponseAction(
+                        AnnotatedString(chatCompletion.choices.first().delta.content ?: "")
+                    )
                 } catch (e: Exception) {
                     failureAction()
                     eventSource.cancel()
