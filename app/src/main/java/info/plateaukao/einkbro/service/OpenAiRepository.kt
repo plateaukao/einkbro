@@ -387,4 +387,6 @@ private fun String.unescape(): String {
         .replace("\\\"", "\"")
         .replace("\\'", "'")
         .replace("\\\\", "\\")
+        .replace("\\u003c", "<")
+        .replace("\\u003e", ">")
 }
