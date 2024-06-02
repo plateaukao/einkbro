@@ -1,12 +1,11 @@
 package info.plateaukao.einkbro.service
 
 import android.util.Log
-import com.google.ai.client.generativeai.GenerativeModel
-import com.google.ai.client.generativeai.type.content
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.data.Content
 import info.plateaukao.einkbro.service.data.ContentPart
 import info.plateaukao.einkbro.service.data.RequestData
+import info.plateaukao.einkbro.service.data.ResponseData
 import info.plateaukao.einkbro.service.data.SafetySetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,8 +18,11 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSources
+import okio.buffer
+import okio.source
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.concurrent.TimeUnit
@@ -41,15 +43,6 @@ class OpenAiRepository : KoinComponent {
     private val factory by lazy { EventSources.createFactory(client) }
 
     private val json = Json { ignoreUnknownKeys = true }
-
-    val generativeModel: GenerativeModel by lazy {
-        GenerativeModel(
-            // The Gemini 1.5 models are versatile and work with most use cases
-            modelName = "gemini-1.5-flash",
-            // Access your API key as a Build Configuration variable (see "Set up your API key" above)
-            apiKey = config.geminiApiKey
-        )
-    }
 
     private var eventSource: EventSource? = null
     fun cancel() {
@@ -108,11 +101,35 @@ class OpenAiRepository : KoinComponent {
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
-        val inputContent = content {
-            messages.forEach { text(it.content) }
-        }
-        generativeModel.generateContentStream(inputContent).collect { chunk ->
-            appendResponseAction(chunk.text.orEmpty())
+        val request = createGeminiRequest(messages, true)
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                failureAction()
+                return
+            }
+            val inputStream = response.body?.byteStream() ?: return
+            inputStream.source().buffer().use { source ->
+                var outputString = ""
+                while (!source.exhausted()) {
+                    val chunk = source.readUtf8Line()
+                    if (chunk == null) {
+                        failureAction()
+                        return
+                    }
+                    try {
+                        //Log.d("OpenAiRepository", "chunk: $chunk")
+                        val textField = "\"text\": \""
+                        if (chunk.contains(textField)) {
+                            appendResponseAction(
+                                chunk.substringAfter(textField).substringBeforeLast("\"").unescape()
+                            )
+                        }
+                    } catch (e: Exception) {
+                        failureAction()
+                        return
+                    }
+                }
+            }
         }
     }
 
@@ -154,20 +171,17 @@ class OpenAiRepository : KoinComponent {
     suspend fun queryGemini(messages: List<ChatMessage>, apiKey: String): String {
         return withContext(Dispatchers.IO) {
             try {
-                generativeModel.generateContent(content {
-                    messages.forEach { text(it.content) }
-                }).text.orEmpty()
-                //val request = createGeminiRequest(messages, false)
-//                val response: Response = client.newCall(request).execute()
-//                if (!response.isSuccessful) {
-//                    return@withContext "Error querying Gemini API: ${response.code}"
-//                }
-//
-//                val responseBody =
-//                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
-//                val responseData = json.decodeFromString<ResponseData>(responseBody)
-//                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
-//                    ?: "No content available"
+                val request = createGeminiRequest(messages, false)
+                val response: Response = client.newCall(request).execute()
+                if (!response.isSuccessful) {
+                    return@withContext "Error querying Gemini API: ${response.code}"
+                }
+
+                val responseBody =
+                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
+                val responseData = json.decodeFromString<ResponseData>(responseBody)
+                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
+                    ?: "No content available"
             } catch (exception: Exception) {
                 "something wrong"
             }
@@ -350,3 +364,11 @@ data class TTSRequest(
     val speed: Double = 1.0,
     val format: String = "aac"
 )
+
+private fun String.unescape(): String {
+    return this.replace("\\n", "\n")
+        .replace("\\t", "\t")
+        .replace("\\\"", "\"")
+        .replace("\\'", "'")
+        .replace("\\\\", "\\")
+}
