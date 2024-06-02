@@ -159,7 +159,7 @@ private fun TranslateResponse(
                 modifier = Modifier
                     .size(iconSize)
                     .padding(iconPadding)
-                    .clickable { ShareUtil.copyToClipboard(context, responseMessage) }
+                    .clickable { ShareUtil.copyToClipboard(context, responseMessage.text) }
             )
 
             if (ViewUnit.isTablet(LocalContext.current)) {
@@ -267,22 +267,26 @@ private fun TranslateResponse(
                 Text(
                     text = requestMessage,
                     color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
                 Divider()
             }
-            if (translationViewModel.isWebViewStyle() && responseMessage != "...") {
+            if (translationViewModel.isWebViewStyle() && responseMessage.text != "...") {
                 WebResultView(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     getTranslationWebView(),
-                    responseMessage
+                    responseMessage.text
                 )
             } else {
                 Text(
                     text = responseMessage,
                     color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
             }
