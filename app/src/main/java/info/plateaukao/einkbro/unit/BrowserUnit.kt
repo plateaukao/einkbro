@@ -294,14 +294,14 @@ object BrowserUnit : KoinComponent {
             }
         }
 
-        if (isURL(query) && !query.contains(" ")) {
+        if (isURL(query)) {
             if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
                 return query
             }
             if (!query.contains("://")) {
                 query = URL_SCHEME_HTTPS + query
             }
-            return query
+            return query.replace(" ", "+")
         }
 
         try {
