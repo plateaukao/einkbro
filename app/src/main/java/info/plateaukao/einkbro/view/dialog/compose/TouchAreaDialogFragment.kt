@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.net.Uri
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -39,10 +40,14 @@ import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 
-class TouchAreaDialogFragment() : ComposeDialogFragment(), KoinComponent {
+class TouchAreaDialogFragment(
+    private val url: String
+) : ComposeDialogFragment(), KoinComponent {
     override fun setupComposeView() = composeView.setContent {
         val touchAreaType = remember { mutableStateOf(config.touchAreaType) }
         val enableTurn = remember { mutableStateOf(config.enableTouchTurn) }
+        val tryFixScroll = remember { mutableStateOf(config.shouldFixScroll(url)) }
+
         MyTheme {
             TouchAreaContent(
                 touchAreaType = touchAreaType.value,
@@ -59,11 +64,24 @@ class TouchAreaDialogFragment() : ComposeDialogFragment(), KoinComponent {
                 hideTouchWhenType = config.hideTouchAreaWhenInput,
                 switchTouchArea = config.switchTouchAreaAction,
                 enableTouchAreaAsArrowKey = config.longClickAsArrowKey,
+                tryFixScroll = tryFixScroll.value,
                 onShowHintClick = { config::touchAreaHint.toggle() },
                 onHideWhenTypeClick = { config::hideTouchAreaWhenInput.toggle() },
                 onSwitchAreaClick = { config::switchTouchAreaAction.toggle() },
                 onCloseClick = { dismiss() },
-                onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() }
+                onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() },
+                onTryFixScrollClick = {
+                    Uri.parse(url)?.host?.let { host ->
+                        if (config.scrollFixList.contains(host)) {
+                            config.scrollFixList =
+                                config.scrollFixList.toMutableList().apply { remove(host) }
+                        } else {
+                            config.scrollFixList =
+                                config.scrollFixList.toMutableList().apply { add(host) }
+                        }
+                        tryFixScroll.value = config.shouldFixScroll(url)
+                    }
+                }
             )
         }
     }
@@ -79,11 +97,13 @@ fun TouchAreaContent(
     hideTouchWhenType: Boolean = true,
     switchTouchArea: Boolean = false,
     enableTouchAreaAsArrowKey: Boolean = false,
+    tryFixScroll: Boolean = false,
     onShowHintClick: () -> Unit = {},
     onHideWhenTypeClick: () -> Unit = {},
     onSwitchAreaClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
     onAsArrowKeyClick: () -> Unit = {},
+    onTryFixScrollClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
         Row(
@@ -148,6 +168,11 @@ fun TouchAreaContent(
             titleResId = R.string.enable_touch_area_as_arrow_key,
             iconResId = -1,
             onClicked = { onAsArrowKeyClick() })
+        ToggleItem(
+            state = tryFixScroll,
+            titleResId = R.string.enable_fix_scroll,
+            iconResId = -1,
+            onClicked = { onTryFixScrollClick() })
 
         Spacer(modifier = Modifier.height(10.dp))
 

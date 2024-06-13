@@ -46,6 +46,8 @@ interface BrowserController {
     fun openHistoryPage(amount: Int = 0)
     //
     fun showTranslationConfigDialog(translateDirectly: Boolean)
+
+    fun showTouchAreaDialog()
     fun toggleFullscreen()
 
     // toolbar click

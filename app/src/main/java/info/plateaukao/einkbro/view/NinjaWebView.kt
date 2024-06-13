@@ -509,17 +509,47 @@ open class NinjaWebView(
     open fun pageDownWithNoAnimation() = if (isVerticalRead) {
         scrollBy(shiftOffset(), 0)
         scrollX = min(computeHorizontalScrollRange() - width, scrollX)
-    } else {
-        scrollBy(0, shiftOffset())
-        scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
+    } else { // normal case
+        if (config.shouldFixScroll(url.orEmpty())) {
+            callScrollFixPageDown()
+        } else {
+            scrollBy(0, shiftOffset())
+            scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
+        }
     }
 
     open fun pageUpWithNoAnimation() = if (isVerticalRead) {
         scrollBy(-shiftOffset(), 0)
         scrollX = max(0, scrollX)
-    } else {
-        scrollBy(0, -shiftOffset())
-        scrollY = max(0, scrollY)
+    } else { // normal case
+        if (config.shouldFixScroll(url.orEmpty())) {
+            callScrollFixPageUp()
+        } else {
+            scrollBy(0, -shiftOffset())
+            scrollY = max(0, scrollY)
+        }
+    }
+
+    private fun callScrollFixPageDown() {
+        evaluateJavascript(
+            """
+            javascript:(function() {
+            let downButton = document.getElementById('EinkBroDownButton');
+            downButton.dispatchEvent(new Event('click'));
+            })()
+        """.trimIndent()
+        ) {}
+    }
+
+    private fun callScrollFixPageUp() {
+        evaluateJavascript(
+            """
+            javascript:(function() {
+            let upButton = document.getElementById('EinkBroUpButton');
+            upButton.dispatchEvent(new Event('click'));
+            })()
+        """.trimIndent()
+        ) {}
     }
 
     fun removeTextSelection() {

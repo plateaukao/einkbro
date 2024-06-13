@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.preference
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Point
+import android.net.Uri
 import android.os.Build
 import android.print.PrintAttributes
 import androidx.compose.ui.graphics.Color
@@ -17,7 +18,6 @@ import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
@@ -277,6 +277,12 @@ class ConfigManager(
         }
 
     var favoriteUrl by StringPreference(sp, K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
+
+    //use stringset in sharedpreference
+    var scrollFixList: List<String>
+        get() = sp.getStringSet(K_SCROLL_FIX_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_SCROLL_FIX_LIST, value.toSet()) }
+    fun shouldFixScroll(url: String): Boolean = scrollFixList.contains(Uri.parse(url).host)
 
     var toolbarActions: List<ToolbarAction>
         get() {
@@ -574,6 +580,7 @@ class ConfigManager(
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
+        const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"

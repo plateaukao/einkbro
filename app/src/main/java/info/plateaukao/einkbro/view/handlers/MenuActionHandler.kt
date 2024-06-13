@@ -21,7 +21,6 @@ import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -51,11 +50,7 @@ class MenuActionHandler(
         MenuItemType.Translate -> browserController.showTranslation()
         MenuItemType.VerticalRead -> browserController.toggleVerticalRead()
         MenuItemType.ReaderMode -> browserController.toggleReaderMode()
-        MenuItemType.TouchSetting -> TouchAreaDialogFragment().show(
-            activity.supportFragmentManager,
-            "TouchAreaDialog"
-        )
-
+        MenuItemType.TouchSetting -> browserController.showTouchAreaDialog()
         MenuItemType.ToolbarSetting -> ToolbarConfigDialogFragment().show(
             activity.supportFragmentManager,
             "toolbar_config"
