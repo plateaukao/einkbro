@@ -7,7 +7,6 @@ import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -23,10 +22,7 @@ class ToolbarActionHandler(
     fun handleLongClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
         ToolbarAction.Back -> browserController.openHistoryPage(5)
         ToolbarAction.Refresh -> browserController.toggleFullscreen()
-        ToolbarAction.Touch -> TouchAreaDialogFragment().show(
-            activity.supportFragmentManager,
-            "TouchAreaDialog"
-        )
+        ToolbarAction.Touch -> browserController.showTouchAreaDialog()
 
         ToolbarAction.PageUp -> browserController.jumpToTop()
         ToolbarAction.PageDown -> browserController.jumpToBottom()
@@ -36,7 +32,7 @@ class ToolbarActionHandler(
         ToolbarAction.Translation -> browserController.showTranslationConfigDialog(true)
         ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
         ToolbarAction.Tts ->
-            TtsSettingDialogFragment (
+            TtsSettingDialogFragment(
                 gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(activity) },
                 showLocaleDialog = { browserController.showTtsLanguageDialog() }
             ).show(activity.supportFragmentManager, "TtsSettingDialog")
@@ -50,8 +46,15 @@ class ToolbarActionHandler(
                 config.papagoApiSecret = ""
             }
         }
-        ToolbarAction.TranslateByParagraph -> browserController.configureTranslationLanguage(TRANSLATE_API.GOOGLE)
-        ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(TRANSLATE_API.PAPAGO)
+
+        ToolbarAction.TranslateByParagraph -> browserController.configureTranslationLanguage(
+            TRANSLATE_API.GOOGLE
+        )
+
+        ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(
+            TRANSLATE_API.PAPAGO
+        )
+
         else -> {}
     }
 
@@ -81,7 +84,7 @@ class ToolbarActionHandler(
         ToolbarAction.RotateScreen -> browserController.rotateScreen()
         ToolbarAction.Translation -> browserController.showTranslation()
         ToolbarAction.CloseTab -> browserController.removeAlbum()
-        ToolbarAction.MoveToBackground-> activity.moveTaskToBack(true)
+        ToolbarAction.MoveToBackground -> activity.moveTaskToBack(true)
         ToolbarAction.InputUrl -> browserController.focusOnInput()
         ToolbarAction.NewTab -> browserController.newATab()
         ToolbarAction.Desktop -> config::desktop.toggle()

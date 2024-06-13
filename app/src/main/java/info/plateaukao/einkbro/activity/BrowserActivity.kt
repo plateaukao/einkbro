@@ -118,6 +118,7 @@ import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
@@ -1470,6 +1471,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             config.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
         }
     }
+
+    override fun showTouchAreaDialog() = TouchAreaDialogFragment(ninjaWebView.url.orEmpty())
+        .show(supportFragmentManager, "TouchAreaDialog")
 
     override fun showTranslationConfigDialog(translateDirectly: Boolean) {
         maybeInitTwoPaneController()

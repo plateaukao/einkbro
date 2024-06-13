@@ -44,11 +44,139 @@ class WebContentPostProcessor : KoinComponent {
             ninjaWebView.settings.textZoom = configManager.fontSize
         }
 
+        // some strange website scrolling support
+        if (configManager.shouldFixScroll(url)) {
+            ninjaWebView.evaluateJavascript(SCROLL_FIX_JS, null);
+        }
         // text selection handling
         ninjaWebView.addSelectionChangeListener()
     }
 
     companion object {
+        // referenced from https://greasyfork.org/zh-CN/scripts/494503-high-contrast-theme-for-e-ink-displays-and-page-down
+        private const val SCROLL_FIX_JS = """
+            javascript:(function() {
+    const body = document.body;
+    const scrollRatio = 0.9;
+ 
+    const Container = document.createElement("div");
+    Container.style.cssText = `
+        width: 1px; height: 1px;
+        bottom:0;right:0;
+        position:fixed;
+        display:flex;
+        flex-direction:column;
+        border-style:dashed;
+        z-index:2147483647;
+        border-width:2px;
+    `;
+ 
+    // 创建一个数组来存储具有overflow-y: auto的元素
+    let elementsWithOverflowYAuto = [window];
+    let el = window;
+    // 设置一个标志变量来记录是否滚动
+    let scrolled = false;
+    let index = -1;
+ 
+    init();
+ 
+    function init() {
+        // 创建一个数组来存储具有overflow-y: auto的元素
+        elementsWithOverflowYAuto = [window];
+        el = window;
+        // 设置一个标志变量来记录是否滚动
+        scrolled = false;
+        index = -1;
+ 
+ 
+        // 确认滚动元素
+        setTimeout(() => {
+            check();
+        }, 80);
+ 
+    }
+ 
+    function check() {
+        if (scrolled) {
+            return;
+        }
+        index++;
+        if (index == 1) {
+            tryFindOverflowY();
+        }
+        if (index >= elementsWithOverflowYAuto.length) {
+            el = window;
+            return;
+        }
+        el = elementsWithOverflowYAuto[index];
+        // 监听滚动事件
+        el.addEventListener('scroll', function () {
+            scrolled = true;
+        });
+ 
+        // 执行滚动操作
+        el.scrollBy(0, 1);
+        setTimeout(() => {
+            check();
+        }, 30);
+ 
+    }
+ 
+ 
+    function tryFindOverflowY() {
+        // 获取所有元素.
+        var allElements = document.querySelectorAll('*');
+        let arr = [];
+        // 遍历所有元素，检查它们的样式
+        allElements.forEach(function (element) {
+            // 获取元素的计算样式
+            var style = getComputedStyle(element);
+ 
+            // 检查overflow-y属性是否为auto
+            if (style.overflowY === 'auto') {
+                // 如果是，添加到结果数组中
+                arr.push(element);
+            }
+        });
+        arr.sort((a, b) => {
+            return (b.clientHeight + b.clientWidth) - (a.clientHeight + a.clientWidth);
+        })
+        elementsWithOverflowYAuto = elementsWithOverflowYAuto.concat(arr);
+    }
+ 
+    const UpButton = document.createElement("div");
+    UpButton.id = "EinkBroUpButton";
+    UpButton.style.cssText = "flex:1";
+    UpButton.addEventListener('click', () => {
+        scroll(-scrollRatio * window.innerHeight);
+    });
+ 
+    const DownButton = document.createElement("div");
+    DownButton.id = "EinkBroDownButton";
+    DownButton.style.cssText = "flex:1;border-top-style:dashed;border-width:2px;";
+    DownButton.addEventListener('click', () => {
+        scroll(scrollRatio * window.innerHeight);
+    });
+ 
+    function scroll(y) {
+        if (document.contains(el)) {
+            el.scrollBy(0, y);
+            return;
+        }
+        init();
+        setTimeout(() => {
+            if (document.contains(el)) {
+                el.scrollBy(0, y);
+            }
+        }, 150);
+    }
+ 
+    Container.appendChild(UpButton);
+    Container.appendChild(DownButton);
+    body.appendChild(Container);
+            })()
+        """
+
         private const val twitterJs = """
             var adsHidden = 0;
 var adSelector = "div[data-testid=placementTracking]";
@@ -226,7 +354,7 @@ var sidebarExists = setInterval(function() {
             document.querySelector(".placeholder-line").remove();
             document.querySelector(".hot-so-wrap").remove();
         """
-        
+
         private const val redditJs = """
             javascript:(function() {
                 localStorage.setItem('bannerLastClosed', new Date());
@@ -266,7 +394,7 @@ var sidebarExists = setInterval(function() {
             "zhihu.com" to zhihuDisablePopupJs,
             "jianshu.com" to jianshuJs,
             "huxiu.com" to huxiuJs,
-            "twitter.com" to twitterJs,
+            //"twitter.com" to twitterJs,
             "reddit.com" to redditJs,
         )
     }
