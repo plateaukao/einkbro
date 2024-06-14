@@ -60,7 +60,7 @@ class TouchAreaViewController(
 
     init {
         updateTouchAreaType()
-        if (config.touchAreaCustomizeY != 0 && allowCustomize()) {
+        if (config.touchAreaCustomizeY != 0 && allowMoveTouchArea()) {
             rootView.post {
                 updateTouchAreaCustomizeY(config.touchAreaCustomizeY)
             }
@@ -187,7 +187,7 @@ class TouchAreaViewController(
             touchAreaPageUp.visibility = View.VISIBLE
             touchAreaPageDown.visibility = View.VISIBLE
             touchAreaDragCustomize.visibility =
-                if (config.touchAreaHint && allowCustomize()) View.VISIBLE else View.GONE
+                if (config.touchAreaHint && allowMoveTouchArea()) View.VISIBLE else View.GONE
             showTouchAreaHint()
         }
     }
@@ -216,7 +216,7 @@ class TouchAreaViewController(
         touchAreaPageUp.visibility = if (enabled) View.VISIBLE else View.GONE
         touchAreaPageDown.visibility = if (enabled) View.VISIBLE else View.GONE
         touchAreaDragCustomize.visibility =
-            if (enabled && allowCustomize()) View.VISIBLE else View.GONE
+            if (enabled && allowMoveTouchArea()) View.VISIBLE else View.GONE
 
         if (enabled) showTouchAreaHint()
     }
@@ -256,7 +256,5 @@ class TouchAreaViewController(
         }
     }
 
-    fun allowCustomize(): Boolean {
-        return config.touchAreaType != TouchAreaType.Long
-    }
+    private fun allowMoveTouchArea(): Boolean = config.touchAreaType != TouchAreaType.Long
 }
