@@ -11,6 +11,7 @@ import info.plateaukao.einkbro.service.ChatRole
 import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.NinjaWebView
@@ -266,11 +267,16 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         // stream case
         if (config.enableOpenAiStream) {
             viewModelScope.launch(Dispatchers.IO) {
+                var responseString = ""
                 openAiRepository.chatStream(
                     messages,
                     appendResponseAction = {
-                        if (_responseMessage.value.text == "...") _responseMessage.value = it
-                        else _responseMessage.value += it
+                        if (_responseMessage.value.text == "...") {
+                            responseString = it
+                        } else {
+                            responseString += it
+                        }
+                        _responseMessage.value = HelperUnit.parseMarkdown(responseString.unescape())
                     },
                     doneAction = { },
                     failureAction = {
@@ -400,4 +406,14 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
 enum class TRANSLATE_API {
     GOOGLE, PAPAGO, NAVER, GPT, DEEPL
+}
+
+private fun String.unescape(): String {
+    return this.replace("\\n", "\n")
+        .replace("\\t", "\t")
+        .replace("\\\"", "\"")
+        .replace("\\'", "'")
+        .replace("\\\\", "\\")
+        .replace("\\u003c", "<")
+        .replace("\\u003e", ">")
 }
