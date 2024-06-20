@@ -1,14 +1,12 @@
 package info.plateaukao.einkbro.service
 
 import android.util.Log
-import androidx.compose.ui.text.AnnotatedString
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.data.Content
 import info.plateaukao.einkbro.service.data.ContentPart
 import info.plateaukao.einkbro.service.data.RequestData
 import info.plateaukao.einkbro.service.data.ResponseData
 import info.plateaukao.einkbro.service.data.SafetySetting
-import info.plateaukao.einkbro.unit.HelperUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
@@ -54,7 +52,7 @@ class OpenAiRepository : KoinComponent {
 
     suspend fun chatStream(
         messages: List<ChatMessage>,
-        appendResponseAction: (AnnotatedString) -> Unit,
+        appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
@@ -67,7 +65,7 @@ class OpenAiRepository : KoinComponent {
 
     private fun chatGptStream(
         messages: List<ChatMessage>,
-        appendResponseAction: (AnnotatedString) -> Unit,
+        appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
@@ -88,9 +86,7 @@ class OpenAiRepository : KoinComponent {
                 try {
                     val chatCompletion =
                         json.decodeFromString(ChatCompletionDelta.serializer(), data)
-                    appendResponseAction(
-                        AnnotatedString(chatCompletion.choices.first().delta.content ?: "")
-                    )
+                    appendResponseAction(chatCompletion.choices.first().delta.content ?: "")
                 } catch (e: Exception) {
                     failureAction()
                     eventSource.cancel()
@@ -102,7 +98,7 @@ class OpenAiRepository : KoinComponent {
 
     private suspend fun geminiStream(
         messages: List<ChatMessage>,
-        appendResponseAction: (AnnotatedString) -> Unit,
+        appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
@@ -114,7 +110,6 @@ class OpenAiRepository : KoinComponent {
             }
             val inputStream = response.body?.byteStream() ?: return
             inputStream.source().buffer().use { source ->
-                var textPrefix = ""
                 while (!source.exhausted()) {
                     val chunk = source.readUtf8Line()
                     if (chunk == null) {
@@ -126,17 +121,9 @@ class OpenAiRepository : KoinComponent {
                         val textField = "\"text\": \""
                         if (chunk.contains(textField)) {
                             var text =
-                                chunk.substringAfter(textField).substringBeforeLast("\"").unescape()
-                            if (textPrefix.isNotBlank()) {
-                                text = textPrefix + text
-                                textPrefix = ""
-                            }
-                            if (text == "##") {
-                                textPrefix = "##"
-                                continue
-                            }
-                            val annotatedString = HelperUnit.parseMarkdown(text)
-                            appendResponseAction(annotatedString)
+                                chunk.substringAfter(textField).removeSuffix("\"")
+                            Log.d("OpenAiRepository", "text: $text")
+                            appendResponseAction(text)
                         }
                     } catch (e: Exception) {
                         failureAction()
@@ -379,13 +366,3 @@ data class TTSRequest(
     val speed: Double = 1.0,
     val format: String = "aac"
 )
-
-private fun String.unescape(): String {
-    return this.replace("\\n", "\n")
-        .replace("\\t", "\t")
-        .replace("\\\"", "\"")
-        .replace("\\'", "'")
-        .replace("\\\\", "\\")
-        .replace("\\u003c", "<")
-        .replace("\\u003e", ">")
-}
