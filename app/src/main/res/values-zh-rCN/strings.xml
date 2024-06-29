@@ -522,7 +522,11 @@
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
     <string name="setting_title_use_gemini">Use Google Gemini Model</string>
-    <string name="setting_summary_use_gemini">Use Google Gemini 1.5 Flash model</string>
+    <string name="setting_summary_use_gemini">Use Google Gemini model</string>
     <string name="setting_title_gemini_key">Gemini Api Key</string>
     <string name="setting_summary_gemini_key">Input Gemini API Key</string>
+    <string name="setting_title_other_model_name">Alternative Model Name</string>
+    <string name="setting_summary_other_model_name">Input model name for alternaltive gpt server</string>
+    <string name="setting_title_gemini_model_name">Gemini Model Name</string>
+    <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-1.5-flash)</string>
 </resources>

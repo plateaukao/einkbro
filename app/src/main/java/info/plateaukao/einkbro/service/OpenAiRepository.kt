@@ -93,6 +93,11 @@ class OpenAiRepository : KoinComponent {
                     this@OpenAiRepository.eventSource = null
                 }
             }
+
+            override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
+                super.onFailure(eventSource, t, response)
+                failureAction()
+            }
         })
     }
 
@@ -192,7 +197,7 @@ class OpenAiRepository : KoinComponent {
 
     private fun createGeminiRequest(messages: List<ChatMessage>, isStream: Boolean): Request {
         val apiPrefix = "https://generativelanguage.googleapis.com/v1beta/models/"
-        val model = "gemini-1.5-flash-latest"
+        val model = config.geminiModel
         val apiUrl = if (isStream)
             "$apiPrefix$model:streamGenerateContent?key=${config.geminiApiKey}"
         else
@@ -243,7 +248,7 @@ class OpenAiRepository : KoinComponent {
     ): Request = Request.Builder()
         .url("${getCurrentServerUrl()}$completionPath")
         .post(
-            json.encodeToString(ChatRequest(config.gptModel, messages, stream))
+            json.encodeToString(ChatRequest(getCurrentModel(), messages, stream))
                 .toRequestBody(mediaType)
         )
         .header("Authorization", "Bearer $apiKey")
@@ -254,6 +259,14 @@ class OpenAiRepository : KoinComponent {
             config.gptUrl
         } else {
             "https://api.openai.com"
+        }
+    }
+
+    private fun getCurrentModel(): String {
+        return if (!config.useCustomGptUrl) {
+            config.gptModel
+        } else {
+            config.alternativeModel
         }
     }
 

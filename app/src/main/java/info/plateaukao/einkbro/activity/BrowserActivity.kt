@@ -630,7 +630,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 with(translationViewModel) {
                     updateInputMessage(ninjaWebView.getRawText())
                     updateTranslateMethod(TRANSLATE_API.GPT)
-                    gptActionInfo = ChatGPTActionInfo(systemMessage = "summarize to 100 words.")
+                    gptActionInfo = ChatGPTActionInfo(systemMessage = config.gptUserPromptForWebPage)
                 }
                 TranslateDialogFragment(
                     translationViewModel,

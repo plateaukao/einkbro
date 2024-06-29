@@ -821,18 +821,18 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_edit_gpt_api_key,
             config::gptApiKey
         ),
-        DividerSettingItem(),
-        ActionSettingItem(
-            R.string.setting_title_gpt_action_list,
-            R.drawable.icon_list,
-            R.string.setting_summary_gpt_action_list,
-        ) { startActivity(GptActionsActivity.createIntent(this)) },
         ValueSettingItem(
             R.string.setting_title_gpt_model_name,
             R.drawable.ic_chat_gpt,
             R.string.setting_summary_gpt_model_name,
             config::gptModel
         ),
+        DividerSettingItem(),
+        ActionSettingItem(
+            R.string.setting_title_gpt_action_list,
+            R.drawable.icon_list,
+            R.string.setting_summary_gpt_action_list,
+        ) { startActivity(GptActionsActivity.createIntent(this)) },
         ValueSettingItem(
             R.string.setting_title_gpt_prompt_for_web_page,
             R.drawable.ic_chat_gpt,
@@ -866,6 +866,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             config::useCustomGptUrl
         ),
         ValueSettingItem(
+            R.string.setting_title_other_model_name,
+            R.drawable.ic_chat_gpt,
+            R.string.setting_summary_other_model_name,
+            config::alternativeModel
+        ),
+        ValueSettingItem(
             R.string.setting_title_custom_gpt_url,
             R.drawable.ic_earth,
             R.string.setting_summary_custom_gpt_url,
@@ -883,6 +889,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.ic_chat,
             R.string.setting_summary_gemini_key,
             config::geminiApiKey
+        ),
+        ValueSettingItem(
+            R.string.setting_title_gemini_model_name,
+            R.drawable.ic_chat_gpt,
+            R.string.setting_summary_gemini_model_name,
+            config::geminiModel
         ),
     )
 
