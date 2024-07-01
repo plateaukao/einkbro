@@ -1081,9 +1081,6 @@ open class NinjaWebView(
 
             document.body.outerHTML = createHtmlBody(article)
 
-            // change font type
-            var bodyClasses = document.body.classList;
-            bodyClasses.add("serif");
             document.getElementsByName('viewport')[0].setAttribute('content', 'width=device-width');
         """
 
