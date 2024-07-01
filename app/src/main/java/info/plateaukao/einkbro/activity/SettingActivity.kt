@@ -98,7 +98,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             MyTheme {
 
                 val backStackEntry = navController.currentBackStackEntryAsState()
-                val currentScreen = valueOf(backStackEntry?.value?.destination?.route ?: Main.name)
+                val currentScreen = valueOf(backStackEntry.value?.destination?.route ?: Main.name)
 
                 Scaffold(
                     modifier = Modifier.semantics {
