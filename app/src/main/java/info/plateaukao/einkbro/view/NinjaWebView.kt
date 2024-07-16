@@ -530,27 +530,9 @@ open class NinjaWebView(
         }
     }
 
-    private fun callScrollFixPageDown() {
-        evaluateJavascript(
-            """
-            javascript:(function() {
-            let downButton = document.getElementById('EinkBroDownButton');
-            downButton.dispatchEvent(new Event('click'));
-            })()
-        """.trimIndent()
-        ) {}
-    }
+    private fun callScrollFixPageDown() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_DOWN)
 
-    private fun callScrollFixPageUp() {
-        evaluateJavascript(
-            """
-            javascript:(function() {
-            let upButton = document.getElementById('EinkBroUpButton');
-            upButton.dispatchEvent(new Event('click'));
-            })()
-        """.trimIndent()
-        ) {}
-    }
+    private fun callScrollFixPageUp() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_UP)
 
     fun removeTextSelection() {
         evaluateJavascript(
@@ -955,6 +937,14 @@ open class NinjaWebView(
             if (config.preferredTranslateLanguageString.isNotEmpty()) "includedLanguages: '${config.preferredTranslateLanguageString}',"
             else ""
         )
+
+    private fun sendKeyEventToView(keyCode: Int) {
+        val downEvent = KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
+        dispatchKeyEvent(downEvent)
+
+        val upEvent = KeyEvent(KeyEvent.ACTION_UP, keyCode)
+        dispatchKeyEvent(upEvent)
+    }
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
