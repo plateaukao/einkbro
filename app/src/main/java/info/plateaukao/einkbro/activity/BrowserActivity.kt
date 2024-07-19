@@ -1260,7 +1260,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 addAlbum(); openHistoryPage()
             }
 
-            "sc_home" -> addAlbum(config.favoriteUrl)
+            "sc_home" -> {
+                addAlbum(config.favoriteUrl)
+            }
 
             "sc_bookmark" -> {
                 addAlbum(); openBookmarkPage()
@@ -1330,10 +1332,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 // set minimize button visible
                 externalSearchViewModel.setButtonVisibility(true)
             }
-
-            else -> {
-                addAlbum()
-            }
+            null -> { }
+            else -> addAlbum()
         }
         getIntent().action = ""
     }
