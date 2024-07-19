@@ -24,6 +24,8 @@ class BrowserContainer {
 
     fun size(): Int = list.size
 
+    fun isEmpty(): Boolean = list.isEmpty()
+
     fun clear() {
         for (albumController in list) {
             (albumController as NinjaWebView).destroy()
