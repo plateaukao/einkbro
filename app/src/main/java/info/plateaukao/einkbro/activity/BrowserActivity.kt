@@ -1919,26 +1919,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun removeAlbum(albumController: AlbumController, showHome: Boolean) {
-        if (browserContainer.size() <= 1) {
-            if (!showHome) {
-                finish()
+        closeTabConfirmation {
+            albumViewModel.removeAlbum(albumController.album)
+            val removeIndex = browserContainer.indexOf(albumController)
+            val currentIndex = browserContainer.indexOf(currentAlbumController)
+            browserContainer.remove(albumController)
+
+            updateSavedAlbumInfo()
+            updateWebViewCount()
+
+            if (browserContainer.isEmpty()) {
+                if (!showHome) {
+                    finish()
+                } else {
+                    ninjaWebView.loadUrl(config.favoriteUrl)
+                }
             } else {
-                ninjaWebView.loadUrl(config.favoriteUrl)
-            }
-        } else {
-            closeTabConfirmation {
-                albumViewModel.removeAlbum(albumController.album)
-                val removeIndex = browserContainer.indexOf(albumController)
-                val currentIndex = browserContainer.indexOf(currentAlbumController)
-                browserContainer.remove(albumController)
                 // only refresh album when the delete one is current one
                 if (removeIndex == currentIndex) {
                     showAlbum(browserContainer[getNextAlbumIndexAfterRemoval(removeIndex)])
                 }
-                updateWebViewCount()
             }
         }
-        updateSavedAlbumInfo()
     }
 
     private fun getNextAlbumIndexAfterRemoval(removeIndex: Int): Int =
