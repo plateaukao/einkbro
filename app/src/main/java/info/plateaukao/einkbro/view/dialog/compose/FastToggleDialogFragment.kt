@@ -33,6 +33,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.DataListActivity
 import info.plateaukao.einkbro.activity.WhiteListType
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.SaveHistoryMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 
@@ -100,10 +101,15 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             onClicked(true)
         }
         ToggleItem(
-            state = config.saveHistory,
+            state = (config.saveHistoryMode != SaveHistoryMode.DISABLED),
             titleResId = R.string.history, iconResId = R.drawable.ic_history
-        ) {
-            config::saveHistory.toggle()
+        ) { on ->
+            if (on) {
+                config.saveHistoryMode = config.toggledSaveHistoryMode
+            } else {
+                config.toggledSaveHistoryMode = config.saveHistoryMode
+                config.saveHistoryMode = SaveHistoryMode.DISABLED
+            }
             onClicked(false)
         }
 

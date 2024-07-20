@@ -911,11 +911,16 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_auto_fill_form,
             config::autoFillForm
         ),
-        BooleanSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_title_history,
             R.drawable.icon_history,
             R.string.setting_summary_history,
-            config::saveHistory
+            config::saveHistoryMode,
+            listOf(
+                R.string.save_history_mode_save_when_open,
+                R.string.save_history_mode_save_when_close,
+                R.string.save_history_mode_disabled,
+            )
         ),
         BooleanSettingItem(
             R.string.setting_title_debug,
