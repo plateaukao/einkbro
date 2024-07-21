@@ -111,6 +111,9 @@
 
     <string name="setting_title_history">History</string>
     <string name="setting_summary_history">Save the history of visited websites.</string>
+    <string name="save_history_mode_save_when_open">Save when opening</string>
+    <string name="save_history_mode_save_when_close">Save when closing</string>
+    <string name="save_history_mode_disabled">Do not save</string>
 
 
     <!-- Browser clear -->
