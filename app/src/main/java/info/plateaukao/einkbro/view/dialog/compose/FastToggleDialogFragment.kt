@@ -101,7 +101,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             onClicked(true)
         }
         ToggleItem(
-            state = (config.saveHistoryMode != SaveHistoryMode.DISABLED),
+            state = config.isSaveHistoryOn(),
             titleResId = R.string.history, iconResId = R.drawable.ic_history
         ) { on ->
             if (on) {

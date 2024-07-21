@@ -491,6 +491,7 @@ class ConfigManager(
             }
         }
 
+    // save history logic codes
     var saveHistoryMode: SaveHistoryMode
         get() {
             val str = sp.getString(K_SAVE_HISTORY_MODE, "")
@@ -510,6 +511,10 @@ class ConfigManager(
                 putString(K_SAVE_HISTORY_MODE, value.ordinal.toString())
             }
         }
+
+    fun isSaveHistoryWhenLoad() = saveHistoryMode == SaveHistoryMode.SAVE_WHEN_OPEN
+    fun isSaveHistoryWhenClose() = saveHistoryMode == SaveHistoryMode.SAVE_WHEN_CLOSE
+    fun isSaveHistoryOn() = saveHistoryMode != SaveHistoryMode.DISABLED
 
     // For tracking state in fast toggling only
     var toggledSaveHistoryMode: SaveHistoryMode = SaveHistoryMode.SAVE_WHEN_OPEN
