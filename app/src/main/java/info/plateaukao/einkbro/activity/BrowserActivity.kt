@@ -84,7 +84,6 @@ import info.plateaukao.einkbro.preference.FabPosition
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.NewTabBehavior
-import info.plateaukao.einkbro.preference.SaveHistoryMode
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.service.ClearService
@@ -1921,7 +1920,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun removeAlbum(albumController: AlbumController, showHome: Boolean) {
         closeTabConfirmation {
-            if (config.saveHistoryMode == SaveHistoryMode.SAVE_WHEN_CLOSE) {
+            if (config.isSaveHistoryWhenClose()) {
                 addHistory(albumController.albumTitle, albumController.albumUrl)
             }
 

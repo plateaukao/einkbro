@@ -28,7 +28,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.caption.TimedText
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.SaveHistoryMode
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.NinjaToast
@@ -83,7 +82,7 @@ class NinjaWebViewClient(
         }, 1000)
 
         // skip translation pages
-        if (config.saveHistoryMode == SaveHistoryMode.SAVE_WHEN_OPEN &&
+        if (config.isSaveHistoryWhenLoad() &&
             !ninjaWebView.incognito &&
             !isTranslationDomain(url) &&
             url != BrowserUnit.URL_ABOUT_BLANK
