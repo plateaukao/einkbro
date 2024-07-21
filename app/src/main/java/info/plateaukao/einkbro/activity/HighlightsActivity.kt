@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -212,9 +213,9 @@ fun ArticleItem(
         )
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .align(Alignment.End)
                 .clickable { onLinkClick() },
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
         ) {
             Icon(
                 modifier = Modifier.size(18.dp),
