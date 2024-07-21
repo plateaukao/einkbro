@@ -54,7 +54,6 @@ class ConfigManager(
     var shouldSaveTabs by BooleanPreference(sp, K_SHOULD_SAVE_TABS, true)
     var adBlock by BooleanPreference(sp, K_ADBLOCK, true)
     var cookies by BooleanPreference(sp, K_COOKIES, true)
-    var saveHistory by BooleanPreference(sp, K_SAVE_HISTORY, true)
     var shareLocation by BooleanPreference(sp, K_SHARE_LOCATION, false)
     var enableTouchTurn by BooleanPreference(sp, K_ENABLE_TOUCH, false)
     var keepAwake by BooleanPreference(sp, K_KEEP_AWAKE, false)
@@ -129,8 +128,10 @@ class ConfigManager(
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
-            cookies = !value
-            saveHistory = !value
+            if (!value) {
+                cookies = false
+                saveHistoryMode = SaveHistoryMode.DISABLED
+            }
             sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
         }
 
@@ -138,11 +139,17 @@ class ConfigManager(
 
     var pageReservedOffset: Int by IntPreference(sp, K_PRESERVE_HEIGHT, 80)
 
-    var pageReservedOffsetInString: String by StringPreference(sp, K_PRESERVE_HEIGHT_IN_STRING, pageReservedOffset.toString())
+    var pageReservedOffsetInString: String by StringPreference(
+        sp,
+        K_PRESERVE_HEIGHT_IN_STRING,
+        pageReservedOffset.toString()
+    )
 
     private val K_TTS_LOCALE = "sp_tts_locale"
     var ttsLocale: Locale
-        get() = Locale(sp.getString(K_TTS_LOCALE, Locale.getDefault().language) ?: Locale.getDefault().language)
+        get() = Locale(
+            sp.getString(K_TTS_LOCALE, Locale.getDefault().language) ?: Locale.getDefault().language
+        )
         set(value) {
             sp.edit { putString(K_TTS_LOCALE, value.language) }
         }
@@ -285,6 +292,7 @@ class ConfigManager(
     var scrollFixList: List<String>
         get() = sp.getStringSet(K_SCROLL_FIX_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_SCROLL_FIX_LIST, value.toSet()) }
+
     fun shouldFixScroll(url: String): Boolean = scrollFixList.contains(Uri.parse(url).host)
 
     var toolbarActions: List<ToolbarAction>
@@ -483,6 +491,28 @@ class ConfigManager(
             }
         }
 
+    var saveHistoryMode: SaveHistoryMode
+        get() {
+            val str = sp.getString(K_SAVE_HISTORY_MODE, "")
+            return if (str.isNullOrEmpty()) {
+                // For backward compatibility.
+                if (sp.getBoolean(K_SAVE_HISTORY, true)) {
+                    SaveHistoryMode.SAVE_WHEN_OPEN
+                } else {
+                    SaveHistoryMode.DISABLED
+                }
+            } else {
+                SaveHistoryMode.entries[str.toInt()]
+            }
+        }
+        set(value) {
+            sp.edit {
+                putString(K_SAVE_HISTORY_MODE, value.ordinal.toString())
+            }
+        }
+
+    // For tracking state in fast toggling only
+    var toggledSaveHistoryMode: SaveHistoryMode = SaveHistoryMode.SAVE_WHEN_OPEN
 
     fun addSplitSearchItem(item: SplitSearchItemInfo) {
         val list = splitSearchItemInfoList.toMutableList()
@@ -599,6 +629,7 @@ class ConfigManager(
         const val K_IS_INCOGNITO_MODE = "sp_incognito"
         const val K_ADBLOCK = "SP_AD_BLOCK_9"
         const val K_SAVE_HISTORY = "saveHistory"
+        const val K_SAVE_HISTORY_MODE = "saveHistoryMode"
         const val K_COOKIES = "SP_COOKIES_9"
         const val K_TRANSLATION_MODE = "sp_translation_mode"
         const val K_ENABLE_TOUCH = "sp_enable_touch"
@@ -890,6 +921,10 @@ enum class HighlightStyle(
     R.string.menu_delete,
     R.drawable.icon_delete,
     )
+}
+
+enum class SaveHistoryMode {
+    SAVE_WHEN_OPEN, SAVE_WHEN_CLOSE, DISABLED
 }
 
 fun KMutableProperty0<Boolean>.toggle() = set(!get())
