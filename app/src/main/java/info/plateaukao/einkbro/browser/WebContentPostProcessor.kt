@@ -46,7 +46,13 @@ class WebContentPostProcessor : KoinComponent {
 
         // some strange website scrolling support
         if (configManager.shouldFixScroll(url)) {
-            ninjaWebView.evaluateJavascript(SCROLL_FIX_JS, null);
+            val offset = configManager.pageReservedOffsetInString
+            val offsetPercent =
+                if (offset.endsWith('%')) offset.take(offset.length - 1).toInt() else 0
+            val offsetPixel = if (offset.endsWith('%')) 0 else offset
+
+            val js = SCROLL_FIX_JS.format(offsetPercent / 100.0, offsetPixel)
+            ninjaWebView.evaluateJavascript(js, null);
         }
         // text selection handling
         ninjaWebView.addSelectionChangeListener()
@@ -72,7 +78,7 @@ class WebContentPostProcessor : KoinComponent {
 
     function scrollPage(direction) {
         const scrollable = findScrollableParent(document.activeElement);
-        const scrollAmount = direction * scrollable.clientHeight;
+        const scrollAmount = direction * scrollable.clientHeight * (1 - %s) - %s;
         scrollable.scrollBy({
             top: scrollAmount,
             left: 0,
