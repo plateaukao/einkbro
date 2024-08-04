@@ -1,5 +1,5 @@
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 plugins {
     id("com.android.application")
@@ -26,8 +26,8 @@ android {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
         targetSdk = 34
-        versionCode = 11_11_00
-        versionName = "11.11.0"
+        versionCode = 11_12_00
+        versionName = "11.12.0"
 
         buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
