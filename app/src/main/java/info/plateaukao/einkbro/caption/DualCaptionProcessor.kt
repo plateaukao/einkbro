@@ -1,26 +1,24 @@
 package info.plateaukao.einkbro.caption
 
-import android.webkit.WebResourceResponse
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.ByteArrayInputStream
 
 class DualCaptionProcessor:KoinComponent {
     private val config: ConfigManager by inject()
+    private val serializer = TimedText.serializer()
 
     private val json = Json {
         ignoreUnknownKeys = true
     }
 
-    fun handle(url: String): WebResourceResponse? {
+    fun processUrl(url: String): String? {
         if (config.dualCaptionLocale.isEmpty()) return null
         if (!url.contains(urlWithCaption)) return null
 
-        val serializer = TimedText.serializer()
 
         try {
             val newUrl = "$url&tlang=${config.dualCaptionLocale}"
@@ -53,16 +51,23 @@ class DualCaptionProcessor:KoinComponent {
                 }
             }
 
-            return WebResourceResponse(
-                "application/json",
-                "UTF-8",
-                ByteArrayInputStream(
-                    json.encodeToString(serializer, oldCaptionJson).toByteArray()
-                )
-            )
+            return json.encodeToString(serializer, oldCaptionJson)
         } catch (exception: Exception) {
             return null
         }
+    }
+
+    fun convertToHtml(jsonString: String): String {
+        val timedText = json.decodeFromString(serializer, jsonString)
+        val sb = StringBuilder()
+        sb.append("<html><head><style>body{font-size: 1.5em;}</style></head><body>")
+        timedText.events.forEach { event ->
+            event.segs?.forEach { segment ->
+                sb.append("${segment.utf8.replace("\n\n", "<br>").replace("\n", "<br>")}<br><br>")
+            }
+        }
+        sb.append("</body></html>")
+        return sb.toString().replace("<br><br><br>", "<br><br>").replace("<br><br><br>", "<br><br>")
     }
 
     companion object {

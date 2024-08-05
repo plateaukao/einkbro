@@ -10,6 +10,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
+import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit.getResourceAndMimetypeFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -58,7 +59,10 @@ class EpubManager(private val context: Context) : KoinComponent {
             val chapterName = getChapterName(ninjaWebView.title)
 
             if (bookName != null && chapterName != null) {
-                val rawHtml = ninjaWebView.getRawReaderHtml()
+                //val rawHtml = ninjaWebView.getRawReaderHtml()
+                val rawHtml = ninjaWebView.dualCaption?.let {
+                    DualCaptionProcessor().convertToHtml(it)
+                } ?: ninjaWebView.getRawReaderHtml()
                 onProgressChanged(5)
 
                 internalSaveEpub(
