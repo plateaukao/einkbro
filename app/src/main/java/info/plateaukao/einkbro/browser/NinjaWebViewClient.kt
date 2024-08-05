@@ -258,7 +258,14 @@ class NinjaWebViewClient(
 
         processBookResource(uri)?.let { return it }
         processCustomFontRequest(uri)?.let { return it }
-        dualCaptionProcessor.handle(url)?.let { return it }
+        dualCaptionProcessor.processUrl(url)?.let {
+            ninjaWebView.dualCaption = it
+            return WebResourceResponse(
+                "application/json",
+                "UTF-8",
+                ByteArrayInputStream(it.toByteArray())
+            )
+        }
 
         return null
     }

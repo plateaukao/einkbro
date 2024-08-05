@@ -71,6 +71,7 @@ open class NinjaWebView(
     private val downloadListener: NinjaDownloadListener = NinjaDownloadListener(context)
     private val clickHandler: NinjaClickHandler
 
+    var dualCaption: String? = null
     var shouldHideTranslateContext: Boolean = false
 
     var baseUrl: String? = null
@@ -328,6 +329,7 @@ open class NinjaWebView(
             return
         }
 
+        dualCaption = null
         isTranslatePage = false
         browserController?.resetTranslateUI()
 
@@ -343,6 +345,7 @@ open class NinjaWebView(
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
+        dualCaption = null
         album.isLoaded = true
 
         isTranslatePage = false
