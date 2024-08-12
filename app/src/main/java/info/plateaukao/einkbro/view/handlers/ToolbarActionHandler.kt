@@ -63,6 +63,8 @@ class ToolbarActionHandler(
         ToolbarAction.Back -> browserController.handleBackKey()
         ToolbarAction.Refresh -> browserController.refreshAction()
         ToolbarAction.Touch -> browserController.toggleTouchTurnPageFeature()
+        ToolbarAction.TouchDirectionUpDown -> browserController.toggleSwitchTouchAreaAction()
+        ToolbarAction.TouchDirectionLeftRight -> browserController.toggleSwitchTouchAreaAction()
         ToolbarAction.PageUp -> browserController.pageUp()
         ToolbarAction.PageDown -> browserController.pageDown()
         ToolbarAction.TabCount -> browserController.showOverview()
