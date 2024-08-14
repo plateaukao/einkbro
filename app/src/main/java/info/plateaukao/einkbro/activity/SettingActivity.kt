@@ -896,6 +896,14 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_gemini_model_name,
             config::geminiModel
         ),
+        DividerSettingItem(),
+        ActionSettingItem(
+            R.string.setting_title_gpt_query_list,
+            R.drawable.icon_menu_save,
+            R.string.setting_summary_gpt_query_list,
+        ) {
+            startActivity(GptQueryListActivity.createIntent(this))
+          },
     )
 
     private val startSettingItems = listOf(

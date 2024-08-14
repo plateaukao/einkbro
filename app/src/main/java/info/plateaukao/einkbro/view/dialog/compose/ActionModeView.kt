@@ -153,16 +153,18 @@ fun ActionMenuItem(
                     .padding(horizontal = 6.dp),
             )
         }
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            text = title,
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            lineHeight = fontSize,
-            fontSize = fontSize,
-            color = MaterialTheme.colors.onBackground
-        )
+        if (title.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                text = title,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                lineHeight = fontSize,
+                fontSize = fontSize,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
     }
 }

@@ -47,7 +47,7 @@ class HighlightViewModel : ViewModel(), KoinComponent {
     fun getHighlightsForArticle(articleId: Int) =
         bookmarkManager.getHighlightsForArticle(articleId)
 
-    suspend fun getHighlightsForArticleAsync(articleId: Int) =
+    private suspend fun getHighlightsForArticleAsync(articleId: Int) =
         bookmarkManager.getHighlightsForArticleAsync(articleId)
 
     fun launchUrl(activity: Activity, url: String) {
