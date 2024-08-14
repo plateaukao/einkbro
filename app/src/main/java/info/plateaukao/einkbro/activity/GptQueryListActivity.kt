@@ -161,15 +161,13 @@ fun QueryItem(
             )
     ) {
         Text(
-            modifier = modifier,
             text = queryString,
-            color = MaterialTheme.colors.onPrimary
+            color = MaterialTheme.colors.onBackground
         )
         if (showResult) {
             Text(
-                modifier = modifier,
                 text = HelperUnit.parseMarkdown(gptQuery.result),
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colors.onBackground
             )
         }
         Row(
@@ -182,12 +180,12 @@ fun QueryItem(
                 modifier = Modifier.size(18.dp),
                 painter = painterResource(id = R.drawable.icon_exit),
                 contentDescription = "link",
-                tint = MaterialTheme.colors.onPrimary
+                tint = MaterialTheme.colors.onBackground
             )
             Text(
                 text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(gptQuery.date),
                 style = MaterialTheme.typography.caption.copy(
-                    color = MaterialTheme.colors.onPrimary
+                    color = MaterialTheme.colors.onBackground
                 )
             )
         }
