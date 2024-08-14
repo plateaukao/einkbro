@@ -662,7 +662,7 @@ object HelperUnit {
 
                     nextBold -> SpanStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = fontSize
+                        fontSize = (DEFAULT_FONT_SIZE + 2).sp
                     )
 
                     nextItalic -> SpanStyle(

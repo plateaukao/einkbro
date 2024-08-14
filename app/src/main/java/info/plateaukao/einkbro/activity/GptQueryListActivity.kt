@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,14 +30,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
@@ -136,11 +138,20 @@ fun QueryItem(
 ) {
     // use a remember to toggle result widget visibility
     var showResult by remember { mutableStateOf(false) }
+    val queryString = if (gptQuery.selectedText.contains("<<") &&
+        gptQuery.selectedText.contains(">>")) {
+        HelperUnit.parseMarkdown(gptQuery.selectedText.replace("<<", "**").replace(">>", "**"))
+    } else {
+        AnnotatedString(gptQuery.selectedText)
+    }
 
+    val interactionSource = remember { MutableInteractionSource() }
     Column(
         modifier = modifier
             .fillMaxWidth()
             .combinedClickable(
+                interactionSource = interactionSource,
+                indication = null,
                 onClick = {
                     showResult = !showResult
                 },
@@ -151,12 +162,14 @@ fun QueryItem(
     ) {
         Text(
             modifier = modifier,
-            text = gptQuery.selectedText
+            text = queryString,
+            color = MaterialTheme.colors.onPrimary
         )
         if (showResult) {
             Text(
                 modifier = modifier,
-                text = gptQuery.result
+                text = HelperUnit.parseMarkdown(gptQuery.result),
+                color = MaterialTheme.colors.onPrimary
             )
         }
         Row(
@@ -169,12 +182,12 @@ fun QueryItem(
                 modifier = Modifier.size(18.dp),
                 painter = painterResource(id = R.drawable.icon_exit),
                 contentDescription = "link",
-                tint = Color.Gray
+                tint = MaterialTheme.colors.onPrimary
             )
             Text(
                 text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(gptQuery.date),
                 style = MaterialTheme.typography.caption.copy(
-                    color = Color.Gray
+                    color = MaterialTheme.colors.onPrimary
                 )
             )
         }
