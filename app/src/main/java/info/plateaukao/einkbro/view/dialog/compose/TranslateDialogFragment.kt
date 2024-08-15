@@ -305,6 +305,13 @@ private fun GptRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
     ) {
+        ActionMenuItem(
+            "",
+            LocalContext.current.getDrawable(R.drawable.icon_menu_save),
+            onClicked = {
+                translationViewModel.saveTranslationResult()
+            }
+        )
         translationViewModel.getGptActionList().map { gptActionInfo ->
             ActionMenuItem(
                 gptActionInfo.name,

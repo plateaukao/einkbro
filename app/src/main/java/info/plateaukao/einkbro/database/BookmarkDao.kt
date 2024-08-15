@@ -28,9 +28,10 @@ import org.koin.core.component.inject
         Bookmark::class,
         FaviconInfo::class,
         Highlight::class,
-        Article::class
+        Article::class,
+        ChatGptQuery::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -38,6 +39,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun faviconDao(): FaviconDao
     abstract fun highlightDao(): HighlightDao
     abstract fun articleDao(): ArticleDao
+    abstract fun chatGptQueryDao(): ChatGptQueryDao
 }
 
 val MIGRATION_1_2: Migration = object : Migration(1, 2) {
@@ -51,6 +53,12 @@ val MIGRATION_2_3: Migration = object : Migration(2, 3) {
         database.execSQL("CREATE TABLE IF NOT EXISTS `highlights` (`articleId` INTEGER NOT NULL, `content` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`articleId`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
         database.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `date` INTEGER NOT NULL, `tags` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
         database.execSQL("CREATE INDEX IF NOT EXISTS `index_highlights_articleId` ON `highlights` (`articleId`)")
+    }
+}
+
+val MIGRATION_3_4: Migration = object : Migration(3, 4) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE IF NOT EXISTS `chat_gpt_query` (`date` INTEGER NOT NULL, `url` TEXT NOT NULL, `model` TEXT NOT NULL, `selectedText` TEXT NOT NULL, `result` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
     }
 }
 
@@ -178,6 +186,7 @@ class BookmarkManager(context: Context) : KoinComponent {
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(MIGRATION_1_2)
         .addMigrations(MIGRATION_2_3)
+        .addMigrations(MIGRATION_3_4)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -186,6 +195,7 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     private val highlightDao = database.highlightDao()
     private val articleDao = database.articleDao()
+    private val chatGptQueryDao = database.chatGptQueryDao()
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
@@ -201,7 +211,6 @@ class BookmarkManager(context: Context) : KoinComponent {
     suspend fun insertHighlight(highlight: Highlight) = highlightDao.insert(highlight)
 
     suspend fun deleteArticle(articleId: Int) = articleDao.deleteArticleById(articleId)
-
     suspend fun deleteArticle(article: Article) = articleDao.delete(article)
 
     suspend fun deleteHighlight(highlight: Highlight) =
@@ -280,4 +289,9 @@ class BookmarkManager(context: Context) : KoinComponent {
     suspend fun overwriteBookmarks(bookmarks: List<Bookmark>) {
         if (bookmarks.isNotEmpty()) bookmarkDao.overwrite(bookmarks)
     }
+
+    fun getAllChatGptQueries(): Flow<List<ChatGptQuery>> = chatGptQueryDao.getAllChatGptQueries()
+    suspend fun addChatGptQuery(chatGptQuery: ChatGptQuery) = chatGptQueryDao.addChatGptQuery(chatGptQuery)
+    suspend fun getChatGptQueryById(id: Int): ChatGptQuery = chatGptQueryDao.getChatGptQueryById(id)
+    suspend fun deleteChatGptQuery(chatGptQuery: ChatGptQuery) = chatGptQueryDao.deleteChatGptQuery(chatGptQuery)
 }
