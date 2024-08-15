@@ -61,6 +61,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val _translateMethod = MutableStateFlow(config.externalSearchMethod)
     val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
 
+    var url: String = ""
+
     fun updateRotateResultScreen(rotate: Boolean) {
         _rotateResultScreen.value = rotate
     }
@@ -248,7 +250,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             bookmarkManager.addChatGptQuery(
                 ChatGptQuery(
                     date = System.currentTimeMillis(),
-                    url = "",
+                    url = url,
                     model = gptActionInfo.name,
                     selectedText = selectedText,
                     result = _responseMessage.value.text

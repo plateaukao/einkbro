@@ -20,8 +20,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -66,17 +71,47 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
                 //it.data?.data?.let { uri -> exportHighlights(uri) }
             }
 
-
         setContent {
             MyTheme {
-                GptQueriesScreen(
-                    gptQueryViewModel,
-                    onLinkClick = {
-                        IntentUnit.launchUrl(this, it.url)
+                // Scaffold with a top bar and back button
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Gpt Results") }, // Set your desired title
+                            navigationIcon = {
+                                IconButton(onClick = {
+                                    // Handle back button press
+                                    onBackPressedDispatcher.onBackPressed()
+                                }) {
+                                    Icon(
+                                        Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Back"
+                                    )
+                                }
+                            }
+                        )
                     }
-                )
+                ) { _ ->
+                    // Content of the screen
+                    GptQueriesScreen(
+                        gptQueryViewModel,
+                        onLinkClick = {
+                            IntentUnit.launchUrl(this, it.url)
+                        }
+                    )
+                }
             }
         }
+//        setContent {
+//            MyTheme {
+//                GptQueriesScreen(
+//                    gptQueryViewModel,
+//                    onLinkClick = {
+//                        IntentUnit.launchUrl(this, it.url)
+//                    }
+//                )
+//            }
+//        }
     }
 
 //    private fun exportHighlights(uri: Uri) {
@@ -106,7 +141,7 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
 @Composable
 fun GptQueriesScreen(
     gptQueryViewModel: GptQueryViewModel,
-    onLinkClick: (ChatGptQuery) -> Unit
+    onLinkClick: (ChatGptQuery) -> Unit,
 ) {
     val gptQueries by gptQueryViewModel.getGptQueries().collectAsState(emptyList())
     LazyColumn(
@@ -134,12 +169,13 @@ fun QueryItem(
     modifier: Modifier,
     gptQuery: ChatGptQuery,
     onLinkClick: () -> Unit = {},
-    deleteQuery: (ChatGptQuery) -> Unit
+    deleteQuery: (ChatGptQuery) -> Unit,
 ) {
     // use a remember to toggle result widget visibility
     var showResult by remember { mutableStateOf(false) }
     val queryString = if (gptQuery.selectedText.contains("<<") &&
-        gptQuery.selectedText.contains(">>")) {
+        gptQuery.selectedText.contains(">>")
+    ) {
         HelperUnit.parseMarkdown(gptQuery.selectedText.replace("<<", "**").replace(">>", "**"))
     } else {
         AnnotatedString(gptQuery.selectedText)
@@ -166,6 +202,7 @@ fun QueryItem(
         )
         if (showResult) {
             Text(
+                modifier = Modifier.padding(top = 5.dp),
                 text = HelperUnit.parseMarkdown(gptQuery.result),
                 color = MaterialTheme.colors.onBackground
             )
@@ -173,15 +210,26 @@ fun QueryItem(
         Row(
             modifier = Modifier
                 .align(Alignment.End)
-                .clickable { onLinkClick() },
+                .clickable {
+                    if (gptQuery.url.isNotEmpty()) onLinkClick()
+                },
             horizontalArrangement = Arrangement.End,
         ) {
-            Icon(
-                modifier = Modifier.size(18.dp),
-                painter = painterResource(id = R.drawable.icon_exit),
-                contentDescription = "link",
-                tint = MaterialTheme.colors.onBackground
+            Text(
+                modifier = Modifier.padding(end = 10.dp),
+                text = gptQuery.model,
+                style = MaterialTheme.typography.caption.copy(
+                    color = MaterialTheme.colors.onBackground
+                )
             )
+            if (gptQuery.url.isNotEmpty()) {
+                Icon(
+                    modifier = Modifier.size(18.dp),
+                    painter = painterResource(id = R.drawable.icon_exit),
+                    contentDescription = "link",
+                    tint = MaterialTheme.colors.onBackground
+                )
+            }
             Text(
                 text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(gptQuery.date),
                 style = MaterialTheme.typography.caption.copy(
