@@ -4,6 +4,8 @@ import android.view.View
 import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.ChatMessage
@@ -31,6 +33,7 @@ import java.util.Locale
 
 class TranslationViewModel : ViewModel(), KoinComponent {
     private val config: ConfigManager by inject()
+    private val bookmarkManager: BookmarkManager by inject()
     private val translateRepository = TranslateRepository()
 
     private lateinit var openAiRepository: OpenAiRepository
@@ -57,6 +60,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     private val _translateMethod = MutableStateFlow(config.externalSearchMethod)
     val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
+
+    var url: String = ""
 
     fun updateRotateResultScreen(rotate: Boolean) {
         _rotateResultScreen.value = rotate
@@ -239,6 +244,23 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return result?.renderedImage
     }
 
+    fun saveTranslationResult() {
+        viewModelScope.launch {
+            val (_, selectedText) = getSelectedTextAndPromptPrefix()
+            bookmarkManager.addChatGptQuery(
+                ChatGptQuery(
+                    date = System.currentTimeMillis(),
+                    url = url,
+                    model = gptActionInfo.name,
+                    selectedText = selectedText,
+                    result = _responseMessage.value.text
+                )
+            )
+            _responseMessage.value = AnnotatedString("Saved.")
+        }
+    }
+
+
     private fun queryGpt() {
         if (!this::openAiRepository.isInitialized) {
             openAiRepository = OpenAiRepository()
@@ -252,16 +274,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             messages.add(gptActionInfo.systemMessage.toSystemMessage())
         }
 
-        val promptPrefix = gptActionInfo.userMessage
-        val selectedText = if (promptPrefix.contains("<<") &&
-            promptPrefix.contains(">>") &&
-            _messageWithContext.value.contains("<<") &&
-            _messageWithContext.value.contains(">>")
-        ) {
-            _messageWithContext.value
-        } else {
-            _inputMessage.value
-        }
+        val (promptPrefix, selectedText) = getSelectedTextAndPromptPrefix()
         messages.add("$promptPrefix$selectedText".toUserMessage())
 
         // stream case
@@ -308,6 +321,20 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                 }
             }
         }
+    }
+
+    private fun getSelectedTextAndPromptPrefix(): Pair<String, String> {
+        val promptPrefix = gptActionInfo.userMessage
+        val selectedText = if (promptPrefix.contains("<<") &&
+            promptPrefix.contains(">>") &&
+            _messageWithContext.value.contains("<<") &&
+            _messageWithContext.value.contains(">>")
+        ) {
+            _messageWithContext.value
+        } else {
+            _inputMessage.value
+        }
+        return Pair(promptPrefix, selectedText)
     }
 
     fun translateByParagraph(html: String): String {

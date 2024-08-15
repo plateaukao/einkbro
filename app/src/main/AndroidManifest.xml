@@ -211,6 +211,7 @@
             android:name=".activity.DataListActivity"
             android:label="@string/setting_title_whitelist" />
         <activity android:name=".activity.GptActionsActivity"/>
+        <activity android:name=".activity.GptQueryListActivity"/>
         <activity android:name=".activity.HighlightsActivity" />
 
 
