@@ -294,6 +294,24 @@ class ConfigManager(
         set(value) = sp.edit { putStringSet(K_SCROLL_FIX_LIST, value.toSet()) }
 
     fun shouldFixScroll(url: String): Boolean = scrollFixList.contains(Uri.parse(url).host)
+    fun toggleFixScroll(url: String): Boolean = Uri.parse(url)?.host?.let { host ->
+        scrollFixList = scrollFixList.toMutableList().apply {
+            if (scrollFixList.contains(host)) remove(host) else add(host)
+        }
+        shouldFixScroll(url)
+    } ?: false
+
+    // use stringset to store the list of sending page navigation key
+    private var sendPageNavKeyList: List<String>
+        get() = sp.getStringSet(K_SEND_PAGE_NAV_KEY_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_SEND_PAGE_NAV_KEY_LIST, value.toSet()) }
+    fun shouldSendPageNavKey(url: String): Boolean = sendPageNavKeyList.contains(Uri.parse(url).host)
+    fun toggleSendPageNavKey(url: String): Boolean = Uri.parse(url)?.host?.let { host ->
+        sendPageNavKeyList = sendPageNavKeyList.toMutableList().apply {
+            if (sendPageNavKeyList.contains(host)) remove(host) else add(host)
+        }
+        shouldSendPageNavKey(url)
+    } ?: false
 
     var toolbarActions: List<ToolbarAction>
         get() {
@@ -619,6 +637,7 @@ class ConfigManager(
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
+        const val K_SEND_PAGE_NAV_KEY_LIST = "sp_send_page_nav_key_list"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"

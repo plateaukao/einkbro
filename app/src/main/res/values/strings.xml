@@ -143,7 +143,7 @@
     <string name="setting_title_userAgent">Custom user agent</string>
 
     <!-- App behavior -->
-        <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
@@ -174,7 +174,7 @@
     <string name="setting_summary_saveTabs">Save tabs so that they can be opened next time.</string>
 
     <!-- Gestures -->
-        <string name="setting_gestures">Gestures</string>
+    <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the \"Navigation button\".</string>
 
@@ -204,11 +204,11 @@
     <string name="export_whitelistCookie">Export Cookie whitelist</string>
 
     <string name="setting_title_export_appData">Export app data</string>
-        <string name="setting_summary_export_appData">Export app data (History, Bookmarks)
+    <string name="setting_summary_export_appData">Export app data (History, Bookmarks)
         and your personal settings.</string>
     <string name="setting_title_import_appData">Import app data</string>
     <string name="setting_summary_import_appData">Import app data by choosing a zip file with previously exported data.</string>
-    
+
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all items here. Will you proceed?</string>
 
@@ -375,7 +375,7 @@
     <string name="setting_title_edit_homepage">Edit Home URL</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
     <string name="setting_summary_plus_behavior">What should be displayed when adding a new tab.</string>
-        <string name="setting_title_translated_langs">Translation Languages for Google Translate</string>
+    <string name="setting_title_translated_langs">Translation Languages for Google Translate</string>
     <string name="setting_summary_translated_langs">Customize languages for translation (e.g. en, fr, de, zh-TW, zh-CN).</string>
     <string name="menu">Menu</string>
     <string name="copy_text">Copy text</string>
@@ -546,4 +546,5 @@
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-1.5-flash)</string>
     <string name="setting_title_gpt_query_list">Gpt Result History</string>
     <string name="setting_summary_gpt_query_list">Saved Gpt query results</string>
+    <string name="enable_touch_area_as_page_key">As Page Up/Down key</string>
 </resources>

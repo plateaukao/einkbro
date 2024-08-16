@@ -62,7 +62,7 @@ import kotlin.math.min
 
 open class NinjaWebView(
     context: Context,
-    var browserController: BrowserController?
+    var browserController: BrowserController?,
 ) : WebView(context), AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
     override val album: Album = Album(this, browserController)
@@ -479,7 +479,7 @@ open class NinjaWebView(
 
     fun createPrintDocumentAdapter(
         documentName: String,
-        onFinish: () -> Unit
+        onFinish: () -> Unit,
     ): PrintDocumentAdapter {
         val superAdapter = super.createPrintDocumentAdapter(documentName)
         return PdfDocumentAdapter(documentName, superAdapter, onFinish)
@@ -513,7 +513,8 @@ open class NinjaWebView(
         scrollBy(shiftOffset(), 0)
         scrollX = min(computeHorizontalScrollRange() - width, scrollX)
     } else { // normal case
-        if (config.shouldFixScroll(url.orEmpty())) {
+        val nonNullUrl = url.orEmpty()
+        if (config.shouldFixScroll(nonNullUrl) || config.shouldSendPageNavKey(nonNullUrl)) {
             callScrollFixPageDown()
         } else {
             scrollBy(0, shiftOffset())
@@ -525,7 +526,8 @@ open class NinjaWebView(
         scrollBy(-shiftOffset(), 0)
         scrollX = max(0, scrollX)
     } else { // normal case
-        if (config.shouldFixScroll(url.orEmpty())) {
+        val nonNullUrl = url.orEmpty()
+        if (config.shouldFixScroll(nonNullUrl) || config.shouldSendPageNavKey(nonNullUrl)) {
             callScrollFixPageUp()
         } else {
             scrollBy(0, -shiftOffset())
@@ -725,7 +727,7 @@ open class NinjaWebView(
     var isReaderModeOn = false
     fun toggleReaderMode(
         isVertical: Boolean = false,
-        getRawTextAction: ((String) -> Unit)? = null
+        getRawTextAction: ((String) -> Unit)? = null,
     ) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
@@ -810,7 +812,7 @@ open class NinjaWebView(
 
     private fun evaluateMozReaderModeJs(
         isVertical: Boolean = false,
-        postAction: (() -> Unit)? = null
+        postAction: (() -> Unit)? = null,
     ) {
         val cssByteArray =
             getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")

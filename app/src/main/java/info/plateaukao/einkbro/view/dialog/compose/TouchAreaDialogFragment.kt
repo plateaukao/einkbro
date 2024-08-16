@@ -47,6 +47,7 @@ class TouchAreaDialogFragment(
         val touchAreaType = remember { mutableStateOf(config.touchAreaType) }
         val enableTurn = remember { mutableStateOf(config.enableTouchTurn) }
         val tryFixScroll = remember { mutableStateOf(config.shouldFixScroll(url)) }
+        val shouldSendPageKey = remember { mutableStateOf(config.shouldSendPageNavKey(url)) }
 
         MyTheme {
             TouchAreaContent(
@@ -65,23 +66,14 @@ class TouchAreaDialogFragment(
                 switchTouchArea = config.switchTouchAreaAction,
                 enableTouchAreaAsArrowKey = config.longClickAsArrowKey,
                 tryFixScroll = tryFixScroll.value,
+                shouldSendPageKey = shouldSendPageKey.value,
                 onShowHintClick = { config::touchAreaHint.toggle() },
                 onHideWhenTypeClick = { config::hideTouchAreaWhenInput.toggle() },
                 onSwitchAreaClick = { config::switchTouchAreaAction.toggle() },
                 onCloseClick = { dismiss() },
                 onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() },
-                onTryFixScrollClick = {
-                    Uri.parse(url)?.host?.let { host ->
-                        if (config.scrollFixList.contains(host)) {
-                            config.scrollFixList =
-                                config.scrollFixList.toMutableList().apply { remove(host) }
-                        } else {
-                            config.scrollFixList =
-                                config.scrollFixList.toMutableList().apply { add(host) }
-                        }
-                        tryFixScroll.value = config.shouldFixScroll(url)
-                    }
-                }
+                onAsPageKeyClick = { shouldSendPageKey.value = config.toggleSendPageNavKey(url) },
+                onTryFixScrollClick = { tryFixScroll.value = config.toggleFixScroll(url) }
             )
         }
     }
@@ -98,11 +90,13 @@ fun TouchAreaContent(
     switchTouchArea: Boolean = false,
     enableTouchAreaAsArrowKey: Boolean = false,
     tryFixScroll: Boolean = false,
+    shouldSendPageKey: Boolean = false,
     onShowHintClick: () -> Unit = {},
     onHideWhenTypeClick: () -> Unit = {},
     onSwitchAreaClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
     onAsArrowKeyClick: () -> Unit = {},
+    onAsPageKeyClick: () -> Unit = {},
     onTryFixScrollClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
@@ -168,6 +162,11 @@ fun TouchAreaContent(
             titleResId = R.string.enable_touch_area_as_arrow_key,
             iconResId = -1,
             onClicked = { onAsArrowKeyClick() })
+        ToggleItem(
+            state = shouldSendPageKey,
+            titleResId = R.string.enable_touch_area_as_page_key,
+            iconResId = -1,
+            onClicked = { onAsPageKeyClick() })
         ToggleItem(
             state = tryFixScroll,
             titleResId = R.string.enable_fix_scroll,

@@ -458,4 +458,5 @@
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-1.5-flash)</string>
     <string name="setting_title_gpt_query_list">Gpt Result History</string>
     <string name="setting_summary_gpt_query_list">Saved Gpt query results</string>
+    <string name="enable_touch_area_as_page_key">As PageUp/PageDown key</string>
 </resources>
