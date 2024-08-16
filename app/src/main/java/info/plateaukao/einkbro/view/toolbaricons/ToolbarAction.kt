@@ -88,6 +88,24 @@ enum class ToolbarAction(
     MoveToBackground(
         iconResId = R.drawable.ic_minimize,
         titleResId = R.string.move_to_background
+    ),
+    TouchDirectionUpDown(
+        iconResId = R.drawable.ic_touch_direction_up,
+        titleResId = R.string.switch_touch_area_action_short,
+        iconActiveInfo = IconActiveInfo(
+            true,
+            R.drawable.ic_touch_direction_up,
+            R.drawable.ic_touch_direction_down
+        )
+    ),
+    TouchDirectionLeftRight(
+        iconResId = R.drawable.ic_touch_direction_left,
+        titleResId = R.string.switch_touch_area_action_short,
+        iconActiveInfo = IconActiveInfo(
+            true,
+            R.drawable.ic_touch_direction_left,
+            R.drawable.ic_touch_direction_right
+        )
     );
 
 

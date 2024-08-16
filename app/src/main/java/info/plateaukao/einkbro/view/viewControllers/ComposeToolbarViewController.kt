@@ -27,6 +27,8 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.RotateScreen
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Settings
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TOC
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Touch
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionUpDown
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionLeftRight
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Tts
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import org.koin.core.component.KoinComponent
@@ -125,6 +127,8 @@ class ComposeToolbarViewController(
                 Refresh -> ToolbarActionInfo(toolbarAction, isLoading)
                 Desktop -> ToolbarActionInfo(toolbarAction, config.desktop)
                 Touch -> ToolbarActionInfo(toolbarAction, config.enableTouchTurn)
+                TouchDirectionUpDown -> ToolbarActionInfo(toolbarAction, config.switchTouchAreaAction)
+                TouchDirectionLeftRight -> ToolbarActionInfo(toolbarAction, config.switchTouchAreaAction)
                 Tts -> ToolbarActionInfo(toolbarAction, ttsManager.isSpeaking())
                 else -> ToolbarActionInfo(toolbarAction, false)
             }

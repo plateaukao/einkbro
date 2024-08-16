@@ -1075,6 +1075,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun toggleTouchTurnPageFeature() = config::enableTouchTurn.toggle()
 
+    override fun toggleSwitchTouchAreaAction() = config::switchTouchAreaAction.toggle()
+
     private fun updateTouchView() = composeToolbarViewController.updateIcons()
 
     // Methods
@@ -1608,6 +1610,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_ENABLE_TOUCH -> {
                     updateTouchView()
                     touchController.toggleTouchPageTurn(config.enableTouchTurn)
+                }
+
+                ConfigManager.K_TOUCH_AREA_ACTION_SWITCH -> {
+                    updateTouchView()
                 }
             }
         }
