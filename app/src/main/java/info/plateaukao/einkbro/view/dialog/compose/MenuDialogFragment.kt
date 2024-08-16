@@ -57,6 +57,7 @@ import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Shortcut
 import org.koin.android.ext.android.inject
 
 class MenuDialogFragment(
+    private val url: String,
     private val itemClicked: (MenuItemType) -> Unit,
     private val itemLongClicked: (MenuItemType) -> Unit
 ) : ComposeDialogFragment() {
@@ -65,7 +66,7 @@ class MenuDialogFragment(
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             MenuItems(
-                config.whiteBackground, config.boldFontStyle,
+                config.whiteBackground(url), config.boldFontStyle,
                 config.blackFontStyle, ttsManager.isSpeaking(),
                 config.showShareSaveMenu, config.showContentMenu,
                 { config::showShareSaveMenu.toggle() },

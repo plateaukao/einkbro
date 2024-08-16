@@ -632,7 +632,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 with(translationViewModel) {
                     updateInputMessage(ninjaWebView.getRawText())
                     updateTranslateMethod(TRANSLATE_API.GPT)
-                    gptActionInfo = ChatGPTActionInfo(systemMessage = config.gptUserPromptForWebPage)
+                    gptActionInfo =
+                        ChatGPTActionInfo(systemMessage = config.gptUserPromptForWebPage)
                 }
                 translationViewModel.url = ninjaWebView.url ?: ""
                 TranslateDialogFragment(
@@ -1337,7 +1338,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 // set minimize button visible
                 externalSearchViewModel.setButtonVisibility(true)
             }
-            null -> { }
+
+            null -> {}
             else -> addAlbum()
         }
         getIntent().action = ""
@@ -1497,7 +1499,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
-                ConfigManager.K_TOOLBAR_ICONS -> {
+                ConfigManager.K_TOOLBAR_ICONS,
+                -> {
                     composeToolbarViewController.updateIcons()
                 }
 
@@ -1551,8 +1554,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_ENABLE_IMAGE_ADJUSTMENT -> ninjaWebView.reload()
 
-                ConfigManager.K_WHITE_BACKGROUND -> {
-                    if (config.whiteBackground) {
+                ConfigManager.K_WHITE_BACKGROUND_LIST -> {
+                    if (config.whiteBackground(ninjaWebView.url.orEmpty())) {
                         ninjaWebView.updateCssStyle()
                     } else {
                         ninjaWebView.reload()
@@ -1602,7 +1605,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     ttsManager.setSpeechRate(config.ttsSpeedValue / 100f)
 
                 ConfigManager.K_CUSTOM_USER_AGENT,
-                ConfigManager.K_ENABLE_CUSTOM_USER_AGENT -> {
+                ConfigManager.K_ENABLE_CUSTOM_USER_AGENT,
+                -> {
                     ninjaWebView.updateUserAgentString()
                     ninjaWebView.reload()
                 }
@@ -1750,7 +1754,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         url: String = config.favoriteUrl,
         foreground: Boolean = true,
         incognito: Boolean = false,
-        enablePreloadWebView: Boolean = true
+        enablePreloadWebView: Boolean = true,
     ) {
         val newWebView = (preloadedWebView ?: createNinjaWebView()).apply {
             this.albumTitle = title
@@ -1770,7 +1774,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun maybeCreateNewPreloadWebView(
         enablePreloadWebView: Boolean,
-        newWebView: NinjaWebView
+        newWebView: NinjaWebView,
     ) {
         preloadedWebView = null
         if (enablePreloadWebView) {
@@ -2322,7 +2326,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         contextMenuItemType: ContextMenuItemType,
         title: String,
         url: String,
-        imageUrl: String
+        imageUrl: String,
     ) {
         when (contextMenuItemType) {
             ContextMenuItemType.NewTabForeground -> addAlbum(title, url)
@@ -2562,6 +2566,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun showMenuDialog() =
         MenuDialogFragment(
+            ninjaWebView.url.orEmpty(),
             { menuActionHandler.handle(it, ninjaWebView) },
             { menuActionHandler.handleLongClick(it, ninjaWebView) }
         ).show(supportFragmentManager, "menu_dialog")
