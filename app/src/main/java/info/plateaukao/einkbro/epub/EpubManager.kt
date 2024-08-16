@@ -71,7 +71,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                     rawHtml,
                     bookName,
                     chapterName,
-                    ninjaWebView.url ?: "",
+                    ninjaWebView.url.orEmpty(),
                     onProgressChanged,
                     { savedBookName ->
                         HelperUnit.openEpubToLastChapter(activity, fileUri)
@@ -236,7 +236,7 @@ class EpubManager(private val context: Context) : KoinComponent {
 
         val imageKeyUrlMap = mutableMapOf<String, String>()
         doc.select("img").forEachIndexed { index, element ->
-            val imgUrl = element.attributes()["src"] ?: element.dataset()["src"] ?: ""
+            val imgUrl = element.attributes()["src"] ?: element.dataset()["src"].orEmpty()
             val newImageIndex = "img_${chapterIndex}_$index"
             // Sadly, Reader mode does not remove all 1px tracking pixels, do this manually instead.
             if (element.isDummyImage()) {

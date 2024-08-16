@@ -30,7 +30,7 @@ class HighlightViewModel : ViewModel(), KoinComponent {
 
     suspend fun dumpSingleArticleHighlights(articleId: Int): String {
         val article = getArticle(articleId)
-        val articleTitle = article?.title ?: ""
+        val articleTitle = article?.title.orEmpty()
         val highlights = getHighlightsForArticleAsync(articleId)
         var data = "<h2>$articleTitle</h2><hr/>"
         data += highlights.joinToString("<br/><br/>") { it.content }

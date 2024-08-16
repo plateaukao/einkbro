@@ -15,7 +15,7 @@ class ReaderFontDialogFragment(
     private val onFontCustomizeClick: () -> Unit
 ) : ComposeDialogFragment() {
     private val customFontNameState: MutableState<String> =
-        mutableStateOf(config.readerCustomFontInfo?.name ?: "")
+        mutableStateOf(config.readerCustomFontInfo?.name.orEmpty())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +25,7 @@ class ReaderFontDialogFragment(
         val view = super.onCreateView(inflater, container, savedInstanceState)
         config.registerOnSharedPreferenceChangeListener { _, key ->
             if (key == ConfigManager.K_READER_CUSTOM_FONT) {
-                customFontNameState.value = config.readerCustomFontInfo?.name ?: ""
+                customFontNameState.value = config.readerCustomFontInfo?.name.orEmpty()
             }
         }
         return view

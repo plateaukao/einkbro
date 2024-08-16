@@ -245,7 +245,7 @@ object HelperUnit {
     fun fileName(url: String?): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault())
         val currentTime = sdf.format(Date())
-        val domain = Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' } ?: ""
+        val domain = Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' }.orEmpty()
         return domain.replace(".", "_").trim { it <= ' ' } + "_" + currentTime.trim { it <= ' ' }
     }
 
@@ -258,7 +258,7 @@ object HelperUnit {
             ""
         } else {
             try {
-                Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' } ?: ""
+                Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' }.orEmpty()
             } catch (e: Exception) {
                 ""
             }
@@ -651,7 +651,7 @@ object HelperUnit {
                     resultBuilder.append(AnnotatedString(normalText, style))
                 }
 
-                val matchText = nextMarkDown.groupValues.getOrNull(1) ?: ""
+                val matchText = nextMarkDown.groupValues.getOrNull(1).orEmpty()
 
                 val style = when (nextMarkDown) {
                     nextBoldItalic -> SpanStyle(

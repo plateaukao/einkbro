@@ -417,7 +417,7 @@ open class NinjaWebView(
 
     // if url is with prefix data, maybe it's translated data, need to use base url instead
     override val albumUrl: String
-        get() = (if (url?.startsWith("data") == true) baseUrl else url) ?: ""
+        get() = (if (url?.startsWith("data") == true) baseUrl else url).orEmpty()
 
     override var initAlbumUrl: String = ""
     override fun activate() {
@@ -463,7 +463,7 @@ open class NinjaWebView(
     }
 
     fun update(title: String?) {
-        album.albumTitle = title ?: ""
+        album.albumTitle = title.orEmpty()
         // so that title on bottom bar can be updated
         browserController?.updateTitle(album.albumTitle)
     }

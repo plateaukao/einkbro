@@ -164,7 +164,7 @@ class BackupUnit(
     private suspend fun getFileContentString(uri: Uri): String {
         return withContext(Dispatchers.IO) {
             context.contentResolver.openInputStream(uri).use {
-                it?.bufferedReader()?.readText() ?: ""
+                it?.bufferedReader()?.readText().orEmpty()
             }
         }
     }
