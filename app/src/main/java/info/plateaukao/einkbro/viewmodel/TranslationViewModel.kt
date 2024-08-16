@@ -156,7 +156,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             val document = Jsoup.parse(String(byteArray))
             val container = document.getElementById("contents")
             var content = ""
-            content += container?.getElementsByClass("section")?.html() ?: ""
+            content += container?.getElementsByClass("section")?.html().orEmpty()
             //_responseMessage.value = content
             //_responseMessage.value = String(byteArray)
             _responseMessage.value =

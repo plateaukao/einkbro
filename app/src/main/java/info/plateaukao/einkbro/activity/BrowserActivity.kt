@@ -2399,7 +2399,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun translateImage(url: String) {
         lifecycleScope.launch {
             val base64String = translationViewModel.translateImage(
-                ninjaWebView.url.orEmpty()
+                ninjaWebView.url.orEmpty(),
                 url,
                 TranslationLanguage.KO,
                 config.translationLanguage,

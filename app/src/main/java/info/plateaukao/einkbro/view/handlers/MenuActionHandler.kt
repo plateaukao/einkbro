@@ -70,7 +70,7 @@ class MenuActionHandler(
 
         MenuItemType.CopyLink -> ShareUtil.copyToClipboard(
             activity,
-            BrowserUnit.stripUrlQuery(ninjaWebView.url ?: "")
+            BrowserUnit.stripUrlQuery(ninjaWebView.url.orEmpty())
         )
 
         MenuItemType.Shortcut -> browserController.createShortcut()

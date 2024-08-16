@@ -333,7 +333,7 @@ class ConfigManager(
             val key =
                 if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
             val iconListString =
-                sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())) ?: ""
+                sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())).orEmpty()
             return iconStringToEnumList(iconListString)
         }
         set(value) {
@@ -347,7 +347,7 @@ class ConfigManager(
     var customFontInfo: CustomFontInfo?
         get() = sp.getString(K_CUSTOM_FONT, "")?.toCustomFontInfo()
         set(value) {
-            sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString() ?: "") }
+            sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString().orEmpty()) }
             if (fontType == FontType.CUSTOM) {
                 customFontChanged = true
             }
@@ -355,7 +355,7 @@ class ConfigManager(
     var readerCustomFontInfo: CustomFontInfo?
         get() = sp.getString(K_READER_CUSTOM_FONT, "")?.toCustomFontInfo()
         set(value) {
-            sp.edit { putString(K_READER_CUSTOM_FONT, value?.toSerializedString() ?: "") }
+            sp.edit { putString(K_READER_CUSTOM_FONT, value?.toSerializedString().orEmpty()) }
             if (fontType == FontType.CUSTOM) {
                 customFontChanged = true
             }
@@ -363,7 +363,7 @@ class ConfigManager(
 
     var recentBookmarks: List<RecentBookmark>
         get() {
-            val string = sp.getString(K_RECENT_BOOKMARKS, "") ?: ""
+            val string = sp.getString(K_RECENT_BOOKMARKS, "").orEmpty()
             if (string.isBlank()) return emptyList()
 
             return try {
@@ -415,7 +415,7 @@ class ConfigManager(
 
     var savedAlbumInfoList: List<AlbumInfo>
         get() {
-            val string = sp.getString(K_SAVED_ALBUM_INFO, "") ?: ""
+            val string = sp.getString(K_SAVED_ALBUM_INFO, "").orEmpty()
             if (string.isBlank()) return emptyList()
 
             return try {
@@ -488,7 +488,7 @@ class ConfigManager(
 
     var fabCustomPosition: Point
         get() {
-            val str = sp.getString(K_FAB_POSITION, "") ?: ""
+            val str = sp.getString(K_FAB_POSITION, "").orEmpty()
             return if (str.isBlank()) Point(0, 0)
             else Point(str.split(",").first().toInt(), str.split(",").last().toInt())
         }
@@ -498,7 +498,7 @@ class ConfigManager(
 
     var fabCustomPositionLandscape: Point
         get() {
-            val str = sp.getString(K_FAB_POSITION_LAND, "") ?: ""
+            val str = sp.getString(K_FAB_POSITION_LAND, "").orEmpty()
             return if (str.isBlank()) Point(0, 0)
             else Point(str.split(",").first().toInt(), str.split(",").last().toInt())
         }
@@ -508,7 +508,7 @@ class ConfigManager(
 
     var splitSearchItemInfoList: List<SplitSearchItemInfo>
         get() {
-            val str = sp.getString(K_SPLIT_SEARCH_ITEMS, "") ?: ""
+            val str = sp.getString(K_SPLIT_SEARCH_ITEMS, "").orEmpty()
             return if (str.isBlank()) emptyList()
             else str.split("###").mapNotNull {
                 decodeFromString(SplitSearchItemInfo.serializer(), it)
@@ -570,7 +570,7 @@ class ConfigManager(
 
     var gptActionList: List<ChatGPTActionInfo>
         get() {
-            val str = sp.getString(K_GPT_ACTION_ITEMS, "") ?: ""
+            val str = sp.getString(K_GPT_ACTION_ITEMS, "").orEmpty()
             return if (str.isBlank()) {
                 if (gptSystemPrompt.isNotBlank() || gptUserPromptPrefix.isNotBlank()) {
                     listOf(
@@ -595,7 +595,7 @@ class ConfigManager(
 
     var gptActionForExternalSearch: ChatGPTActionInfo?
         get() {
-            val str = sp.getString(K_GPT_ACTION_EXTERNAL, "") ?: ""
+            val str = sp.getString(K_GPT_ACTION_EXTERNAL, "").orEmpty()
             return if (str.isBlank()) null
             else str.convertToDataClass<ChatGPTActionInfo>()
         }

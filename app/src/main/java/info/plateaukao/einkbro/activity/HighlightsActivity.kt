@@ -247,7 +247,7 @@ fun HighlightsScreen(
     var articleName by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         val article = highlightViewModel.getArticle(articleId)
-        articleName = article?.title ?: ""
+        articleName = article?.title.orEmpty()
     }
 
     LazyColumn(

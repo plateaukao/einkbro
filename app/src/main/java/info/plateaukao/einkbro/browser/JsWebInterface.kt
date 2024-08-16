@@ -41,13 +41,13 @@ class JsWebInterface(private val webView: NinjaWebView) :
                 translateRepository.ppTranslate(
                     originalText,
                     configManager.translationLanguage.value,
-                ) ?: ""
+                ).orEmpty()
             } else {
                 translateRepository.gTranslateWithApi(
                     originalText,
                     configManager.translationLanguage.value
                 )
-            } ?: ""
+            }.orEmpty()
             withContext(Dispatchers.Main) {
                 if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
                     webView.evaluateJavascript(

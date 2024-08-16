@@ -86,7 +86,7 @@ class OpenAiRepository : KoinComponent {
                 try {
                     val chatCompletion =
                         json.decodeFromString(ChatCompletionDelta.serializer(), data)
-                    appendResponseAction(chatCompletion.choices.first().delta.content ?: "")
+                    appendResponseAction(chatCompletion.choices.first().delta.content.orEmpty())
                 } catch (e: Exception) {
                     failureAction()
                     eventSource.cancel()
@@ -163,7 +163,7 @@ class OpenAiRepository : KoinComponent {
                 return@use continuation.resume(null)
             }
 
-            val responseString = response.body?.string() ?: ""
+            val responseString = response.body?.string().orEmpty()
             try {
                 val chatCompletion =
                     json.decodeFromString(ChatCompletion.serializer(), responseString)

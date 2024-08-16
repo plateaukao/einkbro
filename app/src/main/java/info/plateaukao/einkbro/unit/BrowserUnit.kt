@@ -156,7 +156,7 @@ object BrowserUnit : KoinComponent {
 
     fun getWebViewLinkImageUrl(webView: WebView, message: Message): String {
         val hitTestResult = webView.hitTestResult
-        return hitTestResult.extra ?: message.data.getString("src") ?: ""
+        return hitTestResult.extra ?: message.data.getString("src").orEmpty()
     }
 
     fun getWebViewLinkUrl(webView: WebView, message: Message): String {
@@ -181,7 +181,7 @@ object BrowserUnit : KoinComponent {
         val newMessage = Message().apply {
             target = object : Handler(Looper.getMainLooper()) {
                 override fun handleMessage(msg: Message) {
-                    val titleText = msg.data.getString("title")?.replace("\n", "")?.trim() ?: ""
+                    val titleText = msg.data.getString("title")?.replace("\n", "")?.trim().orEmpty()
                     action(titleText)
                 }
             }
@@ -591,7 +591,7 @@ object BrowserUnit : KoinComponent {
 
             val uriBuilder = uri.buildUpon().clearQuery()
             for (param in params) {
-                if (!matchNeatUrlConfig(uri.host ?: "", param)) {
+                if (!matchNeatUrlConfig(uri.host.orEmpty(), param)) {
                     uriBuilder.appendQueryParameter(param, uri.getQueryParameter(param))
                 } else {
                     strippedCount++
