@@ -456,7 +456,7 @@
     <string name="menu_expand_menu">扩展\n子菜单</string>
     <string name="hide_statusbar">隐藏状态栏</string>
     <string name="setting_summary_hide_statusbar">始终隐藏状态栏</string>
-    <string name="enable_touch_area_as_arrow_key">作为左/右键</string>
+    <string name="enable_touch_area_as_arrow_key">長押作为左/右键</string>
     <string name="setting_title_chat_stream">在信息流中回复</string>
     <string name="setting_summary_chat_stream">响应将逐字符显示，因此速度更快。</string>
     <string name="re_select">重选文本</string>

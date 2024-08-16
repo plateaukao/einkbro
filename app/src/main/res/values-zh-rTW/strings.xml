@@ -383,7 +383,7 @@
     <string name="menu_expand_menu">展開選單</string>
     <string name="hide_statusbar">隱藏狀態列</string>
     <string name="setting_summary_hide_statusbar">總是隱藏上方狀態列</string>
-    <string name="enable_touch_area_as_arrow_key">長按時送出左/右鍵</string>
+    <string name="enable_touch_area_as_arrow_key">長按送出左/右鍵</string>
     <string name="setting_title_chat_stream">逐步回傳結果</string>
     <string name="setting_summary_chat_stream">結果將會部分回傳，降低等待時間</string>
     <string name="re_select">重新\n選取</string>

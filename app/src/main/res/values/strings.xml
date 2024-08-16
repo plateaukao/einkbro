@@ -468,7 +468,7 @@
     <string name="menu_expand_menu">Show more</string>
     <string name="hide_statusbar">Hide statusbar</string>
     <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
-    <string name="enable_touch_area_as_arrow_key">As left/right key</string>
+    <string name="enable_touch_area_as_arrow_key">Long click as ← → key</string>
     <string name="setting_title_chat_stream">Reply In Stream</string>
     <string name="setting_summary_chat_stream">Response will be displayed character by character, so that it\'s faster.</string>
     <string name="re_select">Reselect text</string>
