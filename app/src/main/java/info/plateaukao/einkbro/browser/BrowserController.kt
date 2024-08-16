@@ -55,6 +55,7 @@ interface BrowserController {
     fun handleBackKey()
     fun refreshAction()
     fun toggleTouchTurnPageFeature()
+    fun toggleSwitchTouchAreaAction()
     fun showOverview()
     fun showMenuDialog()
     fun openBookmarkPage()

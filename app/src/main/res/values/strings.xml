@@ -306,6 +306,7 @@
     <string name="setting_summary_dark_mode">Configure dark mode.</string>
     <string name="hie_touch_area_when_input">Disable when typing</string>
     <string name="switch_touch_area_action">Switch up/down direction</string>
+    <string name="switch_touch_area_action_short">Switch direction</string>
     <string name="no_previous_page">No previous page!</string>
     <string name="setting_multitouch_use_title">Use two finger swipe</string>
     <string name="setting_multitouch_use_summary">Use two finger swipe on web content to trigger actions</string>
