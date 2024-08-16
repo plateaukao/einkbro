@@ -29,7 +29,7 @@ import kotlin.reflect.KProperty
 
 class ConfigManager(
     private val context: Context,
-    private val sp: SharedPreferences
+    private val sp: SharedPreferences,
 ) : KoinComponent {
 
     fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
@@ -45,7 +45,6 @@ class ConfigManager(
     var isToolbarOnTop by BooleanPreference(sp, K_TOOLBAR_TOP, false)
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
     var isMultitouchEnabled by BooleanPreference(sp, K_MULTITOUCH, false)
-    var whiteBackground by BooleanPreference(sp, K_WHITE_BACKGROUND, false)
     var useUpDownPageTurn by BooleanPreference(sp, K_UPDOWN_PAGE_TURN, false)
     var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
     var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
@@ -288,7 +287,7 @@ class ConfigManager(
 
     var favoriteUrl by StringPreference(sp, K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
 
-    //use stringset in sharedpreference
+    //use string set in sharedpreference
     var scrollFixList: List<String>
         get() = sp.getStringSet(K_SCROLL_FIX_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_SCROLL_FIX_LIST, value.toSet()) }
@@ -301,16 +300,32 @@ class ConfigManager(
         shouldFixScroll(url)
     } ?: false
 
-    // use stringset to store the list of sending page navigation key
+    // use string set to store the list of sending page navigation key
     private var sendPageNavKeyList: List<String>
         get() = sp.getStringSet(K_SEND_PAGE_NAV_KEY_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_SEND_PAGE_NAV_KEY_LIST, value.toSet()) }
-    fun shouldSendPageNavKey(url: String): Boolean = sendPageNavKeyList.contains(Uri.parse(url).host)
+
+    fun shouldSendPageNavKey(url: String): Boolean =
+        sendPageNavKeyList.contains(Uri.parse(url).host)
+
     fun toggleSendPageNavKey(url: String): Boolean = Uri.parse(url)?.host?.let { host ->
         sendPageNavKeyList = sendPageNavKeyList.toMutableList().apply {
             if (sendPageNavKeyList.contains(host)) remove(host) else add(host)
         }
         shouldSendPageNavKey(url)
+    } ?: false
+
+    // use string set to store the url list of having white background
+    private var whiteBackgroundList: List<String>
+        get() = sp.getStringSet(K_WHITE_BACKGROUND_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_WHITE_BACKGROUND_LIST, value.toSet()) }
+
+    fun whiteBackground(url: String): Boolean = whiteBackgroundList.contains(Uri.parse(url).host)
+    fun toggleWhiteBackground(url: String): Boolean = Uri.parse(url)?.host?.let { host ->
+        whiteBackgroundList = whiteBackgroundList.toMutableList().apply {
+            if (whiteBackgroundList.contains(host)) remove(host) else add(host)
+        }
+        whiteBackground(url)
     } ?: false
 
     var toolbarActions: List<ToolbarAction>
@@ -638,6 +653,7 @@ class ConfigManager(
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
         const val K_SEND_PAGE_NAV_KEY_LIST = "sp_send_page_nav_key_list"
+        const val K_WHITE_BACKGROUND_LIST = "sp_white_background_list"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"
@@ -818,7 +834,7 @@ class ConfigManager(
 class BooleanPreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val defaultValue: Boolean = false
+    private val defaultValue: Boolean = false,
 ) : ReadWriteProperty<Any, Boolean> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
@@ -832,7 +848,7 @@ class BooleanPreference(
 class IntPreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val defaultValue: Int = 0
+    private val defaultValue: Int = 0,
 ) : ReadWriteProperty<Any, Int> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Int =
@@ -845,7 +861,7 @@ class IntPreference(
 class StringPreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val defaultValue: String = ""
+    private val defaultValue: String = "",
 ) : ReadWriteProperty<Any, String> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): String =
@@ -942,8 +958,8 @@ enum class HighlightStyle(
     ),
     BACKGROUND_NONE(
         null,
-    R.string.menu_delete,
-    R.drawable.icon_delete,
+        R.string.menu_delete,
+        R.drawable.icon_delete,
     )
 }
 

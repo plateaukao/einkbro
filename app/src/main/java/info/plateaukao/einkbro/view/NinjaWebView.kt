@@ -121,7 +121,7 @@ open class NinjaWebView(
                     (if (fontType == FontType.JA_MINCHO) jaMinchoFontCss else "") +
                     (if (fontType == FontType.KO_GAMJA) koGamjaFontCss else "") +
                     (if (fontType == FontType.SERIF) serifFontCss else "") +
-                    (if (config.whiteBackground) whiteBackgroundCss else "") +
+                    (if (config.whiteBackground(url.orEmpty())) whiteBackgroundCss else "") +
                     (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
                     (if (config.boldFontStyle) boldFontCss else "") +
                     // all css are purgsed by epublib. need to add it back if it's epub reader mode
