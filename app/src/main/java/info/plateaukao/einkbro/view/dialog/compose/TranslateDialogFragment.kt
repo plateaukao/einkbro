@@ -166,7 +166,7 @@ private fun TranslateResponse(
                 GptRow(translationViewModel)
             }
             Icon(
-                painter = painterResource(id = R.drawable.ic_translate_google),
+                painter = painterResource(id = R.drawable.ic_translate),
                 contentDescription = "Deepl Translate",
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier

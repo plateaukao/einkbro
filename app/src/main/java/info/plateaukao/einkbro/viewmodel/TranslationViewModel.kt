@@ -187,12 +187,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private fun callDeepLTranslate() {
         val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
-            val targetLanguage = if (config.translationLanguage == TranslationLanguage.ZH_TW ||
-                config.translationLanguage == TranslationLanguage.ZH_CN
-            ) {
-                "zh"
-            } else {
-                config.translationLanguage.value
+            val targetLanguage = when (config.translationLanguage) {
+                TranslationLanguage.ZH_TW,
+                TranslationLanguage.ZH_CN,
+                -> "zh"
+
+                else -> config.translationLanguage.value
             }
             _responseMessage.value =
                 AnnotatedString(
