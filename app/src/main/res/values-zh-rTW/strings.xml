@@ -456,7 +456,8 @@
     <string name="setting_summary_other_model_name">Input model name for alternaltive gpt server</string>
     <string name="setting_title_gemini_model_name">Gemini Model Name</string>
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-1.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Gpt Result History</string>
-    <string name="setting_summary_gpt_query_list">Saved Gpt query results</string>
-    <string name="enable_touch_area_as_page_key">As PageUp/PageDown key</string>
+    <string name="setting_title_gpt_query_list">Gpt 查詢歷史記錄</string>
+    <string name="setting_summary_gpt_query_list">已儲存的 Gpt 回傳結果</string>
+    <string name="enable_touch_area_as_page_key">送出 PageUp/PageDown</string>
+    <string name="translate_this_site">翻譯此網站</string>
 </resources>

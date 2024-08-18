@@ -121,6 +121,7 @@ import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ShowEditGptActionDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.TranslationConfigDlgFragment
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
@@ -1496,7 +1497,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun showTranslationConfigDialog(translateDirectly: Boolean) {
         maybeInitTwoPaneController()
-        twoPaneController.showTranslationConfigDialog(translateDirectly)
+        //twoPaneController.showTranslationConfigDialog(translateDirectly)
+        TranslationConfigDlgFragment(ninjaWebView.url.orEmpty())
+            .show(supportFragmentManager, "TranslationConfigDialog")
     }
 
     private val preferenceChangeListener =

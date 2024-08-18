@@ -181,17 +181,15 @@ fun MainFontDialog(
                 }
             }
         }
-        FontDialogButtonBar(
+        DialogOkButtonBar(
             okAction = okAction,
-            editFontAction = onFontCustomizeClick
         )
     }
 }
 
 @Composable
-fun FontDialogButtonBar(
+fun DialogOkButtonBar(
     okAction: () -> Unit,
-    editFontAction: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.End,

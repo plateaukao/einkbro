@@ -54,6 +54,11 @@ class WebContentPostProcessor : KoinComponent {
             val js = SCROLL_FIX_JS.format(offsetPercent / 100.0, offsetPixel)
             ninjaWebView.evaluateJavascript(js, null);
         }
+
+        if (configManager.shouldTranslateSite(url)) {
+            ninjaWebView.translateByParagraphInPlace()
+        }
+
         // text selection handling
         ninjaWebView.addSelectionChangeListener()
     }

@@ -22,16 +22,24 @@ import info.plateaukao.einkbro.view.NinjaWebView
 
 class NinjaWebChromeClient(
     private val ninjaWebView: NinjaWebView,
-    private val onReceiveFavicon: (Bitmap) -> Unit
+    private val onReceiveFavicon: (Bitmap) -> Unit,
 ) : WebChromeClient() {
     private lateinit var webviewParent: ViewGroup
 
-    override fun onCreateWindow(view: WebView, dialog: Boolean, userGesture: Boolean, resultMsg: Message): Boolean {
-            val newWebView = WebView(view.context).apply { initWebView(this) }
+    override fun onCreateWindow(
+        view: WebView,
+        dialog: Boolean,
+        userGesture: Boolean,
+        resultMsg: Message,
+    ): Boolean {
+        val newWebView = WebView(view.context).apply { initWebView(this) }
         newWebView.webViewClient = object : WebViewClient() {
             private var isUrlProcessed = false
 
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?,
+            ): Boolean {
                 val urlString = request?.url?.toString() ?: return false
 
                 // handle login requests
@@ -52,6 +60,7 @@ class NinjaWebChromeClient(
                 webviewParent.removeView(window)
             }
         }
+        if (ninjaWebView.parent == null) return false
         webviewParent = ninjaWebView.parent as ViewGroup
         webviewParent.addView(newWebView)
 
@@ -69,7 +78,7 @@ class NinjaWebChromeClient(
         return url.contains("facebook") && !url.contains("story") && !url.contains("l.php")
     }
 
-    private fun initWebView(webView: WebView)  {
+    private fun initWebView(webView: WebView) {
         val webSettings = webView.settings
         val defaultUserAgent = webSettings.userAgentString
 
@@ -119,7 +128,11 @@ class NinjaWebChromeClient(
         super.onHideCustomView()
     }
 
-    override fun onShowFileChooser(webView: WebView, filePathCallback: ValueCallback<Array<Uri>>, fileChooserParams: FileChooserParams): Boolean {
+    override fun onShowFileChooser(
+        webView: WebView,
+        filePathCallback: ValueCallback<Array<Uri>>,
+        fileChooserParams: FileChooserParams,
+    ): Boolean {
         ninjaWebView.browserController?.showFileChooser(filePathCallback)
         return true
     }
@@ -133,7 +146,10 @@ class NinjaWebChromeClient(
         }
     }
 
-    override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
+    override fun onGeolocationPermissionsShowPrompt(
+        origin: String,
+        callback: GeolocationPermissions.Callback,
+    ) {
         val activity = ninjaWebView.context as Activity
         HelperUnit.grantPermissionsLoc(activity)
         callback.invoke(origin, true, false)
@@ -141,7 +157,7 @@ class NinjaWebChromeClient(
     }
 
     private val posterBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-            .apply { setPixel(0, 0, Color.argb(0, 255, 255, 255)) }
+        .apply { setPixel(0, 0, Color.argb(0, 255, 255, 255)) }
 
     override fun getDefaultVideoPoster(): Bitmap? = posterBitmap
 
