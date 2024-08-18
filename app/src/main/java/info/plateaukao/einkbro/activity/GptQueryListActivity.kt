@@ -50,7 +50,6 @@ import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
@@ -150,15 +149,9 @@ fun GptQueriesScreen(
             QueryItem(
                 modifier = Modifier.padding(vertical = 10.dp),
                 gptQuery = gptQuery,
-                scrollToTopAction = {
-                    coroutineScope.launch {
-                        listState.animateScrollToItem(index)
-                    }
-                },
+                postAction = { coroutineScope.launch { listState.scrollToItem(index) } },
                 onLinkClick = { onLinkClick(gptQuery) },
-                deleteQuery = {
-                    gptQueryViewModel.deleteGptQuery(gptQuery)
-                }
+                deleteQuery = { gptQueryViewModel.deleteGptQuery(gptQuery) }
             )
             if (index < gptQueries.lastIndex) Divider(thickness = 1.dp)
         }
@@ -170,7 +163,7 @@ fun GptQueriesScreen(
 fun QueryItem(
     modifier: Modifier,
     gptQuery: ChatGptQuery,
-    scrollToTopAction: () -> Unit = {},
+    postAction: () -> Unit = {},
     onLinkClick: () -> Unit = {},
     deleteQuery: () -> Unit,
 ) {
@@ -193,7 +186,7 @@ fun QueryItem(
                 indication = null,
                 onClick = {
                     showResult = !showResult
-                    scrollToTopAction()
+                    postAction()
                 },
                 onLongClick = { deleteQuery() }
             )

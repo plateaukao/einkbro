@@ -1,11 +1,9 @@
 package info.plateaukao.einkbro.viewmodel
 
-import android.content.Context
 import android.view.View
 import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import info.plateaukao.einkbro.activity.GptActionsActivity
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -63,6 +61,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     private val _translateMethod = MutableStateFlow(config.externalSearchMethod)
     val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
+
+    private val _showEditDialogWithIndex = MutableStateFlow(-1)
+    val showEditDialogWithIndex: StateFlow<Int> = _showEditDialogWithIndex.asStateFlow()
 
     var url: String = ""
 
@@ -249,8 +250,13 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return result?.renderedImage
     }
 
-    fun showEditGptActionDialog(context: Context, gptActionInfoIndex: Int) =
-        GptActionsActivity.showEditGptAction(context, gptActionInfoIndex)
+    fun showEditGptActionDialog(gptActionInfoIndex: Int) {
+        _showEditDialogWithIndex.value = gptActionInfoIndex
+    }
+
+    fun resetEditDialogIndex() {
+        _showEditDialogWithIndex.value = -1
+    }
 
     fun saveTranslationResult() {
         viewModelScope.launch {
