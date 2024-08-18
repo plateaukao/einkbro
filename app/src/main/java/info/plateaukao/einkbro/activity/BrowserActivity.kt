@@ -118,6 +118,7 @@ import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ShowEditGptActionDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
 import info.plateaukao.einkbro.view.handlers.GestureHandler
@@ -345,17 +346,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         initLanguageLabel()
-
         initTouchAreaViewController()
-
         initTextSearchButton()
         initExternalSearchCloseButton()
+        initTranslationViewModel()
 
         if (config.hideStatusbar) {
             hideStatusBar()
         }
         handleWindowInsets()
         listenKeyboardShowHide()
+    }
+
+    private fun initTranslationViewModel() {
+        lifecycleScope.launch {
+            translationViewModel.showEditDialogWithIndex.collect { index ->
+                if (index == -1) return@collect
+                ShowEditGptActionDialogFragment(index)
+                    .showNow(supportFragmentManager, "editGptAction")
+                translationViewModel.resetEditDialogIndex()
+            }
+        }
+
     }
 
     private fun handleWindowInsets() {

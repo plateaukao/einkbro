@@ -59,11 +59,10 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
 
         val actionIndex = intent?.getIntExtra("actionIndex", -1) ?: -1
-        val defaultShowDialog = actionIndex >= 0
 
         setContent {
             val actionList = remember { mutableStateOf(config.gptActionList) }
-            var showDialog by remember { mutableStateOf(defaultShowDialog) }
+            var showDialog by remember { mutableStateOf(false) }
             var editActionIndex by remember { mutableIntStateOf(actionIndex) }
 
             MyTheme {
@@ -139,7 +138,6 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                     }
                     config.gptActionList = actionList.value
                     showDialog = false
-                    if (defaultShowDialog) finish()
                 },
                 dismissAction = { showDialog = false }
             )
@@ -153,15 +151,6 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                 context,
                 GptActionsActivity::class.java
             )
-        )
-
-        fun showEditGptAction(context: Context, actionIndex: Int) = context.startActivity(
-            Intent(
-                context,
-                GptActionsActivity::class.java
-            ).apply {
-                putExtra("actionIndex", actionIndex)
-            }
         )
     }
 }

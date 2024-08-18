@@ -321,7 +321,7 @@ private fun GptRow(
                     translationViewModel.gptActionInfo = gptActionInfo
                     translationViewModel.translate(TRANSLATE_API.GPT)
                 },
-                onLongClicked = { translationViewModel.showEditGptActionDialog(context, index) }
+                onLongClicked = { translationViewModel.showEditGptActionDialog(index) }
             )
         }
     }
