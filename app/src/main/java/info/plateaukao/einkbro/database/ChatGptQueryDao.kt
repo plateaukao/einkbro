@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ChatGptQueryDao {
-    @Query("SELECT * FROM chat_gpt_query")
+    @Query("SELECT * FROM chat_gpt_query ORDER BY date DESC")
     fun getAllChatGptQueries(): Flow<List<ChatGptQuery>>
 
     @Query("SELECT * FROM chat_gpt_query WHERE id = :id")
