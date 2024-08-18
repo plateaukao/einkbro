@@ -156,6 +156,7 @@ fun ActionMenuItem(
         if (title.isNotEmpty()) {
             Text(
                 modifier = Modifier
+                    .padding(2.dp)
                     .fillMaxWidth()
                     .wrapContentHeight(),
                 text = title,

@@ -99,7 +99,7 @@ class TranslateDialogFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         anchorPoint?.let { setupDialogPosition(it) }
@@ -305,21 +305,23 @@ private fun GptRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
     ) {
+        val context = LocalContext.current
         ActionMenuItem(
             "",
-            LocalContext.current.getDrawable(R.drawable.icon_menu_save),
+            context.getDrawable(R.drawable.icon_menu_save),
             onClicked = {
                 translationViewModel.saveTranslationResult()
             }
         )
-        translationViewModel.getGptActionList().map { gptActionInfo ->
+        translationViewModel.getGptActionList().mapIndexed { index, gptActionInfo ->
             ActionMenuItem(
                 gptActionInfo.name,
                 null,
                 onClicked = {
                     translationViewModel.gptActionInfo = gptActionInfo
                     translationViewModel.translate(TRANSLATE_API.GPT)
-                }
+                },
+                onLongClicked = { translationViewModel.showEditGptActionDialog(context, index) }
             )
         }
     }

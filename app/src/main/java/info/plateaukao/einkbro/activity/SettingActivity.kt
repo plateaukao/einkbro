@@ -832,7 +832,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_gpt_action_list,
             R.drawable.icon_list,
             R.string.setting_summary_gpt_action_list,
-        ) { startActivity(GptActionsActivity.createIntent(this)) },
+        ) { GptActionsActivity.start(this) },
         ValueSettingItem(
             R.string.setting_title_gpt_prompt_for_web_page,
             R.drawable.ic_chat_gpt,
