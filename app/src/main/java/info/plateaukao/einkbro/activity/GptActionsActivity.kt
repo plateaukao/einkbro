@@ -139,6 +139,7 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                     }
                     config.gptActionList = actionList.value
                     showDialog = false
+                    if (defaultShowDialog) finish()
                 },
                 dismissAction = { showDialog = false }
             )
