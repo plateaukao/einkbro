@@ -56,7 +56,7 @@ class WebContentPostProcessor : KoinComponent {
         }
 
         if (configManager.shouldTranslateSite(url)) {
-            ninjaWebView.translateByParagraphInPlace()
+            ninjaWebView.showTranslation()
         }
 
         // text selection handling

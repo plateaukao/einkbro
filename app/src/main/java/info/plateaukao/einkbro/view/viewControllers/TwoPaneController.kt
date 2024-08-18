@@ -174,7 +174,7 @@ class TwoPaneController(
 
     fun isSecondPaneDisplayed(): Boolean = twoPaneLayout.shouldShowSecondPane
 
-    suspend fun showTranslation(webView: NinjaWebView) {
+    fun showTranslation(webView: NinjaWebView) {
         when (config.translationMode) {
             TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
             TranslationMode.PAPAGO_URL, TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
