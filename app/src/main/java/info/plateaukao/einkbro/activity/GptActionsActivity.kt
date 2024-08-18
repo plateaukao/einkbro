@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -31,6 +33,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,6 +46,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import org.koin.core.component.KoinComponent
@@ -54,10 +58,13 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val actionIndex = intent?.getIntExtra("actionIndex", -1) ?: -1
+        val defaultShowDialog = actionIndex >= 0
+
         setContent {
             val actionList = remember { mutableStateOf(config.gptActionList) }
-            var showDialog by remember { mutableStateOf(false) }
-            var editActionIndex by remember { mutableStateOf(-1) }
+            var showDialog by remember { mutableStateOf(defaultShowDialog) }
+            var editActionIndex by remember { mutableIntStateOf(actionIndex) }
 
             MyTheme {
                 Scaffold(
@@ -120,15 +127,15 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                 showDialog,
                 editActionIndex,
                 if (editActionIndex >= 0) actionList.value[editActionIndex] else null,
-                okAction = { name, systemMessage, userMessage ->
+                okAction = { name, systemMessage, userMessage, type ->
                     actionList.value = actionList.value.toMutableList().apply {
                         if (editActionIndex >= 0)
                             set(
                                 editActionIndex,
-                                ChatGPTActionInfo(name, systemMessage, userMessage)
+                                ChatGPTActionInfo(name, systemMessage, userMessage, type)
                             )
                         else
-                            add(ChatGPTActionInfo(name, systemMessage, userMessage))
+                            add(ChatGPTActionInfo(name, systemMessage, userMessage, type))
                     }
                     config.gptActionList = actionList.value
                     showDialog = false
@@ -136,12 +143,24 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                 dismissAction = { showDialog = false }
             )
         }
+
     }
 
     companion object {
-        fun createIntent(context: Context) = Intent(
-            context,
-            GptActionsActivity::class.java
+        fun start(context: Context) = context.startActivity(
+            Intent(
+                context,
+                GptActionsActivity::class.java
+            )
+        )
+
+        fun showEditGptAction(context: Context, actionIndex: Int) = context.startActivity(
+            Intent(
+                context,
+                GptActionsActivity::class.java
+            ).apply {
+                putExtra("actionIndex", actionIndex)
+            }
         )
     }
 }
@@ -151,7 +170,7 @@ fun GptActionListContent(
     modifier: Modifier = Modifier,
     list: MutableState<List<ChatGPTActionInfo>>,
     editAction: (Int) -> Unit, // edit action with index
-    deleteAction: (ChatGPTActionInfo) -> Unit = {}
+    deleteAction: (ChatGPTActionInfo) -> Unit = {},
 ) {
     if (list.value.isEmpty()) {
         // show empty text in center of screen
@@ -207,22 +226,27 @@ fun GptActionDialog(
     showDialog: Boolean,
     editActionIndex: Int,
     action: ChatGPTActionInfo? = null,
-    okAction: (String, String, String) -> Unit,
-    dismissAction: () -> Unit
+    okAction: (String, String, String, GptActionType) -> Unit,
+    dismissAction: () -> Unit,
 ) {
     val name = remember { mutableStateOf("") }
     val systemPrompt = remember { mutableStateOf("") }
     val userPrompt = remember { mutableStateOf("") }
+    val actionType = remember { mutableStateOf(GptActionType.Default) }
 
     if (editActionIndex >= 0 && action != null) {
         name.value = action.name
         systemPrompt.value = action.systemMessage
         userPrompt.value = action.userMessage
+        actionType.value = action.actionType
     } else {
         name.value = ""
         systemPrompt.value = ""
         userPrompt.value = ""
+        actionType.value = GptActionType.Default
     }
+
+    var actionExpanded by remember { mutableStateOf(false) }
 
     if (showDialog) {
         AlertDialog(
@@ -247,7 +271,7 @@ fun GptActionDialog(
                         ),
                         value = name.value,
                         onValueChange = { name.value = it },
-                        label = { Text("name") }
+                        label = { Text("Name") }
                     )
                     TextField(
                         modifier = Modifier.padding(2.dp),
@@ -257,7 +281,7 @@ fun GptActionDialog(
                         ),
                         value = systemPrompt.value,
                         onValueChange = { systemPrompt.value = it },
-                        label = { Text("system prompt") }
+                        label = { Text("System Prompt") }
                     )
                     TextField(
                         modifier = Modifier.padding(2.dp),
@@ -265,17 +289,38 @@ fun GptActionDialog(
                             textColor = MaterialTheme.colors.onBackground,
                             backgroundColor = MaterialTheme.colors.background,
                         ),
+                        minLines = 3,
                         value = userPrompt.value,
                         onValueChange = { userPrompt.value = it },
-                        label = { Text("user prompt") }
+                        label = { Text("User Prompt") }
                     )
+                    TextButton(onClick = { actionExpanded = true }) {
+                        Text(
+                            text = "Action Type: ${actionType.value}",
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    }
+                    DropdownMenu(
+                        modifier = Modifier.padding(2.dp),
+                        expanded = actionExpanded,
+                        onDismissRequest = { actionExpanded = false }
+                    ) {
+                        GptActionType.entries.forEach { type ->
+                            DropdownMenuItem(onClick = {
+                                actionType.value = type
+                                actionExpanded = false
+                            }) {
+                                Text(text = type.name)
+                            }
+                        }
+                    }
                 }
             },
             onDismissRequest = { dismissAction() },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        okAction(name.value, systemPrompt.value, userPrompt.value)
+                        okAction(name.value, systemPrompt.value, userPrompt.value, actionType.value)
                     }
                 ) {
                     Text(

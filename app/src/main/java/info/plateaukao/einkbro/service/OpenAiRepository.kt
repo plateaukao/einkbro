@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.service
 
 import android.util.Log
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.service.data.Content
 import info.plateaukao.einkbro.service.data.ContentPart
 import info.plateaukao.einkbro.service.data.RequestData
@@ -50,20 +51,21 @@ class OpenAiRepository : KoinComponent {
         eventSource = null
     }
 
-    suspend fun chatStream(
+    fun chatStream(
         messages: List<ChatMessage>,
+        gptActionType: GptActionType,
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
-        if (config.useGeminiApi && config.geminiApiKey.isNotBlank()) {
+        if (gptActionType == GptActionType.Gemini) {
             geminiStream(messages, appendResponseAction, doneAction, failureAction)
         } else {
-            chatGptStream(messages, appendResponseAction, doneAction, failureAction)
+            openAiStream(messages, appendResponseAction, doneAction, failureAction)
         }
     }
 
-    private fun chatGptStream(
+    private fun openAiStream(
         messages: List<ChatMessage>,
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
@@ -101,7 +103,7 @@ class OpenAiRepository : KoinComponent {
         })
     }
 
-    private suspend fun geminiStream(
+    fun geminiStream(
         messages: List<ChatMessage>,
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
