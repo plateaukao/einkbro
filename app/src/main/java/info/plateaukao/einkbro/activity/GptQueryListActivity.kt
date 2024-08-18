@@ -14,10 +14,12 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -32,6 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +50,8 @@ import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -92,7 +97,6 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
                         )
                     }
                 ) { _ ->
-                    // Content of the screen
                     GptQueriesScreen(
                         gptQueryViewModel,
                         onLinkClick = {
@@ -102,16 +106,6 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
                 }
             }
         }
-//        setContent {
-//            MyTheme {
-//                GptQueriesScreen(
-//                    gptQueryViewModel,
-//                    onLinkClick = {
-//                        IntentUnit.launchUrl(this, it.url)
-//                    }
-//                )
-//            }
-//        }
     }
 
 //    private fun exportHighlights(uri: Uri) {
@@ -144,15 +138,23 @@ fun GptQueriesScreen(
     onLinkClick: (ChatGptQuery) -> Unit,
 ) {
     val gptQueries by gptQueryViewModel.getGptQueries().collectAsState(emptyList())
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     LazyColumn(
         modifier = Modifier.padding(10.dp),
-        reverseLayout = true
+        state = listState,
     ) {
         items(gptQueries.size) { index ->
             val gptQuery = gptQueries[index]
             QueryItem(
                 modifier = Modifier.padding(vertical = 10.dp),
                 gptQuery = gptQuery,
+                scrollToTopAction = {
+                    coroutineScope.launch {
+                        listState.animateScrollToItem(index)
+                    }
+                },
                 onLinkClick = { onLinkClick(gptQuery) },
                 deleteQuery = {
                     gptQueryViewModel.deleteGptQuery(gptQuery)
@@ -168,8 +170,9 @@ fun GptQueriesScreen(
 fun QueryItem(
     modifier: Modifier,
     gptQuery: ChatGptQuery,
+    scrollToTopAction: () -> Unit = {},
     onLinkClick: () -> Unit = {},
-    deleteQuery: (ChatGptQuery) -> Unit,
+    deleteQuery: () -> Unit,
 ) {
     // use a remember to toggle result widget visibility
     var showResult by remember { mutableStateOf(false) }
@@ -190,10 +193,9 @@ fun QueryItem(
                 indication = null,
                 onClick = {
                     showResult = !showResult
+                    scrollToTopAction()
                 },
-                onLongClick = {
-                    deleteQuery(gptQuery)
-                }
+                onLongClick = { deleteQuery() }
             )
     ) {
         Text(
@@ -208,11 +210,7 @@ fun QueryItem(
             )
         }
         Row(
-            modifier = Modifier
-                .align(Alignment.End)
-                .clickable {
-                    if (gptQuery.url.isNotEmpty()) onLinkClick()
-                },
+            modifier = Modifier.align(Alignment.End),
             horizontalArrangement = Arrangement.End,
         ) {
             Text(
@@ -222,9 +220,24 @@ fun QueryItem(
                     color = MaterialTheme.colors.onBackground
                 )
             )
+            Icon(
+                modifier = Modifier
+                    .size(18.dp)
+                    .padding(end = 2.dp)
+                    .clickable { deleteQuery() },
+                painter = painterResource(id = R.drawable.icon_delete),
+                contentDescription = "delete",
+                tint = MaterialTheme.colors.onBackground
+            )
             if (gptQuery.url.isNotEmpty()) {
+                Spacer(modifier = Modifier.size(10.dp))
                 Icon(
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier
+                        .size(18.dp)
+                        .padding(end = 5.dp)
+                        .clickable {
+                            onLinkClick()
+                        },
                     painter = painterResource(id = R.drawable.icon_exit),
                     contentDescription = "link",
                     tint = MaterialTheme.colors.onBackground
