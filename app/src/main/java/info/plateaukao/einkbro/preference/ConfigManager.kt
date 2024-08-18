@@ -315,6 +315,19 @@ class ConfigManager(
         shouldSendPageNavKey(url)
     } ?: false
 
+    private var translateSiteList: List<String>
+        get() = sp.getStringSet(K_TRANSLATE_SITE_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_TRANSLATE_SITE_LIST, value.toSet()) }
+
+    fun shouldTranslateSite(url: String): Boolean = translateSiteList.contains(Uri.parse(url).host)
+
+    fun toggleTranslateSite(url: String): Boolean = Uri.parse(url)?.host?.let { host ->
+        translateSiteList = translateSiteList.toMutableList().apply {
+            if (translateSiteList.contains(host)) remove(host) else add(host)
+        }
+        shouldTranslateSite(url)
+    } ?: false
+
     // use string set to store the url list of having white background
     private var whiteBackgroundList: List<String>
         get() = sp.getStringSet(K_WHITE_BACKGROUND_LIST, mutableSetOf())?.toList() ?: emptyList()
@@ -653,6 +666,7 @@ class ConfigManager(
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
         const val K_SEND_PAGE_NAV_KEY_LIST = "sp_send_page_nav_key_list"
+        const val K_TRANSLATE_SITE_LIST = "sp_translate_site_list"
         const val K_WHITE_BACKGROUND_LIST = "sp_white_background_list"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_BLACK_FONT = "sp_black_font"
