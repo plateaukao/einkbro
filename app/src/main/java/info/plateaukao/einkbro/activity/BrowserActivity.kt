@@ -452,7 +452,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun initActionModeViewModel() {
         lifecycleScope.launch {
             actionModeMenuViewModel.actionModeMenuState.collect { state ->
-                val point = actionModeMenuViewModel.clickedPoint.value
+                val anchorPoint = actionModeMenuViewModel.clickedPoint.value
                 when (state) {
                     is HighlightText -> {
                         lifecycleScope.launch {
@@ -477,7 +477,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             TranslateDialogFragment(
                                 translationViewModel,
                                 externalSearchWebView,
-                                point
+                                anchorPoint
                             )
                                 .show(supportFragmentManager, "translateDialog")
                             actionModeMenuViewModel.finish()
@@ -519,7 +519,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         actionModeMenuViewModel.finish()
                     }
 
-                    is SelectSentence -> ninjaWebView.selectSentence(point)
+                    is SelectSentence -> ninjaWebView.selectSentence(longPressPoint)
 
                     Idle -> Unit
                 }
@@ -682,6 +682,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             actionModeMenuViewModel.hide()
         }
         actionModeMenuViewModel.updateClickedPoint(newPoint)
+
+        // update the long press point so that it can be used for selecting sentence
+        longPressPoint = Point(
+            ViewUnit.dpToPixel(this, left.toInt() - 1).toInt(),
+            ViewUnit.dpToPixel(this, top.toInt() + 1).toInt()
+        )
     }
 
     override fun toggleReceiveTextSearch() {
@@ -2314,13 +2320,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private var motionEvent: MotionEvent? = null
-    private var point: Point = Point(0, 0)
+    private var longPressPoint: Point = Point(0, 0)
     override fun onLongPress(message: Message, event: MotionEvent?) {
         //Log.d("touch", "onLongPress")
         if (ninjaWebView.isSelectingText) return
 
         motionEvent = event
-        point = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
+        longPressPoint = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
         if (url.isBlank()) {
         } else {
@@ -2361,7 +2367,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ContextMenuItemType.SelectText -> ninjaWebView.post {
                 //actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
-                ninjaWebView.selectLinkText(point)
+                ninjaWebView.selectLinkText(longPressPoint)
             }
 
             ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
