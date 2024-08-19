@@ -815,6 +815,31 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     )
 
     private val chatGptSettingItems = listOf(
+        ActionSettingItem(
+            R.string.setting_title_gpt_query_list,
+            R.drawable.icon_menu_save,
+            R.string.setting_summary_gpt_query_list,
+        ) {
+            startActivity(GptQueryListActivity.createIntent(this))
+        },
+        ActionSettingItem(
+            R.string.setting_title_gpt_action_list,
+            R.drawable.icon_list,
+            R.string.setting_summary_gpt_action_list,
+        ) { GptActionsActivity.start(this) },
+        BooleanSettingItem(
+            R.string.use_it_on_dict_search,
+            R.drawable.icon_search,
+            R.string.setting_summary_search_in_dict,
+            config::externalSearchWithGpt
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_chat_stream,
+            R.drawable.ic_chat,
+            R.string.setting_summary_chat_stream,
+            config::enableOpenAiStream
+        ),
+        DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_edit_gpt_api_key,
             R.drawable.ic_chat_gpt,
@@ -827,36 +852,17 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_gpt_model_name,
             config::gptModel
         ),
-        DividerSettingItem(),
-        ActionSettingItem(
-            R.string.setting_title_gpt_action_list,
-            R.drawable.icon_list,
-            R.string.setting_summary_gpt_action_list,
-        ) { GptActionsActivity.start(this) },
-        ValueSettingItem(
-            R.string.setting_title_gpt_prompt_for_web_page,
-            R.drawable.ic_chat_gpt,
-            R.string.setting_summary_gpt_prompt_for_web_page,
-            config::gptUserPromptForWebPage
-        ),
-        DividerSettingItem(),
-        BooleanSettingItem(
-            R.string.use_it_on_dict_search,
-            R.drawable.icon_search,
-            R.string.setting_summary_search_in_dict,
-            config::externalSearchWithGpt
-        ),
         BooleanSettingItem(
             R.string.use_it_on_tts,
             R.drawable.ic_tts,
             R.string.setting_summary_use_gpt_for_tts,
             config::useOpenAiTts
         ),
-        BooleanSettingItem(
-            R.string.setting_title_chat_stream,
-            R.drawable.ic_chat,
-            R.string.setting_summary_chat_stream,
-            config::enableOpenAiStream
+        ValueSettingItem(
+            R.string.setting_title_gpt_prompt_for_web_page,
+            R.drawable.ic_chat_gpt,
+            R.string.setting_summary_gpt_prompt_for_web_page,
+            config::gptUserPromptForWebPage
         ),
         DividerSettingItem(),
         BooleanSettingItem(
@@ -896,14 +902,6 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_gemini_model_name,
             config::geminiModel
         ),
-        DividerSettingItem(),
-        ActionSettingItem(
-            R.string.setting_title_gpt_query_list,
-            R.drawable.icon_menu_save,
-            R.string.setting_summary_gpt_query_list,
-        ) {
-            startActivity(GptQueryListActivity.createIntent(this))
-          },
     )
 
     private val startSettingItems = listOf(

@@ -378,7 +378,7 @@
     <string name="translate_image_key">Key for translate image</string>
     <string name="papago_language_setting">語言設定</string>
     <string name="toggle_touch_turn_page">開關點擊翻頁</string>
-    <string name="use_it_on_dict_search">Use it on dict search</string>
+    <string name="use_it_on_dict_search">字典查詢時，使用 GPT</string>
     <string name="setting_summary_search_in_dict">在其他 App 中選取文字時，使用此功能</string>
     <string name="menu_expand_menu">展開選單</string>
     <string name="hide_statusbar">隱藏狀態列</string>
@@ -390,7 +390,7 @@
     <string name="setting_dual_caption">Youtube雙語字幕</string>
     <string name="setting_summary_dual_caption">選擇第二字幕的語言</string>
     <string name="naver_translate">Naver Translate</string>
-    <string name="setting_title_gpt_model_name">ChatGPT Model 名稱</string>
+    <string name="setting_title_gpt_model_name">OpenAI Model 名稱</string>
     <string name="setting_summary_gpt_model_name">預設是gpt-3.5-turbo。可填入其他支援的Model名稱</string>
     <string name="split_search">分割視窗搜尋</string>
     <string name="split_search_settings">Split Search Settings</string>

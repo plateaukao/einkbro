@@ -463,8 +463,8 @@
     <string name="translate_image_key_summary">Input necessary key to use image translate feature.</string>
     <string name="papago_language_setting">Language Setting</string>
     <string name="toggle_touch_turn_page">Toggle Touch turn page</string>
-    <string name="use_it_on_dict_search">Use it in dictionary search</string>
-    <string name="setting_summary_search_in_dict">When searching in readers, use ChatGPT to search results.</string>
+    <string name="use_it_on_dict_search">Use GPT in dictionary search</string>
+    <string name="setting_summary_search_in_dict">When searching in readers, use GPT to search results.</string>
     <string name="menu_expand_menu">Show more</string>
     <string name="hide_statusbar">Hide statusbar</string>
     <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
@@ -475,7 +475,7 @@
     <string name="setting_dual_caption">Dual Caption for Youtube</string>
     <string name="setting_summary_dual_caption">Select language for second caption</string>
     <string name="naver_translate">Naver Translate</string>
-    <string name="setting_title_gpt_model_name">ChatGPT Model Name</string>
+    <string name="setting_title_gpt_model_name">OpenAI Model Name</string>
     <string name="setting_summary_gpt_model_name">Default is gpt-3.5-turbo. Fill other model name if necessary.</string>
     <string name="split_search">Split Search</string>
     <string name="papago_translate_by_screen">Papago by Screen</string>
