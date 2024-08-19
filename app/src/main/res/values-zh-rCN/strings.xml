@@ -463,7 +463,7 @@
     <string name="setting_dual_caption">Dual Caption for Youtube</string>
     <string name="setting_summary_dual_caption">select language for second caption</string>
     <string name="naver_translate">Naver Translate</string>
-    <string name="setting_title_gpt_model_name">ChatGPT Model Name</string>
+    <string name="setting_title_gpt_model_name">OpenAI Model Name</string>
     <string name="setting_summary_gpt_model_name">Default is gpt-3.5-turbo. Fill other model name if necessary.</string>
     <string name="split_search">Split Search</string>
     <string name="split_search_settings">Split Search Settings</string>
