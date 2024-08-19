@@ -41,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
@@ -154,7 +153,10 @@ fun GptQueriesScreen(
                 onLinkClick = { onLinkClick(gptQuery) },
                 deleteQuery = { gptQueryViewModel.deleteGptQuery(gptQuery) }
             )
-            if (index < gptQueries.lastIndex) Divider(thickness = 8.dp)
+            if (index < gptQueries.lastIndex) Divider(
+                thickness = 8.dp,
+                color = MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+            )
         }
     }
 }
@@ -198,7 +200,11 @@ fun QueryItem(
             color = MaterialTheme.colors.onBackground
         )
         if (showResult) {
-            Divider(modifier = Modifier.padding(horizontal = 10.dp), thickness = 1.dp)
+            Divider(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colors.onBackground
+            )
             Text(
                 modifier = Modifier.padding(top = 5.dp),
                 text = HelperUnit.parseMarkdown(gptQuery.result),
