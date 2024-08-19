@@ -572,6 +572,29 @@ open class NinjaWebView(
         }
     }
 
+    private fun simulateClick(point: Point) {
+        val downTime = SystemClock.uptimeMillis()
+        val downEvent =
+            MotionEvent.obtain(
+                downTime, downTime, KeyEvent.ACTION_DOWN,
+                point.x.toFloat(), point.y.toFloat(), 0
+            )
+        (this.parent as ViewGroup).dispatchTouchEvent(downEvent)
+
+        val upEvent =
+            MotionEvent.obtain(
+                downTime, downTime + 700, KeyEvent.ACTION_UP,
+                point.x.toFloat(), point.y.toFloat(), 0
+            )
+        postDelayed(
+            {
+                (this.parent as ViewGroup).dispatchTouchEvent(upEvent)
+                downEvent.recycle()
+                upEvent.recycle()
+            }, 50
+        )
+    }
+
     private fun simulateLongClick(point: Point) {
         isSelectingText = true
         val downTime = SystemClock.uptimeMillis()
@@ -926,6 +949,12 @@ open class NinjaWebView(
         }
     }
 
+    fun selectSentence(point: Point) {
+        evaluateJavascript(jsSelectSentence) {
+            this.postDelayed({ simulateClick(point) }, 100)
+        }
+    }
+
     suspend fun getSelectedTextWithContext(contextLength: Int = 10): String =
         suspendCoroutine { continuation ->
             evaluateJavascript(jsGetSelectedTextWithContextV2) { value ->
@@ -955,6 +984,47 @@ open class NinjaWebView(
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
+
+        private const val jsSelectSentence = """
+            javascript:(function () {
+    let selection = window.getSelection();
+    if (selection.rangeCount === 0) return;
+
+    let range = selection.getRangeAt(0);
+    let startContainer = range.startContainer;
+    let endContainer = range.endContainer;
+
+    if (startContainer !== endContainer || startContainer.nodeType !== Node.TEXT_NODE) {
+        // Only handle cases where the selection is within a single text node
+        return;
+    }
+
+    let textContent = startContainer.textContent;
+    let startOffset = range.startOffset;
+    let endOffset = range.endOffset;
+
+    let sentenceStart = startOffset;
+    let sentenceEnd = endOffset;
+
+    // Move the start of the range to the start of the sentence
+    while (sentenceStart > 0 && ![".", "?", "。", "!"].includes(textContent[sentenceStart - 1])) {
+        sentenceStart--;
+    }
+
+    // Move the end of the range to the end of the sentence
+    while (sentenceEnd < textContent.length && ![".", "?", "。", "!"].includes(textContent[sentenceEnd])) {
+        sentenceEnd++;
+    }
+
+    // Set the range to the sentence boundaries
+    range.setStart(startContainer, sentenceStart);
+    range.setEnd(startContainer, sentenceEnd);
+
+    // Clear previous selection and set the new one
+    selection.removeAllRanges();
+    selection.addRange(range);
+            })();
+        """
 
         private const val jsGetSelectedTextWithContextV2 = """
             javascript:(function() {

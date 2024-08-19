@@ -99,7 +99,7 @@ private fun ActionModeMenu(
                 if (showIcons) info.icon else null,
                 onClicked = {
                     info.action?.invoke()
-                    onClicked(info.intent)
+                    if (info.closeMenu) onClicked(info.intent)
                 },
                 onLongClicked = {
                     info.longClickAction?.invoke()

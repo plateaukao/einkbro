@@ -531,4 +531,5 @@
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-1.5-flash)</string>
     <string name="enable_touch_area_as_page_key">As PageUp/PageDown key</string>
     <string name="translate_this_site">Always translate on this site</string>
+    <string name="select_sentence">Select Sentence</string>
 </resources>
