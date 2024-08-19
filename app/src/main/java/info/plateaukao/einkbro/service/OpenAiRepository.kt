@@ -103,7 +103,7 @@ class OpenAiRepository : KoinComponent {
         })
     }
 
-    fun geminiStream(
+    private fun geminiStream(
         messages: List<ChatMessage>,
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
