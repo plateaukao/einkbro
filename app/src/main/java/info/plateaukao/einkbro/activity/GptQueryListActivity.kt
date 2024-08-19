@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.CrossProfileApps
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
@@ -141,19 +143,18 @@ fun GptQueriesScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(
-        modifier = Modifier.padding(10.dp),
         state = listState,
     ) {
         items(gptQueries.size) { index ->
             val gptQuery = gptQueries[index]
             QueryItem(
-                modifier = Modifier.padding(vertical = 10.dp),
+                modifier = Modifier.padding(10.dp),
                 gptQuery = gptQuery,
                 postAction = { coroutineScope.launch { listState.scrollToItem(index) } },
                 onLinkClick = { onLinkClick(gptQuery) },
                 deleteQuery = { gptQueryViewModel.deleteGptQuery(gptQuery) }
             )
-            if (index < gptQueries.lastIndex) Divider(thickness = 1.dp)
+            if (index < gptQueries.lastIndex) Divider(thickness = 8.dp)
         }
     }
 }
@@ -192,10 +193,12 @@ fun QueryItem(
             )
     ) {
         Text(
+            modifier = Modifier.padding(bottom = 5.dp),
             text = queryString,
             color = MaterialTheme.colors.onBackground
         )
         if (showResult) {
+            Divider(modifier = Modifier.padding(horizontal = 10.dp), thickness = 1.dp)
             Text(
                 modifier = Modifier.padding(top = 5.dp),
                 text = HelperUnit.parseMarkdown(gptQuery.result),
@@ -204,7 +207,8 @@ fun QueryItem(
         }
         Row(
             modifier = Modifier.align(Alignment.End),
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 modifier = Modifier.padding(end = 10.dp),
@@ -213,21 +217,11 @@ fun QueryItem(
                     color = MaterialTheme.colors.onBackground
                 )
             )
-            Icon(
-                modifier = Modifier
-                    .size(18.dp)
-                    .padding(end = 2.dp)
-                    .clickable { deleteQuery() },
-                painter = painterResource(id = R.drawable.icon_delete),
-                contentDescription = "delete",
-                tint = MaterialTheme.colors.onBackground
-            )
             if (gptQuery.url.isNotEmpty()) {
                 Spacer(modifier = Modifier.size(10.dp))
                 Icon(
                     modifier = Modifier
-                        .size(18.dp)
-                        .padding(end = 5.dp)
+                        .size(20.dp)
                         .clickable {
                             onLinkClick()
                         },
@@ -235,6 +229,7 @@ fun QueryItem(
                     contentDescription = "link",
                     tint = MaterialTheme.colors.onBackground
                 )
+                Spacer(modifier = Modifier.size(10.dp))
             }
             Text(
                 text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(gptQuery.date),
@@ -242,11 +237,21 @@ fun QueryItem(
                     color = MaterialTheme.colors.onBackground
                 )
             )
+            Spacer(modifier = Modifier.size(10.dp))
+            Icon(
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable { deleteQuery() },
+                painter = painterResource(id = R.drawable.icon_delete),
+                contentDescription = "delete",
+                tint = MaterialTheme.colors.onBackground
+            )
         }
     }
 }
 
-@Preview
+// theme white
+@Preview(showBackground = true)
 @Composable
 fun PreviewQueryItem() {
     MyTheme {

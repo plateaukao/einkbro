@@ -261,11 +261,28 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     fun saveTranslationResult() {
         viewModelScope.launch {
             val (_, selectedText) = getSelectedTextAndPromptPrefix()
+            val model = gptActionInfo.model.ifEmpty {
+                when (gptActionInfo.actionType) {
+                    GptActionType.OpenAi -> config.gptModel
+                    GptActionType.Gemini -> config.geminiModel
+                    GptActionType.SelfHosted -> config.alternativeModel
+                    GptActionType.Default -> {
+                        if (config.useCustomGptUrl && config.gptUrl.isNotBlank()) {
+                            config.alternativeModel
+                        } else
+                            if (config.useGeminiApi && config.geminiApiKey.isNotBlank()) {
+                                config.geminiModel
+                            } else {
+                                config.gptModel
+                            }
+                    }
+                }
+            }
             bookmarkManager.addChatGptQuery(
                 ChatGptQuery(
                     date = System.currentTimeMillis(),
                     url = url,
-                    model = gptActionInfo.model,
+                    model = "${gptActionInfo.name} $model",
                     selectedText = selectedText,
                     result = toBeSavedResponseString,
                 )
