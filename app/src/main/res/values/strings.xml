@@ -436,7 +436,7 @@
     <string name="content_adjustment">Content Adjustment</string>
     <string name="share_save"><![CDATA[Share & Save]]></string>
     <string name="menu_gpt">ChatGPT</string>
-    <string name="setting_title_chat_gpt">ChatGPT Integration</string>
+    <string name="setting_title_chat_gpt">GPT Settings</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI Key</string>
     <string name="setting_summary_edit_gpt_api_key">Input key in order to use this feature.</string>
     <string name="setting_title_edit_gpt_system_prompt">ChatGPT System Prompt</string>

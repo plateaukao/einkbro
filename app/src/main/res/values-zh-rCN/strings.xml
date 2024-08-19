@@ -427,7 +427,7 @@
     <string name="share_save"><![CDATA[分享保存类]]></string>
 
     <string name="menu_gpt">ChatGPT</string>
-    <string name="setting_title_chat_gpt">ChatGPT集成</string>
+    <string name="setting_title_chat_gpt">GPT集成</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI密钥</string>
     <string name="setting_summary_edit_gpt_api_key">输入密钥以使用此功能。</string>
     <string name="setting_title_edit_gpt_system_prompt">ChatGPT提示</string>
