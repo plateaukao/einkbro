@@ -61,13 +61,16 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     fun showActionModeView(
         context: Context,
         parent: ViewGroup,
-        clearSelectionAction: () -> Unit
+        clearSelectionAction: () -> Unit,
     ) {
         if (actionModeView == null) {
             actionModeView = ActionModeView(context = context).apply {
                 init(
                     actionModeMenuViewModel = this@ActionModeMenuViewModel,
-                    menuInfos = getAllProcessTextMenuInfos(context, context.packageManager),
+                    menuInfos = getAllProcessTextMenuInfos(
+                        context,
+                        context.packageManager,
+                    ),
                     clearSelectionAction = clearSelectionAction
                 )
             }
@@ -142,7 +145,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
     private fun getAllProcessTextMenuInfos(
         context: Context,
-        packageManager: PackageManager
+        packageManager: PackageManager,
     ): List<MenuInfo> {
         val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
             type = "text/plain"
@@ -206,6 +209,17 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             0,
             MenuInfo(
+                context.getString(R.string.select_sentence),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
+                closeMenu = false,
+                action = {
+                    _actionModeMenuState.value = ActionModeMenuState.SelectSentence
+                }
+            )
+        )
+        menuInfos.add(
+            0,
+            MenuInfo(
                 context.getString(android.R.string.copy),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
                 action = {
@@ -261,13 +275,14 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 }
 
 sealed class ActionModeMenuState {
-    object Idle : ActionModeMenuState()
+    data object Idle : ActionModeMenuState()
     class Gpt(val gptAction: ChatGPTActionInfo) : ActionModeMenuState()
-    object GoogleTranslate : ActionModeMenuState()
-    object DeeplTranslate : ActionModeMenuState()
-    object Papago : ActionModeMenuState()
-    object Naver : ActionModeMenuState()
+    data object GoogleTranslate : ActionModeMenuState()
+    data object DeeplTranslate : ActionModeMenuState()
+    data object Papago : ActionModeMenuState()
+    data object Naver : ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
     class Tts(val text: String) : ActionModeMenuState()
     class HighlightText(val highlightStyle: HighlightStyle) : ActionModeMenuState()
+    data object SelectSentence : ActionModeMenuState()
 }

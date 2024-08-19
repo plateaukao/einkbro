@@ -137,6 +137,7 @@ import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.HighlightText
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Idle
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Naver
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SelectSentence
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SplitSearch
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Tts
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
@@ -517,6 +518,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         IntentUnit.tts(this@BrowserActivity, state.text)
                         actionModeMenuViewModel.finish()
                     }
+
+                    is SelectSentence -> ninjaWebView.selectSentence(point)
 
                     Idle -> Unit
                 }
@@ -2699,7 +2702,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
                     actionModeMenuViewModel.showActionModeView(
                         this@BrowserActivity,
-                        binding.root
+                        binding.root,
                     ) {
                         ninjaWebView.removeTextSelection()
                     }
@@ -2736,7 +2739,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onActionModeFinished(mode: ActionMode?) {
-        //Log.d("touch", "onActionModeFinished")
         super.onActionModeFinished(mode)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mode?.hide(1000000)
