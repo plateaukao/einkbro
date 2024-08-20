@@ -606,6 +606,22 @@ class ConfigManager(
             }
         }
 
+    fun getDefaultActionModel(): String = if (useGeminiApi) {
+        geminiModel
+    } else if (useCustomGptUrl) {
+        alternativeModel
+    } else {
+        gptModel
+    }
+
+    fun getGptTypeModelMap(): Map<GptActionType, String> = mapOf(
+        GptActionType.Default to getDefaultActionModel(),
+        GptActionType.OpenAi to gptModel,
+        GptActionType.SelfHosted to alternativeModel,
+        GptActionType.Gemini to geminiModel
+    )
+
+
     var gptActionForExternalSearch: ChatGPTActionInfo?
         get() {
             val str = sp.getString(K_GPT_ACTION_EXTERNAL, "").orEmpty()
