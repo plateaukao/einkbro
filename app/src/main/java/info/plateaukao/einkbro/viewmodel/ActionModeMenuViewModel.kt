@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
@@ -190,8 +189,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 action = { _actionModeMenuState.value = ActionModeMenuState.DeeplTranslate }
             )
         )
-        if (configManager.gptApiKey.isNotEmpty() && configManager.gptActionList.isNotEmpty()) {
-            for (actionInfo in configManager.gptActionList.reversed()) {
+        if (configManager.gptActionList.isNotEmpty()) {
+            configManager.gptActionList.reversed().map { actionInfo ->
                 menuInfos.add(
                     0,
                     MenuInfo(
@@ -199,7 +198,9 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                         icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
                         action = {
                             _actionModeMenuState.value =
-                                ActionModeMenuState.Gpt(actionInfo)
+                                ActionModeMenuState.Gpt(
+                                    configManager.gptActionList.indexOf(actionInfo)
+                                )
                         }
                     )
                 )
@@ -276,7 +277,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
 sealed class ActionModeMenuState {
     data object Idle : ActionModeMenuState()
-    class Gpt(val gptAction: ChatGPTActionInfo) : ActionModeMenuState()
+    class Gpt(val gptActionIndex: Int) : ActionModeMenuState()
     data object GoogleTranslate : ActionModeMenuState()
     data object DeeplTranslate : ActionModeMenuState()
     data object Papago : ActionModeMenuState()
