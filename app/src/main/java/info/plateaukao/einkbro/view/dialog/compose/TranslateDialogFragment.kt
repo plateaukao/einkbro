@@ -317,8 +317,9 @@ private fun GptRow(
             ActionMenuItem(
                 gptActionInfo.name,
                 null,
-                onClicked = {
-                    translationViewModel.gptActionInfo = gptActionInfo
+                onClicked = { // need to pass in index so that the action can be updated
+                    translationViewModel.gptActionInfo =
+                        translationViewModel.getGptActionList()[index]
                     translationViewModel.translate(TRANSLATE_API.GPT)
                 },
                 onLongClicked = { translationViewModel.showEditGptActionDialog(index) }

@@ -485,13 +485,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
 
                     is Gpt -> {
+                        val gptAction = config.gptActionList[state.gptActionIndex]
                         translationViewModel.viewModelScope.launch {
                             translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
                             val selectedTextWithContext = ninjaWebView.getSelectedTextWithContext()
                             translationViewModel.updateMessageWithContext(selectedTextWithContext)
                             if (translationViewModel.hasOpenAiApiKey()) {
                                 translationViewModel.updateTranslateMethod(TRANSLATE_API.GPT)
-                                translationViewModel.gptActionInfo = state.gptAction
+                                translationViewModel.gptActionInfo = gptAction
                                 translationViewModel.url = ninjaWebView.url.orEmpty()
                                 TranslateDialogFragment(
                                     translationViewModel,
