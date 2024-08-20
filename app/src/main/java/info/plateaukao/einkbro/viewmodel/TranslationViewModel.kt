@@ -266,16 +266,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     GptActionType.OpenAi -> config.gptModel
                     GptActionType.Gemini -> config.geminiModel
                     GptActionType.SelfHosted -> config.alternativeModel
-                    GptActionType.Default -> {
-                        if (config.useCustomGptUrl && config.gptUrl.isNotBlank()) {
-                            config.alternativeModel
-                        } else
-                            if (config.useGeminiApi && config.geminiApiKey.isNotBlank()) {
-                                config.geminiModel
-                            } else {
-                                config.gptModel
-                            }
-                    }
+                    GptActionType.Default -> config.getDefaultActionModel()
                 }
             }
             bookmarkManager.addChatGptQuery(

@@ -191,7 +191,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             )
         )
         if (configManager.gptApiKey.isNotEmpty() && configManager.gptActionList.isNotEmpty()) {
-            for (actionInfo in configManager.gptActionList) {
+            for (actionInfo in configManager.gptActionList.reversed()) {
                 menuInfos.add(
                     0,
                     MenuInfo(
