@@ -2710,6 +2710,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     actionModeMenuViewModel.showActionModeView(
                         this@BrowserActivity,
                         binding.root,
+                        translationViewModel,
                     ) {
                         ninjaWebView.removeTextSelection()
                     }

@@ -60,6 +60,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     fun showActionModeView(
         context: Context,
         parent: ViewGroup,
+        translationViewModel: TranslationViewModel,
         clearSelectionAction: () -> Unit,
     ) {
         if (actionModeView == null) {
@@ -69,6 +70,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                     menuInfos = getAllProcessTextMenuInfos(
                         context,
                         context.packageManager,
+                        translationViewModel,
                     ),
                     clearSelectionAction = clearSelectionAction
                 )
@@ -145,6 +147,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     private fun getAllProcessTextMenuInfos(
         context: Context,
         packageManager: PackageManager,
+        translationViewModel: TranslationViewModel,
     ): List<MenuInfo> {
         val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
             type = "text/plain"
@@ -201,7 +204,13 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                                 ActionModeMenuState.Gpt(
                                     configManager.gptActionList.indexOf(actionInfo)
                                 )
+                        },
+                        longClickAction = {
+                            translationViewModel.showEditGptActionDialog(
+                                configManager.gptActionList.indexOf(actionInfo)
+                            )
                         }
+
                     )
                 )
             }
