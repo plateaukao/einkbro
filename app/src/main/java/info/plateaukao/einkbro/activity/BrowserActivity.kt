@@ -114,6 +114,7 @@ import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
@@ -628,6 +629,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
+
+    override fun showFontBoldnessDialog() {
+        FontBoldnessDialogFragment(
+            config.fontBoldness,
+            okAction = { changedBoldness ->
+                config.fontBoldness = changedBoldness
+                ninjaWebView.applyFontBoldness()
+            }
+        ).show(supportFragmentManager, "FontBoldnessDialog")
+    }
 
     override fun toggleTextSearch() {
         remoteConnViewModel.toggleTextSearch()
@@ -2593,7 +2604,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         MenuDialogFragment(
             ninjaWebView.url.orEmpty(),
             { menuActionHandler.handle(it, ninjaWebView) },
-            { menuActionHandler.handleLongClick(it, ninjaWebView) }
+            { menuActionHandler.handleLongClick(it) }
         ).show(supportFragmentManager, "menu_dialog")
 
     override fun showWebArchiveFilePicker() {

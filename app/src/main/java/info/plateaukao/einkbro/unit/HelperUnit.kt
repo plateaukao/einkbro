@@ -509,7 +509,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = (DEFAULT_FONT_SIZE + 10).sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 4).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -520,7 +520,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = (DEFAULT_FONT_SIZE + 8).sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 3).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -530,7 +530,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = (DEFAULT_FONT_SIZE + 6).sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 2).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -540,7 +540,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = (DEFAULT_FONT_SIZE + 5).sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 2).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -550,7 +550,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = (DEFAULT_FONT_SIZE + 4).sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 1).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -560,7 +560,7 @@ object HelperUnit {
                     textMarkDown(
                         content,
                         resultBuilder,
-                        fontSize = (DEFAULT_FONT_SIZE + 2).sp,
+                        fontSize = (DEFAULT_FONT_SIZE + 1).sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -662,7 +662,7 @@ object HelperUnit {
 
                     nextBold -> SpanStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = (DEFAULT_FONT_SIZE + 2).sp
+                        fontSize = DEFAULT_FONT_SIZE.sp
                     )
 
                     nextItalic -> SpanStyle(
