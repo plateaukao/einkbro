@@ -14,7 +14,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class ToolbarActionHandler(
-    private val activity: FragmentActivity
+    private val activity: FragmentActivity,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val browserController = activity as BrowserController
@@ -54,6 +54,8 @@ class ToolbarActionHandler(
         ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(
             TRANSLATE_API.PAPAGO
         )
+
+        ToolbarAction.BoldFont -> browserController.showFontBoldnessDialog()
 
         else -> {}
     }

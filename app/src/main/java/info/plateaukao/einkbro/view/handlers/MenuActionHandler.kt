@@ -31,13 +31,15 @@ class MenuActionHandler(
     private val browserController = activity as BrowserController
     private val dialogManager by lazy { DialogManager(activity) }
 
-    fun handleLongClick(menuItemType: MenuItemType, ninjaWebView: NinjaWebView) = when (menuItemType) {
-        MenuItemType.Translate -> browserController.showTranslationConfigDialog(true)
-        MenuItemType.ReceiveData -> browserController.toggleReceiveTextSearch()
-        MenuItemType.SendLink -> browserController.toggleTextSearch()
-        MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
-        else -> Unit
-    }
+    fun handleLongClick(menuItemType: MenuItemType) =
+        when (menuItemType) {
+            MenuItemType.Translate -> browserController.showTranslationConfigDialog(true)
+            MenuItemType.ReceiveData -> browserController.toggleReceiveTextSearch()
+            MenuItemType.SendLink -> browserController.toggleTextSearch()
+            MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
+            MenuItemType.BoldFont -> browserController.showFontBoldnessDialog()
+            else -> Unit
+        }
 
     fun handle(menuItemType: MenuItemType, ninjaWebView: NinjaWebView) = when (menuItemType) {
         MenuItemType.Tts -> browserController.toggleTtsRead()

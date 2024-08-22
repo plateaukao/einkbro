@@ -172,6 +172,8 @@ class ConfigManager(
 
     var touchAreaCustomizeY by IntPreference(sp, K_TOUCH_AREA_OFFSET, 0)
 
+    var fontBoldness by IntPreference(sp, K_FONT_BOLDNESS, 700)
+
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
     var preferredTranslateLanguageString by StringPreference(sp, K_TRANSLATED_LANGS)
@@ -719,6 +721,7 @@ class ConfigManager(
         const val K_TWO_PANE_LINK_HERE = "sp_two_pane_link_here"
         const val K_DARK_MODE = "sp_dark_mode"
         const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
+        const val K_FONT_BOLDNESS = "sp_font_boldness"
         const val K_TOUCH_AREA_ACTION_SWITCH = "sp_touch_area_action_switch"
         const val K_TOUCH_AREA_ARROW_KEY = "sp_touch_area_arrow_key"
         const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"

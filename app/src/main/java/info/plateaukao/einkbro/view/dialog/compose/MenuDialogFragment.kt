@@ -59,7 +59,7 @@ import org.koin.android.ext.android.inject
 class MenuDialogFragment(
     private val url: String,
     private val itemClicked: (MenuItemType) -> Unit,
-    private val itemLongClicked: (MenuItemType) -> Unit
+    private val itemLongClicked: (MenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
     private val ttsManager: TtsManager by inject()
 
@@ -106,7 +106,7 @@ private fun MenuItems(
     toggleShareSaveMenu: () -> Unit,
     toggleContentMenu: () -> Unit,
     onClicked: (MenuItemType) -> Unit,
-    onLongClicked: (MenuItemType) -> Unit
+    onLongClicked: (MenuItemType) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -286,7 +286,9 @@ private fun MenuItems(
                 MenuItem(R.string.black_font, blackRes) { onClicked(MenuItemType.BlackFont) }
                 val boldRes =
                     if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
-                MenuItem(R.string.bold_font, boldRes) { onClicked(MenuItemType.BoldFont) }
+                MenuItem(R.string.bold_font, boldRes,
+                    onLongClicked = { onLongClicked(MenuItemType.BoldFont) }
+                ) { onClicked(MenuItemType.BoldFont) }
                 MenuItem(
                     R.string.font_size,
                     R.drawable.icon_size

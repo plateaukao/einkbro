@@ -123,8 +123,9 @@ open class NinjaWebView(
                     (if (fontType == FontType.SERIF) serifFontCss else "") +
                     (if (config.whiteBackground(url.orEmpty())) whiteBackgroundCss else "") +
                     (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
-                    (if (config.boldFontStyle) boldFontCss else "") +
-                    // all css are purgsed by epublib. need to add it back if it's epub reader mode
+                    (if (config.boldFontStyle)
+                        boldFontCss.replace("value", "${config.fontBoldness}") else "") +
+                    // all css are purged by epublib. need to add it back if it's epub reader mode
                     if (isEpubReaderMode) String(
                         getByteArrayFromAsset("readerview.css"),
                         Charsets.UTF_8
@@ -1298,25 +1299,25 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
         """
 
         private const val boldFontCss = "* {\n" +
-                "\tfont-weight:700 !important;\n" +
+                "\tfont-weight:value !important;\n" +
                 "}\n" +
                 "a,a * {\n" +
-                "\tfont-weight:700 !important;\n" +
+                "\tfont-weight:value !important;\n" +
                 "}\n" +
                 "a: visited,a: visited *,a: active,a: active * {\n" +
-                "\tfont-weight:700 !important;\n" +
+                "\tfont-weight:value !important;\n" +
                 "}\n" +
                 "a: hover,a: hover * {\n" +
-                "\tfont-weight:700 !important;\n" +
+                "\tfont-weight:value !important;\n" +
                 "}\n" +
                 "input,select,option,button,textarea {\n" +
-                "\tfont-weight:700 !important;\n" +
+                "\tfont-weight:value !important;\n" +
                 "}\n" +
                 "input: focus,select: focus,option: focus,button: focus,textarea: focus,input: hover,select: hover,option: hover,button: hover,textarea: hover {\n" +
-                "\tfont-weight:700 !important;\n" +
+                "\tfont-weight:value !important;\n" +
                 "}\n" +
                 "input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {\n" +
-                "\tfont-weight:700 !important;\n" +
+                "\tfont-weight:value !important;\n" +
                 "}\n"
 
         private const val textSelectionChangeJs = """
@@ -1577,5 +1578,10 @@ highlightSelection();
         } else {
             view.setLayerType(LAYER_TYPE_HARDWARE, null)
         }
+    }
+
+    fun applyFontBoldness() {
+        val fontCss = boldFontCss.replace("value", config.fontBoldness.toString())
+        injectCss(fontCss.toByteArray())
     }
 }

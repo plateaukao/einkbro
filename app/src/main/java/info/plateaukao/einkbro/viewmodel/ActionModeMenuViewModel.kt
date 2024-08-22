@@ -193,24 +193,14 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             )
         )
         if (configManager.gptActionList.isNotEmpty()) {
-            configManager.gptActionList.reversed().map { actionInfo ->
+            configManager.gptActionList.mapIndexed { index, actionInfo ->
                 menuInfos.add(
-                    0,
+                    0 + index,
                     MenuInfo(
                         actionInfo.name,
                         icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
-                        action = {
-                            _actionModeMenuState.value =
-                                ActionModeMenuState.Gpt(
-                                    configManager.gptActionList.indexOf(actionInfo)
-                                )
-                        },
-                        longClickAction = {
-                            translationViewModel.showEditGptActionDialog(
-                                configManager.gptActionList.indexOf(actionInfo)
-                            )
-                        }
-
+                        action = { _actionModeMenuState.value = ActionModeMenuState.Gpt(index) },
+                        longClickAction = { translationViewModel.showEditGptActionDialog(index) }
                     )
                 )
             }

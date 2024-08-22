@@ -90,6 +90,7 @@ interface BrowserController {
 
     fun configureTranslationLanguage(translateApi: TRANSLATE_API)
     fun toggleTouchPagination()
+    fun showFontBoldnessDialog()
 
     fun sendToRemote(text: String)
     fun toggleReceiveLink()
