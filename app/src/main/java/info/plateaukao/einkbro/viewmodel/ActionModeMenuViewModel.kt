@@ -209,6 +209,17 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             0,
             MenuInfo(
+                context.getString(R.string.select_paragraph),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
+                closeMenu = false,
+                action = {
+                    _actionModeMenuState.value = ActionModeMenuState.SelectParagraph
+                }
+            )
+        )
+        menuInfos.add(
+            0,
+            MenuInfo(
                 context.getString(R.string.select_sentence),
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
                 closeMenu = false,
@@ -285,4 +296,5 @@ sealed class ActionModeMenuState {
     class Tts(val text: String) : ActionModeMenuState()
     class HighlightText(val highlightStyle: HighlightStyle) : ActionModeMenuState()
     data object SelectSentence : ActionModeMenuState()
+    data object SelectParagraph : ActionModeMenuState()
 }
