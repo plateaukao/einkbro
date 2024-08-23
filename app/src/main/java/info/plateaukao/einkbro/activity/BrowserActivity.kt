@@ -138,6 +138,7 @@ import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.HighlightText
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Idle
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Naver
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SelectParagraph
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SelectSentence
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SplitSearch
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Tts
@@ -522,6 +523,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
 
                     is SelectSentence -> ninjaWebView.selectSentence(longPressPoint)
+                    is SelectParagraph -> ninjaWebView.selectParagraph(longPressPoint)
 
                     Idle -> Unit
                 }
@@ -542,6 +544,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             bookmarkManager.getArticleByUrl(url) ?: bookmarkManager.insertArticle(article)
 
         val selectedText = actionModeMenuViewModel.selectedText.value
+            .replace("\\\"", "\"")
         val highlight = Highlight(articleInDb.id, selectedText)
         bookmarkManager.insertHighlight(highlight)
     }
