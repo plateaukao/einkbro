@@ -15,6 +15,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
+
 data class Highlight(
     var articleId: Int,
     var content: String,
