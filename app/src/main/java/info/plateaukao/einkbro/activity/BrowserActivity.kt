@@ -1593,14 +1593,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_ENABLE_IMAGE_ADJUSTMENT -> ninjaWebView.reload()
 
-                ConfigManager.K_WHITE_BACKGROUND_LIST -> {
-                    if (config.whiteBackground(ninjaWebView.url.orEmpty())) {
-                        ninjaWebView.updateCssStyle()
-                    } else {
-                        ninjaWebView.reload()
-                    }
-                }
-
                 ConfigManager.K_CUSTOM_FONT -> {
                     if (config.fontType == FontType.CUSTOM) {
                         ninjaWebView.updateCssStyle()

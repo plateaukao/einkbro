@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.database
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
@@ -19,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -30,8 +32,9 @@ import org.koin.core.component.inject
         Highlight::class,
         Article::class,
         ChatGptQuery::class,
+        DomainConfiguration::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -40,26 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun highlightDao(): HighlightDao
     abstract fun articleDao(): ArticleDao
     abstract fun chatGptQueryDao(): ChatGptQueryDao
-}
-
-val MIGRATION_1_2: Migration = object : Migration(1, 2) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS `favicons` (`domain` TEXT NOT NULL, `icon` BLOB, PRIMARY KEY(`domain`))")
-    }
-}
-
-val MIGRATION_2_3: Migration = object : Migration(2, 3) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS `highlights` (`articleId` INTEGER NOT NULL, `content` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`articleId`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-        database.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `date` INTEGER NOT NULL, `tags` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
-        database.execSQL("CREATE INDEX IF NOT EXISTS `index_highlights_articleId` ON `highlights` (`articleId`)")
-    }
-}
-
-val MIGRATION_3_4: Migration = object : Migration(3, 4) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS `chat_gpt_query` (`date` INTEGER NOT NULL, `url` TEXT NOT NULL, `model` TEXT NOT NULL, `selectedText` TEXT NOT NULL, `result` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
-    }
+    abstract fun domainConfigurationDao(): DomainConfigurationDao
 }
 
 @Dao
@@ -183,10 +167,46 @@ interface BookmarkDao {
 class BookmarkManager(context: Context) : KoinComponent {
     val config: ConfigManager by inject()
 
+    private val migration1To2: Migration = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `favicons` (`domain` TEXT NOT NULL, `icon` BLOB, PRIMARY KEY(`domain`))")
+        }
+    }
+
+    private val migration2To3: Migration = object : Migration(2, 3) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `highlights` (`articleId` INTEGER NOT NULL, `content` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`articleId`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `date` INTEGER NOT NULL, `tags` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
+            database.execSQL("CREATE INDEX IF NOT EXISTS `index_highlights_articleId` ON `highlights` (`articleId`)")
+        }
+    }
+
+    private val migration3To4: Migration = object : Migration(3, 4) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `chat_gpt_query` (`date` INTEGER NOT NULL, `url` TEXT NOT NULL, `model` TEXT NOT NULL, `selectedText` TEXT NOT NULL, `result` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
+        }
+    }
+
+    private val migration4To5: Migration = object : Migration(4, 5) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `domain_configuration` (`domain` TEXT NOT NULL, `configuration` TEXT NOT NULL, PRIMARY KEY(`domain`))")
+
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
-        .addMigrations(MIGRATION_1_2)
-        .addMigrations(MIGRATION_2_3)
-        .addMigrations(MIGRATION_3_4)
+        .addMigrations(migration1To2)
+        .addMigrations(migration2To3)
+        .addMigrations(migration3To4)
+        .addMigrations(migration4To5)
+        .addCallback(object : RoomDatabase.Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                GlobalScope.launch(Dispatchers.IO) {
+                    convertConfigToDomainConfiguration()
+                }
+            }
+        })
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -196,10 +216,36 @@ class BookmarkManager(context: Context) : KoinComponent {
     private val highlightDao = database.highlightDao()
     private val articleDao = database.articleDao()
     private val chatGptQueryDao = database.chatGptQueryDao()
+    private val domainConfigurationDao = database.domainConfigurationDao()
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
             faviconInfos.addAll(getAllFavicons())
+            config.domainConfigurationMap.putAll(getAllDomainConfigurations())
+        }
+    }
+
+    private suspend fun convertConfigToDomainConfiguration() {
+        config.scrollFixList.forEach { domain ->
+            Log.d("BookmarkManager", "convertConfigToDomainConfiguration: $domain")
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldFixScroll = true
+            addDomainConfiguration(domainConfiguration)
+        }
+        config.sendPageNavKeyList.forEach { domain ->
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldSendPageNavKey = true
+            addDomainConfiguration(domainConfiguration)
+        }
+        config.translateSiteList.forEach { domain ->
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldTranslateSite = true
+            addDomainConfiguration(domainConfiguration)
+        }
+        config.whiteBackgroundList.forEach { domain ->
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldUseWhiteBackground = true
+            addDomainConfiguration(domainConfiguration)
         }
     }
 
@@ -291,7 +337,35 @@ class BookmarkManager(context: Context) : KoinComponent {
     }
 
     fun getAllChatGptQueries(): Flow<List<ChatGptQuery>> = chatGptQueryDao.getAllChatGptQueries()
-    suspend fun addChatGptQuery(chatGptQuery: ChatGptQuery) = chatGptQueryDao.addChatGptQuery(chatGptQuery)
+    suspend fun addChatGptQuery(chatGptQuery: ChatGptQuery) =
+        chatGptQueryDao.addChatGptQuery(chatGptQuery)
+
     suspend fun getChatGptQueryById(id: Int): ChatGptQuery = chatGptQueryDao.getChatGptQueryById(id)
-    suspend fun deleteChatGptQuery(chatGptQuery: ChatGptQuery) = chatGptQueryDao.deleteChatGptQuery(chatGptQuery)
+    suspend fun deleteChatGptQuery(chatGptQuery: ChatGptQuery) =
+        chatGptQueryDao.deleteChatGptQuery(chatGptQuery)
+
+    suspend fun getDomainConfiguration(domain: String): DomainConfigurationData =
+        domainConfigurationDao.getDomainConfiguration(domain)?.let {
+            Json.decodeFromString<DomainConfigurationData>(it.configuration)
+        } ?: DomainConfigurationData(domain)
+
+    val json = Json { encodeDefaults = true }
+    private suspend fun getAllDomainConfigurations(): Map<String, DomainConfigurationData> =
+        mutableMapOf<String, DomainConfigurationData>().apply {
+            domainConfigurationDao.getAllDomainConfigurations().forEach {
+                put(it.domain, json.decodeFromString<DomainConfigurationData>(it.configuration))
+            }
+        }
+    fun addDomainConfiguration(domainConfigurationData: DomainConfigurationData) =
+        GlobalScope.launch(Dispatchers.IO) {
+            domainConfigurationDao.addDomainConfiguration(
+                DomainConfiguration(
+                    domain = domainConfigurationData.domain,
+                    configuration = json.encodeToString(
+                        DomainConfigurationData.serializer(),
+                        domainConfigurationData
+                    )
+                )
+            )
+        }
 }
