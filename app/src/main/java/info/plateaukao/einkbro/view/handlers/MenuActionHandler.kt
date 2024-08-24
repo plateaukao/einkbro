@@ -15,6 +15,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -86,7 +87,10 @@ class MenuActionHandler(
             MenuItemType.SavePdf -> printPDF(ninjaWebView)
 
             MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
-            MenuItemType.InvertColor -> ninjaWebView.toggleInvertColor()
+            MenuItemType.InvertColor -> {
+                val hasInvertedColor = config.toggleInvertedColor(ninjaWebView.url.orEmpty())
+                ViewUnit.invertColor(ninjaWebView, hasInvertedColor)
+            }
             MenuItemType.WhiteBknd -> {
                 val isOn = config.toggleWhiteBackground(ninjaWebView.url.orEmpty())
                 if (isOn) ninjaWebView.updateCssStyle() else ninjaWebView.reload()

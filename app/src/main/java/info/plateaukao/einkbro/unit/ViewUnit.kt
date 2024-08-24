@@ -7,6 +7,8 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Build
@@ -17,6 +19,7 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.webkit.WebView.LAYER_TYPE_HARDWARE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
@@ -200,5 +203,25 @@ object ViewUnit {
         val languageString = translationLanguage.value
         val language = languageString.split("-").last()
         textView.text = language
+    }
+
+    fun invertColor(view: View, shouldInvertColor: Boolean) {
+        val invertPaint: Paint = Paint().apply {
+            val colorMatrix = ColorMatrix(
+                floatArrayOf(
+                    -1f, 0f, 0f, 0f, 255f,
+                    0f, -1f, 0f, 0f, 255f,
+                    0f, 0f, -1f, 0f, 255f,
+                    0f, 0f, 0f, 1f, 0f
+                )
+            )
+            colorFilter = ColorMatrixColorFilter(colorMatrix)
+        }
+        if (shouldInvertColor) {
+            view.setLayerType(LAYER_TYPE_HARDWARE, invertPaint)
+        } else {
+            view.setLayerType(LAYER_TYPE_HARDWARE, null)
+        }
+
     }
 }

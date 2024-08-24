@@ -5,9 +5,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
-import android.graphics.Paint
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
@@ -16,7 +13,6 @@ import android.print.PrintDocumentAdapter
 import android.util.Base64
 import android.view.KeyEvent
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebSettings
@@ -1599,31 +1595,6 @@ highlightSelection();
 
     init {
         initAlbum()
-    }
-
-    private val invertPaint: Paint = Paint().apply {
-        val colorMatrix = ColorMatrix(
-            floatArrayOf(
-                -1f, 0f, 0f, 0f, 255f,
-                0f, -1f, 0f, 0f, 255f,
-                0f, 0f, -1f, 0f, 255f,
-                0f, 0f, 0f, 1f, 0f
-            )
-        )
-        colorFilter = ColorMatrixColorFilter(colorMatrix)
-    }
-
-    private var isInvertColor = false
-    fun toggleInvertColor(view: View = this) {
-        if (this == view) {
-            isInvertColor = !isInvertColor
-        }
-
-        if (isInvertColor) {
-            view.setLayerType(LAYER_TYPE_HARDWARE, invertPaint)
-        } else {
-            view.setLayerType(LAYER_TYPE_HARDWARE, null)
-        }
     }
 
     fun applyFontBoldness() {
