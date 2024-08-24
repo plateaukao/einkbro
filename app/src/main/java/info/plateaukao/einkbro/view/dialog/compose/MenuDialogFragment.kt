@@ -66,9 +66,13 @@ class MenuDialogFragment(
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             MenuItems(
-                config.whiteBackground(url), config.boldFontStyle,
-                config.blackFontStyle, ttsManager.isSpeaking(),
-                config.showShareSaveMenu, config.showContentMenu,
+                config.whiteBackground(url),
+                config.boldFontStyle,
+                config.blackFontStyle,
+                ttsManager.isSpeaking(),
+                config.showShareSaveMenu,
+                config.showContentMenu,
+                config.hasInvertedColor(url),
                 { config::showShareSaveMenu.toggle() },
                 { config::showContentMenu.toggle() },
                 { dialog?.dismiss(); itemClicked(it) },
@@ -103,6 +107,7 @@ private fun MenuItems(
     isSpeaking: Boolean,
     showShareSaveMenu: Boolean,
     showContentMenu: Boolean,
+    hasInvertedColor: Boolean,
     toggleShareSaveMenu: () -> Unit,
     toggleContentMenu: () -> Unit,
     onClicked: (MenuItemType) -> Unit,
@@ -273,10 +278,10 @@ private fun MenuItems(
             ) {
                 val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
                 MenuItem(R.string.menu_tts, ttsRes) { onClicked(MenuItemType.Tts) }
-                MenuItem(R.string.menu_invert_color, R.drawable.ic_invert_color) {
-                    onClicked(
-                        MenuItemType.InvertColor
-                    )
+                val invertRes =
+                    if (hasInvertedColor) R.drawable.ic_invert_color_off else R.drawable.ic_invert_color
+                MenuItem(R.string.menu_invert_color, invertRes) {
+                    onClicked(MenuItemType.InvertColor)
                 }
                 val whiteRes =
                     if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
@@ -432,6 +437,7 @@ private fun PreviewMenuItems() {
             isSpeaking = false,
             showShareSaveMenu = false,
             showContentMenu = false,
+            hasInvertedColor = false,
             {},
             {},
             {},

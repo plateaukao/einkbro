@@ -14,6 +14,10 @@ class WebContentPostProcessor : KoinComponent {
     fun postProcess(ninjaWebView: NinjaWebView, url: String) {
         if (url.startsWith("data:text/html")) return
 
+        if (configManager.hasInvertedColor(url)) {
+            ViewUnit.invertColor(ninjaWebView, true)
+        }
+
         for (entry in urlScriptMap) {
             val entryUrl = entry.key
             val script = entry.value

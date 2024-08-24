@@ -369,6 +369,17 @@ class ConfigManager(
         return whiteBackground(url)
     }
 
+    fun hasInvertedColor(url: String): Boolean =
+        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldInvertColor } ?: false
+    fun toggleInvertedColor(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return false
+
+        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
+        config.shouldInvertColor = !config.shouldInvertColor
+        bookmarkManager.addDomainConfiguration(config)
+        return hasInvertedColor(url)
+    }
+
     var toolbarActions: List<ToolbarAction>
         get() {
             val key =
