@@ -293,6 +293,8 @@ class ConfigManager(
 
     var favoriteUrl by StringPreference(sp, K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
 
+    var version by StringPreference(sp, "sp_version", "11.14.0")
+
     //use string set in sharedpreference
     var domainConfigurationMap = mutableMapOf<String, DomainConfigurationData>()
 
@@ -319,14 +321,15 @@ class ConfigManager(
         set(value) = sp.edit { putStringSet(K_SEND_PAGE_NAV_KEY_LIST, value.toSet()) }
 
     fun shouldSendPageNavKey(url: String): Boolean {
-        return Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldSendPageNavKey } ?: false
+        return Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldSendPageNavKey }
+            ?: false
     }
 
     fun toggleSendPageNavKey(url: String): Boolean {
         val host = Uri.parse(url)?.host ?: return false
 
         val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldSendPageNavKey= !config.shouldSendPageNavKey
+        config.shouldSendPageNavKey = !config.shouldSendPageNavKey
         bookmarkManager.addDomainConfiguration(config)
 
         return shouldFixScroll(url)

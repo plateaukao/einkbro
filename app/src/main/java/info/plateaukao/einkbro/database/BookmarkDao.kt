@@ -15,6 +15,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -199,14 +200,6 @@ class BookmarkManager(context: Context) : KoinComponent {
         .addMigrations(migration2To3)
         .addMigrations(migration3To4)
         .addMigrations(migration4To5)
-        .addCallback(object : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                GlobalScope.launch(Dispatchers.IO) {
-                    convertConfigToDomainConfiguration()
-                }
-            }
-        })
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -220,6 +213,10 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
+            if (BuildConfig.VERSION_NAME < "11.15.0") {
+                convertConfigToDomainConfiguration()
+                config.version = BuildConfig.VERSION_NAME
+            }
             faviconInfos.addAll(getAllFavicons())
             config.domainConfigurationMap.putAll(getAllDomainConfigurations())
         }
@@ -232,21 +229,28 @@ class BookmarkManager(context: Context) : KoinComponent {
             domainConfiguration.shouldFixScroll = true
             addDomainConfiguration(domainConfiguration)
         }
+        config.scrollFixList = emptyList()
+
         config.sendPageNavKeyList.forEach { domain ->
             val domainConfiguration = getDomainConfiguration(domain)
             domainConfiguration.shouldSendPageNavKey = true
             addDomainConfiguration(domainConfiguration)
         }
+        config.sendPageNavKeyList = emptyList()
+
         config.translateSiteList.forEach { domain ->
             val domainConfiguration = getDomainConfiguration(domain)
             domainConfiguration.shouldTranslateSite = true
             addDomainConfiguration(domainConfiguration)
         }
+        config.translateSiteList = emptyList()
+
         config.whiteBackgroundList.forEach { domain ->
             val domainConfiguration = getDomainConfiguration(domain)
             domainConfiguration.shouldUseWhiteBackground = true
             addDomainConfiguration(domainConfiguration)
         }
+        config.whiteBackgroundList = emptyList()
     }
 
     private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
@@ -344,7 +348,7 @@ class BookmarkManager(context: Context) : KoinComponent {
     suspend fun deleteChatGptQuery(chatGptQuery: ChatGptQuery) =
         chatGptQueryDao.deleteChatGptQuery(chatGptQuery)
 
-    suspend fun getDomainConfiguration(domain: String): DomainConfigurationData =
+    private suspend fun getDomainConfiguration(domain: String): DomainConfigurationData =
         domainConfigurationDao.getDomainConfiguration(domain)?.let {
             Json.decodeFromString<DomainConfigurationData>(it.configuration)
         } ?: DomainConfigurationData(domain)
