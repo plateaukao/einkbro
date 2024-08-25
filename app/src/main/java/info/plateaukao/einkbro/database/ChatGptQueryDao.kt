@@ -12,6 +12,9 @@ interface ChatGptQueryDao {
     @Query("SELECT * FROM chat_gpt_query ORDER BY date DESC")
     fun getAllChatGptQueries(): Flow<List<ChatGptQuery>>
 
+    @Query("SELECT * FROM chat_gpt_query ORDER BY date DESC")
+    suspend fun getAllChatGptQueriesAsync(): List<ChatGptQuery>
+
     @Query("SELECT * FROM chat_gpt_query WHERE id = :id")
     suspend fun getChatGptQueryById(id: Int): ChatGptQuery
 

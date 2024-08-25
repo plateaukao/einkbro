@@ -13,26 +13,54 @@ class GptQueryViewModel : ViewModel(), KoinComponent {
 
     fun getGptQueries() = bookmarkManager.getAllChatGptQueries()
 
-    suspend fun getGptQuery(gptQueryId: Int) = bookmarkManager.getChatGptQueryById(gptQueryId)
+//    suspend fun getGptQuery(gptQueryId: Int) = bookmarkManager.getChatGptQueryById(gptQueryId)
 
-//    suspend fun dumpArticlesHighlights(): String {
-//        val articles = getAllArticlesAsync()
-//        var data = ""
-//        articles.sortedByDescending { it.date }.forEach {
-//            data += dumpSingleArticleHighlights(it.id) + "<br/><br/>"
-//        }
-//        return data
-//    }
+    suspend fun dumpGptQueriesAsHtml(): String {
+        val sb = StringBuilder()
 
-//    suspend fun dumpSingleArticleHighlights(articleId: Int): String {
-//        val article = getArticle(articleId)
-//        val articleTitle = article?.title.orEmpty()
-//        val highlights = getHighlightsForArticleAsync(articleId)
-//        var data = "<h2>$articleTitle</h2><hr/>"
-//        data += highlights.joinToString("<br/><br/>") { it.content }
-//        data += "<br/><br/>"
-//        return data
-//    }
+        // Add the HTML structure with UTF-8 encoding
+        sb.append(
+            """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>GPT Queries Dump</title>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+                .query { margin-bottom: 20px; }
+                .query-text { font-weight: bold; }
+                .query-result { margin-top: 5px; }
+            </style>
+        </head>
+        <body>
+        <h1>GPT Queries</h1>
+    """.trimIndent()
+        )
+
+        // Collect the queries and format them
+        bookmarkManager.getAllChatGptQueriesAsync().forEach {
+            sb.append(
+                """
+            <div class="query">
+                <div class="query-text">${it.selectedText}</div>
+                <div class="query-result">${it.result}</div>
+            </div>
+        """.trimIndent()
+            )
+        }
+
+        // Close the HTML structure
+        sb.append(
+            """
+        </body>
+        </html>
+    """.trimIndent()
+        )
+
+        return sb.toString()
+    }
 
     fun deleteGptQuery(query: ChatGptQuery) {
         viewModelScope.launch {
