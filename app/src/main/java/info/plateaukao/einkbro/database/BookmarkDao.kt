@@ -340,6 +340,8 @@ class BookmarkManager(context: Context) : KoinComponent {
         if (bookmarks.isNotEmpty()) bookmarkDao.overwrite(bookmarks)
     }
 
+    suspend fun getAllChatGptQueriesAsync(): List<ChatGptQuery> =
+        chatGptQueryDao.getAllChatGptQueriesAsync()
     fun getAllChatGptQueries(): Flow<List<ChatGptQuery>> = chatGptQueryDao.getAllChatGptQueries()
     suspend fun addChatGptQuery(chatGptQuery: ChatGptQuery) =
         chatGptQueryDao.addChatGptQuery(chatGptQuery)

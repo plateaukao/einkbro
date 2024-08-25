@@ -19,7 +19,7 @@ class HighlightViewModel : ViewModel(), KoinComponent {
 
     suspend fun getArticle(articleId: Int) = bookmarkManager.getArticle(articleId)
 
-    suspend fun dumpArticlesHighlights(): String {
+    suspend fun dumpArticlesHighlightsAsHtml(): String {
         val articles = getAllArticlesAsync()
         var data = ""
         articles.sortedByDescending { it.date }.forEach {

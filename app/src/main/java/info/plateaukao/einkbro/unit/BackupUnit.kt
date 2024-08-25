@@ -315,7 +315,7 @@ class BackupUnit(
         return uri
     }
 
-    fun exportHighlights(uri: Uri, data: String) {
+    fun exportDataToFileUri(uri: Uri, data: String) {
         val fileContent = data.toByteArray()
 
         context.contentResolver.openOutputStream(uri)?.use { outputStream ->

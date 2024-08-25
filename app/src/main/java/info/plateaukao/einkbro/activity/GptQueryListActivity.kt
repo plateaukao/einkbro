@@ -2,7 +2,7 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.CrossProfileApps
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -43,15 +43,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -62,9 +66,7 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
 
     private lateinit var exportGptQueriesLauncher: ActivityResultLauncher<Intent>
 
-    private var highlightsRoute = HighlightsRoute.RouteArticles
-    private fun showFileChooser(highlightsRoute: HighlightsRoute) {
-        this.highlightsRoute = highlightsRoute
+    private fun showExportFileChooser() {
         BrowserUnit.createFilePicker(exportGptQueriesLauncher, "gpt_queries.html")
     }
 
@@ -73,7 +75,7 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
 
         exportGptQueriesLauncher =
             IntentUnit.createResultLauncher(this) {
-                //it.data?.data?.let { uri -> exportHighlights(uri) }
+                it.data?.data?.let { uri -> exportGptQueries(uri) }
             }
 
         setContent {
@@ -93,6 +95,17 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
                                         contentDescription = "Back"
                                     )
                                 }
+                            },
+                            actions = {
+                                // Add a button to export highlights
+                                IconButton(onClick = {
+                                    showExportFileChooser()
+                                }) {
+                                    Icon(
+                                        painterResource(id = R.drawable.icon_export),
+                                        contentDescription = "Export"
+                                    )
+                                }
                             }
                         )
                     }
@@ -108,21 +121,17 @@ class GptQueryListActivity : ComponentActivity(), KoinComponent {
         }
     }
 
-//    private fun exportHighlights(uri: Uri) {
-//        highlightViewModel.viewModelScope.launch(Dispatchers.IO) {
-//            val data = if (highlightsRoute == HighlightsRoute.RouteArticles) {
-//                highlightViewModel.dumpArticlesHighlights()
-//            } else {
-//                highlightViewModel.dumpSingleArticleHighlights(highlightsRoute.articleId)
-//            }
-//            backupUnit.exportHighlights(uri, data)
-//
-//            withContext(Dispatchers.Main) {
-//                NinjaToast.show(this@HighlightsActivity, R.string.toast_backup_successful)
-//                IntentUnit.showFile(this@HighlightsActivity, uri)
-//            }
-//        }
-//    }
+    private fun exportGptQueries(contentUri: Uri) {
+        gptQueryViewModel.viewModelScope.launch(Dispatchers.IO) {
+            val data = gptQueryViewModel.dumpGptQueriesAsHtml()
+            backupUnit.exportDataToFileUri(contentUri, data)
+
+            withContext(Dispatchers.Main) {
+                NinjaToast.show(this@GptQueryListActivity, R.string.toast_backup_successful)
+                IntentUnit.showFile(this@GptQueryListActivity, contentUri)
+            }
+        }
+    }
 
     companion object {
         fun createIntent(context: Context) = Intent(

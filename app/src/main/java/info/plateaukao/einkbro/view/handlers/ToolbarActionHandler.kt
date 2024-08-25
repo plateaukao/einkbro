@@ -57,6 +57,8 @@ class ToolbarActionHandler(
 
         ToolbarAction.BoldFont -> browserController.showFontBoldnessDialog()
 
+        ToolbarAction.PageInfo -> browserController.summarizeContent()
+
         else -> {}
     }
 
@@ -78,6 +80,8 @@ class ToolbarActionHandler(
             "toolbar_config"
         )
 
+        ToolbarAction.PageInfo -> {}
+
         ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
         ToolbarAction.ReaderMode -> browserController.toggleReaderMode()
         ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
@@ -96,7 +100,6 @@ class ToolbarActionHandler(
         ToolbarAction.DuplicateTab -> browserController.duplicateTab()
         ToolbarAction.Tts -> browserController.toggleTtsRead()
         ToolbarAction.TOC -> browserController.showTocDialog()
-        ToolbarAction.PageInfo -> browserController.summarizeContent()
         ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
         ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)
         ToolbarAction.PapagoByParagraph -> browserController.translate(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)

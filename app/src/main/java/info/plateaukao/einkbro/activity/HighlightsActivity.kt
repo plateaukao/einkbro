@@ -28,7 +28,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -136,11 +136,11 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
     private fun exportHighlights(uri: Uri) {
         highlightViewModel.viewModelScope.launch(Dispatchers.IO) {
             val data = if (highlightsRoute == HighlightsRoute.RouteArticles) {
-                highlightViewModel.dumpArticlesHighlights()
+                highlightViewModel.dumpArticlesHighlightsAsHtml()
             } else {
                 highlightViewModel.dumpSingleArticleHighlights(highlightsRoute.articleId)
             }
-            backupUnit.exportHighlights(uri, data)
+            backupUnit.exportDataToFileUri(uri, data)
 
             withContext(Dispatchers.Main) {
                 NinjaToast.show(this@HighlightsActivity, R.string.toast_backup_successful)
@@ -351,7 +351,7 @@ fun HighlightsBar(
             IconButton(onClick = navigateUp) {
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
             }
