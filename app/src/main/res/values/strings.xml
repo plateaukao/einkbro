@@ -551,4 +551,5 @@
     <string name="translate_this_site">Translate this site</string>
     <string name="select_sentence">Select Sentence</string>
     <string name="select_paragraph">Select Paragraph</string>
+    <string name="toast_saved">Saved!</string>
 </resources>

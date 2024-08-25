@@ -462,4 +462,5 @@
     <string name="translate_this_site">翻譯此網站</string>
     <string name="select_sentence">選取句子</string>
     <string name="select_paragraph">選取段落</string>
+    <string name="toast_saved">Saved!</string>
 </resources>
