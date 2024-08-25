@@ -38,6 +38,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -53,6 +54,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -306,11 +308,15 @@ private fun GptRow(
         horizontalArrangement = Arrangement.End,
     ) {
         val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
         ActionMenuItem(
             "",
             context.getDrawable(R.drawable.icon_menu_save),
             onClicked = {
-                translationViewModel.saveTranslationResult()
+                coroutineScope.launch {
+                    translationViewModel.saveTranslationResult()
+                    NinjaToast.show(context, R.string.toast_saved)
+                }
             }
         )
         translationViewModel.getGptActionList().mapIndexed { index, gptActionInfo ->
