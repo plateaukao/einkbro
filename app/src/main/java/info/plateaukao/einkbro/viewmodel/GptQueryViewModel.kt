@@ -31,8 +31,8 @@ class GptQueryViewModel : ViewModel(), KoinComponent {
                 body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
                 .query { margin-bottom: 20px; }
                 .query-text { font-weight: bold; }
-                .query-result { margin-top: 5px; }
             </style>
+            <script type="module" src="https://md-block.verou.me/md-block.js"></script>
         </head>
         <body>
         <h1>GPT Queries</h1>
@@ -44,8 +44,9 @@ class GptQueryViewModel : ViewModel(), KoinComponent {
             sb.append(
                 """
             <div class="query">
-                <div class="query-text">${it.selectedText}</div>
-                <div class="query-result">${it.result}</div>
+            <hr>
+                <h2>${it.selectedText.replace("<<","(").replace(">>", ")")}</h2>
+                <md-block hmin="3">${it.result}</md-block>
             </div>
         """.trimIndent()
             )
