@@ -222,6 +222,5 @@ object ViewUnit {
         } else {
             view.setLayerType(LAYER_TYPE_HARDWARE, null)
         }
-
     }
 }

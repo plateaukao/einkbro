@@ -2128,9 +2128,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
 
         }
-        if (config.hasInvertedColor(ninjaWebView.url.orEmpty())) {
-            ViewUnit.invertColor(view, true)
-        }
+        ViewUnit.invertColor(view, config.hasInvertedColor(ninjaWebView.url.orEmpty()))
 
         val decorView = window.decorView as FrameLayout
         decorView.addView(
