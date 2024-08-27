@@ -1522,7 +1522,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showTranslationConfigDialog(translateDirectly: Boolean) {
         maybeInitTwoPaneController()
         //twoPaneController.showTranslationConfigDialog(translateDirectly)
-        TranslationConfigDlgFragment(ninjaWebView.url.orEmpty())
+        TranslationConfigDlgFragment(ninjaWebView.url.orEmpty()) { shouldTranslate ->
+            if (shouldTranslate) {
+                translate(config.translationMode)
+            } else {
+                ninjaWebView.reload()
+            }
+        }
             .show(supportFragmentManager, "TranslationConfigDialog")
     }
 

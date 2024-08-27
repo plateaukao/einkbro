@@ -23,6 +23,7 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 
 class TranslationConfigDlgFragment(
     private val url: String,
+    private val onToggledAction: (Boolean) -> Unit,
 ) : ComposeDialogFragment() {
     override fun setupComposeView() {
         composeView.setContent {
@@ -33,10 +34,17 @@ class TranslationConfigDlgFragment(
                     site = site,
                     translationMode = translationMode.value,
                     shouldTranslateThisSite = config.shouldTranslateSite(url),
-                    toggleTranslateThisSite = { config.toggleTranslateSite(url) },
+                    toggleTranslateThisSite = {
+                        onToggledAction(config.toggleTranslateSite(url))
+                        dismiss()
+                    },
                     translationModeChanged = {
                         config.translationMode = it
                         translationMode.value = it
+                        if (config.shouldTranslateSite(url)) {
+                            onToggledAction(true)
+                            dismiss()
+                        }
                     }
                 )
             }
