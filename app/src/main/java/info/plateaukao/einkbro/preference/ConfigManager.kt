@@ -264,6 +264,15 @@ class ConfigManager(
             sp.edit { putInt("pdf_paper_size", value.ordinal) }
         }
 
+    var localeLanguage: TranslationLanguage
+        get() = TranslationLanguage.entries[sp.getInt(
+            "sp_locale_language",
+            getDefaultTranslationLanguage().ordinal
+        )]
+        set(value) {
+            sp.edit { putInt("sp_locale_language", value.ordinal) }
+        }
+
     var translationLanguage: TranslationLanguage
         get() = TranslationLanguage.entries[sp.getInt(
             K_TRANSLATE_LANGUAGE,

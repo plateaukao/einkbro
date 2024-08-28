@@ -463,4 +463,6 @@
     <string name="select_sentence">選取句子</string>
     <string name="select_paragraph">選取段落</string>
     <string name="toast_saved">Saved!</string>
+    <string name="setting_app_locale">UI Language</string>
+    <string name="setting_summary_app_locale">configure the language for interface</string>
 </resources>

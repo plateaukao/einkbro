@@ -534,4 +534,6 @@
     <string name="select_sentence">Select Sentence</string>
     <string name="select_paragraph">Select Paragraph</string>
     <string name="toast_saved">Saved!</string>
+    <string name="setting_app_locale">UI Language</string>
+    <string name="setting_summary_app_locale">configure the language for interface</string>
 </resources>

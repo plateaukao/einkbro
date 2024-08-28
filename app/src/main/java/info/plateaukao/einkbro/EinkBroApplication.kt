@@ -13,6 +13,7 @@ import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.pocket.PocketNetwork
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TtsManager
+import info.plateaukao.einkbro.unit.LocaleManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
@@ -53,6 +54,8 @@ class EinkBroApplication : Application() {
         }
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+        LocaleManager.setLocale(this, config.localeLanguage.languageCode)
     }
 
     override fun onTerminate() {
