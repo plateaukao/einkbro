@@ -8,6 +8,7 @@ import android.app.PictureInPictureParams
 import android.app.SearchManager
 import android.content.BroadcastReceiver
 import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.content.IntentFilter
@@ -94,6 +95,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
@@ -1531,6 +1533,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
             .show(supportFragmentManager, "TranslationConfigDialog")
     }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            LocaleManager.setLocale(
+                newBase,
+                config.localeLanguage.languageCode
+            )
+        )
+    }
+
+    private fun updateLocale(context: Context, languageCode: String) {
+        val newContext = LocaleManager.setLocale(context, languageCode)
+        val intent = Intent(newContext, BrowserActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        context.startActivity(intent)
+    }
+
 
     private val preferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->

@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -66,6 +67,7 @@ import info.plateaukao.einkbro.setting.VersionSettingItem
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -277,6 +279,15 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         }
     }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            LocaleManager.setLocale(
+                newBase,
+                config.localeLanguage.languageCode
+            )
+        )
+    }
+
     private fun handleLink(url: String) {
         startActivity(
             Intent(this, BrowserActivity::class.java).apply {
@@ -424,6 +435,16 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_summary_clear_recent_bookmarks,
         ) {
             config.clearRecentBookmarks()
+        },
+        ActionSettingItem(
+            R.string.setting_app_locale,
+            R.drawable.icon_settings,
+            R.string.setting_summary_app_locale,
+        ) {
+            lifecycleScope.launch {
+                TranslationLanguageDialog(this@SettingActivity).showAppLocale()
+                config.restartChanged = true
+            }
         },
     )
 
@@ -791,7 +812,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         ActionSettingItem(
             R.string.setting_dual_caption,
-            R.drawable.icon_arrow_up_gest,
+            R.drawable.ic_reselect,
             R.string.setting_summary_dual_caption,
         ) {
             lifecycleScope.launch {

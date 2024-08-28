@@ -43,6 +43,19 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
         }
     }
 
+    suspend fun showAppLocale() {
+        val languages = TranslationLanguage.entries.map { it.language }
+
+        val selectedIndex = ListSettingWithNameDialog(
+            context,
+            R.string.setting_app_locale,
+            languages,
+            TranslationLanguage.values().indexOfFirst { it.value == config.localeLanguage.value }
+        ).show() ?: return
+
+        config.localeLanguage = TranslationLanguage.entries[selectedIndex]
+    }
+
     private fun getDualCaptionIndex(locale: String): Int =
         if (locale.isEmpty()) 0
         else TranslationLanguage.values().indexOfFirst { it.value == locale } + 1
