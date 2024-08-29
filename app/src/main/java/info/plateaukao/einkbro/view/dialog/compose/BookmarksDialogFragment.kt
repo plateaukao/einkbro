@@ -64,6 +64,7 @@ class BookmarksDialogFragment(
     private val addTabAction: (String, String, Boolean) -> Unit,
     private val splitScreenAction: (String) -> Unit,
     private val syncBookmarksAction: (Boolean) -> Unit,
+    private val linkBookmarksAction: () -> Unit,
 ) : ComposeDialogFragment(), KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
@@ -80,6 +81,7 @@ class BookmarksDialogFragment(
                             upParentAction = { bookmarkViewModel.outOfFolder() },
                             createFolderAction = this@BookmarksDialogFragment::createBookmarkFolder,
                             syncBookmarksAction = syncBookmarksAction,
+                            linkBookmarksAction = linkBookmarksAction,
                             closeAction = { dialog?.dismiss() }) {
                             if (bookmarks.isEmpty()) {
                                 Text(
@@ -196,8 +198,9 @@ fun DialogPanel(
     upParentAction: (Bookmark) -> Unit,
     createFolderAction: (Bookmark) -> Unit,
     syncBookmarksAction: (Boolean) -> Unit,
+    linkBookmarksAction: () -> Unit,
     closeAction: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -242,7 +245,8 @@ fun DialogPanel(
                     .align(Alignment.CenterVertically)
                     .padding(horizontal = 5.dp),
                 iconResId = R.drawable.ic_sync,
-                action = { syncBookmarksAction(false) }
+                action = { syncBookmarksAction(false) },
+                longClickAction = { linkBookmarksAction() }
             )
             ActionIcon(
                 modifier = Modifier
@@ -341,13 +345,22 @@ private fun BookmarkItem(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ActionIcon(modifier: Modifier, iconResId: Int, action: (() -> Unit)? = null) {
+fun ActionIcon(
+    modifier: Modifier,
+    iconResId: Int,
+    action: (() -> Unit)? = null,
+    longClickAction: (() -> Unit)? = null,
+) {
     Icon(
         modifier = modifier
             .size(36.dp)
             .padding(end = 5.dp)
-            .clickable { action?.invoke() },
+            .combinedClickable(
+                onClick = { action?.invoke() },
+                onLongClick = { longClickAction?.invoke() },
+            ),
         painter = painterResource(id = iconResId),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
@@ -377,6 +390,7 @@ private fun PreviewDialogPanel() {
     MyTheme {
         DialogPanel(
             folder = Bookmark("test 1", "https://www.google.com", false),
+            {},
             {},
             {},
             {},

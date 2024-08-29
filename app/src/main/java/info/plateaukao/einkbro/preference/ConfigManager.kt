@@ -662,6 +662,14 @@ class ConfigManager(
         gptModel
     }
 
+    fun getDefaultActionType(): GptActionType = if (useGeminiApi) {
+        GptActionType.Gemini
+    } else if (useCustomGptUrl) {
+        GptActionType.SelfHosted
+    } else {
+        GptActionType.OpenAi
+    }
+
     fun getGptTypeModelMap(): Map<GptActionType, String> = mapOf(
         GptActionType.Default to getDefaultActionModel(),
         GptActionType.OpenAi to gptModel,

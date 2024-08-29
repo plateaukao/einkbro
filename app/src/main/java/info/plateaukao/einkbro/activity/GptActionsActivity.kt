@@ -5,14 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
@@ -39,10 +44,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindowProvider
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -59,6 +67,7 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
 
         val actionIndex = intent?.getIntExtra("actionIndex", -1) ?: -1
+        val defaultActionType = config.getDefaultActionType()
 
         setContent {
             val actionList = remember { mutableStateOf(config.gptActionList) }
@@ -112,6 +121,7 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                     GptActionListContent(
                         modifier = Modifier.padding(innerPadding),
                         actionList,
+                        defaultActionType,
                         editAction = { index ->
                             editActionIndex = index
                             showDialog = true
@@ -168,9 +178,12 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
 fun GptActionListContent(
     modifier: Modifier = Modifier,
     list: MutableState<List<ChatGPTActionInfo>>,
+    defaultActionType: GptActionType,
     editAction: (Int) -> Unit, // edit action with index
     deleteAction: (ChatGPTActionInfo) -> Unit = {},
 ) {
+    val context = LocalContext.current
+
     if (list.value.isEmpty()) {
         // show empty text in center of screen
         Box(
@@ -187,22 +200,52 @@ fun GptActionListContent(
         }
     } else {
         LazyColumn(
-            modifier = modifier,
+            modifier = modifier.padding(10.dp),
             content = {
                 items(list.value.size) { index ->
                     val gptAction = list.value[index]
+                    val actionType = gptAction.actionType.takeIf { it != GptActionType.Default }
+                        ?: defaultActionType
+
+                    val iconRes = when (actionType) {
+                        GptActionType.OpenAi -> R.drawable.ic_chat_gpt
+                        GptActionType.SelfHosted -> R.drawable.ic_ollama
+                        GptActionType.Gemini -> R.drawable.ic_gemini
+                        else -> R.drawable.ic_chat_gpt
+                    }
                     Row(
-                        Modifier.padding(16.dp),
+                        Modifier
+                            .fillMaxSize()
+                            .clickable {
+                                editAction(index)
+                            },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        SelectableText(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = 1.dp, vertical = 3.dp),
-                            selected = false,
-                            text = gptAction.name
+                        // icon: action type
+                        Image(
+                            modifier = Modifier.wrapContentWidth(),
+                            painter = rememberDrawablePainter(context.getDrawable(iconRes)),
+                            contentDescription = "Action Type",
+                        )
+                        Spacer(modifier = Modifier.width(15.dp))
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
                         ) {
-                            editAction(index)
+                            Text(
+                                modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                                text = gptAction.name,
+                                style = MaterialTheme.typography.h6,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                            if (gptAction.model.isNotEmpty()) {
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                                    text = gptAction.model,
+                                    style = MaterialTheme.typography.caption,
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                         }
                         IconButton(onClick = {
                             deleteAction(list.value[index])
@@ -346,4 +389,30 @@ fun GptActionDialog(
             }
         }
     )
+}
+
+@Preview
+@Composable
+private fun GptActionListContentPreview() {
+    val actionList = remember {
+        mutableStateOf(
+            listOf(
+                ChatGPTActionInfo(
+                    "ChatGPT",
+                    "system message",
+                    "user message",
+                    GptActionType.SelfHosted,
+                    "gpt-3"
+                )
+            )
+        )
+    }
+    MyTheme {
+        GptActionListContent(
+            list = actionList,
+            defaultActionType = GptActionType.OpenAi,
+            editAction = {},
+            deleteAction = {}
+        )
+    }
 }

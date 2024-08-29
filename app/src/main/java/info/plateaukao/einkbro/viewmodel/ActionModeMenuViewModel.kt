@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
@@ -194,11 +195,21 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         )
         if (configManager.gptActionList.isNotEmpty()) {
             configManager.gptActionList.mapIndexed { index, actionInfo ->
+
+                val actionType = actionInfo.actionType.takeIf { it != GptActionType.Default }
+                    ?: configManager.getDefaultActionType()
+
+                val iconRes = when (actionType) {
+                    GptActionType.OpenAi -> R.drawable.ic_chat_gpt
+                    GptActionType.SelfHosted -> R.drawable.ic_ollama
+                    GptActionType.Gemini -> R.drawable.ic_gemini
+                    else -> R.drawable.ic_chat_gpt
+                }
                 menuInfos.add(
                     0 + index,
                     MenuInfo(
                         actionInfo.name,
-                        icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
+                        icon = ContextCompat.getDrawable(context, iconRes),
                         action = { _actionModeMenuState.value = ActionModeMenuState.Gpt(index) },
                         longClickAction = { translationViewModel.showEditGptActionDialog(index) }
                     )

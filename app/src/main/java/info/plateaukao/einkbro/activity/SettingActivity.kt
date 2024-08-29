@@ -888,38 +888,38 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_use_custom_gpt_url,
-            R.drawable.ic_chat,
+            R.drawable.ic_ollama,
             R.string.setting_summary_use_custom_gpt_url,
             config::useCustomGptUrl
         ),
         ValueSettingItem(
             R.string.setting_title_other_model_name,
-            R.drawable.ic_chat_gpt,
+            R.drawable.ic_ollama,
             R.string.setting_summary_other_model_name,
             config::alternativeModel
         ),
         ValueSettingItem(
             R.string.setting_title_custom_gpt_url,
-            R.drawable.ic_earth,
+            R.drawable.ic_ollama,
             R.string.setting_summary_custom_gpt_url,
             config::gptUrl
         ),
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_use_gemini,
-            R.drawable.ic_chat,
+            R.drawable.ic_gemini,
             R.string.setting_summary_use_gemini,
             config::useGeminiApi
         ),
         ValueSettingItem(
             R.string.setting_title_gemini_key,
-            R.drawable.ic_chat,
+            R.drawable.ic_gemini,
             R.string.setting_summary_gemini_key,
             config::geminiApiKey
         ),
         ValueSettingItem(
             R.string.setting_title_gemini_model_name,
-            R.drawable.ic_chat_gpt,
+            R.drawable.ic_gemini,
             R.string.setting_summary_gemini_model_name,
             config::geminiModel
         ),
@@ -1036,12 +1036,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     )
 
     private fun handleBookmarkSync(forceUpload: Boolean) {
-        backupUnit.handleBookmarkSync(
-            forceUpload,
-            dialogManager,
-            createBookmarkFileLauncher,
-            openBookmarkFileLauncher
-        )
+        backupUnit.handleBookmarkSync(forceUpload)
     }
 
     private fun hideStatusBar() {
