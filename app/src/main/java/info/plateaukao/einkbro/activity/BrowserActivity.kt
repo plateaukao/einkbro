@@ -1744,12 +1744,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
             splitScreenAction = { url -> toggleSplitScreen(url) },
-            syncBookmarksAction = this::handleBookmarkSync
+            syncBookmarksAction = this::handleBookmarkSync,
+            linkBookmarksAction = this::linkBookmarkSync
         ).show(supportFragmentManager, "bookmarks dialog")
 
     private fun handleBookmarkSync(forceUpload: Boolean = false) {
-        backupUnit.handleBookmarkSync(
-            forceUpload,
+        if (config.bookmarkSyncUrl.isNotEmpty()) backupUnit.handleBookmarkSync(forceUpload)
+        else linkBookmarkSync()
+    }
+
+    private fun linkBookmarkSync() {
+        backupUnit.linkBookmarkSync(
             dialogManager,
             createBookmarkFileLauncher,
             openBookmarkFileLauncher
