@@ -5,28 +5,22 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
 import android.view.ActionMode
-import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
-import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.view.data.toMenuInfo
-import info.plateaukao.einkbro.view.dialog.compose.ActionModeView
 import info.plateaukao.einkbro.view.dialog.compose.HighlightStyleDialogFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -47,6 +41,11 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     val showIcons: Boolean
         get() = configManager.showActionMenuIcons
 
+    var menuInfos: MutableState<List<MenuInfo>> = mutableStateOf(emptyList())
+
+    private val _shouldShow = MutableStateFlow(false)
+    val shouldShow: StateFlow<Boolean> = _shouldShow.asStateFlow()
+
     fun isInActionMode(): Boolean = actionMode != null
 
     fun updateActionMode(actionMode: ActionMode?) {
@@ -56,76 +55,21 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private var actionModeView: View? = null
-    private var clearSelectionAction: (() -> Unit)? = null
-    fun showActionModeView(
+    fun updateMenuInfos(
         context: Context,
-        parent: ViewGroup,
         translationViewModel: TranslationViewModel,
-        clearSelectionAction: () -> Unit,
     ) {
-        if (actionModeView == null) {
-            actionModeView = ActionModeView(context = context).apply {
-                init(
-                    actionModeMenuViewModel = this@ActionModeMenuViewModel,
-                    menuInfos = getAllProcessTextMenuInfos(
-                        context,
-                        context.packageManager,
-                        translationViewModel,
-                    ),
-                    clearSelectionAction = clearSelectionAction
-                )
-            }
-            actionModeView?.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            actionModeView?.visibility = INVISIBLE
-            parent.addView(actionModeView)
-        }
-
-        actionModeView?.post {
-            updatePosition(clickedPoint.value)
-            actionModeView?.visibility = VISIBLE
-        }
-
-        viewModelScope.launch {
-            clickedPoint.collect { updatePosition(it) }
-        }
-    }
-
-    private fun updatePosition(point: Point) {
-        val view = actionModeView ?: return
-        val properPoint = getProperPosition(point)
-        view.x = properPoint.x + ViewUnit.dpToPixel(view.context, 10)
-        view.y = properPoint.y + ViewUnit.dpToPixel(view.context, 10)
-    }
-
-    private fun getProperPosition(point: Point): Point {
-        val view = actionModeView ?: return Point(0, 0)
-        val parentWidth = (view.parent as View).width
-        val parentHeight = (view.parent as View).height
-
-        val width = view.width
-        val height = view.height
-        // Calculate the new position to ensure the view is within bounds
-        val padding = ViewUnit.dpToPixel(view.context, 10)
-        val x =
-            if (point.x + width + padding > parentWidth) parentWidth - width - padding else point.x
-        val y =
-            if (point.y + height + padding > parentHeight) parentHeight - height - padding else point.y
-
-        return Point(x.toInt(), y.toInt())
+        menuInfos.value = getAllProcessTextMenuInfos(
+            context,
+            context.packageManager,
+            translationViewModel,
+        )
     }
 
     fun finish() {
         actionMode?.finish()
         actionMode = null
-        if (actionModeView?.isAttachedToWindow == true) {
-            (actionModeView?.parent as? ViewGroup)?.removeView(actionModeView)
-            actionModeView = null
-        }
-
+        _shouldShow.value = false
         _actionModeMenuState.value = ActionModeMenuState.Idle
     }
 
@@ -138,11 +82,11 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     }
 
     fun hide() {
-        actionModeView?.visibility = INVISIBLE
+        _shouldShow.value = false
     }
 
     fun show() {
-        actionModeView?.visibility = VISIBLE
+        _shouldShow.value = true
     }
 
     private fun getAllProcessTextMenuInfos(

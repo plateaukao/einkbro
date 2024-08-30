@@ -891,7 +891,7 @@ class ConfigManager(
         private const val RECENT_BOOKMARK_LIST_SIZE = 10
 
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
-        private const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
+        const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
         private const val K_GPT_ACTION_EXTERNAL = "sp_gpt_action_external"
 
         private const val K_GPT_SERVER_URL = "sp_gpt_server_url"

@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
+import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
 import android.view.TouchDelegate
@@ -222,5 +223,27 @@ object ViewUnit {
         } else {
             view.setLayerType(LAYER_TYPE_HARDWARE, null)
         }
+    }
+
+    fun updateViewPosition(view: View, point: Point) {
+        val properPoint = getProperPosition(view, point)
+        view.x = properPoint.x + dpToPixel(view.context, 10)
+        view.y = properPoint.y + dpToPixel(view.context, 10)
+    }
+
+    private fun getProperPosition(view: View, point: Point): Point {
+        val parentWidth = (view.parent as View).width
+        val parentHeight = (view.parent as View).height
+
+        val width = view.width
+        val height = view.height
+        // Calculate the new position to ensure the view is within bounds
+        val padding = dpToPixel(view.context, 10)
+        val x =
+            if (point.x + width + padding > parentWidth) parentWidth - width - padding else point.x
+        val y =
+            if (point.y + height + padding > parentHeight) parentHeight - height - padding else point.y
+
+        return Point(x.toInt(), y.toInt())
     }
 }

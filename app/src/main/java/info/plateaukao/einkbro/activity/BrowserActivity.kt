@@ -35,6 +35,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.webkit.CookieManager
@@ -112,6 +113,7 @@ import info.plateaukao.einkbro.view.dialog.ShortcutEditDialog
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
+import info.plateaukao.einkbro.view.dialog.compose.ActionModeView
 import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
@@ -696,7 +698,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 15
             )
         ) {
-            actionModeMenuViewModel.hide()
+            actionModeView?.visibility = INVISIBLE
         }
         actionModeMenuViewModel.updateClickedPoint(newPoint)
 
@@ -1675,6 +1677,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_TOUCH_AREA_ACTION_SWITCH -> {
                     updateTouchView()
                 }
+
+                ConfigManager.K_GPT_ACTION_ITEMS ->
+                    actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
             }
         }
 
@@ -1909,7 +1914,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
                     return
                 }
-                //Log.d("touch", "onLongPress: ${motionEvent.x}, ${motionEvent.y} \n ${actionModeMenuViewModel.clickedPoint.value.x}, ${actionModeMenuViewModel.clickedPoint.value.y}")
                 if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(
                         this@BrowserActivity,
                         15
@@ -1919,7 +1923,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         15
                     )
                 ) {
-                    actionModeMenuViewModel.hide()
+                    actionModeView?.visibility = INVISIBLE
                     longPressStartPoint = null
                     //Log.d("touch", "onLongPress: hide")
                 }
@@ -2403,7 +2407,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
 
             ContextMenuItemType.SelectText -> ninjaWebView.post {
-                //actionModeMenuViewModel.updateClickedPoint(motionEvent!!.toPoint())
                 ninjaWebView.selectLinkText(longPressPoint)
             }
 
@@ -2743,11 +2746,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 lifecycleScope.launch {
                     actionModeMenuViewModel.updateSelectedText(ninjaWebView.getSelectedText())
-                    actionModeMenuViewModel.showActionModeView(
-                        this@BrowserActivity,
-                        binding.root,
-                        translationViewModel,
-                    ) {
+                    showActionModeView(translationViewModel) {
                         ninjaWebView.removeTextSelection()
                     }
                 }
@@ -2759,6 +2758,53 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         super.onActionModeStarted(mode)
+    }
+
+    private var actionModeView: View? = null
+    private fun showActionModeView(
+        translationViewModel: TranslationViewModel,
+        clearSelectionAction: () -> Unit,
+    ) {
+        actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
+        if (actionModeView == null) {
+            actionModeView = ActionModeView(this).apply {
+                init(
+                    actionModeMenuViewModel = actionModeMenuViewModel,
+                    clearSelectionAction = { clearSelectionAction() }
+                )
+            }
+            actionModeView?.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            actionModeView?.visibility = INVISIBLE
+            binding.root.addView(actionModeView)
+        }
+
+        lifecycleScope.launch {
+            actionModeMenuViewModel.clickedPoint.collect {
+                val view = actionModeView ?: return@collect
+                ViewUnit.updateViewPosition(view, it)
+            }
+        }
+
+        lifecycleScope.launch {
+            actionModeMenuViewModel.shouldShow.collect {
+                if (it) {
+                    actionModeView?.visibility = VISIBLE
+                    val view = actionModeView ?: return@collect
+                    ViewUnit.updateViewPosition(view, actionModeMenuViewModel.clickedPoint.value)
+                } else {
+                    actionModeView?.visibility = INVISIBLE
+//                    if (actionModeView?.isAttachedToWindow == true) {
+//                        (actionModeView?.parent as? ViewGroup)?.removeView(actionModeView)
+//                        actionModeView = null
+//                    }
+                }
+            }
+        }
+
+        actionModeMenuViewModel.show()
     }
 
 
