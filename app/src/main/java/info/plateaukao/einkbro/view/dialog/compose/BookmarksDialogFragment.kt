@@ -86,11 +86,11 @@ class BookmarksDialogFragment(
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
         }
 
-
         composeView.setContent {
             MyTheme {
                 DialogPanel(
                     folder = bookmarkViewModel.currentFolder.value,
+                    inSortMode = shouldShowDragHandle.value,
                     upParentAction = { bookmarkViewModel.outOfFolder() },
                     syncBookmarksAction = syncBookmarksAction,
                     linkBookmarksAction = linkBookmarksAction,
@@ -206,6 +206,7 @@ class BookmarksDialogFragment(
 @Composable
 fun DialogPanel(
     folder: Bookmark,
+    inSortMode: Boolean = false,
     upParentAction: (Bookmark) -> Unit,
     syncBookmarksAction: (Boolean) -> Unit,
     linkBookmarksAction: () -> Unit,
@@ -248,7 +249,7 @@ fun DialogPanel(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(horizontal = 5.dp),
-                iconResId = R.drawable.ic_sort,
+                iconResId = if (inSortMode) R.drawable.icon_list else R.drawable.ic_sort,
                 action = { reorderBookmarkAction() },
             )
             ActionIcon(
@@ -304,6 +305,7 @@ fun BookmarkList(
                     bitmap = bookmarkManager?.findFaviconBy(bookmark.url)?.getBitmap(),
                     isPressed = isPressed || isDragging,
                     shouldShowDragHandle = shouldShowDragHandle,
+                    dragModifier = Modifier.draggableHandle(),
                     modifier = Modifier
                         .then(
                             if (shouldShowDragHandle) {
@@ -336,6 +338,7 @@ fun BookmarkItem(
     isPressed: Boolean = false,
     shouldShowDragHandle: Boolean = false,
     bookmark: Bookmark,
+    dragModifier: Modifier = Modifier,
     iconClick: () -> Unit,
 ) {
     val borderWidth = if (isPressed) 1.dp else -1.dp
@@ -350,7 +353,7 @@ fun BookmarkItem(
     ) {
         if (shouldShowDragHandle) {
             Icon(
-                modifier = Modifier.padding(8.dp),
+                modifier = dragModifier.padding(8.dp),
                 painter = painterResource(id = R.drawable.ic_drag),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
@@ -434,6 +437,7 @@ private fun PreviewDialogPanel() {
         DialogPanel(
             folder = Bookmark("test 1", "https://www.google.com", false),
             //{},
+            false,
             {},
             {},
             {},
