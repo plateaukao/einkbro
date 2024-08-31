@@ -1084,7 +1084,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             lifecycleScope.launch {
                 BookmarkEditDialog(
                     this@BrowserActivity,
-                    bookmarkManager,
+                    bookmarkViewModel,
                     Bookmark(nonNullTitle, currentUrl),
                     {
                         handleBookmarkSync(true)
@@ -1712,7 +1712,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private val bookmarkViewModel: BookmarkViewModel by viewModels {
-        BookmarkViewModelFactory(bookmarkManager.bookmarkDao)
+        BookmarkViewModelFactory(bookmarkManager)
     }
 
     private val pocketViewModel: PocketViewModel by viewModels {
@@ -1747,7 +1747,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             lifecycleScope,
             bookmarkViewModel,
             gotoUrlAction = { url -> updateAlbum(url) },
-            addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+            bookmarkIconClickAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
             splitScreenAction = { url -> toggleSplitScreen(url) },
             syncBookmarksAction = this::handleBookmarkSync,
             linkBookmarksAction = this::linkBookmarkSync

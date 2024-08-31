@@ -57,10 +57,9 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import org.koin.android.ext.android.inject
 
-class GptActionsActivity : ComponentActivity(), KoinComponent {
+class GptActionsActivity : ComponentActivity()  {
     private val config: ConfigManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {

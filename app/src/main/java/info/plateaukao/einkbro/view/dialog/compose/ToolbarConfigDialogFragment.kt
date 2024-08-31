@@ -1,11 +1,11 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -33,10 +34,8 @@ import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
-import org.burnoutcrew.reorderable.ReorderableItem
-import org.burnoutcrew.reorderable.detectReorder
-import org.burnoutcrew.reorderable.rememberReorderableLazyListState
-import org.burnoutcrew.reorderable.reorderable
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 class ToolbarConfigDialogFragment : ComposeDialogFragment() {
     override fun setupComposeView() {
@@ -101,20 +100,22 @@ class ToolbarConfigDialogFragment : ComposeDialogFragment() {
                     .map { ToolbarActionItemInfo(it, false) }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ToolbarList(
     modifier: Modifier,
     infos: List<ToolbarActionItemInfo>,
     onItemClicked: (ToolbarAction) -> Unit,
-    onItemMoved: (Int, Int) -> Unit
+    onItemMoved: (Int, Int) -> Unit,
 ) {
-    val state = rememberReorderableLazyListState(onMove = { from, to ->
+    val lazyListState = rememberLazyListState()
+    val state = rememberReorderableLazyListState(lazyListState) { from, to ->
         onItemMoved(from.index, to.index)
-    })
+    }
 
     LazyColumn(
-        state = state.listState,
-        modifier = modifier.reorderable(state)
+        modifier = modifier,
+        state = lazyListState
     ) {
         items(infos, { it.hashCode() }) { info ->
             ReorderableItem(
@@ -132,9 +133,9 @@ private fun ToolbarList(
                         .background(MaterialTheme.colors.background)
                 ) {
                     ToolbarToggleItem(
+                        modifier = Modifier.draggableHandle(),
                         info = info,
                         onItemClicked = onItemClicked,
-                        dragModifier = Modifier.detectReorder(state)
                     )
                 }
             }
@@ -144,9 +145,9 @@ private fun ToolbarList(
 
 @Composable
 fun ToolbarToggleItem(
+    modifier: Modifier,
     info: ToolbarActionItemInfo,
     onItemClicked: (ToolbarAction) -> Unit,
-    dragModifier: Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -163,10 +164,8 @@ fun ToolbarToggleItem(
             )
         }
         Icon(
+            modifier = modifier.padding(4.dp),
             painter = painterResource(id = R.drawable.ic_drag), contentDescription = null,
-            modifier = dragModifier
-                .padding(horizontal = 8.dp)
-                .fillMaxHeight(),
             tint = MaterialTheme.colors.onBackground
         )
     }
@@ -176,7 +175,7 @@ fun ToolbarToggleItem(
 fun DialogButtonBar(
     okResId: Int = android.R.string.ok,
     dismissAction: () -> Unit,
-    okAction: () -> Unit
+    okAction: () -> Unit,
 ) {
     Row(
         modifier = Modifier

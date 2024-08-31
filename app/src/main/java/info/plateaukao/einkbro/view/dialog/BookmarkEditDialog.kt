@@ -10,17 +10,17 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.database.Bookmark
-import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.databinding.DialogEditBookmarkBinding
 import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.launch
 
 class BookmarkEditDialog(
-        private val activity: Activity,
-        private val bookmarkManager: BookmarkManager,
-        private val bookmark: Bookmark,
-        private val okAction: () -> Unit,
-        private val cancelAction: () -> Unit,
+    private val activity: Activity,
+    private val bookmarkViewModel: BookmarkViewModel,
+    private val bookmark: Bookmark,
+    private val okAction: () -> Unit,
+    private val cancelAction: () -> Unit,
 ) {
     private val dialogManager: DialogManager = DialogManager(activity)
 
@@ -40,28 +40,36 @@ class BookmarkEditDialog(
         updateFolderSpinner(binding)
 
         dialogManager.showOkCancelDialog(
-                title = activity.getString(info.plateaukao.einkbro.R.string.menu_save_bookmark),
-                view = binding.root,
-                okAction = { upsertBookmark(binding, lifecycleScope) },
-                cancelAction = { cancelAction.invoke() }
+            title = activity.getString(info.plateaukao.einkbro.R.string.menu_save_bookmark),
+            view = binding.root,
+            okAction = { upsertBookmark(binding, lifecycleScope) },
+            cancelAction = { cancelAction.invoke() }
         )
     }
 
-    private fun addFolder(lifecycleScope: LifecycleCoroutineScope, binding: DialogEditBookmarkBinding) {
+    private fun addFolder(
+        lifecycleScope: LifecycleCoroutineScope,
+        binding: DialogEditBookmarkBinding,
+    ) {
         lifecycleScope.launch {
             val folderName = dialogManager.getBookmarkFolderName() ?: return@launch
-            bookmarkManager.insertDirectory(folderName)
+            bookmarkViewModel.insertDirectory(folderName)
             updateFolderSpinner(binding, folderName)
         }
     }
 
-    private fun updateFolderSpinner(binding: DialogEditBookmarkBinding, selectedFolderName: String? = null) {
+    private fun updateFolderSpinner(
+        binding: DialogEditBookmarkBinding,
+        selectedFolderName: String? = null,
+    ) {
         val lifecycleScope = (activity as LifecycleOwner).lifecycleScope
         lifecycleScope.launch {
-            val folders = bookmarkManager.getBookmarkFolders().toMutableList().apply { add(0, Bookmark("Top", "", true)) }
+            val folders = bookmarkViewModel.getBookmarkFolders().toMutableList()
+                .apply { add(0, Bookmark("Top", "", true)) }
             if (bookmark.isDirectory) folders.remove(bookmark)
 
-            binding.folderSpinner.adapter = ArrayAdapter(activity, R.layout.simple_spinner_dropdown_item, folders)
+            binding.folderSpinner.adapter =
+                ArrayAdapter(activity, R.layout.simple_spinner_dropdown_item, folders)
             val selectedIndex = if (selectedFolderName == null) {
                 folders.indexOfFirst { it.id == bookmark.parent }
             } else {
@@ -69,22 +77,31 @@ class BookmarkEditDialog(
             }
             binding.folderSpinner.setSelection(selectedIndex)
 
-            binding.folderSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    bookmark.parent = folders[position].id
-                }
+            binding.folderSpinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long,
+                    ) {
+                        bookmark.parent = folders[position].id
+                    }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) { }
-            }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                }
         }
     }
 
-    private fun upsertBookmark(binding: DialogEditBookmarkBinding, lifecycleScope: LifecycleCoroutineScope) {
+    private fun upsertBookmark(
+        binding: DialogEditBookmarkBinding,
+        lifecycleScope: LifecycleCoroutineScope,
+    ) {
         try {
             bookmark.title = binding.passTitle.text.toString().trim { it <= ' ' }
             bookmark.url = binding.passUrl.text.toString().trim { it <= ' ' }
             lifecycleScope.launch {
-                bookmarkManager.insert(bookmark)
+                bookmarkViewModel.insertBookmark(bookmark)
                 okAction.invoke()
             }
         } catch (e: Exception) {

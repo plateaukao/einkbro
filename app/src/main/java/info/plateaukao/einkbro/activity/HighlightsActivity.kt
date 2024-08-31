@@ -62,11 +62,10 @@ import info.plateaukao.einkbro.viewmodel.HighlightViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HighlightsActivity : ComponentActivity(), KoinComponent {
+class HighlightsActivity : ComponentActivity()  {
     private val highlightViewModel: HighlightViewModel by viewModels()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 

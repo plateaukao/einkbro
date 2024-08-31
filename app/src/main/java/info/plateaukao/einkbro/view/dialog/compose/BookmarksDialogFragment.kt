@@ -13,12 +13,14 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -30,6 +32,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,7 +64,7 @@ class BookmarksDialogFragment(
     private val lifecycleScope: LifecycleCoroutineScope,
     private val bookmarkViewModel: BookmarkViewModel,
     private val gotoUrlAction: (String) -> Unit,
-    private val addTabAction: (String, String, Boolean) -> Unit,
+    private val bookmarkIconClickAction: (String, String, Boolean) -> Unit,
     private val splitScreenAction: (String) -> Unit,
     private val syncBookmarksAction: (Boolean) -> Unit,
     private val linkBookmarksAction: () -> Unit,
@@ -71,55 +74,58 @@ class BookmarksDialogFragment(
 
     private lateinit var bookmarksUpdateJob: Job
 
+    private val bookmarks = mutableStateOf(emptyList<Bookmark>())
+
     override fun setupComposeView() {
         bookmarksUpdateJob = lifecycleScope.launch {
-            bookmarkViewModel.uiState.collect { bookmarks ->
-                composeView.setContent {
-                    MyTheme {
-                        DialogPanel(
-                            folder = bookmarkViewModel.currentFolder,
-                            upParentAction = { bookmarkViewModel.outOfFolder() },
-                            createFolderAction = this@BookmarksDialogFragment::createBookmarkFolder,
-                            syncBookmarksAction = syncBookmarksAction,
-                            linkBookmarksAction = linkBookmarksAction,
-                            closeAction = { dialog?.dismiss() }) {
-                            if (bookmarks.isEmpty()) {
-                                Text(
-                                    modifier = NormalTextModifier,
-                                    text = getString(R.string.no_bookmarks),
-                                    color = MaterialTheme.colors.onBackground
-                                )
-                            } else {
-                                BookmarkList(
-                                    bookmarks = bookmarks,
-                                    bookmarkManager = bookmarkManager,
-                                    isWideLayout = ViewUnit.isWideLayout(requireContext()),
-                                    shouldReverse = !config.isToolbarOnTop,
-                                    onBookmarkClick = {
-                                        if (!it.isDirectory) {
-                                            gotoUrlAction(it.url)
-                                            config.addRecentBookmark(it)
-                                            dialog?.dismiss()
-                                        } else {
-                                            bookmarkViewModel.intoFolder(it)
-                                        }
-                                    },
-                                    onBookmarkIconClick = {
-                                        if (!it.isDirectory) addTabAction(
-                                            it.title,
-                                            it.url,
-                                            true
-                                        ); dialog?.dismiss()
-                                    },
-                                    onBookmarkLongClick = { showBookmarkContextMenu(it) }
-                                )
-                            }
-                        }
+            bookmarkViewModel.uiState.collect { bookmarks.value = it }
+        }
+
+        composeView.setContent {
+            MyTheme {
+                DialogPanel(
+                    folder = bookmarkViewModel.currentFolder.value,
+                    upParentAction = { bookmarkViewModel.outOfFolder() },
+                    syncBookmarksAction = syncBookmarksAction,
+                    linkBookmarksAction = linkBookmarksAction,
+                    reorderBookmarkAction = { bookmarkViewModel.showReorderUi(this.requireActivity()) },
+                    closeAction = { dialog?.dismiss() }) {
+                    if (bookmarks.value.isEmpty()) {
+                        Text(
+                            modifier = NormalTextModifier,
+                            text = getString(R.string.no_bookmarks),
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    } else {
+                        BookmarkList(
+                            bookmarks = bookmarks.value,
+                            bookmarkManager = bookmarkManager,
+                            isWideLayout = ViewUnit.isWideLayout(requireContext()),
+                            shouldReverse = !config.isToolbarOnTop,
+                            onBookmarkClick = {
+                                if (!it.isDirectory) {
+                                    gotoUrlAction(it.url)
+                                    config.addRecentBookmark(it)
+                                    dialog?.dismiss()
+                                } else {
+                                    bookmarkViewModel.intoFolder(it)
+                                }
+                            },
+                            onBookmarkIconClick = {
+                                if (!it.isDirectory) bookmarkIconClickAction(
+                                    it.title,
+                                    it.url,
+                                    true
+                                ); dialog?.dismiss()
+                            },
+                            onBookmarkLongClick = { showBookmarkContextMenu(it) }
+                        )
                     }
                 }
             }
         }
     }
+
 
     override fun onDestroy() {
         bookmarksUpdateJob.cancel()
@@ -127,15 +133,15 @@ class BookmarksDialogFragment(
         super.onDestroy()
     }
 
-    private fun createBookmarkFolder(bookmark: Bookmark) {
-        lifecycleScope.launch {
-            val folderName = dialogManager.getBookmarkFolderName()
-            folderName?.let {
-                bookmarkManager.insertDirectory(it, bookmark.id)
-                syncBookmarksAction(true)
-            }
-        }
-    }
+//    private fun createBookmarkFolder(bookmark: Bookmark) {
+//        lifecycleScope.launch {
+//            val folderName = dialogManager.getBookmarkFolderName()
+//            folderName?.let {
+//                bookmarkManager.insertDirectory(it, bookmark.id)
+//                syncBookmarksAction(true)
+//            }
+//        }
+//    }
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(requireContext()))
@@ -155,13 +161,13 @@ class BookmarksDialogFragment(
         dialogView.menuContextListEdit.visibility = View.VISIBLE
         dialogView.menuContextListNewTab.setOnClickListener {
             optionDialog.dismissWithAction {
-                addTabAction(getString(R.string.app_name), bookmark.url, false)
+                bookmarkIconClickAction(getString(R.string.app_name), bookmark.url, false)
                 dialog?.dismiss()
             }
         }
         dialogView.menuContextListNewTabOpen.setOnClickListener {
             optionDialog.dismissWithAction {
-                addTabAction(
+                bookmarkIconClickAction(
                     bookmark.title,
                     bookmark.url,
                     true
@@ -179,7 +185,7 @@ class BookmarksDialogFragment(
         dialogView.menuContextListEdit.setOnClickListener {
             BookmarkEditDialog(
                 requireActivity(),
-                bookmarkManager,
+                bookmarkViewModel,
                 bookmark,
                 {
                     ViewUnit.hideKeyboard(requireActivity())
@@ -196,10 +202,10 @@ class BookmarksDialogFragment(
 fun DialogPanel(
     folder: Bookmark,
     upParentAction: (Bookmark) -> Unit,
-    createFolderAction: (Bookmark) -> Unit,
     syncBookmarksAction: (Boolean) -> Unit,
     linkBookmarksAction: () -> Unit,
     closeAction: () -> Unit,
+    reorderBookmarkAction: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -237,8 +243,8 @@ fun DialogPanel(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(horizontal = 5.dp),
-                iconResId = R.drawable.ic_add_folder,
-                action = { createFolderAction(folder) }
+                iconResId = R.drawable.ic_sort,
+                action = { reorderBookmarkAction() },
             )
             ActionIcon(
                 modifier = Modifier
@@ -299,7 +305,7 @@ fun BookmarkList(
 }
 
 @Composable
-private fun BookmarkItem(
+fun BookmarkItem(
     modifier: Modifier,
     bitmap: Bitmap? = null,
     isPressed: Boolean = false,
@@ -311,6 +317,7 @@ private fun BookmarkItem(
     Row(
         modifier = modifier
             .height(54.dp)
+            .width(intrinsicSize = IntrinsicSize.Max)
             .padding(8.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp)),
         horizontalArrangement = Arrangement.Center
@@ -334,7 +341,7 @@ private fun BookmarkItem(
         }
         Text(
             modifier = Modifier
-                .weight(1F)
+                .weight(1.0f)
                 .align(Alignment.CenterVertically),
             text = bookmark.title,
             fontSize = 18.sp,
@@ -390,11 +397,12 @@ private fun PreviewDialogPanel() {
     MyTheme {
         DialogPanel(
             folder = Bookmark("test 1", "https://www.google.com", false),
+            //{},
             {},
             {},
             {},
             {},
-            {}
+            {},
         ) {
             BookmarkList(
                 bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),

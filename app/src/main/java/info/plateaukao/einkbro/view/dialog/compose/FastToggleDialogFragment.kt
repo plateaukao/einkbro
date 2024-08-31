@@ -38,7 +38,7 @@ import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 
 class FastToggleDialogFragment(
-    val extraAction: () -> Unit
+    val extraAction: () -> Unit,
 ) : ComposeDialogFragment() {
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
@@ -161,7 +161,7 @@ fun ToggleItem(
         modifier = Modifier
             .width(IntrinsicSize.Max)
             .height(46.dp)
-            .padding(8.dp)
+            .padding(4.dp)
             .clickable {
                 currentState = !currentState
                 if (isEnabled) {

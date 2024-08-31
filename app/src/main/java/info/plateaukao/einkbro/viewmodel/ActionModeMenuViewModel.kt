@@ -165,7 +165,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(R.string.select_paragraph),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_sort),
                 closeMenu = false,
                 action = {
                     _actionModeMenuState.value = ActionModeMenuState.SelectParagraph
