@@ -81,6 +81,7 @@ class ToolbarActionHandler(
         )
 
         ToolbarAction.PageInfo -> {}
+        ToolbarAction.Time -> {}
 
         ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
         ToolbarAction.ReaderMode -> browserController.toggleReaderMode()

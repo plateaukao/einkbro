@@ -553,4 +553,5 @@
     <string name="setting_app_locale">UI Language</string>
     <string name="setting_summary_app_locale">configure the language for interface</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
+    <string name="toolbar_time">Current Time</string>
 </resources>
