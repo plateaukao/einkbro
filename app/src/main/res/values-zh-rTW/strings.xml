@@ -462,7 +462,8 @@
     <string name="translate_this_site">翻譯此網站</string>
     <string name="select_sentence">選取句子</string>
     <string name="select_paragraph">選取段落</string>
-    <string name="toast_saved">Saved!</string>
-    <string name="setting_app_locale">UI Language</string>
-    <string name="setting_summary_app_locale">configure the language for interface</string>
+    <string name="toast_saved">已儲存！</string>
+    <string name="setting_app_locale">介面語面</string>
+    <string name="setting_summary_app_locale">設定APP使用介面語言</string>
+    <string name="drag_to_reorder">可以開始拖動書籤調整位置</string>
 </resources>

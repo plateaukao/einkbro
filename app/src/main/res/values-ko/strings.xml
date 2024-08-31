@@ -551,4 +551,5 @@
     <string name="toast_saved">저장되었습니다!</string>
     <string name="setting_app_locale">UI 언어</string>
     <string name="setting_summary_app_locale">인터페이스 언어를 구성합니다.</string>
+    <string name="drag_to_reorder">Drag to re-order bookmarks</string>
 </resources>
