@@ -76,10 +76,9 @@ import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import org.koin.android.ext.android.inject
 
-class SettingActivity : ComponentActivity(), KoinComponent {
+class SettingActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val adBlock: AdBlockV2 by inject()

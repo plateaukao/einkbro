@@ -49,7 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.GptQueryListActivity.Companion.INVALID_KEYCODE
 import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
@@ -61,11 +60,10 @@ import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class GptQueryListActivity : ComponentActivity(), KoinComponent {
+class GptQueryListActivity : ComponentActivity()  {
     private val gptQueryViewModel: GptQueryViewModel by viewModels()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
     private var currentKeyCode: MutableState<Int> = mutableIntStateOf(INVALID_KEYCODE)
