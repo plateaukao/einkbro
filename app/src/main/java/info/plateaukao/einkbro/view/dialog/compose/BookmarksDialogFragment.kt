@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -59,6 +60,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyGridState
 
 class BookmarksDialogFragment(
     private val lifecycleScope: LifecycleCoroutineScope,
@@ -76,10 +79,13 @@ class BookmarksDialogFragment(
 
     private val bookmarks = mutableStateOf(emptyList<Bookmark>())
 
+    private val shouldShowDragHandle = mutableStateOf(false)
+
     override fun setupComposeView() {
         bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
         }
+
 
         composeView.setContent {
             MyTheme {
@@ -88,7 +94,9 @@ class BookmarksDialogFragment(
                     upParentAction = { bookmarkViewModel.outOfFolder() },
                     syncBookmarksAction = syncBookmarksAction,
                     linkBookmarksAction = linkBookmarksAction,
-                    reorderBookmarkAction = { bookmarkViewModel.showReorderUi(this.requireActivity()) },
+                    reorderBookmarkAction = {
+                        shouldShowDragHandle.value = !shouldShowDragHandle.value
+                    },
                     closeAction = { dialog?.dismiss() }) {
                     if (bookmarks.value.isEmpty()) {
                         Text(
@@ -102,6 +110,13 @@ class BookmarksDialogFragment(
                             bookmarkManager = bookmarkManager,
                             isWideLayout = ViewUnit.isWideLayout(requireContext()),
                             shouldReverse = !config.isToolbarOnTop,
+                            shouldShowDragHandle = shouldShowDragHandle.value,
+                            onItemMoved = { from, to ->
+                                bookmarks.value =
+                                    bookmarks.value.toMutableList()
+                                        .apply { add(to, removeAt(from)) }
+                                bookmarkViewModel.updateBookmarksOrder(bookmarks.value)
+                            },
                             onBookmarkClick = {
                                 if (!it.isDirectory) {
                                     gotoUrlAction(it.url)
@@ -132,16 +147,6 @@ class BookmarksDialogFragment(
         bookmarkViewModel.toRootFolder()
         super.onDestroy()
     }
-
-//    private fun createBookmarkFolder(bookmark: Bookmark) {
-//        lifecycleScope.launch {
-//            val folderName = dialogManager.getBookmarkFolderName()
-//            folderName?.let {
-//                bookmarkManager.insertDirectory(it, bookmark.id)
-//                syncBookmarksAction(true)
-//            }
-//        }
-//    }
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(requireContext()))
@@ -272,34 +277,54 @@ fun BookmarkList(
     bookmarkManager: BookmarkManager? = null,
     isWideLayout: Boolean = false,
     shouldReverse: Boolean = true,
+    shouldShowDragHandle: Boolean = false,
+    onItemMoved: (from: Int, to: Int) -> Unit,
     onBookmarkClick: OnBookmarkClick,
     onBookmarkIconClick: OnBookmarkIconClick,
     onBookmarkLongClick: OnBookmarkLongClick,
 ) {
+    val lazyGridState = rememberLazyGridState()
+    val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
+        onItemMoved(from.index, to.index)
+    }
+
     LazyVerticalGrid(
         modifier = Modifier.wrapContentHeight(),
+        state = lazyGridState,
         columns = GridCells.Fixed(if (isWideLayout) 2 else 1),
         reverseLayout = shouldReverse
     ) {
-        itemsIndexed(bookmarks) { _, bookmark ->
+        itemsIndexed(bookmarks, key = { _, bookmark -> bookmark.id }) { _, bookmark ->
             val interactionSource = remember { MutableInteractionSource() }
             val isPressed by interactionSource.collectIsPressedAsState()
-            BookmarkItem(
-                bookmark = bookmark,
-                bitmap = bookmarkManager?.findFaviconBy(bookmark.url)?.getBitmap(),
-                isPressed = isPressed,
-                modifier = Modifier
-                    .combinedClickable(
-                        interactionSource = interactionSource,
-                        indication = null,
-                        onClick = { onBookmarkClick(bookmark) },
-                        onLongClick = { onBookmarkLongClick(bookmark) },
-                    ),
-                iconClick = {
-                    if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
-                    else onBookmarkClick(bookmark)
-                }
-            )
+
+            ReorderableItem(reorderableLazyGridState, key = bookmark.id) { isDragging ->
+                BookmarkItem(
+                    bookmark = bookmark,
+                    bitmap = bookmarkManager?.findFaviconBy(bookmark.url)?.getBitmap(),
+                    isPressed = isPressed || isDragging,
+                    shouldShowDragHandle = shouldShowDragHandle,
+                    modifier = Modifier
+                        .then(
+                            if (shouldShowDragHandle) {
+                                Modifier
+                                    .longPressDraggableHandle()
+                                    .clickable { onBookmarkClick(bookmark) }
+                            } else {
+                                Modifier.combinedClickable(
+                                    interactionSource = interactionSource,
+                                    indication = null,
+                                    onClick = { onBookmarkClick(bookmark) },
+                                    onLongClick = { onBookmarkLongClick?.invoke(bookmark) },
+                                )
+                            }
+                        ),
+                    iconClick = {
+                        if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
+                        else onBookmarkClick(bookmark)
+                    }
+                )
+            }
         }
     }
 }
@@ -309,6 +334,7 @@ fun BookmarkItem(
     modifier: Modifier,
     bitmap: Bitmap? = null,
     isPressed: Boolean = false,
+    shouldShowDragHandle: Boolean = false,
     bookmark: Bookmark,
     iconClick: () -> Unit,
 ) {
@@ -318,10 +344,18 @@ fun BookmarkItem(
         modifier = modifier
             .height(54.dp)
             .width(intrinsicSize = IntrinsicSize.Max)
-            .padding(8.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp)),
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .padding(8.dp),
         horizontalArrangement = Arrangement.Center,
     ) {
+        if (shouldShowDragHandle) {
+            Icon(
+                modifier = Modifier.padding(8.dp),
+                painter = painterResource(id = R.drawable.ic_drag),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
         if (bitmap != null) {
             Image(
                 modifier = Modifier
@@ -383,6 +417,8 @@ private fun PreviewBookmarkList() {
             null,
             isWideLayout = true,
             shouldReverse = true,
+            shouldShowDragHandle = false,
+            { _, _ -> },
             {},
             {},
             {}
@@ -409,6 +445,8 @@ private fun PreviewDialogPanel() {
                 null,
                 isWideLayout = true,
                 shouldReverse = true,
+                shouldShowDragHandle = false,
+                { _, _ -> },
                 {},
                 {},
                 {}
