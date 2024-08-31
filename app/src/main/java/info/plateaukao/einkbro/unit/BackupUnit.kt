@@ -353,6 +353,7 @@ private fun Bookmark.toJsonObject(): JSONObject =
         put("url", url)
         put("isDirectory", isDirectory)
         put("parent", parent)
+        put("order", order)
     }
 
 private fun JSONObject.toBookmark(): Bookmark =
@@ -360,7 +361,8 @@ private fun JSONObject.toBookmark(): Bookmark =
         optString("title"),
         optString("url"),
         optBoolean("isDirectory"),
-        optInt("parent")
+        optInt("parent"),
+        optInt("order")
     ).apply { id = optInt("id") }
 
 
