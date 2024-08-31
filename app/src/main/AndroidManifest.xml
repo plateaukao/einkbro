@@ -63,9 +63,9 @@
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".activity.DictActivity"
-            android:theme="@style/TransparentActivity"
+            android:exported="true"
             android:launchMode="singleInstance"
-            android:exported="true">
+            android:theme="@style/TransparentActivity">
             <intent-filter>
                 <action android:name="colordict.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -125,8 +125,8 @@
 
                 <data android:scheme="content" />
 
-                <data android:mimeType="text/html"/>
-                <data android:mimeType="application/xhtml+xml"/>
+                <data android:mimeType="text/html" />
+                <data android:mimeType="application/xhtml+xml" />
             </intent-filter>
             <intent-filter android:icon="@mipmap/ic_launcher">
                 <action android:name="android.intent.action.SEND" />
@@ -210,10 +210,9 @@
         <activity
             android:name=".activity.DataListActivity"
             android:label="@string/setting_title_whitelist" />
-        <activity android:name=".activity.GptActionsActivity"/>
-        <activity android:name=".activity.GptQueryListActivity"/>
+        <activity android:name=".activity.GptActionsActivity" />
+        <activity android:name=".activity.GptQueryListActivity" />
         <activity android:name=".activity.HighlightsActivity" />
-        <activity android:name=".activity.BookmarksReorderActivity"/>
 
         <service
             android:name=".service.ClearService"
