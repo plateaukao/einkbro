@@ -27,9 +27,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -52,8 +55,13 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Desktop
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.NewTab
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.PageInfo
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TabCount
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Time
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Title
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
+import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 private val toolbarIconWidth = 46.dp
@@ -173,6 +181,9 @@ fun ComposedIconBar(
                     }
                 }
 
+                // show a current time (hour:minute) in the toolbar
+                Time -> CurrentTimeText()
+
                 TabCount ->
                     TabCountIcon(
                         isIncognito = isIncognito,
@@ -270,9 +281,32 @@ private fun TabCountIcon(
     }
 }
 
+@Composable
+fun CurrentTimeText(
+    modifier: Modifier = Modifier,
+) {
+    var currentTime by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+            delay(1000L * 60) // Update every second
+        }
+    }
+
+    Text(
+        text = currentTime,
+        color = MaterialTheme.colors.onBackground,
+        modifier = modifier.padding(horizontal = 6.dp),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        textAlign = TextAlign.Center,
+    )
+}
+
 private inline fun Modifier.conditional(
     condition: Boolean,
-    modifier: Modifier.() -> Modifier
+    modifier: Modifier.() -> Modifier,
 ): Modifier {
     return if (condition) {
         modifier.invoke(this)
@@ -322,7 +356,7 @@ fun PreviewToolbarLongTitle() {
                 ToolbarActionInfo(TabCount, false),
                 ToolbarActionInfo(Title, false),
                 ToolbarActionInfo(Desktop, false),
-                ToolbarActionInfo(Desktop, false),
+                ToolbarActionInfo(Time, false),
             ),
             "hi 1 2 3 456789",
             tabCount = "1",

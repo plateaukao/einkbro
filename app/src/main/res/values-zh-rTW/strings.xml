@@ -466,4 +466,5 @@
     <string name="setting_app_locale">介面語面</string>
     <string name="setting_summary_app_locale">設定APP使用介面語言</string>
     <string name="drag_to_reorder">可以開始拖動書籤調整位置</string>
+    <string name="toolbar_time">現在時間</string>
 </resources>
