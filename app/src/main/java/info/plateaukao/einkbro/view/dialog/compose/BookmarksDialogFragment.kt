@@ -320,7 +320,7 @@ fun BookmarkItem(
             .width(intrinsicSize = IntrinsicSize.Max)
             .padding(8.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp)),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         if (bitmap != null) {
             Image(
