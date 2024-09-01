@@ -13,14 +13,12 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -318,7 +316,10 @@ fun BookmarkList(
                             if (shouldShowDragHandle) {
                                 Modifier
                                     .longPressDraggableHandle()
-                                    .clickable { onBookmarkClick(bookmark) }
+                                    .clickable(
+                                        interactionSource = interactionSource,
+                                        indication = null,
+                                    ) { onBookmarkClick(bookmark) }
                             } else {
                                 Modifier.combinedClickable(
                                     interactionSource = interactionSource,
@@ -353,9 +354,9 @@ fun BookmarkItem(
     Row(
         modifier = modifier
             .height(54.dp)
-            .width(intrinsicSize = IntrinsicSize.Max)
+            .padding(4.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .padding(8.dp),
+            .padding(4.dp),
         horizontalArrangement = Arrangement.Center,
     ) {
         if (shouldShowDragHandle) {

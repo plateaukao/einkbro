@@ -1060,7 +1060,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ninjaWebView.updatePageInfo()
 
         languageLabelView?.visibility =
-            (if (ninjaWebView.isTranslatePage) VISIBLE else GONE)
+            if (ninjaWebView.isTranslatePage ||
+                ninjaWebView.translateApi == TRANSLATE_API.GOOGLE ||
+                ninjaWebView.translateApi == TRANSLATE_API.PAPAGO
+            ) VISIBLE else GONE
 
         // when showing a new album, should turn off externalSearch button visibility
         externalSearchViewModel.setButtonVisibility(false)
