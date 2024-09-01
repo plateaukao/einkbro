@@ -782,7 +782,7 @@ open class NinjaWebView(
         }
     }
 
-    fun showTranslation() = browserController?.showTranslation()
+    fun showTranslation() = browserController?.showTranslation(this)
 
     fun addSelectionChangeListener() {
         evaluateJavascript(textSelectionChangeJs, null)

@@ -42,7 +42,7 @@ import java.io.IOException
 
 class NinjaWebViewClient(
     private val ninjaWebView: NinjaWebView,
-    private val addHistoryAction: (String, String) -> Unit
+    private val addHistoryAction: (String, String) -> Unit,
 ) : WebViewClient(), KoinComponent {
     private val context: Context = ninjaWebView.context
     private val config: ConfigManager by inject()
@@ -63,6 +63,7 @@ class NinjaWebViewClient(
     override fun onPageFinished(view: WebView, url: String) {
         ninjaWebView.updateCssStyle()
 
+        Log.d("NinjaWebViewClient", "onPageFinished: ${ninjaWebView.url}\n$url")
         webContentPostProcessor.postProcess(ninjaWebView, url)
 
         if (ninjaWebView.shouldHideTranslateContext) {
@@ -209,7 +210,7 @@ class NinjaWebViewClient(
         view: WebView?,
         handler: HttpAuthHandler?,
         host: String?,
-        realm: String?
+        realm: String?,
     ) {
         AuthenticationDialogFragment { username, password ->
             handler?.proceed(username, password)
@@ -219,7 +220,7 @@ class NinjaWebViewClient(
     override fun onReceivedError(
         view: WebView?,
         request: WebResourceRequest?,
-        error: WebResourceError?
+        error: WebResourceError?,
     ) {
         // if https is not available, try http
         if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
@@ -235,7 +236,7 @@ class NinjaWebViewClient(
 
     override fun shouldInterceptRequest(
         view: WebView,
-        request: WebResourceRequest
+        request: WebResourceRequest,
     ): WebResourceResponse? =
         handleWebRequest(view, request.url) ?: super.shouldInterceptRequest(view, request)
 
