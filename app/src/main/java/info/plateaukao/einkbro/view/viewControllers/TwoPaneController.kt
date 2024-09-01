@@ -38,7 +38,7 @@ class TwoPaneController(
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
     private val loadTranslationUrl: (String) -> Unit,
-    private val translateByParagraph: (TRANSLATE_API) -> Unit,
+    private val translateByParagraph: (TRANSLATE_API, NinjaWebView) -> Unit,
     private val translateByScreen: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
@@ -182,8 +182,8 @@ class TwoPaneController(
                 NinjaToast.showShort(activity, "No more supported")
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
-            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE, webView)
+            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO, webView)
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateByScreen()
         }
     }

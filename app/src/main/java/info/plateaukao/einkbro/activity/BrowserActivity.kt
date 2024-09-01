@@ -613,7 +613,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun translate(translationMode: TranslationMode) {
         when (translationMode) {
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
+
             TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateWebView()
             TranslationMode.GOOGLE_IN_PLACE -> ninjaWebView.addGoogleTranslation()
             else -> Unit
@@ -1166,25 +1168,33 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 { showTranslation() },
                 { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
                 { url -> ninjaWebView.loadUrl(url) },
-                this::translateByParagraph,
+                { api, webView -> translateByParagraph(api, webView) },
                 this::translateWebView
             )
         }
     }
 
-    private fun translateByParagraph(translateApi: TRANSLATE_API) {
+    private fun translateByParagraph(
+        translateApi: TRANSLATE_API,
+        webView: NinjaWebView = ninjaWebView,
+    ) {
         if (config.enableInplaceParagraphTranslate) {
-            translateByParagraphInPlace(translateApi)
+            translateByParagraphInPlace(translateApi, webView)
         } else {
             translateByParagraphInReaderMode(translateApi)
         }
     }
 
-    private fun translateByParagraphInPlace(translateApi: TRANSLATE_API) {
+    private fun translateByParagraphInPlace(
+        translateApi: TRANSLATE_API,
+        webView: NinjaWebView = ninjaWebView,
+    ) {
         lifecycleScope.launch {
-            ninjaWebView.translateApi = translateApi
-            ninjaWebView.translateByParagraphInPlace()
-            languageLabelView?.visibility = VISIBLE
+            webView.translateApi = translateApi
+            webView.translateByParagraphInPlace()
+            if (webView == ninjaWebView) {
+                languageLabelView?.visibility = VISIBLE
+            }
         }
     }
 
@@ -1226,11 +1236,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
 
-    override fun showTranslation() {
+    override fun showTranslation(webView: NinjaWebView?) {
         maybeInitTwoPaneController()
 
         lifecycleScope.launch(Dispatchers.Main) {
-            twoPaneController.showTranslation(ninjaWebView)
+            twoPaneController.showTranslation(webView ?: ninjaWebView)
         }
     }
 
@@ -1747,7 +1757,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             lifecycleScope,
             bookmarkViewModel,
             gotoUrlAction = { url -> updateAlbum(url) },
-            bookmarkIconClickAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+            bookmarkIconClickAction = { title, url, isForeground ->
+                addAlbum(
+                    title,
+                    url,
+                    isForeground
+                )
+            },
             splitScreenAction = { url -> toggleSplitScreen(url) },
             syncBookmarksAction = this::handleBookmarkSync,
             linkBookmarksAction = this::linkBookmarkSync
