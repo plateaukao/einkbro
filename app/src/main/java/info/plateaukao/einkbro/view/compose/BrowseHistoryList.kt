@@ -7,8 +7,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -109,7 +110,7 @@ private fun RecordItem(
                 tint = MaterialTheme.colors.onBackground
             )
         }
-        Box(
+        Column(
             Modifier.weight(1F)
                 .align(Alignment.CenterVertically)
         ) {
@@ -122,17 +123,18 @@ private fun RecordItem(
                 },
                 update = { it.text = record.title ?: "Unknown" }
             )
+            Spacer(modifier = Modifier.height(3.dp))
+            AndroidView(
+                factory = { context ->
+                    TextView(context).apply {
+                        textSize = 10F
+                        maxLines = 1
+                        ellipsize = TextUtils.TruncateAt.MIDDLE
+                    }
+                },
+                update = { it.text = record.url }
+            )
         }
-//        Text(
-//            modifier = Modifier
-//                .weight(1F)
-//                .align(Alignment.CenterVertically),
-//            text = record.title ?: "Unknown",
-//            fontSize = 18.sp,
-//            maxLines = 1,
-//            overflow = TextOverflow.Ellipsis,
-//            color = MaterialTheme.colors.onBackground,
-//        )
         Text(
             modifier = Modifier
                 .wrapContentSize()
@@ -143,7 +145,7 @@ private fun RecordItem(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun previewItem() {
     MyTheme {
@@ -155,7 +157,7 @@ private fun previewItem() {
 }
 
 
-@Preview
+@Preview (showBackground = true)
 @Composable
 private fun previewHistoryList() {
     val list = listOf(

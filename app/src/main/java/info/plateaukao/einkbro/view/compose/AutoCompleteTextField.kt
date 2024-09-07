@@ -136,38 +136,26 @@ fun AutoCompleteTextField(
             .focusRequester(requester),
         verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top
     ) {
-        if (shouldReverse) {
-            HorizontalSeparator()
-            BrowseHistoryList(
-                modifier = Modifier
-                    .weight(1F, fill = false)
-                    .background(MaterialTheme.colors.background),
-                records = filteredRecordList,
-                bookmarkManager = bookmarkManager,
-                shouldReverse = shouldReverse,
-                shouldShowTwoColumns = isWideLayout,
-                onClick = onRecordClick,
-                onLongClick = {}
-            )
-            HorizontalSeparator()
+        if (!shouldReverse) {
+            TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, closeAction)
         }
 
-        TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, closeAction)
+        HorizontalSeparator()
+        BrowseHistoryList(
+            modifier = Modifier
+                .weight(1F, fill = false)
+                .background(MaterialTheme.colors.background),
+            records = filteredRecordList,
+            bookmarkManager = bookmarkManager,
+            shouldReverse = shouldReverse,
+            shouldShowTwoColumns = isWideLayout,
+            onClick = onRecordClick,
+            onLongClick = {}
+        )
+        HorizontalSeparator()
 
-        if (!shouldReverse) {
-            HorizontalSeparator()
-            BrowseHistoryList(
-                modifier = Modifier
-                    .weight(1F, fill = false)
-                    .background(MaterialTheme.colors.background),
-                records = filteredRecordList,
-                bookmarkManager = bookmarkManager,
-                shouldReverse = shouldReverse,
-                shouldShowTwoColumns = isWideLayout,
-                onClick = { onRecordClick(it); focusRequester.freeFocus() },
-                onLongClick = {}
-            )
-            HorizontalSeparator()
+        if (shouldReverse) {
+            TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, closeAction)
         }
     }
 }

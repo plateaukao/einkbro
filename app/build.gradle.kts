@@ -10,7 +10,9 @@ plugins {
 }
 
 fun getCurrentTimestamp(): String {
-    return SimpleDateFormat("MMddHHmm").format(Date())
+    val dateFormat = SimpleDateFormat("MMddHHmm")
+    dateFormat.timeZone = TimeZone.getTimeZone("Asia/Taipei")
+    return dateFormat.format(Date())
 }
 
 fun showUpdateButton(): String {
