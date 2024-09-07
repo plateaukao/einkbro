@@ -55,7 +55,9 @@ class EinkBroApplication : Application() {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
-        LocaleManager.setLocale(this, config.localeLanguage.languageCode)
+        if (config.uiLocaleLanguage.isNotEmpty()) {
+            LocaleManager.setLocale(this, config.uiLocaleLanguage)
+        }
     }
 
     override fun onTerminate() {

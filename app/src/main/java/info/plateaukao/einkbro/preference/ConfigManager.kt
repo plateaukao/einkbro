@@ -264,19 +264,12 @@ class ConfigManager(
             sp.edit { putInt("pdf_paper_size", value.ordinal) }
         }
 
-    var localeLanguage: TranslationLanguage
-        get() = TranslationLanguage.entries[sp.getInt(
-            "sp_locale_language",
-            getDefaultTranslationLanguage().ordinal
-        )]
-        set(value) {
-            sp.edit { putInt("sp_locale_language", value.ordinal) }
-        }
+    var uiLocaleLanguage by StringPreference(sp, "sp_ui_locale_language", "")
 
     var translationLanguage: TranslationLanguage
         get() = TranslationLanguage.entries[sp.getInt(
             K_TRANSLATE_LANGUAGE,
-            getDefaultTranslationLanguage().ordinal
+            TranslationLanguage.EN.ordinal
         )]
         set(value) {
             sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) }
@@ -380,6 +373,7 @@ class ConfigManager(
 
     fun hasInvertedColor(url: String): Boolean =
         Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldInvertColor } ?: false
+
     fun toggleInvertedColor(url: String): Boolean {
         val host = Uri.parse(url)?.host ?: return false
 
