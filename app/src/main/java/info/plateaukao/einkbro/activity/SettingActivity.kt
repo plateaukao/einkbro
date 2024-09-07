@@ -279,12 +279,13 @@ class SettingActivity : ComponentActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(
-            LocaleManager.setLocale(
-                newBase,
-                config.localeLanguage.languageCode
+        if (config.uiLocaleLanguage.isNotEmpty()) {
+            super.attachBaseContext(
+                LocaleManager.setLocale(newBase, config.uiLocaleLanguage)
             )
-        )
+        } else {
+            super.attachBaseContext(newBase)
+        }
     }
 
     private fun handleLink(url: String) {

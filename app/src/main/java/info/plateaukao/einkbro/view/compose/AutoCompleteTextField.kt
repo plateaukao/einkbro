@@ -5,8 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent.KEYCODE_ENTER
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,10 +25,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +54,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
+import kotlinx.coroutines.launch
 
 class AutoCompleteTextComposeView @JvmOverloads constructor(
     context: Context,
@@ -174,7 +179,7 @@ private fun TextInputBar(
     onTextSubmit: (String) -> Unit,
     hasCopiedText: Boolean,
     onPasteClick: () -> Unit,
-    onDownClick: () -> Unit
+    onDownClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -201,6 +206,7 @@ private fun TextInputBar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TextInput(
     modifier: Modifier,
@@ -208,6 +214,13 @@ fun TextInput(
     state: MutableState<TextFieldValue>,
     onValueSubmit: (String) -> Unit,
 ) {
+    val scrollState = remember { androidx.compose.foundation.ScrollState(0) }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        scrollState.scrollTo(scrollState.maxValue)
+    }
+
     Box(modifier = modifier.padding(start = 5.dp)) {
         BasicTextField(
             value = state.value,
@@ -215,6 +228,7 @@ fun TextInput(
             modifier = modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester)
+                .horizontalScroll(scrollState)
                 .onKeyEvent {
                     if (it.nativeKeyEvent.keyCode == KEYCODE_ENTER) {
                         onValueSubmit(state.value.text)
@@ -228,6 +242,9 @@ fun TextInput(
                         state.value = state.value.copy(
                             selection = TextRange(0, text.length)
                         )
+                        coroutineScope.launch {
+                            scrollState.scrollTo(scrollState.maxValue)
+                        }
                     }
                 },
             textStyle = TextStyle.Default.copy(color = MaterialTheme.colors.onBackground),
@@ -236,7 +253,7 @@ fun TextInput(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search,
                 autoCorrect = false,
-                ),
+            ),
             keyboardActions = KeyboardActions(onSearch = { onValueSubmit(state.value.text) }),
         )
         if (state.value.text.isEmpty()) {
