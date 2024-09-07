@@ -437,7 +437,7 @@
     <string name="setting_title_use_custom_gpt_url">使用其他服務</string>
     <string name="setting_title_custom_gpt_url">自定義網址</string>
     <string name="setting_summary_custom_gpt_url">輸入與OpenAI APi相容的網址</string>
-    <string name="setting_title_enable_inplace_translate">Tranalate paragraphs in current tab</string>
+    <string name="setting_title_enable_inplace_translate">Translate paragraphs in current tab</string>
     <string name="setting_summary_enable_inplace_translate">Show paragraph translation in current tab</string>
     <string name="setting_title_show_bookmarks_input_bar">輸入時顯示書籤列表</string>
     <string name="setting_summary_show_bookmarks_input_bar">輸入網址時顯示符合的書籤列表</string>
