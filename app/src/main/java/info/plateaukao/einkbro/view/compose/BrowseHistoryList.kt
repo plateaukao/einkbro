@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -25,13 +25,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordType
+import info.plateaukao.einkbro.unit.ViewUnit
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -44,7 +47,7 @@ fun BrowseHistoryList(
     shouldShowTwoColumns: Boolean,
     bookmarkManager: BookmarkManager? = null,
     onClick: (Record) -> Unit,
-    onLongClick: (Record) -> Unit
+    onLongClick: (Record) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -68,15 +71,18 @@ fun BrowseHistoryList(
 private fun RecordItem(
     modifier: Modifier,
     bitmap: Bitmap? = null,
-    record: Record
+    record: Record,
 ) {
     val timeString =
-        if (record.type == RecordType.History) SimpleDateFormat("MMM dd", Locale.getDefault()).format(record.time)
+        if (record.type == RecordType.History) SimpleDateFormat(
+            "MM/dd",
+            Locale.getDefault()
+        ).format(record.time)
         else ""
 
     Row(
         modifier = modifier
-            .height(54.dp)
+            .height(60.dp)
             .padding(5.dp),
         horizontalArrangement = Arrangement.Center
     ) {
@@ -111,12 +117,14 @@ private fun RecordItem(
             )
         }
         Column(
-            Modifier.weight(1F)
+            Modifier
+                .weight(1F)
                 .align(Alignment.CenterVertically)
         ) {
             AndroidView(
                 factory = { context ->
                     TextView(context).apply {
+                        textSize = ViewUnit.dpToPixel(context, 6)
                         maxLines = 1
                         ellipsize = TextUtils.TruncateAt.MIDDLE
                     }
@@ -124,24 +132,35 @@ private fun RecordItem(
                 update = { it.text = record.title ?: "Unknown" }
             )
             Spacer(modifier = Modifier.height(3.dp))
-            AndroidView(
-                factory = { context ->
-                    TextView(context).apply {
-                        textSize = 10F
-                        maxLines = 1
-                        ellipsize = TextUtils.TruncateAt.MIDDLE
-                    }
-                },
-                update = { it.text = record.url }
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                AndroidView(
+                    modifier = Modifier
+                        .weight(1F)
+                        .align(Alignment.Top),
+                    factory = { context ->
+                        TextView(context).apply {
+                            textSize = ViewUnit.dpToPixel(context, 5)
+                            textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                            maxLines = 1
+                            ellipsize = TextUtils.TruncateAt.MIDDLE
+                        }
+                    },
+                    update = { it.text = record.url }
+                )
+                // alight to end of row
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 3.dp)
+                        .align(Alignment.Top),
+                    text = timeString,
+                    textAlign = TextAlign.End,
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colors.onBackground,
+                )
+            }
         }
-        Text(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterVertically),
-            text = timeString,
-            color = MaterialTheme.colors.onBackground,
-        )
     }
 }
 
@@ -151,13 +170,17 @@ private fun previewItem() {
     MyTheme {
         RecordItem(
             modifier = Modifier,
-            record = Record(title = "Hello", url = "123", time = System.currentTimeMillis())
+            record = Record(
+                title = "Hello",
+                url = "123ddddddddddddddddddddddddd",
+                time = System.currentTimeMillis()
+            )
         )
     }
 }
 
 
-@Preview (showBackground = true)
+@Preview(showBackground = true)
 @Composable
 private fun previewHistoryList() {
     val list = listOf(
@@ -166,7 +189,11 @@ private fun previewHistoryList() {
             url = "123",
             time = System.currentTimeMillis()
         ),
-        Record(title = "Hello 2", url = "123", time = System.currentTimeMillis()),
+        Record(
+            title = "Hello 2",
+            url = "123 dddddddddddddddddddddddddddddddddddddddd",
+            time = System.currentTimeMillis()
+        ),
         Record(title = "Hello 3", url = "123", time = System.currentTimeMillis()),
     )
     MyTheme {
