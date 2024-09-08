@@ -1295,8 +1295,8 @@ open class NinjaWebView(
                  font-display: swap;
                  src: url('mycustomfont');
             }
-            * {
-              font-family: fontfamily !important;
+            html body * {
+              font-family: fontfamily, serif, popular-symbols, lite-glyphs-outlined, lite-glyphs-filled, snaptu-symbols !important;
             }
         """
 
