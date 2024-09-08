@@ -505,7 +505,7 @@ class SettingActivity : ComponentActivity() {
         ),
         BooleanSettingItem(
             R.string.setting_title_confirm_tab_close,
-            R.drawable.icon_close,
+            R.drawable.icon_tab_plus,
             R.string.setting_summary_confirm_tab_close,
             config::confirmTabClose,
         ),
@@ -516,8 +516,14 @@ class SettingActivity : ComponentActivity() {
             config::enableViBinding,
         ),
         BooleanSettingItem(
+            R.string.setting_title_disable_long_press_toucharea,
+            R.drawable.ic_touch_disabled,
+            R.string.setting_summary_disable_long_press_toucharea,
+            config::disableLongPressTouchArea,
+        ),
+        BooleanSettingItem(
             R.string.setting_title_useUpDown,
-            R.drawable.ic_page_down,
+            R.drawable.ic_sync_scroll,
             R.string.setting_summary_useUpDownKey,
             config::useUpDownPageTurn,
         ),

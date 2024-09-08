@@ -536,4 +536,6 @@
     <string name="setting_summary_app_locale">配置APP界面语言</string>
     <string name="drag_to_reorder">拖动以重新排列书签</string>
     <string name="toolbar_time">当前时间</string>
+    <string name="setting_title_disable_long_press_toucharea">Disable Long Press Touch Area</string>
+    <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area.</string>
 </resources>

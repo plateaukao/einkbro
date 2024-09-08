@@ -2311,7 +2311,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         previousKeyEvent == null -> event
                         previousKeyEvent?.keyCode == KeyEvent.KEYCODE_G -> {
                             // gg
-                            ninjaWebView.jumpToTop()
+                            jumpToTop()
                             null
                         }
 
