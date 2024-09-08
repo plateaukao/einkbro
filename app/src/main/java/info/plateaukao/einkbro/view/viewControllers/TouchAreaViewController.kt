@@ -162,6 +162,8 @@ class TouchAreaViewController(
         with(touchAreaPageUp) {
             setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
             setOnLongClickListener {
+                if (config.disableLongPressTouchArea) return@setOnLongClickListener false
+
                 if (config.longClickAsArrowKey) {
                     keyLeftAction()
                     return@setOnLongClickListener true
@@ -172,6 +174,8 @@ class TouchAreaViewController(
         with(touchAreaPageDown) {
             setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
             setOnLongClickListener {
+                if (config.disableLongPressTouchArea) return@setOnLongClickListener false
+
                 if (config.longClickAsArrowKey) {
                     keyRightAction()
                     return@setOnLongClickListener true
