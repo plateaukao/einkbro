@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -153,7 +154,7 @@ interface BookmarkDao {
     suspend fun delete(bookmark: Bookmark)
 
     @Update
-    suspend fun update(bookmark: Bookmark)
+    fun update(bookmark: Bookmark)
 
     @Query("DELETE FROM bookmarks")
     suspend fun deleteAll()
@@ -308,8 +309,14 @@ class BookmarkManager(context: Context) : KoinComponent {
     fun getBookmarksByParentFlow(parentId: Int): Flow<List<Bookmark>> =
         bookmarkDao.getBookmarksByParentFlow(parentId)
 
-    suspend fun updateBookmarkOrder(bookmark: Bookmark, order: Int) {
-        bookmarkDao.update(bookmark.apply { this.order = order })
+    suspend fun updateBookmarksOrder(bookmarks: List<Bookmark>) {
+        withContext(Dispatchers.IO) {
+            database.runInTransaction {
+                bookmarks.forEachIndexed { index, bookmark ->
+                    bookmarkDao.update(bookmark.apply { this.order = index })
+                }
+            }
+        }
     }
 
     suspend fun getAllBookmarks(): List<Bookmark> = bookmarkDao.getAllBookmarks()
