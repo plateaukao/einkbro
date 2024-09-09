@@ -362,6 +362,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (config.hideStatusbar) {
             hideStatusBar()
         }
+
         handleWindowInsets()
         listenKeyboardShowHide()
     }
