@@ -25,6 +25,9 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="snackbarStyle">@style/CustomSnackbar</item>
         <item name="colorSurface">@android:color/white</item>
+
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- remove preference activity background color -->
