@@ -71,9 +71,7 @@ class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewMode
 
     fun updateBookmarksOrder(bookmarks: List<Bookmark>) {
         viewModelScope.launch {
-            bookmarks.forEachIndexed { index, bookmark ->
-                bookmarkManager.updateBookmarkOrder(bookmark, index)
-            }
+            bookmarkManager.updateBookmarksOrder(bookmarks)
             sortMode = BookmarkManager.SortMode.BY_ORDER
             updateUiState()
         }
