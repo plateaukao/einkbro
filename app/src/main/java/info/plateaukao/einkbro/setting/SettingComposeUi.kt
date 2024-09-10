@@ -71,7 +71,14 @@ fun SettingItemUi(
         modifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
 
     Row(
-        modifier = modifier,
+        modifier = modifier.then(
+            if (setting is BooleanSettingItem) Modifier.padding(
+                0.dp,
+                0.dp,
+                55.dp,
+                0.dp
+            ) else Modifier
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (setting.iconId != 0) {
@@ -160,7 +167,7 @@ fun BooleanSettingItemUi(
             },
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .padding(end = 10.dp),
+                .padding(end = 3.dp),
             colors = SwitchDefaults.colors(
                 checkedThumbColor = MaterialTheme.colors.onBackground,
                 uncheckedThumbColor = Color.Gray,
