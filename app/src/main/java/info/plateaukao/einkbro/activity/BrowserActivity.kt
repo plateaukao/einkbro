@@ -1060,12 +1060,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateTitle()
         ninjaWebView.updatePageInfo()
 
-        languageLabelView?.visibility =
-            if (ninjaWebView.isTranslatePage ||
-                ninjaWebView.translateApi == TRANSLATE_API.GOOGLE ||
-                ninjaWebView.translateApi == TRANSLATE_API.PAPAGO
-            ) VISIBLE else GONE
-
         // when showing a new album, should turn off externalSearch button visibility
         externalSearchViewModel.setButtonVisibility(false)
         runOnUiThread {
@@ -1073,6 +1067,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 albumViewModel.albums.value.indexOfFirst { it.isActivated }
             )
         }
+        updateLanguageLabel()
+    }
+
+    private fun updateLanguageLabel() {
+        languageLabelView?.visibility =
+            if (ninjaWebView.isTranslatePage || ninjaWebView.isTranslateByParagraph) VISIBLE else GONE
     }
 
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
