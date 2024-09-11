@@ -80,6 +80,9 @@ class ToolbarActionHandler(
             "toolbar_config"
         )
 
+        ToolbarAction.Spacer1 -> {}
+        ToolbarAction.Spacer2 -> {}
+
         ToolbarAction.PageInfo -> {}
         ToolbarAction.Time -> {}
 
