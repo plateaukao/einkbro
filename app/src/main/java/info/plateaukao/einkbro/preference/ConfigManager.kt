@@ -50,7 +50,11 @@ class ConfigManager(
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
     var isMultitouchEnabled by BooleanPreference(sp, K_MULTITOUCH, false)
     var useUpDownPageTurn by BooleanPreference(sp, K_UPDOWN_PAGE_TURN, false)
-    var disableLongPressTouchArea by BooleanPreference(sp, "sp_disable_long_press_touch_area", false)
+    var disableLongPressTouchArea by BooleanPreference(
+        sp,
+        "sp_disable_long_press_touch_area",
+        false
+    )
     var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
     var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
     var boldFontStyle by BooleanPreference(sp, K_BOLD_FONT, false)
@@ -723,8 +727,14 @@ class ConfigManager(
     }
 
     private fun getDefaultIconStrings(): String =
-        ToolbarAction.defaultActions.joinToString(",") { action ->
-            action.ordinal.toString()
+        if (ViewUnit.isWideLayout(context)) {
+            ToolbarAction.defaultActions.joinToString(",") { action ->
+                action.ordinal.toString()
+            }
+        } else {
+            ToolbarAction.defaultActionsForPhone.joinToString(",") { action ->
+                action.ordinal.toString()
+            }
         }
 
     companion object {

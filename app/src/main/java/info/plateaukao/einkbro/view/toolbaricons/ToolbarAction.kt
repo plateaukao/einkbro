@@ -110,11 +110,31 @@ enum class ToolbarAction(
     Time(
         iconResId = R.drawable.ic_history,
         titleResId = R.string.toolbar_time,
-    );
+    ),
+    Spacer1(
+        iconResId = 0,
+        titleResId = R.string.expand_space,
+    ),
+    Spacer2(
+        iconResId = 0,
+        titleResId = R.string.expand_space,
+    ),
+    ;
 
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
+        val defaultActionsForPhone: List<ToolbarAction> = listOf(
+            Bookmark,
+            TabCount,
+            InputUrl,
+            NewTab,
+            Back,
+            Refresh,
+            Touch,
+            ReaderMode,
+            Settings,
+        )
         val defaultActions: List<ToolbarAction> = listOf(
             Title,
             Bookmark,

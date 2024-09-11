@@ -280,7 +280,7 @@
     <string name="setting_summary_auto_fill_form">當開啟時，會自動填入表格資料</string>
     <string name="setting_title_trim_input_url">去除輸入字串中的非網址部分</string>
     <string name="setting_summary_trim_input_url">當輸入字串有非網址部分時，會自動移除</string>
-    <string name="no_bookmarks">長按書籤按鈕以新增書籤</string>
+    <string name="no_bookmarks">長按書籤將本網頁加入書籤</string>
     <string name="always_enable_zoom">總是啟用網頁放大功能</string>
     <string name="setting_summary_enable_zoom">強制部分無法放大的網頁可以放大</string>
     <string name="setting_title_debug">WebView 抓錯</string>
@@ -467,6 +467,7 @@
     <string name="setting_summary_app_locale">設定APP使用介面語言</string>
     <string name="drag_to_reorder">可以開始拖動書籤調整位置</string>
     <string name="toolbar_time">現在時間</string>
-    <string name="setting_title_disable_long_press_toucharea">Disable Long Press Touch Area</string>
-    <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area.</string>
+    <string name="setting_title_disable_long_press_toucharea">長按觸控區域無作用</string>
+    <string name="setting_summary_disable_long_press_toucharea">避免偶爾會不小心長按觸控區域</string>
+    <string name="expand_space">空白區域</string>
 </resources>
