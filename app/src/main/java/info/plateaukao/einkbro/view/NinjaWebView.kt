@@ -80,6 +80,7 @@ open class NinjaWebView(
     private val cookie: Cookie by inject()
 
     var translateApi: TRANSLATE_API = TRANSLATE_API.GOOGLE
+    var isTranslateByParagraph = false
     override var isTranslatePage = false
         set(value) {
             field = value
@@ -328,6 +329,7 @@ open class NinjaWebView(
 
         dualCaption = null
         isTranslatePage = false
+        isTranslateByParagraph = false
         browserController?.resetTranslateUI()
 
         bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
@@ -346,6 +348,7 @@ open class NinjaWebView(
         album.isLoaded = true
 
         isTranslatePage = false
+        isTranslateByParagraph = false
         browserController?.resetTranslateUI()
 
         if (url.startsWith("javascript:") || url.startsWith("content:")) {
@@ -779,6 +782,7 @@ open class NinjaWebView(
     fun translateByParagraphInPlace() {
         evaluateJavascript(translateParagraphJs) {
             evaluateJavascript(textNodesMonitorJs, null)
+            isTranslateByParagraph = true
         }
     }
 
