@@ -140,7 +140,7 @@ fun ComposedIconBar(
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val shouldTitleWidthFixed = toolbarActionInfos.map { it.toolbarAction }.contains(Title) &&
-        (toolbarActionInfos.filter { it.toolbarAction != Title }.size + 1) * 46 > screenWidth
+            (toolbarActionInfos.filter { it.toolbarAction != Title }.size + 1) * 46 > screenWidth
     Row(
         modifier = Modifier
             .height(50.dp)
@@ -194,7 +194,12 @@ fun ComposedIconBar(
 
                 Spacer1, Spacer2 -> Spacer(modifier = Modifier.weight(1F))
 
-                else -> ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
+                else -> ToolbarIcon(
+                    toolbarAction,
+                    toolbarActionInfo.getCurrentResId(),
+                    onClick,
+                    onLongClick
+                )
             }
         }
     }
@@ -226,7 +231,8 @@ fun PageInfoIcon(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ToolbarIcon(
-    toolbarActionInfo: ToolbarActionInfo,
+    toolbarAction: ToolbarAction,
+    iconResId: Int,
     onClick: (ToolbarAction) -> Unit,
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
@@ -234,7 +240,6 @@ fun ToolbarIcon(
     val pressed by interactionSource.collectIsPressedAsState()
     val borderWidth = if (pressed) 0.5.dp else (-1).dp
 
-    val toolbarAction = toolbarActionInfo.toolbarAction
     Icon(
         modifier = Modifier
             .fillMaxHeight()
@@ -249,7 +254,7 @@ fun ToolbarIcon(
             )
             .padding(6.dp)
             .testTag(toolbarAction.name.lowercase()),
-        painter = painterResource(id = toolbarActionInfo.getCurrentResId()),
+        painter = painterResource(id = iconResId),
         contentDescription = stringResource(id = toolbarAction.titleResId),
         tint = MaterialTheme.colors.onBackground
     )
