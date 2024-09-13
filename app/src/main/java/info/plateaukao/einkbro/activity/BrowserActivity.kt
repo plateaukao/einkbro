@@ -2812,9 +2812,24 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         lifecycleScope.launch {
             actionModeMenuViewModel.shouldShow.collect {
                 if (it) {
-                    actionModeView?.visibility = VISIBLE
                     val view = actionModeView ?: return@collect
-                    ViewUnit.updateViewPosition(view, actionModeMenuViewModel.clickedPoint.value)
+                    // when it's first time to show action mode view
+                    // need to wait until width and height is available
+                    if (view.width == 0 || view.height == 0) {
+                        view.post {
+                            ViewUnit.updateViewPosition(
+                                actionModeView!!,
+                                actionModeMenuViewModel.clickedPoint.value
+                            )
+                            actionModeView?.visibility = VISIBLE
+                        }
+                    } else {
+                        ViewUnit.updateViewPosition(
+                            view,
+                            actionModeMenuViewModel.clickedPoint.value
+                        )
+                        actionModeView?.visibility = VISIBLE
+                    }
                 } else {
                     actionModeView?.visibility = INVISIBLE
 //                    if (actionModeView?.isAttachedToWindow == true) {
