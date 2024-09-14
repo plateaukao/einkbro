@@ -557,4 +557,5 @@
     <string name="setting_title_disable_long_press_toucharea">Disable Long Press Touch Area</string>
     <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area.</string>
     <string name="expand_space">Expand space</string>
+    <string name="open_epub">Open epub file</string>
 </resources>

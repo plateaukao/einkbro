@@ -91,6 +91,7 @@ class MenuActionHandler(
                 val hasInvertedColor = config.toggleInvertedColor(ninjaWebView.url.orEmpty())
                 ViewUnit.invertColor(ninjaWebView, hasInvertedColor)
             }
+
             MenuItemType.WhiteBknd -> {
                 val isOn = config.toggleWhiteBackground(ninjaWebView.url.orEmpty())
                 if (isOn) ninjaWebView.updateCssStyle() else ninjaWebView.reload()
@@ -121,9 +122,12 @@ class MenuActionHandler(
     }
 
     private fun openSavedEpub() = if (config.savedEpubFileInfos.isEmpty()) {
-        NinjaToast.show(activity, "no saved epub!")
+        browserController.showOpenEpubFilePicker()
     } else {
-        dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) { uri ->
+        dialogManager.showSaveEpubDialog(
+            showAddNewEpub = false,
+            openEpubAction = { browserController.showOpenEpubFilePicker() },
+        ) { uri ->
             HelperUnit.openFile(activity, uri ?: return@showSaveEpubDialog)
         }
     }

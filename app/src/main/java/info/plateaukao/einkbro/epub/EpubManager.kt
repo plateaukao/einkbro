@@ -107,13 +107,23 @@ class EpubManager(private val context: Context) : KoinComponent {
         ).show()
     }
 
-    fun showEpubFilePicker(activityResultLauncher: ActivityResultLauncher<Intent>) {
+    fun showWriteEpubFilePicker(activityResultLauncher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_EPUB
         intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        activityResultLauncher.launch(intent)
+    }
+
+    fun showOpenEpubFilePicker(activityResultLauncher: ActivityResultLauncher<Intent>) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = Constants.MIME_TYPE_EPUB
+            addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
         activityResultLauncher.launch(intent)
     }
 

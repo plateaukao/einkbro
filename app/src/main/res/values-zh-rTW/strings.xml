@@ -239,7 +239,7 @@
     <string name="hie_touch_area_when_input">輸入時隱藏點擊區域</string>
     <string name="switch_touch_area_action">上下方向互換</string>
     <string name="no_previous_page">沒有前一頁</string>
-    <string name="menu_open_epub">開啟已存 epub</string>
+    <string name="menu_open_epub">開啟 epub</string>
     <string name="setting_multitouch_use_title">使用兩指手勢</string>
     <string name="setting_multitouch_use_summary">兩指在畫面上滑動啟用相關功能</string>
     <string name="setting_title_two_finger_swipe">兩指滑動</string>
@@ -470,4 +470,5 @@
     <string name="setting_title_disable_long_press_toucharea">長按觸控區域無作用</string>
     <string name="setting_summary_disable_long_press_toucharea">避免偶爾會不小心長按觸控區域</string>
     <string name="expand_space">空白區域</string>
+    <string name="open_epub">開啟 Epub</string>
 </resources>
