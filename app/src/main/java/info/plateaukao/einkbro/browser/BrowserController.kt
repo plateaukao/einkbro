@@ -43,6 +43,7 @@ interface BrowserController {
     fun showFontSizeChangeDialog()
     fun showSearchPanel()
     fun showWebArchiveFilePicker()
+    fun showOpenEpubFilePicker()
     //for tool bar long click
     fun openHistoryPage(amount: Int = 0)
     //

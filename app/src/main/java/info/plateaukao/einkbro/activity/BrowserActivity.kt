@@ -296,6 +296,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
+    private lateinit var openEpubFilePickerLauncher: ActivityResultLauncher<Intent>
 
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
@@ -752,6 +753,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         fileChooserLauncher =
             IntentUnit.createResultLauncher(this) { handleWebViewFileChooser(it) }
+        openEpubFilePickerLauncher =
+            IntentUnit.createResultLauncher(this) { handleEpubUri(it) }
+    }
+
+    private fun handleEpubUri(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) return
+        val uri = result.data?.data ?: return
+        HelperUnit.openFile(this, uri)
     }
 
     private fun handleFontSelectionResult(result: ActivityResult) {
@@ -2609,7 +2618,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
         if (uri == null) {
-            epubManager.showEpubFilePicker(writeEpubFilePickerLauncher)
+            epubManager.showWriteEpubFilePicker(writeEpubFilePickerLauncher)
         } else {
             saveEpub(uri)
         }
@@ -2622,7 +2631,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             } else {
                 lifecycleScope.launch {
                     ttsViewModel.readText(this@BrowserActivity, ninjaWebView.getRawText());
-                    //ttsViewModel.readText(this@BrowserActivity, "one. two. three. four. five. six.")
                 }
             }
             return
@@ -2660,6 +2668,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val fileName = "${ninjaWebView.title}.mht"
         BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
     }
+
+    override fun showOpenEpubFilePicker() = epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
 
     override fun toggleTtsRead() {
         if (ttsManager.isSpeaking()) {
