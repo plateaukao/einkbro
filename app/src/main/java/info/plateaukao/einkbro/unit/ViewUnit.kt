@@ -26,6 +26,7 @@ import android.webkit.WebView.LAYER_TYPE_HARDWARE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
+import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.util.TranslationLanguage
 
 
@@ -110,8 +111,8 @@ object ViewUnit {
     }
 
     @JvmStatic
-    fun dpToPixel(context: Context, dp: Int): Float {
-        val metrics = context.resources.displayMetrics
+    fun dpToPixel(dp: Int): Float {
+        val metrics = EinkBroApplication.instance.resources.displayMetrics
         return dp * (metrics.densityDpi / 160f)
     }
 
@@ -229,8 +230,8 @@ object ViewUnit {
 
     fun updateViewPosition(view: View, point: Point) {
         val properPoint = getProperPosition(view, point)
-        view.x = properPoint.x + dpToPixel(view.context, 10)
-        view.y = properPoint.y + dpToPixel(view.context, 10)
+        view.x = properPoint.x + dpToPixel(10)
+        view.y = properPoint.y + dpToPixel(10)
     }
 
     private fun getProperPosition(view: View, point: Point): Point {
@@ -240,7 +241,7 @@ object ViewUnit {
         val width = view.width
         val height = view.height
         // Calculate the new position to ensure the view is within bounds
-        val padding = dpToPixel(view.context, 10)
+        val padding = dpToPixel(10)
         val x =
             if (point.x + width + padding > parentWidth) parentWidth - width - padding else point.x
         val y =

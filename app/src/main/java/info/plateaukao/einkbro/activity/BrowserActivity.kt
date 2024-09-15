@@ -421,8 +421,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val externalSearchContainer = binding.activityMainContent.externalSearchActionContainer
         externalSearchViewModel.searchActions.forEach { action ->
             val button = TextView(this).apply {
-                height = ViewUnit.dpToPixel(this@BrowserActivity, 40).toInt()
-                textSize = ViewUnit.dpToPixel(this@BrowserActivity, 10)
+                height = ViewUnit.dpToPixel(40).toInt()
+                textSize = ViewUnit.dpToPixel(10)
                 gravity = Gravity.CENTER
                 background = getDrawable(R.drawable.background_with_border)
                 text = action.title.take(2).uppercase(Locale.getDefault())
@@ -697,17 +697,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         //Log.d("touch", "updateSelectionRect: $left, $top, $right, $bottom")
         // 10 for the selection indicator height
         val newPoint = Point(
-            ViewUnit.dpToPixel(this, right.toInt()).toInt(),
-            ViewUnit.dpToPixel(this, bottom.toInt() + 16).toInt()
+            ViewUnit.dpToPixel(right.toInt()).toInt(),
+            ViewUnit.dpToPixel(bottom.toInt() + 16).toInt()
         )
-        if (abs(newPoint.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(
-                this@BrowserActivity,
-                15
-            ) ||
-            abs(newPoint.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(
-                this@BrowserActivity,
-                15
-            )
+        if (abs(newPoint.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(15) ||
+            abs(newPoint.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(15)
         ) {
             actionModeView?.visibility = INVISIBLE
         }
@@ -715,8 +709,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         // update the long press point so that it can be used for selecting sentence
         longPressPoint = Point(
-            ViewUnit.dpToPixel(this, left.toInt() - 1).toInt(),
-            ViewUnit.dpToPixel(this, top.toInt() + 1).toInt()
+            ViewUnit.dpToPixel(left.toInt() - 1).toInt(),
+            ViewUnit.dpToPixel(top.toInt() + 1).toInt()
         )
     }
 
@@ -1904,7 +1898,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun loadUrlInWebView(foreground: Boolean, webView: NinjaWebView, url: String) {
-        //ViewUnit.bound(this, webView)
         if (!foreground) {
             webView.deactivate()
             if (config.enableWebBkgndLoad) {
@@ -1935,14 +1928,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
                     return
                 }
-                if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(
-                        this@BrowserActivity,
-                        15
-                    ) ||
-                    abs(motionEvent.y - (longPressStartPoint?.y ?: 0)) > ViewUnit.dpToPixel(
-                        this@BrowserActivity,
-                        15
-                    )
+                if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(15) ||
+                    abs(motionEvent.y - (longPressStartPoint?.y ?: 0)) > ViewUnit.dpToPixel(15)
                 ) {
                     actionModeView?.visibility = INVISIBLE
                     longPressStartPoint = null

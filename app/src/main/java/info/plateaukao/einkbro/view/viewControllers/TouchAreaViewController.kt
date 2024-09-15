@@ -31,11 +31,12 @@ class TouchAreaViewController(
     private val pageDownAction = { ninjaWebView().pageDownWithNoAnimation() }
     private val pageBottomAction = { ninjaWebView().jumpToBottom() }
     private val keyLeftAction = {
-        ninjaWebView().dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT ))
+        ninjaWebView().dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
     }
     private val keyRightAction = {
         ninjaWebView().dispatchKeyEvent(
-            KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT ))
+            KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT)
+        )
     }
 
     private val touchAreaChangeListener: OnSharedPreferenceChangeListener by lazy {
@@ -83,7 +84,6 @@ class TouchAreaViewController(
                 // need to consider whether top part height is occupied by toolbar
                 val currentViewY =
                     event.rawY - dY - view.height - (if (config.isToolbarOnTop) ViewUnit.dpToPixel(
-                        rootView.context,
                         50
                     ) else 0).toInt()
                 val customizeY = currentViewY + view.height / 2
