@@ -258,6 +258,18 @@ object ViewUnit {
         }
         return false
     }
+
+    fun createCountString(superScript: Int, subScript: Int): String {
+        if (subScript == 0 || superScript == 0) return "1"
+        if (subScript >= 10) return subScript.toString()
+
+        if (subScript == superScript) return subScript.toString()
+
+        val superScripts = listOf("¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
+        val subScripts = listOf("₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
+        val separator = "⁄"
+        return "${superScripts[superScript - 1]}$separator${subScripts[subScript - 1]}"
+    }
 }
 
 fun MotionEvent.toRawPoint(): Point = Point(rawX.toInt(), rawY.toInt())
