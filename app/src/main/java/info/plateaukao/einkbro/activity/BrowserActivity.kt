@@ -525,6 +525,35 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            actionModeMenuViewModel.clickedPoint.collect { point ->
+                val view = actionModeView ?: return@collect
+                ViewUnit.updateViewPosition(view, point)
+            }
+        }
+
+        lifecycleScope.launch {
+            actionModeMenuViewModel.shouldShow.collect { shouldShow ->
+                val view = actionModeView ?: return@collect
+                if (shouldShow) {
+                    val point = actionModeMenuViewModel.clickedPoint.value
+                    // when it's first time to show action mode view
+                    // need to wait until width and height is available
+                    if (view.width == 0 || view.height == 0) {
+                        view.post {
+                            ViewUnit.updateViewPosition(view, point)
+                            view.visibility = VISIBLE
+                        }
+                    } else {
+                        ViewUnit.updateViewPosition(view, point)
+                        view.visibility = VISIBLE
+                    }
+                } else {
+                    view.visibility = INVISIBLE
+                }
+            }
+        }
     }
 
     private suspend fun updateTranslationInput() {
@@ -2648,40 +2677,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             )
             actionModeView?.visibility = INVISIBLE
             binding.root.addView(actionModeView)
-        }
-
-        lifecycleScope.launch {
-            actionModeMenuViewModel.clickedPoint.collect {
-                val view = actionModeView ?: return@collect
-                ViewUnit.updateViewPosition(view, it)
-            }
-        }
-
-        lifecycleScope.launch {
-            actionModeMenuViewModel.shouldShow.collect {
-                if (it) {
-                    val view = actionModeView ?: return@collect
-                    // when it's first time to show action mode view
-                    // need to wait until width and height is available
-                    if (view.width == 0 || view.height == 0) {
-                        view.post {
-                            ViewUnit.updateViewPosition(
-                                actionModeView!!,
-                                actionModeMenuViewModel.clickedPoint.value
-                            )
-                            actionModeView?.visibility = VISIBLE
-                        }
-                    } else {
-                        ViewUnit.updateViewPosition(
-                            view,
-                            actionModeMenuViewModel.clickedPoint.value
-                        )
-                        actionModeView?.visibility = VISIBLE
-                    }
-                } else {
-                    actionModeView?.visibility = INVISIBLE
-                }
-            }
         }
 
         actionModeMenuViewModel.show()
