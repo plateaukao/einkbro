@@ -62,7 +62,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
@@ -77,7 +76,6 @@ import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.AlbumInfo
-import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FabPosition
@@ -190,6 +188,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private val ttsViewModel: TtsViewModel by viewModels()
+
     private val translationViewModel: TranslationViewModel by viewModels()
 
     private val splitSearchViewModel: SplitSearchViewModel by viewModels()
@@ -466,7 +465,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun initActionModeViewModel() {
         lifecycleScope.launch {
             actionModeMenuViewModel.actionModeMenuState.collect { state ->
-                val anchorPoint = actionModeMenuViewModel.clickedPoint.value
                 when (state) {
                     is HighlightText -> {
                         lifecycleScope.launch {
@@ -483,37 +481,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             else TRANSLATE_API.NAVER
                         translationViewModel.updateTranslateMethod(api)
 
-                        translationViewModel.viewModelScope.launch {
-                            translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                            val selectedTextWithContext = ninjaWebView.getSelectedTextWithContext()
-                            translationViewModel.updateMessageWithContext(selectedTextWithContext)
-                            translationViewModel.url = ninjaWebView.url.orEmpty()
-                            TranslateDialogFragment(
-                                translationViewModel,
-                                externalSearchWebView,
-                                anchorPoint
-                            )
-                                .show(supportFragmentManager, "translateDialog")
+                        lifecycleScope.launch {
+                            updateTranslationInput()
+                            showTranslationDialog()
+
                             actionModeMenuViewModel.finish()
                         }
                     }
 
                     is Gpt -> {
                         val gptAction = config.gptActionList[state.gptActionIndex]
-                        translationViewModel.viewModelScope.launch {
-                            translationViewModel.updateInputMessage(actionModeMenuViewModel.selectedText.value)
-                            val selectedTextWithContext = ninjaWebView.getSelectedTextWithContext()
-                            translationViewModel.updateMessageWithContext(selectedTextWithContext)
+                        lifecycleScope.launch {
+                            updateTranslationInput()
                             if (translationViewModel.hasOpenAiApiKey()) {
-                                translationViewModel.updateTranslateMethod(TRANSLATE_API.GPT)
-                                translationViewModel.gptActionInfo = gptAction
+                                translationViewModel.setupGptAction(gptAction)
                                 translationViewModel.url = ninjaWebView.url.orEmpty()
-                                TranslateDialogFragment(
-                                    translationViewModel,
-                                    externalSearchWebView,
-                                    actionModeMenuViewModel.clickedPoint.value,
-                                )
-                                    .show(supportFragmentManager, "contextMenu")
+
+                                showTranslationDialog()
                             } else {
                                 NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
                             }
@@ -540,6 +524,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     Idle -> Unit
                 }
             }
+        }
+    }
+
+    private suspend fun updateTranslationInput() {
+        with(translationViewModel) {
+            updateInputMessage(actionModeMenuViewModel.selectedText.value)
+            updateMessageWithContext(ninjaWebView.getSelectedTextWithContext())
+            url = ninjaWebView.url.orEmpty()
         }
     }
 
@@ -672,24 +664,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun summarizeContent() {
-        if (config.gptApiKey.isNotBlank()) {
+        if (translationViewModel.hasOpenAiApiKey()) {
             lifecycleScope.launch {
-                with(translationViewModel) {
-                    updateInputMessage(ninjaWebView.getRawText())
-                    updateTranslateMethod(TRANSLATE_API.GPT)
-                    gptActionInfo =
-                        ChatGPTActionInfo(systemMessage = config.gptUserPromptForWebPage)
-                }
                 translationViewModel.url = ninjaWebView.url.orEmpty()
-                TranslateDialogFragment(
-                    translationViewModel,
-                    externalSearchWebView,
-                    actionModeMenuViewModel.clickedPoint.value,
-                )
-                    .show(supportFragmentManager, "contextMenu")
+                val isSuccess = translationViewModel.setupTextSummary(ninjaWebView.getRawText())
 
+                if (!isSuccess) {
+                    NinjaToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
+                    return@launch
+                }
+
+                showTranslationDialog()
             }
         }
+    }
+
+    private fun showTranslationDialog() {
+        TranslateDialogFragment(
+            translationViewModel,
+            externalSearchWebView,
+            actionModeMenuViewModel.clickedPoint.value,
+        )
+            .show(supportFragmentManager, "contextMenu")
     }
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
