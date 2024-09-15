@@ -25,12 +25,19 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView.LAYER_TYPE_HARDWARE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
 import info.plateaukao.einkbro.EinkBroApplication
+import info.plateaukao.einkbro.databinding.ActivityMainBinding
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.TranslationLanguage
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
-object ViewUnit {
+object ViewUnit: KoinComponent {
+    private val config: ConfigManager by inject()
+
     @JvmStatic
     fun bound(context: Context, view: View) {
         val windowWidth = getWindowWidth(context)
@@ -270,6 +277,88 @@ object ViewUnit {
         val subScripts = listOf("₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
         val separator = "⁄"
         return "${superScripts[superScript - 1]}$separator${subScripts[subScript - 1]}"
+    }
+
+
+    fun updateAppbarPosition(binding: ActivityMainBinding) {
+        if (config.isToolbarOnTop) {
+            moveAppbarToTop(binding)
+        } else {
+            moveAppbarToBottom(binding)
+        }
+        binding.inputUrl.shouldReverse = config.isToolbarOnTop
+    }
+
+
+    private fun moveAppbarToBottom(binding: ActivityMainBinding) {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            connect(
+                binding.appBar.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+            connect(
+                binding.inputUrl.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.BOTTOM,
+                binding.appBar.id,
+                ConstraintSet.TOP
+            )
+
+            clear(binding.contentSeparator.id, ConstraintSet.TOP)
+            connect(
+                binding.contentSeparator.id,
+                ConstraintSet.BOTTOM,
+                binding.appBar.id,
+                ConstraintSet.TOP
+            )
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun moveAppbarToTop(binding: ActivityMainBinding) {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(binding.appBar.id, ConstraintSet.BOTTOM)
+            clear(binding.inputUrl.id, ConstraintSet.BOTTOM)
+
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.TOP,
+                binding.appBar.id,
+                ConstraintSet.BOTTOM
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM
+            )
+
+            clear(binding.contentSeparator.id, ConstraintSet.BOTTOM)
+            connect(
+                binding.contentSeparator.id,
+                ConstraintSet.TOP,
+                binding.appBar.id,
+                ConstraintSet.BOTTOM
+            )
+        }
+        constraintSet.applyTo(binding.root)
     }
 }
 
