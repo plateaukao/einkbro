@@ -154,6 +154,20 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    fun setupGptAction(gptAction: ChatGPTActionInfo) {
+        updateTranslateMethod(TRANSLATE_API.GPT)
+        gptActionInfo = gptAction
+    }
+
+    fun setupTextSummary(text: String): Boolean {
+        if (!hasOpenAiApiKey()) return false
+
+        updateInputMessage(text)
+        setupGptAction(ChatGPTActionInfo(systemMessage = config.gptUserPromptForWebPage))
+
+        return true
+    }
+
     private fun callNaverDict() {
         val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
