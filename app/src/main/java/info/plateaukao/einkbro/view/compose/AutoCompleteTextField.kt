@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent.KEYCODE_ENTER
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -25,7 +24,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -94,13 +92,18 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
     }
 
     fun getFocus() {
-        // try catch for IllegalStateException: FocusRequester is already active
-        try {
-            focusRequester.requestFocus()
-            postDelayed({ ViewUnit.showKeyboard(context as Activity) }, 400)
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-        }
+        postDelayed(
+            {
+                ViewUnit.showKeyboard(context as Activity)
+                try {
+                    // need to call it after some delay to make sure the view is ready
+                    focusRequester.requestFocus()
+                } catch (e: IllegalStateException) {
+                    // try catch for IllegalStateException: FocusRequester is already active
+                    e.printStackTrace()
+                }
+            }, 200
+        )
     }
 }
 
@@ -132,8 +135,7 @@ fun AutoCompleteTextField(
     Column(
         Modifier
             .background(Color.Transparent)
-            .clickable { closeAction() }
-            .focusRequester(requester),
+            .clickable { closeAction() },
         verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top
     ) {
         if (!shouldReverse) {
@@ -194,7 +196,6 @@ private fun TextInputBar(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TextInput(
     modifier: Modifier,
@@ -204,10 +205,6 @@ fun TextInput(
 ) {
     val scrollState = remember { androidx.compose.foundation.ScrollState(0) }
     val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(Unit) {
-        scrollState.scrollTo(scrollState.maxValue)
-    }
 
     Box(modifier = modifier.padding(start = 5.dp)) {
         BasicTextField(

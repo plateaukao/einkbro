@@ -2052,7 +2052,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.appBar.visibility = INVISIBLE
         binding.contentSeparator.visibility = INVISIBLE
         binding.inputUrl.visibility = VISIBLE
-        ViewUnit.showKeyboard(this)
         binding.inputUrl.getFocus()
     }
 
