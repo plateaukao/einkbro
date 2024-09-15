@@ -124,7 +124,7 @@ private fun RecordItem(
             AndroidView(
                 factory = { context ->
                     TextView(context).apply {
-                        textSize = ViewUnit.dpToPixel(context, 6)
+                        textSize = ViewUnit.dpToPixel(6)
                         maxLines = 1
                         ellipsize = TextUtils.TruncateAt.MIDDLE
                     }
@@ -141,7 +141,7 @@ private fun RecordItem(
                         .align(Alignment.Top),
                     factory = { context ->
                         TextView(context).apply {
-                            textSize = ViewUnit.dpToPixel(context, 5)
+                            textSize = ViewUnit.dpToPixel(5)
                             textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                             maxLines = 1
                             ellipsize = TextUtils.TruncateAt.MIDDLE
