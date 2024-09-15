@@ -43,6 +43,7 @@ import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaToast.showShort
+import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
@@ -632,6 +633,20 @@ object BrowserUnit : KoinComponent {
             if (matchStarString(paramConfig, param)) return true
         }
         return false
+    }
+    
+    fun loadRecentlyUsedBookmarks(webView: NinjaWebView) {
+        val html = getRecentBookmarksContent()
+        if (html.isNotBlank()) {
+            webView.loadDataWithBaseURL(
+                null,
+                getRecentBookmarksContent(),
+                "text/html",
+                "utf-8",
+                null
+            )
+            webView.albumTitle = webView.context.getString(R.string.recently_used_bookmarks)
+        }
     }
 
     private fun matchStarString(config: String, param: String): Boolean {
