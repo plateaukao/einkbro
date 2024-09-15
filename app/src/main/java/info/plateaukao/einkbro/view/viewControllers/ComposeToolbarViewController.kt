@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.AbstractComposeView
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.compose.ComposedToolbar
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -27,23 +26,24 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.RotateScreen
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Settings
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TOC
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Touch
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionUpDown
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionLeftRight
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionUpDown
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Tts
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class ComposeToolbarViewController(
     private val toolbarComposeView: ToolbarComposeView,
     private val albums: MutableState<List<Album>>,
+    private val ttsViewModel: TtsViewModel,
     private val onIconClick: (ToolbarAction) -> Unit,
     private val onIconLongClick: (ToolbarAction) -> Unit,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val ttsManager: TtsManager by inject()
 
     private val readerToolbarActions: List<ToolbarAction> = listOf(
         RotateScreen,
@@ -127,9 +127,17 @@ class ComposeToolbarViewController(
                 Refresh -> ToolbarActionInfo(toolbarAction, isLoading)
                 Desktop -> ToolbarActionInfo(toolbarAction, config.desktop)
                 Touch -> ToolbarActionInfo(toolbarAction, config.enableTouchTurn)
-                TouchDirectionUpDown -> ToolbarActionInfo(toolbarAction, config.switchTouchAreaAction)
-                TouchDirectionLeftRight -> ToolbarActionInfo(toolbarAction, config.switchTouchAreaAction)
-                Tts -> ToolbarActionInfo(toolbarAction, ttsManager.isSpeaking())
+                TouchDirectionUpDown -> ToolbarActionInfo(
+                    toolbarAction,
+                    config.switchTouchAreaAction
+                )
+
+                TouchDirectionLeftRight -> ToolbarActionInfo(
+                    toolbarAction,
+                    config.switchTouchAreaAction
+                )
+
+                Tts -> ToolbarActionInfo(toolbarAction, ttsViewModel.isSpeaking())
                 else -> ToolbarActionInfo(toolbarAction, false)
             }
         }
