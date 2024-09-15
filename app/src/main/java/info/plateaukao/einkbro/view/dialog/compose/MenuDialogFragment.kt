@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
-import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.AddToPocket
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CloseTab
@@ -54,14 +53,13 @@ import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SavePdf
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Settings
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ShareLink
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Shortcut
-import org.koin.android.ext.android.inject
 
 class MenuDialogFragment(
     private val url: String,
+    private val isSpeaking: Boolean,
     private val itemClicked: (MenuItemType) -> Unit,
     private val itemLongClicked: (MenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
-    private val ttsManager: TtsManager by inject()
 
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
@@ -69,7 +67,7 @@ class MenuDialogFragment(
                 config.whiteBackground(url),
                 config.boldFontStyle,
                 config.blackFontStyle,
-                ttsManager.isSpeaking(),
+                isSpeaking,
                 config.showShareSaveMenu,
                 config.showContentMenu,
                 config.hasInvertedColor(url),

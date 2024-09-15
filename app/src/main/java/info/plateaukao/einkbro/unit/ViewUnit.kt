@@ -13,6 +13,8 @@ import android.graphics.Paint
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
+import android.view.Menu
+import android.view.MotionEvent
 import android.view.TouchDelegate
 import android.view.View
 import android.view.Window
@@ -246,4 +248,16 @@ object ViewUnit {
 
         return Point(x.toInt(), y.toInt())
     }
+
+    fun isTextEditMode(context: Context, menu: Menu): Boolean {
+        for (i in 0 until menu.size()) {
+            val item = menu.getItem(i)
+            if (item.title == context.getString(android.R.string.paste)) {
+                return true
+            }
+        }
+        return false
+    }
 }
+
+fun MotionEvent.toRawPoint(): Point = Point(rawX.toInt(), rawY.toInt())

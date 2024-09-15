@@ -29,7 +29,6 @@ import android.view.ActionMode
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
-import android.view.Menu
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.GONE
@@ -89,7 +88,6 @@ import info.plateaukao.einkbro.preference.NewTabBehavior
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.service.ClearService
-import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
@@ -99,6 +97,7 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.unit.toRawPoint
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.MultitouchListener
@@ -160,7 +159,6 @@ import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.File
@@ -190,7 +188,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // Others
     private var downloadReceiver: BroadcastReceiver? = null
     private val config: ConfigManager by inject()
-    private val ttsManager: TtsManager by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private val ttsViewModel: TtsViewModel by viewModels()
@@ -242,6 +239,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ComposeToolbarViewController(
             binding.composeIconBar,
             albumViewModel.albums,
+            ttsViewModel,
             { toolbarActionHandler.handleClick(it) },
             { toolbarActionHandler.handleLongClick(it) },
             onTabClick = { it.showOrJumpToTop() },
@@ -359,6 +357,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initTextSearchButton()
         initExternalSearchCloseButton()
         initTranslationViewModel()
+        initTtsViewModel()
 
         if (config.hideStatusbar) {
             hideStatusBar()
@@ -366,6 +365,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         handleWindowInsets()
         listenKeyboardShowHide()
+    }
+
+    private fun initTtsViewModel() {
+        lifecycleScope.launch {
+            ttsViewModel.speakingState.collect { _ ->
+                composeToolbarViewController.updateIcons()
+            }
+        }
     }
 
     private fun initTranslationViewModel() {
@@ -933,7 +940,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onDestroy() {
-        ttsManager.stopReading()
+        ttsViewModel.stop()
 
         updateSavedAlbumInfo()
 
@@ -997,7 +1004,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun handleBackKey() {
-        hideKeyboard()
+        ViewUnit.hideKeyboard(this)
         if (overviewDialogController.isVisible()) {
             hideOverview()
         }
@@ -1103,10 +1110,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     Bookmark(nonNullTitle, currentUrl),
                     {
                         handleBookmarkSync(true)
-                        hideKeyboard()
+                        ViewUnit.hideKeyboard(this@BrowserActivity)
                         NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
                     },
-                    { hideKeyboard() }
+                    { ViewUnit.hideKeyboard(this@BrowserActivity) }
                 ).show()
             }
         } catch (e: Exception) {
@@ -1123,10 +1130,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             currentUrl,
             ninjaWebView.favicon,
             {
-                hideKeyboard()
+                ViewUnit.hideKeyboard(this)
                 NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
             },
-            { hideKeyboard() }
+            { ViewUnit.hideKeyboard(this) }
         ).show()
     }
 
@@ -1684,7 +1691,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_NAV_POSITION -> fabImageViewController.initialize()
                 ConfigManager.K_TTS_SPEED_VALUE ->
-                    ttsManager.setSpeechRate(config.ttsSpeedValue / 100f)
+                    ttsViewModel.setSpeechRate(config.ttsSpeedValue / 100f)
 
                 ConfigManager.K_CUSTOM_USER_AGENT,
                 ConfigManager.K_ENABLE_CUSTOM_USER_AGENT,
@@ -1809,7 +1816,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             NinjaToast.show(this, getString(R.string.toast_input_empty))
             return
         }
-        hideKeyboard()
+        ViewUnit.hideKeyboard(this)
         (currentAlbumController as NinjaWebView).findNext(false)
     }
 
@@ -1818,7 +1825,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             NinjaToast.show(this, getString(R.string.toast_input_empty))
             return
         }
-        hideKeyboard()
+        ViewUnit.hideKeyboard(this)
         (currentAlbumController as NinjaWebView).findNext(true)
     }
 
@@ -2142,7 +2149,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.appBar.visibility = INVISIBLE
         binding.contentSeparator.visibility = INVISIBLE
         binding.inputUrl.visibility = VISIBLE
-        showKeyboard()
+        ViewUnit.showKeyboard(this)
         binding.inputUrl.getFocus()
     }
 
@@ -2392,14 +2399,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var motionEvent: MotionEvent? = null
     private var longPressPoint: Point = Point(0, 0)
     override fun onLongPress(message: Message, event: MotionEvent?) {
-        //Log.d("touch", "onLongPress")
         if (ninjaWebView.isSelectingText) return
 
         motionEvent = event
         longPressPoint = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message)
-        if (url.isBlank()) {
-        } else {
+        if (url.isNotBlank()) {
             // case: image or link
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
             BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
@@ -2540,7 +2545,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
         dm.enqueue(request)
-        hideKeyboard()
+        ViewUnit.hideKeyboard(this)
     }
 
     @SuppressLint("RestrictedApi")
@@ -2554,7 +2559,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.contentSeparator.visibility = VISIBLE
         binding.inputUrl.visibility = INVISIBLE
         composeToolbarViewController.show()
-        hideKeyboard()
+        ViewUnit.hideKeyboard(this)
     }
 
     override fun toggleFullscreen() {
@@ -2578,7 +2583,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ninjaWebView.clearMatches()
         }
         searchOnSite = false
-        hideKeyboard()
+        ViewUnit.hideKeyboard(this)
         showToolbar()
     }
 
@@ -2612,7 +2617,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.mainSearchPanel.getFocus()
         binding.appBar.visibility = VISIBLE
         binding.contentSeparator.visibility = VISIBLE
-        showKeyboard()
+        ViewUnit.showKeyboard(this)
     }
 
     override fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
@@ -2624,33 +2629,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun readArticle() {
-        if (config.useOpenAiTts && config.gptApiKey.isNotBlank()) {
-            if (ttsViewModel.isSpeaking()) {
-                ttsViewModel.stop()
-            } else {
-                lifecycleScope.launch {
-                    ttsViewModel.readText(this@BrowserActivity, ninjaWebView.getRawText());
-                }
-            }
-            return
-        }
-
-        if (Build.MODEL.startsWith("Pixel 8")) {
-            lifecycleScope.launch {
-                IntentUnit.tts(this@BrowserActivity, ninjaWebView.getRawText())
-            }
-            return
-        }
-
-
         lifecycleScope.launch {
-            ttsManager.readText(ninjaWebView.getRawText())
-            delay(2000)
-            composeToolbarViewController.updateIcons()
-
-            if (ttsManager.isSpeaking()) {
-                speakingCompleteDetector()
-            }
+            ttsViewModel.readText(ninjaWebView.getRawText())
         }
     }
 
@@ -2659,6 +2639,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showMenuDialog() =
         MenuDialogFragment(
             ninjaWebView.url.orEmpty(),
+            ttsViewModel.isSpeaking(),
             { menuActionHandler.handle(it, ninjaWebView) },
             { menuActionHandler.handleLongClick(it) }
         ).show(supportFragmentManager, "menu_dialog")
@@ -2668,35 +2649,25 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
     }
 
-    override fun showOpenEpubFilePicker() = epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
+    override fun showOpenEpubFilePicker() =
+        epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
 
     override fun toggleTtsRead() {
-        if (ttsManager.isSpeaking()) {
-            ttsManager.stopReading()
+        if (ttsViewModel.isSpeaking()) {
+            ttsViewModel.stop()
         } else {
             readArticle()
         }
     }
 
     override fun showTtsLanguageDialog() {
-        TtsLanguageDialog(this).show(ttsManager.getAvailableLanguages()) {
+        TtsLanguageDialog(this).show(ttsViewModel.getAvailableLanguages()) {
             config.ttsLocale = it
         }
     }
 
     override fun removeAlbum() {
         currentAlbumController?.let { removeAlbum(it) }
-    }
-
-    private fun speakingCompleteDetector() {
-        lifecycleScope.launch {
-            while (ttsManager.isSpeaking()) {
-                delay(1000L)
-                if (!ttsManager.isSpeaking()) {
-                    composeToolbarViewController.updateIcons()
-                }
-            }
-        }
     }
 
     override fun toggleSplitScreen(url: String?) {
@@ -2731,18 +2702,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         return list[index]
     }
 
-    private fun showKeyboard() = ViewUnit.showKeyboard(this)
-
-    private fun hideKeyboard() = ViewUnit.hideKeyboard(this)
-
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
-        //Log.d("touch", "onActionModeStarted")
+        val isTextEditMode = ViewUnit.isTextEditMode(this, mode.menu)
 
         // check isSendingLink
-        if (remoteConnViewModel.isSendingTextSearch &&
-            !isTextEditMode(mode.menu)
-        ) {
+        if (remoteConnViewModel.isSendingTextSearch && !isTextEditMode) {
             mode.hide(1000000)
             mode.menu.clear()
             mode.finish()
@@ -2754,7 +2719,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu) && isInSplitSearchMode()) {
+        if (!config.showDefaultActionMenu && !isTextEditMode && isInSplitSearchMode()) {
             mode.hide(1000000)
             mode.menu.clear()
 
@@ -2769,7 +2734,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (!actionModeMenuViewModel.isInActionMode()) {
             actionModeMenuViewModel.updateActionMode(mode)
 
-            if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
+            if (!config.showDefaultActionMenu && !isTextEditMode) {
                 mode.hide(1000000)
                 mode.menu.clear()
                 mode.finish()
@@ -2783,7 +2748,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
 
-        if (!config.showDefaultActionMenu && !isTextEditMode(mode.menu)) {
+        if (!config.showDefaultActionMenu && !isTextEditMode) {
             mode.menu.clear()
         }
 
@@ -2841,26 +2806,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 } else {
                     actionModeView?.visibility = INVISIBLE
-//                    if (actionModeView?.isAttachedToWindow == true) {
-//                        (actionModeView?.parent as? ViewGroup)?.removeView(actionModeView)
-//                        actionModeView = null
-//                    }
                 }
             }
         }
 
         actionModeMenuViewModel.show()
-    }
-
-
-    private fun isTextEditMode(menu: Menu): Boolean {
-        for (i in 0 until menu.size()) {
-            val item = menu.getItem(i)
-            if (item.title == getString(android.R.string.paste)) {
-                return true
-            }
-        }
-        return false
     }
 
     override fun onPause() {
@@ -2888,6 +2838,3 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
 }
-
-//private fun MotionEvent.toPoint(): Point = Point(x.toInt(), y.toInt())
-private fun MotionEvent.toRawPoint(): Point = Point(rawX.toInt(), rawY.toInt())

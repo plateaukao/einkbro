@@ -18,6 +18,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 
+@Suppress("DEPRECATION")
 class EinkBroApplication : Application() {
 
     private val sp: SharedPreferences by lazy {
@@ -58,10 +59,17 @@ class EinkBroApplication : Application() {
         if (config.uiLocaleLanguage.isNotEmpty()) {
             LocaleManager.setLocale(this, config.uiLocaleLanguage)
         }
+
+        instance = this
     }
 
     override fun onTerminate() {
         super.onTerminate()
         ttsManager.release()
+    }
+
+    companion object {
+        lateinit var instance: EinkBroApplication
+            private set
     }
 }
