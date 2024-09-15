@@ -56,7 +56,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -325,7 +324,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         mainContentLayout = findViewById(R.id.main_content)
         subContainer = findViewById(R.id.sub_container)
-        updateAppbarPosition()
+        ViewUnit.updateAppbarPosition(binding)
         initLaunchers()
         initToolbar()
         initSearchPanel()
@@ -1281,7 +1280,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 if (viewUri.scheme == "content") {
                     val (filename, mimetype) = HelperUnit.getFileInfoFromContentUri(this, viewUri)
                     val mimeType = contentResolver.getType(viewUri)
-                    //Log.d(TAG, "mimeType: $mimeType")
                     if (filename?.endsWith(".srt") == true ||
                         mimeType.equals("application/x-subrip")
                     ) {
@@ -1434,86 +1432,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 whenNoSavedTabs?.invoke()
             }
         }
-    }
-
-    private fun updateAppbarPosition() {
-        if (config.isToolbarOnTop) {
-            moveAppbarToTop()
-        } else {
-            moveAppbarToBottom()
-        }
-        binding.inputUrl.shouldReverse = config.isToolbarOnTop
-    }
-
-    private fun moveAppbarToBottom() {
-        val constraintSet = ConstraintSet().apply {
-            clone(binding.root)
-            connect(
-                binding.appBar.id,
-                ConstraintSet.BOTTOM,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.BOTTOM,
-                0
-            )
-            connect(
-                binding.inputUrl.id,
-                ConstraintSet.BOTTOM,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.BOTTOM,
-                0
-            )
-            connect(
-                binding.twoPanelLayout.id,
-                ConstraintSet.TOP,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.TOP
-            )
-            connect(
-                binding.twoPanelLayout.id,
-                ConstraintSet.BOTTOM,
-                binding.appBar.id,
-                ConstraintSet.TOP
-            )
-
-            clear(binding.contentSeparator.id, ConstraintSet.TOP)
-            connect(
-                binding.contentSeparator.id,
-                ConstraintSet.BOTTOM,
-                binding.appBar.id,
-                ConstraintSet.TOP
-            )
-        }
-        constraintSet.applyTo(binding.root)
-    }
-
-    private fun moveAppbarToTop() {
-        val constraintSet = ConstraintSet().apply {
-            clone(binding.root)
-            clear(binding.appBar.id, ConstraintSet.BOTTOM)
-            clear(binding.inputUrl.id, ConstraintSet.BOTTOM)
-
-            connect(
-                binding.twoPanelLayout.id,
-                ConstraintSet.TOP,
-                binding.appBar.id,
-                ConstraintSet.BOTTOM
-            )
-            connect(
-                binding.twoPanelLayout.id,
-                ConstraintSet.BOTTOM,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.BOTTOM
-            )
-
-            clear(binding.contentSeparator.id, ConstraintSet.BOTTOM)
-            connect(
-                binding.contentSeparator.id,
-                ConstraintSet.TOP,
-                binding.appBar.id,
-                ConstraintSet.BOTTOM
-            )
-        }
-        constraintSet.applyTo(binding.root)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -1680,7 +1598,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_DARK_MODE -> config.restartChanged = true
-                ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
+                ConfigManager.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
 
                 ConfigManager.K_NAV_POSITION -> fabImageViewController.initialize()
                 ConfigManager.K_TTS_SPEED_VALUE ->
@@ -2794,7 +2712,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // - action mode handling
 
     companion object {
-        private const val TAG = "BrowserActivity"
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
 }
