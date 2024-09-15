@@ -1785,7 +1785,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun handleBookmarkSync(forceUpload: Boolean = false) {
         if (config.bookmarkSyncUrl.isNotEmpty()) backupUnit.handleBookmarkSync(forceUpload)
-        else linkBookmarkSync()
     }
 
     private fun linkBookmarkSync() {
