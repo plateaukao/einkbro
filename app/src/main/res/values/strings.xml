@@ -558,4 +558,6 @@
     <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area.</string>
     <string name="expand_space">Expand space</string>
     <string name="open_epub">Open epub file</string>
+    <string name="setting_title_enable_web_cache">Enable Web Cache</string>
+    <string name="setting_summary_enabling_web_cache">Load web content faster by enabling web cache</string>
 </resources>

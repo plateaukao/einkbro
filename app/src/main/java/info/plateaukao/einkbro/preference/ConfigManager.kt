@@ -145,6 +145,8 @@ class ConfigManager(
 
     var useOpenAiTts by BooleanPreference(sp, K_USE_OPENAI_TTS, true)
 
+    var webLoadCacheFirst by BooleanPreference(sp, "sp_web_load_cache_first", true)
+
     var pageReservedOffset: Int by IntPreference(sp, K_PRESERVE_HEIGHT, 80)
 
     var pageReservedOffsetInString: String by StringPreference(

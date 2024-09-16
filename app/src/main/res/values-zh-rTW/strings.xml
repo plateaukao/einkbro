@@ -471,4 +471,6 @@
     <string name="setting_summary_disable_long_press_toucharea">避免偶爾會不小心長按觸控區域</string>
     <string name="expand_space">空白區域</string>
     <string name="open_epub">開啟 Epub</string>
+    <string name="setting_title_enable_web_cache">使用網頁快取</string>
+    <string name="setting_summary_enabling_web_cache">加速網頁存取速度</string>
 </resources>

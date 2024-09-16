@@ -140,11 +140,15 @@ open class NinjaWebView(
 
     override fun reload() {
         isTranslatePage = false
-        settings.cacheMode = WebSettings.LOAD_DEFAULT
         isVerticalRead = false
         isReaderModeOn = false
         settings.textZoom = config.fontSize
+        settings.cacheMode = WebSettings.LOAD_DEFAULT
         super.reload()
+
+        postDelayed({
+            if (config.webLoadCacheFirst) settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+        }, 2000)
     }
 
     override fun goBack() {
@@ -227,17 +231,19 @@ open class NinjaWebView(
             loadWithOverviewMode = true
             useWideViewPort = true
         }
-
     }
 
     @Suppress("DEPRECATION")
     fun initPreferences() {
 
         updateUserAgentString()
+        setLayerType(LAYER_TYPE_HARDWARE, null) // Enable hardware acceleration
 
         with(settings) {
             // don't load cache by default, so that it won't cause some issues
-            //cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+            if (config.webLoadCacheFirst)
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+
             textZoom = config.fontSize
             allowFileAccessFromFileURLs = config.enableRemoteAccess
             allowFileAccess = true
@@ -260,7 +266,6 @@ open class NinjaWebView(
             }
         }
         webViewClient.enableAdBlock(config.adBlock)
-
         toggleCookieSupport(config.cookies)
     }
 
