@@ -39,6 +39,7 @@ class MenuActionHandler(
             MenuItemType.SendLink -> browserController.toggleTextSearch()
             MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
             MenuItemType.BoldFont -> browserController.showFontBoldnessDialog()
+            MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
             else -> Unit
         }
 
