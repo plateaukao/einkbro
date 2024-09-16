@@ -539,6 +539,12 @@ class SettingActivity : ComponentActivity() {
             R.string.setting_summary_enable_ssl_error_dialog,
             config::enableCertificateErrorDialog,
         ),
+        BooleanSettingItem(
+            R.string.setting_title_enable_web_cache,
+            0,
+            R.string.setting_summary_enabling_web_cache,
+            config::webLoadCacheFirst,
+        )
     )
 
     private val toolbarSettingItems = listOf(
