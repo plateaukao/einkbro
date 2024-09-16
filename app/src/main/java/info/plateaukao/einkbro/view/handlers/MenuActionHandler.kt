@@ -22,6 +22,7 @@ import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -40,6 +41,10 @@ class MenuActionHandler(
             MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
             MenuItemType.BoldFont -> browserController.showFontBoldnessDialog()
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
+            MenuItemType.Tts -> TtsSettingDialogFragment(
+                gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(activity) },
+                showLocaleDialog = { browserController.showTtsLanguageDialog() }
+            ).show(activity.supportFragmentManager, "TtsSettingDialog")
             else -> Unit
         }
 
