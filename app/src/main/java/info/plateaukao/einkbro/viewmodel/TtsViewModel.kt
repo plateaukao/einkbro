@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.viewmodel
 
 import android.media.MediaPlayer
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.EinkBroApplication
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -67,24 +70,34 @@ class TtsViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    private val fetchSemaphore = Semaphore(1)
     private fun readTextByGpt(text: String) {
-        byteArrayChannel = Channel(3)
+        byteArrayChannel = Channel(1)
         viewModelScope.launch(Dispatchers.IO) {
             val sentences: List<String> = text.split("(?<=\\.)|(?<=。)".toRegex())
 
             _speakingState.value = true
             for (sentence in sentences) {
-                val data = openaiRepository.tts(sentence)
-                if (data != null && byteArrayChannel != null) {
-                    byteArrayChannel?.send(data)
+                if (byteArrayChannel == null) break
+                fetchSemaphore.withPermit {
+                    Log.d("TtsViewModel", "tts sentence fetch: $sentence")
+                    val data = openaiRepository.tts(sentence)
+                    if (data != null) {
+                        Log.d("TtsViewModel", "tts sentence send: $sentence")
+                        byteArrayChannel?.send(data)
+                        Log.d("TtsViewModel", "tts sentence sent: $sentence")
+                    }
                 }
             }
         }
 
         viewModelScope.launch(Dispatchers.IO) {
+            var index = 0
             for (data in byteArrayChannel!!) {
+                Log.d("TtsViewModel", "play audio $index")
                 playAudio(data)
                 delay(200)
+                index++
             }
             delay(2000)
             _speakingState.value = false
@@ -98,6 +111,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         ttsManager.stopReading()
 
         byteArrayChannel?.cancel()
+        byteArrayChannel?.close()
         byteArrayChannel = null
         mediaPlayer.stop()
         mediaPlayer.reset()

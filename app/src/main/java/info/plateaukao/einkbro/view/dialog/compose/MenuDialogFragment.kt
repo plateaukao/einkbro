@@ -413,7 +413,7 @@ fun MenuItem(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewItem() {
     MyTheme {
@@ -424,7 +424,7 @@ private fun PreviewItem() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewMenuItems() {
     MyTheme {
