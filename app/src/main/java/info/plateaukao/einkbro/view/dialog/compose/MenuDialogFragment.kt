@@ -275,7 +275,8 @@ private fun MenuItems(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
-                MenuItem(R.string.menu_tts, ttsRes) { onClicked(MenuItemType.Tts) }
+                MenuItem(R.string.menu_tts, ttsRes,
+                    onLongClicked = { onLongClicked(MenuItemType.Tts) }) { onClicked(MenuItemType.Tts) }
                 val invertRes =
                     if (hasInvertedColor) R.drawable.ic_invert_color_off else R.drawable.ic_invert_color
                 MenuItem(R.string.menu_invert_color, invertRes) {
@@ -349,7 +350,7 @@ private fun MenuItems(
                 R.string.menu_quickToggle,
                 R.drawable.ic_quick_toggle
             ) { onClicked(MenuItemType.QuickToggle) }
-            MenuItem(R.string.settings, R.drawable.icon_settings) { onClicked(Settings) }
+            MenuItem(R.string.settings, R.drawable.icon_settings, onLongClicked = { onLongClicked(Settings) }) { onClicked(Settings) }
         }
     }
 }

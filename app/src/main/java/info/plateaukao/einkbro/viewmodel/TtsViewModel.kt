@@ -96,7 +96,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
             for (data in byteArrayChannel!!) {
                 Log.d("TtsViewModel", "play audio $index")
                 playAudio(data)
-                delay(200)
+                delay(100)
                 index++
             }
             delay(2000)

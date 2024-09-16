@@ -142,7 +142,7 @@ class OpenAiRepository : KoinComponent {
     }
 
     suspend fun tts(text: String): ByteArray? = suspendCoroutine { continuation ->
-        val request = createTtsRequest(text)
+        val request = createTtsRequest(text, speed = (config.ttsSpeedValue / 100F).toDouble())
 
         client.newCall(request).execute().use { response ->
             if (response.code != 200 || response.body == null) {
@@ -283,7 +283,8 @@ class OpenAiRepository : KoinComponent {
                 TTSRequest(
                     text,
                     if (hd) "tts-1-hd" else "tts-1",
-                    "alloy"
+                    "alloy",
+                    speed
                 )
             )
                 .toRequestBody(mediaType)
