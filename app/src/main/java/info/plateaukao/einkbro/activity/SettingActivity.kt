@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
@@ -94,6 +95,7 @@ class SettingActivity : ComponentActivity() {
         openBookmarkFileLauncher = backupUnit.createOpenBookmarkFileLauncher(this)
         createBookmarkFileLauncher = backupUnit.createCreateBookmarkFileLauncher(this)
 
+        val routeName = intent.getStringExtra(KEY_ROUTE) ?: Main.name
         setContent {
             val navController: NavHostController = rememberNavController()
             MyTheme {
@@ -117,7 +119,7 @@ class SettingActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = Main.name,
+                        startDestination = routeName,
                         modifier = Modifier.padding(innerPadding),
                         enterTransition = { fadeIn(animationSpec = tween(1)) },
                         exitTransition = { fadeOut(animationSpec = tween(1)) },
@@ -217,7 +219,7 @@ class SettingActivity : ComponentActivity() {
                             SettingScreen(
                                 navController,
                                 mutableListOf<SettingItemInterface>().apply {
-                                    addAll(LinkSettingItem.values().toList())
+                                    addAll(LinkSettingItem.entries.toList())
                                     add(DividerSettingItem())
                                     if (BuildConfig.showUpdateButton) {
                                         add(ActionSettingItem(
@@ -575,6 +577,36 @@ class SettingActivity : ComponentActivity() {
     )
 
     private val gestureSettingItems = listOf(
+        ActionSettingItem(
+            R.string.setting_title_touch_area_actions,
+            0,
+            R.string.summary_touch_aciton_settings,
+            span = 2
+        ) { },
+        ListSettingWithEnumItem(
+            R.string.setting_touch_up_click,
+            0,
+            config = config::upClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_touch_up_long_click,
+            0,
+            config = config::upLongClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_touch_down_click,
+            0,
+            config = config::downClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_touch_down_long_click,
+            0,
+            config = config::downLongClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
         BooleanSettingItem(
             R.string.setting_multitouch_use_title,
             0,
@@ -586,25 +618,25 @@ class SettingActivity : ComponentActivity() {
             R.string.setting_gesture_up,
             0,
             config = config::multitouchUp,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_down,
             0,
             config = config::multitouchDown,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_left,
             0,
             config = config::multitouchLeft,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_right,
             0,
             config = config::multitouchRight,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         DividerSettingItem(),
         BooleanSettingItem(
@@ -618,25 +650,25 @@ class SettingActivity : ComponentActivity() {
             R.string.setting_gesture_up,
             0,
             config = config::navGestureUp,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_down,
             0,
             config = config::navGestureDown,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_left,
             0,
             config = config::navGestureLeft,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_right,
             0,
             config = config::navGestureRight,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
     )
 
@@ -1049,6 +1081,18 @@ class SettingActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.systemBars())
             window.setDecorFitsSystemWindows(false)
+        }
+    }
+
+    companion object {
+        private const val KEY_ROUTE = "route"
+
+        // create an intent to navigate to desired setting screen route
+        fun createIntent(context: Context, route: SettingRoute): Intent {
+            return Intent(context, SettingActivity::class.java).apply {
+                addFlags(FLAG_ACTIVITY_NO_ANIMATION)
+                putExtra(KEY_ROUTE, route.name)
+            }
         }
     }
 }

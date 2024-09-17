@@ -20,7 +20,12 @@ enum class GestureType(val value: String, val resId: Int) {
     Fullscreen("15", R.string.fullscreen),
     Refresh("16", R.string.refresh),
     Menu("17", R.string.menu),
-    TouchPagination("18", R.string.toggle_touch_turn_page);
+    TouchPagination("18", R.string.toggle_touch_turn_page),
+    KeyPageUp("19", R.string.key_page_up),
+    KeyPageDown("20", R.string.key_page_down),
+    KeyLeft("21", R.string.key_left),
+    KeyRight("22", R.string.key_right),
+    ;
 
     companion object {
         fun from(value: String): GestureType =

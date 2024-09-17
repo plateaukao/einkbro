@@ -459,7 +459,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun initTouchAreaViewController() {
-        touchController = TouchAreaViewController(binding.root) { ninjaWebView }
+        touchController = TouchAreaViewController(binding.activityMainContent, this)
     }
 
     private fun initActionModeViewModel() {
@@ -612,6 +612,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun toggleReaderMode() = ninjaWebView.toggleReaderMode()
     override fun toggleVerticalRead() = ninjaWebView.toggleVerticalRead()
     override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
+
+    override fun sendPageUpKey() = ninjaWebView.sendPageUpKey()
+    override fun sendPageDownKey() = ninjaWebView.sendPageDownKey()
+    override fun sendLeftKey() {
+        ninjaWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
+    }
+    override fun sendRightKey() {
+        ninjaWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
+    }
 
     override fun addToPocket(url: String) {
         lifecycleScope.launch {

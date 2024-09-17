@@ -19,6 +19,7 @@ import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.activity.ExtraBrowserActivity
 import info.plateaukao.einkbro.activity.HighlightsActivity
 import info.plateaukao.einkbro.activity.SettingActivity
+import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 
@@ -73,10 +74,8 @@ object IntentUnit {
         }
     }
 
-    fun gotoSettings(activity: Activity) {
-        activity.startActivity(Intent(activity, SettingActivity::class.java).apply {
-            addFlags(FLAG_ACTIVITY_NO_ANIMATION)
-        })
+    fun gotoSettings(activity: Activity, route: SettingRoute = SettingRoute.Main) {
+        activity.startActivity(SettingActivity.createIntent(activity, route))
     }
 
     fun gotoHighlights(activity: Activity) {

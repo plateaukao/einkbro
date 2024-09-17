@@ -3,41 +3,38 @@ package info.plateaukao.einkbro.view.viewControllers
 import android.annotation.SuppressLint
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Color
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.databinding.ActivityMainContentBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.GestureType
+import info.plateaukao.einkbro.view.handlers.GestureHandler
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.Timer
 import java.util.TimerTask
 
 class TouchAreaViewController(
-    private val rootView: View,
-    ninjaWebView: () -> NinjaWebView,
+    private val binding: ActivityMainContentBinding,
+    private val browserController: BrowserController,
 ) : KoinComponent {
+    private val config: ConfigManager by inject()
+    private val gestureHandler: GestureHandler = GestureHandler(browserController)
+
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
     private lateinit var touchAreaDragCustomize: View
 
-    private val config: ConfigManager by inject()
-
-    private val pageUpAction = { ninjaWebView().pageUpWithNoAnimation() }
-    private val pageTopAction = { ninjaWebView().jumpToTop() }
-    private val pageDownAction = { ninjaWebView().pageDownWithNoAnimation() }
-    private val pageBottomAction = { ninjaWebView().jumpToBottom() }
-    private val keyLeftAction = {
-        ninjaWebView().dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
-    }
-    private val keyRightAction = {
-        ninjaWebView().dispatchKeyEvent(
-            KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT)
-        )
-    }
+    private val pageUpAction = { gestureHandler.handle(config.upClickGesture) }
+    private val pageTopAction = { gestureHandler.handle(config.upLongClickGesture) }
+    private val pageDownAction = { gestureHandler.handle(config.downClickGesture) }
+    private val pageBottomAction = { gestureHandler.handle(config.downLongClickGesture) }
+    private val keyLeftAction = { gestureHandler.handle(GestureType.KeyLeft) }
+    private val keyRightAction = { gestureHandler.handle(GestureType.KeyRight) }
 
     private val touchAreaChangeListener: OnSharedPreferenceChangeListener by lazy {
         OnSharedPreferenceChangeListener { _, key ->
@@ -62,13 +59,13 @@ class TouchAreaViewController(
     init {
         updateTouchAreaType()
         if (config.touchAreaCustomizeY != 0 && allowMoveTouchArea()) {
-            rootView.post {
+            binding.root.post {
                 updateTouchAreaCustomizeY(config.touchAreaCustomizeY)
             }
         }
         // after optimization, don't know why registration is gone.
         // do it after controller is created.
-        rootView.post {
+        binding.root.post {
             config.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
         }
     }
@@ -125,34 +122,34 @@ class TouchAreaViewController(
 
         when (config.touchAreaType) {
             TouchAreaType.BottomLeftRight -> {
-                touchAreaPageUp = rootView.findViewById(R.id.touch_area_bottom_left)
-                touchAreaPageDown = rootView.findViewById(R.id.touch_area_bottom_right)
-                touchAreaDragCustomize = rootView.findViewById(R.id.touch_area_bottom_drag)
+                touchAreaPageUp = binding.touchAreaBottomLeft
+                touchAreaPageDown = binding.touchAreaBottomRight
+                touchAreaDragCustomize = binding.touchAreaBottomDrag
             }
 
             TouchAreaType.MiddleLeftRight -> {
-                touchAreaPageUp = rootView.findViewById(R.id.touch_area_middle_left)
-                touchAreaPageDown = rootView.findViewById(R.id.touch_area_middle_right)
-                touchAreaDragCustomize = rootView.findViewById(R.id.touch_area_middle_drag)
+                touchAreaPageUp = binding.touchAreaMiddleLeft
+                touchAreaPageDown = binding.touchAreaMiddleRight
+                touchAreaDragCustomize = binding.touchAreaMiddleDrag
             }
 
             TouchAreaType.Left -> {
-                touchAreaPageUp = rootView.findViewById(R.id.touch_area_left_1)
-                touchAreaPageDown = rootView.findViewById(R.id.touch_area_left_2)
-                touchAreaDragCustomize = rootView.findViewById(R.id.touch_area_left_drag)
+                touchAreaPageUp = binding.touchAreaLeft1
+                touchAreaPageDown = binding.touchAreaLeft2
+                touchAreaDragCustomize = binding.touchAreaLeftDrag
             }
 
             TouchAreaType.Right -> {
-                touchAreaPageUp = rootView.findViewById(R.id.touch_area_right_1)
-                touchAreaPageDown = rootView.findViewById(R.id.touch_area_right_2)
-                touchAreaDragCustomize = rootView.findViewById(R.id.touch_area_right_drag)
+                touchAreaPageUp = binding.touchAreaRight1
+                touchAreaPageDown = binding.touchAreaRight2
+                touchAreaDragCustomize = binding.touchAreaRightDrag
             }
 
             TouchAreaType.Long -> {
-                touchAreaPageUp = rootView.findViewById(R.id.touch_area_long_left)
-                touchAreaPageDown = rootView.findViewById(R.id.touch_area_long_right)
+                touchAreaPageUp = binding.touchAreaLongLeft
+                touchAreaPageDown = binding.touchAreaLongRight
                 // need to hide drag area
-                touchAreaDragCustomize = rootView.findViewById(R.id.touch_area_middle_drag)
+                touchAreaDragCustomize = binding.touchAreaMiddleDrag
                 touchAreaDragCustomize.visibility = View.GONE
             }
 
@@ -197,7 +194,7 @@ class TouchAreaViewController(
     }
 
     fun hideTouchAreaHint() {
-        rootView.post {
+        binding.root.post {
             touchAreaPageUp.setBackgroundColor(Color.TRANSPARENT)
             touchAreaPageDown.setBackgroundColor(Color.TRANSPARENT)
         }
@@ -212,7 +209,7 @@ class TouchAreaViewController(
                     override fun run() {
                         hideTouchAreaHint()
                     }
-                }, 500)
+                }, 1000)
         }
     }
 
