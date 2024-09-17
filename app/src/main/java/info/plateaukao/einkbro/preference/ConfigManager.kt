@@ -247,6 +247,20 @@ class ConfigManager(
     var navGestureLeft by GestureTypePreference(sp, K_GESTURE_NAV_LEFT)
     var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
 
+    var upClickGesture by GestureTypePreference(
+        sp, "K_UP_CLICK_GESTURE", GestureType.PageUp
+    )
+    var downClickGesture by GestureTypePreference(
+        sp, "K_DOWN_CLICK_GESTURE", GestureType.PageDown
+    )
+    var upLongClickGesture by GestureTypePreference(
+        sp, "K_UP_LONG_CLICK_GESTURE", GestureType.ScrollToTop
+    )
+    var downLongClickGesture by GestureTypePreference(
+        sp, "K_DOWN_LONG_CLICK_GESTURE", GestureType.ScrollToBottom
+    )
+
+
     private val K_EXTERNAL_SEARCH_METHOD = "sp_external_search_method"
     var externalSearchMethod: TRANSLATE_API
         get() = TRANSLATE_API.entries[sp.getInt(K_EXTERNAL_SEARCH_METHOD, 0)]
@@ -968,10 +982,11 @@ class StringPreference(
 class GestureTypePreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
+    private val defaultValue: GestureType = GestureType.NothingHappen,
 ) : ReadWriteProperty<Any, GestureType> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): GestureType =
-        GestureType.from(sharedPreferences.getString(key, "01") ?: "01")
+        GestureType.from(sharedPreferences.getString(key, defaultValue.value) ?: defaultValue.value)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: GestureType) =
         sharedPreferences.edit { putString(key, value.value) }

@@ -83,6 +83,11 @@ interface BrowserController {
     fun pageUp()
     fun updatePageInfo(info: String)
 
+    fun sendPageUpKey()
+    fun sendPageDownKey()
+    fun sendLeftKey()
+    fun sendRightKey()
+
     fun addToPocket(url: String)
     fun handlePocketRequestToken(requestToken: String)
 

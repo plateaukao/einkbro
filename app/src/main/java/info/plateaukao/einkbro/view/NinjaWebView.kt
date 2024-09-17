@@ -520,7 +520,7 @@ open class NinjaWebView(
     } else { // normal case
         val nonNullUrl = url.orEmpty()
         if (config.shouldFixScroll(nonNullUrl) || config.shouldSendPageNavKey(nonNullUrl)) {
-            callScrollFixPageDown()
+            sendPageDownKey()
         } else {
             scrollBy(0, shiftOffset())
             scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
@@ -533,16 +533,16 @@ open class NinjaWebView(
     } else { // normal case
         val nonNullUrl = url.orEmpty()
         if (config.shouldFixScroll(nonNullUrl) || config.shouldSendPageNavKey(nonNullUrl)) {
-            callScrollFixPageUp()
+            sendPageUpKey()
         } else {
             scrollBy(0, -shiftOffset())
             scrollY = max(0, scrollY)
         }
     }
 
-    private fun callScrollFixPageDown() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_DOWN)
+    fun sendPageDownKey() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_DOWN)
 
-    private fun callScrollFixPageUp() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_UP)
+    fun sendPageUpKey() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_UP)
 
     fun removeTextSelection() {
         evaluateJavascript(

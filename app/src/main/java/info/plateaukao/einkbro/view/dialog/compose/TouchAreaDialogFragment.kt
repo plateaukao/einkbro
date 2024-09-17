@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
-import android.net.Uri
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -31,17 +30,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.preference.TouchAreaType.BottomLeftRight
 import info.plateaukao.einkbro.preference.TouchAreaType.Left
 import info.plateaukao.einkbro.preference.TouchAreaType.MiddleLeftRight
 import info.plateaukao.einkbro.preference.TouchAreaType.Right
 import info.plateaukao.einkbro.preference.toggle
+import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 
 class TouchAreaDialogFragment(
-    private val url: String
+    private val url: String,
 ) : ComposeDialogFragment(), KoinComponent {
     override fun setupComposeView() = composeView.setContent {
         val touchAreaType = remember { mutableStateOf(config.touchAreaType) }
@@ -73,7 +74,10 @@ class TouchAreaDialogFragment(
                 onCloseClick = { dismiss() },
                 onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() },
                 onAsPageKeyClick = { shouldSendPageKey.value = config.toggleSendPageNavKey(url) },
-                onTryFixScrollClick = { tryFixScroll.value = config.toggleFixScroll(url) }
+                onTryFixScrollClick = { tryFixScroll.value = config.toggleFixScroll(url) },
+                onConfigActionsClick = {
+                    IntentUnit.gotoSettings(requireActivity(), SettingRoute.Gesture)
+                }
             )
         }
     }
@@ -98,6 +102,7 @@ fun TouchAreaContent(
     onAsArrowKeyClick: () -> Unit = {},
     onAsPageKeyClick: () -> Unit = {},
     onTryFixScrollClick: () -> Unit = {},
+    onConfigActionsClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
         Row(
@@ -142,6 +147,10 @@ fun TouchAreaContent(
 
         Spacer(modifier = Modifier.height(10.dp))
 
+        ActionItem(
+            R.string.touch_aciton_settings,
+            onConfigActionsClick,
+        )
         ToggleItem(
             state = showHint,
             titleResId = R.string.show_touch_area_hint,
@@ -222,7 +231,7 @@ fun TouchAreaItem(
     state: Boolean,
     titleResId: Int,
     iconResId: Int,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val borderWidth = if (state) 4.dp else -1.dp
@@ -256,10 +265,43 @@ fun TouchAreaItem(
     }
 }
 
+// action item with an arrow on right side
+@Composable
+fun ActionItem(
+    titleResId: Int,
+    onClicked: () -> Unit,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ) {
+                onClicked()
+            },
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = titleResId),
+            fontSize = 18.sp,
+            color = MaterialTheme.colors.onBackground,
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.icon_arrow_right_gest),
+            contentDescription = null,
+            tint = MaterialTheme.colors.onBackground
+        )
+    }
+}
+
 @Preview(
     name = "default",
-    showSystemUi = true,
-    showBackground = true, device = "spec:shape=Normal,width=1080,height=2340,unit=px,dpi=440",
+    showBackground = true,
 )
 @Composable
 fun PreviewTouchAreaContent() {

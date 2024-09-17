@@ -2,11 +2,10 @@ package info.plateaukao.einkbro.view.handlers
 
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.view.GestureType
-import org.koin.core.component.KoinComponent
 
 class GestureHandler(
     private val browserController: BrowserController,
-) : KoinComponent {
+) {
 
     fun handle(gesture: GestureType) = when (gesture) {
         GestureType.NothingHappen -> Unit
@@ -27,5 +26,9 @@ class GestureHandler(
         GestureType.Refresh -> browserController.refreshAction()
         GestureType.Menu -> browserController.showMenuDialog()
         GestureType.TouchPagination -> browserController.toggleTouchPagination()
+        GestureType.KeyPageUp -> browserController.sendPageUpKey()
+        GestureType.KeyPageDown -> browserController.sendPageDownKey()
+        GestureType.KeyLeft -> browserController.sendLeftKey()
+        GestureType.KeyRight -> browserController.sendRightKey()
     }
 }

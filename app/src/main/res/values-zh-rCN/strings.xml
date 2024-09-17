@@ -542,4 +542,16 @@
     <string name="open_epub">打开Epub</string>
     <string name="setting_title_enable_web_cache">Enable Web Cache</string>
     <string name="setting_summary_enabling_web_cache">Load web content faster by enabling web cache</string>
+    <string name="touch_custom">Custom</string>
+    <string name="key_page_up">Send PageUp Key</string>
+    <string name="key_page_down">Send PageDown Key</string>
+    <string name="key_left">Send Left Key</string>
+    <string name="key_right">Send Right Key</string>
+    <string name="touch_aciton_settings">Action Settings</string>
+    <string name="summary_touch_aciton_settings">Setup actions for touch area</string>
+    <string name="setting_touch_up_click">Up click action</string>
+    <string name="setting_title_touch_area_actions">Touch Area Click Actions</string>
+    <string name="setting_touch_up_long_click">Up long click action</string>
+    <string name="setting_touch_down_click">Down click action</string>
+    <string name="setting_touch_down_long_click">Down long click action</string>
 </resources>
