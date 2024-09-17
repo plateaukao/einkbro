@@ -13,6 +13,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,22 +24,32 @@ import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
+import info.plateaukao.einkbro.view.dialog.TtsTypeDialog
+import info.plateaukao.einkbro.viewmodel.TtsType
 import java.util.Locale
 
 class TtsSettingDialogFragment(
     private val gotoSettingAction: () -> Unit,
-    private val showLocaleDialog: () -> Unit
+    private val showLocaleDialog: () -> Unit,
 ) : ComposeDialogFragment() {
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
+                val ttsType = remember { mutableStateOf(config.ttsType) }
                 MainTtsSettingDialog(
+                    selectedType = ttsType.value,
                     selectedLocale = config.ttsLocale,
                     selectedSpeedValue = config.ttsSpeedValue,
                     onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
                     okAction = { dismiss() },
                     gotoSettingAction = gotoSettingAction,
                     showLocaleDialog = showLocaleDialog,
+                    showTtsTypeDialog = {
+                        TtsTypeDialog(requireContext()).show {
+                            config.ttsType = it
+                            ttsType.value = it
+                        }
+                    }
                 )
             }
         }
@@ -59,18 +71,34 @@ private val speedRateValueList2 = listOf(
 
 @Composable
 private fun MainTtsSettingDialog(
+    selectedType: TtsType,
     selectedLocale: Locale,
     selectedSpeedValue: Int,
     onSpeedValueClick: (Int) -> Unit,
     gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
     showLocaleDialog: () -> Unit,
+    showTtsTypeDialog: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .padding(top = 8.dp, start = 8.dp, end = 8.dp)
             .width(IntrinsicSize.Max)
     ) {
+        Text(
+            stringResource(id = R.string.setting_tts_type),
+            modifier = Modifier.padding(vertical = 6.dp),
+            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.h6,
+            fontWeight = FontWeight.Bold,
+        )
+        SelectableText(
+            modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+            selected = true, text = selectedType.name
+        ) {
+            showTtsTypeDialog()
+        }
+
         Text(
             stringResource(id = R.string.setting_tts_locale),
             modifier = Modifier.padding(vertical = 6.dp),
@@ -161,17 +189,19 @@ fun TtsDialogButtonBar(
     }
 }
 
-@Preview(widthDp = 600)
+@Preview(widthDp = 600, showBackground = true)
 @Composable
 fun PreviewMainTtsDialog() {
     MyTheme {
         MainTtsSettingDialog(
+            selectedType = TtsType.SYSTEM,
             selectedLocale = Locale.US,
             selectedSpeedValue = 100,
             onSpeedValueClick = {},
             okAction = {},
             gotoSettingAction = {},
             showLocaleDialog = {},
+            showTtsTypeDialog = {},
         )
     }
 }

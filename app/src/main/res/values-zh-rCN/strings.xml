@@ -554,4 +554,5 @@
     <string name="setting_touch_up_long_click">Up long click action</string>
     <string name="setting_touch_down_click">Down click action</string>
     <string name="setting_touch_down_long_click">Down long click action</string>
+    <string name="setting_tts_type">Text-to-Speech Engine</string>
 </resources>

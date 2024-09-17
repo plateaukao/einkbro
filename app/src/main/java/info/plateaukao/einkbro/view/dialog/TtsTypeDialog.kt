@@ -1,0 +1,27 @@
+package info.plateaukao.einkbro.view.dialog
+
+import android.content.Context
+import androidx.appcompat.app.AlertDialog
+import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.viewmodel.TtsType
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
+class TtsTypeDialog(val context: Context) : KoinComponent {
+    private val config: ConfigManager by inject()
+
+    fun show(action: (TtsType) -> Unit) {
+        val types = TtsType.entries
+        AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
+            setTitle("Read in Which Language")
+            setSingleChoiceItems(
+                types.map { it.name }.toTypedArray(),
+                config.ttsType.ordinal
+            ) { dialog, selectedIndex ->
+                action(types[selectedIndex])
+                dialog.dismiss()
+            }
+        }.create().show()
+    }
+}

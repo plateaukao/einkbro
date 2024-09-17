@@ -618,6 +618,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun sendLeftKey() {
         ninjaWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
     }
+
     override fun sendRightKey() {
         ninjaWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
     }

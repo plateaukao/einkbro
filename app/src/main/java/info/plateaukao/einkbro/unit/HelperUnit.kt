@@ -48,6 +48,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.BuildConfig
+import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
@@ -79,6 +80,10 @@ object HelperUnit {
         .followSslRedirects(true)
         .build()
 
+
+
+    fun getStringFromAsset(fileName: String): String =
+        EinkBroApplication.instance.assets.open(fileName).bufferedReader().use { it.readText() }
 
     @JvmStatic
     // return true if need permissions
