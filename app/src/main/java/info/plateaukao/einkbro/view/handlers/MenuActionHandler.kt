@@ -41,10 +41,9 @@ class MenuActionHandler(
             MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
             MenuItemType.BoldFont -> browserController.showFontBoldnessDialog()
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
-            MenuItemType.Tts -> TtsSettingDialogFragment(
-                gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(activity) },
-                showLocaleDialog = { browserController.showTtsLanguageDialog() }
-            ).show(activity.supportFragmentManager, "TtsSettingDialog")
+            MenuItemType.Tts -> TtsSettingDialogFragment()
+                .show(activity.supportFragmentManager, "TtsSettingDialog")
+
             else -> Unit
         }
 

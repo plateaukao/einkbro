@@ -486,4 +486,5 @@
     <string name="setting_touch_down_long_click">Down 區域長按功能</string>
     <string name="touch_custom">自訂</string>
     <string name="setting_tts_type">Text-to-Speech Engine</string>
+    <string name="setting_tts_voice">Voice</string>
 </resources>

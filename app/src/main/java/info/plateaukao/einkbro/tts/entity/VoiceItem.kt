@@ -14,3 +14,15 @@ data class VoiceItem(
     val SuggestedCodec: String,
     val VoiceTag: VoiceTag
 )
+
+// create a dummy VoiceItem
+val dummyVoiceItem = VoiceItem(
+    FriendlyName = "dummy",
+    Gender = "dummy",
+    Locale = "dummy",
+    Name = "dummy",
+    ShortName = "dummy",
+    Status = "dummy",
+    SuggestedCodec = "dummy",
+    VoiceTag = VoiceTag(listOf("dummy"), listOf("dummy")),
+)

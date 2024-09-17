@@ -555,4 +555,5 @@
     <string name="setting_touch_down_click">Down click action</string>
     <string name="setting_touch_down_long_click">Down long click action</string>
     <string name="setting_tts_type">Text-to-Speech Engine</string>
+    <string name="setting_tts_voice">Voice</string>
 </resources>
