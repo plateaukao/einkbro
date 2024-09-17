@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TtsManager
+import info.plateaukao.einkbro.tts.ETts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -32,8 +33,12 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private val ttsManager: TtsManager by inject()
 
+    private val eTts: ETts = ETts.getInstance().apply {
+        initialize()
+    }
+
     private val mediaPlayer by lazy { MediaPlayer() }
-    private var byteArrayChannel: Channel<ByteArray>? = null
+    private var audioFileChannel: Channel<File>? = null
 
     private val _speakingState = MutableStateFlow(false)
     val speakingState: StateFlow<Boolean> = _speakingState.asStateFlow()
@@ -48,18 +53,24 @@ class TtsViewModel : ViewModel(), KoinComponent {
             return
         }
 
-        if (useOpenAiTts()) {
-            viewModelScope.launch {
-                readTextByGpt(text);
-            }
-            return
+        // if (useOpenAiTts()) {
+        val type = if (useOpenAiTts()) TtsType.GPT else config.ttsType
+
+        when (type) {
+            TtsType.ETTS,
+            TtsType.GPT,
+            -> readByEngine(type, text)
+
+            TtsType.SYSTEM -> readBySystemTts(text)
         }
 
 //        if (Build.MODEL.startsWith("Pixel 8")) {
 //            IntentUnit.tts(context as Activity, text)
 //            return
 //        }
+    }
 
+    private fun readBySystemTts(text: String) {
         _speakingState.value = true
         ttsManager.readText(text)
         viewModelScope.launch {
@@ -70,21 +81,29 @@ class TtsViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private val fetchSemaphore = Semaphore(1)
-    private fun readTextByGpt(text: String) {
-        byteArrayChannel = Channel(1)
+    private fun readByEngine(ttsType: TtsType, text: String) {
+        _speakingState.value = true
+        audioFileChannel = Channel(1)
+        val processedText = text.replace("\\n", "").replace("\\\"", "")
         viewModelScope.launch(Dispatchers.IO) {
-            val sentences: List<String> = text.split("(?<=\\.)|(?<=。)".toRegex())
+            val sentences: List<String> = processedText.split("(?<=\\.)|(?<=。)".toRegex())
 
             _speakingState.value = true
             for (sentence in sentences) {
-                if (byteArrayChannel == null) break
+                if (audioFileChannel == null) break
                 fetchSemaphore.withPermit {
                     Log.d("TtsViewModel", "tts sentence fetch: $sentence")
-                    val data = openaiRepository.tts(sentence)
-                    if (data != null) {
+                    val file = if (ttsType == TtsType.ETTS) {
+                        eTts.tts(sentence)
+                    } else {
+                        openaiRepository.tts(sentence)?.let { data ->
+                            generateTempFile(data)
+                        }
+                    }
+
+                    if (file != null) {
                         Log.d("TtsViewModel", "tts sentence send: $sentence")
-                        byteArrayChannel?.send(data)
+                        audioFileChannel?.send(file)
                         Log.d("TtsViewModel", "tts sentence sent: $sentence")
                     }
                 }
@@ -93,26 +112,28 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch(Dispatchers.IO) {
             var index = 0
-            for (data in byteArrayChannel!!) {
+            for (file in audioFileChannel!!) {
                 Log.d("TtsViewModel", "play audio $index")
-                playAudio(data)
+                playAudioFile(file)
                 delay(100)
                 index++
             }
             delay(2000)
             _speakingState.value = false
-            byteArrayChannel = null
+            audioFileChannel = null
         }
     }
+
+    private val fetchSemaphore = Semaphore(3)
 
     fun setSpeechRate(rate: Float) = ttsManager.setSpeechRate(rate)
 
     fun stop() {
         ttsManager.stopReading()
 
-        byteArrayChannel?.cancel()
-        byteArrayChannel?.close()
-        byteArrayChannel = null
+        audioFileChannel?.cancel()
+        audioFileChannel?.close()
+        audioFileChannel = null
         mediaPlayer.stop()
         mediaPlayer.reset()
 
@@ -120,21 +141,20 @@ class TtsViewModel : ViewModel(), KoinComponent {
     }
 
     fun isSpeaking(): Boolean {
-        return ttsManager.isSpeaking() || byteArrayChannel != null
+        Log.d("TtsViewModel", "isSpeaking: ${ttsManager.isSpeaking()} ${audioFileChannel != null}")
+        return ttsManager.isSpeaking() || audioFileChannel != null
     }
 
     fun getAvailableLanguages(): List<Locale> = ttsManager.getAvailableLanguages()
 
-    private suspend fun playAudio(data: ByteArray) = suspendCoroutine { cont ->
-        val tempFile = generateTempFile(data)
-
-        FileInputStream(tempFile).use { fis ->
+    private suspend fun playAudioFile(file: File) = suspendCoroutine { cont ->
+        FileInputStream(file).use { fis ->
             mediaPlayer.setDataSource(fis.fd)
             mediaPlayer.prepare()
             mediaPlayer.start()
 
             mediaPlayer.setOnCompletionListener {
-                tempFile.delete()
+                file.delete()
                 mediaPlayer.reset()
                 cont.resume(0)
             }
@@ -147,4 +167,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
         return tempFile
     }
+}
+
+enum class TtsType {
+    SYSTEM, GPT, ETTS
 }

@@ -18,6 +18,7 @@ interface BrowserController {
     fun isAtTop(): Boolean
     fun isCurrentAlbum(albumController: AlbumController): Boolean
     fun showAlbum(albumController: AlbumController)
+
     // showHomePage: true -> show home page if it's the last tab
     fun removeAlbum(albumController: AlbumController, showHomePage: Boolean = false)
     fun removeAlbum()
@@ -44,8 +45,10 @@ interface BrowserController {
     fun showSearchPanel()
     fun showWebArchiveFilePicker()
     fun showOpenEpubFilePicker()
+
     //for tool bar long click
     fun openHistoryPage(amount: Int = 0)
+
     //
     fun showTranslationConfigDialog(translateDirectly: Boolean)
 

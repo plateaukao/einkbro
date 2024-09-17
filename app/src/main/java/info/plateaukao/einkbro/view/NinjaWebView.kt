@@ -38,6 +38,7 @@ import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -850,7 +851,7 @@ open class NinjaWebView(
         injectCss(cssByteArray)
         if (isVertical) injectCss(verticalLayoutCss.toByteArray())
 
-        val jsString = getStringFromAsset("MozReadability.js")
+        val jsString = HelperUnit.getStringFromAsset("MozReadability.js")
         evaluateJavascript(jsString) {
             evaluateJavascript("javascript:(function() { window.scrollTo(0, 0); })()", null)
             postAction?.invoke()
@@ -927,9 +928,6 @@ open class NinjaWebView(
             ByteArray(0)
         }
     }
-
-    private fun getStringFromAsset(fileName: String): String =
-        context.assets.open(fileName).bufferedReader().use { it.readText() }
 
     private fun injectCss(bytes: ByteArray) {
         try {

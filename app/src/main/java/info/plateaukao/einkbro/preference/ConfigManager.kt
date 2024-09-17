@@ -20,6 +20,7 @@ import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
+import info.plateaukao.einkbro.viewmodel.TtsType
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
@@ -283,6 +284,12 @@ class ConfigManager(
         get() = PaperSize.entries[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
         set(value) {
             sp.edit { putInt("pdf_paper_size", value.ordinal) }
+        }
+
+    var ttsType: TtsType
+        get() = TtsType.entries[sp.getInt("K_TTS_TYPE", 0)]
+        set(value) {
+            sp.edit { putInt("K_TTS_TYPE", value.ordinal) }
         }
 
     var uiLocaleLanguage by StringPreference(sp, "sp_ui_locale_language", "")

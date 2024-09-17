@@ -1,0 +1,16 @@
+package icu.xmc.edgettslib.entity
+
+import info.plateaukao.einkbro.tts.entity.VoiceTag
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class VoiceItem(
+    val FriendlyName: String,
+    val Gender: String,
+    val Locale: String,
+    val Name: String,
+    val ShortName: String,
+    val Status: String,
+    val SuggestedCodec: String,
+    val VoiceTag: VoiceTag
+)
