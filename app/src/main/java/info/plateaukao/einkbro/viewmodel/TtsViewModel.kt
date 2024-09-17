@@ -4,6 +4,7 @@ import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import icu.xmc.edgettslib.entity.VoiceItem
 import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.OpenAiRepository
@@ -46,6 +47,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val openaiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
     private fun useOpenAiTts(): Boolean = config.useOpenAiTts && config.gptApiKey.isNotBlank()
+
+    fun getEttsVoices(): List<VoiceItem> = eTts.voiceList
 
     fun readText(text: String) {
         if (isSpeaking()) {
@@ -94,7 +97,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
                 fetchSemaphore.withPermit {
                     Log.d("TtsViewModel", "tts sentence fetch: $sentence")
                     val file = if (ttsType == TtsType.ETTS) {
-                        eTts.tts(sentence)
+                        eTts.tts(config.ettsVoice, config.ttsSpeedValue, sentence)
                     } else {
                         openaiRepository.tts(sentence)?.let { data ->
                             generateTempFile(data)

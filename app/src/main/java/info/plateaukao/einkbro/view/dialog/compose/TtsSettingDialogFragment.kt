@@ -21,17 +21,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import icu.xmc.edgettslib.entity.VoiceItem
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.service.TtsManager
+import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
+import info.plateaukao.einkbro.view.dialog.ETtsVoiceDialog
+import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsTypeDialog
 import info.plateaukao.einkbro.viewmodel.TtsType
+import org.koin.core.component.inject
 import java.util.Locale
 
-class TtsSettingDialogFragment(
-    private val gotoSettingAction: () -> Unit,
-    private val showLocaleDialog: () -> Unit,
-) : ComposeDialogFragment() {
+class TtsSettingDialogFragment : ComposeDialogFragment() {
+    private val ttsManager: TtsManager by inject()
+
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
@@ -42,12 +47,18 @@ class TtsSettingDialogFragment(
                     selectedSpeedValue = config.ttsSpeedValue,
                     onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
                     okAction = { dismiss() },
-                    gotoSettingAction = gotoSettingAction,
-                    showLocaleDialog = showLocaleDialog,
+                    gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
+                    showLocaleDialog = {
+                        TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages())
+                    },
                     showTtsTypeDialog = {
                         TtsTypeDialog(requireContext()).show {
-                            config.ttsType = it
                             ttsType.value = it
+                        }
+                    },
+                    showEttsVoiceDialog = {
+                        ETtsVoiceDialog(requireContext()).show() {
+                            config.ettsVoice = it
                         }
                     }
                 )
@@ -73,12 +84,14 @@ private val speedRateValueList2 = listOf(
 private fun MainTtsSettingDialog(
     selectedType: TtsType,
     selectedLocale: Locale,
+    selectedEttsVoice: VoiceItem? = null,
     selectedSpeedValue: Int,
     onSpeedValueClick: (Int) -> Unit,
     gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
     showLocaleDialog: () -> Unit,
     showTtsTypeDialog: () -> Unit,
+    showEttsVoiceDialog: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -98,19 +111,35 @@ private fun MainTtsSettingDialog(
         ) {
             showTtsTypeDialog()
         }
-
-        Text(
-            stringResource(id = R.string.setting_tts_locale),
-            modifier = Modifier.padding(vertical = 6.dp),
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h6,
-            fontWeight = FontWeight.Bold,
-        )
-        SelectableText(
-            modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
-            selected = true, text = selectedLocale.displayName
-        ) {
-            showLocaleDialog()
+        if (selectedType == TtsType.ETTS) {
+            Text(
+                stringResource(id = R.string.setting_tts_voice),
+                modifier = Modifier.padding(vertical = 6.dp),
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.Bold,
+            )
+            SelectableText(
+                modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                selected = true, text = selectedEttsVoice?.FriendlyName ?: ""
+            ) {
+                showEttsVoiceDialog()
+            }
+        }
+        if (selectedType == TtsType.SYSTEM) {
+            Text(
+                stringResource(id = R.string.setting_tts_locale),
+                modifier = Modifier.padding(vertical = 6.dp),
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.Bold,
+            )
+            SelectableText(
+                modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                selected = true, text = selectedLocale.displayName
+            ) {
+                showLocaleDialog()
+            }
         }
         Text(
             stringResource(id = R.string.read_speed),
@@ -202,6 +231,7 @@ fun PreviewMainTtsDialog() {
             gotoSettingAction = {},
             showLocaleDialog = {},
             showTtsTypeDialog = {},
+            showEttsVoiceDialog = {},
         )
     }
 }

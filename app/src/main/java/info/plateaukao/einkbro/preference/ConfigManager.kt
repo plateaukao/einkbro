@@ -8,6 +8,8 @@ import android.os.Build
 import android.print.PrintAttributes
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
+import icu.xmc.edgettslib.entity.VoiceItem
+import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -290,6 +292,16 @@ class ConfigManager(
         get() = TtsType.entries[sp.getInt("K_TTS_TYPE", 0)]
         set(value) {
             sp.edit { putInt("K_TTS_TYPE", value.ordinal) }
+        }
+
+    var ettsVoice: VoiceItem
+        get() = Json.decodeFromString(
+            sp.getString(
+                "K_ETTS_VOICE", Json.encodeToString(dummyVoiceItem)
+            ) ?: Json.encodeToString(dummyVoiceItem)
+        )
+        set(value) {
+            sp.edit { putString("K_ETTS_VOICE", Json.encodeToString(value)) }
         }
 
     var uiLocaleLanguage by StringPreference(sp, "sp_ui_locale_language", "")

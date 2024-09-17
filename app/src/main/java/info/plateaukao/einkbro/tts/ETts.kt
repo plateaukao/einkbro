@@ -37,7 +37,8 @@ class ETts private constructor() {
     }
 
     private val json = Json { ignoreUnknownKeys = true }
-    private val voiceList: List<VoiceItem> = json.decodeFromString(
+
+    val voiceList: List<VoiceItem> = json.decodeFromString(
         HelperUnit.getStringFromAsset("eVoiceList.json")
     )
 
@@ -47,7 +48,6 @@ class ETts private constructor() {
         put("Cache-Control", "no-cache")
         put("User-Agent", UrlConstant.EDGE_UA)
     }
-    private lateinit var voice: VoiceItem
     private var format = "audio-24khz-48kbitrate-mono-mp3"
     private var findHeadHook = false
     private var voicePitch = "+0Hz"
@@ -67,8 +67,7 @@ class ETts private constructor() {
             .build()
     }
 
-    fun initialize(voice: VoiceItem? = null) {
-        this.voice = voice ?: voiceList.first { it.ShortName == "en-US-RogerNeural" }
+    fun initialize() {
         storage = EinkBroApplication.instance.cacheDir.absolutePath
         mediaPlayer = MediaPlayer()
         mediaPlayer?.setOnCompletionListener {
@@ -121,70 +120,71 @@ class ETts private constructor() {
         return this
     }
 
-    suspend fun tts(content: String): File? = suspendCoroutine { continuation ->
-        val str = removeIncompatibleCharacters(content)
-        if (str.isNullOrBlank()) {
-            throw RuntimeException("invalid content")
-        }
-        val storageFolder = File(storage)
-        if (!storageFolder.exists()) {
-            storageFolder.mkdirs()
-        }
-        val dateStr = dateToString(Date())
-        val reqId = uuid()
-        val audioFormat = TtsUtil.mkAudioFormat(dateStr, format)
-        val ssml = TtsUtil.mkssml(
-            voice.Locale,
-            voice.Name,
-            content,
-            voicePitch,
-            voiceRate,
-            voiceVolume
-        )
-        val ssmlHeadersPlusData = TtsUtil.ssmlHeadersPlusData(reqId, dateStr, ssml)
-        var fileName = reqId
-        if (format == "audio-24khz-48kbitrate-mono-mp3") {
-            fileName += ".mp3"
-        } else if (format == "webm-24khz-16bit-mono-opus") {
-            fileName += ".opus"
-        }
-        val storageFile = File(storage)
-        if (!storageFile.exists()) {
-            storageFile.mkdirs()
-        }
-        if (request == null) {
-            request = Request.Builder()
-                .url(UrlConstant.EDGE_URL)
-                .headers(headers.toHeaders())
-                .build()
-        }
+    suspend fun tts(voice: VoiceItem, speed: Int, content: String): File? =
+        suspendCoroutine { continuation ->
+            val str = removeIncompatibleCharacters(content)
+            if (str.isNullOrBlank()) {
+                throw RuntimeException("invalid content")
+            }
+            val storageFolder = File(storage)
+            if (!storageFolder.exists()) {
+                storageFolder.mkdirs()
+            }
+            val dateStr = dateToString(Date())
+            val reqId = uuid()
+            val audioFormat = TtsUtil.mkAudioFormat(dateStr, format)
+            val ssml = TtsUtil.mkssml(
+                voice.Locale,
+                voice.Name,
+                content,
+                voicePitch,
+                "+${speed - 100}%",
+                voiceVolume
+            )
+            val ssmlHeadersPlusData = TtsUtil.ssmlHeadersPlusData(reqId, dateStr, ssml)
+            var fileName = reqId
+            if (format == "audio-24khz-48kbitrate-mono-mp3") {
+                fileName += ".mp3"
+            } else if (format == "webm-24khz-16bit-mono-opus") {
+                fileName += ".opus"
+            }
+            val storageFile = File(storage)
+            if (!storageFile.exists()) {
+                storageFile.mkdirs()
+            }
+            if (request == null) {
+                request = Request.Builder()
+                    .url(UrlConstant.EDGE_URL)
+                    .headers(headers.toHeaders())
+                    .build()
+            }
 
-        try {
-            val client =
-                okHttpClient.newWebSocket(
-                    request!!,
-                    object : TTSWebSocketListener(storage, fileName, findHeadHook) {
-                        override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                            val file = File(storage, fileName)
-                            if (file.exists()) {
-                                continuation.resume(file)
-                            } else {
-                                continuation.resume(null)
-                            }
+            try {
+                val client =
+                    okHttpClient.newWebSocket(
+                        request!!,
+                        object : TTSWebSocketListener(storage, fileName, findHeadHook) {
+                            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                                val file = File(storage, fileName)
+                                if (file.exists()) {
+                                    continuation.resume(file)
+                                } else {
+                                    continuation.resume(null)
+                                }
 //                                mediaPlayer?.reset()
 //                                mediaPlayer?.setDataSource(file.absolutePath)
 //                                mediaPlayer?.prepare()
 //                                mediaPlayer?.start()
 
-                        }
-                    })
-            client.send(audioFormat)
-            client.send(ssmlHeadersPlusData)
-        } catch (e: Throwable) {
-            e.printStackTrace()
-            continuation.resume(null)
+                            }
+                        })
+                client.send(audioFormat)
+                client.send(ssmlHeadersPlusData)
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                continuation.resume(null)
+            }
         }
-    }
 
     private fun dateToString(date: Date): String {
         val sdf = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z (zzzz)", Locale.getDefault())

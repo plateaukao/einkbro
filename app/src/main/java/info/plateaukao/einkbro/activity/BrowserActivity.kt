@@ -2573,9 +2573,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun showTtsLanguageDialog() {
-        TtsLanguageDialog(this).show(ttsViewModel.getAvailableLanguages()) {
-            config.ttsLocale = it
-        }
+        TtsLanguageDialog(this).show(ttsViewModel.getAvailableLanguages())
     }
 
     override fun removeAlbum() {

@@ -19,7 +19,9 @@ class TtsTypeDialog(val context: Context) : KoinComponent {
                 types.map { it.name }.toTypedArray(),
                 config.ttsType.ordinal
             ) { dialog, selectedIndex ->
-                action(types[selectedIndex])
+                val newType = types[selectedIndex]
+                config.ttsType = newType
+                action(newType)
                 dialog.dismiss()
             }
         }.create().show()
