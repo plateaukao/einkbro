@@ -23,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -113,7 +114,8 @@ class SettingActivity : ComponentActivity() {
                             navigateUp = {
                                 if (navController.previousBackStackEntry != null) navController.navigateUp()
                                 else finish()
-                            }
+                            },
+                            close = { finish() }
                         )
                     }
                 ) { innerPadding ->
@@ -1117,6 +1119,7 @@ enum class SettingRoute(@StringRes val titleId: Int) {
 fun SettingBar(
     currentScreen: SettingRoute,
     navigateUp: () -> Unit,
+    close: () -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -1130,6 +1133,15 @@ fun SettingBar(
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
                     imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = close) {
+                Icon(
+                    tint = MaterialTheme.colors.onPrimary,
+                    imageVector = Icons.Filled.Close,
                     contentDescription = stringResource(R.string.back)
                 )
             }
