@@ -302,7 +302,7 @@
     <string name="split_screen">Split screen</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="setting_summary_dark_mode">Configure dark mode.</string>
-    <string name="hie_touch_area_when_input">Disable when typing</string>
+    <string name="hie_touch_area_when_input">Hide when typing</string>
     <string name="switch_touch_area_action">Switch up/down direction</string>
     <string name="switch_touch_area_action_short">Switch direction</string>
     <string name="no_previous_page">No previous page!</string>
