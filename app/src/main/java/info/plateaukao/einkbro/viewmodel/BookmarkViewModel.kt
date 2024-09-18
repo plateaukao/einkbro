@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -28,17 +27,14 @@ class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewMode
 
     private var sortMode = BookmarkManager.SortMode.BY_ORDER
 
-    private var updateJob: Job? = null
     private fun updateUiState() {
-        updateJob?.cancel()
-        updateJob = viewModelScope.launch {
-            bookmarkManager.getBookmarksByParentFlow(folderStack.peek().id).collect {
-                currentFolder.value = folderStack.peek()
-                if (sortMode == BookmarkManager.SortMode.BY_ORDER) {
-                    _uiState.value = it.sortedBy { bookmark -> bookmark.order }
-                } else {
-                    _uiState.value = it.sortedBy { bookmark -> bookmark.title }
-                }
+        viewModelScope.launch {
+            val bookmarks = bookmarkManager.getBookmarksByParent(folderStack.peek().id)
+            currentFolder.value = folderStack.peek()
+            if (sortMode == BookmarkManager.SortMode.BY_ORDER) {
+                _uiState.value = bookmarks.sortedBy { bookmark -> bookmark.order }
+            } else {
+                _uiState.value = bookmarks.sortedBy { bookmark -> bookmark.title }
             }
         }
     }

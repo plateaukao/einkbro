@@ -138,8 +138,8 @@ interface BookmarkDao {
     @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
     suspend fun getBookmarksByParent(parentId: Int): List<Bookmark>
 
-    @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
-    fun getBookmarksByParentFlow(parentId: Int): Flow<List<Bookmark>>
+//    @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
+//    fun getBookmarksByParentFlow(parentId: Int): Flow<List<Bookmark>>
 
     @Query("SELECT COUNT(id) FROM bookmarks WHERE url = :url")
     suspend fun existsUrl(url: String): Int
@@ -305,9 +305,6 @@ class BookmarkManager(context: Context) : KoinComponent {
     suspend fun deleteFavicon(faviconInfo: FaviconInfo) = faviconDao.delete(faviconInfo)
 
     // -- Bookmark --
-
-    fun getBookmarksByParentFlow(parentId: Int): Flow<List<Bookmark>> =
-        bookmarkDao.getBookmarksByParentFlow(parentId)
 
     suspend fun updateBookmarksOrder(bookmarks: List<Bookmark>) {
         withContext(Dispatchers.IO) {
