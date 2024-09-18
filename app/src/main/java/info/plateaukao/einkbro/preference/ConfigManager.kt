@@ -295,6 +295,41 @@ class ConfigManager(
             useOpenAiTts = value == TtsType.GPT
         }
 
+    private val K_RECENT_USED_TTS_VOICES = "sp_recent_used_tts_voices"
+    var recentUsedTtsVoices: MutableList<VoiceItem>
+        get() {
+            val string = sp.getString(K_RECENT_USED_TTS_VOICES, "").orEmpty()
+            if (string.isBlank()) return mutableListOf()
+
+            return try {
+                string.split("###")
+                    .mapNotNull { Json.decodeFromString<VoiceItem>(it) }
+                    .toMutableList()
+            } catch (exception: Exception) {
+                sp.edit { remove(K_RECENT_USED_TTS_VOICES) }
+                mutableListOf()
+            }
+        }
+        set(value) {
+            val processedValue = if (value.distinct().size > 5) {
+                value.distinct().subList(0, 5)
+            } else {
+                value.distinct()
+            }
+
+            sp.edit {
+                if (processedValue.isEmpty()) {
+                    remove(K_RECENT_USED_TTS_VOICES)
+                } else {
+                    // check if the new value the same as the old one
+                    putString(
+                        K_RECENT_USED_TTS_VOICES,
+                        processedValue.joinToString("###") { Json.encodeToString(it) }
+                    )
+                }
+            }
+        }
+
     var ettsVoice: VoiceItem
         get() = Json.decodeFromString(
             sp.getString(

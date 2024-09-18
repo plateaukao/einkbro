@@ -1,4 +1,4 @@
-package info.plateaukao.einkbro.view.dialog
+package info.plateaukao.einkbro.view.dialog.compose
 
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import icu.xmc.edgettslib.entity.VoiceItem
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.ComposeDialogFragment
 import kotlinx.serialization.json.Json
 import java.util.Locale
 
@@ -32,9 +31,11 @@ class ETtsVoiceDialogFragment(
         MyTheme {
             LanguageListScreen(
                 selectedVoiceItem = config.ettsVoice,
+                config.recentUsedTtsVoices,
                 voices,
             ) {
                 config.ettsVoice = it
+                config.recentUsedTtsVoices = config.recentUsedTtsVoices.apply { add (0, it) }
                 selectedAction(it)
                 dismiss()
             }
@@ -53,6 +54,7 @@ class ETtsVoiceDialogFragment(
 @Composable
 fun LanguageListScreen(
     selectedVoiceItem: VoiceItem,
+    recentVoices: List<VoiceItem>,
     voices: List<VoiceItem>,
     selectedAction: (VoiceItem) -> Unit = {},
 ) {
@@ -74,6 +76,17 @@ fun LanguageListScreen(
     LazyColumn(
         modifier = Modifier.width(400.dp)
     ) {
+        recentVoices.forEach { voice ->
+            item {
+                VoiceItemRow(
+                    voice = voice,
+                    selected = voice == selectedVoiceItem,
+                    onClick = {
+                        selectedAction(voice)
+                    }
+                )
+            }
+        }
         languageList.forEach { language ->
             item {
                 val isExpanded = remember { mutableStateOf(false) }
@@ -91,26 +104,39 @@ fun LanguageListScreen(
                 if (isExpanded.value) {
                     voices.filter { it.getLanguageCode() == language }
                         .forEach { voice ->
-                            val country = Locale(
-                                voice.getLanguageCode(),
-                                voice.getCountryCode()
-                            ).displayCountry
-                            val role = voice.getVoiceRole()
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(28.dp, 16.dp, 16.dp, 16.dp)
-                                    .clickable {
-                                        selectedAction(voice)
-                                    },
-                                text = country + " - " + voice.getVoiceRole(),
-                                color = MaterialTheme.colors.onBackground
+                            VoiceItemRow(
+                                voice = voice,
+                                selected = voice == selectedVoiceItem,
+                                onClick = {
+                                    selectedAction(voice)
+                                }
                             )
-                            Divider()
                         }
                 }
             }
         }
     }
+}
+
+@Composable
+fun VoiceItemRow(
+    voice: VoiceItem,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    val country = Locale(
+        voice.getLanguageCode(),
+        voice.getCountryCode()
+    ).displayCountry
+    val role = voice.getVoiceRole()
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(28.dp, 16.dp, 16.dp, 16.dp)
+            .clickable(onClick = onClick),
+        text = "$country - $role",
+        color = MaterialTheme.colors.onBackground
+    )
+    Divider()
 }
 
