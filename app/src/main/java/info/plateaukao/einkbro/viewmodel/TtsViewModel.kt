@@ -149,16 +149,23 @@ class TtsViewModel : ViewModel(), KoinComponent {
     fun getAvailableLanguages(): List<Locale> = ttsManager.getAvailableLanguages()
 
     private suspend fun playAudioFile(file: File) = suspendCoroutine { cont ->
-        FileInputStream(file).use { fis ->
-            mediaPlayer.setDataSource(fis.fd)
-            mediaPlayer.prepare()
-            mediaPlayer.start()
+        try {
+            FileInputStream(file).use { fis ->
+                mediaPlayer.setDataSource(fis.fd)
+                mediaPlayer.prepare()
+                mediaPlayer.start()
 
-            mediaPlayer.setOnCompletionListener {
-                file.delete()
-                mediaPlayer.reset()
-                cont.resume(0)
+                mediaPlayer.setOnCompletionListener {
+                    file.delete()
+                    mediaPlayer.reset()
+                    cont.resume(0)
+                }
             }
+        } catch (e: Exception) {
+            Log.e("TtsViewModel", "playAudioFile: ${e.message}")
+            file.delete()
+            mediaPlayer.reset()
+            cont.resume(0)
         }
     }
 
