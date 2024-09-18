@@ -292,6 +292,7 @@ class ConfigManager(
         get() = TtsType.entries[sp.getInt("K_TTS_TYPE", 0)]
         set(value) {
             sp.edit { putInt("K_TTS_TYPE", value.ordinal) }
+            useOpenAiTts = value == TtsType.GPT
         }
 
     var ettsVoice: VoiceItem
