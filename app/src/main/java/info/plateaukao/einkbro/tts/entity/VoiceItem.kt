@@ -12,14 +12,40 @@ data class VoiceItem(
     val ShortName: String,
     val Status: String,
     val SuggestedCodec: String,
-    val VoiceTag: VoiceTag
-)
+    val VoiceTag: VoiceTag,
+) {
+    fun descriptionShort(): String {
+        return "${ShortName.replace("Neural", "")}"
+    }
+
+    fun description(): String {
+        return "${ShortName.replace("Neural", "")}  " +
+                if (specialPersonalities().isNotEmpty()) {
+                    "(${specialPersonalities().joinToString(", ")})"
+                } else {
+                    ""
+                }
+    }
+
+    fun getLanguageCode(): String {
+        return ShortName.split("-")[0]
+    }
+
+    fun getCountryCode(): String {
+        return ShortName.split("-")[1]
+    }
+
+    fun getVoiceRole(): String = description().split("-").last()
+
+    private fun specialPersonalities(): List<String> =
+        VoiceTag.VoicePersonalities.filter { it != "Friendly" && it != "Positive" }
+}
 
 // create a dummy VoiceItem
 val dummyVoiceItem = VoiceItem(
     FriendlyName = "dummy",
     Gender = "dummy",
-    Locale = "dummy",
+    Locale = "en-US",
     Name = "dummy",
     ShortName = "dummy",
     Status = "dummy",
