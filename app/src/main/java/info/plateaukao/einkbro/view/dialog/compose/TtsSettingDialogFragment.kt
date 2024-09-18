@@ -28,7 +28,6 @@ import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
-import info.plateaukao.einkbro.view.dialog.ETtsVoiceDialogFragment
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsTypeDialog
 import info.plateaukao.einkbro.viewmodel.TtsType
