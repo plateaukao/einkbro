@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -83,7 +84,8 @@ fun LanguageListScreen(
                         .padding(16.dp)
                         .clickable {
                             isExpanded.value = !isExpanded.value
-                        }
+                        },
+                    color = MaterialTheme.colors.onBackground
                 )
                 Divider()
                 if (isExpanded.value) {
@@ -101,11 +103,8 @@ fun LanguageListScreen(
                                     .clickable {
                                         selectedAction(voice)
                                     },
-                                text = Locale(
-                                    voice.getLanguageCode(),
-                                    voice.getCountryCode()
-                                ).displayCountry +
-                                        " - " + voice.getVoiceRole(),
+                                text = country + " - " + voice.getVoiceRole(),
+                                color = MaterialTheme.colors.onBackground
                             )
                             Divider()
                         }
