@@ -4,7 +4,6 @@ import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import icu.xmc.edgettslib.entity.VoiceItem
 import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.OpenAiRepository
@@ -48,8 +47,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private fun useOpenAiTts(): Boolean = config.useOpenAiTts && config.gptApiKey.isNotBlank()
 
-    fun getEttsVoices(): List<VoiceItem> = eTts.voiceList
-
     fun readText(text: String) {
         if (isSpeaking()) {
             stop()
@@ -87,7 +84,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private fun readByEngine(ttsType: TtsType, text: String) {
         _speakingState.value = true
         audioFileChannel = Channel(1)
-        val processedText = text.replace("\\n", "").replace("\\\"", "")
+        val processedText = text.replace("\\n", "").replace("\\\"", "").replace("\\t", "")
         viewModelScope.launch(Dispatchers.IO) {
             val sentences: List<String> = processedText.split("(?<=\\.)|(?<=。)".toRegex())
 

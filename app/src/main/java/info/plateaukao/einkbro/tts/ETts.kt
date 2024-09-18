@@ -3,7 +3,6 @@ package info.plateaukao.einkbro.tts
 import android.media.MediaPlayer
 import icu.xmc.edgettslib.entity.VoiceItem
 import info.plateaukao.einkbro.EinkBroApplication
-import info.plateaukao.einkbro.unit.HelperUnit
 import kotlinx.serialization.json.Json
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
@@ -37,10 +36,6 @@ class ETts private constructor() {
     }
 
     private val json = Json { ignoreUnknownKeys = true }
-
-    val voiceList: List<VoiceItem> = json.decodeFromString(
-        HelperUnit.getStringFromAsset("eVoiceList.json")
-    )
 
     private var headers: HashMap<String, String> = HashMap<String, String>().apply {
         put("Origin", UrlConstant.EDGE_ORIGIN)

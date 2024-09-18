@@ -22,12 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import icu.xmc.edgettslib.entity.VoiceItem
+import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
-import info.plateaukao.einkbro.view.dialog.ETtsVoiceDialog
+import info.plateaukao.einkbro.view.dialog.ETtsVoiceDialogFragment
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsTypeDialog
 import info.plateaukao.einkbro.viewmodel.TtsType
@@ -41,9 +42,11 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
         composeView.setContent {
             MyTheme {
                 val ttsType = remember { mutableStateOf(config.ttsType) }
+                val ettsVoice = remember { mutableStateOf(config.ettsVoice) }
                 MainTtsSettingDialog(
                     selectedType = ttsType.value,
                     selectedLocale = config.ttsLocale,
+                    selectedEttsVoice = ettsVoice.value,
                     selectedSpeedValue = config.ttsSpeedValue,
                     onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
                     okAction = { dismiss() },
@@ -57,9 +60,8 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         }
                     },
                     showEttsVoiceDialog = {
-                        ETtsVoiceDialog(requireContext()).show() {
-                            config.ettsVoice = it
-                        }
+                        ETtsVoiceDialogFragment { ettsVoice.value = it }
+                            .show(parentFragmentManager, "etts_voice")
                     }
                 )
             }
@@ -84,7 +86,7 @@ private val speedRateValueList2 = listOf(
 private fun MainTtsSettingDialog(
     selectedType: TtsType,
     selectedLocale: Locale,
-    selectedEttsVoice: VoiceItem? = null,
+    selectedEttsVoice: VoiceItem,
     selectedSpeedValue: Int,
     onSpeedValueClick: (Int) -> Unit,
     gotoSettingAction: () -> Unit,
@@ -121,7 +123,9 @@ private fun MainTtsSettingDialog(
             )
             SelectableText(
                 modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
-                selected = true, text = selectedEttsVoice?.FriendlyName ?: ""
+                selected = true,
+                text = Locale(selectedEttsVoice.getLanguageCode()).displayName
+                        + " " + selectedEttsVoice.getVoiceRole()
             ) {
                 showEttsVoiceDialog()
             }
@@ -232,6 +236,7 @@ fun PreviewMainTtsDialog() {
             showLocaleDialog = {},
             showTtsTypeDialog = {},
             showEttsVoiceDialog = {},
+            selectedEttsVoice = dummyVoiceItem
         )
     }
 }
