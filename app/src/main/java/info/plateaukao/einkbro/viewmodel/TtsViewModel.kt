@@ -53,7 +53,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
             return
         }
 
-        // if (useOpenAiTts()) {
         val type = if (useOpenAiTts()) TtsType.GPT else config.ttsType
 
         when (type) {
@@ -108,6 +107,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
                     }
                 }
             }
+            audioFileChannel?.close()
         }
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -117,8 +117,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
                 playAudioFile(file)
                 delay(100)
                 index++
+                if (audioFileChannel?.isClosedForSend == true &&
+                    audioFileChannel?.isEmpty == true) break
             }
-            delay(2000)
             _speakingState.value = false
             audioFileChannel = null
         }

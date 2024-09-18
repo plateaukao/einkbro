@@ -14,11 +14,7 @@ data class VoiceItem(
     val SuggestedCodec: String,
     val VoiceTag: VoiceTag,
 ) {
-    fun descriptionShort(): String {
-        return "${ShortName.replace("Neural", "")}"
-    }
-
-    fun description(): String {
+    private fun description(): String {
         return "${ShortName.replace("Neural", "")}  " +
                 if (specialPersonalities().isNotEmpty()) {
                     "(${specialPersonalities().joinToString(", ")})"

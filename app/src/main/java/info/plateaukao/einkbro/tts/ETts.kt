@@ -70,48 +70,8 @@ class ETts private constructor() {
         }
     }
 
-    fun setVoicePitch(voicePitch: Int): ETts {
-        this.voicePitch = "+${voicePitch}Hz"
-        return this
-    }
-
-    fun setVoiceRate(voiceRate: Int): ETts {
-        this.voiceRate = "+${voiceRate}%"
-        return this
-    }
-
-    fun setVoiceVolume(voiceVolume: Int): ETts {
-        this.voiceVolume = "+${voiceVolume}%"
-        return this
-    }
-
-    fun formatMp3(): ETts {
-        format = "audio-24khz-48kbitrate-mono-mp3"
-        return this
-    }
-
-//    fun formatOpus(): TTS {
-//        format = "webm-24khz-16bit-mono-opus"
-//        return this
-//    }
-
-    fun findHeadHook(): ETts {
-        findHeadHook = true
-        return this
-    }
-
-    fun fixHeadHook(): ETts {
-        findHeadHook = false
-        return this
-    }
-
     fun storage(storage: String): ETts {
         this.storage = storage
-        return this
-    }
-
-    fun headers(headers: HashMap<String, String>): ETts {
-        this.headers = headers
         return this
     }
 
@@ -119,7 +79,7 @@ class ETts private constructor() {
         suspendCoroutine { continuation ->
             val str = removeIncompatibleCharacters(content)
             if (str.isNullOrBlank()) {
-                throw RuntimeException("invalid content")
+                continuation.resume(null)
             }
             val storageFolder = File(storage)
             if (!storageFolder.exists()) {
@@ -127,8 +87,8 @@ class ETts private constructor() {
             }
             val dateStr = dateToString(Date())
             val reqId = uuid()
-            val audioFormat = TtsUtil.mkAudioFormat(dateStr, format)
-            val ssml = TtsUtil.mkssml(
+            val audioFormat = mkAudioFormat(dateStr, format)
+            val ssml = mkssml(
                 voice.Locale,
                 voice.Name,
                 content,
@@ -136,7 +96,7 @@ class ETts private constructor() {
                 "+${speed - 100}%",
                 voiceVolume
             )
-            val ssmlHeadersPlusData = TtsUtil.ssmlHeadersPlusData(reqId, dateStr, ssml)
+            val ssmlHeadersPlusData = ssmlHeadersPlusData(reqId, dateStr, ssml)
             var fileName = reqId
             if (format == "audio-24khz-48kbitrate-mono-mp3") {
                 fileName += ".mp3"
@@ -166,11 +126,6 @@ class ETts private constructor() {
                                 } else {
                                     continuation.resume(null)
                                 }
-//                                mediaPlayer?.reset()
-//                                mediaPlayer?.setDataSource(file.absolutePath)
-//                                mediaPlayer?.prepare()
-//                                mediaPlayer?.start()
-
                             }
                         })
                 client.send(audioFormat)
@@ -205,4 +160,30 @@ class ETts private constructor() {
         }
         return output.toString()
     }
+
+    private fun mkAudioFormat(dateStr: String, format: String): String =
+        "X-Timestamp:" + dateStr + "\r\n" +
+                "Content-Type:application/json; charset=utf-8\r\n" +
+                "Path:speech.config\r\n\r\n" +
+                "{\"context\":{\"synthesis\":{\"audio\":{\"metadataoptions\":{\"sentenceBoundaryEnabled\":\"false\",\"wordBoundaryEnabled\":\"true\"},\"outputFormat\":\"" + format + "\"}}}}\n"
+
+
+    private fun mkssml(
+        locate: String,
+        voiceName: String,
+        content: String,
+        voicePitch: String,
+        voiceRate: String,
+        voiceVolume: String,
+    ): String =
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='" + locate + "'>" +
+                "<voice name='" + voiceName + "'><prosody pitch='" + voicePitch + "' rate='" + voiceRate + "' volume='" + voiceVolume + "'>" +
+                content + "</prosody></voice></speak>"
+
+
+    private fun ssmlHeadersPlusData(requestId: String, timestamp: String, ssml: String): String =
+        "X-RequestId:" + requestId + "\r\n" +
+                "Content-Type:application/ssml+xml\r\n" +
+                "X-Timestamp:" + timestamp + "Z\r\n" +
+                "Path:ssml\r\n\r\n" + ssml
 }

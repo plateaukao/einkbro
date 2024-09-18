@@ -204,7 +204,7 @@ fun TtsDialogButtonBar(
                 onClick = gotoSettingAction
             ) {
                 Text(
-                    stringResource(id = R.string.settings),
+                    stringResource(id = R.string.system_settings),
                     color = MaterialTheme.colors.onBackground
                 )
             }
