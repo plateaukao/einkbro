@@ -853,7 +853,7 @@ open class NinjaWebView(
 
         val jsString = HelperUnit.getStringFromAsset("MozReadability.js")
         evaluateJavascript(jsString) {
-            evaluateJavascript("javascript:(function() { window.scrollTo(0, 0); })()", null)
+            //evaluateJavascript("javascript:(function() { window.scrollTo(0, 0); })()", null)
             postAction?.invoke()
         }
     }

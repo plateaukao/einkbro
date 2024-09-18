@@ -1,7 +1,5 @@
 package info.plateaukao.einkbro.tts
 
-import android.util.Log
-import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
@@ -14,20 +12,20 @@ open class TTSWebSocketListener(
     private val fileName: String,
     private val findHeadHook: Boolean,
 ) : WebSocketListener() {
-    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        super.onClosing(webSocket, code, reason)
-        Log.d("WebSocket", "onClosing: $reason")
-    }
-
-    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        Log.d("WebSocket", "onFailure: " + t.message)
-    }
+//    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+//        super.onClosing(webSocket, code, reason)
+//        Log.d("WebSocket", "onClosing: $reason")
+//    }
+//
+//    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+//        Log.d("WebSocket", "onFailure: " + t.message)
+//    }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         if (text.contains("Path:turn.end")) {
             webSocket.close(1000, null)
         }
-        Log.d("WebSocket", "onMessage: $text")
+        //Log.d("WebSocket", "onMessage: $text")
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -36,11 +34,10 @@ open class TTSWebSocketListener(
         } else {
             fixHeadHook(bytes.toByteArray())
         }
-        Log.d("WebSocket", "onMessage: $bytes")
+        //Log.d("WebSocket", "onMessage: $bytes")
     }
 
-    override fun onOpen(webSocket: WebSocket, response: Response) {
-    }
+//    override fun onOpen(webSocket: WebSocket, response: Response) { }
 
     /**
      * This implementation method is more generic as it searches for the file header marker in the given file header and removes it. However, it may have lower efficiency.
