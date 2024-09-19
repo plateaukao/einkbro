@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +49,8 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                     selectedEttsVoice = ettsVoice.value,
                     selectedSpeedValue = config.ttsSpeedValue,
                     onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
+                    recentVoices = config.recentUsedTtsVoices,
+                    onVoiceSelected = { config.ettsVoice = it; dismiss() },
                     okAction = { dismiss() },
                     gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
                     showLocaleDialog = {
@@ -86,10 +89,12 @@ private fun MainTtsSettingDialog(
     selectedType: TtsType,
     selectedLocale: Locale,
     selectedEttsVoice: VoiceItem,
+    recentVoices: List<VoiceItem>,
     selectedSpeedValue: Int,
     onSpeedValueClick: (Int) -> Unit,
     gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
+    onVoiceSelected: (VoiceItem) -> Unit,
     showLocaleDialog: () -> Unit,
     showTtsTypeDialog: () -> Unit,
     showEttsVoiceDialog: () -> Unit,
@@ -125,6 +130,23 @@ private fun MainTtsSettingDialog(
                 selected = true,
                 text = Locale(selectedEttsVoice.getLanguageCode()).displayName
                         + " " + selectedEttsVoice.getVoiceRole()
+            ) {
+                showEttsVoiceDialog()
+            }
+            recentVoices.filterNot { it.Name == selectedEttsVoice.Name }.forEach { voice ->
+                SelectableText(
+                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                    selected = false,
+                    text = Locale(voice.getLanguageCode()).displayName
+                            + " " + voice.getVoiceRole()
+                ) {
+                    onVoiceSelected(voice)
+                }
+            }
+            SelectableText(
+                modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                selected = true,
+                text = LocalContext.current.getString(R.string.other_voices)
             ) {
                 showEttsVoiceDialog()
             }
@@ -178,6 +200,7 @@ private fun MainTtsSettingDialog(
             }
         }
         TtsDialogButtonBar(
+            showSystemSetting = selectedType == TtsType.SYSTEM,
             gotoSettingAction = gotoSettingAction,
             okAction = okAction,
         )
@@ -186,6 +209,7 @@ private fun MainTtsSettingDialog(
 
 @Composable
 fun TtsDialogButtonBar(
+    showSystemSetting: Boolean,
     gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
 ) {
@@ -198,22 +222,24 @@ fun TtsDialogButtonBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
-            TextButton(
-                modifier = Modifier.wrapContentWidth(),
-                onClick = gotoSettingAction
-            ) {
-                Text(
-                    stringResource(id = R.string.system_settings),
-                    color = MaterialTheme.colors.onBackground
-                )
+            if (showSystemSetting) {
+                TextButton(
+                    modifier = Modifier.wrapContentWidth(),
+                    onClick = gotoSettingAction
+                ) {
+                    Text(
+                        stringResource(id = R.string.system_settings),
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
+                VerticalSeparator()
             }
-            VerticalSeparator()
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
                 onClick = okAction
             ) {
                 Text(
-                    stringResource(id = android.R.string.ok),
+                    stringResource(id = R.string.close),
                     color = MaterialTheme.colors.onBackground
                 )
             }
@@ -229,6 +255,8 @@ fun PreviewMainTtsDialog() {
             selectedType = TtsType.SYSTEM,
             selectedLocale = Locale.US,
             selectedSpeedValue = 100,
+            recentVoices = listOf(dummyVoiceItem),
+            onVoiceSelected = {},
             onSpeedValueClick = {},
             okAction = {},
             gotoSettingAction = {},

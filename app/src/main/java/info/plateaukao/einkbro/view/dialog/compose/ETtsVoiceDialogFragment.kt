@@ -31,11 +31,9 @@ class ETtsVoiceDialogFragment(
         MyTheme {
             LanguageListScreen(
                 selectedVoiceItem = config.ettsVoice,
-                config.recentUsedTtsVoices,
                 voices,
             ) {
                 config.ettsVoice = it
-                config.recentUsedTtsVoices = config.recentUsedTtsVoices.apply { add (0, it) }
                 selectedAction(it)
                 dismiss()
             }
@@ -54,7 +52,6 @@ class ETtsVoiceDialogFragment(
 @Composable
 fun LanguageListScreen(
     selectedVoiceItem: VoiceItem,
-    recentVoices: List<VoiceItem>,
     voices: List<VoiceItem>,
     selectedAction: (VoiceItem) -> Unit = {},
 ) {
@@ -76,17 +73,6 @@ fun LanguageListScreen(
     LazyColumn(
         modifier = Modifier.width(400.dp)
     ) {
-        recentVoices.forEach { voice ->
-            item {
-                VoiceItemRow(
-                    voice = voice,
-                    selected = voice == selectedVoiceItem,
-                    onClick = {
-                        selectedAction(voice)
-                    }
-                )
-            }
-        }
         languageList.forEach { language ->
             item {
                 val isExpanded = remember { mutableStateOf(false) }
