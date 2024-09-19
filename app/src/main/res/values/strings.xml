@@ -575,4 +575,6 @@
     <string name="setting_tts_type">Text-to-Speech Engine</string>
     <string name="setting_tts_voice">Voice</string>
     <string name="system_settings">System Settings</string>
+    <string name="other_voices">Other Voices...</string>
+    <string name="close">Close</string>
 </resources>

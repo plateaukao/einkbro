@@ -83,7 +83,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private fun readByEngine(ttsType: TtsType, text: String) {
         _speakingState.value = true
         audioFileChannel = Channel(1)
-        val processedText = text.replace("\\n", "").replace("\\\"", "").replace("\\t", "")
+        val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
         viewModelScope.launch(Dispatchers.IO) {
             val sentences: List<String> = processedText.split("(?<=\\.)|(?<=。)".toRegex())
 

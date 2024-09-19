@@ -338,6 +338,7 @@ class ConfigManager(
         )
         set(value) {
             sp.edit { putString("K_ETTS_VOICE", Json.encodeToString(value)) }
+            recentUsedTtsVoices = recentUsedTtsVoices.apply { add (0, value) }
         }
 
     var uiLocaleLanguage by StringPreference(sp, "sp_ui_locale_language", "")
