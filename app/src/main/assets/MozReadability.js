@@ -54,6 +54,7 @@ function Readability(doc, options) {
     return el.innerHTML;
   };
   this._disableJSONLD = !!options.disableJSONLD;
+  this._overwriteImgSrc = !!options.overwriteImgSrc;
 
   // Start with all flags set
   this._flags = this.FLAG_STRIP_UNLIKELYS |
@@ -1979,7 +1980,9 @@ Readability.prototype = {
       }
 
       // also check for "null" to work around https://github.com/jsdom/jsdom/issues/2580
-      if ((elem.src || (elem.srcset && elem.srcset != "null")) && elem.className.toLowerCase().indexOf("lazy") === -1) {
+      if ((elem.src || (elem.srcset && elem.srcset != "null")) &&
+          elem.className.toLowerCase().indexOf("lazy") === -1 &&
+          !this._overwriteImgSrc) {
         return;
       }
 
@@ -1991,7 +1994,8 @@ Readability.prototype = {
         var copyTo = null;
         if (/\.(jpg|jpeg|png|webp)\s+\d/.test(attr.value)) {
           copyTo = "srcset";
-        } else if (/^\s*\S+\.(jpg|jpeg|png|webp)\S*\s*$/.test(attr.value)) {
+        } else if (/^\s*\S+\.(jpg|jpeg|png|webp)\S*\s*$/.test(attr.value) ||
+                   /^\s*https?:\/\/\S+=(jpg|jpeg|png|webp)\S*\s*$/.test(attr.value)) {
           copyTo = "src";
         }
         if (copyTo) {

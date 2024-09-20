@@ -1203,9 +1203,14 @@ open class NinjaWebView(
               observer.observe(targetNode);
             });
         """
+
+
+        private const val readabilityOptions =
+            "{classesToPreserve: preservedClasses, overwriteImgSrc: true}"
+
         private const val replaceWithReaderModeBodyJs = """
             var documentClone = document.cloneNode(true);
-            var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
+            var article = new Readability(documentClone, $readabilityOptions).parse();
             document.innerHTMLCache = document.body.innerHTML;
 
             article.readingTime = getReadingTime(article.length, document.lang);
@@ -1218,7 +1223,7 @@ open class NinjaWebView(
         private const val getReaderModeBodyHtmlJs = """
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
-                var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
+                var article = new Readability(documentClone, $readabilityOptions).parse();
                 article.readingTime = getReadingTime(article.length, document.lang);
                 var bodyOuterHTML = createHtmlBodyWithUrl(article, "%s")
                 var headOuterHTML = document.head.outerHTML;
@@ -1228,7 +1233,7 @@ open class NinjaWebView(
         private const val getReaderModeBodyTextJs = """
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
-                var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
+                var article = new Readability(documentClone, $readabilityOptions).parse();
                 return article.title + ', ' + article.textContent;
             })()
         """
