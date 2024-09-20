@@ -89,8 +89,8 @@ class ETts private constructor() {
             val reqId = uuid()
             val audioFormat = mkAudioFormat(dateStr, format)
             val ssml = mkssml(
-                voice.Locale,
-                voice.Name,
+                voice.locale,
+                voice.name,
                 content,
                 voicePitch,
                 "+${speed - 100}%",
