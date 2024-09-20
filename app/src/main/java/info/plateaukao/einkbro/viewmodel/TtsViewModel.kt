@@ -33,9 +33,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private val ttsManager: TtsManager by inject()
 
-    private val eTts: ETts = ETts.getInstance().apply {
-        initialize()
-    }
+    private val eTts: ETts = ETts()
 
     private val mediaPlayer by lazy { MediaPlayer() }
     private var audioFileChannel: Channel<File>? = null
@@ -85,7 +83,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         audioFileChannel = Channel(1)
         val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
         viewModelScope.launch(Dispatchers.IO) {
-            val sentences: List<String> = processedText.split("(?<=\\.)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
+            val sentences: List<String> =
+                processedText.split("(?<=\\.)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
 
 
             _speakingState.value = true
@@ -119,7 +118,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
                 delay(100)
                 index++
                 if (audioFileChannel?.isClosedForSend == true &&
-                    audioFileChannel?.isEmpty == true) break
+                    audioFileChannel?.isEmpty == true
+                ) break
             }
             _speakingState.value = false
             audioFileChannel = null
