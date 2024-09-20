@@ -6,8 +6,12 @@ import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import okhttp3.WebSocketListener
+import okio.ByteString
 import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
+import java.util.Arrays
 import java.util.Date
 import java.util.Locale
 import java.util.UUID
@@ -18,12 +22,14 @@ import kotlin.coroutines.suspendCoroutine
 // ported from https://github.com/9ikj/Edge-TTS-Lib/
 class ETts {
     private var headers: HashMap<String, String> = HashMap<String, String>().apply {
-        put("Origin", EDGE_ORIGIN)
+        put("Origin", "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold")
         put("Pragma", "no-cache")
         put("Cache-Control", "no-cache")
-        put("User-Agent", EDGE_UA)
+        put(
+            "User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55"
+        )
     }
-    private val format = "audio-24khz-48kbitrate-mono-mp3"
     private val storage = EinkBroApplication.instance.cacheDir.absolutePath
 
     private val okHttpClient by lazy {
@@ -48,7 +54,7 @@ class ETts {
             val dateStr = dateToString(Date())
             val reqId = uuid()
             var fileName = "$reqId.mp3"
-            val audioFormat = mkAudioFormat(dateStr, format)
+            val audioFormat = mkAudioFormat(dateStr, FORMAT)
             val ssml = mkssml(
                 voice.locale,
                 voice.name,
@@ -65,7 +71,7 @@ class ETts {
             }
 
             val request = Request.Builder()
-                .url(EDGE_URL)
+                .url("wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4")
                 .headers(headers.toHeaders())
                 .build()
 
@@ -132,8 +138,10 @@ class ETts {
         voiceRate: String,
         voiceVolume: String,
     ): String =
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='" + locate + "'>" +
-                "<voice name='" + voiceName + "'><prosody pitch='" + voicePitch + "' rate='" + voiceRate + "' volume='" + voiceVolume + "'>" +
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='" +
+                locate + "'>" +
+                "<voice name='" + voiceName + "'><prosody pitch='" + voicePitch +
+                "' rate='" + voiceRate + "' volume='" + voiceVolume + "'>" +
                 content + "</prosody></voice></speak>"
 
 
@@ -144,12 +152,45 @@ class ETts {
                 "Path:ssml\r\n\r\n" + ssml
 
     companion object {
-        const val EDGE_URL =
-            "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
-        const val EDGE_UA =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55"
-        const val EDGE_ORIGIN = "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold"
-        const val VOICES_LIST_URL =
+        private const val FORMAT = "audio-24khz-48kbitrate-mono-mp3"
+        private const val VOICES_LIST_URL =
             "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/voices/list?trustedclienttoken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+    }
+}
+
+open class TTSWebSocketListener(
+    private val storage: String,
+    private val fileName: String,
+) : WebSocketListener() {
+    override fun onMessage(webSocket: WebSocket, text: String) {
+        if (text.contains("Path:turn.end")) {
+            webSocket.close(1000, null)
+        }
+    }
+
+    override fun onMessage(webSocket: WebSocket, bytes: ByteString) =
+        fixHeadHook(bytes.toByteArray())
+
+    private fun fixHeadHook(origin: ByteArray) {
+        val str = String(origin)
+        val skip = when {
+            str.contains("Content-Type") -> when {
+                str.contains("audio/mpeg") -> 130
+                str.contains("codec=opus") -> 142
+                else -> 0
+            }
+
+            else -> 105
+        }
+
+        val voiceBytesRemoveHead = Arrays.copyOfRange(origin, skip, origin.size)
+        try {
+            FileOutputStream(storage + File.separator + fileName, true).use { fos ->
+                fos.write(voiceBytesRemoveHead)
+                fos.flush()
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 }
