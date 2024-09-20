@@ -14,7 +14,7 @@ class TtsTypeDialog(val context: Context) : KoinComponent {
     fun show(action: (TtsType) -> Unit) {
         val types = TtsType.entries
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
-            setTitle("Read in Which Language")
+            setTitle("Read by Which Engine")
             setSingleChoiceItems(
                 types.map { it.name }.toTypedArray(),
                 config.ttsType.ordinal

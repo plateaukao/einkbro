@@ -1,21 +1,30 @@
 package icu.xmc.edgettslib.entity
 
 import info.plateaukao.einkbro.tts.entity.VoiceTag
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class VoiceItem(
-    val FriendlyName: String,
-    val Gender: String,
-    val Locale: String,
-    val Name: String,
-    val ShortName: String,
-    val Status: String,
-    val SuggestedCodec: String,
-    val VoiceTag: VoiceTag,
+    @SerialName("FriendlyName")
+    val friendlyName: String,
+    @SerialName("Gender")
+    val gender: String,
+    @SerialName("Locale")
+    val locale: String,
+    @SerialName("Name")
+    val name: String,
+    @SerialName("ShortName")
+    val shortName: String,
+    @SerialName("Status")
+    val status: String,
+    @SerialName("SuggestedCodec")
+    val suggestedCodec: String,
+    @SerialName("VoiceTag")
+    val voiceTag: VoiceTag
 ) {
     private fun description(): String {
-        return "${ShortName.replace("Neural", "")}  " +
+        return "${shortName.replace("Neural", "")}  " +
                 if (specialPersonalities().isNotEmpty()) {
                     "(${specialPersonalities().joinToString(", ")})"
                 } else {
@@ -24,27 +33,27 @@ data class VoiceItem(
     }
 
     fun getLanguageCode(): String {
-        return ShortName.split("-")[0]
+        return shortName.split("-")[0]
     }
 
     fun getCountryCode(): String {
-        return ShortName.split("-")[1]
+        return shortName.split("-")[1]
     }
 
     fun getVoiceRole(): String = description().split("-").last()
 
     private fun specialPersonalities(): List<String> =
-        VoiceTag.VoicePersonalities.filter { it != "Friendly" && it != "Positive" }
+        voiceTag.voicePersonalities.filter { it != "Friendly" && it != "Positive" }
 }
 
 // create a dummy VoiceItem
 val dummyVoiceItem = VoiceItem(
-    FriendlyName = "dummy",
-    Gender = "dummy",
-    Locale = "en-US",
-    Name = "dummy",
-    ShortName = "dummy",
-    Status = "dummy",
-    SuggestedCodec = "dummy",
-    VoiceTag = VoiceTag(listOf("dummy"), listOf("dummy")),
+    friendlyName = "dummy",
+    gender = "dummy",
+    locale = "en-US",
+    name = "dummy",
+    shortName = "dummy",
+    status = "dummy",
+    suggestedCodec = "dummy",
+    voiceTag = VoiceTag(listOf("dummy"), listOf("dummy")),
 )

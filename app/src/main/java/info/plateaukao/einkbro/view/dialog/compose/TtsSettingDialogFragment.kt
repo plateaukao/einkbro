@@ -133,7 +133,7 @@ private fun MainTtsSettingDialog(
             ) {
                 showEttsVoiceDialog()
             }
-            recentVoices.filterNot { it.Name == selectedEttsVoice.Name }.forEach { voice ->
+            recentVoices.filterNot { it.name == selectedEttsVoice.name }.forEach { voice ->
                 SelectableText(
                     modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
                     selected = false,
