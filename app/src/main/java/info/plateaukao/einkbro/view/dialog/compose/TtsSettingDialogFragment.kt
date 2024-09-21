@@ -35,7 +35,7 @@ import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
@@ -94,7 +94,6 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
 
     private fun readCurrentArticle() {
         IntentUnit.readCurrentArticle(requireActivity())
-        NinjaToast.show(requireContext(), R.string.added_to_read_list)
         dismiss()
     }
 }
@@ -211,17 +210,32 @@ private fun MainTtsSettingDialog(
                     onSpeedValueClick(speedRate)
                 }
             }
+            if (ViewUnit.isTablet(LocalContext.current)) {
+                speedRateValueList2.map { speedRate ->
+                    val isSelect = selectedSpeedValue == speedRate
+                    SelectableText(
+                        modifier = Modifier
+                            .padding(horizontal = 1.dp, vertical = 3.dp),
+                        selected = isSelect,
+                        text = "$speedRate%",
+                    ) {
+                        onSpeedValueClick(speedRate)
+                    }
+                }
+            }
         }
-        Row {
-            speedRateValueList2.map { speedRate ->
-                val isSelect = selectedSpeedValue == speedRate
-                SelectableText(
-                    modifier = Modifier
-                        .padding(horizontal = 1.dp, vertical = 3.dp),
-                    selected = isSelect,
-                    text = "$speedRate%",
-                ) {
-                    onSpeedValueClick(speedRate)
+        if (!ViewUnit.isTablet(LocalContext.current)) {
+            Row {
+                speedRateValueList2.map { speedRate ->
+                    val isSelect = selectedSpeedValue == speedRate
+                    SelectableText(
+                        modifier = Modifier
+                            .padding(horizontal = 1.dp, vertical = 3.dp),
+                        selected = isSelect,
+                        text = "$speedRate%",
+                    ) {
+                        onSpeedValueClick(speedRate)
+                    }
                 }
             }
         }
