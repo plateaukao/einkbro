@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.service.GptVoiceOption
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
@@ -54,12 +55,14 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
             MyTheme {
                 val ttsType = remember { mutableStateOf(config.ttsType) }
                 val ettsVoice = remember { mutableStateOf(config.ettsVoice) }
+                val gptVoice = remember { mutableStateOf(config.gptVoiceOption) }
                 val readProgress = ttsViewModel.readProgress.collectAsState()
 
                 Column {
                     MainTtsSettingDialog(
                         selectedType = ttsType.value,
                         selectedLocale = config.ttsLocale,
+                        selectedGptVoice = gptVoice.value,
                         selectedEttsVoice = ettsVoice.value,
                         selectedSpeedValue = config.ttsSpeedValue,
                         onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
@@ -74,6 +77,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                                 ettsVoice.value = it
                             }.show(parentFragmentManager, "ETtsVoiceDialog")
                         },
+                        onGptVoiceSelected = { config.gptVoiceOption = it; gptVoice.value = it },
                         onVoiceSelected = { config.ettsVoice = it; dismiss() },
                     )
                     TtsDialogButtonBar(
@@ -114,10 +118,12 @@ private val speedRateValueList2 = listOf(
 private fun MainTtsSettingDialog(
     selectedType: TtsType,
     selectedLocale: Locale,
+    selectedGptVoice: GptVoiceOption,
     selectedEttsVoice: VoiceItem,
     recentVoices: List<VoiceItem>,
     selectedSpeedValue: Int,
     onSpeedValueClick: (Int) -> Unit,
+    onGptVoiceSelected: (GptVoiceOption) -> Unit,
     onVoiceSelected: (VoiceItem) -> Unit,
     showLocaleDialog: () -> Unit,
     onTtsTypeSelected: (TtsType) -> Unit,
@@ -148,7 +154,7 @@ private fun MainTtsSettingDialog(
                 }
             }
         }
-        if (selectedType == TtsType.ETTS) {
+        if (selectedType in listOf(TtsType.ETTS, TtsType.GPT)) {
             Text(
                 stringResource(id = R.string.setting_tts_voice),
                 modifier = Modifier.padding(vertical = 6.dp),
@@ -156,6 +162,20 @@ private fun MainTtsSettingDialog(
                 style = MaterialTheme.typography.h6,
                 fontWeight = FontWeight.Bold,
             )
+        }
+        if (selectedType == TtsType.GPT) {
+            GptVoiceOption.entries.forEach {
+                val isSelect = selectedGptVoice == it
+                SelectableText(
+                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                    selected = isSelect,
+                    text = it.name
+                ) {
+                    onGptVoiceSelected(it)
+                }
+            }
+        }
+        if (selectedType == TtsType.ETTS) {
             SelectableText(
                 modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
                 selected = true,
@@ -323,6 +343,7 @@ fun PreviewMainTtsDialog() {
     MyTheme {
         MainTtsSettingDialog(
             selectedType = TtsType.SYSTEM,
+            selectedGptVoice = GptVoiceOption.Alloy,
             selectedLocale = Locale.US,
             selectedSpeedValue = 100,
             recentVoices = listOf(defaultVoiceItem),
@@ -332,6 +353,7 @@ fun PreviewMainTtsDialog() {
             onTtsTypeSelected = {},
             showEttsVoiceDialog = {},
             selectedEttsVoice = defaultVoiceItem,
+            onGptVoiceSelected = {}
         )
     }
 }
