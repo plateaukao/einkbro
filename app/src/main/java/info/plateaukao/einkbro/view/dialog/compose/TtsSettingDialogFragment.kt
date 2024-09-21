@@ -42,6 +42,7 @@ import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsTypeDialog
 import info.plateaukao.einkbro.viewmodel.TtsType
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
+import info.plateaukao.einkbro.viewmodel.toStringResId
 import org.koin.core.component.inject
 import java.util.Locale
 
@@ -138,7 +139,7 @@ private fun MainTtsSettingDialog(
         )
         SelectableText(
             modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
-            selected = true, text = selectedType.name
+            selected = true, text = stringResource(selectedType.toStringResId())
         ) {
             showTtsTypeDialog()
         }
