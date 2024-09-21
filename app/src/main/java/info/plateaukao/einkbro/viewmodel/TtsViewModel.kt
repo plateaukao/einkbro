@@ -100,20 +100,11 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private suspend fun readByEngine(ttsType: TtsType, text: String) {
         _speakingState.value = true
         audioFileChannel = Channel(1)
-        val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
-        val sentences = processedText.split("(?<=\\.)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
-        val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
-            if (acc.isEmpty() || acc.last().length + sentence.length > 100) {
-                acc.add(sentence)
-            } else {
-                val last = acc.last()
-                acc[acc.size - 1] = "$last$sentence"
-            }
-            acc
-        }
 
         viewModelScope.launch(Dispatchers.IO) {
             _speakingState.value = true
+
+            val chunks = processedTextToChunks(text)
             chunks.forEachIndexed { index, chunk ->
                 if (audioFileChannel == null) return@launch
 
@@ -129,9 +120,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
                     val file = if (ttsType == TtsType.ETTS) {
                         eTts.tts(config.ettsVoice, config.ttsSpeedValue, chunk)
                     } else {
-                        openaiRepository.tts(chunk)?.let { data ->
-                            generateTempFile(data)
-                        }
+                        openaiRepository.tts(chunk)?.let { generateTempFile(it) }
                     }
 
                     if (file != null) {
@@ -153,8 +142,24 @@ class TtsViewModel : ViewModel(), KoinComponent {
             if (audioFileChannel?.isClosedForSend == true && audioFileChannel?.isEmpty == true
             ) break
         }
+
         _speakingState.value = false
         audioFileChannel = null
+    }
+
+    private fun processedTextToChunks(text: String): MutableList<String> {
+        val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
+        val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
+        val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
+            if (acc.isEmpty() || acc.last().length + sentence.length > 100) {
+                acc.add(sentence)
+            } else {
+                val last = acc.last()
+                acc[acc.size - 1] = "$last$sentence"
+            }
+            acc
+        }
+        return chunks
     }
 
     private val fetchSemaphore = Semaphore(3)
