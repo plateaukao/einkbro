@@ -9,9 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.activityViewModels
 import icu.xmc.edgettslib.entity.VoiceItem
 import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
@@ -32,11 +38,13 @@ import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsTypeDialog
 import info.plateaukao.einkbro.viewmodel.TtsType
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import org.koin.core.component.inject
 import java.util.Locale
 
 class TtsSettingDialogFragment : ComposeDialogFragment() {
     private val ttsManager: TtsManager by inject()
+    private val ttsViewModel: TtsViewModel by activityViewModels()
 
     override fun setupComposeView() {
         composeView.setContent {
@@ -44,6 +52,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                 val ttsType = remember { mutableStateOf(config.ttsType) }
                 val ettsVoice = remember { mutableStateOf(config.ettsVoice) }
                 MainTtsSettingDialog(
+                    isPlaying = ttsViewModel.isVoicePlaying(),
                     selectedType = ttsType.value,
                     selectedLocale = config.ttsLocale,
                     selectedEttsVoice = ettsVoice.value,
@@ -53,6 +62,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                     onVoiceSelected = { config.ettsVoice = it; dismiss() },
                     okAction = { dismiss() },
                     gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
+                    pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
                     showLocaleDialog = {
                         TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages())
                     },
@@ -86,6 +96,7 @@ private val speedRateValueList2 = listOf(
 
 @Composable
 private fun MainTtsSettingDialog(
+    isPlaying: Boolean,
     selectedType: TtsType,
     selectedLocale: Locale,
     selectedEttsVoice: VoiceItem,
@@ -95,6 +106,7 @@ private fun MainTtsSettingDialog(
     gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
     onVoiceSelected: (VoiceItem) -> Unit,
+    pauseOrResumeAction : () -> Unit,
     showLocaleDialog: () -> Unit,
     showTtsTypeDialog: () -> Unit,
     showEttsVoiceDialog: () -> Unit,
@@ -200,8 +212,10 @@ private fun MainTtsSettingDialog(
             }
         }
         TtsDialogButtonBar(
+            isPlaying = isPlaying,
             showSystemSetting = selectedType == TtsType.SYSTEM,
             gotoSettingAction = gotoSettingAction,
+            pauseOrResumeAction = pauseOrResumeAction,
             okAction = okAction,
         )
     }
@@ -209,7 +223,9 @@ private fun MainTtsSettingDialog(
 
 @Composable
 fun TtsDialogButtonBar(
+    isPlaying: Boolean,
     showSystemSetting: Boolean,
+    pauseOrResumeAction: () -> Unit,
     gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
 ) {
@@ -232,8 +248,21 @@ fun TtsDialogButtonBar(
                         color = MaterialTheme.colors.onBackground
                     )
                 }
+            } else {
                 VerticalSeparator()
+                IconButton(
+                    onClick = {
+                        pauseOrResumeAction()
+                    },
+                    modifier = Modifier.wrapContentWidth()
+                ) {
+                    Icon(
+                        if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                        "pause or resume"
+                    )
+                }
             }
+            VerticalSeparator()
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
                 onClick = okAction
@@ -252,6 +281,7 @@ fun TtsDialogButtonBar(
 fun PreviewMainTtsDialog() {
     MyTheme {
         MainTtsSettingDialog(
+            isPlaying = false,
             selectedType = TtsType.SYSTEM,
             selectedLocale = Locale.US,
             selectedSpeedValue = 100,
@@ -260,6 +290,7 @@ fun PreviewMainTtsDialog() {
             onSpeedValueClick = {},
             okAction = {},
             gotoSettingAction = {},
+            pauseOrResumeAction = {},
             showLocaleDialog = {},
             showTtsTypeDialog = {},
             showEttsVoiceDialog = {},
