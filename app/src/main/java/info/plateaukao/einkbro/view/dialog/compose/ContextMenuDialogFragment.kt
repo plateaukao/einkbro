@@ -162,7 +162,7 @@ private fun ContextMenuItems(
                     onClicked(TranslateImage)
                 }
             }
-            ContextMenuItem(R.string.menu_tts, R.drawable.ic_tts, showIcons) {
+            ContextMenuItem(R.string.menu_tts, R.drawable.ic_voice_off, showIcons) {
                 onClicked(Tts)
             }
             ContextMenuItem(

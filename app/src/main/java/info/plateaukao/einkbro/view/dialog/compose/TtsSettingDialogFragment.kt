@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +59,11 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                 val gptVoice = remember { mutableStateOf(config.gptVoiceOption) }
                 val readProgress = ttsViewModel.readProgress.collectAsState()
 
-                Column {
+                Column(
+                    modifier = Modifier
+                        .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+                        .width(IntrinsicSize.Max)
+                ) {
                     MainTtsSettingDialog(
                         selectedType = ttsType.value,
                         selectedLocale = config.ttsLocale,
@@ -86,6 +91,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         showSystemSetting = ttsType.value == TtsType.SYSTEM,
                         readProgress = readProgress.value,
                         gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
+                        stopAction = { ttsViewModel.stop(); dismiss() },
                         pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
                         addToReadListAction = this@TtsSettingDialogFragment::readCurrentArticle,
                         dismissAction = { dismiss() },
@@ -102,7 +108,6 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
 }
 
 private val speedRateValueList = listOf(
-    50,
     75,
     100,
     125,
@@ -180,7 +185,7 @@ private fun MainTtsSettingDialog(
                 modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
                 selected = true,
                 text = Locale(selectedEttsVoice.getLanguageCode()).displayName
-                        + " " + selectedEttsVoice.getVoiceRole()
+                        + " " + selectedEttsVoice.getShortNameWithoutNeural()
             ) {
                 showEttsVoiceDialog()
             }
@@ -189,7 +194,7 @@ private fun MainTtsSettingDialog(
                     modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
                     selected = false,
                     text = Locale(voice.getLanguageCode()).displayName
-                            + " " + voice.getVoiceRole()
+                            + " " + voice.getShortNameWithoutNeural()
                 ) {
                     onVoiceSelected(voice)
                 }
@@ -274,6 +279,7 @@ fun TtsDialogButtonBar(
     isVoiceReading: Boolean,
     showSystemSetting: Boolean,
     readProgress: String,
+    stopAction: () -> Unit,
     pauseOrResumeAction: () -> Unit,
     addToReadListAction: () -> Unit,
     gotoSettingAction: () -> Unit,
@@ -319,6 +325,15 @@ fun TtsDialogButtonBar(
                         Icon(
                             if (isVoiceReading) Icons.Default.Pause else Icons.Default.PlayArrow,
                             "pause or resume"
+                        )
+                    }
+                    IconButton(
+                        onClick = stopAction,
+                        modifier = Modifier.wrapContentWidth()
+                    ) {
+                        Icon(
+                            Icons.Default.Stop,
+                            "Stop"
                         )
                     }
                 }

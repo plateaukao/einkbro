@@ -274,7 +274,7 @@ private fun MenuItems(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
+                val ttsRes = if (isSpeaking) R.drawable.ic_tts else R.drawable.ic_voice_off
                 MenuItem(R.string.menu_tts, ttsRes,
                     onLongClicked = { onLongClicked(MenuItemType.Tts) }) { onClicked(MenuItemType.Tts) }
                 val invertRes =
