@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -53,32 +54,40 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
             MyTheme {
                 val ttsType = remember { mutableStateOf(config.ttsType) }
                 val ettsVoice = remember { mutableStateOf(config.ettsVoice) }
-                MainTtsSettingDialog(
-                    isPlaying = ttsViewModel.isVoicePlaying(),
-                    selectedType = ttsType.value,
-                    selectedLocale = config.ttsLocale,
-                    selectedEttsVoice = ettsVoice.value,
-                    selectedSpeedValue = config.ttsSpeedValue,
-                    onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
-                    recentVoices = config.recentUsedTtsVoices,
-                    onVoiceSelected = { config.ettsVoice = it; dismiss() },
-                    okAction = { dismiss() },
-                    gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
-                    pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
-                    addToReadListAction = this::readCurrentArticle,
-                    showLocaleDialog = {
-                        TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages())
-                    },
-                    showTtsTypeDialog = {
-                        TtsTypeDialog(requireContext()).show {
-                            ttsType.value = it
-                        }
-                    },
-                    showEttsVoiceDialog = {
-                        ETtsVoiceDialogFragment { ettsVoice.value = it }
-                            .show(parentFragmentManager, "etts_voice")
-                    }
-                )
+                val readProgress = ttsViewModel.readProgress.collectAsState()
+
+                Column {
+                    MainTtsSettingDialog(
+                        selectedType = ttsType.value,
+                        selectedLocale = config.ttsLocale,
+                        selectedEttsVoice = ettsVoice.value,
+                        selectedSpeedValue = config.ttsSpeedValue,
+                        onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
+                        recentVoices = config.recentUsedTtsVoices,
+                        showLocaleDialog = { TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages()) },
+                        showTtsTypeDialog = {
+                            TtsTypeDialog(requireContext()).show {
+                                ttsType.value = it
+                            }
+                        },
+                        showEttsVoiceDialog = {
+                            ETtsVoiceDialogFragment {
+                                ettsVoice.value = it
+                            }.show(parentFragmentManager, "ETtsVoiceDialog")
+                        },
+                        onVoiceSelected = { config.ettsVoice = it; dismiss() },
+                    )
+                    TtsDialogButtonBar(
+                        isPlaying = ttsViewModel.isReading(),
+                        isVoiceReading = ttsViewModel.isVoicePlaying(),
+                        showSystemSetting = ttsType.value == TtsType.SYSTEM,
+                        readProgress = readProgress.value,
+                        gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
+                        pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
+                        addToReadListAction = this@TtsSettingDialogFragment::readCurrentArticle,
+                        dismissAction = { dismiss() },
+                    )
+                }
             }
         }
     }
@@ -105,18 +114,13 @@ private val speedRateValueList2 = listOf(
 
 @Composable
 private fun MainTtsSettingDialog(
-    isPlaying: Boolean,
     selectedType: TtsType,
     selectedLocale: Locale,
     selectedEttsVoice: VoiceItem,
     recentVoices: List<VoiceItem>,
     selectedSpeedValue: Int,
     onSpeedValueClick: (Int) -> Unit,
-    gotoSettingAction: () -> Unit,
-    okAction: () -> Unit,
     onVoiceSelected: (VoiceItem) -> Unit,
-    pauseOrResumeAction : () -> Unit,
-    addToReadListAction: () -> Unit,
     showLocaleDialog: () -> Unit,
     showTtsTypeDialog: () -> Unit,
     showEttsVoiceDialog: () -> Unit,
@@ -221,21 +225,15 @@ private fun MainTtsSettingDialog(
                 }
             }
         }
-        TtsDialogButtonBar(
-            isPlaying = isPlaying,
-            showSystemSetting = selectedType == TtsType.SYSTEM,
-            gotoSettingAction = gotoSettingAction,
-            pauseOrResumeAction = pauseOrResumeAction,
-            addToReadListAction = addToReadListAction,
-            dismissAction = okAction,
-        )
     }
 }
 
 @Composable
 fun TtsDialogButtonBar(
     isPlaying: Boolean,
+    isVoiceReading: Boolean,
     showSystemSetting: Boolean,
+    readProgress: String,
     pauseOrResumeAction: () -> Unit,
     addToReadListAction: () -> Unit,
     gotoSettingAction: () -> Unit,
@@ -262,19 +260,24 @@ fun TtsDialogButtonBar(
                 }
             } else {
                 if (isPlaying) {
+                    Text(
+                        readProgress,
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        color = MaterialTheme.colors.onBackground
+                    )
                     VerticalSeparator()
                     IconButton(
                         onClick = addToReadListAction,
                         modifier = Modifier.wrapContentWidth()
                     ) {
-                        Icon( Icons.Default.Add, "Add to read list")
+                        Icon(Icons.Default.Add, "Add to read list")
                     }
                     IconButton(
                         onClick = pauseOrResumeAction,
                         modifier = Modifier.wrapContentWidth()
                     ) {
                         Icon(
-                            if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            if (isVoiceReading) Icons.Default.Pause else Icons.Default.PlayArrow,
                             "pause or resume"
                         )
                     }
@@ -299,21 +302,16 @@ fun TtsDialogButtonBar(
 fun PreviewMainTtsDialog() {
     MyTheme {
         MainTtsSettingDialog(
-            isPlaying = false,
             selectedType = TtsType.SYSTEM,
             selectedLocale = Locale.US,
             selectedSpeedValue = 100,
             recentVoices = listOf(dummyVoiceItem),
             onVoiceSelected = {},
             onSpeedValueClick = {},
-            okAction = {},
-            gotoSettingAction = {},
-            pauseOrResumeAction = {},
             showLocaleDialog = {},
             showTtsTypeDialog = {},
             showEttsVoiceDialog = {},
             selectedEttsVoice = dummyVoiceItem,
-            addToReadListAction = {}
         )
     }
 }

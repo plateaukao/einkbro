@@ -2369,6 +2369,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
 
             ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
+            ContextMenuItemType.Tts -> addContentToReadList(url)
             ContextMenuItemType.SaveAs -> {
                 if (url.startsWith("data:image")) {
                     saveFile(url)
@@ -2382,6 +2383,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
     }
+
+    private val headlessWebView: NinjaWebView by lazy {
+        NinjaWebView(this, this).apply {
+            setOnPageFinishedAction {
+                lifecycleScope.launch {
+                    ttsViewModel.readArticle(headlessWebView.getRawText())
+                }
+            }
+        }
+    }
+
+    private fun addContentToReadList(url: String) = headlessWebView.loadUrl(url)
 
     private fun translateWebView() {
         lifecycleScope.launch {

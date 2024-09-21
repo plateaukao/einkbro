@@ -109,6 +109,8 @@ open class NinjaWebView(
         this.onScrollChangeListener = onScrollChangeListener
     }
 
+    fun setOnPageFinishedAction(action: () -> Unit) = webViewClient.setOnPageFinishedAction(action)
+
     fun updateCssStyle() {
         val fontType = if (shouldUseReaderFont()) config.readerFontType else config.fontType
 
