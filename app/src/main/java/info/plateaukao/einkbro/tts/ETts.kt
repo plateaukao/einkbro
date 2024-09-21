@@ -1,7 +1,7 @@
 package info.plateaukao.einkbro.tts
 
-import icu.xmc.edgettslib.entity.VoiceItem
 import info.plateaukao.einkbro.EinkBroApplication
+import info.plateaukao.einkbro.tts.entity.VoiceItem
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.Request

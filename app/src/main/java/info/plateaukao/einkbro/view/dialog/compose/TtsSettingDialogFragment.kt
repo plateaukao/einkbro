@@ -30,10 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
-import icu.xmc.edgettslib.entity.VoiceItem
-import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.TtsManager
+import info.plateaukao.einkbro.tts.entity.VoiceItem
+import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -320,13 +320,13 @@ fun PreviewMainTtsDialog() {
             selectedType = TtsType.SYSTEM,
             selectedLocale = Locale.US,
             selectedSpeedValue = 100,
-            recentVoices = listOf(dummyVoiceItem),
+            recentVoices = listOf(defaultVoiceItem),
             onVoiceSelected = {},
             onSpeedValueClick = {},
             showLocaleDialog = {},
             showTtsTypeDialog = {},
             showEttsVoiceDialog = {},
-            selectedEttsVoice = dummyVoiceItem,
+            selectedEttsVoice = defaultVoiceItem,
         )
     }
 }
