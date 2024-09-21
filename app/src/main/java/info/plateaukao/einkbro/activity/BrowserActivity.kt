@@ -2389,12 +2389,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             setOnPageFinishedAction {
                 lifecycleScope.launch {
                     ttsViewModel.readArticle(headlessWebView.getRawText())
+                    if (toBeReadProcessUrlList.isNotEmpty()) {
+                        headlessWebView.loadUrl(toBeReadProcessUrlList.removeAt(0))
+                    }
                 }
             }
         }
     }
 
-    private fun addContentToReadList(url: String) = headlessWebView.loadUrl(url)
+    private var toBeReadProcessUrlList: MutableList<String> = mutableListOf()
+    private fun addContentToReadList(url: String) {
+        if (toBeReadProcessUrlList.size > 0) {
+            toBeReadProcessUrlList.add(url)
+        } else {
+            headlessWebView.loadUrl(url)
+        }
+        NinjaToast.show(this, R.string.added_to_read_list)
+    }
 
     private fun translateWebView() {
         lifecycleScope.launch {
