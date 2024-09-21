@@ -4,11 +4,11 @@ import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TtsManager
+import info.plateaukao.einkbro.tts.ByteArrayMediaDataSource
 import info.plateaukao.einkbro.tts.ETts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -21,9 +21,6 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -37,7 +34,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val eTts: ETts = ETts()
 
     private val mediaPlayer by lazy { MediaPlayer() }
-    private var audioFileChannel: Channel<File>? = null
+    private var byteArrayChannel: Channel<ByteArray>? = null
 
     private val _speakingState = MutableStateFlow(false)
     val speakingState: StateFlow<Boolean> = _speakingState.asStateFlow()
@@ -100,14 +97,14 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private suspend fun readByEngine(ttsType: TtsType, text: String) {
         _speakingState.value = true
-        audioFileChannel = Channel(1)
+        byteArrayChannel = Channel(1)
 
         viewModelScope.launch(Dispatchers.IO) {
             _speakingState.value = true
 
             val chunks = processedTextToChunks(text)
             chunks.forEachIndexed { index, chunk ->
-                if (audioFileChannel == null) return@launch
+                if (byteArrayChannel == null) return@launch
 
                 _readProgress.value =
                     "${index + 1}/${chunks.size} " + if (articlesToBeRead.isNotEmpty()) {
@@ -118,34 +115,33 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
                 fetchSemaphore.withPermit {
                     Log.d("TtsViewModel", "tts sentence fetch: $chunk")
-                    val file = if (ttsType == TtsType.ETTS) {
+                    val byteArray = if (ttsType == TtsType.ETTS) {
                         eTts.tts(config.ettsVoice, config.ttsSpeedValue, chunk)
                     } else {
-                        openaiRepository.tts(chunk)?.let { generateTempFile(it) }
+                        openaiRepository.tts(chunk)
                     }
 
-                    if (file != null) {
+                    if (byteArray != null) {
                         Log.d("TtsViewModel", "tts sentence send: $chunk")
-                        audioFileChannel?.send(file)
+                        byteArrayChannel?.send(byteArray)
                         Log.d("TtsViewModel", "tts sentence sent: $chunk")
                     }
                 }
             }
-            audioFileChannel?.close()
+            byteArrayChannel?.close()
         }
 
         var index = 0
-        for (file in audioFileChannel!!) {
+        for (byteArray in byteArrayChannel!!) {
             Log.d("TtsViewModel", "play audio $index")
-            playAudioFile(file)
-            //delay(100)
+            playAudioByteArray(byteArray)
             index++
-            if (audioFileChannel?.isClosedForSend == true && audioFileChannel?.isEmpty == true
+            if (byteArrayChannel?.isClosedForSend == true && byteArrayChannel?.isEmpty == true
             ) break
         }
 
         _speakingState.value = false
-        audioFileChannel = null
+        byteArrayChannel = null
     }
 
     private fun processedTextToChunks(text: String): MutableList<String> {
@@ -185,9 +181,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
     fun stop() {
         ttsManager.stopReading()
 
-        audioFileChannel?.cancel()
-        audioFileChannel?.close()
-        audioFileChannel = null
+        byteArrayChannel?.cancel()
+        byteArrayChannel?.close()
+        byteArrayChannel = null
         mediaPlayer.stop()
         mediaPlayer.reset()
 
@@ -197,8 +193,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
     }
 
     fun isReading(): Boolean {
-        Log.d("TtsViewModel", "isSpeaking: ${ttsManager.isSpeaking()} ${audioFileChannel != null}")
-        return ttsManager.isSpeaking() || audioFileChannel != null
+        Log.d("TtsViewModel", "isSpeaking: ${ttsManager.isSpeaking()} ${byteArrayChannel != null}")
+        return ttsManager.isSpeaking() || byteArrayChannel != null
     }
 
     fun isVoicePlaying(): Boolean {
@@ -207,32 +203,23 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     fun getAvailableLanguages(): List<Locale> = ttsManager.getAvailableLanguages()
 
-    private suspend fun playAudioFile(file: File) = suspendCoroutine { cont ->
+    private suspend fun playAudioByteArray(byteArray: ByteArray) = suspendCoroutine { cont ->
         try {
-            FileInputStream(file).use { fis ->
-                mediaPlayer.setDataSource(fis.fd)
-                mediaPlayer.prepare()
+            mediaPlayer.setDataSource(ByteArrayMediaDataSource(byteArray))
+            mediaPlayer.setOnPreparedListener {
                 mediaPlayer.start()
+            }
+            mediaPlayer.prepare()
 
-                mediaPlayer.setOnCompletionListener {
-                    file.delete()
-                    mediaPlayer.reset()
-                    cont.resume(0)
-                }
+            mediaPlayer.setOnCompletionListener {
+                mediaPlayer.reset()
+                cont.resume(0)
             }
         } catch (e: Exception) {
-            Log.e("TtsViewModel", "playAudioFile: ${e.message}")
-            file.delete()
+            Log.e("TtsViewModel", "playAudioArray: ${e.message}")
             mediaPlayer.reset()
             cont.resume(0)
         }
-    }
-
-    private fun generateTempFile(data: ByteArray): File {
-        val tempFile = File.createTempFile("temp", "aac", EinkBroApplication.instance.cacheDir)
-        FileOutputStream(tempFile).use { it.write(data) }
-
-        return tempFile
     }
 }
 

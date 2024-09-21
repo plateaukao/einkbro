@@ -9,7 +9,6 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 import java.io.File
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Arrays
 import java.util.Date
@@ -40,7 +39,7 @@ class ETts {
             .build()
     }
 
-    suspend fun tts(voice: VoiceItem, speed: Int, content: String): File? =
+    suspend fun tts(voice: VoiceItem, speed: Int, content: String): ByteArray? =
         suspendCoroutine { continuation ->
             val processedContent = removeIncompatibleCharacters(content)
             if (processedContent.isNullOrBlank()) {
@@ -53,7 +52,6 @@ class ETts {
 
             val dateStr = dateToString(Date())
             val reqId = uuid()
-            var fileName = "$reqId.mp3"
             val audioFormat = mkAudioFormat(dateStr, FORMAT)
             val ssml = mkssml(
                 voice.locale,
@@ -78,14 +76,9 @@ class ETts {
             try {
                 val client = okHttpClient.newWebSocket(
                     request,
-                    object : TTSWebSocketListener(storage, fileName) {
+                    object : TTSWebSocketListener() {
                         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                            val file = File(storage, fileName)
-                            if (file.exists()) {
-                                continuation.resume(file)
-                            } else {
-                                continuation.resume(null)
-                            }
+                            continuation.resume(byteArray)
                         }
                     })
                 client.send(audioFormat)
@@ -158,10 +151,9 @@ class ETts {
     }
 }
 
-open class TTSWebSocketListener(
-    private val storage: String,
-    private val fileName: String,
-) : WebSocketListener() {
+private open class TTSWebSocketListener : WebSocketListener() {
+    var byteArray: ByteArray = ByteArray(0)
+
     override fun onMessage(webSocket: WebSocket, text: String) {
         if (text.contains("Path:turn.end")) {
             webSocket.close(1000, null)
@@ -183,14 +175,6 @@ open class TTSWebSocketListener(
             else -> 105
         }
 
-        val voiceBytesRemoveHead = Arrays.copyOfRange(origin, skip, origin.size)
-        try {
-            FileOutputStream(storage + File.separator + fileName, true).use { fos ->
-                fos.write(voiceBytesRemoveHead)
-                fos.flush()
-            }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
+        byteArray += Arrays.copyOfRange(origin, skip, origin.size)
     }
 }
