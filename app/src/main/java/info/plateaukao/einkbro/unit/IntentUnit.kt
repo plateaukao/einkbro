@@ -93,6 +93,14 @@ object IntentUnit {
         )
     }
 
+    fun readCurrentArticle(activity: Activity) {
+        activity.startActivity(
+            Intent(activity, BrowserActivity::class.java).apply {
+                action = BrowserActivity.ACTION_READ_ALOUD
+            }
+        )
+    }
+
     fun launchNewBrowser(activity: Activity, url: String) {
         val intent = Intent(activity, ExtraBrowserActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)

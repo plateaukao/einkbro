@@ -48,18 +48,24 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val type: TtsType
         get() = if (useOpenAiTts()) TtsType.GPT else config.ttsType
 
-    fun readText(text: String) {
-        if (isReading()) {
-            stop()
-            return
-        }
+    private val articlesToBeRead: MutableList<String> = mutableListOf()
 
-        when (type) {
-            TtsType.ETTS,
-            TtsType.GPT,
-            -> readByEngine(type, text)
+    fun readArticle(text: String) {
+        articlesToBeRead.add(text)
+        if (isReading()) { return }
 
-            TtsType.SYSTEM -> readBySystemTts(text)
+        viewModelScope.launch {
+            while (articlesToBeRead.isNotEmpty()) {
+                val article = articlesToBeRead.removeAt(0)
+
+                when (type) {
+                    TtsType.ETTS,
+                    TtsType.GPT,
+                    -> readByEngine(type, article)
+
+                    TtsType.SYSTEM -> readBySystemTts(article)
+                }
+            }
         }
 
 //        if (Build.MODEL.startsWith("Pixel 8")) {
@@ -68,18 +74,17 @@ class TtsViewModel : ViewModel(), KoinComponent {
 //        }
     }
 
-    private fun readBySystemTts(text: String) {
+    private suspend fun readBySystemTts(text: String) {
         _speakingState.value = true
         ttsManager.readText(text)
-        viewModelScope.launch {
-            while (ttsManager.isSpeaking()) {
-                delay(2000)
-            }
-            _speakingState.value = false
+
+        while (ttsManager.isSpeaking()) {
+            delay(2000)
         }
+        _speakingState.value = false
     }
 
-    private fun readByEngine(ttsType: TtsType, text: String) {
+    private suspend fun readByEngine(ttsType: TtsType, text: String) {
         _speakingState.value = true
         audioFileChannel = Channel(1)
         val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
@@ -119,19 +124,17 @@ class TtsViewModel : ViewModel(), KoinComponent {
             audioFileChannel?.close()
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            var index = 0
-            for (file in audioFileChannel!!) {
-                Log.d("TtsViewModel", "play audio $index")
-                playAudioFile(file)
-                //delay(100)
-                index++
-                if (audioFileChannel?.isClosedForSend == true && audioFileChannel?.isEmpty == true
-                ) break
-            }
-            _speakingState.value = false
-            audioFileChannel = null
+        var index = 0
+        for (file in audioFileChannel!!) {
+            Log.d("TtsViewModel", "play audio $index")
+            playAudioFile(file)
+            //delay(100)
+            index++
+            if (audioFileChannel?.isClosedForSend == true && audioFileChannel?.isEmpty == true
+            ) break
         }
+        _speakingState.value = false
+        audioFileChannel = null
     }
 
     private val fetchSemaphore = Semaphore(3)
