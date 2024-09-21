@@ -2389,7 +2389,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         NinjaWebView(this, this).apply {
             setOnPageFinishedAction {
                 lifecycleScope.launch {
-                    ttsViewModel.readArticle(headlessWebView.getRawText())
+                    val content = headlessWebView.getRawText()
+                    if (content.isNotEmpty()) {
+                        ttsViewModel.readArticle(content)
+                    }
+                    // remove self
+                    if (toBeReadProcessUrlList.isNotEmpty()) {
+                        toBeReadProcessUrlList.removeAt(0)
+                    }
+
                     if (toBeReadProcessUrlList.isNotEmpty()) {
                         headlessWebView.loadUrl(toBeReadProcessUrlList.removeAt(0))
                     } else {
@@ -2402,11 +2410,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var toBeReadProcessUrlList: MutableList<String> = mutableListOf()
     private fun addContentToReadList(url: String) {
-        if (toBeReadProcessUrlList.size > 0) {
-            toBeReadProcessUrlList.add(url)
-        } else {
+        toBeReadProcessUrlList.add(url)
+        if (toBeReadProcessUrlList.size == 1) {
             headlessWebView.loadUrl(url)
         }
+
         NinjaToast.show(this, R.string.added_to_read_list)
     }
 

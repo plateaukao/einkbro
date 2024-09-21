@@ -114,7 +114,9 @@ class NinjaWebViewClient(
         """.trimIndent(), null
         )
 
-        onPageFinishedAction()
+        if (url != "about:blank") {
+            onPageFinishedAction()
+        }
     }
 
     private fun isTranslationDomain(url: String): Boolean {
