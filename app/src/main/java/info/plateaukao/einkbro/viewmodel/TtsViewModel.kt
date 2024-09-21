@@ -96,7 +96,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
     }
 
     private suspend fun readByEngine(ttsType: TtsType, text: String) {
-        _speakingState.value = true
         byteArrayChannel = Channel(1)
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -148,8 +147,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
         val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
         val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
-            if (acc.isEmpty() || acc.last().length + sentence.length > 100) {
-                acc.add(sentence)
+            if (acc.isEmpty() || acc.last().length + sentence.trim().length > 100) {
+                acc.add(sentence.trim())
             } else {
                 val last = acc.last()
                 acc[acc.size - 1] = "$last$sentence"
@@ -163,6 +162,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     fun setSpeechRate(rate: Float) = ttsManager.setSpeechRate(rate)
 
+    private var isInPause = false
     fun pauseOrResume() {
         if (type == TtsType.SYSTEM) {
             // TODO
@@ -171,8 +171,10 @@ class TtsViewModel : ViewModel(), KoinComponent {
             mediaPlayer.let {
                 if (it.isPlaying) {
                     it.pause()
+                    isInPause = true
                 } else {
                     it.start()
+                    isInPause = false
                 }
             }
         }
@@ -186,6 +188,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         byteArrayChannel = null
         mediaPlayer.stop()
         mediaPlayer.reset()
+        isInPause = false
 
         articlesToBeRead.clear()
 
@@ -197,9 +200,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         return ttsManager.isSpeaking() || byteArrayChannel != null
     }
 
-    fun isVoicePlaying(): Boolean {
-        return mediaPlayer.isPlaying
-    }
+    fun isVoicePlaying(): Boolean = !isInPause
 
     fun getAvailableLanguages(): List<Locale> = ttsManager.getAvailableLanguages()
 

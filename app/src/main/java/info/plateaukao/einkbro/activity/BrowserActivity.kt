@@ -123,6 +123,7 @@ import info.plateaukao.einkbro.view.dialog.compose.ShowEditGptActionDialogFragme
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslationConfigDlgFragment
+import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
@@ -2590,9 +2591,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showOpenEpubFilePicker() =
         epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
 
-    override fun toggleTtsRead() {
+    override fun handleTtsButton() {
         if (ttsViewModel.isReading()) {
-            ttsViewModel.stop()
+            TtsSettingDialogFragment().show(supportFragmentManager, "TtsSettingDialog")
         } else {
             readArticle()
         }

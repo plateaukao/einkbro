@@ -42,6 +42,8 @@ data class VoiceItem(
 
     fun getVoiceRole(): String = description().split("-").last()
 
+    fun getShortNameWithoutNeural(): String = shortName.replace("Neural", "").split("-").last()
+
     private fun specialPersonalities(): List<String> =
         voiceTag.voicePersonalities.filter { it != "Friendly" && it != "Positive" }
 }

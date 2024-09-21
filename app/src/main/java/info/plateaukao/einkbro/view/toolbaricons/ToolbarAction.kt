@@ -68,8 +68,8 @@ enum class ToolbarAction(
         titleResId = R.string.menu_tts,
         iconActiveInfo = IconActiveInfo(
             true,
-            R.drawable.ic_stop,
-            R.drawable.ic_tts
+            R.drawable.ic_tts,
+            R.drawable.ic_voice_off
         )
     ),
     PageInfo(iconResId = R.drawable.ic_page_count, titleResId = R.string.page_count),
