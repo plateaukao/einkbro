@@ -82,28 +82,36 @@ class TtsViewModel : ViewModel(), KoinComponent {
         _speakingState.value = true
         audioFileChannel = Channel(1)
         val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
+        val sentences = processedText.split("(?<=\\.)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
+        val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
+            if (acc.isEmpty() || acc.last().length + sentence.length > 100) {
+                acc.add(sentence)
+            } else {
+                val last = acc.last()
+                acc[acc.size - 1] = "$last$sentence"
+            }
+            acc
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
-            val sentences: List<String> =
-                processedText.split("(?<=\\.)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
-
-
             _speakingState.value = true
-            for (sentence in sentences) {
+            for (chunk in chunks) {
                 if (audioFileChannel == null) break
+
                 fetchSemaphore.withPermit {
-                    Log.d("TtsViewModel", "tts sentence fetch: $sentence")
+                    Log.d("TtsViewModel", "tts sentence fetch: $chunk")
                     val file = if (ttsType == TtsType.ETTS) {
-                        eTts.tts(config.ettsVoice, config.ttsSpeedValue, sentence)
+                        eTts.tts(config.ettsVoice, config.ttsSpeedValue, chunk)
                     } else {
-                        openaiRepository.tts(sentence)?.let { data ->
+                        openaiRepository.tts(chunk)?.let { data ->
                             generateTempFile(data)
                         }
                     }
 
                     if (file != null) {
-                        Log.d("TtsViewModel", "tts sentence send: $sentence")
+                        Log.d("TtsViewModel", "tts sentence send: $chunk")
                         audioFileChannel?.send(file)
-                        Log.d("TtsViewModel", "tts sentence sent: $sentence")
+                        Log.d("TtsViewModel", "tts sentence sent: $chunk")
                     }
                 }
             }
@@ -115,10 +123,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
             for (file in audioFileChannel!!) {
                 Log.d("TtsViewModel", "play audio $index")
                 playAudioFile(file)
-                delay(100)
+                //delay(100)
                 index++
-                if (audioFileChannel?.isClosedForSend == true &&
-                    audioFileChannel?.isEmpty == true
+                if (audioFileChannel?.isClosedForSend == true && audioFileChannel?.isEmpty == true
                 ) break
             }
             _speakingState.value = false
