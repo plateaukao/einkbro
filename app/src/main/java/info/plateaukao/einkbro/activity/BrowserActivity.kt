@@ -2551,7 +2551,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showMenuDialog() =
         MenuDialogFragment(
             ninjaWebView.url.orEmpty(),
-            ttsViewModel.isSpeaking(),
+            ttsViewModel.isReading(),
             { menuActionHandler.handle(it, ninjaWebView) },
             { menuActionHandler.handleLongClick(it) }
         ).show(supportFragmentManager, "menu_dialog")
@@ -2565,7 +2565,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
 
     override fun toggleTtsRead() {
-        if (ttsViewModel.isSpeaking()) {
+        if (ttsViewModel.isReading()) {
             ttsViewModel.stop()
         } else {
             readArticle()

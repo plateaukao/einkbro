@@ -45,13 +45,14 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private fun useOpenAiTts(): Boolean = config.useOpenAiTts && config.gptApiKey.isNotBlank()
 
+    private val type: TtsType
+        get() = if (useOpenAiTts()) TtsType.GPT else config.ttsType
+
     fun readText(text: String) {
-        if (isSpeaking()) {
+        if (isReading()) {
             stop()
             return
         }
-
-        val type = if (useOpenAiTts()) TtsType.GPT else config.ttsType
 
         when (type) {
             TtsType.ETTS,
@@ -137,6 +138,21 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     fun setSpeechRate(rate: Float) = ttsManager.setSpeechRate(rate)
 
+    fun pauseOrResume() {
+        if (type == TtsType.SYSTEM) {
+            // TODO
+            return
+        } else {
+            mediaPlayer.let {
+                if (it.isPlaying) {
+                    it.pause()
+                } else {
+                    it.start()
+                }
+            }
+        }
+    }
+
     fun stop() {
         ttsManager.stopReading()
 
@@ -149,9 +165,13 @@ class TtsViewModel : ViewModel(), KoinComponent {
         _speakingState.value = false
     }
 
-    fun isSpeaking(): Boolean {
+    fun isReading(): Boolean {
         Log.d("TtsViewModel", "isSpeaking: ${ttsManager.isSpeaking()} ${audioFileChannel != null}")
         return ttsManager.isSpeaking() || audioFileChannel != null
+    }
+
+    fun isVoicePlaying(): Boolean {
+        return mediaPlayer.isPlaying
     }
 
     fun getAvailableLanguages(): List<Locale> = ttsManager.getAvailableLanguages()
