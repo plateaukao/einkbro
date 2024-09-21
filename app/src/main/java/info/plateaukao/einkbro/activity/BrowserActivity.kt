@@ -2392,6 +2392,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     ttsViewModel.readArticle(headlessWebView.getRawText())
                     if (toBeReadProcessUrlList.isNotEmpty()) {
                         headlessWebView.loadUrl(toBeReadProcessUrlList.removeAt(0))
+                    } else {
+                        headlessWebView.loadUrl("about:blank")
                     }
                 }
             }
