@@ -41,6 +41,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val _speakingState = MutableStateFlow(false)
     val speakingState: StateFlow<Boolean> = _speakingState.asStateFlow()
 
+    private val _readProgress = MutableStateFlow("")
+    val readProgress: StateFlow<String> = _readProgress.asStateFlow()
+
     private val openaiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
     private fun useOpenAiTts(): Boolean = config.useOpenAiTts && config.gptApiKey.isNotBlank()
@@ -52,7 +55,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     fun readArticle(text: String) {
         articlesToBeRead.add(text)
-        if (isReading()) { return }
+        if (isReading()) {
+            return
+        }
 
         viewModelScope.launch {
             while (articlesToBeRead.isNotEmpty()) {
@@ -63,7 +68,15 @@ class TtsViewModel : ViewModel(), KoinComponent {
                     TtsType.GPT,
                     -> readByEngine(type, article)
 
-                    TtsType.SYSTEM -> readBySystemTts(article)
+                    TtsType.SYSTEM -> {
+                        _readProgress.value = if (articlesToBeRead.isNotEmpty()) {
+                            "(${articlesToBeRead.size})"
+                        } else {
+                            ""
+                        }
+
+                        readBySystemTts(article)
+                    }
                 }
             }
         }
@@ -101,8 +114,15 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch(Dispatchers.IO) {
             _speakingState.value = true
-            for (chunk in chunks) {
-                if (audioFileChannel == null) break
+            chunks.forEachIndexed { index, chunk ->
+                if (audioFileChannel == null) return@launch
+
+                _readProgress.value =
+                    "${index + 1}/${chunks.size} " + if (articlesToBeRead.isNotEmpty()) {
+                        "(${articlesToBeRead.size})"
+                    } else {
+                        ""
+                    }
 
                 fetchSemaphore.withPermit {
                     Log.d("TtsViewModel", "tts sentence fetch: $chunk")

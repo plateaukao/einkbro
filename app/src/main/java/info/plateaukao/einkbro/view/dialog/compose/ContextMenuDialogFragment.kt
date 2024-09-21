@@ -23,15 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.activityViewModels
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.AdBlock
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyLink
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveBookmark
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SelectText
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.TranslateImage
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.Tts
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import java.net.URLDecoder
 
 
@@ -40,8 +42,9 @@ class ContextMenuDialogFragment(
     private val shouldShowAdBlock: Boolean,
     private val shouldShowTranslateImage: Boolean,
     private val anchorPoint: Point,
-    private val itemClicked: (ContextMenuItemType) -> Unit
+    private val itemClicked: (ContextMenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
+    private val ttsViewModel: TtsViewModel by activityViewModels()
 
     init {
         shouldShowInCenter = true
@@ -53,6 +56,7 @@ class ContextMenuDialogFragment(
                 url,
                 shouldShowAdBlock,
                 shouldShowTranslateImage,
+                shouldShowReadIcon = ttsViewModel.isReading(),
                 showIcons = config.showActionMenuIcons
             ) { item ->
                 dialog?.dismiss()
@@ -64,7 +68,7 @@ class ContextMenuDialogFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         setupDialogPosition(anchorPoint)
@@ -92,8 +96,9 @@ private fun ContextMenuItems(
     url: String = "",
     shouldShowAdBlock: Boolean = true,
     shouldShowTranslateImage: Boolean = false,
+    shouldShowReadIcon: Boolean = false,
     showIcons: Boolean = true,
-    onClicked: (ContextMenuItemType) -> Unit
+    onClicked: (ContextMenuItemType) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -147,20 +152,6 @@ private fun ContextMenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.Center
         ) {
-            if (shouldShowTranslateImage) {
-                ContextMenuItem(R.string.translate, R.drawable.ic_papago, showIcons) {
-                    onClicked(TranslateImage)
-                }
-            } else {
-                ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark, showIcons) {
-                    onClicked(SaveBookmark)
-                }
-            }
-            ContextMenuItem(
-                R.string.menu_save_as,
-                R.drawable.icon_menu_save,
-                showIcons
-            ) { onClicked(SaveAs) }
             ContextMenuItem(
                 R.string.copy_link,
                 R.drawable.ic_link,
@@ -171,6 +162,21 @@ private fun ContextMenuItems(
                     SelectText
                 )
             }
+            if (shouldShowTranslateImage && (url.endsWith(".jpg") || url.endsWith(".png"))) {
+                ContextMenuItem(R.string.translate, R.drawable.ic_papago, showIcons) {
+                    onClicked(TranslateImage)
+                }
+            }
+            if (shouldShowReadIcon) {
+                ContextMenuItem(R.string.menu_tts, R.drawable.ic_tts, showIcons) {
+                    onClicked(Tts)
+                }
+            }
+            ContextMenuItem(
+                R.string.menu_save_as,
+                R.drawable.icon_menu_save,
+                showIcons
+            ) { onClicked(SaveAs) }
             if (shouldShowAdBlock) {
                 ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block, showIcons) {
                     onClicked(AdBlock)
@@ -198,7 +204,7 @@ enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
     ShareLink, CopyLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
-    SplitScreen, AdBlock, TranslateImage
+    SplitScreen, AdBlock, TranslateImage,Tts
 }
 
 @Preview
