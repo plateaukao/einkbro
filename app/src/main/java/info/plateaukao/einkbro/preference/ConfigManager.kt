@@ -8,13 +8,13 @@ import android.os.Build
 import android.print.PrintAttributes
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
-import icu.xmc.edgettslib.entity.VoiceItem
-import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubFileInfo
+import info.plateaukao.einkbro.tts.entity.VoiceItem
+import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.util.TranslationLanguage
@@ -333,8 +333,8 @@ class ConfigManager(
     var ettsVoice: VoiceItem
         get() = Json.decodeFromString(
             sp.getString(
-                "K_ETTS_VOICE", Json.encodeToString(dummyVoiceItem)
-            ) ?: Json.encodeToString(dummyVoiceItem)
+                "K_ETTS_VOICE", Json.encodeToString(defaultVoiceItem)
+            ) ?: Json.encodeToString(defaultVoiceItem)
         )
         set(value) {
             sp.edit { putString("K_ETTS_VOICE", Json.encodeToString(value)) }

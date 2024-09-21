@@ -14,7 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import icu.xmc.edgettslib.entity.VoiceItem
+import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import kotlinx.serialization.json.Json
