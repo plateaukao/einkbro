@@ -39,7 +39,6 @@ import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
-import info.plateaukao.einkbro.view.dialog.TtsTypeDialog
 import info.plateaukao.einkbro.viewmodel.TtsType
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import info.plateaukao.einkbro.viewmodel.toStringResId
@@ -66,10 +65,9 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
                         recentVoices = config.recentUsedTtsVoices,
                         showLocaleDialog = { TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages()) },
-                        showTtsTypeDialog = {
-                            TtsTypeDialog(requireContext()).show {
-                                ttsType.value = it
-                            }
+                        onTtsTypeSelected = {
+                            config.ttsType = it
+                            ttsType.value = it
                         },
                         showEttsVoiceDialog = {
                             ETtsVoiceDialogFragment {
@@ -122,7 +120,7 @@ private fun MainTtsSettingDialog(
     onSpeedValueClick: (Int) -> Unit,
     onVoiceSelected: (VoiceItem) -> Unit,
     showLocaleDialog: () -> Unit,
-    showTtsTypeDialog: () -> Unit,
+    onTtsTypeSelected: (TtsType) -> Unit,
     showEttsVoiceDialog: () -> Unit,
 ) {
     Column(
@@ -137,11 +135,18 @@ private fun MainTtsSettingDialog(
             style = MaterialTheme.typography.h6,
             fontWeight = FontWeight.Bold,
         )
-        SelectableText(
-            modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
-            selected = true, text = stringResource(selectedType.toStringResId())
-        ) {
-            showTtsTypeDialog()
+        Row {
+            TtsType.entries.forEach { type ->
+                val isSelect = selectedType == type
+                SelectableText(
+                    modifier = Modifier
+                        .padding(horizontal = 1.dp, vertical = 3.dp),
+                    selected = isSelect,
+                    text = stringResource(type.toStringResId()),
+                ) {
+                    onTtsTypeSelected(type)
+                }
+            }
         }
         if (selectedType == TtsType.ETTS) {
             Text(
@@ -171,7 +176,7 @@ private fun MainTtsSettingDialog(
             }
             SelectableText(
                 modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
-                selected = true,
+                selected = false,
                 text = LocalContext.current.getString(R.string.other_voices)
             ) {
                 showEttsVoiceDialog()
@@ -324,7 +329,7 @@ fun PreviewMainTtsDialog() {
             onVoiceSelected = {},
             onSpeedValueClick = {},
             showLocaleDialog = {},
-            showTtsTypeDialog = {},
+            onTtsTypeSelected = {},
             showEttsVoiceDialog = {},
             selectedEttsVoice = defaultVoiceItem,
         )
