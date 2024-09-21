@@ -165,6 +165,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         mediaPlayer.stop()
         mediaPlayer.reset()
 
+        articlesToBeRead.clear()
+
         _speakingState.value = false
     }
 
