@@ -15,6 +15,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
@@ -63,6 +65,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                     okAction = { dismiss() },
                     gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
                     pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
+                    addToReadListAction = this::readCurrentArticle,
                     showLocaleDialog = {
                         TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages())
                     },
@@ -78,6 +81,12 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                 )
             }
         }
+    }
+
+    private fun readCurrentArticle() {
+        IntentUnit.readCurrentArticle(requireActivity())
+        NinjaToast.show(requireContext(), R.string.added_to_read_list)
+        dismiss()
     }
 }
 
@@ -107,6 +116,7 @@ private fun MainTtsSettingDialog(
     okAction: () -> Unit,
     onVoiceSelected: (VoiceItem) -> Unit,
     pauseOrResumeAction : () -> Unit,
+    addToReadListAction: () -> Unit,
     showLocaleDialog: () -> Unit,
     showTtsTypeDialog: () -> Unit,
     showEttsVoiceDialog: () -> Unit,
@@ -216,7 +226,8 @@ private fun MainTtsSettingDialog(
             showSystemSetting = selectedType == TtsType.SYSTEM,
             gotoSettingAction = gotoSettingAction,
             pauseOrResumeAction = pauseOrResumeAction,
-            okAction = okAction,
+            addToReadListAction = addToReadListAction,
+            dismissAction = okAction,
         )
     }
 }
@@ -226,8 +237,9 @@ fun TtsDialogButtonBar(
     isPlaying: Boolean,
     showSystemSetting: Boolean,
     pauseOrResumeAction: () -> Unit,
+    addToReadListAction: () -> Unit,
     gotoSettingAction: () -> Unit,
-    okAction: () -> Unit,
+    dismissAction: () -> Unit,
 ) {
     Column {
         HorizontalSeparator()
@@ -249,23 +261,29 @@ fun TtsDialogButtonBar(
                     )
                 }
             } else {
-                VerticalSeparator()
-                IconButton(
-                    onClick = {
-                        pauseOrResumeAction()
-                    },
-                    modifier = Modifier.wrapContentWidth()
-                ) {
-                    Icon(
-                        if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                        "pause or resume"
-                    )
+                if (isPlaying) {
+                    VerticalSeparator()
+                    IconButton(
+                        onClick = addToReadListAction,
+                        modifier = Modifier.wrapContentWidth()
+                    ) {
+                        Icon( Icons.Default.Add, "Add to read list")
+                    }
+                    IconButton(
+                        onClick = pauseOrResumeAction,
+                        modifier = Modifier.wrapContentWidth()
+                    ) {
+                        Icon(
+                            if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            "pause or resume"
+                        )
+                    }
                 }
             }
             VerticalSeparator()
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
-                onClick = okAction
+                onClick = dismissAction
             ) {
                 Text(
                     stringResource(id = R.string.close),
@@ -294,7 +312,8 @@ fun PreviewMainTtsDialog() {
             showLocaleDialog = {},
             showTtsTypeDialog = {},
             showEttsVoiceDialog = {},
-            selectedEttsVoice = dummyVoiceItem
+            selectedEttsVoice = dummyVoiceItem,
+            addToReadListAction = {}
         )
     }
 }

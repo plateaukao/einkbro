@@ -1437,6 +1437,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 externalSearchViewModel.setButtonVisibility(true)
             }
 
+            ACTION_READ_ALOUD -> readArticle()
+
             null -> {}
             else -> addAlbum()
         }
@@ -2542,7 +2544,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun readArticle() {
         lifecycleScope.launch {
-            ttsViewModel.readText(ninjaWebView.getRawText())
+            ttsViewModel.readArticle(ninjaWebView.getRawText())
         }
     }
 
@@ -2711,5 +2713,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     companion object {
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
+        const val ACTION_READ_ALOUD = "action_read_aloud"
     }
 }
