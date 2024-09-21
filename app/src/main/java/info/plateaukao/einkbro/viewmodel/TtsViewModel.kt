@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.EinkBroApplication
+import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TtsManager
@@ -237,4 +238,12 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
 enum class TtsType {
     SYSTEM, GPT, ETTS
+}
+
+fun TtsType.toStringResId(): Int {
+    return when (this) {
+        TtsType.GPT -> R.string.tts_type_gpt
+        TtsType.ETTS -> R.string.tts_type_etts
+        TtsType.SYSTEM -> R.string.tts_type_system
+    }
 }

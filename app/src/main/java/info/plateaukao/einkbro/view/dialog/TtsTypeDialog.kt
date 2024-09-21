@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.viewmodel.TtsType
+import info.plateaukao.einkbro.viewmodel.toStringResId
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -16,7 +17,7 @@ class TtsTypeDialog(val context: Context) : KoinComponent {
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setTitle("Read by Which Engine")
             setSingleChoiceItems(
-                types.map { it.name }.toTypedArray(),
+                types.map { context.getString(it.toStringResId()) }.toTypedArray(),
                 config.ttsType.ordinal
             ) { dialog, selectedIndex ->
                 val newType = types[selectedIndex]
@@ -27,3 +28,4 @@ class TtsTypeDialog(val context: Context) : KoinComponent {
         }.create().show()
     }
 }
+
