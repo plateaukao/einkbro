@@ -38,6 +38,7 @@ import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
@@ -104,6 +105,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
     private fun readCurrentArticle() {
         IntentUnit.readCurrentArticle(requireActivity())
         dismiss()
+        NinjaToast.show(requireContext(), R.string.added_to_read_list)
     }
 }
 
@@ -316,7 +318,11 @@ fun TtsDialogButtonBar(
                         onClick = addToReadListAction,
                         modifier = Modifier.wrapContentWidth()
                     ) {
-                        Icon(Icons.Default.Add, "Add to read list")
+                        Icon(
+                            Icons.Default.Add,
+                            "Add to read list",
+                            tint = MaterialTheme.colors.onBackground
+                        )
                     }
                     IconButton(
                         onClick = pauseOrResumeAction,
@@ -324,7 +330,8 @@ fun TtsDialogButtonBar(
                     ) {
                         Icon(
                             if (isVoiceReading) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            "pause or resume"
+                            "pause or resume",
+                            tint = MaterialTheme.colors.onBackground
                         )
                     }
                     IconButton(
@@ -333,7 +340,8 @@ fun TtsDialogButtonBar(
                     ) {
                         Icon(
                             Icons.Default.Stop,
-                            "Stop"
+                            "Stop",
+                            tint = MaterialTheme.colors.onBackground
                         )
                     }
                 }
