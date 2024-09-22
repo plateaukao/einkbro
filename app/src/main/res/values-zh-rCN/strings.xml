@@ -558,4 +558,7 @@
     <string name="setting_tts_voice">Voice</string>
     <string name="system_settings">System Settings</string>
     <string name="other_voices">Other Voices...</string>
+    <string name="added_to_read_list">Added to read list</string>
+    <string name="tts_type_etts">ReadAloud</string>
+    <string name="tts_type_system">System TTS</string>
 </resources>

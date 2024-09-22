@@ -28,8 +28,8 @@ android {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
         targetSdk = 34
-        versionCode = 11_17_00
-        versionName = "11.17.0"
+        versionCode = 12_00_00
+        versionName = "12.0.0"
 
         buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
@@ -117,6 +117,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.8")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation("androidx.fragment:fragment-ktx:1.3.6")
+
 
     // for dark mode
     implementation("androidx.webkit:webkit:1.11.0")
@@ -135,16 +137,18 @@ dependencies {
     // compose
     // Compose Material Design
     implementation("androidx.compose.material:material:1.6.8")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0")
+
     // Tooling support (Previews, etc.)
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.8")
+
     // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.8")
 
     implementation("com.google.accompanist:accompanist-drawablepainter:0.31.0-alpha")
 
     // reorder lazylist
-    //implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
     implementation("sh.calvin.reorderable:reorderable:2.3.1")
 
     // okhttp

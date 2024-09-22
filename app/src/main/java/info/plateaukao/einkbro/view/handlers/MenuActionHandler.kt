@@ -49,7 +49,7 @@ class MenuActionHandler(
 
     fun handle(menuItemType: MenuItemType, ninjaWebView: NinjaWebView): Any? {
         return when (menuItemType) {
-            MenuItemType.Tts -> browserController.toggleTtsRead()
+            MenuItemType.Tts -> browserController.handleTtsButton()
             MenuItemType.QuickToggle -> browserController.showFastToggleDialog()
             MenuItemType.OpenHome -> browserController.updateAlbum(config.favoriteUrl)
             MenuItemType.CloseTab -> browserController.removeAlbum()

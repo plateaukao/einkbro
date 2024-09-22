@@ -99,7 +99,7 @@ class ToolbarActionHandler(
         ToolbarAction.Desktop -> config::desktop.toggle()
         ToolbarAction.Search -> browserController.showSearchPanel()
         ToolbarAction.DuplicateTab -> browserController.duplicateTab()
-        ToolbarAction.Tts -> browserController.toggleTtsRead()
+        ToolbarAction.Tts -> browserController.handleTtsButton()
         ToolbarAction.TOC -> browserController.showTocDialog()
         ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
         ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)

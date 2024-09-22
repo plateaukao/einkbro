@@ -109,6 +109,8 @@ open class NinjaWebView(
         this.onScrollChangeListener = onScrollChangeListener
     }
 
+    fun setOnPageFinishedAction(action: () -> Unit) = webViewClient.setOnPageFinishedAction(action)
+
     fun updateCssStyle() {
         val fontType = if (shouldUseReaderFont()) config.readerFontType else config.fontType
 
@@ -700,12 +702,14 @@ open class NinjaWebView(
         if (!isReaderModeOn) {
             evaluateMozReaderModeJs {
                 evaluateJavascript(getReaderModeBodyTextJs) { text ->
-                    continuation.resume(
-                        text.substring(
-                            1,
-                            text.length - 2
-                        )
-                    )
+                    if (text == "null") {
+                        continuation.resume("")
+                    } else {
+                        val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
+                            text.substring(1, text.length - 2)
+                        } else text
+                        continuation.resume(processedText)
+                    }
                 }
             }
         } else {
