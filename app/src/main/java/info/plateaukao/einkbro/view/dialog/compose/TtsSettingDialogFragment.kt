@@ -90,8 +90,8 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                     TtsDialogButtonBar(
                         readingState = readingState.value,
                         isVoicePlaying = ttsViewModel.isVoicePlaying(),
-                        showSystemSetting = ttsType.value == TtsType.SYSTEM,
-                        readProgress = readProgress.value,
+                        ttsType = ttsType.value,
+                        readProgress = readProgress.value.toString(),
                         gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
                         stopAction = { ttsViewModel.stop(); dismiss() },
                         pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
@@ -280,7 +280,7 @@ private fun MainTtsSettingDialog(
 fun TtsDialogButtonBar(
     readingState: Boolean,
     isVoicePlaying: Boolean,
-    showSystemSetting: Boolean,
+    ttsType: TtsType,
     readProgress: String,
     stopAction: () -> Unit,
     pauseOrResumeAction: () -> Unit,
@@ -297,34 +297,24 @@ fun TtsDialogButtonBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
-            if (showSystemSetting) {
-                TextButton(
-                    modifier = Modifier.wrapContentWidth(),
-                    onClick = gotoSettingAction
+            if (readingState) {
+                Text(
+                    readProgress,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    color = MaterialTheme.colors.onBackground
+                )
+                VerticalSeparator()
+                IconButton(
+                    onClick = addToReadListAction,
+                    modifier = Modifier.wrapContentWidth()
                 ) {
-                    Text(
-                        stringResource(id = R.string.system_settings),
-                        color = MaterialTheme.colors.onBackground
+                    Icon(
+                        Icons.Default.Add,
+                        "Add to read list",
+                        tint = MaterialTheme.colors.onBackground
                     )
                 }
-            } else {
-                if (readingState) {
-                    Text(
-                        readProgress,
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        color = MaterialTheme.colors.onBackground
-                    )
-                    VerticalSeparator()
-                    IconButton(
-                        onClick = addToReadListAction,
-                        modifier = Modifier.wrapContentWidth()
-                    ) {
-                        Icon(
-                            Icons.Default.Add,
-                            "Add to read list",
-                            tint = MaterialTheme.colors.onBackground
-                        )
-                    }
+                if (ttsType != TtsType.SYSTEM) {
                     IconButton(
                         onClick = pauseOrResumeAction,
                         modifier = Modifier.wrapContentWidth()
@@ -335,19 +325,30 @@ fun TtsDialogButtonBar(
                             tint = MaterialTheme.colors.onBackground
                         )
                     }
-                    IconButton(
-                        onClick = stopAction,
-                        modifier = Modifier.wrapContentWidth()
-                    ) {
-                        Icon(
-                            Icons.Default.Stop,
-                            "Stop",
-                            tint = MaterialTheme.colors.onBackground
-                        )
-                    }
+                }
+                IconButton(
+                    onClick = stopAction,
+                    modifier = Modifier.wrapContentWidth()
+                ) {
+                    Icon(
+                        Icons.Default.Stop,
+                        "Stop",
+                        tint = MaterialTheme.colors.onBackground
+                    )
                 }
             }
             VerticalSeparator()
+            if (ttsType == TtsType.SYSTEM) {
+                TextButton(
+                    modifier = Modifier.wrapContentWidth(),
+                    onClick = gotoSettingAction
+                ) {
+                    Text(
+                        stringResource(id = R.string.system_settings),
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
+            }
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
                 onClick = dismissAction
