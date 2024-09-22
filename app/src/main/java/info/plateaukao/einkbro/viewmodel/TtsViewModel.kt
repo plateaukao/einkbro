@@ -10,6 +10,7 @@ import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.tts.ByteArrayMediaDataSource
 import info.plateaukao.einkbro.tts.ETts
+import info.plateaukao.einkbro.unit.getWordCount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -147,7 +148,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
         val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
         val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
-            if (acc.isEmpty() || acc.last().length + sentence.trim().length > 100) {
+            Log.d("TtsViewModel", "sentence: $sentence")
+            if (acc.isEmpty() || (acc.last() + sentence).getWordCount() > 80) {
                 acc.add(sentence.trim())
             } else {
                 val last = acc.last()
