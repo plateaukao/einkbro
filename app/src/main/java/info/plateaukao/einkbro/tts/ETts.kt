@@ -1,10 +1,12 @@
 package info.plateaukao.einkbro.tts
 
+import android.util.Log
 import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
@@ -154,10 +156,20 @@ class ETts {
 private open class TTSWebSocketListener : WebSocketListener() {
     var byteArray: ByteArray = ByteArray(0)
 
+    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+        super.onClosing(webSocket, code, reason)
+        webSocket.close(1000, null)
+    }
     override fun onMessage(webSocket: WebSocket, text: String) {
         if (text.contains("Path:turn.end")) {
             webSocket.close(1000, null)
         }
+    }
+
+    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        super.onFailure(webSocket, t, response)
+        response?.close()
+        Log.d("TTSWebSocketListener", "onFailure: ${t.message}")
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) =
