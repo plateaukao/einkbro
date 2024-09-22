@@ -123,6 +123,7 @@ import info.plateaukao.einkbro.view.dialog.compose.ShowEditGptActionDialogFragme
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslationConfigDlgFragment
+import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
@@ -1437,6 +1438,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 externalSearchViewModel.setButtonVisibility(true)
             }
 
+            ACTION_READ_ALOUD -> readArticle()
+
             null -> {}
             else -> addAlbum()
         }
@@ -2367,6 +2370,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
 
             ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
+            ContextMenuItemType.Tts -> addContentToReadList(url)
             ContextMenuItemType.SaveAs -> {
                 if (url.startsWith("data:image")) {
                     saveFile(url)
@@ -2379,6 +2383,39 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
         }
+    }
+
+    private val headlessWebView: NinjaWebView by lazy {
+        NinjaWebView(this, this).apply {
+            setOnPageFinishedAction {
+                lifecycleScope.launch {
+                    val content = headlessWebView.getRawText()
+                    if (content.isNotEmpty()) {
+                        ttsViewModel.readArticle(content)
+                    }
+                    // remove self
+                    if (toBeReadProcessUrlList.isNotEmpty()) {
+                        toBeReadProcessUrlList.removeAt(0)
+                    }
+
+                    if (toBeReadProcessUrlList.isNotEmpty()) {
+                        headlessWebView.loadUrl(toBeReadProcessUrlList.removeAt(0))
+                    } else {
+                        headlessWebView.loadUrl("about:blank")
+                    }
+                }
+            }
+        }
+    }
+
+    private var toBeReadProcessUrlList: MutableList<String> = mutableListOf()
+    private fun addContentToReadList(url: String) {
+        toBeReadProcessUrlList.add(url)
+        if (toBeReadProcessUrlList.size == 1) {
+            headlessWebView.loadUrl(url)
+        }
+
+        NinjaToast.show(this, R.string.added_to_read_list)
     }
 
     private fun translateWebView() {
@@ -2542,7 +2579,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun readArticle() {
         lifecycleScope.launch {
-            ttsViewModel.readText(ninjaWebView.getRawText())
+            ttsViewModel.readArticle(ninjaWebView.getRawText())
         }
     }
 
@@ -2551,7 +2588,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showMenuDialog() =
         MenuDialogFragment(
             ninjaWebView.url.orEmpty(),
-            ttsViewModel.isSpeaking(),
+            ttsViewModel.isReading(),
             { menuActionHandler.handle(it, ninjaWebView) },
             { menuActionHandler.handleLongClick(it) }
         ).show(supportFragmentManager, "menu_dialog")
@@ -2564,9 +2601,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showOpenEpubFilePicker() =
         epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
 
-    override fun toggleTtsRead() {
-        if (ttsViewModel.isSpeaking()) {
-            ttsViewModel.stop()
+    override fun handleTtsButton() {
+        if (ttsViewModel.isReading()) {
+            TtsSettingDialogFragment().show(supportFragmentManager, "TtsSettingDialog")
         } else {
             readArticle()
         }
@@ -2711,5 +2748,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     companion object {
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
+        const val ACTION_READ_ALOUD = "action_read_aloud"
     }
 }

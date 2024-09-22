@@ -695,4 +695,25 @@ object HelperUnit {
             }
         }
     }
+
+}
+
+fun String.getWordCount(): Int {
+    val trimmedInput = trim()
+    if (trimmedInput.isEmpty()) return 0
+
+    // CJ
+    if (endsWith("。") || endsWith("？") || endsWith("！")) {
+        return trimmedInput.length
+    }
+    // korean
+    val hangulRegex = "[가-힣]+".toRegex() // Matches any Hangul syllable
+    // Find all matches and return the count
+    val hangulCount = hangulRegex.findAll(trimmedInput).sumOf { it.value.length }
+    if (hangulCount > 3) return hangulCount
+
+    // Use regex to match words based on Unicode word boundaries
+    val wordRegex = "\\p{L}+".toRegex()
+    // Find all matches and return the count
+    return wordRegex.findAll(trimmedInput).count()
 }

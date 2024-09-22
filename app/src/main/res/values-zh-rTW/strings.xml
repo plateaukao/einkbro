@@ -490,4 +490,7 @@
     <string name="system_settings">系統設定</string>
     <string name="other_voices">其他語音...</string>
     <string name="close">關閉</string>
+    <string name="added_to_read_list">加入朗讀清單</string>
+    <string name="tts_type_etts">ReadAloud</string>
+    <string name="tts_type_system">系統內建</string>
 </resources>

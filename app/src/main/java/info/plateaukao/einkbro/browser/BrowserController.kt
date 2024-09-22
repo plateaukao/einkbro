@@ -33,7 +33,7 @@ interface BrowserController {
     fun loadInSecondPane(url: String): Boolean //void updateTabs(Album album);
 
     // for menu actions
-    fun toggleTtsRead()
+    fun handleTtsButton()
     fun showTtsLanguageDialog()
     fun showFastToggleDialog()
     fun toggleSplitScreen(url: String? = null)

@@ -137,7 +137,7 @@ class ComposeToolbarViewController(
                     config.switchTouchAreaAction
                 )
 
-                Tts -> ToolbarActionInfo(toolbarAction, ttsViewModel.isSpeaking())
+                Tts -> ToolbarActionInfo(toolbarAction, ttsViewModel.isReading())
                 else -> ToolbarActionInfo(toolbarAction, false)
             }
         }

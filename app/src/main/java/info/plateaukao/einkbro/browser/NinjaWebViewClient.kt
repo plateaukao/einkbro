@@ -60,6 +60,11 @@ class NinjaWebViewClient(
         this.hasAdBlock = enable
     }
 
+    private var onPageFinishedAction: () -> Unit = {}
+    fun setOnPageFinishedAction(action: () -> Unit) {
+        onPageFinishedAction = action
+    }
+
     override fun onPageFinished(view: WebView, url: String) {
         ninjaWebView.updateCssStyle()
 
@@ -108,6 +113,10 @@ class NinjaWebViewClient(
                     }
         """.trimIndent(), null
         )
+
+        if (url != "about:blank") {
+            onPageFinishedAction()
+        }
     }
 
     private fun isTranslationDomain(url: String): Boolean {

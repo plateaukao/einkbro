@@ -8,13 +8,14 @@ import android.os.Build
 import android.print.PrintAttributes
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
-import icu.xmc.edgettslib.entity.VoiceItem
-import icu.xmc.edgettslib.entity.dummyVoiceItem
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubFileInfo
+import info.plateaukao.einkbro.service.GptVoiceOption
+import info.plateaukao.einkbro.tts.entity.VoiceItem
+import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.util.TranslationLanguage
@@ -234,6 +235,9 @@ class ConfigManager(
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
     var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
     var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-1.5-flash")
+    var gptVoiceOption: GptVoiceOption
+        get() = GptVoiceOption.entries[sp.getInt("K_GPT_VOICE_OPTION", 0)]
+        set(value) = sp.edit { putInt("K_GPT_VOICE_OPTION", value.ordinal) }
 
     var gptUrl by StringPreference(sp, K_GPT_SERVER_URL, "https://api.openai.com")
     var useCustomGptUrl by BooleanPreference(sp, K_USE_CUSTOM_GPT_URL, false)
@@ -333,8 +337,8 @@ class ConfigManager(
     var ettsVoice: VoiceItem
         get() = Json.decodeFromString(
             sp.getString(
-                "K_ETTS_VOICE", Json.encodeToString(dummyVoiceItem)
-            ) ?: Json.encodeToString(dummyVoiceItem)
+                "K_ETTS_VOICE", Json.encodeToString(defaultVoiceItem)
+            ) ?: Json.encodeToString(defaultVoiceItem)
         )
         set(value) {
             sp.edit { putString("K_ETTS_VOICE", Json.encodeToString(value)) }

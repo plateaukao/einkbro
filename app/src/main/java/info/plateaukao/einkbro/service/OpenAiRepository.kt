@@ -26,6 +26,7 @@ import okio.buffer
 import okio.source
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -76,7 +77,7 @@ class OpenAiRepository : KoinComponent {
         eventSource?.cancel()
         eventSource = factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
             override fun onEvent(
-                eventSource: EventSource, id: String?, type: String?, data: String
+                eventSource: EventSource, id: String?, type: String?, data: String,
             ) {
                 if (data == "[DONE]") {
                     doneAction()
@@ -142,7 +143,11 @@ class OpenAiRepository : KoinComponent {
     }
 
     suspend fun tts(text: String): ByteArray? = suspendCoroutine { continuation ->
-        val request = createTtsRequest(text, speed = (config.ttsSpeedValue / 100F).toDouble())
+        val request = createTtsRequest(
+            text,
+            speed = (config.ttsSpeedValue / 100F).toDouble(),
+            voiceOption = config.gptVoiceOption,
+        )
 
         client.newCall(request).execute().use { response ->
             if (response.code != 200 || response.body == null) {
@@ -157,7 +162,7 @@ class OpenAiRepository : KoinComponent {
     }
 
     suspend fun chatCompletion(
-        messages: List<ChatMessage>
+        messages: List<ChatMessage>,
     ): ChatCompletion? = suspendCoroutine { continuation ->
         val request = createCompletionRequest(messages)
         client.newCall(request).execute().use { response ->
@@ -276,6 +281,7 @@ class OpenAiRepository : KoinComponent {
         text: String,
         hd: Boolean = false,
         speed: Double = 1.0,
+        voiceOption: GptVoiceOption = GptVoiceOption.Alloy,
     ): Request = Request.Builder()
         .url("${getCurrentServerUrl()}$ttsPath")
         .post(
@@ -283,7 +289,7 @@ class OpenAiRepository : KoinComponent {
                 TTSRequest(
                     text,
                     if (hd) "tts-1-hd" else "tts-1",
-                    "alloy",
+                    voiceOption.name.lowercase(Locale("en")),
                     speed
                 )
             )
@@ -305,7 +311,7 @@ data class ChatCompletion(
     val created: Int,
     val model: String,
     val choices: List<ChatChoice>,
-    val usage: ChatUsage = ChatUsage(0, 0, 0)
+    val usage: ChatUsage = ChatUsage(0, 0, 0),
 )
 
 @Serializable
@@ -323,7 +329,7 @@ data class ChatUsage(
     @SerialName("completion_tokens")
     val completeTokens: Int,
     @SerialName("total_tokens")
-    val totalTokens: Int
+    val totalTokens: Int,
 )
 
 @Serializable
@@ -371,7 +377,7 @@ data class ChatDelta(
 @Serializable
 data class ChatMessage(
     val content: String,
-    val role: ChatRole
+    val role: ChatRole,
 )
 
 @Serializable
@@ -380,5 +386,9 @@ data class TTSRequest(
     val model: String,
     val voice: String,
     val speed: Double = 1.0,
-    val format: String = "aac"
+    val format: String = "aac",
 )
+
+enum class GptVoiceOption {
+    Alloy, Echo, Fable, Onyx, Nova, Shimmer
+}
