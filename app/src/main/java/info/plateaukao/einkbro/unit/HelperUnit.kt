@@ -695,4 +695,16 @@ object HelperUnit {
             }
         }
     }
+
+}
+
+fun String.getWordCount(): Int {
+    val trimmedInput = trim()
+    if (trimmedInput.isEmpty()) return 0
+
+    // Use regex to match words based on Unicode word boundaries
+    val wordRegex = "\\p{L}+".toRegex()
+
+    // Find all matches and return the count
+    return wordRegex.findAll(trimmedInput).count()
 }
