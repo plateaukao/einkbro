@@ -29,9 +29,7 @@ class EinkBroApplication : Application() {
         ConfigManager(applicationContext, sp)
     }
 
-    private val ttsManager: TtsManager by lazy {
-        TtsManager(applicationContext)
-    }
+    private val ttsManager: TtsManager = TtsManager(this)
 
     private val myModule = module {
         single { config }

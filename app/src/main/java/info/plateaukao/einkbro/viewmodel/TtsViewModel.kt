@@ -10,10 +10,9 @@ import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.tts.ByteArrayMediaDataSource
 import info.plateaukao.einkbro.tts.ETts
-import info.plateaukao.einkbro.unit.getWordCount
+import info.plateaukao.einkbro.unit.processedTextToChunks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,8 +43,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val _isReading = MutableStateFlow(false)
     val isReading: StateFlow<Boolean> = _isReading.asStateFlow()
 
-    private val _readProgress = MutableStateFlow("")
-    val readProgress: StateFlow<String> = _readProgress.asStateFlow()
+    private val _readProgress = MutableStateFlow(ReadProgress(0, 0, 0))
+    val readProgress: StateFlow<ReadProgress> = _readProgress.asStateFlow()
 
     private val openaiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
@@ -61,6 +60,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
         articlesToBeRead.add(text)
         if (isReading()) {
+            updateReadProgress()
             return
         }
 
@@ -68,39 +68,46 @@ class TtsViewModel : ViewModel(), KoinComponent {
             while (articlesToBeRead.isNotEmpty()) {
                 val article = articlesToBeRead.removeAt(0)
 
+                Log.d("TtsViewModel", "readArticle: $article")
                 when (type) {
                     TtsType.ETTS,
                     TtsType.GPT,
                     -> readByEngine(type, article)
 
                     TtsType.SYSTEM -> {
-                        _readProgress.value = if (articlesToBeRead.isNotEmpty()) {
-                            "(${articlesToBeRead.size})"
-                        } else {
-                            ""
-                        }
-
+                        updateReadProgress()
                         readBySystemTts(article)
                     }
                 }
             }
+
+            _speakingState.value = false
+            _isReading.value = false
+            _readProgress.value = ReadProgress(0, 0, 0)
         }
 
 //        if (Build.MODEL.startsWith("Pixel 8")) {
 //            IntentUnit.tts(context as Activity, text)
 //            return
 //        }
+
     }
 
     private suspend fun readBySystemTts(text: String) {
         _speakingState.value = true
-        ttsManager.readText(text)
+        ttsManager.readText(
+            text,
+            onProgress =  { index, total ->
+                updateReadProgress(index, total)
+            },
+        )
+    }
 
-        while (ttsManager.isSpeaking()) {
-            delay(2000)
-        }
-        _speakingState.value = false
-        _isReading.value = false
+    private fun updateReadProgress(
+        index: Int = _readProgress.value.index,
+        total: Int = _readProgress.value.total,
+        articleLeftCount: Int = articlesToBeRead.size) {
+        _readProgress.value = ReadProgress(index, total, articleLeftCount)
     }
 
     private suspend fun readByEngine(ttsType: TtsType, text: String) {
@@ -134,13 +141,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         var index = 0
         for (byteArray in byteArrayChannel!!) {
             Log.d("TtsViewModel", "play audio $index")
-            _readProgress.value =
-                "${index + 1}/${chunks.size} " +
-                        if (articlesToBeRead.isNotEmpty()) {
-                            "(${articlesToBeRead.size})"
-                        } else {
-                            ""
-                        }
+            updateReadProgress(index = index + 1, total = chunks.size)
 
             playAudioByteArray(byteArray)
             index++
@@ -148,28 +149,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
                 byteArrayChannel?.isEmpty == true) break
         }
 
-        _speakingState.value = false
         byteArrayChannel = null
-
-        if (articlesToBeRead.isEmpty()) {
-            _isReading.value = false
-        }
-    }
-
-    private fun processedTextToChunks(text: String): MutableList<String> {
-        val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "").replace("\\", "")
-        val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
-        val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
-            Log.d("TtsViewModel", "sentence: $sentence")
-            if (acc.isEmpty() || (acc.last() + sentence).getWordCount() > 60) {
-                acc.add(sentence.trim())
-            } else {
-                val last = acc.last()
-                acc[acc.size - 1] = "$last$sentence"
-            }
-            acc
-        }
-        return chunks
     }
 
     private val fetchSemaphore = Semaphore(3)
@@ -248,5 +228,18 @@ fun TtsType.toStringResId(): Int {
         TtsType.GPT -> R.string.tts_type_gpt
         TtsType.ETTS -> R.string.tts_type_etts
         TtsType.SYSTEM -> R.string.tts_type_system
+    }
+}
+
+data class ReadProgress(val index: Int, val total: Int, val articleLeftCount: Int) {
+    override fun toString(): String {
+        if (total == 0) return "($articleLeftCount)"
+
+        return "$index/$total " +
+                if (articleLeftCount > 0) {
+                    "($articleLeftCount)"
+                } else {
+                    ""
+                }
     }
 }

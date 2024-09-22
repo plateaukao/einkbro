@@ -698,6 +698,21 @@ object HelperUnit {
 
 }
 
+fun processedTextToChunks(text: String): MutableList<String> {
+    val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "").replace("\\", "")
+    val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
+    val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
+        if (acc.isEmpty() || (acc.last() + sentence).getWordCount() > 60) {
+            acc.add(sentence.trim())
+        } else {
+            val last = acc.last()
+            acc[acc.size - 1] = "$last$sentence"
+        }
+        acc
+    }
+    return chunks
+}
+
 fun String.getWordCount(): Int {
     val trimmedInput = trim()
     if (trimmedInput.isEmpty()) return 0

@@ -2414,7 +2414,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (toBeReadProcessUrlList.size == 1) {
             headlessWebView.loadUrl(url)
         }
-
         NinjaToast.show(this, R.string.added_to_read_list)
     }
 
