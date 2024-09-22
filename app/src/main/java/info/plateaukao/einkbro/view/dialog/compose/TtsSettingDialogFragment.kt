@@ -59,6 +59,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                 val ettsVoice = remember { mutableStateOf(config.ettsVoice) }
                 val gptVoice = remember { mutableStateOf(config.gptVoiceOption) }
                 val readProgress = ttsViewModel.readProgress.collectAsState()
+                val readingState = ttsViewModel.isReading.collectAsState()
 
                 Column(
                     modifier = Modifier
@@ -87,8 +88,8 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         onVoiceSelected = { config.ettsVoice = it; dismiss() },
                     )
                     TtsDialogButtonBar(
-                        isPlaying = ttsViewModel.isReading(),
-                        isVoiceReading = ttsViewModel.isVoicePlaying(),
+                        readingState = readingState.value,
+                        isVoicePlaying = ttsViewModel.isVoicePlaying(),
                         showSystemSetting = ttsType.value == TtsType.SYSTEM,
                         readProgress = readProgress.value,
                         gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
@@ -277,8 +278,8 @@ private fun MainTtsSettingDialog(
 
 @Composable
 fun TtsDialogButtonBar(
-    isPlaying: Boolean,
-    isVoiceReading: Boolean,
+    readingState: Boolean,
+    isVoicePlaying: Boolean,
     showSystemSetting: Boolean,
     readProgress: String,
     stopAction: () -> Unit,
@@ -307,7 +308,7 @@ fun TtsDialogButtonBar(
                     )
                 }
             } else {
-                if (isPlaying) {
+                if (readingState) {
                     Text(
                         readProgress,
                         modifier = Modifier.padding(horizontal = 8.dp),
@@ -329,7 +330,7 @@ fun TtsDialogButtonBar(
                         modifier = Modifier.wrapContentWidth()
                     ) {
                         Icon(
-                            if (isVoiceReading) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            if (isVoicePlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                             "pause or resume",
                             tint = MaterialTheme.colors.onBackground
                         )

@@ -37,8 +37,12 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val mediaPlayer by lazy { MediaPlayer() }
     private var byteArrayChannel: Channel<ByteArray>? = null
 
+    // for showing play controls state
     private val _speakingState = MutableStateFlow(false)
     val speakingState: StateFlow<Boolean> = _speakingState.asStateFlow()
+
+    private val _isReading = MutableStateFlow(false)
+    val isReading: StateFlow<Boolean> = _isReading.asStateFlow()
 
     private val _readProgress = MutableStateFlow("")
     val readProgress: StateFlow<String> = _readProgress.asStateFlow()
@@ -53,6 +57,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val articlesToBeRead: MutableList<String> = mutableListOf()
 
     fun readArticle(text: String) {
+        _isReading.value = true
+
         articlesToBeRead.add(text)
         if (isReading()) {
             return
@@ -94,24 +100,18 @@ class TtsViewModel : ViewModel(), KoinComponent {
             delay(2000)
         }
         _speakingState.value = false
+        _isReading.value = false
     }
 
     private suspend fun readByEngine(ttsType: TtsType, text: String) {
         byteArrayChannel = Channel(1)
+        val chunks = processedTextToChunks(text)
 
         viewModelScope.launch(Dispatchers.IO) {
             _speakingState.value = true
 
-            val chunks = processedTextToChunks(text)
             chunks.forEachIndexed { index, chunk ->
                 if (byteArrayChannel == null) return@launch
-
-                _readProgress.value =
-                    "${index + 1}/${chunks.size} " + if (articlesToBeRead.isNotEmpty()) {
-                        "(${articlesToBeRead.size})"
-                    } else {
-                        ""
-                    }
 
                 fetchSemaphore.withPermit {
                     Log.d("TtsViewModel", "tts sentence fetch: $chunk")
@@ -122,9 +122,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
                     }
 
                     if (byteArray != null) {
-                        Log.d("TtsViewModel", "tts sentence send: $chunk")
+                        Log.d("TtsViewModel", "tts sentence send ($index) : $chunk")
                         byteArrayChannel?.send(byteArray)
-                        Log.d("TtsViewModel", "tts sentence sent: $chunk")
+                        Log.d("TtsViewModel", "tts sentence sent ($index) : $chunk")
                     }
                 }
             }
@@ -134,22 +134,34 @@ class TtsViewModel : ViewModel(), KoinComponent {
         var index = 0
         for (byteArray in byteArrayChannel!!) {
             Log.d("TtsViewModel", "play audio $index")
+            _readProgress.value =
+                "${index + 1}/${chunks.size} " +
+                        if (articlesToBeRead.isNotEmpty()) {
+                            "(${articlesToBeRead.size})"
+                        } else {
+                            ""
+                        }
+
             playAudioByteArray(byteArray)
             index++
-            if (byteArrayChannel?.isClosedForSend == true && byteArrayChannel?.isEmpty == true
-            ) break
+            if (byteArrayChannel?.isClosedForSend == true &&
+                byteArrayChannel?.isEmpty == true) break
         }
 
         _speakingState.value = false
         byteArrayChannel = null
+
+        if (articlesToBeRead.isEmpty()) {
+            _isReading.value = false
+        }
     }
 
     private fun processedTextToChunks(text: String): MutableList<String> {
-        val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "")
+        val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "").replace("\\", "")
         val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
         val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
             Log.d("TtsViewModel", "sentence: $sentence")
-            if (acc.isEmpty() || (acc.last() + sentence).getWordCount() > 80) {
+            if (acc.isEmpty() || (acc.last() + sentence).getWordCount() > 60) {
                 acc.add(sentence.trim())
             } else {
                 val last = acc.last()
@@ -195,6 +207,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         articlesToBeRead.clear()
 
         _speakingState.value = false
+        _isReading.value = false
     }
 
     fun isReading(): Boolean {
