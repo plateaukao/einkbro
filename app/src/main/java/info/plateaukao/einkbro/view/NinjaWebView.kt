@@ -141,10 +141,14 @@ open class NinjaWebView(
             .replace("fontfamily", "fontfamily${fontNum}")
     }
 
-    override fun reload() {
+    private fun resetState() {
         isTranslatePage = false
         isVerticalRead = false
         isReaderModeOn = false
+    }
+
+    override fun reload() {
+        resetState()
         settings.textZoom = config.fontSize
         settings.cacheMode = WebSettings.LOAD_DEFAULT
         super.reload()
@@ -155,9 +159,7 @@ open class NinjaWebView(
     }
 
     override fun goBack() {
-        isTranslatePage = false
-        isVerticalRead = false
-        isReaderModeOn = false
+        resetState()
         settings.textZoom = config.fontSize
         super.goBack()
     }
@@ -336,7 +338,7 @@ open class NinjaWebView(
         }
 
         dualCaption = null
-        isTranslatePage = false
+        resetState()
         isTranslateByParagraph = false
         browserController?.resetTranslateUI()
 
@@ -355,7 +357,7 @@ open class NinjaWebView(
         dualCaption = null
         album.isLoaded = true
 
-        isTranslatePage = false
+        resetState()
         isTranslateByParagraph = false
         browserController?.resetTranslateUI()
 
