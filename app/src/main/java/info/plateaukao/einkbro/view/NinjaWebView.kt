@@ -141,10 +141,16 @@ open class NinjaWebView(
             .replace("fontfamily", "fontfamily${fontNum}")
     }
 
-    override fun reload() {
+    private fun resetState(partial: Boolean = false) {
         isTranslatePage = false
-        isVerticalRead = false
-        isReaderModeOn = false
+        if (!partial) {
+            isVerticalRead = false
+            isReaderModeOn = false
+        }
+    }
+
+    override fun reload() {
+        resetState()
         settings.textZoom = config.fontSize
         settings.cacheMode = WebSettings.LOAD_DEFAULT
         super.reload()
@@ -155,9 +161,7 @@ open class NinjaWebView(
     }
 
     override fun goBack() {
-        isTranslatePage = false
-        isVerticalRead = false
-        isReaderModeOn = false
+        resetState()
         settings.textZoom = config.fontSize
         super.goBack()
     }
@@ -336,7 +340,7 @@ open class NinjaWebView(
         }
 
         dualCaption = null
-        isTranslatePage = false
+        resetState()
         isTranslateByParagraph = false
         browserController?.resetTranslateUI()
 
@@ -355,12 +359,12 @@ open class NinjaWebView(
         dualCaption = null
         album.isLoaded = true
 
-        isTranslatePage = false
+        val partial = url.startsWith("javascript:") || url.startsWith("content:")
+        resetState(partial)
         isTranslateByParagraph = false
         browserController?.resetTranslateUI()
 
-        if (url.startsWith("javascript:") || url.startsWith("content:")) {
-            // Daniel
+        if (partial) {  // Daniel
             super.loadUrl(url)
             return
         }
