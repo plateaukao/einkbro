@@ -5,8 +5,10 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Message
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
 import android.webkit.GeolocationPermissions
 import android.webkit.PermissionRequest
@@ -24,6 +26,8 @@ class NinjaWebChromeClient(
     private val ninjaWebView: NinjaWebView,
     private val onReceiveFavicon: (Bitmap) -> Unit,
 ) : WebChromeClient() {
+    private val TAG: String = "NinjaWebChromeClient"
+
     private lateinit var webviewParent: ViewGroup
 
     override fun onCreateWindow(
@@ -154,6 +158,11 @@ class NinjaWebChromeClient(
         HelperUnit.grantPermissionsLoc(activity)
         callback.invoke(origin, true, false)
         super.onGeolocationPermissionsShowPrompt(origin, callback)
+    }
+
+    override fun onConsoleMessage(message: ConsoleMessage): Boolean {
+        Log.d(TAG, message.message())
+        return true
     }
 
     private val posterBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
