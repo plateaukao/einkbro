@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
@@ -30,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -76,11 +76,12 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class SettingActivity : ComponentActivity() {
+class SettingActivity : FragmentActivity() {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val adBlock: AdBlockV2 by inject()
@@ -552,6 +553,15 @@ class SettingActivity : ComponentActivity() {
     )
 
     private val toolbarSettingItems = listOf(
+        ActionSettingItem(
+            R.string.toolbar_icons,
+            0,
+            R.string.toolbar_icons_description,
+        ) {
+            ToolbarConfigDialogFragment().show(
+                this@SettingActivity.supportFragmentManager, "toolbar_config"
+            )
+        },
         BooleanSettingItem(
             R.string.setting_title_toolbar_top,
             0,
@@ -579,12 +589,9 @@ class SettingActivity : ComponentActivity() {
     )
 
     private val gestureSettingItems = listOf(
-        ActionSettingItem(
+        DividerSettingItem(
             R.string.setting_title_touch_area_actions,
-            0,
-            R.string.summary_touch_aciton_settings,
-            span = 2
-        ) { },
+        ),
         ListSettingWithEnumItem(
             R.string.setting_touch_up_click,
             0,
@@ -609,6 +616,7 @@ class SettingActivity : ComponentActivity() {
             config = config::downLongClickGesture,
             options = GestureType.entries.map { it.resId },
         ),
+        DividerSettingItem(R.string.setting_multitouch_use_title),
         BooleanSettingItem(
             R.string.setting_multitouch_use_title,
             0,
@@ -640,7 +648,7 @@ class SettingActivity : ComponentActivity() {
             config = config::multitouchRight,
             options = GestureType.entries.map { it.resId },
         ),
-        DividerSettingItem(),
+        DividerSettingItem(R.string.gesture_on_floating_button),
         BooleanSettingItem(
             R.string.setting_gestures_use_title,
             0,
@@ -899,7 +907,7 @@ class SettingActivity : ComponentActivity() {
             R.string.setting_summary_chat_stream,
             config::enableOpenAiStream
         ),
-        DividerSettingItem(),
+        DividerSettingItem(R.string.openai),
         ValueSettingItem(
             R.string.setting_title_edit_gpt_api_key,
             0,
@@ -924,7 +932,7 @@ class SettingActivity : ComponentActivity() {
             R.string.setting_summary_gpt_prompt_for_web_page,
             config::gptUserPromptForWebPage
         ),
-        DividerSettingItem(),
+        DividerSettingItem(R.string.openai_compatible_server),
         BooleanSettingItem(
             R.string.setting_title_use_custom_gpt_url,
             0,
@@ -943,7 +951,7 @@ class SettingActivity : ComponentActivity() {
             R.string.setting_summary_custom_gpt_url,
             config::gptUrl
         ),
-        DividerSettingItem(),
+        DividerSettingItem(R.string.google_gemini),
         BooleanSettingItem(
             R.string.setting_title_use_gemini,
             0,

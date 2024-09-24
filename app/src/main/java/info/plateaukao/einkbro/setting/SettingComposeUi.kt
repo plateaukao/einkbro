@@ -121,6 +121,7 @@ fun SettingItemUi(
 
 @Composable
 fun DividerSettingItemUi(
+    title: Int = 0,
     supportTwoSpan: Boolean = false,
 ) {
     if (!supportTwoSpan) {
@@ -130,13 +131,33 @@ fun DividerSettingItemUi(
                 .height(6.dp)
         ) {
             HorizontalSeparator()
+            if (title != 0) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(5.dp),
+                    text = stringResource(title),
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
         }
     } else {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(16.dp)
-        )
+        if (title != 0) {
+            Text(
+                modifier = Modifier
+                    .padding(5.dp),
+                text = stringResource(title),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground,
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+            )
+        }
     }
 }
 
@@ -305,7 +326,8 @@ fun SettingScreen(
                         setting.showValue
                     )
 
-                    is DividerSettingItem -> DividerSettingItemUi(supportTwoSpan)
+                    is DividerSettingItem ->
+                        DividerSettingItemUi(setting.titleResId, supportTwoSpan)
 
                     is ListSettingWithEnumItem<*> -> ListSettingItemUi(
                         setting,

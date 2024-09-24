@@ -173,8 +173,8 @@
 
     <!-- Gestures -->
     <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the \"Navigation button\".</string>
+    <string name="setting_gestures_use_title">Use gestures on floating button</string>
+    <string name="setting_gestures_use_summary">Swipe on \"floating button\" to execute actions.</string>
 
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
@@ -581,4 +581,10 @@
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_system">System TTS</string>
+    <string name="toolbar_icons">Toolbar Icons</string>
+    <string name="toolbar_icons_description">Arrange toolbar icons</string>
+    <string name="gesture_on_floating_button">Gesture on floating button</string>
+    <string name="openai">OpenAI</string>
+    <string name="openai_compatible_server">OpenAI Compatible Server</string>
+    <string name="google_gemini">Google Gemini</string>
 </resources>

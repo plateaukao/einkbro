@@ -561,4 +561,9 @@
     <string name="added_to_read_list">Added to read list</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_system">System TTS</string>
+    <string name="toolbar_icons">工具栏按钮</string>
+    <string name="toolbar_icons_description">工具栏按钮设置</string>
+    <string name="gesture_on_floating_button">Gesture on floating button</string>
+    <string name="openai">OpenAI</string>
+    <string name="openai_compatible_server">OpenAI Compatible Server</string>
 </resources>
