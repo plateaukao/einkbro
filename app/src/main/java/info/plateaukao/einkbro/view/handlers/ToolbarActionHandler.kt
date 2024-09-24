@@ -21,19 +21,8 @@ class ToolbarActionHandler(
 
     fun handleLongClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
         ToolbarAction.Back -> browserController.openHistoryPage(5)
-        ToolbarAction.Refresh -> browserController.toggleFullscreen()
-        ToolbarAction.Touch -> browserController.showTouchAreaDialog()
-
-        ToolbarAction.PageUp -> browserController.jumpToTop()
-        ToolbarAction.PageDown -> browserController.jumpToBottom()
-        ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
-        ToolbarAction.Settings -> browserController.showFastToggleDialog()
+        ToolbarAction.BoldFont -> browserController.showFontBoldnessDialog()
         ToolbarAction.Bookmark -> browserController.saveBookmark()
-        ToolbarAction.Translation -> browserController.showTranslationConfigDialog(true)
-        ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
-        ToolbarAction.Tts ->
-            TtsSettingDialogFragment().show(activity.supportFragmentManager, "TtsSettingDialog")
-
         ToolbarAction.Font -> browserController.toggleReaderMode()
         ToolbarAction.InputUrl -> {
             // toggle papago translate
@@ -43,66 +32,66 @@ class ToolbarActionHandler(
                 config.papagoApiSecret = ""
             }
         }
-
-        ToolbarAction.TranslateByParagraph -> browserController.configureTranslationLanguage(
-            TRANSLATE_API.GOOGLE
-        )
-
+        ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
+        ToolbarAction.PageDown -> browserController.jumpToBottom()
+        ToolbarAction.PageInfo -> browserController.summarizeContent()
+        ToolbarAction.PageUp -> browserController.jumpToTop()
         ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(
             TRANSLATE_API.PAPAGO
         )
-
-        ToolbarAction.BoldFont -> browserController.showFontBoldnessDialog()
-
-        ToolbarAction.PageInfo -> browserController.summarizeContent()
-
+        ToolbarAction.Refresh -> browserController.toggleFullscreen()
+        ToolbarAction.Settings -> browserController.showFastToggleDialog()
+        ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
+        ToolbarAction.TranslateByParagraph -> browserController.configureTranslationLanguage(
+            TRANSLATE_API.GOOGLE
+        )
+        ToolbarAction.Translation -> browserController.showTranslationConfigDialog(true)
+        ToolbarAction.Tts -> TtsSettingDialogFragment().show(activity.supportFragmentManager, "TtsSettingDialog")
+        ToolbarAction.Touch -> browserController.showTouchAreaDialog()
         else -> {}
     }
 
     fun handleClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
-        ToolbarAction.Title -> browserController.focusOnInput()
         ToolbarAction.Back -> browserController.handleBackKey()
-        ToolbarAction.Refresh -> browserController.refreshAction()
-        ToolbarAction.Touch -> browserController.toggleTouchTurnPageFeature()
-        ToolbarAction.TouchDirectionUpDown -> browserController.toggleSwitchTouchAreaAction()
-        ToolbarAction.TouchDirectionLeftRight -> browserController.toggleSwitchTouchAreaAction()
-        ToolbarAction.PageUp -> browserController.pageUp()
-        ToolbarAction.PageDown -> browserController.pageDown()
-        ToolbarAction.TabCount -> browserController.showOverview()
-        ToolbarAction.Font -> browserController.showFontSizeChangeDialog()
-        ToolbarAction.Settings -> browserController.showMenuDialog()
+        ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
         ToolbarAction.Bookmark -> browserController.openBookmarkPage()
+        ToolbarAction.CloseTab -> browserController.removeAlbum()
+        ToolbarAction.DecreaseFont -> browserController.decreaseFontSize()
+        ToolbarAction.Desktop -> config::desktop.toggle()
+        ToolbarAction.DuplicateTab -> browserController.duplicateTab()
+        ToolbarAction.Font -> browserController.showFontSizeChangeDialog()
+        ToolbarAction.Forward -> browserController.goForward()
+        ToolbarAction.FullScreen -> browserController.toggleFullscreen()
+        ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
         ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(
             activity.supportFragmentManager,
             "toolbar_config"
         )
-
+        ToolbarAction.IncreaseFont -> browserController.increaseFontSize()
+        ToolbarAction.InputUrl -> browserController.focusOnInput()
+        ToolbarAction.MoveToBackground -> activity.moveTaskToBack(true)
+        ToolbarAction.NewTab -> browserController.newATab()
+        ToolbarAction.PageDown -> browserController.pageDown()
+        ToolbarAction.PageInfo -> {}
+        ToolbarAction.PageUp -> browserController.pageUp()
+        ToolbarAction.PapagoByParagraph -> browserController.translate(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
+        ToolbarAction.ReaderMode -> browserController.toggleReaderMode()
+        ToolbarAction.Refresh -> browserController.refreshAction()
+        ToolbarAction.RotateScreen -> browserController.rotateScreen()
+        ToolbarAction.Search -> browserController.showSearchPanel()
+        ToolbarAction.Settings -> browserController.showMenuDialog()
         ToolbarAction.Spacer1 -> {}
         ToolbarAction.Spacer2 -> {}
-
-        ToolbarAction.PageInfo -> {}
-        ToolbarAction.Time -> {}
-
-        ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
-        ToolbarAction.ReaderMode -> browserController.toggleReaderMode()
-        ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
-        ToolbarAction.IncreaseFont -> browserController.increaseFontSize()
-        ToolbarAction.DecreaseFont -> browserController.decreaseFontSize()
-        ToolbarAction.FullScreen -> browserController.toggleFullscreen()
-        ToolbarAction.Forward -> browserController.goForward()
-        ToolbarAction.RotateScreen -> browserController.rotateScreen()
-        ToolbarAction.Translation -> browserController.showTranslation()
-        ToolbarAction.CloseTab -> browserController.removeAlbum()
-        ToolbarAction.MoveToBackground -> activity.moveTaskToBack(true)
-        ToolbarAction.InputUrl -> browserController.focusOnInput()
-        ToolbarAction.NewTab -> browserController.newATab()
-        ToolbarAction.Desktop -> config::desktop.toggle()
-        ToolbarAction.Search -> browserController.showSearchPanel()
-        ToolbarAction.DuplicateTab -> browserController.duplicateTab()
-        ToolbarAction.Tts -> browserController.handleTtsButton()
+        ToolbarAction.TabCount -> browserController.showOverview()
         ToolbarAction.TOC -> browserController.showTocDialog()
-        ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
+        ToolbarAction.Tts -> browserController.handleTtsButton()
+        ToolbarAction.Time -> {}
+        ToolbarAction.Title -> browserController.focusOnInput()
+        ToolbarAction.Touch -> browserController.toggleTouchTurnPageFeature()
+        ToolbarAction.TouchDirectionLeftRight -> browserController.toggleSwitchTouchAreaAction()
+        ToolbarAction.TouchDirectionUpDown -> browserController.toggleSwitchTouchAreaAction()
+        ToolbarAction.Translation -> browserController.showTranslation()
         ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)
-        ToolbarAction.PapagoByParagraph -> browserController.translate(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
+        ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
     }
 }

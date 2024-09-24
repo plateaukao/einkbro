@@ -121,8 +121,8 @@
     <string name="setting_summary_confirm_tab_close">關閉分頁前，顯示對話框</string>
     <string name="setting_overView">畫面預覽</string>
     <string name="setting_gestures">手勢</string>
-    <string name="setting_gestures_use_title">使用手勢</string>
-    <string name="setting_gestures_use_summary">在浮動按鈕上使用手勢</string>
+    <string name="setting_gestures_use_title">浮動按鈕使用手勢</string>
+    <string name="setting_gestures_use_summary">在浮動按鈕上滑動手勢執行各項功能</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">工具列</string>
     <string name="setting_gesture_up">往上滑</string>
@@ -493,4 +493,9 @@
     <string name="added_to_read_list">加入朗讀清單</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_system">系統內建</string>
+    <string name="toolbar_icons">工具列按鈕</string>
+    <string name="toolbar_icons_description">調整工具列功能按鈕</string>
+    <string name="gesture_on_floating_button">浮動按鈕上的手勢</string>
+    <string name="openai">OpenAI</string>
+    <string name="openai_compatible_server">與 OpenAI 相容的服務</string>
 </resources>

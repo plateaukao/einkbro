@@ -11,8 +11,9 @@ interface SettingItemInterface {
     val span: Int
 }
 
-class DividerSettingItem : SettingItemInterface {
-    override val titleResId: Int = 0
+class DividerSettingItem(
+    override val titleResId: Int = 0,
+) : SettingItemInterface {
     override val summaryResId: Int = 0
     override val iconId: Int = 0
     override val span: Int = 2
@@ -57,7 +58,7 @@ open class NavigateSettingItem(
     override val iconId: Int = 0,
     override val summaryResId: Int = 0,
     override val span: Int = 1,
-    val destination: SettingRoute
+    val destination: SettingRoute,
 ) : SettingItemInterface
 
 class VersionSettingItem(

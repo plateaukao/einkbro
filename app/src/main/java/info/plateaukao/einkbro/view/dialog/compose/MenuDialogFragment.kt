@@ -343,14 +343,17 @@ private fun MenuItems(
                 R.drawable.icon_download
             ) { onClicked(MenuItemType.Download) }
             MenuItem(
-                R.string.toolbar_setting,
+                R.string.toolbar_icons,
                 R.drawable.ic_toolbar
             ) { onClicked(MenuItemType.ToolbarSetting) }
             MenuItem(
                 R.string.menu_quickToggle,
                 R.drawable.ic_quick_toggle
             ) { onClicked(MenuItemType.QuickToggle) }
-            MenuItem(R.string.settings, R.drawable.icon_settings, onLongClicked = { onLongClicked(Settings) }) { onClicked(Settings) }
+            MenuItem(
+                R.string.settings,
+                R.drawable.icon_settings,
+                onLongClicked = { onLongClicked(Settings) }) { onClicked(Settings) }
         }
     }
 }
