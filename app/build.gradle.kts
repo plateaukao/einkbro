@@ -136,8 +136,8 @@ dependencies {
 
     // compose
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.6.8")
-    implementation("androidx.compose.material:material-icons-extended:1.0.0")
+    implementation("androidx.compose.material:material:1.7.2")
+    implementation("androidx.compose.material:material-icons-extended:1.7.2")
 
     // Tooling support (Previews, etc.)
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
