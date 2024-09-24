@@ -16,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
@@ -337,7 +338,6 @@ fun TtsDialogButtonBar(
                     )
                 }
             }
-            VerticalSeparator()
             if (ttsType == TtsType.SYSTEM) {
                 TextButton(
                     modifier = Modifier.wrapContentWidth(),
@@ -349,13 +349,26 @@ fun TtsDialogButtonBar(
                     )
                 }
             }
+            if (!readingState) {
+                IconButton(
+                    onClick = addToReadListAction,
+                    modifier = Modifier.wrapContentWidth()
+                ) {
+                    Icon(
+                        Icons.Default.PlayArrow,
+                        "pause or resume",
+                        tint = MaterialTheme.colors.onBackground
+                    )
+                }
+            }
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
                 onClick = dismissAction
             ) {
-                Text(
-                    stringResource(id = R.string.close),
-                    color = MaterialTheme.colors.onBackground
+                Icon(
+                    Icons.Default.KeyboardArrowDown,
+                    "Stop",
+                    tint = MaterialTheme.colors.onBackground
                 )
             }
         }
