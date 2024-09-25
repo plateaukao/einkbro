@@ -142,7 +142,11 @@ open class NinjaWebView(
     }
 
     private fun resetState(partial: Boolean = false) {
+        dualCaption = null
         isTranslatePage = false
+        isTranslateByParagraph = false
+        browserController?.resetTranslateUI()
+
         if (!partial) {
             isVerticalRead = false
             isReaderModeOn = false
@@ -339,10 +343,7 @@ open class NinjaWebView(
             return
         }
 
-        dualCaption = null
         resetState()
-        isTranslateByParagraph = false
-        browserController?.resetTranslateUI()
 
         bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
             setAlbumCover(it)
@@ -356,13 +357,10 @@ open class NinjaWebView(
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
-        dualCaption = null
         album.isLoaded = true
 
         val partial = url.startsWith("javascript:") || url.startsWith("content:")
         resetState(partial)
-        isTranslateByParagraph = false
-        browserController?.resetTranslateUI()
 
         if (partial) {  // Daniel
             super.loadUrl(url)
