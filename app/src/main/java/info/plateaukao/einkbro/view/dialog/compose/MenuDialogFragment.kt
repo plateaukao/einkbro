@@ -52,11 +52,11 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Splitscreen
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.TouchApp
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.outlined.ViewColumn
+import androidx.compose.material.icons.outlined.ViewStream
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -273,7 +273,7 @@ private fun MenuItems(
             ) {
                 MenuItem(
                     R.string.split_screen,
-                    Icons.Outlined.Splitscreen,
+                    Icons.Outlined.ViewStream,
                 ) { onClicked(MenuItemType.SplitScreen) }
                 MenuItem(
                     R.string.translate,

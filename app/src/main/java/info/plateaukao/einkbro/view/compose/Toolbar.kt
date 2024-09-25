@@ -240,24 +240,35 @@ fun ToolbarIcon(
     val pressed by interactionSource.collectIsPressedAsState()
     val borderWidth = if (pressed) 0.5.dp else (-1).dp
 
-    Icon(
-        modifier = Modifier
-            .fillMaxHeight()
-            .width(toolbarIconWidth)
-            .padding(6.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .combinedClickable(
-                indication = null,
-                interactionSource = interactionSource,
-                onClick = { onClick(toolbarAction) },
-                onLongClick = { onLongClick?.invoke(toolbarAction) }
-            )
-            .padding(6.dp)
-            .testTag(toolbarAction.name.lowercase()),
-        painter = painterResource(id = iconResId),
-        contentDescription = stringResource(id = toolbarAction.titleResId),
-        tint = MaterialTheme.colors.onBackground
-    )
+    val modifier = Modifier
+        .fillMaxHeight()
+        .width(toolbarIconWidth)
+        .padding(6.dp)
+        .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+        .combinedClickable(
+            indication = null,
+            interactionSource = interactionSource,
+            onClick = { onClick(toolbarAction) },
+            onLongClick = { onLongClick?.invoke(toolbarAction) }
+        )
+        .padding(6.dp)
+        .testTag(toolbarAction.name.lowercase())
+
+    if (iconResId != 0) {
+        Icon(
+            modifier = modifier,
+            painter = painterResource(id = iconResId),
+            contentDescription = stringResource(id = toolbarAction.titleResId),
+            tint = MaterialTheme.colors.onBackground
+        )
+    } else {
+        Icon(
+            modifier = modifier,
+            imageVector = toolbarAction.imageVector!!,
+            contentDescription = stringResource(id = toolbarAction.titleResId),
+            tint = MaterialTheme.colors.onBackground
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
