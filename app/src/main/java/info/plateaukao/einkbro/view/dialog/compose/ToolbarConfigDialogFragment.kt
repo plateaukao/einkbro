@@ -158,6 +158,7 @@ fun ToolbarToggleItem(
                 state = info.isOn,
                 titleResId = info.toolbarAction.titleResId,
                 iconResId = info.toolbarAction.iconResId,
+                imageVector = info.toolbarAction.imageVector,
                 isEnabled = shouldEnableCheckClick,
                 // settings should not be clickable, and always there
                 onClicked = { if (info.toolbarAction != ToolbarAction.Settings) onItemClicked(info.toolbarAction) }

@@ -1,22 +1,59 @@
 package info.plateaukao.einkbro.view.toolbaricons
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.RotateRight
+import androidx.compose.material.icons.automirrored.outlined.Segment
+import androidx.compose.material.icons.automirrored.outlined.Toc
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Bookmarks
+import androidx.compose.material.icons.outlined.CancelPresentation
+import androidx.compose.material.icons.outlined.DesktopWindows
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.FolderCopy
+import androidx.compose.material.icons.outlined.FormatSize
+import androidx.compose.material.icons.outlined.Fullscreen
+import androidx.compose.material.icons.outlined.GTranslate
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LibraryAdd
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Minimize
+import androidx.compose.material.icons.outlined.ModeEdit
+import androidx.compose.material.icons.outlined.Pin
+import androidx.compose.material.icons.outlined.RecordVoiceOver
+import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.SpaceBar
+import androidx.compose.material.icons.outlined.Straighten
+import androidx.compose.material.icons.outlined.Swipe
+import androidx.compose.material.icons.outlined.SwipeVertical
+import androidx.compose.material.icons.outlined.TextDecrease
+import androidx.compose.material.icons.outlined.TextIncrease
+import androidx.compose.material.icons.outlined.TouchApp
+import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.outlined.Upload
+import androidx.compose.material.icons.outlined.ViewColumn
+import androidx.compose.ui.graphics.vector.ImageVector
 import info.plateaukao.einkbro.R
 
 enum class ToolbarAction(
     val iconResId: Int = 0,
+    val imageVector: ImageVector? = null,
     val titleResId: Int,
     val iconActiveInfo: IconActiveInfo = IconActiveInfo(isActivable = false),
     val isAddable: Boolean = true,
 ) {
-    Title(iconResId = R.drawable.icon_info, titleResId = R.string.toolbar_title), // 0
-    Back(iconResId = R.drawable.icon_arrow_left_gest, titleResId = R.string.back),
+    Title(imageVector = Icons.Outlined.Info, titleResId = R.string.toolbar_title), // 0
+    Back(imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft, titleResId = R.string.back),
     Refresh(
-        iconResId = R.drawable.icon_refresh,
+        imageVector = Icons.Outlined.Refresh,
         titleResId = R.string.refresh,
         iconActiveInfo = IconActiveInfo(true, R.drawable.ic_stop, R.drawable.icon_refresh)
     ),
     Touch(
-        iconResId = R.drawable.ic_touch_enabled,
+        imageVector = Icons.Outlined.TouchApp,
         titleResId = R.string.touch_turn_page,
         iconActiveInfo = IconActiveInfo(
             true,
@@ -24,15 +61,15 @@ enum class ToolbarAction(
             R.drawable.ic_touch_disabled
         )
     ),
-    PageUp(iconResId = R.drawable.ic_page_up, titleResId = R.string.page_up),
-    PageDown(iconResId = R.drawable.ic_page_down, titleResId = R.string.page_down),
-    TabCount(iconResId = R.drawable.icon_preview, titleResId = R.string.tab_preview),
-    Font(iconResId = R.drawable.icon_size, titleResId = R.string.font_size),
-    Settings(iconResId = R.drawable.ic_menu, titleResId = R.string.settings),
-    Bookmark(iconResId = R.drawable.ic_bookmarks, titleResId = R.string.bookmarks),
-    IconSetting(iconResId = R.drawable.ic_toolbar, titleResId = R.string.toolbars),
-    VerticalLayout(iconResId = R.drawable.ic_vertical_read, titleResId = R.string.vertical_read),
-    ReaderMode(iconResId = R.drawable.ic_reader, titleResId = R.string.reader_mode),
+    PageUp(imageVector = Icons.Outlined.Upload, titleResId = R.string.page_up),
+    PageDown(imageVector = Icons.Outlined.Download, titleResId = R.string.page_down),
+    TabCount(imageVector = Icons.Outlined.Pin, titleResId = R.string.tab_preview),
+    Font(imageVector = Icons.Outlined.FormatSize, titleResId = R.string.font_size),
+    Settings(imageVector = Icons.Outlined.Menu, titleResId = R.string.settings),
+    Bookmark(imageVector = Icons.Outlined.Bookmarks, titleResId = R.string.bookmarks),
+    IconSetting(imageVector = Icons.Outlined.Straighten, titleResId = R.string.toolbars),
+    VerticalLayout(imageVector = Icons.Outlined.ViewColumn, titleResId = R.string.vertical_read),
+    ReaderMode(imageVector = Icons.AutoMirrored.Outlined.ChromeReaderMode, titleResId = R.string.reader_mode),
     BoldFont(
         iconResId = R.drawable.ic_bold_font,
         titleResId = R.string.bold_font,
@@ -42,17 +79,17 @@ enum class ToolbarAction(
             R.drawable.ic_bold_font
         )
     ),
-    IncreaseFont(iconResId = R.drawable.ic_font_increase, titleResId = R.string.font_size_increase),
-    DecreaseFont(iconResId = R.drawable.ic_font_decrease, titleResId = R.string.font_size_decrease),
-    FullScreen(iconResId = R.drawable.icon_fullscreen, titleResId = R.string.fullscreen),
-    Forward(iconResId = R.drawable.icon_arrow_right_gest, titleResId = R.string.forward),
-    RotateScreen(iconResId = R.drawable.ic_rotate, titleResId = R.string.rotate),
-    Translation(iconResId = R.drawable.ic_translate, titleResId = R.string.translate),
-    CloseTab(iconResId = R.drawable.icon_close, titleResId = R.string.close_tab),
-    InputUrl(iconResId = R.drawable.ic_input_url, titleResId = R.string.input_url),
-    NewTab(iconResId = R.drawable.icon_plus, titleResId = R.string.open_new_tab),
+    IncreaseFont(imageVector = Icons.Outlined.TextIncrease, titleResId = R.string.font_size_increase),
+    DecreaseFont(imageVector = Icons.Outlined.TextDecrease, titleResId = R.string.font_size_decrease),
+    FullScreen(imageVector = Icons.Outlined.Fullscreen, titleResId = R.string.fullscreen),
+    Forward(imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight, titleResId = R.string.forward),
+    RotateScreen(imageVector = Icons.AutoMirrored.Outlined.RotateRight, titleResId = R.string.rotate),
+    Translation(imageVector = Icons.Outlined.Translate, titleResId = R.string.translate),
+    CloseTab(imageVector = Icons.Outlined.CancelPresentation, titleResId = R.string.close_tab),
+    InputUrl(imageVector = Icons.Outlined.ModeEdit, titleResId = R.string.input_url),
+    NewTab(imageVector = Icons.Outlined.LibraryAdd, titleResId = R.string.open_new_tab),
     Desktop(
-        iconResId = R.drawable.icon_desktop,
+        imageVector = Icons.Outlined.DesktopWindows,
         titleResId = R.string.desktop_mode,
         iconActiveInfo = IconActiveInfo(
             true,
@@ -60,11 +97,11 @@ enum class ToolbarAction(
             R.drawable.icon_desktop
         )
     ),
-    TOC(iconResId = R.drawable.ic_toc, titleResId = R.string.title_in_toc, isAddable = false),
-    Search(iconResId = R.drawable.icon_search, titleResId = R.string.setting_title_search),
-    DuplicateTab(iconResId = R.drawable.ic_copy, titleResId = R.string.duplicate_tab),
+    TOC(imageVector = Icons.AutoMirrored.Outlined.Toc, titleResId = R.string.title_in_toc, isAddable = false),
+    Search(imageVector = Icons.Outlined.Search, titleResId = R.string.setting_title_search),
+    DuplicateTab(imageVector = Icons.Outlined.FolderCopy, titleResId = R.string.duplicate_tab),
     Tts(
-        iconResId = R.drawable.ic_tts,
+        imageVector = Icons.Outlined.RecordVoiceOver,
         titleResId = R.string.menu_tts,
         iconActiveInfo = IconActiveInfo(
             true,
@@ -74,11 +111,11 @@ enum class ToolbarAction(
     ),
     PageInfo(iconResId = R.drawable.ic_page_count, titleResId = R.string.page_count),
     GoogleInPlace(
-        iconResId = R.drawable.ic_translate_google,
+        imageVector = Icons.Outlined.GTranslate,
         titleResId = R.string.google_in_place
     ),
     TranslateByParagraph(
-        iconResId = R.drawable.ic_translate_paragraph,
+        imageVector = Icons.AutoMirrored.Outlined.Segment,
         titleResId = R.string.inter_translate
     ),
     PapagoByParagraph(
@@ -86,11 +123,11 @@ enum class ToolbarAction(
         titleResId = R.string.papago
     ),
     MoveToBackground(
-        iconResId = R.drawable.ic_minimize,
+        imageVector = Icons.Outlined.Minimize,
         titleResId = R.string.move_to_background
     ),
     TouchDirectionUpDown(
-        iconResId = R.drawable.ic_touch_direction_up,
+        imageVector = Icons.Outlined.SwipeVertical,
         titleResId = R.string.switch_touch_area_action_short,
         iconActiveInfo = IconActiveInfo(
             true,
@@ -99,7 +136,7 @@ enum class ToolbarAction(
         )
     ),
     TouchDirectionLeftRight(
-        iconResId = R.drawable.ic_touch_direction_left,
+        imageVector = Icons.Outlined.Swipe,
         titleResId = R.string.switch_touch_area_action_short,
         iconActiveInfo = IconActiveInfo(
             true,
@@ -108,15 +145,15 @@ enum class ToolbarAction(
         )
     ),
     Time(
-        iconResId = R.drawable.ic_history,
+        imageVector = Icons.Outlined.AccessTime,
         titleResId = R.string.toolbar_time,
     ),
     Spacer1(
-        iconResId = 0,
+        imageVector = Icons.Outlined.SpaceBar,
         titleResId = R.string.expand_space,
     ),
     Spacer2(
-        iconResId = 0,
+        imageVector = Icons.Outlined.SpaceBar,
         titleResId = R.string.expand_space,
     ),
     ;
