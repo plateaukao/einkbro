@@ -37,7 +37,7 @@ import androidx.compose.material.icons.outlined.AddLink
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.BorderColor
-import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.CancelPresentation
 import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.FormatSize
@@ -165,7 +165,7 @@ private fun MenuItems(
             }
             MenuItem(R.string.menu_fav, 0, Icons.Outlined.AddHome) { onClicked(MenuItemType.SetHome) }
             MenuItem(R.string.menu_openFav, 0, Icons.Outlined.Home) { onClicked(OpenHome) }
-            MenuItem(R.string.menu_closeTab, 0, Icons.Outlined.Close) { onClicked(CloseTab) }
+            MenuItem(R.string.menu_closeTab, 0, Icons.Outlined.CancelPresentation) { onClicked(CloseTab) }
             MenuItem(R.string.menu_quit, 0, Icons.AutoMirrored.Outlined.Logout) { onClicked(Quit) }
         }
         HorizontalSeparator()

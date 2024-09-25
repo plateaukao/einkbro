@@ -362,6 +362,16 @@ class SettingActivity : FragmentActivity() {
     )
 
     private val uiSettingItems = listOf(
+        ActionSettingItem(
+            R.string.setting_app_locale,
+            0,
+            R.string.setting_summary_app_locale,
+        ) {
+            lifecycleScope.launch {
+                TranslationLanguageDialog(this@SettingActivity).showAppLocale()
+                config.restartChanged = true
+            }
+        },
         BooleanSettingItem(
             R.string.hide_statusbar,
             0,
@@ -440,16 +450,6 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_clear_recent_bookmarks,
         ) {
             config.clearRecentBookmarks()
-        },
-        ActionSettingItem(
-            R.string.setting_app_locale,
-            0,
-            R.string.setting_summary_app_locale,
-        ) {
-            lifecycleScope.launch {
-                TranslationLanguageDialog(this@SettingActivity).showAppLocale()
-                config.restartChanged = true
-            }
         },
     )
 
