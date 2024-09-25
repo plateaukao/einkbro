@@ -41,11 +41,13 @@ class TtsManager(
     fun getAvailableLanguages(): List<Locale> = tts.availableLanguages?.toList() ?: emptyList()
 
     private var utterId = 0
+    private var isStopped = false
     suspend fun readText(
         text: String,
         onProgress: (Int, Int) -> Unit,
     ) = suspendCoroutine { cont ->
         isPreparing = true
+        isStopped = false
 
         tts.language = config.ttsLocale
         tts.setSpeechRate(config.ttsSpeedValue / 100f)
@@ -74,7 +76,9 @@ class TtsManager(
             }
         })
 
-        chunks.forEach { chunk ->
+        for (chunk in chunks) {
+            if (isStopped) break
+
             if (tts.isSpeaking) {
                 tts.speak(chunk, TextToSpeech.QUEUE_ADD, null, utterId.toString())
             } else {
@@ -88,6 +92,7 @@ class TtsManager(
     fun isSpeaking(): Boolean = isInitialized && (isPreparing || tts.isSpeaking)
 
     fun stopReading() {
+        isStopped = true
         tts.stop()
     }
 
