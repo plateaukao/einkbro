@@ -174,7 +174,28 @@ class TtsViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    fun hasNextArticle(): Boolean = articlesToBeRead.isNotEmpty()
+
+    fun nextArticle() {
+        if (type == TtsType.SYSTEM) {
+            ttsManager.stopReading()
+        } else {
+            // stop current one
+            byteArrayChannel?.close()
+            byteArrayChannel = null
+            mediaPlayer.let {
+                if (it.isPlaying) {
+                    it.stop()
+                    it.reset()
+                    isInPause = false
+                }
+            }
+        }
+    }
+
     fun stop() {
+        articlesToBeRead.clear()
+
         ttsManager.stopReading()
 
         byteArrayChannel?.cancel()
@@ -184,7 +205,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
         mediaPlayer.reset()
         isInPause = false
 
-        articlesToBeRead.clear()
 
         _speakingState.value = false
         _isReading.value = false

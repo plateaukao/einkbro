@@ -91,8 +91,10 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                     TtsDialogButtonBar(
                         readingState = readingState.value,
                         isVoicePlaying = ttsViewModel.isVoicePlaying(),
+                        showNextButton = ttsViewModel.hasNextArticle(),
                         ttsType = ttsType.value,
                         readProgress = readProgress.value.toString(),
+                        nextArticleAction = { ttsViewModel.nextArticle() },
                         gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
                         stopAction = { ttsViewModel.stop(); dismiss() },
                         pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
@@ -281,8 +283,10 @@ private fun MainTtsSettingDialog(
 fun TtsDialogButtonBar(
     readingState: Boolean,
     isVoicePlaying: Boolean,
+    showNextButton: Boolean = false,
     ttsType: TtsType,
     readProgress: String,
+    nextArticleAction: () -> Unit,
     stopAction: () -> Unit,
     pauseOrResumeAction: () -> Unit,
     addToReadListAction: () -> Unit,
@@ -327,6 +331,18 @@ fun TtsDialogButtonBar(
                         )
                     }
                 }
+//                if (showNextButton) {
+//                    IconButton(
+//                        onClick = nextArticleAction,
+//                        modifier = Modifier.wrapContentWidth()
+//                    ) {
+//                        Icon(
+//                            Icons.Outlined.FastForward,
+//                            "Next Article",
+//                            tint = MaterialTheme.colors.onBackground
+//                        )
+//                    }
+//                }
                 IconButton(
                     onClick = stopAction,
                     modifier = Modifier.wrapContentWidth()
