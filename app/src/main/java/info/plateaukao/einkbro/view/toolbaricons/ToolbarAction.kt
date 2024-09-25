@@ -18,10 +18,10 @@ import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.GTranslate
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LibraryAdd
+import androidx.compose.material.icons.outlined.LooksOne
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Minimize
 import androidx.compose.material.icons.outlined.ModeEdit
-import androidx.compose.material.icons.outlined.Pin
 import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
@@ -63,7 +63,7 @@ enum class ToolbarAction(
     ),
     PageUp(imageVector = Icons.Outlined.Upload, titleResId = R.string.page_up),
     PageDown(imageVector = Icons.Outlined.Download, titleResId = R.string.page_down),
-    TabCount(imageVector = Icons.Outlined.Pin, titleResId = R.string.tab_preview),
+    TabCount(imageVector = Icons.Outlined.LooksOne, titleResId = R.string.tab_preview),
     Font(imageVector = Icons.Outlined.FormatSize, titleResId = R.string.font_size),
     Settings(imageVector = Icons.Outlined.Menu, titleResId = R.string.settings),
     Bookmark(imageVector = Icons.Outlined.Bookmarks, titleResId = R.string.bookmarks),
