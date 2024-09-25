@@ -35,9 +35,9 @@ class ETts {
 
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
             .build()
     }
 
@@ -81,6 +81,12 @@ class ETts {
                     object : TTSWebSocketListener() {
                         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                             continuation.resume(byteArray)
+                        }
+                        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                            super.onFailure(webSocket, t, response)
+                            response?.close()
+                            Log.d("TTSWebSocketListener", "onFailure: ${t.message}")
+                            continuation.resume(null)
                         }
                     })
                 client.send(audioFormat)
