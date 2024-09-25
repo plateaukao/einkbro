@@ -211,8 +211,14 @@ class TtsViewModel : ViewModel(), KoinComponent {
                 mediaPlayer.reset()
                 cont.resume(0)
             }
+            mediaPlayer.setOnErrorListener { value1, value2, value3 ->
+                Log.e("TtsViewModel", "playAudioArray: error $value1 $value2 $value3")
+                mediaPlayer.reset()
+                cont.resume(0)
+                true
+            }
         } catch (e: Exception) {
-            Log.e("TtsViewModel", "playAudioArray: ${e.message}")
+            Log.e("TtsViewModel", "playAudioArray exception: ${e.message}")
             mediaPlayer.reset()
             cont.resume(0)
         }
