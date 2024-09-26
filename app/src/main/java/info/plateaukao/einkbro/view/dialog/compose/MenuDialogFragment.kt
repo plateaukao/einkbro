@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -148,6 +149,7 @@ private fun MenuItems(
     Column(
         modifier = Modifier
             .wrapContentHeight()
+            .verticalScroll(rememberScrollState())
             .width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.End
     ) {

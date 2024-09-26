@@ -165,8 +165,8 @@ fun ToggleItem(
             .height(46.dp)
             .padding(4.dp)
             .clickable {
-                currentState = !currentState
                 if (isEnabled) {
+                    currentState = !currentState
                     onClicked(currentState)
                 }
             },
@@ -181,8 +181,8 @@ fun ToggleItem(
                 checkmarkColor = MaterialTheme.colors.background,
             ),
             onCheckedChange = {
-                currentState = !currentState
                 if (isEnabled) {
+                    currentState = !currentState
                     onClicked(currentState)
                 }
             }
