@@ -603,6 +603,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 translateByParagraph(ninjaWebView.translateApi)
             }
         }
+        languageLabelView?.setOnLongClickListener {
+            languageLabelView?.visibility = GONE
+            true
+        }
     }
 
     override fun isAtTop(): Boolean = ninjaWebView.isAtTop()

@@ -1,9 +1,11 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -61,33 +63,46 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                 val gptVoice = remember { mutableStateOf(config.gptVoiceOption) }
                 val readProgress = ttsViewModel.readProgress.collectAsState()
                 val readingState = ttsViewModel.isReading.collectAsState()
+                val currentReadingContent = ttsViewModel.currentReadingContent.collectAsState()
+
+                val showReadingContext = remember { mutableStateOf(false) }
 
                 Column(
                     modifier = Modifier
                         .padding(top = 8.dp, start = 8.dp, end = 8.dp)
                         .width(IntrinsicSize.Max)
                 ) {
-                    MainTtsSettingDialog(
-                        selectedType = ttsType.value,
-                        selectedLocale = config.ttsLocale,
-                        selectedGptVoice = gptVoice.value,
-                        selectedEttsVoice = ettsVoice.value,
-                        selectedSpeedValue = config.ttsSpeedValue,
-                        onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
-                        recentVoices = config.recentUsedTtsVoices,
-                        showLocaleDialog = { TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages()) },
-                        onTtsTypeSelected = {
-                            config.ttsType = it
-                            ttsType.value = it
-                        },
-                        showEttsVoiceDialog = {
-                            ETtsVoiceDialogFragment {
-                                ettsVoice.value = it
-                            }.show(parentFragmentManager, "ETtsVoiceDialog")
-                        },
-                        onGptVoiceSelected = { config.gptVoiceOption = it; gptVoice.value = it },
-                        onVoiceSelected = { config.ettsVoice = it; dismiss() },
-                    )
+                    if (readingState.value && showReadingContext.value) {
+                        Text(
+                            currentReadingContent.value,
+                            modifier = Modifier
+                                .defaultMinSize(minHeight = 300.dp)
+                                .padding(vertical = 6.dp),
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    } else {
+                        MainTtsSettingDialog(
+                            selectedType = ttsType.value,
+                            selectedLocale = config.ttsLocale,
+                            selectedGptVoice = gptVoice.value,
+                            selectedEttsVoice = ettsVoice.value,
+                            selectedSpeedValue = config.ttsSpeedValue,
+                            onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
+                            recentVoices = config.recentUsedTtsVoices,
+                            showLocaleDialog = { TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages()) },
+                            onTtsTypeSelected = {
+                                config.ttsType = it
+                                ttsType.value = it
+                            },
+                            showEttsVoiceDialog = {
+                                ETtsVoiceDialogFragment {
+                                    ettsVoice.value = it
+                                }.show(parentFragmentManager, "ETtsVoiceDialog")
+                            },
+                            onGptVoiceSelected = { config.gptVoiceOption = it; gptVoice.value = it },
+                            onVoiceSelected = { config.ettsVoice = it; dismiss() },
+                        )
+                    }
                     TtsDialogButtonBar(
                         readingState = readingState.value,
                         isVoicePlaying = ttsViewModel.isVoicePlaying(),
@@ -100,6 +115,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         pauseOrResumeAction = { ttsViewModel.pauseOrResume(); dismiss() },
                         addToReadListAction = this@TtsSettingDialogFragment::readCurrentArticle,
                         dismissAction = { dismiss() },
+                        clickProgressAction = { showReadingContext.value = !showReadingContext.value }
                     )
                 }
             }
@@ -292,6 +308,7 @@ fun TtsDialogButtonBar(
     addToReadListAction: () -> Unit,
     gotoSettingAction: () -> Unit,
     dismissAction: () -> Unit,
+    clickProgressAction: () -> Unit,
 ) {
     Column {
         HorizontalSeparator()
@@ -305,7 +322,9 @@ fun TtsDialogButtonBar(
             if (readingState) {
                 Text(
                     readProgress,
-                    modifier = Modifier.padding(horizontal = 8.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .clickable { clickProgressAction() },
                     color = MaterialTheme.colors.onBackground
                 )
                 VerticalSeparator()

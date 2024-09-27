@@ -294,12 +294,9 @@ class BookmarkManager(context: Context) : KoinComponent {
         faviconInfos.add(faviconInfo)
     }
 
-    @Synchronized
     fun findFaviconBy(url: String): FaviconInfo? {
         val host = Uri.parse(url).host ?: return null
-        synchronized(faviconInfos) {
-            return faviconInfos.firstOrNull { it.domain == host }
-        }
+        return faviconInfos.firstOrNull { it.domain == host }
     }
 
     suspend fun deleteFavicon(faviconInfo: FaviconInfo) = faviconDao.delete(faviconInfo)
