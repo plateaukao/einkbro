@@ -34,7 +34,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val eTts: ETts = ETts()
 
     private val mediaPlayer by lazy { MediaPlayer() }
-    private var byteArrayChannel: Channel<ByteArray>? = null
+    private var byteArrayChannel: Channel<ChannelData>? = null
 
     // for showing play controls state
     private val _speakingState = MutableStateFlow(false)
@@ -54,6 +54,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
         get() = if (useOpenAiTts()) TtsType.GPT else config.ttsType
 
     private val articlesToBeRead: MutableList<String> = mutableListOf()
+
+    private val _currentReadingContent = MutableStateFlow("")
+    val currentReadingContent: StateFlow<String> = _currentReadingContent.asStateFlow()
 
     fun readArticle(text: String) {
         _isReading.value = true
@@ -97,8 +100,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         _speakingState.value = true
         ttsManager.readText(
             text,
-            onProgress =  { index, total ->
-                updateReadProgress(index, total)
+            onProgress = { index, total ->
+                updateReadProgress(index, total, text)
             },
         )
     }
@@ -106,8 +109,11 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private fun updateReadProgress(
         index: Int = _readProgress.value.index,
         total: Int = _readProgress.value.total,
-        articleLeftCount: Int = articlesToBeRead.size) {
+        text: String = "",
+        articleLeftCount: Int = articlesToBeRead.size,
+    ) {
         _readProgress.value = ReadProgress(index, total, articleLeftCount)
+        _currentReadingContent.value = text
     }
 
     private suspend fun readByEngine(ttsType: TtsType, text: String) {
@@ -130,7 +136,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
                     if (byteArray != null) {
                         Log.d("TtsViewModel", "tts sentence send ($index) : $chunk")
-                        byteArrayChannel?.send(byteArray)
+                        byteArrayChannel?.send(ChannelData(byteArray, chunk))
                         Log.d("TtsViewModel", "tts sentence sent ($index) : $chunk")
                     }
                 }
@@ -139,14 +145,17 @@ class TtsViewModel : ViewModel(), KoinComponent {
         }
 
         var index = 0
-        for (byteArray in byteArrayChannel!!) {
+        for (channelData in byteArrayChannel!!) {
             Log.d("TtsViewModel", "play audio $index")
-            updateReadProgress(index = index + 1, total = chunks.size)
+            val byteArray = channelData.byteArray
+            val text = channelData.text
+            updateReadProgress(index = index + 1, total = chunks.size, text)
 
             playAudioByteArray(byteArray)
             index++
             if (byteArrayChannel?.isClosedForSend == true &&
-                byteArrayChannel?.isEmpty == true) break
+                byteArrayChannel?.isEmpty == true
+            ) break
         }
 
         byteArrayChannel = null
@@ -162,14 +171,19 @@ class TtsViewModel : ViewModel(), KoinComponent {
             // TODO
             return
         } else {
-            mediaPlayer.let {
-                if (it.isPlaying) {
-                    it.pause()
-                    isInPause = true
-                } else {
-                    it.start()
-                    isInPause = false
+            try {
+                mediaPlayer.let {
+                    if (it.isPlaying) {
+                        it.pause()
+                        isInPause = true
+                    } else {
+                        it.start()
+                        isInPause = false
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("TtsViewModel", "pauseOrResume: ${e.message}")
+                mediaPlayer.reset()
             }
         }
     }
@@ -269,3 +283,5 @@ data class ReadProgress(val index: Int, val total: Int, val articleLeftCount: In
                 }
     }
 }
+
+class ChannelData(val byteArray: ByteArray, val text: String)
