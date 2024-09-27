@@ -580,7 +580,7 @@
     <string name="added_to_read_list">Added to read list</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_etts">ReadAloud</string>
-    <string name="tts_type_system">System TTS</string>
+    <string name="tts_type_system">Built-in</string>
     <string name="toolbar_icons">Toolbar Icons</string>
     <string name="toolbar_icons_description">Arrange toolbar icons</string>
     <string name="gesture_on_floating_button">Gesture on floating button</string>

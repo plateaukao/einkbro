@@ -46,6 +46,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val _readProgress = MutableStateFlow(ReadProgress(0, 0, 0))
     val readProgress: StateFlow<ReadProgress> = _readProgress.asStateFlow()
 
+    private val _readingState = MutableStateFlow(TtsReadingState.IDLE)
+    val readingState: StateFlow<TtsReadingState> = _readingState.asStateFlow()
+
     private val openaiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
     private fun useOpenAiTts(): Boolean = config.useOpenAiTts && config.gptApiKey.isNotBlank()
@@ -65,6 +68,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         if (isReading()) {
             updateReadProgress()
             return
+        } else {
+            _readingState.value = TtsReadingState.PREPARING
         }
 
         viewModelScope.launch {
@@ -87,6 +92,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
             _speakingState.value = false
             _isReading.value = false
             _readProgress.value = ReadProgress(0, 0, 0)
+            _readingState.value = TtsReadingState.IDLE
         }
 
 //        if (Build.MODEL.startsWith("Pixel 8")) {
@@ -98,6 +104,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private suspend fun readBySystemTts(text: String) {
         _speakingState.value = true
+        _readingState.value = TtsReadingState.PLAYING
         ttsManager.readText(
             text,
             onProgress = { index, total ->
@@ -174,9 +181,11 @@ class TtsViewModel : ViewModel(), KoinComponent {
             try {
                 mediaPlayer.let {
                     if (it.isPlaying) {
+                        _readingState.value = TtsReadingState.PAUSED
                         it.pause()
                         isInPause = true
                     } else {
+                        _readingState.value = TtsReadingState.PLAYING
                         it.start()
                         isInPause = false
                     }
@@ -222,6 +231,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
         _speakingState.value = false
         _isReading.value = false
+        _readingState.value = TtsReadingState.IDLE
     }
 
     fun isReading(): Boolean {
@@ -261,6 +271,10 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
 enum class TtsType {
     SYSTEM, GPT, ETTS
+}
+
+enum class TtsReadingState {
+    PREPARING, PLAYING, PAUSED, IDLE
 }
 
 fun TtsType.toStringResId(): Int {

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -46,11 +45,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindowProvider
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -59,7 +58,7 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import org.koin.android.ext.android.inject
 
-class GptActionsActivity : ComponentActivity()  {
+class GptActionsActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -221,9 +220,9 @@ fun GptActionListContent(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         // icon: action type
-                        Image(
+                        Icon(
                             modifier = Modifier.wrapContentWidth(),
-                            painter = rememberDrawablePainter(context.getDrawable(iconRes)),
+                            painter = painterResource(id = iconRes),
                             contentDescription = "Action Type",
                         )
                         Spacer(modifier = Modifier.width(15.dp))
