@@ -368,7 +368,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initTtsViewModel() {
         lifecycleScope.launch {
-            ttsViewModel.speakingState.collect { _ ->
+            ttsViewModel.readingState.collect { _ ->
                 composeToolbarViewController.updateIcons()
             }
         }

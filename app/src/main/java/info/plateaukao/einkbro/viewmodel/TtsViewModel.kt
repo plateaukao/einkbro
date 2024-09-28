@@ -38,13 +38,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val mediaPlayer by lazy { MediaPlayer() }
     private var byteArrayChannel: Channel<ChannelData>? = null
 
-    // for showing play controls state
-    private val _speakingState = MutableStateFlow(false)
-    val speakingState: StateFlow<Boolean> = _speakingState.asStateFlow()
-
-    private val _isReading = MutableStateFlow(false)
-    val isReading: StateFlow<Boolean> = _isReading.asStateFlow()
-
     private val _readProgress = MutableStateFlow(ReadProgress(0, 0, 0))
     val readProgress: StateFlow<ReadProgress> = _readProgress.asStateFlow()
 
@@ -72,7 +65,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
     val currentReadingContent: StateFlow<String> = _currentReadingContent.asStateFlow()
 
     fun readArticle(text: String) {
-        _isReading.value = true
 
         articlesToBeRead.add(text)
         if (isReading()) {
@@ -100,8 +92,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
             }
 
             _currentReadingContent.value = ""
-            _speakingState.value = false
-            _isReading.value = false
             _readProgress.value = ReadProgress(0, 0, 0)
             _readingState.value = TtsReadingState.IDLE
         }
@@ -114,12 +104,11 @@ class TtsViewModel : ViewModel(), KoinComponent {
     }
 
     private suspend fun readBySystemTts(text: String) {
-        _speakingState.value = true
         _readingState.value = TtsReadingState.PLAYING
         ttsManager.readText(
             text,
-            onProgress = { index, total ->
-                updateReadProgress(index, total, text)
+            onProgress = { index, total, currentContent ->
+                updateReadProgress(index, total, currentContent)
             },
         )
     }
@@ -155,7 +144,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
         val chunks = processedTextToChunks(text)
 
         viewModelScope.launch(Dispatchers.IO) {
-            _speakingState.value = true
 
             chunks.forEachIndexed { index, chunk ->
                 if (byteArrayChannel == null) return@launch
@@ -252,15 +240,10 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
         _currentReadingContent.value = ""
 
-        _speakingState.value = false
-        _isReading.value = false
         _readingState.value = TtsReadingState.IDLE
     }
 
-    fun isReading(): Boolean {
-        Log.d("TtsViewModel", "isSpeaking: ${ttsManager.isSpeaking()} ${byteArrayChannel != null}")
-        return ttsManager.isSpeaking() || byteArrayChannel != null
-    }
+    fun isReading(): Boolean = _readingState.value != TtsReadingState.IDLE
 
     fun toggleShowCurrentText() {
         config::ttsShowCurrentText.toggle()
