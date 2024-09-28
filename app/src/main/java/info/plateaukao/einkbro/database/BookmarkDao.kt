@@ -212,6 +212,7 @@ class BookmarkManager(context: Context) : KoinComponent {
     val bookmarkDao = database.bookmarkDao()
 
     private val faviconDao = database.faviconDao()
+    private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
 
     private val highlightDao = database.highlightDao()
     private val articleDao = database.articleDao()
@@ -259,8 +260,6 @@ class BookmarkManager(context: Context) : KoinComponent {
         }
         config.whiteBackgroundList = emptyList()
     }
-
-    private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
 
     private suspend fun getAllFavicons(): List<FaviconInfo> = faviconDao.getAllFavicons()
 
