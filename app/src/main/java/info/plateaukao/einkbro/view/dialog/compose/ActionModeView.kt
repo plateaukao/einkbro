@@ -95,7 +95,7 @@ private fun ActionModeMenu(
             val info = menuInfos[index]
             ActionMenuItem(
                 info.title,
-                if (showIcons) info.icon else null,
+                if (showIcons) info.drawable else null,
                 onClicked = {
                     info.action?.invoke()
                     if (info.closeMenu) onClicked(info.intent)

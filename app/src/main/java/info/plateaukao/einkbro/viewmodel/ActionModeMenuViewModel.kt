@@ -107,7 +107,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 0,
                 MenuInfo(
                     context.getString(R.string.papago),
-                    icon = ContextCompat.getDrawable(context, R.drawable.ic_papago),
+                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_papago),
                     action = { _actionModeMenuState.value = ActionModeMenuState.Papago }
                 )
             )
@@ -115,7 +115,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 0,
                 MenuInfo(
                     context.getString(R.string.naver_translate),
-                    icon = ContextCompat.getDrawable(context, R.drawable.icon_search),
+                    drawable = ContextCompat.getDrawable(context, R.drawable.icon_search),
                     action = { _actionModeMenuState.value = ActionModeMenuState.Naver }
                 )
             )
@@ -125,7 +125,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(R.string.google_translate),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_translate_google),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_translate_google),
                 action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
             )
         )
@@ -133,7 +133,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(R.string.deepl_translate),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_translate),
                 action = { _actionModeMenuState.value = ActionModeMenuState.DeeplTranslate }
             )
         )
@@ -153,7 +153,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                     0 + index,
                     MenuInfo(
                         actionInfo.name,
-                        icon = ContextCompat.getDrawable(context, iconRes),
+                        drawable = ContextCompat.getDrawable(context, iconRes),
                         action = { _actionModeMenuState.value = ActionModeMenuState.Gpt(index) },
                         longClickAction = { translationViewModel.showEditGptActionDialog(index) }
                     )
@@ -165,7 +165,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(R.string.select_paragraph),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_paragraph),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_paragraph),
                 closeMenu = false,
                 action = {
                     _actionModeMenuState.value = ActionModeMenuState.SelectParagraph
@@ -176,7 +176,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(R.string.select_sentence),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
                 closeMenu = false,
                 action = {
                     _actionModeMenuState.value = ActionModeMenuState.SelectSentence
@@ -187,7 +187,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(android.R.string.copy),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_copy),
                 action = {
                     val processedText = selectedText.value.replace("\\n", "\n")
                     ShareUtil.copyToClipboard(context, processedText)
@@ -200,7 +200,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 menuInfos.add(
                     MenuInfo(
                         itemInfo.title,
-                        icon = ContextCompat.getDrawable(context, R.drawable.ic_split_screen),
+                        drawable = ContextCompat.getDrawable(context, R.drawable.ic_split_screen),
                         action = {
                             _actionModeMenuState.value =
                                 ActionModeMenuState.SplitSearch(itemInfo.stringPattern)
@@ -212,7 +212,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             MenuInfo(
                 context.getString(R.string.highlight),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_highlight),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_highlight),
                 action = {
                     _actionModeMenuState.value =
                         ActionModeMenuState.HighlightText(configManager.highlightStyle)
