@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.service.OpenAiRepository
+import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.tts.ByteArrayMediaDataSource
 import info.plateaukao.einkbro.tts.ETts
@@ -49,7 +51,15 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val _readingState = MutableStateFlow(TtsReadingState.IDLE)
     val readingState: StateFlow<TtsReadingState> = _readingState.asStateFlow()
 
+    private val _showCurrentText = MutableStateFlow(config.ttsShowCurrentText)
+    val showCurrentText: StateFlow<Boolean> = _showCurrentText.asStateFlow()
+
+    private val _showTranslation = MutableStateFlow(config.ttsShowTextTranslation)
+    val showTranslation: StateFlow<Boolean> = _showTranslation.asStateFlow()
+
     private val openaiRepository: OpenAiRepository by lazy { OpenAiRepository() }
+
+    private val translateRepository: TranslateRepository by lazy { TranslateRepository() }
 
     private fun useOpenAiTts(): Boolean = config.useOpenAiTts && config.gptApiKey.isNotBlank()
 
@@ -121,6 +131,22 @@ class TtsViewModel : ViewModel(), KoinComponent {
     ) {
         _readProgress.value = ReadProgress(index, total, articleLeftCount)
         _currentReadingContent.value = text
+
+        insertTranslationText(text)
+    }
+
+    private val translationSeparator = "\n---\n"
+    private fun insertTranslationText(text: String) {
+        if (_showTranslation.value) {
+            viewModelScope.launch {
+                val translatedText = translateRepository.gTranslateWithApi(text, config.translationLanguage.value)
+                _currentReadingContent.value = "$text$translationSeparator$translatedText"
+            }
+        } else {
+            if (_currentReadingContent.value.contains(translationSeparator)) {
+                _currentReadingContent.value = _currentReadingContent.value.substringBefore(translationSeparator)
+            }
+        }
     }
 
     private suspend fun readByEngine(ttsType: TtsType, text: String) {
@@ -172,7 +198,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     fun setSpeechRate(rate: Float) = ttsManager.setSpeechRate(rate)
 
-    private var isInPause = false
     fun pauseOrResume() {
         if (type == TtsType.SYSTEM) {
             // TODO
@@ -183,11 +208,9 @@ class TtsViewModel : ViewModel(), KoinComponent {
                     if (it.isPlaying) {
                         _readingState.value = TtsReadingState.PAUSED
                         it.pause()
-                        isInPause = true
                     } else {
                         _readingState.value = TtsReadingState.PLAYING
                         it.start()
-                        isInPause = false
                     }
                 }
             } catch (e: Exception) {
@@ -210,7 +233,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
                 if (it.isPlaying) {
                     it.stop()
                     it.reset()
-                    isInPause = false
                 }
             }
         }
@@ -226,7 +248,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
         byteArrayChannel = null
         mediaPlayer.stop()
         mediaPlayer.reset()
-        isInPause = false
 
 
         _speakingState.value = false
@@ -239,7 +260,17 @@ class TtsViewModel : ViewModel(), KoinComponent {
         return ttsManager.isSpeaking() || byteArrayChannel != null
     }
 
-    fun isVoicePlaying(): Boolean = !isInPause
+    fun toggleShowCurrentText() {
+        config::ttsShowCurrentText.toggle()
+        _showCurrentText.value = config.ttsShowCurrentText
+    }
+
+    fun toggleShowTranslation() {
+        config::ttsShowTextTranslation.toggle()
+        _showTranslation.value = config.ttsShowTextTranslation
+
+        insertTranslationText(_currentReadingContent.value)
+    }
 
     fun getAvailableLanguages(): List<Locale> = ttsManager.getAvailableLanguages()
 
