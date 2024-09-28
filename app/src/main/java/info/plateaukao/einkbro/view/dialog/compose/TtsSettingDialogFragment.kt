@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.GptVoiceOption
+import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
@@ -58,6 +59,7 @@ import java.util.Locale
 class TtsSettingDialogFragment : ComposeDialogFragment() {
     private val ttsManager: TtsManager by inject()
     private val ttsViewModel: TtsViewModel by activityViewModels()
+    private val translateRepository = TranslateRepository()
 
     override fun setupComposeView() {
         composeView.setContent {
@@ -65,12 +67,11 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                 val ttsType = remember { mutableStateOf(config.ttsType) }
                 val ettsVoice = remember { mutableStateOf(config.ettsVoice) }
                 val gptVoice = remember { mutableStateOf(config.gptVoiceOption) }
+                val ttsSpeedValue = remember { mutableIntStateOf(config.ttsSpeedValue) }
                 val readProgress = ttsViewModel.readProgress.collectAsState()
                 val readingState = ttsViewModel.readingState.collectAsState()
                 val currentReadingContent = ttsViewModel.currentReadingContent.collectAsState()
-                val ttsSpeedValue = remember { mutableIntStateOf(config.ttsSpeedValue) }
-
-                val showReadingContext = remember { mutableStateOf(false) }
+                val showReadingContext = ttsViewModel.showCurrentText.collectAsState()
 
                 Column(
                     modifier = Modifier
@@ -82,7 +83,10 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                             currentReadingContent.value,
                             modifier = Modifier
                                 .defaultMinSize(minHeight = 300.dp)
-                                .padding(vertical = 6.dp),
+                                .padding(vertical = 6.dp)
+                                .clickable {
+                                    ttsViewModel.toggleShowTranslation()
+                                },
                             color = MaterialTheme.colors.onBackground
                         )
                     } else {
@@ -120,7 +124,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         pauseOrResumeAction = ttsViewModel::pauseOrResume,
                         addToReadListAction = this@TtsSettingDialogFragment::readCurrentArticle,
                         dismissAction = ::dismiss,
-                        clickProgressAction = { showReadingContext.value = !showReadingContext.value }
+                        clickProgressAction = { ttsViewModel.toggleShowCurrentText() }
                     )
                 }
             }
