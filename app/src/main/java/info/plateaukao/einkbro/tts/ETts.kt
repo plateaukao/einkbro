@@ -10,7 +10,6 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Arrays
 import java.util.Date
@@ -47,28 +46,12 @@ class ETts {
             if (processedContent.isNullOrBlank()) {
                 continuation.resume(null)
             }
-            val storageFolder = File(storage)
-            if (!storageFolder.exists()) {
-                storageFolder.mkdirs()
-            }
 
             val dateStr = dateToString(Date())
             val reqId = uuid()
             val audioFormat = mkAudioFormat(dateStr, FORMAT)
-            val ssml = mkssml(
-                voice.locale,
-                voice.name,
-                processedContent,
-                "+0Hz",
-                "+${speed - 100}%",
-                "+0%"
-            )
+            val ssml = mkssml(voice.locale, voice.name, processedContent, "+0Hz", "+${speed - 100}%", "+0%")
             val ssmlHeadersPlusData = ssmlHeadersPlusData(reqId, dateStr, ssml)
-
-            val storageFile = File(storage)
-            if (!storageFile.exists()) {
-                storageFile.mkdirs()
-            }
 
             val request = Request.Builder()
                 .url("wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4")

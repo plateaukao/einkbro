@@ -25,6 +25,9 @@ class TtsManager(
 
     private lateinit var tts: TextToSpeech
 
+    private val utterIdToTextMap = mutableMapOf<Int, String>()
+
+
     init {
         GlobalScope.launch {
             delay(1000)
@@ -44,7 +47,7 @@ class TtsManager(
     private var isStopped = false
     suspend fun readText(
         text: String,
-        onProgress: (Int, Int) -> Unit,
+        onProgress: (Int, Int, String) -> Unit,
     ) = suspendCoroutine { cont ->
         isPreparing = true
         isStopped = false
@@ -59,19 +62,25 @@ class TtsManager(
         tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(utteranceId: String) {
                 isPreparing = false
-                onProgress((utteranceId.toInt() - currentUtterId) + 1, chunks.size)
+                onProgress(
+                    (utteranceId.toInt() - currentUtterId) + 1,
+                    chunks.size,
+                    utterIdToTextMap[utteranceId.toInt()] ?: ""
+                )
                 Log.d("TtsManager", "Start speaking $utteranceId")
             }
 
             override fun onDone(utteranceId: String) {
                 if (utteranceId.toInt() == utterId - 1) {
                     Log.d("TtsManager", "complete speaking $utteranceId")
+                    utterIdToTextMap.remove(utteranceId.toInt())
                     cont.resume(Unit)
                 }
                 Log.d("TtsManager", "Done speaking $utteranceId")
             }
 
             override fun onError(utteranceId: String) {
+                utterIdToTextMap.remove(utteranceId.toInt())
                 Log.e("TtsManager", "Error on utterance $utteranceId")
             }
         })
@@ -79,6 +88,7 @@ class TtsManager(
         for (chunk in chunks) {
             if (isStopped) break
 
+            utterIdToTextMap[utterId] = chunk
             if (tts.isSpeaking) {
                 tts.speak(chunk, TextToSpeech.QUEUE_ADD, null, utterId.toString())
             } else {
