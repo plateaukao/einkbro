@@ -99,6 +99,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
                 }
             }
 
+            _currentReadingContent.value = ""
             _speakingState.value = false
             _isReading.value = false
             _readProgress.value = ReadProgress(0, 0, 0)
@@ -132,7 +133,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         _readProgress.value = ReadProgress(index, total, articleLeftCount)
         _currentReadingContent.value = text
 
-        insertTranslationText(text)
+        if (text.isNotEmpty()) insertTranslationText(text)
     }
 
     private val translationSeparator = "\n---\n"
@@ -249,6 +250,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         mediaPlayer.stop()
         mediaPlayer.reset()
 
+        _currentReadingContent.value = ""
 
         _speakingState.value = false
         _isReading.value = false
