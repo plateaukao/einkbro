@@ -74,6 +74,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch {
             while (articlesToBeRead.isNotEmpty()) {
                 val article = articlesToBeRead.removeAt(0)
+                if (article.isEmpty()) continue
 
                 Log.d("TtsViewModel", "readArticle: $article")
                 when (type) {
@@ -113,17 +114,18 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private fun updateReadProgress(
         index: Int = _readProgress.value.index,
         total: Int = _readProgress.value.total,
-        text: String = "",
+        text: String? = null,
         articleLeftCount: Int = articlesToBeRead.size,
     ) {
         _readProgress.value = ReadProgress(index, total, articleLeftCount)
-        _currentReadingContent.value = text
-
-        if (text.isNotEmpty()) insertTranslationText(text)
+        text?.let {
+            _currentReadingContent.value = it
+            maybeInsertTranslationText(text)
+        }
     }
 
     private val translationSeparator = "\n---\n"
-    private fun insertTranslationText(text: String) {
+    private fun maybeInsertTranslationText(text: String) {
         if (config.ttsShowTextTranslation) {
             viewModelScope.launch {
                 val translatedText = translateRepository.gTranslateWithApi(text, config.translationLanguage.value)
@@ -153,14 +155,12 @@ class TtsViewModel : ViewModel(), KoinComponent {
                         openaiRepository.tts(chunk)
                     }
 
-                    if (byteArray != null) {
-                        Log.d("TtsViewModel", "tts sentence send ($index) : $chunk")
-                        byteArrayChannel?.send(ChannelData(byteArray, chunk))
-                        Log.d("TtsViewModel", "tts sentence sent ($index) : $chunk")
-                    }
+                    Log.d("TtsViewModel", "tts sentence send ($index) : $chunk")
+                    if (byteArrayChannel == null) return@launch
+                    byteArrayChannel?.send(ChannelData(byteArray, chunk, index))
+                    Log.d("TtsViewModel", "tts sentence sent ($index) : $chunk")
                 }
             }
-            byteArrayChannel?.close()
         }
 
         var index = 0
@@ -168,15 +168,20 @@ class TtsViewModel : ViewModel(), KoinComponent {
             Log.d("TtsViewModel", "play audio $index")
             val byteArray = channelData.byteArray
             val text = channelData.text
+            val chunkIndex = channelData.chunkIndex
             updateReadProgress(index = index + 1, total = chunks.size, text)
 
-            playAudioByteArray(byteArray)
+            if (byteArray != null) {
+                playAudioByteArray(byteArray)
+            } else {
+                Log.e("TtsViewModel", "byteArray is null for $text")
+            }
+            if (chunkIndex == chunks.size -1) break
+
             index++
-            if (byteArrayChannel?.isClosedForSend == true &&
-                byteArrayChannel?.isEmpty == true
-            ) break
         }
 
+        byteArrayChannel?.close()
         byteArrayChannel = null
     }
 
@@ -250,7 +255,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
     fun toggleShowTranslation() {
         config::ttsShowTextTranslation.toggle()
 
-        insertTranslationText(_currentReadingContent.value)
+        maybeInsertTranslationText(_currentReadingContent.value)
     }
 
     fun getAvailableLanguages(): List<Locale> = ttsManager.getAvailableLanguages()
@@ -310,4 +315,4 @@ data class ReadProgress(val index: Int, val total: Int, val articleLeftCount: In
     }
 }
 
-class ChannelData(val byteArray: ByteArray, val text: String)
+class ChannelData(val byteArray: ByteArray?, val text: String, val chunkIndex: Int)

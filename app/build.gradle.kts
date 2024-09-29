@@ -146,14 +146,14 @@ dependencies {
     // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.8")
 
-    implementation("com.google.accompanist:accompanist-drawablepainter:0.31.0-alpha")
+    implementation(libs.accompanist.drawablepainter)
 
     // reorder lazylist
-    implementation("sh.calvin.reorderable:reorderable:2.3.1")
+    implementation(libs.reorderable)
 
     // okhttp
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.okhttp3:okhttp-sse:4.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.sse)
+    implementation(libs.kotlinx.serialization.json)
 }
 
