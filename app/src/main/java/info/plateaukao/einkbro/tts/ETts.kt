@@ -42,6 +42,8 @@ class ETts {
 
     suspend fun tts(voice: VoiceItem, speed: Int, content: String): ByteArray? =
         suspendCoroutine { continuation ->
+            var isResumed = false
+
             val processedContent = removeIncompatibleCharacters(content)
             if (processedContent.isNullOrBlank()) {
                 continuation.resume(null)
@@ -63,20 +65,28 @@ class ETts {
                     request,
                     object : TTSWebSocketListener() {
                         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                            Log.d("TTSWebSocketListener", "onClosed: $code, $reason")
+                            isResumed = true
                             continuation.resume(byteArray)
                         }
                         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                             super.onFailure(webSocket, t, response)
                             response?.close()
                             Log.d("TTSWebSocketListener", "onFailure: ${t.message}")
-                            continuation.resume(null)
+                            if (isResumed.not()) {
+                                isResumed = true
+                                continuation.resume(null)
+                            }
                         }
                     })
                 client.send(audioFormat)
                 client.send(ssmlHeadersPlusData)
             } catch (e: Throwable) {
                 e.printStackTrace()
-                continuation.resume(null)
+                if (isResumed.not()) {
+                    isResumed = true
+                    continuation.resume(null)
+                }
             }
         }
 
