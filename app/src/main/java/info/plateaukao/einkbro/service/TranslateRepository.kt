@@ -259,7 +259,12 @@ class TranslateRepository : KoinComponent {
         sourceLanguage: String = "auto",
     ): String? {
         if (authKey == null) {
-            authKey = getAuthKey()
+            try {
+                authKey = getAuthKey()
+            } catch (e: Exception) {
+                Log.d("TranslateRepository", "ppTranslate: $e")
+                return ""
+            }
         }
         val key = authKey?.toByteArray(Charsets.UTF_8) ?: return ""
 
@@ -493,6 +498,6 @@ data class Signature(val ts: Long, val msg: String)
 
 data class ImageTranslateResult(
     val imageId: String,
-    val renderedImage: String
+    val renderedImage: String,
 )
 

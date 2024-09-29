@@ -47,9 +47,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val _showCurrentText = MutableStateFlow(config.ttsShowCurrentText)
     val showCurrentText: StateFlow<Boolean> = _showCurrentText.asStateFlow()
 
-    private val _showTranslation = MutableStateFlow(config.ttsShowTextTranslation)
-    val showTranslation: StateFlow<Boolean> = _showTranslation.asStateFlow()
-
     private val openaiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
     private val translateRepository: TranslateRepository by lazy { TranslateRepository() }
@@ -127,7 +124,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private val translationSeparator = "\n---\n"
     private fun insertTranslationText(text: String) {
-        if (_showTranslation.value) {
+        if (config.ttsShowTextTranslation) {
             viewModelScope.launch {
                 val translatedText = translateRepository.gTranslateWithApi(text, config.translationLanguage.value)
                 _currentReadingContent.value = "$text$translationSeparator$translatedText"
@@ -252,7 +249,6 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     fun toggleShowTranslation() {
         config::ttsShowTextTranslation.toggle()
-        _showTranslation.value = config.ttsShowTextTranslation
 
         insertTranslationText(_currentReadingContent.value)
     }

@@ -699,7 +699,10 @@ object HelperUnit {
 }
 
 fun processedTextToChunks(text: String): MutableList<String> {
-    val processedText = text.replace("\\n", " ").replace("\\\"", "").replace("\\t", "").replace("\\", "")
+    val processedText = text.replace("\\n", " ")
+        .replace("\\\"", "")
+        .replace("\\t", "")
+        .replace("\\", "")
     val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
     val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
         if (acc.isEmpty() || (acc.last() + sentence).getWordCount() > 60) {
