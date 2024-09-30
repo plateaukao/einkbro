@@ -24,7 +24,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -92,7 +93,7 @@ private fun RecordItem(
                     .align(Alignment.CenterVertically)
                     .size(30.dp)
                     .padding(end = 5.dp),
-                painter = painterResource(id = R.drawable.icon_bookmark),
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_bookmark),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )
@@ -111,7 +112,7 @@ private fun RecordItem(
                     .align(Alignment.CenterVertically)
                     .size(30.dp)
                     .padding(end = 5.dp),
-                painter = painterResource(id = R.drawable.ic_history),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_history),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )

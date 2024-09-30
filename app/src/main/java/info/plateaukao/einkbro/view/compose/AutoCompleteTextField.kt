@@ -37,10 +37,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -261,7 +262,7 @@ fun TextBarIcon(
             .width(40.dp)
             .clickable { onClick() }
             .padding(8.dp),
-        painter = painterResource(id = iconResId),
+        imageVector = ImageVector.vectorResource(id = iconResId),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
     )
