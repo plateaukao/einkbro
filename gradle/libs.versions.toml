@@ -1,0 +1,22 @@
+[versions]
+accompanistDrawablepainter = "0.31.0-alpha"
+kotlin = "2.0.0"
+foundationAndroid = "1.6.8"
+kotlinxSerializationJson = "1.6.3"
+mediationTestSuite = "3.0.0"
+okhttp = "4.12.0"
+okhttpSse = "4.11.0"
+reorderable = "2.3.3"
+[libraries]
+accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanistDrawablepainter" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+mediation-test-suite = { group = "com.google.android.ads", name = "mediation-test-suite", version.ref = "mediationTestSuite" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-sse = { group = "com.squareup.okhttp3", name = "okhttp-sse", version.ref = "okhttpSse" }
+reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
+
+[plugins]
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

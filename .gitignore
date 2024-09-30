@@ -13,7 +13,6 @@ local.properties
 # Android Studio
 .idea/
 .gradle
-gradle
 build
 *.iml
 app/release
