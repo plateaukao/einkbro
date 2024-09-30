@@ -38,9 +38,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
@@ -65,7 +66,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HighlightsActivity : ComponentActivity()  {
+class HighlightsActivity : ComponentActivity() {
     private val highlightViewModel: HighlightViewModel by viewModels()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
@@ -223,7 +224,7 @@ fun ArticleItem(
                 modifier = Modifier
                     .padding(end = 5.dp)
                     .size(23.dp),
-                painter = painterResource(id = R.drawable.icon_exit),
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_exit),
                 contentDescription = "link",
                 tint = MaterialTheme.colors.onBackground,
             )
@@ -238,7 +239,7 @@ fun ArticleItem(
                 modifier = Modifier
                     .size(23.dp)
                     .clickable { deleteArticle(article) },
-                painter = painterResource(id = R.drawable.icon_delete),
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_delete),
                 contentDescription = "delete",
                 tint = MaterialTheme.colors.onBackground,
             )
@@ -314,7 +315,7 @@ fun HighlightItem(
                     .clickable {
                         ShareUtil.copyToClipboard(context, highlight.content)
                     },
-                painter = painterResource(id = R.drawable.ic_copy),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_copy),
                 contentDescription = "copy",
                 tint = MaterialTheme.colors.onBackground,
             )
@@ -325,7 +326,7 @@ fun HighlightItem(
                     .clickable {
                         deleteHighlight(highlight)
                     },
-                painter = painterResource(id = R.drawable.icon_delete),
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_delete),
                 contentDescription = "delete",
                 tint = MaterialTheme.colors.onBackground,
             )
@@ -359,7 +360,7 @@ fun HighlightsBar(
             IconButton(onClick = onClick) {
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
-                    painter = painterResource(id = R.drawable.icon_export),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_export),
                     contentDescription = ""
                 )
             }

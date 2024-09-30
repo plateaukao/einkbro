@@ -36,9 +36,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -362,7 +363,7 @@ fun BookmarkItem(
         if (shouldShowDragHandle) {
             Icon(
                 modifier = dragModifier.padding(8.dp),
-                painter = painterResource(id = R.drawable.ic_drag),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_drag),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )
@@ -413,7 +414,7 @@ fun ActionIcon(
                 onClick = { action?.invoke() },
                 onLongClick = { longClickAction?.invoke() },
             ),
-        painter = painterResource(id = iconResId),
+        imageVector = ImageVector.vectorResource(id = iconResId),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
     )

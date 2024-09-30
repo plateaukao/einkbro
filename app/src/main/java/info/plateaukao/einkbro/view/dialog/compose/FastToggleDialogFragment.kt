@@ -25,8 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -190,7 +190,7 @@ fun ToggleItem(
 
         if (iconResId > 0) {
             Icon(
-                painter = painterResource(id = iconResId), contentDescription = null,
+                imageVector = ImageVector.vectorResource(id = iconResId), contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
                     .fillMaxHeight(),
@@ -219,7 +219,7 @@ fun ToggleItem(
         )
         if (onEditAction != null) {
             Icon(
-                painter = painterResource(id = R.drawable.icon_edit), contentDescription = null,
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_edit), contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
                     .fillMaxHeight()

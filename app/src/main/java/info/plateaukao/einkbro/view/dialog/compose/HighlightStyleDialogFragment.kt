@@ -19,7 +19,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.preference.HighlightStyle
@@ -81,7 +82,7 @@ private fun HighlightStyleContent(
             ) {
                 Icon(
                     modifier = Modifier.size(30.dp),
-                    painter = painterResource(id = highlightStyle.iconResId),
+                    imageVector = ImageVector.vectorResource(id = highlightStyle.iconResId),
                     contentDescription = null,
                     tint = highlightStyle.color ?: MaterialTheme.colors.onBackground
                 )

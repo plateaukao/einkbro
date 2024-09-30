@@ -44,8 +44,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -229,7 +230,7 @@ private fun CloseButton(
     closeClick: () -> Unit,
 ) {
     Icon(
-        painter = painterResource(id = R.drawable.icon_close),
+        imageVector = ImageVector.vectorResource(id = R.drawable.icon_close),
         contentDescription = "Close Icon",
         tint = MaterialTheme.colors.onBackground,
         modifier = Modifier
@@ -245,7 +246,7 @@ private fun InfoButton(
     iconSize: Dp,
 ) {
     Icon(
-        painter = painterResource(
+        imageVector = ImageVector.vectorResource(
             id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
         ),
         contentDescription = "Info Icon",
@@ -266,7 +267,7 @@ private fun NaverButton(
     translateNaver: () -> Unit,
 ) {
     Icon(
-        painter = painterResource(id = R.drawable.icon_search),
+        imageVector = ImageVector.vectorResource(id = R.drawable.icon_search),
         contentDescription = "Naver dict icon",
         tint = MaterialTheme.colors.onBackground,
         modifier = Modifier
@@ -287,7 +288,7 @@ private fun PapagoButton(
     onTargetLanguageClick: () -> Unit,
 ) {
     Icon(
-        painter = painterResource(id = R.drawable.ic_papago),
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_papago),
         contentDescription = "Papago Translate Icon",
         tint = MaterialTheme.colors.onBackground,
         modifier = Modifier
@@ -309,7 +310,7 @@ private fun GoogleButton(
     onTargetLanguageClick: () -> Unit,
 ) {
     Icon(
-        painter = painterResource(id = R.drawable.ic_translate_google),
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_translate_google),
         contentDescription = "Google Translate",
         tint = MaterialTheme.colors.onBackground,
         modifier = Modifier
@@ -331,7 +332,7 @@ private fun DeepLButton(
     onTargetLanguageClick: () -> Unit,
 ) {
     Icon(
-        painter = painterResource(id = R.drawable.ic_translate),
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_translate),
         contentDescription = "Deepl Translate",
         tint = MaterialTheme.colors.onBackground,
         modifier = Modifier
@@ -352,7 +353,7 @@ private fun CopyButton(
 ) {
     val context = LocalContext.current
     Icon(
-        painter = painterResource(id = R.drawable.ic_copy),
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_copy),
         contentDescription = "Copy text",
         tint = MaterialTheme.colors.onBackground,
         modifier = Modifier

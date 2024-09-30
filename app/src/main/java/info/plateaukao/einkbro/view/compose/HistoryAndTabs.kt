@@ -44,9 +44,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -356,7 +357,7 @@ private fun TabItem(
                 modifier = Modifier
                     .size(36.dp)
                     .padding(end = 5.dp),
-                painter = painterResource(id = R.drawable.ic_translate),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_translate),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )
@@ -374,7 +375,7 @@ private fun TabItem(
                 modifier = Modifier
                     .size(36.dp)
                     .padding(end = 5.dp),
-                painter = painterResource(id = R.drawable.ic_earth),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_earth),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )
@@ -472,7 +473,7 @@ fun ButtonIcon(
                 onLongClick = onLongClick
             )
             .padding(12.dp),
-        painter = painterResource(id = iconResId),
+        imageVector = ImageVector.vectorResource(id = iconResId),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
     )
