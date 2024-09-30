@@ -139,7 +139,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
-            TRANSLATE_API.GPT -> queryGpt()
+            TRANSLATE_API.LLM -> queryLlm()
             TRANSLATE_API.DEEPL -> callDeepLTranslate()
         }
     }
@@ -155,7 +155,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     fun setupGptAction(gptAction: ChatGPTActionInfo) {
-        updateTranslateMethod(TRANSLATE_API.GPT)
+        updateTranslateMethod(TRANSLATE_API.LLM)
         gptActionInfo = gptAction
     }
 
@@ -204,7 +204,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             val targetLanguage = when (config.translationLanguage) {
                 TranslationLanguage.ZH_TW,
                 TranslationLanguage.ZH_CN,
-                -> "zh"
+                    -> "zh"
 
                 else -> config.translationLanguage.value
             }
@@ -273,7 +273,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     suspend fun saveTranslationResult() {
-        if (_translateMethod.value != TRANSLATE_API.GPT) {
+        if (_translateMethod.value != TRANSLATE_API.LLM) {
             bookmarkManager.addChatGptQuery(
                 ChatGptQuery(
                     date = System.currentTimeMillis(),
@@ -307,12 +307,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
 
-    private fun queryGpt() {
+    private fun queryLlm() {
         if (!this::openAiRepository.isInitialized) {
             openAiRepository = OpenAiRepository()
         }
 
-        _translateMethod.value = TRANSLATE_API.GPT
+        _translateMethod.value = TRANSLATE_API.LLM
         config.gptActionForExternalSearch = gptActionInfo
 
         val messages = mutableListOf<ChatMessage>()
@@ -324,29 +324,34 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         messages.add("$promptPrefix$selectedText".toUserMessage())
 
         viewModelScope.launch(Dispatchers.IO) {
-            when (gptActionInfo.actionType) {
-                GptActionType.OpenAi -> queryOpenAi(messages)
-                GptActionType.Gemini -> queryGemini(messages)
-                GptActionType.SelfHosted,
-                GptActionType.Default,
-                -> { // Default
-                    if (config.useGeminiApi && config.geminiApiKey.isNotBlank()) {
-                        queryGemini(messages)
-                    } else {
-                        queryOpenAi(messages)
-                    }
-                }
-            }
+            // need to preprocess gptActionInfo so that it does not have default type
+            queryLlm(messages, getExactActionInfo(gptActionInfo))
         }
     }
 
-    private suspend fun queryOpenAi(messages: MutableList<ChatMessage>) {
+    private fun getExactActionInfo(gptActionInfo: ChatGPTActionInfo): ChatGPTActionInfo =
+        if (gptActionInfo.actionType == GptActionType.Default) {
+            ChatGPTActionInfo(
+                actionType = config.getDefaultActionType(),
+                model = config.getDefaultActionModel(),
+                name = gptActionInfo.name,
+                userMessage = gptActionInfo.userMessage,
+                systemMessage = gptActionInfo.systemMessage
+            )
+        } else gptActionInfo
+
+    private suspend fun queryLlm(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
         if (config.enableOpenAiStream) {
-            queryWithStream(messages, GptActionType.OpenAi)
+            queryWithStream(messages, gptActionInfo)
             return
         }
 
-        val chatCompletion = openAiRepository.chatCompletion(messages)
+        if (gptActionInfo.actionType == GptActionType.Gemini) {
+            queryGemini(messages, gptActionInfo)
+            return
+        }
+
+        val chatCompletion = openAiRepository.chatCompletion(messages, gptActionInfo)
         if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
             _responseMessage.value = AnnotatedString("Something went wrong.")
             return
@@ -359,25 +364,17 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private suspend fun queryGemini(messages: MutableList<ChatMessage>) {
-        if (config.enableOpenAiStream) {
-            queryWithStream(messages, GptActionType.Gemini)
-            return
-        }
-
-        val result = openAiRepository.queryGemini(
-            messages,
-            apiKey = config.geminiApiKey
-        )
+    private suspend fun queryGemini(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
+        val result = openAiRepository.queryGemini(messages, gptActionInfo)
         toBeSavedResponseString = result
         _responseMessage.value = AnnotatedString(result)
     }
 
-    private fun queryWithStream(messages: MutableList<ChatMessage>, gptActionType: GptActionType) {
+    private fun queryWithStream(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
         var responseString = ""
         openAiRepository.chatStream(
             messages,
-            gptActionType,
+            gptActionInfo,
             appendResponseAction = {
                 if (_responseMessage.value.text == "...") {
                     responseString = it
@@ -503,7 +500,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO, NAVER, GPT, DEEPL
+    GOOGLE, PAPAGO, NAVER, LLM, DEEPL
 }
 
 private fun String.unescape(): String {
