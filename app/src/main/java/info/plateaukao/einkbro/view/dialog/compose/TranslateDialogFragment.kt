@@ -389,7 +389,7 @@ private fun GptRow(
             val gptClicked = remember {
                 {
                     translationViewModel.gptActionInfo = gptActionInfo
-                    translationViewModel.translate(TRANSLATE_API.GPT)
+                    translationViewModel.translate(TRANSLATE_API.LLM)
                 }
             }
             val gptLongClicked =
