@@ -326,7 +326,7 @@ fun BookmarkList(
                                     interactionSource = interactionSource,
                                     indication = null,
                                     onClick = { onBookmarkClick(bookmark) },
-                                    onLongClick = { onBookmarkLongClick?.invoke(bookmark) },
+                                    onLongClick = { onBookmarkLongClick(bookmark) },
                                 )
                             }
                         ),
@@ -350,7 +350,7 @@ fun BookmarkItem(
     dragModifier: Modifier = Modifier,
     iconClick: () -> Unit,
 ) {
-    val borderWidth = if (isPressed) 1.dp else -1.dp
+    val borderWidth = if (isPressed) 1.dp else (-1).dp
 
     Row(
         modifier = modifier

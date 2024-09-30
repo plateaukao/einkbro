@@ -123,7 +123,7 @@ private fun ToolbarList(
                 state,
                 key = info.hashCode(),
             ) { isDragging ->
-                val borderWidth = if (isDragging) 1.5.dp else -1.dp
+                val borderWidth = if (isDragging) 1.5.dp else (-1).dp
                 Column(
                     modifier = Modifier
                         .border(
