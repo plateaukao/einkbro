@@ -22,7 +22,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.outlined.FastForward
+import androidx.compose.material.icons.outlined.SkipNext
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -418,7 +418,7 @@ fun TtsDialogButtonBar(
                         modifier = Modifier.wrapContentWidth()
                     ) {
                         Icon(
-                            Icons.Outlined.FastForward,
+                            Icons.Outlined.SkipNext,
                             "Next Article",
                             tint = MaterialTheme.colors.onBackground
                         )
