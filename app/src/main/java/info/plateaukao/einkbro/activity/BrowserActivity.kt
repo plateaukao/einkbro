@@ -973,7 +973,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onDestroy() {
-        ttsViewModel.stop()
+        ttsViewModel.reset()
 
         updateSavedAlbumInfo()
 

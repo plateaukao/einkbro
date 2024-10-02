@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.outlined.FastForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -120,7 +121,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         readProgress = readProgress.value.toString(),
                         nextArticleAction = ttsViewModel::nextArticle,
                         gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
-                        stopAction = ttsViewModel::stop,
+                        stopAction = ttsViewModel::reset,
                         pauseOrResumeAction = ttsViewModel::pauseOrResume,
                         addToReadListAction = this@TtsSettingDialogFragment::readCurrentArticle,
                         dismissAction = ::dismiss,
@@ -411,18 +412,18 @@ fun TtsDialogButtonBar(
                         )
                     }
                 }
-//                if (showNextButton) {
-//                    IconButton(
-//                        onClick = nextArticleAction,
-//                        modifier = Modifier.wrapContentWidth()
-//                    ) {
-//                        Icon(
-//                            Icons.Outlined.FastForward,
-//                            "Next Article",
-//                            tint = MaterialTheme.colors.onBackground
-//                        )
-//                    }
-//                }
+                if (showNextButton) {
+                    IconButton(
+                        onClick = nextArticleAction,
+                        modifier = Modifier.wrapContentWidth()
+                    ) {
+                        Icon(
+                            Icons.Outlined.FastForward,
+                            "Next Article",
+                            tint = MaterialTheme.colors.onBackground
+                        )
+                    }
+                }
                 IconButton(
                     onClick = stopAction,
                     modifier = Modifier.wrapContentWidth()
