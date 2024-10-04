@@ -66,7 +66,7 @@
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
     <string name="setting_title_font_size">Font size</string>
-    <string name="setting_summary_font_size">Change font size for displaying websites.</string>
+    <string name="setting_summary_font_size">Change font size for displaying websites</string>
 
 
     <string name="setting_title_remote">Remote content</string>
@@ -108,7 +108,7 @@
         need this enabled.</string>
 
     <string name="setting_title_history">History</string>
-    <string name="setting_summary_history">Save the history of visited websites.</string>
+    <string name="setting_summary_history">Save the history of visited websites</string>
     <string name="save_history_mode_save_when_open">Save when opening</string> <!-- When opening tab or EinkBro? -->
     <string name="save_history_mode_save_when_close">Save when closing</string>
     <string name="save_history_mode_disabled">Do not save</string>
@@ -125,7 +125,7 @@
     <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local WebView storage\"</string>
 
     <string name="clear_title_deleteDatabase">Delete database</string>
-    <string name="clear_summary_deleteDatabase">Delete the whole database (start page, bookmarks, history and all whitelists).</string>
+    <string name="clear_summary_deleteDatabase">Delete the whole database (start page, bookmarks, history and all whitelists)</string>
 
 
     <!-- App setting -->
