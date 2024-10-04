@@ -118,7 +118,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
     ) {
         _readProgress.value = ReadProgress(index, total, articleLeftCount)
         text?.let {
-            _currentReadingContent.value = it
+            //_currentReadingContent.value = it
             maybeInsertTranslationText(text)
         }
     }
@@ -133,6 +133,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         } else {
             if (_currentReadingContent.value.contains(translationSeparator)) {
                 _currentReadingContent.value = _currentReadingContent.value.substringBefore(translationSeparator)
+            } else {
+                _currentReadingContent.value = text
             }
         }
     }
@@ -221,9 +223,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
     }
 
     fun reset() {
-        stop()
-
         articlesToBeRead.clear()
+        stop()
         _currentReadingContent.value = ""
         _readingState.value = TtsReadingState.IDLE
     }
@@ -233,6 +234,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
             ttsManager.stopReading()
         } else {
             byteArrayChannel?.cancel()
+            byteArrayChannel?.close()
             byteArrayChannel = null
             mediaPlayer.reset()
         }
