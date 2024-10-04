@@ -148,15 +148,15 @@
     <string name="setting_title_behavior">Behavior</string>
 
     <string name="setting_title_toolbarShow">Toolbar First</string>
-    <string name="setting_summary_toolbarShow">Pressing Back button will make toolbar visible before going back in history.</string>
+    <string name="setting_summary_toolbarShow">Pressing Back button will make toolbar visible before going back in history</string>
 
     <string name="setting_title_nav">Navigation button</string>
     <string name="setting_title_nav_pos">Floating Button Position</string>
-    <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
+    <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed</string>
     <string name="setting_summary_nav_pos_right">Right</string>
     <string name="setting_summary_nav_pos_left">Left</string>
     <string name="setting_summary_nav_pos_center">Center</string>
-    <string name="setting_summary_nav_pos_not_show">Don't Show</string>
+    <string name="setting_summary_nav_pos_not_show">Don\'t Show</string>
     <string name="setting_summary_nav_pos_custom">Custom</string>
 
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? (start page, your bookmarks...)</string>
@@ -167,7 +167,7 @@
     <string name="setting_overView">Overview</string>
 
     <string name="setting_title_saveTabs">Save tabs</string>
-    <string name="setting_summary_saveTabs">Save tabs so they can be opened next time.</string>
+    <string name="setting_summary_saveTabs">Save tabs so they can be opened next time</string>
 
     <!-- Gestures -->
     <string name="setting_gestures">Gestures</string>
@@ -208,7 +208,7 @@
     <string name="setting_summary_export_appData">Export app data (History, Bookmarks)
         and your personal settings.</string>
     <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_import_appData">Import app data by choosing a zip file with previously exported data.</string>
+    <string name="setting_summary_import_appData">Import app data by choosing a zip file with previously exported data</string>
 
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all items here. Will you proceed?</string>
@@ -240,7 +240,7 @@
     <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">Download complete. Open file?</string>
-    <string name="toast_backup">Create data backup? This will overwrite the old backup.</string>
+    <string name="toast_backup">Create data backup? This will overwrite the old backup</string>
 
 
     <!-- Whitelist -->
@@ -300,7 +300,7 @@
     <string name="bottom">Bottom</string>
     <string name="input_url">Input URL</string>
     <string name="setting_title_useUpDown">Use Up/Down Key</string>
-    <string name="setting_summary_useUpDownKey">Use Up/Down key to turn pages. Useful for bluetooth devices.</string>
+    <string name="setting_summary_useUpDownKey">Use Up/Down key to turn pages. Useful for bluetooth devices</string>
     <string name="setting_title_process_text">Custom External Search URL</string>
     <string name="split_screen">Split screen</string>
     <string name="dark_mode">Dark Mode</string>
@@ -324,11 +324,11 @@
     <string name="setting_title_toolbar_top">Toolbar on Top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen.</string>
     <string name="setting_title_vi_binding">Vi key binding</string>
-    <string name="setting_summary_vi_binding">Enable Vi key bindings for faster keyboard navigation.</string>
+    <string name="setting_summary_vi_binding">Enable Vi key bindings for faster keyboard navigation</string>
     <string name="edit_custom_font">Edit Custom Font</string>
-    <string name="cannot_open_file">File can\'t be opened. Please re-open it from file picker.</string>
+    <string name="cannot_open_file">File can\'t be opened. Please re-open it from file picker</string>
     <string name="setting_recent_bookmarks">Show recently used bookmarks</string>
-    <string name="setting_summary_recent_bookmarks">Show recently used bookmarks when opening a new tab.</string>
+    <string name="setting_summary_recent_bookmarks">Show recently used bookmarks when opening a new tab</string>
     <string name="setting_clear_recent_bookmarks">Clear recent bookmark list</string>
     <string name="setting_summary_clear_recent_bookmarks">Clear recently used bookmark list</string>
     <string name="recently_used_bookmarks">Recently Used Bookmarks</string>
@@ -337,7 +337,7 @@
     <string name="menu_receive">Receive data</string>
     <string name="copy_link">Copy link</string>
     <string name="setting_title_background_loading">Load non-active tabs</string>
-    <string name="setting_summary_background_loading">If tab is not activated, still load it's content in background.</string>
+    <string name="setting_summary_background_loading">If tab is not activated, still load it\'s content in background</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
     <string name="setting_title_search">Search</string>
     <string name="dialog_toc_title">Table of Contents</string>
@@ -357,9 +357,9 @@
     <string name="setting_summary_trim_input_url">Remove non-http prefix text in input content</string>
     <string name="no_bookmarks">Long press Bookmarks icon to add some bookmarks</string>
     <string name="always_enable_zoom">Always enable content zooming</string>
-    <string name="setting_summary_enable_zoom">Force some website content to be zoomable.</string>
+    <string name="setting_summary_enable_zoom">Force some website content to be zoomable</string>
     <string name="setting_title_debug">Debug WebView</string>
-    <string name="setting_summary_debug">Enable this option to be able to debug WebView.</string>
+    <string name="setting_summary_debug">Enable this option to be able to debug WebView</string>
     <string name="setting_title_prune_query_parameter">Prune tracking query parameters in URL</string>
     <string name="setting_summary_prune_query_parameter">Query parameters like utm_medium, utm_source, etc. will be removed from URL.</string>
     <string name="setting_title_show_tab_bar">Show tab bar</string>
@@ -372,9 +372,9 @@
     <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Edit Home URL</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
-    <string name="setting_summary_plus_behavior">What should be displayed when adding a new tab.</string>
+    <string name="setting_summary_plus_behavior">What should be displayed when adding a new tab</string>
     <string name="setting_title_translated_langs">Translation Languages for Google Translate</string>
-    <string name="setting_summary_translated_langs">Customize languages for translation (e.g. en, fr, de, zh-TW, zh-CN).</string>
+    <string name="setting_summary_translated_langs">Customize languages for translation (e.g. en, fr, de, zh-TW, zh-CN)</string>
     <string name="menu">Menu</string>
     <string name="copy_text">Copy text</string>
     <string name="menu_tts">Read content</string>
@@ -392,7 +392,7 @@
     <string name="dark_mode_disabled">Disabled</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="setting_title_video_auto_fullscreen">Enable video play in fullscreen</string>
-    <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen.</string>
+    <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen</string>
     <string name="setting_title_video_pip">Show video in small window</string>
     <string name="setting_summary_video_pip">When playing video in fullscreen and leaving, show small window to continue video playback.</string>
     <string name="empty_whitelist_hint">Please click on top right button to add a new domain</string>
@@ -405,7 +405,7 @@
     <string name="setting_title_update_adblock">Update AdBlock content</string>
     <string name="setting_summary_update_adblock">Trigger update AdBlock websites now.</string>
     <string name="setting_title_adblock_url">AdBlock list URL</string>
-    <string name="setting_summary_adblock_url">Edit this URL If you want to use other AdBlock content.</string>
+    <string name="setting_summary_adblock_url">Edit this URL If you want to use other AdBlock content</string>
     <string name="setting_title_adblock_auto_update">Auto Update AdBlock</string>
     <string name="setting_summary_adblock_auto_update">Auto update AdBlock content weekly.</string>
     <string name="toast_adblock_updated">AdBlock is updated!</string>
