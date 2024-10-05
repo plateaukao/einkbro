@@ -519,6 +519,8 @@
     <string name="setting_title_github_snapshot">Обновиться с помощью Snapshot</string>
     <string name="setting_title_use_custom_gpt_url">Использовать альтернативный сервер</string>
     <string name="setting_summary_use_custom_gpt_url">Использовать другой адрес API сервера</string>
+    <string name="setting_title_custom_gpt_url">Пользовательский сервер OpenAI</string>
+    <string name="setting_summary_custom_gpt_url">Вы можете вставить сюда адрес альтернативного сервера OpenAI</string>
     <string name="setting_title_enable_inplace_translate">Переводить параграфы в текущей вкладке</string>
     <string name="setting_summary_enable_inplace_translate">Показывать перевод параграфов в текущей или новой вкладке</string>
     <string name="setting_title_show_bookmarks_input_bar">Показывать закладки при вводе в адресную строку</string>
