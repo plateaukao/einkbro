@@ -306,7 +306,7 @@
     <string name="dark_mode">Тёмный режим</string>
     <string name="setting_summary_dark_mode">Настроить тёмный режим</string>
     <string name="hie_touch_area_when_input">Отключить во время ввода</string> <!-- Typo in variable name -->
-    <string name="switch_touch_area_action">Изменить направления прокрутки</string>
+    <string name="switch_touch_area_action">Изменить направление прокрутки</string>
     <string name="switch_touch_area_action_short">Изм. напр. прокрутки</string>
     <string name="no_previous_page">Предыдущая страница отсутствует!</string>
     <string name="font_custom">Выберите файл шрифта</string>
