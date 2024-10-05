@@ -322,7 +322,7 @@
     <string name="font_type">Тип Шрифта</string>
     <string name="menu_quickToggle">Быстрые опции</string>
     <string name="setting_title_toolbar_top">Переместить панель инструментов наверх</string>
-    <string name="setting_summary_toolbar_top">Перемещает панель интсрументов в верхнюю часть экрана</string>
+    <string name="setting_summary_toolbar_top">Перемещает панель инструментов в верхнюю часть экрана</string>
     <string name="setting_title_vi_binding">Включить сочетания клавиш Vi</string>
     <string name="setting_summary_vi_binding">Включить сочетания клавиш Vi для более быстрой навигации с помощью клавиатуры</string>
     <string name="edit_custom_font">Редактировать пользовательский шрифт</string>
