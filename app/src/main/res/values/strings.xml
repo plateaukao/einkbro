@@ -519,8 +519,8 @@
     <string name="setting_title_github_snapshot">Update with Snapshot</string>
     <string name="setting_title_use_custom_gpt_url">Use Alternative Server</string>
     <string name="setting_summary_use_custom_gpt_url">Use other API server URL</string>
-    <string name="setting_title_custom_gpt_url">Custom Host Url</string>
-    <string name="setting_summary_custom_gpt_url">Input alternative openAI server url</string>
+    <string name="setting_title_custom_gpt_url">Custom Host URL</string>
+    <string name="setting_summary_custom_gpt_url">Input alternative OpenAI server URL</string>
     <string name="setting_title_enable_inplace_translate">Translate paragraphs in current tab</string>
     <string name="setting_summary_enable_inplace_translate">Show paragraph translation in current or new tab</string>
     <string name="setting_title_show_bookmarks_input_bar">Show Bookmarks when editing url</string>
