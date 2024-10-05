@@ -221,7 +221,7 @@ class DialogManager(
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_TEXT
-        intent.putExtra(Intent.EXTRA_TITLE, "bookmark.txt")
+        intent.putExtra(Intent.EXTRA_TITLE, "bookmarks.json")
         activity.startActivityForResult(intent, EXPORT_BOOKMARKS_REQUEST_CODE)
     }
 
