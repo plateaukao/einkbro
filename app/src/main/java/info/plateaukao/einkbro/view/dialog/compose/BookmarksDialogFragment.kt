@@ -29,6 +29,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -363,7 +365,7 @@ fun BookmarkItem(
         if (shouldShowDragHandle) {
             Icon(
                 modifier = dragModifier.padding(8.dp),
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_drag),
+                imageVector = Icons.Outlined.DragHandle,
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )

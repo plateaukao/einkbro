@@ -29,6 +29,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
+import androidx.compose.material.icons.automirrored.outlined.Feed
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
 import androidx.compose.material.icons.automirrored.outlined.Logout
@@ -37,11 +38,13 @@ import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.outlined.AddHome
 import androidx.compose.material.icons.outlined.AddLink
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.BookmarkAdd
-import androidx.compose.material.icons.outlined.BorderColor
 import androidx.compose.material.icons.outlined.CancelPresentation
 import androidx.compose.material.icons.outlined.CopyAll
+import androidx.compose.material.icons.outlined.Copyright
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.FormatSize
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.InstallMobile
@@ -59,6 +62,7 @@ import androidx.compose.material.icons.outlined.TouchApp
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.outlined.ViewColumn
 import androidx.compose.material.icons.outlined.ViewStream
+import androidx.compose.material.icons.twotone.Copyright
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -163,7 +167,7 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            MenuItem(R.string.menu_highlights, 0, Icons.Outlined.BorderColor) {
+            MenuItem(R.string.menu_highlights, 0, Icons.Outlined.EditNote) {
                 onClicked(MenuItemType.Highlights)
             }
             MenuItem(R.string.menu_fav, 0, Icons.Outlined.AddHome) { onClicked(MenuItemType.SetHome) }
@@ -241,15 +245,15 @@ private fun MenuItems(
                     R.string.menu_add_to_pocket,
                     R.drawable.ic_pocket
                 ) { onClicked(AddToPocket) }
-                MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
-                MenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
+                MenuItem(R.string.menu_save_epub, Icons.AutoMirrored.Outlined.Feed) { onClicked(SaveEpub) }
+                MenuItem(R.string.copy_link, Icons.Outlined.CopyAll) { onClicked(CopyLink) }
                 MenuItem(
                     R.string.menu_share_link,
-                    R.drawable.icon_menu_share
+                    Icons.Outlined.Share
                 ) { onClicked(ShareLink) }
                 MenuItem(
                     R.string.menu_expand_menu,
-                    R.drawable.icon_arrow_right_gest,
+                    Icons.AutoMirrored.Outlined.KeyboardArrowRight
                 ) { currentShowShare = true; toggleShareSaveMenu() }
             }
         }
@@ -319,7 +323,7 @@ private fun MenuItems(
                     if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
                 MenuItem(R.string.white_background, whiteRes) { onClicked(MenuItemType.WhiteBknd) }
                 val blackRes =
-                    if (blackFont) R.drawable.ic_black_font_on else R.drawable.ic_black_font_off
+                    if (blackFont) Icons.Outlined.Copyright else Icons.TwoTone.Copyright
                 MenuItem(R.string.black_font, blackRes) { onClicked(MenuItemType.BlackFont) }
                 val boldRes =
                     if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
@@ -493,8 +497,8 @@ fun MenuItem(
 private fun PreviewItem() {
     MyTheme {
         Column {
-            MenuItem(R.string.title_appData, R.drawable.ic_copy, showIcon = false) {}
-            MenuItem(R.string.title, R.drawable.ic_location) {}
+            MenuItem(R.string.title_appData, Icons.Outlined.Backup, showIcon = false) {}
+            MenuItem(R.string.title, 0, Icons.Outlined.Translate) {}
         }
     }
 }

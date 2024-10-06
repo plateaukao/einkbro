@@ -20,6 +20,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +34,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import sh.calvin.reorderable.ReorderableItem
@@ -167,7 +168,7 @@ fun ToolbarToggleItem(
         }
         Icon(
             modifier = modifier.padding(4.dp),
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_drag), contentDescription = null,
+            imageVector = Icons.Outlined.DragHandle, contentDescription = null,
             tint = MaterialTheme.colors.onBackground
         )
     }

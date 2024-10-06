@@ -8,7 +8,7 @@ import info.plateaukao.einkbro.preference.PaperSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class PrinterDocumentPaperSizeDialog(val context: Context): KoinComponent {
+class PrinterDocumentPaperSizeDialog(val context: Context) : KoinComponent {
     private val config: ConfigManager by inject()
 
     fun show() {
