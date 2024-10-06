@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
@@ -97,6 +98,7 @@ private fun ActionModeMenu(
             ActionMenuItem(
                 info.title,
                 if (showIcons) info.drawable else null,
+                if (showIcons) info.imageVector else null,
                 onClicked = {
                     info.action?.invoke()
                     if (info.closeMenu) onClicked(info.intent)
@@ -114,6 +116,7 @@ private fun ActionModeMenu(
 fun ActionMenuItem(
     title: String,
     iconDrawable: Drawable?,
+    imageVector: ImageVector? = null,
     onClicked: () -> Unit = {},
     onLongClicked: () -> Unit = {},
 ) {
@@ -127,7 +130,7 @@ fun ActionMenuItem(
         else -> 45.dp
     }
 
-    val fontSize = if (iconDrawable == null) 12.sp else
+    val fontSize = if (iconDrawable == null && imageVector == null) 12.sp else
         if (configuration.screenWidthDp > 500) 10.sp else 8.sp
     Column(
         modifier = Modifier
@@ -147,6 +150,15 @@ fun ActionMenuItem(
         if (iconDrawable != null) {
             Image(
                 painter = rememberDrawablePainter(drawable = iconDrawable),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(44.dp)
+                    .padding(horizontal = 6.dp),
+            )
+        }
+        if (imageVector != null) {
+            Image(
+                imageVector = imageVector,
                 contentDescription = null,
                 modifier = Modifier
                     .size(44.dp)
@@ -177,6 +189,7 @@ fun PreviewActionMenuItem() {
         ActionMenuItem(
             title = "Title",
             iconDrawable = null,
+            imageVector = null,
             onClicked = {},
             onLongClicked = {},
         )

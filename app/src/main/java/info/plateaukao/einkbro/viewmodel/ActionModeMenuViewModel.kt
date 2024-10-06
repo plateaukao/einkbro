@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
 import android.view.ActionMode
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
@@ -212,7 +214,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             MenuInfo(
                 context.getString(R.string.highlight),
-                drawable = ContextCompat.getDrawable(context, R.drawable.ic_highlight),
+                imageVector = Icons.Outlined.EditNote,
                 action = {
                     _actionModeMenuState.value =
                         ActionModeMenuState.HighlightText(configManager.highlightStyle)
