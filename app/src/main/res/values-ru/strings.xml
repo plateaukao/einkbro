@@ -13,7 +13,7 @@
     <string name="main_menu_new_tab">Новая фоновая вкладка</string>
     <string name="main_menu_new_tabOpen">Новая вкладка</string>
     <string name="main_omnibox_input_hint">Поиск или ввод URL-адреса</string>
-    <string name="menu_open_with">Открыть в...</string>
+    <string name="menu_open_with">Открыть в…</string>
 
     <string name="menu_quit">Выход</string>
     <string name="menu_openFav">Открыть Избранное</string>
@@ -159,7 +159,7 @@
     <string name="setting_summary_nav_pos_not_show">Не показывать</string>
     <string name="setting_summary_nav_pos_custom">Настроить</string>
 
-    <string name="setting_summary_tab">Что должно отображаться при запуске \"Обзора\"? (стартовая страница, закладки...)</string>
+    <string name="setting_summary_tab">Что должно отображаться при запуске \"Обзора\"? (стартовая страница, закладки…)</string>
 
     <string name="setting_title_confirm_tab_close">Подтверждать закрытие вкладки</string>
     <string name="setting_summary_confirm_tab_close">Показывать ли диалоговое окно при закрытии вкладки</string>
@@ -234,7 +234,7 @@
 
     <string name="toast_start_download">Начало загрузки</string>
     <string name="toast_wait_a_minute">Подождите немного, пожалуйста</string>
-    <string name="toast_error">Упс, что-то пошло не так...</string>
+    <string name="toast_error">Упс, что-то пошло не так…</string>
     <string name="toast_edit_successful">Успешно сохранено!</string>
     <string name="toast_webview_forward">Не удается загрузить следующий сайт</string>
     <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить EinkBro. Закрыть сейчас?</string>
@@ -440,7 +440,7 @@
     <string name="google_translate">Google Переводчик</string>
     <string name="translate_by_paragraph">Translate by Paragraph</string>
     <string name="onyx">Onyx</string>
-    <string name="translate_processing">Обработка...</string>
+    <string name="translate_processing">Обработка…</string>
     <string name="translation_language">Язык перевода</string>
     <string name="misc">Разное</string>
     <string name="translate_papago">Секретный API-Ключ Naver Papago</string>
@@ -566,7 +566,7 @@
     <string name="setting_tts_type">Движок TTS</string>
     <string name="setting_tts_voice">Голос</string>
     <string name="system_settings">Системные настройки</string>
-    <string name="other_voices">Другие голоса...</string>
+    <string name="other_voices">Другие голоса…</string>
     <string name="close">Закрыть</string>
     <string name="added_to_read_list">Добавлено в список для чтения</string>
     <string name="tts_type_gpt">OpenAI</string>
