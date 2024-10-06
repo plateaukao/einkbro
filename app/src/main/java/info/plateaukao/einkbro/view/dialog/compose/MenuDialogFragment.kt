@@ -8,6 +8,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -466,17 +467,24 @@ fun MenuItem(
                 )
             }
         }
-        Text(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = if (showIcon) (-5).dp else 0.dp),
-            text = stringResource(id = titleResId),
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            lineHeight = if (!showIcon) 20.sp else 12.sp,
-            fontSize = fontSize,
-            color = MaterialTheme.colors.onBackground
-        )
+                .height(40.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(y = if (showIcon) (-5).dp else 10.dp),
+                text = stringResource(id = titleResId),
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                lineHeight = if (!showIcon) 20.sp else 12.sp,
+                fontSize = fontSize,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
     }
 }
 
