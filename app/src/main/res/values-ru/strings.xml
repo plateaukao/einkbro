@@ -402,13 +402,6 @@
     <string name="google_full_page">Google: Вся страница</string>
     <string name="papago_dual_pane">Papago: В Режиме Разделённой Панели</string>
     <string name="google_in_place">Google: На Месте</string>
-    <string name="setting_title_update_AdBlock">Обновить конфигурацию AdBlock</string>
-    <string name="setting_summary_update_AdBlock">Запустить обновление сайтов AdBlock</string>
-    <string name="setting_title_AdBlock_url">URL списка AdBlock</string>
-    <string name="setting_summary_AdBlock_URL">Если вы хотите использовать другую конфигурацию AdBlock, отредактируйте данный URL</string>
-    <string name="setting_title_AdBlock_auto_update">Автообновление AdBlock</string>
-    <string name="setting_summary_AdBlock_auto_update">Автоматически обновлять конфигурацию AdBlock каждую неделю</string>
-    <string name="toast_AdBlock_updated">AdBlock обновлён!</string>
     <string name="toast_backup_successful">Резервная копия успешно создана!</string>
     <string name="setting_title_enable_ssl_error_dialog">Показывать окно ошибок SSL</string>
     <string name="setting_summary_enable_ssl_error_dialog">Показывать окно ошибки, когда что-то идёт не так с SSL</string>

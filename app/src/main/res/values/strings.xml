@@ -156,7 +156,7 @@
     <string name="setting_summary_nav_pos_right">Right</string>
     <string name="setting_summary_nav_pos_left">Left</string>
     <string name="setting_summary_nav_pos_center">Center</string>
-    <string name="setting_summary_nav_pos_not_show">Don't Show</string>
+    <string name="setting_summary_nav_pos_not_show">Don\'t Show</string>
     <string name="setting_summary_nav_pos_custom">Custom</string>
 
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? (start page, your bookmarks...)</string>
@@ -337,7 +337,7 @@
     <string name="menu_receive">Receive data</string>
     <string name="copy_link">Copy link</string>
     <string name="setting_title_background_loading">Load non-active tabs</string>
-    <string name="setting_summary_background_loading">If tab is not activated, still load it's content in background</string>
+    <string name="setting_summary_background_loading">If tab is not activated, still load it\'s content in background</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
     <string name="setting_title_search">Search</string>
     <string name="dialog_toc_title">Table of Contents</string>

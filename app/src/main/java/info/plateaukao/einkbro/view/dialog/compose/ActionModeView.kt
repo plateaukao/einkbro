@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -166,5 +167,18 @@ fun ActionMenuItem(
                 color = MaterialTheme.colors.onBackground
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewActionMenuItem() {
+    MyTheme {
+        ActionMenuItem(
+            title = "Title",
+            iconDrawable = null,
+            onClicked = {},
+            onLongClicked = {},
+        )
     }
 }
