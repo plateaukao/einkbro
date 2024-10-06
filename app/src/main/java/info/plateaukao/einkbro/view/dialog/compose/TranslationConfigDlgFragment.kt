@@ -77,7 +77,6 @@ fun TranslationConfigScreen(
         ToggleItem(
             state = shouldTranslateThisSite,
             titleResId = R.string.translate_this_site,
-            iconResId = -1
         ) {
             toggleTranslateThisSite()
         }

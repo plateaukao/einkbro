@@ -155,32 +155,26 @@ fun TouchAreaContent(
         ToggleItem(
             state = showHint,
             titleResId = R.string.show_touch_area_hint,
-            iconResId = -1,
             onClicked = { onShowHintClick() })
         ToggleItem(
             state = hideTouchWhenType,
             titleResId = R.string.hie_touch_area_when_input,
-            iconResId = -1,
             onClicked = { onHideWhenTypeClick() })
         ToggleItem(
             state = switchTouchArea,
             titleResId = R.string.switch_touch_area_action,
-            iconResId = -1,
             onClicked = { onSwitchAreaClick() })
         ToggleItem(
             state = enableTouchAreaAsArrowKey,
             titleResId = R.string.enable_touch_area_as_arrow_key,
-            iconResId = -1,
             onClicked = { onAsArrowKeyClick() })
         ToggleItem(
             state = shouldSendPageKey,
             titleResId = R.string.enable_touch_area_as_page_key,
-            iconResId = -1,
             onClicked = { onAsPageKeyClick() })
         ToggleItem(
             state = tryFixScroll,
             titleResId = R.string.enable_fix_scroll,
-            iconResId = -1,
             onClicked = { onTryFixScrollClick() })
 
         Spacer(modifier = Modifier.height(10.dp))
