@@ -17,6 +17,15 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.Cookie
+import androidx.compose.material.icons.outlined.DesktopWindows
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.MusicNote
+import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,14 +65,15 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
     Column(modifier = Modifier.width(IntrinsicSize.Max)) {
         ToggleItem(
             state = config.isIncognitoMode,
-            titleResId = R.string.setting_title_incognito, iconResId = R.drawable.ic_incognito
+            titleResId = R.string.setting_title_incognito,
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_incognito)
         ) {
             config::isIncognitoMode.toggle()
             onClicked(true)
         }
         ToggleItem(
             state = config.adBlock,
-            titleResId = R.string.setting_title_adblock, iconResId = R.drawable.ic_block,
+            titleResId = R.string.setting_title_adblock, imageVector = Icons.Outlined.Block,
             onEditAction = {
                 context.startActivity(
                     DataListActivity.createIntent(
@@ -78,7 +88,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
         }
         ToggleItem(
             state = config.enableJavascript,
-            titleResId = R.string.setting_title_javascript, iconResId = R.drawable.icon_java,
+            titleResId = R.string.setting_title_javascript, imageVector = Icons.Outlined.Terminal,
             onEditAction = {
                 context.startActivity(
                     DataListActivity.createIntent(
@@ -93,7 +103,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
         }
         ToggleItem(
             state = config.cookies,
-            titleResId = R.string.setting_title_cookie, iconResId = R.drawable.icon_cookie,
+            titleResId = R.string.setting_title_cookie, imageVector = Icons.Outlined.Cookie,
             onEditAction = {
                 context.startActivity(DataListActivity.createIntent(context, WhiteListType.Cookie))
             }
@@ -103,7 +113,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
         }
         ToggleItem(
             state = config.isSaveHistoryOn(),
-            titleResId = R.string.history, iconResId = R.drawable.ic_history
+            titleResId = R.string.history, imageVector = Icons.Outlined.AccessTime
         ) { on ->
             if (on) {
                 config.saveHistoryMode = config.toggledSaveHistoryMode
@@ -118,28 +128,28 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
 
         ToggleItem(
             state = config.shareLocation,
-            titleResId = R.string.location, iconResId = R.drawable.ic_location
+            titleResId = R.string.location, imageVector = Icons.Outlined.LocationOn
         ) {
             config::shareLocation.toggle()
             onClicked(false)
         }
         ToggleItem(
             state = config.volumePageTurn,
-            titleResId = R.string.volume_page_turn, iconResId = R.drawable.ic_volume
+            titleResId = R.string.volume_page_turn, imageVector = Icons.AutoMirrored.Outlined.VolumeUp
         ) {
             config::volumePageTurn.toggle()
             onClicked(false)
         }
         ToggleItem(
             state = config.continueMedia,
-            titleResId = R.string.media_continue, iconResId = R.drawable.ic_media_continue
+            titleResId = R.string.media_continue, imageVector = Icons.Outlined.MusicNote
         ) {
             config::continueMedia.toggle()
             onClicked(false)
         }
         ToggleItem(
             state = config.desktop,
-            titleResId = R.string.desktop_mode, iconResId = R.drawable.icon_desktop
+            titleResId = R.string.desktop_mode, imageVector = Icons.Outlined.DesktopWindows
         ) {
             config::desktop.toggle()
             onClicked(false)
@@ -151,7 +161,6 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
 fun ToggleItem(
     state: Boolean,
     titleResId: Int,
-    iconResId: Int,
     imageVector: ImageVector? = null,
     isEnabled: Boolean = true,
     onEditAction: (() -> Unit)? = null,
@@ -187,16 +196,6 @@ fun ToggleItem(
                 }
             }
         )
-
-        if (iconResId > 0) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = iconResId), contentDescription = null,
-                modifier = Modifier
-                    .padding(horizontal = 6.dp)
-                    .fillMaxHeight(),
-                tint = MaterialTheme.colors.onBackground
-            )
-        }
         if (imageVector != null) {
             Icon(
                 imageVector = imageVector, contentDescription = null,
@@ -234,7 +233,7 @@ fun ToggleItem(
 @Composable
 private fun PreviewItem() {
     MyTheme {
-        ToggleItem(true, R.string.title, R.drawable.ic_location, onEditAction = {}) {}
+        ToggleItem(true, R.string.title, Icons.Outlined.LocationOn, onEditAction = {}) {}
     }
 }
 
