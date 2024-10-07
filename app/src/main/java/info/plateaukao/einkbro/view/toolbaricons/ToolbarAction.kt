@@ -162,14 +162,14 @@ enum class ToolbarAction(
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
         val defaultActionsForPhone: List<ToolbarAction> = listOf(
+            NewTab,
+            Touch,
+            ReaderMode,
+            Refresh,
+            Back,
             Bookmark,
             TabCount,
             InputUrl,
-            NewTab,
-            Back,
-            Refresh,
-            Touch,
-            ReaderMode,
             Settings,
         )
         val defaultActions: List<ToolbarAction> = listOf(
