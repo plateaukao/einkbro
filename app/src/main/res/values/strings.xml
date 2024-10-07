@@ -159,7 +159,7 @@
     <string name="setting_summary_nav_pos_not_show">Don\'t Show</string>
     <string name="setting_summary_nav_pos_custom">Custom</string>
 
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? (start page, your bookmarks...)</string>
+    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? (start page, your bookmarks…)</string>
 
     <string name="setting_title_confirm_tab_close">Confirm tab close</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab</string>
@@ -234,7 +234,7 @@
 
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">Please wait for a moment</string>
-    <string name="toast_error">Oops, something went wrong...</string>
+    <string name="toast_error">Oops, something went wrong…</string>
     <string name="toast_edit_successful">Successfully saved!</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
@@ -447,7 +447,7 @@
     <string name="google_translate">Google Translate</string>
     <string name="translate_by_paragraph">Translate by Paragraph</string>
     <string name="onyx">Onyx</string>
-    <string name="translate_processing">Processing...</string>
+    <string name="translate_processing">Processing…</string>
     <string name="translation_language">Translation Language</string>
     <string name="misc">Misc</string>
     <string name="translate_papago">Naver Papago API Secret</string>
@@ -574,7 +574,7 @@
     <string name="setting_tts_type">Text-to-Speech Engine</string>
     <string name="setting_tts_voice">Voice</string>
     <string name="system_settings">System Settings</string>
-    <string name="other_voices">Other Voices...</string>
+    <string name="other_voices">Other Voices…</string>
     <string name="close">Close</string>
     <string name="added_to_read_list">Added to read list</string>
     <string name="tts_type_gpt">OpenAI</string>
