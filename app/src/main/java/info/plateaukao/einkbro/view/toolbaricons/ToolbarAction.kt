@@ -174,13 +174,13 @@ enum class ToolbarAction(
         )
         val defaultActions: List<ToolbarAction> = listOf(
             Title,
-            Bookmark,
-            TabCount,
             NewTab,
-            Back,
-            Refresh,
             Touch,
             ReaderMode,
+            Refresh,
+            Back,
+            Bookmark,
+            TabCount,
             Settings,
         )
     }
