@@ -16,13 +16,13 @@
     <string name="menu_open_with">Open link with…</string>
 
     <string name="menu_quit">Quit</string>
-    <string name="menu_openFav">Open Homepage</string>
+    <string name="menu_openFav">Open homepage</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Downloads</string>
-    <string name="menu_fav">Save as Homepage</string>
+    <string name="menu_fav">Save as homepage</string>
     <string name="menu_sc">Shortcut on home screen</string>
 
     <string name="menu_share_link">Share link</string>
@@ -50,7 +50,7 @@
     <string name="setting_title_clear_control">Data Control</string>
     <string name="setting_title_start_control">Start Control</string>
 
-    <string name="setting_title_search_engine">Search Engine</string>
+    <string name="setting_title_search_engine">Search engine</string>
     <string name="setting_summary_search_engine">Choose a search engine</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
@@ -94,7 +94,7 @@
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
         loading and displaying images and more) but it can also be used for attacks</string>
-    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
+    <string name="setting_title_whitelistJS">JavaScript Whitelist</string>
     <string name="setting_summary_whitelistJS">If you disabled JavaScript you can use this whitelist to allow sites you
         trust to use JavaScript</string>
 
@@ -122,7 +122,7 @@
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>
     <string name="clear_title_history">Clear History</string>
-    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local WebView storage\"</string>
+    <string name="clear_title_indexedDB">Clear \"Indexed Databases\" and \"Local WebView Storage\"</string>
 
     <string name="clear_title_deleteDatabase">Delete database</string>
     <string name="clear_summary_deleteDatabase">Delete the whole database (start page, bookmarks, history and all whitelists)</string>
@@ -147,16 +147,16 @@
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Behavior</string>
 
-    <string name="setting_title_toolbarShow">Toolbar First</string>
+    <string name="setting_title_toolbarShow">Toolbar first</string>
     <string name="setting_summary_toolbarShow">Pressing Back button will make toolbar visible before going back in history</string>
 
     <string name="setting_title_nav">Navigation button</string>
-    <string name="setting_title_nav_pos">Floating Button Position</string>
+    <string name="setting_title_nav_pos">Floating Button position</string>
     <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed</string>
     <string name="setting_summary_nav_pos_right">Right</string>
     <string name="setting_summary_nav_pos_left">Left</string>
     <string name="setting_summary_nav_pos_center">Center</string>
-    <string name="setting_summary_nav_pos_not_show">Don\'t Show</string>
+    <string name="setting_summary_nav_pos_not_show">Don\'t show</string>
     <string name="setting_summary_nav_pos_custom">Custom</string>
 
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? (start page, your bookmarks…)</string>
@@ -175,7 +175,7 @@
     <string name="setting_gestures_use_title">Use gestures on floating button</string>
     <string name="setting_gestures_use_summary">Swipe on \"floating button\" to execute actions</string>
     
-    <string name="setting_multitouch_use_title">Use two finger swipe</string>
+    <string name="setting_multitouch_use_title">Two finger swipe gestures</string>
     <string name="setting_multitouch_use_summary">Use two finger swipe on web content to trigger actions</string>
     <string name="setting_title_two_finger_swipe">Two finger swipe</string>
 
@@ -251,7 +251,7 @@
     <string name="setting_summary_desktop">Support desktop mode of website</string>
     <string name="history">History</string>
     <string name="location">Location</string>
-    <string name="media_continue">Background Play</string>
+    <string name="media_continue">Background play</string>
     <string name="show_touch_area_hint">Show Touch Area border</string>
     <string name="touch_left_side">Left</string>
     <string name="touch_right_side">Right</string>
@@ -259,10 +259,10 @@
     <string name="white_background">White background</string>
     <string name="setting_summary_bold_font">Apply bold font style (need to reload current page)</string>
     <string name="desktop_mode">Desktop mode</string>
-    <string name="setting_title_page_left_value">Page Reserved Height</string>
+    <string name="setting_title_page_left_value">Page reserved height</string>
     <string name="setting_summary_page_left_value">How much height should be reserved when turning to next page(e.g., 50, or 10%)</string>
     <string name="setting_title_pdf_paper_size">Printed PDF paper size</string>
-    <string name="vertical_read">Vertical</string>
+    <string name="vertical_read">Vertical mode</string>
     <string name="reader_mode">Reader mode</string>
     <string name="touch_area_setting">Touch setting</string>
     <string name="toolbar_setting">Toolbar setting</string>
@@ -274,17 +274,17 @@
     <string name="title_in_toc">Chapter name in Table of Contents</string>
     <string name="book_name">Book Name</string>
     <string name="book_name_description">Input the book name</string>
-    <string name="volume_page_turn">Volume Key</string>
+    <string name="volume_page_turn">Volume key</string>
     <string name="folder_name">Bookmark folder name</string>
     <string name="folder_name_description">Insert Bookmark folder name</string>
     <string name="setting_title_export_bookmarks">Export bookmarks</string>
     <string name="setting_title_import_bookmarks">Import bookmarks</string>
-    <string name="setting_title_incognito">Incognito Mode</string>
+    <!-- <string name="setting_title_incognito">Incognito mode</string> -->
     <string name="back">Back</string>
     <string name="refresh">Refresh</string>
-    <string name="touch_turn_page">Touch turn page</string>
+    <string name="touch_turn_page">Touch turn page</string> <!-- This definetely should be called 'Touch Pagination', but I suspect that it won't fin the menu so I didn't change it -->
     <string name="tab_preview">Tab preview</string>
-    <string name="font_size">Font Size</string>
+    <string name="font_size">Font size</string>
     <string name="settings">Settings</string>
     <string name="toolbars">Toolbar setting</string>
     <string name="font_size_increase">Font increase</string>
@@ -294,23 +294,23 @@
     <string name="rotate">Rotate</string>
     <string name="translate">Translate</string>
     <string name="toolbar_title">Title</string>
-    <string name="setting_title_screen_awake">Keep Screen Awake</string>
+    <string name="setting_title_screen_awake">Keep screen awake</string>
     <string name="setting_summary_screen_awake">Keep screen always awake</string>
     <string name="middle">Middle</string>
     <string name="bottom">Bottom</string>
     <string name="input_url">Input URL</string>
     <string name="setting_title_useUpDown">Use Up/Down Key</string>
     <string name="setting_summary_useUpDownKey">Use Up/Down key to turn pages. Useful for bluetooth devices</string>
-    <string name="setting_title_process_text">Custom External Search URL</string>
+    <string name="setting_title_process_text">Custom external search URL</string>
     <string name="split_screen">Split screen</string>
-    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode">Dark mode</string>
     <string name="setting_summary_dark_mode">Configure dark mode</string>
     <string name="hie_touch_area_when_input">Hide when typing</string> <!-- Typo in variable name -->
     <string name="switch_touch_area_action">Switch up/down direction</string>
     <string name="switch_touch_area_action_short">Switch direction</string>
     <string name="no_previous_page">No previous page!</string>
     <string name="font_custom">Select custom font file</string>
-    <string name="translation_mode">Translation Mode</string>
+    <string name="translation_mode">Translation mode</string>
 
 
     <!-- Strings used for fragments for navigation -->
@@ -321,7 +321,7 @@
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
     <string name="menu_quickToggle">Quick Toggle</string>
-    <string name="setting_title_toolbar_top">Toolbar on Top</string>
+    <string name="setting_title_toolbar_top">Toolbar on top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen</string>
     <string name="setting_title_vi_binding">Vi key binding</string>
     <string name="setting_summary_vi_binding">Enable Vi key bindings for faster keyboard navigation</string>
@@ -334,7 +334,7 @@
     <string name="recently_used_bookmarks">Recently Used Bookmarks</string>
     <string name="menu_send_link">Send link</string>
     <string name="done">Close when transfer is done</string>
-    <string name="menu_receive">Receive data</string>
+    <string name="menu_receive">Receive link</string> <!-- Can other types of data be recieved with this option except link? Is they can, change this back; if not - it's better to leave this variant for overall language consistency -->
     <string name="copy_link">Copy link</string>
     <string name="setting_title_background_loading">Load non-active tabs</string>
     <string name="setting_summary_background_loading">If tab is not activated, still load it\'s content in background</string>
@@ -373,7 +373,7 @@
     <string name="setting_title_edit_homepage">Edit Home URL</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
     <string name="setting_summary_plus_behavior">What should be displayed when adding a new tab</string>
-    <string name="setting_title_translated_langs">Translation Languages for Google Translate</string>
+    <string name="setting_title_translated_langs">Translation languages for Google Translate</string>
     <string name="setting_summary_translated_langs">Customize languages for translation (e.g. en, fr, de, zh-TW, zh-CN)</string>
     <string name="menu">Menu</string>
     <string name="copy_text">Copy text</string>
@@ -384,10 +384,10 @@
     <string name="setting_summary_custom_process_text_url">Configure URL prefix that will be used for searching highlighted text from another app</string>
     <string name="not_supported">Not supported</string>
 
-    <string name="plus_start_input_url">Start Input URL</string>
+    <string name="plus_start_input_url">Start input URL</string>
     <string name="plus_show_homepage">Show Home</string>
-    <string name="plus_show_bookmarks">Show Recent Bookmarks</string>
-    <string name="dark_mode_follow_system">Follow System</string>
+    <string name="plus_show_bookmarks">Show recent bookmarks</string>
+    <string name="dark_mode_follow_system">Follow system</string>
     <string name="dark_mode_force_on">Force On</string>
     <string name="dark_mode_disabled">Disabled</string>
     <string name="title_activity_setting">SettingActivity</string>
@@ -401,12 +401,12 @@
     <string name="papago_full_page">Papago Whole Page</string>
     <string name="google_full_page">Google Whole Page</string>
     <string name="papago_dual_pane">Papago Dual Pane</string>
-    <string name="google_in_place">Google in-Place</string>
+    <string name="google_in_place">Google in-place</string>
     <string name="setting_title_update_adblock">Update AdBlock content</string>
     <string name="setting_summary_update_adblock">Trigger update AdBlock websites now</string>
     <string name="setting_title_adblock_url">AdBlock list URL</string>
     <string name="setting_summary_adblock_url">Edit this URL If you want to use other AdBlock content</string>
-    <string name="setting_title_adblock_auto_update">Auto Update AdBlock</string>
+    <string name="setting_title_adblock_auto_update">Auto update AdBlock</string>
     <string name="setting_summary_adblock_auto_update">Auto update AdBlock content weekly</string>
     <string name="toast_adblock_updated">AdBlock is updated!</string>
     <string name="toast_backup_successful">Backup successful!</string>
@@ -417,10 +417,10 @@
     <string name="image_adjust">Image Adjust</string>
     <string name="bookmark_new_file">Create new file</string>
     <string name="bookmark_open_file">Link existing file</string>
-    <string name="menu_save_archive">Save archive</string>
+    <string name="menu_save_archive">Save as archive</string>
     <string name="setting_title_sync_bookmarks">Sync bookmarks</string>
-    <string name="setting_title_setup_bookmarks_location">Configure bookmark location</string>
-    <string name="setting_summary_setup_bookmarks_location">Select a file in Google Drive or other file location that supports remote sync</string>
+    <string name="setting_title_setup_bookmarks_location">Configure remote bookmarks file location</string>
+    <string name="setting_summary_setup_bookmarks_location">Select or create a file in Google Drive or other location that supports remote sync</string>
     <string name="dialog_message_sync_bookmark_file">To sync bookmarks you need to create or open a bookmark file from Google Drive or other remote service using system file picker</string>
     <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
     <string name="settings_title_back_key_behavior">Back key behavior</string>
@@ -434,15 +434,15 @@
     <string name="share_save"><![CDATA[Share & Save]]></string>
     <string name="menu_gpt">ChatGPT</string>
     <string name="setting_title_chat_gpt">GPT Settings</string>
-    <string name="setting_title_edit_gpt_api_key">OpenAI Key</string>
+    <string name="setting_title_edit_gpt_api_key">OpenAI key</string>
     <string name="setting_summary_edit_gpt_api_key">Input key in order to use this feature</string>
     <string name="setting_title_edit_gpt_system_prompt">ChatGPT System Prompt</string>
     <string name="setting_summary_edit_gpt_prompt">Set a role for ChatGPT, e.g. \"You are an interpreter\"</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
     <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix, e.g. \"Translate following content to English:\"</string>
-    <string name="gpt_api_key_not_set">Add OpenAI Key in Settings</string>
+    <string name="gpt_api_key_not_set">Add OpenAI key in Settings</string>
     <string name="dialog_touch_area_enable">Enable Touch Pagination</string>
-    <string name="show_default_text_menu">Show Default Selected Text Menu</string>
+    <string name="show_default_text_menu">Show default selected text menu</string>
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu</string>
     <string name="google_translate">Google Translate</string>
     <string name="translate_by_paragraph">Translate by Paragraph</string>
@@ -456,7 +456,7 @@
     <string name="papago_translate_by_paragraph">Papago by Paragraph</string>
     <string name="source_language">Source Language</string>
     <string name="inter_translate">Inter Translate</string>
-    <string name="translate_image_key">Key For Image Translation</string>
+    <string name="translate_image_key">Key for image translation</string>
     <string name="translate_image_key_summary">Input necessary key to use image translate feature</string>
     <string name="papago_language_setting">Language Setting</string>
     <string name="toggle_touch_turn_page">Toggle Touch turn page</string>
@@ -466,14 +466,14 @@
     <string name="hide_statusbar">Hide statusbar</string>
     <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
     <string name="enable_touch_area_as_arrow_key">Long click as ← → key</string>
-    <string name="setting_title_chat_stream">Reply In Stream</string>
+    <string name="setting_title_chat_stream">Reply In-Stream</string> <!-- Not sure about this one -->
     <string name="setting_summary_chat_stream">Response will be displayed character by character, so that it\'s faster</string>
     <string name="re_select">Reselect text</string>
-    <string name="setting_dual_caption">Dual Caption for Youtube</string>
+    <string name="setting_dual_caption">Dual captions for YouTube</string>
     <string name="setting_summary_dual_caption">Select language for second caption</string>
     <string name="naver_translate">Naver Translate</string>
-    <string name="setting_title_gpt_model_name">OpenAI Model Name</string>
-    <string name="setting_summary_gpt_model_name">Default is gpt-3.5-turbo. Fill other model name if necessary</string>
+    <string name="setting_title_gpt_model_name">OpenAI model name</string>
+    <string name="setting_summary_gpt_model_name">Default is gpt-3.5-turbo. Insert other model name if necessary</string>
     <string name="split_search">Split Search</string>
     <string name="papago_translate_by_screen">Papago by Screen</string>
     <string name="split_search_settings">Split Search settings</string>
@@ -487,28 +487,28 @@
     <string name="send_to_remote_terminate">Terminate remote text search</string>
     <string name="receive_link_terminate">Terminate receiving link</string>
     <string name="receive_once">Receive once</string>
-    <string name="setting_title_search_in_same_tab">Tab for External Search</string>
+    <string name="setting_title_search_in_same_tab">Tab for external search</string>
     <string name="setting_summary_search_in_same_tab">Use same tab for external search</string>
     <string name="move_to_background">Minimize</string>
-    <string name="setting_title_gpt_prompt_for_web_page">Prompt for Full Web Page Content</string>
+    <string name="setting_title_gpt_prompt_for_web_page">Prompt for full webpage content</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Input prompt to process web page full content (for instance: \"Summarize it in 300 words:\")</string>
-    <string name="setting_title_next_tab">Show Next Tab</string>
+    <string name="setting_title_next_tab">Show next tab</string>
     <string name="setting_summary_next_tab">Show next tab when current one is closed (otherwise show previous one)</string>
     <string name="touch_area_long">Two sides</string>
-    <string name="setting_title_gpt_action_list">ChatGPT Action Definition</string>
+    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
     <string name="text_select">Select text</string>
-    <string name="show_context_menu_icons">Show Icons on Action Menus</string>
+    <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler</string>
-    <string name="use_it_on_tts">Use OpenAI TTS Api</string>
+    <string name="use_it_on_tts">Use OpenAI TTS API</string>
     <string name="setting_summary_use_gpt_for_tts">Use OpenAI API to read web content</string>
     <string name="highlight">Highlight</string>
     <string name="menu_highlights">Highlights</string>
     <string name="articles">Articles</string>
     <string name="highlights">Highlights</string>
     <string name="menu_invert_color">Invert colors</string>
-    <string name="setting_title_highlight_style">Highlight Style</string>
+    <string name="setting_title_highlight_style">Highlight style</string>
     <string name="setting_summary_highlight_style">Choose a style for text highlight</string>
     <string name="underline">Underline</string>
     <string name="yellow">Yellow</string>
@@ -517,16 +517,16 @@
     <string name="pink">Pink</string>
     <string name="setting_title_github_update">Update to Latest</string>
     <string name="setting_title_github_snapshot">Update with Snapshot</string>
-    <string name="setting_title_use_custom_gpt_url">Use Alternative Server</string>
+    <string name="setting_title_use_custom_gpt_url">Use alternative server</string>
     <string name="setting_summary_use_custom_gpt_url">Use other API server URL</string>
-    <string name="setting_title_custom_gpt_url">Custom Host URL</string>
+    <string name="setting_title_custom_gpt_url">Custom host URL</string>
     <string name="setting_summary_custom_gpt_url">Input alternative OpenAI server URL</string>
     <string name="setting_title_enable_inplace_translate">Translate paragraphs in current tab</string>
     <string name="setting_summary_enable_inplace_translate">Show paragraph translation in current or new tab</string>
     <string name="setting_title_show_bookmarks_input_bar">Show Bookmarks when editing url</string>
     <string name="setting_summary_show_bookmarks_input_bar">Show bookmark matches when typing text in input bar</string>
     <string name="setting_tts_locale">Text-to-Speech Locale</string>
-    <string name="setting_title_external_search_pop">Use Popup for PROCESS_TEXT event</string>
+    <string name="setting_title_external_search_pop">Use popup for PROCESS_TEXT event</string>
     <string name="setting_summary_external_search_pop">Search as a popup dictionary (suitable for reader apps dictionary integration)</string>
     <string name="cannot_save_epub">Something went wrong while saving EPUB. Please try again later</string>
     <string name="deepl_translate">DeepL</string>
@@ -535,24 +535,24 @@
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
     <string name="setting_title_use_gemini">Use Google Gemini model</string>
     <string name="setting_summary_use_gemini">Use Google Gemini model</string>
-    <string name="setting_title_gemini_key">Gemini Api Key</string>
-    <string name="setting_summary_gemini_key">Input Gemini API Key</string>
+    <string name="setting_title_gemini_key">Gemini API key</string>
+    <string name="setting_summary_gemini_key">Input Gemini API key</string>
     <string name="enable_fix_scroll">Try fix scrolling</string>
-    <string name="setting_title_other_model_name">Alternative Model Name</string>
+    <string name="setting_title_other_model_name">Alternative model name</string>
     <string name="setting_summary_other_model_name">Input model name for alternaltive GPT server</string>
-    <string name="setting_title_gemini_model_name">Gemini Model Name</string>
+    <string name="setting_title_gemini_model_name">Gemini model name</string>
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-1.5-flash)</string>
-    <string name="setting_title_gpt_query_list">GPT Result History</string>
+    <string name="setting_title_gpt_query_list">GPT result history</string>
     <string name="setting_summary_gpt_query_list">Saved GPT query results</string>
     <string name="enable_touch_area_as_page_key">As Page Up/Down key</string>
     <string name="translate_this_site">Translate this site</string>
     <string name="select_sentence">Select Sentence</string>
     <string name="select_paragraph">Select Paragraph</string>
     <string name="toast_saved">Saved!</string>
-    <string name="setting_app_locale">App Language</string>
+    <string name="setting_app_locale">App language</string>
     <string name="setting_summary_app_locale">Change interface language</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
-    <string name="toolbar_time">Current Time</string>
+    <string name="toolbar_time">Current time</string>
     <string name="setting_title_disable_long_press_toucharea">Disable Long Press Touch Area</string>
     <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area</string>
     <string name="expand_space">Expand space</string>
@@ -560,13 +560,13 @@
     <string name="setting_title_enable_web_cache">Enable Web Cache</string>
     <string name="setting_summary_enabling_web_cache">Load web content faster by enabling web cache</string>
     <string name="touch_custom">Custom</string>
-    <string name="key_page_up">Send PageUp Key</string>
-    <string name="key_page_down">Send PageDown Key</string>
+    <string name="key_page_up">Send Page Up Key</string>
+    <string name="key_page_down">Send Page Down Key</string>
     <string name="key_left">Send Left Key</string>
     <string name="key_right">Send Right Key</string>
     <string name="touch_aciton_settings">Action Settings</string>
     <string name="summary_touch_aciton_settings">Setup actions for touch area</string>
-    <string name="setting_title_touch_area_actions">Touch Area Click Actions</string>
+    <string name="setting_title_touch_area_actions">Touch Area click actions</string>
     <string name="setting_touch_up_click">Up click action</string>
     <string name="setting_touch_up_long_click">Up long click action</string>
     <string name="setting_touch_down_click">Down click action</string>
@@ -580,9 +580,9 @@
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_system">Built-in</string>
-    <string name="toolbar_icons">Toolbar Icons</string>
+    <string name="toolbar_icons">Toolbar icons</string>
     <string name="toolbar_icons_description">Arrange toolbar icons</string>
-    <string name="gesture_on_floating_button">Gesture on floating button</string>
+    <string name="gesture_on_floating_button">Floating button gestures</string>
     <string name="openai">OpenAI</string>
     <string name="openai_compatible_server">OpenAI Compatible Server</string>
     <string name="google_gemini">Google Gemini</string>
