@@ -16,13 +16,13 @@
     <string name="menu_open_with">Open link with…</string>
 
     <string name="menu_quit">Quit</string>
-    <string name="menu_openFav">Open Favourites</string>
+    <string name="menu_openFav">Open Homepage</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Downloads</string>
-    <string name="menu_fav">Save as home</string>
+    <string name="menu_fav">Save as homepage</string>
     <string name="menu_sc">Shortcut on home screen</string>
 
     <string name="menu_share_link">Share link</string>
@@ -137,7 +137,7 @@
 
     <string name="setting_title_searchEngine">Custom search engine</string>
 
-    <string name="setting_title_userAgent">Custom user agent</string>
+    <string name="setting_title_userAgent">Custom User Agent</string>
 
     <!-- App behavior -->
     <string name="setting_title_toolbar">Toolbar</string>
@@ -426,8 +426,8 @@
     <string name="settings_title_back_key_behavior">Back key behavior</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history</string>
     <string name="page_count">Page count</string>
-    <string name="setting_title_userAgent_toggle">Enable Custom UserAgent</string>
-    <string name="setting_summary_userAgent">Input custom useragent strings here</string>
+    <string name="setting_title_userAgent_toggle">Enable Custom User Agent</string>
+    <string name="setting_summary_userAgent">Input custom User Agent strings here</string>
     <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
     <string name="menu_add_to_pocket">Add to Pocket</string>
     <string name="content_adjustment">Content Adjustment</string>
@@ -476,8 +476,8 @@
     <string name="setting_summary_gpt_model_name">Default is gpt-3.5-turbo. Fill other model name if necessary</string>
     <string name="split_search">Split Search</string>
     <string name="papago_translate_by_screen">Papago by Screen</string>
-    <string name="split_search_settings">Split Search Settings</string>
-    <string name="setting_title_split_search_setting">Split Search Setting</string>
+    <string name="split_search_settings">Split Search settings</string>
+    <string name="setting_title_split_search_setting">Split Search settings</string>
     <string name="setting_summary_split_search_setting">Custom search and result opening in split screen</string>
     <string name="description_split_screen_string_pattern">Custom search URL with keyword position as %s</string>
     <string name="description_split_screen_title">Input the name to be shown as context menu title</string>

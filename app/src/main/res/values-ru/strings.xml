@@ -427,8 +427,8 @@
     <string name="settings_summary_back_key_behavior">Закрывать вкладку, если она находится на первой странице в истории</string>
     <string name="page_count">Кол-во страниц</string>
     <string name="setting_title_userAgent_toggle">Включить пользовательский юзер-агент</string>
-    <string name="setting_summary_userAgent">Введите здесь предпочитаемый юзер-агент</string>
     <string name="setting_summary_userAgent_toggle">Включить пользовательский юзер-агент</string>
+    <string name="setting_summary_userAgent">Введите здесь предпочитаемый юзер-агент</string>
     <string name="menu_add_to_pocket">Добавить в Pocket</string>
     <string name="content_adjustment">Регулировка Страницы</string>
     <string name="share_save"><![CDATA[Поделиться и Сохранить]]></string>
