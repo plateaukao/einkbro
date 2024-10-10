@@ -21,8 +21,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.outlined.SkipNext
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.GptVoiceOption
-import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
@@ -60,7 +59,6 @@ import java.util.Locale
 class TtsSettingDialogFragment : ComposeDialogFragment() {
     private val ttsManager: TtsManager by inject()
     private val ttsViewModel: TtsViewModel by activityViewModels()
-    private val translateRepository = TranslateRepository()
 
     override fun setupComposeView() {
         composeView.setContent {
@@ -406,7 +404,7 @@ fun TtsDialogButtonBar(
                         modifier = Modifier.wrapContentWidth()
                     ) {
                         Icon(
-                            if (readingState != PAUSED) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            if (readingState != PAUSED) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                             "pause or resume",
                             tint = MaterialTheme.colors.onBackground
                         )
@@ -418,7 +416,7 @@ fun TtsDialogButtonBar(
                         modifier = Modifier.wrapContentWidth()
                     ) {
                         Icon(
-                            Icons.Outlined.SkipNext,
+                            Icons.Filled.SkipNext,
                             "Next Article",
                             tint = MaterialTheme.colors.onBackground
                         )

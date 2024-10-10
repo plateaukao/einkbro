@@ -323,7 +323,7 @@ private fun MenuItems(
                     if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
                 MenuItem(R.string.white_background, whiteRes) { onClicked(MenuItemType.WhiteBknd) }
                 val blackRes =
-                    if (blackFont) Icons.Outlined.Copyright else Icons.TwoTone.Copyright
+                    if (blackFont) Icons.TwoTone.Copyright else Icons.Outlined.Copyright
                 MenuItem(R.string.black_font, blackRes) { onClicked(MenuItemType.BlackFont) }
                 val boldRes =
                     if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
