@@ -279,7 +279,7 @@
     <string name="folder_name_description">Insert Bookmark folder name</string>
     <string name="setting_title_export_bookmarks">Export bookmarks</string>
     <string name="setting_title_import_bookmarks">Import bookmarks</string>
-    <!-- <string name="setting_title_incognito">Incognito mode</string> -->
+    <string name="setting_title_incognito">Incognito mode</string>
     <string name="back">Back</string>
     <string name="refresh">Refresh</string>
     <string name="touch_turn_page">Touch turn page</string> <!-- This definetely should be called 'Touch Pagination', but I suspect that it won't fin the menu so I didn't change it -->
