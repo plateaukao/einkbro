@@ -282,7 +282,7 @@
     <string name="setting_title_incognito">Incognito mode</string>
     <string name="back">Back</string>
     <string name="refresh">Refresh</string>
-    <string name="touch_turn_page">Touch turn page</string> <!-- This definetely should be called 'Touch Pagination', but I suspect that it won't fin the menu so I didn't change it -->
+    <string name="touch_turn_page">Touch turn page</string> <!-- This definetely should be called 'Touch Pagination', but I suspect that it won't fit the menu so I didn't change it -->
     <string name="tab_preview">Tab preview</string>
     <string name="font_size">Font size</string>
     <string name="settings">Settings</string>
