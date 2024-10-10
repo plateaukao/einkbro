@@ -22,7 +22,7 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Downloads</string>
-    <string name="menu_fav">Save as homepage</string>
+    <string name="menu_fav">Save as Homepage</string>
     <string name="menu_sc">Shortcut on home screen</string>
 
     <string name="menu_share_link">Share link</string>
