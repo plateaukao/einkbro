@@ -370,7 +370,7 @@
     <string name="user_name">Username</string>
     <string name="authentication">Authentication</string>
     <string name="twitter">Twitter</string>
-    <string name="setting_title_edit_homepage">Edit Homepage URL</string>
+    <string name="setting_title_edit_homepage">Edit homepage URL</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
     <string name="setting_summary_plus_behavior">What should be displayed when adding a new tab</string>
     <string name="setting_title_translated_langs">Translation languages for Google Translate</string>
@@ -385,7 +385,7 @@
     <string name="not_supported">Not supported</string>
 
     <string name="plus_start_input_url">Start input URL</string>
-    <string name="plus_show_homepage">Show Homepage</string>
+    <string name="plus_show_homepage">Show homepage</string>
     <string name="plus_show_bookmarks">Show recent bookmarks</string>
     <string name="dark_mode_follow_system">Follow system</string>
     <string name="dark_mode_force_on">Force On</string>
