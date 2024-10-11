@@ -109,8 +109,8 @@
 
     <string name="setting_title_history">History</string>
     <string name="setting_summary_history">Save the history of visited websites</string>
-    <string name="save_history_mode_save_when_open">Save when opening</string> <!-- When opening tab or EinkBro? -->
-    <string name="save_history_mode_save_when_close">Save when closing</string>
+    <string name="save_history_mode_save_when_open">Save on tab open</string>
+    <string name="save_history_mode_save_when_close">Save on tab close</string>
     <string name="save_history_mode_disabled">Do not save</string>
 
 
@@ -299,7 +299,7 @@
     <string name="middle">Middle</string>
     <string name="bottom">Bottom</string>
     <string name="input_url">Input URL</string>
-    <string name="setting_title_useUpDown">Use Up/Down Key</string>
+    <string name="setting_title_useUpDown">Use Up/Down key</string>
     <string name="setting_summary_useUpDownKey">Use Up/Down key to turn pages. Useful for bluetooth devices</string>
     <string name="setting_title_process_text">Custom external search URL</string>
     <string name="split_screen">Split screen</string>
@@ -370,7 +370,7 @@
     <string name="user_name">Username</string>
     <string name="authentication">Authentication</string>
     <string name="twitter">Twitter</string>
-    <string name="setting_title_edit_homepage">Edit Home URL</string>
+    <string name="setting_title_edit_homepage">Edit Homepage URL</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
     <string name="setting_summary_plus_behavior">What should be displayed when adding a new tab</string>
     <string name="setting_title_translated_langs">Translation languages for Google Translate</string>
@@ -385,7 +385,7 @@
     <string name="not_supported">Not supported</string>
 
     <string name="plus_start_input_url">Start input URL</string>
-    <string name="plus_show_homepage">Show Home</string>
+    <string name="plus_show_homepage">Show Homepage</string>
     <string name="plus_show_bookmarks">Show recent bookmarks</string>
     <string name="dark_mode_follow_system">Follow system</string>
     <string name="dark_mode_force_on">Force On</string>
@@ -419,7 +419,7 @@
     <string name="bookmark_open_file">Link existing file</string>
     <string name="menu_save_archive">Save as archive</string>
     <string name="setting_title_sync_bookmarks">Sync bookmarks</string>
-    <string name="setting_title_setup_bookmarks_location">Configure remote bookmarks file location</string>
+    <string name="setting_title_setup_bookmarks_location">Configure remote bookmark file location</string>
     <string name="setting_summary_setup_bookmarks_location">Select or create a file in Google Drive or other location that supports remote sync</string>
     <string name="dialog_message_sync_bookmark_file">To sync bookmarks you need to create or open a bookmark file from Google Drive or other remote service using system file picker</string>
     <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
@@ -523,7 +523,7 @@
     <string name="setting_summary_custom_gpt_url">Input alternative OpenAI server URL</string>
     <string name="setting_title_enable_inplace_translate">Translate paragraphs in current tab</string>
     <string name="setting_summary_enable_inplace_translate">Show paragraph translation in current or new tab</string>
-    <string name="setting_title_show_bookmarks_input_bar">Show Bookmarks when editing url</string>
+    <string name="setting_title_show_bookmarks_input_bar">Show Bookmarks when editing URL</string>
     <string name="setting_summary_show_bookmarks_input_bar">Show bookmark matches when typing text in input bar</string>
     <string name="setting_tts_locale">Text-to-Speech Locale</string>
     <string name="setting_title_external_search_pop">Use popup for PROCESS_TEXT event</string>
@@ -553,11 +553,11 @@
     <string name="setting_summary_app_locale">Change interface language</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
     <string name="toolbar_time">Current time</string>
-    <string name="setting_title_disable_long_press_toucharea">Disable Long Press Touch Area</string>
+    <string name="setting_title_disable_long_press_toucharea">Disable long press on Touch Area</string>
     <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area</string>
     <string name="expand_space">Expand space</string>
     <string name="open_epub">Open EPUB file</string>
-    <string name="setting_title_enable_web_cache">Enable Web Cache</string>
+    <string name="setting_title_enable_web_cache">Enable web cache</string>
     <string name="setting_summary_enabling_web_cache">Load web content faster by enabling web cache</string>
     <string name="touch_custom">Custom</string>
     <string name="key_page_up">Send Page Up Key</string>
