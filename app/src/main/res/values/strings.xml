@@ -320,7 +320,7 @@
     <string name="custom_font">Custom</string>
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
-    <string name="menu_quickToggle">Quick Toggle</string>
+    <string name="menu_quickToggle">Quick toggle</string>
     <string name="setting_title_toolbar_top">Toolbar on top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen</string>
     <string name="setting_title_vi_binding">Vi key binding</string>
