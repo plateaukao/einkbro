@@ -152,7 +152,7 @@ fun WhiteListContent(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(R.string.list_empty) + stringResource(R.string.empty_whitelist_hint),
+                text = stringResource(R.string.list_empty) + "\n" + stringResource(R.string.empty_whitelist_hint),
                 style = MaterialTheme.typography.h6,
                 color = MaterialTheme.colors.onBackground,
             )
