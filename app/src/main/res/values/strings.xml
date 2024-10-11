@@ -560,10 +560,10 @@
     <string name="setting_title_enable_web_cache">Enable web cache</string>
     <string name="setting_summary_enabling_web_cache">Load web content faster by enabling web cache</string>
     <string name="touch_custom">Custom</string>
-    <string name="key_page_up">Send Page Up Key</string>
-    <string name="key_page_down">Send Page Down Key</string>
-    <string name="key_left">Send Left Key</string>
-    <string name="key_right">Send Right Key</string>
+    <string name="key_page_up">Send Page Up key</string>
+    <string name="key_page_down">Send Page Down key</string>
+    <string name="key_left">Send Left key</string>
+    <string name="key_right">Send Right key</string>
     <string name="touch_aciton_settings">Action Settings</string>
     <string name="summary_touch_aciton_settings">Setup actions for touch area</string>
     <string name="setting_title_touch_area_actions">Touch Area click actions</string>
