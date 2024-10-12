@@ -37,6 +37,7 @@ import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationMode
+import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
@@ -792,6 +793,14 @@ open class NinjaWebView(
     }
 
     fun translateByParagraphInPlace() {
+        val textBlockStyle = when (config.translationTextStyle) {
+            TranslationTextStyle.NONE -> translatedPCssNone
+            TranslationTextStyle.DASHED_BORDER -> translatedPCssDashedBorder
+            TranslationTextStyle.VERTICAL_LINE -> translatedPCssVerticalLine
+            TranslationTextStyle.GRAY -> translatedPCssGray
+            TranslationTextStyle.BOLD -> translatedPCssBold
+        }
+        injectCss(textBlockStyle.toByteArray())
         evaluateJavascript(translateParagraphJs) {
             evaluateJavascript(textNodesMonitorJs, null)
             isTranslateByParagraph = true
@@ -1173,6 +1182,60 @@ open class NinjaWebView(
             })()
             """
 
+        private const val translatedPCssNone = """
+            .translated {
+                padding: 5px; 
+                display: inline-block; 
+                line-height: 1.5;
+            }
+        """
+
+        private const val translatedPCssGray = """
+            .translated {
+                color: gray;
+                padding: 5px; 
+                display: inline-block; 
+                line-height: 1.5;
+            }
+        """
+
+        private const val translatedPCssBold = """
+            .translated {
+                font-weight: bold;
+                padding: 5px; 
+                display: inline-block; 
+                line-height: 1.5;
+            }
+        """
+
+        private const val translatedPCssDashedBorder = """
+            .translated {
+                border: 1px dashed lightgray; 
+                padding: 5px; 
+                display: inline-block; 
+                position: relative;
+                line-height: 1.5;
+            }
+        """
+        private const val translatedPCssVerticalLine = """
+            .translated {
+                //border: 1px dashed lightgray; 
+                padding: 5px; 
+                display: inline-block; 
+                position: relative;
+                line-height: 1.5;
+            }
+            .translated::before {
+            content: '';
+            display: inline-block;
+            width: 2px;
+            height: 90%;
+            background-color: lightgray;
+            position: absolute;
+            left: -5px;
+          }
+        """
+
         const val textNodesMonitorJs = """
             //const bridge = window.android = new androidApp(context, webView);
             
@@ -1180,7 +1243,7 @@ open class NinjaWebView(
                 //console.log("Element ID:", elementId, "Response string:", responseString);
                 node = document.getElementById(elementId).nextElementSibling;
                 node.textContent = responseString;
-                node.style = "border: 1px dashed lightgray; padding: 5px; display: inline-block; line-height: 1.5;"
+                node.classList.add("translated");
             }
             
             // Create a new IntersectionObserver object

@@ -498,4 +498,10 @@
     <string name="gesture_on_floating_button">浮動按鈕上的手勢</string>
     <string name="openai">OpenAI</string>
     <string name="openai_compatible_server">與 OpenAI 相容的服務</string>
+    <string name="dashed_border">虛線邊框</string>
+    <string name="vertical_line">引用格式</string>
+    <string name="setting_title_translation_style">沉浸式翻譯文字外觀</string>
+    <string name="setting_summary_translation_style">選擇想要的文字區塊外觀</string>
+    <string name="gray">灰色字體</string>
+    <string name="bold">粗體字</string>
 </resources>

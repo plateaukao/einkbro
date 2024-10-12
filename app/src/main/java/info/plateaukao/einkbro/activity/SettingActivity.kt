@@ -55,6 +55,7 @@ import info.plateaukao.einkbro.activity.SettingRoute.valueOf
 import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
+import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
@@ -820,6 +821,13 @@ class SettingActivity : FragmentActivity() {
             config = config::highlightStyle,
             options = HighlightStyle.entries.filter { it != HighlightStyle.BACKGROUND_NONE }
                 .map { it.stringResId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_title_translation_style,
+            0,
+            R.string.setting_summary_translation_style,
+            config = config::translationTextStyle,
+            options = TranslationTextStyle.entries.map { it.stringResId },
         ),
         NavigateSettingItem(
             R.string.setting_title_userAgent,
