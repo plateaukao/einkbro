@@ -1219,8 +1219,8 @@ open class NinjaWebView(
         """
         private const val translatedPCssVerticalLine = """
             .translated {
-                //border: 1px dashed lightgray; 
-                padding: 5px; 
+                padding: 2px; 
+                padding-left: 5px;
                 display: inline-block; 
                 position: relative;
                 line-height: 1.5;
