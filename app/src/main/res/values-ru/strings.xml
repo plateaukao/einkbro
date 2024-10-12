@@ -585,4 +585,9 @@
     <string name="openai">OpenAI</string>
     <string name="openai_compatible_server">Совместимый сервер OpenAI</string>
     <string name="google_gemini">Google Gemini</string>
+    <string name="vertical_line">Vertical line</string>
+    <string name="setting_title_translation_style">Translation text block style</string>
+    <string name="setting_summary_translation_style">Choose the style you like for paragraph translation</string>
+    <string name="gray">Gray</string>
+    <string name="bold">Bold</string>
 </resources>

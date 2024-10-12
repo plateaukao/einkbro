@@ -610,6 +610,10 @@ class ConfigManager(
         get() = HighlightStyle.entries[sp.getInt(K_HIGHLIGHT_STYLE, 0)]
         set(value) = sp.edit { putInt(K_HIGHLIGHT_STYLE, value.ordinal) }
 
+    var translationTextStyle: TranslationTextStyle
+        get() = TranslationTextStyle.entries[sp.getInt("K_TRANSLATION_TEXT_STYLE", 1)]
+        set(value) = sp.edit { putInt("K_TRANSLATION_TEXT_STYLE", value.ordinal) }
+
     var adSites: MutableSet<String>
         get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
         set(value) = sp.edit { putStringSet(K_ADBLOCK_SITES, value) }
@@ -1134,6 +1138,16 @@ enum class HighlightStyle(
         R.string.menu_delete,
         R.drawable.icon_delete,
     )
+}
+
+enum class TranslationTextStyle(
+    val stringResId: Int,
+) {
+    NONE(R.string.none),
+    DASHED_BORDER(R.string.dashed_border),
+    VERTICAL_LINE(R.string.vertical_line),
+    GRAY(R.string.gray),
+    BOLD(R.string.bold),
 }
 
 enum class SaveHistoryMode {
