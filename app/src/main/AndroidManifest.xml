@@ -23,6 +23,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- https://developer.android.com/guide/topics/manifest/uses-feature-element#permissions -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
         android:name="android.hardware.location"
         android:required="false" />
@@ -229,7 +231,7 @@
         </provider>
 
         <meta-data
-            android:name="android.webkit.WebView.MetricsOptOut"
+            android:name="com.tencent.smtt.sdk.WebView.MetricsOptOut"
             android:value="true" />
         <meta-data
             android:name="android.allow_multiple_resumed_activities"

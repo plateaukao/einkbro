@@ -37,11 +37,11 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.webkit.CookieManager
-import android.webkit.ValueCallback
-import android.webkit.WebChromeClient.CustomViewCallback
-import android.webkit.WebView
-import android.webkit.WebView.HitTestResult
+import com.tencent.smtt.sdk.CookieManager
+import com.tencent.smtt.sdk.ValueCallback
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient.CustomViewCallback
+import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebView.HitTestResult
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
@@ -1550,7 +1550,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
                 ConfigManager.K_TOOLBAR_ICONS,
-                -> {
+                    -> {
                     composeToolbarViewController.updateIcons()
                 }
 
@@ -1648,7 +1648,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_CUSTOM_USER_AGENT,
                 ConfigManager.K_ENABLE_CUSTOM_USER_AGENT,
-                -> {
+                    -> {
                     ninjaWebView.updateUserAgentString()
                     ninjaWebView.reload()
                 }

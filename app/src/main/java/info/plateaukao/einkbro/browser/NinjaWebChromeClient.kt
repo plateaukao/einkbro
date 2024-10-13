@@ -8,17 +8,18 @@ import android.os.Message
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.ConsoleMessage
-import android.webkit.CookieManager
-import android.webkit.GeolocationPermissions
-import android.webkit.PermissionRequest
-import android.webkit.ValueCallback
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebView.WebViewTransport
-import android.webkit.WebViewClient
+import com.tencent.smtt.export.external.interfaces.ConsoleMessage
+import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient.CustomViewCallback
+import com.tencent.smtt.export.external.interfaces.PermissionRequest
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest
+import com.tencent.smtt.sdk.CookieManager
+import com.tencent.smtt.sdk.ValueCallback
+import com.tencent.smtt.sdk.WebChromeClient
+import com.tencent.smtt.sdk.WebSettings
+import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebView.WebViewTransport
+import com.tencent.smtt.sdk.WebViewClient
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.NinjaWebView
 
@@ -90,13 +91,13 @@ class NinjaWebChromeClient(
             .replace("wv", "")
             .replace(Regex("Version/\\d+\\.\\d+\\s"), "")
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
-        webSettings.allowFileAccessFromFileURLs = true
-        webSettings.allowUniversalAccessFromFileURLs = true
+//        webSettings.allowFileAccessFromFileURLs = true
+//        webSettings.allowUniversalAccessFromFileURLs = true
         webSettings.domStorageEnabled = true
         webSettings.databaseEnabled = true
         webSettings.javaScriptEnabled = true
         webSettings.javaScriptCanOpenWindowsAutomatically = true
-        webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+//        webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         val manager = CookieManager.getInstance()
         manager.setAcceptThirdPartyCookies(webView, true)
 
@@ -142,7 +143,7 @@ class NinjaWebChromeClient(
     }
 
     override fun onPermissionRequest(request: PermissionRequest?) {
-        if (request?.resources?.contains("android.webkit.resource.AUDIO_CAPTURE") == true) {
+        if (request?.resources?.contains("com.tencent.smtt.sdk.resource.AUDIO_CAPTURE") == true) {
             HelperUnit.grantPermissionsMicrophone(ninjaWebView.context as Activity)
             request.grant(request.resources)
         } else {
@@ -152,7 +153,7 @@ class NinjaWebChromeClient(
 
     override fun onGeolocationPermissionsShowPrompt(
         origin: String,
-        callback: GeolocationPermissions.Callback,
+        callback: GeolocationPermissionsCallback,
     ) {
         val activity = ninjaWebView.context as Activity
         HelperUnit.grantPermissionsLoc(activity)

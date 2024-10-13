@@ -5,8 +5,8 @@ import android.os.Message
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.webkit.ValueCallback
-import android.webkit.WebChromeClient.CustomViewCallback
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient.CustomViewCallback
+import com.tencent.smtt.sdk.ValueCallback
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API

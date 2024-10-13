@@ -16,3 +16,15 @@
 }
 
 -keepnames class <1>$$serializer {static <1>$$serializer INSTANCE;}
+
+
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
+
+-keep class com.tencent.smtt.** {
+    *;
+}
+
+-keep class com.tencent.tbs.** {
+    *;
+}

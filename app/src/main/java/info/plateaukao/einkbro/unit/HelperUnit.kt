@@ -32,7 +32,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
 import android.view.View
-import android.webkit.MimeTypeMap
+import com.tencent.smtt.sdk.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle

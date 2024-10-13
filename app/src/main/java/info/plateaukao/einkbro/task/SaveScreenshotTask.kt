@@ -11,7 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.webkit.WebView
+import com.tencent.smtt.sdk.WebView
 import android.widget.ProgressBar
 import androidx.core.content.FileProvider.getUriForFile
 import info.plateaukao.einkbro.unit.HelperUnit.fileName

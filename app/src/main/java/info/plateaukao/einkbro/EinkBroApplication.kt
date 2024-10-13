@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import com.tencent.smtt.sdk.QbSdk
+import com.tencent.smtt.sdk.QbSdk.PreInitCallback
 import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.browser.Cookie
@@ -53,6 +55,8 @@ class EinkBroApplication : Application() {
             modules(myModule)
         }
 
+        initX5()
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         if (config.uiLocaleLanguage.isNotEmpty()) {
@@ -69,6 +73,16 @@ class EinkBroApplication : Application() {
     override fun onTerminate() {
         super.onTerminate()
         ttsManager.release()
+    }
+
+    private fun initX5() {
+        QbSdk.initX5Environment(this, object : PreInitCallback {
+            override fun onCoreInitFinished() {
+            }
+
+            override fun onViewInitFinished(p0: Boolean) {
+            }
+        })
     }
 
     companion object {

@@ -2,9 +2,7 @@ package info.plateaukao.einkbro.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
@@ -14,11 +12,9 @@ import android.util.Base64
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.ViewGroup
-import android.webkit.CookieManager
-import android.webkit.WebSettings
-import android.webkit.WebView
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
+import com.tencent.smtt.sdk.CookieManager
+import com.tencent.smtt.sdk.WebSettings
+import com.tencent.smtt.sdk.WebView
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
@@ -209,29 +205,29 @@ open class NinjaWebView(
             return
         }
 
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-            WebSettingsCompat.setForceDarkStrategy(
-                settings,
-                WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
-            )
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
-                config.darkMode == DarkMode.FORCE_ON
-            ) {
-                settings.forceDark = WebSettings.FORCE_DARK_ON
-                // when in dark mode, the default background color will be the activity background
-                setBackgroundColor(Color.parseColor("#000000"))
-            }
-
-        }
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, true)
-            }
-        }
+//        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+//            WebSettingsCompat.setForceDarkStrategy(
+//                settings,
+//                WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
+//            )
+//        }
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+//            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
+//                config.darkMode == DarkMode.FORCE_ON
+//            ) {
+//                settings.forceDark = WebSettings.FORCE_DARK_ON
+//                // when in dark mode, the default background color will be the activity background
+//                setBackgroundColor(Color.parseColor("#000000"))
+//            }
+//
+//        }
+//        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, true)
+//            }
+//        }
     }
 
     private fun initWebSettings() {
@@ -257,9 +253,9 @@ open class NinjaWebView(
                 cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
 
             textZoom = config.fontSize
-            allowFileAccessFromFileURLs = config.enableRemoteAccess
+//            allowFileAccessFromFileURLs = config.enableRemoteAccess
             allowFileAccess = true
-            allowUniversalAccessFromFileURLs = config.enableRemoteAccess
+//            allowUniversalAccessFromFileURLs = config.enableRemoteAccess
             domStorageEnabled = config.enableRemoteAccess
             databaseEnabled = true
             blockNetworkImage = !config.enableImages
@@ -267,7 +263,7 @@ open class NinjaWebView(
             javaScriptCanOpenWindowsAutomatically = config.enableJavascript
             setSupportMultipleWindows(config.enableJavascript)
             setGeolocationEnabled(config.shareLocation)
-            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+//            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             setRenderPriority(WebSettings.RenderPriority.HIGH)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -493,7 +489,7 @@ open class NinjaWebView(
         onFinish: () -> Unit,
     ): PrintDocumentAdapter {
         val superAdapter = super.createPrintDocumentAdapter(documentName)
-        return PdfDocumentAdapter(documentName, superAdapter, onFinish)
+        return PdfDocumentAdapter(documentName, superAdapter as PrintDocumentAdapter, onFinish)
     }
 
     val isLoadFinish: Boolean

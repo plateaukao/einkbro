@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
-import android.webkit.WebView
+import com.tencent.smtt.sdk.WebView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import info.plateaukao.einkbro.R

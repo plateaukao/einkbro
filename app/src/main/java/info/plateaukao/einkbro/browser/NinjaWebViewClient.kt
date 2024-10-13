@@ -4,26 +4,26 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.net.http.SslError
 import android.os.Message
 import android.security.KeyChain
 import android.util.Log
 import android.view.View
-import android.webkit.ClientCertRequest
-import android.webkit.CookieManager
-import android.webkit.HttpAuthHandler
-import android.webkit.SslErrorHandler
-import android.webkit.WebResourceError
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.tencent.smtt.export.external.interfaces.ClientCertRequest
+import com.tencent.smtt.export.external.interfaces.HttpAuthHandler
+import com.tencent.smtt.export.external.interfaces.SslError
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler
+import com.tencent.smtt.export.external.interfaces.WebResourceError
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse
+import com.tencent.smtt.sdk.CookieManager
+import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebViewClient
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -370,14 +370,14 @@ class NinjaWebViewClient(
         val title = "An Error Occurred!!!"
         var message =
             "The page you are trying to view cannot be shown because the connection isn't private or the authenticity of the received data could not be verified. \n\nIf you want to take the risk and continue viewing the page, please press OK.\n\n\nReason: "
-        when (error.primaryError) {
-            SslError.SSL_UNTRUSTED -> message += """"Certificate authority is not trusted.""""
-            SslError.SSL_EXPIRED -> message += """"Certificate has expired.""""
-            SslError.SSL_IDMISMATCH -> message += """"Certificate Hostname mismatch.""""
-            SslError.SSL_NOTYETVALID -> message += """"Certificate is not yet valid.""""
-            SslError.SSL_DATE_INVALID -> message += """"Certificate date is invalid.""""
-            SslError.SSL_INVALID -> message += """"Certificate is invalid.""""
-        }
+//        when (error.primaryError) {
+//            SslError.SSL_UNTRUSTED -> message += """"Certificate authority is not trusted.""""
+//            SslError.SSL_EXPIRED -> message += """"Certificate has expired.""""
+//            SslError.SSL_IDMISMATCH -> message += """"Certificate Hostname mismatch.""""
+//            SslError.SSL_NOTYETVALID -> message += """"Certificate is not yet valid.""""
+//            SslError.SSL_DATE_INVALID -> message += """"Certificate date is invalid.""""
+//            SslError.SSL_INVALID -> message += """"Certificate is invalid.""""
+//        }
 
         Log.e(TAG, "onReceivedSslError: $message")
         if (config.enableCertificateErrorDialog) {

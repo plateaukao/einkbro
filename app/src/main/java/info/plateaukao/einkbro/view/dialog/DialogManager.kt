@@ -8,7 +8,7 @@ import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.webkit.URLUtil
+import com.tencent.smtt.sdk.URLUtil
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.net.toUri

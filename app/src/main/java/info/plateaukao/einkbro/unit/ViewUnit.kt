@@ -22,7 +22,7 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebView.LAYER_TYPE_HARDWARE
+import com.tencent.smtt.sdk.WebView.LAYER_TYPE_HARDWARE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet

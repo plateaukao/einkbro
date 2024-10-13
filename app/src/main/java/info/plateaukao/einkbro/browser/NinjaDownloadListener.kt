@@ -2,7 +2,7 @@ package info.plateaukao.einkbro.browser
 
 import android.app.Activity
 import android.content.Context
-import android.webkit.DownloadListener
+import com.tencent.smtt.sdk.DownloadListener
 import info.plateaukao.einkbro.unit.BrowserUnit.download
 
 class NinjaDownloadListener(private val context: Context) : DownloadListener {

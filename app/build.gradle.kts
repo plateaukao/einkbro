@@ -155,5 +155,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.sse)
     implementation(libs.kotlinx.serialization.json)
+
+    api("com.tencent.tbs:tbssdk:44286")
 }
 
