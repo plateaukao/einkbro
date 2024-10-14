@@ -1195,6 +1195,7 @@ open class NinjaWebView(
                 color: gray;
                 padding: 5px; 
                 display: inline-block; 
+                max-width: 100vw;
                 line-height: 1.5;
             }
         """
@@ -1204,6 +1205,7 @@ open class NinjaWebView(
                 font-weight: bold;
                 padding: 5px; 
                 display: inline-block; 
+                max-width: 100vw;
                 line-height: 1.5;
             }
         """
@@ -1214,15 +1216,17 @@ open class NinjaWebView(
                 padding: 5px; 
                 display: inline-block; 
                 position: relative;
+                max-width: 100vw;
                 line-height: 1.5;
             }
         """
         private const val translatedPCssVerticalLine = """
             .translated {
                 padding: 2px; 
-                padding-left: 5px;
+                margin-left: 7px;
                 display: inline-block; 
                 position: relative;
+                max-width: 100vw;
                 line-height: 1.5;
             }
             .translated::before {
@@ -1230,9 +1234,9 @@ open class NinjaWebView(
             display: inline-block;
             width: 2px;
             height: 90%;
-            background-color: lightgray;
+            background-color: black;
             position: absolute;
-            left: -5px;
+            left: -7px;
           }
         """
 
