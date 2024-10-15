@@ -1187,6 +1187,7 @@ open class NinjaWebView(
                 padding: 5px; 
                 display: inline-block; 
                 line-height: 1.5;
+                max-width: 100vw;
             }
         """
 
