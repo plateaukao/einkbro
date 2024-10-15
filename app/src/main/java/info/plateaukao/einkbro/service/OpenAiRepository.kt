@@ -211,7 +211,11 @@ class OpenAiRepository : KoinComponent {
         }
     }
 
-    private fun createGeminiRequest(messages: List<ChatMessage>, gptActionInfo: ChatGPTActionInfo, isStream: Boolean): Request {
+    private fun createGeminiRequest(
+        messages: List<ChatMessage>,
+        gptActionInfo: ChatGPTActionInfo,
+        isStream: Boolean,
+    ): Request {
         val apiPrefix = "https://generativelanguage.googleapis.com/v1beta/models/"
         val model = gptActionInfo.model
         val apiUrl = if (isStream)
