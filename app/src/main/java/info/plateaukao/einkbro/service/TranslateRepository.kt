@@ -138,17 +138,17 @@ class TranslateRepository : KoinComponent {
             .post(body)
             .build()
 
-        return withContext(IO) {
-            client.newCall(request).execute().use { response ->
-                val body = response.body?.string() ?: return@use null
-                try {
+        try {
+            return withContext(IO) {
+                client.newCall(request).execute().use { response ->
+                    val body = response.body?.string() ?: return@use null
                     val result = JSONObject(body).getJSONObject("result")
                     return@use result.getJSONArray("texts").getJSONObject(0).getString("text")
-                } catch (e: Exception) {
-                    Log.d("TranslateRepository", "deepLTranslate: $e")
-                    return@use null
                 }
             }
+        } catch (e: Exception) {
+            Log.d("TranslateRepository", "deepLTranslate: $e")
+            return null
         }
     }
 
@@ -176,10 +176,10 @@ class TranslateRepository : KoinComponent {
                 .addHeader("Referer", "https://translate.google.com/")
                 .build()
 
-            client.newCall(request).execute().use { response ->
-                val body = response.body?.string() ?: return@use null
+            try {
+                client.newCall(request).execute().use { response ->
+                    val body = response.body?.string() ?: return@use null
 
-                try {
                     val result = StringBuilder()
                     val array: JSONArray = JSONArray(body).get(0) as JSONArray
                     for (i in 0 until array.length()) {
@@ -187,9 +187,10 @@ class TranslateRepository : KoinComponent {
                         result.append(item[0].toString())
                     }
                     result.toString()
-                } catch (e: Exception) {
-                    null
                 }
+            } catch (e: Exception) {
+                Log.e("TranslateRepository", "gTranslateWithApi: $e")
+                ""
             }
         }
     }
@@ -214,17 +215,18 @@ class TranslateRepository : KoinComponent {
                 )
                 .build()
 
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) return@use null
+            try {
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) return@use null
 
-                try {
                     val body = JSONObject(response.body?.string() ?: return@use null)
                     body.getJSONObject("message")
                         .getJSONObject("result")
                         .getString("translatedText")
-                } catch (e: Exception) {
-                    null
                 }
+            } catch (e: Exception) {
+                Log.e("TranslateRepository", "pTranslate: $e")
+                null
             }
         }
     }
@@ -342,15 +344,16 @@ class TranslateRepository : KoinComponent {
                 )
                 .build()
 
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) return@use null
+            try {
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) return@use null
 
-                try {
                     val body = JSONObject(response.body?.string() ?: return@use null)
                     body.getString("langCode")
-                } catch (e: Exception) {
-                    null
                 }
+            } catch (e: Exception) {
+                Log.d("TranslateRepository", "pDetectLanguage: $e")
+                null
             }
         }
     }

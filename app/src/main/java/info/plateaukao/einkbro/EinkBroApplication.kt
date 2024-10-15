@@ -14,7 +14,6 @@ import info.plateaukao.einkbro.pocket.PocketNetwork
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.LocaleManager
-import info.plateaukao.einkbro.util.CustomExceptionHandler
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
@@ -61,9 +60,9 @@ class EinkBroApplication : Application() {
 
         instance = this
 
-        Thread.setDefaultUncaughtExceptionHandler(
-            CustomExceptionHandler(Thread.getDefaultUncaughtExceptionHandler())
-        )
+//        Thread.setDefaultUncaughtExceptionHandler(
+//            CustomExceptionHandler(Thread.getDefaultUncaughtExceptionHandler())
+//        )
     }
 
     override fun onTerminate() {
