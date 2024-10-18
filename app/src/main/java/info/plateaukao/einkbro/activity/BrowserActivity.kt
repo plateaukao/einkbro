@@ -1444,7 +1444,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ACTION_READ_ALOUD -> readArticle()
 
-            null -> {}
+            null -> {
+                if (browserContainer.isEmpty()) {
+                    initSavedTabs { addAlbum() }
+                } else {
+                    return
+                }
+            }
             else -> addAlbum()
         }
         getIntent().action = ""
