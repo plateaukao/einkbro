@@ -15,6 +15,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.webkit.CookieManager
+import android.webkit.ValueCallback
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.webkit.WebSettingsCompat
@@ -50,7 +51,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.io.InputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.ceil
@@ -127,10 +127,7 @@ open class NinjaWebView(
                     (if (config.boldFontStyle)
                         boldFontCss.replace("value", "${config.fontBoldness}") else "") +
                     // all css are purged by epublib. need to add it back if it's epub reader mode
-                    if (isEpubReaderMode) String(
-                        getByteArrayFromAsset("readerview.css"),
-                        Charsets.UTF_8
-                    ) else ""
+                    if (isEpubReaderMode) loadAssetFile(context, "readerview.css")  else ""
         if (cssStyle.isNotBlank()) {
             injectCss(cssStyle.toByteArray())
         }
@@ -816,7 +813,7 @@ open class NinjaWebView(
     private var isHighlightCssInjected = false
     fun highlightTextSelection(highlightStyle: HighlightStyle) {
         if (!isHighlightCssInjected) {
-            injectCss(getByteArrayFromAsset("highlight.css"))
+            injectCss(loadAssetFile(context, "highlight.css").toByteArray())
             isHighlightCssInjected = true
         }
 
@@ -862,22 +859,22 @@ open class NinjaWebView(
         postAction: (() -> Unit)? = null,
     ) {
         val cssByteArray =
-            getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
+            loadAssetFile(context, if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
         injectCss(cssByteArray)
         if (isVertical) injectCss(verticalLayoutCss.toByteArray())
 
         val jsString = HelperUnit.getStringFromAsset("MozReadability.js")
         evaluateJavascript(jsString) {
-            //evaluateJavascript("javascript:(function() { window.scrollTo(0, 0); })()", null)
             postAction?.invoke()
         }
     }
 
     private fun injectMozReaderModeJs(isVertical: Boolean = false) {
         try {
-            val buffer = getByteArrayFromAsset("MozReadability.js")
+            val buffer = loadAssetFile(context, "MozReadability.js").toByteArray()
             val cssBuffer =
-                getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
+                loadAssetFile(context,
+                    if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
 
             val verticalCssString = if (isVertical) {
                 "var style = document.createElement('style');" +
@@ -929,21 +926,6 @@ open class NinjaWebView(
         }
     }
 
-    private fun getByteArrayFromAsset(fileName: String): ByteArray {
-        return try {
-            val assetInput: InputStream = context.assets.open(fileName)
-            val buffer = ByteArray(assetInput.available())
-            assetInput.read(buffer)
-            assetInput.close()
-
-            buffer
-        } catch (e: IOException) {
-            // TODO Auto-generated catch block
-            e.printStackTrace()
-            ByteArray(0)
-        }
-    }
-
     private fun injectCss(bytes: ByteArray) {
         try {
             val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
@@ -968,21 +950,15 @@ open class NinjaWebView(
         }
     }
 
-    fun selectSentence(point: Point) {
-        evaluateJavascript(loadJsFile("select_sentence.js")) {
-            this.postDelayed({ simulateClick(point) }, 100)
-        }
-    }
+    fun selectSentence(point: Point) =
+        evaluateJsFile("select_sentence.js") { this.postDelayed({ simulateClick(point) }, 100) }
 
-    fun selectParagraph(point: Point) {
-        evaluateJavascript(loadJsFile("select_paragraph.js")) {
-            this.postDelayed({ simulateClick(point) }, 100)
-        }
-    }
+    fun selectParagraph(point: Point) =
+        evaluateJsFile("select_paragraph.js") { this.postDelayed({ simulateClick(point) }, 100) }
 
     suspend fun getSelectedTextWithContext(contextLength: Int = 10): String =
         suspendCoroutine { continuation ->
-            evaluateJavascript(jsGetSelectedTextWithContextV2) { value ->
+            evaluateJsFile("get_selected_text_with_context.js") { value ->
                 continuation.resume(value.substring(1, value.length - 1))
             }
         }
@@ -1007,58 +983,31 @@ open class NinjaWebView(
         dispatchKeyEvent(upEvent)
     }
 
-    private fun loadJsFile(fileName: String): String {
-        val jsContent = String(getByteArrayFromAsset(fileName), Charsets.UTF_8)
-        return "javascript:(function() {$jsContent})()"
+    private fun evaluateJsFile(fileName: String, callback: ValueCallback<String>) {
+        val jsContent = loadAssetFile(context, fileName)
+        val javascript = "javascript:(function() {$jsContent})()"
+        evaluateJavascript(javascript, callback)
     }
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
 
-        private const val jsGetSelectedTextWithContextV2 = """
-            javascript:(function() {
-    let contextLength = 120;
-    let selection = window.getSelection();
-    if (selection.rangeCount === 0) return "";
+        // load javascript from asset and save to a cache list for later use
+        private val jsCache = mutableMapOf<String, String>()
+        private fun loadAssetFile(context: Context, fileName: String): String {
+            if (jsCache.containsKey(fileName)) {
+                return jsCache[fileName]!!
+            }
 
-    let range = selection.getRangeAt(0);
-    let startContainer = range.startContainer;
-    let endContainer = range.endContainer;
-
-    // Handle the case where the selected text spans multiple nodes
-    if (startContainer !== endContainer) {
-        return "";  // For simplicity, not handling multi-node selections here
-    }
-
-    let textContent = startContainer.textContent;
-    let startOffset = range.startOffset;
-    let endOffset = range.endOffset;
-
-    // Extend previousContext to the previous ".", "。", "?", or "!"
-    let contextStartPos = startOffset;
-    while (contextStartPos > 0 && ![".", "。", "?", "!"].includes(textContent[contextStartPos - 1])) {
-        contextStartPos--;
-        if (startOffset - contextStartPos > contextLength) {
-            break;
+            try {
+                val jsContent = context.assets.open(fileName).bufferedReader().use { it.readText() }
+                jsCache[fileName] = jsContent
+                return jsContent
+            } catch (e: IOException) {
+                e.printStackTrace()
+                return ""
+            }
         }
-    }
-
-    // Extend nextContext to the next ".", "?", or "。"
-    let contextEndPos = endOffset;
-    while (contextEndPos < textContent.length && ![".", "?", "。"].includes(textContent[contextEndPos])) {
-        contextEndPos++;
-        if (contextEndPos - endOffset > contextLength) {
-            break;
-        }
-    }
-
-    let previousContext = textContent.substring(contextStartPos, startOffset);
-    let nextContext = textContent.substring(endOffset, contextEndPos+1);
-
-    let selectedText = selection.toString();
-    return previousContext + "<<" + selectedText + ">>" + nextContext;
-})();
-        """
 
         private const val secondPart =
             """setTimeout(
