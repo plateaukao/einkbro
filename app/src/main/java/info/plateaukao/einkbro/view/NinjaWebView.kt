@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.SystemClock
 import android.print.PrintDocumentAdapter
 import android.util.Base64
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -781,17 +782,15 @@ open class NinjaWebView(
             TranslationTextStyle.BOLD -> translatedPCssBold
         }
         injectCss(textBlockStyle.toByteArray())
-        evaluateJavascript(translateParagraphJs) {
-            evaluateJavascript(textNodesMonitorJs, null)
+        evaluateJsFile("translate_by_paragraph.js") {
+            evaluateJsFile("text_node_monitor.js", false)
             isTranslateByParagraph = true
         }
     }
 
     fun showTranslation() = browserController?.showTranslation(this)
 
-    fun addSelectionChangeListener() {
-        evaluateJsFile("text_selection_change.js")
-    }
+    fun addSelectionChangeListener() = evaluateJsFile("text_selection_change.js")
 
     private var isHighlightCssInjected = false
     fun highlightTextSelection(highlightStyle: HighlightStyle) {
@@ -812,7 +811,9 @@ open class NinjaWebView(
                 else -> ""
             }
 
-            evaluateJavascript(String.format(selectionHighlightJs, className), null)
+            evaluateJavascript(
+                String.format(loadAssetFile(context, "text_selection_highlight.js"), className).wrapJsFunction(), null
+            )
         }
     }
 
@@ -968,10 +969,13 @@ open class NinjaWebView(
         dispatchKeyEvent(upEvent)
     }
 
-    private fun evaluateJsFile(fileName: String, callback: ValueCallback<String>? = null) {
+    private fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) {
         val jsContent = loadAssetFile(context, fileName)
-        val javascript = "javascript:(function() {$jsContent})()"
-        evaluateJavascript(javascript, callback)
+        if (withPrefix) {
+            evaluateJavascript(jsContent.wrapJsFunction(), callback)
+        } else {
+            evaluateJavascript(jsContent, callback)
+        }
     }
 
     companion object {
@@ -989,9 +993,15 @@ open class NinjaWebView(
                 jsCache[fileName] = jsContent
                 return jsContent
             } catch (e: IOException) {
+                Log.e("NinjaWebView", "Failed to load asset file: $fileName")
                 e.printStackTrace()
                 return ""
             }
+        }
+
+        // make a String extension to wrap it with Javascript function
+        private fun String.wrapJsFunction(): String {
+            return "javascript:(function() { $this })()"
         }
 
         private const val secondPart =
@@ -1100,40 +1110,6 @@ open class NinjaWebView(
         """
 
         const val textNodesMonitorJs = """
-            //const bridge = window.android = new androidApp(context, webView);
-            
-            function myCallback(elementId, responseString) {
-                //console.log("Element ID:", elementId, "Response string:", responseString);
-                node = document.getElementById(elementId).nextElementSibling;
-                node.textContent = responseString;
-                node.classList.add("translated");
-            }
-            
-            // Create a new IntersectionObserver object
-            observer = new IntersectionObserver((entries) => {
-              entries.forEach((entry) => {
-                // Check if the target node is currently visible
-                if (entry.isIntersecting) {
-                  //console.log('Node is visible:', entry.target.textContent);
-                  const nextNode = entry.target.nextElementSibling;
-                          //nextNode.textContent = result;
-                  if (nextNode && nextNode.textContent === "") {
-                      androidApp.getTranslation(entry.target.textContent, entry.target.id, "myCallback");
-                  }
-                } else {
-                  // The target node is not visible
-                  //console.log('Node is not visible');
-                }
-              });
-            });
-
-            // Select all elements with class name 'to-translate'
-            targetNodes = document.querySelectorAll('.to-translate');
-
-            // Loop through each target node and start observing it
-            targetNodes.forEach((targetNode) => {
-              observer.observe(targetNode);
-            });
         """
 
 
@@ -1306,9 +1282,6 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
                 "\tfont-weight:value !important;\n" +
                 "}\n"
 
-        private const val textSelectionChangeJs = """
-        """
-
         private const val removeHighlightJs = """
             javascript:(function() {
             function removeHighlightFromSelection() {
@@ -1334,169 +1307,11 @@ removeHighlightFromSelection();
             })()
         """
 
-        private const val selectionHighlightJs = """
-            javascript:(function() {
-                function highlightSelection() {
-  var userSelection = window.getSelection().getRangeAt(0);
-  var safeRanges = getSafeRanges(userSelection);
-  for (var i = 0; i < safeRanges.length; i++) {
-    highlightRange(safeRanges[i]);
-  }
-}
-
-function highlightRange(range) {
-  var newNode = document.createElement("div");
-  newNode.className = "%s"
-  range.surroundContents(newNode);
-}
-
-function getSafeRanges(dangerous) {
-  var a = dangerous.commonAncestorContainer;
-  // Starts -- Work inward from the start, selecting the largest safe range
-  var s = new Array(0), rs = new Array(0);
-  if (dangerous.startContainer != a) {
-    for (var i = dangerous.startContainer; i != a; i = i.parentNode) {
-      s.push(i);
-    }
-  }
-  if (s.length > 0) {
-    for (var i = 0; i < s.length; i++) {
-      var xs = document.createRange();
-      if (i) {
-        xs.setStartAfter(s[i - 1]);
-        xs.setEndAfter(s[i].lastChild);
-      } else {
-        xs.setStart(s[i], dangerous.startOffset);
-        xs.setEndAfter((s[i].nodeType == Node.TEXT_NODE) ? s[i] : s[i].lastChild);
-      }
-      rs.push(xs);
-    }
-  }
-
-  // Ends -- basically the same code reversed
-  var e = new Array(0), re = new Array(0);
-  if (dangerous.endContainer != a) {
-    for (var i = dangerous.endContainer; i != a; i = i.parentNode) {
-      e.push(i);
-    }
-  }
-  if (e.length > 0) {
-    for (var i = 0; i < e.length; i++) {
-      var xe = document.createRange();
-      if (i) {
-        xe.setStartBefore(e[i].firstChild);
-        xe.setEndBefore(e[i - 1]);
-      } else {
-        xe.setStartBefore((e[i].nodeType == Node.TEXT_NODE) ? e[i] : e[i].firstChild);
-        xe.setEnd(e[i], dangerous.endOffset);
-      }
-      re.unshift(xe);
-    }
-  }
-
-  // Middle -- the uncaptured middle
-  if ((s.length > 0) && (e.length > 0)) {
-    var xm = document.createRange();
-    xm.setStartAfter(s[s.length - 1]);
-    xm.setEndBefore(e[e.length - 1]);
-  } else {
-    return [dangerous];
-  }
-
-  // Concat
-  rs.push(xm);
-  response = rs.concat(re);
-
-  // Send to Console
-  return response;
-}
-
-highlightSelection();
-            })();
-            """
         private val clearTranslationElementsJs = """
             javascript:(function() {
                 document.body.innerHTML = document.originalInnerHTML;
                 document.body.classList.remove("translated");
             })()
-        """.trimIndent()
-        private val translateParagraphJs = """
-            function fetchNodesWithText(element) {
-              var result = [];
-              for (var i = 0; i < element.children.length; i++) {
-                var child = element.children[i];
-                // bypass non-necessary element
-                if (
-                  child.getAttribute("data-tiara-action-name") === "헤드글씨크기_클릭" ||
-                  child.innerText === "original link"
-                ) {
-                  continue;
-                }
-                if (child.closest('img, button, code') || child.tagName === "SCRIPT"
-                      || child.classList.contains("screen_out")
-                      || child.classList.contains("blind")
-                      || child.classList.contains("ico_view")
-                ) {
-                  continue;
-                }
-                if (
-                  ["p", "h1", "h2", "h3", "h4", "h5", "h6", "span", "strong"].includes(child.tagName.toLowerCase()) ||
-                  (child.children.length == 0 && child.innerText != "")
-                ) {
-                  if (child.innerText !== "") {
-                    injectTranslateTag(child);
-                    console.log(child.textContent + "\n\n");
-                    result.push(child);
-                  }
-                } else {
-                  result.push(fetchNodesWithText(child));
-                }
-              }
-              return result;
-            }
-            
-            function generateUUID() {
-              var timestamp = new Date().getTime();
-              const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const random = (timestamp + Math.random() * 16) % 16 | 0;
-                timestamp = Math.floor(timestamp / 16);
-                return (c === 'x' ? random : (random & 0x3 | 0x8)).toString(16);
-              });
-
-              return uuid;
-            }
-            
-            function injectTranslateTag(node) {
-                // for monitoring visibility
-                node.className += " to-translate";
-                // for locating element's position
-                node.id = generateUUID().toString();
-                // for later inserting translated text
-               var pElement = document.createElement("p");
-               try {
-                 //node.after(pElement);
-                 node.parentNode.insertBefore(pElement, node.nextSibling);
-               } catch(error) {
-                //console.log(node.textContent);
-                //console.log(error);
-               }
-            }
-            
-            if (!document.body.classList.contains("translated")) {
-                document.body.classList.add("translated");
-                document.originalInnerHTML = document.body.innerHTML;
-                fetchNodesWithText(document.body);
-            } else {
-                if (!document.body.classList.contains("translated_but_hide")) {
-                    document.translatedInnerHTML = document.body.innerHTML;
-                    document.body.innerHTML = document.originalInnerHTML;
-                    document.body.classList.add("translated_but_hide");
-                } else {
-                    document.body.innerHTML = document.translatedInnerHTML;
-                    document.body.classList.remove("translated_but_hide");
-                }
-            }
-            
         """.trimIndent()
     }
 
