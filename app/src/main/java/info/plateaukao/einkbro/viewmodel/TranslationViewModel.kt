@@ -17,7 +17,6 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
-import info.plateaukao.einkbro.view.NinjaWebView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
-import org.jsoup.nodes.DataNode
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 import org.koin.core.component.KoinComponent
@@ -405,25 +403,25 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return Pair(promptPrefix, selectedText)
     }
 
-    fun translateByParagraph(html: String): String {
-        val parsedHtml = Jsoup.parse(html)
-        val nodesWithText = fetchNodesWithText(parsedHtml)
-        nodesWithText.forEachIndexed { index, node ->
-            // for monitoring visibility
-            node.addClass("to-translate")
-            // for locating element's position
-            node.id(index.toString())
-            // for later inserting translated text
-            node.after(Element("p"))
-        }
-        // add observer
-        val script: Element = parsedHtml.createElement("script")
-        script.attr("type", "text/javascript")
-        script.appendChild(DataNode(NinjaWebView.textNodesMonitorJs))
-        parsedHtml.body().appendChild(script)
-
-        return parsedHtml.toString()
-    }
+//    fun translateByParagraph(html: String): String {
+//        val parsedHtml = Jsoup.parse(html)
+//        val nodesWithText = fetchNodesWithText(parsedHtml)
+//        nodesWithText.forEachIndexed { index, node ->
+//            // for monitoring visibility
+//            node.addClass("to-translate")
+//            // for locating element's position
+//            node.id(index.toString())
+//            // for later inserting translated text
+//            node.after(Element("p"))
+//        }
+//        // add observer
+//        val script: Element = parsedHtml.createElement("script")
+//        script.attr("type", "text/javascript")
+//        script.appendChild(DataNode(NinjaWebView.textNodesMonitorJs))
+//        parsedHtml.body().appendChild(script)
+//
+//        return parsedHtml.toString()
+//    }
 
     private fun fetchNodesWithText(
         element: Element,
