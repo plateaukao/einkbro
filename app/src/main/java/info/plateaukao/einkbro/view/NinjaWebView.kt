@@ -127,7 +127,7 @@ open class NinjaWebView(
                     (if (config.boldFontStyle)
                         boldFontCss.replace("value", "${config.fontBoldness}") else "") +
                     // all css are purged by epublib. need to add it back if it's epub reader mode
-                    if (isEpubReaderMode) loadAssetFile(context, "readerview.css")  else ""
+                    if (isEpubReaderMode) loadAssetFile(context, "readerview.css") else ""
         if (cssStyle.isNotBlank()) {
             injectCss(cssStyle.toByteArray())
         }
@@ -680,23 +680,6 @@ open class NinjaWebView(
         }
     }
 
-    suspend fun getRawHtml() = suspendCoroutine { continuation ->
-        if (rawHtmlCache != null) {
-            continuation.resume(rawHtmlCache)
-            return@suspendCoroutine
-        }
-
-        evaluateJavascript(
-            "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
-        ) { html ->
-            val processedHtml = StringEscapeUtils.unescapeJava(html)
-            val rawHtml =
-                processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
-            rawHtmlCache = rawHtml
-            continuation.resume(rawHtml)
-        }
-    }
-
     // only works in isReadModeOn
     suspend fun getRawText() = suspendCoroutine<String> { continuation ->
         if (!isReaderModeOn) {
@@ -807,7 +790,7 @@ open class NinjaWebView(
     fun showTranslation() = browserController?.showTranslation(this)
 
     fun addSelectionChangeListener() {
-        evaluateJavascript(textSelectionChangeJs, null)
+        evaluateJsFile("text_selection_change.js")
     }
 
     private var isHighlightCssInjected = false
@@ -873,8 +856,10 @@ open class NinjaWebView(
         try {
             val buffer = loadAssetFile(context, "MozReadability.js").toByteArray()
             val cssBuffer =
-                loadAssetFile(context,
-                    if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
+                loadAssetFile(
+                    context,
+                    if (isVertical) "verticalReaderview.css" else "readerview.css"
+                ).toByteArray()
 
             val verticalCssString = if (isVertical) {
                 "var style = document.createElement('style');" +
@@ -983,7 +968,7 @@ open class NinjaWebView(
         dispatchKeyEvent(upEvent)
     }
 
-    private fun evaluateJsFile(fileName: String, callback: ValueCallback<String>) {
+    private fun evaluateJsFile(fileName: String, callback: ValueCallback<String>? = null) {
         val jsContent = loadAssetFile(context, fileName)
         val javascript = "javascript:(function() {$jsContent})()"
         evaluateJavascript(javascript, callback)
@@ -1322,43 +1307,6 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
                 "}\n"
 
         private const val textSelectionChangeJs = """
-            var selectedText = "";
-            function getSelectionPositionInWebView() {
-    let selection = window.getSelection();
-    
-    if (selection) {
-        let range = selection.getRangeAt(0);
-        let startNode = range.startContainer;
-        let startOffset = range.startOffset;
-        let endNode = range.endContainer;
-        let endOffset = range.endOffset;
-        
-        let start = getRectInWebView(startNode, startOffset);
-        let end = getRectInWebView(endNode, endOffset);
-        
-            // Send anchor position to Android
-            if (selection.toString() != selectedText) {
-                selectedText = selection.toString();
-                if (selectedText.length > 0) {
-                    androidApp.getAnchorPosition(start.left, start.top, end.right, end.bottom);
-                }
-            }
-    }
-}
-
-function getRectInWebView(node, offset) {
-    let range = document.createRange();
-    range.setStart(node, offset);
-    range.setEnd(node, offset);
-    let rect = range.getBoundingClientRect();
-
-    return rect;
-}
-
-// Call the function to get selection position
-document.addEventListener("selectionchange", function() {
-    getSelectionPositionInWebView();
-    });
         """
 
         private const val removeHighlightJs = """
