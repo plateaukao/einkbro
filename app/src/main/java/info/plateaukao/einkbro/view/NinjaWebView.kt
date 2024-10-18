@@ -800,7 +800,7 @@ open class NinjaWebView(
         }
 
         if (highlightStyle == HighlightStyle.BACKGROUND_NONE) {
-            evaluateJavascript(removeHighlightJs, null)
+            evaluateJsFile("remove_text_highlight.js")
         } else {
             val className = when (highlightStyle) {
                 HighlightStyle.UNDERLINE -> "highlight_underline"
@@ -1109,10 +1109,6 @@ open class NinjaWebView(
           }
         """
 
-        const val textNodesMonitorJs = """
-        """
-
-
         private const val readabilityOptions =
             "{classesToPreserve: preservedClasses, overwriteImgSrc: true}"
 
@@ -1143,30 +1139,6 @@ open class NinjaWebView(
                 var documentClone = document.cloneNode(true);
                 var article = new Readability(documentClone, $readabilityOptions).parse();
                 return article.title + ', ' + article.textContent;
-            })()
-        """
-        private const val stripHeaderElementsJs = """
-            javascript:(function() {
-                var r = document.getElementsByTagName('script');
-                for (var i = (r.length-1); i >= 0; i--) {
-                    if(r[i].getAttribute('id') != 'a'){
-                        r[i].parentNode.removeChild(r[i]);
-                    }
-                }
-            })()
-        """
-
-        private const val oldFacebookHideSponsoredPostsJs = """
-            javascript:(function() {
-            var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
-            while(posts.length > 0) { posts.pop().style.display = "none"; }
-            
-            var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
-               var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
-               while(posts.length > 0) { posts.pop().style.display = "none"; }
-            });
-            
-            qcleanObserver.observe(document, { subtree: true, childList: true });
             })()
         """
 
@@ -1281,31 +1253,6 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
                 "input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {\n" +
                 "\tfont-weight:value !important;\n" +
                 "}\n"
-
-        private const val removeHighlightJs = """
-            javascript:(function() {
-            function removeHighlightFromSelection() {
-    const selection = window.getSelection();
-    // 檢查是否有選取範圍
-    if (!selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    const container = range.commonAncestorContainer;
-    // 確保範圍是在一個元素內部
-    const parentElement = container.nodeType === 3 ? container.parentNode : container;
-
-    // 查找所有的 highlight divs
-    const highlights = parentElement.parentNode.querySelectorAll('div.highlight_underline, div.highlight_yellow, div.highlight_green, div.highlight_blue, div.highlight_pink');
-
-    // 移除每個 highlight div 的外部 HTML
-    highlights.forEach(highlight => {
-        highlight.outerHTML = highlight.innerHTML;
-    });
-}
-
-// 綁定一個按鈕來觸發這個函數
-removeHighlightFromSelection();
-            })()
-        """
 
         private val clearTranslationElementsJs = """
             javascript:(function() {

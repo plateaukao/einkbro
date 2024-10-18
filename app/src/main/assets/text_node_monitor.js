@@ -1,5 +1,3 @@
-//const bridge = window.android = new androidApp(context, webView);
-
 function myCallback(elementId, responseString) {
     //console.log("Element ID:", elementId, "Response string:", responseString);
     node = document.getElementById(elementId).nextElementSibling;

@@ -1231,11 +1231,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         translateApi: TRANSLATE_API,
         webView: NinjaWebView = ninjaWebView,
     ) {
-        if (config.enableInplaceParagraphTranslate) {
-            translateByParagraphInPlace(translateApi, webView)
-        } else {
-            translateByParagraphInReaderMode(translateApi)
-        }
+        translateByParagraphInPlace(translateApi, webView)
+//        if (config.enableInplaceParagraphTranslate) {
+//        } else {
+//            translateByParagraphInReaderMode(translateApi)
+//        }
     }
 
     private fun translateByParagraphInPlace(
@@ -1251,41 +1251,41 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun translateByParagraphInReaderMode(translateApi: TRANSLATE_API) {
-        lifecycleScope.launch {
-            val currentUrl = ninjaWebView.url
-
-            // assume it's current one
-            val translateModeWebView = if (ninjaWebView.isTranslatePage) {
-                ninjaWebView
-            } else {
-                // get html from original WebView
-                val htmlCache = ninjaWebView.getRawReaderHtml()
-                // create a new WebView
-                addAlbum("", "")
-                // set it to translate mode
-                ninjaWebView.isTranslatePage = true
-                ninjaWebView.translateApi = translateApi
-                // set its raw html to be the same as original WebView
-                ninjaWebView.rawHtmlCache = htmlCache
-                // show the language label
-                languageLabelView?.visibility = VISIBLE
-                ninjaWebView
-            }
-
-            val translatedHtml = translationViewModel
-                .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
-            if (translateModeWebView.isAttachedToWindow) {
-                translateModeWebView.loadDataWithBaseURL(
-                    if (!ninjaWebView.isPlainText) currentUrl else null,
-                    translatedHtml,
-                    "text/html",
-                    "utf-8",
-                    null
-                )
-            }
-        }
-    }
+//    private fun translateByParagraphInReaderMode(translateApi: TRANSLATE_API) {
+//        lifecycleScope.launch {
+//            val currentUrl = ninjaWebView.url
+//
+//            // assume it's current one
+//            val translateModeWebView = if (ninjaWebView.isTranslatePage) {
+//                ninjaWebView
+//            } else {
+//                // get html from original WebView
+//                val htmlCache = ninjaWebView.getRawReaderHtml()
+//                // create a new WebView
+//                addAlbum("", "")
+//                // set it to translate mode
+//                ninjaWebView.isTranslatePage = true
+//                ninjaWebView.translateApi = translateApi
+//                // set its raw html to be the same as original WebView
+//                ninjaWebView.rawHtmlCache = htmlCache
+//                // show the language label
+//                languageLabelView?.visibility = VISIBLE
+//                ninjaWebView
+//            }
+//
+//            val translatedHtml = translationViewModel
+//                .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
+//            if (translateModeWebView.isAttachedToWindow) {
+//                translateModeWebView.loadDataWithBaseURL(
+//                    if (!ninjaWebView.isPlainText) currentUrl else null,
+//                    translatedHtml,
+//                    "text/html",
+//                    "utf-8",
+//                    null
+//                )
+//            }
+//        }
+//    }
 
     private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
 
