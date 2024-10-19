@@ -52,7 +52,7 @@ import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.NormalTextModifier
 import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
@@ -102,7 +102,7 @@ class BookmarksDialogFragment(
                     reorderBookmarkAction = {
                         shouldShowDragHandle.value = !shouldShowDragHandle.value
                         if (shouldShowDragHandle.value) {
-                            NinjaToast.show(context, getString(R.string.drag_to_reorder))
+                            EBToast.show(context, getString(R.string.drag_to_reorder))
                         }
                     },
                     closeAction = { dialog?.dismiss() }) {

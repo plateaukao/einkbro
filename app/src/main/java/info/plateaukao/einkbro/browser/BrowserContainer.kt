@@ -1,6 +1,6 @@
 package info.plateaukao.einkbro.browser
 
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 import java.util.*
 
 class BrowserContainer {
@@ -14,7 +14,7 @@ class BrowserContainer {
     fun add(controller: AlbumController, index: Int) = list.add(index, controller)
 
     fun remove(controller: AlbumController) {
-        (controller as NinjaWebView).destroy()
+        (controller as EBWebView).destroy()
         list.remove(controller)
     }
 
@@ -28,7 +28,7 @@ class BrowserContainer {
 
     fun clear() {
         for (albumController in list) {
-            (albumController as NinjaWebView).destroy()
+            (albumController as EBWebView).destroy()
         }
         list.clear()
     }

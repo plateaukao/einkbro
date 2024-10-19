@@ -20,13 +20,13 @@ import android.webkit.WebView
 import android.webkit.WebView.WebViewTransport
 import android.webkit.WebViewClient
 import info.plateaukao.einkbro.unit.HelperUnit
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 
-class NinjaWebChromeClient(
-    private val ninjaWebView: NinjaWebView,
+class EBWebChromeClient(
+    private val ebWebView: EBWebView,
     private val onReceiveFavicon: (Bitmap) -> Unit,
 ) : WebChromeClient() {
-    private val TAG: String = "NinjaWebChromeClient"
+    private val TAG: String = "EBWebChromeClient"
 
     private lateinit var webviewParent: ViewGroup
 
@@ -64,8 +64,8 @@ class NinjaWebChromeClient(
                 webviewParent.removeView(window)
             }
         }
-        if (ninjaWebView.parent == null) return false
-        webviewParent = ninjaWebView.parent as ViewGroup
+        if (ebWebView.parent == null) return false
+        webviewParent = ebWebView.parent as ViewGroup
         webviewParent.addView(newWebView)
 
         val transport = resultMsg.obj as WebViewTransport
@@ -104,31 +104,31 @@ class NinjaWebChromeClient(
     }
 
     override fun onCloseWindow(window: WebView?) {
-        (ninjaWebView.parent as ViewGroup).removeView(window)
+        (ebWebView.parent as ViewGroup).removeView(window)
     }
 
-    private fun handleWebViewLinks(url: String) = ninjaWebView.browserController?.addNewTab(url)
+    private fun handleWebViewLinks(url: String) = ebWebView.browserController?.addNewTab(url)
 
     override fun onProgressChanged(view: WebView, progress: Int) {
         super.onProgressChanged(view, progress)
-        ninjaWebView.update(progress)
+        ebWebView.update(progress)
     }
 
     override fun onReceivedTitle(view: WebView, title: String) {
         super.onReceivedTitle(view, title)
         // prevent setting title for data: contents
         if (!title.startsWith("data:text")) {
-            ninjaWebView.update(title)
+            ebWebView.update(title)
         }
     }
 
     override fun onShowCustomView(view: View, callback: CustomViewCallback) {
-        ninjaWebView.browserController?.onShowCustomView(view, callback)
+        ebWebView.browserController?.onShowCustomView(view, callback)
         super.onShowCustomView(view, callback)
     }
 
     override fun onHideCustomView() {
-        ninjaWebView.browserController?.onHideCustomView()
+        ebWebView.browserController?.onHideCustomView()
         super.onHideCustomView()
     }
 
@@ -137,13 +137,13 @@ class NinjaWebChromeClient(
         filePathCallback: ValueCallback<Array<Uri>>,
         fileChooserParams: FileChooserParams,
     ): Boolean {
-        ninjaWebView.browserController?.showFileChooser(filePathCallback)
+        ebWebView.browserController?.showFileChooser(filePathCallback)
         return true
     }
 
     override fun onPermissionRequest(request: PermissionRequest?) {
         if (request?.resources?.contains("android.webkit.resource.AUDIO_CAPTURE") == true) {
-            HelperUnit.grantPermissionsMicrophone(ninjaWebView.context as Activity)
+            HelperUnit.grantPermissionsMicrophone(ebWebView.context as Activity)
             request.grant(request.resources)
         } else {
             super.onPermissionRequest(request)
@@ -154,7 +154,7 @@ class NinjaWebChromeClient(
         origin: String,
         callback: GeolocationPermissions.Callback,
     ) {
-        val activity = ninjaWebView.context as Activity
+        val activity = ebWebView.context as Activity
         HelperUnit.grantPermissionsLoc(activity)
         callback.invoke(origin, true, false)
         super.onGeolocationPermissionsShowPrompt(origin, callback)

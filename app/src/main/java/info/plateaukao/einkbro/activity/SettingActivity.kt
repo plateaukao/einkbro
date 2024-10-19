@@ -72,7 +72,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.view.GestureType
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
@@ -1047,7 +1047,7 @@ class SettingActivity : FragmentActivity() {
         ) {
             lifecycleScope.launch {
                 adBlock.downloadHosts(this@SettingActivity) {
-                    NinjaToast.show(this@SettingActivity, R.string.toast_adblock_updated)
+                    EBToast.show(this@SettingActivity, R.string.toast_adblock_updated)
                 }
             }
         },

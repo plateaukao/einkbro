@@ -14,8 +14,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.BrowserController
-import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Book
@@ -35,7 +35,7 @@ import kotlin.math.roundToInt
 class EpubReaderView(
     context: Context,
     browserController: BrowserController?
-) : NinjaWebView(context, browserController) {
+) : EBWebView(context, browserController) {
     private lateinit var book: Book
     private val chapterList: ArrayList<Chapter> = ArrayList()
     var chapterNumber = 0
@@ -122,7 +122,7 @@ elements[i].style.color='white';
                 clip
             )
 
-            NinjaToast.showShort(context, "text s copied")
+            EBToast.showShort(context, "text s copied")
         }
     }
 

@@ -21,7 +21,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.system.exitProcess
@@ -134,7 +134,7 @@ class DialogManager(
                 val ext = editExtension.text.toString().trim { it <= ' ' }
                 val fileName = title + ext
                 if (title.isEmpty() || ext.isEmpty() || !extension.startsWith(".")) {
-                    NinjaToast.show(activity, activity.getString(R.string.toast_input_empty))
+                    EBToast.show(activity, activity.getString(R.string.toast_input_empty))
                 } else {
                     saveFile(url, fileName)
                 }

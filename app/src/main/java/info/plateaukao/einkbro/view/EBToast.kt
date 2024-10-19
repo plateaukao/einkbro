@@ -3,7 +3,7 @@ package info.plateaukao.einkbro.view
 import android.content.Context
 import android.widget.Toast
 
-object NinjaToast {
+object EBToast {
     @JvmStatic
     fun show(context: Context?, stringResId: Int) {
         Toast.makeText(context, stringResId, Toast.LENGTH_SHORT).show()

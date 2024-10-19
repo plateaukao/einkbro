@@ -18,9 +18,9 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.TranslationLanguage
-import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.NinjaWebView
-import info.plateaukao.einkbro.view.NinjaWebView.OnScrollChangeListener
+import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.view.EBWebView.OnScrollChangeListener
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.TwoPaneLayout
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
@@ -38,12 +38,12 @@ class TwoPaneController(
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
     private val loadTranslationUrl: (String) -> Unit,
-    private val translateByParagraph: (TRANSLATE_API, NinjaWebView) -> Unit,
+    private val translateByParagraph: (TRANSLATE_API, EBWebView) -> Unit,
     private val translateByScreen: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val webView: NinjaWebView by lazy {
-        NinjaWebView(activity, null).apply {
+    private val webView: EBWebView by lazy {
+        EBWebView(activity, null).apply {
             shouldHideTranslateContext = true
             setScrollChangeListener(object : OnScrollChangeListener {
                 override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
@@ -174,12 +174,12 @@ class TwoPaneController(
 
     fun isSecondPaneDisplayed(): Boolean = twoPaneLayout.shouldShowSecondPane
 
-    fun showTranslation(webView: NinjaWebView) {
+    fun showTranslation(webView: EBWebView) {
         when (config.translationMode) {
             TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
             TranslationMode.PAPAGO_URL, TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
             TranslationMode.ONYX, TranslationMode.PAPAGO, TranslationMode.GOOGLE ->
-                NinjaToast.showShort(activity, "No more supported")
+                EBToast.showShort(activity, "No more supported")
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE, webView)
@@ -218,7 +218,7 @@ class TwoPaneController(
 
     private fun launchTranslateWindow(text: String) {
         if (text == "null") {
-            NinjaToast.showShort(activity, "Translation does not work for this page.")
+            EBToast.showShort(activity, "Translation does not work for this page.")
             return
         }
 
@@ -281,7 +281,7 @@ class TwoPaneController(
         webView.loadUrl(url)
     }
 
-    private fun addWebView(): NinjaWebView {
+    private fun addWebView(): EBWebView {
         val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
         )

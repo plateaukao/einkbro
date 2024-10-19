@@ -8,7 +8,7 @@ import android.view.View
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import info.plateaukao.einkbro.preference.TranslationMode
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 
 interface BrowserController {
@@ -37,7 +37,7 @@ interface BrowserController {
     fun showTtsLanguageDialog()
     fun showFastToggleDialog()
     fun toggleSplitScreen(url: String? = null)
-    fun showTranslation(webView: NinjaWebView? = null)
+    fun showTranslation(webView: EBWebView? = null)
     fun saveBookmark(url: String? = null, title: String? = null)
     fun createShortcut()
     fun showSaveEpubDialog()

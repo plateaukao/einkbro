@@ -41,9 +41,9 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
 import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.NinjaToast.showShort
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.EBToast.showShort
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
@@ -135,7 +135,7 @@ object BrowserUnit : KoinComponent {
                             activity.startActivity(fileIntent)
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            NinjaToast.show(activity, R.string.toast_error)
+                            EBToast.show(activity, R.string.toast_error)
                         }
                     }
                 )
@@ -635,7 +635,7 @@ object BrowserUnit : KoinComponent {
         return false
     }
     
-    fun loadRecentlyUsedBookmarks(webView: NinjaWebView) {
+    fun loadRecentlyUsedBookmarks(webView: EBWebView) {
         val html = getRecentBookmarksContent()
         if (html.isNotBlank()) {
             webView.loadDataWithBaseURL(

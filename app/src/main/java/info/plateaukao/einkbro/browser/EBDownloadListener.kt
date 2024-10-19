@@ -5,7 +5,7 @@ import android.content.Context
 import android.webkit.DownloadListener
 import info.plateaukao.einkbro.unit.BrowserUnit.download
 
-class NinjaDownloadListener(private val context: Context) : DownloadListener {
+class EBDownloadListener(private val context: Context) : DownloadListener {
     override fun onDownloadStart(
         url: String,
         userAgent: String,

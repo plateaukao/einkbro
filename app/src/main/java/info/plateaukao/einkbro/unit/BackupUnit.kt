@@ -15,7 +15,7 @@ import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -87,7 +87,7 @@ class BackupUnit(
 
             zos.close()
             fos.close()
-            NinjaToast.show(context, R.string.toast_backup_successful)
+            EBToast.show(context, R.string.toast_backup_successful)
             return true
         } catch (e: IOException) {
             e.printStackTrace()

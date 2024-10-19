@@ -4,7 +4,7 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TranslateRepository
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.concurrent.Semaphore
 
-class JsWebInterface(private val webView: NinjaWebView) :
+class JsWebInterface(private val webView: EBWebView) :
     KoinComponent {
     private val translateRepository: TranslateRepository = TranslateRepository()
     private val configManager: ConfigManager by inject()

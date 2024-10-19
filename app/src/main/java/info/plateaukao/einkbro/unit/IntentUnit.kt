@@ -20,7 +20,7 @@ import info.plateaukao.einkbro.activity.ExtraBrowserActivity
 import info.plateaukao.einkbro.activity.HighlightsActivity
 import info.plateaukao.einkbro.activity.SettingActivity
 import info.plateaukao.einkbro.activity.SettingRoute
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 
 object IntentUnit {
@@ -43,7 +43,7 @@ object IntentUnit {
         try {
             activity.startActivity(intent)
         } catch (e: Exception) {
-            NinjaToast.show(activity, "No Text to Speech settings found")
+            EBToast.show(activity, "No Text to Speech settings found")
         }
     }
 
@@ -70,7 +70,7 @@ object IntentUnit {
         try {
             activity.startActivity(intent)
         } catch (e: Exception) {
-            NinjaToast.show(activity, "No Text to Speech settings found")
+            EBToast.show(activity, "No Text to Speech settings found")
         }
     }
 

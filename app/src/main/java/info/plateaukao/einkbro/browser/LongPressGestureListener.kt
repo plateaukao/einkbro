@@ -2,9 +2,9 @@ package info.plateaukao.einkbro.browser
 
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 
-class LongPressGestureListener(private var webView: NinjaWebView) : SimpleOnGestureListener() {
+class LongPressGestureListener(private var webView: EBWebView) : SimpleOnGestureListener() {
     private var longPress = true
 
 

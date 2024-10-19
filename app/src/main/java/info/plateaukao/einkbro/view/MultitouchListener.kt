@@ -19,7 +19,7 @@ import kotlin.math.max
 
 open class MultitouchListener(
     context: Context,
-    webView: NinjaWebView,
+    webView: EBWebView,
     private val touchCount: Int = 2
 ) : View.OnTouchListener, DefaultLifecycleObserver, KoinComponent {
 
