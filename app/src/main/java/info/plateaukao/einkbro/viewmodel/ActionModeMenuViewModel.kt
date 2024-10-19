@@ -104,7 +104,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
         val menuInfos = resolveInfos.map { it.toMenuInfo(packageManager) }.toMutableList()
 
-        if (configManager.papagoApiSecret.isNotEmpty()) {
+        if (configManager.imageApiKey.isNotEmpty()) {
             menuInfos.add(
                 0,
                 MenuInfo(
@@ -131,14 +131,16 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
             )
         )
-        menuInfos.add(
-            0,
-            MenuInfo(
-                context.getString(R.string.deepl_translate),
-                drawable = ContextCompat.getDrawable(context, R.drawable.ic_translate),
-                action = { _actionModeMenuState.value = ActionModeMenuState.DeeplTranslate }
+        if (configManager.imageApiKey.isNotBlank()) {
+            menuInfos.add(
+                0,
+                MenuInfo(
+                    context.getString(R.string.deepl_translate),
+                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                    action = { _actionModeMenuState.value = ActionModeMenuState.DeeplTranslate }
+                )
             )
-        )
+        }
         if (configManager.gptActionList.isNotEmpty()) {
             configManager.gptActionList.mapIndexed { index, actionInfo ->
 

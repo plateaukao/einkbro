@@ -504,4 +504,5 @@
     <string name="setting_summary_translation_style">選擇想要的文字區塊外觀</string>
     <string name="gray">灰色字體</string>
     <string name="bold">粗體字</string>
+    <string name="deepl_translate_by_paragraph">Deepl by Paragraph</string>
 </resources>

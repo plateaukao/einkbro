@@ -199,19 +199,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private fun callDeepLTranslate() {
         val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
-            val targetLanguage = when (config.translationLanguage) {
-                TranslationLanguage.ZH_TW,
-                TranslationLanguage.ZH_CN,
-                    -> "zh"
-
-                else -> config.translationLanguage.value
-            }
             _responseMessage.value =
                 AnnotatedString(
-                    translateRepository.deepLTranslate(
-                        message,
-                        targetLanguage = targetLanguage,
-                    )
+                    translateRepository.deepLTranslate(message, targetLanguage = config.translationLanguage)
                         ?: "Something went wrong."
                 )
         }
@@ -222,10 +212,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
                 AnnotatedString(
-                    translateRepository.ppTranslate(
-                        message,
-                        targetLanguage = config.translationLanguage.value,
-                    )
+                    translateRepository.pTranslate(message, targetLanguage = config.translationLanguage.value)
                         ?: "Something went wrong."
                 )
         }

@@ -77,7 +77,7 @@ class TranslateDialogFragment(
         MyTheme {
             TranslateResponse(
                 translationViewModel,
-                showExtraIcons = config.papagoApiSecret.isNotBlank(),
+                showExtraIcons = config.imageApiKey.isNotBlank(),
                 this::changeTranslationLanguage,
                 this::getTranslationWebView,
                 closeAction ?: { dismiss() }
@@ -163,9 +163,9 @@ private fun TranslateResponse(
             if (ViewUnit.isTablet(LocalContext.current)) {
                 GptRow(viewModel)
             }
-            DeepLButton(iconSize, iconPadding, translateDeepL, onTargetLanguageClick)
             GoogleButton(iconSize, iconPadding, translateGoogle, onTargetLanguageClick)
             if (showExtraIcons) {
+                DeepLButton(iconSize, iconPadding, translateDeepL, onTargetLanguageClick)
                 PapagoButton(iconSize, iconPadding, translatePapago, onTargetLanguageClick)
                 NaverButton(iconSize, iconPadding, translateNaver)
             }

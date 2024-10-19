@@ -151,7 +151,8 @@ private fun ContextMenuItems(
             ContextMenuItem(R.string.text_select, showIcons, Icons.AutoMirrored.Outlined.Segment) {
                 onClicked(SelectText)
             }
-            if (shouldShowTranslateImage && (url.endsWith(".jpg") || url.endsWith(".png"))) {
+            val lowerCaseUrl = url.lowercase()
+            if (shouldShowTranslateImage && (lowerCaseUrl.contains("jpg") || lowerCaseUrl.contains("png"))) {
                 ContextMenuItem(R.string.translate, showIcons, iconResId = R.drawable.ic_papago) {
                     onClicked(TranslateImage)
                 }
