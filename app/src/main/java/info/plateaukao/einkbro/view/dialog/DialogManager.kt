@@ -247,6 +247,15 @@ class DialogManager(
         activity.startActivityForResult(intent, IMPORT_BACKUP_REQUEST_CODE)
     }
 
+//    fun showRemoveHighlightConfirmDialog(
+//        action: () -> Unit,
+//    ) {
+//        showOkCancelDialog(
+//            messageResId = R.string.dialog_message_remove_highlight,
+//            okAction = action,
+//        )
+//    }
+
     fun showRestartConfirmDialog() {
         showOkCancelDialog(
             messageResId = R.string.toast_restart,

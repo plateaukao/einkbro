@@ -10,6 +10,10 @@ function highlightRange(range) {
   var newNode = document.createElement("div");
   newNode.className = "%s"
   range.surroundContents(newNode);
+  newNode.onclick = function() {
+    //androidApp.deleteHighlight();
+    newNode.outerHTML = newNode.innerHTML;
+  }
 }
 
 function getSafeRanges(dangerous) {

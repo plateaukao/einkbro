@@ -227,9 +227,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                         clickedPoint.value,
                         okAction = { style ->
                             _actionModeMenuState.value = ActionModeMenuState.Idle
-                            if (style != HighlightStyle.BACKGROUND_NONE) {
-                                configManager.highlightStyle = style
-                            }
+                            configManager.highlightStyle = style
                             _actionModeMenuState.value = ActionModeMenuState.HighlightText(style)
                         },
                         onDismissAction = {

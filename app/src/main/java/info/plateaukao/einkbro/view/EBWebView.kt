@@ -799,22 +799,18 @@ open class EBWebView(
             isHighlightCssInjected = true
         }
 
-        if (highlightStyle == HighlightStyle.BACKGROUND_NONE) {
-            evaluateJsFile("remove_text_highlight.js")
-        } else {
-            val className = when (highlightStyle) {
-                HighlightStyle.UNDERLINE -> "highlight_underline"
-                HighlightStyle.BACKGROUND_YELLOW -> "highlight_yellow"
-                HighlightStyle.BACKGROUND_GREEN -> "highlight_green"
-                HighlightStyle.BACKGROUND_BLUE -> "highlight_blue"
-                HighlightStyle.BACKGROUND_PINK -> "highlight_pink"
-                else -> ""
-            }
-
-            evaluateJavascript(
-                String.format(loadAssetFile("text_selection_highlight.js"), className).wrapJsFunction(), null
-            )
+        val className = when (highlightStyle) {
+            HighlightStyle.UNDERLINE -> "highlight_underline"
+            HighlightStyle.BACKGROUND_YELLOW -> "highlight_yellow"
+            HighlightStyle.BACKGROUND_GREEN -> "highlight_green"
+            HighlightStyle.BACKGROUND_BLUE -> "highlight_blue"
+            HighlightStyle.BACKGROUND_PINK -> "highlight_pink"
+            else -> ""
         }
+
+        evaluateJavascript(
+            String.format(loadAssetFile("text_selection_highlight.js"), className).wrapJsFunction(), null
+        )
     }
 
     private fun disableReaderMode(isVertical: Boolean = false) {
