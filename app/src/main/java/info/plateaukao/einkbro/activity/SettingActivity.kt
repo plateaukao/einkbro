@@ -71,8 +71,8 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
-import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
@@ -819,7 +819,7 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_highlight_style,
             config = config::highlightStyle,
-            options = HighlightStyle.entries.filter { it != HighlightStyle.BACKGROUND_NONE }
+            options = HighlightStyle.entries
                 .map { it.stringResId },
         ),
         ListSettingWithEnumItem(

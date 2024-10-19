@@ -345,7 +345,7 @@ class ConfigManager(
         )
         set(value) {
             sp.edit { putString("K_ETTS_VOICE", Json.encodeToString(value)) }
-            recentUsedTtsVoices = recentUsedTtsVoices.apply { add (0, value) }
+            recentUsedTtsVoices = recentUsedTtsVoices.apply { add(0, value) }
         }
 
     var uiLocaleLanguage by StringPreference(sp, "sp_ui_locale_language", "")
@@ -1133,11 +1133,6 @@ enum class HighlightStyle(
         R.string.pink,
         R.drawable.ic_highlight_color,
     ),
-    BACKGROUND_NONE(
-        null,
-        R.string.menu_delete,
-        R.drawable.icon_delete,
-    )
 }
 
 enum class TranslationTextStyle(

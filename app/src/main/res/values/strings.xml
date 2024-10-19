@@ -594,4 +594,5 @@
     <string name="gray">Gray</string>
     <string name="bold">Bold</string>
     <string name="deepl_translate_by_paragraph">Deepl by Paragraph</string>
+    <string name="dialog_message_remove_highlight">Remove highlight?</string>
 </resources>
