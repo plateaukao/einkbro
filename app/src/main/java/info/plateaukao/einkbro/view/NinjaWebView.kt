@@ -969,7 +969,7 @@ open class NinjaWebView(
         dispatchKeyEvent(upEvent)
     }
 
-    private fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) {
+    fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) {
         val jsContent = loadAssetFile(context, fileName)
         if (withPrefix) {
             evaluateJavascript(jsContent.wrapJsFunction(), callback)

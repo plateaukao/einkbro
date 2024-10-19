@@ -24,6 +24,10 @@ class WebContentPostProcessor : KoinComponent {
             }
         }
 
+        if (url.contains("x.com")) {
+            ninjaWebView.evaluateJsFile("twitter_block_ad.js")
+        }
+
         if (!ninjaWebView.shouldUseReaderFont() && (configManager.desktop || configManager.enableZoom)) {
             val context = application.applicationContext
             val width = if (ViewUnit.getWindowWidth(context) < 800) "800" else "device-width"
