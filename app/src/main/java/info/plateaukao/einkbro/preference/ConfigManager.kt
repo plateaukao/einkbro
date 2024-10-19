@@ -230,7 +230,6 @@ class ConfigManager(
         K_GPT_USER_PROMPT_WEB_PAGE,
         "Summarize in 300 words:"
     )
-    var papagoApiSecret by StringPreference(sp, K_PAPAGO_API_SECRET, "")
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
     var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
@@ -1082,7 +1081,8 @@ enum class TranslationMode(val labelResId: Int) {
     GOOGLE_IN_PLACE(R.string.google_in_place),
     TRANSLATE_BY_PARAGRAPH(R.string.translate_by_paragraph),
     PAPAGO_TRANSLATE_BY_PARAGRAPH(R.string.papago_translate_by_paragraph),
-    PAPAGO_TRANSLATE_BY_SCREEN(R.string.papago_translate_by_screen)
+    PAPAGO_TRANSLATE_BY_SCREEN(R.string.papago_translate_by_screen),
+    DEEPL_BY_PARAGRAPH(R.string.deepl_translate_by_paragraph),
 }
 
 enum class FontType(val resId: Int) {

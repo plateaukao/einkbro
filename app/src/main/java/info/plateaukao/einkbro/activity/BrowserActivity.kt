@@ -657,8 +657,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun translate(translationMode: TranslationMode) {
         when (translationMode) {
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-
             TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+            TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL)
 
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateWebView()
             TranslationMode.GOOGLE_IN_PLACE -> ebWebView.addGoogleTranslation()
@@ -674,8 +674,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         LanguageSettingDialogFragment(translateApi, translationViewModel) {
             if (translateApi == TRANSLATE_API.GOOGLE) {
                 translateByParagraph(TRANSLATE_API.GOOGLE)
-            } else {
+            } else if (translateApi == TRANSLATE_API.PAPAGO) {
                 translateByParagraph(TRANSLATE_API.PAPAGO)
+            } else if (translateApi == TRANSLATE_API.DEEPL) {
+                translateByParagraph(TRANSLATE_API.DEEPL)
             }
         }
             .show(supportFragmentManager, "LanguageSettingDialog")
@@ -1232,10 +1234,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         webView: EBWebView = ebWebView,
     ) {
         translateByParagraphInPlace(translateApi, webView)
-//        if (config.enableInplaceParagraphTranslate) {
-//        } else {
-//            translateByParagraphInReaderMode(translateApi)
-//        }
     }
 
     private fun translateByParagraphInPlace(

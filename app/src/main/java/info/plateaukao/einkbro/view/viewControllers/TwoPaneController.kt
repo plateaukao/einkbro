@@ -182,8 +182,11 @@ class TwoPaneController(
                 EBToast.showShort(activity, "No more supported")
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
+
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE, webView)
             TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO, webView)
+            TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL, webView)
+
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateByScreen()
         }
     }
@@ -251,7 +254,7 @@ class TwoPaneController(
             remove(TranslationMode.ONYX)
             remove(TranslationMode.PAPAGO)
             remove(TranslationMode.GOOGLE)
-            if (config.papagoApiSecret.isBlank()) {
+            if (config.imageApiKey.isBlank()) {
                 remove(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
                 remove(TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN)
             }
@@ -331,7 +334,7 @@ class TwoPaneController(
 
 
     private fun toggleTranslationWindow(
-        isEnabled: Boolean, onTranslationClosed: () -> Unit = {}
+        isEnabled: Boolean, onTranslationClosed: () -> Unit = {},
     ) {
         if (!isEnabled) {
             webView.loadUrl(BrowserUnit.URL_ABOUT_BLANK)

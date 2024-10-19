@@ -24,14 +24,6 @@ class ToolbarActionHandler(
         ToolbarAction.BoldFont -> browserController.showFontBoldnessDialog()
         ToolbarAction.Bookmark -> browserController.saveBookmark()
         ToolbarAction.Font -> browserController.toggleReaderMode()
-        ToolbarAction.InputUrl -> {
-            // toggle papago translate
-            if (config.papagoApiSecret.isBlank()) {
-                config.papagoApiSecret = "123"
-            } else {
-                config.papagoApiSecret = ""
-            }
-        }
         ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
         ToolbarAction.PageDown -> browserController.jumpToBottom()
         ToolbarAction.PageInfo -> browserController.summarizeContent()
