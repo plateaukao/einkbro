@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.SystemClock
 import android.print.PrintDocumentAdapter
 import android.util.Base64
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -42,6 +41,7 @@ import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.HelperUnit.loadAssetFile
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -128,7 +128,7 @@ open class NinjaWebView(
                     (if (config.boldFontStyle)
                         boldFontCss.replace("value", "${config.fontBoldness}") else "") +
                     // all css are purged by epublib. need to add it back if it's epub reader mode
-                    if (isEpubReaderMode) loadAssetFile(context, "readerview.css") else ""
+                    if (isEpubReaderMode) loadAssetFile("readerview.css") else ""
         if (cssStyle.isNotBlank()) {
             injectCss(cssStyle.toByteArray())
         }
@@ -795,7 +795,7 @@ open class NinjaWebView(
     private var isHighlightCssInjected = false
     fun highlightTextSelection(highlightStyle: HighlightStyle) {
         if (!isHighlightCssInjected) {
-            injectCss(loadAssetFile(context, "highlight.css").toByteArray())
+            injectCss(loadAssetFile("highlight.css").toByteArray())
             isHighlightCssInjected = true
         }
 
@@ -812,7 +812,7 @@ open class NinjaWebView(
             }
 
             evaluateJavascript(
-                String.format(loadAssetFile(context, "text_selection_highlight.js"), className).wrapJsFunction(), null
+                String.format(loadAssetFile("text_selection_highlight.js"), className).wrapJsFunction(), null
             )
         }
     }
@@ -843,7 +843,7 @@ open class NinjaWebView(
         postAction: (() -> Unit)? = null,
     ) {
         val cssByteArray =
-            loadAssetFile(context, if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
+            loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
         injectCss(cssByteArray)
         if (isVertical) injectCss(verticalLayoutCss.toByteArray())
 
@@ -855,12 +855,9 @@ open class NinjaWebView(
 
     private fun injectMozReaderModeJs(isVertical: Boolean = false) {
         try {
-            val buffer = loadAssetFile(context, "MozReadability.js").toByteArray()
+            val buffer = loadAssetFile("MozReadability.js").toByteArray()
             val cssBuffer =
-                loadAssetFile(
-                    context,
-                    if (isVertical) "verticalReaderview.css" else "readerview.css"
-                ).toByteArray()
+                loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
 
             val verticalCssString = if (isVertical) {
                 "var style = document.createElement('style');" +
@@ -970,7 +967,7 @@ open class NinjaWebView(
     }
 
     fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) {
-        val jsContent = loadAssetFile(context, fileName)
+        val jsContent = loadAssetFile(fileName)
         if (withPrefix) {
             evaluateJavascript(jsContent.wrapJsFunction(), callback)
         } else {
@@ -981,23 +978,6 @@ open class NinjaWebView(
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
 
-        // load javascript from asset and save to a cache list for later use
-        private val jsCache = mutableMapOf<String, String>()
-        private fun loadAssetFile(context: Context, fileName: String): String {
-            if (jsCache.containsKey(fileName)) {
-                return jsCache[fileName]!!
-            }
-
-            try {
-                val jsContent = context.assets.open(fileName).bufferedReader().use { it.readText() }
-                jsCache[fileName] = jsContent
-                return jsContent
-            } catch (e: IOException) {
-                Log.e("NinjaWebView", "Failed to load asset file: $fileName")
-                e.printStackTrace()
-                return ""
-            }
-        }
 
         // make a String extension to wrap it with Javascript function
         private fun String.wrapJsFunction(): String {
