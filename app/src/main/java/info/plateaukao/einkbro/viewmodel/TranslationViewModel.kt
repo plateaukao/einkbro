@@ -417,7 +417,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 //        // add observer
 //        val script: Element = parsedHtml.createElement("script")
 //        script.attr("type", "text/javascript")
-//        script.appendChild(DataNode(NinjaWebView.textNodesMonitorJs))
+//        script.appendChild(DataNode(ebWebView.textNodesMonitorJs))
 //        parsedHtml.body().appendChild(script)
 //
 //        return parsedHtml.toString()

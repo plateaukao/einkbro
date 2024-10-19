@@ -43,7 +43,7 @@ import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
@@ -132,7 +132,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
 
     private fun readCurrentArticle() {
         IntentUnit.readCurrentArticle(requireActivity())
-        NinjaToast.show(requireContext(), R.string.added_to_read_list)
+        EBToast.show(requireContext(), R.string.added_to_read_list)
     }
 }
 

@@ -25,12 +25,12 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.browser.Cookie
+import info.plateaukao.einkbro.browser.EBClickHandler
+import info.plateaukao.einkbro.browser.EBDownloadListener
+import info.plateaukao.einkbro.browser.EBWebChromeClient
+import info.plateaukao.einkbro.browser.EBWebViewClient
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.browser.JsWebInterface
-import info.plateaukao.einkbro.browser.NinjaClickHandler
-import info.plateaukao.einkbro.browser.NinjaDownloadListener
-import info.plateaukao.einkbro.browser.NinjaWebChromeClient
-import info.plateaukao.einkbro.browser.NinjaWebViewClient
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -59,16 +59,16 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-open class NinjaWebView(
+open class EBWebView(
     context: Context,
     var browserController: BrowserController?,
 ) : WebView(context), AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
     override val album: Album = Album(this, browserController)
-    protected val webViewClient: NinjaWebViewClient
-    private val webChromeClient: NinjaWebChromeClient
-    private val downloadListener: NinjaDownloadListener = NinjaDownloadListener(context)
-    private val clickHandler: NinjaClickHandler
+    protected val webViewClient: EBWebViewClient
+    private val webChromeClient: EBWebChromeClient
+    private val downloadListener: EBDownloadListener = EBDownloadListener(context)
+    private val clickHandler: EBClickHandler
 
     var dualCaption: String? = null
     var shouldHideTranslateContext: Boolean = false
@@ -176,9 +176,9 @@ open class NinjaWebView(
     init {
         isForeground = false
         webViewClient =
-            NinjaWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
-        webChromeClient = NinjaWebChromeClient(this) { setAlbumCoverAndSyncDb(it) }
-        clickHandler = NinjaClickHandler(this)
+            EBWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
+        webChromeClient = EBWebChromeClient(this) { setAlbumCoverAndSyncDb(it) }
+        clickHandler = EBClickHandler(this)
         initWebView()
         initWebSettings()
         initPreferences()
@@ -310,7 +310,7 @@ open class NinjaWebView(
     private fun toggleCookieSupport(isEnabled: Boolean) {
         with(cookieManager) {
             setAcceptCookie(isEnabled)
-            setAcceptThirdPartyCookies(this@NinjaWebView, isEnabled)
+            setAcceptThirdPartyCookies(this@EBWebView, isEnabled)
         }
     }
 
@@ -368,7 +368,7 @@ open class NinjaWebView(
 
         val processedUrl = url.trim { it <= ' ' }
         if (processedUrl.isEmpty()) {
-            NinjaToast.show(context, R.string.toast_load_error)
+            EBToast.show(context, R.string.toast_load_error)
             return
         }
 

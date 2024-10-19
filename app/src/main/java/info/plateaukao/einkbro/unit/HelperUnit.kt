@@ -53,7 +53,7 @@ import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -294,7 +294,7 @@ object HelperUnit {
         try {
             activity.startActivity(Intent.createChooser(intent, "Open file with"))
         } catch (exception: SecurityException) {
-            NinjaToast.show(activity, "open file failed, re-select the file again.")
+            EBToast.show(activity, "open file failed, re-select the file again.")
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = Constants.MIME_TYPE_ANY
@@ -379,7 +379,7 @@ object HelperUnit {
                     .replace("v", "")
                 if (tagName > BuildConfig.VERSION_NAME) {
                     withContext(Dispatchers.Main) {
-                        NinjaToast.show(context, "Start downloading...")
+                        EBToast.show(context, "Start downloading...")
                     }
 
                     val downloadUrl = latestRelease.getJSONArray("assets")
@@ -391,13 +391,13 @@ object HelperUnit {
                     installApkFromFile(context, file)
                 } else {
                     withContext(Dispatchers.Main) {
-                        NinjaToast.show(context, "Already up to date")
+                        EBToast.show(context, "Already up to date")
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    NinjaToast.show(context, "Something went wrong")
+                    EBToast.show(context, "Something went wrong")
                 }
             }
         }
@@ -437,7 +437,7 @@ object HelperUnit {
         val request = Request.Builder().url(url).build()
         try {
             withContext(Dispatchers.Main) {
-                NinjaToast.show(context, "start downloading...")
+                EBToast.show(context, "start downloading...")
             }
 
             client.newCall(request).execute().use { response ->
@@ -445,14 +445,14 @@ object HelperUnit {
 
                 val inputStream = response.body?.byteStream()
                 withContext(Dispatchers.Main) {
-                    NinjaToast.show(context, "Extracting zip...")
+                    EBToast.show(context, "Extracting zip...")
                 }
                 extractApkAndInstall(inputStream, context)
             }
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
-                NinjaToast.show(context, "Something went wrong")
+                EBToast.show(context, "Something went wrong")
             }
         }
     }

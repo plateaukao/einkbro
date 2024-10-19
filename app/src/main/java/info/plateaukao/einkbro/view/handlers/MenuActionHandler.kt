@@ -16,8 +16,8 @@ import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType
@@ -47,7 +47,7 @@ class MenuActionHandler(
             else -> Unit
         }
 
-    fun handle(menuItemType: MenuItemType, ninjaWebView: NinjaWebView): Any? {
+    fun handle(menuItemType: MenuItemType, ebWebView: EBWebView): Any? {
         return when (menuItemType) {
             MenuItemType.Tts -> browserController.handleTtsButton()
             MenuItemType.QuickToggle -> browserController.showFastToggleDialog()
@@ -66,40 +66,40 @@ class MenuActionHandler(
             )
 
             MenuItemType.ReceiveData -> browserController.toggleReceiveLink()
-            MenuItemType.SendLink -> browserController.sendToRemote(ninjaWebView.url.orEmpty())
+            MenuItemType.SendLink -> browserController.sendToRemote(ebWebView.url.orEmpty())
 
             MenuItemType.ShareLink ->
-                IntentUnit.share(activity, ninjaWebView.title, ninjaWebView.url)
+                IntentUnit.share(activity, ebWebView.title, ebWebView.url)
 
             MenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
                 activity,
-                ninjaWebView.url,
+                ebWebView.url,
                 activity.getString(R.string.menu_open_with)
             )
 
             MenuItemType.CopyLink -> ShareUtil.copyToClipboard(
                 activity,
-                BrowserUnit.stripUrlQuery(ninjaWebView.url.orEmpty())
+                BrowserUnit.stripUrlQuery(ebWebView.url.orEmpty())
             )
 
             MenuItemType.Shortcut -> browserController.createShortcut()
 
             MenuItemType.Highlights -> IntentUnit.gotoHighlights(activity)
-            MenuItemType.SetHome -> config.favoriteUrl = ninjaWebView.url.orEmpty()
+            MenuItemType.SetHome -> config.favoriteUrl = ebWebView.url.orEmpty()
             MenuItemType.SaveBookmark -> browserController.saveBookmark()
             MenuItemType.OpenEpub -> openSavedEpub()
             MenuItemType.SaveEpub -> browserController.showSaveEpubDialog()
-            MenuItemType.SavePdf -> printPDF(ninjaWebView)
+            MenuItemType.SavePdf -> printPDF(ebWebView)
 
             MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
             MenuItemType.InvertColor -> {
-                val hasInvertedColor = config.toggleInvertedColor(ninjaWebView.url.orEmpty())
-                ViewUnit.invertColor(ninjaWebView, hasInvertedColor)
+                val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
+                ViewUnit.invertColor(ebWebView, hasInvertedColor)
             }
 
             MenuItemType.WhiteBknd -> {
-                val isOn = config.toggleWhiteBackground(ninjaWebView.url.orEmpty())
-                if (isOn) ninjaWebView.updateCssStyle() else ninjaWebView.reload()
+                val isOn = config.toggleWhiteBackground(ebWebView.url.orEmpty())
+                if (isOn) ebWebView.updateCssStyle() else ebWebView.reload()
             }
 
             MenuItemType.BoldFont -> config::boldFontStyle.toggle()
@@ -109,19 +109,19 @@ class MenuActionHandler(
             MenuItemType.SaveArchive -> browserController.showWebArchiveFilePicker()
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
-            MenuItemType.AddToPocket -> ninjaWebView.url?.let { browserController.addToPocket(it) }
+            MenuItemType.AddToPocket -> ebWebView.url?.let { browserController.addToPocket(it) }
         }
     }
 
 
-    private fun showReceiveDataDialog(ninjaWebView: NinjaWebView) {
+    private fun showReceiveDataDialog(ebWebView: EBWebView) {
         ReceiveDataDialog(activity, activity.lifecycleScope).show { text ->
-            if (text.startsWith("http")) ninjaWebView.loadUrl(text)
+            if (text.startsWith("http")) ebWebView.loadUrl(text)
             else {
                 val clip = ClipData.newPlainText("Copied Text", text)
                 (activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
                     .setPrimaryClip(clip)
-                NinjaToast.show(activity, "String is Copied!")
+                EBToast.show(activity, "String is Copied!")
             }
         }
     }
@@ -137,12 +137,12 @@ class MenuActionHandler(
         }
     }
 
-    private fun printPDF(ninjaWebView: NinjaWebView) {
+    private fun printPDF(ebWebView: EBWebView) {
         try {
-            val title = HelperUnit.fileName(ninjaWebView.url)
+            val title = HelperUnit.fileName(ebWebView.url)
             val printManager =
                 activity.getSystemService(FragmentActivity.PRINT_SERVICE) as PrintManager
-            val printAdapter = ninjaWebView.createPrintDocumentAdapter(title) {
+            val printAdapter = ebWebView.createPrintDocumentAdapter(title) {
                 showFileListConfirmDialog()
             }
             printManager.print(title, printAdapter, PrintAttributes.Builder().build())

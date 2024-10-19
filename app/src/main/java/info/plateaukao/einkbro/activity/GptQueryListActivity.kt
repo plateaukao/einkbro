@@ -55,7 +55,7 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
 import kotlinx.coroutines.Dispatchers
@@ -145,7 +145,7 @@ class GptQueryListActivity : ComponentActivity()  {
             backupUnit.exportDataToFileUri(contentUri, data)
 
             withContext(Dispatchers.Main) {
-                NinjaToast.show(this@GptQueryListActivity, R.string.toast_backup_successful)
+                EBToast.show(this@GptQueryListActivity, R.string.toast_backup_successful)
                 IntentUnit.showFile(this@GptQueryListActivity, contentUri)
             }
         }

@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.databinding.DialogEditBookmarkBinding
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.launch
 
@@ -106,7 +106,7 @@ class BookmarkEditDialog(
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            NinjaToast.show(activity, info.plateaukao.einkbro.R.string.toast_error)
+            EBToast.show(activity, info.plateaukao.einkbro.R.string.toast_error)
         }
     }
 }

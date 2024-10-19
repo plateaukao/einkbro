@@ -15,7 +15,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit.getResourceAndMimetypeFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -47,7 +47,7 @@ class EpubManager(private val context: Context) : KoinComponent {
     fun saveEpub(
         activity: ComponentActivity,
         fileUri: Uri,
-        ninjaWebView: NinjaWebView,
+        ebWebView: EBWebView,
         onProgressChanged: (Int) -> Unit,
         onErrorAction: () -> Unit,
     ) {
@@ -56,13 +56,13 @@ class EpubManager(private val context: Context) : KoinComponent {
                 (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
 
             val bookName = if (isNewFile) getBookName() else ""
-            val chapterName = getChapterName(ninjaWebView.title)
+            val chapterName = getChapterName(ebWebView.title)
 
             if (bookName != null && chapterName != null) {
-                //val rawHtml = ninjaWebView.getRawReaderHtml()
-                val rawHtml = ninjaWebView.dualCaption?.let {
+                //val rawHtml = ebWebView.getRawReaderHtml()
+                val rawHtml = ebWebView.dualCaption?.let {
                     DualCaptionProcessor().convertToHtml(it)
-                } ?: ninjaWebView.getRawReaderHtml()
+                } ?: ebWebView.getRawReaderHtml()
                 onProgressChanged(5)
 
                 internalSaveEpub(
@@ -71,7 +71,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                     rawHtml,
                     bookName,
                     chapterName,
-                    ninjaWebView.url.orEmpty(),
+                    ebWebView.url.orEmpty(),
                     onProgressChanged,
                     { savedBookName ->
                         HelperUnit.openEpubToLastChapter(activity, fileUri)

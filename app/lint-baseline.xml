@@ -817,7 +817,7 @@
         errorLine1="                okAction = { handler.proceed() },"
         errorLine2="                             ~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
+            file="src/main/java/info/plateaukao/einkbro/browser/ebWebViewClient.kt"
             line="377"
             column="30"/>
     </issue>
@@ -828,7 +828,7 @@
         errorLine1="            handler.proceed()"
         errorLine2="            ~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
+            file="src/main/java/info/plateaukao/einkbro/browser/ebWebViewClient.kt"
             line="381"
             column="13"/>
     </issue>
@@ -2145,11 +2145,11 @@
 
     <issue
         id="ViewConstructor"
-        message="Custom view `NinjaWebView` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`"
-        errorLine1="open class NinjaWebView("
+        message="Custom view `ebWebView` is missing constructor used by tools: `(Context)` or `(Context,AttributeSet)` or `(Context,AttributeSet,int)`"
+        errorLine1="open class ebWebView("
         errorLine2="           ~~~~~~~~~~~~">
         <location
-            file="src/main/java/info/plateaukao/einkbro/view/NinjaWebView.kt"
+            file="src/main/java/info/plateaukao/einkbro/view/ebWebView.kt"
             line="58"
             column="12"/>
     </issue>

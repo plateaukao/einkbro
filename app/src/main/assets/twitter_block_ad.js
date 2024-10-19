@@ -60,6 +60,7 @@ function hideAd(ad) {
 
 function getAndHideAds() {
   getAds().forEach(hideAd)
+  console.log('getAndHideAds() ran');
 }
 
 // hide ads on page load
@@ -73,7 +74,6 @@ new PerformanceObserver((entryList) => {
 // re-check as user scrolls
 document.addEventListener('scroll', () => getAndHideAds());
 
-// re-check as user scrolls tweet sidebar (exists when image is opened)
 var sidebarExists = setInterval(function() {
   let timelines = document.querySelectorAll("[aria-label='Timeline: Conversation']");
 

@@ -57,7 +57,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -381,7 +381,7 @@ private fun GptRow(
             onClicked = {
                 coroutineScope.launch {
                     translationViewModel.saveTranslationResult()
-                    NinjaToast.show(context, R.string.toast_saved)
+                    EBToast.show(context, R.string.toast_saved)
                 }
             }
         )
