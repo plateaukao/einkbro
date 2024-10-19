@@ -31,6 +31,7 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
@@ -58,11 +59,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okio.IOException
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
@@ -490,6 +491,23 @@ object HelperUnit {
             "com.android.vending" == installerPackageName
         } catch (e: IllegalArgumentException) {
             false
+        }
+    }
+
+    private val fileCache = mutableMapOf<String, String>()
+    fun loadAssetFile(fileName: String): String {
+        if (fileCache.containsKey(fileName)) {
+            return fileCache[fileName]!!
+        }
+
+        try {
+            val jsContent = EinkBroApplication.instance.assets.open(fileName).bufferedReader().use { it.readText() }
+            fileCache[fileName] = jsContent
+            return jsContent
+        } catch (e: IOException) {
+            Log.e("HelperUnit", "Failed to load asset file: $fileName")
+            e.printStackTrace()
+            return ""
         }
     }
 
