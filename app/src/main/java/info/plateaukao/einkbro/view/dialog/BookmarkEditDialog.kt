@@ -28,11 +28,11 @@ class BookmarkEditDialog(
         val lifecycleScope = (activity as LifecycleOwner).lifecycleScope
 
         val binding = DialogEditBookmarkBinding.inflate(LayoutInflater.from(activity))
-        binding.passTitle.setText(bookmark.title)
+        binding.bookmarkTitle.setText(bookmark.title)
         if (bookmark.isDirectory) {
             binding.urlContainer.visibility = View.GONE
         } else {
-            binding.passUrl.setText(bookmark.url)
+            binding.bookmarkUrl.setText(bookmark.url)
         }
 
         binding.buttonAddFolder.setOnClickListener { addFolder(lifecycleScope, binding) }
@@ -42,7 +42,13 @@ class BookmarkEditDialog(
         dialogManager.showOkCancelDialog(
             title = activity.getString(info.plateaukao.einkbro.R.string.menu_save_bookmark),
             view = binding.root,
-            okAction = { upsertBookmark(binding, lifecycleScope) },
+            okAction = {
+                val newBookmark = bookmark.copy(
+                    title = binding.bookmarkTitle.text.toString().trim { it <= ' ' },
+                    url = binding.bookmarkUrl.text.toString().trim { it <= ' ' }
+                ).apply { id = bookmark.id }
+                upsertBookmark(newBookmark)
+            },
             cancelAction = { cancelAction.invoke() }
         )
     }
@@ -69,7 +75,7 @@ class BookmarkEditDialog(
             if (bookmark.isDirectory) folders.remove(bookmark)
 
             binding.folderSpinner.adapter =
-                ArrayAdapter(activity, R.layout.simple_spinner_dropdown_item, folders)
+                ArrayAdapter(activity, R.layout.simple_spinner_dropdown_item, folders.map { it.title })
             val selectedIndex = if (selectedFolderName == null) {
                 folders.indexOfFirst { it.id == bookmark.parent }
             } else {
@@ -93,17 +99,9 @@ class BookmarkEditDialog(
         }
     }
 
-    private fun upsertBookmark(
-        binding: DialogEditBookmarkBinding,
-        lifecycleScope: LifecycleCoroutineScope,
-    ) {
+    private fun upsertBookmark(bookmark: Bookmark) {
         try {
-            bookmark.title = binding.passTitle.text.toString().trim { it <= ' ' }
-            bookmark.url = binding.passUrl.text.toString().trim { it <= ' ' }
-            lifecycleScope.launch {
-                bookmarkViewModel.insertBookmark(bookmark)
-                okAction.invoke()
-            }
+            bookmarkViewModel.insertBookmark(bookmark) { okAction.invoke() }
         } catch (e: Exception) {
             e.printStackTrace()
             EBToast.show(activity, info.plateaukao.einkbro.R.string.toast_error)

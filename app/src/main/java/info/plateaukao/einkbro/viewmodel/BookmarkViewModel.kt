@@ -69,10 +69,11 @@ class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewMode
         updateUiState()
     }
 
-    fun insertBookmark(bookmark: Bookmark) {
+    fun insertBookmark(bookmark: Bookmark, doneAction: (() -> Unit)? = null) {
         viewModelScope.launch {
             bookmarkManager.insert(bookmark)
             updateUiState()
+            doneAction?.invoke()
         }
     }
 
