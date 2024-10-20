@@ -1,12 +1,10 @@
 package info.plateaukao.einkbro.browser
 
-import android.app.Activity
 import android.util.Log
 import android.webkit.JavascriptInterface
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.view.EBWebView
-import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +20,6 @@ class JsWebInterface(private val webView: EBWebView) :
     KoinComponent {
     private val translateRepository: TranslateRepository = TranslateRepository()
     private val configManager: ConfigManager by inject()
-    private val dialogManager: DialogManager by lazy { DialogManager(webView.context as Activity) }
 
     // to control the translation request threshold
     private val semaphoreForTranslate = Semaphore(4)

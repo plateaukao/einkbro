@@ -79,8 +79,8 @@ android {
 
     lint {
         baseline = file("lint-baseline.xml")
-        //isCheckReleaseBuilds = false
         disable.add("MissingTranslation")
+        checkReleaseBuilds = false
     }
 
     namespace = "info.plateaukao.einkbro"
