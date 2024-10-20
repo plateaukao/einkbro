@@ -94,6 +94,7 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.unit.pruneWebTitle
 import info.plateaukao.einkbro.unit.toRawPoint
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
@@ -1136,13 +1137,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun saveBookmark(url: String?, title: String?) {
         val currentUrl = url ?: ebWebView.url ?: return
-        val nonNullTitle = title ?: HelperUnit.secString(ebWebView.title)
+        var nonNullTitle = title ?: HelperUnit.secString(ebWebView.title)
         try {
             lifecycleScope.launch {
                 BookmarkEditDialog(
                     this@BrowserActivity,
                     bookmarkViewModel,
-                    Bookmark(nonNullTitle, currentUrl),
+                    Bookmark(nonNullTitle.pruneWebTitle(), currentUrl),
                     {
                         handleBookmarkSync(true)
                         ViewUnit.hideKeyboard(this@BrowserActivity)
@@ -1449,6 +1450,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     return
                 }
             }
+
             else -> addAlbum()
         }
         getIntent().action = ""
@@ -1554,7 +1556,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
                 ConfigManager.K_TOOLBAR_ICONS,
-                -> {
+                    -> {
                     composeToolbarViewController.updateIcons()
                 }
 
@@ -1652,7 +1654,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_CUSTOM_USER_AGENT,
                 ConfigManager.K_ENABLE_CUSTOM_USER_AGENT,
-                -> {
+                    -> {
                     ebWebView.updateUserAgentString()
                     ebWebView.reload()
                 }

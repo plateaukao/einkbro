@@ -753,3 +753,12 @@ fun String.getWordCount(): Int {
     // Find all matches and return the count
     return wordRegex.findAll(trimmedInput).count()
 }
+
+fun String.pruneWebTitle(): String =
+    if (contains("|")) {
+        substringBefore("|").trim()
+    } else if (contains("-")) {
+        substringBefore("-").trim()
+    } else {
+        this
+    }
