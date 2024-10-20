@@ -62,7 +62,6 @@ import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
@@ -75,7 +74,6 @@ class BookmarksDialogFragment(
     private val syncBookmarksAction: (Boolean) -> Unit,
     private val linkBookmarksAction: () -> Unit,
 ) : ComposeDialogFragment(), KoinComponent {
-    private val bookmarkManager: BookmarkManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
     private lateinit var bookmarksUpdateJob: Job
@@ -115,7 +113,7 @@ class BookmarksDialogFragment(
                     } else {
                         BookmarkList(
                             bookmarks = bookmarks.value,
-                            bookmarkManager = bookmarkManager,
+                            bookmarkViewModel = bookmarkViewModel,
                             isWideLayout = ViewUnit.isWideLayout(requireContext()),
                             shouldReverse = !config.isToolbarOnTop,
                             shouldShowDragHandle = shouldShowDragHandle.value,
@@ -189,7 +187,7 @@ class BookmarksDialogFragment(
         }
         dialogView.menuContextListDelete.setOnClickListener {
             lifecycleScope.launch {
-                bookmarkManager.delete(bookmark)
+                bookmarkViewModel.deleteBookmark(bookmark)
                 syncBookmarksAction(true)
             }
             optionDialog.dismiss()
@@ -283,7 +281,7 @@ fun DialogPanel(
 @Composable
 fun BookmarkList(
     bookmarks: List<Bookmark>,
-    bookmarkManager: BookmarkManager? = null,
+    bookmarkViewModel: BookmarkViewModel,
     isWideLayout: Boolean = false,
     shouldReverse: Boolean = true,
     shouldShowDragHandle: Boolean = false,
@@ -310,7 +308,7 @@ fun BookmarkList(
             ReorderableItem(reorderableLazyGridState, key = bookmark.id) { isDragging ->
                 BookmarkItem(
                     bookmark = bookmark,
-                    bitmap = bookmarkManager?.findFaviconBy(bookmark.url)?.getBitmap(),
+                    bitmap = bookmarkViewModel.getFavicon(bookmark),
                     isPressed = isPressed || isDragging,
                     shouldShowDragHandle = shouldShowDragHandle,
                     dragModifier = Modifier.draggableHandle(),
@@ -428,7 +426,7 @@ private fun PreviewBookmarkList() {
     MyTheme {
         BookmarkList(
             bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
-            null,
+            BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
             isWideLayout = true,
             shouldReverse = true,
             shouldShowDragHandle = false,
@@ -457,7 +455,7 @@ private fun PreviewDialogPanel() {
         ) {
             BookmarkList(
                 bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
-                null,
+                BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
                 isWideLayout = true,
                 shouldReverse = true,
                 shouldShowDragHandle = false,
