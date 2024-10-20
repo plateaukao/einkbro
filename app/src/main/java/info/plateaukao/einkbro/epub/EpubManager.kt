@@ -14,6 +14,7 @@ import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit.getResourceAndMimetypeFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.pruneWebTitle
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
@@ -56,10 +57,9 @@ class EpubManager(private val context: Context) : KoinComponent {
                 (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
 
             val bookName = if (isNewFile) getBookName() else ""
-            val chapterName = getChapterName(ebWebView.title)
+            val chapterName = getChapterName(ebWebView.title?.pruneWebTitle())
 
             if (bookName != null && chapterName != null) {
-                //val rawHtml = ebWebView.getRawReaderHtml()
                 val rawHtml = ebWebView.dualCaption?.let {
                     DualCaptionProcessor().convertToHtml(it)
                 } ?: ebWebView.getRawReaderHtml()
@@ -136,7 +136,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         currentUrl: String,
         onProgressChanged: (Int) -> Unit, // 0..100
         doneAction: (String) -> Unit,
-        errorAction: () -> Unit
+        errorAction: () -> Unit,
     ) {
         val webUri = Uri.parse(currentUrl)
         val domain = webUri.host ?: "EinkBro"
@@ -228,7 +228,7 @@ class EpubManager(private val context: Context) : KoinComponent {
     private fun processHtmlString(
         html: String,
         chapterIndex: Int,
-        baseUri: String
+        baseUri: String,
     ): Pair<String, Map<String, String>> {
         val doc = Jsoup.parse(html, baseUri)
         with(doc.head().allElements) {
