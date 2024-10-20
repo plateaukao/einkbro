@@ -29,8 +29,8 @@ import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
-import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
 import nl.siegmann.epublib.domain.Book
@@ -231,6 +231,10 @@ class EBWebViewClient(
         request: WebResourceRequest?,
         error: WebResourceError?,
     ) {
+//        if (request?.isForMainFrame == true) {
+//            view?.loadUrl("file:///android_asset/trex.html")
+//            return
+//        }
         // if https is not available, try http
         if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
             ebWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
