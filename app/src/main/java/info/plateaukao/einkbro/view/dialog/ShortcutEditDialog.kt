@@ -18,8 +18,8 @@ class ShortcutEditDialog(
 
     fun show() {
         val binding = DialogEditShortcutBinding.inflate(LayoutInflater.from(activity))
-        binding.passTitle.setText(title)
-        binding.passUrl.setText(url)
+        binding.title.setText(title)
+        binding.url.setText(url)
 
         dialogManager.showOkCancelDialog(
                 title = activity.getString(info.plateaukao.einkbro.R.string.menu_sc),
@@ -32,8 +32,8 @@ class ShortcutEditDialog(
     private fun createShortcut(binding: DialogEditShortcutBinding) {
         HelperUnit.createShortcut(
             activity,
-            binding.passTitle.text.toString().trim { it <= ' ' },
-            binding.passUrl.text.toString().trim { it <= ' ' },
+            binding.title.text.toString().trim { it <= ' ' },
+            binding.url.text.toString().trim { it <= ' ' },
             bitmap
         )
         okAction.invoke()
