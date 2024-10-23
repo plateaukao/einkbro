@@ -182,7 +182,8 @@ class BookmarksDialogFragment(
                     bookmark.title,
                     bookmark.url,
                     true
-                ); dialog?.dismiss()
+                )
+                dialog?.dismiss()
             }
         }
         dialogView.menuContextListDelete.setOnClickListener {
@@ -221,8 +222,7 @@ fun DialogPanel(
     content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Box(Modifier.weight(1F, fill = false)) {
             content()
