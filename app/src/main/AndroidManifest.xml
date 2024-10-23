@@ -213,6 +213,7 @@
         <activity android:name=".activity.GptActionsActivity" />
         <activity android:name=".activity.GptQueryListActivity" />
         <activity android:name=".activity.HighlightsActivity" />
+        <activity android:name=".activity.ToolbarConfigActivity" />
 
         <service
             android:name=".service.ClearService"
