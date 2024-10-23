@@ -107,29 +107,24 @@ class ToolbarConfigActivity : ComponentActivity() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
-    val lazyGridState = rememberLazyGridState()
-    val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
-        list.value = list.value.toMutableList().apply {
-            val item = removeAt(from.index)
-            add(to.index, item)
-        }
-    }
-
     Column(
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 1.dp),
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
             text = "Preview",
+            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h6
         )
         Text(
             modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
             text = "tap to remove; drag to reorder",
+            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.caption
         )
         Box(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .border(1.dp, MaterialTheme.colors.onBackground),
             contentAlignment = Alignment.CenterEnd
         ) {
@@ -149,13 +144,15 @@ fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
             )
         }
         Text(
-            modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 5.dp),
+            modifier = Modifier.padding(start = 10.dp, top = 20.dp, bottom = 5.dp),
             text = "Other Actions",
+            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h6
         )
         Text(
             modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
             text = "tap to add",
+            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.caption
         )
         LazyVerticalGrid(
