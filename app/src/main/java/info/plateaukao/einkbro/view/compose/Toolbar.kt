@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
@@ -31,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -62,6 +64,7 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Time
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Title
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import kotlinx.coroutines.delay
+import sh.calvin.reorderable.ReorderableRow
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -155,40 +158,11 @@ fun ComposedIconBar(
     ) {
         toolbarActionInfos.forEach { toolbarActionInfo ->
             when (val toolbarAction = toolbarActionInfo.toolbarAction) {
-                Title -> {
-                    val titleModifier = Modifier
-                        .padding(start = 2.dp, top = 6.dp, bottom = 6.dp)
-                        .fillMaxHeight()
-                        .defaultMinSize(minWidth = 100.dp)
-                        .border(
-                            0.5.dp,
-                            MaterialTheme.colors.onBackground,
-                            RoundedCornerShape(16.dp)
-                        )
-                        .padding(start = 3.dp, end = 1.dp)
-                        .clickable { onClick(toolbarAction) }
-                    Row(
-                        modifier = titleModifier,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = title,
-                            color = MaterialTheme.colors.onBackground,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                }
-
-                // show a current time (hour:minute) in the toolbar
+                Title -> ToolbarTitle(onClick, toolbarAction, title)
                 Time -> CurrentTimeText()
-
                 TabCount -> TabCountIcon(isIncognito, tabCount, onClick, onLongClick)
-
                 PageInfo -> PageInfoIcon(pageInfo, onClick, onLongClick)
-
                 Spacer1, Spacer2 -> Spacer(modifier = Modifier.weight(1F))
-
                 else -> ToolbarIcon(
                     toolbarAction,
                     toolbarActionInfo.getCurrentResId(),
@@ -197,6 +171,97 @@ fun ComposedIconBar(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ReorderableComposedIconBar(
+    list: MutableState<List<ToolbarActionInfo>>,
+    title: String,
+    tabCount: String,
+    pageInfo: String,
+    onClick: (ToolbarAction) -> Unit,
+) {
+    ReorderableRow(
+        modifier = Modifier
+            .height(50.dp)
+            .background(MaterialTheme.colors.background)
+            .horizontalScroll(
+                rememberScrollState(),
+                reverseScrolling = true
+            ),
+        list = list.value,
+        onSettle = { fromIndex, toIndex ->
+            list.value = list.value.toMutableList().apply {
+                add(toIndex, removeAt(fromIndex))
+            }
+        },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End
+    ) { _, toolbarActionInfo, isDragging ->
+        key(toolbarActionInfo) {
+            val toolbarAction = toolbarActionInfo.toolbarAction
+            Box(
+                modifier = Modifier
+                    .longPressDraggableHandle()
+                    .border(
+                        if (isDragging) 1.5.dp else (-1).dp,
+                        MaterialTheme.colors.onBackground,
+                        RoundedCornerShape(3.dp)
+                    )
+                    .conditional(toolbarAction in listOf(Spacer1, Spacer2, Time)) {
+                        clickable(onClick = { onClick(toolbarAction) })
+                    }
+            ) {
+                when (toolbarAction) {
+                    Title -> ToolbarTitle(onClick, toolbarAction, title)
+                    Time -> CurrentTimeText()
+                    TabCount -> TabCountIcon(false, tabCount, onClick)
+                    PageInfo -> PageInfoIcon(pageInfo, onClick)
+                    Spacer1, Spacer2 -> Spacer(
+                        modifier = Modifier
+                            .size(50.dp)
+                    )
+
+                    else -> ToolbarIcon(
+                        toolbarAction,
+                        toolbarActionInfo.getCurrentResId(),
+                        onClick,
+                        null
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ToolbarTitle(
+    onClick: (ToolbarAction) -> Unit,
+    toolbarAction: ToolbarAction,
+    title: String,
+) {
+    val titleModifier = Modifier
+        .padding(start = 2.dp, top = 6.dp, bottom = 6.dp)
+        .fillMaxHeight()
+        .defaultMinSize(minWidth = 100.dp)
+        .border(
+            0.5.dp,
+            MaterialTheme.colors.onBackground,
+            RoundedCornerShape(16.dp)
+        )
+        .padding(start = 3.dp, end = 1.dp)
+        .clickable { onClick(toolbarAction) }
+    Row(
+        modifier = titleModifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = title,
+            color = MaterialTheme.colors.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 
@@ -218,7 +283,7 @@ fun PageInfoIcon(
             .wrapContentWidth()
             .combinedClickable(
                 onClick = { onClick(PageInfo) },
-                onLongClick = { onLongClick?.invoke(PageInfo) }
+                onLongClick = onLongClick?.let { { it.invoke(PageInfo) } },
             )
     )
 }
@@ -244,7 +309,7 @@ fun ToolbarIcon(
             indication = null,
             interactionSource = interactionSource,
             onClick = { onClick(toolbarAction) },
-            onLongClick = { onLongClick?.invoke(toolbarAction) }
+            onLongClick = onLongClick?.let { { it.invoke(toolbarAction) } },
         )
         .padding(6.dp)
         .testTag(toolbarAction.name.lowercase())
@@ -285,7 +350,7 @@ private fun TabCountIcon(
             .width(toolbarIconWidth)
             .combinedClickable(
                 onClick = { onClick(TabCount) },
-                onLongClick = { onLongClick?.invoke(TabCount) }
+                onLongClick = onLongClick?.let { { it.invoke(TabCount) } },
             ),
         contentAlignment = Alignment.Center
     ) {

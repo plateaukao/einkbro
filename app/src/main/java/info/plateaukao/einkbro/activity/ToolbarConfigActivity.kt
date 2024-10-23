@@ -10,7 +10,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -50,6 +49,8 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import org.koin.android.ext.android.inject
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
+import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.compose.ReorderableComposedIconBar
 
 class ToolbarConfigActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
@@ -67,7 +68,7 @@ class ToolbarConfigActivity : ComponentActivity() {
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text(text = "123")
+                                Text(text = stringResource(id = R.string.toolbars))
                             },
                             navigationIcon = {
                                 IconButton(onClick = { finish() }) {
@@ -115,16 +116,16 @@ fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
     }
 
     Column(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(vertical = 8.dp, horizontal = 1.dp),
     ) {
         Text(
-            modifier = Modifier.padding(vertical = 10.dp),
+            modifier = Modifier.padding(10.dp),
             text = "Preview",
             style = MaterialTheme.typography.h6
         )
         Text(
-            modifier = Modifier.padding(bottom = 10.dp),
-            text = "no interaction here",
+            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
+            text = "tap to remove; drag to reorder",
             style = MaterialTheme.typography.caption
         )
         Box(
@@ -132,77 +133,29 @@ fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
                 .border(1.dp, MaterialTheme.colors.onBackground),
             contentAlignment = Alignment.CenterEnd
         ) {
-            ComposedIconBar(
-                toolbarActionInfos = list.value,
+            ReorderableComposedIconBar(
+                list = list,
                 title = "Toolbar Configuration",
                 tabCount = "7",
-                pageInfo = "1",
-                isIncognito = false,
-                onClick = {},
-                onLongClick = {},
+                pageInfo = "4/21",
+                onClick = { action ->
+                    if (action != ToolbarAction.Settings) {
+                        list.value = list.value.toMutableList().apply {
+                            val info = find { it.toolbarAction == action }
+                            remove(info)
+                        }
+                    }
+                },
             )
         }
         Text(
-            modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
-            text = "Added Actions",
-            style = MaterialTheme.typography.h6
-        )
-        Text(
-            modifier = Modifier.padding(bottom = 10.dp),
-            text = "click to remove; drag to reorder",
-            style = MaterialTheme.typography.caption
-        )
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxWidth(),
-            state = lazyGridState,
-            columns = GridCells.Adaptive(64.dp),
-        ) {
-            val actionList = list.value.map { it.toolbarAction }
-            itemsIndexed(actionList, key = { _, item -> item.ordinal }) { index, action ->
-                ReorderableItem(reorderableLazyGridState, key = action.ordinal) { isDragging ->
-                    val borderWidth = if (isDragging) 1.5.dp else (-1).dp
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                borderWidth,
-                                MaterialTheme.colors.onBackground,
-                                RoundedCornerShape(3.dp)
-                            )
-                            .padding(horizontal = 6.dp)
-                            .longPressDraggableHandle()
-                            .clickable {
-                                if (action == ToolbarAction.Settings) {
-                                    // do nothing
-                                    return@clickable
-                                }
-
-                                list.value = actionList.toMutableList().apply {
-                                    remove(action)
-                                }.toToolbarActionInfoList()
-                            },
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(64.dp)
-                                .padding(horizontal = 6.dp),
-                            imageVector = action.imageVector
-                                ?: ImageVector.vectorResource(id = action.iconResId),
-                            contentDescription = null,
-                            tint = MaterialTheme.colors.onBackground
-                        )
-                    }
-                }
-            }
-        }
-        Text(
-            modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
+            modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 5.dp),
             text = "Other Actions",
             style = MaterialTheme.typography.h6
         )
         Text(
-            modifier = Modifier.padding(bottom = 10.dp),
-            text = "click to add",
+            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
+            text = "tap to add",
             style = MaterialTheme.typography.caption
         )
         LazyVerticalGrid(
