@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -48,6 +49,7 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
@@ -174,6 +176,8 @@ fun ComposedIconBar(
     }
 }
 
+fun List<Dp>.sumDp(): Dp = this.fold(0.dp) { acc, dp -> acc + dp }
+
 @Composable
 fun ReorderableComposedIconBar(
     list: MutableState<List<ToolbarActionInfo>>,
@@ -182,9 +186,12 @@ fun ReorderableComposedIconBar(
     pageInfo: String,
     onClick: (ToolbarAction) -> Unit,
 ) {
+    val spacerWidth = calculateSpacerWidth(list)
+
     ReorderableRow(
         modifier = Modifier
             .height(50.dp)
+            .fillMaxWidth()
             .background(MaterialTheme.colors.background)
             .horizontalScroll(
                 rememberScrollState(),
@@ -220,7 +227,8 @@ fun ReorderableComposedIconBar(
                     PageInfo -> PageInfoIcon(pageInfo, onClick)
                     Spacer1, Spacer2 -> Spacer(
                         modifier = Modifier
-                            .size(50.dp)
+                            .height(50.dp)
+                            .width(spacerWidth)
                     )
 
                     else -> ToolbarIcon(
@@ -233,6 +241,20 @@ fun ReorderableComposedIconBar(
             }
         }
     }
+}
+
+@Composable
+private fun calculateSpacerWidth(list: MutableState<List<ToolbarActionInfo>>): Dp {
+    val iconWidth = 46.dp
+    val totalActionIconWidth = list.value.filterNot { it.toolbarAction in listOf(Spacer1, Spacer2) }
+        .map {
+            if (it.toolbarAction == Title) 100.dp else if (it.toolbarAction == Time) 55.dp else iconWidth
+        }.sumDp()
+    val spacerCount = list.value.count { it.toolbarAction in listOf(Spacer1, Spacer2) }
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val leftWidth = screenWidth - totalActionIconWidth
+    val spacerWidth = (if (leftWidth > 50.dp) leftWidth else 50.dp) / spacerCount
+    return spacerWidth
 }
 
 @Composable
@@ -346,8 +368,7 @@ private fun TabCountIcon(
 
     Box(
         modifier = Modifier
-            .height(toolbarIconWidth)
-            .width(toolbarIconWidth)
+            .size(toolbarIconWidth)
             .combinedClickable(
                 onClick = { onClick(TabCount) },
                 onLongClick = onLongClick?.let { { it.invoke(TabCount) } },
