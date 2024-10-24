@@ -86,23 +86,23 @@ enum class LinkSettingItem(
     override val summaryResId: Int = 0,
     override val span: Int = 1,
 ) : SettingItemInterface {
-    ProjectSite(R.string.project_site, R.drawable.ic_home, "https://github.com/plateaukao/browser"),
+    ProjectSite(R.string.project_site, R.drawable.ic_home, "https://github.com/plateaukao/einkbro"),
     LatestRelease(
         R.string.latest_release,
         R.drawable.icon_earth,
-        "https://github.com/plateaukao/browser/releases"
+        "https://github.com/plateaukao/einkbro/releases"
     ),
     Facebook(R.string.twitter, R.drawable.icon_earth, "https://twitter.com/einkbro"),
     ChangeLogs(
         R.string.changelogs,
         R.drawable.icon_earth,
-        "https://github.com/plateaukao/browser/blob/main/CHANGELOG.md"
+        "https://github.com/plateaukao/einkbro/blob/main/CHANGELOG.md"
     ),
     Contributors(
         R.string.contributors,
         R.drawable.icon_copyright,
-        "https://github.com/plateaukao/browser/blob/main/CONTRIBUTORS.md"
+        "https://github.com/plateaukao/einkbro/blob/main/CONTRIBUTORS.md"
     ),
     Medium(R.string.medium_articles, R.drawable.ic_reader, "https://medium.com/einkbro"),
-    Manual(R.string.manual, R.drawable.ic_reader, "https://einkbro.github.io/docs/home/")
+    Manual(R.string.manual, R.drawable.ic_reader, "https://einkbro.github.io/overview.html", span = 2)
 }
