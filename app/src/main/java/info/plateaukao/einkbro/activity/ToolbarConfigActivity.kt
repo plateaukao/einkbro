@@ -8,16 +8,17 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -110,50 +111,19 @@ fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 1.dp),
+            .fillMaxHeight()
+            .padding(top = 8.dp, start = 1.dp, end = 1.dp, bottom = 50.dp),
+        verticalArrangement = Arrangement.Bottom
     ) {
         Text(
-            modifier = Modifier.padding(10.dp),
-            text = "Preview",
+            modifier = Modifier.padding(start = 10.dp, bottom = 5.dp),
+            text = "Available Actions",
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h6
         )
         Text(
             modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
-            text = "tap to remove; drag to reorder",
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.caption
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colors.onBackground),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            ReorderableComposedIconBar(
-                list = list,
-                title = "Toolbar Configuration",
-                tabCount = "7",
-                pageInfo = "4/21",
-                onClick = { action ->
-                    if (action != ToolbarAction.Settings) {
-                        list.value = list.value.toMutableList().apply {
-                            val info = find { it.toolbarAction == action }
-                            remove(info)
-                        }
-                    }
-                },
-            )
-        }
-        Text(
-            modifier = Modifier.padding(start = 10.dp, top = 20.dp, bottom = 5.dp),
-            text = "Other Actions",
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h6
-        )
-        Text(
-            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
-            text = "tap to add",
+            text = "click icon to add it to the toolbar",
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.caption
         )
@@ -198,6 +168,40 @@ fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
                     )
                 }
             }
+        }
+        Spacer(modifier = Modifier.size(20.dp))
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = "Preview",
+            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.h6
+        )
+        Text(
+            modifier = Modifier.padding(start = 10.dp, bottom = 20.dp),
+            text = "click icon to remove it from the toolbar; long click to drag icon to reorder",
+            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.caption
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, MaterialTheme.colors.onBackground),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            ReorderableComposedIconBar(
+                list = list,
+                title = "Toolbar Configuration",
+                tabCount = "7",
+                pageInfo = "4/21",
+                onClick = { action ->
+                    if (action != ToolbarAction.Settings) {
+                        list.value = list.value.toMutableList().apply {
+                            val info = find { it.toolbarAction == action }
+                            remove(info)
+                        }
+                    }
+                },
+            )
         }
     }
 }
