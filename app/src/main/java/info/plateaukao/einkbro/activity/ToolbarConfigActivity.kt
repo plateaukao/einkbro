@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.activity
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -11,14 +12,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -36,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -48,10 +55,10 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import org.koin.android.ext.android.inject
-import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyGridState
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.ReorderableComposedIconBar
+import info.plateaukao.einkbro.view.compose.conditional
 
 class ToolbarConfigActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
@@ -100,72 +107,79 @@ class ToolbarConfigActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
             window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
+
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxSize()
             .padding(top = 8.dp, start = 1.dp, end = 1.dp, bottom = 50.dp),
         verticalArrangement = Arrangement.Bottom
     ) {
-        Text(
-            modifier = Modifier.padding(start = 10.dp, bottom = 5.dp),
-            text = "Available Actions",
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h6
-        )
-        Text(
-            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
-            text = "click icon to add it to the toolbar",
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.caption
-        )
-        LazyVerticalGrid(
+        Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            columns = GridCells.Adaptive(84.dp),
+                .weight(1f),
+            verticalArrangement = Arrangement.Bottom
         ) {
-            val selectedActions = list.value.map { it.toolbarAction }
-            val otherActionInfos = ToolbarAction.entries
-                .filter { it !in selectedActions }
-                .toToolbarActionInfoList()
-            itemsIndexed(otherActionInfos) { index, info ->
-                Column(
-                    modifier = Modifier
-                        .padding(vertical = 5.dp)
-                        .clickable {
-                            list.value = list.value.toMutableList().apply {
-                                add(info)
-                            }
-                        },
-                ) {
-                    Icon(
-                        imageVector = info.toolbarAction.imageVector
-                            ?: ImageVector.vectorResource(id = info.toolbarAction.iconResId),
-                        contentDescription = null,
+            Text(
+                modifier = Modifier.padding(start = 10.dp, bottom = 5.dp),
+                text = "Available Actions",
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.h6
+            )
+            Text(
+                modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
+                text = "click icon to add it to the toolbar",
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.caption
+            )
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                columns = GridCells.Adaptive(84.dp),
+            ) {
+                val selectedActions = list.value.map { it.toolbarAction }
+                val otherActionInfos = ToolbarAction.entries
+                    .filter { it !in selectedActions }
+                    .toToolbarActionInfoList()
+                itemsIndexed(otherActionInfos) { index, info ->
+                    Column(
                         modifier = Modifier
-                            .size(48.dp)
-                            .padding(horizontal = 6.dp)
-                            .align(Alignment.CenterHorizontally),
-                        tint = MaterialTheme.colors.onBackground
-                    )
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                        text = stringResource(id = info.toolbarAction.titleResId),
-                        textAlign = TextAlign.Center,
-                        fontSize = 10.sp,
-                        lineHeight = 14.sp,
-                        color = MaterialTheme.colors.onBackground
-                    )
+                            .padding(vertical = 5.dp)
+                            .clickable {
+                                list.value = list.value.toMutableList().apply {
+                                    add(info)
+                                }
+                            },
+                    ) {
+                        Icon(
+                            imageVector = info.toolbarAction.imageVector
+                                ?: ImageVector.vectorResource(id = info.toolbarAction.iconResId),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .padding(horizontal = 6.dp)
+                                .align(Alignment.CenterHorizontally),
+                            tint = MaterialTheme.colors.onBackground
+                        )
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally),
+                            text = stringResource(id = info.toolbarAction.titleResId),
+                            textAlign = TextAlign.Center,
+                            fontSize = 10.sp,
+                            lineHeight = 14.sp,
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    }
                 }
             }
         }

@@ -1,12 +1,13 @@
 package info.plateaukao.einkbro.view.handlers
 
+import android.content.Intent
 import androidx.fragment.app.FragmentActivity
+import info.plateaukao.einkbro.activity.ToolbarConfigActivity
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -55,10 +56,8 @@ class ToolbarActionHandler(
         ToolbarAction.Forward -> browserController.goForward()
         ToolbarAction.FullScreen -> browserController.toggleFullscreen()
         ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
-        ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(
-            activity.supportFragmentManager,
-            "toolbar_config"
-        )
+        ToolbarAction.IconSetting ->
+            activity.startActivity(Intent(activity, ToolbarConfigActivity::class.java))
         ToolbarAction.IncreaseFont -> browserController.increaseFontSize()
         ToolbarAction.InputUrl -> browserController.focusOnInput()
         ToolbarAction.MoveToBackground -> activity.moveTaskToBack(true)
