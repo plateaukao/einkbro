@@ -108,7 +108,9 @@ class ToolbarConfigActivity : ComponentActivity() {
 @Composable
 fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
     Column(
-        modifier = Modifier.padding(vertical = 8.dp, horizontal = 1.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 1.dp),
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
@@ -211,6 +213,22 @@ fun PreviewToolbarConfigPanel() {
         var list = remember { mutableStateOf(toolbarActionInfoList) }
         ToolbarConfigPanel(
             list = list,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewToolbar() {
+    MyTheme {
+        val toolbarActionInfoList = listOf(ToolbarAction.Time).toToolbarActionInfoList()
+        ComposedIconBar(
+            toolbarActionInfos = toolbarActionInfoList,
+            title = "Toolbar Configuration",
+            tabCount = "7",
+            pageInfo = "4/21",
+            isIncognito = false,
+            onClick = { },
         )
     }
 }

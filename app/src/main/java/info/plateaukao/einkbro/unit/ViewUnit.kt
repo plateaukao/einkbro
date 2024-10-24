@@ -116,6 +116,10 @@ object ViewUnit: KoinComponent {
     fun getWindowWidth(context: Context): Int {
         return context.resources.displayMetrics.widthPixels
     }
+    @JvmStatic
+    fun getWindowWidthInDp(context: Context): Int {
+        return context.resources.displayMetrics.widthPixels.toDp(context)
+    }
 
     @JvmStatic
     fun dpToPixel(dp: Int): Float {
@@ -125,6 +129,11 @@ object ViewUnit: KoinComponent {
 
 
     fun isWideLayout(context: Context): Boolean = isLandscape(context) || isTablet(context)
+
+    fun Int.toDp(context: Context): Int {
+        val metrics = context.resources.displayMetrics
+        return (this * (160f / metrics.densityDpi)).toInt()
+    }
 
     fun Int.dp(context: Context): Int {
         val metrics = context.resources.displayMetrics
