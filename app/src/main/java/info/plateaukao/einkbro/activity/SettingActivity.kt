@@ -559,9 +559,7 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.toolbar_icons_description,
         ) {
-            ToolbarConfigDialogFragment().show(
-                this@SettingActivity.supportFragmentManager, "toolbar_config"
-            )
+            startActivity(Intent(this, ToolbarConfigActivity::class.java))
         },
         BooleanSettingItem(
             R.string.setting_title_toolbar_top,

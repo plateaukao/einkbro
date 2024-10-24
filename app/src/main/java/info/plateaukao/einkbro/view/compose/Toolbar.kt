@@ -142,8 +142,8 @@ fun ComposedIconBar(
     onClick: (ToolbarAction) -> Unit,
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
-    val shouldRowFixed = toolbarActionInfos.map { it.toolbarAction }.contains(Spacer1) ||
-            toolbarActionInfos.map { it.toolbarAction }.contains(Spacer2)
+    val shouldRowFixed = toolbarActionInfos.find { it.toolbarAction in listOf(Spacer1, Spacer2) } != null
+            && calculateSpacerWidth(toolbarActionInfos) > 50.dp
 
     Row(
         modifier = Modifier
@@ -186,7 +186,7 @@ fun ReorderableComposedIconBar(
     pageInfo: String,
     onClick: (ToolbarAction) -> Unit,
 ) {
-    val spacerWidth = calculateSpacerWidth(list)
+    val spacerWidth = calculateSpacerWidth(list.value)
 
     ReorderableRow(
         modifier = Modifier
@@ -244,13 +244,14 @@ fun ReorderableComposedIconBar(
 }
 
 @Composable
-private fun calculateSpacerWidth(list: MutableState<List<ToolbarActionInfo>>): Dp {
+private fun calculateSpacerWidth(list: List<ToolbarActionInfo>): Dp {
     val iconWidth = 46.dp
-    val totalActionIconWidth = list.value.filterNot { it.toolbarAction in listOf(Spacer1, Spacer2) }
+    val totalActionIconWidth = list.filterNot { it.toolbarAction in listOf(Spacer1, Spacer2) }
         .map {
             if (it.toolbarAction == Title) 100.dp else if (it.toolbarAction == Time) 55.dp else iconWidth
         }.sumDp()
-    val spacerCount = list.value.count { it.toolbarAction in listOf(Spacer1, Spacer2) }
+    val spacerCount = list.count { it.toolbarAction in listOf(Spacer1, Spacer2) }
+    if (spacerCount == 0) return 0.dp
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val leftWidth = screenWidth - totalActionIconWidth
     val spacerWidth = (if (leftWidth > 50.dp) leftWidth else 50.dp) / spacerCount
@@ -414,7 +415,7 @@ fun CurrentTimeText(
     )
 }
 
-private inline fun Modifier.conditional(
+inline fun Modifier.conditional(
     condition: Boolean,
     modifier: Modifier.() -> Modifier,
 ): Modifier {
