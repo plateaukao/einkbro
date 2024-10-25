@@ -160,7 +160,10 @@ fun ComposedIconBar(
     ) {
         toolbarActionInfos.forEach { toolbarActionInfo ->
             when (val toolbarAction = toolbarActionInfo.toolbarAction) {
-                Title -> ToolbarTitle(onClick, toolbarAction, title)
+                Title -> ToolbarTitle(
+                    Modifier.width(calculateTitleWidth(toolbarActionInfos)), onClick, toolbarAction, title
+                )
+
                 Time -> CurrentTimeText()
                 TabCount -> TabCountIcon(isIncognito, tabCount, onClick, onLongClick)
                 PageInfo -> PageInfoIcon(pageInfo, onClick, onLongClick)
@@ -221,7 +224,10 @@ fun ReorderableComposedIconBar(
                     }
             ) {
                 when (toolbarAction) {
-                    Title -> ToolbarTitle(onClick, toolbarAction, title)
+                    Title -> ToolbarTitle(
+                        Modifier.width(calculateTitleWidth(list.value)), onClick, toolbarAction, title
+                    )
+
                     Time -> CurrentTimeText()
                     TabCount -> TabCountIcon(false, tabCount, onClick)
                     PageInfo -> PageInfoIcon(pageInfo, onClick)
@@ -259,21 +265,33 @@ private fun calculateSpacerWidth(list: List<ToolbarActionInfo>): Dp {
 }
 
 @Composable
+private fun calculateTitleWidth(list: List<ToolbarActionInfo>): Dp {
+    if (!list.map { it.toolbarAction }.contains(Title)) return 0.dp
+    if (list.find { it.toolbarAction in listOf(Spacer1, Spacer2) } != null) return 100.dp
+
+    val iconWidth = 46.dp
+    val totalActionIconWidth =
+        list.filterNot { it.toolbarAction == Title }.map { if (it.toolbarAction == Time) 55.dp else iconWidth }.sumDp()
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    return screenWidth - totalActionIconWidth
+}
+
+@Composable
 private fun ToolbarTitle(
+    modifier: Modifier = Modifier,
     onClick: (ToolbarAction) -> Unit,
     toolbarAction: ToolbarAction,
     title: String,
 ) {
-    val titleModifier = Modifier
+    val titleModifier = modifier
         .padding(start = 2.dp, top = 6.dp, bottom = 6.dp)
         .fillMaxHeight()
-        .defaultMinSize(minWidth = 100.dp)
         .border(
             0.5.dp,
             MaterialTheme.colors.onBackground,
-            RoundedCornerShape(16.dp)
+            RoundedCornerShape(12.dp)
         )
-        .padding(start = 3.dp, end = 1.dp)
+        .padding(start = 10.dp, end = 10.dp)
         .clickable { onClick(toolbarAction) }
     Row(
         modifier = titleModifier,
