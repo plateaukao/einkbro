@@ -159,23 +159,55 @@ fun ComposedIconBar(
         horizontalArrangement = Arrangement.End
     ) {
         toolbarActionInfos.forEach { toolbarActionInfo ->
-            when (val toolbarAction = toolbarActionInfo.toolbarAction) {
-                Title -> ToolbarTitle(
-                    Modifier.width(calculateTitleWidth(toolbarActionInfos)), onClick, toolbarAction, title
-                )
-
-                Time -> CurrentTimeText()
-                TabCount -> TabCountIcon(isIncognito, tabCount, onClick, onLongClick)
-                PageInfo -> PageInfoIcon(pageInfo, onClick, onLongClick)
-                Spacer1, Spacer2 -> Spacer(modifier = Modifier.weight(1F))
-                else -> ToolbarIcon(
-                    toolbarAction,
-                    toolbarActionInfo.getCurrentResId(),
-                    onClick,
-                    onLongClick
-                )
-            }
+            CreateToolbarIcon(
+                toolbarActionInfo,
+                toolbarActionInfos,
+                onClick,
+                title,
+                isIncognito,
+                tabCount,
+                onLongClick,
+                pageInfo,
+            )
         }
+    }
+}
+
+@Composable
+private fun CreateToolbarIcon(
+    toolbarActionInfo: ToolbarActionInfo,
+    toolbarActionInfos: List<ToolbarActionInfo>,
+    onClick: (ToolbarAction) -> Unit,
+    title: String,
+    isIncognito: Boolean,
+    tabCount: String,
+    onLongClick: ((ToolbarAction) -> Unit)?,
+    pageInfo: String,
+) {
+    val spacerWidth = calculateSpacerWidth(toolbarActionInfos)
+    val titleWidth = calculateTitleWidth(toolbarActionInfos)
+
+    val toolbarAction = toolbarActionInfo.toolbarAction
+    when (toolbarAction) {
+        Title -> ToolbarTitle(
+            Modifier.width(titleWidth), onClick, toolbarAction, title
+        )
+
+        Time -> CurrentTimeText()
+        TabCount -> TabCountIcon(isIncognito, tabCount, onClick, onLongClick)
+        PageInfo -> PageInfoIcon(pageInfo, onClick, onLongClick)
+        Spacer1, Spacer2 -> Spacer(
+            modifier = Modifier
+                .height(50.dp)
+                .width(spacerWidth)
+        )
+
+        else -> ToolbarIcon(
+            toolbarAction,
+            toolbarActionInfo.getCurrentResId(),
+            onClick,
+            onLongClick
+        )
     }
 }
 
@@ -189,8 +221,6 @@ fun ReorderableComposedIconBar(
     pageInfo: String,
     onClick: (ToolbarAction) -> Unit,
 ) {
-    val spacerWidth = calculateSpacerWidth(list.value)
-
     ReorderableRow(
         modifier = Modifier
             .height(50.dp)
@@ -223,27 +253,16 @@ fun ReorderableComposedIconBar(
                         clickable(onClick = { onClick(toolbarAction) })
                     }
             ) {
-                when (toolbarAction) {
-                    Title -> ToolbarTitle(
-                        Modifier.width(calculateTitleWidth(list.value)), onClick, toolbarAction, title
-                    )
-
-                    Time -> CurrentTimeText()
-                    TabCount -> TabCountIcon(false, tabCount, onClick)
-                    PageInfo -> PageInfoIcon(pageInfo, onClick)
-                    Spacer1, Spacer2 -> Spacer(
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(spacerWidth)
-                    )
-
-                    else -> ToolbarIcon(
-                        toolbarAction,
-                        toolbarActionInfo.getCurrentResId(),
-                        onClick,
-                        null
-                    )
-                }
+                CreateToolbarIcon(
+                    toolbarActionInfo,
+                    list.value,
+                    onClick,
+                    title,
+                    false,
+                    tabCount,
+                    null,
+                    pageInfo,
+                )
             }
         }
     }
@@ -251,13 +270,16 @@ fun ReorderableComposedIconBar(
 
 @Composable
 private fun calculateSpacerWidth(list: List<ToolbarActionInfo>): Dp {
-    val iconWidth = 46.dp
-    val totalActionIconWidth = list.filterNot { it.toolbarAction in listOf(Spacer1, Spacer2) }
-        .map {
-            if (it.toolbarAction == Title) 100.dp else if (it.toolbarAction == Time) 55.dp else iconWidth
-        }.sumDp()
     val spacerCount = list.count { it.toolbarAction in listOf(Spacer1, Spacer2) }
     if (spacerCount == 0) return 0.dp
+
+    val iconWidth = 46.dp
+    if (list.map { it.toolbarAction }.contains(Title)) return iconWidth
+
+    val totalActionIconWidth = list.filterNot { it.toolbarAction in listOf(Spacer1, Spacer2) }
+        .map {
+            if (it.toolbarAction == Time) 55.dp else iconWidth
+        }.sumDp()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val leftWidth = screenWidth - totalActionIconWidth
     val spacerWidth = (if (leftWidth > 50.dp) leftWidth else 50.dp) / spacerCount
@@ -267,13 +289,13 @@ private fun calculateSpacerWidth(list: List<ToolbarActionInfo>): Dp {
 @Composable
 private fun calculateTitleWidth(list: List<ToolbarActionInfo>): Dp {
     if (!list.map { it.toolbarAction }.contains(Title)) return 0.dp
-    if (list.find { it.toolbarAction in listOf(Spacer1, Spacer2) } != null) return 100.dp
 
     val iconWidth = 46.dp
     val totalActionIconWidth =
         list.filterNot { it.toolbarAction == Title }.map { if (it.toolbarAction == Time) 55.dp else iconWidth }.sumDp()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    return screenWidth - totalActionIconWidth
+    val finalWidth = screenWidth - totalActionIconWidth
+    return if (finalWidth > 100.dp) finalWidth else 100.dp
 }
 
 @Composable
