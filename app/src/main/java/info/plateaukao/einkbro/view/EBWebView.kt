@@ -47,7 +47,6 @@ import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.apache.commons.text.StringEscapeUtils
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
@@ -661,7 +660,7 @@ open class EBWebView(
         } else if (!isReaderModeOn && !isTranslatePage) {
             injectMozReaderModeJs(false)
             evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
-                val processedHtml = StringEscapeUtils.unescapeJava(html)
+                val processedHtml = HelperUnit.unescapeJava(html)
                 val rawHtml =
                     processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
                 rawHtmlCache = rawHtml
@@ -671,7 +670,7 @@ open class EBWebView(
             evaluateJavascript(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
             ) { html ->
-                val processedHtml = StringEscapeUtils.unescapeJava(html)
+                val processedHtml = HelperUnit.unescapeJava(html)
                 val rawHtml =
                     processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
                 // keep html cache when it's still null

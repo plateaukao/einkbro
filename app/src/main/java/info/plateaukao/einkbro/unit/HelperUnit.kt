@@ -714,6 +714,42 @@ object HelperUnit {
         }
     }
 
+    /**
+     * re-implementation of org.apache.commons.text.StringEscapeUtils.unescapeJava
+     */
+    fun unescapeJava(input: String): String {
+        val stringBuilder = StringBuilder()
+        var i = 0
+        while (i < input.length) {
+            val ch = input[i]
+            if (ch == '\\' && i + 1 < input.length) {
+                val nextChar = input[i + 1]
+                when (nextChar) {
+                    'n' -> stringBuilder.append('\n')
+                    't' -> stringBuilder.append('\t')
+                    'b' -> stringBuilder.append('\b')
+                    'r' -> stringBuilder.append('\r')
+                    'f' -> stringBuilder.append('\u000C')
+                    '\'' -> stringBuilder.append('\'')
+                    '"' -> stringBuilder.append('\"')
+                    '\\' -> stringBuilder.append('\\')
+                    'u' -> {
+                        if (i + 5 < input.length) {
+                            val hexCode = input.substring(i + 2, i + 6)
+                            stringBuilder.append(hexCode.toInt(16).toChar())
+                            i += 4
+                        }
+                    }
+                    else -> stringBuilder.append(nextChar)  // if it's not an escape sequence, keep the original
+                }
+                i += 1 // skip next character
+            } else {
+                stringBuilder.append(ch)
+            }
+            i++
+        }
+        return stringBuilder.toString()
+    }
 }
 
 fun processedTextToChunks(text: String): MutableList<String> {
@@ -762,3 +798,4 @@ fun String.pruneWebTitle(): String =
     } else {
         this
     }
+

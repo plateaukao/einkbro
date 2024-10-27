@@ -28,8 +28,8 @@ android {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
         targetSdk = 34
-        versionCode = 12_03_00
-        versionName = "12.3.0"
+        versionCode = 12_04_00
+        versionName = "12.4.0"
 
         buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
@@ -87,21 +87,18 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.12.0")
+    implementation(libs.material)
 
     // epublib
     implementation("com.positiondev.epublib:epublib-core:3.1") {
         exclude(group = "org.slf4j")
         exclude(group = "xmlpull")
     }
-    implementation("org.slf4j:slf4j-api:1.7.32")
-    implementation("net.sf.kxml:kxml2:2.3.0")
-
-    // common lang
-    implementation("org.apache.commons:commons-text:1.9")
+    implementation(libs.slf4j.api)
+    implementation(libs.kxml2)
 
     // for epub saving: html processing
-    implementation("org.jsoup:jsoup:1.15.3")
+    implementation(libs.jsoup)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation("androidx.room:room-runtime:2.6.1")
