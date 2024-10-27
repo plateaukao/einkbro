@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
@@ -79,11 +78,11 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     fun hasOpenAiApiKey(): Boolean = config.gptApiKey.isNotBlank()
 
     fun updateMessageWithContext(userMessage: String) {
-        _messageWithContext.value = StringEscapeUtils.unescapeJava(userMessage)
+        _messageWithContext.value = HelperUnit.unescapeJava(userMessage)
     }
 
     fun updateInputMessage(userMessage: String) {
-        _inputMessage.value = StringEscapeUtils.unescapeJava(userMessage)
+        _inputMessage.value = HelperUnit.unescapeJava(userMessage)
         _responseMessage.value = AnnotatedString("...")
     }
 

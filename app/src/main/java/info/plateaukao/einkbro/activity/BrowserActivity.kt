@@ -579,7 +579,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             bookmarkManager.getArticleByUrl(url) ?: bookmarkManager.insertArticle(article)
 
         val selectedText = actionModeMenuViewModel.selectedText.value
-            .replace("\\\"", "\"")
         val highlight = Highlight(articleInDb.id, selectedText)
         bookmarkManager.insertHighlight(highlight)
     }
@@ -2696,7 +2695,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 mode.finish()
 
                 lifecycleScope.launch {
-                    actionModeMenuViewModel.updateSelectedText(ebWebView.getSelectedText())
+                    actionModeMenuViewModel.updateSelectedText(HelperUnit.unescapeJava(ebWebView.getSelectedText()))
                     showActionModeView(translationViewModel) {
                         ebWebView.removeTextSelection()
                     }
