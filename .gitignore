@@ -19,3 +19,7 @@ app/release
 .DS_Store
 .idea/gradle.xml
 tools/*.png
+
+.externalNativeBuild
+.cxx/
+adblock-client/.cxx

@@ -1,0 +1,29 @@
+{
+  "name": "Scriptlets for AdblockAndroid",
+  "version": "0.0.1",
+  "description": "Uglify scriptlets.js for AdblockAndroid",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edsuns/AdblockAndroid.git"
+  },
+  "keywords": [
+    "scriptlets"
+  ],
+  "author": "Edsuns@qq.com",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Edsuns/AdblockAndroid/issues"
+  },
+  "homepage": "https://github.com/Edsuns/AdblockAndroid#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-uglify": "^3.0.2",
+    "pump": "^3.0.0",
+    "uglify-es": "^3.3.9",
+    "split-file": "^2.2.1"
+  }
+}

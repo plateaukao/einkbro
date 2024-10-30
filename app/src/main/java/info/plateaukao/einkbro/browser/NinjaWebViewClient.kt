@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.browser
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Message
@@ -33,6 +34,7 @@ import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
+import io.github.edsuns.adfilter.AdFilter
 import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -54,6 +56,8 @@ class EBWebViewClient(
     private var hasAdBlock: Boolean = true
     var book: Book? = null
 
+    private val adFilter: AdFilter = AdFilter.get()
+
     private val dualCaptionProcessor = DualCaptionProcessor()
 
     fun enableAdBlock(enable: Boolean) {
@@ -63,6 +67,13 @@ class EBWebViewClient(
     private var onPageFinishedAction: () -> Unit = {}
     fun setOnPageFinishedAction(action: () -> Unit) {
         onPageFinishedAction = action
+    }
+
+    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+        super.onPageStarted(view, url, favicon)
+        if (config.adBlock) {
+            adFilter.performScript(view, url)
+        }
     }
 
     override fun onPageFinished(view: WebView, url: String) {
@@ -231,10 +242,6 @@ class EBWebViewClient(
         request: WebResourceRequest?,
         error: WebResourceError?,
     ) {
-//        if (request?.isForMainFrame == true) {
-//            view?.loadUrl("file:///android_asset/trex.html")
-//            return
-//        }
         // if https is not available, try http
         if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
             ebWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
@@ -250,14 +257,20 @@ class EBWebViewClient(
     override fun shouldInterceptRequest(
         view: WebView,
         request: WebResourceRequest,
-    ): WebResourceResponse? =
-        handleWebRequest(view, request.url) ?: super.shouldInterceptRequest(view, request)
+    ): WebResourceResponse? {
+        if (config.adBlock) {
+            val result = adFilter.shouldIntercept(view, request)
+            if (result.shouldBlock) return result.resourceResponse
+        }
+
+        return handleWebRequest(view, request.url) ?: super.shouldInterceptRequest(view, request)
+    }
 
     private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
         val url = uri.toString()
-        if (hasAdBlock && !adBlock.isWhite(url) && adBlock.isAd(url)) {
-            return adTxtResponse
-        }
+//        if (hasAdBlock && !adBlock.isWhite(url) && adBlock.isAd(url)) {
+//            return adTxtResponse
+//        }
 
         if (!config.cookies) {
             if (cookie.isWhite(url)) {
