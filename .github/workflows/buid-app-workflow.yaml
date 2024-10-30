@@ -16,12 +16,37 @@ jobs:
         uses: timheuer/base64-to-file@v1
         id: android_keystore
         with:
-            fileName: "android_keystore.keystore"
-            encodedString: ${{ secrets.KEYSTORE }}
+          fileName: "android_keystore.keystore"
+          encodedString: ${{ secrets.KEYSTORE }}
       - name: Build the app
         run: ./gradlew assembleRelease -PshowUpdateButton=true -Pandroid.injected.signing.store.file=${{ steps.android_keystore.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
+      - name: Upload arm64-v8a APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-arm64-v8a-release.apk
+          path: app/build/outputs/apk/release/app-arm64-v8a-release.apk
+      - name: Upload x86_64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-x86_64-release.apk
+          path: app/build/outputs/apk/release/app-x86_64-release.apk
+      - name: Upload armeabi-v7a APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-armeabi-v7a-release.apk
+          path: app/build/outputs/apk/release/app-armeabi-v7a-release.apk
+      - name: Upload universal APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-universal-release.apk
+          path: app/build/outputs/apk/release/app-universal-release.apk
+      - name: Upload x86 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-x86-release.apk
+          path: app/build/outputs/apk/release/app-x86-release.apk
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-            name: app-release.apk
-            path: app/build/outputs/apk/release/app-release.apk
+          name: app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
