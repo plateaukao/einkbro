@@ -71,13 +71,11 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
-import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
-import info.plateaukao.einkbro.view.dialog.compose.ToolbarConfigDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -1043,11 +1041,13 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_update_adblock,
         ) {
-            lifecycleScope.launch {
-                adBlock.downloadHosts(this@SettingActivity) {
-                    EBToast.show(this@SettingActivity, R.string.toast_adblock_updated)
-                }
-            }
+//            lifecycleScope.launch {
+//                adBlock.downloadHosts(this@SettingActivity) {
+//                    EBToast.show(this@SettingActivity, R.string.toast_adblock_updated)
+//                }
+//            }
+            startActivity(Intent(this, AdBlockSettingActivity::class.java))
+            finish()
         },
         ValueSettingItem(
             R.string.setting_title_adblock_url,
