@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.DownloadManager
 import android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE
 import android.app.DownloadManager.Request
@@ -157,6 +158,8 @@ import info.plateaukao.einkbro.viewmodel.SplitSearchViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
+import io.github.edsuns.adfilter.AdFilter
+import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -306,10 +309,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    private val adFilter: AdFilter = AdFilter.get()
+    private val filterViewModel: FilterViewModel = adFilter.viewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // workaround for crash issue
         // Caused by java.lang.NoSuchMethodException:
         super.onCreate(null)
+
+        //android.os.Debug.waitForDebugger()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -365,6 +373,46 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         handleWindowInsets()
         listenKeyboardShowHide()
+
+        // post delay to update filter list
+        binding.root.postDelayed({
+            checkAdBlockerList()
+        }, 1000)
+    }
+
+    private fun checkAdBlockerList() {
+        if (!adFilter.hasInstallation) {
+            val map = mapOf(
+                "AdGuard Base" to "https://filters.adtidy.org/extension/chromium/filters/2.txt",
+                "EasyPrivacy Lite" to "https://filters.adtidy.org/extension/chromium/filters/118_optimized.txt",
+                "AdGuard Tracking Protection" to "https://filters.adtidy.org/extension/chromium/filters/3.txt",
+                "AdGuard Annoyances" to "https://filters.adtidy.org/extension/chromium/filters/14.txt",
+                "AdGuard Chinese" to "https://filters.adtidy.org/extension/chromium/filters/224.txt",
+                "NoCoin Filter List" to "https://filters.adtidy.org/extension/chromium/filters/242.txt"
+            )
+            for ((key, value) in map) {
+                filterViewModel.addFilter(key, value)
+            }
+            val filters = filterViewModel.filters.value ?: return
+            for ((key, _) in filters) {
+                filterViewModel.download(key)
+            }
+//            AlertDialog.Builder(this)
+////                .setTitle(R.string.filter_download_title)
+////                .setMessage(R.string.filter_download_msg)
+//                .setTitle("Filter Download")
+//                .setMessage("Download filters to block ads")
+//                .setCancelable(true)
+//                .setPositiveButton(
+//                    android.R.string.ok
+//                ) { _, _ ->
+//                    val filters = filterViewModel.filters.value ?: return@setPositiveButton
+//                    for ((key, _) in filters) {
+//                        filterViewModel.download(key)
+//                    }
+//                }
+//                .show()
+        }
     }
 
     private fun initTtsViewModel() {
@@ -1830,6 +1878,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         loadUrlInWebView(foreground, newWebView, url)
 
         updateSavedAlbumInfo()
+
+        AdFilter.get().setupWebView(newWebView)
     }
 
     private fun maybeCreateNewPreloadWebView(

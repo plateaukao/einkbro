@@ -83,10 +83,22 @@ android {
         checkReleaseBuilds = false
     }
 
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            isUniversalApk = true
+        }
+    }
     namespace = "info.plateaukao.einkbro"
 }
 
 dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    implementation(project(":ad-filter"))
+
     implementation(libs.material)
 
     // epublib
@@ -103,6 +115,8 @@ dependencies {
 
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation(project(":ad-filter"))
+    implementation(libs.timber)
     ksp("androidx.room:room-compiler:2.6.1")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
@@ -152,5 +166,9 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.sse)
     implementation(libs.kotlinx.serialization.json)
+
+    // adfilter
+
+    implementation("androidx.work:work-runtime-ktx:2.7.0")
 }
 
