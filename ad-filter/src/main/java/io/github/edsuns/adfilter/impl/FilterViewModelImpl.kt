@@ -22,9 +22,9 @@ import kotlinx.serialization.json.Json
 /**
  * Created by Edsuns@qq.com on 2021/7/29.
  */
-internal class FilterViewModelImpl (
+internal class FilterViewModelImpl(
     context: Context,
-    private val filterDataLoader: FilterDataLoader
+    private val filterDataLoader: FilterDataLoader,
 ) : FilterViewModel {
 
     internal val sharedPreferences: FilterSharedPreferences =
@@ -32,12 +32,12 @@ internal class FilterViewModelImpl (
 
     private val workManager: WorkManager = WorkManager.getInstance(context)
 
-    override val workInfo: StateFlow<List<WorkInfo>> =
+    private val _workInfo: MutableStateFlow<List<WorkInfo>> = MutableStateFlow(emptyList())
+    override val workInfo: StateFlow<List<WorkInfo>> = _workInfo.asStateFlow().apply {
         workManager.getWorkInfosByTagLiveData(TAG_FILTER_WORK).let {
-            val stateFlow = MutableStateFlow(emptyList<WorkInfo>())
-            it.observeForever { stateFlow.value = it }
-            stateFlow
+            it.observeForever { _workInfo.value = it }
         }
+    }
 
     /**
      * Count of enabled filters (excluding custom filter).
@@ -52,33 +52,24 @@ internal class FilterViewModelImpl (
     /**
      * [Filter.id] to [Filter]
      */
-    private val _filterMap: MutableStateFlow<LinkedHashMap<String, Filter>> =
+    private val _filterMap: MutableStateFlow<Map<String, Filter>> =
         MutableStateFlow(Json.decodeFromString(sharedPreferences.filterMap))
-    private val filterMap: StateFlow<LinkedHashMap<String, Filter>>  = _filterMap.asStateFlow()
 
-    /**
-     * All added filters.
-     * [Filter.id] to [Filter]
-     * @see filterMap
-     */
-    override val filters: StateFlow<LinkedHashMap<String, Filter>> = filterMap
-    override fun setFilters(filters: LinkedHashMap<String, Filter>) {
-        _filterMap.value = filters
-        saveFilterMap()
+    override val filters: StateFlow<Map<String, Filter>> = _filterMap.asStateFlow()
+    override fun updateFilters() {
+        _filterMap.value = filters.value.toMutableMap()
     }
 
 
     /**
-     * [WorkRequest.getId] to [Filter.id]
-     */
-    internal val downloadFilterIdMap: HashMap<String, String> by lazy { sharedPreferences.downloadFilterIdMap }
-
-    /**
      * Used to observe download has been added or removed.
      * [WorkRequest.getId] to [Filter.id]
-     * @see downloadFilterIdMap
      */
-    override val workToFilterMap: MutableStateFlow<Map<String, String>> = MutableStateFlow(emptyMap())
+    private val _workToFilterMap: MutableStateFlow<Map<String, String>> = MutableStateFlow(HashMap<String, String>())
+    override val workToFilterMap: StateFlow<Map<String, String>> = _workToFilterMap.asStateFlow()
+    override fun updateWorkToFilterMap(map: Map<String, String>) {
+        _workToFilterMap.value = map
+    }
 
     init {
         workManager.pruneWork()
@@ -104,10 +95,9 @@ internal class FilterViewModelImpl (
     override fun addFilter(name: String, url: String): Filter {
         val filter = Filter(url)
         filter.name = name
-        filterMap.value.get(filter.id)?.let {
-            return it
-        }
-        filterMap.value.set(filter.id, filter)
+        filters.value[filter.id]?.let { return it }
+
+        _filterMap.value = filters.value.toMutableMap().apply { set(filter.id, filter) }
         flushFilter()
         return filter
     }
@@ -115,20 +105,20 @@ internal class FilterViewModelImpl (
     override fun removeFilter(id: String) {
         cancelDownload(id)
         filterDataLoader.remove(id)
-        filterMap.value.remove(id)
+        _filterMap.value = filters.value.toMutableMap().apply { remove(id) }
         flushFilter()
     }
 
     override fun setFilterEnabled(id: String, enabled: Boolean, post: Boolean) {
-        filterMap.value[id]?.let {
+        filters.value[id]?.let {
             val enableMask = enabled && it.hasDownloaded()
             if (it.isEnabled != enableMask) {
                 if (enableMask)
                     enableFilter(it)
                 else
                     disableFilter(it)
-                // refresh
-                if (post) _filterMap.value = filterMap.value
+
+                _filterMap.value = filters.value.toMutableMap()
                 saveFilterMap()
             }
         }
@@ -139,6 +129,7 @@ internal class FilterViewModelImpl (
             filterDataLoader.load(filter.id)
             filter.isEnabled = true
             updateEnabledFilterCount()
+            _filterMap.value = filters.value.toMutableMap()
             flushFilter()
         }
     }
@@ -147,12 +138,14 @@ internal class FilterViewModelImpl (
         filterDataLoader.unload(filter.id)
         filter.isEnabled = false
         updateEnabledFilterCount()
+        _filterMap.value = filters.value.toMutableMap()
         flushFilter()
     }
 
     override fun renameFilter(id: String, name: String) {
-        filterMap.value.get(id)?.let {
+        filters.value[id]?.let {
             it.name = name
+            _filterMap.value = filters.value.toMutableMap()
             flushFilter()
         }
     }
@@ -170,10 +163,10 @@ internal class FilterViewModelImpl (
     }
 
     override fun download(id: String) {
-        if (downloadFilterIdMap.any { it.value == id }) {
+        if (workToFilterMap.value.any { it.value == id }) {
             return
         }
-        filterMap.value.get(id)?.let {
+        filters.value[id]?.let {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresCharging(false)
@@ -203,13 +196,13 @@ internal class FilterViewModelImpl (
                 it.id, ExistingWorkPolicy.KEEP, download
             ).then(install)
             // record worker ids
-            downloadFilterIdMap[download.id.toString()] = it.id
-            downloadFilterIdMap[install.id.toString()] = it.id
-            sharedPreferences.downloadFilterIdMap = downloadFilterIdMap
+            _workToFilterMap.value = _workToFilterMap.value.toMutableMap().apply {
+                this[download.id.toString()] = it.id
+                this[install.id.toString()] = it.id
+            }
             // notify download work added
-            workToFilterMap.value = downloadFilterIdMap
             // mark the beginning of the download
-            it.downloadState = DownloadState.NONE
+            _filterMap.value = filters.value.toMutableMap().apply { this[id]?.downloadState = DownloadState.NONE }
             // start the work
             continuation.enqueue()
         }
@@ -224,8 +217,7 @@ internal class FilterViewModelImpl (
     }
 
     private fun saveFilterMap() {
-        sharedPreferences.filterMap = Json.encodeToString(filterMap.value)
-        _filterMap.value = Json.decodeFromString(sharedPreferences.filterMap)
+        sharedPreferences.filterMap = Json.encodeToString(_filterMap.value)
     }
 
     companion object {

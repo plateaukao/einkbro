@@ -1,9 +1,12 @@
 package info.plateaukao.einkbro.activity
 
 import android.os.Bundle
+import android.webkit.URLUtil
+import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.Composable
@@ -31,7 +35,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.dialog.DialogManager
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.DownloadState
 import io.github.edsuns.adfilter.Filter
@@ -42,23 +48,58 @@ import java.util.*
 class AdBlockSettingActivity : ComponentActivity() {
 
     private val viewModel: FilterViewModel = AdFilter.get().viewModel
+    private val dialogManager by lazy { DialogManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             MyTheme {
-                SettingsScreen(viewModel = viewModel) {
-                    finish()
-                }
+                SettingsScreen(
+                    viewModel = viewModel,
+                    addFilterDialog = { showEditDialog() },
+                    deleteFilterDialog = { filter -> showDeleteDialog(filter) },
+                    onCloseAction = { finish() }
+                )
             }
         }
+    }
+
+    private fun showEditDialog() {
+        val editText = EditText(this).apply {
+            hint = "add filter"
+        }
+        dialogManager.showOkCancelDialog(
+            title = "add filter",
+            view = editText,
+            okAction = {
+                val url = editText.text.toString()
+                if (url.isNotBlank() && URLUtil.isNetworkUrl(url)) {
+                    val filter = viewModel.addFilter("", url)
+                    viewModel.download(filter.id)
+                } else {
+                    EBToast.show(this, "invalid url")
+                }
+            }
+        )
+    }
+
+    private fun showDeleteDialog(filter: Filter) {
+        dialogManager.showOkCancelDialog(
+            title = "delete filter",
+            message = "Are you sure to delete this filter?",
+            okAction = {
+                viewModel.removeFilter(filter.id)
+            }
+        )
     }
 }
 
 @Composable
 fun SettingsScreen(
     viewModel: FilterViewModel,
+    addFilterDialog: () -> Unit,
+    deleteFilterDialog: (Filter) -> Unit,
     onCloseAction: () -> Unit = {},
 ) {
     val filters = viewModel.filters.collectAsState(initial = emptyMap())
@@ -77,12 +118,12 @@ fun SettingsScreen(
                     IconButton(onClick = { filters.value.keys.forEach { viewModel.download(it) } }) {
                         Icon(Icons.Outlined.Refresh, contentDescription = "update")
                     }
+                    IconButton(onClick = addFilterDialog) {
+                        Icon(Icons.Default.Add, contentDescription = "add filter")
+                    }
                     IconButton(onClick = { onCloseAction() }) {
                         Icon(Icons.Outlined.Close, contentDescription = stringResource(android.R.string.cancel))
                     }
-//                    IconButton(onClick = { showDialog(context, viewModel) }) {
-//                        Icon(Icons.Outlined.Add, contentDescription = "add filter")
-//                    }
                 }
             )
         },
@@ -93,9 +134,12 @@ fun SettingsScreen(
                     items(filterList.size) { index ->
                         val filter = filterList[index]
                         FilterRow(filter, SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH),
-                            onClick = { viewModel.download(it.id) },
+                            onClick = {
+                                viewModel.download(it.id)
+                            },
+                            onLongClick = { deleteFilterDialog(it) },
                             onToggled = { filter, enabled ->
-                                viewModel.setFilterEnabled(filter.id, enabled, true)
+                                viewModel.setFilterEnabled(filter.id, enabled)
                             }
                         )
                     }
@@ -105,11 +149,13 @@ fun SettingsScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FilterRow(
     filter: Filter,
     dateFormatter: SimpleDateFormat,
     onClick: (Filter) -> Unit,
+    onLongClick: (Filter) -> Unit,
     onToggled: (Filter, Boolean) -> Unit,
 ) {
     val isChecked = remember { mutableStateOf(filter.isEnabled) }
@@ -118,7 +164,10 @@ fun FilterRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick(filter) },
+            .combinedClickable(
+                onClick = { onClick(filter) },
+                onLongClick = { onLongClick(filter) }
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
@@ -161,7 +210,7 @@ fun FilterRow(
             }
         }
         Switch(
-            checked = isChecked.value,
+            checked = filter.isEnabled,
             onCheckedChange = {
                 isChecked.value = it
                 onToggled(filter, it)
@@ -172,36 +221,3 @@ fun FilterRow(
 }
 
 
-//@Composable
-//fun showDialog(context: Context, viewModel: FilterViewModel) {
-//    var textState = remember { mutableStateOf("") }
-//
-//    val dialog = AlertDialog.Builder(context)
-//        .setTitle(R.string.add_filter)
-//        .setNegativeButton(android.R.string.cancel, Unit)
-//        .setPositiveButton(android.R.string.ok) { _, _ ->
-//            val url = textState.value
-//            if (url.isNotBlank() && URLUtil.isNetworkUrl(url)) {
-//                val filter = viewModel.addFilter("", url)
-//                viewModel.download(filter.id)
-//            } else {
-//                Toast.makeText(context, R.string.invalid_url, Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//        .create()
-//
-//    dialog.setView(
-//        Column(
-//            modifier = Modifier
-//                .padding(16.dp)
-//                .fillMaxWidth()
-//        ) {
-//            BasicTextField(
-//                value = textState.value,
-//                onValueChange = { textState.value = it },
-//                modifier = Modifier.fillMaxWidth()
-//            )
-//        }
-//    )
-//    dialog.show()
-//}
