@@ -1,49 +1,33 @@
 package io.github.edsuns.adfilter
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.work.WorkInfo
-import androidx.work.WorkInfo.State.*
 import androidx.work.WorkRequest
-import io.github.edsuns.adfilter.util.None
+import kotlinx.coroutines.flow.StateFlow
 
-/**
- * Created by Edsuns@qq.com on 2021/1/1.
- */
 interface FilterViewModel {
-
-    /**
-     * Status of the filter master switch.
-     */
-    val isEnabled: MutableLiveData<Boolean>
-
     /**
      * Work info of AdFilter.
      */
-    val workInfo: LiveData<List<WorkInfo>>
+    val workInfo: StateFlow<List<WorkInfo>>
 
     /**
      * Count of enabled filters (excluding custom filter).
      */
-    val enabledFilterCount: LiveData<Int>
+    val enabledFilterCount: StateFlow<Int>
 
     /**
      * All added filters.
      * [Filter.id] to [Filter]
      */
-    val filters: LiveData<LinkedHashMap<String, Filter>>
+    val filters: StateFlow<LinkedHashMap<String, Filter>>
+    fun setFilters(filters: LinkedHashMap<String, Filter>)
 
     /**
      * Used to observe download has been added or removed.
      * Only includes [ENQUEUED], [RUNNING] and [BLOCKED].
      * [WorkRequest.getId] to [Filter.id]
      */
-    val workToFilterMap: LiveData<Map<String, String>>
-
-    /**
-     * Used to notify that the filters have changed (enable, disable, add, remove).
-     */
-    val onDirty: LiveData<None>
+    val workToFilterMap: StateFlow<Map<String, String>>
 
     /**
      * Add a new filter.
@@ -62,7 +46,7 @@ interface FilterViewModel {
      * Enable or disable specified filter with notification.
      * @param id [Filter.id]
      * @param enabled true to enable
-     * @param post true to notify changes by [LiveData]
+     * @param post true to notify changes by [StateFlow]
      */
     fun setFilterEnabled(id: String, enabled: Boolean, post: Boolean = true)
 

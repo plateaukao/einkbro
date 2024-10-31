@@ -1025,36 +1025,19 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_adblock,
             config::adBlock
         ),
-        BooleanSettingItem(
-            R.string.setting_title_adblock_auto_update,
-            0,
-            R.string.setting_summary_adblock_auto_update,
-            config::autoUpdateAdblock
-        ),
-        ActionSettingItem(
-            R.string.setting_title_whitelist,
-            0,
-            R.string.setting_summary_whitelist,
-        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
         ActionSettingItem(
             R.string.setting_title_update_adblock,
             0,
             R.string.setting_summary_update_adblock,
         ) {
-//            lifecycleScope.launch {
-//                adBlock.downloadHosts(this@SettingActivity) {
-//                    EBToast.show(this@SettingActivity, R.string.toast_adblock_updated)
-//                }
-//            }
             startActivity(Intent(this, AdBlockSettingActivity::class.java))
             finish()
         },
-        ValueSettingItem(
-            R.string.setting_title_adblock_url,
+        ActionSettingItem(
+            R.string.setting_title_whitelist,
             0,
-            R.string.setting_summary_adblock_url,
-            config = config::adblockHostUrl,
-        ),
+            R.string.setting_summary_whitelist,
+        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_javascript,

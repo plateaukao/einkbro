@@ -1,7 +1,6 @@
 package info.plateaukao.einkbro.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.DownloadManager
 import android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE
 import android.app.DownloadManager.Request
@@ -393,7 +392,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             for ((key, value) in map) {
                 filterViewModel.addFilter(key, value)
             }
-            val filters = filterViewModel.filters.value ?: return
+            val filters = filterViewModel.filters.value
             for ((key, _) in filters) {
                 filterViewModel.download(key)
             }
@@ -1879,7 +1878,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         updateSavedAlbumInfo()
 
-        AdFilter.get().setupWebView(newWebView)
+        if (config.adBlock) {
+            AdFilter.get().setupWebView(newWebView)
+        }
     }
 
     private fun maybeCreateNewPreloadWebView(

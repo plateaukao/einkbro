@@ -5,7 +5,6 @@ import android.net.Uri
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
-import androidx.lifecycle.MutableLiveData
 import androidx.work.WorkInfo
 import io.github.edsuns.adblockclient.ResourceType
 import io.github.edsuns.adfilter.*
@@ -18,8 +17,9 @@ import io.github.edsuns.adfilter.impl.Constants.TAG_INSTALLATION
 import io.github.edsuns.adfilter.script.ElementHiding
 import io.github.edsuns.adfilter.script.ScriptInjection
 import io.github.edsuns.adfilter.script.Scriptlet
-import io.github.edsuns.adfilter.util.None
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -27,7 +27,7 @@ import java.io.File
 /**
  * Created by Edsuns@qq.com on 2021/7/29.
  */
-internal class AdFilterImpl constructor(appContext: Context) : AdFilter {
+internal class AdFilterImpl (appContext: Context) : AdFilter {
 
     private val detector: Detector = DetectorImpl()
     internal val binaryDataStore: BinaryDataStore =
@@ -45,24 +45,25 @@ internal class AdFilterImpl constructor(appContext: Context) : AdFilter {
         get() = viewModel.sharedPreferences.hasInstallation
 
     init {
-        viewModel.isEnabled.observeForever { enable ->
-            if (enable) {
-                viewModel.filters.value?.values?.forEach {
-                    if (it.isEnabled && it.hasDownloaded()) {
-                        viewModel.enableFilter(it)
+        GlobalScope.launch {
+//                if (enable) {
+                    viewModel.filters.value.values.forEach {
+                        if (it.isEnabled && it.hasDownloaded()) {
+                            viewModel.enableFilter(it)
+                        }
                     }
-                }
-                filterDataLoader.load(FilterDataLoader.ID_CUSTOM)
-            } else {
-                filterDataLoader.unloadAll()
-                filterDataLoader.unloadCustomFilter()
+                    filterDataLoader.load(FilterDataLoader.ID_CUSTOM)
+//                } else {
+//                    filterDataLoader.unloadAll()
+//                    filterDataLoader.unloadCustomFilter()
+//                }
+                viewModel.updateEnabledFilterCount()
             }
-            viewModel.updateEnabledFilterCount()
-            viewModel.sharedPreferences.isEnabled = enable
-            // notify onDirty
-            (viewModel.onDirty as MutableLiveData).value = None.Value
+
+        GlobalScope.launch {
+            viewModel.workInfo.collect { list -> processWorkInfo(list) }
         }
-        viewModel.workInfo.observeForever { list -> processWorkInfo(list) }
+
     }
 
     private fun processWorkInfo(workInfoList: List<WorkInfo>) {
@@ -118,7 +119,7 @@ internal class AdFilterImpl constructor(appContext: Context) : AdFilter {
             // save shared preferences
             viewModel.sharedPreferences.downloadFilterIdMap = viewModel.downloadFilterIdMap
             // notify download work removed
-            (viewModel.workToFilterMap as MutableLiveData).postValue(viewModel.downloadFilterIdMap)
+            viewModel.workToFilterMap.value = viewModel.downloadFilterIdMap
         }
         if (downloadState != filter.downloadState) {
             filter.downloadState = downloadState
@@ -181,9 +182,7 @@ internal class AdFilterImpl constructor(appContext: Context) : AdFilter {
     }
 
     override fun performScript(webView: WebView?, url: String?) {
-        if (viewModel.isEnabled.value == true) {
             elementHiding.perform(webView, url)
             scriptlet.perform(webView, url)
-        }
     }
 }
