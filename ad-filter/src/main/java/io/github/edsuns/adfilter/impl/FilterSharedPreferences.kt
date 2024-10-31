@@ -21,7 +21,7 @@ internal class FilterSharedPreferences(private val context: Context) {
 
     var filterMap: String
         get() = preferences.getString(KEY_FILTER_MAP, "{}")!!
-        set(value) = preferences.edit { putString(KEY_FILTER_MAP, value) }
+        set(value) = preferences.edit(commit = true) { putString(KEY_FILTER_MAP, value) }
 
     var downloadFilterIdMap: HashMap<String, String>
         get() = Json.decodeFromString(preferences.getString(KEY_DOWNLOAD_FILTER_ID_MAP, "{}")!!)

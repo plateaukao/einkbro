@@ -19,8 +19,8 @@ interface FilterViewModel {
      * All added filters.
      * [Filter.id] to [Filter]
      */
-    val filters: StateFlow<LinkedHashMap<String, Filter>>
-    fun setFilters(filters: LinkedHashMap<String, Filter>)
+    val filters: StateFlow<Map<String, Filter>>
+    fun updateFilters()
 
     /**
      * Used to observe download has been added or removed.
@@ -28,6 +28,7 @@ interface FilterViewModel {
      * [WorkRequest.getId] to [Filter.id]
      */
     val workToFilterMap: StateFlow<Map<String, String>>
+    fun updateWorkToFilterMap(map: Map<String, String>)
 
     /**
      * Add a new filter.

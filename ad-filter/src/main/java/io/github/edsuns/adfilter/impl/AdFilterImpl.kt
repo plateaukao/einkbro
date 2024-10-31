@@ -27,7 +27,7 @@ import java.io.File
 /**
  * Created by Edsuns@qq.com on 2021/7/29.
  */
-internal class AdFilterImpl (appContext: Context) : AdFilter {
+internal class AdFilterImpl(appContext: Context) : AdFilter {
 
     private val detector: Detector = DetectorImpl()
     internal val binaryDataStore: BinaryDataStore =
@@ -47,18 +47,18 @@ internal class AdFilterImpl (appContext: Context) : AdFilter {
     init {
         GlobalScope.launch {
 //                if (enable) {
-                    viewModel.filters.value.values.forEach {
-                        if (it.isEnabled && it.hasDownloaded()) {
-                            viewModel.enableFilter(it)
-                        }
-                    }
-                    filterDataLoader.load(FilterDataLoader.ID_CUSTOM)
+            viewModel.filters.value.values.forEach {
+                if (it.isEnabled && it.hasDownloaded()) {
+                    viewModel.enableFilter(it)
+                }
+            }
+            filterDataLoader.load(FilterDataLoader.ID_CUSTOM)
 //                } else {
 //                    filterDataLoader.unloadAll()
 //                    filterDataLoader.unloadCustomFilter()
 //                }
-                viewModel.updateEnabledFilterCount()
-            }
+            viewModel.updateEnabledFilterCount()
+        }
 
         GlobalScope.launch {
             viewModel.workInfo.collect { list -> processWorkInfo(list) }
@@ -68,11 +68,12 @@ internal class AdFilterImpl (appContext: Context) : AdFilter {
 
     private fun processWorkInfo(workInfoList: List<WorkInfo>) {
         workInfoList.forEach { workInfo ->
-            val filterId = viewModel.downloadFilterIdMap[workInfo.id.toString()]
-            viewModel.filters.value?.get(filterId)?.let {
+            val filterId = viewModel.workToFilterMap.value[workInfo.id.toString()]
+            viewModel.filters.value.toMutableMap()[filterId]?.let {
                 updateFilter(it, workInfo)
             }
         }
+        viewModel.updateFilters()
     }
 
     private fun updateFilter(filter: Filter, workInfo: WorkInfo) {
@@ -102,6 +103,7 @@ internal class AdFilterImpl (appContext: Context) : AdFilter {
                         filter.updateTime = System.currentTimeMillis()
                         DownloadState.SUCCESS
                     }
+
                     WorkInfo.State.FAILED -> DownloadState.FAILED
                     WorkInfo.State.CANCELLED -> DownloadState.CANCELLED
                     else -> downloadState
@@ -115,14 +117,11 @@ internal class AdFilterImpl (appContext: Context) : AdFilter {
             }
         }
         if (state.isFinished) {
-            viewModel.downloadFilterIdMap.remove(workInfo.id.toString())
-            // save shared preferences
-            viewModel.sharedPreferences.downloadFilterIdMap = viewModel.downloadFilterIdMap
-            // notify download work removed
-            viewModel.workToFilterMap.value = viewModel.downloadFilterIdMap
+            viewModel.updateWorkToFilterMap(viewModel.workToFilterMap.value - workInfo.id.toString())
         }
         if (downloadState != filter.downloadState) {
             filter.downloadState = downloadState
+            viewModel.updateFilters()
             viewModel.flushFilter()
         }
     }
@@ -138,7 +137,7 @@ internal class AdFilterImpl (appContext: Context) : AdFilter {
      */
     override fun shouldIntercept(
         webView: WebView,
-        request: WebResourceRequest
+        request: WebResourceRequest,
     ): FilterResult = runBlocking {
         val url = request.url.toString()
         if (request.isForMainFrame) {
@@ -161,7 +160,7 @@ internal class AdFilterImpl (appContext: Context) : AdFilter {
     override fun shouldIntercept(
         url: String,
         documentUrl: String,
-        resourceType: ResourceType?
+        resourceType: ResourceType?,
     ): FilterResult {
         val type = resourceType ?: ResourceType.from(Uri.parse(url)) ?: ResourceType.UNKNOWN
         val rule = detector.shouldBlock(url, documentUrl, type)
@@ -182,7 +181,7 @@ internal class AdFilterImpl (appContext: Context) : AdFilter {
     }
 
     override fun performScript(webView: WebView?, url: String?) {
-            elementHiding.perform(webView, url)
-            scriptlet.perform(webView, url)
+        elementHiding.perform(webView, url)
+        scriptlet.perform(webView, url)
     }
 }
