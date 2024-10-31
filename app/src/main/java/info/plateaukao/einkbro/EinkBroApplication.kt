@@ -24,6 +24,8 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.LocaleManager
 import io.github.edsuns.adfilter.AdFilter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
@@ -84,7 +86,9 @@ class EinkBroApplication : Application() {
 
         val filter = AdFilter.create(this)
         val viewModel = filter.viewModel
-        viewModel.workToFilterMap.observeForever { notifyDownloading(it.isEmpty()) }
+        GlobalScope.launch {
+            viewModel.workToFilterMap.collect { notifyDownloading(it.isEmpty()) }
+        }
 
     }
 
@@ -110,8 +114,7 @@ class EinkBroApplication : Application() {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val builder = NotificationCompat.Builder(this, channelId).apply {
-            //setContentTitle(getString(R.string.filter_download))
-            setContentTitle("Filter Download")
+            setContentTitle("Adblock Filter Download")
             setContentIntent(pendingIntent)
             setDefaults(NotificationCompat.DEFAULT_ALL)
             setVibrate(longArrayOf(0L))

@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -56,9 +57,11 @@ class AdBlockSettingActivity : ComponentActivity() {
 }
 
 @Composable
-fun SettingsScreen(viewModel: FilterViewModel, onCloseAction: () -> Unit = {}) {
-    val filters = remember { mutableStateOf(viewModel.filters.value ?: emptyMap()) }
-    val isEnabled = remember { mutableStateOf(viewModel.isEnabled.value) }
+fun SettingsScreen(
+    viewModel: FilterViewModel,
+    onCloseAction: () -> Unit = {},
+) {
+    val filters = viewModel.filters.collectAsState(initial = emptyMap())
     val context = LocalContext.current
 
     Scaffold(
@@ -85,19 +88,16 @@ fun SettingsScreen(viewModel: FilterViewModel, onCloseAction: () -> Unit = {}) {
         },
         content = { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                Switch(
-                    checked = isEnabled.value!!,
-                    onCheckedChange = { viewModel.isEnabled.value = it }
-                )
-                if (isEnabled.value!!) {
-                    val filterList = viewModel.filters.value?.values?.toList() ?: emptyList()
-                    LazyColumn {
-                        items(filterList.size) { index ->
-                            val filter = filterList[index]
-                            FilterRow(filter, SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH)) {
-                                viewModel.download(it.id)
+                LazyColumn {
+                    val filterList = filters.value.values.toList()
+                    items(filterList.size) { index ->
+                        val filter = filterList[index]
+                        FilterRow(filter, SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH),
+                            onClick = { viewModel.download(it.id) },
+                            onToggled = { filter, enabled ->
+                                viewModel.setFilterEnabled(filter.id, enabled, true)
                             }
-                        }
+                        )
                     }
                 }
             }
@@ -110,7 +110,10 @@ fun FilterRow(
     filter: Filter,
     dateFormatter: SimpleDateFormat,
     onClick: (Filter) -> Unit,
+    onToggled: (Filter, Boolean) -> Unit,
 ) {
+    val isChecked = remember { mutableStateOf(filter.isEnabled) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -158,8 +161,11 @@ fun FilterRow(
             }
         }
         Switch(
-            checked = filter.isEnabled,
-            onCheckedChange = null, // You can handle this change outside
+            checked = isChecked.value,
+            onCheckedChange = {
+                isChecked.value = it
+                onToggled(filter, it)
+            },
             enabled = filter.filtersCount > 0
         )
     }

@@ -48,7 +48,6 @@ class EBWebViewClient(
 ) : WebViewClient(), KoinComponent {
     private val context: Context = ebWebView.context
     private val config: ConfigManager by inject()
-    private val adBlock: AdBlockV2 by inject()
     private val cookie: Cookie by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
 
@@ -220,12 +219,6 @@ class EBWebViewClient(
         return true
     }
 
-    private val adTxtResponse: WebResourceResponse = WebResourceResponse(
-        BrowserUnit.MIME_TYPE_TEXT_PLAIN,
-        BrowserUnit.URL_ENCODING,
-        ByteArrayInputStream("".toByteArray())
-    )
-
     override fun onReceivedHttpAuthRequest(
         view: WebView?,
         handler: HttpAuthHandler?,
@@ -268,9 +261,6 @@ class EBWebViewClient(
 
     private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
         val url = uri.toString()
-//        if (hasAdBlock && !adBlock.isWhite(url) && adBlock.isAd(url)) {
-//            return adTxtResponse
-//        }
 
         if (!config.cookies) {
             if (cookie.isWhite(url)) {
