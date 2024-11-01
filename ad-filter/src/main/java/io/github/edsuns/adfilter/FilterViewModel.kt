@@ -20,6 +20,7 @@ interface FilterViewModel {
      * [Filter.id] to [Filter]
      */
     val filters: StateFlow<Map<String, Filter>>
+    fun updateFilterByFilterId(id: String, filter: Filter)
     fun updateFilters()
 
     /**
