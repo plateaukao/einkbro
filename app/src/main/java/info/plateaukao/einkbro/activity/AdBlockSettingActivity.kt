@@ -210,7 +210,7 @@ fun FilterRow(
             }
         }
         Switch(
-            checked = filter.isEnabled,
+            checked = isChecked.value,
             onCheckedChange = {
                 isChecked.value = it
                 onToggled(filter, it)

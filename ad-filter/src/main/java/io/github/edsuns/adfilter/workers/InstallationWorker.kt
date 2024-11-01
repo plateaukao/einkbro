@@ -84,6 +84,9 @@ internal class InstallationWorker(context: Context, params: WorkerParameters) : 
 
     private fun persistFilterData(id: String, rawBytes: ByteArray): Int {
         val client = AdBlockClient(id)
+        if (rawBytes.isEmpty()) {
+            return 0
+        }
         client.loadBasicData(rawBytes, true)
         binaryDataStore.saveData(id, client.getProcessedData())
         return client.getFiltersCount()
