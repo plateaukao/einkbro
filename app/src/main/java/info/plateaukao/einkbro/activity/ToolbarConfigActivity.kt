@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.activity
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
@@ -12,19 +13,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -42,7 +38,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -56,9 +51,8 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import org.koin.android.ext.android.inject
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.view.compose.ReorderableComposedIconBar
-import info.plateaukao.einkbro.view.compose.conditional
 
 class ToolbarConfigActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
@@ -109,6 +103,16 @@ class ToolbarConfigActivity : ComponentActivity() {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        if (config.uiLocaleLanguage.isNotEmpty()) {
+            super.attachBaseContext(
+                LocaleManager.setLocale(newBase, config.uiLocaleLanguage)
+            )
+        } else {
+            super.attachBaseContext(newBase)
         }
     }
 }

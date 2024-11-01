@@ -231,7 +231,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var shouldLoadTabState: Boolean = false
 
     private val toolbarActionHandler: ToolbarActionHandler by lazy {
-        ToolbarActionHandler(this)
+        ToolbarActionHandler(this, ebWebView)
     }
 
     private val albumViewModel: AlbumViewModel by viewModels()

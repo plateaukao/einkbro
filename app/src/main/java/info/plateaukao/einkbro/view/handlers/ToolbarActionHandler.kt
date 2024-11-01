@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -16,6 +17,7 @@ import org.koin.core.component.inject
 
 class ToolbarActionHandler(
     private val activity: FragmentActivity,
+    private val ebWebView: EBWebView,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val browserController = activity as BrowserController
@@ -32,12 +34,14 @@ class ToolbarActionHandler(
         ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(
             TRANSLATE_API.PAPAGO
         )
+
         ToolbarAction.Refresh -> browserController.toggleFullscreen()
         ToolbarAction.Settings -> browserController.showFastToggleDialog()
         ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
         ToolbarAction.TranslateByParagraph -> browserController.configureTranslationLanguage(
             TRANSLATE_API.GOOGLE
         )
+
         ToolbarAction.Translation -> browserController.showTranslationConfigDialog(true)
         ToolbarAction.Tts -> TtsSettingDialogFragment().show(activity.supportFragmentManager, "TtsSettingDialog")
         ToolbarAction.Touch -> browserController.showTouchAreaDialog()
@@ -58,6 +62,7 @@ class ToolbarActionHandler(
         ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
         ToolbarAction.IconSetting ->
             activity.startActivity(Intent(activity, ToolbarConfigActivity::class.java))
+
         ToolbarAction.IncreaseFont -> browserController.increaseFontSize()
         ToolbarAction.InputUrl -> browserController.focusOnInput()
         ToolbarAction.MoveToBackground -> activity.moveTaskToBack(true)
@@ -84,5 +89,7 @@ class ToolbarActionHandler(
         ToolbarAction.Translation -> browserController.showTranslation()
         ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)
         ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
+        ToolbarAction.SaveEpub -> browserController.showSaveEpubDialog()
+        ToolbarAction.ShareLink -> IntentUnit.share(activity, ebWebView.title, ebWebView.url)
     }
 }
