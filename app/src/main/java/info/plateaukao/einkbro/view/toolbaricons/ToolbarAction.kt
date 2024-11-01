@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.view.toolbaricons
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.outlined.ModeEdit
 import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.SpaceBar
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.Swipe
@@ -155,6 +157,14 @@ enum class ToolbarAction(
     Spacer2(
         imageVector = Icons.Outlined.SpaceBar,
         titleResId = R.string.expand_space,
+    ),
+    ShareLink(
+        imageVector = Icons.Outlined.Share,
+        titleResId = R.string.menu_share_link,
+    ),
+    SaveEpub(
+        imageVector = Icons.AutoMirrored.Outlined.Article,
+        titleResId = R.string.menu_save_epub,
     ),
     ;
 
