@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE
@@ -14,6 +15,7 @@ import android.content.Intent.ACTION_VIEW
 import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.PorterDuff
@@ -50,6 +52,7 @@ import android.widget.TextView
 import android.widget.VideoView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
@@ -374,6 +377,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         // post delay to update filter list
+        if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // 如果沒有獲得權限，請求權限
+            requestNotificationPermission()
+        }
         binding.root.postDelayed({
             checkAdBlockerList()
         }, 1000)
@@ -412,6 +419,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 //                }
 //                .show()
         }
+    }
+
+    private fun requestNotificationPermission() {
+        val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+            } else {
+            }
+        }
+
+        // 發起權限請求
+        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
 
     private fun initTtsViewModel() {
