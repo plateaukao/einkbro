@@ -6,7 +6,7 @@ EinkBro is designed to fit Eink devices' needs; no unnecessary UI transitions an
      alt="Get it on F-Droid"
      height="60">](https://f-droid.org/packages/info.plateaukao.einkbro/)
 
-[<img src="https://badgen.net/github/release/plateaukao/einkbro">](https://github.com/plateaukao/einkbro/releases)   [<img src="https://badgen.net/badge/download/snapshot_zip/green">](https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip)   
+[<img src="https://badgen.net/github/release/plateaukao/einkbro">](https://github.com/plateaukao/einkbro/releases)   [<img src="https://badgen.net/badge/download/snapshot_zip/green">](https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-arm64-v8a-release.apk.zip)   
 
 ## EinkBro has a book about how it was developed!
 [<img width=200 src="https://github.com/user-attachments/assets/19c07714-a093-4960-b33e-bebb2ecf4501">](https://play.google.com/store/books/details/%E9%AB%98%E8%8C%82%E5%8E%9F_Daniel_Kao_Android%E9%96%8B%E6%BA%90%E5%B0%88%E6%A1%88_%E7%9C%9F_%E5%AF%A6%E6%88%B0%E5%95%9F%E8%88%AA?id=aOniEAAAQBAJ)
