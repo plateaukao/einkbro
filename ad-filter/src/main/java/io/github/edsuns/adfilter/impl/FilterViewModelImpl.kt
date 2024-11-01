@@ -56,6 +56,11 @@ internal class FilterViewModelImpl(
         MutableStateFlow(Json.decodeFromString(sharedPreferences.filterMap))
 
     override val filters: StateFlow<Map<String, Filter>> = _filterMap.asStateFlow()
+    override fun updateFilterByFilterId(id: String, filter: Filter) {
+        _filterMap.value = filters.value.toMutableMap().apply { set(id, filter) }
+        saveFilterMap()
+    }
+
     override fun updateFilters() {
         _filterMap.value = filters.value.toMutableMap()
     }
@@ -74,18 +79,18 @@ internal class FilterViewModelImpl(
     init {
         workManager.pruneWork()
         // clear bad running download state
-        filters.value.values.forEach {
-            if (it.downloadState.isRunning) {
-                val list = workManager.getWorkInfosForUniqueWork(it.id).get()
+        filters.value.values.forEach { filter ->
+            if (filter.downloadState.isRunning) {
+                val list = workManager.getWorkInfosForUniqueWork(filter.id).get()
                 if (list == null || list.isEmpty()) {
-                    it.downloadState = DownloadState.FAILED
-                    flushFilter()
+                    val updatedFilter = filter.copy(downloadState = DownloadState.FAILED)
+                    updateFilterByFilterId(filter.id, updatedFilter)
                 } else {
                     if (list[0].state == WorkInfo.State.ENQUEUED
-                        && it.downloadState != DownloadState.ENQUEUED
+                        && filter.downloadState != DownloadState.ENQUEUED
                     ) {
-                        it.downloadState = DownloadState.ENQUEUED
-                        flushFilter()
+                        val updatedFilter = filter.copy(downloadState = DownloadState.ENQUEUED)
+                        updateFilterByFilterId(filter.id, updatedFilter)
                     }
                 }
             }
@@ -93,13 +98,10 @@ internal class FilterViewModelImpl(
     }
 
     override fun addFilter(name: String, url: String): Filter {
-        val filter = Filter(url)
-        filter.name = name
-        filters.value[filter.id]?.let { return it }
-
-        _filterMap.value = filters.value.toMutableMap().apply { set(filter.id, filter) }
-        flushFilter()
-        return filter
+        val newFilter = Filter(url, name)
+        _filterMap.value = filters.value.toMutableMap().apply { set(newFilter.id, newFilter) }
+        updateFilterByFilterId(newFilter.id, newFilter)
+        return newFilter
     }
 
     override fun removeFilter(id: String) {
@@ -127,26 +129,21 @@ internal class FilterViewModelImpl(
     internal fun enableFilter(filter: Filter) {
         if (filter.filtersCount > 0) {
             filterDataLoader.load(filter.id)
-            filter.isEnabled = true
+            filter.copy(isEnabled = true).let { updateFilterByFilterId(it.id, it) }
             updateEnabledFilterCount()
-            _filterMap.value = filters.value.toMutableMap()
-            flushFilter()
         }
     }
 
     private fun disableFilter(filter: Filter) {
         filterDataLoader.unload(filter.id)
-        filter.isEnabled = false
+        filter.copy(isEnabled = false).let { updateFilterByFilterId(it.id, it) }
         updateEnabledFilterCount()
-        _filterMap.value = filters.value.toMutableMap()
-        flushFilter()
     }
 
     override fun renameFilter(id: String, name: String) {
         filters.value[id]?.let {
-            it.name = name
-            _filterMap.value = filters.value.toMutableMap()
-            flushFilter()
+            val updatedFilter = it.copy(name = name)
+            updateFilterByFilterId(id, updatedFilter)
         }
     }
 
@@ -202,7 +199,7 @@ internal class FilterViewModelImpl(
             }
             // notify download work added
             // mark the beginning of the download
-            _filterMap.value = filters.value.toMutableMap().apply { this[id]?.downloadState = DownloadState.NONE }
+            filters.value[id]?.copy(downloadState = DownloadState.NONE)?.let { updateFilterByFilterId(id, it) }
             // start the work
             continuation.enqueue()
         }

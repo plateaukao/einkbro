@@ -27,6 +27,7 @@ interface AdFilter {
      */
     val customFilter: CustomFilter
 
+    fun setEnabled(enable: Boolean)
     /**
      * Call this function when [WebViewClient.shouldInterceptRequest],
      * and use [FilterResult.resourceResponse] as return value.
