@@ -422,11 +422,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun requestNotificationPermission() {
-        val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-            } else {
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+                if (isGranted) {
+                } else {
+                }
             }
-        }
 
         // 發起權限請求
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -2648,7 +2649,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
         if (uri == null) {
-            epubManager.showWriteEpubFilePicker(writeEpubFilePickerLauncher)
+            epubManager.showWriteEpubFilePicker(writeEpubFilePickerLauncher, ebWebView.title ?: "einkbro")
         } else {
             saveEpub(uri)
         }

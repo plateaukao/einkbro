@@ -56,7 +56,7 @@ class EpubManager(private val context: Context) : KoinComponent {
             val isNewFile =
                 (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
 
-            val bookName = if (isNewFile) getBookName() else ""
+            val bookName = if (isNewFile) getBookName(ebWebView.title?.pruneWebTitle()) else ""
             val chapterName = getChapterName(ebWebView.title?.pruneWebTitle())
 
             if (bookName != null && chapterName != null) {
@@ -98,20 +98,23 @@ class EpubManager(private val context: Context) : KoinComponent {
         ).show()
     }
 
-    private suspend fun getBookName(): String? {
+    private suspend fun getBookName(defaultBookName: String?): String? {
         return TextInputDialog(
             context,
             context.getString(R.string.book_name),
             context.getString(R.string.book_name_description),
-            "einkbro book"
+            defaultBookName ?: "einkbro book"
         ).show()
     }
 
-    fun showWriteEpubFilePicker(activityResultLauncher: ActivityResultLauncher<Intent>) {
+    fun showWriteEpubFilePicker(
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        fileName: String,
+    ) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_EPUB
-        intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
+        intent.putExtra(Intent.EXTRA_TITLE, "$fileName.epub")
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         activityResultLauncher.launch(intent)
