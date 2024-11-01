@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
@@ -91,5 +92,9 @@ class ToolbarActionHandler(
         ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
         ToolbarAction.SaveEpub -> browserController.showSaveEpubDialog()
         ToolbarAction.ShareLink -> IntentUnit.share(activity, ebWebView.title, ebWebView.url)
+        ToolbarAction.InvertColor -> {
+            val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
+            ViewUnit.invertColor(ebWebView, hasInvertedColor)
+        }
     }
 }

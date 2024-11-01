@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.FormatSize
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.GTranslate
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.InvertColors
 import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.material.icons.outlined.LooksOne
 import androidx.compose.material.icons.outlined.Menu
@@ -165,6 +166,10 @@ enum class ToolbarAction(
     SaveEpub(
         imageVector = Icons.AutoMirrored.Outlined.Article,
         titleResId = R.string.menu_save_epub,
+    ),
+    InvertColor(
+        imageVector = Icons.Outlined.InvertColors,
+        titleResId = R.string.menu_invert_color,
     ),
     ;
 
