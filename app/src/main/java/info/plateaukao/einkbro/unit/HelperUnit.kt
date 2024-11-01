@@ -82,7 +82,6 @@ object HelperUnit {
         .build()
 
 
-
     fun getStringFromAsset(fileName: String): String =
         EinkBroApplication.instance.assets.open(fileName).bufferedReader().use { it.readText() }
 
@@ -279,7 +278,7 @@ object HelperUnit {
         activity: Activity,
         uri: Uri,
         resultLauncher: ActivityResultLauncher<Intent>? = null,
-        shouldGoToEnd: Boolean = false
+        shouldGoToEnd: Boolean = false,
     ) {
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
@@ -410,11 +409,22 @@ object HelperUnit {
             file
         )
 
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(apkUri, "application/vnd.android.package-archive")
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            @Suppress("DEPRECATION")
+            Intent(Intent.ACTION_INSTALL_PACKAGE).apply {
+                data = apkUri
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+        } else {
+            Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(apkUri, "application/vnd.android.package-archive")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
         }
+            .apply {
+                putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+                putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, context.packageName)
+            }
 
         context.startActivity(intent)
     }
@@ -433,7 +443,7 @@ object HelperUnit {
 
     suspend fun upgradeFromSnapshot(context: Context) {
         val url =
-            "https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip"
+            "https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-arm64-v8a-release.apk.zip"
         val request = Request.Builder().url(url).build()
         try {
             withContext(Dispatchers.Main) {
@@ -463,7 +473,7 @@ object HelperUnit {
 
         var zipEntry = zipInputStream.nextEntry
         while (zipEntry != null) {
-            if (zipEntry.name == "app-release.apk") {
+            if (zipEntry.name == "app-arm64-v8a-release.apk") {
                 val tempFile = File("${context.cacheDir.absolutePath}/app.apk")
                 if (tempFile.exists()) {
                     tempFile.delete()
@@ -512,6 +522,7 @@ object HelperUnit {
     }
 
     private const val DEFAULT_FONT_SIZE = 18
+
     /**
      * Parses a given markdown text and converts it into an [AnnotatedString] with appropriate styles.
      * from: mdparserkitcore/src/main/java/com/daksh/mdparserkit/core/ParseMarkdown.kt
@@ -644,7 +655,7 @@ object HelperUnit {
         inputText: String,
         resultBuilder: AnnotatedString.Builder,
         fontSize: TextUnit,
-        fontWeight: FontWeight = FontWeight.Normal
+        fontWeight: FontWeight = FontWeight.Normal,
     ) {
         val boldItalicPattern = Regex("\\*\\*[*_](.*?)[*_]\\*\\*")
         val boldPattern = Regex("\\*\\*(.*?)\\*\\*")
@@ -740,6 +751,7 @@ object HelperUnit {
                             i += 4
                         }
                     }
+
                     else -> stringBuilder.append(nextChar)  // if it's not an escape sequence, keep the original
                 }
                 i += 1 // skip next character
