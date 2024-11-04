@@ -563,7 +563,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             updateTranslationInput()
                             if (translationViewModel.hasOpenAiApiKey()) {
                                 translationViewModel.setupGptAction(gptAction)
-                                translationViewModel.url = ebWebView.url.orEmpty()
+                                translationViewModel.url = getFocusedWebView().url.orEmpty()
 
                                 showTranslationDialog()
                             } else {
@@ -586,8 +586,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         actionModeMenuViewModel.finish()
                     }
 
-                    is SelectSentence -> ebWebView.selectSentence(longPressPoint)
-                    is SelectParagraph -> ebWebView.selectParagraph(longPressPoint)
+                    is SelectSentence -> getFocusedWebView().selectSentence(longPressPoint)
+                    is SelectParagraph -> getFocusedWebView().selectParagraph(longPressPoint)
 
                     Idle -> Unit
                 }
@@ -625,20 +625,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private suspend fun updateTranslationInput() {
+        // need to handle where data is from: ebWebView or twoPaneController.getSecondWebView()
         with(translationViewModel) {
             updateInputMessage(actionModeMenuViewModel.selectedText.value)
-            updateMessageWithContext(ebWebView.getSelectedTextWithContext())
-            url = ebWebView.url.orEmpty()
+            updateMessageWithContext(getFocusedWebView().getSelectedTextWithContext())
+            url = getFocusedWebView().url.orEmpty()
         }
     }
 
     private suspend fun highlightText(highlightStyle: HighlightStyle) {
+        val focusedWebView = getFocusedWebView()
         // work on UI first
-        ebWebView.highlightTextSelection(highlightStyle)
+        focusedWebView.highlightTextSelection(highlightStyle)
 
         // work on db saving
-        val url = ebWebView.url.orEmpty()
-        val title = ebWebView.title.orEmpty()
+        val url = focusedWebView.url.orEmpty()
+        val title = focusedWebView.title.orEmpty()
         val article = Article(title, url, System.currentTimeMillis(), "")
 
         val articleInDb =
@@ -2727,6 +2729,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         return list[index]
     }
 
+    private fun getFocusedWebView(): EBWebView = when {
+        ebWebView.hasFocus() -> ebWebView
+        isTwoPaneControllerInitialized() && twoPaneController.getSecondWebView().hasFocus() -> {
+            twoPaneController.getSecondWebView()
+        }
+
+        else -> ebWebView
+    }
+
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
         val isTextEditMode = ViewUnit.isTextEditMode(this, mode.menu)
@@ -2738,7 +2749,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             mode.finish()
 
             lifecycleScope.launch {
-                val keyword = ebWebView.getSelectedText()
+                val keyword = getFocusedWebView().getSelectedText()
                 remoteConnViewModel.sendTextSearch(externalSearchViewModel.generateSearchUrl(keyword))
             }
             return
@@ -2765,9 +2776,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 mode.finish()
 
                 lifecycleScope.launch {
-                    actionModeMenuViewModel.updateSelectedText(HelperUnit.unescapeJava(ebWebView.getSelectedText()))
+                    actionModeMenuViewModel.updateSelectedText(HelperUnit.unescapeJava(getFocusedWebView().getSelectedText()))
                     showActionModeView(translationViewModel) {
-                        ebWebView.removeTextSelection()
+                        getFocusedWebView().removeTextSelection()
                     }
                 }
             }

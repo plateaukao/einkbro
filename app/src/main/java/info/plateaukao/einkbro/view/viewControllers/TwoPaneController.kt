@@ -28,7 +28,6 @@ import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.lang.Math.abs
 
 class TwoPaneController(
     private val activity: Activity,
@@ -47,7 +46,7 @@ class TwoPaneController(
             shouldHideTranslateContext = true
             setScrollChangeListener(object : OnScrollChangeListener {
                 override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                    if (abs(scrollY - oldScrollY) > 10) {
+                    if (kotlin.math.abs(scrollY - oldScrollY) > 10) {
                         hideControlButtons()
                     }
                 }
@@ -119,6 +118,8 @@ class TwoPaneController(
             }
         }
     }
+
+    fun getSecondWebView(): EBWebView = webView
 
     private fun hideControlButtons() {
         translationViewBinding.controlsContainer.visibility = INVISIBLE
