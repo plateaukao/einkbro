@@ -35,6 +35,7 @@ import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -149,6 +150,7 @@ object HelperUnit {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
     fun createShortcut(context: Context, title: String?, url: String?, bitmap: Bitmap?) {
         val url = url ?: return

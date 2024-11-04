@@ -2657,7 +2657,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun readArticle() {
+    protected fun readArticle() {
         lifecycleScope.launch {
             ttsViewModel.readArticle(ebWebView.getRawText())
         }

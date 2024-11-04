@@ -30,18 +30,31 @@ class EpubReaderActivity: BrowserActivity() {
         epubReader.showTocDialog()
     }
     override fun dispatchIntent(intent: Intent) {
-        val epubUri= intent.data ?: return
-        val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
+        when (intent.action) {
+            Intent.ACTION_VIEW -> {
+                val epubUri = intent.data ?: return
+                val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
 
-        addAlbum(url = BrowserUnit.URL_ABOUT_BLANK, enablePreloadWebView = false) // so that it won't miss the preload webview
-        lifecycleScope.launch {
-            with(ebWebView as EpubReaderView) {
-                openEpubFile(epubUri)
-                if (shouldGotoLastChapter) {
-                    gotoLastChapter()
-                } else {
-                    gotoPosition(0, 0F)
+                addAlbum(
+                    url = BrowserUnit.URL_ABOUT_BLANK,
+                    enablePreloadWebView = false
+                ) // so that it won't miss the preload webview
+                lifecycleScope.launch {
+                    with(ebWebView as EpubReaderView) {
+                        openEpubFile(epubUri)
+                        if (shouldGotoLastChapter) {
+                            gotoLastChapter()
+                        } else {
+                            gotoPosition(0, 0F)
+                        }
+                    }
                 }
+            }
+            ACTION_READ_ALOUD -> {
+                readArticle()
+            }
+            else -> {
+                super.dispatchIntent(intent)
             }
         }
     }
