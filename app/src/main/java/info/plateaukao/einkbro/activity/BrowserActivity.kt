@@ -62,6 +62,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -136,6 +137,7 @@ import info.plateaukao.einkbro.view.viewControllers.FabImageViewController
 import info.plateaukao.einkbro.view.viewControllers.OverviewDialogController
 import info.plateaukao.einkbro.view.viewControllers.TouchAreaViewController
 import info.plateaukao.einkbro.view.viewControllers.TwoPaneController
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuState
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.DeeplTranslate
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.GoogleTranslate
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
@@ -556,6 +558,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             actionModeMenuViewModel.finish()
                         }
                     }
+                    
+                    is ActionModeMenuState.ReadFromHere -> readFromThisSentence()
 
                     is Gpt -> {
                         val gptAction = config.gptActionList[state.gptActionIndex]
@@ -621,6 +625,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     view.visibility = INVISIBLE
                 }
             }
+        }
+    }
+
+    private fun readFromThisSentence() {
+        lifecycleScope.launch {
+            val selectedSentence = ebWebView.getSelectedText()
+            val fullText = ebWebView.getRawText()
+            // read from selected sentence to the end of the article
+            val startIndex = fullText.indexOf(selectedSentence)
+            ttsViewModel.readArticle(fullText.substring(startIndex))
         }
     }
 

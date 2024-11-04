@@ -506,4 +506,5 @@
     <string name="bold">粗體字</string>
     <string name="deepl_translate_by_paragraph">Deepl by Paragraph</string>
     <string name="dialog_message_remove_highlight">Remove highlight?</string>
+    <string name="read_from_here">Read from here</string>
 </resources>

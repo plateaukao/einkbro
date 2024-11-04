@@ -7,6 +7,7 @@ import android.graphics.Point
 import android.view.ActionMode
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
@@ -104,6 +105,14 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
         val menuInfos = resolveInfos.map { it.toMenuInfo(packageManager) }.toMutableList()
 
+        menuInfos.add(
+            0,
+            MenuInfo(
+                context.getString(R.string.read_from_here),
+                imageVector = Icons.Outlined.RecordVoiceOver,
+                action = { _actionModeMenuState.value = ActionModeMenuState.ReadFromHere }
+            )
+        )
         if (configManager.imageApiKey.isNotEmpty()) {
             menuInfos.add(
                 0,
@@ -249,6 +258,7 @@ sealed class ActionModeMenuState {
     data object DeeplTranslate : ActionModeMenuState()
     data object Papago : ActionModeMenuState()
     data object Naver : ActionModeMenuState()
+    data object ReadFromHere: ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
     class Tts(val text: String) : ActionModeMenuState()
     class HighlightText(val highlightStyle: HighlightStyle) : ActionModeMenuState()
