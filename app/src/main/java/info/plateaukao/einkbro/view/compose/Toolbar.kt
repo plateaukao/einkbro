@@ -253,16 +253,26 @@ fun ReorderableComposedIconBar(
                         clickable(onClick = { onClick(toolbarAction) })
                     }
             ) {
-                CreateToolbarIcon(
-                    toolbarActionInfo,
-                    list.value,
-                    onClick,
-                    title,
-                    false,
-                    tabCount,
-                    null,
-                    pageInfo,
-                )
+                if (toolbarAction in listOf(Spacer1, Spacer2)) {
+                    val spacerWidth = calculateSpacerWidth(list.value)
+                    Spacer(
+                        modifier = Modifier
+                            .height(40.dp)
+                            .width(spacerWidth)
+                            .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.onBackground)
+                    )
+                } else {
+                    CreateToolbarIcon(
+                        toolbarActionInfo,
+                        list.value,
+                        onClick,
+                        title,
+                        false,
+                        tabCount,
+                        null,
+                        pageInfo,
+                    )
+                }
             }
         }
     }
@@ -518,5 +528,14 @@ fun PreviewToolbarLongTitle() {
             isIncognito = true,
             { },
         )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewReorderableComposedIconBar() {
+    MyTheme {
+        val list = remember { mutableStateOf(ToolbarAction.values().map { ToolbarActionInfo(it, false) }) }
+        ReorderableComposedIconBar(list, "hihi", "1", "1/1") {}
     }
 }
