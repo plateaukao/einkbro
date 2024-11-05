@@ -54,16 +54,12 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.github.Edsuns:SmoothProgressAnimator:1.0'
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':adblock-client')
 
     implementation "com.jakewharton.timber:timber:$timber"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines"
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
 
