@@ -1914,7 +1914,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateSavedAlbumInfo()
 
         if (config.adBlock) {
-            AdFilter.get().setupWebView(newWebView)
+            adFilter.setupWebView(newWebView)
         }
     }
 

@@ -35,6 +35,8 @@ internal class InstallationWorker(context: Context, params: WorkerParameters) : 
         val dataStr = String(rawData)
         val name = extractTitle(dataStr)
         val checksum = Checksum(dataStr)
+
+        // TODO: need to comment out this section to avoid the list without checksum and license
         // reject filter that doesn't include both checksum and license if checkLicense is true
         if (checksum.checksumIn == null && checkLicense && !validateLicense(dataStr)) {
             Timber.v("Filter is invalid: $id")
