@@ -375,10 +375,9 @@ object HelperUnit {
             try {
                 val jsonArray = JSONArray(response.body!!.string())
                 val latestRelease = jsonArray.getJSONObject(0)
-                val tagName = latestRelease
-                    .getString("tag_name")
-                    .replace("v", "")
-                if (tagName > BuildConfig.VERSION_NAME) {
+                val tagName = latestRelease.getString("tag_name").replace("v", "")
+                val isPreRelease = latestRelease.getBoolean("prerelease")
+                if (tagName > BuildConfig.VERSION_NAME && !isPreRelease) {
                     withContext(Dispatchers.Main) {
                         EBToast.show(context, "Start downloading...")
                     }
