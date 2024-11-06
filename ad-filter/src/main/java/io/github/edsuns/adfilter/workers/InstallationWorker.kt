@@ -7,7 +7,6 @@ import androidx.work.workDataOf
 import io.github.edsuns.adblockclient.AdBlockClient
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.impl.AdFilterImpl
-import io.github.edsuns.adfilter.impl.Constants.KEY_ALREADY_UP_TO_DATE
 import io.github.edsuns.adfilter.impl.Constants.KEY_CHECK_LICENSE
 import io.github.edsuns.adfilter.impl.Constants.KEY_DOWNLOADED_DATA
 import io.github.edsuns.adfilter.impl.Constants.KEY_FILTERS_COUNT
@@ -15,7 +14,6 @@ import io.github.edsuns.adfilter.impl.Constants.KEY_FILTER_ID
 import io.github.edsuns.adfilter.impl.Constants.KEY_FILTER_NAME
 import io.github.edsuns.adfilter.impl.Constants.KEY_RAW_CHECKSUM
 import io.github.edsuns.adfilter.util.Checksum
-import timber.log.Timber
 
 /**
  * Created by Edsuns@qq.com on 2021/1/5.
@@ -38,23 +36,23 @@ internal class InstallationWorker(context: Context, params: WorkerParameters) : 
 
         // TODO: need to comment out this section to avoid the list without checksum and license
         // reject filter that doesn't include both checksum and license if checkLicense is true
-        if (checksum.checksumIn == null && checkLicense && !validateLicense(dataStr)) {
-            Timber.v("Filter is invalid: $id")
-            return Result.success()
-        }
-        Timber.v("Checksum: $rawChecksum, ${checksum.checksumIn}, ${checksum.checksumCalc}, ${checksum.validate()}")
-        if (!checksum.validate()) {
-            return Result.failure()
-        }
-        if (checksum.validate(rawChecksum)) {
-            Timber.v("Filter is up to date: $id")
-            return Result.success(
-                workDataOf(
-                    KEY_FILTER_NAME to name,
-                    KEY_ALREADY_UP_TO_DATE to true
-                )
-            )
-        }
+//        if (checksum.checksumIn == null && checkLicense && !validateLicense(dataStr)) {
+//            Timber.v("Filter is invalid: $id")
+//            return Result.success()
+//        }
+//        Timber.v("Checksum: $rawChecksum, ${checksum.checksumIn}, ${checksum.checksumCalc}, ${checksum.validate()}")
+//        if (!checksum.validate()) {
+//            return Result.failure()
+//        }
+//        if (checksum.validate(rawChecksum)) {
+//            Timber.v("Filter is up to date: $id")
+//            return Result.success(
+//                workDataOf(
+//                    KEY_FILTER_NAME to name,
+//                    KEY_ALREADY_UP_TO_DATE to true
+//                )
+//            )
+//        }
         val filtersCount = persistFilterData(id, rawData)
         binaryDataStore.clearData(downloadedDataName)
         return Result.success(

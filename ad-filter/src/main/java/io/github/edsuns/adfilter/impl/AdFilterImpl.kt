@@ -230,11 +230,11 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
 
     override fun setupWebView(webView: WebView) {
         webView.addJavascriptInterface(elementHiding, ScriptInjection.bridgeNameFor(elementHiding))
-        webView.addJavascriptInterface(scriptlet, ScriptInjection.bridgeNameFor(scriptlet))
+        //webView.addJavascriptInterface(scriptlet, ScriptInjection.bridgeNameFor(scriptlet))
     }
 
     override fun performScript(webView: WebView?, url: String?) {
         elementHiding.perform(webView, url)
-        scriptlet.perform(webView, url)
+        //scriptlet.perform(webView, url)
     }
 }
