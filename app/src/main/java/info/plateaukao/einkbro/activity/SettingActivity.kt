@@ -52,7 +52,6 @@ import info.plateaukao.einkbro.activity.SettingRoute.Toolbar
 import info.plateaukao.einkbro.activity.SettingRoute.Ui
 import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
-import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationTextStyle
@@ -83,7 +82,6 @@ import org.koin.android.ext.android.inject
 class SettingActivity : FragmentActivity() {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
-    private val adBlock: AdBlockV2 by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>

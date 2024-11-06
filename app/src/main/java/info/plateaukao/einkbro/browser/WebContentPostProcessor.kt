@@ -71,10 +71,6 @@ class WebContentPostProcessor : KoinComponent {
             "javascript:document.getElementsByName('viewport')[0].setAttribute('content', '%s%s');"
 
         private const val enableZoomJs = "initial-scale=1,maximum-scale=10.0,"
-        val urlScriptMap = mapOf(
-            "huxiu.com" to "huxiu.js",
-            //"x.com" to "twitter_block_ad.js",
-            "reddit.com" to "reddit_block_ad.js",
-        )
+        val urlScriptMap = mapOf<String, String>()
     }
 }
