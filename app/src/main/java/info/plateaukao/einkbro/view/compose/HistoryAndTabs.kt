@@ -174,7 +174,12 @@ fun HistoryAndTabs(
         MainContent(
             modifier = Modifier.Companion
                 .weight(1f, false)
-                .background(MaterialTheme.colors.background),
+                .background(MaterialTheme.colors.background)
+                .horizontalBorder(
+                    drawTop = !isBarOnTop,
+                    drawBottom = isBarOnTop,
+                    MaterialTheme.colors.onBackground
+                ),
             isHistoryOpen,
             shouldShowTwoColumns,
             shouldReverseHistory,
@@ -217,7 +222,7 @@ private fun MainContent(
     bookmarkManager: BookmarkManager?,
     records: List<Record>,
     onHistoryItemClick: (Record) -> Unit,
-    onHistoryItemLongClick: (Record) -> Unit
+    onHistoryItemLongClick: (Record) -> Unit,
 ) {
     if (!isHistoryOpen) {
         PreviewTabs(
@@ -254,7 +259,7 @@ fun PreviewTabs(
     albumFocusIndex: MutableState<Int>,
     onClick: (Album) -> Unit,
     closeAction: (Album) -> Unit,
-    showHorizontal: Boolean = false
+    showHorizontal: Boolean = false,
 ) {
     if (showHorizontal) {
         val maxItemWidth = 200
@@ -324,7 +329,7 @@ fun PreviewTabs(
 @Composable
 private fun scrollToFocusedItem(
     listState: LazyListState,
-    albumFocusIndex: Int
+    albumFocusIndex: Int,
 ) {
     val scope = rememberCoroutineScope()
     LaunchedEffect(true) {
@@ -406,7 +411,7 @@ data class TabInfo(
     val url: String,
     val title: String,
     val favicon: Bitmap? = null,
-    val isTranslatePage: Boolean
+    val isTranslatePage: Boolean,
 )
 
 @Composable
