@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
@@ -159,6 +160,7 @@ fun ActionMenuItem(
         if (imageVector != null) {
             Image(
                 imageVector = imageVector,
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
                 contentDescription = null,
                 modifier = Modifier
                     .size(44.dp)
