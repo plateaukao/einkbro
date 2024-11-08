@@ -96,7 +96,7 @@ open class EBWebView(
     var incognito: Boolean = false
         set(value) {
             field = value
-            toggleCookieSupport(!incognito)
+            toggleCookieSupport(!value)
         }
 
     private var isForeground = false
