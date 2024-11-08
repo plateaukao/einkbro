@@ -137,13 +137,23 @@ class ConfigManager(
     var enableInplaceParagraphTranslate by
     BooleanPreference(sp, K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE, true)
 
+    private var originalSaveHistoryMode: SaveHistoryMode? = null
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
-            if (!value) {
-                cookies = false
+            cookies = !value
+            if (value) {
+                originalSaveHistoryMode = saveHistoryMode
                 saveHistoryMode = SaveHistoryMode.DISABLED
+            } else {
+                if (originalSaveHistoryMode != null) {
+                    saveHistoryMode = originalSaveHistoryMode!!
+                    originalSaveHistoryMode = null
+                } else {
+                    saveHistoryMode = toggledSaveHistoryMode
+                }
             }
+
             sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
         }
 
