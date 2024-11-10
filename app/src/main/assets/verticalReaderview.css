@@ -176,6 +176,7 @@
 .mozac-readerview-content p {
   font-size: 1em !important;
   margin: 0px !important;
+  line-height: 1.5em !important;
   margin-left: 20px !important;
 }
 
