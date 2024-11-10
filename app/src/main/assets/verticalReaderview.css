@@ -84,6 +84,7 @@
 .mozac-readerview-body > .container > .header {
   text-align: start;
   padding-left: 10px;
+  line-height: 1.5em !important;
 }
 
 .mozac-readerview-body > .container > .header > .credits {

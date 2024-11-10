@@ -54,6 +54,7 @@ import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 
@@ -504,12 +505,18 @@ open class EBWebView(
     }
 
     fun isAtTop(): Boolean = if (isVerticalRead) {
-        scrollX == 0
+        val totalPageCount = computeHorizontalScrollRange() / shiftOffset()
+        val currentPage = totalPageCount - (floor(scrollX.toDouble() / shiftOffset()).toInt())
+        currentPage == 1
     } else {
         scrollY == 0
     }
 
-    fun jumpToTop() = scrollTo(0, 0)
+    fun jumpToTop() = if (isVerticalRead) {
+        scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
+    } else {
+        scrollTo(0, 0)
+    }
 
     fun jumpToBottom() = if (isVerticalRead) {
         scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
@@ -642,10 +649,15 @@ open class EBWebView(
 
     fun updatePageInfo() {
         try {
-            val info = if (isVerticalRead) {
-                "${ceil((scrollX + 1).toDouble() / shiftOffset()).toInt()}/${computeHorizontalScrollRange() / shiftOffset()}"
+            val totalPageCount = if (isVerticalRead) {
+                computeHorizontalScrollRange() / shiftOffset()
             } else {
-                "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/${computeVerticalScrollRange() / shiftOffset()}"
+                computeVerticalScrollRange() / shiftOffset()
+            }
+            val info = if (isVerticalRead) {
+                "${totalPageCount - (floor(scrollX.toDouble() / shiftOffset()).toInt())}/$totalPageCount"
+            } else {
+                "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/$totalPageCount"
             }
             browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
         } catch (e: ArithmeticException) { // prevent divide by zero
