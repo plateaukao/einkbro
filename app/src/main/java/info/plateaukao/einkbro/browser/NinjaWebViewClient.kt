@@ -253,7 +253,10 @@ class EBWebViewClient(
     ): WebResourceResponse? {
         if (config.adBlock) {
             val result = adFilter.shouldIntercept(view, request)
-            if (result.shouldBlock) return result.resourceResponse
+            if (result.shouldBlock) {
+                //Log.d("EBWebViewClient", "blocked\n rule: ${result.rule}\n url:${result.resourceUrl}")
+                return result.resourceResponse
+            }
         }
 
         return handleWebRequest(view, request.url) ?: super.shouldInterceptRequest(view, request)
