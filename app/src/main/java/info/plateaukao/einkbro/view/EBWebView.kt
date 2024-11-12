@@ -755,22 +755,18 @@ open class EBWebView(
     var isReaderModeOn = false
     fun toggleReaderMode(
         isVertical: Boolean = false,
-        getRawTextAction: ((String) -> Unit)? = null,
     ) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
             evaluateMozReaderModeJs(isVertical) {
-                val getRawTextJs =
-                    if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
                 evaluateJavascript(
                     "(function() { ${
-                        String.format(
-                            replaceWithReaderModeBodyJs,
-                            url
-                        )
-                    } $getRawTextJs })();",
-                    getRawTextAction
-                )
+                        String.format(replaceWithReaderModeBodyJs, url)
+                    } })();"
+                ) { _ ->
+                    // need to wait for a while to jump to top, so that vertical read starts from beginning
+                    postDelayed({ jumpToTop() }, 200)
+                }
             }
             settings.textZoom = config.readerFontSize
             updateCssStyle()
