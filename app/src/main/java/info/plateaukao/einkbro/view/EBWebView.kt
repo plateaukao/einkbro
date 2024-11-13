@@ -1128,6 +1128,11 @@ open class EBWebView(
         private const val verticalLayoutCss = "body {\n" +
                 "-webkit-writing-mode: vertical-rl;\n" +
                 "writing-mode: vertical-rl;\n" +
+                "}\n" +
+                "img {\n" +
+                "margin: 10px 10px 10px 10px;\n" +
+                "float: left;\n" +
+                "display: block;\n" +
                 "}\n"
 
         private const val horizontalLayoutCss = "body {\n" +
