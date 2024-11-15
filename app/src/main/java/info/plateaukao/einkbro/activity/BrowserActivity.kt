@@ -558,7 +558,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             actionModeMenuViewModel.finish()
                         }
                     }
-                    
+
                     is ActionModeMenuState.ReadFromHere -> readFromThisSentence()
 
                     is Gpt -> {
@@ -1805,7 +1805,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 addAlbum(getString(R.string.app_name), "", incognito = true)
                 focusOnInput()
             },
-            onHistoryChanged = { },
             splitScreenAction = { url -> toggleSplitScreen(url) },
             addEmptyTabAction = { newATab() }
         )
@@ -2477,6 +2476,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
             }
+
+            else -> Unit
         }
     }
 

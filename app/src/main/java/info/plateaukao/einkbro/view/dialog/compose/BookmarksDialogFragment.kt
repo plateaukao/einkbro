@@ -1,8 +1,6 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.graphics.Bitmap
-import android.view.LayoutInflater
-import android.view.View
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -40,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,14 +47,11 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.NormalTextModifier
 import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
-import info.plateaukao.einkbro.view.dialog.DialogManager
-import info.plateaukao.einkbro.view.dialog.dismissWithAction
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -74,7 +68,6 @@ class BookmarksDialogFragment(
     private val syncBookmarksAction: (Boolean) -> Unit,
     private val linkBookmarksAction: () -> Unit,
 ) : ComposeDialogFragment(), KoinComponent {
-    private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
     private lateinit var bookmarksUpdateJob: Job
 
@@ -155,58 +148,53 @@ class BookmarksDialogFragment(
     }
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
-        val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(requireContext()))
-        val optionDialog = dialogManager.showOptionDialog(dialogView.root)
+        BookmarkContextMenuDlgFragment(
+            bookmark,
+        ) {
+            when (it) {
+                ContextMenuItemType.NewTabForeground -> {
+                    bookmarkIconClickAction(
+                        bookmark.title,
+                        bookmark.url,
+                        true
+                    )
+                    dialog?.dismiss()
+                }
 
-        if (bookmark.isDirectory) {
-            dialogView.menuContextListNewTab.visibility = View.GONE
-            dialogView.menuContextListNewTabOpen.visibility = View.GONE
-            dialogView.menuContextListSplitScreen.visibility = View.GONE
-        }
+                ContextMenuItemType.NewTabBackground -> {
+                    bookmarkIconClickAction(
+                        bookmark.title,
+                        bookmark.url,
+                        false
+                    )
+                    dialog?.dismiss()
+                }
 
-        dialogView.menuContextListSplitScreen.setOnClickListener {
-            optionDialog.dismissWithAction { splitScreenAction(bookmark.url); dialog?.dismiss() }
-        }
+                ContextMenuItemType.SplitScreen -> {
+                    splitScreenAction(bookmark.url)
+                    dialog?.dismiss()
+                }
 
-        dialogView.menuTitle.text = bookmark.title
-        dialogView.menuContextListEdit.visibility = View.VISIBLE
-        dialogView.menuContextListNewTab.setOnClickListener {
-            optionDialog.dismissWithAction {
-                bookmarkIconClickAction(getString(R.string.app_name), bookmark.url, false)
-                dialog?.dismiss()
-            }
-        }
-        dialogView.menuContextListNewTabOpen.setOnClickListener {
-            optionDialog.dismissWithAction {
-                bookmarkIconClickAction(
-                    bookmark.title,
-                    bookmark.url,
-                    true
-                )
-                dialog?.dismiss()
-            }
-        }
-        dialogView.menuContextListDelete.setOnClickListener {
-            lifecycleScope.launch {
-                bookmarkViewModel.deleteBookmark(bookmark)
-                syncBookmarksAction(true)
-            }
-            optionDialog.dismiss()
-        }
+                ContextMenuItemType.Edit -> BookmarkEditDialog(
+                    requireActivity(),
+                    bookmarkViewModel,
+                    bookmark,
+                    {
+                        ViewUnit.hideKeyboard(requireActivity())
+                        syncBookmarksAction(true)
+                    },
+                    { ViewUnit.hideKeyboard(requireActivity()) }
+                ).show()
 
-        dialogView.menuContextListEdit.setOnClickListener {
-            BookmarkEditDialog(
-                requireActivity(),
-                bookmarkViewModel,
-                bookmark,
-                {
-                    ViewUnit.hideKeyboard(requireActivity())
+                ContextMenuItemType.Delete -> lifecycleScope.launch {
+                    bookmarkViewModel.deleteBookmark(bookmark)
                     syncBookmarksAction(true)
-                },
-                { ViewUnit.hideKeyboard(requireActivity()) }
-            ).show()
-            optionDialog.dismiss()
-        }
+                }
+
+                else -> Unit
+            }
+        }.show(parentFragmentManager, "bookmark_context_menu")
+
     }
 }
 
@@ -243,7 +231,7 @@ fun DialogPanel(
                 Spacer(modifier = Modifier.size(36.dp))
             }
             Text(
-                if (folder.id == 0) stringResource(id = R.string.bookmarks) else folder.title,
+                if (folder.id == 0) "" else folder.title,
                 Modifier
                     .weight(1F)
                     .padding(horizontal = 5.dp)
