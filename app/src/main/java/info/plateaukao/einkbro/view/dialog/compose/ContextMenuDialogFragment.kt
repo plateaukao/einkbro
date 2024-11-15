@@ -186,7 +186,7 @@ enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
     ShareLink, CopyLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
-    SplitScreen, AdBlock, TranslateImage, Tts
+    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete
 }
 
 @Preview(showBackground = true)
