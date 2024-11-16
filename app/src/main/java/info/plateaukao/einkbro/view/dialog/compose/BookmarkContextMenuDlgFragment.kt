@@ -1,5 +1,11 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.graphics.Point
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -28,6 +34,7 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 class BookmarkContextMenuDlgFragment(
     private val bookmark: Bookmark,
     private val allowEdit: Boolean = true,
+    private val anchorPoint: Point? = null,
     private val onClicked: (ContextMenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
     override fun setupComposeView() {
@@ -40,6 +47,31 @@ class BookmarkContextMenuDlgFragment(
             }
         }
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        anchorPoint?.let { setupDialogPosition(it) }
+        return view
+    }
+
+    private fun setupDialogPosition(position: Point) {
+        val window = dialog?.window ?: return
+        window.setGravity(Gravity.TOP or Gravity.LEFT)
+
+        if (position.isValid()) {
+            val params = window.attributes.apply {
+                x = position.x
+                y = position.y
+            }
+            window.attributes = params
+        }
+    }
+
+    private fun Point.isValid() = x != 0 && y != 0
 }
 
 @Composable
