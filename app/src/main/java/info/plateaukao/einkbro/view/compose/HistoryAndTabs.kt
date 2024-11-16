@@ -5,6 +5,7 @@ package info.plateaukao.einkbro.view.compose
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.util.AttributeSet
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -83,7 +84,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
     var recordList: List<Record> by mutableStateOf(emptyList())
     var onHistoryIconClick by mutableStateOf({})
     var onHistoryItemClick by mutableStateOf<(Record) -> Unit>({})
-    var onHistoryItemLongClick by mutableStateOf<(Record) -> Unit>({})
+    var onHistoryItemLongClick by mutableStateOf<(Record, Point) -> Unit>({ _, _ -> })
 
     var addIncognitoTab by mutableStateOf({})
     var addTab by mutableStateOf({})
@@ -137,7 +138,7 @@ fun HistoryAndTabs(
     records: List<Record>,
     onHistoryIconClick: () -> Unit,
     onHistoryItemClick: (Record) -> Unit,
-    onHistoryItemLongClick: (Record) -> Unit,
+    onHistoryItemLongClick: (Record, Point) -> Unit,
 
     addIncognitoTab: () -> Unit,
     addTab: () -> Unit,
@@ -222,7 +223,7 @@ private fun MainContent(
     bookmarkManager: BookmarkManager?,
     records: List<Record>,
     onHistoryItemClick: (Record) -> Unit,
-    onHistoryItemLongClick: (Record) -> Unit,
+    onHistoryItemLongClick: (Record, Point) -> Unit,
 ) {
     if (!isHistoryOpen) {
         PreviewTabs(
@@ -512,7 +513,7 @@ fun PreviewHistoryAndTabs() {
         records = recordList,
         onHistoryIconClick = {},
         onHistoryItemClick = {},
-        onHistoryItemLongClick = {},
+        onHistoryItemLongClick = { _, _ -> },
 
         addIncognitoTab = {},
         addTab = {},

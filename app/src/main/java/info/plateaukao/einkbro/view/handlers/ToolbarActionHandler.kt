@@ -24,7 +24,7 @@ class ToolbarActionHandler(
     private val browserController = activity as BrowserController
 
     fun handleLongClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
-        ToolbarAction.Back -> browserController.openHistoryPage(5)
+        ToolbarAction.Back -> browserController.openHistoryPage(6)
         ToolbarAction.BoldFont -> browserController.showFontBoldnessDialog()
         ToolbarAction.Bookmark -> browserController.saveBookmark()
         ToolbarAction.Font -> browserController.toggleReaderMode()

@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view.viewControllers
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Point
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.compose.runtime.MutableState
@@ -61,14 +62,14 @@ class OverviewDialogController(
             shouldShowTwoColumns = isWideLayout()
             albumList = currentAlbumList
             albumFocusIndex = albumFocusIndex
-            onTabIconClick = { openHomePage() }
+            onTabIconClick = this@OverviewDialogController::openHomePage
             onTabClick = { hide(); it.showOrJumpToTop() }
             onTabLongClick = { it.remove() }
 
             recordList = currentRecordList
-            onHistoryIconClick = { openHistoryPage() }
-            onHistoryItemClick = { clickHistoryItem(it) }
-            onHistoryItemLongClick = { longClickHistoryItem(it) }
+            onHistoryIconClick = this@OverviewDialogController::openHistoryPage
+            onHistoryItemClick = this@OverviewDialogController::clickHistoryItem
+            onHistoryItemLongClick = this@OverviewDialogController::showHistoryContextMenu
             addIncognitoTab = addIncognitoTabAction
             addTab = { hide(); addEmptyTabAction() }
             closePanel = { hide() }
@@ -90,10 +91,6 @@ class OverviewDialogController(
             )
         }
         hide()
-    }
-
-    private fun longClickHistoryItem(record: Record) {
-        showHistoryContextMenu(record)
     }
 
     fun hide() {
@@ -143,11 +140,12 @@ class OverviewDialogController(
         }
     }
 
-    private fun showHistoryContextMenu(record: Record) {
+    private fun showHistoryContextMenu(record: Record, position: Point) {
         val parentFragmentManager = (context as FragmentActivity).supportFragmentManager
         BookmarkContextMenuDlgFragment(
             Bookmark(record.title ?: "no title", record.url),
             allowEdit = false,
+            anchorPoint = position,
         ) {
             when (it) {
                 ContextMenuItemType.Delete -> deleteHistory(record)
