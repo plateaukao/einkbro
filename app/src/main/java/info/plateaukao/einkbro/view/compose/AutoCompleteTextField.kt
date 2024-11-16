@@ -153,7 +153,7 @@ fun AutoCompleteTextField(
             shouldReverse = shouldReverse,
             shouldShowTwoColumns = isWideLayout,
             onClick = onRecordClick,
-            onLongClick = {}
+            onLongClick = { _, _ -> }
         )
         HorizontalSeparator()
 

@@ -1,11 +1,12 @@
 package info.plateaukao.einkbro.view.compose
 
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.text.TextUtils
 import android.widget.TextView
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,10 +22,16 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +43,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordType
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.dialog.compose.toScreenPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -48,21 +56,30 @@ fun BrowseHistoryList(
     shouldShowTwoColumns: Boolean,
     bookmarkManager: BookmarkManager? = null,
     onClick: (Record) -> Unit,
-    onLongClick: (Record) -> Unit,
+    onLongClick: (Record, Point) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         reverseLayout = shouldReverse
     ) {
+
         itemsIndexed(records) { index, record ->
+            var boxPosition = remember { mutableStateOf(Offset.Zero) }
+
             RecordItem(
                 record = record,
                 bitmap = bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
-                modifier = Modifier.combinedClickable(
-                    onClick = { onClick(record) },
-                    onLongClick = { onLongClick(record) }
-                )
+                modifier = Modifier
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onTap = { _ -> onClick(record) },
+                            onLongPress = { it ->
+                                onLongClick(record, it.toScreenPoint(boxPosition.value))
+                            }
+                        )
+                    }
+                    .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
             )
         }
     }
@@ -204,6 +221,6 @@ private fun previewHistoryList() {
             shouldReverse = true,
             shouldShowTwoColumns = true,
             onClick = {},
-            onLongClick = {})
+            onLongClick = { _, _ -> })
     }
 }
