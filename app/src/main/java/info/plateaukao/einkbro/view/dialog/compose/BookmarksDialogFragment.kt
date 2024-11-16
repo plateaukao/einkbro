@@ -312,26 +312,26 @@ fun BookmarkList(
                     shouldShowDragHandle = shouldShowDragHandle,
                     dragModifier = Modifier.draggableHandle(),
                     modifier = Modifier.then(
-                        if (shouldShowDragHandle) {
-                            Modifier
-                                .longPressDraggableHandle()
-                                .clickable(
-                                    interactionSource = interactionSource,
-                                    indication = null,
-                                ) { onBookmarkClick(bookmark) }
-                        } else {
-                            Modifier.pointerInput(Unit) {
-                                detectTapGestures(
-                                    onTap = { offset -> onBookmarkClick(bookmark) },
-                                    onLongPress = { offset ->
-                                        longClickPosition.value = offset
-                                        onBookmarkLongClick(bookmark, offset.toScreenPoint(boxPosition.value))
-                                    }
-                                )
+                            if (shouldShowDragHandle) {
+                                Modifier
+                                    .longPressDraggableHandle()
+                                    .clickable(
+                                        interactionSource = interactionSource,
+                                        indication = null,
+                                    ) { onBookmarkClick(bookmark) }
+                            } else {
+                                Modifier.pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onTap = { offset -> onBookmarkClick(bookmark) },
+                                        onLongPress = { offset ->
+                                            longClickPosition.value = offset
+                                            onBookmarkLongClick(bookmark, offset.toScreenPoint(boxPosition.value))
+                                        }
+                                    )
+                                }
+                                    .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
                             }
-                                .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
-                        }
-                    ),
+                        ),
                     iconClick = {
                         if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
                         else onBookmarkClick(bookmark)

@@ -41,7 +41,7 @@ class BookmarkContextMenuDlgFragment(
         composeView.setContent {
             MyTheme {
                 BookmarkContextMenuScreen(
-                    title = bookmark.title,
+                    bookmark = bookmark,
                     allowEdit = allowEdit,
                     onClicked = { onClicked(it); dismiss() })
             }
@@ -76,18 +76,18 @@ class BookmarkContextMenuDlgFragment(
 
 @Composable
 fun BookmarkContextMenuScreen(
-    title: String,
+    bookmark: Bookmark,
     allowEdit: Boolean = true,
     onClicked: (ContextMenuItemType) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .wrapContentHeight()
-            .width(320.dp),
+            .width(if (bookmark.isDirectory) 200.dp else 320.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = title,
+            text = bookmark.title,
             Modifier.padding(4.dp),
             color = MaterialTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
@@ -99,14 +99,16 @@ fun BookmarkContextMenuScreen(
                 .width(IntrinsicSize.Max)
                 .horizontalScroll(rememberScrollState()),
         ) {
-            ContextMenuItem(R.string.main_menu_new_tabOpen, true, Icons.Outlined.Tab) {
-                onClicked(ContextMenuItemType.NewTabForeground)
-            }
-            ContextMenuItem(R.string.main_menu_new_tab, true, Icons.Outlined.TabUnselected) {
-                onClicked(ContextMenuItemType.NewTabBackground)
-            }
-            ContextMenuItem(R.string.split_screen, true, Icons.Outlined.ViewStream) {
-                onClicked(ContextMenuItemType.SplitScreen)
+            if (!bookmark.isDirectory) {
+                ContextMenuItem(R.string.main_menu_new_tabOpen, true, Icons.Outlined.Tab) {
+                    onClicked(ContextMenuItemType.NewTabForeground)
+                }
+                ContextMenuItem(R.string.main_menu_new_tab, true, Icons.Outlined.TabUnselected) {
+                    onClicked(ContextMenuItemType.NewTabBackground)
+                }
+                ContextMenuItem(R.string.split_screen, true, Icons.Outlined.ViewStream) {
+                    onClicked(ContextMenuItemType.SplitScreen)
+                }
             }
             if (allowEdit) {
                 ContextMenuItem(R.string.menu_edit, true, Icons.Outlined.Edit) { onClicked(ContextMenuItemType.Edit) }
