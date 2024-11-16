@@ -1,11 +1,13 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.graphics.Bitmap
+import android.graphics.Point
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -35,8 +37,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -132,7 +138,7 @@ class BookmarksDialogFragment(
                                     true
                                 ); dialog?.dismiss()
                             },
-                            onBookmarkLongClick = { showBookmarkContextMenu(it) }
+                            onBookmarkLongClick = { bookmark, offSet -> showBookmarkContextMenu(bookmark, offSet) }
                         )
                     }
                 }
@@ -147,9 +153,10 @@ class BookmarksDialogFragment(
         super.onDestroy()
     }
 
-    private fun showBookmarkContextMenu(bookmark: Bookmark) {
+    private fun showBookmarkContextMenu(bookmark: Bookmark, point: Point) {
         BookmarkContextMenuDlgFragment(
             bookmark,
+            anchorPoint = point
         ) {
             when (it) {
                 ContextMenuItemType.NewTabForeground -> {
@@ -292,6 +299,10 @@ fun BookmarkList(
         itemsIndexed(bookmarks, key = { _, bookmark -> bookmark.id }) { _, bookmark ->
             val interactionSource = remember { MutableInteractionSource() }
             val isPressed by interactionSource.collectIsPressedAsState()
+            // for getting long click point
+            var longClickPosition = remember { mutableStateOf(Offset.Zero) }
+            var boxPosition = remember { mutableStateOf(Offset.Zero) }
+
 
             ReorderableItem(reorderableLazyGridState, key = bookmark.id) { isDragging ->
                 BookmarkItem(
@@ -300,24 +311,27 @@ fun BookmarkList(
                     isPressed = isPressed || isDragging,
                     shouldShowDragHandle = shouldShowDragHandle,
                     dragModifier = Modifier.draggableHandle(),
-                    modifier = Modifier
-                        .then(
-                            if (shouldShowDragHandle) {
-                                Modifier
-                                    .longPressDraggableHandle()
-                                    .clickable(
-                                        interactionSource = interactionSource,
-                                        indication = null,
-                                    ) { onBookmarkClick(bookmark) }
-                            } else {
-                                Modifier.combinedClickable(
+                    modifier = Modifier.then(
+                        if (shouldShowDragHandle) {
+                            Modifier
+                                .longPressDraggableHandle()
+                                .clickable(
                                     interactionSource = interactionSource,
                                     indication = null,
-                                    onClick = { onBookmarkClick(bookmark) },
-                                    onLongClick = { onBookmarkLongClick(bookmark) },
+                                ) { onBookmarkClick(bookmark) }
+                        } else {
+                            Modifier.pointerInput(Unit) {
+                                detectTapGestures(
+                                    onTap = { offset -> onBookmarkClick(bookmark) },
+                                    onLongPress = { offset ->
+                                        longClickPosition.value = offset
+                                        onBookmarkLongClick(bookmark, offset.toScreenPoint(boxPosition.value))
+                                    }
                                 )
                             }
-                        ),
+                                .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
+                        }
+                    ),
                     iconClick = {
                         if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
                         else onBookmarkClick(bookmark)
@@ -421,7 +435,7 @@ private fun PreviewBookmarkList() {
             { _, _ -> },
             {},
             {},
-            {}
+            { _, _ -> }
         )
     }
 }
@@ -450,12 +464,16 @@ private fun PreviewDialogPanel() {
                 { _, _ -> },
                 {},
                 {},
-                {}
+                { _, _ -> }
             )
         }
     }
 }
 
 typealias OnBookmarkClick = (bookmark: Bookmark) -> Unit
-typealias OnBookmarkLongClick = (bookmark: Bookmark) -> Unit
+typealias OnBookmarkLongClick = (bookmark: Bookmark, point: Point) -> Unit
 typealias OnBookmarkIconClick = (bookmark: Bookmark) -> Unit
+
+fun Offset.toScreenPoint(boxPosition: Offset): Point {
+    return Point((x + boxPosition.x).toInt(), (y + boxPosition.y).toInt())
+}
