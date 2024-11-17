@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DualCaptionProcessor:KoinComponent {
+class DualCaptionProcessor : KoinComponent {
     private val config: ConfigManager by inject()
     private val serializer = TimedText.serializer()
 
@@ -16,8 +16,9 @@ class DualCaptionProcessor:KoinComponent {
     }
 
     fun processUrl(url: String): String? {
-        if (config.dualCaptionLocale.isEmpty()) return null
         if (!url.contains(urlWithCaption)) return null
+
+        if (config.dualCaptionLocale.isEmpty()) return runBlocking { String(BrowserUnit.getResourceFromUrl(url)) }
 
 
         try {
@@ -37,7 +38,7 @@ class DualCaptionProcessor:KoinComponent {
             }
 
             oldCaptionJson.events.forEach { event ->
-                if (event.segs != null && event.segs.size > 0) {
+                if (event.segs != null && event.segs.isNotEmpty()) {
                     val first = event.segs.first()
                     first.utf8 = event.segs.map { it.utf8 }.reduce { acc, s -> acc + s }
 
