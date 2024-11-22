@@ -102,7 +102,12 @@ class OpenAiRepository : KoinComponent {
 
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
                 super.onFailure(eventSource, t, response)
-                failureAction()
+                if(response?.code == 200) {
+                    doneAction()
+                    this@OpenAiRepository.eventSource = null
+                } else {
+                    failureAction()
+                }
             }
         })
     }
