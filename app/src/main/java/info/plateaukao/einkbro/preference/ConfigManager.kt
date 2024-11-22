@@ -238,7 +238,7 @@ class ConfigManager(
     var gptUserPromptForWebPage by StringPreference(
         sp,
         K_GPT_USER_PROMPT_WEB_PAGE,
-        "Summarize in 300 words:"
+        "Summarize in 50 words:"
     )
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
