@@ -764,8 +764,12 @@ open class EBWebView(
                         String.format(replaceWithReaderModeBodyJs, url)
                     } })();"
                 ) { _ ->
-                    // need to wait for a while to jump to top, so that vertical read starts from beginning
-                    postDelayed({ jumpToTop() }, 200)
+                    if (isVertical) {
+                        evaluateJsFile("process_text_nodes.js", false) {
+                            // need to wait for a while to jump to top, so that vertical read starts from beginning
+                            postDelayed({ jumpToTop() }, 200)
+                        }
+                    }
                 }
             }
             settings.textZoom = config.readerFontSize
