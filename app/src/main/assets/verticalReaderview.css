@@ -276,13 +276,17 @@
   padding: 0;
 }
 
-        .vertical {
-            display: inline-block;
-            margin: 0.5em 0 !important;
-            letter-spacing: 0.0em;
-            text-indent: 0;
-              -moz-transform:rotate(-90deg);
-              -webkit-transform:rotate(-90deg);
-              -o-transform:rotate(-90deg);
-              transform:rotate(-90deg);
-        }
+.vertical {
+    display: inline-block;
+    margin: 0.5em 0 !important;
+    letter-spacing: 0.0em;
+    text-indent: 0;
+    -moz-transform:rotate(-90deg);
+    -webkit-transform:rotate(-90deg);
+    -o-transform:rotate(-90deg);
+    transform:rotate(-90deg);
+}
+.verticalSingleChr {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+}
