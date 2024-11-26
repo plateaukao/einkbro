@@ -19,7 +19,6 @@
 package info.plateaukao.einkbro.unit
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
@@ -32,28 +31,40 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.RequiresApi
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.BuildConfig
+import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okio.IOException
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
@@ -72,10 +83,12 @@ object HelperUnit {
         .build()
 
 
+    fun getStringFromAsset(fileName: String): String =
+        EinkBroApplication.instance.assets.open(fileName).bufferedReader().use { it.readText() }
+
     @JvmStatic
     // return true if need permissions
     fun needGrantStoragePermission(activity: Activity): Boolean {
-        @SuppressLint("NewApi")
         if (Build.VERSION.SDK_INT in 23..28) {
             val hasWriteExternalStoragePermission =
                 activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -137,6 +150,7 @@ object HelperUnit {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
     fun createShortcut(context: Context, title: String?, url: String?, bitmap: Bitmap?) {
         val url = url ?: return
@@ -238,7 +252,7 @@ object HelperUnit {
     fun fileName(url: String?): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault())
         val currentTime = sdf.format(Date())
-        val domain = Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' } ?: ""
+        val domain = Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' }.orEmpty()
         return domain.replace(".", "_").trim { it <= ' ' } + "_" + currentTime.trim { it <= ' ' }
     }
 
@@ -251,7 +265,7 @@ object HelperUnit {
             ""
         } else {
             try {
-                Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' } ?: ""
+                Uri.parse(url).host?.replace("www.", "")?.trim { it <= ' ' }.orEmpty()
             } catch (e: Exception) {
                 ""
             }
@@ -266,7 +280,7 @@ object HelperUnit {
         activity: Activity,
         uri: Uri,
         resultLauncher: ActivityResultLauncher<Intent>? = null,
-        shouldGoToEnd: Boolean = false
+        shouldGoToEnd: Boolean = false,
     ) {
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
@@ -281,7 +295,7 @@ object HelperUnit {
         try {
             activity.startActivity(Intent.createChooser(intent, "Open file with"))
         } catch (exception: SecurityException) {
-            NinjaToast.show(activity, "open file failed, re-select the file again.")
+            EBToast.show(activity, "open file failed, re-select the file again.")
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = Constants.MIME_TYPE_ANY
@@ -345,7 +359,8 @@ object HelperUnit {
             withContext(Dispatchers.Main) {
                 // launch play store with my app page
                 val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+                    data =
+                        Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
                     setPackage("com.android.vending")
                 }
                 context.startActivity(intent)
@@ -360,12 +375,11 @@ object HelperUnit {
             try {
                 val jsonArray = JSONArray(response.body!!.string())
                 val latestRelease = jsonArray.getJSONObject(0)
-                val tagName = latestRelease
-                    .getString("tag_name")
-                    .replace("v", "")
-                if (tagName > BuildConfig.VERSION_NAME) {
+                val tagName = latestRelease.getString("tag_name").replace("v", "")
+                val isPreRelease = latestRelease.getBoolean("prerelease")
+                if (tagName > BuildConfig.VERSION_NAME && !isPreRelease) {
                     withContext(Dispatchers.Main) {
-                        NinjaToast.show(context, "Start downloading...")
+                        EBToast.show(context, "Start downloading...")
                     }
 
                     val downloadUrl = latestRelease.getJSONArray("assets")
@@ -377,13 +391,13 @@ object HelperUnit {
                     installApkFromFile(context, file)
                 } else {
                     withContext(Dispatchers.Main) {
-                        NinjaToast.show(context, "Already up to date")
+                        EBToast.show(context, "Already up to date")
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    NinjaToast.show(context, "Something went wrong")
+                    EBToast.show(context, "Something went wrong")
                 }
             }
         }
@@ -396,11 +410,22 @@ object HelperUnit {
             file
         )
 
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(apkUri, "application/vnd.android.package-archive")
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            @Suppress("DEPRECATION")
+            Intent(Intent.ACTION_INSTALL_PACKAGE).apply {
+                data = apkUri
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+        } else {
+            Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(apkUri, "application/vnd.android.package-archive")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
         }
+            .apply {
+                putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+                putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, context.packageName)
+            }
 
         context.startActivity(intent)
     }
@@ -418,11 +443,12 @@ object HelperUnit {
     }
 
     suspend fun upgradeFromSnapshot(context: Context) {
-        val url = "https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip"
+        val url =
+            "https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-arm64-v8a-release.apk.zip"
         val request = Request.Builder().url(url).build()
         try {
             withContext(Dispatchers.Main) {
-                NinjaToast.show(context, "start downloading...")
+                EBToast.show(context, "start downloading...")
             }
 
             client.newCall(request).execute().use { response ->
@@ -430,14 +456,14 @@ object HelperUnit {
 
                 val inputStream = response.body?.byteStream()
                 withContext(Dispatchers.Main) {
-                    NinjaToast.show(context, "Extracting zip...")
+                    EBToast.show(context, "Extracting zip...")
                 }
                 extractApkAndInstall(inputStream, context)
             }
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
-                NinjaToast.show(context, "Something went wrong")
+                EBToast.show(context, "Something went wrong")
             }
         }
     }
@@ -448,7 +474,7 @@ object HelperUnit {
 
         var zipEntry = zipInputStream.nextEntry
         while (zipEntry != null) {
-            if (zipEntry.name == "app-release.apk") {
+            if (zipEntry.name == "app-arm64-v8a-release.apk") {
                 val tempFile = File("${context.cacheDir.absolutePath}/app.apk")
                 if (tempFile.exists()) {
                     tempFile.delete()
@@ -478,4 +504,311 @@ object HelperUnit {
             false
         }
     }
+
+    private val fileCache = mutableMapOf<String, String>()
+    fun loadAssetFile(fileName: String): String {
+        if (fileCache.containsKey(fileName)) {
+            return fileCache[fileName]!!
+        }
+
+        try {
+            val jsContent = EinkBroApplication.instance.assets.open(fileName).bufferedReader().use { it.readText() }
+            fileCache[fileName] = jsContent
+            return jsContent
+        } catch (e: IOException) {
+            Log.e("HelperUnit", "Failed to load asset file: $fileName")
+            e.printStackTrace()
+            return ""
+        }
+    }
+
+    private const val DEFAULT_FONT_SIZE = 18
+
+    /**
+     * Parses a given markdown text and converts it into an [AnnotatedString] with appropriate styles.
+     * from: mdparserkitcore/src/main/java/com/daksh/mdparserkit/core/ParseMarkdown.kt
+     *
+     * @param markdownText The input markdown text to parse.
+     * @return An [AnnotatedString] with styles applied according to the markdown syntax.
+     */
+    fun parseMarkdown(markdownText: String): AnnotatedString {
+        val lines = markdownText.split("\n")
+        val resultBuilder = AnnotatedString.Builder()
+        var currentStyle: SpanStyle
+
+        lines.forEach { line ->
+            when {
+                // Heading 1: Extracting content, applying bold style, and appending to resultBuilder
+                line.startsWith("# ") -> {
+                    val content = line.removePrefix("# ").trim()
+                    textMarkDown(
+                        content,
+                        resultBuilder,
+                        fontSize = (DEFAULT_FONT_SIZE + 4).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                // Similar processing for Heading 2 to Heading 6
+                // Heading 2
+                line.startsWith("## ") -> {
+                    val content = line.removePrefix("## ").trim()
+                    textMarkDown(
+                        content,
+                        resultBuilder,
+                        fontSize = (DEFAULT_FONT_SIZE + 3).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                // Heading 3
+                line.startsWith("### ") -> {
+                    val content = line.removePrefix("### ").trim()
+                    textMarkDown(
+                        content,
+                        resultBuilder,
+                        fontSize = (DEFAULT_FONT_SIZE + 2).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                // Heading 4
+                line.startsWith("#### ") -> {
+                    val content = line.removePrefix("#### ").trim()
+                    textMarkDown(
+                        content,
+                        resultBuilder,
+                        fontSize = (DEFAULT_FONT_SIZE + 2).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                // Heading 5
+                line.startsWith("##### ") -> {
+                    val content = line.removePrefix("##### ").trim()
+                    textMarkDown(
+                        content,
+                        resultBuilder,
+                        fontSize = (DEFAULT_FONT_SIZE + 1).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                // Heading 6
+                line.startsWith("###### ") -> {
+                    val content = line.removePrefix("###### ").trim()
+                    textMarkDown(
+                        content,
+                        resultBuilder,
+                        fontSize = (DEFAULT_FONT_SIZE + 1).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                // Unordered list item: Extracting content, applying bold style, appending bullet point symbol, and appending to resultBuilder
+                line.startsWith("* ") || line.startsWith("- ") -> {
+                    val content = line.removePrefix("* ").removePrefix("- ").trim()
+                    currentStyle = SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = DEFAULT_FONT_SIZE.sp
+                    )
+                    resultBuilder.append(
+                        AnnotatedString("• ", currentStyle)
+                    )
+                    textMarkDown(content, resultBuilder, fontSize = 14.sp)
+                }
+                // Ordered list item: Extracting content, applying bold style, appending number and period, and appending to resultBuilder
+                line.matches(Regex("^\\d+\\.\\s.*$")) -> {
+                    val regex = Regex("^\\d+\\.\\s.*$")
+                    val startIndex = regex.find(line)?.range?.first ?: 0
+                    currentStyle = SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = DEFAULT_FONT_SIZE.sp
+                    )
+                    val annotatedString = buildAnnotatedString {
+                        if (startIndex > 0) {
+                            append(line.substring(0, startIndex))
+                        }
+                        withStyle(currentStyle) {
+                            append(line.substring(startIndex, startIndex + 2))
+                        }
+                    }
+                    resultBuilder.append(annotatedString)
+                    textMarkDown(
+                        inputText = line.substring(startIndex + 2, line.length),
+                        resultBuilder = resultBuilder,
+                        fontSize = 16.sp
+                    )
+                }
+                // Remaining Text
+                else -> {
+                    textMarkDown(line, resultBuilder, fontSize = DEFAULT_FONT_SIZE.sp)
+                }
+            } // Appending new line
+            resultBuilder.append("\n")
+        }
+        return resultBuilder.toAnnotatedString().trim() as AnnotatedString
+    }
+
+    /**
+     * Converts markdown-style text formatting to [AnnotatedString] with appropriate [SpanStyle]s.
+     *
+     * @param inputText The input text to be converted.
+     * @param resultBuilder The [AnnotatedString.Builder] to append the converted text to.
+     * @param fontSize The desired font size for the text.
+     * @return The converted text with markdown formatting replaced by appropriate [SpanStyle]s.
+     */
+    private fun textMarkDown(
+        inputText: String,
+        resultBuilder: AnnotatedString.Builder,
+        fontSize: TextUnit,
+        fontWeight: FontWeight = FontWeight.Normal,
+    ) {
+        val boldItalicPattern = Regex("\\*\\*[*_](.*?)[*_]\\*\\*")
+        val boldPattern = Regex("\\*\\*(.*?)\\*\\*")
+        val italicPattern = Regex("[*_](.*?)[*_]")
+        val strikethroughPattern = Regex("~~(.+?)~~")
+
+        var currentIndex = 0
+
+        while (currentIndex < inputText.length) {
+            val nextBoldItalic = boldItalicPattern.find(inputText, startIndex = currentIndex)
+            val nextBold = boldPattern.find(inputText, startIndex = currentIndex)
+            val nextItalic = italicPattern.find(inputText, startIndex = currentIndex)
+            val nextStrikethrough = strikethroughPattern.find(inputText, startIndex = currentIndex)
+
+            val nextMarkDown = listOfNotNull(
+                nextBoldItalic,
+                nextBold,
+                nextItalic,
+                nextStrikethrough
+            ).minByOrNull { it.range.first }
+
+            if (nextMarkDown != null) {
+                if (nextMarkDown.range.first > currentIndex) {
+                    // Append any normal text before the markdown
+                    val normalText = inputText.substring(currentIndex, nextMarkDown.range.first)
+                    val style = SpanStyle(fontWeight = fontWeight, fontSize = fontSize)
+                    resultBuilder.append(AnnotatedString(normalText, style))
+                }
+
+                val matchText = nextMarkDown.groupValues.getOrNull(1).orEmpty()
+
+                val style = when (nextMarkDown) {
+                    nextBoldItalic -> SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Italic,
+                        fontSize = fontSize
+                    )
+
+                    nextBold -> SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = DEFAULT_FONT_SIZE.sp
+                    )
+
+                    nextItalic -> SpanStyle(
+                        fontStyle = FontStyle.Italic,
+                        fontSize = fontSize
+                    )
+
+                    nextStrikethrough -> SpanStyle(
+                        textDecoration = TextDecoration.LineThrough,
+                        fontSize = fontSize
+                    )
+
+                    else -> throw IllegalStateException("Unhandled markdown type")
+                }
+
+                resultBuilder.append(AnnotatedString(matchText, style))
+
+                currentIndex = nextMarkDown.range.last + 1
+            } else {
+                // Append any remaining text if no more markdown found
+                val normalText = inputText.substring(currentIndex)
+                val style = SpanStyle(fontWeight = fontWeight, fontSize = fontSize)
+                resultBuilder.append(AnnotatedString(normalText, style))
+                currentIndex = inputText.length
+            }
+        }
+    }
+
+    /**
+     * re-implementation of org.apache.commons.text.StringEscapeUtils.unescapeJava
+     */
+    fun unescapeJava(input: String): String {
+        val stringBuilder = StringBuilder()
+        var i = 0
+        while (i < input.length) {
+            val ch = input[i]
+            if (ch == '\\' && i + 1 < input.length) {
+                val nextChar = input[i + 1]
+                when (nextChar) {
+                    'n' -> stringBuilder.append('\n')
+                    't' -> stringBuilder.append('\t')
+                    'b' -> stringBuilder.append('\b')
+                    'r' -> stringBuilder.append('\r')
+                    'f' -> stringBuilder.append('\u000C')
+                    '\'' -> stringBuilder.append('\'')
+                    '"' -> stringBuilder.append('\"')
+                    '\\' -> stringBuilder.append('\\')
+                    'u' -> {
+                        if (i + 5 < input.length) {
+                            val hexCode = input.substring(i + 2, i + 6)
+                            stringBuilder.append(hexCode.toInt(16).toChar())
+                            i += 4
+                        }
+                    }
+
+                    else -> stringBuilder.append(nextChar)  // if it's not an escape sequence, keep the original
+                }
+                i += 1 // skip next character
+            } else {
+                stringBuilder.append(ch)
+            }
+            i++
+        }
+        return stringBuilder.toString()
+    }
 }
+
+fun processedTextToChunks(text: String): MutableList<String> {
+    val processedText = text.replace("\\n", " ")
+        .replace("\\\"", "")
+        .replace("\\t", "")
+        .replace("\\", "")
+    val sentences = processedText.split("(?<=\\.)(?!\\d)|(?<=。)|(?<=？)|(?<=\\?)".toRegex())
+    val chunks = sentences.fold(mutableListOf<String>()) { acc, sentence ->
+        if (acc.isEmpty() || (acc.last() + sentence).getWordCount() > 60) {
+            acc.add(sentence.trim())
+        } else {
+            val last = acc.last()
+            acc[acc.size - 1] = "$last$sentence"
+        }
+        acc
+    }
+    return chunks
+}
+
+fun String.getWordCount(): Int {
+    val trimmedInput = trim()
+    if (trimmedInput.isEmpty()) return 0
+
+    // CJ
+    if (endsWith("。") || endsWith("？") || endsWith("！")) {
+        return trimmedInput.length
+    }
+    // korean
+    val hangulRegex = "[가-힣]+".toRegex() // Matches any Hangul syllable
+    // Find all matches and return the count
+    val hangulCount = hangulRegex.findAll(trimmedInput).sumOf { it.value.length }
+    if (hangulCount > 3) return hangulCount
+
+    // Use regex to match words based on Unicode word boundaries
+    val wordRegex = "\\p{L}+".toRegex()
+    // Find all matches and return the count
+    return wordRegex.findAll(trimmedInput).count()
+}
+
+fun String.pruneWebTitle(): String =
+    if (contains("|")) {
+        substringBefore("|").trim()
+    } else if (contains("-")) {
+        substringBefore("-").trim()
+    } else {
+        this
+    }
+

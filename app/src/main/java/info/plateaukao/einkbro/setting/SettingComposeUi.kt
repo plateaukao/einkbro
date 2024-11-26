@@ -22,6 +22,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,15 +32,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import info.plateaukao.einkbro.BuildConfig
-import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -51,7 +54,7 @@ fun SettingItemUi(
     isChecked: Boolean = false,
     extraTitlePostfix: String = "",
     showBorder: Boolean = false,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -69,16 +72,25 @@ fun SettingItemUi(
         modifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
 
     Row(
-        modifier = modifier,
+        modifier = modifier.then(
+            if (setting is BooleanSettingItem) Modifier.padding(
+                0.dp,
+                0.dp,
+                55.dp,
+                0.dp
+            ) else Modifier
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(id = setting.iconId), contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 6.dp)
-                .fillMaxHeight(),
-            tint = MaterialTheme.colors.onBackground
-        )
+        if (setting.iconId != 0) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = setting.iconId), contentDescription = null,
+                modifier = Modifier
+                    .padding(horizontal = 6.dp)
+                    .fillMaxHeight(),
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
         Spacer(
             modifier = Modifier
                 .width(6.dp)
@@ -110,6 +122,7 @@ fun SettingItemUi(
 
 @Composable
 fun DividerSettingItemUi(
+    title: Int = 0,
     supportTwoSpan: Boolean = false,
 ) {
     if (!supportTwoSpan) {
@@ -119,13 +132,33 @@ fun DividerSettingItemUi(
                 .height(6.dp)
         ) {
             HorizontalSeparator()
+            if (title != 0) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(5.dp),
+                    text = stringResource(title),
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
         }
     } else {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(16.dp)
-        )
+        if (title != 0) {
+            Text(
+                modifier = Modifier
+                    .padding(5.dp),
+                text = stringResource(title),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground,
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+            )
+        }
     }
 }
 
@@ -148,16 +181,22 @@ fun BooleanSettingItemUi(
             setting.config.toggle()
         }
 
-        if (checked.value) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_check), contentDescription = null,
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .align(if (showBorder) Alignment.TopEnd else Alignment.CenterEnd)
-                    .fillMaxHeight(),
-                tint = MaterialTheme.colors.onBackground
+        Switch(
+            checked = checked.value,
+            onCheckedChange = {
+                checked.value = it
+                setting.config.set(it)
+            },
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 3.dp),
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colors.onBackground,
+                uncheckedThumbColor = Color.Gray,
+                uncheckedTrackColor = Color.Gray,
+                checkedTrackColor = MaterialTheme.colors.onBackground,
             )
-        }
+        )
     }
 }
 
@@ -288,7 +327,8 @@ fun SettingScreen(
                         setting.showValue
                     )
 
-                    is DividerSettingItem -> DividerSettingItemUi(supportTwoSpan)
+                    is DividerSettingItem ->
+                        DividerSettingItemUi(setting.titleResId, supportTwoSpan)
 
                     is ListSettingWithEnumItem<*> -> ListSettingItemUi(
                         setting,

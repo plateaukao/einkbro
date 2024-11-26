@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.AdBlockV2
+import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.DomainInterface
 import info.plateaukao.einkbro.browser.Javascript
@@ -141,7 +141,7 @@ enum class WhiteListType {
 fun WhiteListContent(
     modifier: Modifier = Modifier,
     list: MutableState<List<String>>,
-    deleteAction: (String) -> Unit = {}
+    deleteAction: (String) -> Unit = {},
 ) {
     if (list.value.isEmpty()) {
         // show empty text in center of screen
@@ -152,7 +152,7 @@ fun WhiteListContent(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(R.string.list_empty) + stringResource(R.string.empty_whitelist_hint),
+                text = stringResource(R.string.list_empty) + "\n" + stringResource(R.string.empty_whitelist_hint),
                 style = MaterialTheme.typography.h6,
                 color = MaterialTheme.colors.onBackground,
             )
@@ -192,7 +192,7 @@ abstract class BaseWhiteListType {
     open fun addDomain(
         lifecycleScope: LifecycleCoroutineScope,
         dialogManager: DialogManager,
-        postAction: (String) -> Unit
+        postAction: (String) -> Unit,
     ) {
         lifecycleScope.launch {
             val value = dialogManager.getTextInput(
@@ -211,7 +211,7 @@ abstract class BaseWhiteListType {
 
 class WhiteListTypeAdblock : BaseWhiteListType(), KoinComponent {
     override val titleId: Int = R.string.setting_title_whitelist
-    private val adBlock: AdBlockV2 by inject()
+    private val adBlock: AdBlock by inject()
     override val domainHandler: DomainInterface by lazy { adBlock }
 }
 

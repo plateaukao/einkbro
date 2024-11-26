@@ -1,0 +1,25 @@
+[Adblock Plus 2.0]
+! Version: 201711011335
+! Title: EasyList
+! Last modified: 01 Nov 2017 13:35 UTC
+! Expires: 4 days (update frequency)
+! Homepage: https://easylist.to/
+! Licence: https://easylist.to/pages/licence.html
+! 
+! Please report any unblocked adverts or problems
+! in the forums (https://forums.lanik.us/)
+! or via e-mail (easylist.subscription@gmail.com).
+! GitHub issues: https://github.com/easylist/easylist/issues
+! GitHub pull requests: https://github.com/easylist/easylist/pulls
+! 
+! -----------------------General advert blocking filters-----------------------!
+! *** easylist:easylist/easylist_general_block.txt ***
+###videoad
+###videoads
+example.com##.video_ads
+example.com#@##videoads
+sub.example.com#@##videoad
+||imasdk.googleapis.com^$third-party
+/:[0-9]{4,6}\/[a-z]{2}\/[a-z]-[0-9]{2,4}-[0-9]{2,3}-[0-9]\.html/$subdocument
+||exception-rule.com^
+@@||exception-rule.com/a/b/info

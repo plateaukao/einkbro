@@ -30,6 +30,7 @@
         android:name="android.hardware.location.gps"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -63,9 +64,9 @@
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".activity.DictActivity"
-            android:theme="@style/TransparentActivity"
+            android:exported="true"
             android:launchMode="singleInstance"
-            android:exported="true">
+            android:theme="@style/TransparentActivity">
             <intent-filter>
                 <action android:name="colordict.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -125,8 +126,8 @@
 
                 <data android:scheme="content" />
 
-                <data android:mimeType="text/html"/>
-                <data android:mimeType="application/xhtml+xml"/>
+                <data android:mimeType="text/html" />
+                <data android:mimeType="application/xhtml+xml" />
             </intent-filter>
             <intent-filter android:icon="@mipmap/ic_launcher">
                 <action android:name="android.intent.action.SEND" />
@@ -210,9 +211,21 @@
         <activity
             android:name=".activity.DataListActivity"
             android:label="@string/setting_title_whitelist" />
-        <activity android:name=".activity.GptActionsActivity"/>
-        <activity android:name=".activity.HighlightsActivity" />
-
+        <activity
+            android:name=".activity.GptActionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.GptQueryListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.HighlightsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ToolbarConfigActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AdBlockSettingActivity"
+            android:exported="false" />
 
         <service
             android:name=".service.ClearService"

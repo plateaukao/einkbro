@@ -1,0 +1,32 @@
+[versions]
+accompanistDrawablepainter = "0.31.0-alpha"
+jsoup = "1.15.3"
+kotlin = "2.0.0"
+foundationAndroid = "1.6.8"
+kotlinxSerializationJson = "1.6.3"
+kxml2 = "2.3.0"
+material = "1.12.0"
+mediationTestSuite = "3.0.0"
+okhttp = "4.12.0"
+okhttpSse = "4.11.0"
+reorderable = "2.3.3"
+slf4jApi = "1.7.36"
+timber = "4.7.1"
+[libraries]
+accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanistDrawablepainter" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kxml2 = { module = "net.sf.kxml:kxml2", version.ref = "kxml2" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+mediation-test-suite = { group = "com.google.android.ads", name = "mediation-test-suite", version.ref = "mediationTestSuite" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-sse = { group = "com.squareup.okhttp3", name = "okhttp-sse", version.ref = "okhttpSse" }
+reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
+[plugins]
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

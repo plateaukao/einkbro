@@ -1,13 +1,13 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.graphics.Bitmap
-import android.view.LayoutInflater
-import android.view.View
+import android.graphics.Point
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -23,19 +23,28 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionOnScreen
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,80 +53,99 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.NormalTextModifier
 import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
-import info.plateaukao.einkbro.view.dialog.DialogManager
-import info.plateaukao.einkbro.view.dialog.dismissWithAction
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyGridState
 
 class BookmarksDialogFragment(
     private val lifecycleScope: LifecycleCoroutineScope,
     private val bookmarkViewModel: BookmarkViewModel,
     private val gotoUrlAction: (String) -> Unit,
-    private val addTabAction: (String, String, Boolean) -> Unit,
+    private val bookmarkIconClickAction: (String, String, Boolean) -> Unit,
     private val splitScreenAction: (String) -> Unit,
     private val syncBookmarksAction: (Boolean) -> Unit,
+    private val linkBookmarksAction: () -> Unit,
 ) : ComposeDialogFragment(), KoinComponent {
-    private val bookmarkManager: BookmarkManager by inject()
-    private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
     private lateinit var bookmarksUpdateJob: Job
 
+    private val bookmarks = mutableStateOf(emptyList<Bookmark>())
+
+    private val shouldShowDragHandle = mutableStateOf(false)
+
     override fun setupComposeView() {
         bookmarksUpdateJob = lifecycleScope.launch {
-            bookmarkViewModel.uiState.collect { bookmarks ->
-                composeView.setContent {
-                    MyTheme {
-                        DialogPanel(
-                            folder = bookmarkViewModel.currentFolder,
-                            upParentAction = { bookmarkViewModel.outOfFolder() },
-                            createFolderAction = this@BookmarksDialogFragment::createBookmarkFolder,
-                            syncBookmarksAction = syncBookmarksAction,
-                            closeAction = { dialog?.dismiss() }) {
-                            if (bookmarks.isEmpty()) {
-                                Text(
-                                    modifier = NormalTextModifier,
-                                    text = getString(R.string.no_bookmarks),
-                                    color = MaterialTheme.colors.onBackground
-                                )
-                            } else {
-                                BookmarkList(
-                                    bookmarks = bookmarks,
-                                    bookmarkManager = bookmarkManager,
-                                    isWideLayout = ViewUnit.isWideLayout(requireContext()),
-                                    shouldReverse = !config.isToolbarOnTop,
-                                    onBookmarkClick = {
-                                        if (!it.isDirectory) {
-                                            gotoUrlAction(it.url)
-                                            config.addRecentBookmark(it)
-                                            dialog?.dismiss()
-                                        } else {
-                                            bookmarkViewModel.intoFolder(it)
-                                        }
-                                    },
-                                    onBookmarkIconClick = {
-                                        if (!it.isDirectory) addTabAction(
-                                            it.title,
-                                            it.url,
-                                            true
-                                        ); dialog?.dismiss()
-                                    },
-                                    onBookmarkLongClick = { showBookmarkContextMenu(it) }
-                                )
-                            }
+            bookmarkViewModel.uiState.collect { bookmarks.value = it }
+        }
+
+        composeView.setContent {
+            val context = LocalContext.current
+
+            MyTheme {
+                DialogPanel(
+                    folder = bookmarkViewModel.currentFolder.value,
+                    inSortMode = shouldShowDragHandle.value,
+                    upParentAction = { bookmarkViewModel.outOfFolder() },
+                    syncBookmarksAction = syncBookmarksAction,
+                    linkBookmarksAction = linkBookmarksAction,
+                    reorderBookmarkAction = {
+                        shouldShowDragHandle.value = !shouldShowDragHandle.value
+                        if (shouldShowDragHandle.value) {
+                            EBToast.show(context, getString(R.string.drag_to_reorder))
                         }
+                    },
+                    closeAction = { dialog?.dismiss() }) {
+                    if (bookmarks.value.isEmpty()) {
+                        Text(
+                            modifier = NormalTextModifier,
+                            text = getString(R.string.no_bookmarks),
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    } else {
+                        BookmarkList(
+                            bookmarks = bookmarks.value,
+                            bookmarkViewModel = bookmarkViewModel,
+                            isWideLayout = ViewUnit.isWideLayout(requireContext()),
+                            shouldReverse = !config.isToolbarOnTop,
+                            shouldShowDragHandle = shouldShowDragHandle.value,
+                            onItemMoved = { from, to ->
+                                bookmarks.value =
+                                    bookmarks.value.toMutableList()
+                                        .apply { add(to, removeAt(from)) }
+                                bookmarkViewModel.updateBookmarksOrder(bookmarks.value)
+                            },
+                            onBookmarkClick = {
+                                if (!it.isDirectory) {
+                                    gotoUrlAction(it.url)
+                                    config.addRecentBookmark(it)
+                                    dialog?.dismiss()
+                                } else {
+                                    bookmarkViewModel.intoFolder(it)
+                                }
+                            },
+                            onBookmarkIconClick = {
+                                if (!it.isDirectory) bookmarkIconClickAction(
+                                    it.title,
+                                    it.url,
+                                    true
+                                ); dialog?.dismiss()
+                            },
+                            onBookmarkLongClick = { bookmark, offSet -> showBookmarkContextMenu(bookmark, offSet) }
+                        )
                     }
                 }
             }
         }
     }
+
 
     override fun onDestroy() {
         bookmarksUpdateJob.cancel()
@@ -125,83 +153,71 @@ class BookmarksDialogFragment(
         super.onDestroy()
     }
 
-    private fun createBookmarkFolder(bookmark: Bookmark) {
-        lifecycleScope.launch {
-            val folderName = dialogManager.getBookmarkFolderName()
-            folderName?.let {
-                bookmarkManager.insertDirectory(it, bookmark.id)
-                syncBookmarksAction(true)
-            }
-        }
-    }
+    private fun showBookmarkContextMenu(bookmark: Bookmark, point: Point) {
+        BookmarkContextMenuDlgFragment(
+            bookmark,
+            anchorPoint = point
+        ) {
+            when (it) {
+                ContextMenuItemType.NewTabForeground -> {
+                    bookmarkIconClickAction(
+                        bookmark.title,
+                        bookmark.url,
+                        true
+                    )
+                    dialog?.dismiss()
+                }
 
-    private fun showBookmarkContextMenu(bookmark: Bookmark) {
-        val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(requireContext()))
-        val optionDialog = dialogManager.showOptionDialog(dialogView.root)
+                ContextMenuItemType.NewTabBackground -> {
+                    bookmarkIconClickAction(
+                        bookmark.title,
+                        bookmark.url,
+                        false
+                    )
+                    dialog?.dismiss()
+                }
 
-        if (bookmark.isDirectory) {
-            dialogView.menuContextListNewTab.visibility = View.GONE
-            dialogView.menuContextListNewTabOpen.visibility = View.GONE
-            dialogView.menuContextListSplitScreen.visibility = View.GONE
-        }
+                ContextMenuItemType.SplitScreen -> {
+                    splitScreenAction(bookmark.url)
+                    dialog?.dismiss()
+                }
 
-        dialogView.menuContextListSplitScreen.setOnClickListener {
-            optionDialog.dismissWithAction { splitScreenAction(bookmark.url); dialog?.dismiss() }
-        }
+                ContextMenuItemType.Edit -> BookmarkEditDialog(
+                    requireActivity(),
+                    bookmarkViewModel,
+                    bookmark,
+                    {
+                        ViewUnit.hideKeyboard(requireActivity())
+                        syncBookmarksAction(true)
+                    },
+                    { ViewUnit.hideKeyboard(requireActivity()) }
+                ).show()
 
-        dialogView.menuTitle.text = bookmark.title
-        dialogView.menuContextListEdit.visibility = View.VISIBLE
-        dialogView.menuContextListNewTab.setOnClickListener {
-            optionDialog.dismissWithAction {
-                addTabAction(getString(R.string.app_name), bookmark.url, false)
-                dialog?.dismiss()
-            }
-        }
-        dialogView.menuContextListNewTabOpen.setOnClickListener {
-            optionDialog.dismissWithAction {
-                addTabAction(
-                    bookmark.title,
-                    bookmark.url,
-                    true
-                ); dialog?.dismiss()
-            }
-        }
-        dialogView.menuContextListDelete.setOnClickListener {
-            lifecycleScope.launch {
-                bookmarkManager.delete(bookmark)
-                syncBookmarksAction(true)
-            }
-            optionDialog.dismiss()
-        }
-
-        dialogView.menuContextListEdit.setOnClickListener {
-            BookmarkEditDialog(
-                requireActivity(),
-                bookmarkManager,
-                bookmark,
-                {
-                    ViewUnit.hideKeyboard(requireActivity())
+                ContextMenuItemType.Delete -> lifecycleScope.launch {
+                    bookmarkViewModel.deleteBookmark(bookmark)
                     syncBookmarksAction(true)
-                },
-                { ViewUnit.hideKeyboard(requireActivity()) }
-            ).show()
-            optionDialog.dismiss()
-        }
+                }
+
+                else -> Unit
+            }
+        }.show(parentFragmentManager, "bookmark_context_menu")
+
     }
 }
 
 @Composable
 fun DialogPanel(
     folder: Bookmark,
+    inSortMode: Boolean = false,
     upParentAction: (Bookmark) -> Unit,
-    createFolderAction: (Bookmark) -> Unit,
     syncBookmarksAction: (Boolean) -> Unit,
+    linkBookmarksAction: () -> Unit,
     closeAction: () -> Unit,
-    content: @Composable () -> Unit
+    reorderBookmarkAction: () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Box(Modifier.weight(1F, fill = false)) {
             content()
@@ -222,7 +238,7 @@ fun DialogPanel(
                 Spacer(modifier = Modifier.size(36.dp))
             }
             Text(
-                if (folder.id == 0) stringResource(id = R.string.bookmarks) else folder.title,
+                if (folder.id == 0) "" else folder.title,
                 Modifier
                     .weight(1F)
                     .padding(horizontal = 5.dp)
@@ -234,15 +250,16 @@ fun DialogPanel(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(horizontal = 5.dp),
-                iconResId = R.drawable.ic_add_folder,
-                action = { createFolderAction(folder) }
+                iconResId = if (inSortMode) R.drawable.icon_list else R.drawable.ic_sort,
+                action = { reorderBookmarkAction() },
             )
             ActionIcon(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(horizontal = 5.dp),
                 iconResId = R.drawable.ic_sync,
-                action = { syncBookmarksAction(false) }
+                action = { syncBookmarksAction(false) },
+                longClickAction = { linkBookmarksAction() }
             )
             ActionIcon(
                 modifier = Modifier
@@ -259,58 +276,100 @@ fun DialogPanel(
 @Composable
 fun BookmarkList(
     bookmarks: List<Bookmark>,
-    bookmarkManager: BookmarkManager? = null,
+    bookmarkViewModel: BookmarkViewModel,
     isWideLayout: Boolean = false,
     shouldReverse: Boolean = true,
+    shouldShowDragHandle: Boolean = false,
+    onItemMoved: (from: Int, to: Int) -> Unit,
     onBookmarkClick: OnBookmarkClick,
     onBookmarkIconClick: OnBookmarkIconClick,
     onBookmarkLongClick: OnBookmarkLongClick,
 ) {
+    val lazyGridState = rememberLazyGridState()
+    val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
+        onItemMoved(from.index, to.index)
+    }
+
     LazyVerticalGrid(
         modifier = Modifier.wrapContentHeight(),
+        state = lazyGridState,
         columns = GridCells.Fixed(if (isWideLayout) 2 else 1),
         reverseLayout = shouldReverse
     ) {
-        itemsIndexed(bookmarks) { _, bookmark ->
+        itemsIndexed(bookmarks, key = { _, bookmark -> bookmark.id }) { _, bookmark ->
             val interactionSource = remember { MutableInteractionSource() }
             val isPressed by interactionSource.collectIsPressedAsState()
-            BookmarkItem(
-                bookmark = bookmark,
-                bitmap = bookmarkManager?.findFaviconBy(bookmark.url)?.getBitmap(),
-                isPressed = isPressed,
-                modifier = Modifier
-                    .combinedClickable(
-                        interactionSource = interactionSource,
-                        indication = null,
-                        onClick = { onBookmarkClick(bookmark) },
-                        onLongClick = { onBookmarkLongClick(bookmark) },
-                    ),
-                iconClick = {
-                    if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
-                    else onBookmarkClick(bookmark)
-                }
-            )
+            // for getting long click point
+            var longClickPosition = remember { mutableStateOf(Offset.Zero) }
+            var boxPosition = remember { mutableStateOf(Offset.Zero) }
+
+
+            ReorderableItem(reorderableLazyGridState, key = bookmark.id) { isDragging ->
+                BookmarkItem(
+                    bookmark = bookmark,
+                    bitmap = bookmarkViewModel.getFavicon(bookmark),
+                    isPressed = isPressed || isDragging,
+                    shouldShowDragHandle = shouldShowDragHandle,
+                    dragModifier = Modifier.draggableHandle(),
+                    modifier = Modifier.then(
+                            if (shouldShowDragHandle) {
+                                Modifier
+                                    .longPressDraggableHandle()
+                                    .clickable(
+                                        interactionSource = interactionSource,
+                                        indication = null,
+                                    ) { onBookmarkClick(bookmark) }
+                            } else {
+                                Modifier.pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onTap = { offset -> onBookmarkClick(bookmark) },
+                                        onLongPress = { offset ->
+                                            longClickPosition.value = offset
+                                            onBookmarkLongClick(bookmark, offset.toScreenPoint(boxPosition.value))
+                                        }
+                                    )
+                                }
+                                    .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
+                            }
+                        ),
+                    iconClick = {
+                        if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
+                        else onBookmarkClick(bookmark)
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun BookmarkItem(
+fun BookmarkItem(
     modifier: Modifier,
     bitmap: Bitmap? = null,
     isPressed: Boolean = false,
+    shouldShowDragHandle: Boolean = false,
     bookmark: Bookmark,
+    dragModifier: Modifier = Modifier,
     iconClick: () -> Unit,
 ) {
-    val borderWidth = if (isPressed) 1.dp else -1.dp
+    val borderWidth = if (isPressed) 1.dp else (-1).dp
 
     Row(
         modifier = modifier
             .height(54.dp)
-            .padding(8.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp)),
-        horizontalArrangement = Arrangement.Center
+            .padding(4.dp)
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .padding(4.dp),
+        horizontalArrangement = Arrangement.Center,
     ) {
+        if (shouldShowDragHandle) {
+            Icon(
+                modifier = dragModifier.padding(8.dp),
+                imageVector = Icons.Outlined.DragHandle,
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
         if (bitmap != null) {
             Image(
                 modifier = Modifier
@@ -330,7 +389,7 @@ private fun BookmarkItem(
         }
         Text(
             modifier = Modifier
-                .weight(1F)
+                .weight(1.0f)
                 .align(Alignment.CenterVertically),
             text = bookmark.title,
             fontSize = 18.sp,
@@ -341,14 +400,23 @@ private fun BookmarkItem(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ActionIcon(modifier: Modifier, iconResId: Int, action: (() -> Unit)? = null) {
+fun ActionIcon(
+    modifier: Modifier,
+    iconResId: Int,
+    action: (() -> Unit)? = null,
+    longClickAction: (() -> Unit)? = null,
+) {
     Icon(
         modifier = modifier
             .size(36.dp)
             .padding(end = 5.dp)
-            .clickable { action?.invoke() },
-        painter = painterResource(id = iconResId),
+            .combinedClickable(
+                onClick = { action?.invoke() },
+                onLongClick = { longClickAction?.invoke() },
+            ),
+        imageVector = ImageVector.vectorResource(id = iconResId),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
     )
@@ -360,12 +428,14 @@ private fun PreviewBookmarkList() {
     MyTheme {
         BookmarkList(
             bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
-            null,
+            BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
             isWideLayout = true,
             shouldReverse = true,
+            shouldShowDragHandle = false,
+            { _, _ -> },
             {},
             {},
-            {}
+            { _, _ -> }
         )
     }
 }
@@ -377,24 +447,33 @@ private fun PreviewDialogPanel() {
     MyTheme {
         DialogPanel(
             folder = Bookmark("test 1", "https://www.google.com", false),
+            //{},
+            false,
             {},
             {},
             {},
-            {}
+            {},
+            {},
         ) {
             BookmarkList(
                 bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
-                null,
+                BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
                 isWideLayout = true,
                 shouldReverse = true,
+                shouldShowDragHandle = false,
+                { _, _ -> },
                 {},
                 {},
-                {}
+                { _, _ -> }
             )
         }
     }
 }
 
 typealias OnBookmarkClick = (bookmark: Bookmark) -> Unit
-typealias OnBookmarkLongClick = (bookmark: Bookmark) -> Unit
+typealias OnBookmarkLongClick = (bookmark: Bookmark, point: Point) -> Unit
 typealias OnBookmarkIconClick = (bookmark: Bookmark) -> Unit
+
+fun Offset.toScreenPoint(boxPosition: Offset): Point {
+    return Point((x + boxPosition.x).toInt(), (y + boxPosition.y).toInt())
+}

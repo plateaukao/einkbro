@@ -10,11 +10,13 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
+import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit.getResourceAndMimetypeFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.pruneWebTitle
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -46,7 +48,7 @@ class EpubManager(private val context: Context) : KoinComponent {
     fun saveEpub(
         activity: ComponentActivity,
         fileUri: Uri,
-        ninjaWebView: NinjaWebView,
+        ebWebView: EBWebView,
         onProgressChanged: (Int) -> Unit,
         onErrorAction: () -> Unit,
     ) {
@@ -54,11 +56,13 @@ class EpubManager(private val context: Context) : KoinComponent {
             val isNewFile =
                 (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
 
-            val bookName = if (isNewFile) getBookName() else ""
-            val chapterName = getChapterName(ninjaWebView.title)
+            val bookName = if (isNewFile) getBookName(ebWebView.title?.pruneWebTitle()) else ""
+            val chapterName = getChapterName(ebWebView.title?.pruneWebTitle())
 
             if (bookName != null && chapterName != null) {
-                val rawHtml = ninjaWebView.getRawReaderHtml()
+                val rawHtml = ebWebView.dualCaption?.let {
+                    DualCaptionProcessor().convertToHtml(it)
+                } ?: ebWebView.getRawReaderHtml()
                 onProgressChanged(5)
 
                 internalSaveEpub(
@@ -67,7 +71,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                     rawHtml,
                     bookName,
                     chapterName,
-                    ninjaWebView.url ?: "",
+                    ebWebView.url.orEmpty(),
                     onProgressChanged,
                     { savedBookName ->
                         HelperUnit.openEpubToLastChapter(activity, fileUri)
@@ -94,22 +98,35 @@ class EpubManager(private val context: Context) : KoinComponent {
         ).show()
     }
 
-    private suspend fun getBookName(): String? {
+    private suspend fun getBookName(defaultBookName: String?): String? {
         return TextInputDialog(
             context,
             context.getString(R.string.book_name),
             context.getString(R.string.book_name_description),
-            "einkbro book"
+            defaultBookName ?: "einkbro book"
         ).show()
     }
 
-    fun showEpubFilePicker(activityResultLauncher: ActivityResultLauncher<Intent>) {
+    fun showWriteEpubFilePicker(
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        fileName: String,
+    ) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_EPUB
-        intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
+        intent.putExtra(Intent.EXTRA_TITLE, "$fileName.epub")
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        activityResultLauncher.launch(intent)
+    }
+
+    fun showOpenEpubFilePicker(activityResultLauncher: ActivityResultLauncher<Intent>) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = Constants.MIME_TYPE_EPUB
+            addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
         activityResultLauncher.launch(intent)
     }
 
@@ -122,7 +139,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         currentUrl: String,
         onProgressChanged: (Int) -> Unit, // 0..100
         doneAction: (String) -> Unit,
-        errorAction: () -> Unit
+        errorAction: () -> Unit,
     ) {
         val webUri = Uri.parse(currentUrl)
         val domain = webUri.host ?: "EinkBro"
@@ -214,7 +231,7 @@ class EpubManager(private val context: Context) : KoinComponent {
     private fun processHtmlString(
         html: String,
         chapterIndex: Int,
-        baseUri: String
+        baseUri: String,
     ): Pair<String, Map<String, String>> {
         val doc = Jsoup.parse(html, baseUri)
         with(doc.head().allElements) {
@@ -232,7 +249,7 @@ class EpubManager(private val context: Context) : KoinComponent {
 
         val imageKeyUrlMap = mutableMapOf<String, String>()
         doc.select("img").forEachIndexed { index, element ->
-            val imgUrl = element.attributes()["src"] ?: element.dataset()["src"] ?: ""
+            val imgUrl = element.attributes()["src"] ?: element.dataset()["src"].orEmpty()
             val newImageIndex = "img_${chapterIndex}_$index"
             // Sadly, Reader mode does not remove all 1px tracking pixels, do this manually instead.
             if (element.isDummyImage()) {

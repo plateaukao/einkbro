@@ -15,7 +15,7 @@ import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -87,7 +87,7 @@ class BackupUnit(
 
             zos.close()
             fos.close()
-            NinjaToast.show(context, R.string.toast_backup_successful)
+            EBToast.show(context, R.string.toast_backup_successful)
             return true
         } catch (e: IOException) {
             e.printStackTrace()
@@ -164,7 +164,7 @@ class BackupUnit(
     private suspend fun getFileContentString(uri: Uri): String {
         return withContext(Dispatchers.IO) {
             context.contentResolver.openInputStream(uri).use {
-                it?.bufferedReader()?.readText() ?: ""
+                it?.bufferedReader()?.readText().orEmpty()
             }
         }
     }
@@ -275,24 +275,23 @@ class BackupUnit(
 
     fun handleBookmarkSync(
         forceUpload: Boolean = false,
+    ) {
+        if (forceUpload) {
+            exportBookmarks(Uri.parse(config.bookmarkSyncUrl), false)
+        } else {
+            importBookmarks(Uri.parse(config.bookmarkSyncUrl))
+        }
+    }
+
+    fun linkBookmarkSync(
         dialogManager: DialogManager,
         createBookmarkFileLauncher: ActivityResultLauncher<Intent>,
         openBookmarkFileLauncher: ActivityResultLauncher<Intent>,
     ) {
-        if (forceUpload) {
-            if (config.bookmarkSyncUrl.isNotBlank()) {
-                exportBookmarks(Uri.parse(config.bookmarkSyncUrl), false)
-            }
-        } else {
-            if (config.bookmarkSyncUrl.isNotBlank()) {
-                importBookmarks(Uri.parse(config.bookmarkSyncUrl))
-            } else {
-                dialogManager.showCreateOrOpenBookmarkFileDialog(
-                    { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
-                    { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
-                )
-            }
-        }
+        dialogManager.showCreateOrOpenBookmarkFileDialog(
+            { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
+            { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
+        )
     }
 
     private fun linkToBookmarkSyncFile(result: ActivityResult) {
@@ -315,7 +314,7 @@ class BackupUnit(
         return uri
     }
 
-    fun exportHighlights(uri: Uri, data: String) {
+    fun exportDataToFileUri(uri: Uri, data: String) {
         val fileContent = data.toByteArray()
 
         context.contentResolver.openOutputStream(uri)?.use { outputStream ->
@@ -354,6 +353,7 @@ private fun Bookmark.toJsonObject(): JSONObject =
         put("url", url)
         put("isDirectory", isDirectory)
         put("parent", parent)
+        put("order", order)
     }
 
 private fun JSONObject.toBookmark(): Bookmark =
@@ -361,7 +361,8 @@ private fun JSONObject.toBookmark(): Bookmark =
         optString("title"),
         optString("url"),
         optBoolean("isDirectory"),
-        optInt("parent")
+        optInt("parent"),
+        optInt("order")
     ).apply { id = optInt("id") }
 
 

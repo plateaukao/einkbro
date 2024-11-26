@@ -17,6 +17,15 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.Cookie
+import androidx.compose.material.icons.outlined.DesktopWindows
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.MusicNote
+import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,8 +33,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,11 +43,12 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.DataListActivity
 import info.plateaukao.einkbro.activity.WhiteListType
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.SaveHistoryMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 
 class FastToggleDialogFragment(
-    val extraAction: () -> Unit
+    val extraAction: () -> Unit,
 ) : ComposeDialogFragment() {
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
@@ -54,14 +65,15 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
     Column(modifier = Modifier.width(IntrinsicSize.Max)) {
         ToggleItem(
             state = config.isIncognitoMode,
-            titleResId = R.string.setting_title_incognito, iconResId = R.drawable.ic_incognito
+            titleResId = R.string.setting_title_incognito,
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_incognito)
         ) {
             config::isIncognitoMode.toggle()
             onClicked(true)
         }
         ToggleItem(
             state = config.adBlock,
-            titleResId = R.string.setting_title_adblock, iconResId = R.drawable.ic_block,
+            titleResId = R.string.setting_title_adblock, imageVector = Icons.Outlined.Block,
             onEditAction = {
                 context.startActivity(
                     DataListActivity.createIntent(
@@ -76,7 +88,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
         }
         ToggleItem(
             state = config.enableJavascript,
-            titleResId = R.string.setting_title_javascript, iconResId = R.drawable.icon_java,
+            titleResId = R.string.setting_title_javascript, imageVector = Icons.Outlined.Terminal,
             onEditAction = {
                 context.startActivity(
                     DataListActivity.createIntent(
@@ -91,7 +103,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
         }
         ToggleItem(
             state = config.cookies,
-            titleResId = R.string.setting_title_cookie, iconResId = R.drawable.icon_cookie,
+            titleResId = R.string.setting_title_cookie, imageVector = Icons.Outlined.Cookie,
             onEditAction = {
                 context.startActivity(DataListActivity.createIntent(context, WhiteListType.Cookie))
             }
@@ -100,10 +112,15 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             onClicked(true)
         }
         ToggleItem(
-            state = config.saveHistory,
-            titleResId = R.string.history, iconResId = R.drawable.ic_history
-        ) {
-            config::saveHistory.toggle()
+            state = config.isSaveHistoryOn(),
+            titleResId = R.string.history, imageVector = Icons.Outlined.AccessTime
+        ) { on ->
+            if (on) {
+                config.saveHistoryMode = config.toggledSaveHistoryMode
+            } else {
+                config.toggledSaveHistoryMode = config.saveHistoryMode
+                config.saveHistoryMode = SaveHistoryMode.DISABLED
+            }
             onClicked(false)
         }
 
@@ -111,28 +128,28 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
 
         ToggleItem(
             state = config.shareLocation,
-            titleResId = R.string.location, iconResId = R.drawable.ic_location
+            titleResId = R.string.location, imageVector = Icons.Outlined.LocationOn
         ) {
             config::shareLocation.toggle()
             onClicked(false)
         }
         ToggleItem(
             state = config.volumePageTurn,
-            titleResId = R.string.volume_page_turn, iconResId = R.drawable.ic_volume
+            titleResId = R.string.volume_page_turn, imageVector = Icons.AutoMirrored.Outlined.VolumeUp
         ) {
             config::volumePageTurn.toggle()
             onClicked(false)
         }
         ToggleItem(
             state = config.continueMedia,
-            titleResId = R.string.media_continue, iconResId = R.drawable.ic_media_continue
+            titleResId = R.string.media_continue, imageVector = Icons.Outlined.MusicNote
         ) {
             config::continueMedia.toggle()
             onClicked(false)
         }
         ToggleItem(
             state = config.desktop,
-            titleResId = R.string.desktop_mode, iconResId = R.drawable.icon_desktop
+            titleResId = R.string.desktop_mode, imageVector = Icons.Outlined.DesktopWindows
         ) {
             config::desktop.toggle()
             onClicked(false)
@@ -144,7 +161,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
 fun ToggleItem(
     state: Boolean,
     titleResId: Int,
-    iconResId: Int,
+    imageVector: ImageVector? = null,
     isEnabled: Boolean = true,
     onEditAction: (() -> Unit)? = null,
     onClicked: (Boolean) -> Unit,
@@ -155,10 +172,10 @@ fun ToggleItem(
         modifier = Modifier
             .width(IntrinsicSize.Max)
             .height(46.dp)
-            .padding(8.dp)
+            .padding(4.dp)
             .clickable {
-                currentState = !currentState
                 if (isEnabled) {
+                    currentState = !currentState
                     onClicked(currentState)
                 }
             },
@@ -173,16 +190,15 @@ fun ToggleItem(
                 checkmarkColor = MaterialTheme.colors.background,
             ),
             onCheckedChange = {
-                currentState = !currentState
                 if (isEnabled) {
+                    currentState = !currentState
                     onClicked(currentState)
                 }
             }
         )
-
-        if (iconResId > 0) {
+        if (imageVector != null) {
             Icon(
-                painter = painterResource(id = iconResId), contentDescription = null,
+                imageVector = imageVector, contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
                     .fillMaxHeight(),
@@ -202,7 +218,7 @@ fun ToggleItem(
         )
         if (onEditAction != null) {
             Icon(
-                painter = painterResource(id = R.drawable.icon_edit), contentDescription = null,
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_edit), contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
                     .fillMaxHeight()
@@ -217,7 +233,7 @@ fun ToggleItem(
 @Composable
 private fun PreviewItem() {
     MyTheme {
-        ToggleItem(true, R.string.title, R.drawable.ic_location, onEditAction = {}) {}
+        ToggleItem(true, R.string.title, Icons.Outlined.LocationOn, onEditAction = {}) {}
     }
 }
 

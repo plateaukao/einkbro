@@ -34,16 +34,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -53,6 +57,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -72,7 +77,7 @@ class TranslateDialogFragment(
         MyTheme {
             TranslateResponse(
                 translationViewModel,
-                showExtraIcons = config.papagoApiSecret.isNotBlank(),
+                showExtraIcons = config.imageApiKey.isNotBlank(),
                 this::changeTranslationLanguage,
                 this::getTranslationWebView,
                 closeAction ?: { dismiss() }
@@ -82,6 +87,7 @@ class TranslateDialogFragment(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        translationViewModel.cancel()
         closeAction?.invoke()
     }
 
@@ -98,12 +104,10 @@ class TranslateDialogFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         anchorPoint?.let { setupDialogPosition(it) }
-
-        //dialog?.window?.setBackgroundDrawableResource(R.drawable.white_bgd_with_border_margin)
 
         translationViewModel.translate()
 
@@ -111,10 +115,9 @@ class TranslateDialogFragment(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TranslateResponse(
-    translationViewModel: TranslationViewModel,
+    viewModel: TranslationViewModel,
     showExtraIcons: Boolean,
     onTargetLanguageClick: () -> Unit,
     getTranslationWebView: () -> WebView,
@@ -122,13 +125,17 @@ private fun TranslateResponse(
 ) {
     val iconSize = 40.dp
     val iconPadding = 5.dp
-    val requestMessage by translationViewModel.inputMessage.collectAsState()
-    val responseMessage by translationViewModel.responseMessage.collectAsState()
-    val rotateScreen by translationViewModel.rotateResultScreen.collectAsState()
+    val requestMessage by viewModel.inputMessage.collectAsState()
+    val responseMessage by viewModel.responseMessage.collectAsState()
+    val rotateScreen by viewModel.rotateResultScreen.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
-    val context = LocalContext.current
     val scrollState = rememberScrollState()
+
+    val translateDeepL = remember { { viewModel.translate(TRANSLATE_API.DEEPL) } }
+    val translateGoogle = remember { { viewModel.translate(TRANSLATE_API.GOOGLE) } }
+    val translatePapago = remember { { viewModel.translate(TRANSLATE_API.PAPAGO) } }
+    val translateNaver = remember { { viewModel.translate(TRANSLATE_API.NAVER) } }
 
     Column(
         modifier = Modifier
@@ -151,87 +158,23 @@ private fun TranslateResponse(
                 .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_copy),
-                contentDescription = "Copy text",
-                tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .size(iconSize)
-                    .padding(iconPadding)
-                    .clickable { ShareUtil.copyToClipboard(context, responseMessage) }
-            )
+            CopyButton(iconSize, iconPadding, responseMessage)
 
             if (ViewUnit.isTablet(LocalContext.current)) {
-                GptRow(translationViewModel)
+                GptRow(viewModel)
             }
-            Icon(
-                painter = painterResource(id = R.drawable.ic_translate_google),
-                contentDescription = "Google Translate Icon",
-                tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .size(iconSize)
-                    .padding(iconPadding)
-                    .combinedClickable(
-                        onClick = {
-                            translationViewModel.translate(TRANSLATE_API.GOOGLE)
-                        },
-                        onLongClick = { onTargetLanguageClick() }
-                    )
-            )
+            GoogleButton(iconSize, iconPadding, translateGoogle, onTargetLanguageClick)
             if (showExtraIcons) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_papago),
-                    contentDescription = "Papago Translate Icon",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .size(iconSize)
-                        .padding(iconPadding)
-                        .combinedClickable(
-                            onClick = {
-                                translationViewModel.translate(TRANSLATE_API.PAPAGO)
-                            },
-                            onLongClick = { onTargetLanguageClick() }
-                        )
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_search),
-                    contentDescription = "Naver dict icon",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .size(iconSize)
-                        .padding(iconPadding)
-                        .clickable {
-                            translationViewModel.translate(TRANSLATE_API.NAVER)
-                        }
-                )
+                DeepLButton(iconSize, iconPadding, translateDeepL, onTargetLanguageClick)
+                PapagoButton(iconSize, iconPadding, translatePapago, onTargetLanguageClick)
+                NaverButton(iconSize, iconPadding, translateNaver)
             }
-            Icon(
-                painter = painterResource(
-                    id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
-                ),
-                contentDescription = "Info Icon",
-                tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .size(iconSize)
-                    .padding(10.dp)
-                    .combinedClickable(
-                        onClick = { showRequest.value = !showRequest.value },
-                        onLongClick = { translationViewModel.updateRotateResultScreen(!rotateScreen) }
-                    )
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.icon_close),
-                contentDescription = "Close Icon",
-                tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .size(iconSize)
-                    .padding(iconPadding)
-                    .clickable { closeClick() }
-            )
+            InfoButton(showRequest, iconSize)
+            CloseButton(iconSize, iconPadding, closeClick)
         }
         if (!ViewUnit.isTablet(LocalContext.current)) {
             GptRow(
-                translationViewModel,
+                viewModel,
                 modifier = Modifier.align(Alignment.End),
             )
         }
@@ -243,7 +186,7 @@ private fun TranslateResponse(
                 .weight(1f)
                 .align(Alignment.Start)
                 .conditionalScroll(
-                    !translationViewModel.isWebViewStyle(),
+                    !viewModel.isWebViewStyle(),
                     scrollState
                 ),
             horizontalAlignment = Alignment.End
@@ -252,28 +195,172 @@ private fun TranslateResponse(
                 Text(
                     text = requestMessage,
                     color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
                 Divider()
             }
-            if (translationViewModel.isWebViewStyle() && responseMessage != "...") {
+            if (viewModel.isWebViewStyle() && responseMessage.text != "...") {
                 WebResultView(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     getTranslationWebView(),
-                    responseMessage
+                    responseMessage.text
                 )
             } else {
                 Text(
                     text = responseMessage,
                     color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
             }
         }
         RoundedDragBar()
     }
+}
+
+@Composable
+private fun CloseButton(
+    iconSize: Dp,
+    iconPadding: Dp,
+    closeClick: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.icon_close),
+        contentDescription = "Close Icon",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(iconPadding)
+            .clickable { closeClick() }
+    )
+}
+
+@Composable
+private fun InfoButton(
+    showRequest: MutableState<Boolean>,
+    iconSize: Dp,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(
+            id = if (showRequest.value) R.drawable.icon_arrow_up_gest else R.drawable.icon_info
+        ),
+        contentDescription = "Info Icon",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(10.dp)
+            .clickable {
+                showRequest.value = !showRequest.value
+            }
+    )
+}
+
+@Composable
+private fun NaverButton(
+    iconSize: Dp,
+    iconPadding: Dp,
+    translateNaver: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.icon_search),
+        contentDescription = "Naver dict icon",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(iconPadding)
+            .clickable {
+                translateNaver()
+            }
+    )
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun PapagoButton(
+    iconSize: Dp,
+    iconPadding: Dp,
+    translatePapago: () -> Unit,
+    onTargetLanguageClick: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_papago),
+        contentDescription = "Papago Translate Icon",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(iconPadding)
+            .combinedClickable(
+                onClick = translatePapago,
+                onLongClick = onTargetLanguageClick
+            )
+    )
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun GoogleButton(
+    iconSize: Dp,
+    iconPadding: Dp,
+    translateGoogle: () -> Unit,
+    onTargetLanguageClick: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_translate_google),
+        contentDescription = "Google Translate",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(iconPadding)
+            .combinedClickable(
+                onClick = translateGoogle,
+                onLongClick = onTargetLanguageClick
+            )
+    )
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun DeepLButton(
+    iconSize: Dp,
+    iconPadding: Dp,
+    onClick: () -> Unit,
+    onTargetLanguageClick: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_translate),
+        contentDescription = "Deepl Translate",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(iconPadding)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onTargetLanguageClick
+            )
+    )
+}
+
+@Composable
+private fun CopyButton(
+    iconSize: Dp,
+    iconPadding: Dp,
+    responseMessage: AnnotatedString,
+) {
+    val context = LocalContext.current
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_copy),
+        contentDescription = "Copy text",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(iconPadding)
+            .clickable { ShareUtil.copyToClipboard(context, responseMessage.text) }
+    )
 }
 
 @Composable
@@ -286,14 +373,32 @@ private fun GptRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
     ) {
-        translationViewModel.getGptActionList().map { gptActionInfo ->
+        val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
+        ActionMenuItem(
+            "",
+            context.getDrawable(R.drawable.icon_menu_save),
+            onClicked = {
+                coroutineScope.launch {
+                    translationViewModel.saveTranslationResult()
+                    EBToast.show(context, R.string.toast_saved)
+                }
+            }
+        )
+        translationViewModel.getGptActionList().mapIndexed { index, gptActionInfo ->
+            val gptClicked = remember {
+                {
+                    translationViewModel.gptActionInfo = gptActionInfo
+                    translationViewModel.translate(TRANSLATE_API.LLM)
+                }
+            }
+            val gptLongClicked =
+                remember { { translationViewModel.showEditGptActionDialog(index) } }
             ActionMenuItem(
                 gptActionInfo.name,
                 null,
-                onClicked = {
-                    translationViewModel.gptActionInfo = gptActionInfo
-                    translationViewModel.translate(TRANSLATE_API.GPT)
-                }
+                onClicked = gptClicked,
+                onLongClicked = gptLongClicked
             )
         }
     }
@@ -347,7 +452,7 @@ fun PreviewTranslateResponse() {
     val context = LocalContext.current
     MyTheme {
         TranslateResponse(
-            translationViewModel = TranslationViewModel(),
+            viewModel = TranslationViewModel(),
             showExtraIcons = true,
             onTargetLanguageClick = {},
             getTranslationWebView = { WebView(context) },

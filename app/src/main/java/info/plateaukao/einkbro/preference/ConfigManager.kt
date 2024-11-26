@@ -3,13 +3,19 @@ package info.plateaukao.einkbro.preference
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Point
+import android.net.Uri
 import android.os.Build
 import android.print.PrintAttributes
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
+import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubFileInfo
+import info.plateaukao.einkbro.service.GptVoiceOption
+import info.plateaukao.einkbro.tts.entity.VoiceItem
+import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.util.TranslationLanguage
@@ -17,11 +23,12 @@ import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
-import kotlinx.serialization.decodeFromString
+import info.plateaukao.einkbro.viewmodel.TtsType
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.Locale
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
@@ -29,8 +36,9 @@ import kotlin.reflect.KProperty
 
 class ConfigManager(
     private val context: Context,
-    private val sp: SharedPreferences
+    private val sp: SharedPreferences,
 ) : KoinComponent {
+    private val bookmarkManager: BookmarkManager by inject()
 
     fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         sp.registerOnSharedPreferenceChangeListener(listener)
@@ -45,8 +53,12 @@ class ConfigManager(
     var isToolbarOnTop by BooleanPreference(sp, K_TOOLBAR_TOP, false)
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
     var isMultitouchEnabled by BooleanPreference(sp, K_MULTITOUCH, false)
-    var whiteBackground by BooleanPreference(sp, K_WHITE_BACKGROUND, false)
     var useUpDownPageTurn by BooleanPreference(sp, K_UPDOWN_PAGE_TURN, false)
+    var disableLongPressTouchArea by BooleanPreference(
+        sp,
+        "sp_disable_long_press_touch_area",
+        false
+    )
     var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
     var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
     var boldFontStyle by BooleanPreference(sp, K_BOLD_FONT, false)
@@ -54,7 +66,6 @@ class ConfigManager(
     var shouldSaveTabs by BooleanPreference(sp, K_SHOULD_SAVE_TABS, true)
     var adBlock by BooleanPreference(sp, K_ADBLOCK, true)
     var cookies by BooleanPreference(sp, K_COOKIES, true)
-    var saveHistory by BooleanPreference(sp, K_SAVE_HISTORY, true)
     var shareLocation by BooleanPreference(sp, K_SHARE_LOCATION, false)
     var enableTouchTurn by BooleanPreference(sp, K_ENABLE_TOUCH, false)
     var keepAwake by BooleanPreference(sp, K_KEEP_AWAKE, false)
@@ -126,29 +137,43 @@ class ConfigManager(
     var enableInplaceParagraphTranslate by
     BooleanPreference(sp, K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE, true)
 
+    private var originalSaveHistoryMode: SaveHistoryMode? = null
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
             cookies = !value
-            saveHistory = !value
+            if (value) {
+                originalSaveHistoryMode = saveHistoryMode
+                saveHistoryMode = SaveHistoryMode.DISABLED
+            } else {
+                if (originalSaveHistoryMode != null) {
+                    saveHistoryMode = originalSaveHistoryMode!!
+                    originalSaveHistoryMode = null
+                } else {
+                    saveHistoryMode = toggledSaveHistoryMode
+                }
+            }
+
             sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
         }
 
     var useOpenAiTts by BooleanPreference(sp, K_USE_OPENAI_TTS, true)
 
-    var shouldGetSelectedTextContextForGpt by BooleanPreference(
-        sp,
-        K_GET_SELECTED_TEXT_CONTEXT_FOR_GPT,
-        false
-    )
+    var webLoadCacheFirst by BooleanPreference(sp, "sp_web_load_cache_first", false)
 
     var pageReservedOffset: Int by IntPreference(sp, K_PRESERVE_HEIGHT, 80)
 
-    var pageReservedOffsetInString: String by StringPreference(sp, K_PRESERVE_HEIGHT_IN_STRING, pageReservedOffset.toString())
+    var pageReservedOffsetInString: String by StringPreference(
+        sp,
+        K_PRESERVE_HEIGHT_IN_STRING,
+        pageReservedOffset.toString()
+    )
 
     private val K_TTS_LOCALE = "sp_tts_locale"
     var ttsLocale: Locale
-        get() = Locale(sp.getString(K_TTS_LOCALE, Locale.getDefault().language) ?: Locale.getDefault().language)
+        get() = Locale(
+            sp.getString(K_TTS_LOCALE, Locale.getDefault().language) ?: Locale.getDefault().language
+        )
         set(value) {
             sp.edit { putString(K_TTS_LOCALE, value.language) }
         }
@@ -171,6 +196,8 @@ class ConfigManager(
         }
 
     var touchAreaCustomizeY by IntPreference(sp, K_TOUCH_AREA_OFFSET, 0)
+
+    var fontBoldness by IntPreference(sp, K_FONT_BOLDNESS, 700)
 
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
@@ -195,6 +222,9 @@ class ConfigManager(
     var pocketAccessToken by StringPreference(sp, K_POCKET_ACCESS_TOKEN, "")
 
     var gptApiKey by StringPreference(sp, K_GPT_API_KEY, "")
+
+    var geminiApiKey by StringPreference(sp, K_GEMINI_API_KEY, "")
+
     var gptSystemPrompt by StringPreference(
         sp,
         K_GPT_SYSTEM_PROMPT,
@@ -208,13 +238,19 @@ class ConfigManager(
     var gptUserPromptForWebPage by StringPreference(
         sp,
         K_GPT_USER_PROMPT_WEB_PAGE,
-        "Summarize in 300 words:"
+        "Summarize in 50 words:"
     )
-    var papagoApiSecret by StringPreference(sp, K_PAPAGO_API_SECRET, "")
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
+    var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
+    var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-1.5-flash")
+    var gptVoiceOption: GptVoiceOption
+        get() = GptVoiceOption.entries[sp.getInt("K_GPT_VOICE_OPTION", 0)]
+        set(value) = sp.edit { putInt("K_GPT_VOICE_OPTION", value.ordinal) }
+
     var gptUrl by StringPreference(sp, K_GPT_SERVER_URL, "https://api.openai.com")
     var useCustomGptUrl by BooleanPreference(sp, K_USE_CUSTOM_GPT_URL, false)
+    var useGeminiApi by BooleanPreference(sp, K_USE_GEMINI_API, false)
 
     var dualCaptionLocale by StringPreference(sp, K_DUAL_CAPTION_LOCALE, "")
 
@@ -226,6 +262,20 @@ class ConfigManager(
     var navGestureDown by GestureTypePreference(sp, K_GESTURE_NAV_DOWN)
     var navGestureLeft by GestureTypePreference(sp, K_GESTURE_NAV_LEFT)
     var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
+
+    var upClickGesture by GestureTypePreference(
+        sp, "K_UP_CLICK_GESTURE", GestureType.PageUp
+    )
+    var downClickGesture by GestureTypePreference(
+        sp, "K_DOWN_CLICK_GESTURE", GestureType.PageDown
+    )
+    var upLongClickGesture by GestureTypePreference(
+        sp, "K_UP_LONG_CLICK_GESTURE", GestureType.ScrollToTop
+    )
+    var downLongClickGesture by GestureTypePreference(
+        sp, "K_DOWN_LONG_CLICK_GESTURE", GestureType.ScrollToBottom
+    )
+
 
     private val K_EXTERNAL_SEARCH_METHOD = "sp_external_search_method"
     var externalSearchMethod: TRANSLATE_API
@@ -251,10 +301,69 @@ class ConfigManager(
             sp.edit { putInt("pdf_paper_size", value.ordinal) }
         }
 
+    var ttsType: TtsType
+        get() = TtsType.entries[sp.getInt("K_TTS_TYPE", 0)]
+        set(value) {
+            sp.edit { putInt("K_TTS_TYPE", value.ordinal) }
+            useOpenAiTts = value == TtsType.GPT
+        }
+
+    var ttsShowCurrentText by BooleanPreference(sp, "K_TTS_SHOW_CURRENT_TEXT", false)
+
+    var ttsShowTextTranslation by BooleanPreference(sp, "K_TTS_SHOW_TEXT_TRANSLATION", false)
+
+    private val K_RECENT_USED_TTS_VOICES = "sp_recent_used_tts_voices"
+    var recentUsedTtsVoices: MutableList<VoiceItem>
+        get() {
+            val string = sp.getString(K_RECENT_USED_TTS_VOICES, "").orEmpty()
+            if (string.isBlank()) return mutableListOf()
+
+            return try {
+                string.split("###")
+                    .mapNotNull { Json.decodeFromString<VoiceItem>(it) }
+                    .toMutableList()
+            } catch (exception: Exception) {
+                sp.edit { remove(K_RECENT_USED_TTS_VOICES) }
+                mutableListOf()
+            }
+        }
+        set(value) {
+            val processedValue = if (value.distinct().size > 5) {
+                value.distinct().subList(0, 5)
+            } else {
+                value.distinct()
+            }
+
+            sp.edit {
+                if (processedValue.isEmpty()) {
+                    remove(K_RECENT_USED_TTS_VOICES)
+                } else {
+                    // check if the new value the same as the old one
+                    putString(
+                        K_RECENT_USED_TTS_VOICES,
+                        processedValue.joinToString("###") { Json.encodeToString(it) }
+                    )
+                }
+            }
+        }
+
+    var ettsVoice: VoiceItem
+        get() = Json.decodeFromString(
+            sp.getString(
+                "K_ETTS_VOICE", Json.encodeToString(defaultVoiceItem)
+            ) ?: Json.encodeToString(defaultVoiceItem)
+        )
+        set(value) {
+            sp.edit { putString("K_ETTS_VOICE", Json.encodeToString(value)) }
+            recentUsedTtsVoices = recentUsedTtsVoices.apply { add(0, value) }
+        }
+
+    var uiLocaleLanguage by StringPreference(sp, "sp_ui_locale_language", "")
+
     var translationLanguage: TranslationLanguage
         get() = TranslationLanguage.entries[sp.getInt(
             K_TRANSLATE_LANGUAGE,
-            getDefaultTranslationLanguage().ordinal
+            TranslationLanguage.EN.ordinal
         )]
         set(value) {
             sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) }
@@ -280,12 +389,100 @@ class ConfigManager(
 
     var favoriteUrl by StringPreference(sp, K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
 
+    var version by StringPreference(sp, "sp_version", "11.14.0")
+
+    //use string set in sharedpreference
+    var domainConfigurationMap = mutableMapOf<String, DomainConfigurationData>()
+
+    var scrollFixList: List<String>
+        get() = sp.getStringSet(K_SCROLL_FIX_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_SCROLL_FIX_LIST, value.toSet()) }
+
+    fun shouldFixScroll(url: String): Boolean =
+        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldFixScroll } ?: false
+
+    fun toggleFixScroll(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return false
+
+        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
+        config.shouldFixScroll = !config.shouldFixScroll
+        bookmarkManager.addDomainConfiguration(config)
+
+        return shouldFixScroll(url)
+    }
+
+    // use string set to store the list of sending page navigation key
+    var sendPageNavKeyList: List<String>
+        get() = sp.getStringSet(K_SEND_PAGE_NAV_KEY_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_SEND_PAGE_NAV_KEY_LIST, value.toSet()) }
+
+    fun shouldSendPageNavKey(url: String): Boolean {
+        return Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldSendPageNavKey }
+            ?: false
+    }
+
+    fun toggleSendPageNavKey(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return false
+
+        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
+        config.shouldSendPageNavKey = !config.shouldSendPageNavKey
+        bookmarkManager.addDomainConfiguration(config)
+
+        return shouldFixScroll(url)
+    }
+
+    var translateSiteList: List<String>
+        get() = sp.getStringSet(K_TRANSLATE_SITE_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_TRANSLATE_SITE_LIST, value.toSet()) }
+
+    fun shouldTranslateSite(url: String): Boolean =
+        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldTranslateSite } ?: false
+
+    fun toggleTranslateSite(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return false
+
+        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
+        config.shouldTranslateSite = !config.shouldTranslateSite
+        bookmarkManager.addDomainConfiguration(config)
+
+        return shouldTranslateSite(url)
+    }
+
+    // use string set to store the url list of having white background
+    var whiteBackgroundList: List<String>
+        get() = sp.getStringSet(K_WHITE_BACKGROUND_LIST, mutableSetOf())?.toList() ?: emptyList()
+        set(value) = sp.edit { putStringSet(K_WHITE_BACKGROUND_LIST, value.toSet()) }
+
+    fun whiteBackground(url: String): Boolean =
+        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldUseWhiteBackground } ?: false
+
+    fun toggleWhiteBackground(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return false
+
+        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
+        config.shouldUseWhiteBackground = !config.shouldUseWhiteBackground
+        bookmarkManager.addDomainConfiguration(config)
+        return whiteBackground(url)
+    }
+
+    fun hasInvertedColor(url: String): Boolean =
+        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldInvertColor } ?: false
+
+    fun toggleInvertedColor(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return false
+
+        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
+        config.shouldInvertColor = !config.shouldInvertColor
+        bookmarkManager.addDomainConfiguration(config)
+        return hasInvertedColor(url)
+    }
+
     var toolbarActions: List<ToolbarAction>
         get() {
             val key =
                 if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
             val iconListString =
-                sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())) ?: ""
+                sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())).orEmpty()
             return iconStringToEnumList(iconListString)
         }
         set(value) {
@@ -299,7 +496,7 @@ class ConfigManager(
     var customFontInfo: CustomFontInfo?
         get() = sp.getString(K_CUSTOM_FONT, "")?.toCustomFontInfo()
         set(value) {
-            sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString() ?: "") }
+            sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString().orEmpty()) }
             if (fontType == FontType.CUSTOM) {
                 customFontChanged = true
             }
@@ -307,7 +504,7 @@ class ConfigManager(
     var readerCustomFontInfo: CustomFontInfo?
         get() = sp.getString(K_READER_CUSTOM_FONT, "")?.toCustomFontInfo()
         set(value) {
-            sp.edit { putString(K_READER_CUSTOM_FONT, value?.toSerializedString() ?: "") }
+            sp.edit { putString(K_READER_CUSTOM_FONT, value?.toSerializedString().orEmpty()) }
             if (fontType == FontType.CUSTOM) {
                 customFontChanged = true
             }
@@ -315,7 +512,7 @@ class ConfigManager(
 
     var recentBookmarks: List<RecentBookmark>
         get() {
-            val string = sp.getString(K_RECENT_BOOKMARKS, "") ?: ""
+            val string = sp.getString(K_RECENT_BOOKMARKS, "").orEmpty()
             if (string.isBlank()) return emptyList()
 
             return try {
@@ -367,7 +564,7 @@ class ConfigManager(
 
     var savedAlbumInfoList: List<AlbumInfo>
         get() {
-            val string = sp.getString(K_SAVED_ALBUM_INFO, "") ?: ""
+            val string = sp.getString(K_SAVED_ALBUM_INFO, "").orEmpty()
             if (string.isBlank()) return emptyList()
 
             return try {
@@ -422,6 +619,10 @@ class ConfigManager(
         get() = HighlightStyle.entries[sp.getInt(K_HIGHLIGHT_STYLE, 0)]
         set(value) = sp.edit { putInt(K_HIGHLIGHT_STYLE, value.ordinal) }
 
+    var translationTextStyle: TranslationTextStyle
+        get() = TranslationTextStyle.entries[sp.getInt("K_TRANSLATION_TEXT_STYLE", 1)]
+        set(value) = sp.edit { putInt("K_TRANSLATION_TEXT_STYLE", value.ordinal) }
+
     var adSites: MutableSet<String>
         get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
         set(value) = sp.edit { putStringSet(K_ADBLOCK_SITES, value) }
@@ -440,7 +641,7 @@ class ConfigManager(
 
     var fabCustomPosition: Point
         get() {
-            val str = sp.getString(K_FAB_POSITION, "") ?: ""
+            val str = sp.getString(K_FAB_POSITION, "").orEmpty()
             return if (str.isBlank()) Point(0, 0)
             else Point(str.split(",").first().toInt(), str.split(",").last().toInt())
         }
@@ -450,7 +651,7 @@ class ConfigManager(
 
     var fabCustomPositionLandscape: Point
         get() {
-            val str = sp.getString(K_FAB_POSITION_LAND, "") ?: ""
+            val str = sp.getString(K_FAB_POSITION_LAND, "").orEmpty()
             return if (str.isBlank()) Point(0, 0)
             else Point(str.split(",").first().toInt(), str.split(",").last().toInt())
         }
@@ -460,7 +661,7 @@ class ConfigManager(
 
     var splitSearchItemInfoList: List<SplitSearchItemInfo>
         get() {
-            val str = sp.getString(K_SPLIT_SEARCH_ITEMS, "") ?: ""
+            val str = sp.getString(K_SPLIT_SEARCH_ITEMS, "").orEmpty()
             return if (str.isBlank()) emptyList()
             else str.split("###").mapNotNull {
                 decodeFromString(SplitSearchItemInfo.serializer(), it)
@@ -476,6 +677,33 @@ class ConfigManager(
             }
         }
 
+    // save history logic codes
+    var saveHistoryMode: SaveHistoryMode
+        get() {
+            val str = sp.getString(K_SAVE_HISTORY_MODE, "")
+            return if (str.isNullOrEmpty()) {
+                // For backward compatibility.
+                if (sp.getBoolean(K_SAVE_HISTORY, true)) {
+                    SaveHistoryMode.SAVE_WHEN_OPEN
+                } else {
+                    SaveHistoryMode.DISABLED
+                }
+            } else {
+                SaveHistoryMode.entries[str.toInt()]
+            }
+        }
+        set(value) {
+            sp.edit {
+                putString(K_SAVE_HISTORY_MODE, value.ordinal.toString())
+            }
+        }
+
+    fun isSaveHistoryWhenLoad() = saveHistoryMode == SaveHistoryMode.SAVE_WHEN_OPEN
+    fun isSaveHistoryWhenClose() = saveHistoryMode == SaveHistoryMode.SAVE_WHEN_CLOSE
+    fun isSaveHistoryOn() = saveHistoryMode != SaveHistoryMode.DISABLED
+
+    // For tracking state in fast toggling only
+    var toggledSaveHistoryMode: SaveHistoryMode = SaveHistoryMode.SAVE_WHEN_OPEN
 
     fun addSplitSearchItem(item: SplitSearchItemInfo) {
         val list = splitSearchItemInfoList.toMutableList()
@@ -495,7 +723,7 @@ class ConfigManager(
 
     var gptActionList: List<ChatGPTActionInfo>
         get() {
-            val str = sp.getString(K_GPT_ACTION_ITEMS, "") ?: ""
+            val str = sp.getString(K_GPT_ACTION_ITEMS, "").orEmpty()
             return if (str.isBlank()) {
                 if (gptSystemPrompt.isNotBlank() || gptUserPromptPrefix.isNotBlank()) {
                     listOf(
@@ -518,9 +746,33 @@ class ConfigManager(
             }
         }
 
+    fun getDefaultActionModel(): String = if (useGeminiApi) {
+        geminiModel
+    } else if (useCustomGptUrl) {
+        alternativeModel
+    } else {
+        gptModel
+    }
+
+    fun getDefaultActionType(): GptActionType = if (useGeminiApi) {
+        GptActionType.Gemini
+    } else if (useCustomGptUrl) {
+        GptActionType.SelfHosted
+    } else {
+        GptActionType.OpenAi
+    }
+
+    fun getGptTypeModelMap(): Map<GptActionType, String> = mapOf(
+        GptActionType.Default to getDefaultActionModel(),
+        GptActionType.OpenAi to gptModel,
+        GptActionType.SelfHosted to alternativeModel,
+        GptActionType.Gemini to geminiModel
+    )
+
+
     var gptActionForExternalSearch: ChatGPTActionInfo?
         get() {
-            val str = sp.getString(K_GPT_ACTION_EXTERNAL, "") ?: ""
+            val str = sp.getString(K_GPT_ACTION_EXTERNAL, "").orEmpty()
             return if (str.isBlank()) null
             else str.convertToDataClass<ChatGPTActionInfo>()
         }
@@ -568,14 +820,24 @@ class ConfigManager(
     }
 
     private fun getDefaultIconStrings(): String =
-        ToolbarAction.defaultActions.joinToString(",") { action ->
-            action.ordinal.toString()
+        if (ViewUnit.isWideLayout(context)) {
+            ToolbarAction.defaultActions.joinToString(",") { action ->
+                action.ordinal.toString()
+            }
+        } else {
+            ToolbarAction.defaultActionsForPhone.joinToString(",") { action ->
+                action.ordinal.toString()
+            }
         }
 
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
+        const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
+        const val K_SEND_PAGE_NAV_KEY_LIST = "sp_send_page_nav_key_list"
+        const val K_TRANSLATE_SITE_LIST = "sp_translate_site_list"
+        const val K_WHITE_BACKGROUND_LIST = "sp_white_background_list"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"
@@ -591,6 +853,7 @@ class ConfigManager(
         const val K_IS_INCOGNITO_MODE = "sp_incognito"
         const val K_ADBLOCK = "SP_AD_BLOCK_9"
         const val K_SAVE_HISTORY = "saveHistory"
+        const val K_SAVE_HISTORY_MODE = "saveHistoryMode"
         const val K_COOKIES = "SP_COOKIES_9"
         const val K_TRANSLATION_MODE = "sp_translation_mode"
         const val K_ENABLE_TOUCH = "sp_enable_touch"
@@ -610,6 +873,7 @@ class ConfigManager(
         const val K_TWO_PANE_LINK_HERE = "sp_two_pane_link_here"
         const val K_DARK_MODE = "sp_dark_mode"
         const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
+        const val K_FONT_BOLDNESS = "sp_font_boldness"
         const val K_TOUCH_AREA_ACTION_SWITCH = "sp_touch_area_action_switch"
         const val K_TOUCH_AREA_ARROW_KEY = "sp_touch_area_arrow_key"
         const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"
@@ -678,6 +942,7 @@ class ConfigManager(
 
         const val K_POCKET_ACCESS_TOKEN = "sp_pocket_access_token"
         const val K_GPT_API_KEY = "sp_gpt_api_key"
+        const val K_GEMINI_API_KEY = "sp_gemini_api_key"
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
         const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
         const val K_GPT_USER_PROMPT_WEB_PAGE = "sp_gpt_user_prompt_web_page"
@@ -685,10 +950,11 @@ class ConfigManager(
         const val K_IMAGE_API_KEY = "sp_image_api_key"
         const val K_DUAL_CAPTION_LOCALE = "sp_dual_caption_locale"
         const val K_GPT_MODEL = "sp_gp_model"
+        const val K_ALTERNATIVE_MODEL = "sp_alternative_model"
+        const val K_GEMINI_MODEL = "sp_gemini_model"
         const val K_SPLIT_SEARCH_STRING = "sp_split_search_prefix"
         const val K_USE_OPENAI_TTS = "sp_use_openai_tts"
         const val K_HIGHLIGHT_STYLE = "sp_highlight_style"
-        const val K_GET_SELECTED_TEXT_CONTEXT_FOR_GPT = "sp_get_selected_text_context_for_gpt"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 
@@ -723,11 +989,12 @@ class ConfigManager(
         private const val RECENT_BOOKMARK_LIST_SIZE = 10
 
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
-        private const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
+        const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
         private const val K_GPT_ACTION_EXTERNAL = "sp_gpt_action_external"
 
         private const val K_GPT_SERVER_URL = "sp_gpt_server_url"
         private const val K_USE_CUSTOM_GPT_URL = "sp_use_custom_gpt_url"
+        private const val K_USE_GEMINI_API = "sp_use_gemini_api"
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =
@@ -752,7 +1019,7 @@ class ConfigManager(
 class BooleanPreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val defaultValue: Boolean = false
+    private val defaultValue: Boolean = false,
 ) : ReadWriteProperty<Any, Boolean> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
@@ -766,7 +1033,7 @@ class BooleanPreference(
 class IntPreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val defaultValue: Int = 0
+    private val defaultValue: Int = 0,
 ) : ReadWriteProperty<Any, Int> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Int =
@@ -779,7 +1046,7 @@ class IntPreference(
 class StringPreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val defaultValue: String = ""
+    private val defaultValue: String = "",
 ) : ReadWriteProperty<Any, String> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): String =
@@ -792,10 +1059,11 @@ class StringPreference(
 class GestureTypePreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
+    private val defaultValue: GestureType = GestureType.NothingHappen,
 ) : ReadWriteProperty<Any, GestureType> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): GestureType =
-        GestureType.from(sharedPreferences.getString(key, "01") ?: "01")
+        GestureType.from(sharedPreferences.getString(key, defaultValue.value) ?: defaultValue.value)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: GestureType) =
         sharedPreferences.edit { putString(key, value.value) }
@@ -823,14 +1091,18 @@ enum class TranslationMode(val labelResId: Int) {
     GOOGLE_IN_PLACE(R.string.google_in_place),
     TRANSLATE_BY_PARAGRAPH(R.string.translate_by_paragraph),
     PAPAGO_TRANSLATE_BY_PARAGRAPH(R.string.papago_translate_by_paragraph),
-    PAPAGO_TRANSLATE_BY_SCREEN(R.string.papago_translate_by_screen)
+    PAPAGO_TRANSLATE_BY_SCREEN(R.string.papago_translate_by_screen),
+    DEEPL_BY_PARAGRAPH(R.string.deepl_translate_by_paragraph),
 }
 
 enum class FontType(val resId: Int) {
     SYSTEM_DEFAULT(R.string.system_default),
     SERIF(R.string.serif),
     GOOGLE_SERIF(R.string.googleserif),
-    CUSTOM(R.string.custom_font)
+    CUSTOM(R.string.custom_font),
+    TC_WENKAI(R.string.wenkai_tc),
+    JA_MINCHO(R.string.mincho_ja),
+    KO_GAMJA(R.string.gamja_flower_ko)
 }
 
 enum class DarkMode {
@@ -871,11 +1143,20 @@ enum class HighlightStyle(
         R.string.pink,
         R.drawable.ic_highlight_color,
     ),
-    BACKGROUND_NONE(
-        null,
-    R.string.menu_delete,
-    R.drawable.icon_delete,
-    )
+}
+
+enum class TranslationTextStyle(
+    val stringResId: Int,
+) {
+    NONE(R.string.none),
+    DASHED_BORDER(R.string.dashed_border),
+    VERTICAL_LINE(R.string.vertical_line),
+    GRAY(R.string.gray),
+    BOLD(R.string.bold),
+}
+
+enum class SaveHistoryMode {
+    SAVE_WHEN_OPEN, SAVE_WHEN_CLOSE, DISABLED
 }
 
 fun KMutableProperty0<Boolean>.toggle() = set(!get())

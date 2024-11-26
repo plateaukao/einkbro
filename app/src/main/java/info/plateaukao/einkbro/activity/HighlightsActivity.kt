@@ -15,6 +15,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,7 +28,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,10 +36,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
@@ -53,18 +56,17 @@ import info.plateaukao.einkbro.database.Highlight
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.viewmodel.HighlightViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HighlightsActivity : ComponentActivity(), KoinComponent {
+class HighlightsActivity : ComponentActivity() {
     private val highlightViewModel: HighlightViewModel by viewModels()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
@@ -134,14 +136,14 @@ class HighlightsActivity : ComponentActivity(), KoinComponent {
     private fun exportHighlights(uri: Uri) {
         highlightViewModel.viewModelScope.launch(Dispatchers.IO) {
             val data = if (highlightsRoute == HighlightsRoute.RouteArticles) {
-                highlightViewModel.dumpArticlesHighlights()
+                highlightViewModel.dumpArticlesHighlightsAsHtml()
             } else {
                 highlightViewModel.dumpSingleArticleHighlights(highlightsRoute.articleId)
             }
-            backupUnit.exportHighlights(uri, data)
+            backupUnit.exportDataToFileUri(uri, data)
 
             withContext(Dispatchers.Main) {
-                NinjaToast.show(this@HighlightsActivity, R.string.toast_backup_successful)
+                EBToast.show(this@HighlightsActivity, R.string.toast_backup_successful)
                 IntentUnit.showFile(this@HighlightsActivity, uri)
             }
         }
@@ -164,7 +166,7 @@ enum class HighlightsRoute(@StringRes val articleId: Int) {
 fun ArticlesScreen(
     navHostController: NavHostController,
     highlightViewModel: HighlightViewModel,
-    onLinkClick: (Article) -> Unit
+    onLinkClick: (Article) -> Unit,
 ) {
     val articles by highlightViewModel.getAllArticles().collectAsState(emptyList())
     LazyColumn(
@@ -194,7 +196,7 @@ fun ArticleItem(
     navHostController: NavHostController,
     article: Article,
     onLinkClick: () -> Unit = {},
-    deleteArticle: (Article) -> Unit
+    deleteArticle: (Article) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -208,25 +210,38 @@ fun ArticleItem(
     ) {
         Text(
             modifier = modifier,
-            text = article.title
+            text = article.title,
+            color = MaterialTheme.colors.onBackground,
         )
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .align(Alignment.End)
                 .clickable { onLinkClick() },
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(18.dp),
-                painter = painterResource(id = R.drawable.icon_exit),
+                modifier = Modifier
+                    .padding(end = 5.dp)
+                    .size(23.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_exit),
                 contentDescription = "link",
-                tint = Color.Gray
+                tint = MaterialTheme.colors.onBackground,
             )
             Text(
-                text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(article.date),
+                modifier = Modifier.padding(end = 15.dp),
+                text = SimpleDateFormat("MM-dd", Locale.getDefault()).format(article.date),
                 style = MaterialTheme.typography.caption.copy(
-                    color = Color.Gray
+                    color = MaterialTheme.colors.onBackground,
                 )
+            )
+            Icon(
+                modifier = Modifier
+                    .size(23.dp)
+                    .clickable { deleteArticle(article) },
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_delete),
+                contentDescription = "delete",
+                tint = MaterialTheme.colors.onBackground,
             )
         }
     }
@@ -246,7 +261,7 @@ fun HighlightsScreen(
     var articleName by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         val article = highlightViewModel.getArticle(articleId)
-        articleName = article?.title ?: ""
+        articleName = article?.title.orEmpty()
     }
 
     LazyColumn(
@@ -254,12 +269,12 @@ fun HighlightsScreen(
     ) {
         item {
             Text(
+                modifier = Modifier.padding(vertical = 10.dp),
                 text = articleName,
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h6.copy(
+                    color = MaterialTheme.colors.onBackground,
+                )
             )
-        }
-        item {
-            HorizontalSeparator()
         }
         items(highlights.size) { index ->
             HighlightItem(
@@ -275,17 +290,48 @@ fun HighlightsScreen(
 @Composable
 fun HighlightItem(
     highlight: Highlight,
-    deleteHighlight: (Highlight) -> Unit
+    deleteHighlight: (Highlight) -> Unit,
 ) {
-    Text(
+    val context = LocalContext.current
+    Column(
         modifier = Modifier
-            .padding(vertical = 10.dp)
-            .combinedClickable(
-                onClick = {},
-                onLongClick = { deleteHighlight(highlight) }
-            ),
-        text = highlight.content
-    )
+            .padding(vertical = 5.dp)
+            .clickable {
+                ShareUtil.copyToClipboard(context, highlight.content)
+            }
+    ) {
+        Text(
+            modifier = Modifier.padding(vertical = 10.dp),
+            text = highlight.content,
+            color = MaterialTheme.colors.onBackground,
+        )
+        Row(
+            modifier = Modifier.align(Alignment.End),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable {
+                        ShareUtil.copyToClipboard(context, highlight.content)
+                    },
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_copy),
+                contentDescription = "copy",
+                tint = MaterialTheme.colors.onBackground,
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable {
+                        deleteHighlight(highlight)
+                    },
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_delete),
+                contentDescription = "delete",
+                tint = MaterialTheme.colors.onBackground,
+            )
+        }
+    }
 }
 
 @Composable
@@ -305,7 +351,7 @@ fun HighlightsBar(
             IconButton(onClick = navigateUp) {
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
             }
@@ -314,7 +360,7 @@ fun HighlightsBar(
             IconButton(onClick = onClick) {
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
-                    painter = painterResource(id = R.drawable.icon_export),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_export),
                     contentDescription = ""
                 )
             }

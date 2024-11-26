@@ -22,27 +22,35 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.preference.TouchAreaType.BottomLeftRight
 import info.plateaukao.einkbro.preference.TouchAreaType.Left
 import info.plateaukao.einkbro.preference.TouchAreaType.MiddleLeftRight
 import info.plateaukao.einkbro.preference.TouchAreaType.Right
 import info.plateaukao.einkbro.preference.toggle
+import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 
-class TouchAreaDialogFragment() : ComposeDialogFragment(), KoinComponent {
+class TouchAreaDialogFragment(
+    private val url: String,
+) : ComposeDialogFragment(), KoinComponent {
     override fun setupComposeView() = composeView.setContent {
         val touchAreaType = remember { mutableStateOf(config.touchAreaType) }
         val enableTurn = remember { mutableStateOf(config.enableTouchTurn) }
+        val tryFixScroll = remember { mutableStateOf(config.shouldFixScroll(url)) }
+        val shouldSendPageKey = remember { mutableStateOf(config.shouldSendPageNavKey(url)) }
+
         MyTheme {
             TouchAreaContent(
                 touchAreaType = touchAreaType.value,
@@ -59,11 +67,18 @@ class TouchAreaDialogFragment() : ComposeDialogFragment(), KoinComponent {
                 hideTouchWhenType = config.hideTouchAreaWhenInput,
                 switchTouchArea = config.switchTouchAreaAction,
                 enableTouchAreaAsArrowKey = config.longClickAsArrowKey,
+                tryFixScroll = tryFixScroll.value,
+                shouldSendPageKey = shouldSendPageKey.value,
                 onShowHintClick = { config::touchAreaHint.toggle() },
                 onHideWhenTypeClick = { config::hideTouchAreaWhenInput.toggle() },
                 onSwitchAreaClick = { config::switchTouchAreaAction.toggle() },
                 onCloseClick = { dismiss() },
-                onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() }
+                onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() },
+                onAsPageKeyClick = { shouldSendPageKey.value = config.toggleSendPageNavKey(url) },
+                onTryFixScrollClick = { tryFixScroll.value = config.toggleFixScroll(url) },
+                onConfigActionsClick = {
+                    IntentUnit.gotoSettings(requireActivity(), SettingRoute.Gesture)
+                }
             )
         }
     }
@@ -79,11 +94,16 @@ fun TouchAreaContent(
     hideTouchWhenType: Boolean = true,
     switchTouchArea: Boolean = false,
     enableTouchAreaAsArrowKey: Boolean = false,
+    tryFixScroll: Boolean = false,
+    shouldSendPageKey: Boolean = false,
     onShowHintClick: () -> Unit = {},
     onHideWhenTypeClick: () -> Unit = {},
     onSwitchAreaClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
     onAsArrowKeyClick: () -> Unit = {},
+    onAsPageKeyClick: () -> Unit = {},
+    onTryFixScrollClick: () -> Unit = {},
+    onConfigActionsClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
         Row(
@@ -128,26 +148,34 @@ fun TouchAreaContent(
 
         Spacer(modifier = Modifier.height(10.dp))
 
+        ActionItem(
+            R.string.touch_aciton_settings,
+            onConfigActionsClick,
+        )
         ToggleItem(
             state = showHint,
             titleResId = R.string.show_touch_area_hint,
-            iconResId = -1,
             onClicked = { onShowHintClick() })
         ToggleItem(
             state = hideTouchWhenType,
             titleResId = R.string.hie_touch_area_when_input,
-            iconResId = -1,
             onClicked = { onHideWhenTypeClick() })
         ToggleItem(
             state = switchTouchArea,
             titleResId = R.string.switch_touch_area_action,
-            iconResId = -1,
             onClicked = { onSwitchAreaClick() })
         ToggleItem(
             state = enableTouchAreaAsArrowKey,
             titleResId = R.string.enable_touch_area_as_arrow_key,
-            iconResId = -1,
             onClicked = { onAsArrowKeyClick() })
+        ToggleItem(
+            state = shouldSendPageKey,
+            titleResId = R.string.enable_touch_area_as_page_key,
+            onClicked = { onAsPageKeyClick() })
+        ToggleItem(
+            state = tryFixScroll,
+            titleResId = R.string.enable_fix_scroll,
+            onClicked = { onTryFixScrollClick() })
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -198,7 +226,7 @@ fun TouchAreaItem(
     state: Boolean,
     titleResId: Int,
     iconResId: Int,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val borderWidth = if (state) 4.dp else -1.dp
@@ -215,7 +243,7 @@ fun TouchAreaItem(
         verticalArrangement = Arrangement.Center,
     ) {
         Icon(
-            painter = painterResource(id = iconResId),
+            imageVector = ImageVector.vectorResource(id = iconResId),
             contentDescription = null,
             modifier = Modifier
                 .height(80.dp)
@@ -232,10 +260,43 @@ fun TouchAreaItem(
     }
 }
 
+// action item with an arrow on right side
+@Composable
+fun ActionItem(
+    titleResId: Int,
+    onClicked: () -> Unit,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ) {
+                onClicked()
+            },
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = titleResId),
+            fontSize = 18.sp,
+            color = MaterialTheme.colors.onBackground,
+        )
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.icon_arrow_right_gest),
+            contentDescription = null,
+            tint = MaterialTheme.colors.onBackground
+        )
+    }
+}
+
 @Preview(
     name = "default",
-    showSystemUi = true,
-    showBackground = true, device = "spec:shape=Normal,width=1080,height=2340,unit=px,dpi=440",
+    showBackground = true,
 )
 @Composable
 fun PreviewTouchAreaContent() {

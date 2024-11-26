@@ -7,9 +7,14 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
+import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
+import android.view.Menu
+import android.view.MotionEvent
 import android.view.TouchDelegate
 import android.view.View
 import android.view.Window
@@ -17,13 +22,22 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.webkit.WebView.LAYER_TYPE_HARDWARE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
+import info.plateaukao.einkbro.EinkBroApplication
+import info.plateaukao.einkbro.databinding.ActivityMainBinding
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.TranslationLanguage
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
-object ViewUnit {
+object ViewUnit: KoinComponent {
+    private val config: ConfigManager by inject()
+
     @JvmStatic
     fun bound(context: Context, view: View) {
         val windowWidth = getWindowWidth(context)
@@ -102,15 +116,24 @@ object ViewUnit {
     fun getWindowWidth(context: Context): Int {
         return context.resources.displayMetrics.widthPixels
     }
+    @JvmStatic
+    fun getWindowWidthInDp(context: Context): Int {
+        return context.resources.displayMetrics.widthPixels.toDp(context)
+    }
 
     @JvmStatic
-    fun dpToPixel(context: Context, dp: Int): Float {
-        val metrics = context.resources.displayMetrics
+    fun dpToPixel(dp: Int): Float {
+        val metrics = EinkBroApplication.instance.resources.displayMetrics
         return dp * (metrics.densityDpi / 160f)
     }
 
 
     fun isWideLayout(context: Context): Boolean = isLandscape(context) || isTablet(context)
+
+    fun Int.toDp(context: Context): Int {
+        val metrics = context.resources.displayMetrics
+        return (this * (160f / metrics.densityDpi)).toInt()
+    }
 
     fun Int.dp(context: Context): Int {
         val metrics = context.resources.displayMetrics
@@ -201,4 +224,151 @@ object ViewUnit {
         val language = languageString.split("-").last()
         textView.text = language
     }
+
+    fun invertColor(view: View, shouldInvertColor: Boolean) {
+        val invertPaint: Paint = Paint().apply {
+            val colorMatrix = ColorMatrix(
+                floatArrayOf(
+                    -1f, 0f, 0f, 0f, 255f,
+                    0f, -1f, 0f, 0f, 255f,
+                    0f, 0f, -1f, 0f, 255f,
+                    0f, 0f, 0f, 1f, 0f
+                )
+            )
+            colorFilter = ColorMatrixColorFilter(colorMatrix)
+        }
+        if (shouldInvertColor) {
+            view.setLayerType(LAYER_TYPE_HARDWARE, invertPaint)
+        } else {
+            view.setLayerType(LAYER_TYPE_HARDWARE, null)
+        }
+    }
+
+    fun updateViewPosition(view: View, point: Point) {
+        val properPoint = getProperPosition(view, point)
+        view.x = properPoint.x + dpToPixel(10)
+        view.y = properPoint.y + dpToPixel(10)
+    }
+
+    private fun getProperPosition(view: View, point: Point): Point {
+        val parentWidth = (view.parent as View).width
+        val parentHeight = (view.parent as View).height
+
+        val width = view.width
+        val height = view.height
+        // Calculate the new position to ensure the view is within bounds
+        val padding = dpToPixel(10)
+        val x =
+            if (point.x + width + padding > parentWidth) parentWidth - width - padding else point.x
+        val y =
+            if (point.y + height + padding > parentHeight) parentHeight - height - padding else point.y
+
+        return Point(x.toInt(), y.toInt())
+    }
+
+    fun isTextEditMode(context: Context, menu: Menu): Boolean {
+        for (i in 0 until menu.size()) {
+            val item = menu.getItem(i)
+            if (item.title == context.getString(android.R.string.paste)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun createCountString(superScript: Int, subScript: Int): String {
+        if (subScript == 0 || superScript == 0) return "1"
+        if (subScript >= 10) return subScript.toString()
+
+        if (subScript == superScript) return subScript.toString()
+
+        val superScripts = listOf("¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
+        val subScripts = listOf("₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
+        val separator = "⁄"
+        return "${superScripts[superScript - 1]}$separator${subScripts[subScript - 1]}"
+    }
+
+
+    fun updateAppbarPosition(binding: ActivityMainBinding) {
+        if (config.isToolbarOnTop) {
+            moveAppbarToTop(binding)
+        } else {
+            moveAppbarToBottom(binding)
+        }
+        binding.inputUrl.shouldReverse = config.isToolbarOnTop
+    }
+
+
+    private fun moveAppbarToBottom(binding: ActivityMainBinding) {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            connect(
+                binding.appBar.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+            connect(
+                binding.inputUrl.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.BOTTOM,
+                binding.appBar.id,
+                ConstraintSet.TOP
+            )
+
+            clear(binding.contentSeparator.id, ConstraintSet.TOP)
+            connect(
+                binding.contentSeparator.id,
+                ConstraintSet.BOTTOM,
+                binding.appBar.id,
+                ConstraintSet.TOP
+            )
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun moveAppbarToTop(binding: ActivityMainBinding) {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(binding.appBar.id, ConstraintSet.BOTTOM)
+            clear(binding.inputUrl.id, ConstraintSet.BOTTOM)
+
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.TOP,
+                binding.appBar.id,
+                ConstraintSet.BOTTOM
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM
+            )
+
+            clear(binding.contentSeparator.id, ConstraintSet.BOTTOM)
+            connect(
+                binding.contentSeparator.id,
+                ConstraintSet.TOP,
+                binding.appBar.id,
+                ConstraintSet.BOTTOM
+            )
+        }
+        constraintSet.applyTo(binding.root)
+    }
 }
+
+fun MotionEvent.toRawPoint(): Point = Point(rawX.toInt(), rawY.toInt())

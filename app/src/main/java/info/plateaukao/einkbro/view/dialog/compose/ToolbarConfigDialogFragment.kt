@@ -1,11 +1,11 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,12 +13,15 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,17 +29,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
-import org.burnoutcrew.reorderable.ReorderableItem
-import org.burnoutcrew.reorderable.detectReorder
-import org.burnoutcrew.reorderable.rememberReorderableLazyListState
-import org.burnoutcrew.reorderable.reorderable
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 class ToolbarConfigDialogFragment : ComposeDialogFragment() {
     override fun setupComposeView() {
@@ -97,31 +98,33 @@ class ToolbarConfigDialogFragment : ComposeDialogFragment() {
                     .filter { it.isAddable }
                     .filterNot { config.toolbarActions.contains(it) }
                     // hide papago action if papago api key is not set
-                    .filterNot { config.papagoApiSecret.isBlank() && it == ToolbarAction.PapagoByParagraph }
+                    .filterNot { config.imageApiKey.isBlank() && it == ToolbarAction.PapagoByParagraph }
                     .map { ToolbarActionItemInfo(it, false) }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ToolbarList(
     modifier: Modifier,
     infos: List<ToolbarActionItemInfo>,
     onItemClicked: (ToolbarAction) -> Unit,
-    onItemMoved: (Int, Int) -> Unit
+    onItemMoved: (Int, Int) -> Unit,
 ) {
-    val state = rememberReorderableLazyListState(onMove = { from, to ->
+    val lazyListState = rememberLazyListState()
+    val state = rememberReorderableLazyListState(lazyListState) { from, to ->
         onItemMoved(from.index, to.index)
-    })
+    }
 
     LazyColumn(
-        state = state.listState,
-        modifier = modifier.reorderable(state)
+        modifier = modifier,
+        state = lazyListState
     ) {
         items(infos, { it.hashCode() }) { info ->
             ReorderableItem(
                 state,
                 key = info.hashCode(),
             ) { isDragging ->
-                val borderWidth = if (isDragging) 1.5.dp else -1.dp
+                val borderWidth = if (isDragging) 1.5.dp else (-1).dp
                 Column(
                     modifier = Modifier
                         .border(
@@ -132,9 +135,9 @@ private fun ToolbarList(
                         .background(MaterialTheme.colors.background)
                 ) {
                     ToolbarToggleItem(
+                        modifier = Modifier.draggableHandle(),
                         info = info,
                         onItemClicked = onItemClicked,
-                        dragModifier = Modifier.detectReorder(state)
                     )
                 }
             }
@@ -144,9 +147,9 @@ private fun ToolbarList(
 
 @Composable
 fun ToolbarToggleItem(
+    modifier: Modifier,
     info: ToolbarActionItemInfo,
     onItemClicked: (ToolbarAction) -> Unit,
-    dragModifier: Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -156,17 +159,16 @@ fun ToolbarToggleItem(
             ToggleItem(
                 state = info.isOn,
                 titleResId = info.toolbarAction.titleResId,
-                iconResId = info.toolbarAction.iconResId,
+                imageVector = info.toolbarAction.imageVector
+                    ?: ImageVector.vectorResource(id = info.toolbarAction.iconResId),
                 isEnabled = shouldEnableCheckClick,
                 // settings should not be clickable, and always there
                 onClicked = { if (info.toolbarAction != ToolbarAction.Settings) onItemClicked(info.toolbarAction) }
             )
         }
         Icon(
-            painter = painterResource(id = R.drawable.ic_drag), contentDescription = null,
-            modifier = dragModifier
-                .padding(horizontal = 8.dp)
-                .fillMaxHeight(),
+            modifier = modifier.padding(4.dp),
+            imageVector = Icons.Outlined.DragHandle, contentDescription = null,
             tint = MaterialTheme.colors.onBackground
         )
     }
@@ -176,7 +178,7 @@ fun ToolbarToggleItem(
 fun DialogButtonBar(
     okResId: Int = android.R.string.ok,
     dismissAction: () -> Unit,
-    okAction: () -> Unit
+    okAction: () -> Unit,
 ) {
     Row(
         modifier = Modifier

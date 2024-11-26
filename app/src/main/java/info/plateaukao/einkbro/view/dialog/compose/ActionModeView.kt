@@ -23,14 +23,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -44,7 +48,6 @@ class ActionModeView @JvmOverloads constructor(
     defStyle: Int = 0,
 ) : AbstractComposeView(context, attrs, defStyle) {
     private lateinit var actionModeMenuViewModel: ActionModeMenuViewModel
-    private lateinit var menuInfos: List<MenuInfo>
     private lateinit var clearSelectionAction: () -> Unit
 
     @Composable
@@ -52,7 +55,7 @@ class ActionModeView @JvmOverloads constructor(
         val text by actionModeMenuViewModel.selectedText.collectAsState()
         MyTheme {
             ActionModeMenu(
-                menuInfos,
+                actionModeMenuViewModel.menuInfos,
                 actionModeMenuViewModel.showIcons,
             ) { intent ->
                 if (intent != null) {
@@ -69,18 +72,16 @@ class ActionModeView @JvmOverloads constructor(
 
     fun init(
         actionModeMenuViewModel: ActionModeMenuViewModel,
-        menuInfos: List<MenuInfo>,
         clearSelectionAction: () -> Unit,
     ) {
         this.actionModeMenuViewModel = actionModeMenuViewModel
-        this.menuInfos = menuInfos
         this.clearSelectionAction = clearSelectionAction
     }
 }
 
 @Composable
 private fun ActionModeMenu(
-    menuInfos: List<MenuInfo>,
+    menus: MutableState<List<MenuInfo>>,
     showIcons: Boolean = true,
     onClicked: (Intent?) -> Unit,
 ) {
@@ -92,14 +93,16 @@ private fun ActionModeMenu(
             .width(280.dp)
             .border(1.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
     ) {
+        val menuInfos = menus.value
         items(menuInfos.size) { index ->
             val info = menuInfos[index]
             ActionMenuItem(
                 info.title,
-                if (showIcons) info.icon else null,
+                if (showIcons) info.drawable else null,
+                if (showIcons) info.imageVector else null,
                 onClicked = {
                     info.action?.invoke()
-                    onClicked(info.intent)
+                    if (info.closeMenu) onClicked(info.intent)
                 },
                 onLongClicked = {
                     info.longClickAction?.invoke()
@@ -114,6 +117,7 @@ private fun ActionModeMenu(
 fun ActionMenuItem(
     title: String,
     iconDrawable: Drawable?,
+    imageVector: ImageVector? = null,
     onClicked: () -> Unit = {},
     onLongClicked: () -> Unit = {},
 ) {
@@ -127,7 +131,7 @@ fun ActionMenuItem(
         else -> 45.dp
     }
 
-    val fontSize = if (iconDrawable == null) 12.sp else
+    val fontSize = if (iconDrawable == null && imageVector == null) 12.sp else
         if (configuration.screenWidthDp > 500) 10.sp else 8.sp
     Column(
         modifier = Modifier
@@ -153,16 +157,43 @@ fun ActionMenuItem(
                     .padding(horizontal = 6.dp),
             )
         }
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            text = title,
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            lineHeight = fontSize,
-            fontSize = fontSize,
-            color = MaterialTheme.colors.onBackground
+        if (imageVector != null) {
+            Image(
+                imageVector = imageVector,
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(44.dp)
+                    .padding(horizontal = 6.dp),
+            )
+        }
+        if (title.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                text = title,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                lineHeight = fontSize,
+                fontSize = fontSize,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewActionMenuItem() {
+    MyTheme {
+        ActionMenuItem(
+            title = "Title",
+            iconDrawable = null,
+            imageVector = null,
+            onClicked = {},
+            onLongClicked = {},
         )
     }
 }

@@ -1,12 +1,12 @@
 package info.plateaukao.einkbro.view.viewControllers
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context
-import android.view.LayoutInflater
+import android.graphics.Point
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.compose.runtime.MutableState
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
@@ -14,7 +14,6 @@ import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.database.RecordType
-import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.IntentUnit
@@ -22,6 +21,8 @@ import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.compose.HistoryAndTabsView
 import info.plateaukao.einkbro.view.dialog.DialogManager
+import info.plateaukao.einkbro.view.dialog.compose.BookmarkContextMenuDlgFragment
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -35,7 +36,6 @@ class OverviewDialogController(
     private val gotoUrlAction: (String) -> Unit,
     private val addTabAction: (String, String, Boolean) -> Unit,
     private val addIncognitoTabAction: () -> Unit,
-    private val onHistoryChanged: () -> Unit,
     private val splitScreenAction: (String) -> Unit,
     private val addEmptyTabAction: () -> Unit,
 ) : KoinComponent {
@@ -62,14 +62,14 @@ class OverviewDialogController(
             shouldShowTwoColumns = isWideLayout()
             albumList = currentAlbumList
             albumFocusIndex = albumFocusIndex
-            onTabIconClick = { openHomePage() }
+            onTabIconClick = this@OverviewDialogController::openHomePage
             onTabClick = { hide(); it.showOrJumpToTop() }
             onTabLongClick = { it.remove() }
 
             recordList = currentRecordList
-            onHistoryIconClick = { openHistoryPage() }
-            onHistoryItemClick = { clickHistoryItem(it) }
-            onHistoryItemLongClick = { longClickHistoryItem(it) }
+            onHistoryIconClick = this@OverviewDialogController::openHistoryPage
+            onHistoryItemClick = this@OverviewDialogController::clickHistoryItem
+            onHistoryItemLongClick = this@OverviewDialogController::showHistoryContextMenu
             addIncognitoTab = addIncognitoTabAction
             addTab = { hide(); addEmptyTabAction() }
             closePanel = { hide() }
@@ -78,10 +78,6 @@ class OverviewDialogController(
             launchNewBrowserAction =
                 { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
         }
-    }
-
-    fun showAlbum(index: Int){
-        albumFocusIndex.value = index
     }
 
     private fun clickHistoryItem(record: Record) {
@@ -95,10 +91,6 @@ class OverviewDialogController(
             )
         }
         hide()
-    }
-
-    private fun longClickHistoryItem(record: Record) {
-        showHistoryContextMenu(record)
     }
 
     fun hide() {
@@ -139,7 +131,6 @@ class OverviewDialogController(
             okAction = {
                 BrowserUnit.clearHistory(context)
                 hide()
-                onHistoryChanged()
             })
     }
 
@@ -147,45 +138,34 @@ class OverviewDialogController(
         albumList.value.listIterator().forEach {
             it.remove(true)
         }
-
     }
 
-    private fun showHistoryContextMenu(record: Record) {
-        val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
-        val dialog = dialogManager.showOptionDialog(dialogView.root)
+    private fun showHistoryContextMenu(record: Record, position: Point) {
+        val parentFragmentManager = (context as FragmentActivity).supportFragmentManager
+        BookmarkContextMenuDlgFragment(
+            Bookmark(record.title ?: "no title", record.url),
+            allowEdit = false,
+            anchorPoint = position,
+        ) {
+            when (it) {
+                ContextMenuItemType.Delete -> deleteHistory(record)
 
-        with(dialogView) {
-            menuTitle.text = record.title
-            menuContextListEdit.visibility = GONE
-            menuContextListNewTab.setOnClickListener {
-                dialog.dismissWithAction {
-                    addTabAction(context.getString(R.string.app_name), record.url, false)
-                }
-            }
-            menuContextListSplitScreen.setOnClickListener {
-                dialog.dismissWithAction { splitScreenAction(record.url) }
-                hide()
-            }
-            menuContextListNewTabOpen.setOnClickListener {
-                dialog.dismissWithAction {
+                ContextMenuItemType.NewTabForeground ->
                     addTabAction(context.getString(R.string.app_name), record.url, true)
-                    hide()
-                }
+
+                ContextMenuItemType.NewTabBackground ->
+                    addTabAction(context.getString(R.string.app_name), record.url, false)
+
+                ContextMenuItemType.SplitScreen -> splitScreenAction(record.url)
+
+                else -> Unit
             }
-            menuContextListDelete.setOnClickListener {
-                dialog.dismissWithAction { deleteHistory(record) }
-            }
-        }
+            hide()
+        }.show(parentFragmentManager, "history_context_menu")
     }
 
     private fun deleteHistory(record: Record) {
         recordDb.deleteHistoryItem(record)
-        onHistoryChanged()
         refreshHistoryList()
     }
-}
-
-private fun Dialog.dismissWithAction(action: () -> Unit) {
-    dismiss()
-    action()
 }

@@ -1,26 +1,28 @@
 package info.plateaukao.einkbro.viewmodel
 
 import android.view.View
+import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.service.ChatMessage
 import info.plateaukao.einkbro.service.ChatRole
 import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
-import info.plateaukao.einkbro.view.NinjaWebView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.apache.commons.text.StringEscapeUtils
 import org.jsoup.Jsoup
-import org.jsoup.nodes.DataNode
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 import org.koin.core.component.KoinComponent
@@ -29,17 +31,21 @@ import java.util.Locale
 
 class TranslationViewModel : ViewModel(), KoinComponent {
     private val config: ConfigManager by inject()
+    private val bookmarkManager: BookmarkManager by inject()
     private val translateRepository = TranslateRepository()
 
-    private val openAiRepository by lazy { OpenAiRepository(config.gptApiKey) }
+    private lateinit var openAiRepository: OpenAiRepository
     var gptActionInfo = config.gptActionForExternalSearch ?: config.gptActionList.firstOrNull()
     ?: ChatGPTActionInfo()
 
-    private val _responseMessage = MutableStateFlow("")
-    val responseMessage: StateFlow<String> = _responseMessage.asStateFlow()
+    private val _responseMessage = MutableStateFlow(AnnotatedString(""))
+    val responseMessage: StateFlow<AnnotatedString> = _responseMessage.asStateFlow()
 
     private val _inputMessage = MutableStateFlow("")
     val inputMessage: StateFlow<String> = _inputMessage.asStateFlow()
+
+    private val _messageWithContext = MutableStateFlow("")
+    val messageWithContext: StateFlow<String> = _messageWithContext.asStateFlow()
 
     private val _translationLanguage = MutableStateFlow(config.translationLanguage)
     val translationLanguage: StateFlow<TranslationLanguage> = _translationLanguage.asStateFlow()
@@ -53,6 +59,13 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     private val _translateMethod = MutableStateFlow(config.externalSearchMethod)
     val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
 
+    private val _showEditDialogWithIndex = MutableStateFlow(-1)
+    val showEditDialogWithIndex: StateFlow<Int> = _showEditDialogWithIndex.asStateFlow()
+
+    var url: String = ""
+
+    private var toBeSavedResponseString = ""
+
     fun updateRotateResultScreen(rotate: Boolean) {
         _rotateResultScreen.value = rotate
     }
@@ -64,9 +77,13 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     fun hasOpenAiApiKey(): Boolean = config.gptApiKey.isNotBlank()
 
+    fun updateMessageWithContext(userMessage: String) {
+        _messageWithContext.value = HelperUnit.unescapeJava(userMessage)
+    }
+
     fun updateInputMessage(userMessage: String) {
-        _inputMessage.value = StringEscapeUtils.unescapeJava(userMessage)
-        _responseMessage.value = "..."
+        _inputMessage.value = HelperUnit.unescapeJava(userMessage)
+        _responseMessage.value = AnnotatedString("...")
     }
 
     fun updateTranslationLanguage(language: TranslationLanguage) {
@@ -75,11 +92,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     fun updateTranslationLanguageAndGo(language: TranslationLanguage) {
         updateTranslationLanguage(language)
-        _responseMessage.value = "..."
+        _responseMessage.value = AnnotatedString("...")
         when (_translateMethod.value) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
+            TRANSLATE_API.DEEPL -> callDeepLTranslate()
             else -> Unit
         }
     }
@@ -94,7 +112,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     fun updateSourceLanguageAndGo(translateApi: TRANSLATE_API, language: TranslationLanguage) {
         updateSourceLanguage(language)
-        _responseMessage.value = "..."
+        _responseMessage.value = AnnotatedString("...")
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
@@ -102,21 +120,13 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private fun extractContentInBrackets(input: String): String {
-        if (!config.shouldGetSelectedTextContextForGpt) return input
-
-        val regex = "<<(.*?)>>".toRegex()
-        val matchResult = regex.find(input)
-        return matchResult?.groups?.get(1)?.value ?: input
-    }
-
     fun translate(
         translateApi: TRANSLATE_API = _translateMethod.value,
-        userMessage: String? = null
+        userMessage: String? = null,
     ) {
         _translateMethod.value = translateApi
         config.externalSearchMethod = translateApi
-        _responseMessage.value = "..."
+        _responseMessage.value = AnnotatedString("...")
 
         if (userMessage != null) {
             _inputMessage.value = userMessage
@@ -126,7 +136,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
-            TRANSLATE_API.GPT -> queryGpt()
+            TRANSLATE_API.LLM -> queryLlm()
+            TRANSLATE_API.DEEPL -> callDeepLTranslate()
         }
     }
 
@@ -134,43 +145,75 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return config.gptActionList
     }
 
+    fun cancel() {
+        if (this::openAiRepository.isInitialized) {
+            openAiRepository.cancel()
+        }
+    }
+
+    fun setupGptAction(gptAction: ChatGPTActionInfo) {
+        updateTranslateMethod(TRANSLATE_API.LLM)
+        gptActionInfo = gptAction
+    }
+
+    fun setupTextSummary(text: String): Boolean {
+        if (!hasOpenAiApiKey()) return false
+
+        updateInputMessage(text)
+        setupGptAction(ChatGPTActionInfo(systemMessage = config.gptUserPromptForWebPage))
+
+        return true
+    }
+
     private fun callNaverDict() {
-        val message = extractContentInBrackets(_inputMessage.value)
+        val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
             val byteArray =
                 BrowserUnit.getResourceFromUrl("https://dict.naver.com/dict.search?query=$message}")
             val document = Jsoup.parse(String(byteArray))
             val container = document.getElementById("contents")
             var content = ""
-            content += container?.getElementsByClass("section")?.html() ?: ""
+            content += container?.getElementsByClass("section")?.html().orEmpty()
             //_responseMessage.value = content
             //_responseMessage.value = String(byteArray)
             _responseMessage.value =
-                "https://ja.dict.naver.com/#/search?query=$message}"
+                AnnotatedString("https://ja.dict.naver.com/#/search?query=$message}")
         }
     }
 
     private fun callGoogleTranslate() {
-        val message = extractContentInBrackets(_inputMessage.value)
+        val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
-                translateRepository.gTranslateWithApi(
-                    message,
-                    targetLanguage = config.translationLanguage.value,
+                AnnotatedString(
+                    translateRepository.gTranslateWithApi(
+                        message,
+                        targetLanguage = config.translationLanguage.value,
+                    )
+                        ?: "Something went wrong."
                 )
-                    ?: "Something went wrong."
+        }
+    }
+
+    private fun callDeepLTranslate() {
+        val message = _inputMessage.value
+        viewModelScope.launch(Dispatchers.IO) {
+            _responseMessage.value =
+                AnnotatedString(
+                    translateRepository.deepLTranslate(message, targetLanguage = config.translationLanguage)
+                        ?: "Something went wrong."
+                )
         }
     }
 
     private fun callPapagoTranslate() {
-        val message = extractContentInBrackets(_inputMessage.value)
+        val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
-                translateRepository.ppTranslate(
-                    message,
-                    targetLanguage = config.translationLanguage.value,
+                AnnotatedString(
+                    translateRepository.pTranslate(message, targetLanguage = config.translationLanguage.value)
+                        ?: "Something went wrong."
                 )
-                    ?: "Something went wrong."
         }
     }
 
@@ -205,67 +248,166 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         return result?.renderedImage
     }
 
-    private fun queryGpt() {
-        _translateMethod.value = TRANSLATE_API.GPT
+    fun showEditGptActionDialog(gptActionInfoIndex: Int) {
+        _showEditDialogWithIndex.value = gptActionInfoIndex
+    }
+
+    fun resetEditDialogIndex() {
+        _showEditDialogWithIndex.value = -1
+    }
+
+    suspend fun saveTranslationResult() {
+        if (_translateMethod.value != TRANSLATE_API.LLM) {
+            bookmarkManager.addChatGptQuery(
+                ChatGptQuery(
+                    date = System.currentTimeMillis(),
+                    url = url,
+                    model = _translateMethod.value.name,
+                    selectedText = _inputMessage.value,
+                    result = _responseMessage.value.text,
+                )
+            )
+        } else {
+            val (_, selectedText) = getSelectedTextAndPromptPrefix()
+            val model = gptActionInfo.model.ifEmpty {
+                when (gptActionInfo.actionType) {
+                    GptActionType.OpenAi -> config.gptModel
+                    GptActionType.Gemini -> config.geminiModel
+                    GptActionType.SelfHosted -> config.alternativeModel
+                    GptActionType.Default -> config.getDefaultActionModel()
+                }
+            }
+            bookmarkManager.addChatGptQuery(
+                ChatGptQuery(
+                    date = System.currentTimeMillis(),
+                    url = url,
+                    model = "${gptActionInfo.name} $model",
+                    selectedText = selectedText,
+                    result = toBeSavedResponseString,
+                )
+            )
+        }
+        toBeSavedResponseString = ""
+    }
+
+
+    private fun queryLlm() {
+        if (!this::openAiRepository.isInitialized) {
+            openAiRepository = OpenAiRepository()
+        }
+
+        _translateMethod.value = TRANSLATE_API.LLM
         config.gptActionForExternalSearch = gptActionInfo
 
         val messages = mutableListOf<ChatMessage>()
         if (gptActionInfo.systemMessage.isNotBlank()) {
             messages.add(gptActionInfo.systemMessage.toSystemMessage())
         }
-        messages.add("${gptActionInfo.userMessage}${_inputMessage.value}".toUserMessage())
 
+        val (promptPrefix, selectedText) = getSelectedTextAndPromptPrefix()
+        messages.add("$promptPrefix$selectedText".toUserMessage())
 
-        // stream case
-        if (config.enableOpenAiStream) {
-            openAiRepository.chatStream(
-                messages,
-                appendResponseAction = {
-                    if (_responseMessage.value == "...") _responseMessage.value = it
-                    else _responseMessage.value += it
-                },
-                doneAction = { },
-                failureAction = {
-                    _responseMessage.value = "Something went wrong."
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            // need to preprocess gptActionInfo so that it does not have default type
+            queryLlm(messages, getExactActionInfo(gptActionInfo))
+        }
+    }
+
+    private fun getExactActionInfo(gptActionInfo: ChatGPTActionInfo): ChatGPTActionInfo =
+        if (gptActionInfo.actionType == GptActionType.Default) {
+            ChatGPTActionInfo(
+                actionType = config.getDefaultActionType(),
+                model = config.getDefaultActionModel(),
+                name = gptActionInfo.name,
+                userMessage = gptActionInfo.userMessage,
+                systemMessage = gptActionInfo.systemMessage
             )
+        } else gptActionInfo
+
+    private suspend fun queryLlm(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
+        if (config.enableOpenAiStream) {
+            queryWithStream(messages, gptActionInfo)
             return
         }
 
-        // normal case: too slow!!!
-        viewModelScope.launch(Dispatchers.IO) {
-            val chatCompletion = openAiRepository.chatCompletion(messages)
-            if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
-                _responseMessage.value = "Something went wrong."
-                return@launch
-            } else {
-                val responseContent = chatCompletion.choices
-                    .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
-                    ?: "Something went wrong."
-                _responseMessage.value = responseContent
+        if (gptActionInfo.actionType == GptActionType.Gemini) {
+            queryGemini(messages, gptActionInfo)
+            return
+        }
+
+        val chatCompletion = openAiRepository.chatCompletion(messages, gptActionInfo)
+        if (chatCompletion == null || chatCompletion.choices.isEmpty()) {
+            _responseMessage.value = AnnotatedString("Something went wrong.")
+            return
+        } else {
+            val responseContent = chatCompletion.choices
+                .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
+                ?: "Something went wrong."
+            toBeSavedResponseString = responseContent
+            _responseMessage.value = AnnotatedString(responseContent)
+        }
+    }
+
+    private suspend fun queryGemini(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
+        val result = openAiRepository.queryGemini(messages, gptActionInfo)
+        toBeSavedResponseString = result
+        _responseMessage.value = AnnotatedString(result)
+    }
+
+    private fun queryWithStream(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
+        var responseString = ""
+        openAiRepository.chatStream(
+            messages,
+            gptActionInfo,
+            appendResponseAction = {
+                if (_responseMessage.value.text == "...") {
+                    responseString = it
+                } else {
+                    responseString += it
+                }
+                toBeSavedResponseString = responseString.unescape()
+                _responseMessage.value = HelperUnit.parseMarkdown(toBeSavedResponseString)
+            },
+            doneAction = { },
+            failureAction = {
+                _responseMessage.value = AnnotatedString("## Something went wrong.")
             }
-        }
+        )
     }
 
-    fun translateByParagraph(html: String): String {
-        val parsedHtml = Jsoup.parse(html)
-        val nodesWithText = fetchNodesWithText(parsedHtml)
-        nodesWithText.forEachIndexed { index, node ->
-            // for monitoring visibility
-            node.addClass("to-translate")
-            // for locating element's position
-            node.id(index.toString())
-            // for later inserting translated text
-            node.after(Element("p"))
+    private fun getSelectedTextAndPromptPrefix(): Pair<String, String> {
+        val promptPrefix = gptActionInfo.userMessage
+        val selectedText = if (promptPrefix.contains("<<") &&
+            promptPrefix.contains(">>") &&
+            _messageWithContext.value.contains("<<") &&
+            _messageWithContext.value.contains(">>")
+        ) {
+            _messageWithContext.value
+        } else {
+            _inputMessage.value
         }
-        // add observer
-        val script: Element = parsedHtml.createElement("script")
-        script.attr("type", "text/javascript")
-        script.appendChild(DataNode(NinjaWebView.textNodesMonitorJs))
-        parsedHtml.body().appendChild(script)
-
-        return parsedHtml.toString()
+        return Pair(promptPrefix, selectedText)
     }
+
+//    fun translateByParagraph(html: String): String {
+//        val parsedHtml = Jsoup.parse(html)
+//        val nodesWithText = fetchNodesWithText(parsedHtml)
+//        nodesWithText.forEachIndexed { index, node ->
+//            // for monitoring visibility
+//            node.addClass("to-translate")
+//            // for locating element's position
+//            node.id(index.toString())
+//            // for later inserting translated text
+//            node.after(Element("p"))
+//        }
+//        // add observer
+//        val script: Element = parsedHtml.createElement("script")
+//        script.attr("type", "text/javascript")
+//        script.appendChild(DataNode(ebWebView.textNodesMonitorJs))
+//        parsedHtml.body().appendChild(script)
+//
+//        return parsedHtml.toString()
+//    }
 
     private fun fetchNodesWithText(
         element: Element,
@@ -342,5 +484,15 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO, NAVER, GPT
+    GOOGLE, PAPAGO, NAVER, LLM, DEEPL
+}
+
+private fun String.unescape(): String {
+    return this.replace("\\n", "\n")
+        .replace("\\t", "\t")
+        .replace("\\\"", "\"")
+        .replace("\\'", "'")
+        .replace("\\\\", "\\")
+        .replace("\\u003c", "<")
+        .replace("\\u003e", ">")
 }

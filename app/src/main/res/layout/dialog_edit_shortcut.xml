@@ -22,7 +22,7 @@
             app:passwordToggleEnabled="false" >
 
             <EditText
-                android:id="@+id/pass_title"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
@@ -40,7 +40,7 @@
         app:passwordToggleEnabled="false" >
 
         <EditText
-            android:id="@+id/pass_url"
+            android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"

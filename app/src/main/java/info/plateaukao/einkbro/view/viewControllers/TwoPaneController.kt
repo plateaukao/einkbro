@@ -18,9 +18,9 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.TranslationLanguage
-import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.NinjaWebView
-import info.plateaukao.einkbro.view.NinjaWebView.OnScrollChangeListener
+import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.view.EBWebView.OnScrollChangeListener
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.TwoPaneLayout
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
@@ -28,7 +28,6 @@ import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.lang.Math.abs
 
 class TwoPaneController(
     private val activity: Activity,
@@ -38,16 +37,16 @@ class TwoPaneController(
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
     private val loadTranslationUrl: (String) -> Unit,
-    private val translateByParagraph: (TRANSLATE_API) -> Unit,
+    private val translateByParagraph: (TRANSLATE_API, EBWebView) -> Unit,
     private val translateByScreen: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val webView: NinjaWebView by lazy {
-        NinjaWebView(activity, null).apply {
+    private val webView: EBWebView by lazy {
+        EBWebView(activity, null).apply {
             shouldHideTranslateContext = true
             setScrollChangeListener(object : OnScrollChangeListener {
                 override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                    if (abs(scrollY - oldScrollY) > 10) {
+                    if (kotlin.math.abs(scrollY - oldScrollY) > 10) {
                         hideControlButtons()
                     }
                 }
@@ -120,6 +119,8 @@ class TwoPaneController(
         }
     }
 
+    fun getSecondWebView(): EBWebView = webView
+
     private fun hideControlButtons() {
         translationViewBinding.controlsContainer.visibility = INVISIBLE
         translationViewBinding.expandedButton.visibility = VISIBLE
@@ -174,16 +175,19 @@ class TwoPaneController(
 
     fun isSecondPaneDisplayed(): Boolean = twoPaneLayout.shouldShowSecondPane
 
-    suspend fun showTranslation(webView: NinjaWebView) {
+    fun showTranslation(webView: EBWebView) {
         when (config.translationMode) {
             TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
             TranslationMode.PAPAGO_URL, TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
             TranslationMode.ONYX, TranslationMode.PAPAGO, TranslationMode.GOOGLE ->
-                NinjaToast.showShort(activity, "No more supported")
+                EBToast.showShort(activity, "No more supported")
 
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
-            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO)
+
+            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE, webView)
+            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO, webView)
+            TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL, webView)
+
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateByScreen()
         }
     }
@@ -218,7 +222,7 @@ class TwoPaneController(
 
     private fun launchTranslateWindow(text: String) {
         if (text == "null") {
-            NinjaToast.showShort(activity, "Translation does not work for this page.")
+            EBToast.showShort(activity, "Translation does not work for this page.")
             return
         }
 
@@ -251,7 +255,7 @@ class TwoPaneController(
             remove(TranslationMode.ONYX)
             remove(TranslationMode.PAPAGO)
             remove(TranslationMode.GOOGLE)
-            if (config.papagoApiSecret.isBlank()) {
+            if (config.imageApiKey.isBlank()) {
                 remove(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
                 remove(TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN)
             }
@@ -281,7 +285,7 @@ class TwoPaneController(
         webView.loadUrl(url)
     }
 
-    private fun addWebView(): NinjaWebView {
+    private fun addWebView(): EBWebView {
         val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
         )
@@ -331,7 +335,7 @@ class TwoPaneController(
 
 
     private fun toggleTranslationWindow(
-        isEnabled: Boolean, onTranslationClosed: () -> Unit = {}
+        isEnabled: Boolean, onTranslationClosed: () -> Unit = {},
     ) {
         if (!isEnabled) {
             webView.loadUrl(BrowserUnit.URL_ABOUT_BLANK)

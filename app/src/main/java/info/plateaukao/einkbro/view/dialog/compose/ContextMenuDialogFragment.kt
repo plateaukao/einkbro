@@ -17,9 +17,21 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Segment
+import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.CopyAll
+import androidx.compose.material.icons.outlined.RecordVoiceOver
+import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Tab
+import androidx.compose.material.icons.outlined.TabUnselected
+import androidx.compose.material.icons.outlined.ViewStream
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,9 +41,9 @@ import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.AdBlock
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyLink
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveBookmark
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SelectText
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.TranslateImage
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.Tts
 import java.net.URLDecoder
 
 
@@ -40,7 +52,7 @@ class ContextMenuDialogFragment(
     private val shouldShowAdBlock: Boolean,
     private val shouldShowTranslateImage: Boolean,
     private val anchorPoint: Point,
-    private val itemClicked: (ContextMenuItemType) -> Unit
+    private val itemClicked: (ContextMenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
 
     init {
@@ -64,7 +76,7 @@ class ContextMenuDialogFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         setupDialogPosition(anchorPoint)
@@ -93,7 +105,7 @@ private fun ContextMenuItems(
     shouldShowAdBlock: Boolean = true,
     shouldShowTranslateImage: Boolean = false,
     showIcons: Boolean = true,
-    onClicked: (ContextMenuItemType) -> Unit
+    onClicked: (ContextMenuItemType) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -114,30 +126,18 @@ private fun ContextMenuItems(
                 .width(IntrinsicSize.Max)
                 .horizontalScroll(rememberScrollState()),
         ) {
-            ContextMenuItem(R.string.main_menu_new_tabOpen, R.drawable.icon_tab_plus, showIcons) {
-                onClicked(
-                    ContextMenuItemType.NewTabForeground
-                )
+            ContextMenuItem(R.string.main_menu_new_tabOpen, showIcons, Icons.Outlined.Tab) {
+                onClicked(ContextMenuItemType.NewTabForeground)
             }
-            ContextMenuItem(R.string.main_menu_new_tab, R.drawable.icon_tab_unselected, showIcons) {
-                onClicked(
-                    ContextMenuItemType.NewTabBackground
-                )
+            ContextMenuItem(R.string.main_menu_new_tab, showIcons, Icons.Outlined.TabUnselected) {
+                onClicked(ContextMenuItemType.NewTabBackground)
             }
-            ContextMenuItem(R.string.menu_open_with, R.drawable.icon_exit, showIcons) {
-                onClicked(
-                    OpenWith
-                )
+            ContextMenuItem(R.string.menu_open_with, showIcons, Icons.Outlined.Apps) { onClicked(OpenWith) }
+            ContextMenuItem(R.string.split_screen, showIcons, Icons.Outlined.ViewStream) {
+                onClicked(ContextMenuItemType.SplitScreen)
             }
-            ContextMenuItem(R.string.split_screen, R.drawable.ic_split_screen, showIcons) {
-                onClicked(
-                    ContextMenuItemType.SplitScreen
-                )
-            }
-            ContextMenuItem(R.string.menu_share_link, R.drawable.icon_menu_share, showIcons) {
-                onClicked(
-                    ContextMenuItemType.ShareLink
-                )
+            ContextMenuItem(R.string.menu_share_link, showIcons, Icons.Outlined.Share) {
+                onClicked(ContextMenuItemType.ShareLink)
             }
         }
         HorizontalSeparator()
@@ -147,34 +147,20 @@ private fun ContextMenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.Center
         ) {
-            if (shouldShowTranslateImage) {
-                ContextMenuItem(R.string.translate, R.drawable.ic_papago, showIcons) {
+            ContextMenuItem(R.string.copy_link, showIcons, Icons.Outlined.CopyAll) { onClicked(CopyLink) }
+            ContextMenuItem(R.string.text_select, showIcons, Icons.AutoMirrored.Outlined.Segment) {
+                onClicked(SelectText)
+            }
+            val lowerCaseUrl = url.lowercase()
+            if (shouldShowTranslateImage && (lowerCaseUrl.contains("jpg") || lowerCaseUrl.contains("png"))) {
+                ContextMenuItem(R.string.translate, showIcons, iconResId = R.drawable.ic_papago) {
                     onClicked(TranslateImage)
                 }
-            } else {
-                ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark, showIcons) {
-                    onClicked(SaveBookmark)
-                }
             }
-            ContextMenuItem(
-                R.string.menu_save_as,
-                R.drawable.icon_menu_save,
-                showIcons
-            ) { onClicked(SaveAs) }
-            ContextMenuItem(
-                R.string.copy_link,
-                R.drawable.ic_link,
-                showIcons
-            ) { onClicked(CopyLink) }
-            ContextMenuItem(R.string.text_select, R.drawable.ic_reselect, showIcons) {
-                onClicked(
-                    SelectText
-                )
-            }
+            ContextMenuItem(R.string.menu_tts, showIcons, Icons.Outlined.RecordVoiceOver) { onClicked(Tts) }
+            ContextMenuItem(R.string.menu_save_as, showIcons, Icons.Outlined.Save) { onClicked(SaveAs) }
             if (shouldShowAdBlock) {
-                ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block, showIcons) {
-                    onClicked(AdBlock)
-                }
+                ContextMenuItem(R.string.setting_title_adblock, showIcons, Icons.Outlined.Block) { onClicked(AdBlock) }
             }
         }
     }
@@ -183,12 +169,14 @@ private fun ContextMenuItems(
 @Composable
 fun ContextMenuItem(
     titleResId: Int,
-    iconResId: Int,
     showIcon: Boolean = false,
+    imageVector: ImageVector? = null,
+    iconResId: Int = 0,
     onClicked: () -> Unit = {},
 ) = MenuItem(
     titleResId = titleResId,
     iconResId = iconResId,
+    imageVector = imageVector,
     isLargeType = true,
     showIcon = showIcon,
     onClicked = onClicked
@@ -198,10 +186,10 @@ enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
     ShareLink, CopyLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
-    SplitScreen, AdBlock, TranslateImage
+    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewContextMenuItems() {
     MyTheme {

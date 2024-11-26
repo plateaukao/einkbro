@@ -6,6 +6,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.TranslationLanguage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.Locale
 
 class TranslationLanguageDialog(val context: Context) : KoinComponent {
     private val config: ConfigManager by inject()
@@ -41,6 +42,24 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
         } else {
             config.dualCaptionLocale = TranslationLanguage.entries[selectedIndex - 1].value
         }
+    }
+
+    suspend fun showAppLocale() {
+        val languages = listOf(
+            "af", "ar", "ca", "cs", "da", "de", "el", "en", "es", "fi", "fr",
+            "he", "hu", "in", "it", "ja", "ko", "nl", "no", "pl", "pt",
+            "ro", "ru", "sat", "sr", "tr", "uk", "vi", "zh-Hant",
+            "zh-Hans"
+        )
+
+        val selectedIndex = ListSettingWithNameDialog(
+            context,
+            R.string.setting_app_locale,
+            languages.map(Locale::forLanguageTag).map(Locale::getDisplayName),
+            languages.indexOf(config.uiLocaleLanguage)
+        ).show() ?: return
+
+        config.uiLocaleLanguage = languages[selectedIndex]
     }
 
     private fun getDualCaptionIndex(locale: String): Int =

@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.database
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
@@ -14,11 +15,14 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -28,9 +32,11 @@ import org.koin.core.component.inject
         Bookmark::class,
         FaviconInfo::class,
         Highlight::class,
-        Article::class
+        Article::class,
+        ChatGptQuery::class,
+        DomainConfiguration::class,
     ],
-    version = 3,
+    version = 6,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -38,20 +44,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun faviconDao(): FaviconDao
     abstract fun highlightDao(): HighlightDao
     abstract fun articleDao(): ArticleDao
-}
-
-val MIGRATION_1_2: Migration = object : Migration(1, 2) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS `favicons` (`domain` TEXT NOT NULL, `icon` BLOB, PRIMARY KEY(`domain`))")
-    }
-}
-
-val MIGRATION_2_3: Migration = object : Migration(2, 3) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS `highlights` (`articleId` INTEGER NOT NULL, `content` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`articleId`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-        database.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `date` INTEGER NOT NULL, `tags` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
-        database.execSQL("CREATE INDEX IF NOT EXISTS `index_highlights_articleId` ON `highlights` (`articleId`)")
-    }
+    abstract fun chatGptQueryDao(): ChatGptQueryDao
+    abstract fun domainConfigurationDao(): DomainConfigurationDao
 }
 
 @Dao
@@ -144,8 +138,8 @@ interface BookmarkDao {
     @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
     suspend fun getBookmarksByParent(parentId: Int): List<Bookmark>
 
-    @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
-    fun getBookmarksByParentFlow(parentId: Int): Flow<List<Bookmark>>
+//    @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
+//    fun getBookmarksByParentFlow(parentId: Int): Flow<List<Bookmark>>
 
     @Query("SELECT COUNT(id) FROM bookmarks WHERE url = :url")
     suspend fun existsUrl(url: String): Int
@@ -160,7 +154,7 @@ interface BookmarkDao {
     suspend fun delete(bookmark: Bookmark)
 
     @Update
-    suspend fun update(bookmark: Bookmark)
+    fun update(bookmark: Bookmark)
 
     @Query("DELETE FROM bookmarks")
     suspend fun deleteAll()
@@ -175,25 +169,97 @@ interface BookmarkDao {
 class BookmarkManager(context: Context) : KoinComponent {
     val config: ConfigManager by inject()
 
+    private val migration1To2: Migration = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `favicons` (`domain` TEXT NOT NULL, `icon` BLOB, PRIMARY KEY(`domain`))")
+        }
+    }
+
+    private val migration2To3: Migration = object : Migration(2, 3) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `highlights` (`articleId` INTEGER NOT NULL, `content` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`articleId`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `date` INTEGER NOT NULL, `tags` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
+            database.execSQL("CREATE INDEX IF NOT EXISTS `index_highlights_articleId` ON `highlights` (`articleId`)")
+        }
+    }
+
+    private val migration3To4: Migration = object : Migration(3, 4) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `chat_gpt_query` (`date` INTEGER NOT NULL, `url` TEXT NOT NULL, `model` TEXT NOT NULL, `selectedText` TEXT NOT NULL, `result` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
+        }
+    }
+
+    private val migration4To5: Migration = object : Migration(4, 5) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `domain_configuration` (`domain` TEXT NOT NULL, `configuration` TEXT NOT NULL, PRIMARY KEY(`domain`))")
+        }
+    }
+
+    private val migration5To6: Migration = object : Migration(5, 6) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE `bookmarks` ADD COLUMN `order` INTEGER DEFAULT 0 NOT NULL")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
-        .addMigrations(MIGRATION_1_2)
-        .addMigrations(MIGRATION_2_3)
+        .addMigrations(migration1To2)
+        .addMigrations(migration2To3)
+        .addMigrations(migration3To4)
+        .addMigrations(migration4To5)
+        .addMigrations(migration5To6)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
 
     private val faviconDao = database.faviconDao()
+    private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
 
     private val highlightDao = database.highlightDao()
     private val articleDao = database.articleDao()
+    private val chatGptQueryDao = database.chatGptQueryDao()
+    private val domainConfigurationDao = database.domainConfigurationDao()
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
+            if (BuildConfig.VERSION_NAME < "11.15.0") {
+                convertConfigToDomainConfiguration()
+                config.version = BuildConfig.VERSION_NAME
+            }
             faviconInfos.addAll(getAllFavicons())
+            config.domainConfigurationMap.putAll(getAllDomainConfigurations())
         }
     }
 
-    private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
+    private suspend fun convertConfigToDomainConfiguration() {
+        config.scrollFixList.forEach { domain ->
+            Log.d("BookmarkManager", "convertConfigToDomainConfiguration: $domain")
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldFixScroll = true
+            addDomainConfiguration(domainConfiguration)
+        }
+        config.scrollFixList = emptyList()
+
+        config.sendPageNavKeyList.forEach { domain ->
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldSendPageNavKey = true
+            addDomainConfiguration(domainConfiguration)
+        }
+        config.sendPageNavKeyList = emptyList()
+
+        config.translateSiteList.forEach { domain ->
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldTranslateSite = true
+            addDomainConfiguration(domainConfiguration)
+        }
+        config.translateSiteList = emptyList()
+
+        config.whiteBackgroundList.forEach { domain ->
+            val domainConfiguration = getDomainConfiguration(domain)
+            domainConfiguration.shouldUseWhiteBackground = true
+            addDomainConfiguration(domainConfiguration)
+        }
+        config.whiteBackgroundList = emptyList()
+    }
 
     private suspend fun getAllFavicons(): List<FaviconInfo> = faviconDao.getAllFavicons()
 
@@ -201,7 +267,6 @@ class BookmarkManager(context: Context) : KoinComponent {
     suspend fun insertHighlight(highlight: Highlight) = highlightDao.insert(highlight)
 
     suspend fun deleteArticle(articleId: Int) = articleDao.deleteArticleById(articleId)
-
     suspend fun deleteArticle(article: Article) = articleDao.delete(article)
 
     suspend fun deleteHighlight(highlight: Highlight) =
@@ -228,15 +293,24 @@ class BookmarkManager(context: Context) : KoinComponent {
         faviconInfos.add(faviconInfo)
     }
 
-    @Synchronized
     fun findFaviconBy(url: String): FaviconInfo? {
         val host = Uri.parse(url).host ?: return null
-        synchronized(faviconInfos) {
-            return faviconInfos.firstOrNull { it.domain == host }
-        }
+        return faviconInfos.firstOrNull { it.domain == host }
     }
 
     suspend fun deleteFavicon(faviconInfo: FaviconInfo) = faviconDao.delete(faviconInfo)
+
+    // -- Bookmark --
+
+    suspend fun updateBookmarksOrder(bookmarks: List<Bookmark>) {
+        withContext(Dispatchers.IO) {
+            database.runInTransaction {
+                bookmarks.forEachIndexed { index, bookmark ->
+                    bookmarkDao.update(bookmark.apply { this.order = index })
+                }
+            }
+        }
+    }
 
     suspend fun getAllBookmarks(): List<Bookmark> = bookmarkDao.getAllBookmarks()
 
@@ -263,21 +337,53 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     suspend fun findBy(url: String): List<Bookmark> = bookmarkDao.findBy(url)
 
-    suspend fun insertDirectory(title: String, parentId: Int = 0) {
-        bookmarkDao.insert(
-            Bookmark(
-                title = title,
-                url = "",
-                isDirectory = true,
-                parent = parentId,
-            )
-        )
-    }
-
     suspend fun delete(bookmark: Bookmark) = bookmarkDao.delete(bookmark)
 
     suspend fun update(bookmark: Bookmark) = bookmarkDao.update(bookmark)
+
     suspend fun overwriteBookmarks(bookmarks: List<Bookmark>) {
         if (bookmarks.isNotEmpty()) bookmarkDao.overwrite(bookmarks)
+    }
+
+    suspend fun getAllChatGptQueriesAsync(): List<ChatGptQuery> =
+        chatGptQueryDao.getAllChatGptQueriesAsync()
+
+    fun getAllChatGptQueries(): Flow<List<ChatGptQuery>> = chatGptQueryDao.getAllChatGptQueries()
+    suspend fun addChatGptQuery(chatGptQuery: ChatGptQuery) =
+        chatGptQueryDao.addChatGptQuery(chatGptQuery)
+
+    suspend fun getChatGptQueryById(id: Int): ChatGptQuery = chatGptQueryDao.getChatGptQueryById(id)
+    suspend fun deleteChatGptQuery(chatGptQuery: ChatGptQuery) =
+        chatGptQueryDao.deleteChatGptQuery(chatGptQuery)
+
+    private suspend fun getDomainConfiguration(domain: String): DomainConfigurationData =
+        domainConfigurationDao.getDomainConfiguration(domain)?.let {
+            Json.decodeFromString<DomainConfigurationData>(it.configuration)
+        } ?: DomainConfigurationData(domain)
+
+    val json = Json { encodeDefaults = true }
+    private suspend fun getAllDomainConfigurations(): Map<String, DomainConfigurationData> =
+        mutableMapOf<String, DomainConfigurationData>().apply {
+            domainConfigurationDao.getAllDomainConfigurations().forEach {
+                put(it.domain, json.decodeFromString<DomainConfigurationData>(it.configuration))
+            }
+        }
+
+    fun addDomainConfiguration(domainConfigurationData: DomainConfigurationData) =
+        GlobalScope.launch(Dispatchers.IO) {
+            domainConfigurationDao.addDomainConfiguration(
+                DomainConfiguration(
+                    domain = domainConfigurationData.domain,
+                    configuration = json.encodeToString(
+                        DomainConfigurationData.serializer(),
+                        domainConfigurationData
+                    )
+                )
+            )
+        }
+
+    enum class SortMode {
+        BY_ORDER,
+        BY_TITLE,
     }
 }

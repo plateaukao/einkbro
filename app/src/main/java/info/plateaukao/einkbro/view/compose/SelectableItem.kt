@@ -19,6 +19,7 @@ fun SelectableText(
     modifier: Modifier,
     selected: Boolean,
     text: String,
+    isEnabled: Boolean = true,
     textAlign: TextAlign = TextAlign.Start,
     onClick: () -> Unit,
 ) {
@@ -26,7 +27,7 @@ fun SelectableText(
     val borderWidth = if (selected) 1.dp else -1.dp
     Text(
         text = text,
-        color = MaterialTheme.colors.onBackground,
+        color = MaterialTheme.colors.onBackground.copy(alpha = if (isEnabled) 1f else 0.5f),
         style = MaterialTheme.typography.button,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -37,6 +38,8 @@ fun SelectableText(
             .clickable(
                 indication = null,
                 interactionSource = interactionSource,
-            ) { onClick() }
+            ) {
+                if (isEnabled) onClick()
+            }
     )
 }

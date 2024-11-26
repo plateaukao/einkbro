@@ -5,28 +5,25 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
 import android.view.ActionMode
-import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.RecordVoiceOver
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
-import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.data.MenuInfo
 import info.plateaukao.einkbro.view.data.toMenuInfo
-import info.plateaukao.einkbro.view.dialog.compose.ActionModeView
 import info.plateaukao.einkbro.view.dialog.compose.HighlightStyleDialogFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -47,6 +44,11 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     val showIcons: Boolean
         get() = configManager.showActionMenuIcons
 
+    var menuInfos: MutableState<List<MenuInfo>> = mutableStateOf(emptyList())
+
+    private val _shouldShow = MutableStateFlow(false)
+    val shouldShow: StateFlow<Boolean> = _shouldShow.asStateFlow()
+
     fun isInActionMode(): Boolean = actionMode != null
 
     fun updateActionMode(actionMode: ActionMode?) {
@@ -56,71 +58,21 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private var actionModeView: View? = null
-    private var clearSelectionAction: (() -> Unit)? = null
-    fun showActionModeView(
+    fun updateMenuInfos(
         context: Context,
-        parent: ViewGroup,
-        clearSelectionAction: () -> Unit
+        translationViewModel: TranslationViewModel,
     ) {
-        if (actionModeView == null) {
-            actionModeView = ActionModeView(context = context).apply {
-                init(
-                    actionModeMenuViewModel = this@ActionModeMenuViewModel,
-                    menuInfos = getAllProcessTextMenuInfos(context, context.packageManager),
-                    clearSelectionAction = clearSelectionAction
-                )
-            }
-            actionModeView?.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            actionModeView?.visibility = INVISIBLE
-            parent.addView(actionModeView)
-        }
-
-        actionModeView?.post {
-            updatePosition(clickedPoint.value)
-            actionModeView?.visibility = VISIBLE
-        }
-
-        viewModelScope.launch {
-            clickedPoint.collect { updatePosition(it) }
-        }
-    }
-
-    private fun updatePosition(point: Point) {
-        val view = actionModeView ?: return
-        val properPoint = getProperPosition(point)
-        view.x = properPoint.x + ViewUnit.dpToPixel(view.context, 10)
-        view.y = properPoint.y + ViewUnit.dpToPixel(view.context, 10)
-    }
-
-    private fun getProperPosition(point: Point): Point {
-        val view = actionModeView ?: return Point(0, 0)
-        val parentWidth = (view.parent as View).width
-        val parentHeight = (view.parent as View).height
-
-        val width = view.width
-        val height = view.height
-        // Calculate the new position to ensure the view is within bounds
-        val padding = ViewUnit.dpToPixel(view.context, 10)
-        val x =
-            if (point.x + width + padding > parentWidth) parentWidth - width - padding else point.x
-        val y =
-            if (point.y + height + padding > parentHeight) parentHeight - height - padding else point.y
-
-        return Point(x.toInt(), y.toInt())
+        menuInfos.value = getAllProcessTextMenuInfos(
+            context,
+            context.packageManager,
+            translationViewModel,
+        )
     }
 
     fun finish() {
         actionMode?.finish()
         actionMode = null
-        if (actionModeView?.isAttachedToWindow == true) {
-            (actionModeView?.parent as? ViewGroup)?.removeView(actionModeView)
-            actionModeView = null
-        }
-
+        _shouldShow.value = false
         _actionModeMenuState.value = ActionModeMenuState.Idle
     }
 
@@ -133,16 +85,17 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
     }
 
     fun hide() {
-        actionModeView?.visibility = INVISIBLE
+        _shouldShow.value = false
     }
 
     fun show() {
-        actionModeView?.visibility = VISIBLE
+        _shouldShow.value = true
     }
 
     private fun getAllProcessTextMenuInfos(
         context: Context,
-        packageManager: PackageManager
+        packageManager: PackageManager,
+        translationViewModel: TranslationViewModel,
     ): List<MenuInfo> {
         val intent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
             type = "text/plain"
@@ -152,12 +105,20 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 
         val menuInfos = resolveInfos.map { it.toMenuInfo(packageManager) }.toMutableList()
 
-        if (configManager.papagoApiSecret.isNotEmpty()) {
+        menuInfos.add(
+            0,
+            MenuInfo(
+                context.getString(R.string.read_from_here),
+                imageVector = Icons.Outlined.RecordVoiceOver,
+                action = { _actionModeMenuState.value = ActionModeMenuState.ReadFromHere }
+            )
+        )
+        if (configManager.imageApiKey.isNotEmpty()) {
             menuInfos.add(
                 0,
                 MenuInfo(
                     context.getString(R.string.papago),
-                    icon = ContextCompat.getDrawable(context, R.drawable.ic_papago),
+                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_papago),
                     action = { _actionModeMenuState.value = ActionModeMenuState.Papago }
                 )
             )
@@ -165,7 +126,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 0,
                 MenuInfo(
                     context.getString(R.string.naver_translate),
-                    icon = ContextCompat.getDrawable(context, R.drawable.icon_search),
+                    drawable = ContextCompat.getDrawable(context, R.drawable.icon_search),
                     action = { _actionModeMenuState.value = ActionModeMenuState.Naver }
                 )
             )
@@ -175,21 +136,39 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             0,
             MenuInfo(
                 context.getString(R.string.google_translate),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_translate_google),
                 action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
             )
         )
-        if (configManager.gptApiKey.isNotEmpty() && configManager.gptActionList.isNotEmpty()) {
-            for (actionInfo in configManager.gptActionList) {
+        if (configManager.imageApiKey.isNotBlank()) {
+            menuInfos.add(
+                0,
+                MenuInfo(
+                    context.getString(R.string.deepl_translate),
+                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                    action = { _actionModeMenuState.value = ActionModeMenuState.DeeplTranslate }
+                )
+            )
+        }
+        if (configManager.gptActionList.isNotEmpty()) {
+            configManager.gptActionList.mapIndexed { index, actionInfo ->
+
+                val actionType = actionInfo.actionType.takeIf { it != GptActionType.Default }
+                    ?: configManager.getDefaultActionType()
+
+                val iconRes = when (actionType) {
+                    GptActionType.OpenAi -> R.drawable.ic_chat_gpt
+                    GptActionType.SelfHosted -> R.drawable.ic_ollama
+                    GptActionType.Gemini -> R.drawable.ic_gemini
+                    else -> R.drawable.ic_chat_gpt
+                }
                 menuInfos.add(
-                    0,
+                    0 + index,
                     MenuInfo(
                         actionInfo.name,
-                        icon = ContextCompat.getDrawable(context, R.drawable.ic_chat_gpt),
-                        action = {
-                            _actionModeMenuState.value =
-                                ActionModeMenuState.Gpt(actionInfo)
-                        }
+                        drawable = ContextCompat.getDrawable(context, iconRes),
+                        action = { _actionModeMenuState.value = ActionModeMenuState.Gpt(index) },
+                        longClickAction = { translationViewModel.showEditGptActionDialog(index) }
                     )
                 )
             }
@@ -198,8 +177,30 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             0,
             MenuInfo(
+                context.getString(R.string.select_paragraph),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_paragraph),
+                closeMenu = false,
+                action = {
+                    _actionModeMenuState.value = ActionModeMenuState.SelectParagraph
+                }
+            )
+        )
+        menuInfos.add(
+            0,
+            MenuInfo(
+                context.getString(R.string.select_sentence),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_reselect),
+                closeMenu = false,
+                action = {
+                    _actionModeMenuState.value = ActionModeMenuState.SelectSentence
+                }
+            )
+        )
+        menuInfos.add(
+            0,
+            MenuInfo(
                 context.getString(android.R.string.copy),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_copy),
+                drawable = ContextCompat.getDrawable(context, R.drawable.ic_copy),
                 action = {
                     val processedText = selectedText.value.replace("\\n", "\n")
                     ShareUtil.copyToClipboard(context, processedText)
@@ -212,7 +213,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                 menuInfos.add(
                     MenuInfo(
                         itemInfo.title,
-                        icon = ContextCompat.getDrawable(context, R.drawable.ic_split_screen),
+                        drawable = ContextCompat.getDrawable(context, R.drawable.ic_split_screen),
                         action = {
                             _actionModeMenuState.value =
                                 ActionModeMenuState.SplitSearch(itemInfo.stringPattern)
@@ -224,7 +225,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
         menuInfos.add(
             MenuInfo(
                 context.getString(R.string.highlight),
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_highlight),
+                imageVector = Icons.Outlined.EditNote,
                 action = {
                     _actionModeMenuState.value =
                         ActionModeMenuState.HighlightText(configManager.highlightStyle)
@@ -235,9 +236,7 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                         clickedPoint.value,
                         okAction = { style ->
                             _actionModeMenuState.value = ActionModeMenuState.Idle
-                            if (style != HighlightStyle.BACKGROUND_NONE) {
-                                configManager.highlightStyle = style
-                            }
+                            configManager.highlightStyle = style
                             _actionModeMenuState.value = ActionModeMenuState.HighlightText(style)
                         },
                         onDismissAction = {
@@ -253,12 +252,16 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
 }
 
 sealed class ActionModeMenuState {
-    object Idle : ActionModeMenuState()
-    class Gpt(val gptAction: ChatGPTActionInfo) : ActionModeMenuState()
-    object GoogleTranslate : ActionModeMenuState()
-    object Papago : ActionModeMenuState()
-    object Naver : ActionModeMenuState()
+    data object Idle : ActionModeMenuState()
+    class Gpt(val gptActionIndex: Int) : ActionModeMenuState()
+    data object GoogleTranslate : ActionModeMenuState()
+    data object DeeplTranslate : ActionModeMenuState()
+    data object Papago : ActionModeMenuState()
+    data object Naver : ActionModeMenuState()
+    data object ReadFromHere: ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
     class Tts(val text: String) : ActionModeMenuState()
     class HighlightText(val highlightStyle: HighlightStyle) : ActionModeMenuState()
+    data object SelectSentence : ActionModeMenuState()
+    data object SelectParagraph : ActionModeMenuState()
 }

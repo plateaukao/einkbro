@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.epub.EpubReaderListener
 import info.plateaukao.einkbro.epub.EpubReaderView
 import info.plateaukao.einkbro.unit.BrowserUnit
-import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.launch
 
 class EpubReaderActivity: BrowserActivity() {
@@ -30,18 +30,31 @@ class EpubReaderActivity: BrowserActivity() {
         epubReader.showTocDialog()
     }
     override fun dispatchIntent(intent: Intent) {
-        val epubUri= intent.data ?: return
-        val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
+        when (intent.action) {
+            Intent.ACTION_VIEW -> {
+                val epubUri = intent.data ?: return
+                val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
 
-        addAlbum(url = BrowserUnit.URL_ABOUT_BLANK, enablePreloadWebView = false) // so that it won't miss the preload webview
-        lifecycleScope.launch {
-            with(ninjaWebView as EpubReaderView) {
-                openEpubFile(epubUri)
-                if (shouldGotoLastChapter) {
-                    gotoLastChapter()
-                } else {
-                    gotoPosition(0, 0F)
+                addAlbum(
+                    url = BrowserUnit.URL_ABOUT_BLANK,
+                    enablePreloadWebView = false
+                ) // so that it won't miss the preload webview
+                lifecycleScope.launch {
+                    with(ebWebView as EpubReaderView) {
+                        openEpubFile(epubUri)
+                        if (shouldGotoLastChapter) {
+                            gotoLastChapter()
+                        } else {
+                            gotoPosition(0, 0F)
+                        }
+                    }
                 }
+            }
+            ACTION_READ_ALOUD -> {
+                readArticle()
+            }
+            else -> {
+                super.dispatchIntent(intent)
             }
         }
     }
@@ -50,9 +63,9 @@ class EpubReaderActivity: BrowserActivity() {
         // don't need it, since it's not normal web page
     }
 
-    override fun createNinjaWebView(): NinjaWebView {
+    override fun createebWebView(): EBWebView {
         epubReader = EpubReaderView(this, this)
-        ninjaWebView = epubReader
+        ebWebView = epubReader
 
         epubReader.setEpubReaderListener(object : EpubReaderListener {
             override fun onTextSelectionModeChangeListener(mode: Boolean?) {

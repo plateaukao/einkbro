@@ -3,7 +3,7 @@ appId: info.plateaukao.einkbro
 - launchApp
 - extendedWaitUntil:
     visible: "EinkBro"
-    timeout: 3000
+    timeout: 4000
 - takeScreenshot: MainScreen
 # Settings button on toolbar
 - tapOn:

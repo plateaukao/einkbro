@@ -35,10 +35,10 @@ class FontDialogFragment(
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
-                val customFontName = remember { mutableStateOf(config.customFontInfo?.name ?: "") }
+                val customFontName = remember { mutableStateOf(config.customFontInfo?.name.orEmpty()) }
                 config.registerOnSharedPreferenceChangeListener { _, key ->
                     if (key == ConfigManager.K_CUSTOM_FONT) {
-                        customFontName.value = config.customFontInfo?.name ?: ""
+                        customFontName.value = config.customFontInfo?.name.orEmpty()
                     }
                 }
                 MainFontDialog(
@@ -61,7 +61,7 @@ class FontDialogFragment(
                         onFontCustomizeClick()
                         config.registerOnSharedPreferenceChangeListener { _, key ->
                             if (key == ConfigManager.K_CUSTOM_FONT) {
-                                customFontName.value = config.customFontInfo?.name ?: ""
+                                customFontName.value = config.customFontInfo?.name.orEmpty()
                             }
                         }
                     },
@@ -181,17 +181,15 @@ fun MainFontDialog(
                 }
             }
         }
-        FontDialogButtonBar(
+        DialogOkButtonBar(
             okAction = okAction,
-            editFontAction = onFontCustomizeClick
         )
     }
 }
 
 @Composable
-fun FontDialogButtonBar(
+fun DialogOkButtonBar(
     okAction: () -> Unit,
-    editFontAction: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.End,

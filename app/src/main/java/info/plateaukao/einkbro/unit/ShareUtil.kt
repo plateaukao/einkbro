@@ -5,7 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -32,7 +32,7 @@ object ShareUtil : KoinComponent {
             context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("text", url)
         clipboard.setPrimaryClip(clip)
-        NinjaToast.show(context, R.string.toast_copy_successful)
+        EBToast.show(context, R.string.toast_copy_successful)
     }
     private var bytesToBeSent = ByteArray(0)
     fun startBroadcastingUrl(

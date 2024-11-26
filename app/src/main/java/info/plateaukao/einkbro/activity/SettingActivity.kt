@@ -1,16 +1,18 @@
 package info.plateaukao.einkbro.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -20,12 +22,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -48,9 +52,9 @@ import info.plateaukao.einkbro.activity.SettingRoute.Toolbar
 import info.plateaukao.einkbro.activity.SettingRoute.Ui
 import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
-import info.plateaukao.einkbro.browser.AdBlockV2
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
+import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
@@ -65,21 +69,19 @@ import info.plateaukao.einkbro.setting.VersionSettingItem
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.view.GestureType
-import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import org.koin.android.ext.android.inject
 
-class SettingActivity : ComponentActivity(), KoinComponent {
+class SettingActivity : FragmentActivity() {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
-    private val adBlock: AdBlockV2 by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
@@ -92,12 +94,13 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         openBookmarkFileLauncher = backupUnit.createOpenBookmarkFileLauncher(this)
         createBookmarkFileLauncher = backupUnit.createCreateBookmarkFileLauncher(this)
 
+        val routeName = intent.getStringExtra(KEY_ROUTE) ?: Main.name
         setContent {
             val navController: NavHostController = rememberNavController()
             MyTheme {
 
                 val backStackEntry = navController.currentBackStackEntryAsState()
-                val currentScreen = valueOf(backStackEntry?.value?.destination?.route ?: Main.name)
+                val currentScreen = valueOf(backStackEntry.value?.destination?.route ?: Main.name)
 
                 Scaffold(
                     modifier = Modifier.semantics {
@@ -109,25 +112,20 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                             navigateUp = {
                                 if (navController.previousBackStackEntry != null) navController.navigateUp()
                                 else finish()
-                            }
+                            },
+                            close = { finish() }
                         )
                     }
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = Main.name,
+                        startDestination = routeName,
                         modifier = Modifier.padding(innerPadding),
-                        enterTransition = { EnterTransition.None },
-                        exitTransition = { ExitTransition.None },
+                        enterTransition = { fadeIn(animationSpec = tween(1)) },
+                        exitTransition = { fadeOut(animationSpec = tween(1)) },
                     ) {
                         val action = this@SettingActivity::handleLink
-                        composable(
-                            Main.name,
-                            enterTransition = { EnterTransition.None },
-                            exitTransition = { ExitTransition.None },
-                            popEnterTransition = { EnterTransition.None },
-                            popExitTransition = { ExitTransition.None },
-                        ) {
+                        composable(Main.name) {
                             SettingScreen(navController, mainSettings, dialogManager, action, 2)
                         }
                         composable(Ui.name) {
@@ -221,12 +219,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                             SettingScreen(
                                 navController,
                                 mutableListOf<SettingItemInterface>().apply {
-                                    addAll(LinkSettingItem.values().toList())
+                                    addAll(LinkSettingItem.entries.toList())
                                     add(DividerSettingItem())
                                     if (BuildConfig.showUpdateButton) {
                                         add(ActionSettingItem(
                                             R.string.setting_title_github_update,
-                                            R.drawable.ic_data,
+                                            0,
                                         ) {
                                             lifecycleScope.launch(Dispatchers.IO) {
                                                 HelperUnit.upgradeToLatestRelease(this@SettingActivity)
@@ -234,7 +232,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                                         })
                                         add(ActionSettingItem(
                                             R.string.setting_title_github_snapshot,
-                                            R.drawable.ic_data,
+                                            0,
                                         ) {
                                             lifecycleScope.launch(Dispatchers.IO) {
                                                 HelperUnit.upgradeFromSnapshot(this@SettingActivity)
@@ -264,6 +262,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         overridePendingTransition(0, 0)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val uri = data?.data ?: return
@@ -278,6 +277,16 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             ) {
                 dialogManager.showRestartConfirmDialog()
             }
+        }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        if (config.uiLocaleLanguage.isNotEmpty()) {
+            super.attachBaseContext(
+                LocaleManager.setLocale(newBase, config.uiLocaleLanguage)
+            )
+        } else {
+            super.attachBaseContext(newBase)
         }
     }
 
@@ -350,46 +359,56 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     )
 
     private val uiSettingItems = listOf(
+        ActionSettingItem(
+            R.string.setting_app_locale,
+            0,
+            R.string.setting_summary_app_locale,
+        ) {
+            lifecycleScope.launch {
+                TranslationLanguageDialog(this@SettingActivity).showAppLocale()
+                config.restartChanged = true
+            }
+        },
         BooleanSettingItem(
             R.string.hide_statusbar,
-            R.drawable.ic_page_height,
+            0,
             R.string.setting_summary_hide_statusbar,
             config::hideStatusbar,
         ),
         BooleanSettingItem(
             R.string.desktop_mode,
-            R.drawable.icon_desktop,
+            0,
             R.string.setting_summary_desktop,
             config::desktop,
         ),
         BooleanSettingItem(
             R.string.always_enable_zoom,
-            R.drawable.ic_enable_zoom,
+            0,
             R.string.setting_summary_enable_zoom,
             config::enableZoom,
         ),
         BooleanSettingItem(
             R.string.show_default_text_menu,
-            R.drawable.ic_menu,
+            0,
             R.string.setting_summary_show_default_text_menu,
             config::showDefaultActionMenu,
         ),
         BooleanSettingItem(
             R.string.show_context_menu_icons,
-            R.drawable.ic_menu,
+            0,
             R.string.setting_summary_show_context_menu_icons,
             config::showActionMenuIcons,
         ),
         DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_page_left_value,
-            R.drawable.ic_page_height,
+            0,
             R.string.setting_summary_page_left_value,
             config::pageReservedOffsetInString
         ),
         ListSettingWithEnumItem(
             R.string.dark_mode,
-            R.drawable.ic_dark_mode,
+            0,
             R.string.setting_summary_dark_mode,
             config::darkMode,
             listOf(
@@ -400,7 +419,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         ListSettingWithEnumItem(
             R.string.setting_title_nav_pos,
-            R.drawable.icon_arrow_expand,
+            0,
             R.string.setting_summary_nav_pos,
             config::fabPosition,
             listOf(
@@ -413,7 +432,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         ListSettingWithEnumItem(
             R.string.setting_title_plus_behavior,
-            R.drawable.icon_plus,
+            0,
             R.string.setting_summary_plus_behavior,
             config::newTabBehavior,
             listOf(
@@ -424,7 +443,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         ActionSettingItem(
             R.string.setting_clear_recent_bookmarks,
-            R.drawable.ic_bookmarks,
+            0,
             R.string.setting_summary_clear_recent_bookmarks,
         ) {
             config.clearRecentBookmarks()
@@ -434,187 +453,234 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val behaviorSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_saveTabs,
-            R.drawable.icon_tab_plus,
+            0,
             R.string.setting_summary_saveTabs,
             config::shouldSaveTabs,
         ),
         BooleanSettingItem(
             R.string.setting_title_background_loading,
-            R.drawable.icon_tab_plus,
+            0,
             R.string.setting_summary_background_loading,
             config::enableWebBkgndLoad,
         ),
         BooleanSettingItem(
             R.string.setting_title_next_tab,
-            R.drawable.icon_tab_plus,
+            0,
             R.string.setting_summary_next_tab,
             config::shouldShowNextAfterRemoveTab,
         ),
         BooleanSettingItem(
             R.string.settings_title_back_key_behavior,
-            R.drawable.icon_arrow_left_gest,
+            0,
             R.string.settings_summary_back_key_behavior,
             config::closeTabWhenNoMoreBackHistory,
         ),
         BooleanSettingItem(
             R.string.setting_title_trim_input_url,
-            R.drawable.icon_edit,
+            0,
             R.string.setting_summary_trim_input_url,
             config::shouldTrimInputUrl,
         ),
         BooleanSettingItem(
             R.string.setting_title_prune_query_parameter,
-            R.drawable.ic_filter,
+            0,
             R.string.setting_summary_prune_query_parameter,
             config::shouldPruneQueryParameters,
         ),
         BooleanSettingItem(
             R.string.setting_title_video_auto_fullscreen,
-            R.drawable.ic_video,
+            0,
             R.string.setting_summary_video_auto_fullscreen,
             config::enableVideoAutoFullscreen,
         ),
         BooleanSettingItem(
             R.string.setting_title_video_pip,
-            R.drawable.ic_video,
+            0,
             R.string.setting_summary_video_pip,
             config::enableVideoPip,
         ),
         BooleanSettingItem(
             R.string.setting_title_screen_awake,
-            R.drawable.ic_eye,
+            0,
             R.string.setting_summary_screen_awake,
             config::keepAwake,
         ),
         BooleanSettingItem(
             R.string.setting_title_confirm_tab_close,
-            R.drawable.icon_close,
+            0,
             R.string.setting_summary_confirm_tab_close,
             config::confirmTabClose,
         ),
         BooleanSettingItem(
             R.string.setting_title_vi_binding,
-            R.drawable.ic_keyboard,
+            0,
             R.string.setting_summary_vi_binding,
             config::enableViBinding,
         ),
         BooleanSettingItem(
+            R.string.setting_title_disable_long_press_toucharea,
+            0,
+            R.string.setting_summary_disable_long_press_toucharea,
+            config::disableLongPressTouchArea,
+        ),
+        BooleanSettingItem(
             R.string.setting_title_useUpDown,
-            R.drawable.ic_page_down,
+            0,
             R.string.setting_summary_useUpDownKey,
             config::useUpDownPageTurn,
         ),
         BooleanSettingItem(
             R.string.setting_title_show_bookmarks_input_bar,
-            R.drawable.icon_edit,
+            0,
             R.string.setting_summary_show_bookmarks_input_bar,
             config::showBookmarksInInputBar,
         ),
         BooleanSettingItem(
             R.string.setting_title_enable_ssl_error_dialog,
-            R.drawable.icon_settings,
+            0,
             R.string.setting_summary_enable_ssl_error_dialog,
             config::enableCertificateErrorDialog,
         ),
+        BooleanSettingItem(
+            R.string.setting_title_enable_web_cache,
+            0,
+            R.string.setting_summary_enabling_web_cache,
+            config::webLoadCacheFirst,
+        )
     )
 
     private val toolbarSettingItems = listOf(
+        ActionSettingItem(
+            R.string.toolbar_icons,
+            0,
+            R.string.toolbar_icons_description,
+        ) {
+            startActivity(Intent(this, ToolbarConfigActivity::class.java))
+        },
         BooleanSettingItem(
             R.string.setting_title_toolbar_top,
-            R.drawable.ic_page_height,
+            0,
             R.string.setting_summary_toolbar_top,
             config::isToolbarOnTop,
         ),
         BooleanSettingItem(
             R.string.setting_title_hideToolbar,
-            R.drawable.icon_fullscreen,
+            0,
             R.string.setting_summary_hide,
             config::shouldHideToolbar,
         ),
         BooleanSettingItem(
             R.string.setting_title_toolbarShow,
-            R.drawable.icon_show,
+            0,
             R.string.setting_summary_toolbarShow,
             config::showToolbarFirst,
         ),
         BooleanSettingItem(
             R.string.setting_title_show_tab_bar,
-            R.drawable.icon_tab_plus,
+            0,
             R.string.setting_summary_show_tab_bar,
             config::shouldShowTabBar,
         ),
     )
 
     private val gestureSettingItems = listOf(
+        DividerSettingItem(
+            R.string.setting_title_touch_area_actions,
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_touch_up_click,
+            0,
+            config = config::upClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_touch_up_long_click,
+            0,
+            config = config::upLongClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_touch_down_click,
+            0,
+            config = config::downClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_touch_down_long_click,
+            0,
+            config = config::downLongClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
+        DividerSettingItem(R.string.setting_multitouch_use_title),
         BooleanSettingItem(
             R.string.setting_multitouch_use_title,
-            R.drawable.ic_touch_disabled,
+            0,
             R.string.setting_multitouch_use_summary,
             config::isMultitouchEnabled,
             span = 2,
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_up,
-            R.drawable.icon_arrow_up_gest,
+            0,
             config = config::multitouchUp,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_down,
-            R.drawable.icon_arrow_down_gest,
+            0,
             config = config::multitouchDown,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_left,
-            R.drawable.icon_arrow_left_gest,
+            0,
             config = config::multitouchLeft,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_right,
-            R.drawable.icon_arrow_right_gest,
+            0,
             config = config::multitouchRight,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
-        DividerSettingItem(),
+        DividerSettingItem(R.string.gesture_on_floating_button),
         BooleanSettingItem(
             R.string.setting_gestures_use_title,
-            R.drawable.ic_touch_disabled,
+            0,
             R.string.setting_gestures_use_summary,
             config::enableNavButtonGesture,
             span = 2,
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_up,
-            R.drawable.icon_arrow_up_gest,
+            0,
             config = config::navGestureUp,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_down,
-            R.drawable.icon_arrow_down_gest,
+            0,
             config = config::navGestureDown,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_left,
-            R.drawable.icon_arrow_left_gest,
+            0,
             config = config::navGestureLeft,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_right,
-            R.drawable.icon_arrow_right_gest,
+            0,
             config = config::navGestureRight,
-            options = GestureType.values().map { it.resId },
+            options = GestureType.entries.map { it.resId },
         ),
     )
 
     private val searchSettingItems = listOf(
         ListSettingWithStringItem(
             R.string.setting_title_search_engine,
-            R.drawable.icon_search,
+            0,
             config = config::searchEngine,
             options = listOf(
                 R.string.setting_summary_search_engine_startpage,
@@ -632,34 +698,34 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         ),
         ValueSettingItem(
             R.string.setting_title_searchEngine,
-            R.drawable.icon_edit,
+            0,
             R.string.setting_summary_search_engine,
             config = config::searchEngineUrl,
         ),
         DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_process_text,
-            R.drawable.icon_edit,
+            0,
             R.string.setting_summary_custom_process_text_url,
             config = config::processTextUrl,
         ),
         BooleanSettingItem(
             R.string.setting_title_external_search_pop,
-            R.drawable.icon_search,
+            0,
             R.string.setting_summary_external_search_pop,
             config::externalSearchWithPopUp,
         ),
         DividerSettingItem(),
         ActionSettingItem(
             R.string.setting_title_split_search_setting,
-            R.drawable.icon_edit,
+            0,
             R.string.setting_summary_split_search_setting
         ) {
             startActivity(DataListActivity.createIntent(this, WhiteListType.SplitSearch))
         },
         BooleanSettingItem(
             R.string.setting_title_search_in_same_tab,
-            R.drawable.icon_search,
+            0,
             R.string.setting_summary_search_in_same_tab,
             config::isExternalSearchInSameTab,
         ),
@@ -668,26 +734,26 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val dataSettingItems = listOf(
         ActionSettingItem(
             R.string.setting_title_export_appData,
-            R.drawable.icon_export,
+            0,
             R.string.setting_summary_export_appData
         ) { dialogManager.showBackupFilePicker() },
         ActionSettingItem(
             R.string.setting_title_import_appData,
-            R.drawable.icon_import,
+            0,
             R.string.setting_summary_import_appData
         ) { dialogManager.showImportBackupFilePicker() },
         DividerSettingItem(),
         ActionSettingItem(
             R.string.setting_title_export_bookmarks,
-            R.drawable.icon_bookmark,
+            0,
         ) { dialogManager.showBookmarkFilePicker() },
         ActionSettingItem(
             R.string.setting_title_import_bookmarks,
-            R.drawable.ic_bookmark,
+            0,
         ) { dialogManager.showImportBookmarkFilePicker() },
         ActionSettingItem(
             R.string.setting_title_setup_bookmarks_location,
-            R.drawable.icon_settings,
+            0,
             R.string.setting_summary_setup_bookmarks_location,
         ) {
             dialogManager.showCreateOrOpenBookmarkFileDialog(
@@ -697,41 +763,41 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         },
         ActionSettingItem(
             R.string.setting_title_sync_bookmarks,
-            R.drawable.ic_sync,
+            0,
         ) { handleBookmarkSync(true) },
     )
 
     private val clearDataSettingItems = listOf(
         BooleanSettingItem(
             R.string.clear_title_cache,
-            R.drawable.ic_save_data,
+            0,
             config = config::clearCache,
         ),
         BooleanSettingItem(
             R.string.clear_title_history,
-            R.drawable.icon_history,
+            0,
             config = config::clearHistory,
         ),
         BooleanSettingItem(
             R.string.clear_title_indexedDB,
-            R.drawable.icon_delete,
+            0,
             config = config::clearIndexedDB,
         ),
         BooleanSettingItem(
             R.string.clear_title_cookie,
-            R.drawable.icon_cookie,
+            0,
             R.string.setting_summary_cookie_delete,
             config::clearCookies
         ),
         BooleanSettingItem(
             R.string.clear_title_quit,
-            R.drawable.icon_exit,
+            0,
             R.string.clear_summary_quit,
             config::clearWhenQuit
         ),
         ActionSettingItem(
             R.string.clear_title_deleteDatabase,
-            R.drawable.icon_delete,
+            0,
             R.string.clear_summary_deleteDatabase,
         ) {
             deleteDatabase("Ninja4.db")
@@ -744,58 +810,58 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val miscSettingItems = listOf(
         ListSettingWithEnumItem(
             R.string.setting_title_highlight_style,
-            R.drawable.ic_highlight,
+            0,
             R.string.setting_summary_highlight_style,
             config = config::highlightStyle,
-            options = HighlightStyle.entries.filter { it != HighlightStyle.BACKGROUND_NONE }
+            options = HighlightStyle.entries
                 .map { it.stringResId },
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_title_translation_style,
+            0,
+            R.string.setting_summary_translation_style,
+            config = config::translationTextStyle,
+            options = TranslationTextStyle.entries.map { it.stringResId },
         ),
         NavigateSettingItem(
             R.string.setting_title_userAgent,
-            R.drawable.icon_useragent,
+            0,
             destination = UserAgent
         ),
         ValueSettingItem(
             R.string.setting_title_edit_homepage,
-            R.drawable.ic_home,
+            0,
             config = config::favoriteUrl,
             showValue = false
         ),
-        ActionSettingItem(R.string.setting_title_pdf_paper_size, R.drawable.ic_pdf) {
+        ActionSettingItem(R.string.setting_title_pdf_paper_size, 0) {
             PrinterDocumentPaperSizeDialog(
                 this
             ).show()
         },
-//        ValueSettingItem(
-//            R.string.translate_papago,
-//            R.drawable.ic_papago,
-//            R.string.translate_papago_summary,
-//            config = config::papagoApiSecret,
-//            showValue = false
-//        ),
         DividerSettingItem(),
-        BooleanSettingItem(
-            R.string.setting_title_enable_inplace_translate,
-            R.drawable.ic_translate,
-            R.string.setting_summary_enable_inplace_translate,
-            config::enableInplaceParagraphTranslate
-        ),
+//        BooleanSettingItem(
+//            R.string.setting_title_enable_inplace_translate,
+//            0,
+//            R.string.setting_summary_enable_inplace_translate,
+//            config::enableInplaceParagraphTranslate
+//        ),
         ValueSettingItem(
             R.string.setting_title_translated_langs,
-            R.drawable.ic_translate,
+            0,
             R.string.setting_summary_translated_langs,
             config::preferredTranslateLanguageString
         ),
         ValueSettingItem(
             R.string.translate_image_key,
-            R.drawable.ic_papago,
+            0,
             R.string.translate_image_key_summary,
             config = config::imageApiKey,
             showValue = false
         ),
         ActionSettingItem(
             R.string.setting_dual_caption,
-            R.drawable.icon_arrow_up_gest,
+            0,
             R.string.setting_summary_dual_caption,
         ) {
             lifecycleScope.launch {
@@ -806,195 +872,205 @@ class SettingActivity : ComponentActivity(), KoinComponent {
     private val userAgentSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_userAgent_toggle,
-            R.drawable.icon_useragent,
+            0,
             R.string.setting_summary_userAgent_toggle,
             config::enableCustomUserAgent
         ),
         ValueSettingItem(
             R.string.setting_title_userAgent,
-            R.drawable.ic_page_height,
+            0,
             R.string.setting_summary_userAgent,
             config::customUserAgent
         ),
     )
 
     private val chatGptSettingItems = listOf(
-        ValueSettingItem(
-            R.string.setting_title_edit_gpt_api_key,
-            R.drawable.ic_chat_gpt,
-            R.string.setting_summary_edit_gpt_api_key,
-            config::gptApiKey
-        ),
-        DividerSettingItem(),
+        ActionSettingItem(
+            R.string.setting_title_gpt_query_list,
+            0,
+            R.string.setting_summary_gpt_query_list,
+        ) {
+            startActivity(GptQueryListActivity.createIntent(this))
+        },
         ActionSettingItem(
             R.string.setting_title_gpt_action_list,
-            R.drawable.icon_list,
+            0,
             R.string.setting_summary_gpt_action_list,
-        ) { startActivity(GptActionsActivity.createIntent(this)) },
-        ValueSettingItem(
-            R.string.setting_title_gpt_model_name,
-            R.drawable.ic_chat_gpt,
-            R.string.setting_summary_gpt_model_name,
-            config::gptModel
-        ),
-        ValueSettingItem(
-            R.string.setting_title_gpt_prompt_for_web_page,
-            R.drawable.ic_chat_gpt,
-            R.string.setting_summary_gpt_prompt_for_web_page,
-            config::gptUserPromptForWebPage
-        ),
-        DividerSettingItem(),
-        BooleanSettingItem(
-            R.string.get_selected_text_context,
-            R.drawable.icon_search,
-            R.string.setting_get_selected_text_context,
-            config::shouldGetSelectedTextContextForGpt
-        ),
+        ) { GptActionsActivity.start(this) },
         BooleanSettingItem(
             R.string.use_it_on_dict_search,
-            R.drawable.icon_search,
+            0,
             R.string.setting_summary_search_in_dict,
             config::externalSearchWithGpt
         ),
         BooleanSettingItem(
-            R.string.use_it_on_tts,
-            R.drawable.ic_tts,
-            R.string.setting_summary_use_gpt_for_tts,
-            config::useOpenAiTts
-        ),
-        BooleanSettingItem(
             R.string.setting_title_chat_stream,
-            R.drawable.ic_chat,
+            0,
             R.string.setting_summary_chat_stream,
             config::enableOpenAiStream
         ),
-        DividerSettingItem(),
+        DividerSettingItem(R.string.openai),
+        ValueSettingItem(
+            R.string.setting_title_edit_gpt_api_key,
+            0,
+            R.string.setting_summary_edit_gpt_api_key,
+            config::gptApiKey
+        ),
+        ValueSettingItem(
+            R.string.setting_title_gpt_model_name,
+            0,
+            R.string.setting_summary_gpt_model_name,
+            config::gptModel
+        ),
+        BooleanSettingItem(
+            R.string.use_it_on_tts,
+            0,
+            R.string.setting_summary_use_gpt_for_tts,
+            config::useOpenAiTts
+        ),
+        ValueSettingItem(
+            R.string.setting_title_gpt_prompt_for_web_page,
+            0,
+            R.string.setting_summary_gpt_prompt_for_web_page,
+            config::gptUserPromptForWebPage
+        ),
+        DividerSettingItem(R.string.openai_compatible_server),
         BooleanSettingItem(
             R.string.setting_title_use_custom_gpt_url,
-            R.drawable.ic_chat,
+            0,
             R.string.setting_summary_use_custom_gpt_url,
             config::useCustomGptUrl
         ),
         ValueSettingItem(
+            R.string.setting_title_other_model_name,
+            0,
+            R.string.setting_summary_other_model_name,
+            config::alternativeModel
+        ),
+        ValueSettingItem(
             R.string.setting_title_custom_gpt_url,
-            R.drawable.ic_chat,
+            0,
             R.string.setting_summary_custom_gpt_url,
             config::gptUrl
+        ),
+        DividerSettingItem(R.string.google_gemini),
+        BooleanSettingItem(
+            R.string.setting_title_use_gemini,
+            0,
+            R.string.setting_summary_use_gemini,
+            config::useGeminiApi
+        ),
+        ValueSettingItem(
+            R.string.setting_title_gemini_key,
+            0,
+            R.string.setting_summary_gemini_key,
+            config::geminiApiKey
+        ),
+        ValueSettingItem(
+            R.string.setting_title_gemini_model_name,
+            0,
+            R.string.setting_summary_gemini_model_name,
+            config::geminiModel
         ),
     )
 
     private val startSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_images,
-            R.drawable.icon_image,
+            0,
             R.string.setting_summary_images,
             config::enableImages
         ),
         BooleanSettingItem(
             R.string.setting_title_auto_fill_form,
-            R.drawable.ic_input_url,
+            0,
             R.string.setting_summary_auto_fill_form,
             config::autoFillForm
         ),
-        BooleanSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_title_history,
-            R.drawable.icon_history,
+            0,
             R.string.setting_summary_history,
-            config::saveHistory
+            config::saveHistoryMode,
+            listOf(
+                R.string.save_history_mode_save_when_open,
+                R.string.save_history_mode_save_when_close,
+                R.string.save_history_mode_disabled,
+            )
         ),
         BooleanSettingItem(
             R.string.setting_title_debug,
-            R.drawable.ic_eye,
+            0,
             R.string.setting_summary_debug,
             config::debugWebView
         ),
         BooleanSettingItem(
             R.string.setting_title_remote,
-            R.drawable.icon_remote,
+            0,
             R.string.setting_summary_remote,
             config::enableRemoteAccess
         ),
         BooleanSettingItem(
             R.string.setting_title_location,
-            R.drawable.ic_location,
+            0,
             R.string.setting_summary_location,
             config::shareLocation
         ),
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_adblock,
-            R.drawable.ic_block,
+            0,
             R.string.setting_summary_adblock,
             config::adBlock
         ),
-        BooleanSettingItem(
-            R.string.setting_title_adblock_auto_update,
-            R.drawable.ic_block,
-            R.string.setting_summary_adblock_auto_update,
-            config::autoUpdateAdblock
-        ),
-        ActionSettingItem(
-            R.string.setting_title_whitelist,
-            R.drawable.icon_list,
-            R.string.setting_summary_whitelist,
-        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
         ActionSettingItem(
             R.string.setting_title_update_adblock,
-            R.drawable.ic_receive,
+            0,
             R.string.setting_summary_update_adblock,
         ) {
-            lifecycleScope.launch {
-                adBlock.downloadHosts(this@SettingActivity) {
-                    NinjaToast.show(this@SettingActivity, R.string.toast_adblock_updated)
-                }
-            }
+            startActivity(Intent(this, AdBlockSettingActivity::class.java))
+            finish()
         },
-        ValueSettingItem(
-            R.string.setting_title_adblock_url,
-            R.drawable.ic_input_url,
-            R.string.setting_summary_adblock_url,
-            config = config::adblockHostUrl,
-        ),
+        ActionSettingItem(
+            R.string.setting_title_whitelist,
+            0,
+            R.string.setting_summary_whitelist,
+        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_javascript,
-            R.drawable.icon_java,
+            0,
             R.string.setting_summary_javascript,
             config::enableJavascript
         ),
         ActionSettingItem(
             R.string.setting_title_whitelistJS,
-            R.drawable.icon_list,
+            0,
             R.string.setting_summary_whitelistJS,
         ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Javascript)) },
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_cookie,
-            R.drawable.icon_cookie,
+            0,
             R.string.setting_summary_cookie,
             config::cookies
         ),
         ActionSettingItem(
             R.string.setting_title_whitelistCookie,
-            R.drawable.icon_list,
+            0,
             R.string.setting_summary_whitelistCookie,
         ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Cookie)) },
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_save_data,
-            R.drawable.ic_save_data,
+            0,
             R.string.setting_summary_save_data,
             config::enableSaveData
         ),
     )
 
     private fun handleBookmarkSync(forceUpload: Boolean) {
-        backupUnit.handleBookmarkSync(
-            forceUpload,
-            dialogManager,
-            createBookmarkFileLauncher,
-            openBookmarkFileLauncher
-        )
+        backupUnit.handleBookmarkSync(forceUpload)
     }
 
     private fun hideStatusBar() {
@@ -1002,6 +1078,18 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.systemBars())
             window.setDecorFitsSystemWindows(false)
+        }
+    }
+
+    companion object {
+        private const val KEY_ROUTE = "route"
+
+        // create an intent to navigate to desired setting screen route
+        fun createIntent(context: Context, route: SettingRoute): Intent {
+            return Intent(context, SettingActivity::class.java).apply {
+                addFlags(FLAG_ACTIVITY_NO_ANIMATION)
+                putExtra(KEY_ROUTE, route.name)
+            }
         }
     }
 }
@@ -1026,6 +1114,7 @@ enum class SettingRoute(@StringRes val titleId: Int) {
 fun SettingBar(
     currentScreen: SettingRoute,
     navigateUp: () -> Unit,
+    close: () -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -1039,6 +1128,15 @@ fun SettingBar(
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
                     imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = close) {
+                Icon(
+                    tint = MaterialTheme.colors.onPrimary,
+                    imageVector = Icons.Filled.Close,
                     contentDescription = stringResource(R.string.back)
                 )
             }

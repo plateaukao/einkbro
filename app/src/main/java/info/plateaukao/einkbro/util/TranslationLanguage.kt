@@ -121,4 +121,6 @@ enum class TranslationLanguage(val value: String, val language: String) {
             return ZH_TW
         }
     }
+
+    val languageCode get() = if (value == "zh-TW") "zh-Hant" else if (value == "zh-CN") "zh-Hans" else value
 }

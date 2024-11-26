@@ -4,6 +4,8 @@
 # generated files
 gen/
 
+.kotlin/
+
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -11,10 +13,13 @@ local.properties
 # Android Studio
 .idea/
 .gradle
-gradle
 build
 *.iml
 app/release
 .DS_Store
 .idea/gradle.xml
 tools/*.png
+
+.externalNativeBuild
+.cxx/
+adblock-client/.cxx

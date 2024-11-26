@@ -21,14 +21,14 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.EBToast
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.system.exitProcess
 
 
 class DialogManager(
-    private val activity: Activity
+    private val activity: Activity,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val inflater = LayoutInflater.from(activity)
@@ -41,20 +41,26 @@ class DialogManager(
         isIndeterminate = false
         max = 100
     }
-    fun showSaveEpubDialog(shouldAddNewEpub: Boolean = true, onNextAction: (Uri?) -> Unit) {
+
+    fun showSaveEpubDialog(
+        showAddNewEpub: Boolean = true,
+        openEpubAction: (() -> Unit)? = null,
+        onNextAction: (Uri?) -> Unit,
+    ) {
         val binding = DialogSavedEpubListBinding.inflate(inflater)
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .apply { setView(binding.root) }
             .show()
 
-        setupSavedEpubFileList(binding, dialog, shouldAddNewEpub, onNextAction)
+        setupSavedEpubFileList(binding, dialog, showAddNewEpub, openEpubAction, onNextAction)
     }
 
     private fun setupSavedEpubFileList(
         binding: DialogSavedEpubListBinding,
         dialog: Dialog,
         shouldAddNewEpub: Boolean = true,
-        onNextAction: (Uri?) -> Unit
+        openEpubAction: (() -> Unit)? = null,
+        onNextAction: (Uri?) -> Unit,
     ) {
         if (shouldAddNewEpub) {
             // add first item to handle picker case
@@ -67,6 +73,17 @@ class DialogManager(
                 }
             }
             binding.epubInfoContainer.addView(firstItemBinding.root)
+        }
+        if (openEpubAction != null) {
+            val openEpubItemBinding = ListItemEpubFileBinding.inflate(inflater).apply {
+                buttonHide.visibility = View.GONE
+                epubTitle.setText(R.string.open_epub)
+                root.setOnClickListener {
+                    openEpubAction()
+                    dialog.dismiss()
+                }
+            }
+            binding.epubInfoContainer.addView(openEpubItemBinding.root)
         }
 
         config.savedEpubFileInfos.reversed().forEach { epubFileInfo ->
@@ -117,7 +134,7 @@ class DialogManager(
                 val ext = editExtension.text.toString().trim { it <= ' ' }
                 val fileName = title + ext
                 if (title.isEmpty() || ext.isEmpty() || !extension.startsWith(".")) {
-                    NinjaToast.show(activity, activity.getString(R.string.toast_input_empty))
+                    EBToast.show(activity, activity.getString(R.string.toast_input_empty))
                 } else {
                     saveFile(url, fileName)
                 }
@@ -134,7 +151,7 @@ class DialogManager(
         okAction: () -> Unit,
         cancelAction: (() -> Unit)? = null,
         showInCenter: Boolean = false,
-        showNegativeButton: Boolean = true
+        showNegativeButton: Boolean = true,
     ): Dialog {
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .setPositiveButton(android.R.string.ok) { _, _ -> okAction() }
@@ -156,7 +173,7 @@ class DialogManager(
     }
 
     fun showOptionDialog(
-        view: View
+        view: View,
     ): Dialog {
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .setView(view)
@@ -204,7 +221,7 @@ class DialogManager(
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_TEXT
-        intent.putExtra(Intent.EXTRA_TITLE, "bookmark.txt")
+        intent.putExtra(Intent.EXTRA_TITLE, "bookmarks.json")
         activity.startActivityForResult(intent, EXPORT_BOOKMARKS_REQUEST_CODE)
     }
 
@@ -230,6 +247,15 @@ class DialogManager(
         activity.startActivityForResult(intent, IMPORT_BACKUP_REQUEST_CODE)
     }
 
+//    fun showRemoveHighlightConfirmDialog(
+//        action: () -> Unit,
+//    ) {
+//        showOkCancelDialog(
+//            messageResId = R.string.dialog_message_remove_highlight,
+//            okAction = action,
+//        )
+//    }
+
     fun showRestartConfirmDialog() {
         showOkCancelDialog(
             messageResId = R.string.toast_restart,
@@ -239,7 +265,7 @@ class DialogManager(
 
     fun showCreateOrOpenBookmarkFileDialog(
         createFileAction: () -> Unit,
-        openFileAction: () -> Unit
+        openFileAction: () -> Unit,
     ) {
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .setPositiveButton(R.string.bookmark_new_file) { _, _ -> createFileAction() }

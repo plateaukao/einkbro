@@ -5,6 +5,7 @@ package info.plateaukao.einkbro.view.compose
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.util.AttributeSet
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -44,9 +45,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,7 +84,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
     var recordList: List<Record> by mutableStateOf(emptyList())
     var onHistoryIconClick by mutableStateOf({})
     var onHistoryItemClick by mutableStateOf<(Record) -> Unit>({})
-    var onHistoryItemLongClick by mutableStateOf<(Record) -> Unit>({})
+    var onHistoryItemLongClick by mutableStateOf<(Record, Point) -> Unit>({ _, _ -> })
 
     var addIncognitoTab by mutableStateOf({})
     var addTab by mutableStateOf({})
@@ -136,7 +138,7 @@ fun HistoryAndTabs(
     records: List<Record>,
     onHistoryIconClick: () -> Unit,
     onHistoryItemClick: (Record) -> Unit,
-    onHistoryItemLongClick: (Record) -> Unit,
+    onHistoryItemLongClick: (Record, Point) -> Unit,
 
     addIncognitoTab: () -> Unit,
     addTab: () -> Unit,
@@ -173,7 +175,12 @@ fun HistoryAndTabs(
         MainContent(
             modifier = Modifier.Companion
                 .weight(1f, false)
-                .background(MaterialTheme.colors.background),
+                .background(MaterialTheme.colors.background)
+                .horizontalBorder(
+                    drawTop = !isBarOnTop,
+                    drawBottom = isBarOnTop,
+                    MaterialTheme.colors.onBackground
+                ),
             isHistoryOpen,
             shouldShowTwoColumns,
             shouldReverseHistory,
@@ -216,7 +223,7 @@ private fun MainContent(
     bookmarkManager: BookmarkManager?,
     records: List<Record>,
     onHistoryItemClick: (Record) -> Unit,
-    onHistoryItemLongClick: (Record) -> Unit
+    onHistoryItemLongClick: (Record, Point) -> Unit,
 ) {
     if (!isHistoryOpen) {
         PreviewTabs(
@@ -253,7 +260,7 @@ fun PreviewTabs(
     albumFocusIndex: MutableState<Int>,
     onClick: (Album) -> Unit,
     closeAction: (Album) -> Unit,
-    showHorizontal: Boolean = false
+    showHorizontal: Boolean = false,
 ) {
     if (showHorizontal) {
         val maxItemWidth = 200
@@ -323,7 +330,7 @@ fun PreviewTabs(
 @Composable
 private fun scrollToFocusedItem(
     listState: LazyListState,
-    albumFocusIndex: Int
+    albumFocusIndex: Int,
 ) {
     val scope = rememberCoroutineScope()
     LaunchedEffect(true) {
@@ -356,7 +363,7 @@ private fun TabItem(
                 modifier = Modifier
                     .size(36.dp)
                     .padding(end = 5.dp),
-                painter = painterResource(id = R.drawable.ic_translate),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_translate),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )
@@ -374,7 +381,7 @@ private fun TabItem(
                 modifier = Modifier
                     .size(36.dp)
                     .padding(end = 5.dp),
-                painter = painterResource(id = R.drawable.ic_earth),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_earth),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )
@@ -405,7 +412,7 @@ data class TabInfo(
     val url: String,
     val title: String,
     val favicon: Bitmap? = null,
-    val isTranslatePage: Boolean
+    val isTranslatePage: Boolean,
 )
 
 @Composable
@@ -472,7 +479,7 @@ fun ButtonIcon(
                 onLongClick = onLongClick
             )
             .padding(12.dp),
-        painter = painterResource(id = iconResId),
+        imageVector = ImageVector.vectorResource(id = iconResId),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
     )
@@ -506,7 +513,7 @@ fun PreviewHistoryAndTabs() {
         records = recordList,
         onHistoryIconClick = {},
         onHistoryItemClick = {},
-        onHistoryItemLongClick = {},
+        onHistoryItemLongClick = { _, _ -> },
 
         addIncognitoTab = {},
         addTab = {},

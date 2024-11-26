@@ -6,11 +6,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
@@ -31,33 +37,41 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindowProvider
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import org.koin.android.ext.android.inject
 
-class GptActionsActivity : ComponentActivity(), KoinComponent {
+class GptActionsActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val actionIndex = intent?.getIntExtra("actionIndex", -1) ?: -1
+        val defaultActionType = config.getDefaultActionType()
+
         setContent {
             val actionList = remember { mutableStateOf(config.gptActionList) }
             var showDialog by remember { mutableStateOf(false) }
-            var editActionIndex by remember { mutableStateOf(-1) }
+            var editActionIndex by remember { mutableIntStateOf(actionIndex) }
 
             MyTheme {
                 Scaffold(
@@ -106,6 +120,7 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                     GptActionListContent(
                         modifier = Modifier.padding(innerPadding),
                         actionList,
+                        defaultActionType,
                         editAction = { index ->
                             editActionIndex = index
                             showDialog = true
@@ -116,32 +131,44 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
                     }
                 }
             }
-            GptActionDialog(
-                showDialog,
-                editActionIndex,
-                if (editActionIndex >= 0) actionList.value[editActionIndex] else null,
-                okAction = { name, systemMessage, userMessage ->
-                    actionList.value = actionList.value.toMutableList().apply {
-                        if (editActionIndex >= 0)
-                            set(
-                                editActionIndex,
-                                ChatGPTActionInfo(name, systemMessage, userMessage)
-                            )
-                        else
-                            add(ChatGPTActionInfo(name, systemMessage, userMessage))
-                    }
-                    config.gptActionList = actionList.value
-                    showDialog = false
-                },
-                dismissAction = { showDialog = false }
-            )
+            if (showDialog) {
+                GptActionDialog(
+                    editActionIndex,
+                    if (editActionIndex >= 0)
+                        actionList.value[editActionIndex] else createDefaultGptAction(),
+
+                    config.getGptTypeModelMap(),
+                    okAction = { modifiedAction ->
+                        actionList.value = actionList.value.toMutableList().apply {
+                            if (editActionIndex >= 0) set(editActionIndex, modifiedAction)
+                            else add(modifiedAction)
+                        }
+                        config.gptActionList = actionList.value
+                        showDialog = false
+                    },
+                    dismissAction = { showDialog = false }
+                )
+            }
         }
+
+    }
+
+    private fun createDefaultGptAction(): ChatGPTActionInfo {
+        return ChatGPTActionInfo(
+            "New Action",
+            "",
+            "",
+            GptActionType.Default,
+            config.getDefaultActionModel()
+        )
     }
 
     companion object {
-        fun createIntent(context: Context) = Intent(
-            context,
-            GptActionsActivity::class.java
+        fun start(context: Context) = context.startActivity(
+            Intent(
+                context,
+                GptActionsActivity::class.java
+            )
         )
     }
 }
@@ -150,9 +177,12 @@ class GptActionsActivity : ComponentActivity(), KoinComponent {
 fun GptActionListContent(
     modifier: Modifier = Modifier,
     list: MutableState<List<ChatGPTActionInfo>>,
+    defaultActionType: GptActionType,
     editAction: (Int) -> Unit, // edit action with index
-    deleteAction: (ChatGPTActionInfo) -> Unit = {}
+    deleteAction: (ChatGPTActionInfo) -> Unit = {},
 ) {
+    val context = LocalContext.current
+
     if (list.value.isEmpty()) {
         // show empty text in center of screen
         Box(
@@ -169,22 +199,52 @@ fun GptActionListContent(
         }
     } else {
         LazyColumn(
-            modifier = modifier,
+            modifier = modifier.padding(10.dp),
             content = {
                 items(list.value.size) { index ->
                     val gptAction = list.value[index]
+                    val actionType = gptAction.actionType.takeIf { it != GptActionType.Default }
+                        ?: defaultActionType
+
+                    val iconRes = when (actionType) {
+                        GptActionType.OpenAi -> R.drawable.ic_chat_gpt
+                        GptActionType.SelfHosted -> R.drawable.ic_ollama
+                        GptActionType.Gemini -> R.drawable.ic_gemini
+                        else -> R.drawable.ic_chat_gpt
+                    }
                     Row(
-                        Modifier.padding(16.dp),
+                        Modifier
+                            .fillMaxSize()
+                            .clickable {
+                                editAction(index)
+                            },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        SelectableText(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = 1.dp, vertical = 3.dp),
-                            selected = false,
-                            text = gptAction.name
+                        // icon: action type
+                        Icon(
+                            modifier = Modifier.wrapContentWidth(),
+                            imageVector = ImageVector.vectorResource(id = iconRes),
+                            contentDescription = "Action Type",
+                        )
+                        Spacer(modifier = Modifier.width(15.dp))
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
                         ) {
-                            editAction(index)
+                            Text(
+                                modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                                text = gptAction.name,
+                                style = MaterialTheme.typography.h6,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                            if (gptAction.model.isNotEmpty()) {
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                                    text = gptAction.model,
+                                    style = MaterialTheme.typography.caption,
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                         }
                         IconButton(onClick = {
                             deleteAction(list.value[index])
@@ -202,88 +262,156 @@ fun GptActionListContent(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GptActionDialog(
-    showDialog: Boolean,
     editActionIndex: Int,
-    action: ChatGPTActionInfo? = null,
-    okAction: (String, String, String) -> Unit,
-    dismissAction: () -> Unit
+    action: ChatGPTActionInfo,
+    gptTypeModelMap: Map<GptActionType, String>,
+    okAction: (ChatGPTActionInfo) -> Unit,
+    dismissAction: () -> Unit,
 ) {
     val name = remember { mutableStateOf("") }
     val systemPrompt = remember { mutableStateOf("") }
     val userPrompt = remember { mutableStateOf("") }
+    val currentActionType = remember { mutableStateOf(GptActionType.Default) }
+    val model = remember { mutableStateOf(action.model) }
 
-    if (editActionIndex >= 0 && action != null) {
+    if (editActionIndex >= 0) {
         name.value = action.name
         systemPrompt.value = action.systemMessage
         userPrompt.value = action.userMessage
+        currentActionType.value = action.actionType
     } else {
         name.value = ""
         systemPrompt.value = ""
         userPrompt.value = ""
+        currentActionType.value = GptActionType.Default
     }
 
-    if (showDialog) {
-        AlertDialog(
-            modifier = Modifier
-                .padding(2.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colors.onBackground,
-                    shape = RoundedCornerShape(8.dp)
+    AlertDialog(
+        modifier = Modifier
+            .padding(2.dp)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colors.onBackground,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(2.dp),
+        // use caption style
+        title = { Text("Action Setting", style = MaterialTheme.typography.h6) },
+        text = {
+            // set dim amount to 0 to avoid dialog window's dim
+            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+            Column {
+                TextField(
+                    modifier = Modifier.padding(2.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = MaterialTheme.colors.onBackground,
+                        backgroundColor = MaterialTheme.colors.background,
+                    ),
+                    value = name.value,
+                    onValueChange = { name.value = it },
+                    label = { Text("Name") }
                 )
-                .padding(2.dp),
-            title = { Text("Action Setting") },
-            text = {
-                // set dim amount to 0 to avoid dialog window's dim
-                (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
-                Column {
-                    TextField(
-                        modifier = Modifier.padding(2.dp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            textColor = MaterialTheme.colors.onBackground,
-                            backgroundColor = MaterialTheme.colors.background,
-                        ),
-                        value = name.value,
-                        onValueChange = { name.value = it },
-                        label = { Text("name") }
-                    )
-                    TextField(
-                        modifier = Modifier.padding(2.dp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            textColor = MaterialTheme.colors.onBackground,
-                            backgroundColor = MaterialTheme.colors.background,
-                        ),
-                        value = systemPrompt.value,
-                        onValueChange = { systemPrompt.value = it },
-                        label = { Text("system prompt") }
-                    )
-                    TextField(
-                        modifier = Modifier.padding(2.dp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            textColor = MaterialTheme.colors.onBackground,
-                            backgroundColor = MaterialTheme.colors.background,
-                        ),
-                        value = userPrompt.value,
-                        onValueChange = { userPrompt.value = it },
-                        label = { Text("user prompt") }
-                    )
-                }
-            },
-            onDismissRequest = { dismissAction() },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        okAction(name.value, systemPrompt.value, userPrompt.value)
+                TextField(
+                    modifier = Modifier.padding(2.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = MaterialTheme.colors.onBackground,
+                        backgroundColor = MaterialTheme.colors.background,
+                    ),
+                    value = systemPrompt.value,
+                    onValueChange = { systemPrompt.value = it },
+                    label = { Text("System Prompt") }
+                )
+                TextField(
+                    modifier = Modifier.padding(2.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = MaterialTheme.colors.onBackground,
+                        backgroundColor = MaterialTheme.colors.background,
+                    ),
+                    minLines = 3,
+                    value = userPrompt.value,
+                    onValueChange = { userPrompt.value = it },
+                    label = { Text("User Prompt") }
+                )
+                Text(
+                    modifier = Modifier.padding(5.dp),
+                    text = "Service",
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onBackground
+                )
+                FlowRow {
+                    GptActionType.entries.map { gptActionType ->
+                        val isSelect = currentActionType.value == gptActionType
+                        SelectableText(
+                            modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                            selected = isSelect,
+                            text = "$gptActionType",
+                        ) {
+                            currentActionType.value = gptActionType
+                            model.value = gptTypeModelMap[gptActionType] ?: ""
+                        }
                     }
-                ) {
-                    Text(
-                        stringResource(id = android.R.string.ok),
-                        color = MaterialTheme.colors.onBackground
+                }
+                TextField(
+                    modifier = Modifier.padding(2.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = MaterialTheme.colors.onBackground,
+                        backgroundColor = MaterialTheme.colors.background,
+                    ),
+                    value = model.value,
+                    onValueChange = { model.value = it },
+                    label = { Text("model") }
+                )
+            }
+        },
+        onDismissRequest = { dismissAction() },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    okAction(
+                        ChatGPTActionInfo(
+                            name.value,
+                            systemPrompt.value,
+                            userPrompt.value,
+                            currentActionType.value,
+                            model.value,
+                        )
                     )
                 }
+            ) {
+                Text(
+                    stringResource(id = android.R.string.ok),
+                    color = MaterialTheme.colors.onBackground
+                )
             }
+        }
+    )
+}
+
+@Preview
+@Composable
+private fun GptActionListContentPreview() {
+    val actionList = remember {
+        mutableStateOf(
+            listOf(
+                ChatGPTActionInfo(
+                    "ChatGPT",
+                    "system message",
+                    "user message",
+                    GptActionType.SelfHosted,
+                    "gpt-3"
+                )
+            )
+        )
+    }
+    MyTheme {
+        GptActionListContent(
+            list = actionList,
+            defaultActionType = GptActionType.OpenAi,
+            editAction = {},
+            deleteAction = {}
         )
     }
 }

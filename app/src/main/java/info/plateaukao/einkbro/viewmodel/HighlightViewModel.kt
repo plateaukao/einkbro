@@ -19,7 +19,7 @@ class HighlightViewModel : ViewModel(), KoinComponent {
 
     suspend fun getArticle(articleId: Int) = bookmarkManager.getArticle(articleId)
 
-    suspend fun dumpArticlesHighlights(): String {
+    suspend fun dumpArticlesHighlightsAsHtml(): String {
         val articles = getAllArticlesAsync()
         var data = ""
         articles.sortedByDescending { it.date }.forEach {
@@ -30,7 +30,7 @@ class HighlightViewModel : ViewModel(), KoinComponent {
 
     suspend fun dumpSingleArticleHighlights(articleId: Int): String {
         val article = getArticle(articleId)
-        val articleTitle = article?.title ?: ""
+        val articleTitle = article?.title.orEmpty()
         val highlights = getHighlightsForArticleAsync(articleId)
         var data = "<h2>$articleTitle</h2><hr/>"
         data += highlights.joinToString("<br/><br/>") { it.content }
@@ -47,7 +47,7 @@ class HighlightViewModel : ViewModel(), KoinComponent {
     fun getHighlightsForArticle(articleId: Int) =
         bookmarkManager.getHighlightsForArticle(articleId)
 
-    suspend fun getHighlightsForArticleAsync(articleId: Int) =
+    private suspend fun getHighlightsForArticleAsync(articleId: Int) =
         bookmarkManager.getHighlightsForArticleAsync(articleId)
 
     fun launchUrl(activity: Activity, url: String) {

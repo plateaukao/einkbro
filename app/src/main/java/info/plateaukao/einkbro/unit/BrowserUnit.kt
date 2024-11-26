@@ -41,8 +41,9 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
 import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.NinjaToast.showShort
+import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.EBToast.showShort
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
@@ -134,7 +135,7 @@ object BrowserUnit : KoinComponent {
                             activity.startActivity(fileIntent)
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            NinjaToast.show(activity, R.string.toast_error)
+                            EBToast.show(activity, R.string.toast_error)
                         }
                     }
                 )
@@ -156,7 +157,7 @@ object BrowserUnit : KoinComponent {
 
     fun getWebViewLinkImageUrl(webView: WebView, message: Message): String {
         val hitTestResult = webView.hitTestResult
-        return hitTestResult.extra ?: message.data.getString("src") ?: ""
+        return hitTestResult.extra ?: message.data.getString("src").orEmpty()
     }
 
     fun getWebViewLinkUrl(webView: WebView, message: Message): String {
@@ -181,7 +182,7 @@ object BrowserUnit : KoinComponent {
         val newMessage = Message().apply {
             target = object : Handler(Looper.getMainLooper()) {
                 override fun handleMessage(msg: Message) {
-                    val titleText = msg.data.getString("title")?.replace("\n", "")?.trim() ?: ""
+                    val titleText = msg.data.getString("title")?.replace("\n", "")?.trim().orEmpty()
                     action(titleText)
                 }
             }
@@ -294,14 +295,14 @@ object BrowserUnit : KoinComponent {
             }
         }
 
-        if (isURL(query) && !query.contains(" ")) {
+        if (isURL(query)) {
             if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
                 return query
             }
             if (!query.contains("://")) {
                 query = URL_SCHEME_HTTPS + query
             }
-            return query
+            return query.replace(" ", "+")
         }
 
         try {
@@ -591,7 +592,7 @@ object BrowserUnit : KoinComponent {
 
             val uriBuilder = uri.buildUpon().clearQuery()
             for (param in params) {
-                if (!matchNeatUrlConfig(uri.host ?: "", param)) {
+                if (!matchNeatUrlConfig(uri.host.orEmpty(), param)) {
                     uriBuilder.appendQueryParameter(param, uri.getQueryParameter(param))
                 } else {
                     strippedCount++
@@ -632,6 +633,20 @@ object BrowserUnit : KoinComponent {
             if (matchStarString(paramConfig, param)) return true
         }
         return false
+    }
+    
+    fun loadRecentlyUsedBookmarks(webView: EBWebView) {
+        val html = getRecentBookmarksContent()
+        if (html.isNotBlank()) {
+            webView.loadDataWithBaseURL(
+                null,
+                getRecentBookmarksContent(),
+                "text/html",
+                "utf-8",
+                null
+            )
+            webView.albumTitle = webView.context.getString(R.string.recently_used_bookmarks)
+        }
     }
 
     private fun matchStarString(config: String, param: String): Boolean {
