@@ -14,8 +14,8 @@ function convertToVerticalStyle(node) {
 
             // digits longer than 3 characters , e.g. 12345, keep 2024 similar year numbers
             if (match[0].length >= 3) {
-                console.log("matchedText.length >= 3");
-                console.log(matchedText);
+                //console.log("matchedText.length >= 3");
+                //console.log(matchedText);
                 if (matchedText[1] != '.') {
                     if (lastIndex < match.index) {
                         fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
@@ -139,10 +139,10 @@ function convertListLabel(node) {
 
    olLists.forEach((ol) => {
        const listStyleType = window.getComputedStyle(ol).listStyleType;
-       console.log(listStyleType);
+       //console.log(listStyleType);
        const listItems = ol.querySelectorAll("li");
        listItems.forEach((li, index) => {
-           console.log(li.textContent);
+           //console.log(li.textContent);
            const marker = convertLabel(listStyleType, index);
            li.setAttribute("data-marker", marker);
        });

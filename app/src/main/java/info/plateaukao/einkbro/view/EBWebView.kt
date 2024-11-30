@@ -1104,7 +1104,7 @@ open class EBWebView(
             var article = new Readability(documentClone, $readabilityOptions).parse();
             document.innerHTMLCache = document.body.innerHTML;
 
-            article.readingTime = getReadingTime(article.length, document.lang);
+            article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
 
             document.body.outerHTML = createHtmlBody(article)
 
@@ -1115,7 +1115,7 @@ open class EBWebView(
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
                 var article = new Readability(documentClone, $readabilityOptions).parse();
-                article.readingTime = getReadingTime(article.length, document.lang);
+                article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
                 var bodyOuterHTML = createHtmlBodyWithUrl(article, "%s")
                 var headOuterHTML = document.head.outerHTML;
                 return ('<html>'+ headOuterHTML + bodyOuterHTML +'</html>');
