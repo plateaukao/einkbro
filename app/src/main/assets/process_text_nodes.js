@@ -8,12 +8,15 @@ function convertToVerticalStyle(node) {
         const fragment = document.createDocumentFragment();
 
         while ((match = regex.exec(text)) !== null) {
+            let matchedText = match[0];
             // exclude english words longer than 2 characters, e.g. "Hello" but keep a. b. c.
-            if (match[0].length > 1 && isLetter(match[0][0]) && isLetter(match[0][1])) { continue }
+            if (matchedText.length > 4 && isLetter(matchedText[0]) && isLetter(matchedText[1])) { continue }
 
             // digits longer than 3 characters , e.g. 12345, keep 2024 similar year numbers
             if (match[0].length >= 3) {
-                if (match[0][1] != '.') {
+                console.log("matchedText.length >= 3");
+                console.log(matchedText);
+                if (matchedText[1] != '.') {
                     if (lastIndex < match.index) {
                         fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
                     }
@@ -21,7 +24,7 @@ function convertToVerticalStyle(node) {
                     // Create span element for the matched part
                     const span = document.createElement('span');
                     span.className = 'verticalSingleChr';
-                    span.textContent = match[0];
+                    span.textContent = matchedText;
                     fragment.appendChild(span);
 
                     lastIndex = regex.lastIndex;
@@ -33,11 +36,19 @@ function convertToVerticalStyle(node) {
                 fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
             }
 
-            // Create span element for the matched part
-            const span = document.createElement('span');
-            span.className = 'vertical';
-            span.textContent = match[0];
-            fragment.appendChild(span);
+            // prevent duplicate vertical text
+            const parentNode = node.parentNode;
+            const isAlreadyWrapped = parentNode && parentNode.classList && parentNode.classList.contains('vertical');
+
+            if (!isAlreadyWrapped) {
+                // Create span element for the matched part
+                const span = document.createElement('span');
+                span.className = 'vertical';
+                span.textContent = matchedText;
+                fragment.appendChild(span);
+            } else {
+                fragment.appendChild(document.createTextNode(match[0]));
+            }
 
             lastIndex = regex.lastIndex;
         }
