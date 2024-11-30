@@ -2368,7 +2368,9 @@ const minuteTranslations = {
   sk: 'minút',
   sv: 'minuter',
   tr: 'dakika',
-  zh: '分鐘'
+  zh: '分鐘',
+  ja: '分',
+  ko: '분',
 };
 
 
