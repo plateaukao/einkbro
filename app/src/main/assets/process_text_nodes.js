@@ -2,7 +2,7 @@ function convertToVerticalStyle(node) {
     if (node.nodeType === Node.TEXT_NODE) {
         let text = convertToFullWidth(node.nodeValue);
         // 1.1 | 1. | 2024 | a.
-        const regex = /(\b\d\.\d\b|\d{1}\.(?=\s|\b)|\d{1,4}|\b[a-zA-Z]\.)/g;
+        const regex = /(\b\d\.\d\b|\d{1}\.(?=\s|\b)|\d{1,4}|\b[a-zA-Z]\.|\b[a-zA-Z]{1,3}(?![a-zA-Z]))/g;
         let match;
         let lastIndex = 0;
         const fragment = document.createDocumentFragment();
@@ -67,7 +67,7 @@ function convertToVerticalStyle(node) {
 }
 
 function convertToFullWidth(str) {
-  return str.replace(/%/g, '％');
+  return str.replace(/%/g, '％').replace(/\,/g, '，').replace(/\?/g, '？').replace(/\!/g, '！').replace(/:/g, '：').replace(/\//g, '／');
 }
 
 function isLetter(char) {
