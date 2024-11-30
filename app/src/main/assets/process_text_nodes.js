@@ -149,39 +149,11 @@ function convertListLabel(node) {
    });
 }
 
-//   const ulLists = node.querySelectorAll("ul");
-//   ulLists.forEach((ul) => {
-//       const listStyleType = ul.style.listStyleType;
-//       const listItems = ul.querySelectorAll("li");
-//       listItems.forEach((li, index) => {
-//           const marker = convertLabel(listStyleType, index);
-//           li.setAttribute("data-marker", marker);
-//       });
-//   });
-
 // Run the function on the document body
 convertListLabel(document.body);
 
 function changeOlToOlCjk(node) {
-    const olElements = node.querySelectorAll("ol");
-
-    olElements.forEach((ol) => {
-        const newOl = document.createElement("ol");
-        newOl.classList.add("cjk");
-
-        // Copy all attributes from old ol to new ol
-        for (let attr of ol.attributes) {
-            newOl.setAttribute(attr.name, attr.value);
-        }
-
-        // Move all children from old ol to new ol
-        while (ol.firstChild) {
-            newOl.appendChild(ol.firstChild);
-        }
-
-        // Replace old ol with new ol
-        ol.parentNode.replaceChild(newOl, ol);
-    });
+    node.querySelectorAll("ol").forEach((ol) => { ol.classList.add("cjk"); });
 }
 
 changeOlToOlCjk(document.body);
