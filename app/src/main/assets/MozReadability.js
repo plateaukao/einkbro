@@ -2351,6 +2351,27 @@ function  getReadingSpeedForLanguage(lang) {
  return readingSpeed.get(lang) || readingSpeed.get("en");
 }
 
+const minuteTranslations = {
+  en: 'minutes',
+  ar: 'دقائق',
+  de: 'Minuten',
+  es: 'minutos',
+  fi: 'minuuttia',
+  fr: 'minutes',
+  he: 'דקות',
+  it: 'minuti',
+  jw: 'menit',
+  nl: 'minuten',
+  pl: 'minut',
+  pt: 'minutos',
+  ru: 'минут',
+  sk: 'minút',
+  sv: 'minuter',
+  tr: 'dakika',
+  zh: '分鐘'
+};
+
+
 function  getReadingTime(length, lang = "en") {
   const readingSpeed = this.getReadingSpeedForLanguage(lang);
   const charactersPerMinuteLow = readingSpeed.cpm - readingSpeed.variance;
@@ -2361,8 +2382,11 @@ function  getReadingTime(length, lang = "en") {
   // Construct a localized and "humanized" reading time in minutes.
   // If we have both a fast and slow reading time we'll show both e.g.
   // "2 - 4 minutes", otherwise we'll just show "4 minutes".
+  console.log('lang', lang);
+  console.log('minuteTranslations[lang]', minuteTranslations[lang]);
   try {
     var parts = new Intl.RelativeTimeFormat(lang).formatToParts(readingTimeMinsSlow, 'minute');
+    console.log('parts', parts);
     if (parts.length == 3) {
       // No need to use part[0] which represents the literal "in".
       var readingTime = parts[1].value; // reading time in minutes
@@ -2372,6 +2396,8 @@ function  getReadingTime(length, lang = "en") {
         readingTimeString = `${readingTimeMinsFast} - ${readingTimeString}`;
       }
       return readingTimeString;
+    } else {
+      return `${readingTimeMinsSlow} ${minuteTranslations[lang]}`;
     }
   }
   catch(error) {
