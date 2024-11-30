@@ -261,9 +261,9 @@
 
 .vertical {
     display: inline-block;
-    margin: 0.5em 0 !important;
+    margin: 0.4em 0.0em !important;
     letter-spacing: 0.0em;
-    text-indent: 0;
+    text-indent: 0.2em;
     -moz-transform:rotate(-90deg);
     -webkit-transform:rotate(-90deg);
     -o-transform:rotate(-90deg);
@@ -272,6 +272,7 @@
 .verticalSingleChr {
     writing-mode: vertical-rl;
     text-orientation: upright;
+    text-indent: 0.4em;
 }
 ol.cjk {
     list-style-type: none;
