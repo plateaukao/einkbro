@@ -18,20 +18,27 @@ function toChineseNumeralForDate(num) {
 }
 
 function convertDateToChinese(dateString) {
-  return convertMonthDayToChinese(convertYearToChinese(dateString));
+  return convertDayToChinese(convertMonthToChinese(convertYearToChinese(dateString)));
 }
 
-function convertMonthDayToChinese(dateString) {
-  const datePattern = /(\d{1,2})月(\d{1,2})日/g;
-  return dateString.replace(datePattern, (match, month, day) => {
-    const chineseMonth = toChineseNumeralForDate(parseInt(month));
+function convertDayToChinese(dateString) {
+  const datePattern = /\s*(\d{1,2})\s*日/g;
+  return dateString.replace(datePattern, (match, day) => {
     const chineseDay = toChineseNumeralForDate(parseInt(day));
-    return `${chineseMonth}月${chineseDay}日`;
+    return `${chineseDay}日`;
+  });
+}
+
+function convertMonthToChinese(dateString) {
+  const datePattern = /\s*(\d{1,2})\s*月/g;
+  return dateString.replace(datePattern, (match, month) => {
+    const chineseMonth = toChineseNumeralForDate(parseInt(month));
+    return `${chineseMonth}月`;
   });
 }
 
 function convertYearToChinese(dateString) {
-  const datePattern = /(\d{1,4})年/g;
+  const datePattern = /(\d{1,4})\s*年/g;
   return dateString.replace(datePattern, (match, year) => {
     console.log(year);
     const chineseYear = year.split('').map(digit => toChineseNumeral(digit)).join('');
