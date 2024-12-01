@@ -1,3 +1,55 @@
+function toChineseNumeral(num) {
+  const numerals = ['○', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  return num.toString().split('').map(digit => numerals[parseInt(digit)]).join('');
+}
+
+function toChineseNumeralForDate(num) {
+  const numerals = ['○', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+
+  if (num < 10) {
+    return numerals[num];
+  } else if (num < 20) {
+    return '十' + (num === 10 ? '' : numerals[num - 10]);
+  } else {
+    const tens = Math.floor(num / 10);
+    const units = num % 10;
+    return (tens === 1 ? '十' : numerals[tens] + '十') + (units === 0 ? '' : numerals[units]);
+  }
+}
+
+function convertDateToChinese(dateString) {
+  return convertMonthDayToChinese(convertYearToChinese(dateString));
+}
+
+function convertMonthDayToChinese(dateString) {
+  const datePattern = /(\d{1,2})月(\d{1,2})日/g;
+  return dateString.replace(datePattern, (match, month, day) => {
+    const chineseMonth = toChineseNumeralForDate(parseInt(month));
+    const chineseDay = toChineseNumeralForDate(parseInt(day));
+    return `${chineseMonth}月${chineseDay}日`;
+  });
+}
+
+function convertYearToChinese(dateString) {
+  const datePattern = /(\d{1,4})年/g;
+  return dateString.replace(datePattern, (match, year) => {
+    console.log(year);
+    const chineseYear = year.split('').map(digit => toChineseNumeral(digit)).join('');
+    console.log('chineseYear', chineseYear);
+    return `${chineseYear}年`;
+  });
+}
+
+function traverseAndConvertDates(node) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    node.textContent = convertDateToChinese(node.textContent);
+  } else {
+    node.childNodes.forEach(traverseAndConvertDates);
+  }
+}
+
+traverseAndConvertDates(document.body);
+
 function convertToVerticalStyle(node) {
     if (node.nodeType === Node.TEXT_NODE) {
         let text = convertToFullWidth(node.nodeValue);
