@@ -13,6 +13,7 @@
 
 .mozac-readerview-body * {
   background-color: #ffffff !important;
+  line-height: 1.5em !important;
 }
 
 /* Override some controls and content styles based on color scheme */
@@ -267,7 +268,8 @@
     display: inline-block;
     margin: 0.4em 0.0em !important;
     letter-spacing: 0.0em;
-    text-indent: 0.2em;
+    text-indent: 0.1em;
+    font-size: 0.8em;
     -moz-transform:rotate(-90deg);
     -webkit-transform:rotate(-90deg);
     -o-transform:rotate(-90deg);
