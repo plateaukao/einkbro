@@ -2408,3 +2408,10 @@ function  getReadingTime(length, lang = "en") {
 
   return "";
 }
+
+function setPadding(paddingValue) {
+    var elements = document.getElementsByClassName('mozac-readerview-body');
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.padding = paddingValue + 'px';
+    }
+}

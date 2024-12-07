@@ -199,6 +199,9 @@ class ConfigManager(
 
     var fontBoldness by IntPreference(sp, K_FONT_BOLDNESS, 700)
 
+    private val K_PADDING_FOR_READER_MODE = "sp_padding_for_reader_mode"
+    var paddingForReaderMode by IntPreference(sp, K_PADDING_FOR_READER_MODE, 10)
+
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
     var preferredTranslateLanguageString by StringPreference(sp, K_TRANSLATED_LANGS)

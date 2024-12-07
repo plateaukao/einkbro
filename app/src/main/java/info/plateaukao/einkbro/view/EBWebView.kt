@@ -769,6 +769,9 @@ open class EBWebView(
                             // need to wait for a while to jump to top, so that vertical read starts from beginning
                             postDelayed({ jumpToTop() }, 200)
                         }
+                    } else {
+                        // add padding
+                        setPaddingInReaderMode(config.paddingForReaderMode)
                     }
                 }
             }
@@ -778,6 +781,10 @@ open class EBWebView(
             disableReaderMode(isVertical)
             settings.textZoom = config.fontSize
         }
+    }
+
+    private fun setPaddingInReaderMode(padding: Int) {
+        evaluateJavascript("javascript:setPadding($padding)", null)
     }
 
     fun clearTranslationElements() {
