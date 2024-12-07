@@ -100,8 +100,7 @@ private fun RecordItem(
 
     Row(
         modifier = modifier
-            .height(60.dp)
-            .padding(5.dp),
+            .padding(2.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         if (record.type == RecordType.Bookmark) {
@@ -142,14 +141,14 @@ private fun RecordItem(
             AndroidView(
                 factory = { context ->
                     TextView(context).apply {
-                        textSize = ViewUnit.dpToPixel(6)
+                        textSize = ViewUnit.dpToPixel(11).toFloat()
                         maxLines = 1
                         ellipsize = TextUtils.TruncateAt.MIDDLE
                     }
                 },
                 update = { it.text = record.title ?: "Unknown" }
             )
-            Spacer(modifier = Modifier.height(3.dp))
+            Spacer(modifier = Modifier.height(1.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -159,7 +158,7 @@ private fun RecordItem(
                         .align(Alignment.Top),
                     factory = { context ->
                         TextView(context).apply {
-                            textSize = ViewUnit.dpToPixel(5)
+                            textSize = ViewUnit.dpToPixel(8).toFloat()
                             textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                             maxLines = 1
                             ellipsize = TextUtils.TruncateAt.MIDDLE

@@ -59,6 +59,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -489,8 +491,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val externalSearchContainer = binding.activityMainContent.externalSearchActionContainer
         externalSearchViewModel.searchActions.forEach { action ->
             val button = TextView(this).apply {
-                height = ViewUnit.dpToPixel(40).toInt()
-                textSize = ViewUnit.dpToPixel(10)
+                height = 40.dp.value.toInt()
+                textSize = 10.sp.value
                 gravity = Gravity.CENTER
                 background = getDrawable(R.drawable.background_with_border)
                 text = action.title.take(2).uppercase(Locale.getDefault())
