@@ -406,6 +406,12 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_page_left_value,
             config::pageReservedOffsetInString
         ),
+        ValueSettingItem(
+            R.string.setting_title_reader_mode_padding,
+            0,
+            R.string.setting_summary_reader_mode_padding,
+            config::paddingForReaderMode
+        ),
         ListSettingWithEnumItem(
             R.string.dark_mode,
             0,
