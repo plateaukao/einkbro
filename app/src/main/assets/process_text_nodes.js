@@ -60,8 +60,8 @@ traverseAndConvertDates(document.body);
 function convertToVerticalStyle(node) {
     if (node.nodeType === Node.TEXT_NODE) {
         let text = convertToFullWidth(node.nodeValue);
-        // 1.1 | 1. | 2024 | a.
-        const regex = /(\b\d\.\d\b|\d{1}\.(?=\s|\b)|\d{1,4}|\b[a-zA-Z]\.|\b[a-zA-Z]{1,3}(?![a-zA-Z])(?!\S))/g;
+        // 1.1 | 1. | 5G | 2024 | a. | 這是 ABC 的測試
+        const regex = /(\b\d\.\d\b|\d{1}\.(?=\s|\b)|\b\d[a-zA-Z]{1}|\d{1,4}|\b[a-zA-Z]{1}\.(?!\s+[a-zA-Z])|(?<![a-zA-Z]+\s+)\b[a-zA-Z]{1,4}(?![a-zA-Z])(?!\s+[a-zA-Z]))/g;
         let match;
         let lastIndex = 0;
         const fragment = document.createDocumentFragment();
