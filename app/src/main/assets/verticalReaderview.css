@@ -266,10 +266,11 @@
 
 .vertical {
     display: inline-block;
-    margin: 0.4em 0.0em !important;
+    /* need to set a width for the vertical text */
+    margin: 0.8em 0.0em !important;
     letter-spacing: 0.0em;
     text-indent: 0.1em;
-    font-size: 0.8em;
+    font-size: 1.0em;
     -moz-transform:rotate(-90deg);
     -webkit-transform:rotate(-90deg);
     -o-transform:rotate(-90deg);
