@@ -70,6 +70,7 @@ function convertToVerticalStyle(node) {
             let matchedText = match[0];
             // exclude english words longer than 2 characters, e.g. "Hello" but keep a. b. c.
             if (matchedText.length > 4 && isLetter(matchedText[0]) && isLetter(matchedText[1])) { continue }
+            if (matchedText.length == 3 && isAllCapitalLetter(matchedText)) { continue }
 
             // digits longer than 3 characters , e.g. 12345, keep 2024 similar year numbers
             if (match[0].length >= 3) {
@@ -127,6 +128,15 @@ function convertToVerticalStyle(node) {
 
 function convertToFullWidth(str) {
   return str.replace(/%/g, '％').replace(/\,/g, '，').replace(/\?/g, '？').replace(/\!/g, '！').replace(/:/g, '：').replace(/\//g, '／');
+}
+
+function isAllCapitalLetter(str) {
+    for (let i = 0; i < str.length; i++) {
+        if (!isLetter(str[i])) {
+            return false;
+        }
+    }
+    return str === str.toUpperCase();
 }
 
 function isLetter(char) {
