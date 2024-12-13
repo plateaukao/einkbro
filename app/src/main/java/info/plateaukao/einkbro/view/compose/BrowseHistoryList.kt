@@ -42,7 +42,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordType
-import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.compose.toScreenPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -141,7 +140,7 @@ private fun RecordItem(
             AndroidView(
                 factory = { context ->
                     TextView(context).apply {
-                        textSize = ViewUnit.dpToPixel(11).toFloat()
+                        textSize = 16.sp.value.toFloat()
                         maxLines = 1
                         ellipsize = TextUtils.TruncateAt.MIDDLE
                     }
@@ -158,7 +157,7 @@ private fun RecordItem(
                         .align(Alignment.Top),
                     factory = { context ->
                         TextView(context).apply {
-                            textSize = ViewUnit.dpToPixel(8).toFloat()
+                            textSize = 12.sp.value.toFloat()
                             textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                             maxLines = 1
                             ellipsize = TextUtils.TruncateAt.MIDDLE
