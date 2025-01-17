@@ -74,7 +74,7 @@ class OverviewDialogController(
             addTab = { hide(); addEmptyTabAction() }
             closePanel = { hide() }
             onDeleteAllHistoryAction = { hide(); deleteAllItems() }
-            onCloseAllTabs = { hide(); closeAllTabs() }
+            onCloseAllTabs = { hide(); closeAllTabs(); addEmptyTabAction() }
             launchNewBrowserAction =
                 { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
         }
