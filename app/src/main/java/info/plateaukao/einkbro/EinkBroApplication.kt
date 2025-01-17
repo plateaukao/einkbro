@@ -1,16 +1,20 @@
 package info.plateaukao.einkbro
 
+import android.Manifest
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.activity.SettingActivity
 import info.plateaukao.einkbro.browser.AdBlock
@@ -140,13 +144,8 @@ class EinkBroApplication : Application() {
             }
         }
         NotificationManagerCompat.from(this).apply {
-            // Make a channel if necessary
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // Create the NotificationChannel, but only on API 26+ because
-                // the NotificationChannel class is new and not in the support library
-                //val name: CharSequence = getString(R.string.notification_channel_name)
                 val name: CharSequence = "Filter Download"
-                //val description: String = getString(R.string.notification_description)
                 val description: String = "Filter Download Description"
                 val importance = NotificationManager.IMPORTANCE_HIGH
                 val channel = NotificationChannel(channelId, name, importance)
@@ -156,9 +155,24 @@ class EinkBroApplication : Application() {
                 // Add the channel
                 createNotificationChannel(channel)
             }
-            val notification = builder.build()
-            cancel(notificationId)// fix notification remains on MIUI 12.5
-            notify(notificationId, notification)
+            // Check if notification permission is granted
+            if (ContextCompat.checkSelfPermission(
+                    this@EinkBroApplication,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                val notification = builder.build()
+                cancel(notificationId)
+                notify(notificationId, notification)
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ActivityCompat.requestPermissions(
+                        (this@EinkBroApplication as BrowserActivity),
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        1
+                    )
+                }
+            }
         }
     }
 

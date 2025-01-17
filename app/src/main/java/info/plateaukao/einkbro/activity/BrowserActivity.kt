@@ -382,23 +382,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         // post delay to update filter list
         if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // 如果沒有獲得權限，請求權限
             requestNotificationPermission()
+        } else {
+            binding.root.postDelayed({
+                checkAdBlockerList()
+            }, 1000)
         }
-        binding.root.postDelayed({
-            checkAdBlockerList()
-        }, 1000)
     }
 
     private fun checkAdBlockerList() {
         if (!adFilter.hasInstallation) {
             val map = mapOf(
                 "AdGuard Base" to "https://filters.adtidy.org/extension/chromium/filters/2.txt",
-                "EasyPrivacy Lite" to "https://filters.adtidy.org/extension/chromium/filters/118_optimized.txt",
-                "AdGuard Tracking Protection" to "https://filters.adtidy.org/extension/chromium/filters/3.txt",
-                "AdGuard Annoyances" to "https://filters.adtidy.org/extension/chromium/filters/14.txt",
-                "AdGuard Chinese" to "https://filters.adtidy.org/extension/chromium/filters/224.txt",
-                "NoCoin Filter List" to "https://filters.adtidy.org/extension/chromium/filters/242.txt"
+//                "EasyPrivacy Lite" to "https://filters.adtidy.org/extension/chromium/filters/118_optimized.txt",
+//                "AdGuard Tracking Protection" to "https://filters.adtidy.org/extension/chromium/filters/3.txt",
+//                "AdGuard Annoyances" to "https://filters.adtidy.org/extension/chromium/filters/14.txt",
+//                "AdGuard Chinese" to "https://filters.adtidy.org/extension/chromium/filters/224.txt",
+//                "NoCoin Filter List" to "https://filters.adtidy.org/extension/chromium/filters/242.txt"
             )
             for ((key, value) in map) {
                 filterViewModel.addFilter(key, value)
@@ -407,21 +407,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             for ((key, _) in filters) {
                 filterViewModel.download(key)
             }
-//            AlertDialog.Builder(this)
-////                .setTitle(R.string.filter_download_title)
-////                .setMessage(R.string.filter_download_msg)
-//                .setTitle("Filter Download")
-//                .setMessage("Download filters to block ads")
-//                .setCancelable(true)
-//                .setPositiveButton(
-//                    android.R.string.ok
-//                ) { _, _ ->
-//                    val filters = filterViewModel.filters.value ?: return@setPositiveButton
-//                    for ((key, _) in filters) {
-//                        filterViewModel.download(key)
-//                    }
-//                }
-//                .show()
         }
     }
 
@@ -429,11 +414,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (isGranted) {
+                    checkAdBlockerList()
                 } else {
                 }
             }
-
-        // 發起權限請求
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
 
