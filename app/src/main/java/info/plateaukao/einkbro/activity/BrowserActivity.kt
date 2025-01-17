@@ -256,16 +256,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    override fun newATab() = when (config.newTabBehavior) {
-        NewTabBehavior.START_INPUT -> {
-            addAlbum(getString(R.string.app_name), "")
-            focusOnInput()
+    override fun newATab() {
+        // fix: https://github.com/plateaukao/einkbro/issues/343
+        if (searchOnSite) {
+            hideSearchPanel()
         }
 
-        NewTabBehavior.SHOW_HOME -> addAlbum("", config.favoriteUrl)
-        NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
-            addAlbum("", "")
-            BrowserUnit.loadRecentlyUsedBookmarks(ebWebView)
+        when (config.newTabBehavior) {
+            NewTabBehavior.START_INPUT -> {
+                addAlbum(getString(R.string.app_name), "")
+                focusOnInput()
+            }
+
+            NewTabBehavior.SHOW_HOME -> addAlbum("", config.favoriteUrl)
+            NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
+                addAlbum("", "")
+                BrowserUnit.loadRecentlyUsedBookmarks(ebWebView)
+            }
         }
     }
 
