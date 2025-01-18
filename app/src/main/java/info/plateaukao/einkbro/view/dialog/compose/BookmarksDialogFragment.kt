@@ -88,6 +88,7 @@ class BookmarksDialogFragment(
 
         composeView.setContent {
             val context = LocalContext.current
+            val showTwoColumn = ViewUnit.isWideLayout(context)
 
             MyTheme {
                 DialogPanel(
@@ -113,13 +114,13 @@ class BookmarksDialogFragment(
                         BookmarkList(
                             bookmarks = bookmarks.value,
                             bookmarkViewModel = bookmarkViewModel,
-                            isWideLayout = ViewUnit.isWideLayout(requireContext()),
+                            showTwoColumn = showTwoColumn,
                             shouldReverse = !config.isToolbarOnTop,
                             shouldShowDragHandle = shouldShowDragHandle.value,
                             onItemMoved = { from, to ->
                                 bookmarks.value =
-                                    bookmarks.value.toMutableList()
-                                        .apply { add(to, removeAt(from)) }
+                                    if (showTwoColumn) moveItemInTwoColumns(bookmarks.value, from, to)
+                                    else bookmarks.value.toMutableList().apply { add(to, removeAt(from)) }
                                 bookmarkViewModel.updateBookmarksOrder(bookmarks.value)
                             },
                             onBookmarkClick = {
@@ -277,7 +278,7 @@ fun DialogPanel(
 fun BookmarkList(
     bookmarks: List<Bookmark>,
     bookmarkViewModel: BookmarkViewModel,
-    isWideLayout: Boolean = false,
+    showTwoColumn: Boolean = false,
     shouldReverse: Boolean = true,
     shouldShowDragHandle: Boolean = false,
     onItemMoved: (from: Int, to: Int) -> Unit,
@@ -293,7 +294,7 @@ fun BookmarkList(
     LazyVerticalGrid(
         modifier = Modifier.wrapContentHeight(),
         state = lazyGridState,
-        columns = GridCells.Fixed(if (isWideLayout) 2 else 1),
+        columns = GridCells.Fixed(if (showTwoColumn) 2 else 1),
         reverseLayout = shouldReverse
     ) {
         itemsIndexed(bookmarks, key = { _, bookmark -> bookmark.id }) { _, bookmark ->
@@ -312,15 +313,16 @@ fun BookmarkList(
                     shouldShowDragHandle = shouldShowDragHandle,
                     dragModifier = Modifier.draggableHandle(),
                     modifier = Modifier.then(
-                            if (shouldShowDragHandle) {
-                                Modifier
-                                    .longPressDraggableHandle()
-                                    .clickable(
-                                        interactionSource = interactionSource,
-                                        indication = null,
-                                    ) { onBookmarkClick(bookmark) }
-                            } else {
-                                Modifier.pointerInput(Unit) {
+                        if (shouldShowDragHandle) {
+                            Modifier
+                                .longPressDraggableHandle()
+                                .clickable(
+                                    interactionSource = interactionSource,
+                                    indication = null,
+                                ) { onBookmarkClick(bookmark) }
+                        } else {
+                            Modifier
+                                .pointerInput(Unit) {
                                     detectTapGestures(
                                         onTap = { offset -> onBookmarkClick(bookmark) },
                                         onLongPress = { offset ->
@@ -329,9 +331,9 @@ fun BookmarkList(
                                         }
                                     )
                                 }
-                                    .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
-                            }
-                        ),
+                                .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
+                        }
+                    ),
                     iconClick = {
                         if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
                         else onBookmarkClick(bookmark)
@@ -429,7 +431,7 @@ private fun PreviewBookmarkList() {
         BookmarkList(
             bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
             BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
-            isWideLayout = true,
+            showTwoColumn = true,
             shouldReverse = true,
             shouldShowDragHandle = false,
             { _, _ -> },
@@ -458,7 +460,7 @@ private fun PreviewDialogPanel() {
             BookmarkList(
                 bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
                 BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
-                isWideLayout = true,
+                showTwoColumn = true,
                 shouldReverse = true,
                 shouldShowDragHandle = false,
                 { _, _ -> },
@@ -477,3 +479,52 @@ typealias OnBookmarkIconClick = (bookmark: Bookmark) -> Unit
 fun Offset.toScreenPoint(boxPosition: Offset): Point {
     return Point((x + boxPosition.x).toInt(), (y + boxPosition.y).toInt())
 }
+
+private fun <T> moveItemInTwoColumns(
+    originalList: List<T>,
+    fromIndex: Int,
+    toIndex: Int,
+): List<T> {
+    // Divide the original list into two lists: odd-positioned and even-positioned items
+    val evenList = originalList.filterIndexed { index, _ -> index % 2 == 0 }.toMutableList()
+    val oddList = originalList.filterIndexed { index, _ -> index % 2 != 0 }.toMutableList()
+
+    if (fromIndex < 0 || fromIndex >= originalList.size || toIndex < 0 || toIndex >= originalList.size) {
+        return originalList
+    }
+
+    val fromItem = if (fromIndex.isEven()) {
+        evenList.removeAt(fromIndex / 2)
+    } else {
+        oddList.removeAt(fromIndex / 2)
+    }
+
+    // move item to the target position
+    if (toIndex.isEven()) {
+        evenList.add(toIndex / 2, fromItem)
+    } else {
+        oddList.add(toIndex / 2, fromItem)
+    }
+
+    // Ensure both lists are balanced (list2 can have up to 2 more items than list1)
+    while (oddList.size > evenList.size + 1) {
+        evenList.add(oddList.removeLast())
+    }
+
+    while (evenList.size > oddList.size + 1) {
+        oddList.add(evenList.removeLast())
+    }
+
+    // Merge the lists into one
+    val resultList = mutableListOf<T>()
+    val maxSize = maxOf(evenList.size, oddList.size)
+
+    for (i in 0 until maxSize) {
+        if (i < evenList.size) resultList.add(evenList[i])
+        if (i < oddList.size) resultList.add(oddList[i])
+    }
+
+    return resultList
+}
+
+private fun Int.isEven(): Boolean = this % 2 == 0
