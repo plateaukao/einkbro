@@ -17,7 +17,6 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ShareUtil
-import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -72,8 +71,7 @@ class MenuActionHandler(
             MenuItemType.ReceiveData -> browserController.toggleReceiveLink()
             MenuItemType.SendLink -> browserController.sendToRemote(ebWebView.url.orEmpty())
 
-            MenuItemType.ShareLink ->
-                IntentUnit.share(activity, ebWebView.title, ebWebView.url)
+            MenuItemType.ShareLink -> browserController.shareLink()
 
             MenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
                 activity,
@@ -96,10 +94,7 @@ class MenuActionHandler(
             MenuItemType.SavePdf -> printPDF(ebWebView)
 
             MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
-            MenuItemType.InvertColor -> {
-                val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
-                ViewUnit.invertColor(ebWebView, hasInvertedColor)
-            }
+            MenuItemType.InvertColor -> browserController.invertColors()
 
             MenuItemType.WhiteBknd -> {
                 val isOn = config.toggleWhiteBackground(ebWebView.url.orEmpty())

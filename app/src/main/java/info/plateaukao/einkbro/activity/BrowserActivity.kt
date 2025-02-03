@@ -235,7 +235,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var shouldLoadTabState: Boolean = false
 
     private val toolbarActionHandler: ToolbarActionHandler by lazy {
-        ToolbarActionHandler(this, ebWebView)
+        ToolbarActionHandler(this)
     }
 
     private val albumViewModel: AlbumViewModel by viewModels()
@@ -807,6 +807,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             actionModeMenuViewModel.clickedPoint.value,
         )
             .show(supportFragmentManager, "contextMenu")
+    }
+
+    override fun invertColors() {
+        val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
+        ViewUnit.invertColor(ebWebView, hasInvertedColor)
+    }
+
+    override fun shareLink() {
+        IntentUnit.share(this, ebWebView.title, ebWebView.url)
     }
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
