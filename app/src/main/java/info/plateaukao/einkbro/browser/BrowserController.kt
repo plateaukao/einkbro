@@ -110,4 +110,8 @@ interface BrowserController {
     fun summarizeContent()
 
     fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float)
+
+    fun invertColors()
+
+    fun shareLink()
 }

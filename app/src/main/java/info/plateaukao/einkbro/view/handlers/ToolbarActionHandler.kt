@@ -8,8 +8,6 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -18,7 +16,6 @@ import org.koin.core.component.inject
 
 class ToolbarActionHandler(
     private val activity: FragmentActivity,
-    private val ebWebView: EBWebView,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val browserController = activity as BrowserController
@@ -91,10 +88,7 @@ class ToolbarActionHandler(
         ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)
         ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
         ToolbarAction.SaveEpub -> browserController.showSaveEpubDialog()
-        ToolbarAction.ShareLink -> IntentUnit.share(activity, ebWebView.title, ebWebView.url)
-        ToolbarAction.InvertColor -> {
-            val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
-            ViewUnit.invertColor(ebWebView, hasInvertedColor)
-        }
+        ToolbarAction.ShareLink -> browserController.shareLink()
+        ToolbarAction.InvertColor -> browserController.invertColors()
     }
 }
