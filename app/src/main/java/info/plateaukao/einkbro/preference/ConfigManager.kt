@@ -1103,7 +1103,7 @@ enum class FontType(val resId: Int) {
     SERIF(R.string.serif),
     GOOGLE_SERIF(R.string.googleserif),
     CUSTOM(R.string.custom_font),
-    TC_WENKAI(R.string.wenkai_tc),
+    TC_IANSUI(R.string.iansui_tc),
     JA_MINCHO(R.string.mincho_ja),
     KO_GAMJA(R.string.gamja_flower_ko)
 }

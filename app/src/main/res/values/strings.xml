@@ -598,4 +598,5 @@
     <string name="read_from_here">From here</string>
     <string name="setting_title_reader_mode_padding">Padding for reader mode</string>
     <string name="setting_summary_reader_mode_padding">Padding value (in px) for reader mode, default value is 10</string>
+    <string name="iansui_tc">iansui(TC)</string>
 </resources>

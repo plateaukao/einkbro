@@ -119,7 +119,7 @@ open class EBWebView(
         val cssStyle =
             (if (config.blackFontStyle) makeTextBlackCss else "") +
                     (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
-                    (if (fontType == FontType.TC_WENKAI) wenKaiFontCss else "") +
+                    (if (fontType == FontType.TC_IANSUI) iansuiFontCss else "") +
                     (if (fontType == FontType.JA_MINCHO) jaMinchoFontCss else "") +
                     (if (fontType == FontType.KO_GAMJA) koGamjaFontCss else "") +
                     (if (fontType == FontType.SERIF) serifFontCss else "") +
@@ -1159,10 +1159,10 @@ open class EBWebView(
                     "* {\n" +
                     "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
                     "}\n"
-        private const val wenKaiFontCss =
-            "@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400&display=swap');" +
+        private const val iansuiFontCss =
+            "@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&family=Iansui&display=swap');" +
                     "* {\n" +
-                    "font-family: 'LXGW WenKai TC',serif !important;\n" +
+                    "font-family: 'Iansui',serif !important;\n" +
                     "}\n"
         private const val jaMinchoFontCss =
             "@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400&display=swap');" +

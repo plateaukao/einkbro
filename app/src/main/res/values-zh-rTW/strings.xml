@@ -509,4 +509,5 @@
     <string name="read_from_here">從這裡開始朗讀</string>
     <string name="setting_title_reader_mode_padding">閱讀模式的留白</string>
     <string name="setting_summary_reader_mode_padding">閱讀模式的四周留白(單位: px) 預設值是 10</string>
+    <string name="iansui_tc">芫荽(TC)</string>
 </resources>
