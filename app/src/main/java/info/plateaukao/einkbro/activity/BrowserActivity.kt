@@ -104,6 +104,7 @@ import info.plateaukao.einkbro.unit.pruneWebTitle
 import info.plateaukao.einkbro.unit.toRawPoint
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
+import info.plateaukao.einkbro.util.urlUnification
 import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
@@ -1461,7 +1462,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             Intent.ACTION_SEND -> {
                 initSavedTabs()
-                val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT).orEmpty()
+                val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    ?.urlUnification()
+                    .orEmpty()
                 val url =
                     if (BrowserUnit.isURL(sentKeyword)) sentKeyword else externalSearchViewModel.generateSearchUrl(
                         sentKeyword
