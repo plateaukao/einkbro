@@ -191,6 +191,7 @@
             android:name=".activity.EpubReaderActivity"
             android:exported="true"
             android:label="@string/menu_open_epub"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
