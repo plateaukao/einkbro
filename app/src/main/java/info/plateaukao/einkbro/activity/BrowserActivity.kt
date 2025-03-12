@@ -64,7 +64,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -104,9 +103,9 @@ import info.plateaukao.einkbro.unit.pruneWebTitle
 import info.plateaukao.einkbro.unit.toRawPoint
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
-import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.SwipeTouchListener
 import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -1226,7 +1225,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 BookmarkEditDialog(
                     this@BrowserActivity,
                     bookmarkViewModel,
-                    Bookmark(nonNullTitle.pruneWebTitle(), currentUrl),
+                    Bookmark(
+                        nonNullTitle.pruneWebTitle(),
+                        currentUrl, order = if (ViewUnit.isWideLayout(this@BrowserActivity)) 999 else 0),
                     {
                         handleBookmarkSync(true)
                         ViewUnit.hideKeyboard(this@BrowserActivity)
