@@ -92,7 +92,7 @@ fun TranslationConfigScreen(
             expanded = actionExpanded,
             onDismissRequest = { actionExpanded = false }
         ) {
-            TranslationMode.entries.toMutableList().apply { remove(TranslationMode.DEEPL_BY_PARAGRAPH) }
+            TranslationMode.entries//.toMutableList().apply { remove(TranslationMode.DEEPL_BY_PARAGRAPH) }
                 .forEach { type ->
                     val text = context.getString(type.labelResId)
                     DropdownMenuItem(onClick = {

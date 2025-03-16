@@ -138,6 +138,8 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             TRANSLATE_API.NAVER -> callNaverDict()
             TRANSLATE_API.LLM -> queryLlm()
             TRANSLATE_API.DEEPL -> callDeepLTranslate()
+            TRANSLATE_API.GEMINI -> Unit
+            TRANSLATE_API.OPENAI -> Unit
         }
     }
 
@@ -484,7 +486,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO, NAVER, LLM, DEEPL
+    GOOGLE, PAPAGO, NAVER, LLM, DEEPL,OPENAI, GEMINI,
 }
 
 private fun String.unescape(): String {
