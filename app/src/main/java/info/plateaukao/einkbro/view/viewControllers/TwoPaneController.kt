@@ -189,6 +189,8 @@ class TwoPaneController(
             TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL, webView)
 
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateByScreen()
+            TranslationMode.GEMINI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GEMINI, webView)
+            TranslationMode.OPENAI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.OPENAI, webView)
         }
     }
 

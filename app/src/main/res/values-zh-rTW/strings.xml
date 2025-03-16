@@ -510,4 +510,6 @@
     <string name="setting_title_reader_mode_padding">閱讀模式的留白</string>
     <string name="setting_summary_reader_mode_padding">閱讀模式的四周留白(單位: px) 預設值是 10</string>
     <string name="iansui_tc">芫荽(TC)</string>
+    <string name="openai_translate_by_paragraph">OpenAi by Paragraph</string>
+    <string name="gemini_translate_by_paragraph">Gemini by Paragraph</string>
 </resources>

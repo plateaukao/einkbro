@@ -1096,6 +1096,8 @@ enum class TranslationMode(val labelResId: Int) {
     PAPAGO_TRANSLATE_BY_PARAGRAPH(R.string.papago_translate_by_paragraph),
     PAPAGO_TRANSLATE_BY_SCREEN(R.string.papago_translate_by_screen),
     DEEPL_BY_PARAGRAPH(R.string.deepl_translate_by_paragraph),
+    OPENAI_BY_PARAGRAPH(R.string.openai_translate_by_paragraph),
+    GEMINI_BY_PARAGRAPH(R.string.gemini_translate_by_paragraph),
 }
 
 enum class FontType(val resId: Int) {
