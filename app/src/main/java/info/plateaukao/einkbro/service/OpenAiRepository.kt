@@ -299,7 +299,7 @@ class OpenAiRepository : KoinComponent {
             json.encodeToString(
                 TTSRequest(
                     text,
-                    if (hd) "tts-1-hd" else "tts-1",
+                    if (hd) "tts-1-hd" else "gpt-4o-mini-tts",
                     voiceOption.name.lowercase(Locale("en")),
                     speed
                 )
