@@ -473,7 +473,7 @@
     <string name="setting_summary_dual_caption">두 번째 자막 언어를 선택합니다.</string>
     <string name="naver_translate">네이버 번역</string>
     <string name="setting_title_gpt_model_name">OpenAI 모델 이름</string>
-    <string name="setting_summary_gpt_model_name">기본값은 gpt-3.5-turbo입니다. 필요하면 다른 모델 이름을 입력하십시오.</string>
+    <string name="setting_summary_gpt_model_name">기본값은 gpt-4.1 입니다. 필요하면 다른 모델 이름을 입력하십시오.</string>
     <string name="split_search">분할 검색</string>
     <string name="papago_translate_by_screen">파파고 화면별 번역</string>
     <string name="split_search_settings">분할 검색 설정</string>

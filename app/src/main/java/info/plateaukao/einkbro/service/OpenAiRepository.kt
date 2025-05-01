@@ -290,7 +290,6 @@ class OpenAiRepository : KoinComponent {
 
     private fun createTtsRequest(
         text: String,
-        hd: Boolean = false,
         speed: Double = 1.0,
         voiceOption: GptVoiceOption = GptVoiceOption.Alloy,
     ): Request = Request.Builder()
@@ -299,9 +298,10 @@ class OpenAiRepository : KoinComponent {
             json.encodeToString(
                 TTSRequest(
                     text,
-                    if (hd) "tts-1-hd" else "gpt-4o-mini-tts",
+                    config.gptVoiceModel,
                     voiceOption.name.lowercase(Locale("en")),
-                    speed
+                    speed,
+                    instructions = config.gptVoicePrompt
                 )
             )
                 .toRequestBody(mediaType)
@@ -398,6 +398,7 @@ data class TTSRequest(
     val voice: String,
     val speed: Double = 1.0,
     val format: String = "aac",
+    val instructions: String = "",
 )
 
 enum class GptVoiceOption {

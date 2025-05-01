@@ -244,12 +244,14 @@ class ConfigManager(
         "Summarize in 50 words:"
     )
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
-    var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-3.5-turbo")
+    var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-4.1")
     var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
     var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-1.5-flash")
     var gptVoiceOption: GptVoiceOption
         get() = GptVoiceOption.entries[sp.getInt("K_GPT_VOICE_OPTION", 0)]
         set(value) = sp.edit { putInt("K_GPT_VOICE_OPTION", value.ordinal) }
+    var gptVoiceModel by StringPreference(sp, K_GPT_VOICE_MODEL, "tts-1")
+    var gptVoicePrompt by StringPreference(sp, K_GPT_VOICE_PROMPT, "")
 
     var gptUrl by StringPreference(sp, K_GPT_SERVER_URL, "https://api.openai.com")
     var useCustomGptUrl by BooleanPreference(sp, K_USE_CUSTOM_GPT_URL, false)
@@ -953,6 +955,8 @@ class ConfigManager(
         const val K_IMAGE_API_KEY = "sp_image_api_key"
         const val K_DUAL_CAPTION_LOCALE = "sp_dual_caption_locale"
         const val K_GPT_MODEL = "sp_gp_model"
+        const val K_GPT_VOICE_MODEL = "sp_gpt_voice_model"
+        const val K_GPT_VOICE_PROMPT = "sp_gpt_voice_prompt"
         const val K_ALTERNATIVE_MODEL = "sp_alternative_model"
         const val K_GEMINI_MODEL = "sp_gemini_model"
         const val K_SPLIT_SEARCH_STRING = "sp_split_search_prefix"

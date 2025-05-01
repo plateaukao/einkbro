@@ -462,7 +462,7 @@
     <string name="setting_summary_dual_caption">选择第二标题语言</string>
     <string name="naver_translate">Naver翻译</string>
     <string name="setting_title_gpt_model_name">OpenAI模型名称</string>
-    <string name="setting_summary_gpt_model_name">默认设置为gpt-3.5-turbo。必要时填写其他模型名称。</string>
+    <string name="setting_summary_gpt_model_name">默认设置为gpt-4.1。必要时填写其他模型名称。</string>
     <string name="split_search">拆分搜索</string>
     <string name="split_search_settings">拆分搜索设置</string>
     <string name="setting_title_split_search_setting">拆分搜索设置</string>
@@ -579,4 +579,8 @@
     <string name="setting_summary_reader_mode_padding">Padding value (in px) for reader mode, default value is 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="gemini_translate_by_paragraph">Gemini by Paragraph</string>
+    <string name="setting_title_gpt_prompt_for_tts">audio output instructions</string>
+    <string name="setting_summary_gpt_prompt_for_tts">instructions when gpt-4o-mini-tts model is used.</string>
+    <string name="setting_title_gpt_audio_model_name">OpenAI TTS model name</string>
+    <string name="setting_summary_gpt_audio_model_name">Available options: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
 </resources>
