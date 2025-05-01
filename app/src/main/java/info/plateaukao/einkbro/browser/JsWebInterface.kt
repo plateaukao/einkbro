@@ -94,7 +94,7 @@ class JsWebInterface(private val webView: EBWebView) :
         val chatGptActionInfo = ChatGPTActionInfo(
             userMessage = "translate following content to ${configManager.translationLanguage.value}; no other extra explanation:\n",
             actionType = GptActionType.OpenAi,
-            model = "gpt-4o-mini",
+            model = configManager.gptModel,
         )
         val messages = listOf((chatGptActionInfo.userMessage + originalText).toUserMessage())
         val completion = openAiRepository.chatCompletion(messages, chatGptActionInfo)
@@ -106,7 +106,7 @@ class JsWebInterface(private val webView: EBWebView) :
         val chatGptActionInfo = ChatGPTActionInfo(
             userMessage = "translate following content to ${configManager.translationLanguage.value}; no other extra explanation:\n",
             actionType = GptActionType.Gemini,
-            model = "gemini-2.0-flash",
+            model = configManager.geminiModel,
         )
         val messages = listOf((chatGptActionInfo.userMessage + originalText).toUserMessage())
         return openAiRepository.queryGemini(messages, chatGptActionInfo)
