@@ -473,7 +473,7 @@
     <string name="setting_summary_dual_caption">Select language for second caption</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="setting_title_gpt_model_name">OpenAI model name</string>
-    <string name="setting_summary_gpt_model_name">Default is gpt-3.5-turbo. Insert other model name if necessary</string>
+    <string name="setting_summary_gpt_model_name">Default is gpt-4.1. Insert other model name if necessary</string>
     <string name="split_search">Split Search</string>
     <string name="papago_translate_by_screen">Papago by Screen</string>
     <string name="split_search_settings">Split Search settings</string>
@@ -601,4 +601,8 @@
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi by Paragraph</string>
     <string name="gemini_translate_by_paragraph">Gemini by Paragraph</string>
+    <string name="setting_title_gpt_prompt_for_tts">audio output instructions</string>
+    <string name="setting_summary_gpt_prompt_for_tts">instructions when gpt-4o-mini-tts model is used.</string>
+    <string name="setting_title_gpt_audio_model_name">OpenAI TTS model name</string>
+    <string name="setting_summary_gpt_audio_model_name">Available options: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
 </resources>

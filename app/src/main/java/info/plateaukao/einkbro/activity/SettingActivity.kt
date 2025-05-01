@@ -935,6 +935,18 @@ class SettingActivity : FragmentActivity() {
             config::useOpenAiTts
         ),
         ValueSettingItem(
+            R.string.setting_title_gpt_audio_model_name,
+            0,
+            R.string.setting_summary_gpt_audio_model_name,
+            config::gptVoiceModel
+        ),
+        ValueSettingItem(
+            R.string.setting_title_gpt_prompt_for_tts,
+            0,
+            R.string.setting_summary_gpt_prompt_for_tts,
+            config::gptVoicePrompt
+        ),
+        ValueSettingItem(
             R.string.setting_title_gpt_prompt_for_web_page,
             0,
             R.string.setting_summary_gpt_prompt_for_web_page,

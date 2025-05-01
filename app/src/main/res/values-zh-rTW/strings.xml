@@ -391,7 +391,7 @@
     <string name="setting_summary_dual_caption">選擇第二字幕的語言</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="setting_title_gpt_model_name">OpenAI Model名稱</string>
-    <string name="setting_summary_gpt_model_name">預設是gpt-3.5-turbo。可填入其他支援的Model名稱</string>
+    <string name="setting_summary_gpt_model_name">預設是gpt-4.1。可填入其他支援的Model名稱</string>
     <string name="split_search">分割視窗搜尋</string>
     <string name="split_search_settings">Split Search Settings</string>
     <string name="setting_title_split_search_setting">Split Search Setting</string>
@@ -512,4 +512,8 @@
     <string name="iansui_tc">芫荽(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi by Paragraph</string>
     <string name="gemini_translate_by_paragraph">Gemini by Paragraph</string>
+    <string name="setting_title_gpt_prompt_for_tts">audio output instructions</string>
+    <string name="setting_summary_gpt_prompt_for_tts">instructions when gpt-4o-mini-tts model is used.</string>
+    <string name="setting_title_gpt_audio_model_name">OpenAI TTS model name</string>
+    <string name="setting_summary_gpt_audio_model_name">Available options: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
 </resources>
