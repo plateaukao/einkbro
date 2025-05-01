@@ -52,7 +52,15 @@ class ETts {
             val dateStr = dateToString(Date())
             val reqId = uuid()
             val audioFormat = mkAudioFormat(dateStr, FORMAT)
-            val ssml = mkssml(voice.locale, voice.name, processedContent, "+0Hz", "+${speed - 100}%", "+0%")
+            // if speec - 100 is minus, it should be with - instead of +
+            val ssml = mkssml(
+                voice.locale,
+                voice.name,
+                processedContent,
+                "+0Hz",
+                if (speed < 100) "${speed - 100}%" else "+${speed - 100}%",
+                "+0%"
+            )
             val ssmlHeadersPlusData = ssmlHeadersPlusData(reqId, dateStr, ssml)
 
             val request = Request.Builder()
