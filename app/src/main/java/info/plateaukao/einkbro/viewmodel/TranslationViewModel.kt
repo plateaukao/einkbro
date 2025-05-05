@@ -27,7 +27,6 @@ import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.Locale
 
 class TranslationViewModel : ViewModel(), KoinComponent {
     private val config: ConfigManager by inject()
@@ -389,69 +388,6 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             _inputMessage.value
         }
         return Pair(promptPrefix, selectedText)
-    }
-
-//    fun translateByParagraph(html: String): String {
-//        val parsedHtml = Jsoup.parse(html)
-//        val nodesWithText = fetchNodesWithText(parsedHtml)
-//        nodesWithText.forEachIndexed { index, node ->
-//            // for monitoring visibility
-//            node.addClass("to-translate")
-//            // for locating element's position
-//            node.id(index.toString())
-//            // for later inserting translated text
-//            node.after(Element("p"))
-//        }
-//        // add observer
-//        val script: Element = parsedHtml.createElement("script")
-//        script.attr("type", "text/javascript")
-//        script.appendChild(DataNode(ebWebView.textNodesMonitorJs))
-//        parsedHtml.body().appendChild(script)
-//
-//        return parsedHtml.toString()
-//    }
-
-    private fun fetchNodesWithText(
-        element: Element,
-    ): List<Element> {
-        val result = mutableListOf<Element>()
-        for (node in element.textNodes()) {
-            if (node.text().isNotBlank() && !node.hasUnwantedParent()) {
-                val textElement = Element("p").apply { text(node.text()) }
-                node.replaceWith(textElement)
-                result += textElement
-            }
-        }
-        for (node in element.children()) {
-            // by pass non-necessary element
-            if (node.attr("data-tiara-action-name") == "헤드글씨크기_클릭" ||
-                node.text() == "original link"
-            ) {
-                node.text("")
-                break
-            }
-            if ((node.children().size == 0 && node.text().isNotBlank()) ||
-                node.tagName().lowercase(Locale.ROOT) in listOf(
-                    "strong",
-                    "span",
-                    "p",
-                    "h1",
-                    "h2",
-                    "h3",
-                    "h4",
-                    "h5",
-                    "h6",
-                    "em"
-                )
-            ) {
-                if (node.text().isNotEmpty() && !node.hasUnwantedParent()) {
-                    result += node
-                }
-            } else {
-                result += fetchNodesWithText(node)
-            }
-        }
-        return result
     }
 
     private fun Element.hasUnwantedParent(): Boolean {
