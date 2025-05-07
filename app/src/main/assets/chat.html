@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android WebView Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        .message {
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background-color: #DCF8C6;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #f1f1f1;
+            align-self: flex-start;
+        }
+        .input-area {
+            display: flex;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+        }
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        #send-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        #send-button:active {
+            background-color: #3e8e41;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        blockquote {
+            border-left: 4px solid #ddd;
+            padding-left: 10px;
+            color: #666;
+            margin-left: 0;
+        }
+        .typing-indicator {
+            display: none;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 18px;
+            align-self: flex-start;
+            margin-bottom: 16px;
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #888;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 1px;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-6px); }
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+            Hello! I'm ready to chat. What would you like to talk about?
+        </div>
+    </div>
+    <div class="typing-indicator" id="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="input-area">
+        <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+        <button id="send-button">Send</button>
+    </div>
+</div>
+
+<!-- Include marked.js for Markdown parsing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+
+<script>
+    // Global variables
+    const chatMessages = document.getElementById('chat-messages');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    // Configuration for Markdown parsing
+    marked.setOptions({
+        breaks: true, // Add line breaks as paragraphs
+        gfm: true     // Enable GitHub Flavored Markdown
+    });
+
+    // Function to add a message to the chat
+    function addMessage(text, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+
+        // If it's a user message, just add the text
+        // If it's a bot message, parse the markdown
+        if (isUser) {
+            messageDiv.textContent = text;
+        } else {
+            messageDiv.innerHTML = marked.parse(text);
+        }
+
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Function to show typing indicator
+    function showTypingIndicator() {
+        typingIndicator.style.display = 'block';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Function to hide typing indicator
+    function hideTypingIndicator() {
+        typingIndicator.style.display = 'none';
+    }
+
+    // Function to send a message to Android
+    function sendMessageToAndroid(message) {
+        // Check if Android interface is available
+        if (window.AndroidInterface) {
+            // If Android interface exists, send the message to it
+            window.AndroidInterface.sendMessage(message);
+        } else {
+            console.log("Android interface not available. This would send to Android: ", message);
+
+            // For testing in browser without Android interface
+            // Simulate a response after a short delay
+            showTypingIndicator();
+            setTimeout(() => {
+                hideTypingIndicator();
+                receiveMessageFromAndroid(
+                    "This is a *markdown* formatted **test response**.\n\n" +
+                    "```java\n" +
+                    "public class Test {\n" +
+                    "    public static void main(String[] args) {\n" +
+                    "        System.out.println(\"Hello World\");\n" +
+                    "    }\n" +
+                    "}\n" +
+                    "```\n\n" +
+                    "1. First item\n" +
+                    "2. Second item\n" +
+                    "3. Third item"
+                );
+            }, 1500);
+        }
+    }
+
+    // Function to receive messages from Android
+    function receiveMessageFromAndroid(markdown) {
+        hideTypingIndicator();
+        addMessage(markdown, false);
+    }
+
+    // Make this function available globally so Android can call it
+    window.receiveMessageFromAndroid = receiveMessageFromAndroid;
+
+    // Event listeners
+    sendButton.addEventListener('click', () => {
+        const message = messageInput.value.trim();
+        if (message) {
+            addMessage(message, true);
+            sendMessageToAndroid(message);
+            messageInput.value = '';
+        }
+    });
+
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                sendMessageToAndroid(message);
+                messageInput.value = '';
+            }
+        }
+    });
+
+    // Initial setup - focus on input
+    messageInput.focus();
+</script>
+</body>
+</html>
