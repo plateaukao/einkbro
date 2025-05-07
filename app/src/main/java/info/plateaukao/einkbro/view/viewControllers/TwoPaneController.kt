@@ -176,6 +176,7 @@ class TwoPaneController(
 
     fun hideSecondPane() {
         toggleTranslationWindow(false)
+        webView.isAIPage = false
     }
 
     fun isSecondPaneDisplayed(): Boolean = twoPaneLayout.shouldShowSecondPane
