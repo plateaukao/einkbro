@@ -7,10 +7,12 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
+import info.plateaukao.einkbro.service.ChatMessage
 import info.plateaukao.einkbro.service.ChatRole
 import info.plateaukao.einkbro.service.OpenAiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.getValue
@@ -22,17 +24,20 @@ class ChatWebInterface(
 ): KoinComponent {
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
+    private val messageList: MutableList<ChatMessage> = mutableListOf()
 
-    /**
-     * This method will be called from JavaScript
-     * The @JavascriptInterface annotation is required
-     */
+    private val chatGptActionInfo = ChatGPTActionInfo(
+        userMessage = "",
+        actionType = GptActionType.OpenAi,
+        model = configManager.gptModel,
+    )
+
     @JavascriptInterface
     fun sendMessage(message: String) {
         lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val markdownResponse = getMarkdownResponse(message)
             val escapedResponse = escapeJsString(markdownResponse)
-            webView.post{
+            withContext(Dispatchers.Main) {
                 webView.evaluateJavascript(
                     "javascript:receiveMessageFromAndroid('$escapedResponse')",
                     null
@@ -42,13 +47,17 @@ class ChatWebInterface(
     }
 
     private suspend fun getMarkdownResponse(message: String): String {
-        val chatGptActionInfo = ChatGPTActionInfo(
-            userMessage = "```$webContent```\n based on content above, $message",
-            actionType = GptActionType.OpenAi,
-            model = configManager.gptModel,
-        )
-        val messages = listOf(chatGptActionInfo.userMessage.toUserMessage())
-        val completion = openAiRepository.chatCompletion(messages, chatGptActionInfo)
+        val userPrompt = if (messageList.isEmpty()) {
+            "```$webContent```\n this is the web content; $message"
+        } else {
+            message
+        }
+        messageList.add(userPrompt.toUserMessage())
+        val completion = openAiRepository.chatCompletion(messageList, chatGptActionInfo)
+        if (completion?.choices?.firstOrNull()?.message != null) {
+            messageList.add(completion.choices.firstOrNull()?.message!!)
+        }
+
         return completion?.choices?.firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
             ?: "Something went wrong."
     }
