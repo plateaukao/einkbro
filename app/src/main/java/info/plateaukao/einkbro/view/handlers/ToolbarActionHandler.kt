@@ -27,7 +27,8 @@ class ToolbarActionHandler(
         ToolbarAction.Font -> browserController.toggleReaderMode()
         ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
         ToolbarAction.PageDown -> browserController.jumpToBottom()
-        ToolbarAction.PageInfo -> browserController.summarizeContent()
+        //ToolbarAction.PageInfo -> browserController.summarizeContent()
+        ToolbarAction.PageInfo -> browserController.chatWithWeb()
         ToolbarAction.PageUp -> browserController.jumpToTop()
         ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(
             TRANSLATE_API.PAPAGO

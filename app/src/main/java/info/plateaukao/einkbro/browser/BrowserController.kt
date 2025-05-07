@@ -108,6 +108,7 @@ interface BrowserController {
     fun toggleReceiveTextSearch()
 
     fun summarizeContent()
+    fun chatWithWeb()
 
     fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float)
 
