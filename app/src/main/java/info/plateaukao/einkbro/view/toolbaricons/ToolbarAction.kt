@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view.toolbaricons
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
+import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
@@ -171,6 +172,10 @@ enum class ToolbarAction(
         imageVector = Icons.Outlined.InvertColors,
         titleResId = R.string.menu_invert_color,
     ),
+    ChatWithWeb(
+        imageVector = Icons.AutoMirrored.Outlined.Chat,
+        titleResId = R.string.chat_with_web,
+    )
     ;
 
 

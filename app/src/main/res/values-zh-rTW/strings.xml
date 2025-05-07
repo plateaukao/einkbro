@@ -516,4 +516,5 @@
     <string name="setting_summary_gpt_prompt_for_tts">instructions when gpt-4o-mini-tts model is used.</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS model name</string>
     <string name="setting_summary_gpt_audio_model_name">Available options: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
+    <string name="chat_with_web">Chat With Web</string>
 </resources>

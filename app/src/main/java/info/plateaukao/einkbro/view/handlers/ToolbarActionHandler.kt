@@ -27,8 +27,7 @@ class ToolbarActionHandler(
         ToolbarAction.Font -> browserController.toggleReaderMode()
         ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)
         ToolbarAction.PageDown -> browserController.jumpToBottom()
-        //ToolbarAction.PageInfo -> browserController.summarizeContent()
-        ToolbarAction.PageInfo -> browserController.chatWithWeb()
+        ToolbarAction.PageInfo -> browserController.summarizeContent()
         ToolbarAction.PageUp -> browserController.jumpToTop()
         ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(
             TRANSLATE_API.PAPAGO
@@ -91,5 +90,6 @@ class ToolbarActionHandler(
         ToolbarAction.SaveEpub -> browserController.showSaveEpubDialog()
         ToolbarAction.ShareLink -> browserController.shareLink()
         ToolbarAction.InvertColor -> browserController.invertColors()
+        ToolbarAction.ChatWithWeb -> browserController.chatWithWeb()
     }
 }

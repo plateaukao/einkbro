@@ -72,7 +72,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
 import info.plateaukao.einkbro.browser.BrowserController
-import info.plateaukao.einkbro.browser.ChatWebInterface
 import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -802,11 +801,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun chatWithWeb() {
         lifecycleScope.launch {
-            val rawText = ebWebView.getRawText()
             addAlbum("Chat With Web")
-            ebWebView.addJavascriptInterface(
-                ChatWebInterface(this@BrowserActivity, ebWebView, rawText), "AndroidInterface")
-            ebWebView.loadUrl("file:///android_asset/chat.html")
+            ebWebView.setupAiPage(this@BrowserActivity, this@BrowserActivity.ebWebView.getRawText())
         }
     }
 
@@ -1238,7 +1234,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     bookmarkViewModel,
                     Bookmark(
                         nonNullTitle.pruneWebTitle(),
-                        currentUrl, order = if (ViewUnit.isWideLayout(this@BrowserActivity)) 999 else 0),
+                        currentUrl, order = if (ViewUnit.isWideLayout(this@BrowserActivity)) 999 else 0
+                    ),
                     {
                         handleBookmarkSync(true)
                         ViewUnit.hideKeyboard(this@BrowserActivity)
@@ -2010,6 +2007,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val albumControllers = browserContainer.list()
         val albumInfoList = albumControllers
             .filter { !it.isTranslatePage }
+            .filter { !it.isAIPage }
             .filter { !it.albumUrl.startsWith("data") }
             .filter {
                 (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) ||

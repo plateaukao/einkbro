@@ -18,12 +18,14 @@ import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.activity.ComponentActivity
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.browser.ChatWebInterface
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.EBClickHandler
 import info.plateaukao.einkbro.browser.EBDownloadListener
@@ -91,6 +93,7 @@ open class EBWebView(
                 album.isTranslatePage = true
             }
         }
+    override var isAIPage: Boolean = false
 
     var isPlainText = false
 
@@ -174,6 +177,7 @@ open class EBWebView(
     }
 
     init {
+        isAIPage = false
         isForeground = false
         webViewClient =
             EBWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
@@ -400,6 +404,13 @@ open class EBWebView(
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
 
+    fun setupAiPage(activity: ComponentActivity, webContent: String) {
+        isAIPage = true
+        addJavascriptInterface(
+            ChatWebInterface(activity, this, webContent), "AndroidInterface"
+        )
+        loadUrl("file:///android_asset/chat.html")
+    }
     private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)
 
