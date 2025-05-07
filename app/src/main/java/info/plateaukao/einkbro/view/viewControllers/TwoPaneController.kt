@@ -169,6 +169,11 @@ class TwoPaneController(
         webView.loadUrl(url)
     }
 
+    fun showSecondPaneAsAi(webContent: String) {
+        showSecondPane()
+        webView.setupAiPage(lifecycleScope, webContent)
+    }
+
     fun hideSecondPane() {
         toggleTranslationWindow(false)
     }

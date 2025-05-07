@@ -2,8 +2,7 @@ package info.plateaukao.einkbro.browser
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
@@ -18,7 +17,7 @@ import org.koin.core.component.inject
 import kotlin.getValue
 
 class ChatWebInterface(
-    private val lifecycleOwner: LifecycleOwner,
+    private val lifecycleScope: LifecycleCoroutineScope,
     private val webView: WebView,
     private val webContent: String
 ): KoinComponent {
@@ -34,7 +33,7 @@ class ChatWebInterface(
 
     @JavascriptInterface
     fun sendMessage(message: String) {
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             val markdownResponse = getMarkdownResponse(message)
             val escapedResponse = escapeJsString(markdownResponse)
             withContext(Dispatchers.Main) {
