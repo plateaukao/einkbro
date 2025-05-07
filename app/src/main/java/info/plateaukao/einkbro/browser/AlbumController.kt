@@ -10,6 +10,8 @@ interface AlbumController {
 
     var isTranslatePage: Boolean
 
+    var isAIPage: Boolean
+
     fun activate()
     fun deactivate()
 
