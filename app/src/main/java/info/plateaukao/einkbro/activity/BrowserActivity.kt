@@ -801,12 +801,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun chatWithWeb() {
+    override fun chatWithWeb(useSplitScreen: Boolean) {
         lifecycleScope.launch {
             val rawText = ebWebView.getRawText()
             withContext(Dispatchers.Main) {
-                addAlbum("Chat With Web")
-                ebWebView.setupAiPage(this@BrowserActivity, rawText)
+                if (useSplitScreen) {
+                    maybeInitTwoPaneController()
+                    twoPaneController.showSecondPaneAsAi(rawText)
+                } else {
+                    addAlbum("Chat With Web")
+                    ebWebView.setupAiPage(this@BrowserActivity.lifecycleScope, rawText)
+                }
             }
         }
     }

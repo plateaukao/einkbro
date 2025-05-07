@@ -108,7 +108,7 @@ interface BrowserController {
     fun toggleReceiveTextSearch()
 
     fun summarizeContent()
-    fun chatWithWeb()
+    fun chatWithWeb(useSplitScreen: Boolean = false)
 
     fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float)
 

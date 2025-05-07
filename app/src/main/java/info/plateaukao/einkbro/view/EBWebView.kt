@@ -19,6 +19,7 @@ import android.webkit.ValueCallback
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.BuildConfig
@@ -404,10 +405,10 @@ open class EBWebView(
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
 
-    fun setupAiPage(activity: ComponentActivity, webContent: String) {
+    fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String) {
         isAIPage = true
         addJavascriptInterface(
-            ChatWebInterface(activity, this, webContent), "AndroidInterface"
+            ChatWebInterface(lifecycleScope, this, webContent), "AndroidInterface"
         )
         loadUrl("file:///android_asset/chat.html")
     }
