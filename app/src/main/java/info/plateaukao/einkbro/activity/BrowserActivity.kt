@@ -72,6 +72,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
 import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.browser.ChatWebInterface
 import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -167,6 +168,7 @@ import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import java.io.File
 import java.util.Locale
@@ -801,8 +803,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun chatWithWeb() {
         lifecycleScope.launch {
-            addAlbum("Chat With Web")
-            ebWebView.setupAiPage(this@BrowserActivity, this@BrowserActivity.ebWebView.getRawText())
+            val rawText = ebWebView.getRawText()
+            withContext(Dispatchers.Main) {
+                addAlbum("Chat With Web")
+                ebWebView.setupAiPage(this@BrowserActivity, rawText)
+            }
         }
     }
 
