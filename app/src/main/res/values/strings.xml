@@ -606,4 +606,10 @@
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS model name</string>
     <string name="setting_summary_gpt_audio_model_name">Available options: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Chat With Web</string>
+    <string name="web_content_processing">Web Content Processing</string>
+    <string name="web_processing_gpt_type">Gpt Engine</string>
+    <string name="setting_summary_web_processing_gpt_type">Choose the engine to process web content</string>
+    <string name="self_hosted">Self Hosted</string>
+    <string name="summary_gpt_type">Gpt type for summary web content</string>
+    <string name="setting_summary_summary_gpt_type">Choose gpt engine for content summarization</string>
 </resources>

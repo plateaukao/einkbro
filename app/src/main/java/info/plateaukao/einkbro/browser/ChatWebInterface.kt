@@ -25,12 +25,6 @@ class ChatWebInterface(
     private val configManager: ConfigManager by inject()
     private val messageList: MutableList<ChatMessage> = mutableListOf()
 
-    private val chatGptActionInfo = ChatGPTActionInfo(
-        userMessage = "",
-        actionType = GptActionType.OpenAi,
-        model = configManager.gptModel,
-    )
-
     @JavascriptInterface
     fun sendMessage(message: String) {
         lifecycleScope.launch(Dispatchers.IO) {
@@ -52,13 +46,24 @@ class ChatWebInterface(
             message
         }
         messageList.add(userPrompt.toUserMessage())
-        val completion = openAiRepository.chatCompletion(messageList, chatGptActionInfo)
-        if (completion?.choices?.firstOrNull()?.message != null) {
-            messageList.add(completion.choices.firstOrNull()?.message!!)
-        }
 
-        return completion?.choices?.firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
-            ?: "Something went wrong."
+        val chatGptActionInfo = ChatGPTActionInfo(
+            actionType = configManager.gptForChatWeb,
+            model = configManager.getGptTypeModelMap()[configManager.gptForChatWeb] ?: configManager.gptModel,
+        )
+
+        if (chatGptActionInfo.actionType != GptActionType.Gemini) {
+            val completion = openAiRepository.chatCompletion(messageList, chatGptActionInfo)
+            if (completion?.choices?.firstOrNull()?.message != null) {
+                messageList.add(completion.choices.firstOrNull()?.message!!)
+            }
+
+            return completion?.choices?.firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
+                ?: "Something went wrong."
+        } else {
+            val result = openAiRepository.queryGemini(messageList, chatGptActionInfo)
+            return result
+        }
     }
 
     /**

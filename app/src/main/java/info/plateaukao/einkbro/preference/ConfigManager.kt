@@ -751,6 +751,17 @@ class ConfigManager(
             }
         }
 
+    var gptForChatWeb: GptActionType
+        get() = GptActionType.entries[sp.getInt(K_GPT_FOR_CHAT_WEB, 0)]
+        set(value) {
+            sp.edit { putInt(K_GPT_FOR_CHAT_WEB, value.ordinal) }
+        }
+    var gptForSummary: GptActionType
+        get() = GptActionType.entries[sp.getInt(K_GPT_FOR_SUMMARY, 0)]
+        set(value) {
+            sp.edit { putInt(K_GPT_FOR_SUMMARY, value.ordinal) }
+        }
+
     fun getDefaultActionModel(): String = if (useGeminiApi) {
         geminiModel
     } else if (useCustomGptUrl) {
@@ -998,6 +1009,8 @@ class ConfigManager(
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
         const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
         private const val K_GPT_ACTION_EXTERNAL = "sp_gpt_action_external"
+        private const val K_GPT_FOR_CHAT_WEB = "sp_gpt_for_chat_web"
+        private const val K_GPT_FOR_SUMMARY = "sp_gpt_for_summary"
 
         private const val K_GPT_SERVER_URL = "sp_gpt_server_url"
         private const val K_USE_CUSTOM_GPT_URL = "sp_use_custom_gpt_url"

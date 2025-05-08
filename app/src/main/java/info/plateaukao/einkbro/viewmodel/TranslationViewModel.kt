@@ -161,7 +161,13 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         if (!hasOpenAiApiKey()) return false
 
         updateInputMessage(text)
-        setupGptAction(ChatGPTActionInfo(systemMessage = config.gptUserPromptForWebPage))
+        setupGptAction(
+            ChatGPTActionInfo(
+                systemMessage = config.gptUserPromptForWebPage,
+                actionType = config.gptForSummary,
+                model = config.getGptTypeModelMap()[config.gptForSummary] ?: config.gptModel,
+            )
+        )
 
         return true
     }
@@ -325,7 +331,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             )
         } else gptActionInfo
 
-    private suspend fun queryLlm(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
+    suspend fun queryLlm(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
         if (config.enableOpenAiStream) {
             queryWithStream(messages, gptActionInfo)
             return

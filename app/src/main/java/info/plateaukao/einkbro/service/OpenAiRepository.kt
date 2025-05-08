@@ -119,6 +119,10 @@ class OpenAiRepository : KoinComponent {
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
+        if (config.geminiApiKey.isEmpty()) {
+            appendResponseAction("no gemini api key")
+            return
+        }
         val request = createGeminiRequest(messages, gptActionInfo, true)
         try {
             client.newCall(request).execute().use { response ->
@@ -198,6 +202,10 @@ class OpenAiRepository : KoinComponent {
     suspend fun queryGemini(messages: List<ChatMessage>, gptActionInfo: ChatGPTActionInfo): String {
         return withContext(Dispatchers.IO) {
             try {
+                if (config.geminiApiKey.isEmpty()) {
+                    return@withContext "no gemini api key"
+                }
+
                 val request = createGeminiRequest(messages, gptActionInfo, false)
                 val response: Response = client.newCall(request).execute()
                 if (!response.isSuccessful) {
