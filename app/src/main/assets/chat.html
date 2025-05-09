@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Android WebView Chat</title>
+    <title>Chat with Web</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -152,6 +152,10 @@
     const sendButton = document.getElementById('send-button');
     const typingIndicator = document.getElementById('typing-indicator');
 
+    // Track current message element for streaming
+    let currentStreamMessageElement = null;
+    let isStreaming = false;
+
     // Make sure document has proper height for scrolling
     document.addEventListener('DOMContentLoaded', function() {
         adjustLayout();
@@ -185,17 +189,62 @@
         messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
 
         // If it's a user message, just add the text
-        // If it's a bot message, parse the markdown
         if (isUser) {
             messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
         } else {
-            messageDiv.innerHTML = marked.parse(text);
+            // For bot messages, we'll handle them separately
+            // since they could be streamed or complete
+            messageDiv.innerHTML = ''; // Start empty for streaming
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+            // Return the element for potential streaming updates
+            return messageDiv;
+        }
+    }
+
+    let streamText = ''; // Placeholder for streaming text
+    // Function to handle streaming updates to a message
+    function updateStreamMessage(element, text, isComplete = false) {
+        if (!element) return;
+
+        if (isComplete) {
+            // If it's the final update, render the complete markdown
+            element.innerHTML = marked.parse(streamText + text);
+            // Reset streaming state
+            isStreaming = false;
+            streamText = '';
+            currentStreamMessageElement = null;
+            // Hide typing indicator
+            console.log('isComplete == true');
+        } else {
+            // For partial updates, just show the raw text as it comes in
+            streamText += text;
+            element.innerHTML = marked.parse(streamText);
+            console.log('Streaming:', streamText);
         }
 
-        chatMessages.appendChild(messageDiv);
-
-        // Smooth scroll to bottom
         scrollToBottom();
+    }
+
+    // Function to receive messages from Android - supports streaming
+    function receiveMessageFromAndroid(markdown, isStream = false, isComplete = false) {
+        hideTypingIndicator();
+
+        if (isStream) {
+            updateStreamMessage(currentStreamMessageElement, markdown, isComplete);
+        } else {
+            const messageDiv = addMessage('', false);
+            messageDiv.innerHTML = marked.parse(markdown);
+            scrollToBottom();
+        }
+    }
+
+    // Function to handle stream start
+    function startMessageStream() {
+        isStreaming = true;
+        currentStreamMessageElement = addMessage('', false);
     }
 
     // Function to scroll to bottom (compatible with WebView.scrollBy)
@@ -226,39 +275,13 @@
 
     // Function to send a message to Android
     function sendMessageToAndroid(message) {
-        // Check if Android interface is available
-        if (window.AndroidInterface) {
-            // If Android interface exists, send the message to it
-            window.AndroidInterface.sendMessage(message);
-        } else {
-            console.log("Android interface not available. This would send to Android: ", message);
+        // Add user message to chat
+        addMessage(message, true);
 
-            // For testing in browser without Android interface
-            // Simulate a response after a short delay
-            showTypingIndicator();
-            setTimeout(() => {
-                hideTypingIndicator();
-                receiveMessageFromAndroid(
-                    "This is a *markdown* formatted **test response**.\n\n" +
-                    "```java\n" +
-                    "public class Test {\n" +
-                    "    public static void main(String[] args) {\n" +
-                    "        System.out.println(\"Hello World\");\n" +
-                    "    }\n" +
-                    "}\n" +
-                    "```\n\n" +
-                    "1. First item\n" +
-                    "2. Second item\n" +
-                    "3. Third item"
-                );
-            }, 1500);
-        }
-    }
+        // Show typing indicator
+        showTypingIndicator();
 
-    // Function to receive messages from Android
-    function receiveMessageFromAndroid(markdown) {
-        hideTypingIndicator();
-        addMessage(markdown, false);
+        window.AndroidInterface.sendMessage(message);
     }
 
     // Make this function available globally so Android can call it
@@ -268,7 +291,6 @@
     sendButton.addEventListener('click', () => {
         const message = messageInput.value.trim();
         if (message) {
-            addMessage(message, true);
             sendMessageToAndroid(message);
             messageInput.value = '';
         }
@@ -278,7 +300,6 @@
         if (e.key === 'Enter') {
             const message = messageInput.value.trim();
             if (message) {
-                addMessage(message, true);
                 sendMessageToAndroid(message);
                 messageInput.value = '';
             }
