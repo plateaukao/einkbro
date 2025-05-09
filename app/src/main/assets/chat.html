@@ -10,8 +10,6 @@
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
-            height: 100vh;
-            overflow: hidden;
         }
         .chat-container {
             display: flex;
@@ -19,21 +17,16 @@
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
-            height: 100vh;
+            height: 100%;
+            min-height: 100vh;
             background-color: white;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            position: relative;
         }
         .chat-messages {
             flex: 1;
             overflow-y: auto;
             padding: 16px;
-            position: absolute;
-            top: 0;
-            bottom: 60px; /* Height of input area plus padding */
-            left: 0;
-            right: 0;
-            overflow-y: auto;
+            padding-bottom: 70px; /* Space for input area */
         }
         .message {
             margin-bottom: 16px;
@@ -56,11 +49,11 @@
             padding: 10px;
             background-color: #f0f0f0;
             border-top: 1px solid #ddd;
-            position: absolute;
+            position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 40px;
+            z-index: 100;
         }
         #message-input {
             flex: 1;
@@ -105,8 +98,8 @@
             background-color: #f1f1f1;
             border-radius: 18px;
             margin-bottom: 16px;
-            position: absolute;
-            bottom: 70px;
+            position: fixed;
+            bottom: 60px;
             left: 16px;
             z-index: 10;
         }
@@ -159,12 +152,26 @@
     const sendButton = document.getElementById('send-button');
     const typingIndicator = document.getElementById('typing-indicator');
 
+    // Make sure document has proper height for scrolling
+    document.addEventListener('DOMContentLoaded', function() {
+        adjustLayout();
+    });
+
     // Handle window resize
     window.addEventListener('resize', function() {
-        // Ensure the chat area fills the available space
-        document.documentElement.style.height = '100%';
-        document.body.style.height = '100%';
+        adjustLayout();
     });
+
+    // Adjust layout for proper scrolling
+    function adjustLayout() {
+        // Ensure the input is visible
+        messageInput.scrollIntoView(false);
+
+        // Notify Android of height changes
+        if (window.AndroidInterface && typeof window.AndroidInterface.onContentHeightChanged === 'function') {
+            window.AndroidInterface.onContentHeightChanged(document.body.scrollHeight);
+        }
+    }
 
     // Configuration for Markdown parsing
     marked.setOptions({
@@ -187,10 +194,23 @@
 
         chatMessages.appendChild(messageDiv);
 
-        // Ensure scroll to bottom
+        // Smooth scroll to bottom
+        scrollToBottom();
+    }
+
+    // Function to scroll to bottom (compatible with WebView.scrollBy)
+    function scrollToBottom() {
+        // Use setTimeout to ensure this happens after DOM updates
         setTimeout(() => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 10);
+            // This calculates total scroll height and scrolls there
+            const scrollHeight = chatMessages.scrollHeight;
+            window.scrollTo(0, document.body.scrollHeight);
+
+            // Make this visible to Android
+            if (window.AndroidInterface && typeof window.AndroidInterface.onContentHeightChanged === 'function') {
+                window.AndroidInterface.onContentHeightChanged(document.body.scrollHeight);
+            }
+        }, 100);
     }
 
     // Function to show typing indicator
