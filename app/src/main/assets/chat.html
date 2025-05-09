@@ -216,13 +216,12 @@
             isStreaming = false;
             streamText = '';
             currentStreamMessageElement = null;
-            // Hide typing indicator
-            console.log('isComplete == true');
+            //console.log('isComplete == true');
         } else {
             // For partial updates, just show the raw text as it comes in
             streamText += text;
             element.innerHTML = marked.parse(streamText);
-            console.log('Streaming:', streamText);
+            //console.log('Streaming:', streamText);
         }
 
         scrollToBottom();
