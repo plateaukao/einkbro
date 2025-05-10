@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.epub
 
+import android.content.Context
 import android.os.Build
 import info.plateaukao.einkbro.epub.EpubBook.Chapter
 import info.plateaukao.einkbro.epub.EpubBook.Image
@@ -69,6 +70,7 @@ private fun createDummyManifest(document: Document): Element {
 
 @Throws(Exception::class)
 suspend fun epubParser(
+    context: Context,
     inputStream: InputStream,
 ): EpubBook = withContext(Dispatchers.Default) {
     val files = getZipFiles(inputStream)
@@ -144,7 +146,7 @@ suspend fun epubParser(
 
 
             if (imgFile != null) {
-                return Image(absPath = imgFile.absPath, image = imgFile.data)
+                return Image(absPath = imgFile.absPath, mediaType = "image/${imgSrc.split(".").last()}", image = imgFile.data)
             }
         }
         return null
@@ -153,7 +155,7 @@ suspend fun epubParser(
     // 1. Primary Method: Try to get the cover image from the manifest
     var coverImage = manifestItems[metadataCoverId]
         ?.let { files[it.absPath] }
-        ?.let { Image(absPath = it.absPath, image = it.data) }
+        ?.let { Image(absPath = it.absPath, mediaType = "image/jpeg", image = it.data) }
 
     // 2. Fallback: Check the `<guide>` tag if the primary method didn't yield a cover
     if (coverImage == null) {
@@ -284,17 +286,28 @@ suspend fun epubParser(
             imageExtensions.any { file.absPath.endsWith(it, ignoreCase = true) }
         }
         .map { (_, file) ->
-            Image(absPath = file.absPath, image = file.data)
+            Image(absPath = file.absPath, mediaType = "image/" + file.absPath.split(".").last(), image = file.data)
         }
 
     val listedImages = manifestItems.asSequence()
         .map { it.value }
         .filter { it.mediaType.startsWith("image") }
-        .mapNotNull { files[it.absPath] }
-        .map { Image(absPath = it.absPath, image = it.data) }
+        //.mapNotNull { files[it.absPath] }
+        .map { Image(absPath = it.absPath, mediaType = it.mediaType, image = files[it.absPath]!!.data) }
 
     val images = (listedImages + unlistedImages).distinctBy { it.absPath }
 
+    val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
+    if (!File(epubTempExtractionLocation).exists()) File(epubTempExtractionLocation).mkdirs()
+    images.forEach {
+        // write image file to temp location with relative path
+        val relativePath = it.absPath.substringAfter("$rootPath/")
+        val imageFile = File(epubTempExtractionLocation + File.separator + relativePath)
+        if (!imageFile.parentFile.exists()) {
+            imageFile.parentFile.mkdirs()
+        }
+        imageFile.writeBytes(it.image)
+    }
 
     return@withContext EpubBook(
         fileName = metadataTitle.asFileName(),

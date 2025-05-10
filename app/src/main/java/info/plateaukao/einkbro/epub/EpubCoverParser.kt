@@ -59,5 +59,5 @@ suspend fun epubCoverParser(
 
     manifestItems[metadataCoverId]
         ?.let { files[it.absoluteFilePath] }
-        ?.let { EpubBook.Image(absPath = it.absPath, image = it.data) }
+        ?.let { EpubBook.Image(absPath = it.absPath, mediaType = "image/jpeg", image = it.data) }
 }

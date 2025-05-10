@@ -27,6 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
+import info.plateaukao.einkbro.epub.EpubBook
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -54,6 +55,7 @@ class EBWebViewClient(
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
     var book: Book? = null
+    var epubBook: EpubBook? = null
 
     private val adFilter: AdFilter = AdFilter.get()
 
@@ -291,14 +293,15 @@ class EBWebViewClient(
     }
 
     private fun processBookResource(uri: Uri): WebResourceResponse? {
-        val currentBook = book ?: return null
+        val currentBook = epubBook ?: return null
 
         if (uri.scheme == "img") {
-            val resource = currentBook.resources.getByHref(uri.host.toString())
+            val resource = currentBook.images.find {  uri.host.toString() == it.absPath }
+                ?: return null
             return WebResourceResponse(
-                resource.mediaType.name,
+                resource.mediaType,
                 "UTF-8",
-                ByteArrayInputStream(resource.data)
+                ByteArrayInputStream(resource.image)
             )
         }
         return null

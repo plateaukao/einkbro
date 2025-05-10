@@ -27,6 +27,7 @@ data class EpubBook(
 
     data class Image(
         val absPath: String,
+        val mediaType: String,
         val image: ByteArray
     )
 
