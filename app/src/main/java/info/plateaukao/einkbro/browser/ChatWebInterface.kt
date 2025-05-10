@@ -12,72 +12,82 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.getValue
 
 class ChatWebInterface(
-    private val lifecycleScope: LifecycleCoroutineScope,
-    private val webView: WebView,
+    lifecycleScope: LifecycleCoroutineScope,
+    webView: WebView,
     private val webContent: String,
 ) : KoinComponent {
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
     private val messageList: MutableList<ChatMessage> = mutableListOf()
+    private val jsHelper = JsHelper(webView, lifecycleScope)
 
     @JavascriptInterface
     fun sendMessage(message: String) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            //Log.d("ChatWebInterface", "Message: $message")
-            webView.evaluateJavascript("javascript:startMessageStream()", null)
-        }
-        generateMarkdownResponse(message)
+        jsHelper.startMessageStream()
+
+        val userPrompt = createUserPrompt(message)
+        messageList.add(userPrompt.toUserMessage())
+
+        val chatGptActionInfo = createChatGptActionInfo()
+
+        openAiRepository.chatStream(
+            messages = messageList,
+            gptActionInfo = chatGptActionInfo,
+            appendResponseAction = { response -> jsHelper.sendStreamUpdate(response) },
+            doneAction = { jsHelper.completeStream() },
+            failureAction = { handleFailure() }
+        )
     }
 
-    private fun generateMarkdownResponse(message: String) {
-        val userPrompt = if (messageList.isEmpty()) {
+    private fun createUserPrompt(message: String): String {
+        return if (messageList.isEmpty()) {
             "```$webContent```\n this is the web content; $message"
         } else {
             message
         }
-        messageList.add(userPrompt.toUserMessage())
+    }
 
-        val chatGptActionInfo = ChatGPTActionInfo(
+    private fun createChatGptActionInfo(): ChatGPTActionInfo {
+        return ChatGPTActionInfo(
             actionType = configManager.gptForChatWeb,
             model = configManager.getGptTypeModelMap()[configManager.gptForChatWeb] ?: configManager.gptModel,
         )
+    }
 
-        openAiRepository.chatStream(messageList, chatGptActionInfo,
-            { response ->
-                lifecycleScope.launch(Dispatchers.Main) {
-                    //Log.d("ChatWebInterface", "Response: $response")
-                    webView.evaluateJavascript(
-                        "javascript:receiveMessageFromAndroid('${escapeJsString(response)}', true, false)",
-                        null
-                    )
-                }
-            },
-            doneAction = {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    //Log.d("ChatWebInterface", "Done")
-                    webView.evaluateJavascript("javascript:receiveMessageFromAndroid('', true, true)", null)
-                }
-            },
-            failureAction = {
-                Log.e("ChatWebInterface", "Error in stream")
-            }
-        )
+    private fun handleFailure() {
+        Log.e("ChatWebInterface", "Error in stream")
+        jsHelper.sendStreamUpdate("Sorry, there was an error processing your request.", isComplete = true)
+    }
+}
 
-//        if (chatGptActionInfo.actionType != GptActionType.Gemini) {
-//            val completion = openAiRepository.chatCompletion(messageList, chatGptActionInfo)
-//            if (completion?.choices?.firstOrNull()?.message != null) {
-//                messageList.add(completion.choices.firstOrNull()?.message!!)
-//            }
-//
-//            return completion?.choices?.firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
-//                ?: "Something went wrong."
-//        } else {
-//            val result = openAiRepository.queryGemini(messageList, chatGptActionInfo)
-//            return result
-//        }
+/**
+ * Helper class to manage JavaScript interactions with WebView
+ */
+class JsHelper(
+    private val webView: WebView,
+    private val lifecycleScope: LifecycleCoroutineScope
+) {
+    fun startMessageStream() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            webView.evaluateJavascript("javascript:startMessageStream()", null)
+        }
+    }
+
+    fun sendStreamUpdate(message: String, isComplete: Boolean = false) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            webView.evaluateJavascript(
+                "javascript:receiveMessageFromAndroid('${escapeJsString(message)}', true, $isComplete)",
+                null
+            )
+        }
+    }
+
+    fun completeStream() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            webView.evaluateJavascript("javascript:receiveMessageFromAndroid('', true, true)", null)
+        }
     }
 
     /**
