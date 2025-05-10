@@ -298,15 +298,21 @@ suspend fun epubParser(
     val images = (listedImages + unlistedImages).distinctBy { it.absPath }
 
     val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
-    if (!File(epubTempExtractionLocation).exists()) File(epubTempExtractionLocation).mkdirs()
-    images.forEach {
-        // write image file to temp location with relative path
-        val relativePath = it.absPath.substringAfter("$rootPath/")
-        val imageFile = File(epubTempExtractionLocation + File.separator + relativePath)
-        if (!imageFile.parentFile.exists()) {
-            imageFile.parentFile.mkdirs()
+    // clean it first
+    if (File(epubTempExtractionLocation).exists()) {
+        File(epubTempExtractionLocation).deleteRecursively()
+    }
+
+    // create it
+    File(epubTempExtractionLocation).mkdirs()
+    files.forEach { (_, file) ->
+        // write file to temp location with relative path
+        val relativePath = file.absPath.substringAfter("$rootPath/")
+        val epubFile = File(epubTempExtractionLocation + File.separator + relativePath)
+        if (!epubFile.parentFile.exists()) {
+            epubFile.parentFile.mkdirs()
         }
-        imageFile.writeBytes(it.image)
+        epubFile.writeBytes(file.data)
     }
 
     return@withContext EpubBook(
@@ -317,5 +323,6 @@ suspend fun epubParser(
         coverImage = coverImage,
         chapters = chapters.toList(),
         images = images.toList(),
+        rootPath = rootPath,
     )
 }

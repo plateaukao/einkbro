@@ -327,13 +327,15 @@ elements[i].style.color='white';
 
             val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
             val dirOEBPS = File(epubTempExtractionLocation + File.separator + "OEBPS")
+            val relativeFolder = epub.chapters.firstOrNull()?.absPath?.substringBeforeLast("/")?.substringAfter(epub.rootPath) ?: ""
+            val dirRelativePath = File(epubTempExtractionLocation + relativeFolder + File.separator)
             resourceLocation = if (dirOEBPS.exists() && dirOEBPS.isDirectory) {
                 "file://" + epubTempExtractionLocation + File.separator + "OEBPS" + File.separator
+            } else if (dirRelativePath.exists() && dirRelativePath.isDirectory && relativeFolder.isNotEmpty()) {
+                "file://" + epubTempExtractionLocation + relativeFolder + File.separator
             } else {
                 "file://" + epubTempExtractionLocation + File.separator
             }
-            if (!File(epubTempExtractionLocation).exists()) File(epubTempExtractionLocation).mkdirs()
-            resourceLocation = "file://" + epubTempExtractionLocation + File.separator
         }
     }
 

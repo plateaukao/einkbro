@@ -17,7 +17,8 @@ data class EpubBook(
     val coverImage: Image?,
     val chapters: List<Chapter>,
     val images: List<Image>,
-    val toc: List<ToCEntry> = emptyList()
+    val toc: List<ToCEntry> = emptyList(),
+    val rootPath: String = "",
 ) {
     data class Chapter(
         val absPath: String,
