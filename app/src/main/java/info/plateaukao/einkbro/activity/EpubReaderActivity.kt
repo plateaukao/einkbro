@@ -41,11 +41,11 @@ class EpubReaderActivity: BrowserActivity() {
                 ) // so that it won't miss the preload webview
                 lifecycleScope.launch {
                     with(ebWebView as EpubReaderView) {
-                        openEpubFile(epubUri)
+                        openEpubFileV2(epubUri)
                         if (shouldGotoLastChapter) {
                             gotoLastChapter()
                         } else {
-                            gotoPosition(0, 0F)
+                            gotoFirstChapter()
                         }
                     }
                 }

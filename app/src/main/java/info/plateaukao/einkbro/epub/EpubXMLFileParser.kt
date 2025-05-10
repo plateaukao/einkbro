@@ -22,9 +22,14 @@ internal class EpubXMLFileParser(
         val title = body.selectFirst("h1, h2, h3, h4, h5, h6")?.text()
         body.selectFirst("h1, h2, h3, h4, h5, h6")?.remove()
 
+        // TODO
+//        return Output(
+//            title = title,
+//            body = getNodeStructuredText(body)
+//        )
         return Output(
             title = title,
-            body = getNodeStructuredText(body)
+            body = data.decodeToString()
         )
     }
 
