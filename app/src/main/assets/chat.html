@@ -36,12 +36,14 @@
             word-wrap: break-word;
         }
         .user-message {
-            background-color: #DCF8C6;
+            background-color: transparent;
+            border: 1px solid #cccccc;
             align-self: flex-end;
             margin-left: auto;
         }
         .bot-message {
-            background-color: #f1f1f1;
+            background-color: transparent;
+            border: 1px solid #cccccc;
             align-self: flex-start;
         }
         .input-area {
@@ -122,13 +124,20 @@
             0%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-6px); }
         }
+        table {
+          border-collapse: collapse;
+          border: 1px solid #cccccc;
+        }
+        th, td {
+          border: 1px solid #cccccc;
+        }
     </style>
 </head>
 <body>
 <div class="chat-container">
     <div class="chat-messages" id="chat-messages">
         <div class="message bot-message">
-            Hello! I'm ready to chat. What would you like to talk about?
+            Hello! I'm ready to chat!
         </div>
     </div>
     <div class="typing-indicator" id="typing-indicator">
