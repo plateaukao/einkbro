@@ -320,18 +320,20 @@ elements[i].style.color='white';
 
     suspend fun openEpubFileV2(uri: Uri) {
         withContext(IO) {
-            val epub = context.contentResolver.openInputStream(uri).use { epubParser(inputStream = it!!) }
-            // print epub info
-            Log.d("EpubReaderView", "Title: ${epub.title}")
-            Log.d("EpubReaderView", "Author: ${epub.author}")
-            Log.d("EpubReaderView", "Description: ${epub.description}")
-            // chapter names
-            Log.d("EpubReaderView", "Chapters: ${epub.chapters.map { it.title + '\n'}}")
-            //this@EpubReaderView.book = ?
+            val epub = context.contentResolver.openInputStream(uri).use { epubParser(context, inputStream = it!!) }
             this@EpubReaderView.epub = epub
             // webViewClient.book = book // for loading image resources
+            webViewClient.epubBook = epub
 
-            // chapterList.clear()
+            val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
+            val dirOEBPS = File(epubTempExtractionLocation + File.separator + "OEBPS")
+            resourceLocation = if (dirOEBPS.exists() && dirOEBPS.isDirectory) {
+                "file://" + epubTempExtractionLocation + File.separator + "OEBPS" + File.separator
+            } else {
+                "file://" + epubTempExtractionLocation + File.separator
+            }
+            if (!File(epubTempExtractionLocation).exists()) File(epubTempExtractionLocation).mkdirs()
+            resourceLocation = "file://" + epubTempExtractionLocation + File.separator
         }
     }
 
@@ -348,7 +350,7 @@ elements[i].style.color='white';
             } catch (e: Exception) {
             }
             chapterList.add(Chapter(TOC.title, builder.toString(), TOC.completeHref))
-            if (TOC.children.size > 0) {
+            if (TOC.children.isNotEmpty()) {
                 processChaptersByTOC(TOC.children)
             }
         }
@@ -388,6 +390,9 @@ elements[i].style.color='white';
 
         gotoChapter(epub.chapters.last())
         chapterNumber = epub.chapters.size - 1
+
+        scrollX = 0
+        scrollY = 0
     }
 
     fun gotoFirstChapter() {
@@ -532,9 +537,10 @@ elements[i].style.color='white';
     }
 
     fun nextChapter() {
-        if (chapterList.size > chapterNumber + 1 && !loading) {
+        if (epub.chapters.size > chapterNumber + 1 && !loading) {
+            chapterNumber++
             loading = true
-            gotoChapter(epub.chapters[chapterNumber + 1])
+            gotoChapter(epub.chapters[chapterNumber])
             listener.onChapterChangeListener(chapterNumber)
             listener.onPageChangeListener(
                 this.chapterNumber,
@@ -543,6 +549,8 @@ elements[i].style.color='white';
                 getProgressEnd()
             )
             loading = false
+            scrollX = 0
+            scrollY = 0
         } else if (chapterList.size <= chapterNumber + 1) {
             listener.onBookEndReached()
         }
@@ -551,7 +559,8 @@ elements[i].style.color='white';
     fun previousChapter() {
         if (chapterNumber - 1 >= 0 && !loading) {
             loading = true
-            gotoChapter(epub.chapters[chapterNumber - 1])
+            chapterNumber--
+            gotoChapter(epub.chapters[chapterNumber])
             listener.onChapterChangeListener(chapterNumber)
             listener.onPageChangeListener(
                 chapterNumber,
@@ -560,12 +569,14 @@ elements[i].style.color='white';
                 getProgressEnd()
             )
             loading = false
+            postDelayed({
+                val totalHeight = getTotalContentHeight()
+                scrollY = totalHeight
+            }, 200)
         } else if (chapterNumber - 1 < 0) {
             listener.onBookStartReached()
         }
     }
-
-    fun getChapterContent(): String = chapterList[chapterNumber].content
 
     private fun getTotalContentHeight(): Int =
         (this.contentHeight * resources.displayMetrics.density).toInt()
