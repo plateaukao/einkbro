@@ -37,6 +37,7 @@ class EpubReaderView(
     browserController: BrowserController?
 ) : EBWebView(context, browserController) {
     private lateinit var book: Book
+    private lateinit var epub: EpubBook
     private val chapterList: ArrayList<Chapter> = ArrayList()
     var chapterNumber = 0
     var progress = 0f
@@ -317,6 +318,23 @@ elements[i].style.color='white';
         }
     }
 
+    suspend fun openEpubFileV2(uri: Uri) {
+        withContext(IO) {
+            val epub = context.contentResolver.openInputStream(uri).use { epubParser(inputStream = it!!) }
+            // print epub info
+            Log.d("EpubReaderView", "Title: ${epub.title}")
+            Log.d("EpubReaderView", "Author: ${epub.author}")
+            Log.d("EpubReaderView", "Description: ${epub.description}")
+            // chapter names
+            Log.d("EpubReaderView", "Chapters: ${epub.chapters.map { it.title + '\n'}}")
+            //this@EpubReaderView.book = ?
+            this@EpubReaderView.epub = epub
+            // webViewClient.book = book // for loading image resources
+
+            // chapterList.clear()
+        }
+    }
+
     private fun processChaptersByTOC(tocReferences: List<TOCReference>) {
         for (TOC in tocReferences) {
             val builder = StringBuilder()
@@ -366,48 +384,35 @@ elements[i].style.color='white';
     }
 
     fun gotoLastChapter() {
-        if (chapterList.isEmpty()) return
+        if (epub.chapters.isEmpty()) return
 
-        gotoPosition(chapterList.size - 1, 0F)
+        gotoChapter(epub.chapters.last())
+        chapterNumber = epub.chapters.size - 1
     }
 
-    fun gotoPosition(chapterNumber: Int, progress: Float) {
-        if (chapterList.isEmpty()) return
+    fun gotoFirstChapter() {
+        if (epub.chapters.isEmpty()) return
+        gotoChapter(epub.chapters.first())
+        chapterNumber = 0
+    }
 
-        if (chapterNumber < 0) {
-            this.chapterNumber = 0
-            this.progress = 0f
-        } else if (chapterNumber >= chapterList.size) {
-            this.chapterNumber = chapterList.size - 1
-            this.progress = 1f
-        } else {
-            this.chapterNumber = chapterNumber
-            this.progress = progress
-        }
+    fun gotoChapter(chapter: EpubBook.Chapter) {
         loadDataWithBaseURL(
             resourceLocation,
-            chapterList[this.chapterNumber].content,
+            chapter.body,
             "text/html",
             "utf-8",
             null
         )
-
-        if (progress == 0F) {
-            scrollY = 0
-        } else {
-            this.postDelayed({
-                scrollY = (getTotalContentHeight() * progress).toInt()
-            }, 500) // wait for onPageFinished
-        }
     }
 
     fun showTocDialog() {
         try {
-            val items = chapterList.map { it.name }.toTypedArray()
+            val items = epub.chapters.map { it.title }.toTypedArray()
             AlertDialog.Builder(context, R.style.TouchAreaDialog)
                 .setTitle(context.getString(R.string.dialog_toc_title))
                 .setItems(items) { _, item ->
-                    gotoPosition(item, 0f)
+                    gotoChapter(epub.chapters.first { it.title == items[item] })
                     listener.onChapterChangeListener(item)
                 }.create().apply {
                     with(listView) {
@@ -419,6 +424,7 @@ elements[i].style.color='white';
                 }
                 .show()
         } catch (e: Exception) {
+            Log.e("EpubReaderView", e.toString())
         }
     }
 
@@ -528,7 +534,7 @@ elements[i].style.color='white';
     fun nextChapter() {
         if (chapterList.size > chapterNumber + 1 && !loading) {
             loading = true
-            gotoPosition(chapterNumber + 1, 0f)
+            gotoChapter(epub.chapters[chapterNumber + 1])
             listener.onChapterChangeListener(chapterNumber)
             listener.onPageChangeListener(
                 this.chapterNumber,
@@ -545,7 +551,7 @@ elements[i].style.color='white';
     fun previousChapter() {
         if (chapterNumber - 1 >= 0 && !loading) {
             loading = true
-            gotoPosition(chapterNumber - 1, 1f)
+            gotoChapter(epub.chapters[chapterNumber - 1])
             listener.onChapterChangeListener(chapterNumber)
             listener.onPageChangeListener(
                 chapterNumber,

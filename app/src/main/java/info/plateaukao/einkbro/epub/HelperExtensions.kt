@@ -16,6 +16,7 @@ internal val Node.childElements get() = childNodes.elements
 internal fun Document.selectFirstTag(tag: String): Node? = getElementsByTagName(tag).item(0)
 internal fun Node.selectFirstChildTag(tag: String) = childElements.find { it.tagName == tag }
 internal fun Node.selectChildTag(tag: String) = childElements.filter { it.tagName == tag }
+internal fun Node.selectChildTags(tag1: String, tag2: String) = childElements.filter { it.tagName == tag1 || it.tagName == tag2 }
 internal fun Node.getAttributeValue(attribute: String): String? =
     attributes?.getNamedItem(attribute)?.textContent
 

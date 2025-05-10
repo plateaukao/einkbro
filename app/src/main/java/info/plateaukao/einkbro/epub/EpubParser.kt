@@ -7,13 +7,15 @@ import info.plateaukao.einkbro.epub.EpubBook.ToCEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
+import org.w3c.dom.Document
+import org.w3c.dom.Element
 import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 import kotlin.io.path.invariantSeparatorsPathString
 
 internal suspend fun getZipFiles(
-    inputStream: InputStream
+    inputStream: InputStream,
 ): Map<String, EpubFile> = withContext(Dispatchers.IO) {
     ZipInputStream(inputStream).use { zipInputStream ->
         zipInputStream
@@ -24,9 +26,50 @@ internal suspend fun getZipFiles(
     }
 }
 
+// Add this function to your EpubParser.kt file
+private fun createDummyMetadata(document: Document): Element {
+    val metadata = document.createElement("metadata")
+
+    // Create and add basic required elements
+    val title = document.createElement("dc:title")
+    title.textContent = "Unknown Title"
+    metadata.appendChild(title)
+
+    val creator = document.createElement("dc:creator")
+    creator.textContent = "Unknown Author"
+    metadata.appendChild(creator)
+
+    val description = document.createElement("dc:description")
+    description.textContent = "No description available"
+    metadata.appendChild(description)
+
+    return metadata
+}
+
+private fun createDummyManifest(document: Document): Element {
+    val manifest = document.createElement("manifest")
+
+    // Create a minimal item entry
+    val item = document.createElement("item")
+    item.setAttribute("id", "dummy-item")
+    item.setAttribute("href", "dummy.xhtml")
+    item.setAttribute("media-type", "application/xhtml+xml")
+    manifest.appendChild(item)
+
+    // Create an NCX item that's often required
+    val ncxItem = document.createElement("item")
+    ncxItem.setAttribute("id", "ncx")
+    ncxItem.setAttribute("href", "toc.ncx")
+    ncxItem.setAttribute("media-type", "application/x-dtbncx+xml")
+    manifest.appendChild(ncxItem)
+
+    return manifest
+}
+
+
 @Throws(Exception::class)
 suspend fun epubParser(
-    inputStream: InputStream
+    inputStream: InputStream,
 ): EpubBook = withContext(Dispatchers.Default) {
     val files = getZipFiles(inputStream)
 
@@ -43,11 +86,15 @@ suspend fun epubParser(
 
     val document = parseXMLFile(opfFile.data)
         ?: throw Exception(".opf file failed to parse data")
+    val version = document.documentElement.getAttributeValue("version")
     val metadata = document.selectFirstTag("metadata")
-        ?: throw Exception(".opf file metadata section missing")
+        ?: document.selectFirstTag("opf:metadata")
+        ?: createDummyMetadata(document)
     val manifest = document.selectFirstTag("manifest")
-        ?: throw Exception(".opf file manifest section missing")
+        ?: document.selectFirstTag("opf:manifest")
+        ?: createDummyManifest(document)
     val spine = document.selectFirstTag("spine")
+        ?: document.selectFirstTag("opf:spine")
         ?: throw Exception(".opf file spine section missing")
     val guide = document.selectFirstTag("guide")
     val metadataTitle = metadata.selectFirstChildTag("dc:title")?.textContent
@@ -72,7 +119,7 @@ suspend fun epubParser(
         TODO("VERSION.SDK_INT < O")
     }
 
-    val manifestItems = manifest.selectChildTag("item").map {
+    val manifestItems = manifest.selectChildTags("item", "opf:item").map {
         ManifestItem(
             id = it.getAttribute("id"),
             absPath = it.getAttribute("href").decodedURL.hrefAbsolutePath(),
@@ -80,7 +127,6 @@ suspend fun epubParser(
             properties = it.getAttribute("properties")
         )
     }.associateBy { it.id }
-
 
 
     fun parseCoverImageFromXhtml(coverFile: EpubFile): Image? {
@@ -127,20 +173,49 @@ suspend fun epubParser(
         }
     }
 
-    val ncxFilePath = manifestItems["ncx"]?.absPath
-    val ncxFile = files[ncxFilePath] ?: throw Exception("ncx file missing")
+    fun getTocEntries(): List<ToCEntry> {
+        val ncxFilePath = manifestItems["ncx"]?.absPath
+        if (ncxFilePath != null) {
+            val ncxFilePath = manifestItems["ncx"]?.absPath
+            val ncxFile = files[ncxFilePath] ?: throw Exception("ncx file missing")
 
+            val doc = Jsoup.parse(ncxFile.data.inputStream(), "UTF-8", "")
+            val navMap = doc.selectFirst("navMap") ?: throw Exception("Invalid NCX file: navMap not found")
 
-    val doc = Jsoup.parse(ncxFile.data.inputStream(), "UTF-8", "")
-    val navMap = doc.selectFirst("navMap") ?: throw Exception("Invalid NCX file: navMap not found")
+            return navMap.select("navPoint").map { navPoint ->
+                val title = navPoint.selectFirst("navLabel")?.selectFirst("text")?.text() ?: ""
+                var link = navPoint.selectFirst("content")?.attribute("src")?.value ?: "" // Add the prefix
+                if (!link.startsWith(rootPath))
+                    link = "$rootPath/$link"
+                ToCEntry(title, link)
+            }
+        } else {
+            val tocFilePath = manifestItems["toc"]?.absPath
+            val tocFile = files[tocFilePath] ?: throw Exception("toc file missing")
 
-    val tocEntries = navMap.select("navPoint").map { navPoint ->
-        val title =  navPoint.selectFirst("navLabel")?.selectFirst("text")?.text() ?: ""
-        var link = navPoint.selectFirst("content")?.attribute("src")?.value ?: "" // Add the prefix
-        if (!link.startsWith(rootPath))
-            link = "$rootPath/$link"
-        ToCEntry(title, link)
+            val doc = Jsoup.parse(tocFile.data.inputStream(), "UTF-8", "")
+            val nav = doc.select("nav[epub:type=toc], nav#toc, nav.toc").first()
+                ?: doc.select("nav").first()
+                ?: return emptyList()
+
+            val entries = mutableListOf<ToCEntry>()
+            // Look for ordered lists directly under the nav, then list items, then links
+            nav.select("ol > li > a[href], ul > li > a[href], a[href]")
+                .forEach { linkElement -> // More specific selector first
+                    val title = linkElement.text().trim()
+                    var hrefAttr = linkElement.attr("href")
+                    if (!hrefAttr.startsWith(rootPath)) {
+                        hrefAttr = "$rootPath/$hrefAttr"
+                    }
+                    if (title.isNotEmpty() && hrefAttr.isNotEmpty()) {
+                        entries.add(ToCEntry(title, hrefAttr)) // to be fixed
+                    }
+                }
+            return entries
+        }
     }
+
+    val tocEntries = getTocEntries()
 
     // Function to check if a spine item is a chapter
     fun isChapter(item: ManifestItem): Boolean {
@@ -161,7 +236,7 @@ suspend fun epubParser(
     var currentTOC: ToCEntry? = null
     var currentChapterBody = ""
 
-    spine.selectChildTag("itemref").forEach { itemRef ->
+    spine.selectChildTags("itemref", "opf:itemref").forEach { itemRef ->
         val itemId = itemRef.getAttribute("idref")
         val spineItem = manifestItems[itemId]
 
