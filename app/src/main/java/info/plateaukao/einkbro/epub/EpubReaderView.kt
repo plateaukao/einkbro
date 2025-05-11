@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.util.Log
 import android.util.TypedValue
-import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -31,21 +30,12 @@ class EpubReaderView(
     context: Context,
     browserController: BrowserController?
 ) : EBWebView(context, browserController) {
-    private lateinit var book: Book
     private lateinit var epub: EpubBook
     private val chapterList: ArrayList<Chapter> = ArrayList()
     var chapterNumber = 0
     var progress = 0f
     var pageNumber = 0
-    private var touchX = 0f
-    private var touchY = 0f
-    private var touchTime: Long = 0
     private var resourceLocation = ""
-    private var actionMode: ActionMode? = null
-    private var actionModeCallback: SelectActionModeCallback? = null
-    var selectedText = ""
-        private set
-    var selectedTextInfo: SelectedTextInfo? = null
 
     private var loading = false
     lateinit var listener: EpubReaderListener
@@ -74,63 +64,11 @@ elements[i].style.color='white';
             }
         }
 
-    private var textSelectionMode = false
-
     fun setEpubReaderListener(listener: EpubReaderListener) {
         this.listener = listener
     }
 
     inner class Chapter(val name: String, val content: String, val href: String)
-    inner class SelectActionModeCallback : ActionMode.Callback {
-        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-            actionMode = mode
-            mode.menuInflater.inflate(R.menu.menu_ereader, menu);
-            textSelectionMode = true
-            listener.onTextSelectionModeChangeListener(true)
-            return true
-        }
-
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            return true
-        }
-
-        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            when (item.itemId) {
-                R.id.menu_copy -> copySelection()
-                R.id.menu_highlight -> annotateSelection(AnnotateType.HIGHLIGHT)
-                R.id.menu_underline -> annotateSelection(AnnotateType.UNDERLINE)
-                R.id.menu_strike -> annotateSelection(AnnotateType.STRIKETHROUGH)
-            }
-            return true
-        }
-
-        override fun onDestroyActionMode(mode: ActionMode) {
-            listener.onTextSelectionModeChangeListener(false)
-            textSelectionMode = false
-        }
-    }
-
-    private fun copySelection() {
-        processTextSelection {
-            val text = selectedTextInfo?.text ?: return@processTextSelection
-            val clip = ClipData.newPlainText("Copied Text", text)
-            (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
-                clip
-            )
-
-            EBToast.showShort(context, "text s copied")
-        }
-    }
-
-    private fun annotateSelection(annotateType: AnnotateType) {
-        processTextSelection {
-            val info = selectedTextInfo ?: return@processTextSelection
-            if (info.chapterNumber >= 0 && info.chapterNumber == this.chapterNumber && info.dataString.isNotBlank()) {
-                // TODO: Save ChapterNumber,DataString,Color,AnnotateMethod,BookLocation etc in database/Server to recreate highlight
-                annotate(info.dataString, annotateType, "#ef9a9a")
-            }
-        }
-    }
 
     init {
         with(settings) {
@@ -144,103 +82,6 @@ elements[i].style.color='white';
 
     private fun processJavascript(js: String) {
         evaluateJavascript("(function(){$js})()") { }
-    }
-
-    fun annotate(jsonData: String, annotateType: AnnotateType, hashcolor: String) {
-        var js = """
-    var data = JSON.parse($jsonData);
-    var selectedText = data['selectedText'];
-	var startOffset = data['startOffset'];
-	var endOffset = data['endOffset'];
-	var startNodeData = data['startNodeData'];
-	var startNodeHTML = data['startNodeHTML'];
-	var startNodeTagName = data['startNodeTagName'];
-	var endNodeData = data['endNodeData'];
-	var endNodeHTML = data['endNodeHTML'];
-	var endNodeTagName = data['endNodeTagName'];
-    var tagList = document.getElementsByTagName(startNodeTagName);
-    for (var i = 0; i < tagList.length; i++) {
-        if (tagList[i].innerHTML == startNodeHTML) {
-            var startFoundEle = tagList[i];
-        }
-    }
-	var nodeList = startFoundEle.childNodes;
-    for (var i = 0; i < nodeList.length; i++) {
-        if (nodeList[i].data == startNodeData) {
-            var startNode = nodeList[i];
-        }
-    }
-	var tagList = document.getElementsByTagName(endNodeTagName);
-    for (var i = 0; i < tagList.length; i++) {
-        if (tagList[i].innerHTML == endNodeHTML) {
-            var endFoundEle = tagList[i];
-        }
-    }
-    var nodeList = endFoundEle.childNodes;
-    for (var i = 0; i < nodeList.length; i++) {
-        if (nodeList[i].data == endNodeData) {
-            var endNode = nodeList[i];
-        }
-    }
-    var range = document.createRange();
-	range.setStart(startNode, startOffset);
-    range.setEnd(endNode, endOffset);
-    var sel = window.getSelection();
-	sel.removeAllRanges();
-	document.designMode = "on";
-	sel.addRange(range);
-"""
-        js += when (annotateType) {
-            AnnotateType.HIGHLIGHT -> "\tdocument.execCommand(\"HiliteColor\", false, \"$hashcolor\");\n"
-            AnnotateType.UNDERLINE -> "\tdocument.execCommand(\"underline\");\n"
-            AnnotateType.STRIKETHROUGH -> "\tdocument.execCommand(\"strikeThrough\");\n"
-        }
-        js += """ sel.removeAllRanges();
-	document.designMode = "off";
-	return "{\"status\":1}";
-"""
-        processJavascript(js)
-    }
-
-    fun exitSelectionMode() {
-        actionMode!!.finish()
-        val js = "window.getSelection().removeAllRanges();"
-        processJavascript(js)
-    }
-
-    fun processTextSelection(postAction: (() -> Unit)?) {
-        val js = """	var sel = window.getSelection();
-	var jsonData ={};
-	if(!sel.isCollapsed) {
-		var range = sel.getRangeAt(0);
-		startNode = range.startContainer;
-		endNode = range.endContainer;
-		jsonData['selectedText'] = range.toString();
-		jsonData['startOffset'] = range.startOffset;  // where the range starts
-		jsonData['endOffset'] = range.endOffset;      // where the range ends
-		jsonData['startNodeData'] = startNode.data;                       // the actual selected text
-		jsonData['startNodeHTML'] = startNode.parentElement.innerHTML;    // parent element innerHTML
-		jsonData['startNodeTagName'] = startNode.parentElement.tagName;   // parent element tag name
-		jsonData['endNodeData'] = endNode.data;                       // the actual selected text
-		jsonData['endNodeHTML'] = endNode.parentElement.innerHTML;    // parent element innerHTML
-		jsonData['endNodeTagName'] = endNode.parentElement.tagName;   // parent element tag name
-		jsonData['status'] = 1;
-	}else{
-		jsonData['status'] = 0;
-	}
-	return (JSON.stringify(jsonData));"""
-        evaluateJavascript("(function(){$js})()") { value ->
-            val parseJson = value.substring(1, value.length - 1)
-                .replace("\\\\\"".toRegex(), "\"")
-                .replace("\\\\\\\\\"".toRegex(), "\\\\\"")
-                .replace("\\\\\\\"".toRegex(), "\\\\\"")
-                .replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
-            selectedTextInfo =
-                SelectedTextInfo.from(parseJson, chapterNumber, value)
-                    ?: return@evaluateJavascript // TODO: show error
-            postAction?.invoke()
-            exitSelectionMode()
-        }
     }
 
     suspend fun openEpubFile(uri: Uri) {
