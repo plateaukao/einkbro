@@ -88,7 +88,6 @@ suspend fun epubParser(
 
     val document = parseXMLFile(opfFile.data)
         ?: throw Exception(".opf file failed to parse data")
-    val version = document.documentElement.getAttributeValue("version")
     val metadata = document.selectFirstTag("metadata")
         ?: document.selectFirstTag("opf:metadata")
         ?: createDummyMetadata(document)
