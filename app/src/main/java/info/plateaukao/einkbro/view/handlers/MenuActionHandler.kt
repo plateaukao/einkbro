@@ -44,6 +44,8 @@ class MenuActionHandler(
             MenuItemType.Tts -> TtsSettingDialogFragment()
                 .show(activity.supportFragmentManager, "TtsSettingDialog")
 
+            MenuItemType.ChatWithWeb -> browserController.chatWithWeb(true)
+
             else -> Unit
         }
 
@@ -109,6 +111,8 @@ class MenuActionHandler(
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
             MenuItemType.AddToPocket -> ebWebView.url?.let { browserController.addToPocket(it) }
+
+            MenuItemType.ChatWithWeb -> browserController.chatWithWeb()
         }
     }
 
