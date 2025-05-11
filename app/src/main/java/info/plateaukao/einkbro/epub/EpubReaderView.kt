@@ -19,12 +19,7 @@ import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.Spine
-import nl.siegmann.epublib.domain.TOCReference
-import nl.siegmann.epublib.epub.EpubReader
-import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -137,42 +132,7 @@ elements[i].style.color='white';
         }
     }
 
-    // don't use it when action menu is customized
-//    override fun startActionMode(callback: ActionMode.Callback, ModeType: Int): ActionMode? {
-//        val parent = parent ?: return null
-//        actionModeCallback = SelectActionModeCallback()
-//        return parent.startActionModeForChild(this, actionModeCallback)
-//    }
-
     init {
-//        setOnTouchListener(OnTouchListener { _, event ->
-//            when (event.action) {
-//                MotionEvent.ACTION_MOVE -> return@OnTouchListener true
-//                MotionEvent.ACTION_DOWN -> {
-//                    touchX = event.rawX
-//                    touchY = event.rawY
-//                    touchTime = System.currentTimeMillis()
-//                }
-//                MotionEvent.ACTION_UP -> {
-//                    val x = event.rawX
-//                    val y = event.rawY
-//                    if (touchX - x > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-//                        nextPage()
-//                    } else if (x - touchX > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-//                        previousPage()
-//                    } else if (touchY - y > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-//                        nextPage()
-//                    } else if (y - touchY > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-//                        previousPage()
-//                    } else if (Math.abs(y - touchY) < dpToPixel(10) && Math.abs(touchX - x) < dpToPixel(10) && System.currentTimeMillis() - touchTime < 250) {
-//                        //Log.d("Tap Details", Math.abs(y - touchY).toString() + " " + Math.abs(touchX - x) + " " + (System.currentTimeMillis() - touchTime))
-//                        listener.onSingleTap()
-//                    }
-//                }
-//            }
-//            false
-//        })
-
         with(settings) {
             allowContentAccess = true
             allowFileAccess = true
@@ -285,45 +245,8 @@ elements[i].style.color='white';
 
     suspend fun openEpubFile(uri: Uri) {
         withContext(IO) {
-            try {
-                context.contentResolver.openInputStream(uri).use { epubInputStream ->
-                    this@EpubReaderView.book = EpubReader().readEpub(epubInputStream)
-                    val book = this@EpubReaderView.book
-                    webViewClient.book = book // for loading image resources
-
-                    val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
-                    if (!File(epubTempExtractionLocation).exists()) File(epubTempExtractionLocation).mkdirs()
-                    val dir1 = File(epubTempExtractionLocation + File.separator + "OEBPS")
-                    val resourceFolder =
-                        book.opfResource.href.replace("content.opf", "").replace("/", "")
-                    val dir2 = File(epubTempExtractionLocation + File.separator + resourceFolder)
-                    resourceLocation = if (dir1.exists() && dir1.isDirectory) {
-                        "file://" + epubTempExtractionLocation + File.separator + "OEBPS" + File.separator
-                    } else if (dir2.exists() && dir2.isDirectory && resourceFolder != "") {
-                        "file://" + epubTempExtractionLocation + File.separator + resourceFolder + File.separator
-                    } else {
-                        "file://" + epubTempExtractionLocation + File.separator
-                    }
-                    chapterList.clear()
-
-                    if (resourceLocation.contains("OEPBS") && book.tableOfContents.tocReferences.size > 1)
-                        processChaptersByTOC(book.tableOfContents.tocReferences)
-                    else if (book.tableOfContents.tocReferences.size > 1) {
-                        processChaptersByTOC(book.tableOfContents.tocReferences)
-                    } else processChaptersBySpline(book.spine)
-                }
-            } catch (e: Exception) {
-                Log.e("EpubReaderView", e.toString())
-            }
-        }
-    }
-
-    suspend fun openEpubFileV2(uri: Uri) {
-        withContext(IO) {
             val epub = context.contentResolver.openInputStream(uri).use { epubParser(context, inputStream = it!!) }
             this@EpubReaderView.epub = epub
-            // webViewClient.book = book // for loading image resources
-            webViewClient.epubBook = epub
 
             val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
             val dirOEBPS = File(epubTempExtractionLocation + File.separator + "OEBPS")
@@ -336,54 +259,6 @@ elements[i].style.color='white';
             } else {
                 "file://" + epubTempExtractionLocation + File.separator
             }
-        }
-    }
-
-    private fun processChaptersByTOC(tocReferences: List<TOCReference>) {
-        for (TOC in tocReferences) {
-            val builder = StringBuilder()
-            try {
-                val r = BufferedReader(InputStreamReader(TOC.resource.inputStream))
-                var aux: String? = ""
-                while (r.readLine().also { aux = it } != null) {
-                    aux = aux?.replace("""src="img""", """src="img://img""")
-                    builder.append(aux)
-                }
-            } catch (e: Exception) {
-            }
-            chapterList.add(Chapter(TOC.title, builder.toString(), TOC.completeHref))
-            if (TOC.children.isNotEmpty()) {
-                processChaptersByTOC(TOC.children)
-            }
-        }
-    }
-
-    private fun processChaptersBySpline(spine: Spine?) {
-        var chapterNumber = 1
-        if (spine != null) {
-            for (i in 0 until spine.size()) {
-                val builder = StringBuilder()
-                try {
-                    val r = BufferedReader(InputStreamReader(spine.getResource(i).inputStream))
-                    var aux: String? = ""
-                    while (r.readLine().also { aux = it } != null) {
-                        aux = aux?.replace("""src="img""", """src="img://img""")
-                        builder.append(aux)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                chapterList.add(
-                    Chapter(
-                        if (spine.getResource(i).title != null) spine.getResource(i).title else chapterNumber.toString(),
-                        builder.toString(),
-                        spine.getResource(i).href
-                    )
-                )
-                chapterNumber++
-            }
-        } else {
-            Log.d("EpubReader", "spline is null")
         }
     }
 
@@ -478,64 +353,6 @@ elements[i].style.color='white';
             }
         }
         loading = false
-    }
-
-    fun nextPage() {
-        if (loading) return
-        val pageHeight = this.height - 50
-        val totalHeight = getTotalContentHeight()
-        if (totalHeight > this.scrollY + this.height) {
-            loading = true
-            progress = (this.scrollY + pageHeight).toFloat() / totalHeight
-            pageNumber = ((this.scrollY + pageHeight) / pageHeight)
-            scrollY = pageNumber * pageHeight
-            listener.onPageChangeListener(
-                this.chapterNumber,
-                this.pageNumber,
-                getProgressStart(),
-                getProgressEnd()
-            )
-            Log.d(
-                "EpubReaderProgress",
-                progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight
-            )
-            loading = false
-        } else {
-            nextChapter()
-        }
-    }
-
-    fun previousPage() {
-        if (loading) return
-        val pageHeight = this.height - 50
-        val totalHeight = getTotalContentHeight()
-        if (this.scrollY - pageHeight >= 0) {
-            loading = true
-            progress = (this.scrollY - pageHeight).toFloat() / totalHeight
-            pageNumber = ((this.scrollY - pageHeight) / pageHeight)
-            scrollY = pageNumber * pageHeight
-            listener.onPageChangeListener(
-                this.chapterNumber,
-                this.pageNumber,
-                getProgressStart(),
-                getProgressEnd()
-            )
-            loading = false
-        } else if (this.scrollY > 0) {
-            loading = true
-            progress = 0f
-            pageNumber = 0
-            scrollY = pageNumber * pageHeight
-            listener.onPageChangeListener(
-                this.chapterNumber,
-                this.pageNumber,
-                getProgressStart(),
-                getProgressEnd()
-            )
-            loading = false
-        } else {
-            previousChapter()
-        }
     }
 
     fun nextChapter() {

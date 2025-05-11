@@ -27,7 +27,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
-import info.plateaukao.einkbro.epub.EpubBook
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -36,7 +35,6 @@ import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
 import io.github.edsuns.adfilter.AdFilter
-import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
@@ -54,8 +52,6 @@ class EBWebViewClient(
 
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
-    var book: Book? = null
-    var epubBook: EpubBook? = null
 
     private val adFilter: AdFilter = AdFilter.get()
 
@@ -278,7 +274,6 @@ class EBWebViewClient(
             }
         }
 
-        processBookResource(uri)?.let { return it }
         processCustomFontRequest(uri)?.let { return it }
         dualCaptionProcessor.processUrl(url)?.let {
             ebWebView.dualCaption = it
@@ -289,21 +284,6 @@ class EBWebViewClient(
             )
         }
 
-        return null
-    }
-
-    private fun processBookResource(uri: Uri): WebResourceResponse? {
-        val currentBook = epubBook ?: return null
-
-        if (uri.scheme == "img") {
-            val resource = currentBook.images.find {  uri.host.toString() == it.absPath }
-                ?: return null
-            return WebResourceResponse(
-                resource.mediaType,
-                "UTF-8",
-                ByteArrayInputStream(resource.image)
-            )
-        }
         return null
     }
 
