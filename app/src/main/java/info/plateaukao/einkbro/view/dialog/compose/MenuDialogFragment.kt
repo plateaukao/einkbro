@@ -282,6 +282,7 @@ private fun MenuItems(
                 MenuItem(
                     R.string.chat_with_web,
                     Icons.AutoMirrored.Outlined.Chat,
+                    onLongClicked = { onLongClicked(MenuItemType.ChatWithWeb) },
                 ) { onClicked(MenuItemType.ChatWithWeb) }
                 MenuItem(
                     R.string.split_screen,
