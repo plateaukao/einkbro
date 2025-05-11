@@ -181,8 +181,6 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             val container = document.getElementById("contents")
             var content = ""
             content += container?.getElementsByClass("section")?.html().orEmpty()
-            //_responseMessage.value = content
-            //_responseMessage.value = String(byteArray)
             _responseMessage.value =
                 AnnotatedString("https://ja.dict.naver.com/#/search?query=$message}")
         }
@@ -350,8 +348,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
             val responseContent = chatCompletion.choices
                 .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
                 ?: "Something went wrong."
-            toBeSavedResponseString = responseContent
-            _responseMessage.value = AnnotatedString(responseContent)
+            // to remove think tags from qwen3
+            toBeSavedResponseString = responseContent.replace("<think>\n\n</think>\n\n", "")
+            _responseMessage.value = AnnotatedString(toBeSavedResponseString)
         }
     }
 
@@ -371,6 +370,10 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     responseString = it
                 } else {
                     responseString += it
+                    if (responseString.length < 20) {
+                        // to remove think tags from qwen3
+                        responseString = responseString.replace("<think>\n\n</think>\n\n", "")
+                    }
                 }
                 toBeSavedResponseString = responseString.unescape()
                 _responseMessage.value = HelperUnit.parseMarkdown(toBeSavedResponseString)
@@ -428,7 +431,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO, NAVER, LLM, DEEPL,OPENAI, GEMINI,
+    GOOGLE, PAPAGO, NAVER, LLM, DEEPL, OPENAI, GEMINI,
 }
 
 private fun String.unescape(): String {
