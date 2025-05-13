@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.epub
 import android.content.Context
 import android.os.Build
 import info.plateaukao.einkbro.epub.EpubBook.Chapter
+import info.plateaukao.einkbro.epub.EpubBook.ChapterPart
 import info.plateaukao.einkbro.epub.EpubBook.Image
 import info.plateaukao.einkbro.epub.EpubBook.ToCEntry
 import kotlinx.coroutines.Dispatchers
@@ -219,7 +220,7 @@ suspend fun epubParser(
     val tocEntries = getTocEntries()
 
     // Function to check if a spine item is a chapter
-    fun isChapter(item: ManifestItem): Boolean {
+    fun isChapterPart(item: ManifestItem): Boolean {
         val extension = item.absPath.substringAfterLast('.')
         return listOf("xhtml", "xml", "html").contains(extension)
     }
@@ -235,45 +236,51 @@ suspend fun epubParser(
     // Iterate through spine items to build chapters list
     val chapters = mutableListOf<Chapter>()
     var currentTOC: ToCEntry? = null
-    var currentChapterBody = ""
+    var chapterParts = mutableListOf<ChapterPart>()
 
     spine.selectChildTags("itemref", "opf:itemref").forEach { itemRef ->
         val itemId = itemRef.getAttribute("idref")
         val spineItem = manifestItems[itemId]
 
         // Check if the spine item exists and is a chapter
-        if (spineItem != null && isChapter(spineItem)) {
+        if (spineItem != null && isChapterPart(spineItem)) {
             var spineUrl = spineItem.absPath
-            if (!spineUrl.startsWith(rootPath))
-                spineUrl = "$rootPath/$spineUrl"
+            //if (!spineUrl.startsWith(rootPath)) spineUrl = "$rootPath/$spineUrl"
 
             val tocEntry = findTocEntryForChapter(tocEntries, spineUrl)
             val parser = EpubXMLFileParser(spineUrl, files[spineUrl]?.data ?: ByteArray(0), files)
             val res = parser.parseAsDocument()
 
+            // handle cover image case
+            if (spineItem.mediaType.startsWith("image/")) {
+                chapters.add(Chapter("image_${spineItem.absPath}", "",
+                    listOf(ChapterPart("", parser.parseAsImage(spineItem.absPath)))))
+                return@forEach
+            }
             // If currentTOC exists and we have a new tocEntry, add the accumulated chapter content
-            if (currentTOC != null && tocEntry != null && currentChapterBody.isNotEmpty()) {
-                chapters.add(Chapter(currentTOC!!.chapterLink, currentTOC!!.chapterTitle, currentChapterBody))
-                currentChapterBody = ""
+            if (currentTOC != null && tocEntry != null && chapterParts.isNotEmpty()) {
+                chapters.add(Chapter(currentTOC!!.chapterLink, currentTOC!!.chapterTitle, chapterParts))
+                chapterParts = mutableListOf()
             }
 
             if (tocEntry == null) {
-                currentChapterBody += if (res.body.isBlank()) "" else "\n\n${res.body}"
+                chapterParts.add(ChapterPart(spineItem.absPath, res.body))
             } else {
                 currentTOC = tocEntry
                 if (spineItem.mediaType.startsWith("image/")) {
-                    chapters.add(Chapter("image_${spineItem.absPath}", "", parser.parseAsImage(spineItem.absPath)))
+                    chapters.add(Chapter("image_${spineItem.absPath}", "", listOf(ChapterPart(spineItem.absPath, ""))))
+                    chapterParts = mutableListOf()
                 } else {
-                    // Append the chapter content to the current chapter body
-                    currentChapterBody += if (res.body.isBlank()) "" else "\n\n${res.body}"
+                    chapterParts.add(ChapterPart(spineItem.absPath, res.body))
                 }
             }
         }
     }
 
     // Add the last chapter if any content remains
-    if (currentTOC != null && currentChapterBody.isNotEmpty()) {
-        chapters.add(Chapter(currentTOC!!.chapterLink, currentTOC!!.chapterTitle, currentChapterBody))
+    if (currentTOC != null && chapterParts.isNotEmpty()) {
+        chapters.add(Chapter(currentTOC!!.chapterLink, currentTOC!!.chapterTitle, chapterParts))
+        chapterParts = mutableListOf()
     }
 
 
