@@ -1,23 +1,17 @@
 package info.plateaukao.einkbro.epub
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.util.Log
 import android.util.TypedValue
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.BrowserController
-import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import nl.siegmann.epublib.domain.Book
 import java.io.File
 import kotlin.math.max
 import kotlin.math.min
@@ -28,11 +22,12 @@ import kotlin.math.roundToInt
  */
 class EpubReaderView(
     context: Context,
-    browserController: BrowserController?
+    browserController: BrowserController?,
 ) : EBWebView(context, browserController) {
     private lateinit var epub: EpubBook
     private val chapterList: ArrayList<Chapter> = ArrayList()
     var chapterNumber = 0
+    var chapterPartPosition = 0
     var progress = 0f
     var pageNumber = 0
     private var resourceLocation = ""
@@ -91,7 +86,8 @@ elements[i].style.color='white';
 
             val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
             val dirOEBPS = File(epubTempExtractionLocation + File.separator + "OEBPS")
-            val relativeFolder = epub.chapters.firstOrNull()?.absPath?.substringBeforeLast("/")?.substringAfter(epub.rootPath) ?: ""
+            val relativeFolder =
+                epub.chapters.firstOrNull()?.absPath?.substringBeforeLast("/")?.substringAfter(epub.rootPath) ?: ""
             val dirRelativePath = File(epubTempExtractionLocation + relativeFolder + File.separator)
             resourceLocation = if (dirOEBPS.exists() && dirOEBPS.isDirectory) {
                 "file://" + epubTempExtractionLocation + File.separator + "OEBPS" + File.separator
@@ -108,6 +104,7 @@ elements[i].style.color='white';
 
         gotoChapter(epub.chapters.last())
         chapterNumber = epub.chapters.size - 1
+        chapterPartPosition = 0
 
         scrollX = 0
         scrollY = 0
@@ -117,16 +114,19 @@ elements[i].style.color='white';
         if (epub.chapters.isEmpty()) return
         gotoChapter(epub.chapters.first())
         chapterNumber = 0
+        chapterPartPosition = 0
     }
 
-    fun gotoChapter(chapter: EpubBook.Chapter) {
+    fun gotoChapter(chapter: EpubBook.Chapter, partNumber: Int = 0) {
         loadDataWithBaseURL(
             resourceLocation,
-            chapter.body,
+            chapter.parts[partNumber].body,
             "text/html",
             "utf-8",
             null
         )
+        // after loading data, make sure it's on top of the content
+        scrollTo(0, 0)
     }
 
     fun showTocDialog() {
@@ -159,7 +159,7 @@ elements[i].style.color='white';
             val totalWidth = computeHorizontalScrollRange()
             when {
                 totalWidth > scrollX + pageWidth -> scrollBy(shiftOffset(), 0)
-                else -> previousChapter()
+                else -> gotoPreviousPartOrChapter()
             }
             scrollX = min(computeHorizontalScrollRange() - width, scrollX)
         } else {
@@ -167,10 +167,39 @@ elements[i].style.color='white';
             val totalHeight = getTotalContentHeight()
             when {
                 totalHeight > scrollY + height -> scrollBy(0, pageHeight)
-                else -> nextChapter()
+                else -> {
+                    gotoNextPartOrChapter()
+                }
             }
         }
         loading = false
+    }
+
+    private fun gotoNextPartOrChapter() {
+        if (epub.chapters[chapterNumber].parts.size > chapterPartPosition + 1) {
+            chapterPartPosition++
+            gotoChapter(epub.chapters[chapterNumber], chapterPartPosition)
+        } else {
+            if (chapterNumber + 1 < epub.chapters.size) {
+                chapterNumber++
+                gotoChapter(epub.chapters[chapterNumber])
+            } else {
+                listener.onBookEndReached()
+            }
+        }
+    }
+
+    private fun gotoPreviousPartOrChapter() {
+        if (chapterPartPosition - 1 >= 0) {
+            chapterPartPosition--
+            gotoChapter(epub.chapters[chapterNumber], chapterPartPosition)
+        } else if (chapterNumber - 1 >= 0) {
+            chapterNumber--
+            chapterPartPosition = epub.chapters[chapterNumber].parts.size - 1
+            gotoChapter(epub.chapters[chapterNumber], chapterPartPosition)
+        } else {
+            listener.onBookStartReached()
+        }
     }
 
     override fun pageUpWithNoAnimation() {
@@ -181,7 +210,9 @@ elements[i].style.color='white';
             when {
                 scrollX - pageWidth >= 0 -> scrollBy(-shiftOffset(), 0)
                 scrollX > 0 -> scrollX = 0
-                else -> nextChapter()
+                else -> {
+                    nextChapter()
+                }
             }
             scrollBy(-shiftOffset(), 0)
             scrollX = max(0, scrollX)
@@ -190,7 +221,9 @@ elements[i].style.color='white';
             when {
                 scrollY - pageHeight >= 0 -> scrollBy(0, -shiftOffset())
                 scrollY > 0 -> scrollY = 0
-                else -> previousChapter()
+                else -> {
+                    previousChapter()
+                }
             }
         }
         loading = false
@@ -199,6 +232,7 @@ elements[i].style.color='white';
     fun nextChapter() {
         if (epub.chapters.size > chapterNumber + 1 && !loading) {
             chapterNumber++
+            chapterPartPosition = 0
             loading = true
             gotoChapter(epub.chapters[chapterNumber])
             listener.onChapterChangeListener(chapterNumber)
@@ -220,7 +254,8 @@ elements[i].style.color='white';
         if (chapterNumber - 1 >= 0 && !loading) {
             loading = true
             chapterNumber--
-            gotoChapter(epub.chapters[chapterNumber])
+            gotoChapter(epub.chapters[chapterNumber], epub.chapters[chapterNumber].parts.size - 1)
+
             listener.onChapterChangeListener(chapterNumber)
             listener.onPageChangeListener(
                 chapterNumber,

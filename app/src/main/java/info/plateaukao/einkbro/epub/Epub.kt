@@ -23,7 +23,12 @@ data class EpubBook(
     data class Chapter(
         val absPath: String,
         val title: String,
-        val body: String
+        val parts: List<ChapterPart>,
+    )
+
+    data class ChapterPart(
+        val absPath: String,
+        val body: String,
     )
 
     data class Image(
