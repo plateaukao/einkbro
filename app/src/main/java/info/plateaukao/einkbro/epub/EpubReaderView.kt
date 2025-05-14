@@ -13,7 +13,6 @@ import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.io.File
-import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -83,6 +82,7 @@ elements[i].style.color='white';
         withContext(IO) {
             val epub = context.contentResolver.openInputStream(uri).use { epubParser(context, inputStream = it!!) }
             this@EpubReaderView.epub = epub
+            isVerticalRead = epub.pageProgressDirection == PageProgressDirection.RTL
 
             val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
             val dirOEBPS = File(epubTempExtractionLocation + File.separator + "OEBPS")
@@ -118,6 +118,7 @@ elements[i].style.color='white';
     }
 
     fun gotoChapter(chapter: EpubBook.Chapter, partNumber: Int = 0) {
+        chapterPartPosition = partNumber
         loadDataWithBaseURL(
             resourceLocation,
             chapter.parts[partNumber].body,
@@ -125,8 +126,14 @@ elements[i].style.color='white';
             "utf-8",
             null
         )
-        // after loading data, make sure it's on top of the content
-        scrollTo(0, 0)
+        postDelayed({
+            if (isVerticalRead) {
+                // to right most
+                scrollTo(computeHorizontalScrollRange(), 0)
+            } else {
+                scrollTo(0, 0)
+            }
+        }, 100)
     }
 
     fun showTocDialog() {
@@ -158,7 +165,7 @@ elements[i].style.color='white';
             val pageWidth = shiftOffset()
             val totalWidth = computeHorizontalScrollRange()
             when {
-                totalWidth > scrollX + pageWidth -> scrollBy(shiftOffset(), 0)
+                totalWidth - pageWidth > scrollX + pageWidth -> scrollBy(shiftOffset(), 0)
                 else -> gotoPreviousPartOrChapter()
             }
             scrollX = min(computeHorizontalScrollRange() - width, scrollX)
@@ -166,6 +173,7 @@ elements[i].style.color='white';
             val pageHeight = shiftOffset()
             val totalHeight = getTotalContentHeight()
             when {
+                totalHeight - height < 10 -> gotoNextPartOrChapter()
                 totalHeight > scrollY + height -> scrollBy(0, pageHeight)
                 else -> {
                     gotoNextPartOrChapter()
@@ -208,70 +216,22 @@ elements[i].style.color='white';
         if (isVerticalRead) {
             val pageWidth = shiftOffset()
             when {
+                scrollX == width -> gotoNextPartOrChapter()
                 scrollX - pageWidth >= 0 -> scrollBy(-shiftOffset(), 0)
                 scrollX > 0 -> scrollX = 0
-                else -> {
-                    nextChapter()
-                }
+                else -> gotoNextPartOrChapter()
             }
-            scrollBy(-shiftOffset(), 0)
-            scrollX = max(0, scrollX)
         } else {
             val pageHeight = shiftOffset()
             when {
                 scrollY - pageHeight >= 0 -> scrollBy(0, -shiftOffset())
                 scrollY > 0 -> scrollY = 0
-                else -> {
-                    previousChapter()
-                }
+                else -> gotoPreviousPartOrChapter()
             }
         }
         loading = false
     }
 
-    fun nextChapter() {
-        if (epub.chapters.size > chapterNumber + 1 && !loading) {
-            chapterNumber++
-            chapterPartPosition = 0
-            loading = true
-            gotoChapter(epub.chapters[chapterNumber])
-            listener.onChapterChangeListener(chapterNumber)
-            listener.onPageChangeListener(
-                this.chapterNumber,
-                this.pageNumber,
-                getProgressStart(),
-                getProgressEnd()
-            )
-            loading = false
-            scrollX = 0
-            scrollY = 0
-        } else if (chapterList.size <= chapterNumber + 1) {
-            listener.onBookEndReached()
-        }
-    }
-
-    fun previousChapter() {
-        if (chapterNumber - 1 >= 0 && !loading) {
-            loading = true
-            chapterNumber--
-            gotoChapter(epub.chapters[chapterNumber], epub.chapters[chapterNumber].parts.size - 1)
-
-            listener.onChapterChangeListener(chapterNumber)
-            listener.onPageChangeListener(
-                chapterNumber,
-                pageNumber,
-                getProgressStart(),
-                getProgressEnd()
-            )
-            loading = false
-            postDelayed({
-                val totalHeight = getTotalContentHeight()
-                scrollY = totalHeight
-            }, 200)
-        } else if (chapterNumber - 1 < 0) {
-            listener.onBookStartReached()
-        }
-    }
 
     private fun getTotalContentHeight(): Int =
         (this.contentHeight * resources.displayMetrics.density).toInt()
@@ -303,5 +263,3 @@ elements[i].style.color='white';
 }
 
 enum class WebThemeType { LIGHT, DARK }
-
-enum class AnnotateType { HIGHLIGHT, UNDERLINE, STRIKETHROUGH }

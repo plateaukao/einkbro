@@ -15,6 +15,7 @@ data class EpubBook(
     val author: String?,
     val description: String?,
     val coverImage: Image?,
+    val pageProgressDirection: PageProgressDirection?,
     val chapters: List<Chapter>,
     val images: List<Image>,
     val toc: List<ToCEntry> = emptyList(),
@@ -49,4 +50,4 @@ data class ManifestItem(
     val properties: String
 )
 
-
+enum class PageProgressDirection { LTR, RTL }

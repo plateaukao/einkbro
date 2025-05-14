@@ -237,6 +237,16 @@ suspend fun epubParser(
     val chapters = mutableListOf<Chapter>()
     var currentTOC: ToCEntry? = null
     var chapterParts = mutableListOf<ChapterPart>()
+    var pageProgressDirection = PageProgressDirection.LTR
+
+    spine.attributes.getNamedItem("page-progression-direction")?.let {
+        val direction = it.nodeValue
+        pageProgressDirection = if (direction == "rtl") {
+            PageProgressDirection.RTL
+        } else {
+            PageProgressDirection.LTR
+        }
+    }
 
     spine.selectChildTags("itemref", "opf:itemref").forEach { itemRef ->
         val itemId = itemRef.getAttribute("idref")
@@ -327,6 +337,7 @@ suspend fun epubParser(
         author = metadataCreator,
         description = metadataDesc,
         coverImage = coverImage,
+        pageProgressDirection = pageProgressDirection,
         chapters = chapters.toList(),
         images = images.toList(),
         rootPath = rootPath,
