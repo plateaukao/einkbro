@@ -25,33 +25,36 @@ class ChatWebInterface(
 
     @JavascriptInterface
     fun sendMessage(message: String) {
-        jsHelper.startMessageStream()
-
-        val userPrompt = createUserPrompt(message)
-        messageList.add(userPrompt.toUserMessage())
-
-        val chatGptActionInfo = createChatGptActionInfo()
-
-        openAiRepository.chatStream(
-            messages = messageList,
-            gptActionInfo = chatGptActionInfo,
-            appendResponseAction = { response -> jsHelper.sendStreamUpdate(response) },
-            doneAction = { jsHelper.completeStream() },
-            failureAction = { handleFailure() }
-        )
+        sendMessageWithGptActionInfo(createChatGptActionInfo(message))
     }
 
-    private fun createUserPrompt(message: String): String {
-        return if (messageList.isEmpty()) {
-            "```$webContent```\n this is the web content; $message"
-        } else {
-            message
+    fun sendMessageWithGptActionInfo(gptActionInfo: ChatGPTActionInfo) {
+        if (messageList.isEmpty()) {
+            if (gptActionInfo.systemMessage.isNotEmpty()) {
+                messageList.add(gptActionInfo.systemMessage.toSystemMessage())
+            }
+            messageList.add("```$webContent```\n this is the web content;".toUserMessage())
         }
+
+        messageList.add(gptActionInfo.userMessage.toUserMessage())
+
+        jsHelper.startMessageStream {
+            openAiRepository.chatStream(
+                messages = messageList,
+                gptActionInfo = gptActionInfo,
+                appendResponseAction = { response -> jsHelper.sendStreamUpdate(response) },
+                doneAction = { jsHelper.completeStream() },
+                failureAction = { handleFailure() }
+            )
+        }
+
+
     }
 
-    private fun createChatGptActionInfo(): ChatGPTActionInfo {
+    private fun createChatGptActionInfo(message: String): ChatGPTActionInfo {
         return ChatGPTActionInfo(
             actionType = configManager.gptForChatWeb,
+            userMessage = message,
             model = configManager.getGptTypeModelMap()[configManager.gptForChatWeb] ?: configManager.gptModel,
         )
     }
@@ -67,11 +70,13 @@ class ChatWebInterface(
  */
 class JsHelper(
     private val webView: WebView,
-    private val lifecycleScope: LifecycleCoroutineScope
+    private val lifecycleScope: LifecycleCoroutineScope,
 ) {
-    fun startMessageStream() {
+    fun startMessageStream(postAction: () -> Unit = {}) {
         lifecycleScope.launch(Dispatchers.Main) {
-            webView.evaluateJavascript("javascript:startMessageStream()", null)
+            webView.evaluateJavascript("javascript:startMessageStream()") {
+                postAction()
+            }
         }
     }
 

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -27,6 +28,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -34,6 +36,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -54,6 +58,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionDisplay
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
@@ -275,6 +280,7 @@ fun GptActionDialog(
     val systemPrompt = remember { mutableStateOf("") }
     val userPrompt = remember { mutableStateOf("") }
     val currentActionType = remember { mutableStateOf(GptActionType.Default) }
+    val currentActionDisplay = remember { mutableStateOf(GptActionDisplay.Popup) }
     val model = remember { mutableStateOf(action.model) }
 
     if (editActionIndex >= 0) {
@@ -282,6 +288,7 @@ fun GptActionDialog(
         systemPrompt.value = action.systemMessage
         userPrompt.value = action.userMessage
         currentActionType.value = action.actionType
+        currentActionDisplay.value = action.display
     } else {
         name.value = ""
         systemPrompt.value = ""
@@ -314,7 +321,7 @@ fun GptActionDialog(
                     onValueChange = { name.value = it },
                     label = { Text("Name") }
                 )
-                TextField(
+                ToggleableTextField(
                     modifier = Modifier.padding(2.dp),
                     colors = TextFieldDefaults.textFieldColors(
                         textColor = MaterialTheme.colors.onBackground,
@@ -324,7 +331,7 @@ fun GptActionDialog(
                     onValueChange = { systemPrompt.value = it },
                     label = { Text("System Prompt") }
                 )
-                TextField(
+                ToggleableTextField(
                     modifier = Modifier.padding(2.dp),
                     colors = TextFieldDefaults.textFieldColors(
                         textColor = MaterialTheme.colors.onBackground,
@@ -364,6 +371,18 @@ fun GptActionDialog(
                     onValueChange = { model.value = it },
                     label = { Text("model") }
                 )
+                FlowRow {
+                    GptActionDisplay.entries.map { gptActionDisplay ->
+                        val isSelect = currentActionDisplay.value == gptActionDisplay
+                        SelectableText(
+                            modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                            selected = isSelect,
+                            text = "$gptActionDisplay",
+                        ) {
+                            currentActionDisplay.value = gptActionDisplay
+                        }
+                    }
+                }
             }
         },
         onDismissRequest = { dismissAction() },
@@ -377,6 +396,7 @@ fun GptActionDialog(
                             userPrompt.value,
                             currentActionType.value,
                             model.value,
+                            currentActionDisplay.value,
                         )
                     )
                 }
@@ -388,6 +408,54 @@ fun GptActionDialog(
             }
         }
     )
+}
+
+@Composable
+fun ToggleableTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
+    modifier: Modifier = Modifier,
+    minLines: Int = 1,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: String = "",
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { isExpanded = !isExpanded }
+                .padding(vertical = 8.dp)
+        ) {
+            label?.invoke()
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                contentDescription = if (isExpanded) "Collapse" else "Expand"
+            )
+        }
+
+        if (isExpanded) {
+            TextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text(placeholder) },
+                minLines = minLines,
+                colors = colors,
+            )
+        } else if (value.isNotEmpty()) {
+            Text(
+                text = value,
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.padding(vertical = 4.dp),
+                maxLines = 1,
+            )
+        }
+    }
 }
 
 @Preview

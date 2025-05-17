@@ -12,6 +12,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.databinding.TranslationPanelBinding
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
@@ -179,6 +180,10 @@ class TwoPaneController(
         translationViewBinding.expandedButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             bottomMargin = 55.dp(activity)
         }
+    }
+
+    fun runGptAction(action: ChatGPTActionInfo) {
+        webView.runGptAction(action)
     }
 
     fun hideSecondPane() {
