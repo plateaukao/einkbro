@@ -573,7 +573,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                                     }
 
                                     GptActionDisplay.SplitScreen -> {
-                                        chatWithWeb(true, actionModeMenuViewModel.selectedText.value)
+                                        chatWithWeb(true, actionModeMenuViewModel.selectedText.value, gptAction)
                                     }
                                 }
                             } else {
@@ -820,12 +820,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 if (useSplitScreen) {
                     maybeInitTwoPaneController()
                     twoPaneController.showSecondPaneAsAi(rawText)
-                    delay(500)
+                    // so that the chat.html could be loaded first
+                    delay(300)
                     runWithAction?.let { twoPaneController.runGptAction(it) }
                 } else {
                     addAlbum("Chat With Web")
                     ebWebView.setupAiPage(this@BrowserActivity.lifecycleScope, rawText)
-                    delay(200)
                     runWithAction?.let { ebWebView.runGptAction(it) }
                 }
             }

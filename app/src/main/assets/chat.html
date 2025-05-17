@@ -238,6 +238,7 @@
 
     // Function to receive messages from Android - supports streaming
     function receiveMessageFromAndroid(markdown, isStream = false, isComplete = false) {
+        console.log('receiveMessageFromAndroid:', markdown, isStream, isComplete);
         hideTypingIndicator();
 
         if (isStream) {
@@ -251,6 +252,7 @@
 
     // Function to handle stream start
     function startMessageStream() {
+        console.log('startMessageStream');
         isStreaming = true;
         currentStreamMessageElement = addMessage('', false);
     }
