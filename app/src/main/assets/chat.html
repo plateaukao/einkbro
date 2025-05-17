@@ -191,6 +191,13 @@
         breaks: true, // Add line breaks as paragraphs
         gfm: true     // Enable GitHub Flavored Markdown
     });
+    marked.use({
+      extensions: [],
+      options: {
+        gfm: true,
+        strikethrough: false
+      }
+    });
 
     // Function to add a message to the chat
     function addMessage(text, isUser = false) {
