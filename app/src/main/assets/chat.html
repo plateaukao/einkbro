@@ -211,12 +211,17 @@
             // Return the element for potential streaming updates
             return messageDiv;
         }
+        console.log('addMessage:', text, isUser);
     }
 
     let streamText = ''; // Placeholder for streaming text
     // Function to handle streaming updates to a message
     function updateStreamMessage(element, text, isComplete = false) {
-        if (!element) return;
+        console.log('update Streaming:', text);
+        if (!element) {
+            currentStreamMessageElement = addMessage('', false);
+            element = currentStreamMessageElement;
+        }
 
         if (isComplete) {
             // If it's the final update, render the complete markdown
@@ -225,12 +230,12 @@
             isStreaming = false;
             streamText = '';
             currentStreamMessageElement = null;
-            //console.log('isComplete == true');
+            console.log('isComplete == true');
         } else {
             // For partial updates, just show the raw text as it comes in
             streamText += text;
             element.innerHTML = marked.parse(streamText);
-            //console.log('Streaming:', streamText);
+            console.log('Streaming:', streamText);
         }
 
         scrollToBottom();

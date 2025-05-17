@@ -415,8 +415,9 @@ open class EBWebView(
         loadUrl("file:///android_asset/chat.html")
     }
 
-    fun runGptAction(gptActionInfo: ChatGPTActionInfo) =
+    fun runGptAction(gptActionInfo: ChatGPTActionInfo) {
         chatWebInterface?.sendMessageWithGptActionInfo(gptActionInfo)
+    }
 
     private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)

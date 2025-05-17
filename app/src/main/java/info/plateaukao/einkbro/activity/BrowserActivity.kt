@@ -817,15 +817,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         lifecycleScope.launch {
             val rawText = content ?: ebWebView.getRawText()
             withContext(Dispatchers.Main) {
+                val scope = this@BrowserActivity.lifecycleScope
                 if (useSplitScreen) {
                     maybeInitTwoPaneController()
                     twoPaneController.showSecondPaneAsAi(rawText)
-                    // so that the chat.html could be loaded first
-                    delay(300)
                     runWithAction?.let { twoPaneController.runGptAction(it) }
                 } else {
                     addAlbum("Chat With Web")
-                    ebWebView.setupAiPage(this@BrowserActivity.lifecycleScope, rawText)
+                    ebWebView.setupAiPage(scope, rawText)
                     runWithAction?.let { ebWebView.runGptAction(it) }
                 }
             }

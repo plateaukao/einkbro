@@ -182,9 +182,7 @@ class TwoPaneController(
         }
     }
 
-    fun runGptAction(action: ChatGPTActionInfo) {
-        webView.runGptAction(action)
-    }
+    suspend fun runGptAction(action: ChatGPTActionInfo) = webView.runGptAction(action)
 
     fun hideSecondPane() {
         toggleTranslationWindow(false)
