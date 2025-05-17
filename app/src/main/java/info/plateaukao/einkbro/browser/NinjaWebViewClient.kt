@@ -61,6 +61,7 @@ class EBWebViewClient(
         this.hasAdBlock = enable
     }
 
+
     private var onPageFinishedAction: () -> Unit = {}
     fun setOnPageFinishedAction(action: () -> Unit) {
         onPageFinishedAction = action
@@ -68,6 +69,7 @@ class EBWebViewClient(
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
+
         if (config.adBlock) {
             adFilter.performScript(view, url)
         }

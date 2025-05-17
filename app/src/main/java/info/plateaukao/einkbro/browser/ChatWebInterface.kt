@@ -44,7 +44,7 @@ class ChatWebInterface(
                 messages = messageList,
                 gptActionInfo = gptActionInfo,
                 appendResponseAction = { response -> jsHelper.sendStreamUpdate(response) },
-                doneAction = { jsHelper.completeStream() },
+                doneAction = { jsHelper.completeStream(messageList) },
                 failureAction = { handleFailure() }
             )
         }
@@ -73,15 +73,16 @@ class JsHelper(
     private val webView: WebView,
     private val lifecycleScope: LifecycleCoroutineScope,
 ) {
+    private var processingMessage = ""
     fun startMessageStream(postAction: () -> Unit = {}) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            webView.evaluateJavascript("javascript:startMessageStream()") {
-                postAction()
-            }
+        processingMessage = ""
+        webView.evaluateJavascript("javascript:startMessageStream()") {
+            postAction()
         }
     }
 
     fun sendStreamUpdate(message: String, isComplete: Boolean = false) {
+        processingMessage += message
         lifecycleScope.launch(Dispatchers.Main) {
             webView.evaluateJavascript(
                 "javascript:receiveMessageFromAndroid('${escapeJsString(message)}', true, $isComplete)",
@@ -90,10 +91,11 @@ class JsHelper(
         }
     }
 
-    fun completeStream() {
+    fun completeStream(messageList: MutableList<ChatMessage>) {
         lifecycleScope.launch(Dispatchers.Main) {
             webView.evaluateJavascript("javascript:receiveMessageFromAndroid('', true, true)", null)
         }
+        messageList.add(processingMessage.toAssistantMessage())
     }
 
     /**

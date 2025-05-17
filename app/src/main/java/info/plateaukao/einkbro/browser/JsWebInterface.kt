@@ -132,3 +132,7 @@ fun String.toSystemMessage() = ChatMessage(
     role = ChatRole.System,
     content = this
 )
+fun String.toAssistantMessage() = ChatMessage(
+    role = ChatRole.Assistant,
+    content = this
+)
