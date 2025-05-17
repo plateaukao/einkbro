@@ -9,6 +9,7 @@ data class ChatGPTActionInfo (
     val userMessage: String = "",
     val actionType: GptActionType = GptActionType.Default,
     val model: String = "",
+    val display: GptActionDisplay = GptActionDisplay.Popup,
 )
 
 enum class GptActionType {
@@ -16,4 +17,10 @@ enum class GptActionType {
     OpenAi,
     SelfHosted,
     Gemini
+}
+
+enum class GptActionDisplay {
+    Popup,
+    NewTab,
+    SplitScreen,
 }

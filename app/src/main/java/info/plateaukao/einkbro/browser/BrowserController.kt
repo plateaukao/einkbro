@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -108,7 +109,7 @@ interface BrowserController {
     fun toggleReceiveTextSearch()
 
     fun summarizeContent()
-    fun chatWithWeb(useSplitScreen: Boolean = false)
+    fun chatWithWeb(useSplitScreen: Boolean = false, content: String? = null, runWithAction: ChatGPTActionInfo? = null)
 
     fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float)
 

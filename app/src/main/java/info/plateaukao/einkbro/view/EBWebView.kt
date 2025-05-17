@@ -18,7 +18,6 @@ import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebSettings
 import android.webkit.WebView
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
@@ -36,6 +35,7 @@ import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.browser.JsWebInterface
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.FaviconInfo
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FontType
@@ -405,13 +405,20 @@ open class EBWebView(
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
 
+    private lateinit var chatWebInterface: ChatWebInterface
     fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String) {
         isAIPage = true
-        addJavascriptInterface(
-            ChatWebInterface(lifecycleScope, this, webContent), "AndroidInterface"
-        )
+        chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent)
+        addJavascriptInterface(chatWebInterface, "AndroidInterface" )
         loadUrl("file:///android_asset/chat.html")
     }
+
+    fun runGptAction(gptActionInfo: ChatGPTActionInfo) {
+        if (this::chatWebInterface.isInitialized) {
+            chatWebInterface.sendMessageWithGptActionInfo(gptActionInfo)
+        }
+    }
+
     private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)
 

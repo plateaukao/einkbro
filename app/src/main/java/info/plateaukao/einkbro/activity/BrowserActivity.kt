@@ -82,10 +82,12 @@ import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.AlbumInfo
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FabPosition
 import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.preference.GptActionDisplay
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.NewTabBehavior
 import info.plateaukao.einkbro.preference.TranslationMode
@@ -167,6 +169,7 @@ import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -563,7 +566,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                                 translationViewModel.setupGptAction(gptAction)
                                 translationViewModel.url = getFocusedWebView().url.orEmpty()
 
-                                showTranslationDialog()
+                                when (gptAction.display) {
+                                    GptActionDisplay.Popup -> showTranslationDialog()
+                                    GptActionDisplay.NewTab -> {
+                                        chatWithWeb(false, actionModeMenuViewModel.selectedText.value, gptAction)
+                                    }
+
+                                    GptActionDisplay.SplitScreen -> {
+                                        chatWithWeb(true, actionModeMenuViewModel.selectedText.value)
+                                    }
+                                }
                             } else {
                                 EBToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
                             }
@@ -801,16 +813,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun chatWithWeb(useSplitScreen: Boolean) {
+    override fun chatWithWeb(useSplitScreen: Boolean, content: String?, runWithAction: ChatGPTActionInfo?) {
         lifecycleScope.launch {
-            val rawText = ebWebView.getRawText()
+            val rawText = content ?: ebWebView.getRawText()
             withContext(Dispatchers.Main) {
                 if (useSplitScreen) {
                     maybeInitTwoPaneController()
                     twoPaneController.showSecondPaneAsAi(rawText)
+                    delay(500)
+                    runWithAction?.let { twoPaneController.runGptAction(it) }
                 } else {
                     addAlbum("Chat With Web")
                     ebWebView.setupAiPage(this@BrowserActivity.lifecycleScope, rawText)
+                    delay(200)
+                    runWithAction?.let { ebWebView.runGptAction(it) }
                 }
             }
         }

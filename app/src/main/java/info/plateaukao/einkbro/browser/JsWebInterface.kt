@@ -128,3 +128,7 @@ fun String.toUserMessage() = ChatMessage(
     role = ChatRole.User,
     content = this
 )
+fun String.toSystemMessage() = ChatMessage(
+    role = ChatRole.System,
+    content = this
+)
