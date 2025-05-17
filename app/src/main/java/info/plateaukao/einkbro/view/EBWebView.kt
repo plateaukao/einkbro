@@ -405,19 +405,18 @@ open class EBWebView(
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
 
-    private lateinit var chatWebInterface: ChatWebInterface
+    private var chatWebInterface: ChatWebInterface? = null
     fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String) {
         isAIPage = true
+        removeJavascriptInterface("AndroidInterface")
         chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent)
-        addJavascriptInterface(chatWebInterface, "AndroidInterface" )
+
+        addJavascriptInterface(chatWebInterface!!, "AndroidInterface")
         loadUrl("file:///android_asset/chat.html")
     }
 
-    fun runGptAction(gptActionInfo: ChatGPTActionInfo) {
-        if (this::chatWebInterface.isInitialized) {
-            chatWebInterface.sendMessageWithGptActionInfo(gptActionInfo)
-        }
-    }
+    fun runGptAction(gptActionInfo: ChatGPTActionInfo) =
+        chatWebInterface?.sendMessageWithGptActionInfo(gptActionInfo)
 
     private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)

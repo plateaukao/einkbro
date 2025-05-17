@@ -25,7 +25,8 @@ class ChatWebInterface(
 
     @JavascriptInterface
     fun sendMessage(message: String) {
-        sendMessageWithGptActionInfo(createChatGptActionInfo(message))
+        val chatGptActionInfo = createChatGptActionInfo(message)
+        sendMessageWithGptActionInfo(chatGptActionInfo)
     }
 
     fun sendMessageWithGptActionInfo(gptActionInfo: ChatGPTActionInfo) {
