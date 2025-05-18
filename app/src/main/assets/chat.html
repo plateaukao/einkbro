@@ -72,22 +72,36 @@
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
             margin-left: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         #history-button {
             background-color: #2196F3;
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 10px 15px;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
             margin-left: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         #send-button:active, #history-button:active {
             opacity: 0.8;
+        }
+        /* Icons styling */
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: white;
         }
         pre {
             background-color: #f8f8f8;
@@ -205,8 +219,16 @@
     </div>
     <div class="input-area">
         <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
-        <button id="history-button">History</button>
-        <button id="send-button">Send</button>
+        <button id="history-button">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M12,20c-4.4,0-8-3.6-8-8s3.6-8,8-8s8,3.6,8,8 S16.4,20,12,20z M12.5,7H11v6l5.2,3.2l0.8-1.3l-4.5-2.7V7z"/>
+            </svg>
+        </button>
+        <button id="send-button">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
     </div>
 </div>
 
@@ -244,66 +266,97 @@
     const MAX_HISTORY_ITEMS = 10;
 
     // Initialize message history from localStorage
-    let messageHistory = JSON.parse(localStorage.getItem(MESSAGE_HISTORY_KEY) || '[]');
+    let messageHistory = [];
+    try {
+        const savedHistory = localStorage.getItem(MESSAGE_HISTORY_KEY);
+        if (savedHistory) {
+            messageHistory = JSON.parse(savedHistory);
+        }
+    } catch (error) {
+        console.warn('Failed to load message history from localStorage:', error);
+        messageHistory = [];
+    }
 
     // Function to save a message to history
     function saveMessageToHistory(message) {
-        // Don't save empty messages
-        if (!message.trim()) return;
+        try {
+            // Don't save empty messages
+            if (!message.trim()) return;
 
-        // Remove the message if it already exists to avoid duplicates
-        messageHistory = messageHistory.filter(item => item !== message);
+            // Remove the message if it already exists to avoid duplicates
+            messageHistory = messageHistory.filter(function(item) {
+                return item !== message;
+            });
 
-        // Add the new message to the beginning of the array
-        messageHistory.unshift(message);
+            // Add the new message to the beginning of the array
+            messageHistory.unshift(message);
 
-        // Limit to MAX_HISTORY_ITEMS
-        if (messageHistory.length > MAX_HISTORY_ITEMS) {
-            messageHistory = messageHistory.slice(0, MAX_HISTORY_ITEMS);
+            // Limit to MAX_HISTORY_ITEMS
+            if (messageHistory.length > MAX_HISTORY_ITEMS) {
+                messageHistory = messageHistory.slice(0, MAX_HISTORY_ITEMS);
+            }
+
+            // Save to localStorage
+            try {
+                localStorage.setItem(MESSAGE_HISTORY_KEY, JSON.stringify(messageHistory));
+            } catch (storageError) {
+                console.warn('Failed to save to localStorage:', storageError);
+            }
+        } catch (error) {
+            console.error('Error saving message to history:', error);
         }
-
-        // Save to localStorage
-        localStorage.setItem(MESSAGE_HISTORY_KEY, JSON.stringify(messageHistory));
     }
 
     // Function to populate the history list
     function populateHistoryList() {
-        // Clear the current list
-        historyList.innerHTML = '';
+        try {
+            // Clear the current list
+            historyList.innerHTML = '';
 
-        // Add each history item to the list
-        messageHistory.forEach(message => {
-            const li = document.createElement('li');
-            li.className = 'history-item';
-            li.textContent = message;
-            li.addEventListener('click', () => {
-                messageInput.value = message;
-                hideHistoryPopup();
-                messageInput.focus();
+            // Add each history item to the list
+            messageHistory.forEach(message => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.textContent = message;
+                li.addEventListener('click', function() {
+                    messageInput.value = message;
+                    hideHistoryPopup();
+                    messageInput.focus();
+                });
+                historyList.appendChild(li);
             });
-            historyList.appendChild(li);
-        });
 
-        // Show a message if history is empty
-        if (messageHistory.length === 0) {
-            const li = document.createElement('li');
-            li.className = 'history-item';
-            li.textContent = 'No message history';
-            li.style.fontStyle = 'italic';
-            li.style.color = '#888';
-            historyList.appendChild(li);
+            // Show a message if history is empty
+            if (messageHistory.length === 0) {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.textContent = 'No message history';
+                li.style.fontStyle = 'italic';
+                li.style.color = '#888';
+                historyList.appendChild(li);
+            }
+        } catch (error) {
+            console.error('Error populating history list:', error);
         }
     }
 
     // Function to show history popup
     function showHistoryPopup() {
-        populateHistoryList();
-        historyPopup.style.display = 'block';
+        try {
+            populateHistoryList();
+            historyPopup.style.display = 'block';
+        } catch (error) {
+            console.error('Error showing history popup:', error);
+        }
     }
 
     // Function to hide history popup
     function hideHistoryPopup() {
-        historyPopup.style.display = 'none';
+        try {
+            historyPopup.style.display = 'none';
+        } catch (error) {
+            console.error('Error hiding history popup:', error);
+        }
     }
 
     // Make sure document has proper height for scrolling
@@ -455,7 +508,7 @@
     window.receiveMessageFromAndroid = receiveMessageFromAndroid;
 
     // Event listeners
-    sendButton.addEventListener('click', () => {
+    sendButton.addEventListener('click', function() {
         const message = messageInput.value.trim();
         if (message) {
             sendMessageToAndroid(message);
@@ -463,7 +516,7 @@
         }
     });
 
-    messageInput.addEventListener('keypress', (e) => {
+    messageInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             const message = messageInput.value.trim();
             if (message) {
@@ -474,18 +527,22 @@
     });
 
     // History button event listener
-    historyButton.addEventListener('click', () => {
+    historyButton.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent event bubbling
         showHistoryPopup();
     });
 
     // Close popup button event listener
-    closePopup.addEventListener('click', () => {
+    closePopup.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent event bubbling
         hideHistoryPopup();
     });
 
     // Close popup when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!historyPopup.contains(e.target) && e.target !== historyButton) {
+    document.addEventListener('click', function(e) {
+        if (historyPopup.style.display === 'block' &&
+            !historyPopup.contains(e.target) &&
+            e.target !== historyButton) {
             hideHistoryPopup();
         }
     });
