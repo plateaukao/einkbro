@@ -63,12 +63,14 @@
         }
         #message-input {
             flex: 1;
+            min-width: 0;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 20px;
             outline: none;
         }
         #send-button {
+            flex-shrink: 0;
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -82,6 +84,7 @@
             justify-content: center;
         }
         #history-button {
+            flex-shrink: 0;
             background-color: #2196F3;
             color: white;
             border: none;
@@ -321,7 +324,6 @@
                 li.addEventListener('click', function() {
                     messageInput.value = message;
                     hideHistoryPopup();
-                    messageInput.focus();
                 });
                 historyList.appendChild(li);
             });
