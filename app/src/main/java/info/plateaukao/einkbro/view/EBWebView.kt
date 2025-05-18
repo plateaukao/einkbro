@@ -408,8 +408,11 @@ open class EBWebView(
     private var chatWebInterface: ChatWebInterface? = null
     fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String) {
         isAIPage = true
-        removeJavascriptInterface("AndroidInterface")
-        chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent)
+        if (chatWebInterface == null) {
+            chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent)
+        } else {
+            chatWebInterface?.updateWebContent(webContent)
+        }
 
         addJavascriptInterface(chatWebInterface!!, "AndroidInterface")
         loadUrl("file:///android_asset/chat.html")

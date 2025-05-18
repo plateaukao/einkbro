@@ -32,19 +32,23 @@
             margin-bottom: 16px;
             padding: 10px 14px;
             border-radius: 18px;
-            max-width: 80%;
             word-wrap: break-word;
         }
         .user-message {
             background-color: transparent;
-            border: 1px solid #cccccc;
+            border: 2px solid #cccccc;
             align-self: flex-end;
             margin-left: auto;
+            margin-right: 0;
+            text-align: right;
+            min-width: 30%;
+            max-width: 80%;
         }
         .bot-message {
             background-color: transparent;
             border: 1px solid #cccccc;
             align-self: flex-start;
+            max-width: 100%;
         }
         .input-area {
             display: flex;
@@ -136,9 +140,6 @@
 <body>
 <div class="chat-container">
     <div class="chat-messages" id="chat-messages">
-        <div class="message bot-message">
-            Hello! I'm ready to chat!
-        </div>
     </div>
     <div class="typing-indicator" id="typing-indicator">
         <span></span>
@@ -303,6 +304,8 @@
         // Show typing indicator
         showTypingIndicator();
 
+
+        // Send message to Android
         window.AndroidInterface.sendMessage(message);
     }
 
