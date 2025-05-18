@@ -77,8 +77,17 @@
             margin-left: 10px;
             cursor: pointer;
         }
-        #send-button:active {
-            background-color: #3e8e41;
+        #history-button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        #send-button:active, #history-button:active {
+            opacity: 0.8;
         }
         pre {
             background-color: #f8f8f8;
@@ -135,6 +144,54 @@
         th, td {
           border: 1px solid #cccccc;
         }
+
+        /* History popup styles */
+        .history-popup {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 80%;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .history-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .history-item:hover {
+            background-color: #f5f5f5;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .popup-header {
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .close-popup {
+            cursor: pointer;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -148,8 +205,20 @@
     </div>
     <div class="input-area">
         <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+        <button id="history-button">History</button>
         <button id="send-button">Send</button>
     </div>
+</div>
+
+<!-- History popup -->
+<div class="history-popup" id="history-popup">
+    <div class="popup-header">
+        <span>Message History</span>
+        <span class="close-popup" id="close-popup">&times;</span>
+    </div>
+    <ul class="history-list" id="history-list">
+        <!-- History items will be inserted here -->
+    </ul>
 </div>
 
 <!-- Include marked.js for Markdown parsing -->
@@ -161,10 +230,81 @@
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
     const typingIndicator = document.getElementById('typing-indicator');
+    const historyButton = document.getElementById('history-button');
+    const historyPopup = document.getElementById('history-popup');
+    const historyList = document.getElementById('history-list');
+    const closePopup = document.getElementById('close-popup');
 
     // Track current message element for streaming
     let currentStreamMessageElement = null;
     let isStreaming = false;
+
+    // Message history management
+    const MESSAGE_HISTORY_KEY = 'chatMessageHistory';
+    const MAX_HISTORY_ITEMS = 10;
+
+    // Initialize message history from localStorage
+    let messageHistory = JSON.parse(localStorage.getItem(MESSAGE_HISTORY_KEY) || '[]');
+
+    // Function to save a message to history
+    function saveMessageToHistory(message) {
+        // Don't save empty messages
+        if (!message.trim()) return;
+
+        // Remove the message if it already exists to avoid duplicates
+        messageHistory = messageHistory.filter(item => item !== message);
+
+        // Add the new message to the beginning of the array
+        messageHistory.unshift(message);
+
+        // Limit to MAX_HISTORY_ITEMS
+        if (messageHistory.length > MAX_HISTORY_ITEMS) {
+            messageHistory = messageHistory.slice(0, MAX_HISTORY_ITEMS);
+        }
+
+        // Save to localStorage
+        localStorage.setItem(MESSAGE_HISTORY_KEY, JSON.stringify(messageHistory));
+    }
+
+    // Function to populate the history list
+    function populateHistoryList() {
+        // Clear the current list
+        historyList.innerHTML = '';
+
+        // Add each history item to the list
+        messageHistory.forEach(message => {
+            const li = document.createElement('li');
+            li.className = 'history-item';
+            li.textContent = message;
+            li.addEventListener('click', () => {
+                messageInput.value = message;
+                hideHistoryPopup();
+                messageInput.focus();
+            });
+            historyList.appendChild(li);
+        });
+
+        // Show a message if history is empty
+        if (messageHistory.length === 0) {
+            const li = document.createElement('li');
+            li.className = 'history-item';
+            li.textContent = 'No message history';
+            li.style.fontStyle = 'italic';
+            li.style.color = '#888';
+            historyList.appendChild(li);
+        }
+    }
+
+    // Function to show history popup
+    function showHistoryPopup() {
+        populateHistoryList();
+        historyPopup.style.display = 'block';
+    }
+
+    // Function to hide history popup
+    function hideHistoryPopup() {
+        historyPopup.style.display = 'none';
+    }
 
     // Make sure document has proper height for scrolling
     document.addEventListener('DOMContentLoaded', function() {
@@ -301,9 +441,11 @@
         // Add user message to chat
         addMessage(message, true);
 
+        // Save message to history
+        saveMessageToHistory(message);
+
         // Show typing indicator
         showTypingIndicator();
-
 
         // Send message to Android
         window.AndroidInterface.sendMessage(message);
@@ -328,6 +470,23 @@
                 sendMessageToAndroid(message);
                 messageInput.value = '';
             }
+        }
+    });
+
+    // History button event listener
+    historyButton.addEventListener('click', () => {
+        showHistoryPopup();
+    });
+
+    // Close popup button event listener
+    closePopup.addEventListener('click', () => {
+        hideHistoryPopup();
+    });
+
+    // Close popup when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!historyPopup.contains(e.target) && e.target !== historyButton) {
+            hideHistoryPopup();
         }
     });
 
