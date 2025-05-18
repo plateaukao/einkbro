@@ -14,9 +14,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class ChatWebInterface(
-    lifecycleScope: LifecycleCoroutineScope,
+    val lifecycleScope: LifecycleCoroutineScope,
     webView: WebView,
-    private val webContent: String,
+    private var webContent: String,
 ) : KoinComponent {
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
@@ -26,7 +26,15 @@ class ChatWebInterface(
     @JavascriptInterface
     fun sendMessage(message: String) {
         val chatGptActionInfo = createChatGptActionInfo(message)
-        sendMessageWithGptActionInfo(chatGptActionInfo)
+        lifecycleScope.launch(Dispatchers.Main) {
+            sendMessageWithGptActionInfo(chatGptActionInfo)
+        }
+    }
+
+    fun updateWebContent(webContent: String) {
+        this.webContent = webContent
+        messageList.removeIf { it.content.contains("this is the web content") }
+        messageList.add("```$webContent```\n this is the web content;".toUserMessage())
     }
 
     fun sendMessageWithGptActionInfo(gptActionInfo: ChatGPTActionInfo) {
