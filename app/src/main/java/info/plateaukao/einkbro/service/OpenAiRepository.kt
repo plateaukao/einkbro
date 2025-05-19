@@ -9,6 +9,7 @@ import info.plateaukao.einkbro.service.data.ContentPart
 import info.plateaukao.einkbro.service.data.RequestData
 import info.plateaukao.einkbro.service.data.ResponseData
 import info.plateaukao.einkbro.service.data.SafetySetting
+import info.plateaukao.einkbro.viewmodel.unescape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
@@ -144,7 +145,7 @@ class OpenAiRepository : KoinComponent {
                             var text =
                                 chunk.substringAfter(textField).removeSuffix("\"")
                             Log.d("OpenAiRepository", "text: $text")
-                            appendResponseAction(text)
+                            appendResponseAction(text.unescape())
                         }
                     }
                 }

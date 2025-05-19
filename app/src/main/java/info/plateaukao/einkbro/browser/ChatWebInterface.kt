@@ -48,16 +48,16 @@ class ChatWebInterface(
         messageList.add(gptActionInfo.userMessage.toUserMessage())
 
         jsHelper.startMessageStream {
-            openAiRepository.chatStream(
-                messages = messageList,
-                gptActionInfo = gptActionInfo,
-                appendResponseAction = { response -> jsHelper.sendStreamUpdate(response) },
-                doneAction = { jsHelper.completeStream(messageList) },
-                failureAction = { handleFailure() }
-            )
+            lifecycleScope.launch(Dispatchers.IO) {
+                openAiRepository.chatStream(
+                    messages = messageList,
+                    gptActionInfo = gptActionInfo,
+                    appendResponseAction = { response -> jsHelper.sendStreamUpdate(response) },
+                    doneAction = { jsHelper.completeStream(messageList) },
+                    failureAction = { handleFailure() }
+                )
+            }
         }
-
-
     }
 
     private fun createChatGptActionInfo(message: String): ChatGPTActionInfo {
