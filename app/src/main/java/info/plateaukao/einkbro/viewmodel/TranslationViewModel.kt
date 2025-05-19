@@ -434,8 +434,9 @@ enum class TRANSLATE_API {
     GOOGLE, PAPAGO, NAVER, LLM, DEEPL, OPENAI, GEMINI,
 }
 
-private fun String.unescape(): String {
-    return this.replace("\\n", "\n")
+fun String.unescape(): String {
+    return this.replace("\\\\n", "\n")
+        .replace("\\n", "\n")
         .replace("\\t", "\t")
         .replace("\\\"", "\"")
         .replace("\\'", "'")
