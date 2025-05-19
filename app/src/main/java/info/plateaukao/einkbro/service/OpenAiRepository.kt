@@ -132,6 +132,8 @@ class OpenAiRepository : KoinComponent {
                     return
                 }
                 val inputStream = response.body?.byteStream() ?: return
+                val textField = "\"text\": \""
+                val finishReasonString = "\"finishReason\": \""
                 inputStream.source().buffer().use { source ->
                     while (!source.exhausted()) {
                         val chunk = source.readUtf8Line()
@@ -140,12 +142,18 @@ class OpenAiRepository : KoinComponent {
                             return
                         }
                         Log.d("OpenAiRepository", "chunk: $chunk")
-                        val textField = "\"text\": \""
                         if (chunk.contains(textField)) {
                             var text =
                                 chunk.substringAfter(textField).removeSuffix("\"")
                             Log.d("OpenAiRepository", "text: $text")
                             appendResponseAction(text.unescape())
+                        } else if (chunk.contains(finishReasonString)) {
+                            val finishReason = chunk.substringAfter(finishReasonString)
+                            Log.d("OpenAiRepository", "finishReason: $finishReason")
+                            if (finishReason.contains("STOP")) {
+                                doneAction()
+                                eventSource?.cancel()
+                            }
                         }
                     }
                 }
