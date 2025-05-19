@@ -388,11 +388,18 @@
         gfm: true     // Enable GitHub Flavored Markdown
     });
     marked.use({
-      extensions: [],
-      options: {
-        gfm: true,
-        strikethrough: false
-      }
+        extensions: [],
+        options: {
+            gfm: false,
+            strikethrough: false
+        },
+        tokenizer: {
+            strikethrough: () => false
+        },
+        renderer: {
+            strikethrough: () => false
+        }
+
     });
 
     // Function to add a message to the chat
