@@ -212,6 +212,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val externalSearchViewModel: ExternalSearchViewModel by viewModels()
 
+    private val keyHandler: KeyHandler by lazy { KeyHandler(this, ebWebView, config) }
+
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as EBWebView
         val title = webView.title
@@ -1105,52 +1107,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        when (keyCode) {
-            KeyEvent.KEYCODE_DPAD_DOWN -> {
-                if (config.useUpDownPageTurn) ebWebView.pageDownWithNoAnimation()
-            }
-
-            KeyEvent.KEYCODE_DPAD_UP -> {
-                if (config.useUpDownPageTurn) ebWebView.pageUpWithNoAnimation()
-            }
-
-            KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey()
-            KeyEvent.KEYCODE_VOLUME_UP -> return handleVolumeUpKey()
-            KeyEvent.KEYCODE_MENU -> {
-                showMenuDialog(); return true
-            }
-
-            KeyEvent.KEYCODE_BACK -> {
-                handleBackKey(); return true
-            }
-        }
-        return false
-    }
-
-    private fun handleVolumeDownKey(): Boolean {
-        return if (config.volumePageTurn) {
-            if (ebWebView.isVerticalRead) {
-                ebWebView.pageUpWithNoAnimation()
-            } else {
-                ebWebView.pageDownWithNoAnimation()
-            }
-            true
-        } else {
-            false
-        }
-    }
-
-    private fun handleVolumeUpKey(): Boolean {
-        return if (config.volumePageTurn) {
-            if (ebWebView.isVerticalRead) {
-                ebWebView.pageDownWithNoAnimation()
-            } else {
-                ebWebView.pageUpWithNoAnimation()
-            }
-            true
-        } else {
-            false
-        }
+        return keyHandler.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
     }
 
     override fun handleBackKey() {
@@ -1222,6 +1179,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         progressBar.visibility = GONE
         ebWebView = controller as EBWebView
+        keyHandler.setWebView(ebWebView)
 
         updateTitle()
         ebWebView.updatePageInfo()
@@ -1286,7 +1244,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ViewUnit.hideKeyboard(this)
                 EBToast.show(this@BrowserActivity, R.string.toast_edit_successful)
             },
-            { ViewUnit.hideKeyboard(this) }
+            { ViewUnit.hideKeyboard(this@BrowserActivity) }
         ).show()
     }
 
@@ -2309,95 +2267,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var previousKeyEvent: KeyEvent? = null
     override fun handleKeyEvent(event: KeyEvent): Boolean {
-        if (event.action != ACTION_DOWN) return false
-        if (ebWebView.hitTestResult.type == HitTestResult.EDIT_TEXT_TYPE) return false
-
-        // process dpad navigation
-        if (config.useUpDownPageTurn) {
-            when (event.keyCode) {
-                KeyEvent.KEYCODE_DPAD_DOWN -> {
-                    ebWebView.pageDownWithNoAnimation()
-                    return true
-                }
-
-                KeyEvent.KEYCODE_DPAD_UP -> {
-                    ebWebView.pageUpWithNoAnimation()
-                    return true
-                }
-            }
-        }
-
-        if (!config.enableViBinding) return false
-        // vim bindings
-        if (event.isShiftPressed) {
-            when (event.keyCode) {
-                KeyEvent.KEYCODE_J -> {
-                    val controller = nextAlbumController(true) ?: return true
-                    showAlbum(controller)
-                }
-
-                KeyEvent.KEYCODE_K -> {
-                    val controller = nextAlbumController(false) ?: return true
-                    showAlbum(controller)
-                }
-
-                KeyEvent.KEYCODE_G -> ebWebView.jumpToBottom()
-                else -> return false
-            }
-        } else { // non-capital
-            when (event.keyCode) {
-                KeyEvent.KEYCODE_B -> openBookmarkPage()
-                KeyEvent.KEYCODE_O -> {
-                    if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
-                        decreaseFontSize()
-                        previousKeyEvent = null
-                    } else {
-                        focusOnInput()
-                    }
-                }
-
-                KeyEvent.KEYCODE_J -> ebWebView.pageDownWithNoAnimation()
-                KeyEvent.KEYCODE_K -> ebWebView.pageUpWithNoAnimation()
-                KeyEvent.KEYCODE_H -> ebWebView.goBack()
-                KeyEvent.KEYCODE_L -> ebWebView.goForward()
-                KeyEvent.KEYCODE_R -> showTranslation()
-                KeyEvent.KEYCODE_D -> removeAlbum()
-                KeyEvent.KEYCODE_T -> {
-                    addAlbum(getString(R.string.app_name), "")
-                    focusOnInput()
-                }
-
-                KeyEvent.KEYCODE_SLASH -> showSearchPanel()
-                KeyEvent.KEYCODE_G -> {
-                    previousKeyEvent = when {
-                        previousKeyEvent == null -> event
-                        previousKeyEvent?.keyCode == KeyEvent.KEYCODE_G -> {
-                            // gg
-                            jumpToTop()
-                            null
-                        }
-
-                        else -> null
-                    }
-                }
-
-                KeyEvent.KEYCODE_V -> {
-                    previousKeyEvent = if (previousKeyEvent == null) event else null
-                }
-
-                KeyEvent.KEYCODE_I -> {
-                    if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
-                        increaseFontSize()
-                        previousKeyEvent = null
-                    }
-                }
-
-                KeyEvent.KEYCODE_F -> toggleFullscreen()
-
-                else -> return false
-            }
-        }
-        return true
+        return keyHandler.handleKeyEvent(event)
     }
 
     override fun loadInSecondPane(url: String): Boolean =
@@ -2879,9 +2749,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onActionModeFinished(mode: ActionMode?) {
         super.onActionModeFinished(mode)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mode?.hide(1000000)
-        }
+        mode?.hide(1000000)
         actionModeMenuViewModel.updateActionMode(null)
     }
 
