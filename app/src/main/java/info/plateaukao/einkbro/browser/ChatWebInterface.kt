@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.browser
 
-import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -12,16 +11,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import timber.log.Timber
 
 class ChatWebInterface(
     val lifecycleScope: LifecycleCoroutineScope,
-    webView: WebView,
+    webView: WebView, // Made private as JsHelper will use it
     private var webContent: String,
 ) : KoinComponent {
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
-    private val messageList: MutableList<ChatMessage> = mutableListOf()
+    private val chatHistory: MutableList<ChatMessage> = mutableListOf()
     private val jsHelper = JsHelper(webView, lifecycleScope)
+
+    companion object {
+        private const val WEB_CONTENT_MESSAGE_SUFFIX = "\n this is the web content;"
+    }
 
     @JavascriptInterface
     fun sendMessage(message: String) {
@@ -31,33 +35,53 @@ class ChatWebInterface(
         }
     }
 
-    fun updateWebContent(webContent: String) {
-        this.webContent = webContent
-        messageList.removeIf { it.content.contains("this is the web content") }
-        messageList.add("```$webContent```\n this is the web content;".toUserMessage())
+    fun updateWebContent(newWebContent: String) {
+        this.webContent = newWebContent
+        // No direct manipulation of chatHistory needed here for web content updates.
+        // The latest webContent will be used when constructing messages for the API.
     }
 
     fun sendMessageWithGptActionInfo(gptActionInfo: ChatGPTActionInfo) {
-        if (messageList.isEmpty()) {
+        val currentUserMessage = gptActionInfo.userMessage.toUserMessage()
+
+        val messagesForApi = mutableListOf<ChatMessage>().apply {
             if (gptActionInfo.systemMessage.isNotEmpty()) {
-                messageList.add(gptActionInfo.systemMessage.toSystemMessage())
+                add(gptActionInfo.systemMessage.toSystemMessage())
             }
-            messageList.add("```$webContent```\n this is the web content;".toUserMessage())
+            add(createWebContentMessage(webContent))
+            addAll(chatHistory) // Add previous conversation turns
+            add(currentUserMessage) // Add the current user message
         }
 
-        messageList.add(gptActionInfo.userMessage.toUserMessage())
+        val assistantResponseAggregator = StringBuilder()
 
-        jsHelper.startMessageStream {
+        jsHelper.startMessageStream { // Prepares JS for a new message stream
             lifecycleScope.launch(Dispatchers.IO) {
                 openAiRepository.chatStream(
-                    messages = messageList,
+                    messages = messagesForApi,
                     gptActionInfo = gptActionInfo,
-                    appendResponseAction = { response -> jsHelper.sendStreamUpdate(response) },
-                    doneAction = { jsHelper.completeStream(messageList) },
-                    failureAction = { handleFailure() }
+                    appendResponseAction = { responseChunk ->
+                        jsHelper.sendStreamUpdate(responseChunk) // Send chunk to WebView
+                        assistantResponseAggregator.append(responseChunk) // Aggregate for history
+                    },
+                    doneAction = { // Called when OpenAI stream is successfully finished
+                        jsHelper.sendFinalEmptyUpdate() // Signal JS that stream is done
+                        // Add the user's message and the full assistant response to history
+                        chatHistory.add(currentUserMessage)
+                        chatHistory.add(assistantResponseAggregator.toString().toAssistantMessage())
+                    },
+                    failureAction = { // Called on stream failure
+                        Timber.e("Error in OpenAI stream")
+                        jsHelper.sendErrorUpdate("Sorry, there was an error processing your request.")
+                        // Optionally, add an error marker to chatHistory or handle as needed
+                    }
                 )
             }
         }
+    }
+
+    private fun createWebContentMessage(content: String): ChatMessage {
+        return "```$content```$WEB_CONTENT_MESSAGE_SUFFIX".toUserMessage()
     }
 
     private fun createChatGptActionInfo(message: String): ChatGPTActionInfo {
@@ -67,52 +91,61 @@ class ChatWebInterface(
             model = configManager.getGptTypeModelMap()[configManager.gptForChatWeb] ?: configManager.gptModel,
         )
     }
-
-    private fun handleFailure() {
-        Log.e("ChatWebInterface", "Error in stream")
-        jsHelper.sendStreamUpdate("Sorry, there was an error processing your request.", isComplete = true)
-    }
 }
 
 /**
- * Helper class to manage JavaScript interactions with WebView
+ * Helper class to manage JavaScript interactions with WebView.
+ * This class is now stateless regarding message content, only forwarding to JS.
  */
 class JsHelper(
     private val webView: WebView,
     private val lifecycleScope: LifecycleCoroutineScope,
 ) {
-    private var processingMessage = ""
     fun startMessageStream(postAction: () -> Unit = {}) {
-        processingMessage = ""
+        // Tell JS to prepare for a new incoming message stream
         webView.evaluateJavascript("javascript:startMessageStream()") {
             postAction()
         }
     }
 
-    fun sendStreamUpdate(message: String, isComplete: Boolean = false) {
-        processingMessage += message
+    fun sendStreamUpdate(messageChunk: String) {
+        // Send a chunk of the message to JS; not the end of the stream yet.
         lifecycleScope.launch(Dispatchers.Main) {
             webView.evaluateJavascript(
-                "javascript:receiveMessageFromAndroid('${escapeJsString(message)}', true, $isComplete)",
+                "javascript:receiveMessageFromAndroid('${escapeJsString(messageChunk)}', true, false)",
                 null
             )
         }
     }
 
-    fun completeStream(messageList: MutableList<ChatMessage>) {
+    fun sendFinalEmptyUpdate() {
+        // Signal JS that the message stream has completed successfully.
+        // Sends an empty message with the 'done' flag.
         lifecycleScope.launch(Dispatchers.Main) {
             webView.evaluateJavascript("javascript:receiveMessageFromAndroid('', true, true)", null)
         }
-        messageList.add(processingMessage.toAssistantMessage())
+    }
+
+    fun sendErrorUpdate(errorMessage: String) {
+        // Signal JS that an error occurred and the stream is ending.
+        // Sends the error message with the 'done' flag.
+        lifecycleScope.launch(Dispatchers.Main) {
+            webView.evaluateJavascript(
+                "javascript:receiveMessageFromAndroid('${escapeJsString(errorMessage)}', true, true)",
+                null
+            )
+        }
     }
 
     /**
      * Escape special characters for JavaScript string literals
      */
     private fun escapeJsString(str: String): String {
-        return str.replace("\\", "\\\\")
+        return str.replace("\\", "\\\\") // Escape backslashes first
             .replace("'", "\\'")
             .replace("\n", "\\n")
             .replace("\r", "\\r")
+            // Add other escapes as necessary, e.g., for quotes if using double quotes in JS
+            .replace("\"", "\\\"")
     }
 }
