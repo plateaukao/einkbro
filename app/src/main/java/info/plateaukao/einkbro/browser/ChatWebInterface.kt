@@ -80,17 +80,15 @@ class ChatWebInterface(
         }
     }
 
-    private fun createWebContentMessage(content: String): ChatMessage {
-        return "```$content```$WEB_CONTENT_MESSAGE_SUFFIX".toUserMessage()
-    }
+    private fun createWebContentMessage(content: String): ChatMessage =
+        "```$content```$WEB_CONTENT_MESSAGE_SUFFIX".toUserMessage()
 
-    private fun createChatGptActionInfo(message: String): ChatGPTActionInfo {
-        return ChatGPTActionInfo(
+    private fun createChatGptActionInfo(message: String): ChatGPTActionInfo =
+        ChatGPTActionInfo(
             actionType = configManager.gptForChatWeb,
             userMessage = message,
             model = configManager.getGptTypeModelMap()[configManager.gptForChatWeb] ?: configManager.gptModel,
         )
-    }
 }
 
 /**
