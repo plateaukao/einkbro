@@ -161,7 +161,9 @@
         th, td {
           border: 1px solid #cccccc;
         }
-
+        del {
+            text-decoration: none !important;  /* Remove strikethrough and make it important */
+        }
         /* History popup styles */
         .history-popup {
             display: none;
@@ -394,6 +396,10 @@
             strikethrough: false
         },
         tokenizer: {
+            del(src) {
+              // Return false to prevent strikethrough parsing
+              return false;
+            }
             strikethrough: () => false
         },
         renderer: {
