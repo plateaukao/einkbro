@@ -348,7 +348,7 @@ fun SettingScreen(
                     ) { linkAction(setting.url) }
 
                     is VersionSettingItem -> {
-                        val version = " v${BuildConfig.VERSION_NAME} (${BuildConfig.builtDateTime})"
+                        val version = " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
                         SettingItemUi(setting, false, version, showBorder) {
                             navController.navigate(setting.destination.name)
                         }

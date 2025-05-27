@@ -9,10 +9,17 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" // this version matches your Kotlin version
 }
 
-fun getCurrentTimestamp(): String {
+fun getLastCommitTimeStamp(): String {
+    val epoch = System.getenv("SOURCE_DATE_EPOCH")?.toLongOrNull()
+    val date = if (epoch != null) {
+        Date(epoch * 1_000) // Convert seconds to milliseconds
+    } else {
+        Date()
+    }
+
     val dateFormat = SimpleDateFormat("MMddHHmm")
     dateFormat.timeZone = TimeZone.getTimeZone("Asia/Taipei")
-    return dateFormat.format(Date())
+    return dateFormat.format(date)
 }
 
 fun showUpdateButton(): String {
@@ -31,7 +38,7 @@ android {
         versionCode = 14_06_00
         versionName = "14.6.0"
 
-        buildConfigField("String", "builtDateTime", "\"${getCurrentTimestamp()}\"")
+        buildConfigField("String", "lastCommitTime", "\"${getLastCommitTimeStamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
 
         ksp {
