@@ -67,8 +67,9 @@ class DictActivity : AppCompatActivity() {
             webView,
             Point(50, 50),
         ) {
-            supportFragmentManager.popBackStack()
-            moveTaskToBack(true)
+            finish()
+//            supportFragmentManager.popBackStack()
+//            moveTaskToBack(true)
         }
         supportFragmentManager.beginTransaction().add(fragment, "contextMenu").addToBackStack(null)
             .commit()
