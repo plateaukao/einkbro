@@ -33,6 +33,7 @@ import info.plateaukao.einkbro.browser.EBWebChromeClient
 import info.plateaukao.einkbro.browser.EBWebViewClient
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.browser.JsWebInterface
+import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -716,7 +717,9 @@ open class EBWebView(
 
     // only works in isReadModeOn
     suspend fun getRawText() = suspendCoroutine<String> { continuation ->
-        if (!isReaderModeOn) {
+        if (dualCaption != null) {
+            continuation.resume(DualCaptionProcessor().convertToHtml(dualCaption ?: ""))
+        } else if (!isReaderModeOn) {
             evaluateMozReaderModeJs {
                 evaluateJavascript(getReaderModeBodyTextJs) { text ->
                     if (text == "null") {
