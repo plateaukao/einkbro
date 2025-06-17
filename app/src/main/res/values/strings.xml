@@ -612,4 +612,5 @@
     <string name="self_hosted">Self Hosted</string>
     <string name="summary_gpt_type">Gpt type for summary web content</string>
     <string name="setting_summary_summary_gpt_type">Choose gpt engine for content summarization</string>
+    <string name="menu_summarize">Summarize</string>
 </resources>

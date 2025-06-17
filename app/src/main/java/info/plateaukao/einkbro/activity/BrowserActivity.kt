@@ -43,7 +43,6 @@ import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView
-import android.webkit.WebView.HitTestResult
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
@@ -72,7 +71,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
 import info.plateaukao.einkbro.browser.BrowserController
-import info.plateaukao.einkbro.browser.ChatWebInterface
 import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -169,7 +167,6 @@ import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -797,6 +794,33 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         SendLinkDialog(this, lifecycleScope).show(text)
+    }
+
+    private val linkContentWebView: EBWebView by lazy {
+        EBWebView(this, this).apply {
+            setOnPageFinishedAction {
+                lifecycleScope.launch {
+                    val content = linkContentWebView.getRawText()
+                    loadUrl("about:blank")
+                    if (content.isNotEmpty()) {
+                        val isSuccess = translationViewModel.setupTextSummary(content)
+                        if (!isSuccess) {
+                            EBToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
+                            return@launch
+                        }
+
+                        showTranslationDialog()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun summarizeLinkContent(url: String) {
+        if (translationViewModel.hasOpenAiApiKey()) {
+                translationViewModel.url = url
+                linkContentWebView.loadUrl(url)
+        }
     }
 
     override fun summarizeContent() {
@@ -2372,6 +2396,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
             ContextMenuItemType.Tts -> addContentToReadList(url)
+            ContextMenuItemType.Summarize -> summarizeLinkContent(url)
             ContextMenuItemType.SaveAs -> {
                 if (url.startsWith("data:image")) {
                     saveFile(url)
@@ -2388,11 +2413,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private val headlessWebView: EBWebView by lazy {
+    private val toBeReadWebView: EBWebView by lazy {
         EBWebView(this, this).apply {
             setOnPageFinishedAction {
                 lifecycleScope.launch {
-                    val content = headlessWebView.getRawText()
+                    val content = toBeReadWebView.getRawText()
                     if (content.isNotEmpty()) {
                         ttsViewModel.readArticle(content)
                     }
@@ -2402,9 +2427,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
 
                     if (toBeReadProcessUrlList.isNotEmpty()) {
-                        headlessWebView.loadUrl(toBeReadProcessUrlList.removeAt(0))
+                        toBeReadWebView.loadUrl(toBeReadProcessUrlList.removeAt(0))
                     } else {
-                        headlessWebView.loadUrl("about:blank")
+                        toBeReadWebView.loadUrl("about:blank")
                     }
                 }
             }
@@ -2415,7 +2440,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun addContentToReadList(url: String) {
         toBeReadProcessUrlList.add(url)
         if (toBeReadProcessUrlList.size == 1) {
-            headlessWebView.loadUrl(url)
+            toBeReadWebView.loadUrl(url)
         }
         EBToast.show(this, R.string.added_to_read_list)
     }

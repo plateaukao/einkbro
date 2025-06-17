@@ -18,9 +18,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.Segment
 import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.Save
@@ -37,11 +37,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.AdBlock
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyLink
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SelectText
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.Summarize
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.TranslateImage
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.Tts
 import java.net.URLDecoder
@@ -159,9 +159,10 @@ private fun ContextMenuItems(
             }
             ContextMenuItem(R.string.menu_tts, showIcons, Icons.Outlined.RecordVoiceOver) { onClicked(Tts) }
             ContextMenuItem(R.string.menu_save_as, showIcons, Icons.Outlined.Save) { onClicked(SaveAs) }
-            if (shouldShowAdBlock) {
-                ContextMenuItem(R.string.setting_title_adblock, showIcons, Icons.Outlined.Block) { onClicked(AdBlock) }
-            }
+            ContextMenuItem(R.string.menu_summarize, showIcons, Icons.AutoMirrored.Outlined.Chat) { onClicked(Summarize) }
+//            if (shouldShowAdBlock) {
+//                ContextMenuItem(R.string.setting_title_adblock, showIcons, Icons.Outlined.Block) { onClicked(AdBlock) }
+//            }
         }
     }
 }
@@ -186,7 +187,7 @@ enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
     ShareLink, CopyLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
-    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete
+    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete, Summarize
 }
 
 @Preview(showBackground = true)
