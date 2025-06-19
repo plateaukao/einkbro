@@ -62,7 +62,7 @@
     <string name="setting_summary_font_size">Ajustar el tamaño del texto en sitios web</string>
     <string name="setting_title_remote">Contenido remoto</string>
     <string name="setting_summary_remote">Habilita el contenido remoto que no proviene directamente del sitio web que estás visitando. Deshabilitarlo aumentará el nivel de seguridad, la velocidad y ahorrará volumen de datos, pero algunos contenidos no se mostrarán.</string>
-    <string name="setting_title_save_data">Solicitar 'Ahorrar datos'</string>
+    <string name="setting_title_save_data">Solicitar \'Ahorrar datos\'</string>
     <string name="setting_summary_save_data">Indica a los sitios web que prefieres ahorrar datos. Los sitios web compatibles se cargarán más rápido</string>
 
     <!-- Browser start -->
