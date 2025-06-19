@@ -4,7 +4,7 @@
     <string name="app_name">EinkBro</string>
     <string name="list_empty">La lista actual está vacía.</string>
     <string name="bookmarks">Marcadores</string>
-    <string name="album_title_history">Historia</string>
+    <string name="album_title_history">Historial</string>
     <string name="album_title_home">Inicio</string>
     <string name="search_hint">Buscar</string>
 
@@ -35,8 +35,8 @@
     <string name="dialog_title_hint">Título:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Extensión (por ejemplo: \".jpg\"):</string>
-    <string name="dialog_title_download">¿Quieres descargar el archivo?</string>
-    <string name="dialog_content_resubmission">¿Te gustaría volver a enviar tus datos?</string>
+    <string name="dialog_title_download">¿Desea descargar el archivo?</string>
+    <string name="dialog_content_resubmission">¿Desea volver a enviar tus datos?</string>
 
     <!-- Settings -->
     <string name="setting_label">Configuración</string>
@@ -59,7 +59,7 @@
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
     <string name="setting_title_font_size">Tamaño de fuente</string>
-    <string name="setting_summary_font_size">Cambia el tamaño de fuente para mostrar sitios web</string>
+    <string name="setting_summary_font_size">Ajustar el tamaño del texto en sitios web</string>
     <string name="setting_title_remote">Contenido remoto</string>
     <string name="setting_summary_remote">Habilita el contenido remoto que no proviene directamente del sitio web que estás visitando. Deshabilitarlo aumentará el nivel de seguridad, la velocidad y ahorrará volumen de datos, pero algunos contenidos no se mostrarán.</string>
     <string name="setting_title_save_data">Solicitar 'Ahorrar datos'</string>
@@ -101,7 +101,7 @@
     <string name="clear_summary_deleteDatabase">Eliminar toda la base de datos (página de inicio, marcadores, historial y todas las listas blancas)</string>
 
     <!-- App setting -->
-    <string name="setting_title_ui">UI</string>
+    <string name="setting_title_ui">Comportamiento/UI</string>
     <string name="setting_title_data">Copia de seguridad</string>
     <string name="setting_title_fav">Favoritos</string>
     <string name="setting_title_searchEngine">Motor de búsqueda personalizado</string>
@@ -159,11 +159,11 @@
     <string name="export_whitelistJS">Exportar lista blanca de JavaScript</string>
     <string name="export_whitelistCookie">Exportar lista blanca de Cookies</string>
     <string name="setting_title_export_appData">Exportar datos de la app</string>
-    <string name="setting_summary_export_appData">Exportar datos de la app (Historia, Marcadores) y tus ajustes personales</string>
+    <string name="setting_summary_export_appData">Exportar datos de la app (Historial, Marcadores) y tus ajustes personales</string>
     <string name="setting_title_import_appData">Importar datos de la app</string>
     <string name="setting_summary_import_appData">Importar datos de la app seleccionando un archivo zip con datos exportados anteriormente</string>
     <string name="title_appData">Datos de la app</string>
-    <string name="hint_database">Esto eliminará todos los elementos aquí. ¿Proceder?</string>
+    <string name="hint_database">Esto eliminará todos los elementos de aquí. ¿Proceder?</string>
 
     <!-- Others setting -->
     <string name="setting_title_license">Licencia</string>
@@ -175,7 +175,7 @@
     <string name="toast_domain_already_exists">El dominio ya existe</string>
     <string name="toast_export_successful">Exportado como:&#160;</string>
     <string name="toast_export_failed">Fallo al exportar</string>
-    <string name="toast_import_successful">Importado count:&#160;</string>
+    <string name="toast_import_successful">Cuenta importada:&#160;</string>
     <string name="toast_import_failed">Fallo al importar</string>
     <string name="toast_input_empty">No has introducido nada</string>
     <string name="toast_invalid_domain">Dominio no válido</string>
@@ -290,7 +290,7 @@
     <string name="latest_release">Último lanzamiento</string>
     <string name="project_site">Sitio del proyecto</string>
     <string name="facebook_groups">Grupos de Facebook</string>
-    <string name="changelogs">¿Qué hay de nuevo?</string>
+    <string name="changelogs">¿Qué hay nuevo?</string>
     <string name="medium_articles">Artículos de Medium</string>
     <string name="contributors">Colaboradores</string>
     <string name="turn_on">Encendido</string>
