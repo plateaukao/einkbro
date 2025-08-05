@@ -1257,20 +1257,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun createShortcut() {
-        val currentUrl = ebWebView.url ?: return
-        ShortcutEditDialog(
-            this@BrowserActivity,
-            HelperUnit.secString(ebWebView.title),
-            currentUrl,
-            ebWebView.favicon,
-            {
-                ViewUnit.hideKeyboard(this)
-                EBToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-            },
-            { ViewUnit.hideKeyboard(this@BrowserActivity) }
-        ).show()
-    }
+    override fun createShortcut() = BrowserUnit.createShortcut(this, ebWebView)
 
     override fun toggleTouchTurnPageFeature() = config::enableTouchTurn.toggle()
 
@@ -1348,42 +1335,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
     }
-
-//    private fun translateByParagraphInReaderMode(translateApi: TRANSLATE_API) {
-//        lifecycleScope.launch {
-//            val currentUrl = ebWebView.url
-//
-//            // assume it's current one
-//            val translateModeWebView = if (ebWebView.isTranslatePage) {
-//                ebWebView
-//            } else {
-//                // get html from original WebView
-//                val htmlCache = ebWebView.getRawReaderHtml()
-//                // create a new WebView
-//                addAlbum("", "")
-//                // set it to translate mode
-//                ebWebView.isTranslatePage = true
-//                ebWebView.translateApi = translateApi
-//                // set its raw html to be the same as original WebView
-//                ebWebView.rawHtmlCache = htmlCache
-//                // show the language label
-//                languageLabelView?.visibility = VISIBLE
-//                ebWebView
-//            }
-//
-//            val translatedHtml = translationViewModel
-//                .translateByParagraph(translateModeWebView.rawHtmlCache ?: return@launch)
-//            if (translateModeWebView.isAttachedToWindow) {
-//                translateModeWebView.loadDataWithBaseURL(
-//                    if (!ebWebView.isPlainText) currentUrl else null,
-//                    translatedHtml,
-//                    "text/html",
-//                    "utf-8",
-//                    null
-//                )
-//            }
-//        }
-//    }
 
     private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
 
