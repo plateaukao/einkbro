@@ -112,7 +112,6 @@ import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.SendLinkDialog
-import info.plateaukao.einkbro.view.dialog.ShortcutEditDialog
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
@@ -846,11 +845,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 val scope = this@BrowserActivity.lifecycleScope
                 if (useSplitScreen) {
                     maybeInitTwoPaneController()
-                    twoPaneController.showSecondPaneAsAi(rawText)
+                    // get current web title/url
+                    val webTitle = ebWebView.title ?: "No Title"
+                    val webUrl = ebWebView.url.orEmpty()
+                    // add new tab
+                    twoPaneController.showSecondPaneAsAi(rawText, webTitle, webUrl)
                     runWithAction?.let { twoPaneController.runGptAction(it) }
                 } else {
+                    // get current web title/url
+                    val webTitle = ebWebView.title ?: "No Title"
+                    val webUrl = ebWebView.url.orEmpty()
+                    // add new tab
                     addAlbum("Chat With Web")
-                    ebWebView.setupAiPage(scope, rawText)
+                    ebWebView.setupAiPage(scope, rawText, webTitle, webUrl)
                     runWithAction?.let { ebWebView.runGptAction(it) }
                 }
             }

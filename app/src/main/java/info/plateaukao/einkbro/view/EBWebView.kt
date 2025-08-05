@@ -407,11 +407,9 @@ open class EBWebView(
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
 
     private var chatWebInterface: ChatWebInterface? = null
-    fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String) {
+    fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String, webTitle: String, webUrl: String) {
         isAIPage = true
-        val webTitle = albumTitle.takeIf { it.isNotBlank() } ?: "Untitled Page"
-        val webUrl = albumUrl.takeIf { it.isNotBlank() } ?: ""
-        
+
         if (chatWebInterface == null) {
             chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent, webTitle, webUrl)
         } else {
