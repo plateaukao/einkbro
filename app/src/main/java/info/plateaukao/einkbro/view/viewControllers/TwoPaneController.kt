@@ -171,9 +171,9 @@ class TwoPaneController(
         webView.loadUrl(url)
     }
 
-    fun showSecondPaneAsAi(webContent: String) {
+    fun showSecondPaneAsAi(webContent: String, webTitle: String, webUrl: String) {
         showSecondPane()
-        webView.setupAiPage(lifecycleScope, webContent)
+        webView.setupAiPage(lifecycleScope, webContent, webTitle, webUrl)
         translationViewBinding.controlsContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             bottomMargin = 55.dp(activity)
         }
