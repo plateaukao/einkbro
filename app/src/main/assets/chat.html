@@ -611,7 +611,6 @@
     // Save sessions to localStorage
     function saveSessions() {
         try {
-            // Save current session messages
             if (currentSessionId && sessions[currentSessionId]) {
                 sessions[currentSessionId].messages = [...currentMessages];
                 sessions[currentSessionId].lastUpdated = Date.now();
@@ -670,7 +669,13 @@
         
         // Save current session before switching
         if (currentSessionId && sessions[currentSessionId]) {
-            sessions[currentSessionId].messages = [...currentMessages];
+            if (currentMessages.length > 0) {
+                //sessions[currentSessionId].lastUpdated = Date.now();
+                sessions[currentSessionId].messages = [...currentMessages];
+            } else {
+                // If no messages, delete the session from sessions
+                delete sessions[currentSessionId];
+            }
         }
         
         currentSessionId = sessionId;
@@ -711,11 +716,16 @@
         
         delete sessions[sessionId];
         
-        // If we deleted the current session, create a new one
-        if (currentSessionId === sessionId) {
+        // If we deleted the current session, load first session in sessions; if empty, create a new one
+        const sessionIds = Object.keys(sessions);
+        if (sessionIds.length === 0) {
+            currentSessionId = null;
+            currentMessages = [];
             createNewSession();
+        } else {
+            currentSessionId = sessionIds[0];
+            loadSession(currentSessionId);
         }
-        
         updateSessionPanel();
         saveSessions();
     }
