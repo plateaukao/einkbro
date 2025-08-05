@@ -17,6 +17,8 @@ class ChatWebInterface(
     val lifecycleScope: LifecycleCoroutineScope,
     webView: WebView, // Made private as JsHelper will use it
     private var webContent: String,
+    private var webTitle: String,
+    private var webUrl: String,
 ) : KoinComponent {
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
@@ -35,8 +37,31 @@ class ChatWebInterface(
         }
     }
 
-    fun updateWebContent(newWebContent: String) {
+    @JavascriptInterface
+    fun getWebMetadata(): String {
+        // Return web metadata as JSON string for JavaScript to use
+        return """{"title": "${escapeJsonString(webTitle)}", "url": "${escapeJsonString(webUrl)}"}"""
+    }
+
+    @JavascriptInterface
+    fun openUrlInNewTab(url: String) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            jsHelper.openUrlInNewTab(url)
+        }
+    }
+
+    private fun escapeJsonString(str: String): String {
+        return str.replace("\\", "\\\\")
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+            .replace("\t", "\\t")
+    }
+
+    fun updateWebContent(newWebContent: String, newWebTitle: String = webTitle, newWebUrl: String = webUrl) {
         this.webContent = newWebContent
+        this.webTitle = newWebTitle
+        this.webUrl = newWebUrl
         // No direct manipulation of chatHistory needed here for web content updates.
         // The latest webContent will be used when constructing messages for the API.
     }
@@ -132,6 +157,13 @@ class JsHelper(
                 "javascript:receiveMessageFromAndroid('${escapeJsString(errorMessage)}', true, true)",
                 null
             )
+        }
+    }
+
+    fun openUrlInNewTab(url: String) {
+        // Use WebView to open URL in the same browser (new tab functionality would be handled by BrowserController)
+        lifecycleScope.launch(Dispatchers.Main) {
+            webView.loadUrl(url)
         }
     }
 

@@ -409,10 +409,13 @@ open class EBWebView(
     private var chatWebInterface: ChatWebInterface? = null
     fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String) {
         isAIPage = true
+        val webTitle = albumTitle.takeIf { it.isNotBlank() } ?: "Untitled Page"
+        val webUrl = albumUrl.takeIf { it.isNotBlank() } ?: ""
+        
         if (chatWebInterface == null) {
-            chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent)
+            chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent, webTitle, webUrl)
         } else {
-            chatWebInterface?.updateWebContent(webContent)
+            chatWebInterface?.updateWebContent(webContent, webTitle, webUrl)
         }
 
         addJavascriptInterface(chatWebInterface!!, "AndroidInterface")
