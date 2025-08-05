@@ -97,9 +97,9 @@
             align-items: center;
             justify-content: center;
         }
-        #new-session-button {
+        #input-history-button {
             flex-shrink: 0;
-            background-color: #FF9800;
+            background-color: #9C27B0;
             color: white;
             border: none;
             border-radius: 50%;
@@ -111,7 +111,7 @@
             align-items: center;
             justify-content: center;
         }
-        #send-button:active, #history-button:active, #new-session-button:active {
+        #send-button:active, #history-button:active, #input-history-button:active {
             opacity: 0.8;
         }
         /* Icons styling */
@@ -266,6 +266,23 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        .session-web-info {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .web-icon {
+            font-size: 10px;
+        }
+        .web-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
         .session-actions {
             display: none;
             margin-top: 8px;
@@ -303,6 +320,61 @@
                 left: 0;
             }
         }
+        /* Input history popup styles */
+        .input-history-popup {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            left: 10px;
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .input-history-header {
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .input-history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .input-history-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            line-height: 1.4;
+            transition: background-color 0.2s;
+        }
+        .input-history-item:hover {
+            background-color: #f5f5f5;
+        }
+        .input-history-item:last-child {
+            border-bottom: none;
+        }
+        .input-history-empty {
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            font-style: italic;
+        }
+        .close-input-history {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -316,9 +388,9 @@
     </div>
     <div class="input-area">
         <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
-        <button id="new-session-button">
+        <button id="input-history-button">
             <svg class="icon" viewBox="0 0 24 24">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                <path d="M13,3A9,9 0 0,0 4,12H1L4.89,15.89L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z"/>
             </svg>
         </button>
         <button id="history-button">
@@ -348,6 +420,17 @@
     </div>
 </div>
 
+<!-- Input History Popup -->
+<div class="input-history-popup" id="input-history-popup">
+    <div class="input-history-header">
+        <span>Input History</span>
+        <button class="close-input-history" id="close-input-history">&times;</button>
+    </div>
+    <ul class="input-history-list" id="input-history-list">
+        <!-- Input history items will be inserted here -->
+    </ul>
+</div>
+
 <!-- Include marked.js for Markdown parsing -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
 
@@ -356,13 +439,16 @@
     const chatMessages = document.getElementById('chat-messages');
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
-    const newSessionButton = document.getElementById('new-session-button');
+    const inputHistoryButton = document.getElementById('input-history-button');
     const typingIndicator = document.getElementById('typing-indicator');
     const historyButton = document.getElementById('history-button');
     const sessionPanel = document.getElementById('session-panel');
     const sessionsContainer = document.getElementById('sessions-container');
     const closePanel = document.getElementById('close-panel');
     const clearAllBtn = document.getElementById('clear-all-btn');
+    const inputHistoryPopup = document.getElementById('input-history-popup');
+    const inputHistoryList = document.getElementById('input-history-list');
+    const closeInputHistory = document.getElementById('close-input-history');
 
     // Track current message element for streaming
     let currentStreamMessageElement = null;
@@ -371,28 +457,145 @@
     // Session management
     const SESSIONS_KEY = 'chatSessions';
     const CURRENT_SESSION_KEY = 'currentSessionId';
+    const INPUT_HISTORY_KEY = 'chatInputHistory';
     const MAX_SESSIONS = 50;
+    const MAX_INPUT_HISTORY = 8;
     
     // Current session state
     let currentSessionId = null;
     let sessions = {};
     let currentMessages = [];
+    let webMetadata = { title: '', url: '' };
+    let inputHistory = [];
+
+    // Input history management
+    function loadInputHistory() {
+        try {
+            const savedHistory = localStorage.getItem(INPUT_HISTORY_KEY);
+            if (savedHistory) {
+                inputHistory = JSON.parse(savedHistory);
+            }
+        } catch (error) {
+            console.warn('Failed to load input history:', error);
+            inputHistory = [];
+        }
+    }
+
+    function saveInputHistory() {
+        try {
+            localStorage.setItem(INPUT_HISTORY_KEY, JSON.stringify(inputHistory));
+        } catch (error) {
+            console.warn('Failed to save input history:', error);
+        }
+    }
+
+    function addToInputHistory(input) {
+        if (!input || input.trim() === '') return;
+        
+        const trimmedInput = input.trim();
+        
+        // Remove existing instance of this input
+        inputHistory = inputHistory.filter(item => item !== trimmedInput);
+        
+        // Add to beginning of array
+        inputHistory.unshift(trimmedInput);
+        
+        // Keep only the last MAX_INPUT_HISTORY items
+        if (inputHistory.length > MAX_INPUT_HISTORY) {
+            inputHistory = inputHistory.slice(0, MAX_INPUT_HISTORY);
+        }
+        
+        saveInputHistory();
+    }
+
+    function showInputHistoryPopup() {
+        try {
+            populateInputHistoryList();
+            inputHistoryPopup.style.display = 'block';
+        } catch (error) {
+            console.error('Error showing input history popup:', error);
+        }
+    }
+
+    function hideInputHistoryPopup() {
+        try {
+            inputHistoryPopup.style.display = 'none';
+        } catch (error) {
+            console.error('Error hiding input history popup:', error);
+        }
+    }
+
+    function populateInputHistoryList() {
+        try {
+            inputHistoryList.innerHTML = '';
+            
+            if (inputHistory.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'input-history-empty';
+                emptyDiv.textContent = 'No input history yet';
+                inputHistoryList.appendChild(emptyDiv);
+                return;
+            }
+            
+            inputHistory.forEach(input => {
+                const li = document.createElement('li');
+                li.className = 'input-history-item';
+                li.textContent = input;
+                li.addEventListener('click', function() {
+                    messageInput.value = input;
+                    hideInputHistoryPopup();
+                    messageInput.focus();
+                });
+                inputHistoryList.appendChild(li);
+            });
+        } catch (error) {
+            console.error('Error populating input history list:', error);
+        }
+    }
+
+    // Function to get web metadata with retry
+    function getWebMetadata(callback) {
+        function tryGetMetadata(attempts = 0) {
+            if (window.AndroidInterface && typeof window.AndroidInterface.getWebMetadata === 'function') {
+                try {
+                    const metadataJson = window.AndroidInterface.getWebMetadata();
+                    const metadata = JSON.parse(metadataJson);
+                    console.log('Web metadata loaded:', metadata);
+                    webMetadata = metadata;
+                    callback(metadata);
+                    return;
+                } catch (e) {
+                    console.warn('Failed to get web metadata, attempt', attempts + 1, ':', e);
+                }
+            }
+            
+            if (attempts < 5) {
+                setTimeout(() => tryGetMetadata(attempts + 1), 100);
+            } else {
+                console.warn('Failed to get web metadata after 5 attempts');
+                callback({ title: '', url: '' });
+            }
+        }
+        
+        tryGetMetadata();
+    }
 
     // Initialize sessions from localStorage
     function initializeSessions() {
         try {
+            // Load existing sessions and input history
             const savedSessions = localStorage.getItem(SESSIONS_KEY);
             if (savedSessions) {
                 sessions = JSON.parse(savedSessions);
             }
             
-            const savedCurrentSession = localStorage.getItem(CURRENT_SESSION_KEY);
-            if (savedCurrentSession && sessions[savedCurrentSession]) {
-                currentSessionId = savedCurrentSession;
-                loadSession(currentSessionId);
-            } else {
+            loadInputHistory();
+            
+            // Get web metadata and then create new session
+            getWebMetadata((metadata) => {
+                webMetadata = metadata;
                 createNewSession();
-            }
+            });
         } catch (error) {
             console.warn('Failed to load sessions from localStorage:', error);
             createNewSession();
@@ -427,13 +630,22 @@
     function createNewSession() {
         const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
         
+        // Use web metadata for the session title if available, otherwise use 'New Chat'
+        const sessionTitle = (webMetadata.title && webMetadata.title.trim() !== '') 
+            ? webMetadata.title 
+            : 'New Chat';
+        
         sessions[sessionId] = {
             id: sessionId,
-            title: 'New Chat',
+            title: sessionTitle,
             created: Date.now(),
             lastUpdated: Date.now(),
-            messages: []
+            messages: [],
+            webTitle: webMetadata.title || '',
+            webUrl: webMetadata.url || ''
         };
+        
+        console.log('Created new session:', sessions[sessionId]);
         
         // Clean up old sessions if we have too many
         const sessionIds = Object.keys(sessions);
@@ -529,8 +741,11 @@
         
         currentMessages.push(message);
         
-        // Update session title if this is the first user message
-        if (isUser && sessions[currentSessionId] && sessions[currentSessionId].title === 'New Chat') {
+        // Update session title if this is the first user message and we only have 'New Chat' as title
+        // Don't override if we already have a web title
+        if (isUser && sessions[currentSessionId] && 
+            sessions[currentSessionId].title === 'New Chat' && 
+            !sessions[currentSessionId].webTitle) {
             sessions[currentSessionId].title = generateSessionTitle(content);
             updateSessionPanel();
         }
@@ -577,16 +792,38 @@
                 
                 const lastUpdated = new Date(session.lastUpdated).toLocaleDateString();
                 const messageCount = session.messages.length;
+                const hasWebUrl = session.webUrl && session.webUrl.trim() !== '';
                 
-                sessionDiv.innerHTML = `
+                console.log(`Session ${sessionId}: webUrl="${session.webUrl}", webTitle="${session.webTitle}", hasWebUrl=${hasWebUrl}`);
+                
+                let sessionHtml = `
                     <div class="session-title">${session.title}</div>
-                    <div class="session-meta">${lastUpdated} • ${messageCount} messages</div>
+                    <div class="session-meta">${lastUpdated} • ${messageCount} messages</div>`;
+                
+                if (hasWebUrl) {
+                    sessionHtml += `
+                        <div class="session-web-info">
+                            <span class="web-icon">🔗</span>
+                            <span class="web-title">${session.webTitle || 'Web Page'}</span>
+                        </div>`;
+                }
+                
+                sessionHtml += `
                     <div class="session-preview">${preview}</div>
                     <div class="session-actions">
-                        <button class="session-action-btn" onclick="switchToSession('${sessionId}'); hideSessionPanel();">Load</button>
+                        <button class="session-action-btn" onclick="switchToSession('${sessionId}'); hideSessionPanel();">Load</button>`;
+                
+                if (hasWebUrl) {
+                    sessionHtml += `
+                        <button class="session-action-btn" onclick="openOriginalUrl('${escapeHtml(session.webUrl)}')">Open URL</button>`;
+                }
+                
+                sessionHtml += `
                         <button class="session-action-btn delete" onclick="deleteSession('${sessionId}')">Delete</button>
                     </div>
                 `;
+                
+                sessionDiv.innerHTML = sessionHtml;
                 
                 // Add click event to load session
                 sessionDiv.addEventListener('click', function(e) {
@@ -780,6 +1017,9 @@
         // Add user message to chat (this will also save to session)
         addMessage(message, true);
 
+        // Add to input history
+        addToInputHistory(message);
+
         // Show typing indicator
         showTypingIndicator();
 
@@ -809,10 +1049,10 @@
         }
     });
 
-    // New session button event listener
-    newSessionButton.addEventListener('click', function(e) {
+    // Input history button event listener
+    inputHistoryButton.addEventListener('click', function(e) {
         e.stopPropagation();
-        createNewSession();
+        showInputHistoryPopup();
     });
 
     // History button event listener
@@ -833,6 +1073,12 @@
         clearAllSessions();
     });
 
+    // Input history close button event listener
+    closeInputHistory.addEventListener('click', function(e) {
+        e.stopPropagation();
+        hideInputHistoryPopup();
+    });
+
     // Close panel when clicking outside
     document.addEventListener('click', function(e) {
         if (sessionPanel.style.display === 'flex' &&
@@ -840,12 +1086,39 @@
             e.target !== historyButton) {
             hideSessionPanel();
         }
+        
+        if (inputHistoryPopup.style.display === 'block' &&
+            !inputHistoryPopup.contains(e.target) &&
+            e.target !== inputHistoryButton) {
+            hideInputHistoryPopup();
+        }
     });
+
+    // Function to escape HTML for safe insertion
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // Function to open original URL
+    function openOriginalUrl(url) {
+        if (window.AndroidInterface && typeof window.AndroidInterface.openUrlInNewTab === 'function') {
+            window.AndroidInterface.openUrlInNewTab(url);
+        } else {
+            // Fallback - try to open in current window
+            window.open(url, '_blank');
+        }
+    }
 
     // Make functions available globally for HTML onclick handlers
     window.switchToSession = switchToSession;
     window.deleteSession = deleteSession;
     window.hideSessionPanel = hideSessionPanel;
+    window.openOriginalUrl = openOriginalUrl;
 
     // Initial setup - initialize sessions and focus on input
     initializeSessions();
