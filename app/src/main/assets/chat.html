@@ -613,7 +613,6 @@
         try {
             if (currentSessionId && sessions[currentSessionId]) {
                 sessions[currentSessionId].messages = [...currentMessages];
-                sessions[currentSessionId].lastUpdated = Date.now();
             }
             
             localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
@@ -670,7 +669,6 @@
         // Save current session before switching
         if (currentSessionId && sessions[currentSessionId]) {
             if (currentMessages.length > 0) {
-                //sessions[currentSessionId].lastUpdated = Date.now();
                 sessions[currentSessionId].messages = [...currentMessages];
             } else {
                 // If no messages, delete the session from sessions
