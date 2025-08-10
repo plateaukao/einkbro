@@ -365,7 +365,12 @@ data class ChatRequest(
     val model: String,
     val messages: List<ChatMessage>,
     val stream: Boolean = false,
-    val temperature: Double = 0.5,
+    val reasoning: Reasoning = Reasoning(),
+)
+
+@Serializable
+data class Reasoning(
+    val effort: String = "minimal",
 )
 
 @Serializable
