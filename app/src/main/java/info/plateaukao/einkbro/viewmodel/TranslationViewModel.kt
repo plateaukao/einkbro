@@ -370,10 +370,6 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     responseString = it
                 } else {
                     responseString += it
-                    if (responseString.length < 20) {
-                        // to remove think tags from qwen3
-                        responseString = responseString.replace("<think>\n\n</think>\n\n", "")
-                    }
                 }
                 toBeSavedResponseString = responseString.unescape()
                 _responseMessage.value = HelperUnit.parseMarkdown(toBeSavedResponseString)
