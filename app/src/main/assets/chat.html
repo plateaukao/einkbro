@@ -355,9 +355,33 @@
             cursor: pointer;
             line-height: 1.4;
             transition: background-color 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .input-history-item:hover {
             background-color: #f5f5f5;
+        }
+        .input-history-text {
+            flex: 1;
+        }
+        .input-arrow-btn {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            margin-left: 10px;
+        }
+        .input-arrow-btn:hover {
+            background-color: #e0e0e0;
+        }
+        .arrow-icon {
+            width: 16px;
+            height: 16px;
+            fill: #666;
         }
         .input-history-item:last-child {
             border-bottom: none;
@@ -388,19 +412,19 @@
     </div>
     <div class="input-area">
         <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+        <button id="send-button">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
         <button id="input-history-button">
             <svg class="icon" viewBox="0 0 24 24">
-                <path d="M13,3A9,9 0 0,0 4,12H1L4.89,15.89L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z"/>
+                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11.5,7H12.5V13L16.5,15.5L17.5,14.08L13.5,11.5V7H11.5Z"/>
             </svg>
         </button>
         <button id="history-button">
             <svg class="icon" viewBox="0 0 24 24">
                 <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-            </svg>
-        </button>
-        <button id="send-button">
-            <svg class="icon" viewBox="0 0 24 24">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
             </svg>
         </button>
     </div>
@@ -410,9 +434,11 @@
 <div class="session-panel" id="session-panel">
     <div class="panel-header">
         <span class="panel-title">Chat Sessions</span>
+        <!-- keep buttons spacing larger -->
         <div class="panel-controls">
             <button class="control-btn" id="clear-all-btn">Clear All</button>
-            <button class="close-panel" id="close-panel">&times;</button>
+            <div></div>
+            <button class="close-panel" id="close-panel">&nbsp;&times;&nbsp;</button>
         </div>
     </div>
     <div class="sessions-container" id="sessions-container">
@@ -540,12 +566,38 @@
             inputHistory.forEach(input => {
                 const li = document.createElement('li');
                 li.className = 'input-history-item';
-                li.textContent = input;
-                li.addEventListener('click', function() {
+                
+                const textSpan = document.createElement('span');
+                textSpan.className = 'input-history-text';
+                textSpan.textContent = input;
+                
+                const arrowBtn = document.createElement('button');
+                arrowBtn.className = 'input-arrow-btn';
+                arrowBtn.innerHTML = `
+                    <svg class="arrow-icon" viewBox="0 0 24 24">
+                        <path d="M12 16l-4-4h3V4h2v8h3l-4 4z"/>
+                    </svg>
+                `;
+
+                // Arrow button click - fill input without keyboard
+                arrowBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     messageInput.value = input;
                     hideInputHistoryPopup();
-                    messageInput.focus();
+                    // Don't focus to avoid keyboard popup
                 });
+                
+                // Main item click - send message directly
+                li.addEventListener('click', function(e) {
+                    if (e.target === arrowBtn || arrowBtn.contains(e.target)) {
+                        return; // Let arrow button handle its own click
+                    }
+                    sendMessageToAndroid(input);
+                    hideInputHistoryPopup();
+                });
+                
+                li.appendChild(textSpan);
+                li.appendChild(arrowBtn);
                 inputHistoryList.appendChild(li);
             });
         } catch (error) {
