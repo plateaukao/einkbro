@@ -7,6 +7,7 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.ChatMessage
 import info.plateaukao.einkbro.service.OpenAiRepository
+import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -161,9 +162,9 @@ class JsHelper(
     }
 
     fun openUrlInNewTab(url: String) {
-        // Use WebView to open URL in the same browser (new tab functionality would be handled by BrowserController)
         lifecycleScope.launch(Dispatchers.Main) {
-            webView.loadUrl(url)
+            // Use WebView to open URL in the same browser (new tab functionality would be handled by BrowserController)
+            (webView as? EBWebView)?.browserController?.addNewTab(url)
         }
     }
 

@@ -757,7 +757,7 @@
             chatMessages.appendChild(messageDiv);
         });
         
-        scrollToBottom();
+        //scrollToBottom();
     }
 
     // Delete session
@@ -870,9 +870,8 @@
                 
                 sessionHtml += `
                     <div class="session-preview">${preview}</div>
-                    <div class="session-actions">
-                        <button class="session-action-btn" onclick="switchToSession('${sessionId}'); hideSessionPanel();">Load</button>`;
-                
+                    <div class="session-actions">`;
+
                 if (hasWebUrl) {
                     sessionHtml += `
                         <button class="session-action-btn" onclick="openOriginalUrl('${escapeHtml(session.webUrl)}')">Open URL</button>`;
@@ -1172,6 +1171,7 @@
             // Fallback - try to open in current window
             window.open(url, '_blank');
         }
+        hideSessionPanel();
     }
 
     // Make functions available globally for HTML onclick handlers
