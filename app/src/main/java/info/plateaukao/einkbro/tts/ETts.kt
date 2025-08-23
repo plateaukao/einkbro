@@ -10,6 +10,8 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Arrays
 import java.util.Date
@@ -27,7 +29,7 @@ class ETts {
         put("Cache-Control", "no-cache")
         put(
             "User-Agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.3485.14 Safari/537.36 Edg/99.0.1150.55"
         )
     }
     private val storage = EinkBroApplication.instance.cacheDir.absolutePath
@@ -61,10 +63,13 @@ class ETts {
                 if (speed < 100) "${speed - 100}%" else "+${speed - 100}%",
                 "+0%"
             )
+
             val ssmlHeadersPlusData = ssmlHeadersPlusData(reqId, dateStr, ssml)
 
+            val secMsGEC = generateSecMsGec()
+
             val request = Request.Builder()
-                .url("wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4")
+                .url("$TTS_URL&Sec-MS-GEC=$secMsGEC&Sec-MS-GEC-Version=1-130.0.2849.68&ConnectionId=$reqId")
                 .headers(headers.toHeaders())
                 .build()
 
@@ -97,6 +102,18 @@ class ETts {
                 }
             }
         }
+
+    private fun generateSecMsGec(): String {
+        val ticks = System.currentTimeMillis() / 1000 + 11644473600L
+        val rounded = ticks - (ticks % 300)
+        val windowsTicks = rounded * 10000000L
+        val data = "$windowsTicks$TRUSTED_CLIENT_TOKEN"
+
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(data.toByteArray(StandardCharsets.UTF_8))
+
+        return hashBytes.joinToString("", transform = "%02X"::format)
+    }
 
     private fun dateToString(date: Date): String {
         val sdf = SimpleDateFormat(
@@ -155,8 +172,11 @@ class ETts {
 
     companion object {
         private const val FORMAT = "audio-24khz-48kbitrate-mono-mp3"
+        private const val TRUSTED_CLIENT_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+        private const val TTS_URL =
+            "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=$TRUSTED_CLIENT_TOKEN"
         private const val VOICES_LIST_URL =
-            "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/voices/list?trustedclienttoken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+            "https://api.msedgeservices.com/tts/cognitiveservices/voices/list?TrustedClientToken=$TRUSTED_CLIENT_TOKEN"
     }
 }
 
