@@ -801,6 +801,8 @@ class ConfigManager(
             }
         }
 
+    var remoteQueryActionName by StringPreference(sp, K_REMOTE_QUERY_ACTION_NAME, "Search")
+
     fun addGptAction(action: ChatGPTActionInfo) {
         gptActionList = gptActionList.toMutableList().apply { add(action) }
     }
@@ -1015,6 +1017,8 @@ class ConfigManager(
         private const val K_GPT_SERVER_URL = "sp_gpt_server_url"
         private const val K_USE_CUSTOM_GPT_URL = "sp_use_custom_gpt_url"
         private const val K_USE_GEMINI_API = "sp_use_gemini_api"
+
+        private const val K_REMOTE_QUERY_ACTION_NAME = "sp_remote_query_action_name"
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =

@@ -217,6 +217,18 @@ class DialogManager(
             defaultValue
         ).show()
 
+    suspend fun getSelectedOptionWithString(
+        titleId: Int,
+        listSettings: List<String>,
+        defaultValue: Int,
+    ): Int? =
+        ListSettingWithNameDialog(
+            activity,
+            titleId,
+            listSettings,
+            defaultValue
+        ).show()
+
     fun showBookmarkFilePicker() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)

@@ -38,22 +38,27 @@ object ShareUtil : KoinComponent {
     fun startBroadcastingUrl(
         lifecycleCoroutineScope: CoroutineScope,
         url: String,
-        times: Int = 999
+        times: Int = 3
     ) {
-        if (broadcastJob != null && socket?.isConnected == true) {
-            bytesToBeSent = url.toByteArray()
-        } else {
-            broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
-                try {
-                    socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
-                    bytesToBeSent = url.toByteArray()
-                    repeat(times) {
-                        socket?.send(DatagramPacket(bytesToBeSent, bytesToBeSent.size, group, multicastPort))
-                        delay(broadcastIntervalInMilli) // 1 second
-                    }
-                } catch (exception: Exception) {
-                    exception.printStackTrace()
+        if (socket == null || socket?.isClosed == true) {
+            socket?.leaveGroup(group)
+            socket?.close()
+            socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
+        }
+
+        if (broadcastJob != null) {
+            broadcastJob?.cancel()
+        }
+
+        broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
+            try {
+                bytesToBeSent = url.toByteArray()
+                repeat(times) {
+                    socket?.send(DatagramPacket(bytesToBeSent, bytesToBeSent.size, group, multicastPort))
+                    delay(broadcastIntervalInMilli) // 1 second
                 }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
         }
     }
@@ -71,6 +76,7 @@ object ShareUtil : KoinComponent {
         receivedAction: (String) -> Unit
     ) {
         var receivedString = ""
+        var lastReceivedTime = System.currentTimeMillis()
         val receiveData = ByteArray(4096)
         val receivePacket = DatagramPacket(receiveData, receiveData.size)
 
@@ -86,11 +92,17 @@ object ShareUtil : KoinComponent {
                 } catch (exception: SocketException) {
                     return@launch
                 }
+
                 val newString = String(receivePacket.data, 0, receivePacket.length)
+                if (newString == receivedString && System.currentTimeMillis() - lastReceivedTime < 5_000L) {
+                    continue // Ignore duplicate messages within the interval
+                }
+
+                lastReceivedTime = System.currentTimeMillis()
                 if (receivedString != newString) {
                     receivedString = newString
 
-                    val processedString = if (receivedString.startsWith("http")) {
+                    val processedString = if (receivedString.startsWith("http") || receivedString.startsWith("action")) {
                         receivedString // EinkBro case
                     } else {
                         convertSharikResponse(receivePacket.address.toString(), receivedString)
@@ -99,6 +111,8 @@ object ShareUtil : KoinComponent {
                         receivedAction(processedString)
                     }
                 }
+
+                delay(300L)
             }
         }
     }

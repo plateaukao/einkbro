@@ -12,6 +12,7 @@ data class ChatGPTActionInfo (
     val display: GptActionDisplay = GptActionDisplay.Popup,
 )
 
+@Serializable
 enum class GptActionType {
     Default,
     OpenAi,
@@ -19,6 +20,7 @@ enum class GptActionType {
     Gemini
 }
 
+@Serializable
 enum class GptActionDisplay {
     Popup,
     NewTab,

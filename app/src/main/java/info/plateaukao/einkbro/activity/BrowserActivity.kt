@@ -168,6 +168,7 @@ import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import java.io.File
 import java.util.Locale
@@ -865,12 +866,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun showTranslationDialog() {
+        supportFragmentManager.findFragmentByTag("translateDialog")?.let {
+            supportFragmentManager.beginTransaction().remove(it).commitAllowingStateLoss()
+        }
         TranslateDialogFragment(
             translationViewModel,
             externalSearchWebView,
             actionModeMenuViewModel.clickedPoint.value,
         )
-            .show(supportFragmentManager, "contextMenu")
+            .show(supportFragmentManager, "translateDialog")
     }
 
     override fun invertColors() {
@@ -907,7 +911,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (remoteConnViewModel.isReceivingLink) {
             remoteConnViewModel.toggleReceiveLink {}
         } else {
-            remoteConnViewModel.toggleReceiveLink { ebWebView.loadUrl(it) }
+            remoteConnViewModel.toggleReceiveLink {
+                if (it.startsWith("action")) {
+                    val (_, content, actionString) = it.split("|||")
+                    val action = Json.decodeFromString<ChatGPTActionInfo>(actionString)
+                    if (action.display == GptActionDisplay.Popup) {
+                        translationViewModel.setupGptAction(action)
+                        translationViewModel.updateMessageWithContext(content)
+                        translationViewModel.updateInputMessage(content)
+                        showTranslationDialog()
+                    } else {
+                        chatWithWeb(false, content, action)
+                    }
+                } else {
+                    ebWebView.loadUrl(it)
+                }
+            }
         }
     }
 
@@ -2643,6 +2662,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         else -> ebWebView
     }
 
+    private val json = Json {
+        // Configure JSON serializer
+        ignoreUnknownKeys = true
+        encodeDefaults = false // Don't encode default values to reduce size
+        isLenient = true
+    }
+
     // - action mode handling
     override fun onActionModeStarted(mode: ActionMode) {
         val isTextEditMode = ViewUnit.isTextEditMode(this, mode.menu)
@@ -2655,7 +2681,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             lifecycleScope.launch {
                 val keyword = getFocusedWebView().getSelectedText()
-                remoteConnViewModel.sendTextSearch(externalSearchViewModel.generateSearchUrl(keyword))
+                val keywordWithContext = getFocusedWebView().getSelectedTextWithContext()
+                val action = config.gptActionList.firstOrNull { it.name == config.remoteQueryActionName }
+                val constructedUrlString =
+                    if (action != null) {
+                        val actionString = json.encodeToString(serializer = ChatGPTActionInfo.serializer(), action)
+                        "action|||$keywordWithContext|||$actionString"
+                    } else {
+                        externalSearchViewModel.generateSearchUrl(keyword)
+                    }
+                remoteConnViewModel.sendTextSearch(constructedUrlString)
             }
             return
         }

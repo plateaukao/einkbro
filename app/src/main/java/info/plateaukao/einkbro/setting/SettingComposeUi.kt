@@ -261,7 +261,7 @@ fun <T : Enum<T>> ListSettingItemUi(
 
 @Composable
 fun ListSettingWithStringItemUi(
-    setting: ListSettingWithStringItem,
+    setting: ListSettingWithStrResIdItem,
     dialogManager: DialogManager,
     showBorder: Boolean = false,
 ) {
@@ -283,6 +283,33 @@ fun ListSettingWithStringItemUi(
             ) ?: return@launch
             setting.config.set(selectedIndex.toString())
             currentValueString.value = context.getString(setting.options[selectedIndex])
+        }
+    }
+}
+
+@Composable
+fun <T> ListSettingWithClassItemUi(
+    setting: ListSettingWithClassItem<T>,
+    dialogManager: DialogManager,
+    showBorder: Boolean = false,
+) {
+    val configString = setting.config.get()
+    var currentValueString = remember { mutableStateOf(configString) }
+    val coroutineScope = rememberCoroutineScope()
+    SettingItemUi(
+        setting = setting,
+        extraTitlePostfix = ": ${currentValueString.value}",
+        showBorder = showBorder,
+    ) {
+        coroutineScope.launch {
+            val selectedIndex = dialogManager.getSelectedOptionWithString(
+                setting.titleResId,
+                setting.options,
+                setting.options.indexOf(configString)
+            ) ?: return@launch
+            val selectedValue = setting.options[selectedIndex]
+            setting.config.set(selectedValue)
+            currentValueString.value = selectedValue
         }
     }
 }
@@ -336,7 +363,13 @@ fun SettingScreen(
                         showBorder
                     )
 
-                    is ListSettingWithStringItem -> ListSettingWithStringItemUi(
+                    is ListSettingWithStrResIdItem -> ListSettingWithStringItemUi(
+                        setting,
+                        dialogManager,
+                        showBorder
+                    )
+
+                    is ListSettingWithClassItem<*> -> ListSettingWithClassItemUi(
                         setting,
                         dialogManager,
                         showBorder
