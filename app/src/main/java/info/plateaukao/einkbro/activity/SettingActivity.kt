@@ -52,6 +52,7 @@ import info.plateaukao.einkbro.activity.SettingRoute.Toolbar
 import info.plateaukao.einkbro.activity.SettingRoute.Ui
 import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationTextStyle
@@ -59,8 +60,9 @@ import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
 import info.plateaukao.einkbro.setting.LinkSettingItem
+import info.plateaukao.einkbro.setting.ListSettingWithClassItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
-import info.plateaukao.einkbro.setting.ListSettingWithStringItem
+import info.plateaukao.einkbro.setting.ListSettingWithStrResIdItem
 import info.plateaukao.einkbro.setting.NavigateSettingItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.SettingScreen
@@ -684,7 +686,7 @@ class SettingActivity : FragmentActivity() {
     )
 
     private val searchSettingItems = listOf(
-        ListSettingWithStringItem(
+        ListSettingWithStrResIdItem(
             R.string.setting_title_search_engine,
             0,
             config = config::searchEngine,
@@ -734,6 +736,13 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_search_in_same_tab,
             config::isExternalSearchInSameTab,
+        ),
+        DividerSettingItem(),
+        ListSettingWithClassItem<ChatGPTActionInfo>(
+            R.string.setting_title_remote_query,
+            0,
+            config = config::remoteQueryActionName,
+            options = listOf("Search") +  config.gptActionList.map { it.name }
         ),
     )
 

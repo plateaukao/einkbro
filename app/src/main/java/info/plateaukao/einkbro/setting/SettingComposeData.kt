@@ -36,12 +36,21 @@ class ListSettingWithEnumItem<T : Enum<T>>(
     override val span: Int = 1,
 ) : SettingItemInterface
 
-class ListSettingWithStringItem(
+class ListSettingWithStrResIdItem(
     override val titleResId: Int,
     override val iconId: Int = 0,
     override val summaryResId: Int = 0,
     var config: KMutableProperty0<String>,
     val options: List<Int>,
+    override val span: Int = 1,
+) : SettingItemInterface
+
+class ListSettingWithClassItem<T>(
+    override val titleResId: Int,
+    override val iconId: Int = 0,
+    override val summaryResId: Int = 0,
+    var config: KMutableProperty0<String>,
+    val options: List<String>,
     override val span: Int = 1,
 ) : SettingItemInterface
 
