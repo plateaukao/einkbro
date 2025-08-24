@@ -172,6 +172,10 @@ class EBWebViewClient(
             }
         }
         if (url.startsWith("intent:")) {
+            // prevent google map intent from opening google map app directly. Use browser instead!
+            if (url.startsWith("intent://www.google.com/maps")) {
+                return true
+            }
             try {
                 val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
                 if (intent.resolveActivity(context.packageManager) != null || intent.data?.scheme == "market") {
