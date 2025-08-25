@@ -447,7 +447,7 @@ fun MenuItem(
     Column(
         modifier = Modifier
             .width(width)
-            .height(if (isLargeType) 80.dp else 70.dp)
+            .height(if (!showIcon) 50.dp else if (isLargeType) 80.dp else 70.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .combinedClickable(
                 interactionSource = interactionSource,
@@ -486,7 +486,7 @@ fun MenuItem(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .offset(y = if (showIcon) (-5).dp else 10.dp),
+                    .offset(y = if (showIcon) (-5).dp else 0.dp),
                 text = stringResource(id = titleResId),
                 textAlign = TextAlign.Center,
                 maxLines = 2,
