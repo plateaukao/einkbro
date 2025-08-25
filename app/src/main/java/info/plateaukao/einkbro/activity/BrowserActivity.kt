@@ -818,8 +818,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun summarizeLinkContent(url: String) {
         if (translationViewModel.hasOpenAiApiKey()) {
-                translationViewModel.url = url
-                linkContentWebView.loadUrl(url)
+            translationViewModel.url = url
+            linkContentWebView.loadUrl(url)
         }
     }
 
@@ -1951,7 +1951,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 webView.initAlbumUrl = url
             }
         } else {
-            showToolbar()
             showAlbum(webView)
             if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
                 webView.loadUrl(url)
