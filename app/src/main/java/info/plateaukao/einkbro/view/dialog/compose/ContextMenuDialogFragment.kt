@@ -194,6 +194,6 @@ enum class ContextMenuItemType {
 @Composable
 fun PreviewContextMenuItems() {
     MyTheme {
-        ContextMenuItems("abc") { }
+        ContextMenuItems("abc", showIcons = false) { }
     }
 }
