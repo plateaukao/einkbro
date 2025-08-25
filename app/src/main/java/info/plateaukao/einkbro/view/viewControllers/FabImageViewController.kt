@@ -130,10 +130,11 @@ class FabImageViewController(
                 textView.scaleX = 2.0f
                 textView.scaleY = 2.0f
                 textView.setOnTouchListener { view, event -> customOnTouch(view, event) }
+                false
             } else {
                 longClickAction()
+                true
             }
-            false
         }
     }
 

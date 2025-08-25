@@ -1755,7 +1755,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             orientation,
             findViewById(R.id.fab_imageButtonNav),
             this::showToolbar,
-            this::showFastToggleDialog
+            longClickAction = {
+                if (config.enableNavButtonGesture) {
+                    gestureHandler.handle(config.navButtonLongClickGesture)
+                } else {
+                    showFastToggleDialog()
+                }
+            }
         )
     }
 
@@ -1838,6 +1844,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initSearchPanel() {
         with(binding.mainSearchPanel) {
+            visibility = INVISIBLE
             onTextChanged = { (currentAlbumController as EBWebView?)?.findAllAsync(it) }
             onCloseClick = { hideSearchPanel() }
             onUpClick = { searchUp(it) }
@@ -2777,3 +2784,4 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         const val ACTION_READ_ALOUD = "action_read_aloud"
     }
 }
+

@@ -267,6 +267,11 @@ class ConfigManager(
     var navGestureDown by GestureTypePreference(sp, K_GESTURE_NAV_DOWN)
     var navGestureLeft by GestureTypePreference(sp, K_GESTURE_NAV_LEFT)
     var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
+    var navButtonLongClickGesture by GestureTypePreference(
+        sp,
+        K_GESTURE_NAV_LONG_CLICK,
+        defaultValue = GestureType.Overview
+    )
 
     var upClickGesture by GestureTypePreference(
         sp, "K_UP_CLICK_GESTURE", GestureType.PageUp
@@ -674,7 +679,8 @@ class ConfigManager(
         }
         private set(value) {
             sp.edit {
-                putString(K_SPLIT_SEARCH_ITEMS,
+                putString(
+                    K_SPLIT_SEARCH_ITEMS,
                     value.joinToString("###") {
                         Json.encodeToString(SplitSearchItemInfo.serializer(), it)
                     }
@@ -957,6 +963,7 @@ class ConfigManager(
         const val K_GESTURE_NAV_DOWN = "setting_gesture_nav_down"
         const val K_GESTURE_NAV_LEFT = "setting_gesture_nav_left"
         const val K_GESTURE_NAV_RIGHT = "setting_gesture_nav_right"
+        const val K_GESTURE_NAV_LONG_CLICK = "setting_gesture_nav_long_click"
 
         const val K_POCKET_ACCESS_TOKEN = "sp_pocket_access_token"
         const val K_GPT_API_KEY = "sp_gpt_api_key"
