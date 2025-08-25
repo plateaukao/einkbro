@@ -683,6 +683,12 @@ class SettingActivity : FragmentActivity() {
             config = config::navGestureRight,
             options = GestureType.entries.map { it.resId },
         ),
+        ListSettingWithEnumItem(
+            R.string.setting_floating_button_long_click,
+            0,
+            config = config::navButtonLongClickGesture,
+            options = GestureType.entries.map { it.resId },
+        ),
     )
 
     private val searchSettingItems = listOf(

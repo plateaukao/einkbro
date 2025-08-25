@@ -81,7 +81,7 @@
     <string name="setting_title_images">Images</string>
     <string name="setting_summary_images">Enable network images. Disabling could be useful for saving mobile data and loading
         websites faster</string>
-    
+
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
         use them, for instance, to store user settings (e.g. search settings) but they could also be used to collect personal
@@ -171,10 +171,10 @@
 
     <!-- Gestures -->
     <string name="setting_gestures">Gestures</string>
-    
+
     <string name="setting_gestures_use_title">Use gestures on floating button</string>
     <string name="setting_gestures_use_summary">Swipe on \"floating button\" to execute actions</string>
-    
+
     <string name="setting_multitouch_use_title">Two finger swipe gestures</string>
     <string name="setting_multitouch_use_summary">Use two finger swipe on web content to trigger actions</string>
     <string name="setting_title_two_finger_swipe">Two finger swipe</string>
@@ -571,6 +571,7 @@
     <string name="setting_touch_up_long_click">Up long click action</string>
     <string name="setting_touch_down_click">Down click action</string>
     <string name="setting_touch_down_long_click">Down long click action</string>
+    <string name="setting_floating_button_long_click">Long click</string>
     <string name="setting_tts_type">Text-to-Speech Engine</string>
     <string name="setting_tts_voice">Voice</string>
     <string name="system_settings">System Settings</string>
