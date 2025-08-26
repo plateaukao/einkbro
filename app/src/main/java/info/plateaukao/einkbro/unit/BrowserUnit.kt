@@ -32,6 +32,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -68,6 +69,7 @@ import java.util.Base64
 import java.util.Locale
 import java.util.Objects
 import java.util.regex.Pattern
+import kotlin.system.exitProcess
 
 object BrowserUnit : KoinComponent {
     const val PROGRESS_MAX = 100
@@ -774,6 +776,14 @@ object BrowserUnit : KoinComponent {
             { ViewUnit.hideKeyboard(activity) }
         ).show()
     }
+
+    fun restartApp(activity: Activity) {
+        finishAffinity(activity) // Finishes all activities.
+        activity.startActivity(activity.packageManager.getLaunchIntentForPackage(activity.packageName))    // Start the launch activity
+        activity.overridePendingTransition(0, 0)
+        exitProcess(0)
+    }
+
 
     private fun isRedirect(responseCode: Int): Boolean = responseCode in 301..399
 }

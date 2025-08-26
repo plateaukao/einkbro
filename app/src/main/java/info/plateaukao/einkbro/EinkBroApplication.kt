@@ -76,9 +76,6 @@ class EinkBroApplication : Application() {
         instance = this
 
         setupAdBlock()
-//        Thread.setDefaultUncaughtExceptionHandler(
-//            CustomExceptionHandler(Thread.getDefaultUncaughtExceptionHandler())
-//        )
     }
 
     private fun setupAdBlock() {
@@ -88,11 +85,11 @@ class EinkBroApplication : Application() {
 
         val filter = AdFilter.create(this)
         filter.setEnabled(config.adBlock)
-        val viewModel = filter.viewModel
-        GlobalScope.launch {
-            viewModel.workToFilterMap.collect { notifyDownloading(it.isEmpty()) }
+        if (config.adBlock) {
+            GlobalScope.launch {
+                filter.viewModel.workToFilterMap.collect { notifyDownloading(it.isEmpty()) }
+            }
         }
-
     }
 
     override fun onTerminate() {
