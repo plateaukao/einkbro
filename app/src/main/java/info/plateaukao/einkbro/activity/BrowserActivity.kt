@@ -1452,6 +1452,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 addAlbum(); openBookmarkPage()
             }
 
+            "sc_disable_adblock" -> {
+                config.adBlock = false
+                BrowserUnit.restartApp(this)
+            }
+
             Intent.ACTION_SEND -> {
                 initSavedTabs()
                 val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT).orEmpty()

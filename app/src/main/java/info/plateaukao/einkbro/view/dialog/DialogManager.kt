@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.webkit.URLUtil
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import info.plateaukao.einkbro.R
@@ -18,13 +17,13 @@ import info.plateaukao.einkbro.databinding.DialogEditExtensionBinding
 import info.plateaukao.einkbro.databinding.DialogSavedEpubListBinding
 import info.plateaukao.einkbro.databinding.ListItemEpubFileBinding
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.unit.BrowserUnit.restartApp
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBToast
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.system.exitProcess
 
 
 class DialogManager(
@@ -271,7 +270,7 @@ class DialogManager(
     fun showRestartConfirmDialog() {
         showOkCancelDialog(
             messageResId = R.string.toast_restart,
-            okAction = { restartApp() }
+            okAction = { restartApp(activity) }
         )
     }
 
@@ -287,13 +286,6 @@ class DialogManager(
                 setNegativeButton(R.string.bookmark_open_file) { _, _ -> openFileAction() }
             }
         dialog.show()
-    }
-
-    private fun restartApp() {
-        finishAffinity(activity) // Finishes all activities.
-        activity.startActivity(activity.packageManager.getLaunchIntentForPackage(activity.packageName))    // Start the launch activity
-        activity.overridePendingTransition(0, 0)
-        exitProcess(0)
     }
 
     companion object {

@@ -40,6 +40,18 @@
             android:targetClass="info.plateaukao.einkbro.activity.BrowserActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
+    <shortcut
+        android:shortcutId="sc_disable_adblock"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/sc_disable_adblock_short"
+        android:shortcutLongLabel="@string/sc_disable_adblock_long"
+        android:shortcutDisabledMessage="@string/sc_disable_adblock_disabled">
+        <intent
+            android:action="sc_disable_adblock"
+            android:targetPackage="info.plateaukao.einkbro"
+            android:targetClass="info.plateaukao.einkbro.activity.BrowserActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
 </shortcuts>
         
 
