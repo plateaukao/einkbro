@@ -82,7 +82,6 @@ import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.AddToPocket
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CloseTab
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CopyLink
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenEpub
@@ -135,7 +134,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, AddToPocket, Highlights, InvertColor, ChatWithWeb,
+    SaveArchive, Highlights, InvertColor, ChatWithWeb,
 }
 
 @Composable
@@ -222,10 +221,6 @@ private fun MenuItems(
                     Icons.AutoMirrored.Outlined.SendToMobile,
                     onLongClicked = { onLongClicked(MenuItemType.SendLink) },
                 ) { onClicked(MenuItemType.SendLink) }
-                MenuItem(
-                    R.string.menu_add_to_pocket,
-                    R.drawable.ic_pocket
-                ) { onClicked(AddToPocket) }
                 MenuItem(R.string.menu_save_archive, 0, Icons.Outlined.Save) {
                     onClicked(
                         MenuItemType.SaveArchive
@@ -242,10 +237,6 @@ private fun MenuItems(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MenuItem(
-                    R.string.menu_add_to_pocket,
-                    R.drawable.ic_pocket
-                ) { onClicked(AddToPocket) }
                 MenuItem(R.string.menu_save_epub, Icons.AutoMirrored.Outlined.Feed) { onClicked(SaveEpub) }
                 MenuItem(R.string.copy_link, Icons.Outlined.CopyAll) { onClicked(CopyLink) }
                 MenuItem(

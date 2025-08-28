@@ -351,7 +351,6 @@
     <string name="setting_title_userAgent_toggle">自訂 UserAgent</string>
     <string name="setting_summary_userAgent">輸入想要的 Useragent 字串</string>
     <string name="setting_summary_userAgent_toggle">啟用自訂的 Useragent</string>
-    <string name="menu_add_to_pocket">加到 Pocket</string>
     <string name="content_adjustment">網頁內容調整</string>
     <string name="share_save">分享或儲存</string>
     <string name="menu_gpt">GPT</string>

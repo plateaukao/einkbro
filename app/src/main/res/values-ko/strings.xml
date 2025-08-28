@@ -429,7 +429,6 @@
     <string name="setting_title_userAgent_toggle">사용자 지정 UserAgent 활성화</string>
     <string name="setting_summary_userAgent">사용자 지정 useragent 문자열을 입력하십시오.</string>
     <string name="setting_summary_userAgent_toggle">사용자 지정 useragent 활성화</string>
-    <string name="menu_add_to_pocket">Pocket에 추가</string>
     <string name="content_adjustment">콘텐츠 조정</string>
     <string name="share_save"><![CDATA[공유 및 저장]]></string>
     <string name="menu_gpt">ChatGPT</string>

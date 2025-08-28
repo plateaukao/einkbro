@@ -429,7 +429,6 @@
     <string name="setting_title_userAgent_toggle">Включить пользовательский юзер-агент</string>
     <string name="setting_summary_userAgent_toggle">Включить пользовательский юзер-агент</string>
     <string name="setting_summary_userAgent">Введите здесь предпочитаемый юзер-агент</string>
-    <string name="menu_add_to_pocket">Добавить в Pocket</string>
     <string name="content_adjustment">Регулировка Страницы</string>
     <string name="share_save"><![CDATA[Поделиться и Сохранить]]></string>
     <string name="menu_gpt">ChatGPT</string>

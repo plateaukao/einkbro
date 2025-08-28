@@ -420,7 +420,6 @@
     <string name="setting_title_userAgent_toggle">Aktifkan UserAgent Khusus</string>
     <string name="setting_summary_userAgent">Masukan teks useragent khusus disini.</string>
     <string name="setting_summary_userAgent_toggle">Aktifkan useragent khusus</string>
-    <string name="menu_add_to_pocket">Tambah ke Pocket</string>
     <string name="content_adjustment">Penyesuaian konten</string>
     <string name="share_save"><![CDATA[Bagi & Simpan]]></string>
     <string name="touch_area_long">Two sides</string>
