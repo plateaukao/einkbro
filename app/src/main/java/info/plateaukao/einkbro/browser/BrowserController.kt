@@ -95,8 +95,6 @@ interface BrowserController {
 
     //region Sharing and External Services
     fun createShortcut()
-    fun addToPocket(url: String)
-    fun handlePocketRequestToken(requestToken: String)
     fun sendToRemote(text: String)
     fun shareLink()
     //endregion

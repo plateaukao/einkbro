@@ -375,7 +375,6 @@
     <string name="setting_title_userAgent_toggle">Habilitar Agente de Usuario Personalizado</string>
     <string name="setting_summary_userAgent">Introduce aquí cadenas de Agente de Usuario personalizado</string>
     <string name="setting_summary_userAgent_toggle">Habilitar agente de usuario personalizado</string>
-    <string name="menu_add_to_pocket">Añadir a Pocket</string>
     <string name="content_adjustment">Ajuste de contenido</string>
     <string name="share_save"><![CDATA[Compartir & Guardar]]></string>
     <string name="menu_gpt">ChatGPT</string>

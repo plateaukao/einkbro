@@ -400,10 +400,6 @@ open class EBWebView(
         super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }
 
-    fun handlePocketRequestToken(requestToken: String) {
-        browserController?.handlePocketRequestToken(requestToken)
-    }
-
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
 
     private var chatWebInterface: ChatWebInterface? = null

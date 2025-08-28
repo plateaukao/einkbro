@@ -149,13 +149,6 @@ class EBWebViewClient(
             Log.d("ebWebViewClient", "Title: $title - URL: $url")
         }
 
-        // handle pocket authentication
-        if (url.startsWith("einkbropocket://pocket-auth")) {
-            val requestToken = url.substringAfter("code=", "")
-            ebWebView.handlePocketRequestToken(requestToken)
-            return true
-        }
-
         if (url.startsWith("http")) {
 //            webView.loadUrl(url, ebWebView.requestHeaders)
 //            return true

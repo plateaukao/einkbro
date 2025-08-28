@@ -420,7 +420,6 @@
     <string name="setting_title_userAgent_toggle">启用自定义用户代理</string>
     <string name="setting_summary_userAgent">在此输入自定义用户代理字符串。</string>
     <string name="setting_summary_userAgent_toggle">启用自定义用户代理</string>
-    <string name="menu_add_to_pocket">添加到Pocket</string>
     <string name="content_adjustment">重排类</string>
     <string name="share_save"><![CDATA[分享保存类]]></string>
 

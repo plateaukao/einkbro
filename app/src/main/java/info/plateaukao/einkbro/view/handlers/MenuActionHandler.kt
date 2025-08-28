@@ -110,8 +110,6 @@ class MenuActionHandler(
             MenuItemType.SaveArchive -> browserController.showWebArchiveFilePicker()
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
-            MenuItemType.AddToPocket -> ebWebView.url?.let { browserController.addToPocket(it) }
-
             MenuItemType.ChatWithWeb -> browserController.chatWithWeb()
         }
     }

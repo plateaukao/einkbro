@@ -155,9 +155,6 @@ import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel
-import info.plateaukao.einkbro.viewmodel.PocketShareState
-import info.plateaukao.einkbro.viewmodel.PocketViewModel
-import info.plateaukao.einkbro.viewmodel.PocketViewModelFactory
 import info.plateaukao.einkbro.viewmodel.RemoteConnViewModel
 import info.plateaukao.einkbro.viewmodel.SplitSearchViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -713,32 +710,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun sendRightKey() {
         ebWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
-    }
-
-    override fun addToPocket(url: String) {
-        lifecycleScope.launch {
-            when (val sharedState =
-                pocketViewModel.shareToPocketWithLoginCheck(this@BrowserActivity, url)) {
-                is PocketShareState.SharedByEinkBro -> {
-                    Snackbar.make(binding.root, "Added", Snackbar.LENGTH_LONG).apply {
-                        setAction("Go to Pocket article url") {
-                            addNewTab(sharedState.pocketUrl)
-                        }
-                    }.show()
-                }
-
-                is PocketShareState.NeedLogin -> addNewTab(sharedState.authUrl)
-                PocketShareState.Failed -> EBToast.showShort(this@BrowserActivity, "Failed")
-                PocketShareState.SharedByPocketApp -> Unit // done by pocket app
-            }
-        }
-    }
-
-    override fun handlePocketRequestToken(requestToken: String) {
-        lifecycleScope.launch {
-            pocketViewModel.getAndSaveAccessToken()
-            addToPocket(pocketViewModel.urlToBeAdded)
-        }
     }
 
     override fun translate(translationMode: TranslationMode) {
@@ -1790,10 +1761,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val bookmarkViewModel: BookmarkViewModel by viewModels {
         BookmarkViewModelFactory(bookmarkManager)
-    }
-
-    private val pocketViewModel: PocketViewModel by viewModels {
-        PocketViewModelFactory()
     }
 
     private val actionModeMenuViewModel: ActionModeMenuViewModel by viewModels()

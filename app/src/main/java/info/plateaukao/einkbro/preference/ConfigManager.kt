@@ -222,7 +222,6 @@ class ConfigManager(
         ADBLOCK_URL_DEFAULT
     )
     var bookmarkSyncUrl by StringPreference(sp, K_BOOKMARK_SYNC_URL, "")
-    var pocketAccessToken by StringPreference(sp, K_POCKET_ACCESS_TOKEN, "")
 
     var gptApiKey by StringPreference(sp, K_GPT_API_KEY, "")
 
@@ -965,7 +964,6 @@ class ConfigManager(
         const val K_GESTURE_NAV_RIGHT = "setting_gesture_nav_right"
         const val K_GESTURE_NAV_LONG_CLICK = "setting_gesture_nav_long_click"
 
-        const val K_POCKET_ACCESS_TOKEN = "sp_pocket_access_token"
         const val K_GPT_API_KEY = "sp_gpt_api_key"
         const val K_GEMINI_API_KEY = "sp_gemini_api_key"
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
