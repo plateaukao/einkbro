@@ -218,15 +218,15 @@ private fun MenuItems(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MenuItem(
-                    R.string.menu_instapaper,
-                    Icons.Outlined.CloudUpload,
-                    onLongClicked = { onLongClicked(MenuItemType.Instapaper) },
-                ) { onClicked(MenuItemType.Instapaper) }
-                MenuItem(
                     R.string.menu_send_link,
                     Icons.AutoMirrored.Outlined.SendToMobile,
                     onLongClicked = { onLongClicked(MenuItemType.SendLink) },
                 ) { onClicked(MenuItemType.SendLink) }
+                MenuItem(
+                    R.string.menu_instapaper,
+                    Icons.Outlined.CloudUpload,
+                    onLongClicked = { onLongClicked(MenuItemType.Instapaper) },
+                ) { onClicked(MenuItemType.Instapaper) }
                 MenuItem(R.string.menu_save_archive, 0, Icons.Outlined.Save) {
                     onClicked(
                         MenuItemType.SaveArchive
