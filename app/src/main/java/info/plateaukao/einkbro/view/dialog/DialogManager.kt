@@ -20,6 +20,7 @@ import info.plateaukao.einkbro.databinding.ListItemEpubFileBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit.restartApp
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBToast
@@ -279,17 +280,14 @@ class DialogManager(
         confirmAction: (username: String, password: String) -> Unit,
     ) {
         val binding = DialogInstapaperCredentialsBinding.inflate(inflater)
-        
-        binding.dialogInstapaperUsername.setText(config.instapaperUsername)
-        binding.dialogInstapaperPassword.setText(config.instapaperPassword)
-        
-        showOkCancelDialog(
+
+        val dialog = showOkCancelDialog(
             title = activity.getString(R.string.menu_instapaper),
             view = binding.root,
             okAction = {
                 val username = binding.dialogInstapaperUsername.text.toString().trim()
                 val password = binding.dialogInstapaperPassword.text.toString().trim()
-                
+
                 if (username.isEmpty() || password.isEmpty()) {
                     EBToast.show(activity, activity.getString(R.string.toast_input_empty))
                 } else {
@@ -300,6 +298,14 @@ class DialogManager(
             },
             cancelAction = { ViewUnit.hideKeyboard(activity) }
         )
+
+        binding.dialogInstapaperUsername.setText(config.instapaperUsername)
+        binding.dialogInstapaperPassword.setText(config.instapaperPassword)
+        binding.dialogInstapaperCreateAccount.setOnClickListener {
+            IntentUnit.launchUrl(activity, "https://www.instapaper.com/user/register")
+            dialog.dismiss()
+        }
+
     }
 
     fun showCreateOrOpenBookmarkFileDialog(
