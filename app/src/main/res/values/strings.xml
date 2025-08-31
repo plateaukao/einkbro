@@ -622,5 +622,6 @@
     <string name="failed_to_add_to_instapaper">failed</string>
     <string name="instapaper_username_hint">Username or Email</string>
     <string name="instapaper_password_hint">Password</string>
+    <string name="instapaper_create_account">Create account</string>
     <string name="url_empty">url is empty</string>
 </resources>
