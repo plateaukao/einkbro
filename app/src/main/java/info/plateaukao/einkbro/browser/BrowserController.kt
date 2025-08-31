@@ -97,6 +97,8 @@ interface BrowserController {
     fun createShortcut()
     fun sendToRemote(text: String)
     fun shareLink()
+    fun addToInstapaper()
+    fun configureInstapaper()
     //endregion
 
     //region Search

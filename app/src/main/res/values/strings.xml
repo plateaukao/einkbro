@@ -617,4 +617,10 @@
     <string name="sc_disable_adblock_short">No AdBlock</string>
     <string name="sc_disable_adblock_long">No AdBlock</string>
     <string name="sc_disable_adblock_disabled">No AdBlock</string>
+    <string name="menu_instapaper">Instapaper</string>
+    <string name="added_to_instapaper">Added to Instapaper</string>
+    <string name="failed_to_add_to_instapaper">failed</string>
+    <string name="instapaper_username_hint">Username or Email</string>
+    <string name="instapaper_password_hint">Password</string>
+    <string name="url_empty">url is empty</string>
 </resources>

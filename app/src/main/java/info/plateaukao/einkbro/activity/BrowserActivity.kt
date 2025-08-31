@@ -66,7 +66,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
@@ -155,6 +154,7 @@ import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel
+import info.plateaukao.einkbro.viewmodel.InstapaperViewModel
 import info.plateaukao.einkbro.viewmodel.RemoteConnViewModel
 import info.plateaukao.einkbro.viewmodel.SplitSearchViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -205,6 +205,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val remoteConnViewModel: RemoteConnViewModel by viewModels()
 
     private val externalSearchViewModel: ExternalSearchViewModel by viewModels()
+
+    private val instapaperViewModel: InstapaperViewModel by viewModels()
 
     private val keyHandler: KeyHandler by lazy { KeyHandler(this, ebWebView, config) }
 
@@ -354,6 +356,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initOverview()
         initTouchArea()
         initActionModeViewModel()
+        initInstapaperViewModel()
 
         downloadReceiver = createDownloadReceiver(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -629,6 +632,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
     }
+    private fun initInstapaperViewModel() {
+        lifecycleScope.launch {
+            instapaperViewModel.uiState.collect { state ->
+                if (state.showConfigureDialog) {
+                    configureInstapaper()
+                } else if (state.successMessage != null) {
+                    EBToast.show(this@BrowserActivity, state.successMessage)
+                } else if (state.errorMessage != null) {
+                    EBToast.show(this@BrowserActivity, state.errorMessage)
+                }
+                instapaperViewModel.resetState()
+            }
+        }
+    }
 
     private fun readFromThisSentence() {
         lifecycleScope.launch {
@@ -834,6 +851,25 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
         }
+    }
+
+    override fun addToInstapaper() {
+        val url = ebWebView.url.orEmpty()
+        if (url.isEmpty()) {
+            EBToast.show(this, R.string.url_empty)
+            return
+        }
+
+        instapaperViewModel.addUrl(
+            url = url,
+            username = config.instapaperUsername,
+            password = config.instapaperPassword,
+            title = ebWebView.title
+        )
+    }
+
+    override fun configureInstapaper() {
+        dialogManager.showInstapaperCredentialsDialog { name, password -> Unit }
     }
 
     private fun showTranslationDialog() {

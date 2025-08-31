@@ -807,6 +807,9 @@ class ConfigManager(
         }
 
     var remoteQueryActionName by StringPreference(sp, K_REMOTE_QUERY_ACTION_NAME, "Search")
+    
+    var instapaperUsername by StringPreference(sp, K_INSTAPAPER_USERNAME, "")
+    var instapaperPassword by StringPreference(sp, K_INSTAPAPER_PASSWORD, "")
 
     fun addGptAction(action: ChatGPTActionInfo) {
         gptActionList = gptActionList.toMutableList().apply { add(action) }
@@ -1024,6 +1027,9 @@ class ConfigManager(
         private const val K_USE_GEMINI_API = "sp_use_gemini_api"
 
         private const val K_REMOTE_QUERY_ACTION_NAME = "sp_remote_query_action_name"
+        
+        const val K_INSTAPAPER_USERNAME = "sp_instapaper_username"
+        const val K_INSTAPAPER_PASSWORD = "sp_instapaper_password"
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =

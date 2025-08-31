@@ -42,6 +42,7 @@ import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.CancelPresentation
+import androidx.compose.material.icons.outlined.CloudUpload
 import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.Copyright
 import androidx.compose.material.icons.outlined.Download
@@ -134,7 +135,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, Highlights, InvertColor, ChatWithWeb,
+    SaveArchive, Highlights, InvertColor, ChatWithWeb, Instapaper
 }
 
 @Composable
@@ -216,6 +217,11 @@ private fun MenuItems(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                MenuItem(
+                    R.string.menu_instapaper,
+                    Icons.Outlined.CloudUpload,
+                    onLongClicked = { onLongClicked(MenuItemType.Instapaper) },
+                ) { onClicked(MenuItemType.Instapaper) }
                 MenuItem(
                     R.string.menu_send_link,
                     Icons.AutoMirrored.Outlined.SendToMobile,
