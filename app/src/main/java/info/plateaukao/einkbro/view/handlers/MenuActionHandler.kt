@@ -46,6 +46,8 @@ class MenuActionHandler(
 
             MenuItemType.ChatWithWeb -> browserController.chatWithWeb(true)
 
+            MenuItemType.Instapaper -> browserController.configureInstapaper()
+
             else -> Unit
         }
 
@@ -111,6 +113,7 @@ class MenuActionHandler(
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
             MenuItemType.ChatWithWeb -> browserController.chatWithWeb()
+            MenuItemType.Instapaper -> browserController.addToInstapaper()
         }
     }
 

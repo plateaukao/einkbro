@@ -23,6 +23,7 @@ import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.service.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.LocaleManager
 import io.github.edsuns.adfilter.AdFilter
@@ -55,6 +56,7 @@ class EinkBroApplication : Application() {
         single { Javascript(androidContext()) }
         single { Cookie(androidContext()) }
         single { ttsManager }
+        single { InstapaperRepository() }
     }
 
     override fun onCreate() {

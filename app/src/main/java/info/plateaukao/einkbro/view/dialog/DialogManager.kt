@@ -14,6 +14,7 @@ import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.databinding.DialogEditExtensionBinding
+import info.plateaukao.einkbro.databinding.DialogInstapaperCredentialsBinding
 import info.plateaukao.einkbro.databinding.DialogSavedEpubListBinding
 import info.plateaukao.einkbro.databinding.ListItemEpubFileBinding
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -271,6 +272,33 @@ class DialogManager(
         showOkCancelDialog(
             messageResId = R.string.toast_restart,
             okAction = { restartApp(activity) }
+        )
+    }
+
+    fun showInstapaperCredentialsDialog(
+        confirmAction: (username: String, password: String) -> Unit,
+    ) {
+        val binding = DialogInstapaperCredentialsBinding.inflate(inflater)
+        
+        binding.dialogInstapaperUsername.setText(config.instapaperUsername)
+        binding.dialogInstapaperPassword.setText(config.instapaperPassword)
+        
+        showOkCancelDialog(
+            title = activity.getString(R.string.menu_instapaper),
+            view = binding.root,
+            okAction = {
+                val username = binding.dialogInstapaperUsername.text.toString().trim()
+                val password = binding.dialogInstapaperPassword.text.toString().trim()
+                
+                if (username.isEmpty() || password.isEmpty()) {
+                    EBToast.show(activity, activity.getString(R.string.toast_input_empty))
+                } else {
+                    config.instapaperUsername = username
+                    config.instapaperPassword = password
+                    confirmAction(username, password)
+                }
+            },
+            cancelAction = { ViewUnit.hideKeyboard(activity) }
         )
     }
 
