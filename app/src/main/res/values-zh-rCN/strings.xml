@@ -594,4 +594,5 @@
     <string name="sc_disable_adblock_short">No AdBlock</string>
     <string name="sc_disable_adblock_long">No AdBlock</string>
     <string name="sc_disable_adblock_disabled">No AdBlock</string>
+    <string name="setting_summary_nav_pos_reset_custom">Reset custom position</string>
 </resources>
