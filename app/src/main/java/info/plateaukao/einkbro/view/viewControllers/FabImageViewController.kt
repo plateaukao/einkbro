@@ -1,13 +1,14 @@
 package info.plateaukao.einkbro.view.viewControllers
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Point
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.FabPosition
@@ -30,9 +31,17 @@ class FabImageViewController(
     init {
         initialize()
     }
+
     fun initialize() {
         textView.alpha = 0.5f
-        val params = RelativeLayout.LayoutParams(
+
+        // Reset absolute positioning when not in custom mode
+        if (config.fabPosition != FabPosition.Custom) {
+            textView.x = 0f
+            textView.y = 0f
+        }
+
+        val params = ConstraintLayout.LayoutParams(
             textView.layoutParams.width,
             textView.layoutParams.height
         )
@@ -40,29 +49,31 @@ class FabImageViewController(
         when (config.fabPosition) {
             FabPosition.Custom -> {
                 textView.layoutParams = params.apply {
-                    addRule(RelativeLayout.CENTER_HORIZONTAL)
-                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
+                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                    endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                    bottomToBottom = R.id.main_content
                 }
             }
 
             FabPosition.Left -> {
                 textView.layoutParams = params.apply {
-                    addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
+                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                    bottomToBottom = R.id.main_content
                 }
             }
 
             FabPosition.Right -> {
                 textView.layoutParams = params.apply {
-                    addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
+                    endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                    bottomToBottom = R.id.main_content
                 }
             }
 
             FabPosition.Center -> {
                 textView.layoutParams = params.apply {
-                    addRule(RelativeLayout.CENTER_HORIZONTAL)
-                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
+                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                    endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                    bottomToBottom = R.id.main_content
                 }
             }
 
@@ -76,6 +87,11 @@ class FabImageViewController(
     }
 
     fun show() {
+        if (config.fabPosition == FabPosition.Custom) {
+            positionValidation()
+            updateImagePosition(orientation)
+        }
+
         textView.visibility = View.VISIBLE
         // don't know why sometimes the fab gesture is not working.
         // set it again when showing it
@@ -103,8 +119,6 @@ class FabImageViewController(
                 }
             }
 
-            val parentX = (textView.parent as View).x
-            val parentY = (textView.parent as View).y
             val maxWidth = (textView.parent as View).width
             val maxHeight = (textView.parent as View).height
             if (textView.x < 0) textView.x = 0f
@@ -165,5 +179,20 @@ class FabImageViewController(
         } else {
             config.fabCustomPositionLandscape = Point(x, y)
         }
+
+        positionValidation()
+    }
+
+    private fun positionValidation() {
+        val maxWidth = (textView.parent as View).width
+        val maxHeight = (textView.parent as View).height
+
+            if (orientation == ORIENTATION_PORTRAIT &&
+                (config.fabCustomPosition.x > maxWidth || config.fabCustomPosition.y > maxHeight)){
+                config.fabCustomPosition = Point(0, 0)
+            } else if (orientation != ORIENTATION_LANDSCAPE &&
+                (config.fabCustomPositionLandscape.x > maxWidth || config.fabCustomPositionLandscape.y > maxHeight)){
+                config.fabCustomPositionLandscape = Point(0, 0)
+            }
     }
 }

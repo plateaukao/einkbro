@@ -624,4 +624,5 @@
     <string name="instapaper_password_hint">Password</string>
     <string name="instapaper_create_account">Create account</string>
     <string name="url_empty">url is empty</string>
+    <string name="setting_summary_nav_pos_reset_custom">Reset custom position</string>
 </resources>

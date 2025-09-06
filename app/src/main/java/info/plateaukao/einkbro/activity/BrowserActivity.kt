@@ -632,6 +632,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
     }
+
     private fun initInstapaperViewModel() {
         lifecycleScope.launch {
             instapaperViewModel.uiState.collect { state ->
@@ -1631,6 +1632,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
 
+    private var fabImagePositionChanged = false
     private val preferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             when (key) {
@@ -1736,7 +1738,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_DARK_MODE -> config.restartChanged = true
                 ConfigManager.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
 
-                ConfigManager.K_NAV_POSITION -> fabImageViewController.initialize()
+                ConfigManager.K_NAV_POSITION -> config.restartChanged = true
+
                 ConfigManager.K_TTS_SPEED_VALUE ->
                     ttsViewModel.setSpeechRate(config.ttsSpeedValue / 100f)
 
