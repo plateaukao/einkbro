@@ -315,7 +315,8 @@ private fun MenuItems(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 val ttsRes = if (isSpeaking) Icons.Filled.RecordVoiceOver else Icons.Outlined.RecordVoiceOver
-                MenuItem(R.string.menu_tts, ttsRes,
+                MenuItem(
+                    R.string.menu_tts, ttsRes,
                     onLongClicked = { onLongClicked(MenuItemType.Tts) }) { onClicked(MenuItemType.Tts) }
                 val invertRes =
                     if (hasInvertedColor) Icons.Outlined.InvertColorsOff else Icons.Outlined.InvertColors
@@ -330,7 +331,8 @@ private fun MenuItems(
                 MenuItem(R.string.black_font, blackRes) { onClicked(MenuItemType.BlackFont) }
                 val boldRes =
                     if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
-                MenuItem(R.string.bold_font, boldRes,
+                MenuItem(
+                    R.string.bold_font, boldRes,
                     onLongClicked = { onLongClicked(MenuItemType.BoldFont) }
                 ) { onClicked(MenuItemType.BoldFont) }
                 MenuItem(
@@ -431,7 +433,6 @@ fun MenuItem(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 0.5.dp else (-1).dp
 
     val configuration = LocalConfiguration.current
     val width = when {
@@ -446,10 +447,9 @@ fun MenuItem(
         if (pressed) {
             Box(
                 modifier = Modifier
-                    .size(10.dp)
+                    .size(6.dp)
                     .background(MaterialTheme.colors.onBackground, shape = CircleShape)
                     .align(Alignment.TopCenter)
-                    .offset(y = (-6).dp)
             )
         }
         Column(
