@@ -1,7 +1,7 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
@@ -21,7 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -441,56 +441,67 @@ fun MenuItem(
     }
 
     val fontSize = if (!showIcon) 16.sp else if (configuration.screenWidthDp > 500) 10.sp else 8.sp
-    Column(
-        modifier = Modifier
-            .width(width)
-            .height(if (!showIcon) 50.dp else if (isLargeType) 80.dp else 70.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .combinedClickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onLongClick = { onLongClicked() },
-                onClick = { onClicked() },
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = if (!showIcon) Arrangement.Center else Arrangement.Top
-    ) {
-        if (showIcon) {
-            if (imageVector != null) {
-                Icon(
-                    imageVector = imageVector, contentDescription = null,
-                    modifier = Modifier
-                        .size(if (isLargeType) 55.dp else 44.dp)
-                        .padding(horizontal = 6.dp),
-                    tint = MaterialTheme.colors.onBackground
-                )
-            } else {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = iconResId), contentDescription = null,
-                    modifier = Modifier
-                        .size(if (isLargeType) 55.dp else 44.dp)
-                        .padding(horizontal = 6.dp),
-                    tint = MaterialTheme.colors.onBackground
-                )
-            }
+
+    Box {
+        if (pressed) {
+            Box(
+                modifier = Modifier
+                    .size(10.dp)
+                    .background(MaterialTheme.colors.onBackground, shape = CircleShape)
+                    .align(Alignment.TopCenter)
+                    .offset(y = (-6).dp)
+            )
         }
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp),
-            contentAlignment = Alignment.Center
+                .width(width)
+                .height(if (!showIcon) 50.dp else if (isLargeType) 80.dp else 70.dp)
+                .combinedClickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onLongClick = { onLongClicked() },
+                    onClick = { onClicked() },
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = if (!showIcon) Arrangement.Center else Arrangement.Top
         ) {
-            Text(
+            if (showIcon) {
+                if (imageVector != null) {
+                    Icon(
+                        imageVector = imageVector, contentDescription = null,
+                        modifier = Modifier
+                            .size(if (isLargeType) 55.dp else 44.dp)
+                            .padding(horizontal = 6.dp),
+                        tint = MaterialTheme.colors.onBackground
+                    )
+                } else {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = iconResId), contentDescription = null,
+                        modifier = Modifier
+                            .size(if (isLargeType) 55.dp else 44.dp)
+                            .padding(horizontal = 6.dp),
+                        tint = MaterialTheme.colors.onBackground
+                    )
+                }
+            }
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .offset(y = if (showIcon) (-5).dp else 0.dp),
-                text = stringResource(id = titleResId),
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                lineHeight = if (!showIcon) 20.sp else 12.sp,
-                fontSize = fontSize,
-                color = MaterialTheme.colors.onBackground
-            )
+                    .height(40.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset(y = if (showIcon) (-5).dp else 0.dp),
+                    text = stringResource(id = titleResId),
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    lineHeight = if (!showIcon) 20.sp else 12.sp,
+                    fontSize = fontSize,
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
         }
     }
 }
