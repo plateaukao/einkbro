@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -377,7 +378,6 @@ fun ToolbarIcon(
         .fillMaxHeight()
         .width(toolbarIconWidth)
         .padding(6.dp)
-        .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
         .combinedClickable(
             indication = null,
             interactionSource = interactionSource,
@@ -387,20 +387,32 @@ fun ToolbarIcon(
         .padding(6.dp)
         .testTag(toolbarAction.name.lowercase())
 
-    if (iconResId != 0) {
-        Icon(
-            modifier = modifier,
-            imageVector = ImageVector.vectorResource(id = iconResId),
-            contentDescription = stringResource(id = toolbarAction.titleResId),
-            tint = MaterialTheme.colors.onBackground
-        )
-    } else {
-        Icon(
-            modifier = modifier,
-            imageVector = toolbarAction.imageVector!!,
-            contentDescription = stringResource(id = toolbarAction.titleResId),
-            tint = MaterialTheme.colors.onBackground
-        )
+    Box(
+        modifier = Modifier.padding(3.dp)
+    ) {
+        if (pressed) {
+            Box(
+                modifier = Modifier
+                    .size(6.dp)
+                    .background(MaterialTheme.colors.onBackground, shape = CircleShape)
+                    .align(Alignment.TopCenter)
+            )
+        }
+        if (iconResId != 0) {
+            Icon(
+                modifier = modifier,
+                imageVector = ImageVector.vectorResource(id = iconResId),
+                contentDescription = stringResource(id = toolbarAction.titleResId),
+                tint = MaterialTheme.colors.onBackground
+            )
+        } else {
+            Icon(
+                modifier = modifier,
+                imageVector = toolbarAction.imageVector!!,
+                contentDescription = stringResource(id = toolbarAction.titleResId),
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
     }
 }
 
