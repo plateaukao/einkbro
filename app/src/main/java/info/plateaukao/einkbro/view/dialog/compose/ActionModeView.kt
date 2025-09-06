@@ -11,6 +11,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -123,7 +125,6 @@ fun ActionMenuItem(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 0.5.dp else (-1).dp
 
     val configuration = LocalConfiguration.current
     val width = when {
@@ -133,53 +134,65 @@ fun ActionMenuItem(
 
     val fontSize = if (iconDrawable == null && imageVector == null) 12.sp else
         if (configuration.screenWidthDp > 500) 10.sp else 8.sp
-    Column(
+    Box(
         modifier = Modifier
             .width(width)
             .wrapContentHeight()
-            .padding(8.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .combinedClickable(
-                indication = null,
-                interactionSource = interactionSource,
-                onClick = onClicked,
-                onLongClick = onLongClicked,
-            ),
-
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (iconDrawable != null) {
-            Image(
-                painter = rememberDrawablePainter(drawable = iconDrawable),
-                contentDescription = null,
+        if (pressed) {
+            Box(
                 modifier = Modifier
-                    .size(44.dp)
-                    .padding(horizontal = 6.dp),
+                    .padding(start = (width + 16.dp) / 2, top = 4.dp)
+                    .size(6.dp)
+                    .background(MaterialTheme.colors.onBackground, shape = CircleShape)
+                    .align(Alignment.TopStart)
             )
         }
-        if (imageVector != null) {
-            Image(
-                imageVector = imageVector,
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(44.dp)
-                    .padding(horizontal = 6.dp),
-            )
-        }
-        if (title.isNotEmpty()) {
-            Text(
-                modifier = Modifier
-                    .padding(2.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                text = title,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                lineHeight = fontSize,
-                fontSize = fontSize,
-                color = MaterialTheme.colors.onBackground
-            )
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .padding(8.dp)
+                .combinedClickable(
+                    indication = null,
+                    interactionSource = interactionSource,
+                    onClick = onClicked,
+                    onLongClick = onLongClicked,
+                ),
+
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (iconDrawable != null) {
+                Image(
+                    painter = rememberDrawablePainter(drawable = iconDrawable),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(44.dp)
+                        .padding(horizontal = 6.dp),
+                )
+            }
+            if (imageVector != null) {
+                Image(
+                    imageVector = imageVector,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(44.dp)
+                        .padding(horizontal = 6.dp),
+                )
+            }
+            if (title.isNotEmpty()) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    text = title,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    lineHeight = fontSize,
+                    fontSize = fontSize,
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
         }
     }
 }

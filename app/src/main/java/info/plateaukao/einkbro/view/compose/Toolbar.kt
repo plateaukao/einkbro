@@ -388,7 +388,7 @@ fun ToolbarIcon(
         .testTag(toolbarAction.name.lowercase())
 
     Box(
-        modifier = Modifier.padding(3.dp)
+        modifier = Modifier.padding(top = 3.dp)
     ) {
         if (pressed) {
             Box(
