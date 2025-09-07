@@ -354,8 +354,12 @@ object HelperUnit {
         return Pair(fileName, mimeType)
     }
 
-    suspend fun upgradeToLatestRelease(context: Context) {
+    suspend fun upgradeToLatestRelease(
+        context: Context,
+        progressCallback: (suspend (Float, String) -> Unit)? = null,
+    ) {
         if (isAppInstalledFromPlayStore(context)) {
+            progressCallback?.invoke(1.0f, "Update available on Play Store")
             withContext(Dispatchers.Main) {
                 // launch play store with my app page
                 val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -368,34 +372,41 @@ object HelperUnit {
             return
         }
 
+        progressCallback?.invoke(0.1f, "Connecting to GitHub API")
         val url = "https://api.github.com/repos/plateaukao/einkbro/releases"
         val request = Request.Builder().url(url).build()
 
         client.newCall(request).execute().use { response ->
             try {
+                progressCallback?.invoke(0.2f, "Retrieved release data")
                 val jsonArray = JSONArray(response.body!!.string())
                 val latestRelease = jsonArray.getJSONObject(0)
                 val tagName = latestRelease.getString("tag_name").replace("v", "")
                 val isPreRelease = latestRelease.getBoolean("prerelease")
+
                 if (tagName > BuildConfig.VERSION_NAME && !isPreRelease) {
-                    withContext(Dispatchers.Main) {
-                        EBToast.show(context, "Start downloading...")
-                    }
+                    progressCallback?.invoke(0.3f, "Version $tagName available")
 
                     val downloadUrl = latestRelease.getJSONArray("assets")
                         .getJSONObject(0)
                         .getString("browser_download_url")
 
                     val file = File.createTempFile("temp", ".apk", context.cacheDir)
-                    downloadApkFile(downloadUrl, file.absolutePath)
+                    progressCallback?.invoke(0.4f, "Starting download")
+                    downloadApkFileWithProgress(downloadUrl, file.absolutePath, progressCallback)
+
+                    progressCallback?.invoke(0.9f, "Preparing installation")
                     installApkFromFile(context, file)
+                    progressCallback?.invoke(1.0f, "Update ready to install")
                 } else {
+                    progressCallback?.invoke(1.0f, "Running latest version")
                     withContext(Dispatchers.Main) {
                         EBToast.show(context, "Already up to date")
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                progressCallback?.invoke(0.0f, "Update failed: ${e.message}")
                 withContext(Dispatchers.Main) {
                     EBToast.show(context, "Something went wrong")
                 }
@@ -430,51 +441,85 @@ object HelperUnit {
         context.startActivity(intent)
     }
 
-    private fun downloadApkFile(apkUrl: String, destinationPath: String) {
+    private suspend fun downloadApkFileWithProgress(
+        apkUrl: String,
+        destinationPath: String,
+        progressCallback: (suspend (Float, String) -> Unit)?,
+    ) {
         val request = Request.Builder().url(apkUrl).build()
         OkHttpClient().newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Failed to download file: $response")
 
-            val fos = FileOutputStream(destinationPath)
-            fos.use { outputStream ->
-                outputStream.write(response.body?.bytes())
+            val responseBody = response.body ?: throw IOException("Response body is null")
+            val contentLength = responseBody.contentLength()
+            val inputStream = responseBody.byteStream()
+
+            FileOutputStream(destinationPath).use { outputStream ->
+                val buffer = ByteArray(8192)
+                var totalBytesRead = 0L
+                var bytesRead: Int
+
+                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                    outputStream.write(buffer, 0, bytesRead)
+                    totalBytesRead += bytesRead
+
+                    if (contentLength > 0) {
+                        val progress = 0.4f + (totalBytesRead.toFloat() / contentLength.toFloat()) * 0.5f
+                        val percentage = (totalBytesRead.toFloat() / contentLength.toFloat() * 100).toInt()
+                        val totalMB = contentLength / 1024 / 1024
+                        val downloadedMB = totalBytesRead / 1024 / 1024
+                        progressCallback?.invoke(
+                            progress,
+                            "Downloaded ${downloadedMB}MB / ${totalMB}MB ($percentage%)"
+                        )
+                    }
+                }
             }
         }
     }
 
-    suspend fun upgradeFromSnapshot(context: Context) {
+    suspend fun upgradeFromSnapshot(
+        context: Context,
+        progressCallback: (suspend (Float, String) -> Unit)? = null,
+    ) {
         val url =
             "https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-arm64-v8a-release.apk.zip"
         val request = Request.Builder().url(url).build()
         try {
-            withContext(Dispatchers.Main) {
-                EBToast.show(context, "start downloading...")
-            }
+            progressCallback?.invoke(0.1f, "Preparing to download latest snapshot")
 
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) throw IOException("Failed to download file: $response")
 
-                val inputStream = response.body?.byteStream()
-                withContext(Dispatchers.Main) {
-                    EBToast.show(context, "Extracting zip...")
-                }
-                extractApkAndInstall(inputStream, context)
+                progressCallback?.invoke(0.2f, "Starting ZIP download")
+                val responseBody = response.body ?: throw IOException("Response body is null")
+                val inputStream = responseBody.byteStream()
+                progressCallback?.invoke(0.6f, "Processing snapshot archive")
+                extractApkAndInstallWithProgress(inputStream, context, progressCallback)
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            progressCallback?.invoke(0.0f, "Snapshot update failed: ${e.message}")
             withContext(Dispatchers.Main) {
                 EBToast.show(context, "Something went wrong")
             }
         }
     }
 
-    // may throw error
-    private fun extractApkAndInstall(inputStream: InputStream?, context: Context) {
+    private suspend fun extractApkAndInstallWithProgress(
+        inputStream: InputStream?,
+        context: Context,
+        progressCallback: (suspend (Float, String) -> Unit)?,
+    ) {
         val zipInputStream = ZipInputStream(inputStream)
+
+        progressCallback?.invoke(0.7f, "Processing ZIP entries")
 
         var zipEntry = zipInputStream.nextEntry
         while (zipEntry != null) {
             if (zipEntry.name == "app-arm64-v8a-release.apk") {
+                progressCallback?.invoke(0.8f, "Extracting ${zipEntry.name}")
+
                 val tempFile = File("${context.cacheDir.absolutePath}/app.apk")
                 if (tempFile.exists()) {
                     tempFile.delete()
@@ -483,7 +528,9 @@ object HelperUnit {
                 tempFile.deleteOnExit()
                 FileOutputStream(tempFile).use { fos -> zipInputStream.copyTo(fos) }
 
+                progressCallback?.invoke(0.9f, "Preparing APK installation")
                 installApkFromFile(context, tempFile)
+                progressCallback?.invoke(1.0f, "Snapshot update ready to install")
 
                 break
             }

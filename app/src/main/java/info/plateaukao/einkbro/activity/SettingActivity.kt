@@ -64,6 +64,7 @@ import info.plateaukao.einkbro.setting.ListSettingWithClassItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.ListSettingWithStrResIdItem
 import info.plateaukao.einkbro.setting.NavigateSettingItem
+import info.plateaukao.einkbro.setting.ProgressActionSettingItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.SettingScreen
 import info.plateaukao.einkbro.setting.ValueSettingItem
@@ -224,20 +225,24 @@ class SettingActivity : FragmentActivity() {
                                     addAll(LinkSettingItem.entries.toList())
                                     add(DividerSettingItem())
                                     if (BuildConfig.showUpdateButton) {
-                                        add(ActionSettingItem(
+                                        add(ProgressActionSettingItem(
                                             R.string.setting_title_github_update,
                                             0,
-                                        ) {
+                                        ) { progressCallback ->
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                HelperUnit.upgradeToLatestRelease(this@SettingActivity)
+                                                HelperUnit.upgradeToLatestRelease(this@SettingActivity) { progress, progressText ->
+                                                    progressCallback.updateProgress(progress, progressText)
+                                                }
                                             }
                                         })
-                                        add(ActionSettingItem(
+                                        add(ProgressActionSettingItem(
                                             R.string.setting_title_github_snapshot,
                                             0,
-                                        ) {
+                                        ) { progressCallback ->
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                HelperUnit.upgradeFromSnapshot(this@SettingActivity)
+                                                HelperUnit.upgradeFromSnapshot(this@SettingActivity) { progress, progressText ->
+                                                    progressCallback.updateProgress(progress, progressText)
+                                                }
                                             }
                                         })
                                     }
