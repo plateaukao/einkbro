@@ -41,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -109,20 +110,46 @@ class ContextMenuDialogFragment(
     }
 
     private fun determineHoveredItem(x: Float, y: Float): ContextMenuItemType? {
-        // This is a simplified implementation - you'll need to calculate
-        // the actual bounds of each menu item based on your layout
-        // For now, using rough estimates
+        // Calculate precise dimensions based on MenuItem logic
+        val screenWidthDp = resources.configuration.screenWidthDp
+        val isLargeType = true // ContextMenuItem uses isLargeType = true
+        val showIcon = config.showActionMenuIcons
 
-        if (y < 120) return null // URL text area
+        // Calculate item width (same logic as MenuItem)
+        val itemWidthDp = when {
+            isLargeType -> if (screenWidthDp > 500) 62 else 50
+            screenWidthDp > 500 -> 55
+            else -> 45
+        }
 
-        val firstRowY = 120f..190f
-        val secondRowY = 220f..290f
+        // Calculate item height
+        val itemHeightDp = if (!showIcon) 50 else if (isLargeType) 80 else 70
+
+        // Convert dp to pixels (approximate density)
+        val density = resources.displayMetrics.density
+        val itemWidthPx = itemWidthDp * density
+        val itemHeightPx = itemHeightDp * density
+
+        // Layout structure:
+        // 1. URL text with 4dp padding = ~8dp height + text height (~20dp) = ~28dp
+        // 2. HorizontalSeparator = 1dp
+        // 3. First Row = itemHeightPx
+        // 4. HorizontalSeparator = 1dp
+        // 5. Second Row = itemHeightPx
+
+        val urlTextHeight = 30 * density // URL text area
+        val separatorHeight = 1 * density // HorizontalSeparator
+
+        val firstRowStart = urlTextHeight + separatorHeight
+        val firstRowEnd = firstRowStart + itemHeightPx
+        val secondRowStart = firstRowEnd + separatorHeight
+        val secondRowEnd = secondRowStart + itemHeightPx
 
         when {
-            y in firstRowY -> {
-                // First row items
-                val itemWidth = 64f // Approximate width per item
-                val itemIndex = (x / itemWidth).toInt()
+            y < firstRowStart -> return null // URL text area
+            y in firstRowStart..firstRowEnd -> {
+                // First row items (fixed 5 items)
+                val itemIndex = (x / itemWidthPx).toInt()
                 return when (itemIndex) {
                     0 -> ContextMenuItemType.NewTabForeground
                     1 -> ContextMenuItemType.NewTabBackground
@@ -132,19 +159,20 @@ class ContextMenuDialogFragment(
                     else -> null
                 }
             }
-            y in secondRowY -> {
-                // Second row items
-                val itemWidth = 64f
-                val itemIndex = (x / itemWidth).toInt()
-                return when (itemIndex) {
-                    0 -> ContextMenuItemType.CopyLink
-                    1 -> ContextMenuItemType.SelectText
-                    2 -> if (shouldShowTranslateImage && (url.lowercase().contains("jpg") || url.lowercase().contains("png"))) ContextMenuItemType.TranslateImage else ContextMenuItemType.Tts
-                    3 -> ContextMenuItemType.Tts
-                    4 -> ContextMenuItemType.SaveAs
-                    5 -> ContextMenuItemType.Summarize
-                    else -> null
+            y in secondRowStart..secondRowEnd -> {
+                // Second row items (variable items based on conditions)
+                val itemIndex = (x / itemWidthPx).toInt()
+                val secondRowItems = buildList {
+                    add(ContextMenuItemType.CopyLink)
+                    add(ContextMenuItemType.SelectText)
+                    if (shouldShowTranslateImage && (url.lowercase().contains("jpg") || url.lowercase().contains("png"))) {
+                        add(ContextMenuItemType.TranslateImage)
+                    }
+                    add(ContextMenuItemType.Tts)
+                    add(ContextMenuItemType.SaveAs)
+                    add(ContextMenuItemType.Summarize)
                 }
+                return secondRowItems.getOrNull(itemIndex)
             }
             else -> return null
         }

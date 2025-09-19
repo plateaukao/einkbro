@@ -1988,7 +1988,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 super.onLongPressMove(motionEvent)
 
                 // Handle context menu hover selection
-                if (isInLongPressMode && activeContextMenuDialog != null) {
+                if (config.enableDragUrlToAction && isInLongPressMode && activeContextMenuDialog != null) {
                     activeContextMenuDialog?.updateHoveredItem(motionEvent.rawX, motionEvent.rawY)
                     return
                 }
