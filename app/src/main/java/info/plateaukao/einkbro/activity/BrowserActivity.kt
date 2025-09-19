@@ -1986,6 +1986,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
             override fun onLongPressMove(motionEvent: MotionEvent) {
                 super.onLongPressMove(motionEvent)
+
+                // Handle context menu hover selection
+                if (isInLongPressMode && activeContextMenuDialog != null) {
+                    activeContextMenuDialog?.updateHoveredItem(motionEvent.rawX, motionEvent.rawY)
+                    return
+                }
+
                 if (longPressStartPoint == null) {
                     longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
                     return
@@ -2000,6 +2007,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
 
             override fun onMoveDone(motionEvent: MotionEvent) {
+                // Handle finger lift for context menu
+                if (isInLongPressMode && activeContextMenuDialog != null) {
+                    activeContextMenuDialog?.onFingerLifted()
+                    activeContextMenuDialog = null
+                    isInLongPressMode = false
+                    return
+                }
                 //Log.d("touch", "onMoveDone")
             }
         }.apply { lifecycle.addObserver(this) }
@@ -2332,6 +2346,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var motionEvent: MotionEvent? = null
     private var longPressPoint: Point = Point(0, 0)
+    private var activeContextMenuDialog: ContextMenuDialogFragment? = null
+    private var isInLongPressMode = false
     override fun onLongPress(message: Message, event: MotionEvent?) {
         if (ebWebView.isSelectingText) return
 
@@ -2343,14 +2359,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ebWebView, message)
             BrowserUnit.getWebViewLinkTitle(ebWebView) { linkTitle ->
                 val titleText = linkTitle.ifBlank { url }.toString()
-                ContextMenuDialogFragment(
+                val contextMenuDialog = ContextMenuDialogFragment(
                     url,
                     linkImageUrl.isNotBlank(),
                     config.imageApiKey.isNotBlank(),
                     motionEvent!!.toRawPoint(),
                 ) {
                     this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
-                }.show(supportFragmentManager, "contextMenu")
+                    activeContextMenuDialog = null
+                    isInLongPressMode = false
+                }
+                activeContextMenuDialog = contextMenuDialog
+                isInLongPressMode = true
+                contextMenuDialog.show(supportFragmentManager, "contextMenu")
             }
         }
     }
