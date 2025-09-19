@@ -64,9 +64,21 @@ class WebContentPostProcessor : KoinComponent {
 
         // text selection handling
         ebWebView.addSelectionChangeListener()
+
+        if (configManager.enableDragUrlToAction) {
+            ebWebView.evaluateJavascript(preventLinkDraggingJs, null)
+        }
     }
 
     companion object {
+        private const val preventLinkDraggingJs = """
+            document.addEventListener('dragstart', function(e) {
+    if (e.target.tagName === 'A') {
+        e.preventDefault();
+        return false;
+    }
+});
+        """
         private const val zoomAndDesktopTemplateJs =
             "javascript:document.getElementsByName('viewport')[0].setAttribute('content', '%s%s');"
 

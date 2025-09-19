@@ -321,6 +321,9 @@ class ConfigManager(
 
     var ttsShowTextTranslation by BooleanPreference(sp, "K_TTS_SHOW_TEXT_TRANSLATION", false)
 
+    // add a boolean preference for toggling url dragging
+    var enableDragUrlToAction by BooleanPreference(sp, "K_ENABLE_DRAG_URL_TO_ACTION", true)
+
     private val K_RECENT_USED_TTS_VOICES = "sp_recent_used_tts_voices"
     var recentUsedTtsVoices: MutableList<VoiceItem>
         get() {
@@ -1027,7 +1030,7 @@ class ConfigManager(
         private const val K_USE_GEMINI_API = "sp_use_gemini_api"
 
         private const val K_REMOTE_QUERY_ACTION_NAME = "sp_remote_query_action_name"
-        
+
         const val K_INSTAPAPER_USERNAME = "sp_instapaper_username"
         const val K_INSTAPAPER_PASSWORD = "sp_instapaper_password"
     }

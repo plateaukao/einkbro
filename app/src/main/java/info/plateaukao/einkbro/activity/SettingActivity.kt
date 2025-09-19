@@ -560,6 +560,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_enabling_web_cache,
             config::webLoadCacheFirst,
         )
+        // add a boolean setting to enable/disable url drag to action feature
+        ,BooleanSettingItem(
+            R.string.setting_title_enable_url_drag_to_action,
+            0,
+            R.string.setting_summary_enable_url_drag_to_action,
+            config::enableDragUrlToAction,
+        )
     )
 
     private val toolbarSettingItems = listOf(
