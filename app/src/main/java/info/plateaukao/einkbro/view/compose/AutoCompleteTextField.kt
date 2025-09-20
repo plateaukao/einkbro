@@ -261,7 +261,7 @@ fun TextInput(
             // Use coerceIn to ensure the cursor position is always within valid range
             val safeCursorPosition = cursorPosition.coerceIn(0, textLength)
 
-            if (safeCursorPosition >= 0 && safeCursorPosition <= textLength && textLength > 0) {
+            if (safeCursorPosition <= textLength && textLength > 0) {
                 val cursorOffset = textLayoutResult!!.getCursorRect(safeCursorPosition)
                 Canvas(modifier = Modifier.matchParentSize()) {
                     drawLine(
