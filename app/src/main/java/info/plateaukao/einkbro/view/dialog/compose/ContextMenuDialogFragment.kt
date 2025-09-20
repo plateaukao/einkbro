@@ -4,7 +4,6 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
@@ -22,10 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.Segment
@@ -38,24 +33,97 @@ import androidx.compose.material.icons.outlined.Tab
 import androidx.compose.material.icons.outlined.TabUnselected
 import androidx.compose.material.icons.outlined.ViewStream
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyLink
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SelectText
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.Summarize
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.TranslateImage
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.Tts
 import java.net.URLDecoder
 
+data class MenuItemConfig(
+    val type: ContextMenuItemType,
+    val titleResId: Int,
+    val imageVector: ImageVector? = null,
+    val iconResId: Int = 0,
+    val shouldShow: (url: String, shouldShowAdBlock: Boolean, shouldShowTranslateImage: Boolean) -> Boolean = { _, _, _ -> true }
+)
+
+data class MenuLayout(
+    val firstRowItems: List<MenuItemConfig>,
+    val secondRowItems: List<MenuItemConfig>
+)
+
+private fun createMenuLayout(): MenuLayout {
+    val firstRowItems = listOf(
+        MenuItemConfig(
+            ContextMenuItemType.NewTabForeground,
+            R.string.main_menu_new_tabOpen,
+            Icons.Outlined.Tab
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.NewTabBackground,
+            R.string.main_menu_new_tab,
+            Icons.Outlined.TabUnselected
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.OpenWith,
+            R.string.menu_open_with,
+            Icons.Outlined.Apps
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.SplitScreen,
+            R.string.split_screen,
+            Icons.Outlined.ViewStream
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.ShareLink,
+            R.string.menu_share_link,
+            Icons.Outlined.Share
+        )
+    )
+
+    val secondRowItems = listOf(
+        MenuItemConfig(
+            ContextMenuItemType.CopyLink,
+            R.string.copy_link,
+            Icons.Outlined.CopyAll
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.SelectText,
+            R.string.text_select,
+            Icons.AutoMirrored.Outlined.Segment
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.TranslateImage,
+            R.string.translate,
+            iconResId = R.drawable.ic_papago,
+            shouldShow = { url, _, shouldShowTranslateImage ->
+                shouldShowTranslateImage && (url.lowercase().contains("jpg") || url.lowercase().contains("png"))
+            }
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.Tts,
+            R.string.menu_tts,
+            Icons.Outlined.RecordVoiceOver
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.SaveAs,
+            R.string.menu_save_as,
+            Icons.Outlined.Save
+        ),
+        MenuItemConfig(
+            ContextMenuItemType.Summarize,
+            R.string.menu_summarize,
+            Icons.AutoMirrored.Outlined.Chat
+        )
+    )
+
+    return MenuLayout(firstRowItems, secondRowItems)
+}
 
 class ContextMenuDialogFragment(
     private val url: String,
@@ -110,6 +178,8 @@ class ContextMenuDialogFragment(
     }
 
     private fun determineHoveredItem(x: Float, y: Float): ContextMenuItemType? {
+        val menuLayout = createMenuLayout()
+
         // Calculate precise dimensions based on MenuItem logic
         val screenWidthDp = resources.configuration.screenWidthDp
         val isLargeType = true // ContextMenuItem uses isLargeType = true
@@ -148,31 +218,17 @@ class ContextMenuDialogFragment(
         when {
             y < firstRowStart -> return null // URL text area
             y in firstRowStart..firstRowEnd -> {
-                // First row items (fixed 5 items)
+                // First row items
                 val itemIndex = (x / itemWidthPx).toInt()
-                return when (itemIndex) {
-                    0 -> ContextMenuItemType.NewTabForeground
-                    1 -> ContextMenuItemType.NewTabBackground
-                    2 -> ContextMenuItemType.OpenWith
-                    3 -> ContextMenuItemType.SplitScreen
-                    4 -> ContextMenuItemType.ShareLink
-                    else -> null
-                }
+                return menuLayout.firstRowItems.getOrNull(itemIndex)?.type
             }
             y in secondRowStart..secondRowEnd -> {
-                // Second row items (variable items based on conditions)
-                val itemIndex = (x / itemWidthPx).toInt()
-                val secondRowItems = buildList {
-                    add(ContextMenuItemType.CopyLink)
-                    add(ContextMenuItemType.SelectText)
-                    if (shouldShowTranslateImage && (url.lowercase().contains("jpg") || url.lowercase().contains("png"))) {
-                        add(ContextMenuItemType.TranslateImage)
-                    }
-                    add(ContextMenuItemType.Tts)
-                    add(ContextMenuItemType.SaveAs)
-                    add(ContextMenuItemType.Summarize)
+                // Second row items (filter based on conditions)
+                val visibleSecondRowItems = menuLayout.secondRowItems.filter { item ->
+                    item.shouldShow(url, shouldShowAdBlock, shouldShowTranslateImage)
                 }
-                return secondRowItems.getOrNull(itemIndex)
+                val itemIndex = (x / itemWidthPx).toInt()
+                return visibleSecondRowItems.getOrNull(itemIndex)?.type
             }
             else -> return null
         }
@@ -190,7 +246,7 @@ class ContextMenuDialogFragment(
 
     private fun setupDialogPosition(position: Point) {
         val window = dialog?.window ?: return
-        window.setGravity(Gravity.TOP or Gravity.LEFT)
+        window.setGravity(Gravity.TOP or Gravity.START)
 
         if (position.isValid()) {
             val params = window.attributes.apply {
@@ -213,6 +269,8 @@ private fun ContextMenuItems(
     hoveredItem: ContextMenuItemType? = null,
     onClicked: (ContextMenuItemType) -> Unit,
 ) {
+    val menuLayout = createMenuLayout()
+
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -232,43 +290,16 @@ private fun ContextMenuItems(
                 .width(IntrinsicSize.Max)
                 .horizontalScroll(rememberScrollState()),
         ) {
-            ContextMenuItem(
-                titleResId = R.string.main_menu_new_tabOpen,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.Tab,
-                isHovered = hoveredItem == ContextMenuItemType.NewTabForeground
-            ) {
-                onClicked(ContextMenuItemType.NewTabForeground)
-            }
-            ContextMenuItem(
-                titleResId = R.string.main_menu_new_tab,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.TabUnselected,
-                isHovered = hoveredItem == ContextMenuItemType.NewTabBackground
-            ) {
-                onClicked(ContextMenuItemType.NewTabBackground)
-            }
-            ContextMenuItem(
-                titleResId = R.string.menu_open_with,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.Apps,
-                isHovered = hoveredItem == ContextMenuItemType.OpenWith
-            ) { onClicked(OpenWith) }
-            ContextMenuItem(
-                titleResId = R.string.split_screen,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.ViewStream,
-                isHovered = hoveredItem == ContextMenuItemType.SplitScreen
-            ) {
-                onClicked(ContextMenuItemType.SplitScreen)
-            }
-            ContextMenuItem(
-                titleResId = R.string.menu_share_link,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.Share,
-                isHovered = hoveredItem == ContextMenuItemType.ShareLink
-            ) {
-                onClicked(ContextMenuItemType.ShareLink)
+            menuLayout.firstRowItems.forEach { item ->
+                ContextMenuItem(
+                    titleResId = item.titleResId,
+                    showIcon = showIcons,
+                    imageVector = item.imageVector,
+                    iconResId = item.iconResId,
+                    isHovered = hoveredItem == item.type
+                ) {
+                    onClicked(item.type)
+                }
             }
         }
         HorizontalSeparator()
@@ -278,52 +309,19 @@ private fun ContextMenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.Center
         ) {
-            ContextMenuItem(
-                titleResId = R.string.copy_link,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.CopyAll,
-                isHovered = hoveredItem == ContextMenuItemType.CopyLink
-            ) { onClicked(CopyLink) }
-            ContextMenuItem(
-                titleResId = R.string.text_select,
-                showIcon = showIcons,
-                imageVector = Icons.AutoMirrored.Outlined.Segment,
-                isHovered = hoveredItem == ContextMenuItemType.SelectText
-            ) {
-                onClicked(SelectText)
-            }
-            val lowerCaseUrl = url.lowercase()
-            if (shouldShowTranslateImage && (lowerCaseUrl.contains("jpg") || lowerCaseUrl.contains("png"))) {
+            menuLayout.secondRowItems.filter { item ->
+                item.shouldShow(url, shouldShowAdBlock, shouldShowTranslateImage)
+            }.forEach { item ->
                 ContextMenuItem(
-                    titleResId = R.string.translate,
+                    titleResId = item.titleResId,
                     showIcon = showIcons,
-                    iconResId = R.drawable.ic_papago,
-                    isHovered = hoveredItem == ContextMenuItemType.TranslateImage
+                    imageVector = item.imageVector,
+                    iconResId = item.iconResId,
+                    isHovered = hoveredItem == item.type
                 ) {
-                    onClicked(TranslateImage)
+                    onClicked(item.type)
                 }
             }
-            ContextMenuItem(
-                titleResId = R.string.menu_tts,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.RecordVoiceOver,
-                isHovered = hoveredItem == ContextMenuItemType.Tts
-            ) { onClicked(Tts) }
-            ContextMenuItem(
-                titleResId = R.string.menu_save_as,
-                showIcon = showIcons,
-                imageVector = Icons.Outlined.Save,
-                isHovered = hoveredItem == ContextMenuItemType.SaveAs
-            ) { onClicked(SaveAs) }
-            ContextMenuItem(
-                titleResId = R.string.menu_summarize,
-                showIcon = showIcons,
-                imageVector = Icons.AutoMirrored.Outlined.Chat,
-                isHovered = hoveredItem == ContextMenuItemType.Summarize
-            ) { onClicked(Summarize) }
-//            if (shouldShowAdBlock) {
-//                ContextMenuItem(R.string.setting_title_adblock, showIcons, Icons.Outlined.Block) { onClicked(AdBlock) }
-//            }
         }
     }
 }
@@ -342,7 +340,7 @@ fun ContextMenuItem(
             Box(
                 modifier = Modifier
                     .size(6.dp)
-                    .background(MaterialTheme.colors.primary, shape = CircleShape)
+                    .background(MaterialTheme.colors.onBackground, shape = CircleShape)
                     .align(Alignment.TopCenter)
             )
         }
