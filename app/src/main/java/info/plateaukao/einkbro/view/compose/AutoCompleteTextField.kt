@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent.KEYCODE_ENTER
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -35,13 +36,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -206,6 +210,10 @@ fun TextInput(
 ) {
     val scrollState = remember { androidx.compose.foundation.ScrollState(0) }
     val coroutineScope = rememberCoroutineScope()
+    val density = LocalDensity.current
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+    var isFocused by remember { mutableStateOf(false) }
+    val cursorColor = MaterialTheme.colors.onBackground // Cache the color outside Canvas
 
     Box(modifier = modifier.padding(start = 5.dp)) {
         BasicTextField(
@@ -223,6 +231,7 @@ fun TextInput(
                     false
                 }
                 .onFocusChanged { focusState ->
+                    isFocused = focusState.isFocused
                     if (focusState.isFocused) {
                         val text = state.value.text
                         state.value = state.value.copy(
@@ -234,14 +243,43 @@ fun TextInput(
                     }
                 },
             textStyle = TextStyle.Default.copy(color = MaterialTheme.colors.onBackground),
-            cursorBrush = SolidColor(MaterialTheme.colors.onBackground),
+            cursorBrush = SolidColor(Color.Transparent), // Hide default cursor
             onValueChange = { state.value = it },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search,
-                autoCorrect = false,
+                autoCorrectEnabled = false,
             ),
             keyboardActions = KeyboardActions(onSearch = { onValueSubmit(state.value.text) }),
+            onTextLayout = { textLayoutResult = it }
         )
+
+        // Custom static cursor - draws a non-blinking cursor line
+        if (isFocused && textLayoutResult != null) {
+            val cursorPosition = state.value.selection.start
+            val textLength = textLayoutResult!!.layoutInput.text.length
+            // Ensure cursor position is within valid bounds for the current text layout
+            // Use coerceIn to ensure the cursor position is always within valid range
+            val safeCursorPosition = cursorPosition.coerceIn(0, textLength)
+
+            if (safeCursorPosition <= textLength && textLength > 0) {
+                val cursorOffset = textLayoutResult!!.getCursorRect(safeCursorPosition)
+                Canvas(modifier = Modifier.matchParentSize()) {
+                    drawLine(
+                        color = cursorColor,
+                        start = Offset(
+                            x = cursorOffset.left - scrollState.value.toFloat(),
+                            y = cursorOffset.top
+                        ),
+                        end = Offset(
+                            x = cursorOffset.left - scrollState.value.toFloat(),
+                            y = cursorOffset.bottom
+                        ),
+                        strokeWidth = with(density) { 2.dp.toPx() }
+                    )
+                }
+            }
+        }
+
         if (state.value.text.isEmpty()) {
             Text(
                 stringResource(R.string.main_omnibox_input_hint),
