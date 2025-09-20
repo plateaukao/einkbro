@@ -261,17 +261,27 @@ fun TextInput(
             // Use coerceIn to ensure the cursor position is always within valid range
             val safeCursorPosition = cursorPosition.coerceIn(0, textLength)
 
-            if (safeCursorPosition <= textLength && textLength > 0) {
+            // draw cursor when position is 0 and text is empty too
+            if (safeCursorPosition == 0 && textLength == 0) {
+                Canvas(modifier = Modifier.matchParentSize()) {
+                    drawLine(
+                        color = cursorColor,
+                        start = Offset(x = 0f, y = 0f),
+                        end = Offset(x = 0f, y = size.height),
+                        strokeWidth = with(density) { 2.dp.toPx() }
+                    )
+                }
+            } else if (safeCursorPosition <= textLength) {
                 val cursorOffset = textLayoutResult!!.getCursorRect(safeCursorPosition)
                 Canvas(modifier = Modifier.matchParentSize()) {
                     drawLine(
                         color = cursorColor,
                         start = Offset(
-                            x = cursorOffset.left - scrollState.value.toFloat(),
+                            x = cursorOffset.left - scrollState.value.toFloat() + 2F,
                             y = cursorOffset.top
                         ),
                         end = Offset(
-                            x = cursorOffset.left - scrollState.value.toFloat(),
+                            x = cursorOffset.left - scrollState.value.toFloat() + 2F,
                             y = cursorOffset.bottom
                         ),
                         strokeWidth = with(density) { 2.dp.toPx() }
