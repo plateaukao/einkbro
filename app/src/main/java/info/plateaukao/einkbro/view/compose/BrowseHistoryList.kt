@@ -70,7 +70,7 @@ fun BrowseHistoryList(
                 record = record,
                 bitmap = bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
                 modifier = Modifier
-                    .pointerInput(Unit) {
+                    .pointerInput(record) {
                         detectTapGestures(
                             onTap = { _ -> onClick(record) },
                             onLongPress = { it ->
