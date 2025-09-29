@@ -74,6 +74,7 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
 
     var closeAction: () -> Unit = {}
     var onTextSubmit: (String) -> Unit = {}
+    var onTextChange: (String) -> Unit = {}
     var onPasteClick: () -> Unit = {}
     var onRecordClick: (Record) -> Unit = {}
 
@@ -89,6 +90,7 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
                 shouldReverse = shouldReverse,
                 hasCopiedText = hasCopiedText,
                 onTextSubmit = onTextSubmit,
+                onTextChange = onTextChange,
                 onPasteClick = onPasteClick,
                 closeAction = closeAction,
                 onRecordClick = onRecordClick,
@@ -122,6 +124,7 @@ fun AutoCompleteTextField(
     recordList: MutableState<List<Record>>,
     hasCopiedText: Boolean = false,
     onTextSubmit: (String) -> Unit,
+    onTextChange: (String) -> Unit,
     onPasteClick: () -> Unit,
     closeAction: () -> Unit,
     onRecordClick: (Record) -> Unit,
@@ -144,7 +147,7 @@ fun AutoCompleteTextField(
         verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top
     ) {
         if (!shouldReverse) {
-            TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, closeAction)
+            TextInputBar(requester, text, onTextSubmit, onTextChange, hasCopiedText, onPasteClick, closeAction)
         }
 
         HorizontalSeparator()
@@ -162,7 +165,7 @@ fun AutoCompleteTextField(
         HorizontalSeparator()
 
         if (shouldReverse) {
-            TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, closeAction)
+            TextInputBar(requester, text, onTextSubmit, onTextChange,hasCopiedText, onPasteClick, closeAction)
         }
     }
 }
@@ -172,6 +175,7 @@ private fun TextInputBar(
     focusRequester: FocusRequester,
     text: MutableState<TextFieldValue>,
     onTextSubmit: (String) -> Unit,
+    onTextChange: (String) -> Unit,
     hasCopiedText: Boolean,
     onPasteClick: () -> Unit,
     onDownClick: () -> Unit,
@@ -189,6 +193,7 @@ private fun TextInputBar(
             focusRequester,
             state = text,
             onValueSubmit = onTextSubmit,
+            onValueChange = onTextChange,
         )
 
         TextBarIcon(
@@ -207,6 +212,7 @@ fun TextInput(
     focusRequester: FocusRequester,
     state: MutableState<TextFieldValue>,
     onValueSubmit: (String) -> Unit,
+    onValueChange: (String) -> Unit,
 ) {
     val scrollState = remember { androidx.compose.foundation.ScrollState(0) }
     val coroutineScope = rememberCoroutineScope()
@@ -244,13 +250,14 @@ fun TextInput(
                 },
             textStyle = TextStyle.Default.copy(color = MaterialTheme.colors.onBackground),
             cursorBrush = SolidColor(Color.Transparent), // Hide default cursor
-            onValueChange = { state.value = it },
+            onValueChange = { state.value = it ; onValueChange(it.text) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search,
                 autoCorrectEnabled = false,
             ),
             keyboardActions = KeyboardActions(onSearch = { onValueSubmit(state.value.text) }),
-            onTextLayout = { textLayoutResult = it }
+            onTextLayout = { textLayoutResult = it },
+
         )
 
         // Custom static cursor - draws a non-blinking cursor line
@@ -329,6 +336,7 @@ fun PreviewTextBar() {
             focusRequester = FocusRequester(),
             recordList = mutableStateOf(listOf()),
             onRecordClick = {},
+            onTextChange = {},
         )
     }
 }

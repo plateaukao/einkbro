@@ -97,6 +97,8 @@ private fun RecordItem(
         ).format(record.time)
         else ""
 
+    val isTypeSuggestion = record.type == RecordType.Suggestion
+
     Row(
         modifier = modifier
             .padding(2.dp),
@@ -109,6 +111,16 @@ private fun RecordItem(
                     .size(30.dp)
                     .padding(end = 5.dp),
                 imageVector = ImageVector.vectorResource(id = R.drawable.icon_bookmark),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground
+            )
+        } else if (isTypeSuggestion) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(30.dp)
+                    .padding(end = 5.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable.icon_search),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
             )
@@ -138,43 +150,48 @@ private fun RecordItem(
                 .align(Alignment.CenterVertically)
         ) {
             AndroidView(
+                modifier = Modifier.conditional(isTypeSuggestion) {
+                    height(30.dp)
+                },
                 factory = { context ->
                     TextView(context).apply {
-                        textSize = 16.sp.value.toFloat()
+                        textSize = if (isTypeSuggestion) 20.sp.value else 16.sp.value
                         maxLines = 1
                         ellipsize = TextUtils.TruncateAt.MIDDLE
                     }
                 },
                 update = { it.text = record.title ?: "Unknown" }
             )
-            Spacer(modifier = Modifier.height(1.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                AndroidView(
-                    modifier = Modifier
-                        .weight(1F)
-                        .align(Alignment.Top),
-                    factory = { context ->
-                        TextView(context).apply {
-                            textSize = 12.sp.value.toFloat()
-                            textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                            maxLines = 1
-                            ellipsize = TextUtils.TruncateAt.MIDDLE
-                        }
-                    },
-                    update = { it.text = record.url }
-                )
-                // alight to end of row
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 3.dp)
-                        .align(Alignment.Top),
-                    text = timeString,
-                    textAlign = TextAlign.End,
-                    fontSize = 10.sp,
-                    color = MaterialTheme.colors.onBackground,
-                )
+            if (!isTypeSuggestion) {
+                Spacer(modifier = Modifier.height(1.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    AndroidView(
+                        modifier = Modifier
+                            .weight(1F)
+                            .align(Alignment.Top),
+                        factory = { context ->
+                            TextView(context).apply {
+                                textSize = 12.sp.value.toFloat()
+                                textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                                maxLines = 1
+                                ellipsize = TextUtils.TruncateAt.MIDDLE
+                            }
+                        },
+                        update = { it.text = record.url }
+                    )
+                    // alight to end of row
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 3.dp)
+                            .align(Alignment.Top),
+                        text = timeString,
+                        textAlign = TextAlign.End,
+                        fontSize = 10.sp,
+                        color = MaterialTheme.colors.onBackground,
+                    )
+                }
             }
         }
     }

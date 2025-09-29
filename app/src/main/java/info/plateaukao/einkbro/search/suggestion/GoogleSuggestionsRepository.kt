@@ -1,7 +1,5 @@
 package info.plateaukao.einkbro.search.suggestion
 
-import info.plateaukao.einkbro.EinkBroApplication
-import info.plateaukao.einkbro.R
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import org.xmlpull.v1.XmlPullParser
@@ -9,8 +7,6 @@ import org.xmlpull.v1.XmlPullParserFactory
 
 class GoogleSuggestionsRepository : SearchSuggestionsRepository {
     private val okHttpClient: okhttp3.OkHttpClient by lazy { okhttp3.OkHttpClient() }
-
-    private val searchSubtitle = EinkBroApplication.instance.getString(R.string.suggestion)
 
     // https://suggestqueries.google.com/complete/search?output=toolbar&hl={language}&q={query}
     private fun createQueryUrl(query: String, language: String): HttpUrl = HttpUrl.Builder()
@@ -31,7 +27,7 @@ class GoogleSuggestionsRepository : SearchSuggestionsRepository {
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG && "suggestion" == parser.name) {
                 val suggestion = parser.getAttributeValue(null, "data")
-                suggestions.add(SearchSuggestion("$searchSubtitle \"$suggestion\"", suggestion))
+                suggestions.add(SearchSuggestion(suggestion, suggestion))
             }
             eventType = parser.next()
         }
@@ -46,7 +42,7 @@ class GoogleSuggestionsRepository : SearchSuggestionsRepository {
             .get()
             .build()
 
-        okhttp3.OkHttpClient().newCall(request).execute().use { response ->
+        okHttpClient.newCall(request).execute().use { response ->
             if (!response.isSuccessful) {
                 throw Exception("Unexpected code $response")
             }
