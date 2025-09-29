@@ -9,4 +9,4 @@ data class Record(val title: String?, val url: String, val time: Long, val type:
     override fun hashCode(): Int = this.title.hashCode() + this.url.hashCode()
 }
 
-enum class RecordType { Bookmark, History }
+enum class RecordType { Bookmark, History, Suggestion }

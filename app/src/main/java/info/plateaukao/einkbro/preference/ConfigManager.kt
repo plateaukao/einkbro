@@ -161,6 +161,8 @@ class ConfigManager(
 
     var webLoadCacheFirst by BooleanPreference(sp, "sp_web_load_cache_first", false)
 
+    var enableSearchSuggestion by BooleanPreference(sp, "sp_enable_search_suggestion", true)
+
     var pageReservedOffset: Int by IntPreference(sp, K_PRESERVE_HEIGHT, 80)
 
     var pageReservedOffsetInString: String by StringPreference(
