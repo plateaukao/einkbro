@@ -150,9 +150,11 @@ private fun RecordItem(
                 .align(Alignment.CenterVertically)
         ) {
             AndroidView(
-                modifier = Modifier.conditional(isTypeSuggestion) {
-                    height(30.dp)
-                },
+                modifier = Modifier
+                    .conditional(isTypeSuggestion) {
+                        height(35.dp)
+                        padding(end = 5.dp)
+                    },
                 factory = { context ->
                     TextView(context).apply {
                         textSize = if (isTypeSuggestion) 20.sp.value else 16.sp.value
