@@ -728,6 +728,12 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_search_engine,
             config = config::searchEngineUrl,
         ),
+        BooleanSettingItem(
+            R.string.setting_title_search_suggestion,
+            0,
+            R.string.setting_summary_search_suggestion,
+            config::enableSearchSuggestion,
+        ),
         DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_process_text,

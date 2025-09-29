@@ -89,6 +89,7 @@ import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.NewTabBehavior
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
+import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
 import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
@@ -207,6 +208,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val externalSearchViewModel: ExternalSearchViewModel by viewModels()
 
     private val instapaperViewModel: InstapaperViewModel by viewModels()
+
+    private val searchSuggestionViewModel: SearchSuggestionViewModel by inject()
 
     private val keyHandler: KeyHandler by lazy { KeyHandler(this, ebWebView, config) }
 
@@ -1067,6 +1070,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.inputUrl.apply {
             focusRequester = FocusRequester()
             onTextSubmit = { updateAlbum(it.trim()); showToolbar() }
+            onTextChange = { query ->
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        searchSuggestionViewModel.updateSuggestions(query)
+                    }
+                    recordList.value = searchSuggestionViewModel.suggestions.value
+                }
+            }
             onPasteClick = { updateAlbum(getClipboardText()); showToolbar() }
             closeAction = { showToolbar() }
             onRecordClick = {
@@ -2176,8 +2187,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             shouldReverse = !config.isToolbarOnTop
             hasCopiedText = getClipboardText().isNotEmpty()
             lifecycleScope.launch {
-                binding.inputUrl.recordList.value =
-                    recordDb.listEntries(config.showBookmarksInInputBar)
+                withContext(Dispatchers.IO) {
+                    searchSuggestionViewModel.initSuggestions()
+                    binding.inputUrl.recordList.value = searchSuggestionViewModel.suggestions.value
+                }
+                //recordDb.listEntries(config.showBookmarksInInputBar)
             }
         }
 
