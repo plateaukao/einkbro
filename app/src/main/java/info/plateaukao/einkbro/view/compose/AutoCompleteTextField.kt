@@ -130,15 +130,6 @@ fun AutoCompleteTextField(
     onRecordClick: (Record) -> Unit,
 ) {
     val requester = remember { focusRequester }
-    val filteredRecordList = if (text.value.text.isEmpty()) {
-        recordList.value
-    } else {
-        val list = recordList.value.filter {
-            it.title?.contains(text.value.text, ignoreCase = true) == true
-                    || it.url.contains(text.value.text, ignoreCase = true)
-        }
-        list.ifEmpty { recordList.value }
-    }
 
     Column(
         Modifier
@@ -155,7 +146,7 @@ fun AutoCompleteTextField(
             modifier = Modifier
                 .weight(1F, fill = false)
                 .background(MaterialTheme.colors.background),
-            records = filteredRecordList,
+            records = recordList.value,
             bookmarkManager = bookmarkManager,
             shouldReverse = shouldReverse,
             shouldShowTwoColumns = isWideLayout,
@@ -165,7 +156,7 @@ fun AutoCompleteTextField(
         HorizontalSeparator()
 
         if (shouldReverse) {
-            TextInputBar(requester, text, onTextSubmit, onTextChange,hasCopiedText, onPasteClick, closeAction)
+            TextInputBar(requester, text, onTextSubmit, onTextChange, hasCopiedText, onPasteClick, closeAction)
         }
     }
 }
@@ -250,7 +241,7 @@ fun TextInput(
                 },
             textStyle = TextStyle.Default.copy(color = MaterialTheme.colors.onBackground),
             cursorBrush = SolidColor(Color.Transparent), // Hide default cursor
-            onValueChange = { state.value = it ; onValueChange(it.text) },
+            onValueChange = { state.value = it; onValueChange(it.text) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search,
                 autoCorrectEnabled = false,
@@ -258,7 +249,7 @@ fun TextInput(
             keyboardActions = KeyboardActions(onSearch = { onValueSubmit(state.value.text) }),
             onTextLayout = { textLayoutResult = it },
 
-        )
+            )
 
         // Custom static cursor - draws a non-blinking cursor line
         if (isFocused && textLayoutResult != null) {

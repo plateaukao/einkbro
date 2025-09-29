@@ -41,7 +41,7 @@ class SearchSuggestionViewModel : KoinComponent {
                     it.url.contains(query, ignoreCase = true)
         }
 
-        if (query.length <= 2 && filteredRecords.isNotEmpty()) {
+        if ((query.length <= 2 && filteredRecords.isNotEmpty()) || !config.enableSearchSuggestion) {
             _suggestions.value = filteredRecords
             return
         }
