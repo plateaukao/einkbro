@@ -533,4 +533,5 @@
     <string name="setting_summary_nav_pos_reset_custom">Reset custom position</string>
     <string name="setting_title_enable_url_drag_to_action">1 touch to url action</string>
     <string name="setting_summary_enable_url_drag_to_action">Long click on url and move to action items</string>
+    <string name="suggestion">"Search: "</string>
 </resources>
