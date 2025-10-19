@@ -25,9 +25,11 @@ class SearchSuggestionViewModel : KoinComponent {
     val suggestions: StateFlow<List<Record>> = _suggestions
 
     private var historyAndBookmarkRecords = listOf<Record>()
+    private var queryString = ""
     suspend fun initSuggestions() {
         historyAndBookmarkRecords = recordDb.listEntries(config.showBookmarksInInputBar)
         _suggestions.value = historyAndBookmarkRecords
+        queryString = ""
     }
 
     suspend fun updateSuggestions(query: String) {
@@ -36,18 +38,27 @@ class SearchSuggestionViewModel : KoinComponent {
             return
         }
 
+        if (queryString.isNotEmpty() && query.startsWith(queryString) && _suggestions.value.isEmpty())
+        {
+            // if the new query is an extension of the previous query and previous suggestions are empty, keep it empty
+            queryString = query
+            return
+        }
+
+        queryString = query
+
         val filteredRecords = historyAndBookmarkRecords.filter {
             it.title?.contains(query, ignoreCase = true) == true ||
                     it.url.contains(query, ignoreCase = true)
         }
 
-        if ((query.length <= 2 && filteredRecords.isNotEmpty()) || !config.enableSearchSuggestion) {
+        if ((query.length <= 1 && filteredRecords.isNotEmpty()) || !config.enableSearchSuggestion) {
             _suggestions.value = filteredRecords
             return
         }
 
         try {
-            val results = repository.searchSuggestionResults(query).take(5)
+            val results = repository.searchSuggestionResults(query).take(6)
             _suggestions.value =
                 results.map { Record(title = it.title, url = it.url, time = -1, type = RecordType.Suggestion) } +
                         filteredRecords
