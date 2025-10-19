@@ -207,10 +207,10 @@ class ContextMenuDialogFragment(
         // 4. HorizontalSeparator = 1dp
         // 5. Second Row = itemHeightPx
 
-        val urlTextHeight = 30 * density // URL text area
+        //val urlTextHeight = 30 * density // URL text area
         val separatorHeight = 1 * density // HorizontalSeparator
 
-        val firstRowStart = urlTextHeight + separatorHeight
+        val firstRowStart = 0F // urlTextHeight + separatorHeight
         val firstRowEnd = firstRowStart + itemHeightPx
         val secondRowStart = firstRowEnd + separatorHeight
         val secondRowEnd = secondRowStart + itemHeightPx
@@ -277,14 +277,6 @@ private fun ContextMenuItems(
             .width(320.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            URLDecoder.decode(url, "UTF-8"),
-            Modifier.padding(4.dp),
-            color = MaterialTheme.colors.onBackground,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-        )
-        HorizontalSeparator()
         Row(
             modifier = Modifier
                 .width(IntrinsicSize.Max)
@@ -323,6 +315,14 @@ private fun ContextMenuItems(
                 }
             }
         }
+        HorizontalSeparator()
+        Text(
+            URLDecoder.decode(url, "UTF-8"),
+            Modifier.padding(4.dp),
+            color = MaterialTheme.colors.onBackground,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+        )
     }
 }
 
