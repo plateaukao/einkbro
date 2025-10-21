@@ -151,7 +151,11 @@ fun AutoCompleteTextField(
             shouldReverse = shouldReverse,
             shouldShowTwoColumns = isWideLayout,
             onClick = onRecordClick,
-            onLongClick = { _, _ -> }
+            onLongClick = { _, _ -> },
+            onAppendClick = { suggestion ->
+                val resultString = "$suggestion "
+                text.value = TextFieldValue(resultString, selection = TextRange(resultString.length))
+            },
         )
         HorizontalSeparator()
 

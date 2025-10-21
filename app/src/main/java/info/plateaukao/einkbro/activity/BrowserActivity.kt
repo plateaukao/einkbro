@@ -164,6 +164,7 @@ import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -1066,12 +1067,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         enterPictureInPictureMode(params)
     }
 
+    private var searchJob: Job? = null
     private fun initInputBar() {
         binding.inputUrl.apply {
             focusRequester = FocusRequester()
             onTextSubmit = { updateAlbum(it.trim()); showToolbar() }
             onTextChange = { query ->
-                lifecycleScope.launch {
+                searchJob?.cancel()
+                searchJob = lifecycleScope.launch {
+                    kotlinx.coroutines.delay(300) // Debounce for 300ms
                     withContext(Dispatchers.IO) {
                         searchSuggestionViewModel.updateSuggestions(query)
                     }
