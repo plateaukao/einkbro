@@ -245,10 +245,10 @@
 :root[style] body .${INJECTED_STYLE_CLASS_DOWN},
 :root body[style] .${INJECTED_STYLE_CLASS_DOWN},
 :root[style] body[style] .${INJECTED_STYLE_CLASS_DOWN} {
-  outline-color: black !important;
+  /*outline-color: black !important;
   outline-style: dashed !important;
   outline-width: 0.2em !important;
-  outline-offset: -0.2em !important;
+  outline-offset: -0.2em !important;*/
 }
 
 :root body .${INJECTED_STYLE_CLASS_UP},
@@ -257,8 +257,8 @@
 :root[style] body[style] .${INJECTED_STYLE_CLASS_UP} {
   outline-color: black !important;
   outline-style: dotted !important;
-  outline-width: 0.4em !important;
-  outline-offset: -0.4em !important;
+  outline-width: 0.2em !important;
+  outline-offset: -0.2em !important;
 }
 
 :root body .${INJECTED_STYLE_CLASS_FIT},
@@ -360,6 +360,7 @@
     relayout("bootstrap");
 
     const _touchDowns = [];
+    let _doubleTap = undefined;
 
     let timeout_INJECTED_STYLE_CLASS_MARGIN_add = undefined;
     let timeout_INJECTED_STYLE_CLASS_MARGIN_remove = undefined;
@@ -665,26 +666,33 @@
         element.classList.remove(INJECTED_STYLE_CLASS_DOWN);
       });
 
-      let timeMin = 0;
-      let timeMax = Date.now(); // Number.MAX_SAFE_INTEGER;
-      _touchDowns.forEach((item) => {
-        if (item.timestamp > timeMin) {
-          timeMin = item.timestamp;
+      let doubleTap = false;
+      const now = Date.now();
+      if (_touchDowns.length !== 2) {
+        _doubleTap = undefined;
+      } else if (_doubleTap) {
+        const delta = now - _doubleTap;
+        if (delta > 500) {
+          _doubleTap = now;
+        } else {
+          _doubleTap = undefined;
+          doubleTap = true;
         }
-      });
-      const timeDelta = timeMax - timeMin;
+      } else {
+        _doubleTap = now;
+      }
 
       const scrolling = _touchDowns.length === 1;
-      if (
-        _touchDowns.length === 1 ||
-        (_touchDowns.length === 2 && timeDelta < 500) ||
-        _touchDowns.length >= 3
-      ) {
+      const zooming = _touchDowns.length === 2 && !doubleTap;
+      const cancelling = _touchDowns.length >= 3;
+      if (scrolling || zooming || cancelling) {
         _touchDowns.splice(0, _touchDowns.length);
 
-        if (scrolling) {
+        if (scrolling || zooming) {
           if (DEBUG)
-            console.log(`[${NAME}] 1-finger SCROLL ==> PRESERVE WRAP FIT`);
+            console.log(
+              `[${NAME}] 1-finger SCROLL or 2-finger ZOOM ==> PRESERVE WRAP FIT`,
+            );
           return;
         }
 
@@ -697,16 +705,13 @@
 
         document.documentElement.style.zoom = 1;
 
-        if (DEBUG)
-          console.log(
-            `[${NAME}] 2-finger ZOOM or 3+ finger TAP ==> CANCEL WRAP FIT`,
-          );
+        if (DEBUG) console.log(`[${NAME}] 3+ finger TAP ==> CANCEL WRAP FIT`);
         return;
       }
 
-      // _touchDowns.length === 2 && timeDelta >= 1000
+      // _touchDowns.length === 2 && doubleTap
 
-      if (DEBUG) console.log(`[${NAME}] long 2-finger TAP ==> WRAP!`);
+      if (DEBUG) console.log(`[${NAME}] double 2-finger TAP ==> WRAP!`);
 
       const element =
         firstNearestCommonAncestor(
@@ -726,7 +731,7 @@
         elementsUp?.forEach((element) => {
           element.classList.remove(INJECTED_STYLE_CLASS_UP);
         });
-      }, 800);
+      }, 2000);
 
       const zoom = document.documentElement.style.zoom || 1;
       const maxWidth = round(window.visualViewport.width * 0.96);
@@ -745,7 +750,8 @@
       if (Math.round(maxWidth) - Math.round(rect.width) > 10) {
         const ratio = maxWidth / rect.width;
         if (DEBUG) console.log(`[${NAME}] ratio: ${ratio}`);
-        document.documentElement.style.zoom = ratio;
+        document.documentElement.style.zoom =
+          ratio * (document.documentElement.style.zoom || 1);
       }
 
       element.classList.add(INJECTED_STYLE_CLASS_FIT);
