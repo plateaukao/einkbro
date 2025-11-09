@@ -153,15 +153,19 @@
       left.style.setProperty("left", `${leftLeft}px`, "important");
       left.style.setProperty("top", `${top}px`, "important");
       left.style.setProperty("width", `${width}px`, "important");
-      left.style.setProperty("border-width", `${borderWidth}px`, "important");
+      left.style.setProperty(
+        "border-width",
+        `${round(borderWidth / zoom)}px`,
+        "important",
+      );
       left.style.setProperty(
         "border-top-right-radius",
-        `${borderWidth * 10}px`,
+        `${round((borderWidth * 10) / zoom)}px`,
         "important",
       );
       left.style.setProperty(
         "border-bottom-right-radius",
-        `${borderWidth * 10}px`,
+        `${round((borderWidth * 10) / zoom)}px`,
         "important",
       );
       left.style.setProperty("height", `${height}px`, "important");
@@ -172,15 +176,19 @@
       right.style.setProperty("left", `${rightLeft}px`, "important");
       right.style.setProperty("top", `${top}px`, "important");
       right.style.setProperty("width", `${width}px`, "important");
-      right.style.setProperty("border-width", `${borderWidth}px`, "important");
+      right.style.setProperty(
+        "border-width",
+        `${round(borderWidth / zoom)}px`,
+        "important",
+      );
       right.style.setProperty(
         "border-top-left-radius",
-        `${borderWidth * 10}px`,
+        `${round((borderWidth * 10) / zoom)}px`,
         "important",
       );
       right.style.setProperty(
         "border-bottom-left-radius",
-        `${borderWidth * 10}px`,
+        `${round((borderWidth * 10) / zoom)}px`,
         "important",
       );
       right.style.setProperty("height", `${height}px`, "important");
@@ -504,6 +512,7 @@
         // mx: ev.x,
         // my: ev.y,
         released: false,
+        timestamp: Date.now(),
       });
 
       ev.target.classList.add(INJECTED_STYLE_CLASS_DOWN);
@@ -656,11 +665,20 @@
         element.classList.remove(INJECTED_STYLE_CLASS_DOWN);
       });
 
+      let timeMin = 0;
+      let timeMax = Date.now(); // Number.MAX_SAFE_INTEGER;
+      _touchDowns.forEach((item) => {
+        if (item.timestamp > timeMin) {
+          timeMin = item.timestamp;
+        }
+      });
+      const timeDelta = timeMax - timeMin;
+
       const scrolling = _touchDowns.length === 1;
       if (
         _touchDowns.length === 1 ||
-        _touchDowns.length === 2 ||
-        _touchDowns.length >= 4
+        (_touchDowns.length === 2 && timeDelta < 500) ||
+        _touchDowns.length >= 3
       ) {
         _touchDowns.splice(0, _touchDowns.length);
 
@@ -677,16 +695,18 @@
           element.classList.remove(INJECTED_STYLE_CLASS_FIT);
         });
 
+        document.documentElement.style.zoom = 1;
+
         if (DEBUG)
           console.log(
-            `[${NAME}] 2-finger ZOOM or 4-finger TAP ==> CANCEL WRAP FIT`,
+            `[${NAME}] 2-finger ZOOM or 3+ finger TAP ==> CANCEL WRAP FIT`,
           );
         return;
       }
 
-      // _touchDowns.length === 3
+      // _touchDowns.length === 2 && timeDelta >= 1000
 
-      if (DEBUG) console.log(`[${NAME}] 3-finger TAP ==> WRAP!`);
+      if (DEBUG) console.log(`[${NAME}] long 2-finger TAP ==> WRAP!`);
 
       const element =
         firstNearestCommonAncestor(
@@ -740,8 +760,8 @@
         element.classList.add(INJECTED_STYLE_CLASS_MARGIN);
         element.scrollIntoView({
           behavior: "instant",
-          block: "nearest",
-          inline: "start",
+          block: "center",
+          inline: "center",
         });
         relayout("scrollIntoView");
 
