@@ -77,23 +77,80 @@
     }
 
     function doLayout() {
-      const height = round(window.visualViewport.height / 3); // window.visualViewport.scale
+      const zoom = document.documentElement.style.zoom || 1;
+
+      const height = round(window.visualViewport.height / 3 / zoom); // window.visualViewport.scale
       const top = round(
-        window.visualViewport.offsetTop +
-          document.scrollingElement.scrollTop +
+        (window.visualViewport.offsetTop +
+          document.scrollingElement.scrollTop) /
+          zoom +
           height,
       );
-      const width = round(WIDTH_TOUCH_OVERLAY / window.visualViewport.scale);
+      const width = round(
+        WIDTH_TOUCH_OVERLAY / window.visualViewport.scale / zoom,
+      );
       const borderWidth = round(
         BORDER_TOUCH_OVERLAY / window.visualViewport.scale,
       );
 
+      let bodyLeft = window.getComputedStyle(document.body).left;
+      // console.log("bodyLeft", bodyLeft);
+
+      let bodyRight = window.getComputedStyle(document.body).right;
+      // console.log("bodyRight", bodyRight);
+
+      bodyLeft = parseInt(bodyLeft);
+      bodyRight = parseInt(bodyRight);
+
+      bodyLeft = isNaN(bodyLeft) ? 0 : bodyLeft;
+      bodyRight = isNaN(bodyRight) ? 0 : bodyRight;
+
+      const scrollbarWidth =
+        document.scrollingElement.clientWidth -
+        document.scrollingElement.offsetWidth;
+
+      const leftLeft =
+        round(
+          window.visualViewport.offsetLeft +
+            document.scrollingElement.scrollLeft -
+            bodyLeft,
+        ) / zoom;
+
+      const rightLeft =
+        leftLeft +
+        round(
+          window.visualViewport.width -
+            WIDTH_TOUCH_OVERLAY / window.visualViewport.scale,
+        ) /
+          zoom;
+      // round(
+      //   scrollbarWidth / window.visualViewport.scale +
+      //     window.visualViewport.offsetLeft +
+      //     window.visualViewport.width +
+      //     document.scrollingElement.scrollLeft -
+      //     bodyRight -
+      //     WIDTH_TOUCH_OVERLAY / window.visualViewport.scale,
+      // ) / zoom;
+
+      // console.log(
+      //   "document.scrollingElement.offsetWidth",
+      //   document.scrollingElement.offsetWidth,
+      // );
+      // console.log(
+      //   "document.scrollingElement.clientWidth",
+      //   document.scrollingElement.clientWidth,
+      // );
+      // console.log("scrollbarWidth", scrollbarWidth);
+
+      // console.log("window.innerWidth", window.innerWidth);
+      // console.log(
+      //   "document.documentElement.offsetWidth",
+      //   document.documentElement.offsetWidth,
+      // );
+      // console.log("document.body.clientWidth", document.body.clientWidth);
+
       const left = document.getElementById(INJECTED_LEFT_ELEMENT_ID);
-      left.style.setProperty(
-        "left",
-        `${round(window.visualViewport.offsetLeft + document.scrollingElement.scrollLeft)}px`,
-        "important",
-      );
+      left.style.setProperty("left", `${leftLeft}px`, "important");
       left.style.setProperty("top", `${top}px`, "important");
       left.style.setProperty("width", `${width}px`, "important");
       left.style.setProperty("border-width", `${borderWidth}px`, "important");
@@ -111,38 +168,8 @@
 
       left.style.display = "block";
 
-      const scrollbarWidth =
-        document.scrollingElement.clientWidth -
-        document.scrollingElement.offsetWidth;
-
-      // console.log("window.innerWidth", window.innerWidth);
-      // console.log(
-      //   "document.documentElement.offsetWidth",
-      //   document.documentElement.offsetWidth,
-      // );
-      // console.log("document.body.clientWidth", document.body.clientWidth);
-
-      // console.log(
-      //   "document.scrollingElement.offsetWidth",
-      //   document.scrollingElement.offsetWidth,
-      // );
-      // console.log(
-      //   "document.scrollingElement.clientWidth",
-      //   document.scrollingElement.clientWidth,
-      // );
-
       const right = document.getElementById(INJECTED_RIGHT_ELEMENT_ID);
-      right.style.setProperty(
-        "left",
-        `${round(
-          scrollbarWidth / window.visualViewport.scale +
-            window.visualViewport.offsetLeft +
-            window.visualViewport.width +
-            document.scrollingElement.scrollLeft -
-            110 / window.visualViewport.scale,
-        )}px`,
-        "important",
-      );
+      right.style.setProperty("left", `${rightLeft}px`, "important");
       right.style.setProperty("top", `${top}px`, "important");
       right.style.setProperty("width", `${width}px`, "important");
       right.style.setProperty("border-width", `${borderWidth}px`, "important");
@@ -161,7 +188,9 @@
       right.style.display = "block";
     }
 
-    const relayout = () => {
+    const relayout = (cause) => {
+      if (DEBUG) console.log(`[${NAME}] relayout CAUSE: ${cause}`);
+
       doLayoutDebounced.clear();
 
       const left = document.getElementById(INJECTED_LEFT_ELEMENT_ID);
@@ -237,10 +266,12 @@
 
   margin: 0 !important;
 
+  /*
   padding-left: 1em !important;
   padding-right: 1em !important;
   padding-top: 1em !important;
   padding-bottom: 1em !important;
+  */
 }
 
 :root body .${INJECTED_STYLE_CLASS_MARGIN},
@@ -255,7 +286,7 @@
   box-sizing: border-box !important;
   position: absolute !important;
   background-color: transparent !important;
-  border: ${BORDER_TOUCH_OVERLAY}px dotted transparent !important;
+  border: ${BORDER_TOUCH_OVERLAY}px dotted black !important;
   border-top-right-radius: ${BORDER_TOUCH_OVERLAY * 10}px !important;
   border-bottom-right-radius: ${BORDER_TOUCH_OVERLAY * 10}px !important;
 }
@@ -264,13 +295,47 @@
   box-sizing: border-box !important;
   position: absolute !important;
   background-color: transparent !important;
-  border: ${BORDER_TOUCH_OVERLAY}px dotted transparent !important;
+  border: ${BORDER_TOUCH_OVERLAY}px dotted black !important;
   border-top-left-radius: ${BORDER_TOUCH_OVERLAY * 10}px !important;
   border-bottom-left-radius: ${BORDER_TOUCH_OVERLAY * 10}px !important;
 }
 `;
 
       document.head.appendChild(styleElement);
+
+      if (DEBUG) console.log(`[${NAME}] Pausing audio/video...`);
+
+      const medias = document.body.querySelectorAll("video, audio");
+      medias?.forEach((media) => {
+        try {
+          media.pause();
+        } catch (e) {}
+      });
+
+      if (DEBUG)
+        console.log(`[${NAME}] Checking meta viewport in document HEAD...`);
+
+      const viewports_ = document.head.querySelectorAll(
+        'meta[name="viewport"]',
+      );
+      const viewports = viewports_?.length ? Array.from(viewports_) : [];
+      let viewportToInsert = undefined;
+      if (!viewports.length) {
+        const viewport = document.createElement("meta");
+        viewport.setAttribute("name", "viewport");
+        viewportToInsert = viewport;
+        viewports.push(viewport);
+      }
+      viewports.forEach((viewport) => {
+        viewport.setAttribute("content", "initial-scale=1,maximum-scale=10.0");
+      });
+      if (viewportToInsert) {
+        if (DEBUG)
+          console.log(
+            `[${NAME}] Injecting missing meta viewport in document HEAD...`,
+          );
+        document.head.appendChild(viewportToInsert);
+      }
 
       if (DEBUG)
         console.log(`[${NAME}] Injecting user interface in document BODY...`);
@@ -284,7 +349,7 @@
       document.body.appendChild(rightElement);
     }
 
-    relayout();
+    relayout("bootstrap");
 
     const _touchDowns = [];
 
@@ -294,7 +359,8 @@
 
     // ####################################################################################
     function onTouchStart(ev) {
-      relayout();
+      ev.stopPropagation();
+      relayout("onTouchStart");
       // if (DEBUG)
       //   console.log(
       //     `[${NAME}] DOCUMENT EVENT: "touchstart" ${ev.touches?.length} (${JSON.stringify(ev.touches, null, 4)})`,
@@ -304,14 +370,13 @@
       //   console.log(
       //     `[${NAME}] data log: ${JSON.stringify(_touchDowns, null, 4)}`,
       //   );
-
-      // ev.stopPropagation();
     }
     window.document.addEventListener("touchstart", onTouchStart, true);
 
     // ####################################################################################
     function onTouchEnd(ev) {
-      relayout();
+      ev.stopPropagation();
+      relayout("onTouchEnd");
       // if (DEBUG)
       //   console.log(
       //     `[${NAME}] DOCUMENT EVENT: "touchend" ${ev.touches?.length} (${JSON.stringify(ev.touches, null, 4)})`,
@@ -321,14 +386,13 @@
       //   console.log(
       //     `[${NAME}] data log: ${JSON.stringify(_touchDowns, null, 4)}`,
       //   );
-
-      // ev.stopPropagation();
     }
     window.document.addEventListener("touchend", onTouchEnd, true);
 
     // ####################################################################################
     function onTouchCancel(ev) {
-      relayout();
+      ev.stopPropagation();
+      relayout("onTouchCancel");
       // if (DEBUG)
       //   console.log(
       //     `[${NAME}] DOCUMENT EVENT: "touchcancel" ${ev.touches?.length} (${JSON.stringify(ev.touches, null, 4)})`,
@@ -338,14 +402,13 @@
       //   console.log(
       //     `[${NAME}] data log: ${JSON.stringify(_touchDowns, null, 4)}`,
       //   );
-
-      // ev.stopPropagation();
     }
     window.document.addEventListener("touchcancel", onTouchCancel, true);
 
     // ####################################################################################
     function onTouchMove(ev) {
-      relayout();
+      ev.stopPropagation();
+      relayout("onTouchMove");
       // if (DEBUG)
       //   console.log(
       //     `[${NAME}] DOCUMENT EVENT: "touchmove" ${ev.touches?.length} (${JSON.stringify(ev.touches, null, 4)})`,
@@ -355,14 +418,13 @@
       //   console.log(
       //     `[${NAME}] data log: ${JSON.stringify(_touchDowns, null, 4)}`,
       //   );
-
-      // ev.stopPropagation();
     }
     window.document.addEventListener("touchmove", onTouchMove, true);
 
     // ####################################################################################
     function onPointerLeave(ev) {
-      relayout();
+      ev.stopPropagation();
+      // relayout("onPointerLeave");
       // if (DEBUG)
       //   console.log(
       //     `[${NAME}] DOCUMENT EVENT: "pointerleave" ${ev.pointerId} (${ev.x}, ${ev.y})`,
@@ -372,14 +434,13 @@
       //   console.log(
       //     `[${NAME}] data log: ${JSON.stringify(_touchDowns, null, 4)}`,
       //   );
-
-      // ev.stopPropagation();
     }
     window.document.addEventListener("pointerleave", onPointerLeave, true);
 
     // ####################################################################################
     function onPointerOut(ev) {
-      relayout();
+      ev.stopPropagation();
+      relayout("onPointerOut");
       // if (DEBUG)
       //   console.log(
       //     `[${NAME}] DOCUMENT EVENT: "pointerout" ${ev.pointerId} (${ev.x}, ${ev.y})`,
@@ -390,8 +451,6 @@
       //     `[${NAME}] data log: ${JSON.stringify(_touchDowns, null, 4)}`,
       //   );
 
-      // ev.stopPropagation();
-
       // if (ev.pointerType !== "touch") {
       //   return;
       // }
@@ -400,7 +459,7 @@
 
     // ####################################################################################
     function onPointerDown(ev) {
-      relayout();
+      relayout("onPointerDown");
 
       if (DEBUG)
         console.log(
@@ -453,7 +512,8 @@
 
     // ####################################################################################
     function onPointerMove(ev) {
-      relayout();
+      ev.stopPropagation();
+      relayout("onPointerMove");
 
       // if (DEBUG)
       //   console.log(
@@ -464,8 +524,6 @@
       //   console.log(
       //     `[${NAME}] data log: ${JSON.stringify(_touchDowns, null, 4)}`,
       //   );
-
-      // // ev.stopPropagation();
 
       // if (ev.pointerType !== "touch") {
       //   return;
@@ -531,7 +589,7 @@
 
     // ####################################################################################
     function onPointerUp(ev) {
-      relayout();
+      relayout("onPointerUp");
 
       if (DEBUG)
         console.log(
@@ -650,20 +708,25 @@
         });
       }, 800);
 
+      const zoom = document.documentElement.style.zoom || 1;
       const maxWidth = round(window.visualViewport.width * 0.96);
       document.documentElement.style.setProperty(
         "--window-visualViewport-width",
-        `${maxWidth}px`,
+        `${round(maxWidth / zoom)}px`,
       );
 
-      //    const rect = element.getBoundingClientRect();
-      //    let delay = 0;
-      //    if (rect.width < maxWidth) {
-      //        delay = 1000;
-      //        const ratio = maxWidth / rect.width;
-      //        console.log("ZOOM ratio: ", ratio);
-      //        document.documentElement.style.zoom = ratio;
-      //    }
+      const rect = element.getBoundingClientRect();
+      if (DEBUG)
+        console.log(
+          `[${NAME}] documentElement.style.zoom: ${document.documentElement.style.zoom}`,
+        );
+      if (DEBUG) console.log(`[${NAME}] maxWidth: ${maxWidth}`);
+      if (DEBUG) console.log(`[${NAME}] rect.width: ${rect.width}`);
+      if (Math.round(maxWidth) - Math.round(rect.width) > 10) {
+        const ratio = maxWidth / rect.width;
+        if (DEBUG) console.log(`[${NAME}] ratio: ${ratio}`);
+        document.documentElement.style.zoom = ratio;
+      }
 
       element.classList.add(INJECTED_STYLE_CLASS_FIT);
 
@@ -680,7 +743,7 @@
           block: "nearest",
           inline: "start",
         });
-        relayout();
+        relayout("scrollIntoView");
 
         if (!!timeout_INJECTED_STYLE_CLASS_MARGIN_remove) {
           window.clearTimeout(timeout_INJECTED_STYLE_CLASS_MARGIN_remove);
@@ -689,7 +752,7 @@
         timeout_INJECTED_STYLE_CLASS_MARGIN_remove = setTimeout(() => {
           timeout_INJECTED_STYLE_CLASS_MARGIN_remove = undefined;
           element.classList.remove(INJECTED_STYLE_CLASS_MARGIN);
-          relayout();
+          relayout("timeout_INJECTED_STYLE_CLASS_MARGIN_remove");
         }, 500);
       }, 500);
     }
@@ -697,11 +760,11 @@
 
     window.addEventListener("scroll", function () {
       if (DEBUG) console.log(`[${NAME}] WINDOW EVENT: "scroll"`);
-      relayout();
+      relayout("scroll");
     });
 
     window.visualViewport.addEventListener("resize", function () {
-      relayout();
+      relayout("visualViewport resize");
 
       if (DEBUG)
         console.log(`[${NAME}] WINDOW VISUAL VIEWPORT EVENT: "resize"`);
@@ -745,14 +808,14 @@
         );
     });
     window.addEventListener("resize", function () {
-      relayout();
+      relayout("window resize");
 
       // if (DEBUG) console.log(`[${NAME}] WINDOW EVENT: "resize"`);
     });
 
     let tearDownMediaQuery = undefined;
     const updatePixelRatio = () => {
-      relayout();
+      relayout("updatePixelRatio");
 
       tearDownMediaQuery?.();
       const media = window.matchMedia(
