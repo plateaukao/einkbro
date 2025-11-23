@@ -4,6 +4,7 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.database.RecordType
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.search.SearchEngine
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.component.KoinComponent
@@ -15,7 +16,7 @@ class SearchSuggestionViewModel : KoinComponent {
 
     private val repository: SearchSuggestionsRepository by lazy {
         when (config.searchEngine) {
-            "Google" -> GoogleSuggestionsRepository()
+            SearchEngine.DUCKDUCKGO.ordinal.toString() -> DuckDuckGoSuggestionsRepository()
             else -> GoogleSuggestionsRepository()
         }
     }

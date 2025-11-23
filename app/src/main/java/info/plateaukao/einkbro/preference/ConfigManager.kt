@@ -13,6 +13,7 @@ import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubFileInfo
+import info.plateaukao.einkbro.search.SearchEngine
 import info.plateaukao.einkbro.service.GptVoiceOption
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
@@ -210,7 +211,7 @@ class ConfigManager(
     var searchEngine by StringPreference(
         sp,
         K_SEARCH_ENGINE,
-        if (Locale.getDefault().country == "CN") "2" else "5"
+        if (Locale.getDefault().country == "CN") SearchEngine.BAIDU.ordinal.toString() else SearchEngine.GOOGLE.ordinal.toString()
     )
     var searchEngineUrl by StringPreference(
         sp,
