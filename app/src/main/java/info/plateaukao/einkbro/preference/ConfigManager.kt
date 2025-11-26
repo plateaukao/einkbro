@@ -186,6 +186,11 @@ class ConfigManager(
         set(value) {
             sp.edit { putString(K_FONT_SIZE, value.toString()) }
         }
+    var customFontSize: Int
+        get() = sp.getString(K_CUSTOM_FONT_SIZE, "100")?.toInt() ?: fontSize
+        set(value) {
+            sp.edit { putString(K_CUSTOM_FONT_SIZE, value.toString()) }
+        }
     var readerFontSize: Int
         get() = sp.getString(K_READER_FONT_SIZE, fontSize.toString())?.toInt() ?: fontSize
         set(value) {
@@ -874,6 +879,7 @@ class ConfigManager(
         const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"
         const val K_FONT_SIZE = "sp_fontSize"
+        const val K_CUSTOM_FONT_SIZE = "sp_customFontSize"
         const val K_READER_FONT_SIZE = "sp_reader_fontSize"
         const val K_TTS_SPEED_VALUE = "sp_tts_speed"
         const val K_FAVORITE_URL = "favoriteURL"

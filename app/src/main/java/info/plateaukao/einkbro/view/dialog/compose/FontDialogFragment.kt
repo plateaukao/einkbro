@@ -15,6 +15,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,45 +24,65 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
+import info.plateaukao.einkbro.view.dialog.TextInputDialog
+import kotlinx.coroutines.launch
 
 class FontDialogFragment(
-    private val onFontCustomizeClick: () -> Unit
+    private val onFontTypeChanged: () -> Unit
 ) : ComposeDialogFragment() {
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
                 val customFontName = remember { mutableStateOf(config.customFontInfo?.name.orEmpty()) }
+                val fontSizeState = remember { mutableIntStateOf(config.fontSize) }
                 config.registerOnSharedPreferenceChangeListener { _, key ->
                     if (key == ConfigManager.K_CUSTOM_FONT) {
                         customFontName.value = config.customFontInfo?.name.orEmpty()
                     }
                 }
                 MainFontDialog(
-                    selectedFontSizeValue = config.fontSize,
+                    selectedFontSizeValue = fontSizeState.value,
+                    customFontSizeValue = config.customFontSize,
                     selectedFontType = config.fontType,
                     customFontName = customFontName.value,
                     onFontSizeClick = {
                         config.fontSize = it
+                        fontSizeState.value = it
                         dismiss()
                     },
                     onFontTypeClick = {
                         if (it == FontType.CUSTOM && config.customFontInfo == null) {
-                            onFontCustomizeClick()
+                            onFontTypeChanged()
                         } else {
                             config.fontType = it
                             dismiss()
                         }
                     },
-                    onFontCustomizeClick = {
-                        onFontCustomizeClick()
+                    onFontTypeChanged = {
+                        onFontTypeChanged()
                         config.registerOnSharedPreferenceChangeListener { _, key ->
                             if (key == ConfigManager.K_CUSTOM_FONT) {
                                 customFontName.value = config.customFontInfo?.name.orEmpty()
+                            }
+                        }
+                    },
+                    onCustomFontSizeClick = {
+                        lifecycleScope.launch {
+                            TextInputDialog(
+                                requireContext(),
+                                getString(R.string.custom_scale),
+                                getString(R.string.custom_scale_desc),
+                                config.customFontSize.toString()
+                            ).show()?.toIntOrNull()?.let {
+                                config.fontSize = it
+                                config.customFontSize = it
+                                fontSizeState.value = it
                             }
                         }
                     },
@@ -86,14 +107,20 @@ val fontSizeList2 = listOf(
     200,
 )
 
+val fontSizeList3 = listOf(
+    -1 // Custom
+)
+
 @Composable
 fun MainFontDialog(
     selectedFontSizeValue: Int,
+    customFontSizeValue: Int,
     selectedFontType: FontType,
     customFontName: String,
     onFontSizeClick: (Int) -> Unit,
     onFontTypeClick: (FontType) -> Unit,
-    onFontCustomizeClick: () -> Unit,
+    onFontTypeChanged: () -> Unit,
+    onCustomFontSizeClick: () -> Unit,
     okAction: () -> Unit,
 ) {
     Column(
@@ -121,6 +148,7 @@ fun MainFontDialog(
                 }
             }
         }
+
         Row {
             fontSizeList2.map { fontSize ->
                 val isSelect = selectedFontSizeValue == fontSize
@@ -134,6 +162,25 @@ fun MainFontDialog(
                 }
             }
         }
+        Row {
+            fontSizeList3.map { fontSize ->
+                val isSelect = selectedFontSizeValue !in fontSizeList1 && selectedFontSizeValue !in fontSizeList2
+                val text = if (customFontSizeValue !in fontSizeList1 && customFontSizeValue !in fontSizeList2) {
+                    "$customFontSizeValue%"
+                } else {
+                    stringResource(id = R.string.custom_scale)
+                }
+                SelectableText(
+                    modifier = Modifier
+                        .padding(horizontal = 1.dp, vertical = 3.dp),
+                    selected = isSelect,
+                    text = text,
+                ) {
+                    onCustomFontSizeClick()
+                }
+            }
+        }
+
         Text(
             stringResource(id = R.string.font_type),
             modifier = Modifier.padding(vertical = 6.dp),
@@ -169,7 +216,7 @@ fun MainFontDialog(
                             onFontTypeClick(fontType)
                         }
                         IconButton(
-                            onClick = onFontCustomizeClick,
+                            onClick = onFontTypeChanged,
                         ) {
                             Icon(
                                 tint = MaterialTheme.colors.onBackground,
@@ -215,11 +262,13 @@ fun PreviewMainFontDialog() {
     MyTheme {
         MainFontDialog(
             selectedFontSizeValue = 100,
+            customFontSizeValue = 120,
             selectedFontType = FontType.SYSTEM_DEFAULT,
             customFontName = "Noto Sans CJK TC",
             onFontSizeClick = {},
             onFontTypeClick = {},
-            onFontCustomizeClick = {},
+            onFontTypeChanged = {},
+            onCustomFontSizeClick = {},
             okAction = {},
         )
     }

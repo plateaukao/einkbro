@@ -38,6 +38,7 @@ class ReaderFontDialogFragment(
                     remember { customFontNameState }
                 MainFontDialog(
                     selectedFontSizeValue = config.readerFontSize,
+                    customFontSizeValue = config.customFontSize,
                     selectedFontType = config.readerFontType,
                     customFontName = customFontName.value,
                     onFontSizeClick = {
@@ -52,7 +53,8 @@ class ReaderFontDialogFragment(
                             dismiss()
                         }
                     },
-                    onFontCustomizeClick = { onFontCustomizeClick() },
+                    onFontTypeChanged = onFontCustomizeClick,
+                    onCustomFontSizeClick = onFontCustomizeClick,
                     okAction = { dismiss() },
                 )
             }
