@@ -87,7 +87,7 @@ fun BrowseHistoryList(
                     .onGloballyPositioned { boxPosition.value = it.positionOnScreen() },
                 onAppendClick = onAppendClick,
 
-            )
+                )
         }
     }
 }
@@ -97,7 +97,7 @@ private fun RecordItem(
     modifier: Modifier,
     bitmap: Bitmap? = null,
     record: Record,
-    onAppendClick: (String) -> Unit = {}
+    onAppendClick: (String) -> Unit = {},
 ) {
     val timeString =
         if (record.type == RecordType.History) SimpleDateFormat(
@@ -125,13 +125,14 @@ private fun RecordItem(
                     tint = MaterialTheme.colors.onBackground
                 )
             }
+
             isTypeSuggestion -> {
                 IconButton(
                     modifier = Modifier
                         .wrapContentWidth()
                         .wrapContentHeight()
                         .padding(0.dp),
-                    onClick = { onAppendClick (record.title.orEmpty()) }
+                    onClick = { onAppendClick(record.title.orEmpty()) }
                 ) {
                     Icon(
                         modifier = Modifier
@@ -143,6 +144,7 @@ private fun RecordItem(
                     )
                 }
             }
+
             bitmap != null -> {
                 Image(
                     modifier = Modifier
@@ -153,6 +155,7 @@ private fun RecordItem(
                     contentDescription = null,
                 )
             }
+
             else -> {
                 Icon(
                     modifier = Modifier

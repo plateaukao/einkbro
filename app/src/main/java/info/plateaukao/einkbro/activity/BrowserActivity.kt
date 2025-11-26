@@ -2371,6 +2371,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         motionEvent = event
         longPressPoint = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
+        val rawPoint = event?.toRawPoint() ?: Point(0, 0)
+
         val url = BrowserUnit.getWebViewLinkUrl(ebWebView, message)
         if (url.isNotBlank()) {
             // case: image or link
@@ -2381,7 +2383,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     url,
                     linkImageUrl.isNotBlank(),
                     config.imageApiKey.isNotBlank(),
-                    motionEvent!!.toRawPoint(),
+                    rawPoint,
                 ) {
                     this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
                     activeContextMenuDialog = null

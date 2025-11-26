@@ -12,5 +12,7 @@ class EBClickHandler(private val webView: EBWebView) : Handler() {
     override fun handleMessage(message: Message) {
         super.handleMessage(message)
         webView.browserController?.onLongPress(message, currentMotionEvent)
+        currentMotionEvent?.recycle()
+        currentMotionEvent = null
     }
 }

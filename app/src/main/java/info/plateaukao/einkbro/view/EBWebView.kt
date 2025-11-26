@@ -519,7 +519,7 @@ open class EBWebView(
 
     fun onLongPress(event: MotionEvent) {
         val click = clickHandler.obtainMessage()
-        clickHandler.currentMotionEvent = event
+        clickHandler.currentMotionEvent = MotionEvent.obtain(event)
         click.target = clickHandler
         requestFocusNodeHref(click)
     }
