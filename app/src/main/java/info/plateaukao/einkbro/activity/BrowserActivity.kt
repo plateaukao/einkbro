@@ -1416,36 +1416,48 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 // if webview for that url already exists, show the original tab, otherwise, create new
                 val viewUri = intent.data?.toNormalScheme() ?: return
                 if (viewUri.scheme == "content") {
-                    val (filename, mimetype) = HelperUnit.getFileInfoFromContentUri(this, viewUri)
-                    val mimeType = contentResolver.getType(viewUri)
-                    if (filename?.endsWith(".srt") == true ||
-                        mimeType.equals("application/x-subrip")
-                    ) {
-                        // srt
-                        addAlbum()
-                        val stringList =
-                            HelperUnit.readContentAsStringList(contentResolver, viewUri)
-                        val htmlContent = HelperUnit.srtToHtml(stringList)
-                        ebWebView.isPlainText = true
-                        ebWebView.rawHtmlCache = htmlContent
-                        ebWebView.loadData(htmlContent, "text/html", "utf-8")
+                    lifecycleScope.launch {
+                        val (filename, mimeType) = withContext(Dispatchers.IO) {
+                            val (fName, _) = HelperUnit.getFileInfoFromContentUri(this@BrowserActivity, viewUri)
+                            val mType = contentResolver.getType(viewUri)
+                            Pair(fName, mType)
+                        }
 
-                    } else if (mimeType.equals("application/octet-stream")) {
-                        HelperUnit.getCachedPathFromURI(this, viewUri).let {
-                            addAlbum(url = "file://$it")
+                        if (filename?.endsWith(".srt") == true ||
+                            mimeType == "application/x-subrip"
+                        ) {
+                            // srt
+                            addAlbum()
+                            val htmlContent = withContext(Dispatchers.IO) {
+                                val stringList =
+                                    HelperUnit.readContentAsStringList(contentResolver, viewUri)
+                                HelperUnit.srtToHtml(stringList)
+                            }
+                            ebWebView.isPlainText = true
+                            ebWebView.rawHtmlCache = htmlContent
+                            ebWebView.loadData(htmlContent, "text/html", "utf-8")
+
+                        } else if (mimeType == "application/octet-stream") {
+                            val cachedPath = withContext(Dispatchers.IO) {
+                                HelperUnit.getCachedPathFromURI(this@BrowserActivity, viewUri)
+                            }
+                            cachedPath.let {
+                                addAlbum(url = "file://$it")
+                            }
+                        } else if (filename?.endsWith(".mht") == true) {
+                            // mht
+                            val cachedPath = withContext(Dispatchers.IO) {
+                                HelperUnit.getCachedPathFromURI(this@BrowserActivity, viewUri)
+                            }
+                            addAlbum(url = "file://$cachedPath")
+                        } else if (filename?.endsWith(".html") == true || mimeType == "text/html") {
+                            // local html
+                            updateAlbum(url = viewUri.toString())
+                        } else {
+                            // epub
+                            epubManager.showEpubReader(viewUri)
+                            finish()
                         }
-                    } else if (filename?.endsWith(".mht") == true) {
-                        // mht
-                        HelperUnit.getCachedPathFromURI(this, viewUri).let {
-                            addAlbum(url = "file://$it")
-                        }
-                    } else if (filename?.endsWith(".html") == true || mimeType.equals("text/html")) {
-                        // local html
-                        updateAlbum(url = viewUri.toString())
-                    } else {
-                        // epub
-                        epubManager.showEpubReader(viewUri)
-                        finish()
                     }
                 } else {
                     val url = viewUri.toString()
