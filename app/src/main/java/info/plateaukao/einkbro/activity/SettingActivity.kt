@@ -566,6 +566,12 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_enable_url_drag_to_action,
             config::enableDragUrlToAction,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_text_wrap_reflow,
+            0,
+            R.string.setting_summary_text_wrap_reflow,
+            config::enableZoomTextWrapReflow,
         )
     )
 

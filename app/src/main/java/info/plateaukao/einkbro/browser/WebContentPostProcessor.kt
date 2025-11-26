@@ -71,8 +71,10 @@ class WebContentPostProcessor : KoinComponent {
 
         // https://github.com/plateaukao/einkbro/issues/537
         // https://github.com/emvaized/text-reflow-on-zoom-mobile/blob/main/src/text_reflow_on_pinch_zoom.js
-        val jsZoomTextWrapReflow = HelperUnit.loadAssetFile("zoom-text-wrap-reflow.js")
-        ebWebView.evaluateJavascript(jsZoomTextWrapReflow, null)
+        if (configManager.enableZoomTextWrapReflow) {
+            val jsZoomTextWrapReflow = HelperUnit.loadAssetFile("zoom-text-wrap-reflow.js")
+            ebWebView.evaluateJavascript(jsZoomTextWrapReflow, null)
+        }
     }
 
     companion object {
