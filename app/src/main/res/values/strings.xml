@@ -630,4 +630,6 @@
     <string name="suggestion">"Search: "</string>
     <string name="setting_title_search_suggestion">Search suggestions</string>
     <string name="setting_summary_search_suggestion">"while inputting content, show search suggestions "</string>
+    <string name="custom_scale">Custom Font Scale</string>
+    <string name="custom_scale_desc">Input desired font scale (%)</string>
 </resources>
