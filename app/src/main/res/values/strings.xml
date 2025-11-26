@@ -632,4 +632,6 @@
     <string name="setting_summary_search_suggestion">"while inputting content, show search suggestions "</string>
     <string name="custom_scale">Custom Font Scale</string>
     <string name="custom_scale_desc">Input desired font scale (%)</string>
+    <string name="setting_title_text_wrap_reflow">Text Wrap Reflow</string>
+    <string name="setting_summary_text_wrap_reflow">Enable to double tap on text to text wrap reflow</string>
 </resources>

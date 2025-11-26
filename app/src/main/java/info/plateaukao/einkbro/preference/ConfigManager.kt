@@ -332,6 +332,8 @@ class ConfigManager(
     // add a boolean preference for toggling url dragging
     var enableDragUrlToAction by BooleanPreference(sp, "K_ENABLE_DRAG_URL_TO_ACTION", true)
 
+    var enableZoomTextWrapReflow by BooleanPreference(sp, K_ENABLE_ZOOM_TEXT_WRAP_REFLOW, false)
+
     private val K_RECENT_USED_TTS_VOICES = "sp_recent_used_tts_voices"
     var recentUsedTtsVoices: MutableList<VoiceItem>
         get() {
@@ -1015,6 +1017,8 @@ class ConfigManager(
 
         const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
             "sp_show_translated_image_to_second_panel"
+
+        const val K_ENABLE_ZOOM_TEXT_WRAP_REFLOW = "sp_enable_zoom_text_wrap_reflow"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
