@@ -465,20 +465,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             val params = view.layoutParams as FrameLayout.LayoutParams
 
             if (config.hideStatusbar) {
-                if (isKeyboardDisplaying()) {
+                // When keyboard is visible, adjust for keyboard height
+                // Otherwise, adjust for navigation bar
+                if (insetsKeyboard.bottom > 0) {
                     params.bottomMargin = insetsKeyboard.bottom
+                } else if (insetsNavigationBar.bottom > 0) {
+                    params.bottomMargin = insetsNavigationBar.bottom
                 } else {
-                    if (insetsNavigationBar.bottom > 0) {
-                        params.bottomMargin = insetsNavigationBar.bottom
-                    } else {
-                        params.bottomMargin = 0
-                    }
+                    params.bottomMargin = 0
                 }
                 view.layoutParams = params
             }
-            WindowInsetsCompat.CONSUMED
+            // Return windowInsets instead of CONSUMED to allow proper inset propagation
+            // This is critical for WebView to properly resize when keyboard appears
+            windowInsets
         }
     }
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initExternalSearchCloseButton() {
@@ -1106,6 +1109,28 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             } else {
                 touchController.maybeEnableAgain()
             }
+
+            // Manual keyboard handling for pre-R devices when status bar is hidden
+            val isFullscreen = (window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && isFullscreen) {
+                val rect = Rect()
+                binding.root.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = binding.root.rootView.height
+                val keypadHeight = screenHeight - rect.bottom
+                
+                val params = binding.root.layoutParams as FrameLayout.LayoutParams
+                if (keypadHeight > screenHeight * 0.15) { // Keyboard is open
+                    if (params.bottomMargin != keypadHeight) {
+                        params.bottomMargin = keypadHeight
+                        binding.root.layoutParams = params
+                    }
+                } else { // Keyboard is closed
+                    if (params.bottomMargin != 0) {
+                        params.bottomMargin = 0
+                        binding.root.layoutParams = params
+                    }
+                }
+            }
         }
     }
 
@@ -1202,7 +1227,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 if (config.closeTabWhenNoMoreBackHistory) {
                     removeAlbum()
                 } else {
-                    EBToast.show(this, getString(R.string.no_previous_page))
+                    EBToast.show(this, R.string.no_previous_page)
                 }
             }
         }
@@ -2621,6 +2646,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
+
 
     private fun showStatusBar() {
         if (config.hideStatusbar) return
