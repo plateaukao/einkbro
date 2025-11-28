@@ -158,6 +158,8 @@ class ContextMenuDialogFragment(
     }
 
     fun updateHoveredItem(screenX: Float, screenY: Float) {
+        if (!isAdded) return
+
         // Convert screen coordinates to dialog coordinates and determine hovered item
         val dialogLocation = IntArray(2)
         composeView.getLocationOnScreen(dialogLocation)
