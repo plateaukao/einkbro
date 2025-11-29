@@ -56,6 +56,7 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationTextStyle
+import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
@@ -73,6 +74,7 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -86,6 +88,7 @@ class SettingActivity : FragmentActivity() {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
+    private val openAiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
@@ -225,26 +228,28 @@ class SettingActivity : FragmentActivity() {
                                     addAll(LinkSettingItem.entries.toList())
                                     add(DividerSettingItem())
                                     if (BuildConfig.showUpdateButton) {
-                                        add(ProgressActionSettingItem(
-                                            R.string.setting_title_github_update,
-                                            0,
-                                        ) { progressCallback ->
-                                            lifecycleScope.launch(Dispatchers.IO) {
-                                                HelperUnit.upgradeToLatestRelease(this@SettingActivity) { progress, progressText ->
-                                                    progressCallback.updateProgress(progress, progressText)
+                                        add(
+                                            ProgressActionSettingItem(
+                                                R.string.setting_title_github_update,
+                                                0,
+                                            ) { progressCallback ->
+                                                lifecycleScope.launch(Dispatchers.IO) {
+                                                    HelperUnit.upgradeToLatestRelease(this@SettingActivity) { progress, progressText ->
+                                                        progressCallback.updateProgress(progress, progressText)
+                                                    }
                                                 }
-                                            }
-                                        })
-                                        add(ProgressActionSettingItem(
-                                            R.string.setting_title_github_snapshot,
-                                            0,
-                                        ) { progressCallback ->
-                                            lifecycleScope.launch(Dispatchers.IO) {
-                                                HelperUnit.upgradeFromSnapshot(this@SettingActivity) { progress, progressText ->
-                                                    progressCallback.updateProgress(progress, progressText)
+                                            })
+                                        add(
+                                            ProgressActionSettingItem(
+                                                R.string.setting_title_github_snapshot,
+                                                0,
+                                            ) { progressCallback ->
+                                                lifecycleScope.launch(Dispatchers.IO) {
+                                                    HelperUnit.upgradeFromSnapshot(this@SettingActivity) { progress, progressText ->
+                                                        progressCallback.updateProgress(progress, progressText)
+                                                    }
                                                 }
-                                            }
-                                        })
+                                            })
                                     }
                                     add(DividerSettingItem())
                                 },
@@ -561,7 +566,7 @@ class SettingActivity : FragmentActivity() {
             config::webLoadCacheFirst,
         )
         // add a boolean setting to enable/disable url drag to action feature
-        ,BooleanSettingItem(
+        , BooleanSettingItem(
             R.string.setting_title_enable_url_drag_to_action,
             0,
             R.string.setting_summary_enable_url_drag_to_action,
@@ -772,7 +777,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_remote_query,
             0,
             config = config::remoteQueryActionName,
-            options = listOf("Search") +  config.gptActionList.map { it.name }
+            options = listOf("Search") + config.gptActionList.map { it.name }
         ),
     )
 
@@ -992,12 +997,35 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_edit_gpt_api_key,
             config::gptApiKey
         ),
-        ValueSettingItem(
+        ActionSettingItem(
             R.string.setting_title_gpt_model_name,
             0,
             R.string.setting_summary_gpt_model_name,
-            config::gptModel
-        ),
+            //config::gptModel
+        ) {
+            lifecycleScope.launch {
+                val models = openAiRepository.queryModels(
+                    ChatGPTActionInfo(
+                        name = "",
+                        systemMessage = "",
+                        userMessage = "",
+                        actionType = config.gptForChatWeb,
+                        model = config.gptModel
+                    )
+                )
+                if (models.isNotEmpty()) {
+                    dialogManager.getSelectedOptionWithString(
+                        R.string.setting_title_gpt_model_name,
+                        models,
+                        models.indexOf(config.gptModel).coerceAtLeast(0)
+                    )?.let { index ->
+                        config.gptModel = models[index]
+                    }
+                } else {
+                    EBToast.show(this@SettingActivity, "No models found")
+                }
+            }
+        },
         BooleanSettingItem(
             R.string.use_it_on_tts,
             0,
