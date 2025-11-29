@@ -25,6 +25,7 @@ enum class GestureType(val value: String, val resId: Int) {
     KeyPageDown("20", R.string.key_page_down),
     KeyLeft("21", R.string.key_left),
     KeyRight("22", R.string.key_right),
+    InputUrl("23", R.string.input_url),
     ;
 
     companion object {

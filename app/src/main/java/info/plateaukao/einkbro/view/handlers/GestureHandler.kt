@@ -30,5 +30,6 @@ class GestureHandler(
         GestureType.KeyPageDown -> browserController.sendPageDownKey()
         GestureType.KeyLeft -> browserController.sendLeftKey()
         GestureType.KeyRight -> browserController.sendRightKey()
+        GestureType.InputUrl -> browserController.focusOnInput()
     }
 }
