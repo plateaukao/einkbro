@@ -393,7 +393,7 @@ object HelperUnit {
 
                     val file = File.createTempFile("temp", ".apk", context.cacheDir)
                     progressCallback?.invoke(0.4f, "Starting download")
-                    downloadApkFileWithProgress(downloadUrl, file.absolutePath, progressCallback)
+                    downloadFileWithProgress(downloadUrl, file.absolutePath, progressCallback, 0.4f, 0.5f)
 
                     progressCallback?.invoke(0.9f, "Preparing installation")
                     installApkFromFile(context, file)
@@ -441,13 +441,15 @@ object HelperUnit {
         context.startActivity(intent)
     }
 
-    private suspend fun downloadApkFileWithProgress(
-        apkUrl: String,
+    private suspend fun downloadFileWithProgress(
+        url: String,
         destinationPath: String,
         progressCallback: (suspend (Float, String) -> Unit)?,
+        baseProgress: Float,
+        progressScale: Float
     ) {
-        val request = Request.Builder().url(apkUrl).build()
-        OkHttpClient().newCall(request).execute().use { response ->
+        val request = Request.Builder().url(url).build()
+        client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Failed to download file: $response")
 
             val responseBody = response.body ?: throw IOException("Response body is null")
@@ -464,7 +466,7 @@ object HelperUnit {
                     totalBytesRead += bytesRead
 
                     if (contentLength > 0) {
-                        val progress = 0.4f + (totalBytesRead.toFloat() / contentLength.toFloat()) * 0.5f
+                        val progress = baseProgress + (totalBytesRead.toFloat() / contentLength.toFloat()) * progressScale
                         val percentage = (totalBytesRead.toFloat() / contentLength.toFloat() * 100).toInt()
                         val totalMB = contentLength / 1024 / 1024
                         val downloadedMB = totalBytesRead / 1024 / 1024
@@ -488,15 +490,12 @@ object HelperUnit {
         try {
             progressCallback?.invoke(0.1f, "Preparing to download latest snapshot")
 
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) throw IOException("Failed to download file: $response")
+            val zipFile = File.createTempFile("snapshot", ".zip", context.cacheDir)
+            downloadFileWithProgress(url, zipFile.absolutePath, progressCallback, 0.2f, 0.5f)
 
-                progressCallback?.invoke(0.2f, "Starting ZIP download")
-                val responseBody = response.body ?: throw IOException("Response body is null")
-                val inputStream = responseBody.byteStream()
-                progressCallback?.invoke(0.6f, "Processing snapshot archive")
-                extractApkAndInstallWithProgress(inputStream, context, progressCallback)
-            }
+            progressCallback?.invoke(0.7f, "Processing snapshot archive")
+            extractApkAndInstallWithProgress(zipFile.inputStream(), context, progressCallback)
+            zipFile.delete()
         } catch (e: Exception) {
             e.printStackTrace()
             progressCallback?.invoke(0.0f, "Snapshot update failed: ${e.message}")
