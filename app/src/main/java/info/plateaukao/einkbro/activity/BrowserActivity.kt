@@ -1208,6 +1208,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         return keyHandler.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
     }
 
+    override fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
+        return keyHandler.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        return keyHandler.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event)
+    }
+
     override fun handleBackKey() {
         ViewUnit.hideKeyboard(this)
         if (overviewDialogController.isVisible()) {

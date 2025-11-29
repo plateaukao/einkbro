@@ -1,5 +1,7 @@
 package info.plateaukao.einkbro.activity
 
+import android.content.Context
+import android.media.AudioManager
 import android.view.KeyEvent
 import android.webkit.WebView
 import info.plateaukao.einkbro.browser.BrowserController
@@ -29,8 +31,8 @@ class KeyHandler(
                 return true
             }
 
-            KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey()
-            KeyEvent.KEYCODE_VOLUME_UP -> return handleVolumeUpKey()
+            KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey(event)
+            KeyEvent.KEYCODE_VOLUME_UP -> return handleVolumeUpKey(event)
             KeyEvent.KEYCODE_MENU -> {
                 browserController.showMenuDialog()
                 return true
@@ -170,29 +172,77 @@ class KeyHandler(
         }
     }
 
-    private fun handleVolumeDownKey(): Boolean {
-        return if (config.volumePageTurn) {
-            if (ebWebView.isVerticalRead) {
-                ebWebView.pageUpWithNoAnimation()
-            } else {
-                ebWebView.pageDownWithNoAnimation()
+    private var isVolumeLongPress = false
+
+    fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (config.volumePageTurn) {
+                isVolumeLongPress = true
+                adjustVolume(keyCode)
+                return true
             }
-            true
-        } else {
-            false
         }
+        return false
     }
 
-    private fun handleVolumeUpKey(): Boolean {
-        return if (config.volumePageTurn) {
-            if (ebWebView.isVerticalRead) {
-                ebWebView.pageDownWithNoAnimation()
-            } else {
-                ebWebView.pageUpWithNoAnimation()
+    fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (config.volumePageTurn) {
+                isVolumeLongPress = false
+                return true
             }
-            true
-        } else {
-            false
         }
+        return false
+    }
+
+    private fun adjustVolume(keyCode: Int) {
+        val context = browserController as? Context ?: return
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return
+        val direction = if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) AudioManager.ADJUST_RAISE else AudioManager.ADJUST_LOWER
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, direction, AudioManager.FLAG_SHOW_UI)
+    }
+
+    private fun handleVolumeDownKey(event: KeyEvent): Boolean {
+        if (config.volumePageTurn) {
+            if (event.repeatCount == 0) {
+                isVolumeLongPress = false
+                event.startTracking()
+                if (ebWebView.isVerticalRead) {
+                    ebWebView.pageUpWithNoAnimation()
+                } else {
+                    ebWebView.pageDownWithNoAnimation()
+                }
+                return true
+            } else {
+                if (isVolumeLongPress) {
+                    adjustVolume(KeyEvent.KEYCODE_VOLUME_DOWN)
+                    return true
+                }
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun handleVolumeUpKey(event: KeyEvent): Boolean {
+        if (config.volumePageTurn) {
+            if (event.repeatCount == 0) {
+                isVolumeLongPress = false
+                event.startTracking()
+                if (ebWebView.isVerticalRead) {
+                    ebWebView.pageDownWithNoAnimation()
+                } else {
+                    ebWebView.pageUpWithNoAnimation()
+                }
+                return true
+            } else {
+                if (isVolumeLongPress) {
+                    adjustVolume(KeyEvent.KEYCODE_VOLUME_UP)
+                    return true
+                }
+                return true
+            }
+        }
+        return false
     }
 }
