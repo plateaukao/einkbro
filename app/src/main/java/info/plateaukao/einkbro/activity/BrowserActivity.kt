@@ -1071,10 +1071,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private var searchJob: Job? = null
+    private var shouldRestoreFullscreen = false
     private fun initInputBar() {
         binding.inputUrl.apply {
             focusRequester = FocusRequester()
-            onTextSubmit = { updateAlbum(it.trim()); showToolbar() }
+            onTextSubmit = {
+                updateAlbum(it.trim())
+                showToolbar()
+                if (shouldRestoreFullscreen) {
+                    toggleFullscreen()
+                    shouldRestoreFullscreen = false
+                }
+            }
             onTextChange = { query ->
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
@@ -1086,10 +1094,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }
             onPasteClick = { updateAlbum(getClipboardText()); showToolbar() }
-            closeAction = { showToolbar() }
+            closeAction = {
+                showToolbar()
+                if (shouldRestoreFullscreen) {
+                    toggleFullscreen()
+                    shouldRestoreFullscreen = false
+                }
+            }
             onRecordClick = {
                 updateAlbum(it.url)
                 showToolbar()
+                if (shouldRestoreFullscreen) {
+                    toggleFullscreen()
+                    shouldRestoreFullscreen = false
+                }
             }
         }
         binding.inputUrl.bookmarkManager = bookmarkManager
@@ -2221,6 +2239,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var inputTextOrUrl = mutableStateOf(TextFieldValue(""))
     private var focusRequester = FocusRequester()
     override fun focusOnInput() {
+        if (binding.appBar.visibility != VISIBLE) {
+            shouldRestoreFullscreen = true
+            
+            // Temporarily enable window adjustment for keyboard (only when in fullscreen)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.setDecorFitsSystemWindows(true)
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            }
+        }
+        
         composeToolbarViewController.hide()
 
         val textOrUrl = if (ebWebView.url?.startsWith("data:") != true) {
