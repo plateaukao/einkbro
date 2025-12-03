@@ -540,7 +540,7 @@
     <string name="setting_title_other_model_name">대체 모델 이름</string>
     <string name="setting_summary_other_model_name">대체 GPT 서버에 대한 모델 이름 입력</string>
     <string name="setting_title_gemini_model_name">Gemini 모델 이름</string>
-    <string name="setting_summary_gemini_model_name">Gemini 모델 이름 입력(기본값: gemini-1.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Gemini 모델 이름 입력(기본값: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">GPT 결과 기록</string>
     <string name="setting_summary_gpt_query_list">저장된 GPT 쿼리 결과</string>
     <string name="enable_touch_area_as_page_key">Page Up/Down 키로 사용</string>

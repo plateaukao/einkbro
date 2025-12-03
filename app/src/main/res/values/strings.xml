@@ -540,7 +540,7 @@
     <string name="setting_title_other_model_name">Alternative model name</string>
     <string name="setting_summary_other_model_name">Input model name for alternaltive GPT server</string>
     <string name="setting_title_gemini_model_name">Gemini model name</string>
-    <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-1.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">GPT result history</string>
     <string name="setting_summary_gpt_query_list">Saved GPT query results</string>
     <string name="enable_touch_area_as_page_key">As Page Up/Down key</string>

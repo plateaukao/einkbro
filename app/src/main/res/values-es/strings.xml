@@ -486,7 +486,7 @@
     <string name="setting_title_other_model_name">Nombre de modelo alternativo</string>
     <string name="setting_summary_other_model_name">Introduce el nombre del modelo para el servidor GPT alternativo</string>
     <string name="setting_title_gemini_model_name">Nombre del modelo Gemini</string>
-    <string name="setting_summary_gemini_model_name">Introduce el nombre del modelo Gemini (predeterminado: gemini-1.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Introduce el nombre del modelo Gemini (predeterminado: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">Historial de resultados de GPT</string>
     <string name="setting_summary_gpt_query_list">Resultados de consultas de GPT guardados</string>
     <string name="enable_touch_area_as_page_key">Como tecla de página arriba/abajo</string>
