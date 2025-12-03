@@ -525,7 +525,7 @@
     <string name="setting_title_other_model_name">替代模型名称</string>
     <string name="setting_summary_other_model_name">输入替代GPT服务器模型名称</string>
     <string name="setting_title_gemini_model_name">Gemini模型名称</string>
-    <string name="setting_summary_gemini_model_name">输入Gemini模型名称 (默认: gemini-1.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">输入Gemini模型名称 (默认: gemini-2.5-flash)</string>
     <string name="enable_touch_area_as_page_key">作为PageUp/PageDown键</string>
     <string name="translate_this_site">始终翻译此网站</string>
     <string name="select_sentence">选择语句</string>

@@ -253,7 +253,7 @@ class ConfigManager(
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-4.1")
     var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
-    var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-1.5-flash")
+    var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-2.5-flash")
     var gptVoiceOption: GptVoiceOption
         get() = GptVoiceOption.entries[sp.getInt("K_GPT_VOICE_OPTION", 0)]
         set(value) = sp.edit { putInt("K_GPT_VOICE_OPTION", value.ordinal) }

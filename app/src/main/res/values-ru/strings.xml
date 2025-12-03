@@ -539,7 +539,7 @@
     <string name="setting_title_other_model_name">Название альтернативной модели</string>
     <string name="setting_summary_other_model_name">Вставьте сюда имя модели для альтернативного GPT-сервера</string>
     <string name="setting_title_gemini_model_name">Название модели Gemini</string>
-    <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-1.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">История результатов GPT</string>
     <string name="setting_summary_gpt_query_list">Сохранённая история результатов GPT</string>
     <string name="enable_touch_area_as_page_key">Исп. как кл. Page Up/Down</string>
