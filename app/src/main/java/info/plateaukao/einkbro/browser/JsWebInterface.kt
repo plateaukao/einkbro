@@ -2,6 +2,8 @@ package info.plateaukao.einkbro.browser
 
 import android.util.Log
 import android.webkit.JavascriptInterface
+import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.TranslationCache
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
@@ -20,12 +22,17 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
+
+private const val CACHE_EXPIRATION_DAYS = 5
+private const val CACHE_TEXT_LENGTH_LIMIT = 15
 
 class JsWebInterface(private val webView: EBWebView) :
     KoinComponent {
     private val translateRepository: TranslateRepository = TranslateRepository()
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
+    private val bookmarkManager: BookmarkManager by inject()
 
     // to control the translation request threshold
     private val semaphoreForTranslate = Semaphore(4)
@@ -37,11 +44,47 @@ class JsWebInterface(private val webView: EBWebView) :
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
         GlobalScope.launch(Dispatchers.IO) {
+            val currentLanguage = configManager.translationLanguage.value
+            val currentTime = System.currentTimeMillis()
+
+            // Check cache for short strings
+            if (originalText.length < CACHE_TEXT_LENGTH_LIMIT) {
+                val cachedEntry = bookmarkManager.getTranslationCache(originalText, currentLanguage)
+                if (cachedEntry != null) {
+                    val daysDiff = TimeUnit.MILLISECONDS.toDays(currentTime - cachedEntry.timestamp)
+                    if (daysDiff < CACHE_EXPIRATION_DAYS) {
+                        Log.d("JsWebInterface", "Cache hit for: $originalText")
+                        withContext(Dispatchers.Main) {
+                            if (webView.isAttachedToWindow) {
+                                webView.evaluateJavascript(
+                                    "$callback('$elementId', '${cachedEntry.translatedText}')",
+                                    null
+                                )
+                            }
+                        }
+                        return@launch
+                    } else {
+                        // Optionally delete old cache entry, though we have a bulk delete method
+                    }
+                }
+            }
+
             val semaphore = getSemaphoreForApi(webView.translateApi)
             semaphore.acquire()
 
             Log.d("JsWebInterface", "getTranslation: $originalText")
             val translatedString = performTranslation(originalText, webView.translateApi)
+
+            if (translatedString.isNotEmpty() && originalText.length < CACHE_TEXT_LENGTH_LIMIT) {
+                bookmarkManager.insertTranslationCache(
+                    TranslationCache(
+                        originalText = originalText,
+                        targetLanguage = currentLanguage,
+                        translatedText = translatedString,
+                        timestamp = currentTime
+                    )
+                )
+            }
 
             withContext(Dispatchers.Main) {
                 if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
