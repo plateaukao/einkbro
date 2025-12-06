@@ -35,8 +35,9 @@ import org.koin.core.component.inject
         Article::class,
         ChatGptQuery::class,
         DomainConfiguration::class,
+        TranslationCache::class,
     ],
-    version = 6,
+    version = 7,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -46,6 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
     abstract fun chatGptQueryDao(): ChatGptQueryDao
     abstract fun domainConfigurationDao(): DomainConfigurationDao
+    abstract fun translationCacheDao(): TranslationCacheDao
 }
 
 @Dao
@@ -201,12 +203,19 @@ class BookmarkManager(context: Context) : KoinComponent {
         }
     }
 
+    private val migration6To7: Migration = object : Migration(6, 7) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `translation_cache` (`originalText` TEXT NOT NULL, `targetLanguage` TEXT NOT NULL, `translatedText` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, PRIMARY KEY(`originalText`, `targetLanguage`))")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
         .addMigrations(migration3To4)
         .addMigrations(migration4To5)
         .addMigrations(migration5To6)
+        .addMigrations(migration6To7)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -218,6 +227,7 @@ class BookmarkManager(context: Context) : KoinComponent {
     private val articleDao = database.articleDao()
     private val chatGptQueryDao = database.chatGptQueryDao()
     private val domainConfigurationDao = database.domainConfigurationDao()
+    private val translationCacheDao = database.translationCacheDao()
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
@@ -381,6 +391,15 @@ class BookmarkManager(context: Context) : KoinComponent {
                 )
             )
         }
+
+    suspend fun getTranslationCache(originalText: String, targetLanguage: String): TranslationCache? =
+        translationCacheDao.getTranslation(originalText, targetLanguage)
+
+    suspend fun insertTranslationCache(translationCache: TranslationCache) =
+        translationCacheDao.insert(translationCache)
+
+    suspend fun deleteOldTranslationCache(timestamp: Long) =
+        translationCacheDao.deleteOldCache(timestamp)
 
     enum class SortMode {
         BY_ORDER,
