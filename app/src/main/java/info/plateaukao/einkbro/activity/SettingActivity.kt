@@ -577,6 +577,12 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_text_wrap_reflow,
             config::enableZoomTextWrapReflow,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_zoom_in_custom_view,
+            0,
+            R.string.setting_summary_zoom_in_custom_view,
+            config::zoomInCustomView,
         )
     )
 

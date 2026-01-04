@@ -41,6 +41,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
+import android.view.ScaleGestureDetector
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView
 import android.widget.FrameLayout
@@ -106,6 +107,7 @@ import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.view.ZoomableFrameLayout
 import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.SwipeTouchListener
 import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
@@ -186,6 +188,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var videoView: VideoView? = null
     private var customView: View? = null
     private var languageLabelView: TextView? = null
+
 
     // Layouts
     private lateinit var mainContentLayout: FrameLayout
@@ -2316,7 +2319,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
         customView = view
         originalOrientation = requestedOrientation
-        fullscreenHolder = FrameLayout(this).apply {
+        fullscreenHolder = ZoomableFrameLayout(this).apply {
+            enableZoom = config.zoomInCustomView
             addView(
                 customView,
                 FrameLayout.LayoutParams(

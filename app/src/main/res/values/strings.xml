@@ -633,5 +633,7 @@
     <string name="custom_scale">Custom Font Scale</string>
     <string name="custom_scale_desc">Input desired font scale (%)</string>
     <string name="setting_title_text_wrap_reflow">Text Wrap Reflow</string>
-    <string name="setting_summary_text_wrap_reflow">Enable to double tap on text to text wrap reflow</string>
+    <string name="setting_summary_text_wrap_reflow">Reflow text when zooming</string>
+    <string name="setting_title_zoom_in_custom_view">Zoom in Custom View</string>
+    <string name="setting_summary_zoom_in_custom_view">Enable 2-finger zoom in fullscreen mode (default: false)</string>
 </resources>
