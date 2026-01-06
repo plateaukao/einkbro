@@ -105,7 +105,7 @@ function Readability(doc, options) {
       }
     };
   } else {
-    this.log = function () {};
+    this.log = function () { };
   }
 }
 
@@ -139,11 +139,11 @@ Readability.prototype = {
     // NOTE: These two regular expressions are duplicated in
     // Readability-readerable.js. Please keep both copies in sync.
     unlikelyCandidates:
-      /-ad-|ai2html|banner|breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|footer|gdpr|header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper|social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup|yom-remote/i,
+      /-ad-|ai2html|banner|breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|footer|gdpr|header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper|social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup|yom-remote|ad-content/i,
     okMaybeItsACandidate: /and|article|body|column|content|main|shadow/i,
 
     positive:
-      /article|body|content|entry|hentry|h-entry|main|page|pagination|post|text|blog|story/i,
+      /article|body|content|entry|hentry|h-entry|main|page|pagination|post|text|blog|story|ck-section/i,
     negative:
       /-ad-|hidden|^hid$| hid$| hid |^hid |banner|combx|comment|com-|contact|footer|gdpr|masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|sidebar|skyscraper|sponsor|shopping|tags|widget/i,
     extraneous:
@@ -641,7 +641,7 @@ Readability.prototype = {
       curTitleWordCount <= 4 &&
       (!titleHadHierarchicalSeparators ||
         curTitleWordCount !=
-          wordCount(origTitle.replace(/[\|\-\\\/>»]+/g, "")) - 1)
+        wordCount(origTitle.replace(/[\|\-\\\/>»]+/g, "")) - 1)
     ) {
       curTitle = origTitle;
     }
@@ -1115,8 +1115,9 @@ Readability.prototype = {
         // Remove unlikely candidates
         if (stripUnlikelyCandidates) {
           if (
-            this.REGEXPS.unlikelyCandidates.test(matchString) &&
-            !this.REGEXPS.okMaybeItsACandidate.test(matchString) &&
+            (this.REGEXPS.unlikelyCandidates.test(matchString) &&
+              !this.REGEXPS.okMaybeItsACandidate.test(matchString)) ||
+            matchString.indexOf("ad-content") !== -1 && // Force remove ad-content
             !this._hasAncestorTag(node, "table") &&
             !this._hasAncestorTag(node, "code") &&
             node.tagName !== "BODY" &&
@@ -1130,9 +1131,9 @@ Readability.prototype = {
           if (this.UNLIKELY_ROLES.includes(node.getAttribute("role"))) {
             this.log(
               "Removing content with role " +
-                node.getAttribute("role") +
-                " - " +
-                matchString
+              node.getAttribute("role") +
+              " - " +
+              matchString
             );
             node = this._removeAndGetNext(node);
             continue;
@@ -1242,6 +1243,11 @@ Readability.prototype = {
         // For every 100 characters in this paragraph, add another point. Up to 3 points.
         contentScore += Math.min(Math.floor(innerText.length / 100), 3);
 
+        // Add a bonus if the paragraph matches the positive pattern (e.g. ck-section)
+        if (elementToScore.className && this.REGEXPS.positive.test(elementToScore.className)) {
+          contentScore += 5;
+        }
+
         // Initialize and score ancestors.
         this._forEachNode(ancestors, function (ancestor, level) {
           if (
@@ -1331,7 +1337,7 @@ Readability.prototype = {
         for (var i = 1; i < topCandidates.length; i++) {
           if (
             topCandidates[i].readability.contentScore /
-              topCandidate.readability.contentScore >=
+            topCandidate.readability.contentScore >=
             0.75
           ) {
             alternativeCandidateAncestors.push(
@@ -1459,7 +1465,7 @@ Readability.prototype = {
           if (
             sibling.readability &&
             sibling.readability.contentScore + contentBonus >=
-              siblingScoreThreshold
+            siblingScoreThreshold
           ) {
             append = true;
           } else if (sibling.nodeName === "P") {
@@ -1816,7 +1822,7 @@ Readability.prototype = {
 
     const articleAuthor =
       typeof values["article:author"] === "string" &&
-      !this._isUrl(values["article:author"])
+        !this._isUrl(values["article:author"])
         ? values["article:author"]
         : undefined;
 
@@ -2004,8 +2010,8 @@ Readability.prototype = {
       !node.textContent.trim().length &&
       (!node.children.length ||
         node.children.length ==
-          node.getElementsByTagName("br").length +
-            node.getElementsByTagName("hr").length)
+        node.getElementsByTagName("br").length +
+        node.getElementsByTagName("hr").length)
     );
   },
 
@@ -2389,7 +2395,7 @@ Readability.prototype = {
           if (/\.(jpg|jpeg|png|webp)\s+\d/.test(attr.value)) {
             copyTo = "srcset";
           } else if (/^\s*\S+\.(jpg|jpeg|png|webp)\S*\s*$/.test(attr.value) ||
-                     /^\s*https?:\/\/\S+=(jpg|jpeg|png|webp)\S*\s*$/.test(attr.value)) {
+            /^\s*https?:\/\/\S+=(jpg|jpeg|png|webp)\S*\s*$/.test(attr.value)) {
             copyTo = "src";
           }
           if (copyTo) {
@@ -2851,28 +2857,28 @@ function createHtmlBody(article) {
   `
 }
 
-function  getReadingSpeedForLanguage(lang) {
- const readingSpeed = new Map([
-   [ "en", {cpm: 987,  variance: 118 } ],
-   [ "ar", {cpm: 612,  variance: 88 } ],
-   [ "de", {cpm: 920,  variance: 86 } ],
-   [ "es", {cpm: 1025, variance: 127 } ],
-   [ "fi", {cpm: 1078, variance: 121 } ],
-   [ "fr", {cpm: 998,  variance: 126 } ],
-   [ "he", {cpm: 833,  variance: 130 } ],
-   [ "it", {cpm: 950,  variance: 140 } ],
-   [ "jw", {cpm: 357,  variance: 56 } ],
-   [ "nl", {cpm: 978,  variance: 143 } ],
-   [ "pl", {cpm: 916,  variance: 126 } ],
-   [ "pt", {cpm: 913,  variance: 145 } ],
-   [ "ru", {cpm: 986,  variance: 175 } ],
-   [ "sk", {cpm: 885,  variance: 145 } ],
-   [ "sv", {cpm: 917,  variance: 156 } ],
-   [ "tr", {cpm: 1054, variance: 156 } ],
-   [ "zh", {cpm: 255,  variance: 29 } ],
- ]);
+function getReadingSpeedForLanguage(lang) {
+  const readingSpeed = new Map([
+    ["en", { cpm: 987, variance: 118 }],
+    ["ar", { cpm: 612, variance: 88 }],
+    ["de", { cpm: 920, variance: 86 }],
+    ["es", { cpm: 1025, variance: 127 }],
+    ["fi", { cpm: 1078, variance: 121 }],
+    ["fr", { cpm: 998, variance: 126 }],
+    ["he", { cpm: 833, variance: 130 }],
+    ["it", { cpm: 950, variance: 140 }],
+    ["jw", { cpm: 357, variance: 56 }],
+    ["nl", { cpm: 978, variance: 143 }],
+    ["pl", { cpm: 916, variance: 126 }],
+    ["pt", { cpm: 913, variance: 145 }],
+    ["ru", { cpm: 986, variance: 175 }],
+    ["sk", { cpm: 885, variance: 145 }],
+    ["sv", { cpm: 917, variance: 156 }],
+    ["tr", { cpm: 1054, variance: 156 }],
+    ["zh", { cpm: 255, variance: 29 }],
+  ]);
 
- return readingSpeed.get(lang) || readingSpeed.get("en");
+  return readingSpeed.get(lang) || readingSpeed.get("en");
 }
 
 const minuteTranslations = {
@@ -2898,12 +2904,12 @@ const minuteTranslations = {
 };
 
 
-function  getReadingTime(length, lang = "en") {
+function getReadingTime(length, lang = "en") {
   const readingSpeed = this.getReadingSpeedForLanguage(lang);
   const charactersPerMinuteLow = readingSpeed.cpm - readingSpeed.variance;
   const charactersPerMinuteHigh = readingSpeed.cpm + readingSpeed.variance;
   const readingTimeMinsSlow = Math.ceil(length / charactersPerMinuteLow);
-  const readingTimeMinsFast  = Math.ceil(length / charactersPerMinuteHigh);
+  const readingTimeMinsFast = Math.ceil(length / charactersPerMinuteHigh);
 
   // Construct a localized and "humanized" reading time in minutes.
   // If we have both a fast and slow reading time we'll show both e.g.
@@ -2926,7 +2932,7 @@ function  getReadingTime(length, lang = "en") {
       return `${readingTimeMinsSlow} ${minuteTranslations[lang]}`;
     }
   }
-  catch(error) {
+  catch (error) {
     console.error(`Failed to format reading time: ${error}`);
   }
 
@@ -2934,8 +2940,8 @@ function  getReadingTime(length, lang = "en") {
 }
 
 function setPadding(paddingValue) {
-    var elements = document.getElementsByClassName('mozac-readerview-body');
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].style.padding = paddingValue + 'px';
-    }
+  var elements = document.getElementsByClassName('mozac-readerview-body');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].style.padding = paddingValue + 'px';
+  }
 }
