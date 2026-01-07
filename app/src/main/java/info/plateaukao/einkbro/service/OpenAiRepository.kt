@@ -414,7 +414,7 @@ data class ChatRequest(
 
 @Serializable
 data class Reasoning(
-    val effort: String = "minimal",
+    val effort: String = "none",
 )
 
 @Serializable
