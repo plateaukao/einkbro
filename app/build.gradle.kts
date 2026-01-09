@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.TimeZone
 
 plugins {
     id("com.android.application")
@@ -35,8 +36,8 @@ android {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
         targetSdk = 34
-        versionCode = 15_04_00
-        versionName = "15.4.0"
+        versionCode = 15_05_00
+        versionName = "15.5.0"
 
         buildConfigField("String", "lastCommitTime", "\"${getLastCommitTimeStamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
