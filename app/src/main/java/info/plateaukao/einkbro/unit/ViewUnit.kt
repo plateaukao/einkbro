@@ -344,7 +344,6 @@ object ViewUnit: KoinComponent {
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.BOTTOM)
-            clear(binding.inputUrl.id, ConstraintSet.BOTTOM)
 
             connect(
                 binding.twoPanelLayout.id,
