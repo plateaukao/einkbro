@@ -18,7 +18,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
@@ -38,6 +41,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -48,7 +52,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -63,6 +66,8 @@ import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import org.koin.android.ext.android.inject
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 class GptActionsActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
@@ -124,16 +129,24 @@ class GptActionsActivity : ComponentActivity() {
                 ) { innerPadding ->
                     GptActionListContent(
                         modifier = Modifier.padding(innerPadding),
-                        actionList,
-                        defaultActionType,
+                        list = actionList,
+                        defaultActionType = defaultActionType,
                         editAction = { index ->
                             editActionIndex = index
                             showDialog = true
                         },
-                    ) {
-                        actionList.value = actionList.value.toMutableList().apply { remove(it) }
-                        config.deleteGptAction(it)
-                    }
+                        deleteAction = { action ->
+                            actionList.value = actionList.value.toMutableList().apply { remove(action) }
+                            config.deleteGptAction(action)
+                        },
+                        reorderAction = { from, to ->
+                            val newList = actionList.value.toMutableList().apply {
+                                add(to, removeAt(from))
+                            }
+                            actionList.value = newList
+                            config.gptActionList = newList
+                        }
+                    )
                 }
             }
             if (showDialog) {
@@ -178,6 +191,7 @@ class GptActionsActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GptActionListContent(
     modifier: Modifier = Modifier,
@@ -185,9 +199,8 @@ fun GptActionListContent(
     defaultActionType: GptActionType,
     editAction: (Int) -> Unit, // edit action with index
     deleteAction: (ChatGPTActionInfo) -> Unit = {},
+    reorderAction: (from: Int, to: Int) -> Unit = { _, _ -> },
 ) {
-    val context = LocalContext.current
-
     if (list.value.isEmpty()) {
         // show empty text in center of screen
         Box(
@@ -203,26 +216,34 @@ fun GptActionListContent(
             )
         }
     } else {
+        val lazyListState = rememberLazyListState()
+        val reorderableState = rememberReorderableLazyListState(lazyListState) { from, to ->
+            reorderAction(from.index, to.index)
+        }
+
         LazyColumn(
             modifier = modifier.padding(10.dp),
-            content = {
-                items(list.value.size) { index ->
-                    val gptAction = list.value[index]
-                    val actionType = gptAction.actionType.takeIf { it != GptActionType.Default }
-                        ?: defaultActionType
+            state = lazyListState,
+        ) {
+            itemsIndexed(list.value, key = { _, action -> action.id }) { index, gptAction ->
+                val actionType = gptAction.actionType.takeIf { it != GptActionType.Default }
+                    ?: defaultActionType
 
-                    val iconRes = when (actionType) {
-                        GptActionType.OpenAi -> R.drawable.ic_chat_gpt
-                        GptActionType.SelfHosted -> R.drawable.ic_ollama
-                        GptActionType.Gemini -> R.drawable.ic_gemini
-                        else -> R.drawable.ic_chat_gpt
-                    }
+                val iconRes = when (actionType) {
+                    GptActionType.OpenAi -> R.drawable.ic_chat_gpt
+                    GptActionType.SelfHosted -> R.drawable.ic_ollama
+                    GptActionType.Gemini -> R.drawable.ic_gemini
+                    else -> R.drawable.ic_chat_gpt
+                }
+
+                ReorderableItem(reorderableState, key = gptAction.id) { _ ->
                     Row(
                         Modifier
                             .fillMaxSize()
                             .clickable {
                                 editAction(index)
-                            },
+                            }
+                            .padding(vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         // icon: action type
@@ -251,8 +272,16 @@ fun GptActionListContent(
                                 )
                             }
                         }
+                        Icon(
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .draggableHandle(),
+                            imageVector = Icons.Outlined.DragHandle,
+                            contentDescription = stringResource(R.string.gpt_action_drag_handle),
+                            tint = MaterialTheme.colors.onBackground
+                        )
                         IconButton(onClick = {
-                            deleteAction(list.value[index])
+                            deleteAction(gptAction)
                         }) {
                             Icon(
                                 tint = MaterialTheme.colors.onBackground,
@@ -263,7 +292,7 @@ fun GptActionListContent(
                     }
                 }
             }
-        )
+        }
     }
 }
 
