@@ -132,6 +132,7 @@ interface BrowserController {
     //region AI Features
     fun summarizeContent()
     fun chatWithWeb(useSplitScreen: Boolean = false, content: String? = null, runWithAction: ChatGPTActionInfo? = null)
+    fun showPageAiActionMenu()
     //endregion
 
     //region UI Toggles and Dialogs

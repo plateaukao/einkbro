@@ -68,6 +68,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
@@ -399,22 +400,25 @@ private fun GptRow(
                 }
             }
         )
-        translationViewModel.getGptActionList().mapIndexed { index, gptActionInfo ->
-            val gptClicked = remember {
-                {
-                    translationViewModel.gptActionInfo = gptActionInfo
-                    translationViewModel.translate(TRANSLATE_API.LLM)
+        translationViewModel.getGptActionList()
+            .mapIndexed { index, gptActionInfo -> index to gptActionInfo }
+            .filter { it.second.scope == GptActionScope.TextSelection }
+            .forEach { (index, gptActionInfo) ->
+                val gptClicked = remember {
+                    {
+                        translationViewModel.gptActionInfo = gptActionInfo
+                        translationViewModel.translate(TRANSLATE_API.LLM)
+                    }
                 }
+                val gptLongClicked =
+                    remember { { translationViewModel.showEditGptActionDialog(index) } }
+                ActionMenuItem(
+                    gptActionInfo.name,
+                    null,
+                    onClicked = gptClicked,
+                    onLongClicked = gptLongClicked
+                )
             }
-            val gptLongClicked =
-                remember { { translationViewModel.showEditGptActionDialog(index) } }
-            ActionMenuItem(
-                gptActionInfo.name,
-                null,
-                onClicked = gptClicked,
-                onLongClicked = gptLongClicked
-            )
-        }
     }
 }
 

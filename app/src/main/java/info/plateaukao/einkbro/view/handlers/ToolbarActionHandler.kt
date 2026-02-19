@@ -92,5 +92,6 @@ class ToolbarActionHandler(
         ToolbarAction.ShareLink -> browserController.shareLink()
         ToolbarAction.InvertColor -> browserController.invertColors()
         ToolbarAction.ChatWithWeb -> browserController.chatWithWeb()
+        ToolbarAction.PageAi -> browserController.showPageAiActionMenu()
     }
 }

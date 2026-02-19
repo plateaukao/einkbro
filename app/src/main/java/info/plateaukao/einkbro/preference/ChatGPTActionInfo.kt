@@ -11,6 +11,7 @@ data class ChatGPTActionInfo (
     val actionType: GptActionType = GptActionType.Default,
     val model: String = "",
     val display: GptActionDisplay = GptActionDisplay.Popup,
+    val scope: GptActionScope = GptActionScope.TextSelection,
     val id: String = UUID.randomUUID().toString(),
 )
 
@@ -27,4 +28,10 @@ enum class GptActionDisplay {
     Popup,
     NewTab,
     SplitScreen,
+}
+
+@Serializable
+enum class GptActionScope {
+    TextSelection,
+    WholePage,
 }
