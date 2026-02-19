@@ -859,8 +859,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     val webUrl = ebWebView.url.orEmpty()
                     // add new tab
                     addAlbum("Chat With Web")
+                    runWithAction?.let { action ->
+                        ebWebView.setOnPageFinishedAction {
+                            ebWebView.setOnPageFinishedAction {}
+                            ebWebView.runGptAction(action)
+                        }
+                    }
                     ebWebView.setupAiPage(scope, rawText, webTitle, webUrl)
-                    runWithAction?.let { ebWebView.runGptAction(it) }
                 }
             }
         }
@@ -874,9 +879,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        PageAiActionDialogFragment(pageActions) {
-            runPageAiAction(it)
-        }.showNow(supportFragmentManager, "pageAiAction")
+        PageAiActionDialogFragment(
+            actions = pageActions,
+            onActionClicked = { runPageAiAction(it) },
+            onActionLongClicked = { action ->
+                val index = config.gptActionList.indexOf(action)
+                if (index >= 0) {
+                    ShowEditGptActionDialogFragment(index)
+                        .showNow(supportFragmentManager, "editGptAction")
+                }
+            }
+        ).showNow(supportFragmentManager, "pageAiAction")
     }
 
     private fun runPageAiAction(action: ChatGPTActionInfo) {
