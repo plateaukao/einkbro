@@ -907,7 +907,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 GptActionDisplay.Popup -> {
                     translationViewModel.updateInputMessage(content)
                     translationViewModel.updateMessageWithContext(content)
-                    showTranslationDialog()
+                    showTranslationDialog(isWholePageMode = true)
                 }
 
                 GptActionDisplay.NewTab -> chatWithWeb(false, content, action)
@@ -936,7 +936,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         dialogManager.showInstapaperCredentialsDialog { name, password -> Unit }
     }
 
-    private fun showTranslationDialog() {
+    private fun showTranslationDialog(isWholePageMode: Boolean = false) {
         supportFragmentManager.findFragmentByTag("translateDialog")?.let {
             supportFragmentManager.beginTransaction().remove(it).commitAllowingStateLoss()
         }
@@ -944,6 +944,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             translationViewModel,
             externalSearchWebView,
             actionModeMenuViewModel.clickedPoint.value,
+            isWholePageMode = isWholePageMode,
         )
             .show(supportFragmentManager, "translateDialog")
     }
@@ -990,7 +991,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         translationViewModel.setupGptAction(action)
                         translationViewModel.updateMessageWithContext(content)
                         translationViewModel.updateInputMessage(content)
-                        showTranslationDialog()
+                        showTranslationDialog(isWholePageMode = action.scope == GptActionScope.WholePage)
                     } else {
                         chatWithWeb(false, content, action)
                     }
