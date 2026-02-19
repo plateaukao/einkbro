@@ -208,39 +208,6 @@ class OpenAiRepository : KoinComponent {
         }
     }
 
-    suspend fun queryModels(gptActionInfo: ChatGPTActionInfo): List<String> = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url("${getServerUrl(gptActionInfo.actionType)}$modelsPath")
-            .get()
-            .header("Authorization", "Bearer $apiKey")
-            .build()
-
-        try {
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    Log.e("OpenAiRepository", "Error querying models: ${response.code}")
-                    return@withContext emptyList()
-                }
-                val responseBody = response.body?.string() ?: return@withContext emptyList()
-                val modelList = json.decodeFromString(ModelList.serializer(), responseBody)
-                modelList.data.map { it.id }
-                    .filter {
-                        it.startsWith("gpt") &&
-                                !it.contains("audio") &&
-                                !it.contains("tts") &&
-                                !it.contains("transcribe") &&
-                                !it.contains("codex") &&
-                                !it.contains("image") &&
-                                !it.contains("realtime")
-                    }
-                    .sortedDescending()
-            }
-        } catch (e: Exception) {
-            Log.e("OpenAiRepository", "Error querying models", e)
-            emptyList()
-        }
-    }
-
     suspend fun queryGemini(messages: List<ChatMessage>, gptActionInfo: ChatGPTActionInfo): String {
         return withContext(Dispatchers.IO) {
             try {
@@ -361,21 +328,10 @@ class OpenAiRepository : KoinComponent {
 
     companion object {
         private const val completionPath = "/v1/chat/completions"
-        private const val modelsPath = "/v1/models"
         private const val ttsPath = "/v1/audio/speech"
         private val mediaType = "application/json; charset=utf-8".toMediaType()
     }
 }
-
-@Serializable
-data class ModelList(
-    val data: List<ModelData>,
-)
-
-@Serializable
-data class ModelData(
-    val id: String,
-)
 
 @Serializable
 data class ChatCompletion(
