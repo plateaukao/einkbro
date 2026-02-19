@@ -440,6 +440,9 @@
     <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
     <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix, e.g. \"Translate following content to English:\"</string>
     <string name="gpt_api_key_not_set">Add OpenAI key in Settings</string>
+    <string name="gpt_scope">Scope</string>
+    <string name="gpt_scope_text_selection">Text selection</string>
+    <string name="gpt_scope_whole_page">Whole page</string>
     <string name="dialog_touch_area_enable">Enable Touch Pagination</string>
     <string name="show_default_text_menu">Show default selected text menu</string>
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu</string>
@@ -552,6 +555,9 @@
     <string name="setting_summary_app_locale">Change interface language</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
     <string name="gpt_action_drag_handle">Drag to reorder ChatGPT actions</string>
+    <string name="page_ai">Page AI</string>
+    <string name="page_ai_action_title">Page AI Actions</string>
+    <string name="page_ai_action_empty">No page AI actions available; add one under GPT Actions (whole page scope).</string>
     <string name="toolbar_time">Current time</string>
     <string name="setting_title_disable_long_press_toucharea">Disable long press on Touch Area</string>
     <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area</string>

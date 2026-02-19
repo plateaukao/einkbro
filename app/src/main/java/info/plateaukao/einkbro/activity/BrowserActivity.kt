@@ -86,6 +86,7 @@ import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FabPosition
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.GptActionDisplay
+import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.NewTabBehavior
 import info.plateaukao.einkbro.preference.TranslationMode
@@ -127,6 +128,7 @@ import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.PageAiActionDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ShowEditGptActionDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
@@ -860,6 +862,44 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     ebWebView.setupAiPage(scope, rawText, webTitle, webUrl)
                     runWithAction?.let { ebWebView.runGptAction(it) }
                 }
+            }
+        }
+    }
+
+    override fun showPageAiActionMenu() {
+        val pageActions =
+            config.gptActionList.filter { it.scope == GptActionScope.WholePage }
+        if (pageActions.isEmpty()) {
+            EBToast.show(this, R.string.page_ai_action_empty)
+            return
+        }
+
+        PageAiActionDialogFragment(pageActions) {
+            runPageAiAction(it)
+        }.showNow(supportFragmentManager, "pageAiAction")
+    }
+
+    private fun runPageAiAction(action: ChatGPTActionInfo) {
+        lifecycleScope.launch {
+            if (!translationViewModel.hasOpenAiApiKey()) {
+                EBToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
+                return@launch
+            }
+
+            val content = ebWebView.getRawText()
+            translationViewModel.setupGptAction(action)
+            translationViewModel.url = ebWebView.url.orEmpty()
+
+            when (action.display) {
+                GptActionDisplay.Popup -> {
+                    translationViewModel.updateInputMessage(content)
+                    translationViewModel.updateMessageWithContext(content)
+                    showTranslationDialog()
+                }
+
+                GptActionDisplay.NewTab -> chatWithWeb(false, content, action)
+
+                GptActionDisplay.SplitScreen -> chatWithWeb(true, content, action)
             }
         }
     }
@@ -2915,4 +2955,3 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         const val ACTION_READ_ALOUD = "action_read_aloud"
     }
 }
-

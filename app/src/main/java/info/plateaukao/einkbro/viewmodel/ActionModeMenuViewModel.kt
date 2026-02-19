@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.ShareUtil
@@ -151,7 +152,8 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
             )
         }
         if (configManager.gptActionList.isNotEmpty()) {
-            configManager.gptActionList.mapIndexed { index, actionInfo ->
+            configManager.gptActionList.forEachIndexed { index, actionInfo ->
+                if (actionInfo.scope != GptActionScope.TextSelection) return@forEachIndexed
 
                 val actionType = actionInfo.actionType.takeIf { it != GptActionType.Default }
                     ?: configManager.getDefaultActionType()

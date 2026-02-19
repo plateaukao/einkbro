@@ -175,8 +175,11 @@ enum class ToolbarAction(
     ChatWithWeb(
         imageVector = Icons.AutoMirrored.Outlined.Chat,
         titleResId = R.string.chat_with_web,
-    )
-    ;
+    ),
+    PageAi(
+        imageVector = Icons.AutoMirrored.Outlined.Article,
+        titleResId = R.string.page_ai,
+    );
 
 
     companion object {

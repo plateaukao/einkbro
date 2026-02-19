@@ -63,6 +63,7 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionDisplay
 import info.plateaukao.einkbro.preference.GptActionType
+import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import org.koin.android.ext.android.inject
@@ -263,6 +264,14 @@ fun GptActionListContent(
                                 style = MaterialTheme.typography.h6,
                                 color = MaterialTheme.colors.onBackground
                             )
+                            if (gptAction.scope == GptActionScope.WholePage) {
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 1.dp),
+                                    text = stringResource(R.string.gpt_scope_whole_page),
+                                    style = MaterialTheme.typography.caption,
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                             if (gptAction.model.isNotEmpty()) {
                                 Text(
                                     modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
@@ -310,6 +319,7 @@ fun GptActionDialog(
     val userPrompt = remember { mutableStateOf("") }
     val currentActionType = remember { mutableStateOf(GptActionType.Default) }
     val currentActionDisplay = remember { mutableStateOf(GptActionDisplay.Popup) }
+    val currentActionScope = remember { mutableStateOf(GptActionScope.TextSelection) }
     val model = remember { mutableStateOf(action.model) }
 
     if (editActionIndex >= 0) {
@@ -318,11 +328,13 @@ fun GptActionDialog(
         userPrompt.value = action.userMessage
         currentActionType.value = action.actionType
         currentActionDisplay.value = action.display
+        currentActionScope.value = action.scope
     } else {
         name.value = ""
         systemPrompt.value = ""
         userPrompt.value = ""
         currentActionType.value = GptActionType.Default
+        currentActionScope.value = GptActionScope.TextSelection
     }
 
     AlertDialog(
@@ -412,6 +424,27 @@ fun GptActionDialog(
                         }
                     }
                 }
+                Text(
+                    modifier = Modifier.padding(5.dp),
+                    text = stringResource(R.string.gpt_scope),
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onBackground
+                )
+                FlowRow {
+                    GptActionScope.entries.map { gptActionScope ->
+                        val isSelect = currentActionScope.value == gptActionScope
+                        val scopeLabel = if (gptActionScope == GptActionScope.WholePage)
+                            stringResource(R.string.gpt_scope_whole_page)
+                        else stringResource(R.string.gpt_scope_text_selection)
+                        SelectableText(
+                            modifier = Modifier.padding(horizontal = 1.dp, vertical = 3.dp),
+                            selected = isSelect,
+                            text = scopeLabel,
+                        ) {
+                            currentActionScope.value = gptActionScope
+                        }
+                    }
+                }
             }
         },
         onDismissRequest = { dismissAction() },
@@ -426,6 +459,7 @@ fun GptActionDialog(
                             currentActionType.value,
                             model.value,
                             currentActionDisplay.value,
+                            currentActionScope.value,
                         )
                     )
                 }
