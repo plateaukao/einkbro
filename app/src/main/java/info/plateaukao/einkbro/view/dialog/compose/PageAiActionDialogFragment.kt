@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -28,12 +29,14 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 class PageAiActionDialogFragment(
     private val actions: List<ChatGPTActionInfo>,
     private val onActionClicked: (ChatGPTActionInfo) -> Unit,
+    private val onActionLongClicked: ((ChatGPTActionInfo) -> Unit)? = null,
 ) : ComposeDialogFragment() {
 
     init {
         shouldShowInCenter = true
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
@@ -49,36 +52,34 @@ class PageAiActionDialogFragment(
                         color = MaterialTheme.colors.onBackground
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    actions.forEachIndexed { index, action ->
-                        Column(
+                    actions.forEach { action ->
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable {
-                                    onActionClicked(action)
-                                    dismiss()
-                                }
-                                .padding(vertical = 10.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = actionIconRes(action)),
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colors.onBackground
+                                .combinedClickable(
+                                    onClick = {
+                                        onActionClicked(action)
+                                        composeView.post { dismiss() }
+                                    },
+                                    onLongClick = {
+                                        onActionLongClicked?.invoke(action)
+                                        composeView.post { dismiss() }
+                                    }
                                 )
-                                Column {
-                                    Text(
-                                        text = action.name,
-                                        style = MaterialTheme.typography.subtitle1,
-                                        color = MaterialTheme.colors.onBackground
-                                    )
-                                }
-                            }
-                            if (index < actions.lastIndex) {
-                                HorizontalSeparator()
-                            }
+                                .padding(vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = actionIconRes(action)),
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.onBackground
+                            )
+                            Text(
+                                text = action.name,
+                                style = MaterialTheme.typography.subtitle1,
+                                color = MaterialTheme.colors.onBackground
+                            )
                         }
                     }
                 }
