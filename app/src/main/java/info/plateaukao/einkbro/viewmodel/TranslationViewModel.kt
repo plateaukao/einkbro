@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.service.ChatMessage
 import info.plateaukao.einkbro.service.ChatRole
@@ -68,6 +69,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     val scrollSignal: SharedFlow<Boolean> = _scrollSignal.asSharedFlow()
 
     var url: String = ""
+    var pageTitle: String = ""
 
     private var toBeSavedResponseString = ""
 
@@ -268,6 +270,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
     }
 
     suspend fun saveTranslationResult() {
+        val isWholePage = gptActionInfo.scope == GptActionScope.WholePage
         if (_translateMethod.value != TRANSLATE_API.LLM) {
             bookmarkManager.addChatGptQuery(
                 ChatGptQuery(
@@ -293,7 +296,7 @@ class TranslationViewModel : ViewModel(), KoinComponent {
                     date = System.currentTimeMillis(),
                     url = url,
                     model = "${gptActionInfo.name} $model",
-                    selectedText = selectedText,
+                    selectedText = if (isWholePage) pageTitle else selectedText,
                     result = toBeSavedResponseString,
                 )
             )
