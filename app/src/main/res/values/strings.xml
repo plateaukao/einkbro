@@ -551,6 +551,7 @@
     <string name="setting_app_locale">App language</string>
     <string name="setting_summary_app_locale">Change interface language</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
+    <string name="gpt_action_drag_handle">Drag to reorder ChatGPT actions</string>
     <string name="toolbar_time">Current time</string>
     <string name="setting_title_disable_long_press_toucharea">Disable long press on Touch Area</string>
     <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area</string>

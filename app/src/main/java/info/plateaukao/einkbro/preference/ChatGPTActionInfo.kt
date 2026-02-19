@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.preference
 
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
 data class ChatGPTActionInfo (
@@ -10,6 +11,7 @@ data class ChatGPTActionInfo (
     val actionType: GptActionType = GptActionType.Default,
     val model: String = "",
     val display: GptActionDisplay = GptActionDisplay.Popup,
+    val id: String = UUID.randomUUID().toString(),
 )
 
 @Serializable
