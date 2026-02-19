@@ -56,7 +56,6 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationTextStyle
-import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
@@ -74,7 +73,6 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
-import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -88,7 +86,6 @@ class SettingActivity : FragmentActivity() {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
-    private val openAiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
@@ -1003,35 +1000,12 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_edit_gpt_api_key,
             config::gptApiKey
         ),
-        ActionSettingItem(
+        ValueSettingItem(
             R.string.setting_title_gpt_model_name,
             0,
             R.string.setting_summary_gpt_model_name,
-            //config::gptModel
-        ) {
-            lifecycleScope.launch {
-                val models = openAiRepository.queryModels(
-                    ChatGPTActionInfo(
-                        name = "",
-                        systemMessage = "",
-                        userMessage = "",
-                        actionType = config.gptForChatWeb,
-                        model = config.gptModel
-                    )
-                )
-                if (models.isNotEmpty()) {
-                    dialogManager.getSelectedOptionWithString(
-                        R.string.setting_title_gpt_model_name,
-                        models,
-                        models.indexOf(config.gptModel).coerceAtLeast(0)
-                    )?.let { index ->
-                        config.gptModel = models[index]
-                    }
-                } else {
-                    EBToast.show(this@SettingActivity, "No models found")
-                }
-            }
-        },
+            config::gptModel
+        ),
         BooleanSettingItem(
             R.string.use_it_on_tts,
             0,
