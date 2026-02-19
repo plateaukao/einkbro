@@ -84,6 +84,7 @@ class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
     private val webView: WebView,
     private val anchorPoint: Point? = null,
+    private val isWholePageMode: Boolean = false,
     private val closeAction: (() -> Unit)? = null,
 ) : DraggableComposeDialogFragment() {
 
@@ -94,7 +95,8 @@ class TranslateDialogFragment(
                 showExtraIcons = config.imageApiKey.isNotBlank(),
                 this::changeTranslationLanguage,
                 this::getTranslationWebView,
-                closeAction ?: { dismiss() }
+                closeAction ?: { dismiss() },
+                isWholePageMode = isWholePageMode,
             )
         }
     }
@@ -154,6 +156,7 @@ private fun TranslateResponse(
     onTargetLanguageClick: () -> Unit,
     getTranslationWebView: () -> WebView,
     closeClick: () -> Unit,
+    isWholePageMode: Boolean = false,
 ) {
     val iconSize = 40.dp
     val iconPadding = 5.dp
@@ -207,19 +210,23 @@ private fun TranslateResponse(
         ) {
             CopyButton(iconSize, iconPadding, responseMessage)
 
-            if (ViewUnit.isTablet(LocalContext.current)) {
-                GptRow(viewModel)
+            if (isWholePageMode) {
+                SaveButton(iconSize, iconPadding, viewModel)
+            } else {
+                if (ViewUnit.isTablet(LocalContext.current)) {
+                    GptRow(viewModel)
+                }
+                GoogleButton(iconSize, iconPadding, translateGoogle, onTargetLanguageClick)
+                if (showExtraIcons) {
+                    DeepLButton(iconSize, iconPadding, translateDeepL, onTargetLanguageClick)
+                    PapagoButton(iconSize, iconPadding, translatePapago, onTargetLanguageClick)
+                    NaverButton(iconSize, iconPadding, translateNaver)
+                }
+                InfoButton(showRequest, iconSize)
             }
-            GoogleButton(iconSize, iconPadding, translateGoogle, onTargetLanguageClick)
-            if (showExtraIcons) {
-                DeepLButton(iconSize, iconPadding, translateDeepL, onTargetLanguageClick)
-                PapagoButton(iconSize, iconPadding, translatePapago, onTargetLanguageClick)
-                NaverButton(iconSize, iconPadding, translateNaver)
-            }
-            InfoButton(showRequest, iconSize)
             CloseButton(iconSize, iconPadding, closeClick)
         }
-        if (!ViewUnit.isTablet(LocalContext.current)) {
+        if (!isWholePageMode && !ViewUnit.isTablet(LocalContext.current)) {
             GptRow(
                 viewModel,
                 modifier = Modifier.align(Alignment.End),
@@ -390,6 +397,33 @@ private fun DeepLButton(
                 onClick = onClick,
                 onLongClick = onTargetLanguageClick
             )
+    )
+}
+
+@Composable
+private fun SaveButton(
+    iconSize: Dp,
+    iconPadding: Dp,
+    viewModel: TranslationViewModel,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val saveIcon = Icons.Default.Save
+    var currentIcon by remember { mutableStateOf(saveIcon) }
+    Icon(
+        imageVector = currentIcon,
+        contentDescription = "Save",
+        tint = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .size(iconSize)
+            .padding(iconPadding)
+            .clickable {
+                coroutineScope.launch {
+                    viewModel.saveTranslationResult()
+                    currentIcon = Icons.Filled.Done
+                    delay(1000)
+                    currentIcon = saveIcon
+                }
+            }
     )
 }
 
