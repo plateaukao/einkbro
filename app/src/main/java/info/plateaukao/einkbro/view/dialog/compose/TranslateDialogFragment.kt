@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.view.dialog.compose
 import android.content.DialogInterface
 import android.graphics.Point
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -55,6 +57,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
@@ -65,10 +69,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
@@ -123,6 +127,24 @@ class TranslateDialogFragment(
 
         return view
     }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): android.app.Dialog {
+        setStyle(STYLE_NO_FRAME, 0)
+        return object : android.app.Dialog(requireContext(), theme) {
+            override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+                val keyCode = event.keyCode
+                if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                    if (config.volumePageTurn) {
+                        if (event.action == KeyEvent.ACTION_DOWN) {
+                            translationViewModel.emitScrollEvent(keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+                        }
+                        return true
+                    }
+                }
+                return super.dispatchKeyEvent(event)
+            }
+        }
+    }
 }
 
 @Composable
@@ -141,11 +163,26 @@ private fun TranslateResponse(
     val showRequest = remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
+    var viewportHeight by remember { mutableStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        viewModel.scrollSignal.collect { isUp ->
+            val scrollAmount = if (isUp) -viewportHeight else viewportHeight
+            if (scrollAmount != 0) {
+                scrollState.scrollTo(
+                    (scrollState.value + scrollAmount).coerceIn(0, scrollState.maxValue)
+                )
+            }
+        }
+    }
 
     val translateDeepL = remember { { viewModel.translate(TRANSLATE_API.DEEPL) } }
     val translateGoogle = remember { { viewModel.translate(TRANSLATE_API.GOOGLE) } }
     val translatePapago = remember { { viewModel.translate(TRANSLATE_API.PAPAGO) } }
     val translateNaver = remember { { viewModel.translate(TRANSLATE_API.NAVER) } }
+
+    val configuration = LocalConfiguration.current
+    val maxHeight = (configuration.screenHeightDp * 0.8).dp
 
     Column(
         modifier = Modifier
@@ -157,7 +194,7 @@ private fun TranslateResponse(
                         .rotate(-90f)
                 } else {
                     wrapContentWidth()
-                        .height(IntrinsicSize.Max)
+                        .heightIn(max = maxHeight)
                 }
             }
     ) {
@@ -193,8 +230,11 @@ private fun TranslateResponse(
                 .defaultMinSize(minWidth = 300.dp)
                 .wrapContentHeight()
                 .width(IntrinsicSize.Max)
-                .weight(1f)
+                .weight(1f, fill = false)
                 .align(Alignment.Start)
+                .onGloballyPositioned { coordinates ->
+                    viewportHeight = coordinates.size.height
+                }
                 .conditionalScroll(
                     !viewModel.isWebViewStyle(),
                     scrollState

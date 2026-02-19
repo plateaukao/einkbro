@@ -18,8 +18,11 @@ import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
@@ -60,6 +63,9 @@ class TranslationViewModel : ViewModel(), KoinComponent {
 
     private val _showEditDialogWithIndex = MutableStateFlow(-1)
     val showEditDialogWithIndex: StateFlow<Int> = _showEditDialogWithIndex.asStateFlow()
+
+    private val _scrollSignal = MutableSharedFlow<Boolean>()
+    val scrollSignal: SharedFlow<Boolean> = _scrollSignal.asSharedFlow()
 
     var url: String = ""
 
@@ -424,6 +430,12 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         role = ChatRole.System,
         content = this
     )
+
+    fun emitScrollEvent(isUp: Boolean) {
+        viewModelScope.launch {
+            _scrollSignal.emit(isUp)
+        }
+    }
 }
 
 enum class TRANSLATE_API {
