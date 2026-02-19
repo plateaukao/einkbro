@@ -902,6 +902,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             val content = ebWebView.getRawText()
             translationViewModel.setupGptAction(action)
             translationViewModel.url = ebWebView.url.orEmpty()
+            translationViewModel.pageTitle = ebWebView.title.orEmpty()
 
             when (action.display) {
                 GptActionDisplay.Popup -> {
