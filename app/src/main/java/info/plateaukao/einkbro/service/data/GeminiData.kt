@@ -12,9 +12,16 @@ data class Content(val parts: List<ContentPart>)
 data class SafetySetting(val category: String, val threshold: String)
 
 @Serializable
+data class ThinkingConfig(val thinkingBudget: Int, val includeThoughts: Boolean = false)
+
+@Serializable
+data class GenerationConfig(val thinkingConfig: ThinkingConfig)
+
+@Serializable
 data class RequestData(
     val contents: List<Content>,
-    val safety_settings: List<SafetySetting>
+    val safety_settings: List<SafetySetting>,
+    val generationConfig: GenerationConfig = GenerationConfig(ThinkingConfig(thinkingBudget = 0))
 )
 
 @Serializable
