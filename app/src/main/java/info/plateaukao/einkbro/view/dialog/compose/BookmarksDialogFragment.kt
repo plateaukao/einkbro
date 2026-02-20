@@ -81,7 +81,10 @@ class BookmarksDialogFragment(
 
     private val shouldShowDragHandle = mutableStateOf(false)
 
+    private val isGridView = mutableStateOf(false)
+
     override fun setupComposeView() {
+        isGridView.value = config.isBookmarkGridView
         bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
         }
@@ -94,9 +97,14 @@ class BookmarksDialogFragment(
                 DialogPanel(
                     folder = bookmarkViewModel.currentFolder.value,
                     inSortMode = shouldShowDragHandle.value,
+                    isGridView = isGridView.value,
                     upParentAction = { bookmarkViewModel.outOfFolder() },
                     syncBookmarksAction = syncBookmarksAction,
                     linkBookmarksAction = linkBookmarksAction,
+                    toggleGridViewAction = {
+                        isGridView.value = !isGridView.value
+                        config.isBookmarkGridView = isGridView.value
+                    },
                     reorderBookmarkAction = {
                         shouldShowDragHandle.value = !shouldShowDragHandle.value
                         if (shouldShowDragHandle.value) {
@@ -115,6 +123,7 @@ class BookmarksDialogFragment(
                             bookmarks = bookmarks.value,
                             bookmarkViewModel = bookmarkViewModel,
                             showTwoColumn = showTwoColumn,
+                            isGridView = isGridView.value,
                             shouldReverse = !config.isToolbarOnTop,
                             shouldShowDragHandle = shouldShowDragHandle.value,
                             onItemMoved = { from, to ->
@@ -210,11 +219,13 @@ class BookmarksDialogFragment(
 fun DialogPanel(
     folder: Bookmark,
     inSortMode: Boolean = false,
+    isGridView: Boolean = false,
     upParentAction: (Bookmark) -> Unit,
     syncBookmarksAction: (Boolean) -> Unit,
     linkBookmarksAction: () -> Unit,
     closeAction: () -> Unit,
     reorderBookmarkAction: () -> Unit,
+    toggleGridViewAction: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -266,6 +277,13 @@ fun DialogPanel(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(horizontal = 5.dp),
+                iconResId = if (isGridView) R.drawable.ic_hamburger else R.drawable.ic_grid_view,
+                action = toggleGridViewAction
+            )
+            ActionIcon(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = 5.dp),
                 iconResId = R.drawable.icon_arrow_down_gest,
                 action = closeAction
             )
@@ -279,6 +297,7 @@ fun BookmarkList(
     bookmarks: List<Bookmark>,
     bookmarkViewModel: BookmarkViewModel,
     showTwoColumn: Boolean = false,
+    isGridView: Boolean = false,
     shouldReverse: Boolean = true,
     shouldShowDragHandle: Boolean = false,
     onItemMoved: (from: Int, to: Int) -> Unit,
@@ -294,7 +313,7 @@ fun BookmarkList(
     LazyVerticalGrid(
         modifier = Modifier.wrapContentHeight(),
         state = lazyGridState,
-        columns = GridCells.Fixed(if (showTwoColumn) 2 else 1),
+        columns = GridCells.Fixed(if (isGridView) 4 else if (showTwoColumn) 2 else 1),
         reverseLayout = shouldReverse
     ) {
         itemsIndexed(bookmarks, key = { _, bookmark -> bookmark.id }) { _, bookmark ->
@@ -306,25 +325,16 @@ fun BookmarkList(
 
 
             ReorderableItem(reorderableLazyGridState, key = bookmark.id) { isDragging ->
-                BookmarkItem(
-                    bookmark = bookmark,
-                    bitmap = bookmarkViewModel.getFavicon(bookmark),
-                    isPressed = isPressed || isDragging,
-                    shouldShowDragHandle = shouldShowDragHandle,
-                    dragModifier = Modifier.draggableHandle(),
-                    modifier = Modifier.then(
-                        if (shouldShowDragHandle) {
-                            Modifier
-                                .longPressDraggableHandle()
-                                .clickable(
-                                    interactionSource = interactionSource,
-                                    indication = null,
-                                ) { onBookmarkClick(bookmark) }
-                        } else {
+                if (isGridView) {
+                    BookmarkGridItem(
+                        bookmark = bookmark,
+                        bitmap = bookmarkViewModel.getFavicon(bookmark),
+                        isPressed = isPressed || isDragging,
+                        modifier = Modifier.then(
                             Modifier
                                 .pointerInput(Unit) {
                                     detectTapGestures(
-                                        onTap = { offset -> onBookmarkClick(bookmark) },
+                                        onTap = { onBookmarkClick(bookmark) },
                                         onLongPress = { offset ->
                                             longClickPosition.value = offset
                                             onBookmarkLongClick(bookmark, offset.toScreenPoint(boxPosition.value))
@@ -332,13 +342,43 @@ fun BookmarkList(
                                     )
                                 }
                                 .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
+                        ),
+                    )
+                } else {
+                    BookmarkItem(
+                        bookmark = bookmark,
+                        bitmap = bookmarkViewModel.getFavicon(bookmark),
+                        isPressed = isPressed || isDragging,
+                        shouldShowDragHandle = shouldShowDragHandle,
+                        dragModifier = Modifier.draggableHandle(),
+                        modifier = Modifier.then(
+                            if (shouldShowDragHandle) {
+                                Modifier
+                                    .longPressDraggableHandle()
+                                    .clickable(
+                                        interactionSource = interactionSource,
+                                        indication = null,
+                                    ) { onBookmarkClick(bookmark) }
+                            } else {
+                                Modifier
+                                    .pointerInput(Unit) {
+                                        detectTapGestures(
+                                            onTap = { offset -> onBookmarkClick(bookmark) },
+                                            onLongPress = { offset ->
+                                                longClickPosition.value = offset
+                                                onBookmarkLongClick(bookmark, offset.toScreenPoint(boxPosition.value))
+                                            }
+                                        )
+                                    }
+                                    .onGloballyPositioned { boxPosition.value = it.positionOnScreen() }
+                            }
+                        ),
+                        iconClick = {
+                            if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
+                            else onBookmarkClick(bookmark)
                         }
-                    ),
-                    iconClick = {
-                        if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
-                        else onBookmarkClick(bookmark)
-                    }
-                )
+                    )
+                }
             }
         }
     }
@@ -402,6 +442,56 @@ fun BookmarkItem(
     }
 }
 
+@Composable
+fun BookmarkGridItem(
+    modifier: Modifier,
+    bitmap: Bitmap? = null,
+    isPressed: Boolean = false,
+    bookmark: Bookmark,
+) {
+    val borderWidth = if (isPressed) 1.dp else (-1).dp
+
+    Column(
+        modifier = modifier
+            .padding(4.dp)
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .padding(4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        if (bitmap != null) {
+            Image(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(4.dp),
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = null,
+            )
+        } else {
+            Icon(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(4.dp),
+                imageVector = ImageVector.vectorResource(
+                    id = if (bookmark.isDirectory) R.drawable.ic_folder else R.drawable.icon_plus
+                ),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground,
+            )
+        }
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = bookmark.title,
+            fontSize = 10.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colors.onBackground,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        )
+    }
+}
+
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ActionIcon(
@@ -430,14 +520,14 @@ private fun PreviewBookmarkList() {
     MyTheme {
         BookmarkList(
             bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
-            BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
+            bookmarkViewModel = BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
             showTwoColumn = true,
             shouldReverse = true,
             shouldShowDragHandle = false,
-            { _, _ -> },
-            {},
-            {},
-            { _, _ -> }
+            onItemMoved = { _, _ -> },
+            onBookmarkClick = {},
+            onBookmarkIconClick = {},
+            onBookmarkLongClick = { _, _ -> }
         )
     }
 }
@@ -450,23 +540,23 @@ private fun PreviewDialogPanel() {
         DialogPanel(
             folder = Bookmark("test 1", "https://www.google.com", false),
             //{},
-            false,
-            {},
-            {},
-            {},
-            {},
-            {},
+            inSortMode = false,
+            upParentAction = {},
+            syncBookmarksAction = {},
+            linkBookmarksAction = {},
+            closeAction = {},
+            reorderBookmarkAction = {},
         ) {
             BookmarkList(
                 bookmarks = listOf(Bookmark("test 1", "https://www.google.com", false)),
-                BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
+                bookmarkViewModel = BookmarkViewModel(bookmarkManager = BookmarkManager(LocalContext.current)),
                 showTwoColumn = true,
                 shouldReverse = true,
                 shouldShowDragHandle = false,
-                { _, _ -> },
-                {},
-                {},
-                { _, _ -> }
+                onItemMoved = { _, _ -> },
+                onBookmarkClick = {},
+                onBookmarkIconClick = {},
+                onBookmarkLongClick = { _, _ -> }
             )
         }
     }
