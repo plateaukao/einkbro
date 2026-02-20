@@ -83,6 +83,7 @@ class ConfigManager(
     var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
     var longClickAsArrowKey by BooleanPreference(sp, K_TOUCH_AREA_ARROW_KEY, false)
     var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
+    var isBookmarkGridView by BooleanPreference(sp, K_BOOKMARK_GRID_VIEW, false)
     var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
     var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
@@ -1020,6 +1021,8 @@ class ConfigManager(
             "sp_show_translated_image_to_second_panel"
 
         const val K_ENABLE_ZOOM_TEXT_WRAP_REFLOW = "sp_enable_zoom_text_wrap_reflow"
+
+        const val K_BOOKMARK_GRID_VIEW = "sp_bookmark_grid_view"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
