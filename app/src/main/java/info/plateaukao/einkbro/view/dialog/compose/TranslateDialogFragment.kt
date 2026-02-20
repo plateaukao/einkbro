@@ -120,6 +120,10 @@ class TranslateDialogFragment(
                 setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 val attrs = attributes
                 attrs.x = 0
+                if (isWholePageMode && anchorPoint == null) {
+                    setGravity(android.view.Gravity.TOP or android.view.Gravity.LEFT)
+                    attrs.y = requireActivity().window.decorView.height / 3
+                }
                 attributes = attrs
             }
         }
