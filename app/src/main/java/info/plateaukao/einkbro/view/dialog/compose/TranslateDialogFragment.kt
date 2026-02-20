@@ -107,6 +107,24 @@ class TranslateDialogFragment(
         closeAction?.invoke()
     }
 
+    override fun onStart() {
+        super.onStart()
+        val context = requireContext()
+        if (ViewUnit.isWideLayout(context)) {
+            dialog?.window?.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        } else {
+            dialog?.window?.apply {
+                setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                val attrs = attributes
+                attrs.x = 0
+                attributes = attrs
+            }
+        }
+    }
+
     private fun getTranslationWebView() = webView
 
     private fun changeTranslationLanguage() {
