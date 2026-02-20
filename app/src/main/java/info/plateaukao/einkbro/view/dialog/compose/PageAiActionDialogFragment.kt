@@ -33,7 +33,7 @@ class PageAiActionDialogFragment(
 ) : ComposeDialogFragment() {
 
     init {
-        shouldShowInCenter = true
+        shouldShowInCenter = false
     }
 
     @OptIn(ExperimentalFoundationApi::class)
