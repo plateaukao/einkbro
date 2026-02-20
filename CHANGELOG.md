@@ -1,3 +1,219 @@
+### 15.6.0
+#### Features
+* Support grid mode in bookmarks UI
+* Support Page AI toolbar action
+* Support item reordering in GPT action definition list
+* Support translation dialog pagination by volume key
+* Save web title when saving Page AI generated content
+
+#### Fixes
+* Page AI not working when opened in split screen or new tab
+* Hide translate actions in translate dialog when invoked from Page AI actions
+* Remove overly long model list for OpenAI
+
+---
+
+### 15.5.0
+#### Features
+* Support zoom feature in fullscreen mode
+* Add translation cache for short terms
+* Add input URL option in gesture action
+* Use model list picker instead of manual model name entry
+* Long pressing volume key (while using it for page navigation) now shows volume adjustment UI
+
+#### Fixes
+* Use `none` reasoning value for GenAI API calls
+* thenewslens.com reader mode conversion
+* Improve translate-by-paragraph text node algorithm (group consecutive inline elements; respect block boundaries)
+* More web pages can now use translate-by-paragraph correctly
+* Snapshot/latest version install progress now displays correctly
+* Context menu dialog fragment attach crash
+* Change default Gemini model to 2.5-flash (1.5-flash deprecated)
+
+---
+
+### 15.4.0
+#### Features
+* Opera-style text wrap/reflow to fit visible viewport (#538)
+* Setting to toggle text wrap reflow feature (#537)
+* Custom font setting in font dialog (#530)
+* DuckDuckGo search suggestions
+
+#### Fixes
+* Keyboard overlapping WebView content in fullscreen on some Android versions
+* Use `coroutine context.IO` to prevent UI blocking when handling intents (#545)
+* Long press crash (#533)
+
+---
+
+### 15.3.0
+#### Features
+* Google search suggestions (#531)
+* Append button in URL input auto-suggestion
+* Move context menu URL to bottom for easier reach
+* Fine-tuned search suggestion logic
+
+---
+
+### 15.2.0
+#### Features
+* Long-click URL bar and drag to context menu item to trigger it (#524)
+* Progress indicator when updating to latest version
+* Pressed dot visual effect on toolbar buttons
+
+#### Fixes
+* Static cursor in text input field when empty (#529, #528)
+* Dark mode dot color in context menu dialog (#526)
+* Custom floating button position
+
+---
+
+### 15.0.0
+#### Features
+* Instapaper: add URL support with toolbar/menu integration
+* Long-click action configuration for floating button
+* New shortcut to disable adblock on launch (allows re-downloading filter data)
+* Support ChatGPT actions in remote query across different devices
+
+#### Fixes
+* Removed Pocket service integration
+* Prevent Google Maps website from hijacking intents to open Maps app
+* Do not leave fullscreen mode when adding new tab
+* Fixed menu items missing icons
+
+---
+
+### 14.9.0
+#### Features
+* Open URL in chat web now correctly opens a new tab
+* Switching chat sessions no longer auto-scrolls to bottom
+
+#### Fixes
+* ReadAloud TTS issue
+
+---
+
+### 14.8.0
+#### Features
+* Chat history: save, restore and manage past chat sessions
+* Summarize web content for links in context menu
+* Use YouTube captions as chat-with-web content when available
+* Enhanced input history behavior
+
+#### Fixes
+* GPT-5 support with minimal reasoning tokens
+* Chat history title and URL now saved correctly
+* Do not save empty (0-message) sessions
+* Fixed leaving dict activity behavior (#501)
+
+---
+
+### 14.7.0
+#### Features
+* 16KB page size support
+
+#### Fixes
+* Spanish translation update (#499, #503)
+* Use F-Droid system env for reproducible builds (#496)
+* Chat HTML parsing error
+
+---
+
+### 14.6.0
+#### Features
+* Message history in chat-with-web
+* Input message history for chat-with-web
+
+#### Fixes
+* Gemini stream mode `done` action handling
+* GenAI output line return formatting
+* Disabled GFM markdown in chat-with-web
+* Chat input box shrinks correctly when space is limited
+
+---
+
+### 14.5.0
+#### Features
+* Chat with web for text selections (split screen support)
+* Stream mode for chat-with-web
+* Select different LLM providers for chat-with-web and summarization
+* Long-press chat button opens AI UI in split screen
+* Toolbar action for chat-with-web
+* EPUB reader: port parser from noveldokusha with image support
+* EPUB reader: navigate multi-part TOC entries
+* Select text and start TTS read-aloud from that sentence
+
+#### Fixes
+* Chat scroll-to-bottom behavior
+* Split screen control button position in chat-with-web mode
+* Remove `think` tag output when using Qwen3 on Ollama
+* EPUB reader navigation in vertical content
+* ReadAloud now works in EPUB reader activity
+
+---
+
+### 14.4.0
+#### Features
+* Support OpenAI / Gemini for translate-by-paragraph
+* OpenAI TTS: different model settings; instructions for `gpt-4o-mini-tts`
+* Use cheaper `gpt-4o-mini-tts` audio generation model
+* Updated MozReadability to latest version (adds footnote support) (#473)
+* Replace Wenkai with Iansui font for traditional Chinese characters
+
+#### Fixes
+* ReadAloud speed below 100% now works (#484)
+* Newly added bookmarks placed at end of list on wide screen (#475)
+* EPUB reader activity is now single instance (#474)
+* Invert color and share link from toolbar uses correct WebView (#466)
+* Bookmark drag-and-drop from/to index calculation (#443)
+* Hide search panel when new tab is created (#343)
+* Create empty tab after all tabs are closed (#456)
+* Simplified adblock filter download flow
+
+---
+
+### 14.2.0
+#### Features
+* Vertical reader mode: handle year/month/day and Chinese date expressions
+* Vertical reader mode: process digits and single English characters with dots
+* Enhanced `ol` list label handling in vertical reading mode
+* Add padding configuration for reader mode (#33)
+* Enlarged history and bookmark font size (#447)
+
+#### Fixes
+* Vertical reader mode: image ratio, body height, alignment
+* Dark mode icon color in action mode menu
+* Incognito mode no longer affects save-history setting after toggling
+
+---
+
+### 14.1.0
+#### Features
+* Vertical reader mode fine-tuning: digit rotation, inline element alignment, line interval
+
+#### Fixes
+* Korean and Japanese minute translation in reader mode
+* Do not rotate digits twice in vertical mode
+* Disable prerelease updates for "Update to Latest Release" button (#441)
+
+---
+
+### 14.0.0
+#### Features
+* New adblock system (rewrote filter download and management; removed Apache Commons Text dependency)
+* Invert color toolbar action
+* Save EPUB / share link toolbar actions
+* Use web title as file/book name
+* Add post-notification permission
+* Scriptlet support (experimental)
+
+#### Fixes
+* Text selection from second WebView when split screen is active (#440)
+* Toolbar title width calculation
+* Download snapshot binary with correct arm64-v8a CPU model
+
+---
+
 ### 10.5.0
 * Reader mode font configuration (not stable yet)
 * Support reading subtitle format srt file.
