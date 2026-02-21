@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view.dialog.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -16,12 +17,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.GptActionsActivity
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -46,11 +50,26 @@ class PageAiActionDialogFragment(
                         .verticalScroll(rememberScrollState())
                         .padding(12.dp)
                 ) {
-                    Text(
-                        text = stringResource(R.string.page_ai_action_title),
-                        style = MaterialTheme.typography.h6,
-                        color = MaterialTheme.colors.onBackground
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(R.string.page_ai_action_title),
+                            style = MaterialTheme.typography.h6,
+                            color = MaterialTheme.colors.onBackground
+                        )
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = stringResource(R.string.settings),
+                            tint = MaterialTheme.colors.onBackground,
+                            modifier = Modifier.clickable {
+                                context?.let { GptActionsActivity.start(it) }
+                                dismiss()
+                            }
+                        )
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     actions.forEach { action ->
                         Row(
