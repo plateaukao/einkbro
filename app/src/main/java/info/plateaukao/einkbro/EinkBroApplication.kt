@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Looper
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -27,6 +28,7 @@ import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
 import info.plateaukao.einkbro.service.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.LocaleManager
+import info.plateaukao.einkbro.util.WebViewUtil
 import io.github.edsuns.adfilter.AdFilter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -173,6 +175,24 @@ class EinkBroApplication : Application() {
                 }
             }
         }
+    }
+
+    // This snippet borrow from mihon
+    // https://github.com/mihonapp/mihon/blob/81871a34694c8e408d907731292b7266c5b993cc/app/src/main/java/eu/kanade/tachiyomi/App.kt#L231
+    override fun getPackageName(): String {
+        try {
+            // Override the value passed as X-Requested-With in WebView requests
+            val stackTrace = Looper.getMainLooper().thread.stackTrace
+            val isChromiumCall = stackTrace.any { trace ->
+                trace.className.lowercase() in setOf("org.chromium.base.buildinfo", "org.chromium.base.apkinfo") &&
+                        trace.methodName.lowercase() in setOf("getall", "getpackagename", "<init>")
+            }
+
+            if (isChromiumCall) return WebViewUtil.spoofedPackageName(applicationContext)
+        } catch (_: Exception) {
+        }
+
+        return super.getPackageName()
     }
 
     companion object {
