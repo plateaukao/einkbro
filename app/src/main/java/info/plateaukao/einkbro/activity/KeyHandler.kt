@@ -2,10 +2,14 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Context
 import android.media.AudioManager
+import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.webkit.WebView
+import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 
 class KeyHandler(
@@ -173,11 +177,23 @@ class KeyHandler(
     }
 
     private var isVolumeLongPress = false
+    private var isVolumeTemporarilyDisabled = false
+    private val handler = Handler(Looper.getMainLooper())
+    private val reenableVolumePageTurnRunnable = Runnable {
+        isVolumeTemporarilyDisabled = false
+        val context = browserController as? Context ?: return@Runnable
+        EBToast.show(context, R.string.volume_page_turn_resumed)
+    }
 
     fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             if (config.volumePageTurn) {
                 isVolumeLongPress = true
+                isVolumeTemporarilyDisabled = true
+                handler.removeCallbacks(reenableVolumePageTurnRunnable)
+                handler.postDelayed(reenableVolumePageTurnRunnable, 5000)
+                val context = browserController as? Context ?: return true
+                EBToast.show(context, R.string.volume_page_turn_paused)
                 adjustVolume(keyCode)
                 return true
             }
@@ -189,10 +205,15 @@ class KeyHandler(
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             if (config.volumePageTurn) {
                 isVolumeLongPress = false
-                return true
+                return !isVolumeTemporarilyDisabled
             }
         }
         return false
+    }
+
+    private fun extendVolumeDisablePeriod() {
+        handler.removeCallbacks(reenableVolumePageTurnRunnable)
+        handler.postDelayed(reenableVolumePageTurnRunnable, 5000)
     }
 
     private fun adjustVolume(keyCode: Int) {
@@ -204,6 +225,10 @@ class KeyHandler(
 
     private fun handleVolumeDownKey(event: KeyEvent): Boolean {
         if (config.volumePageTurn) {
+            if (isVolumeTemporarilyDisabled) {
+                if (event.repeatCount == 0) extendVolumeDisablePeriod()
+                return false
+            }
             if (event.repeatCount == 0) {
                 isVolumeLongPress = false
                 event.startTracking()
@@ -226,6 +251,10 @@ class KeyHandler(
 
     private fun handleVolumeUpKey(event: KeyEvent): Boolean {
         if (config.volumePageTurn) {
+            if (isVolumeTemporarilyDisabled) {
+                if (event.repeatCount == 0) extendVolumeDisablePeriod()
+                return false
+            }
             if (event.repeatCount == 0) {
                 isVolumeLongPress = false
                 event.startTracking()

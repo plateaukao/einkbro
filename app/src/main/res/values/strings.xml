@@ -275,6 +275,8 @@
     <string name="book_name">Book Name</string>
     <string name="book_name_description">Input the book name</string>
     <string name="volume_page_turn">Volume key</string>
+    <string name="volume_page_turn_paused">Volume page turn paused for 5 seconds</string>
+    <string name="volume_page_turn_resumed">Volume page turn resumed</string>
     <string name="folder_name">Bookmark folder name</string>
     <string name="folder_name_description">Insert Bookmark folder name</string>
     <string name="setting_title_export_bookmarks">Export bookmarks</string>
