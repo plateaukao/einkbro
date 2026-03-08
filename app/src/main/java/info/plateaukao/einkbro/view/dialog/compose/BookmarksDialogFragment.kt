@@ -326,7 +326,7 @@ fun BookmarkList(
         LazyVerticalGrid(
             modifier = Modifier.wrapContentHeight(),
             state = lazyGridState,
-            columns = GridCells.Fixed(if (isGridView) 4 else if (showTwoColumn) 2 else 1),
+            columns = if (isGridView) GridCells.Adaptive(73.dp) else GridCells.Fixed(if (showTwoColumn) 2 else 1),
             reverseLayout = shouldReverse
         ) {
             itemsIndexed(bookmarks, key = { _, bookmark -> bookmark.id }) { _, bookmark ->
