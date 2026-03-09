@@ -640,11 +640,11 @@ object BrowserUnit : KoinComponent {
     }
     
     fun loadRecentlyUsedBookmarks(webView: EBWebView) {
-        val html = getRecentBookmarksContent()
+        val html = getRecentBookmarksContent(webView.context)
         if (html.isNotBlank()) {
             webView.loadDataWithBaseURL(
                 null,
-                getRecentBookmarksContent(),
+                html,
                 "text/html",
                 "utf-8",
                 null
@@ -692,43 +692,36 @@ object BrowserUnit : KoinComponent {
         tempImageInputStream = null
     }
 
-    fun getRecentBookmarksContent(): String {
+    fun getRecentBookmarksContent(context: Context): String {
         if (config.recentBookmarks.isEmpty()) return ""
-        val content = config.recentBookmarks.joinToString(separator = " ") {
-            """<button><a href="${it.url}">${it.name}</a></button> """
+        val alignBottom = !config.isToolbarOnTop
+        val bookmarks = if (alignBottom) config.recentBookmarks.reversed() else config.recentBookmarks
+        val content = bookmarks.joinToString(separator = "\n") {
+            val initial = it.name.firstOrNull()?.uppercase() ?: "#"
+            val domain = try {
+                java.net.URI(it.url).host?.removePrefix("www.") ?: ""
+            } catch (e: Exception) { "" }
+            val faviconUrl = try {
+                val uri = java.net.URI(it.url)
+                "${uri.scheme}://${uri.host}/favicon.ico"
+            } catch (e: Exception) { "" }
+            """
+            <a href="${it.url}" class="card">
+                <div class="icon">
+                    <img src="$faviconUrl" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                    <span class="fallback">$initial</span>
+                </div>
+                <div class="info">
+                    <div class="name">${it.name}</div>
+                    <div class="domain">$domain</div>
+                </div>
+            </a>
+            """
         }
-        return """
-            <html>
-            <head>
-                <style>
-                body {
-                flex-wrap: wrap;
-                }
-                a{
-                  text-decoration:none;  
-                }
-                button {
-                  border: 2px solid black;
-                  background-color: white;
-                  color: black;
-                  padding: 14px 28px;
-                  font-size: 16px;
-                  cursor: pointer;
-                  border-color: #2196F3;
-                  color: dodgerblue;
-                  border-radius: 12px;
-                }
-                button:hover {
-                  background: #2196F3;
-                  color: white;
-                }
-                </style>
-            </head>
-            <body>
-                <center> $content </center>
-            </body>
-            </html>
-        """.trimIndent()
+        val bodyClass = if (alignBottom) "align-bottom" else ""
+        return HelperUnit.loadAssetFileToString(context, "recent_bookmarks.html")
+            .replace("{{BODY_CLASS}}", bodyClass)
+            .replace("{{CONTENT}}", content)
     }
 
     suspend fun getResourceAndMimetypeFromUrl(url: String, timeout: Int = 0): Pair<ByteArray, String> {

@@ -1,0 +1,106 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+        height: 100%;
+    }
+    body {
+        font-family: -apple-system, sans-serif;
+        background: #fff;
+        color: #000;
+        padding: 24px 16px;
+        display: flex;
+        flex-direction: column;
+    }
+    body.align-bottom {
+        justify-content: flex-end;
+    }
+    h1 {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        border-bottom: 2px solid #000;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+    .grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: #000;
+        border: 1.5px solid #000;
+        border-radius: 8px;
+        padding: 12px 14px;
+        width: calc(50% - 6px);
+        min-width: 180px;
+        transition: background 0.1s;
+    }
+    .card:active {
+        background: #e0e0e0;
+    }
+    .icon {
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid #000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+        position: relative;
+    }
+    .icon img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+    }
+    .icon .fallback {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+        width: 100%;
+        height: 100%;
+    }
+    .info {
+        overflow: hidden;
+        min-width: 0;
+    }
+    .name {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .domain {
+        font-size: 11px;
+        color: #555;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 2px;
+    }
+    @media (max-width: 400px) {
+        .card { width: 100%; }
+    }
+    </style>
+</head>
+<body class="{{BODY_CLASS}}">
+    <h1>Bookmarks</h1>
+    <div class="grid">
+        {{CONTENT}}
+    </div>
+</body>
+</html>
