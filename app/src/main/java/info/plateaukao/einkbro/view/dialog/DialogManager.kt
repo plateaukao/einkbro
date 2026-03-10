@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package info.plateaukao.einkbro.view.dialog
 
 import android.app.Activity
@@ -34,6 +36,7 @@ class DialogManager(
     private val config: ConfigManager by inject()
     private val inflater = LayoutInflater.from(activity)
 
+    @Suppress("DEPRECATION")
     fun createProgressDialog(
         titleResId: Int,
     ): ProgressDialog = ProgressDialog(activity, R.style.TouchAreaDialog).apply {

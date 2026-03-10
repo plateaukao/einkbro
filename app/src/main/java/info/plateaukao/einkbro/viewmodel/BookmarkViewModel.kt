@@ -104,6 +104,7 @@ class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewMode
 
 class BookmarkViewModelFactory(private val bookmarkManager: BookmarkManager) :
     ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
         BookmarkViewModel(bookmarkManager) as T
 }

@@ -18,6 +18,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -168,6 +169,7 @@ interface BookmarkDao {
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 class BookmarkManager(context: Context) : KoinComponent {
     val config: ConfigManager by inject()
 

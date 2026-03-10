@@ -241,6 +241,7 @@ class EBWebViewClient(
     }
 
     @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? =
         handleWebRequest(view, Uri.parse(url)) ?: super.shouldInterceptRequest(view, url)
 

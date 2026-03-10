@@ -82,6 +82,7 @@ class EBWebChromeClient(
         return url.contains("facebook") && !url.contains("story") && !url.contains("l.php")
     }
 
+    @Suppress("DEPRECATION")
     private fun initWebView(webView: WebView) {
         val webSettings = webView.settings
         val defaultUserAgent = webSettings.userAgentString

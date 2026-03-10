@@ -150,7 +150,7 @@ private object UrlResourceTypeDetector {
     private fun mapExtensions(extensions: Array<String>, contentType: ResourceType) {
         for (extension in extensions) {
             // all comparisons are in lower case, force that the extensions are in lower case
-            extensionTypeMap[extension.toLowerCase(Locale.ROOT)] = contentType
+            extensionTypeMap[extension.lowercase(Locale.ROOT)] = contentType
         }
     }
 
@@ -159,7 +159,7 @@ private object UrlResourceTypeDetector {
         val lastIndexOfDot = path.lastIndexOf('.')
         if (lastIndexOfDot > -1) {
             val fileExtension = path.substring(lastIndexOfDot + 1)
-            return extensionTypeMap[fileExtension.toLowerCase(Locale.ROOT)]
+            return extensionTypeMap[fileExtension.lowercase(Locale.ROOT)]
         }
         return null
     }

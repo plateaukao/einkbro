@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package info.plateaukao.einkbro
 
 import android.Manifest
@@ -30,6 +32,7 @@ import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.util.WebViewUtil
 import io.github.edsuns.adfilter.AdFilter
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
@@ -37,7 +40,7 @@ import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 
-@Suppress("DEPRECATION")
+@OptIn(DelicateCoroutinesApi::class)
 class EinkBroApplication : Application() {
 
     private val sp: SharedPreferences by lazy {
