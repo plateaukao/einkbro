@@ -220,11 +220,13 @@ fun <T> ValueSettingItemUi(
                 setting.summaryResId,
                 setting.config.get()
             ) ?: return@launch
+            @Suppress("UNCHECKED_CAST")
             if (setting.config.get() is Int) {
                 setting.config.set(value.toInt() as T)
             } else {
                 setting.config.set(value as T)
             }
+            @Suppress("UNCHECKED_CAST")
             currentValue.value = value as T
         }
     }

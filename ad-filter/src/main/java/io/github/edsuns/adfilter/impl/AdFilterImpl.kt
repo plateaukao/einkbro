@@ -17,6 +17,7 @@ import io.github.edsuns.adfilter.impl.Constants.TAG_INSTALLATION
 import io.github.edsuns.adfilter.script.ElementHiding
 import io.github.edsuns.adfilter.script.ScriptInjection
 import io.github.edsuns.adfilter.script.Scriptlet
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ import java.io.File
 /**
  * Created by Edsuns@qq.com on 2021/7/29.
  */
+@OptIn(DelicateCoroutinesApi::class)
 internal class AdFilterImpl(appContext: Context) : AdFilter {
 
     private val detector: Detector = DetectorImpl()

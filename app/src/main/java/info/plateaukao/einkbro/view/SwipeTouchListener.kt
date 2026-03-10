@@ -19,11 +19,11 @@ open class SwipeTouchListener(ctx: Context?) : OnTouchListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean = gestureDetector.onTouchEvent(event)
 
-    @Suppress("NOTHING_TO_OVERRIDE", "ACCIDENTAL_OVERRIDE")
     private inner class GestureListener : SimpleOnGestureListener() {
         override fun onDown(e: MotionEvent): Boolean = false
 
-        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+            if (e1 == null) return false
             var result = false
             try {
                 val diffY = e2.y - e1.y

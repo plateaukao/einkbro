@@ -18,6 +18,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +38,7 @@ import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
 
+@OptIn(DelicateCoroutinesApi::class)
 class BackupUnit(
     private val context: Context,
 ) : KoinComponent {
@@ -180,7 +182,7 @@ class BackupUnit(
     private fun dlElement(elements: Elements, parentId: Int): List<Bookmark> {
         val bookmarkList = mutableListOf<Bookmark>()
         for (elem in elements) {
-            when (elem.nodeName().toUpperCase()) {
+            when (elem.nodeName().uppercase()) {
                 "DT" -> bookmarkList.addAll(dtElement(elem.children(), parentId))
                 "DL" -> bookmarkList.addAll(dlElement(elem.children(), parentId))
                 "P" -> continue
@@ -194,7 +196,7 @@ class BackupUnit(
     private fun dtElement(elements: Elements, parentId: Int): List<Bookmark> {
         val bookmarkList = mutableListOf<Bookmark>()
         for (elem in elements) {
-            when (elem.nodeName().toUpperCase()) {
+            when (elem.nodeName().uppercase()) {
                 "H3" -> {
                     currentFolderId = ++recordId
                     bookmarkList.add(

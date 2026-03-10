@@ -105,6 +105,7 @@ class ToolbarConfigActivity : ComponentActivity() {
             window.setDecorFitsSystemWindows(false)
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
+            @Suppress("DEPRECATION")
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }

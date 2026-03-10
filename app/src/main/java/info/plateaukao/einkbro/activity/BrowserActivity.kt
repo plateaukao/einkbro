@@ -1067,6 +1067,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         filePathCallback = null
     }
 
+    @Suppress("DEPRECATION")
     private fun saveEpub(uri: Uri) {
         val progressDialog =
             dialogManager.createProgressDialog(R.string.saving_epub).apply { show() }
@@ -1187,6 +1188,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
 
             // Manual keyboard handling for pre-R devices when status bar is hidden
+            @Suppress("DEPRECATION")
             val isFullscreen = (window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && isFullscreen) {
                 val rect = Rect()
@@ -1245,6 +1247,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         updateTitle()
+        @Suppress("DEPRECATION")
         overridePendingTransition(0, 0)
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
@@ -2304,10 +2307,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.setDecorFitsSystemWindows(true)
             } else {
+                @Suppress("DEPRECATION")
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             }
         }
-        
+
         composeToolbarViewController.hide()
 
         val textOrUrl = if (ebWebView.url?.startsWith("data:") != true) {
@@ -2731,6 +2735,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         showToolbar()
     }
 
+    @Suppress("DEPRECATION")
     private fun hideStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
@@ -2744,6 +2749,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
 
+    @Suppress("DEPRECATION")
     private fun showStatusBar() {
         if (config.hideStatusbar) return
 
