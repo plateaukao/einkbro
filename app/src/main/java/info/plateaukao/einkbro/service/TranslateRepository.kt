@@ -107,10 +107,8 @@ class TranslateRepository : KoinComponent {
         }
 
         val body =
-            RequestBody.create(
-                "application/json; charset=utf-8".toMediaTypeOrNull(),
-                processPostData(data, id)
-            )
+            processPostData(data, id)
+                .toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
         val request = Request.Builder()
             .url("https://www2.deepl.com/jsonrpc")

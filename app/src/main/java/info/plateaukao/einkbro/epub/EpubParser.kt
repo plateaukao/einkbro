@@ -325,8 +325,8 @@ suspend fun epubParser(
         // write file to temp location with relative path
         val relativePath = file.absPath.substringAfter("$rootPath/")
         val epubFile = File(epubTempExtractionLocation + File.separator + relativePath)
-        if (!epubFile.parentFile.exists()) {
-            epubFile.parentFile.mkdirs()
+        if (epubFile.parentFile?.exists() != true) {
+            epubFile.parentFile?.mkdirs()
         }
         epubFile.writeBytes(file.data)
     }

@@ -110,7 +110,7 @@ fun SettingsScreen(
             TopAppBar(
                 title = { Text(text = stringResource(R.string.settings)) },
                 navigationIcon = {
-                    IconButton(onClick = { (context as ComponentActivity).onBackPressed() }) {
+                    IconButton(onClick = { (context as ComponentActivity).onBackPressedDispatcher.onBackPressed() }) {
                         Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = null)
                     }
                 },

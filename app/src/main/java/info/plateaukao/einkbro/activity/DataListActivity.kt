@@ -18,7 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
@@ -68,7 +68,7 @@ class DataListActivity : ComponentActivity(), KoinComponent {
                                 IconButton(onClick = { finish() }) {
                                     Icon(
                                         tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.Filled.ArrowBack,
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                         contentDescription = stringResource(R.string.back)
                                     )
                                 }
@@ -111,6 +111,7 @@ class DataListActivity : ComponentActivity(), KoinComponent {
     }
 
     private fun getWhitelistType(): BaseWhiteListType =
+        @Suppress("DEPRECATION")
         when (intent.getSerializableExtra(TYPE) as WhiteListType) {
             WhiteListType.Adblock -> WhiteListTypeAdblock()
             WhiteListType.Javascript -> BaseWhiteListTypeJavascript()

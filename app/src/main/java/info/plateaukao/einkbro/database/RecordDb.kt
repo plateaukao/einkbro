@@ -39,8 +39,8 @@ class RecordDb(
     }
 
     private fun internalAddHistory(record: Record) {
-        if (record.title == null || record.title.trim { it <= ' ' }.isEmpty()
-            || record.url == null || record.url.trim { it <= ' ' }.isEmpty()
+        if (record.title.isNullOrBlank()
+            || record.url.isBlank()
             || record.time < 0L
         ) {
             return

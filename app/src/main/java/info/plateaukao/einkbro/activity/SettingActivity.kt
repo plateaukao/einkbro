@@ -21,7 +21,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -268,6 +268,7 @@ class SettingActivity : FragmentActivity() {
     override fun onResume() {
         super.onResume()
 
+        @Suppress("DEPRECATION")
         overridePendingTransition(0, 0)
     }
 
@@ -307,6 +308,7 @@ class SettingActivity : FragmentActivity() {
             }
         )
         finish()
+        @Suppress("DEPRECATION")
         overridePendingTransition(0, 0)
     }
 
@@ -1163,6 +1165,7 @@ class SettingActivity : FragmentActivity() {
         backupUnit.handleBookmarkSync(forceUpload)
     }
 
+    @Suppress("DEPRECATION")
     private fun hideStatusBar() {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -1217,7 +1220,7 @@ fun SettingBar(
             IconButton(onClick = navigateUp) {
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
             }

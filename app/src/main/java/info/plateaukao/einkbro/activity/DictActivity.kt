@@ -94,6 +94,7 @@ class DictActivity : AppCompatActivity() {
         finish()
     }
 
+    @Suppress("DEPRECATION")
     private fun hideStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val controller = window.insetsController

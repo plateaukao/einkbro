@@ -49,6 +49,7 @@ import info.plateaukao.einkbro.unit.HelperUnit.loadAssetFile
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -63,6 +64,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
+@OptIn(DelicateCoroutinesApi::class)
 open class EBWebView(
     context: Context,
     var browserController: BrowserController?,
@@ -208,6 +210,7 @@ open class EBWebView(
         addJavascriptInterface(JsWebInterface(this), "androidApp")
     }
 
+    @Suppress("DEPRECATION")
     private fun updateDarkMode() {
         if (config.darkMode == DarkMode.DISABLED) {
             return

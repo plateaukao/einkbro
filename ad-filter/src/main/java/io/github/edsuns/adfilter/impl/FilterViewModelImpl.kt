@@ -15,6 +15,7 @@ import io.github.edsuns.adfilter.workers.InstallationWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -22,6 +23,7 @@ import kotlinx.serialization.json.Json
 /**
  * Created by Edsuns@qq.com on 2021/7/29.
  */
+@OptIn(ExperimentalSerializationApi::class)
 internal class FilterViewModelImpl(
     context: Context,
     private val filterDataLoader: FilterDataLoader,

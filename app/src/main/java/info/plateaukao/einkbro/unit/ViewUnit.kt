@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Bitmap
+import androidx.core.view.drawToBitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.ColorMatrix
@@ -60,14 +61,7 @@ object ViewUnit: KoinComponent {
     }
 
     fun captureDrawingCache(view: View): Bitmap {
-        view.isDrawingCacheEnabled = true
-        view.destroyDrawingCache()
-        view.buildDrawingCache()
-        var bitmap: Bitmap? = null
-        while (bitmap == null) {
-            bitmap = view.drawingCache
-        }
-        return bitmap
+        return view.drawToBitmap()
     }
 
     @JvmStatic
@@ -150,6 +144,7 @@ object ViewUnit: KoinComponent {
     }
 
     private var isNavigationBarDisplayed: Boolean? = null
+    @Suppress("DEPRECATION")
     fun setCustomFullscreen(
         window: Window,
         fullscreen: Boolean,
@@ -194,12 +189,8 @@ object ViewUnit: KoinComponent {
         val imm =
             activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         activity.runOnUiThread {
-            imm.toggleSoftInput(
-                InputMethodManager.SHOW_FORCED,
-                InputMethodManager.HIDE_IMPLICIT_ONLY
-            )
-            //val view = activity.currentFocus ?: return@runOnUiThread
-            //imm.showSoftInput(view, 0)
+            val view = activity.currentFocus ?: return@runOnUiThread
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
     }
 

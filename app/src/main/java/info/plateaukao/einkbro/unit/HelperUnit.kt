@@ -139,7 +139,7 @@ object HelperUnit {
     fun setBottomSheetBehavior(dialog: BottomSheetDialog, view: View, beh: Int) {
         val mBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(view.parent as View)
         mBehavior.state = beh
-        mBehavior.setBottomSheetCallback(object : BottomSheetCallback() {
+        mBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     dialog.cancel()
@@ -190,7 +190,7 @@ object HelperUnit {
         val originalUri = Uri.parse(url)
         val scheme = when (originalUri.scheme) {
             "https" -> "einkbros"
-            "https" -> "einkbro"
+            "http" -> "einkbro"
             else -> originalUri.scheme
         }
         return originalUri.buildUpon().scheme(scheme).build()
@@ -539,14 +539,19 @@ object HelperUnit {
         zipInputStream.close()
     }
 
+    @Suppress("DEPRECATION")
     private fun isAppInstalledFromPlayStore(context: Context): Boolean {
         val packageName = context.packageName
         val pm = context.packageManager
 
         return try {
-            val installerPackageName = pm.getInstallerPackageName(packageName)
+            val installerPackageName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                pm.getInstallSourceInfo(packageName).installingPackageName
+            } else {
+                pm.getInstallerPackageName(packageName)
+            }
             "com.android.vending" == installerPackageName
-        } catch (e: IllegalArgumentException) {
+        } catch (e: Exception) {
             false
         }
     }

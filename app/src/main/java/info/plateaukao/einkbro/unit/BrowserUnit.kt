@@ -50,6 +50,7 @@ import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ShortcutEditDialog
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -71,6 +72,7 @@ import java.util.Objects
 import java.util.regex.Pattern
 import kotlin.system.exitProcess
 
+@OptIn(DelicateCoroutinesApi::class)
 object BrowserUnit : KoinComponent {
     const val PROGRESS_MAX = 100
     const val SUFFIX_PNG = ".png"
@@ -164,6 +166,7 @@ object BrowserUnit : KoinComponent {
         return hitTestResult.extra ?: message.data.getString("src").orEmpty()
     }
 
+    @Suppress("DEPRECATION")
     fun getWebViewLinkUrl(webView: WebView, message: Message): String {
         val hitTestResult = webView.hitTestResult
 
@@ -248,7 +251,7 @@ object BrowserUnit : KoinComponent {
     @JvmStatic
     fun isURL(url: String?): Boolean {
         var url = url ?: return false
-        url = url.toLowerCase(Locale.getDefault())
+        url = url.lowercase(Locale.getDefault())
         if (url.startsWith(URL_ABOUT_BLANK)
             || url.startsWith(URL_SCHEME_MAIL_TO)
             || url.startsWith(URL_SCHEME_FILE)
@@ -280,7 +283,7 @@ object BrowserUnit : KoinComponent {
     fun queryWrapper(context: Context, query: String): String {
         // Use prefix and suffix to process some special links
         var query = query
-        val temp = query.toLowerCase(Locale.getDefault())
+        val temp = query.lowercase(Locale.getDefault())
         if (temp.contains(URL_PREFIX_GOOGLE_PLAY) && temp.contains(URL_SUFFIX_GOOGLE_PLAY)) {
             val start = temp.indexOf(URL_PREFIX_GOOGLE_PLAY) + URL_PREFIX_GOOGLE_PLAY.length
             val end = temp.indexOf(URL_SUFFIX_GOOGLE_PLAY)
@@ -453,9 +456,9 @@ object BrowserUnit : KoinComponent {
 
     fun guessFilename(url: String, contentDisposition: String, mimeType: String): String {
         val prefix = "filename*=utf-8''"
-        val decodedContentDescription = URLDecoder.decode(contentDisposition)
-        if (decodedContentDescription.toLowerCase().contains(prefix)) {
-            val index = decodedContentDescription.toLowerCase().indexOf(prefix)
+        val decodedContentDescription = URLDecoder.decode(contentDisposition, "UTF-8")
+        if (decodedContentDescription.lowercase().contains(prefix)) {
+            val index = decodedContentDescription.lowercase().indexOf(prefix)
             return decodedContentDescription.substring(index + prefix.length)
         }
         val anotherPrefix = "filename=\""
@@ -575,7 +578,7 @@ object BrowserUnit : KoinComponent {
         val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
         context.contentResolver?.takePersistableUriPermission(uri, takeFlags)
 
-        val file = File(uri.path)
+        val file = File(uri.path ?: return)
         if (isReaderMode) {
             config.readerCustomFontInfo = CustomFontInfo(file.name, uri.toString())
         } else {
@@ -773,6 +776,7 @@ object BrowserUnit : KoinComponent {
     fun restartApp(activity: Activity) {
         finishAffinity(activity) // Finishes all activities.
         activity.startActivity(activity.packageManager.getLaunchIntentForPackage(activity.packageName))    // Start the launch activity
+        @Suppress("DEPRECATION")
         activity.overridePendingTransition(0, 0)
         exitProcess(0)
     }

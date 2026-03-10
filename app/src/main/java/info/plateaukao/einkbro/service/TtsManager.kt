@@ -6,6 +6,7 @@ import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.processedTextToChunks
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -15,6 +16,7 @@ import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+@OptIn(DelicateCoroutinesApi::class)
 class TtsManager(
     private val context: Context,
 ) : KoinComponent {

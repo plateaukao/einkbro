@@ -3,6 +3,7 @@ package io.github.edsuns.adfilter.impl
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -10,6 +11,7 @@ import kotlinx.serialization.json.Json
 /**
  * Created by Edsuns@qq.com on 2021/1/1.
  */
+@OptIn(ExperimentalSerializationApi::class)
 internal class FilterSharedPreferences(private val context: Context) {
 
     val hasInstallation: Boolean
