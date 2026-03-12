@@ -66,6 +66,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
@@ -193,6 +194,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
 
     // Layouts
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
 
@@ -355,8 +357,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         orientation = resources.configuration.orientation
 
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
         mainContentLayout = findViewById(R.id.main_content)
         subContainer = findViewById(R.id.sub_container)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            if (currentAlbumController != null) {
+                ebWebView.reload()
+            } else {
+                swipeRefreshLayout.isRefreshing = false
+            }
+        }
         ViewUnit.updateAppbarPosition(binding)
         initLaunchers()
         initToolbar()
@@ -2290,6 +2301,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         } else { // web page loading complete
             updateRefresh(false)
             progressBar.visibility = GONE
+            swipeRefreshLayout.isRefreshing = false
 
             scrollChange()
 
