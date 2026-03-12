@@ -120,6 +120,7 @@ dependencies {
     // for epub saving: html processing
     implementation(libs.jsoup)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
