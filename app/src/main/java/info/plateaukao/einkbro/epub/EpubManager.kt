@@ -117,6 +117,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         intent.putExtra(Intent.EXTRA_TITLE, "$fileName.epub")
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
         activityResultLauncher.launch(intent)
     }
 
