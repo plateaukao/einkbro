@@ -1,7 +1,6 @@
 package info.plateaukao.einkbro.tts
 
 import android.util.Log
-import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
@@ -23,16 +22,18 @@ import kotlin.coroutines.suspendCoroutine
 
 // ported from https://github.com/9ikj/Edge-TTS-Lib/
 class ETts {
-    private var headers: HashMap<String, String> = HashMap<String, String>().apply {
+    private fun buildHeaders(): HashMap<String, String> = HashMap<String, String>().apply {
         put("Origin", "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold")
         put("Pragma", "no-cache")
         put("Cache-Control", "no-cache")
         put(
             "User-Agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.3485.14 Safari/537.36 Edg/99.0.1150.55"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/$CHROMIUM_MAJOR_VERSION.0.0.0 Safari/537.36 Edg/$CHROMIUM_MAJOR_VERSION.0.0.0"
         )
+        put("Accept-Encoding", "gzip, deflate, br, zstd")
+        put("Accept-Language", "en-US,en;q=0.9")
+        put("Cookie", "muid=${generateMuid()};")
     }
-    private val storage = EinkBroApplication.instance.cacheDir.absolutePath
 
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
@@ -69,8 +70,8 @@ class ETts {
             val secMsGEC = generateSecMsGec()
 
             val request = Request.Builder()
-                .url("$TTS_URL&Sec-MS-GEC=$secMsGEC&Sec-MS-GEC-Version=1-130.0.2849.68&ConnectionId=$reqId")
-                .headers(headers.toHeaders())
+                .url("$TTS_URL&Sec-MS-GEC=$secMsGEC&Sec-MS-GEC-Version=$SEC_MS_GEC_VERSION&ConnectionId=$reqId")
+                .headers(buildHeaders().toHeaders())
                 .build()
 
             try {
@@ -170,9 +171,18 @@ class ETts {
                 "X-Timestamp:" + timestamp + "Z\r\n" +
                 "Path:ssml\r\n\r\n" + ssml
 
+    private fun generateMuid(): String {
+        val bytes = ByteArray(16)
+        java.security.SecureRandom().nextBytes(bytes)
+        return bytes.joinToString("", transform = "%02X"::format)
+    }
+
     companion object {
         private const val FORMAT = "audio-24khz-48kbitrate-mono-mp3"
         private const val TRUSTED_CLIENT_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+        private const val CHROMIUM_FULL_VERSION = "143.0.3650.75"
+        private const val CHROMIUM_MAJOR_VERSION = "143"
+        private const val SEC_MS_GEC_VERSION = "1-$CHROMIUM_FULL_VERSION"
         private const val TTS_URL =
             "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=$TRUSTED_CLIENT_TOKEN"
         private const val VOICES_LIST_URL =
