@@ -312,7 +312,10 @@ class BackupUnit(
         if (result.resultCode != FragmentActivity.RESULT_OK) return null
         val uri = result.data?.data ?: return null
         context.contentResolver
-            .takePersistableUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            .takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
         return uri
     }
 
