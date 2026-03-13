@@ -211,7 +211,7 @@
         tools:ignore="RelativeOverlap"
         tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/main_content" />
+        app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout" />
 
     <TextView
         android:id="@+id/translation_language"

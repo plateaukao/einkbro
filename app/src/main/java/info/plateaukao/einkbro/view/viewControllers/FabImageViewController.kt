@@ -51,21 +51,21 @@ class FabImageViewController(
                 textView.layoutParams = params.apply {
                     startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                     endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.main_content
+                    bottomToBottom = R.id.swipe_refresh_layout
                 }
             }
 
             FabPosition.Left -> {
                 textView.layoutParams = params.apply {
                     startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.main_content
+                    bottomToBottom = R.id.swipe_refresh_layout
                 }
             }
 
             FabPosition.Right -> {
                 textView.layoutParams = params.apply {
                     endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.main_content
+                    bottomToBottom = R.id.swipe_refresh_layout
                 }
             }
 
@@ -73,7 +73,7 @@ class FabImageViewController(
                 textView.layoutParams = params.apply {
                     startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                     endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.main_content
+                    bottomToBottom = R.id.swipe_refresh_layout
                 }
             }
 
