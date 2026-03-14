@@ -361,19 +361,29 @@ object BrowserUnit : KoinComponent {
             return
         }
 
-        var filename = Uri.decode(guessFilename(url, contentDisposition, mimeType))
-        val title = context.getString(R.string.dialog_title_download)
+        val filename = Uri.decode(guessFilename(url, contentDisposition, mimeType))
 
-        (activity as LifecycleOwner).lifecycleScope.launch {
-            val modifiedFilename = TextInputDialog(
-                context,
-                "",
-                title,
-                filename
-            ).show()
+        if (hasExactFilename(contentDisposition)) {
+            internalDownload(activity, url, mimeType, filename)
+        } else {
+            val title = context.getString(R.string.dialog_title_download)
+            (activity as LifecycleOwner).lifecycleScope.launch {
+                val modifiedFilename = TextInputDialog(
+                    context,
+                    "",
+                    title,
+                    filename
+                ).show()
 
-            modifiedFilename?.let { internalDownload(activity, url, mimeType, it) }
+                modifiedFilename?.let { internalDownload(activity, url, mimeType, it) }
+            }
         }
+    }
+
+    private fun hasExactFilename(contentDisposition: String): Boolean {
+        if (contentDisposition.isBlank()) return false
+        val lower = contentDisposition.lowercase()
+        return lower.contains("filename*=") || lower.contains("filename=")
     }
 
     var downloadFileId = -1L
