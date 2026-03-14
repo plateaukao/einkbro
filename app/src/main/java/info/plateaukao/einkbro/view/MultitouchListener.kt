@@ -61,6 +61,9 @@ open class MultitouchListener(
 
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_POINTER_DOWN -> {
+                // Prevent parent (e.g. SwipeRefreshLayout) from intercepting
+                // so two-finger gestures are not mistaken for pull-to-refresh
+                view.parent?.requestDisallowInterceptTouchEvent(true)
                 scaleFactor = 1.0f
                 startPoint0 = event.getPoint(0)
                 startPoint1 = event.getPoint(1)
