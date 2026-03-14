@@ -393,7 +393,12 @@ object BrowserUnit : KoinComponent {
             setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             setTitle(filename)
             setMimeType(mimeType)
-            setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+            try {
+                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+            } catch (e: Exception) {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                setDestinationUri(Uri.fromFile(java.io.File(downloadsDir, filename)))
+            }
         }
         val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         downloadFileId = manager.enqueue(request)

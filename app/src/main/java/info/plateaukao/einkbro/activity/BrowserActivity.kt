@@ -2703,7 +2703,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val request = Request(source).apply {
             addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
             setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+            try {
+                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+            } catch (e: Exception) {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                setDestinationUri(Uri.fromFile(java.io.File(downloadsDir, fileName)))
+            }
         }
 
         val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
