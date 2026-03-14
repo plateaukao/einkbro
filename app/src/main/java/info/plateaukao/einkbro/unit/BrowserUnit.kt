@@ -380,11 +380,8 @@ object BrowserUnit : KoinComponent {
         }
     }
 
-    private fun hasExactFilename(contentDisposition: String): Boolean {
-        if (contentDisposition.isBlank()) return false
-        val lower = contentDisposition.lowercase()
-        return lower.contains("filename*=") || lower.contains("filename=")
-    }
+    private fun hasExactFilename(contentDisposition: String): Boolean =
+        parseContentDispositionFilename(contentDisposition) != null
 
     var downloadFileId = -1L
     private fun internalDownload(
@@ -470,50 +467,68 @@ object BrowserUnit : KoinComponent {
     }
 
     fun guessFilename(url: String, contentDisposition: String, mimeType: String): String {
-        val prefix = "filename*=utf-8''"
-        val decodedContentDescription = URLDecoder.decode(contentDisposition, "UTF-8")
-        if (decodedContentDescription.lowercase().contains(prefix)) {
-            val index = decodedContentDescription.lowercase().indexOf(prefix)
-            return decodedContentDescription.substring(index + prefix.length)
-        }
-        val anotherPrefix = "filename=\""
-        if (contentDisposition.contains(anotherPrefix)) {
-            val index = contentDisposition.indexOf(anotherPrefix)
-            return contentDisposition.substring(
-                index + anotherPrefix.length,
-                contentDisposition.length - 1
-            )
-        }
-        val anotherPrefix2 = "filename="
-        if (contentDisposition.contains(anotherPrefix2)) {
-            val index = contentDisposition.indexOf(anotherPrefix2)
-            return contentDisposition.substring(
-                index + anotherPrefix2.length,
-                contentDisposition.length
-            )
-        }
+        val cdFilename = parseContentDispositionFilename(contentDisposition)
+        if (cdFilename != null) return sanitizeFilename(cdFilename)
 
-        var filename = URLUtil.guessFileName(url, contentDisposition, mimeType)
-        if (filename.endsWith(".bin")) {
-            var decodedUrl: String? = Uri.decode(url)
-            if (decodedUrl != null) {
-                val queryIndex = decodedUrl.indexOf('?')
-                // If there is a query string strip it, same as desktop browsers
-                if (queryIndex > 0) {
-                    decodedUrl = decodedUrl.substring(0, queryIndex)
-                }
-                if (!decodedUrl.endsWith("/")) {
-                    val index = decodedUrl.lastIndexOf('/') + 1
-                    if (index > 0) {
-                        filename = decodedUrl.substring(index)
-                        if (filename.indexOf('.') < 0) {
-                            filename += "bin"
-                        }
-                    }
-                }
+        val urlFilename = extractFilenameFromUrl(url, mimeType)
+        if (urlFilename != null) return sanitizeFilename(urlFilename)
+
+        return sanitizeFilename(URLUtil.guessFileName(url, contentDisposition, mimeType))
+    }
+
+    private fun parseContentDispositionFilename(contentDisposition: String): String? {
+        if (contentDisposition.isBlank()) return null
+
+        // RFC 5987: filename*=UTF-8''percent-encoded-name (takes priority per RFC 6266)
+        val extValuePattern = Regex("""filename\*\s*=\s*[^']*'[^']*'(.+?)(?:\s*;|$)""", RegexOption.IGNORE_CASE)
+        extValuePattern.find(contentDisposition)?.let { match ->
+            val encoded = match.groupValues[1].trim()
+            return try {
+                URLDecoder.decode(encoded, "UTF-8")
+            } catch (e: Exception) {
+                encoded
             }
         }
+
+        // Quoted: filename="name"
+        val quotedPattern = Regex("""filename\s*=\s*"([^"]+)"""", RegexOption.IGNORE_CASE)
+        quotedPattern.find(contentDisposition)?.let { match ->
+            return match.groupValues[1]
+        }
+
+        // Unquoted: filename=name
+        val unquotedPattern = Regex("""filename\s*=\s*([^\s;]+)""", RegexOption.IGNORE_CASE)
+        unquotedPattern.find(contentDisposition)?.let { match ->
+            return match.groupValues[1]
+        }
+
+        return null
+    }
+
+    private fun extractFilenameFromUrl(url: String, mimeType: String): String? {
+        val decodedUrl = try { Uri.decode(url) } catch (e: Exception) { return null } ?: return null
+
+        // Strip query string and fragment
+        val cleanUrl = decodedUrl.substringBefore('?').substringBefore('#')
+        if (cleanUrl.endsWith("/")) return null
+
+        val lastSegment = cleanUrl.substringAfterLast('/')
+        if (lastSegment.isBlank()) return null
+
+        // If it has a recognizable file extension, use it
+        if (lastSegment.contains('.')) return lastSegment
+
+        // No extension — try to derive one from mimeType
+        val ext = android.webkit.MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+        return if (ext != null) "$lastSegment.$ext" else null
+    }
+
+    private fun sanitizeFilename(filename: String): String {
         return filename
+            .replace(Regex("[/\\\\]"), "_")
+            .replace(Regex("[\\x00-\\x1f]"), "")
+            .trim()
+            .ifBlank { "download" }
     }
 
 
