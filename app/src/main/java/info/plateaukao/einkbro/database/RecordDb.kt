@@ -147,7 +147,7 @@ class RecordDb(
             null,
             null,
             null,
-            RecordUnit.COLUMN_TIME + (if (config.isToolbarOnTop) " asc" else " desc")
+            RecordUnit.COLUMN_TIME + " desc"
         )
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
