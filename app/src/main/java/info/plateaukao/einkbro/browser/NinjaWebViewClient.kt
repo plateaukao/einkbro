@@ -70,6 +70,9 @@ class EBWebViewClient(
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         ebWebView.isInnerScrollAtTop = true
+        ebWebView.innerScrollTop = 0
+        ebWebView.innerScrollHeight = 0
+        ebWebView.innerClientHeight = 0
 
         if (config.adBlock) {
             adFilter.performScript(view, url)

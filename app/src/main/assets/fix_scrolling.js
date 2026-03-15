@@ -33,7 +33,12 @@
         var target = e.target;
         if (target && target !== document && target !== document.documentElement
             && target !== document.body && typeof androidApp !== 'undefined') {
-            androidApp.onInnerScrollChanged(target.scrollTop <= 0);
+            androidApp.onInnerScrollChanged(
+                target.scrollTop <= 0,
+                target.scrollTop,
+                target.scrollHeight,
+                target.clientHeight
+            );
         }
     }, true);
 
@@ -48,5 +53,12 @@
             behavior: 'auto'
         });
         return "true";
+    };
+
+    window.__einkbroScrollToTop = function() {
+        var scrollable = findInnerScrollable();
+        if (scrollable) {
+            scrollable.scrollTo({ top: 0, behavior: 'auto' });
+        }
     };
 })();

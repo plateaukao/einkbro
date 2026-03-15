@@ -167,8 +167,12 @@ class JsWebInterface(private val webView: EBWebView) :
     }
 
     @JavascriptInterface
-    fun onInnerScrollChanged(isAtTop: Boolean) {
+    fun onInnerScrollChanged(isAtTop: Boolean, scrollTop: Int, scrollHeight: Int, clientHeight: Int) {
         webView.isInnerScrollAtTop = isAtTop
+        webView.innerScrollTop = scrollTop
+        webView.innerScrollHeight = scrollHeight
+        webView.innerClientHeight = clientHeight
+        webView.post { webView.updatePageInfo() }
     }
 }
 
