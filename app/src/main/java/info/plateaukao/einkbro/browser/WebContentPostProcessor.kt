@@ -90,6 +90,8 @@ class WebContentPostProcessor : KoinComponent {
             "javascript:document.getElementsByName('viewport')[0].setAttribute('content', '%s%s');"
 
         private const val enableZoomJs = "initial-scale=1,maximum-scale=10.0,"
-        val urlScriptMap = mapOf<String, String>()
+        val urlScriptMap = mapOf(
+            "github.com" to "github_include_fragment.js"
+        )
     }
 }
