@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.epub.EpubReaderListener
 import info.plateaukao.einkbro.epub.EpubReaderView
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.launch
 
@@ -40,12 +41,23 @@ class EpubReaderActivity: BrowserActivity() {
                     enablePreloadWebView = false
                 ) // so that it won't miss the preload webview
                 lifecycleScope.launch {
-                    with(ebWebView as EpubReaderView) {
-                        openEpubFile(epubUri)
-                        if (shouldGotoLastChapter) {
-                            gotoLastChapter()
+                    try {
+                        with(ebWebView as EpubReaderView) {
+                            openEpubFile(epubUri)
+                            if (shouldGotoLastChapter) {
+                                gotoLastChapter()
+                            } else {
+                                gotoFirstChapter()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("EpubReaderActivity", "Failed to open epub", e)
+                        // If permission denied, try re-opening via file picker
+                        if (e is SecurityException || e.cause is SecurityException) {
+                            EBToast.show(this@EpubReaderActivity, "Permission denied. Please select the file again.")
+                            showOpenEpubFilePicker()
                         } else {
-                            gotoFirstChapter()
+                            EBToast.show(this@EpubReaderActivity, "Failed to open epub: ${e.message}")
                         }
                     }
                 }

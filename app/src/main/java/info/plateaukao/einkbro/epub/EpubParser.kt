@@ -192,8 +192,10 @@ suspend fun epubParser(
                 ToCEntry(title, link)
             }
         } else {
-            val tocFilePath = manifestItems["toc"]?.absPath
-            val tocFile = files[tocFilePath] ?: throw Exception("toc file missing")
+            val tocItem = manifestItems["toc"]
+                ?: manifestItems["nav"]
+                ?: manifestItems.values.find { it.properties.contains("nav") }
+            val tocFile = tocItem?.absPath?.let { files[it] } ?: return emptyList()
 
             val doc = Jsoup.parse(tocFile.data.inputStream(), "UTF-8", "")
             val nav = doc.select("nav[epub:type=toc], nav#toc, nav.toc").first()
