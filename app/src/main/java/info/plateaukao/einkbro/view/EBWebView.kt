@@ -109,6 +109,11 @@ open class EBWebView(
 
     private var isForeground = false
 
+    // Tracks whether an inner scrollable container (detected by JS) is at its top.
+    // Updated via JsWebInterface.onInnerScrollChanged callback.
+    @Volatile
+    var isInnerScrollAtTop: Boolean = true
+
     override fun onScrollChanged(l: Int, t: Int, old_l: Int, old_t: Int) {
         super.onScrollChanged(l, t, old_l, old_t)
         onScrollChangeListener?.onScrollChange(t, old_t)
@@ -532,7 +537,7 @@ open class EBWebView(
         val currentPage = totalPageCount - (floor(scrollX.toDouble() / shiftOffset()).toInt())
         currentPage == 1
     } else {
-        scrollY == 0
+        scrollY == 0 && isInnerScrollAtTop
     }
 
     fun jumpToTop() = if (isVerticalRead) {
@@ -552,11 +557,15 @@ open class EBWebView(
         scrollX = min(computeHorizontalScrollRange() - width, scrollX)
     } else { // normal case
         val nonNullUrl = url.orEmpty()
-        if (config.shouldFixScroll(nonNullUrl) || config.shouldSendPageNavKey(nonNullUrl)) {
+        if (config.shouldSendPageNavKey(nonNullUrl)) {
             sendPageDownKey()
         } else {
-            scrollBy(0, shiftOffset())
-            scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
+            jsPageScroll(1) { handled ->
+                if (!handled) {
+                    scrollBy(0, shiftOffset())
+                    scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
+                }
+            }
         }
     }
 
@@ -565,11 +574,27 @@ open class EBWebView(
         scrollX = max(0, scrollX)
     } else { // normal case
         val nonNullUrl = url.orEmpty()
-        if (config.shouldFixScroll(nonNullUrl) || config.shouldSendPageNavKey(nonNullUrl)) {
+        if (config.shouldSendPageNavKey(nonNullUrl)) {
             sendPageUpKey()
         } else {
-            scrollBy(0, -shiftOffset())
-            scrollY = max(0, scrollY)
+            jsPageScroll(-1) { handled ->
+                if (!handled) {
+                    scrollBy(0, -shiftOffset())
+                    scrollY = max(0, scrollY)
+                }
+            }
+        }
+    }
+
+    private fun jsPageScroll(direction: Int, fallback: (Boolean) -> Unit) {
+        val offset = config.pageReservedOffsetInString
+        val offsetPercent = if (offset.endsWith('%')) offset.take(offset.length - 1).toInt() else 0
+        val offsetPx = if (offset.endsWith('%')) 0 else offset.toInt().dp(context)
+        evaluateJavascript(
+            "window.__einkbroPageScroll && window.__einkbroPageScroll($direction, ${offsetPercent / 100.0}, $offsetPx)"
+        ) { result ->
+            // result is "true" if JS scrolled an inner container, otherwise fall back to native scroll
+            fallback(result?.trim('"') == "true")
         }
     }
 

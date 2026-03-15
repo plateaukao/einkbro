@@ -452,7 +452,7 @@ class ConfigManager(
         config.shouldSendPageNavKey = !config.shouldSendPageNavKey
         bookmarkManager.addDomainConfiguration(config)
 
-        return shouldFixScroll(url)
+        return shouldSendPageNavKey(url)
     }
 
     var translateSiteList: List<String>

@@ -165,6 +165,11 @@ class JsWebInterface(private val webView: EBWebView) :
         Log.d("touch", "rect: $left, $top, $right, $bottom")
         webView.browserController?.updateSelectionRect(left, top, right, bottom)
     }
+
+    @JavascriptInterface
+    fun onInnerScrollChanged(isAtTop: Boolean) {
+        webView.isInnerScrollAtTop = isAtTop
+    }
 }
 
 fun String.toUserMessage() = ChatMessage(

@@ -362,7 +362,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         subContainer = findViewById(R.id.sub_container)
 
         swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
-            ebWebView.scrollY > 0
+            ebWebView.scrollY > 0 || !ebWebView.isInnerScrollAtTop
         }
         swipeRefreshLayout.setOnRefreshListener {
             if (currentAlbumController != null) {
