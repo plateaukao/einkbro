@@ -23,3 +23,5 @@ tools/*.png
 .externalNativeBuild
 .cxx/
 adblock-client/.cxx
+
+.claude/
