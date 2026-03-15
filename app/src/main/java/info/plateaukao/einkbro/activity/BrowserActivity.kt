@@ -2666,18 +2666,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 config.translationLanguage,
             )
             if (base64String != null) {
-                //addAlbum(url = "data:image/png;base64,$it")
-                val translatedImageHtml = HelperUnit.loadAssetFileToString(
-                    this@BrowserActivity, "translated_image.html"
-                ).replace("%%", base64String)
-                if (config.showTranslatedImageToSecondPanel) {
-                    maybeInitTwoPaneController()
-                    twoPaneController.showSecondPaneWithData(translatedImageHtml)
-                } else {
-                    addAlbum()
-                    ebWebView.isTranslatePage = true
-                    ebWebView.loadData(translatedImageHtml, "text/html", "utf-8")
-                }
+                val escapedUrl = url.replace("\\", "\\\\").replace("'", "\\'")
+                val js = HelperUnit.loadAssetFileToString(
+                    this@BrowserActivity, "translate_image_overlay.js"
+                ).replace("%%IMAGE_URL%%", escapedUrl)
+                    .replace("%%BASE64_DATA%%", base64String)
+                ebWebView.evaluateJavascript(js, null)
             } else {
                 EBToast.show(this@BrowserActivity, "Failed to translate image")
             }

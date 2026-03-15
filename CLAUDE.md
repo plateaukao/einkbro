@@ -131,15 +131,6 @@ The project has limited test coverage but includes:
 
 ## Release Process
 
-Version codes follow the pattern `MM_mm_pp` (major_minor_patch). To create a new release:
-
-1. **Bump version** in `app/build.gradle.kts`: update `versionCode` and `versionName`
-2. **Commit and push** the version bump
-3. **Build signed release APKs** using the `bri` command (which runs `./gradlew clean assembleRelease` with the release keystore at `/Users/maoyuankao/browser.keystore`)
-4. **Create GitHub release** with `gh release create`:
-   - Tag: `vX.Y.Z`
-   - Title: `Release vX.Y.Z`
-   - Attach all 5 APK variants from `app/build/outputs/apk/release/`: arm64-v8a, armeabi-v7a, universal, x86_64, x86
-   - Release notes should include sections: What's New, Improvements, Bug Fixes (derived from `git log` since previous tag)
+Use the `/release` skill (e.g., `/release 15.9.0`) to create a new release. It handles version bumping, changelog updates, signed APK builds, and GitHub release creation.
 
 The project also uses Fastlane for deployment automation and supports F-Droid distribution.
