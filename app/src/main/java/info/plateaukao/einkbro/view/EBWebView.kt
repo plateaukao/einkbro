@@ -109,10 +109,15 @@ open class EBWebView(
 
     private var isForeground = false
 
-    // Tracks whether an inner scrollable container (detected by JS) is at its top.
-    // Updated via JsWebInterface.onInnerScrollChanged callback.
+    // Inner scrollable container state, updated via JsWebInterface callback.
     @Volatile
     var isInnerScrollAtTop: Boolean = true
+    @Volatile
+    var innerScrollTop: Int = 0
+    @Volatile
+    var innerScrollHeight: Int = 0
+    @Volatile
+    var innerClientHeight: Int = 0
 
     // True only if the content was already at top when the touch gesture started.
     // Prevents pull-to-refresh from triggering when scrolling up from the middle.
@@ -557,6 +562,7 @@ open class EBWebView(
         scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
     } else {
         scrollTo(0, 0)
+        evaluateJavascript("window.__einkbroScrollToTop && window.__einkbroScrollToTop()", null)
     }
 
     fun jumpToBottom() = if (isVerticalRead) {
@@ -710,17 +716,24 @@ open class EBWebView(
 
     fun updatePageInfo() {
         try {
-            val totalPageCount = if (isVerticalRead) {
-                computeHorizontalScrollRange() / shiftOffset()
+            val pageHeight = shiftOffset()
+            if (isVerticalRead) {
+                val totalPageCount = computeHorizontalScrollRange() / pageHeight
+                val currentPage = totalPageCount - (floor(scrollX.toDouble() / pageHeight).toInt())
+                val info = "$currentPage/$totalPageCount"
+                browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
+            } else if (innerClientHeight > 0 && computeVerticalScrollRange() <= height + pageHeight / 2) {
+                // Inner scrollable container: use JS-reported dimensions
+                val totalPageCount = innerScrollHeight / innerClientHeight
+                val currentPage = ceil((innerScrollTop + 1).toDouble() / innerClientHeight).toInt()
+                val info = "$currentPage/$totalPageCount"
+                browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
             } else {
-                computeVerticalScrollRange() / shiftOffset()
+                val totalPageCount = computeVerticalScrollRange() / pageHeight
+                val currentPage = ceil((scrollY + 1).toDouble() / pageHeight).toInt()
+                val info = "$currentPage/$totalPageCount"
+                browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
             }
-            val info = if (isVerticalRead) {
-                "${totalPageCount - (floor(scrollX.toDouble() / shiftOffset()).toInt())}/$totalPageCount"
-            } else {
-                "${ceil((scrollY + 1).toDouble() / shiftOffset()).toInt()}/$totalPageCount"
-            }
-            browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
         } catch (e: ArithmeticException) { // prevent divide by zero
             browserController?.updatePageInfo("-/-")
         }
