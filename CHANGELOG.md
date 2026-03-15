@@ -1,3 +1,33 @@
+### 15.7.0
+#### Features
+* Pull-to-refresh support for WebView
+* Long press volume key to temporarily disable page turn for 5 seconds
+* Support more than 4 items per row in bookmark grid mode
+* Drag and drop support in bookmarks grid mode
+* Settings icon in page AI action dialog
+
+#### Improvements
+* More elegant recent bookmarks page
+* Position translate dialog at 1/3 window height in whole page mode
+* More compact bullet rendering in chat with web
+* Page AI action dialog positioned closer to toolbar
+
+#### Fixes
+* Page info and jump-to-top for inner scroll containers
+* Generic JS-based pagination for inner scroll containers
+* Crash when opening EPUB3 files from file explorer
+* Pull-to-refresh only triggers at top of page
+* Prevent pull-to-refresh from intercepting two-finger gestures
+* Polyfill GitHub's include-fragment for older WebView versions
+* Improve download filename parsing with proper RFC 5987/6266 support
+* Skip filename dialog when content-disposition provides exact name
+* Handle NPE in setDestinationInExternalPublicDir for downloads
+* Sort history URLs newest-first in URL bar suggestions
+* Request persistent write permission for EPUB file URIs
+* Update Edge TTS to use Chromium 143 headers and MUID cookie
+
+---
+
 ### 15.6.0
 #### Features
 * Support grid mode in bookmarks UI
