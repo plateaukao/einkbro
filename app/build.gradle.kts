@@ -95,8 +95,10 @@ android {
         abi {
             isEnable = true
             reset()
-            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
-            isUniversalApk = true
+            val abis = (project.findProperty("buildAbis") as String?)?.split(",")
+                ?: listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            include(*abis.toTypedArray())
+            isUniversalApk = project.findProperty("buildAbis") == null
         }
     }
     namespace = "info.plateaukao.einkbro"
