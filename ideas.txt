@@ -1,0 +1,65 @@
+## New Feature Ideas
+
+### 1. Reading List / Read-Later Queue
+You have Instapaper integration, but a built-in offline reading queue would be powerful for E-ink users who often read in areas without connectivity. Save articles for offline viewing with automatic content extraction and caching, separate from bookmarks.
+
+### 2. RSS/Atom Feed Reader
+E-ink users are often heavy readers. A lightweight built-in feed reader that detects RSS feeds on pages and lets users subscribe would be a natural fit. Display articles in reader mode automatically.
+
+### 3. Page Annotation / Margin Notes
+You already have highlighting with 5 styles — extending this to support margin notes (short text annotations attached to highlights) would make it a serious reading/research tool. Export annotations + highlights together as Markdown.
+
+### 4. Reading Progress Tracker
+Track reading progress per article/page (scroll percentage, estimated time remaining). Show a subtle progress bar. Useful for long-form reading on E-ink where page refreshes make it easy to lose your place.
+
+### 5. Keyboard Shortcut Overlay / Customization
+You have Vi bindings and keyboard support, but a discoverable shortcut overlay (press `?` to show all bindings) and user-customizable key mappings would help Bluetooth keyboard users on E-ink devices.
+
+### 6. Smart Article Chaining
+When reading multi-page articles, auto-detect "Next Page" / pagination links and offer one-tap continuation or auto-load, avoiding the tedious tap-wait-refresh cycle on E-ink.
+
+---
+
+## Enhancements to Existing Features
+
+### 7. Enhanced EPUB Reader
+- Bookmark/annotation within EPUBs (not just chapter navigation)
+- Font size and margin persistence per book
+- Reading position sync (e.g., via a simple JSON file on cloud storage)
+- Search within EPUB content
+
+### 8. Smarter AI Integration
+- Page summarization as a first-class toolbar action — one tap to get a summary (currently requires going through GPT actions)
+- AI-powered "Explain this" for selected text — context-aware explanation using surrounding paragraphs
+- Auto-translate on navigate — option to automatically translate pages from specific languages without manual trigger
+- AI reading assistant — ask follow-up questions about highlighted/selected text with context preserved
+
+### 9. Better Highlight Management
+- Tag/categorize highlights by topic
+- Search across all highlights
+- Export all highlights for a domain as Markdown/plain text
+- Highlight sync across devices (like bookmark sync)
+
+### 10. Enhanced TTS
+- Auto-advance to next article/chapter when TTS finishes
+- Bookmark audio position for resuming later
+- Speed presets (1x, 1.5x, 2x) as quick toggles rather than slider
+- Background TTS with notification controls
+
+### 11. Per-Site Profiles
+You have per-domain settings for JS, cookies, colors, etc. — but they're scattered. A unified "site profile" view where you can see/edit all overrides for a domain in one place would simplify management.
+
+### 12. Improved Ad Blocking
+- Cosmetic filtering (hide elements by CSS selector, not just block requests)
+- User-definable element hiding rules (long-press element to hide)
+- Multiple filter list subscriptions (EasyList, regional lists)
+
+### 13. E-ink Refresh Optimization
+- Manual full-page refresh button/gesture (force E-ink ghosting cleanup)
+- Configurable scroll modes: page-flip (jump by screen height) vs. smooth scroll, since page-flip is much cleaner on E-ink
+- "Reading mode" that disables all animations and transitions in CSS
+
+### 14. Tab Session Management
+- Named tab groups / sessions (e.g., "Research", "News", "Work")
+- Save/restore entire sessions
+- Quick-switch between session groups
