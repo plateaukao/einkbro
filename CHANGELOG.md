@@ -1,17 +1,4 @@
-### 15.7.0
-#### Features
-* Pull-to-refresh support for WebView
-* Long press volume key to temporarily disable page turn for 5 seconds
-* Support more than 4 items per row in bookmark grid mode
-* Drag and drop support in bookmarks grid mode
-* Settings icon in page AI action dialog
-
-#### Improvements
-* More elegant recent bookmarks page
-* Position translate dialog at 1/3 window height in whole page mode
-* More compact bullet rendering in chat with web
-* Page AI action dialog positioned closer to toolbar
-
+### 15.8.0
 #### Fixes
 * Page info and jump-to-top for inner scroll containers
 * Generic JS-based pagination for inner scroll containers
@@ -25,6 +12,22 @@
 * Sort history URLs newest-first in URL bar suggestions
 * Request persistent write permission for EPUB file URIs
 * Update Edge TTS to use Chromium 143 headers and MUID cookie
+
+---
+
+### 15.7.0
+#### Features
+* Pull-to-refresh support for WebView
+* Long press volume key to temporarily disable page turn for 5 seconds
+* Support more than 4 items per row in bookmark grid mode
+* Drag and drop support in bookmarks grid mode
+* Settings icon in page AI action dialog
+
+#### Improvements
+* More elegant recent bookmarks page
+* Position translate dialog at 1/3 window height in whole page mode
+* More compact bullet rendering in chat with web
+* Page AI action dialog positioned closer to toolbar
 
 ---
 
