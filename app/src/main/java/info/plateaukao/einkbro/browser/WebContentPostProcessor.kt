@@ -47,16 +47,8 @@ class WebContentPostProcessor : KoinComponent {
             ebWebView.settings.textZoom = configManager.fontSize
         }
 
-        // some strange website scrolling support
-        if (configManager.shouldFixScroll(url)) {
-            val offset = configManager.pageReservedOffsetInString
-            val offsetPercent =
-                if (offset.endsWith('%')) offset.take(offset.length - 1).toInt() else 0
-            val offsetPixel = if (offset.endsWith('%')) 0 else offset
-
-            val js = HelperUnit.loadAssetFile("fix_scrolling.js").format(offsetPercent / 100.0, offsetPixel)
-            ebWebView.evaluateJavascript(js, null);
-        }
+        // inject page scroll helper for JS-based pagination (works with inner scroll containers)
+        ebWebView.evaluateJsFile("fix_scrolling.js", withPrefix = false)
 
         if (configManager.shouldTranslateSite(url)) {
             ebWebView.showTranslation()

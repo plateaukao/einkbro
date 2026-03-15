@@ -48,7 +48,6 @@ class TouchAreaDialogFragment(
     override fun setupComposeView() = composeView.setContent {
         val touchAreaType = remember { mutableStateOf(config.touchAreaType) }
         val enableTurn = remember { mutableStateOf(config.enableTouchTurn) }
-        val tryFixScroll = remember { mutableStateOf(config.shouldFixScroll(url)) }
         val shouldSendPageKey = remember { mutableStateOf(config.shouldSendPageNavKey(url)) }
 
         MyTheme {
@@ -67,7 +66,6 @@ class TouchAreaDialogFragment(
                 hideTouchWhenType = config.hideTouchAreaWhenInput,
                 switchTouchArea = config.switchTouchAreaAction,
                 enableTouchAreaAsArrowKey = config.longClickAsArrowKey,
-                tryFixScroll = tryFixScroll.value,
                 shouldSendPageKey = shouldSendPageKey.value,
                 onShowHintClick = { config::touchAreaHint.toggle() },
                 onHideWhenTypeClick = { config::hideTouchAreaWhenInput.toggle() },
@@ -75,7 +73,6 @@ class TouchAreaDialogFragment(
                 onCloseClick = { dismiss() },
                 onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() },
                 onAsPageKeyClick = { shouldSendPageKey.value = config.toggleSendPageNavKey(url) },
-                onTryFixScrollClick = { tryFixScroll.value = config.toggleFixScroll(url) },
                 onConfigActionsClick = {
                     IntentUnit.gotoSettings(requireActivity(), SettingRoute.Gesture)
                 }
@@ -94,7 +91,6 @@ fun TouchAreaContent(
     hideTouchWhenType: Boolean = true,
     switchTouchArea: Boolean = false,
     enableTouchAreaAsArrowKey: Boolean = false,
-    tryFixScroll: Boolean = false,
     shouldSendPageKey: Boolean = false,
     onShowHintClick: () -> Unit = {},
     onHideWhenTypeClick: () -> Unit = {},
@@ -102,7 +98,6 @@ fun TouchAreaContent(
     onCloseClick: () -> Unit = {},
     onAsArrowKeyClick: () -> Unit = {},
     onAsPageKeyClick: () -> Unit = {},
-    onTryFixScrollClick: () -> Unit = {},
     onConfigActionsClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
@@ -172,10 +167,6 @@ fun TouchAreaContent(
             state = shouldSendPageKey,
             titleResId = R.string.enable_touch_area_as_page_key,
             onClicked = { onAsPageKeyClick() })
-        ToggleItem(
-            state = tryFixScroll,
-            titleResId = R.string.enable_fix_scroll,
-            onClicked = { onTryFixScrollClick() })
 
         Spacer(modifier = Modifier.height(10.dp))
 

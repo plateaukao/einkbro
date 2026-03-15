@@ -1,34 +1,52 @@
-function findScrollableParent(element) {
-    if (!element) {
-        return document.scrollingElement || document.documentElement;
-    }
-
-    if (element.scrollHeight > element.clientHeight) {
-        const overflowY = window.getComputedStyle(element).overflowY;
-        if (overflowY !== 'visible' && overflowY !== 'hidden') {
-            return element;
+(function() {
+    function findScrollableParent(element) {
+        if (!element || element === document.body || element === document.documentElement) {
+            return null;
         }
+
+        if (element.scrollHeight > element.clientHeight + 1) {
+            var overflowY = window.getComputedStyle(element).overflowY;
+            if (overflowY === 'auto' || overflowY === 'scroll') {
+                return element;
+            }
+        }
+
+        return findScrollableParent(element.parentElement);
     }
 
-    return findScrollableParent(element.parentElement);
-}
+    function findInnerScrollable() {
+        var centerX = window.innerWidth / 2;
+        var centerY = window.innerHeight / 2;
+        var element = document.elementFromPoint(centerX, centerY);
+        var fromCenter = findScrollableParent(element);
+        if (fromCenter) return fromCenter;
 
-function scrollPage(direction) {
-    const scrollable = findScrollableParent(document.activeElement);
-    const scrollAmount = direction * scrollable.clientHeight * (1 - %s) - %s;
-    scrollable.scrollBy({
-        top: scrollAmount,
-        left: 0,
-        behavior: 'auto'
-    });
-}
+        var fromActive = findScrollableParent(document.activeElement);
+        if (fromActive) return fromActive;
 
-window.addEventListener('keydown', function(e) {
-    if (e.key === 'PageDown' || e.keyCode === 34) {
-        e.preventDefault();
-        scrollPage(1);
-    } else if (e.key === 'PageUp' || e.keyCode === 33) {
-        e.preventDefault();
-        scrollPage(-1);
+        return null;
     }
-}, true);
+
+    // Capture-phase scroll listener: catches ALL inner element scrolls,
+    // including finger swipes, so pull-to-refresh is correctly blocked.
+    document.addEventListener('scroll', function(e) {
+        var target = e.target;
+        if (target && target !== document && target !== document.documentElement
+            && target !== document.body && typeof androidApp !== 'undefined') {
+            androidApp.onInnerScrollChanged(target.scrollTop <= 0);
+        }
+    }, true);
+
+    window.__einkbroPageScroll = function(direction, offsetPercent, offsetPx) {
+        var scrollable = findInnerScrollable();
+        if (!scrollable) return "false";
+
+        var scrollAmount = direction * (scrollable.clientHeight * (1 - offsetPercent) - offsetPx);
+        scrollable.scrollBy({
+            top: scrollAmount,
+            left: 0,
+            behavior: 'auto'
+        });
+        return "true";
+    };
+})();
