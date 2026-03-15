@@ -114,6 +114,19 @@ open class EBWebView(
     @Volatile
     var isInnerScrollAtTop: Boolean = true
 
+    // True only if the content was already at top when the touch gesture started.
+    // Prevents pull-to-refresh from triggering when scrolling up from the middle.
+    var wasAtTopOnTouchStart: Boolean = true
+        private set
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+            wasAtTopOnTouchStart = scrollY == 0 && isInnerScrollAtTop
+        }
+        return super.onTouchEvent(event)
+    }
+
     override fun onScrollChanged(l: Int, t: Int, old_l: Int, old_t: Int) {
         super.onScrollChanged(l, t, old_l, old_t)
         onScrollChangeListener?.onScrollChange(t, old_t)
