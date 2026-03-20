@@ -12,13 +12,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.webkit.URLUtil
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.databinding.DialogEditExtensionBinding
-import info.plateaukao.einkbro.databinding.DialogInstapaperCredentialsBinding
-import info.plateaukao.einkbro.databinding.DialogSavedEpubListBinding
-import info.plateaukao.einkbro.databinding.ListItemEpubFileBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit.restartApp
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -26,6 +44,7 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -51,61 +70,49 @@ class DialogManager(
         openEpubAction: (() -> Unit)? = null,
         onNextAction: (Uri?) -> Unit,
     ) {
-        val binding = DialogSavedEpubListBinding.inflate(inflater)
-        val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
-            .apply { setView(binding.root) }
+        val epubFiles = mutableStateOf(config.savedEpubFileInfos.reversed())
+        var dialogRef: Dialog? = null
+
+        val composeView = ComposeView(activity).apply {
+            setContent {
+                MyTheme {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        if (showAddNewEpub) {
+                            EpubListItem(
+                                title = stringResource(R.string.new_epub_or_from_picker),
+                                showRemove = false,
+                                onClick = { onNextAction(null); dialogRef?.dismiss() },
+                            )
+                        }
+                        if (openEpubAction != null) {
+                            EpubListItem(
+                                title = stringResource(R.string.open_epub),
+                                showRemove = false,
+                                onClick = { openEpubAction(); dialogRef?.dismiss() },
+                            )
+                        }
+                        epubFiles.value.forEach { epubFileInfo ->
+                            EpubListItem(
+                                title = "${epubFileInfo.title} (${getFileSizeString(epubFileInfo.uri)})",
+                                showRemove = true,
+                                onClick = {
+                                    onNextAction(epubFileInfo.uri.toUri())
+                                    dialogRef?.dismiss()
+                                },
+                                onRemove = {
+                                    config.removeSavedEpubFile(epubFileInfo)
+                                    epubFiles.value = config.savedEpubFileInfos.reversed()
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        dialogRef = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+            .apply { setView(composeView) }
             .show()
-
-        setupSavedEpubFileList(binding, dialog, showAddNewEpub, openEpubAction, onNextAction)
-    }
-
-    private fun setupSavedEpubFileList(
-        binding: DialogSavedEpubListBinding,
-        dialog: Dialog,
-        shouldAddNewEpub: Boolean = true,
-        openEpubAction: (() -> Unit)? = null,
-        onNextAction: (Uri?) -> Unit,
-    ) {
-        if (shouldAddNewEpub) {
-            // add first item to handle picker case
-            val firstItemBinding = ListItemEpubFileBinding.inflate(inflater).apply {
-                buttonHide.visibility = View.GONE
-                epubTitle.setText(R.string.new_epub_or_from_picker)
-                root.setOnClickListener {
-                    onNextAction(null)
-                    dialog.dismiss()
-                }
-            }
-            binding.epubInfoContainer.addView(firstItemBinding.root)
-        }
-        if (openEpubAction != null) {
-            val openEpubItemBinding = ListItemEpubFileBinding.inflate(inflater).apply {
-                buttonHide.visibility = View.GONE
-                epubTitle.setText(R.string.open_epub)
-                root.setOnClickListener {
-                    openEpubAction()
-                    dialog.dismiss()
-                }
-            }
-            binding.epubInfoContainer.addView(openEpubItemBinding.root)
-        }
-
-        config.savedEpubFileInfos.reversed().forEach { epubFileInfo ->
-            val itemBinding = ListItemEpubFileBinding.inflate(inflater)
-            with(itemBinding.epubTitle) {
-                text = "${epubFileInfo.title} (${getFileSizeString(epubFileInfo.uri)})"
-                setOnClickListener {
-                    onNextAction(epubFileInfo.uri.toUri())
-                    dialog.dismiss()
-                }
-            }
-            itemBinding.buttonHide.setOnClickListener {
-                config.removeSavedEpubFile(epubFileInfo)
-                binding.epubInfoContainer.removeView(itemBinding.root)
-            }
-
-            binding.epubInfoContainer.addView(itemBinding.root)
-        }
     }
 
     private fun getFileSizeString(uri: String): String {
@@ -119,23 +126,48 @@ class DialogManager(
         url: String,
         saveFile: (String, String) -> Unit,
     ) {
-        val menuView = DialogEditExtensionBinding.inflate(inflater)
-        val editTitle = menuView.dialogEdit.apply {
-            setHint(R.string.dialog_title_hint)
-            setText(HelperUnit.fileName(url))
-        }
-        val editExtension = menuView.dialogEditExtension
         val filename = URLUtil.guessFileName(url, null, null)
         val extension = filename.substring(filename.lastIndexOf("."))
-        if (extension.length <= 8) {
-            editExtension.setText(extension)
+        val titleState = mutableStateOf(HelperUnit.fileName(url))
+        val extensionState = mutableStateOf(if (extension.length <= 8) extension else "")
+
+        val composeView = ComposeView(activity).apply {
+            setContent {
+                MyTheme {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 15.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = titleState.value,
+                            onValueChange = { titleState.value = it },
+                            label = { Text(stringResource(R.string.dialog_title_hint)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = MaterialTheme.colors.onBackground,
+                            ),
+                        )
+                        OutlinedTextField(
+                            value = extensionState.value,
+                            onValueChange = { extensionState.value = it },
+                            label = { Text(stringResource(R.string.dialog_extension_hint)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = MaterialTheme.colors.onBackground,
+                            ),
+                        )
+                    }
+                }
+            }
         }
+
         showOkCancelDialog(
             title = activity.getString(R.string.menu_edit),
-            view = menuView.root,
+            view = composeView,
             okAction = {
-                val title = editTitle.text.toString().trim { it <= ' ' }
-                val ext = editExtension.text.toString().trim { it <= ' ' }
+                val title = titleState.value.trim()
+                val ext = extensionState.value.trim()
                 val fileName = title + ext
                 if (title.isEmpty() || ext.isEmpty() || !extension.startsWith(".")) {
                     EBToast.show(activity, activity.getString(R.string.toast_input_empty))
@@ -282,14 +314,62 @@ class DialogManager(
     fun showInstapaperCredentialsDialog(
         confirmAction: (username: String, password: String) -> Unit,
     ) {
-        val binding = DialogInstapaperCredentialsBinding.inflate(inflater)
+        val usernameState = mutableStateOf(config.instapaperUsername)
+        val passwordState = mutableStateOf(config.instapaperPassword)
+        var dialogRef: Dialog? = null
 
-        val dialog = showOkCancelDialog(
+        val composeView = ComposeView(activity).apply {
+            setContent {
+                MyTheme {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 15.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = usernameState.value,
+                            onValueChange = { usernameState.value = it },
+                            label = { Text(stringResource(R.string.instapaper_username_hint)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = MaterialTheme.colors.onBackground,
+                            ),
+                        )
+                        OutlinedTextField(
+                            value = passwordState.value,
+                            onValueChange = { passwordState.value = it },
+                            label = { Text(stringResource(R.string.instapaper_password_hint)) },
+                            visualTransformation = PasswordVisualTransformation(),
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = MaterialTheme.colors.onBackground,
+                            ),
+                        )
+                        Text(
+                            text = stringResource(R.string.instapaper_create_account),
+                            color = MaterialTheme.colors.primary,
+                            fontSize = 14.sp,
+                            modifier = Modifier
+                                .padding(top = 16.dp)
+                                .clickable {
+                                    IntentUnit.launchUrl(
+                                        activity,
+                                        "https://www.instapaper.com/user/register"
+                                    )
+                                    dialogRef?.dismiss()
+                                }
+                        )
+                    }
+                }
+            }
+        }
+
+        dialogRef = showOkCancelDialog(
             title = activity.getString(R.string.menu_instapaper),
-            view = binding.root,
+            view = composeView,
             okAction = {
-                val username = binding.dialogInstapaperUsername.text.toString().trim()
-                val password = binding.dialogInstapaperPassword.text.toString().trim()
+                val username = usernameState.value.trim()
+                val password = passwordState.value.trim()
 
                 if (username.isEmpty() || password.isEmpty()) {
                     EBToast.show(activity, activity.getString(R.string.toast_input_empty))
@@ -301,14 +381,6 @@ class DialogManager(
             },
             cancelAction = { ViewUnit.hideKeyboard(activity) }
         )
-
-        binding.dialogInstapaperUsername.setText(config.instapaperUsername)
-        binding.dialogInstapaperPassword.setText(config.instapaperPassword)
-        binding.dialogInstapaperCreateAccount.setOnClickListener {
-            IntentUnit.launchUrl(activity, "https://www.instapaper.com/user/register")
-            dialog.dismiss()
-        }
-
     }
 
     fun showCreateOrOpenBookmarkFileDialog(
@@ -336,4 +408,36 @@ class DialogManager(
 fun Dialog.dismissWithAction(action: () -> Unit) {
     dismiss()
     action()
+}
+
+@Composable
+private fun EpubListItem(
+    title: String,
+    showRemove: Boolean,
+    onClick: () -> Unit,
+    onRemove: (() -> Unit)? = null,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(vertical = 15.dp, horizontal = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = title,
+            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colors.onBackground,
+        )
+        if (showRemove && onRemove != null) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_remove),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .clickable { onRemove() },
+            )
+        }
+    }
 }

@@ -10,8 +10,8 @@ import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.webkit.WebView
 import androidx.activity.viewModels
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
@@ -28,7 +28,7 @@ class DictActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dict)
+        setContent {}
 
         hideStatusBar()
 
