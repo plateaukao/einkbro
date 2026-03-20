@@ -7,7 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.BrowserController
-import info.plateaukao.einkbro.databinding.ActivityMainContentBinding
+import info.plateaukao.einkbro.view.MainContentLayout
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.unit.ViewUnit
@@ -19,7 +19,7 @@ import java.util.Timer
 import java.util.TimerTask
 
 class TouchAreaViewController(
-    private val binding: ActivityMainContentBinding,
+    private val binding: MainContentLayout,
     private val browserController: BrowserController,
 ) : KoinComponent {
     private val config: ConfigManager by inject()

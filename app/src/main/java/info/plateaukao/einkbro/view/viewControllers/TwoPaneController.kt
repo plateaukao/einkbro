@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.databinding.TranslationPanelBinding
+import info.plateaukao.einkbro.view.TranslationPanelView
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
@@ -34,7 +34,7 @@ import org.koin.core.component.inject
 class TwoPaneController(
     private val activity: Activity,
     private val lifecycleScope: LifecycleCoroutineScope,
-    private val translationViewBinding: TranslationPanelBinding,
+    private val translationPanel: TranslationPanelView,
     private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
@@ -65,53 +65,53 @@ class TwoPaneController(
         }
 
 
-        translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
-        translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
+        translationPanel.translationFontPlus.setOnClickListener { increaseFontSize() }
+        translationPanel.translationFontMinus.setOnClickListener { decreaseFontSize() }
 
-        translationViewBinding.translationClose.setOnClickListener {
+        translationPanel.translationClose.setOnClickListener {
             toggleTranslationWindow(
                 false, onTranslationClosed
             )
         }
-        translationViewBinding.translationClose.setOnLongClickListener {
+        translationPanel.translationClose.setOnLongClickListener {
             hideControlButtons()
             true
         }
 
-        translationViewBinding.translationOrientation.setImageResource(
+        translationPanel.translationOrientation.setImageResource(
             if (twoPaneLayout.getOrientation() == Orientation.Vertical) R.drawable.ic_split_screen
             else R.drawable.ic_split_screen_vertical
         )
 
-        translationViewBinding.translationOrientation.setOnClickListener {
+        translationPanel.translationOrientation.setOnClickListener {
             val orientation =
                 if (twoPaneLayout.getOrientation() == Orientation.Vertical) Orientation.Horizontal else Orientation.Vertical
             setOrientation(orientation)
         }
 
-        translationViewBinding.translationOrientation.setOnLongClickListener {
+        translationPanel.translationOrientation.setOnLongClickListener {
             config::translationPanelSwitched.toggle()
             twoPaneLayout.switchPanels()
             true
         }
 
-        translationViewBinding.linkHere.setOnClickListener {
+        translationPanel.linkHere.setOnClickListener {
             config::twoPanelLinkHere.toggle()
             updateLinkHereView(config.twoPanelLinkHere)
         }
         updateLinkHereView(config.twoPanelLinkHere)
 
-        translationViewBinding.syncScroll.setOnClickListener {
+        translationPanel.syncScroll.setOnClickListener {
             config::translationScrollSync.toggle()
             updateSyncScrollView(config.translationScrollSync)
         }
         updateSyncScrollView(config.translationScrollSync)
 
-        translationViewBinding.expandedButton.setOnClickListener { showControlButtons() }
+        translationPanel.expandedButton.setOnClickListener { showControlButtons() }
 
-        val languageView = translationViewBinding.translationLanguage
+        val languageView = translationPanel.translationLanguage
         ViewUnit.updateLanguageLabel(languageView, config.translationLanguage)
-        translationViewBinding.translationLanguage.setOnClickListener {
+        translationPanel.translationLanguage.setOnClickListener {
             lifecycleScope.launch {
                 val translationLanguage =
                     TranslationLanguageDialog(activity).show() ?: return@launch
@@ -124,13 +124,13 @@ class TwoPaneController(
     fun getSecondWebView(): EBWebView = webView
 
     private fun hideControlButtons() {
-        translationViewBinding.controlsContainer.visibility = INVISIBLE
-        translationViewBinding.expandedButton.visibility = VISIBLE
+        translationPanel.controlsContainer.visibility = INVISIBLE
+        translationPanel.expandedButton.visibility = VISIBLE
     }
 
     private fun showControlButtons() {
-        translationViewBinding.controlsContainer.visibility = VISIBLE
-        translationViewBinding.expandedButton.visibility = INVISIBLE
+        translationPanel.controlsContainer.visibility = VISIBLE
+        translationPanel.expandedButton.visibility = INVISIBLE
     }
 
     private fun translateWithNewLanguage(translationLanguage: TranslationLanguage) {
@@ -156,8 +156,8 @@ class TwoPaneController(
             isWebViewAdded = true
         }
 
-        translationViewBinding.translationLanguage.visibility = GONE
-        translationViewBinding.linkHere.visibility = VISIBLE
+        translationPanel.translationLanguage.visibility = GONE
+        translationPanel.linkHere.visibility = VISIBLE
         twoPaneLayout.shouldShowSecondPane = true
     }
 
@@ -174,10 +174,10 @@ class TwoPaneController(
     fun showSecondPaneAsAi(webContent: String, webTitle: String, webUrl: String) {
         showSecondPane()
         webView.setupAiPage(lifecycleScope, webContent, webTitle, webUrl)
-        translationViewBinding.controlsContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        translationPanel.controlsContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             bottomMargin = 55.dp(activity)
         }
-        translationViewBinding.expandedButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        translationPanel.expandedButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             bottomMargin = 55.dp(activity)
         }
     }
@@ -220,7 +220,7 @@ class TwoPaneController(
     private fun setOrientation(orientation: Orientation) {
         config.translationOrientation = orientation
         twoPaneLayout.setOrientation(orientation)
-        translationViewBinding.translationOrientation.setImageResource(
+        translationPanel.translationOrientation.setImageResource(
             if (twoPaneLayout.getOrientation() == Orientation.Vertical) R.drawable.ic_split_screen
             else R.drawable.ic_split_screen_vertical
         )
@@ -229,13 +229,13 @@ class TwoPaneController(
     private fun updateSyncScrollView(shouldSyncScroll: Boolean = false) {
         val drawable =
             if (shouldSyncScroll) R.drawable.selected_border_bg else R.drawable.background_with_border
-        translationViewBinding.syncScroll.setBackgroundResource(drawable)
+        translationPanel.syncScroll.setBackgroundResource(drawable)
     }
 
     private fun updateLinkHereView(shouldLinkHere: Boolean = false) {
         val drawable =
             if (shouldLinkHere) R.drawable.selected_border_bg else R.drawable.background_with_border
-        translationViewBinding.linkHere.setBackgroundResource(drawable)
+        translationPanel.linkHere.setBackgroundResource(drawable)
     }
 
     private fun launchTranslateWindow(text: String) {
@@ -250,8 +250,8 @@ class TwoPaneController(
             isWebViewAdded = true
         }
 
-        translationViewBinding.linkHere.visibility = GONE
-        translationViewBinding.translationLanguage.visibility =
+        translationPanel.linkHere.visibility = GONE
+        translationPanel.translationLanguage.visibility =
             if (config.translationMode == TranslationMode.GOOGLE_URL) VISIBLE else GONE
 
         twoPaneLayout.shouldShowSecondPane = true
@@ -307,7 +307,7 @@ class TwoPaneController(
         val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
         )
-        translationViewBinding.root.addView(webView, 0, params)
+        translationPanel.addView(webView, 0, params)
 
         return webView
     }
@@ -359,10 +359,10 @@ class TwoPaneController(
             webView.loadUrl(BrowserUnit.URL_ABOUT_BLANK)
             twoPaneLayout.shouldShowSecondPane = false
             onTranslationClosed()
-            translationViewBinding.controlsContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            translationPanel.controlsContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 bottomMargin = 0.dp(activity)
             }
-            translationViewBinding.expandedButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            translationPanel.expandedButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 bottomMargin = 0.dp(activity)
             }
         }

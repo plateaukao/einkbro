@@ -82,7 +82,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Highlight
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
-import info.plateaukao.einkbro.databinding.ActivityMainBinding
+import info.plateaukao.einkbro.view.MainActivityLayout
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.AlbumInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -111,6 +111,7 @@ import info.plateaukao.einkbro.unit.pruneWebTitle
 import info.plateaukao.einkbro.unit.toRawPoint
 import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
 import info.plateaukao.einkbro.util.TranslationLanguage
+import info.plateaukao.einkbro.view.TranslationPanelView
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.ZoomableFrameLayout
@@ -203,7 +204,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // Layouts
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mainContentLayout: FrameLayout
-    private lateinit var subContainer: RelativeLayout
+    private lateinit var translationPanelView: TranslationPanelView
 
     private var fullscreenHolder: FrameLayout? = null
 
@@ -244,7 +245,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var currentAlbumController: AlbumController? = null
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: MainActivityLayout
 
     private val bookmarkManager: BookmarkManager by inject()
 
@@ -352,7 +353,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         //android.os.Debug.waitForDebugger()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = MainActivityLayout.create(this)
 
         savedInstanceState?.let {
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
@@ -366,7 +367,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
         mainContentLayout = findViewById(R.id.main_content)
-        subContainer = findViewById(R.id.sub_container)
+        translationPanelView = TranslationPanelView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT)
+        }
+        binding.twoPanelLayout.addView(translationPanelView)
 
         swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
             !ebWebView.wasAtTopOnTouchStart || ebWebView.scrollY > 0 || !ebWebView.isInnerScrollAtTop
@@ -1508,7 +1512,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             twoPaneController = TwoPaneController(
                 this,
                 lifecycleScope,
-                binding.subContainer,
+                translationPanelView,
                 binding.twoPanelLayout,
                 { showTranslation() },
                 { if (ebWebView.isReaderModeOn) ebWebView.toggleReaderMode() },
