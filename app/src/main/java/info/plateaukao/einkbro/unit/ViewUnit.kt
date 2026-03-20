@@ -29,7 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
 import info.plateaukao.einkbro.EinkBroApplication
-import info.plateaukao.einkbro.databinding.ActivityMainBinding
+import info.plateaukao.einkbro.view.MainActivityLayout
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.TranslationLanguage
 import org.koin.core.component.KoinComponent
@@ -280,7 +280,7 @@ object ViewUnit: KoinComponent {
     }
 
 
-    fun updateAppbarPosition(binding: ActivityMainBinding) {
+    fun updateAppbarPosition(binding: MainActivityLayout) {
         if (config.isToolbarOnTop) {
             moveAppbarToTop(binding)
         } else {
@@ -289,7 +289,7 @@ object ViewUnit: KoinComponent {
     }
 
 
-    private fun moveAppbarToBottom(binding: ActivityMainBinding) {
+    private fun moveAppbarToBottom(binding: MainActivityLayout) {
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             connect(
@@ -330,7 +330,7 @@ object ViewUnit: KoinComponent {
         constraintSet.applyTo(binding.root)
     }
 
-    private fun moveAppbarToTop(binding: ActivityMainBinding) {
+    private fun moveAppbarToTop(binding: MainActivityLayout) {
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.BOTTOM)

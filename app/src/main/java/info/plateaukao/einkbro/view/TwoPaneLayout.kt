@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.databinding.TwoPaneLayoutBinding
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 
 
@@ -28,10 +27,30 @@ class TwoPaneLayout : FrameLayout {
         doOnLayout { initViews() }
     }
 
-    private val binding: TwoPaneLayoutBinding = TwoPaneLayoutBinding.inflate(LayoutInflater.from(context), this)
-    private val separator: View = binding.separator
-    private val floatingLine: View = binding.floatingLine
-    private val dragHandle: View = binding.middleDragHandle
+    private fun resolveColorControlNormal(): Int {
+        val tv = TypedValue()
+        context.theme.resolveAttribute(android.R.attr.colorControlNormal, tv, true)
+        return tv.data
+    }
+
+    private val separator: View = View(context).apply {
+        layoutParams = LayoutParams(1, LayoutParams.MATCH_PARENT)
+        setBackgroundColor(resolveColorControlNormal())
+        this@TwoPaneLayout.addView(this)
+    }
+    private val floatingLine: View = View(context).apply {
+        layoutParams = LayoutParams(2.dp(context), LayoutParams.MATCH_PARENT)
+        visibility = GONE
+        setBackgroundColor(resolveColorControlNormal())
+        this@TwoPaneLayout.addView(this)
+    }
+    private val dragHandle: View = View(context).apply {
+        layoutParams = LayoutParams(12.dp(context), 50.dp(context))
+        visibility = GONE
+        alpha = 0.3f
+        setBackgroundColor(resolveColorControlNormal())
+        this@TwoPaneLayout.addView(this)
+    }
 
     private var panel1: View? = null
     private var panel2: View? = null
@@ -56,7 +75,6 @@ class TwoPaneLayout : FrameLayout {
         if (this.orientation != orientation) {
             this.orientation = orientation
             initDragHandle()
-            binding.root.requestLayout()
             this.requestLayout()
             this.doOnLayout { initViews() }
         }
