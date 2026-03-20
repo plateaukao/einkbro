@@ -5,6 +5,12 @@ function myCallback(elementId, responseString) {
     node.classList.add("translated");
 }
 
+function getTranslatableText(element) {
+    var clone = element.cloneNode(true);
+    clone.querySelectorAll('img').forEach(function(img) { img.remove(); });
+    return clone.textContent;
+}
+
 // Create a new IntersectionObserver object
 observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
@@ -13,8 +19,9 @@ observer = new IntersectionObserver((entries) => {
       //console.log('Node is visible:', entry.target.textContent);
       const nextNode = entry.target.nextElementSibling;
               //nextNode.textContent = result;
-      if (nextNode && nextNode.textContent === "") {
-          androidApp.getTranslation(entry.target.textContent, entry.target.id, "myCallback");
+      var text = getTranslatableText(entry.target);
+      if (nextNode && nextNode.textContent === "" && text.trim() !== "") {
+          androidApp.getTranslation(text, entry.target.id, "myCallback");
       }
     } else {
       // The target node is not visible

@@ -1,3 +1,9 @@
+function getTextExcludingImages(element) {
+  var clone = element.cloneNode(true);
+  clone.querySelectorAll('img').forEach(function(img) { img.remove(); });
+  return clone.textContent;
+}
+
 function isInline(node) {
   if (node.nodeType === Node.TEXT_NODE) {
     return true;
@@ -40,7 +46,7 @@ function fetchNodesWithText(element) {
 
   const isBlockTag = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "li"].includes(element.tagName.toLowerCase());
 
-  if (isBlockTag && shouldTranslateAsBlock(element) && element.innerText.trim() !== "") {
+  if (isBlockTag && shouldTranslateAsBlock(element) && getTextExcludingImages(element).trim() !== "") {
     injectTranslateTag(element);
     console.log("Block: " + element.textContent + "\n\n");
     result.push(element);
