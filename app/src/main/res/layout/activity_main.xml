@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <info.plateaukao.einkbro.view.viewControllers.ToolbarComposeView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/compose_icon_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <info.plateaukao.einkbro.view.compose.SearchBarView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/main_search_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -50,7 +50,7 @@
             android:layout_height="match_parent" />
     </info.plateaukao.einkbro.view.TwoPaneLayout>
 
-    <info.plateaukao.einkbro.view.compose.AutoCompleteTextComposeView
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/input_url"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -67,7 +67,7 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/appBar" />
 
-    <info.plateaukao.einkbro.view.compose.HistoryAndTabsView
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/layout_overview"
         android:layout_width="0dp"
         android:layout_height="0dp"

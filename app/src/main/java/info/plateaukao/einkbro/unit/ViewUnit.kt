@@ -286,7 +286,6 @@ object ViewUnit: KoinComponent {
         } else {
             moveAppbarToBottom(binding)
         }
-        binding.inputUrl.shouldReverse = config.isToolbarOnTop
     }
 
 

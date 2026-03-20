@@ -55,7 +55,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -119,7 +123,10 @@ import info.plateaukao.einkbro.view.dialog.SendLinkDialog
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
-import info.plateaukao.einkbro.view.dialog.compose.ActionModeView
+import info.plateaukao.einkbro.view.compose.AutoCompleteTextField
+import info.plateaukao.einkbro.view.compose.ComposedSearchBar
+import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.dialog.compose.ActionModeMenu
 import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
@@ -1145,45 +1152,66 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var searchJob: Job? = null
     private var shouldRestoreFullscreen = false
+
+    // State for AutoCompleteTextField (previously in AutoCompleteTextComposeView)
+    private val inputTextOrUrl = mutableStateOf(TextFieldValue(""))
+    private val inputRecordList = mutableStateOf(listOf<Record>())
+    private val inputUrlFocusRequester = FocusRequester()
+    private var inputIsWideLayout by mutableStateOf(false)
+    private var inputShouldReverse by mutableStateOf(true)
+    private var inputHasCopiedText by mutableStateOf(false)
+
     private fun initInputBar() {
         binding.inputUrl.apply {
-            focusRequester = FocusRequester()
-            onTextSubmit = {
-                updateAlbum(it.trim())
-                showToolbar()
-                if (shouldRestoreFullscreen) {
-                    toggleFullscreen()
-                    shouldRestoreFullscreen = false
-                }
-            }
-            onTextChange = { query ->
-                searchJob?.cancel()
-                searchJob = lifecycleScope.launch {
-                    kotlinx.coroutines.delay(300) // Debounce for 300ms
-                    withContext(Dispatchers.IO) {
-                        searchSuggestionViewModel.updateSuggestions(query)
-                    }
-                    recordList.value = searchSuggestionViewModel.suggestions.value
-                }
-            }
-            onPasteClick = { updateAlbum(getClipboardText()); showToolbar() }
-            closeAction = {
-                showToolbar()
-                if (shouldRestoreFullscreen) {
-                    toggleFullscreen()
-                    shouldRestoreFullscreen = false
-                }
-            }
-            onRecordClick = {
-                updateAlbum(it.url)
-                showToolbar()
-                if (shouldRestoreFullscreen) {
-                    toggleFullscreen()
-                    shouldRestoreFullscreen = false
+            visibility = INVISIBLE
+            setContent {
+                MyTheme {
+                    AutoCompleteTextField(
+                        text = inputTextOrUrl,
+                        recordList = inputRecordList,
+                        bookmarkManager = bookmarkManager,
+                        focusRequester = inputUrlFocusRequester,
+                        isWideLayout = inputIsWideLayout,
+                        shouldReverse = inputShouldReverse,
+                        hasCopiedText = inputHasCopiedText,
+                        onTextSubmit = { text ->
+                            updateAlbum(text.trim())
+                            showToolbar()
+                            if (shouldRestoreFullscreen) {
+                                toggleFullscreen()
+                                shouldRestoreFullscreen = false
+                            }
+                        },
+                        onTextChange = { query ->
+                            searchJob?.cancel()
+                            searchJob = lifecycleScope.launch {
+                                kotlinx.coroutines.delay(300)
+                                withContext(Dispatchers.IO) {
+                                    searchSuggestionViewModel.updateSuggestions(query)
+                                }
+                                inputRecordList.value = searchSuggestionViewModel.suggestions.value
+                            }
+                        },
+                        onPasteClick = { updateAlbum(getClipboardText()); showToolbar() },
+                        closeAction = {
+                            showToolbar()
+                            if (shouldRestoreFullscreen) {
+                                toggleFullscreen()
+                                shouldRestoreFullscreen = false
+                            }
+                        },
+                        onRecordClick = {
+                            updateAlbum(it.url)
+                            showToolbar()
+                            if (shouldRestoreFullscreen) {
+                                toggleFullscreen()
+                                shouldRestoreFullscreen = false
+                            }
+                        },
+                    )
                 }
             }
         }
-        binding.inputUrl.bookmarkManager = bookmarkManager
     }
 
     private fun isKeyboardDisplaying(): Boolean {
@@ -2006,13 +2034,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
+    private val searchPanelFocusRequester = FocusRequester()
+
     private fun initSearchPanel() {
-        with(binding.mainSearchPanel) {
+        binding.mainSearchPanel.apply {
             visibility = INVISIBLE
-            onTextChanged = { (currentAlbumController as EBWebView?)?.findAllAsync(it) }
-            onCloseClick = { hideSearchPanel() }
-            onUpClick = { searchUp(it) }
-            onDownClick = { searchDown(it) }
+            setContent {
+                MyTheme {
+                    ComposedSearchBar(
+                        focusRequester = searchPanelFocusRequester,
+                        onTextChanged = { (currentAlbumController as EBWebView?)?.findAllAsync(it) },
+                        onCloseClick = { hideSearchPanel() },
+                        onUpClick = { searchUp(it) },
+                        onDownClick = { searchDown(it) },
+                    )
+                }
+            }
         }
     }
 
@@ -2312,12 +2349,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private var inputTextOrUrl = mutableStateOf(TextFieldValue(""))
-    private var focusRequester = FocusRequester()
     override fun focusOnInput() {
         if (binding.appBar.visibility != VISIBLE) {
             shouldRestoreFullscreen = true
-            
+
             // Temporarily enable window adjustment for keyboard (only when in fullscreen)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.setDecorFitsSystemWindows(true)
@@ -2336,26 +2371,31 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             TextFieldValue("")
         }
 
-        binding.inputUrl.apply {
-            inputTextOrUrl.value = textOrUrl
-            isWideLayout = ViewUnit.isWideLayout(this@BrowserActivity)
-            shouldReverse = !config.isToolbarOnTop
-            hasCopiedText = getClipboardText().isNotEmpty()
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    searchSuggestionViewModel.initSuggestions()
-                    binding.inputUrl.recordList.value = searchSuggestionViewModel.suggestions.value
-                }
-                //recordDb.listEntries(config.showBookmarksInInputBar)
+        inputTextOrUrl.value = textOrUrl
+        inputIsWideLayout = ViewUnit.isWideLayout(this)
+        inputShouldReverse = !config.isToolbarOnTop
+        inputHasCopiedText = getClipboardText().isNotEmpty()
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                searchSuggestionViewModel.initSuggestions()
+                inputRecordList.value = searchSuggestionViewModel.suggestions.value
             }
         }
-
 
         composeToolbarViewController.hide()
         binding.appBar.visibility = INVISIBLE
         binding.contentSeparator.visibility = INVISIBLE
         binding.inputUrl.visibility = VISIBLE
-        binding.inputUrl.getFocus()
+        binding.inputUrl.postDelayed(
+            {
+                ViewUnit.showKeyboard(this)
+                try {
+                    inputUrlFocusRequester.requestFocus()
+                } catch (e: IllegalStateException) {
+                    e.printStackTrace()
+                }
+            }, 200
+        )
     }
 
     private fun getClipboardText(): String =
@@ -2830,7 +2870,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         searchOnSite = true
         fabImageViewController.hide()
         binding.mainSearchPanel.visibility = VISIBLE
-        binding.mainSearchPanel.getFocus()
+        binding.mainSearchPanel.post {
+            searchPanelFocusRequester.requestFocus()
+            ViewUnit.showKeyboard(this)
+        }
         binding.appBar.visibility = VISIBLE
         binding.contentSeparator.visibility = VISIBLE
         ViewUnit.showKeyboard(this)
@@ -3001,11 +3044,25 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     ) {
         actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
         if (actionModeView == null) {
-            actionModeView = ActionModeView(this).apply {
-                init(
-                    actionModeMenuViewModel = actionModeMenuViewModel,
-                    clearSelectionAction = { clearSelectionAction() }
-                )
+            actionModeView = ComposeView(this).apply {
+                setContent {
+                    val text by actionModeMenuViewModel.selectedText.collectAsState()
+                    MyTheme {
+                        ActionModeMenu(
+                            actionModeMenuViewModel.menuInfos,
+                            actionModeMenuViewModel.showIcons,
+                        ) { intent ->
+                            if (intent != null) {
+                                context.startActivity(intent.apply {
+                                    putExtra(Intent.EXTRA_PROCESS_TEXT, text)
+                                    putExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, true)
+                                })
+                            }
+                            clearSelectionAction()
+                            actionModeMenuViewModel.updateActionMode(null)
+                        }
+                    }
+                }
             }
             actionModeView?.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,

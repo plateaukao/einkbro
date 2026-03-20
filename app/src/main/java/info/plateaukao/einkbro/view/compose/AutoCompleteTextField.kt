@@ -1,9 +1,6 @@
 package info.plateaukao.einkbro.view.compose
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.util.AttributeSet
 import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -41,7 +38,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -55,64 +51,8 @@ import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
-import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import kotlinx.coroutines.launch
-
-class AutoCompleteTextComposeView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0,
-) : AbstractComposeView(context, attrs, defStyle) {
-    var inputTextOrUrl = mutableStateOf(TextFieldValue(""))
-    var recordList = mutableStateOf(listOf<Record>())
-    var focusRequester by mutableStateOf(FocusRequester())
-    var bookmarkManager: BookmarkManager? = null
-    var isWideLayout by mutableStateOf(false)
-    var shouldReverse by mutableStateOf(true)
-    var hasCopiedText by mutableStateOf(false)
-
-    var closeAction: () -> Unit = {}
-    var onTextSubmit: (String) -> Unit = {}
-    var onTextChange: (String) -> Unit = {}
-    var onPasteClick: () -> Unit = {}
-    var onRecordClick: (Record) -> Unit = {}
-
-    @Composable
-    override fun Content() {
-        MyTheme {
-            AutoCompleteTextField(
-                text = inputTextOrUrl,
-                recordList = recordList,
-                bookmarkManager = bookmarkManager,
-                focusRequester = focusRequester,
-                isWideLayout = isWideLayout,
-                shouldReverse = shouldReverse,
-                hasCopiedText = hasCopiedText,
-                onTextSubmit = onTextSubmit,
-                onTextChange = onTextChange,
-                onPasteClick = onPasteClick,
-                closeAction = closeAction,
-                onRecordClick = onRecordClick,
-            )
-        }
-    }
-
-    fun getFocus() {
-        postDelayed(
-            {
-                ViewUnit.showKeyboard(context as Activity)
-                try {
-                    // need to call it after some delay to make sure the view is ready
-                    focusRequester.requestFocus()
-                } catch (e: IllegalStateException) {
-                    // try catch for IllegalStateException: FocusRequester is already active
-                    e.printStackTrace()
-                }
-            }, 200
-        )
-    }
-}
 
 @Composable
 fun AutoCompleteTextField(
