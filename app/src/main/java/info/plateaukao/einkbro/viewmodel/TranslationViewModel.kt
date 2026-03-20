@@ -13,6 +13,7 @@ import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.service.ChatMessage
 import info.plateaukao.einkbro.service.ChatRole
 import info.plateaukao.einkbro.service.OpenAiRepository
+import info.plateaukao.einkbro.service.ImageTranslateResult
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -250,15 +251,14 @@ class TranslationViewModel : ViewModel(), KoinComponent {
         url: String,
         sourceLanguage: TranslationLanguage,
         targetLanguage: TranslationLanguage,
-    ): String? {
-        val result = translateRepository.translateImageFromUrl(
+    ): ImageTranslateResult? {
+        return translateRepository.translateImageFromUrl(
             referer,
             url,
             sourceLanguage.value,
             targetLanguage.value,
             true,
         )
-        return result?.renderedImage
     }
 
     fun showEditGptActionDialog(gptActionInfoIndex: Int) {
