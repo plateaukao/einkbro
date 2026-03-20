@@ -131,6 +131,7 @@ class ContextMenuDialogFragment(
     private val shouldShowTranslateImage: Boolean,
     private val anchorPoint: Point,
     private val itemClicked: (ContextMenuItemType) -> Unit,
+    private val itemLongClicked: (ContextMenuItemType) -> Unit = {},
 ) : ComposeDialogFragment() {
 
     private val hoveredItemState = mutableStateOf<ContextMenuItemType?>(null)
@@ -149,11 +150,18 @@ class ContextMenuDialogFragment(
                 shouldShowAdBlock,
                 shouldShowTranslateImage,
                 showIcons = config.showActionMenuIcons,
-                hoveredItem = hoveredItemState.value
-            ) { item ->
-                dialog?.dismiss()
-                itemClicked(item)
-            }
+                hoveredItem = hoveredItemState.value,
+                onClicked = { item ->
+                    dialog?.dismiss()
+                    itemClicked(item)
+                },
+                onLongClicked = { item ->
+                    composeView.post {
+                        dialog?.dismiss()
+                        itemLongClicked(item)
+                    }
+                }
+            )
         }
     }
 
@@ -270,6 +278,7 @@ private fun ContextMenuItems(
     showIcons: Boolean = true,
     hoveredItem: ContextMenuItemType? = null,
     onClicked: (ContextMenuItemType) -> Unit,
+    onLongClicked: (ContextMenuItemType) -> Unit = {},
 ) {
     val menuLayout = createMenuLayout()
 
@@ -311,7 +320,8 @@ private fun ContextMenuItems(
                     showIcon = showIcons,
                     imageVector = item.imageVector,
                     iconResId = item.iconResId,
-                    isHovered = hoveredItem == item.type
+                    isHovered = hoveredItem == item.type,
+                    onLongClicked = { onLongClicked(item.type) }
                 ) {
                     onClicked(item.type)
                 }
@@ -335,6 +345,7 @@ fun ContextMenuItem(
     imageVector: ImageVector? = null,
     iconResId: Int = 0,
     isHovered: Boolean = false,
+    onLongClicked: () -> Unit = {},
     onClicked: () -> Unit = {},
 ) {
     Box {
@@ -352,6 +363,7 @@ fun ContextMenuItem(
             imageVector = imageVector,
             isLargeType = true,
             showIcon = showIcon,
+            onLongClicked = onLongClicked,
             onClicked = onClicked
         )
     }
@@ -368,6 +380,6 @@ enum class ContextMenuItemType {
 @Composable
 fun PreviewContextMenuItems() {
     MyTheme {
-        ContextMenuItems("abc", showIcons = false) { }
+        ContextMenuItems("abc", showIcons = false, onClicked = { })
     }
 }

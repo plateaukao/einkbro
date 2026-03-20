@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.service
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -355,12 +356,42 @@ class TranslateRepository : KoinComponent {
         langDetect: Boolean,
     ): ImageTranslateResult? {
         val file = downloadImage(url, referer) ?: return null
+        val checkOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(file.absolutePath, checkOptions)
+        if (checkOptions.outWidth < MIN_IMAGE_DIMENSION || checkOptions.outHeight < MIN_IMAGE_DIMENSION) {
+            file.delete()
+            return null
+        }
+        val resizedFile = resizeImageIfNeeded(file, MAX_IMAGE_DIMENSION)
         val builder = createMultipartBuilder(srcLang, dstLang, langDetect)
         builder.addFormDataPart(
-            "image", file.name,
-            file.asRequestBody("image/*".toMediaType())
+            "image", resizedFile.name,
+            resizedFile.asRequestBody("image/*".toMediaType())
         )
         return getImageTranslateResult(builder.build())
+    }
+
+    private fun resizeImageIfNeeded(file: File, maxDimension: Int): File {
+        val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(file.absolutePath, options)
+        val width = options.outWidth
+        val height = options.outHeight
+        if (width <= maxDimension && height <= maxDimension) return file
+
+        val scale = maxDimension.toFloat() / maxOf(width, height)
+        val newWidth = (width * scale).toInt()
+        val newHeight = (height * scale).toInt()
+        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+        val resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+        bitmap.recycle()
+
+        val resizedFile = File.createTempFile("image_resized", ".jpg")
+        FileOutputStream(resizedFile).use { out ->
+            resized.compress(Bitmap.CompressFormat.JPEG, 90, out)
+        }
+        resized.recycle()
+        file.delete()
+        return resizedFile
     }
 
     private suspend fun downloadImage(url: String, referer: String): File? {
@@ -390,6 +421,8 @@ class TranslateRepository : KoinComponent {
         private const val API_URL = "https://papago.naver.com/apis/n2mt/translate"
         private const val IMAGE_API_URL = "https://apis.naver.com/papago/papago_app/ocr/detect"
         private const val DETECT_LANGUAGE_URL = "https://papago.naver.com/apis/langs/dect"
+        private const val MAX_IMAGE_DIMENSION = 2000
+        private const val MIN_IMAGE_DIMENSION = 200
     }
 }
 
