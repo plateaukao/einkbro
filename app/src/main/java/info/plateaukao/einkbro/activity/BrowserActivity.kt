@@ -2685,8 +2685,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ).replace("%%IMAGE_URL%%", escapedUrl)
                 .replace("%%BASE64_DATA%%", base64String)
             ebWebView.evaluateJavascript(js, null)
-        } else {
-            EBToast.show(this@BrowserActivity, "Failed to translate image")
         }
     }
 
