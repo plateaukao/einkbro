@@ -2536,11 +2536,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     linkImageUrl.isNotBlank(),
                     config.imageApiKey.isNotBlank(),
                     rawPoint,
-                ) {
-                    this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
-                    activeContextMenuDialog = null
-                    isInLongPressMode = false
-                }
+                    itemClicked = {
+                        this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
+                        activeContextMenuDialog = null
+                        isInLongPressMode = false
+                    },
+                    itemLongClicked = {
+                        if (it == ContextMenuItemType.TranslateImage) {
+                            translateAllImages(linkImageUrl)
+                        }
+                        activeContextMenuDialog = null
+                        isInLongPressMode = false
+                    }
+                )
                 activeContextMenuDialog = contextMenuDialog
                 isInLongPressMode = true
                 contextMenuDialog.show(supportFragmentManager, "contextMenu")
@@ -2659,21 +2667,64 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun translateImage(url: String) {
         lifecycleScope.launch {
-            val base64String = translationViewModel.translateImage(
-                ebWebView.url.orEmpty(),
-                url,
-                TranslationLanguage.KO,
-                config.translationLanguage,
-            )
-            if (base64String != null) {
-                val escapedUrl = url.replace("\\", "\\\\").replace("'", "\\'")
-                val js = HelperUnit.loadAssetFileToString(
-                    this@BrowserActivity, "translate_image_overlay.js"
-                ).replace("%%IMAGE_URL%%", escapedUrl)
-                    .replace("%%BASE64_DATA%%", base64String)
-                ebWebView.evaluateJavascript(js, null)
-            } else {
-                EBToast.show(this@BrowserActivity, "Failed to translate image")
+            translateImageSuspend(url)
+        }
+    }
+
+    private suspend fun translateImageSuspend(url: String) {
+        val base64String = translationViewModel.translateImage(
+            ebWebView.url.orEmpty(),
+            url,
+            TranslationLanguage.KO,
+            config.translationLanguage,
+        )
+        if (base64String != null) {
+            val escapedUrl = url.replace("\\", "\\\\").replace("'", "\\'")
+            val js = HelperUnit.loadAssetFileToString(
+                this@BrowserActivity, "translate_image_overlay.js"
+            ).replace("%%IMAGE_URL%%", escapedUrl)
+                .replace("%%BASE64_DATA%%", base64String)
+            ebWebView.evaluateJavascript(js, null)
+        } else {
+            EBToast.show(this@BrowserActivity, "Failed to translate image")
+        }
+    }
+
+    private fun translateAllImages(imageUrl: String) {
+        lifecycleScope.launch {
+            val escapedUrl = imageUrl.replace("\\", "\\\\").replace("'", "\\'")
+            val js = HelperUnit.loadAssetFileToString(
+                this@BrowserActivity, "get_remaining_images.js"
+            ).replace("%%IMAGE_URL%%", escapedUrl)
+
+            ebWebView.evaluateJavascript(js) { result ->
+                val urlsJson = result?.trim('"')?.replace("\\\"", "\"")
+                    ?.replace("\\\\", "\\") ?: return@evaluateJavascript
+                try {
+                    val urls = org.json.JSONArray(urlsJson)
+                    val imageUrls = mutableListOf<String>()
+                    for (i in 0 until urls.length()) {
+                        imageUrls.add(urls.getString(i))
+                    }
+                    if (imageUrls.isEmpty()) return@evaluateJavascript
+
+                    EBToast.show(
+                        this@BrowserActivity,
+                        "Translating ${imageUrls.size} images..."
+                    )
+                    lifecycleScope.launch {
+                        for ((index, url) in imageUrls.withIndex()) {
+                            translateImageSuspend(url)
+                            if (index < imageUrls.size - 1) {
+                                val base = config.imageTranslateIntervalSeconds
+                                val delayMs = ((base - 2).coerceAtLeast(1)..(base + 2)).random() * 1000L
+                                kotlinx.coroutines.delay(delayMs)
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    EBToast.show(this@BrowserActivity, "Failed to get image list")
+                }
             }
         }
     }

@@ -252,6 +252,7 @@ class ConfigManager(
         "Summarize in 50 words:"
     )
     var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
+    var imageTranslateIntervalSeconds by IntPreference(sp, "K_IMAGE_TRANSLATE_INTERVAL", 4)
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-4.1")
     var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
     var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-2.5-flash")
