@@ -6,11 +6,16 @@ import android.graphics.Point
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
+import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.database.RecordType
@@ -19,7 +24,8 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.Album
-import info.plateaukao.einkbro.view.compose.HistoryAndTabsView
+import info.plateaukao.einkbro.view.compose.HistoryAndTabs
+import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.BookmarkContextMenuDlgFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
@@ -32,7 +38,7 @@ class OverviewDialogController(
     private val context: Context,
     private val albumList: MutableState<List<Album>>,
     private val albumFocusIndex: MutableState<Int>,
-    private val composeView: HistoryAndTabsView,
+    private val composeView: ComposeView,
     private val gotoUrlAction: (String) -> Unit,
     private val addTabAction: (String, String, Boolean) -> Unit,
     private val addIncognitoTabAction: () -> Unit,
@@ -41,11 +47,51 @@ class OverviewDialogController(
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val recordDb: RecordDb by inject()
+    private val bookmarkManager: BookmarkManager by inject()
     private val dialogManager: DialogManager = DialogManager(context as Activity)
 
     private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
 
     private val currentRecordList = mutableListOf<Record>()
+
+    // State previously held by HistoryAndTabsView
+    private var isHistoryOpen by mutableStateOf(false)
+    private var shouldReverse by mutableStateOf(true)
+    private var shouldShowTwoColumns by mutableStateOf(false)
+    private var recordList: List<Record> by mutableStateOf(emptyList())
+
+    init {
+        composeView.setContent {
+            MyTheme {
+                HistoryAndTabs(
+                    bookmarkManager = bookmarkManager,
+                    isHistoryOpen = isHistoryOpen,
+                    shouldReverseHistory = shouldReverse,
+                    shouldShowTwoColumns = shouldShowTwoColumns,
+                    albumList = albumList,
+                    albumFocusIndex = albumFocusIndex,
+                    onTabIconClick = this@OverviewDialogController::openHomePage,
+                    onTabClick = { hide(); it.showOrJumpToTop() },
+                    onTabLongClick = { it.remove() },
+                    records = recordList,
+                    onHistoryIconClick = { openHistoryPage() },
+                    onHistoryItemClick = this@OverviewDialogController::clickHistoryItem,
+                    onHistoryItemLongClick = this@OverviewDialogController::showHistoryContextMenu,
+                    addIncognitoTab = addIncognitoTabAction,
+                    addTab = { hide(); addEmptyTabAction() },
+                    closePanel = { hide() },
+                    onDeleteAction = { hide(); deleteAllItems() },
+                    onCloseAllTabs = { hide(); closeAllTabs(); addEmptyTabAction() },
+                    launchNewBrowserAction = {
+                        hide(); IntentUnit.launchNewBrowser(
+                        context as Activity,
+                        config.favoriteUrl
+                    )
+                    },
+                )
+            }
+        }
+    }
 
     fun isVisible() = composeView.visibility == VISIBLE
 
@@ -54,30 +100,11 @@ class OverviewDialogController(
         openHomePage()
     }
 
-    private fun initViews(showHistory: Boolean = false) {
-        val currentAlbumList = albumList
-        with(composeView) {
-            isHistoryOpen = showHistory
-            shouldReverse = !config.isToolbarOnTop
-            shouldShowTwoColumns = isWideLayout()
-            albumList = currentAlbumList
-            albumFocusIndex = albumFocusIndex
-            onTabIconClick = this@OverviewDialogController::openHomePage
-            onTabClick = { hide(); it.showOrJumpToTop() }
-            onTabLongClick = { it.remove() }
-
-            recordList = currentRecordList
-            onHistoryIconClick = this@OverviewDialogController::openHistoryPage
-            onHistoryItemClick = this@OverviewDialogController::clickHistoryItem
-            onHistoryItemLongClick = this@OverviewDialogController::showHistoryContextMenu
-            addIncognitoTab = addIncognitoTabAction
-            addTab = { hide(); addEmptyTabAction() }
-            closePanel = { hide() }
-            onDeleteAllHistoryAction = { hide(); deleteAllItems() }
-            onCloseAllTabs = { hide(); closeAllTabs(); addEmptyTabAction() }
-            launchNewBrowserAction =
-                { hide(); IntentUnit.launchNewBrowser(context as Activity, config.favoriteUrl) }
-        }
+    private fun updateState(showHistory: Boolean = false) {
+        isHistoryOpen = showHistory
+        shouldReverse = !config.isToolbarOnTop
+        shouldShowTwoColumns = isWideLayout()
+        recordList = currentRecordList.toList()
     }
 
     private fun clickHistoryItem(record: Record) {
@@ -108,7 +135,7 @@ class OverviewDialogController(
             val finalList = getLatestRecords(amount, shouldReverse)
             currentRecordList.clear()
             currentRecordList.addAll(finalList)
-            initViews(showHistory = true)
+            updateState(showHistory = true)
         }
     }
 
@@ -121,7 +148,7 @@ class OverviewDialogController(
         ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
 
     private fun openHomePage() {
-        initViews(showHistory = false)
+        updateState(showHistory = false)
     }
 
 
