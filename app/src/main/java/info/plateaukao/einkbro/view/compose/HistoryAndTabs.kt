@@ -3,10 +3,8 @@
 package info.plateaukao.einkbro.view.compose
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Point
-import android.util.AttributeSet
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,16 +35,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -60,67 +55,7 @@ import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.dialog.compose.ActionIcon
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import kotlin.math.max
-
-class HistoryAndTabsView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0,
-) : AbstractComposeView(context, attrs, defStyle), KoinComponent {
-    private val bookmarkManager: BookmarkManager by inject()
-
-    var albumList = mutableStateOf(listOf<Album>())
-    var albumFocusIndex = mutableStateOf(0)
-    var isHistoryOpen by mutableStateOf(false)
-    var shouldReverse by mutableStateOf(true)
-    var shouldShowTwoColumns by mutableStateOf(false)
-
-    var onTabIconClick by mutableStateOf({})
-    var onTabClick by mutableStateOf<(Album) -> Unit>({})
-    var onTabLongClick by mutableStateOf<(Album) -> Unit>({})
-
-    var recordList: List<Record> by mutableStateOf(emptyList())
-    var onHistoryIconClick by mutableStateOf({})
-    var onHistoryItemClick by mutableStateOf<(Record) -> Unit>({})
-    var onHistoryItemLongClick by mutableStateOf<(Record, Point) -> Unit>({ _, _ -> })
-
-    var addIncognitoTab by mutableStateOf({})
-    var addTab by mutableStateOf({})
-    var closePanel by mutableStateOf({})
-    var onDeleteAllHistoryAction by mutableStateOf({})
-    var onCloseAllTabs by mutableStateOf({})
-    var launchNewBrowserAction by mutableStateOf({})
-
-    @Composable
-    override fun Content() {
-        MyTheme {
-            HistoryAndTabs(
-                bookmarkManager = bookmarkManager,
-                isHistoryOpen = isHistoryOpen,
-                shouldReverseHistory = shouldReverse,
-                shouldShowTwoColumns = shouldShowTwoColumns,
-                albumList = albumList,
-                albumFocusIndex = albumFocusIndex,
-                onTabIconClick = onTabIconClick,
-                onTabClick = onTabClick,
-                onTabLongClick = onTabLongClick,
-
-                records = recordList,
-                onHistoryIconClick = onHistoryIconClick,
-                onHistoryItemClick = onHistoryItemClick,
-                onHistoryItemLongClick = onHistoryItemLongClick,
-                addIncognitoTab = addIncognitoTab,
-                addTab = addTab,
-                closePanel = closePanel,
-                onDeleteAction = onDeleteAllHistoryAction,
-                onCloseAllTabs = onCloseAllTabs,
-                launchNewBrowserAction = launchNewBrowserAction,
-            )
-        }
-    }
-}
 
 @Composable
 fun HistoryAndTabs(

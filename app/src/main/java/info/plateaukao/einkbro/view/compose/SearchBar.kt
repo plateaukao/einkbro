@@ -1,8 +1,5 @@
 package info.plateaukao.einkbro.view.compose
 
-import android.app.Activity
-import android.content.Context
-import android.util.AttributeSet
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -14,15 +11,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.unit.ViewUnit
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -101,36 +95,6 @@ fun SearchBarIcon(
     )
 }
 
-class SearchBarView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0,
-): AbstractComposeView(context, attrs, defStyle) {
-
-    var onTextChanged: (String)->Unit = {}
-    var onCloseClick: ()->Unit = {}
-    var onUpClick: (String)->Unit = {}
-    var onDownClick: (String)->Unit = {}
-    var focusRequester by mutableStateOf(FocusRequester())
-
-    @Composable
-    override fun Content() {
-        MyTheme {
-            ComposedSearchBar(
-                focusRequester = focusRequester,
-                onTextChanged = onTextChanged,
-                onCloseClick = onCloseClick,
-                onUpClick = onUpClick,
-                onDownClick = onDownClick,
-            )
-        }
-    }
-
-    fun getFocus() {
-        focusRequester.requestFocus()
-        postDelayed({ ViewUnit.showKeyboard(context as Activity) }, 400)
-    }
-}
 
 @Preview
 @Composable
