@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="swipe_refresh_layout" type="id" />
+    <item name="main_content" type="id" />
+    <item name="main_progress_bar" type="id" />
+    <item name="fab_imageButtonNav" type="id" />
+    <item name="translation_language" type="id" />
+    <item name="remote_text_search" type="id" />
+    <item name="external_search_close" type="id" />
+    <item name="external_search_action_container" type="id" />
+    <item name="appBar" type="id" />
+    <item name="compose_icon_bar" type="id" />
+    <item name="main_search_panel" type="id" />
+    <item name="two_panel_layout" type="id" />
+    <item name="input_url" type="id" />
+    <item name="content_separator" type="id" />
+    <item name="layout_overview" type="id" />
+</resources>
