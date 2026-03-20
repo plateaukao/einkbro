@@ -292,6 +292,7 @@ object ViewUnit: KoinComponent {
     private fun moveAppbarToBottom(binding: MainActivityLayout) {
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
+            clear(binding.appBar.id, ConstraintSet.TOP)
             connect(
                 binding.appBar.id,
                 ConstraintSet.BOTTOM,
@@ -334,6 +335,13 @@ object ViewUnit: KoinComponent {
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.BOTTOM)
+            connect(
+                binding.appBar.id,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP,
+                0
+            )
 
             connect(
                 binding.twoPanelLayout.id,
