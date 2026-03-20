@@ -34,6 +34,12 @@ class JsWebInterface(private val webView: EBWebView) :
     private val configManager: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
 
+    private fun escapeForJs(text: String): String =
+        text.replace("\\", "\\\\")
+            .replace("'", "\\'")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+
     // to control the translation request threshold
     private val semaphoreForTranslate = Semaphore(4)
 
@@ -57,7 +63,7 @@ class JsWebInterface(private val webView: EBWebView) :
                         withContext(Dispatchers.Main) {
                             if (webView.isAttachedToWindow) {
                                 webView.evaluateJavascript(
-                                    "$callback('$elementId', '${cachedEntry.translatedText}')",
+                                    "$callback('$elementId', '${escapeForJs(cachedEntry.translatedText)}')",
                                     null
                                 )
                             }
@@ -89,7 +95,7 @@ class JsWebInterface(private val webView: EBWebView) :
             withContext(Dispatchers.Main) {
                 if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
                     webView.evaluateJavascript(
-                        "$callback('$elementId', '$translatedString')",
+                        "$callback('$elementId', '${escapeForJs(translatedString)}')",
                         null
                     )
                 }
