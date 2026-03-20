@@ -1,17 +1,33 @@
 package info.plateaukao.einkbro.view.dialog
 
-import android.R
 import android.app.Activity
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
-import info.plateaukao.einkbro.databinding.DialogEditBookmarkBinding
 import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.launch
 
@@ -24,28 +40,139 @@ class BookmarkEditDialog(
 ) {
     private val dialogManager: DialogManager = DialogManager(activity)
 
+    private val titleState = mutableStateOf(bookmark.title)
+    private val urlState = mutableStateOf(bookmark.url)
+    private val foldersState = mutableStateOf(listOf<Bookmark>())
+    private val selectedFolderIndex = mutableStateOf(0)
+    private val dropdownExpanded = mutableStateOf(false)
+
     fun show() {
         val lifecycleScope = (activity as LifecycleOwner).lifecycleScope
 
-        val binding = DialogEditBookmarkBinding.inflate(LayoutInflater.from(activity))
-        binding.bookmarkTitle.setText(bookmark.title)
-        if (bookmark.isDirectory) {
-            binding.urlContainer.visibility = View.GONE
-        } else {
-            binding.bookmarkUrl.setText(bookmark.url)
+        // Load folders
+        lifecycleScope.launch {
+            val folders = bookmarkViewModel.getBookmarkFolders().toMutableList()
+                .apply { add(0, Bookmark("Top", "", true)) }
+            if (bookmark.isDirectory) folders.remove(bookmark)
+            foldersState.value = folders
+            selectedFolderIndex.value = folders.indexOfFirst { it.id == bookmark.parent }
+                .coerceAtLeast(0)
         }
 
-        binding.buttonAddFolder.setOnClickListener { addFolder(lifecycleScope, binding) }
-
-        updateFolderSpinner(binding)
+        val composeView = ComposeView(activity).apply {
+            setContent {
+                MyTheme {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 15.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = titleState.value,
+                            onValueChange = { titleState.value = it },
+                            label = { Text(stringResource(R.string.dialog_title_hint)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            minLines = 2,
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = MaterialTheme.colors.onBackground,
+                            ),
+                        )
+                        if (!bookmark.isDirectory) {
+                            OutlinedTextField(
+                                value = urlState.value,
+                                onValueChange = { urlState.value = it },
+                                label = { Text(stringResource(R.string.dialog_url_hint)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    textColor = MaterialTheme.colors.onBackground,
+                                ),
+                            )
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 5.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "Folder:",
+                                modifier = Modifier.weight(1f),
+                                color = MaterialTheme.colors.onBackground,
+                            )
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_add_folder),
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.onBackground,
+                                modifier = Modifier
+                                    .size(46.dp)
+                                    .padding(8.dp)
+                                    .clickable {
+                                        lifecycleScope.launch {
+                                            val folderName =
+                                                dialogManager.getBookmarkFolderName()
+                                                    ?: return@launch
+                                            bookmarkViewModel.insertDirectory(folderName)
+                                            val updatedFolders =
+                                                bookmarkViewModel.getBookmarkFolders()
+                                                    .toMutableList()
+                                                    .apply {
+                                                        add(0, Bookmark("Top", "", true))
+                                                    }
+                                            if (bookmark.isDirectory) updatedFolders.remove(
+                                                bookmark
+                                            )
+                                            foldersState.value = updatedFolders
+                                            selectedFolderIndex.value =
+                                                updatedFolders.indexOfFirst { it.title == folderName }
+                                                    .coerceAtLeast(0)
+                                        }
+                                    }
+                            )
+                        }
+                        // Dropdown for folder selection
+                        val folders = foldersState.value
+                        if (folders.isNotEmpty()) {
+                            val selectedName = folders.getOrNull(selectedFolderIndex.value)?.title ?: ""
+                            OutlinedTextField(
+                                value = selectedName,
+                                onValueChange = {},
+                                readOnly = true,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { dropdownExpanded.value = true },
+                                enabled = false,
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    disabledTextColor = MaterialTheme.colors.onBackground,
+                                    disabledBorderColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                                ),
+                            )
+                            DropdownMenu(
+                                expanded = dropdownExpanded.value,
+                                onDismissRequest = { dropdownExpanded.value = false },
+                            ) {
+                                folders.forEachIndexed { index, folder ->
+                                    DropdownMenuItem(onClick = {
+                                        selectedFolderIndex.value = index
+                                        bookmark.parent = folder.id
+                                        dropdownExpanded.value = false
+                                    }) {
+                                        Text(folder.title)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         dialogManager.showOkCancelDialog(
-            title = activity.getString(info.plateaukao.einkbro.R.string.menu_save_bookmark),
-            view = binding.root,
+            title = activity.getString(R.string.menu_save_bookmark),
+            view = composeView,
             okAction = {
                 val newBookmark = bookmark.copy(
-                    title = binding.bookmarkTitle.text.toString().trim { it <= ' ' },
-                    url = binding.bookmarkUrl.text.toString().trim { it <= ' ' }
+                    title = titleState.value.trim(),
+                    url = urlState.value.trim()
                 ).apply { id = bookmark.id }
                 upsertBookmark(newBookmark)
             },
@@ -53,58 +180,12 @@ class BookmarkEditDialog(
         )
     }
 
-    private fun addFolder(
-        lifecycleScope: LifecycleCoroutineScope,
-        binding: DialogEditBookmarkBinding,
-    ) {
-        lifecycleScope.launch {
-            val folderName = dialogManager.getBookmarkFolderName() ?: return@launch
-            bookmarkViewModel.insertDirectory(folderName)
-            updateFolderSpinner(binding, folderName)
-        }
-    }
-
-    private fun updateFolderSpinner(
-        binding: DialogEditBookmarkBinding,
-        selectedFolderName: String? = null,
-    ) {
-        val lifecycleScope = (activity as LifecycleOwner).lifecycleScope
-        lifecycleScope.launch {
-            val folders = bookmarkViewModel.getBookmarkFolders().toMutableList()
-                .apply { add(0, Bookmark("Top", "", true)) }
-            if (bookmark.isDirectory) folders.remove(bookmark)
-
-            binding.folderSpinner.adapter =
-                ArrayAdapter(activity, R.layout.simple_spinner_dropdown_item, folders.map { it.title })
-            val selectedIndex = if (selectedFolderName == null) {
-                folders.indexOfFirst { it.id == bookmark.parent }
-            } else {
-                folders.indexOfFirst { it.title == selectedFolderName }
-            }
-            binding.folderSpinner.setSelection(selectedIndex)
-
-            binding.folderSpinner.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long,
-                    ) {
-                        bookmark.parent = folders[position].id
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                }
-        }
-    }
-
     private fun upsertBookmark(bookmark: Bookmark) {
         try {
             bookmarkViewModel.insertBookmark(bookmark) { okAction.invoke() }
         } catch (e: Exception) {
             e.printStackTrace()
-            EBToast.show(activity, info.plateaukao.einkbro.R.string.toast_error)
+            EBToast.show(activity, R.string.toast_error)
         }
     }
 }

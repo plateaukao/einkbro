@@ -9,7 +9,7 @@ import android.net.http.SslError
 import android.os.Message
 import android.security.KeyChain
 import android.util.Log
-import android.view.View
+import android.view.ViewGroup
 import android.webkit.ClientCertRequest
 import android.webkit.CookieManager
 import android.webkit.HttpAuthHandler
@@ -19,17 +19,21 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import android.widget.TextView
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
-import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -313,22 +317,57 @@ class EBWebViewClient(
 
     override fun onFormResubmission(view: WebView, doNotResend: Message, resend: Message) {
         val holder = view.context as? Activity ?: return
-        val dialog = BottomSheetDialog(holder)
-        val dialogView = View.inflate(holder, R.layout.dialog_action, null)
-
-        dialogView.findViewById<TextView>(R.id.dialog_text)
-            .setText(R.string.dialog_content_resubmission)
-        dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-            resend.sendToTarget()
-            dialog.cancel()
+        val showDialog = mutableStateOf(true)
+        val rootView = holder.findViewById<ViewGroup>(android.R.id.content)
+        val composeView = ComposeView(holder).apply {
+            setViewTreeLifecycleOwner(holder as androidx.lifecycle.LifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(holder as androidx.savedstate.SavedStateRegistryOwner)
         }
-        dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-            doNotResend.sendToTarget()
-            dialog.cancel()
+        rootView.addView(composeView)
+        composeView.setContent {
+            MyTheme {
+                if (showDialog.value) {
+                    androidx.compose.material.AlertDialog(
+                        onDismissRequest = {
+                            showDialog.value = false
+                            doNotResend.sendToTarget()
+                            rootView.removeView(composeView)
+                        },
+                        text = {
+                            Text(
+                                text = stringResource(R.string.dialog_content_resubmission),
+                                color = MaterialTheme.colors.onBackground,
+                            )
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                showDialog.value = false
+                                resend.sendToTarget()
+                                rootView.removeView(composeView)
+                            }) {
+                                Text(
+                                    text = stringResource(android.R.string.ok),
+                                    color = MaterialTheme.colors.onBackground,
+                                )
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                showDialog.value = false
+                                doNotResend.sendToTarget()
+                                rootView.removeView(composeView)
+                            }) {
+                                Text(
+                                    text = stringResource(android.R.string.cancel),
+                                    color = MaterialTheme.colors.onBackground,
+                                )
+                            }
+                        },
+                        backgroundColor = MaterialTheme.colors.background,
+                    )
+                }
+            }
         }
-        dialog.setContentView(dialogView)
-        dialog.show()
-        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
     // return true means it's processed
