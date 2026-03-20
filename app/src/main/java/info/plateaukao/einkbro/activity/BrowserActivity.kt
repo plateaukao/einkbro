@@ -2671,21 +2671,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private suspend fun translateImageSuspend(url: String) {
-        val base64String = translationViewModel.translateImage(
+    private suspend fun translateImageSuspend(url: String): Boolean {
+        val result = translationViewModel.translateImage(
             ebWebView.url.orEmpty(),
             url,
             TranslationLanguage.KO,
             config.translationLanguage,
         )
-        if (base64String != null) {
+        if (result != null) {
             val escapedUrl = url.replace("\\", "\\\\").replace("'", "\\'")
             val js = HelperUnit.loadAssetFileToString(
                 this@BrowserActivity, "translate_image_overlay.js"
             ).replace("%%IMAGE_URL%%", escapedUrl)
-                .replace("%%BASE64_DATA%%", base64String)
+                .replace("%%BASE64_DATA%%", result.renderedImage)
             ebWebView.evaluateJavascript(js, null)
+            return result.imageId == "cached"
         }
+        return false
     }
 
     private fun translateAllImages(imageUrl: String) {
@@ -2712,8 +2714,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     )
                     lifecycleScope.launch {
                         for ((index, url) in imageUrls.withIndex()) {
-                            translateImageSuspend(url)
-                            if (index < imageUrls.size - 1) {
+                            val wasCached = translateImageSuspend(url)
+                            if (index < imageUrls.size - 1 && !wasCached) {
                                 val base = config.imageTranslateIntervalSeconds
                                 val delayMs = ((base - 2).coerceAtLeast(1)..(base + 2)).random() * 1000L
                                 kotlinx.coroutines.delay(delayMs)

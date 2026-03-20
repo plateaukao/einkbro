@@ -27,7 +27,9 @@ import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import android.content.Context
 import java.security.InvalidKeyException
+import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.Locale
 import java.util.UUID
@@ -38,6 +40,27 @@ import javax.crypto.spec.SecretKeySpec
 class TranslateRepository : KoinComponent {
     private val client = OkHttpClient()
     private val config: ConfigManager by inject()
+    private val context: Context by inject()
+
+    private val imageCacheDir: File by lazy {
+        File(context.cacheDir, "translated_images").also { it.mkdirs() }
+    }
+
+    private fun imageCacheKey(url: String, dstLang: String): String {
+        val digest = MessageDigest.getInstance("MD5")
+        val hash = digest.digest("$url|$dstLang".toByteArray())
+        return hash.joinToString("") { "%02x".format(it) }
+    }
+
+    private fun getCachedImageTranslation(url: String, dstLang: String): String? {
+        val file = File(imageCacheDir, imageCacheKey(url, dstLang))
+        return if (file.exists()) file.readText() else null
+    }
+
+    private fun cacheImageTranslation(url: String, dstLang: String, base64Data: String) {
+        val file = File(imageCacheDir, imageCacheKey(url, dstLang))
+        file.writeText(base64Data)
+    }
 
     private fun getICount(translateText: String): Int {
         return translateText.split("i").size - 1
@@ -355,6 +378,10 @@ class TranslateRepository : KoinComponent {
         dstLang: String,
         langDetect: Boolean,
     ): ImageTranslateResult? {
+        getCachedImageTranslation(url, dstLang)?.let {
+            return ImageTranslateResult("cached", it)
+        }
+
         val file = downloadImage(url, referer) ?: return null
         val checkOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeFile(file.absolutePath, checkOptions)
@@ -368,7 +395,11 @@ class TranslateRepository : KoinComponent {
             "image", resizedFile.name,
             resizedFile.asRequestBody("image/*".toMediaType())
         )
-        return getImageTranslateResult(builder.build())
+        val result = getImageTranslateResult(builder.build())
+        if (result != null) {
+            cacheImageTranslation(url, dstLang, result.renderedImage)
+        }
+        return result
     }
 
     private fun resizeImageIfNeeded(file: File, maxDimension: Int): File {
