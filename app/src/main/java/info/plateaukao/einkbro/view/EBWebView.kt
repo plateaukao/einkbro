@@ -1121,62 +1121,92 @@ open class EBWebView(
             """
 
         private const val translatedPCssNone = """
+            .to-translate + p:not(.translated) {
+                margin: 0;
+                padding: 0;
+                height: 0;
+                overflow: hidden;
+            }
             .translated {
-                padding: 5px; 
-                display: inline-block; 
+                padding: 5px;
+                display: inline-block;
                 line-height: 1.5;
                 max-width: 100vw;
             }
         """
 
         private const val translatedPCssGray = """
+            .to-translate + p:not(.translated) {
+                margin: 0;
+                padding: 0;
+                height: 0;
+                overflow: hidden;
+            }
             .translated {
                 color: gray;
-                padding: 5px; 
-                display: inline-block; 
+                padding: 5px;
+                display: inline-block;
                 max-width: 100vw;
                 line-height: 1.5;
             }
         """
 
         private const val translatedPCssBold = """
+            .to-translate + p:not(.translated) {
+                margin: 0;
+                padding: 0;
+                height: 0;
+                overflow: hidden;
+            }
             .translated {
                 font-weight: bold;
-                padding: 5px; 
-                display: inline-block; 
+                padding: 5px;
+                display: inline-block;
                 max-width: 100vw;
                 line-height: 1.5;
             }
         """
 
         private const val translatedPCssDashedBorder = """
+            .to-translate + p:not(.translated) {
+                margin: 0;
+                padding: 0;
+                height: 0;
+                overflow: hidden;
+            }
             .translated {
-                border: 1px dashed lightgray; 
-                padding: 5px; 
-                display: inline-block; 
+                border: 1px dashed lightgray;
+                padding: 5px;
+                display: inline-block;
                 position: relative;
                 max-width: 100vw;
                 line-height: 1.5;
             }
         """
         private const val translatedPCssVerticalLine = """
+            .to-translate + p:not(.translated) {
+                margin: 0;
+                padding: 0;
+                height: 0;
+                overflow: hidden;
+            }
             .translated {
-                padding: 2px; 
+                padding: 2px;
                 margin-left: 7px;
-                display: inline-block; 
+                display: inline-block;
                 position: relative;
                 max-width: 100vw;
                 line-height: 1.5;
             }
             .translated::before {
-            content: '';
-            display: inline-block;
-            width: 2px;
-            height: 90%;
-            background-color: black;
-            position: absolute;
-            left: -7px;
-          }
+                content: '';
+                display: inline-block;
+                width: 2px;
+                height: 90%;
+                background-color: black;
+                position: absolute;
+                left: -7px;
+            }
         """
 
         private const val readabilityOptions =
