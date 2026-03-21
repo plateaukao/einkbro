@@ -18,8 +18,10 @@ EinkBro is designed to fit E-Ink devices' needs; no unnecessary UI transitions a
 |<img src="screenshots/01_main_browsing.png" width="200"/>|<img src="screenshots/02_menu_panel.png" width="200"/>|<img src="screenshots/03_translate.png" width="200"/>|
 |Toolbar Configuration|Touch Setting|Vertical Read|
 |<img src="screenshots/06_toolbar_config.png" width="200"/>|<img src="screenshots/07_touch_setting.png" width="200"/>|<img src="screenshots/09_vertical_read.png" width="200"/>|
-|Settings|Font Size| |
-|<img src="screenshots/08_settings.png" width="200"/>|<img src="screenshots/10_font_size.png" width="200"/>| |
+|Settings|Font Size|Chat with Web|
+|<img src="screenshots/08_settings.png" width="200"/>|<img src="screenshots/10_font_size.png" width="200"/>|<img src="screenshots/04_chat_with_web.png" width="200"/>|
+|Bookmarks| | |
+|<img src="screenshots/05_bookmarks.png" width="200"/>| | |
 
 ---
 
