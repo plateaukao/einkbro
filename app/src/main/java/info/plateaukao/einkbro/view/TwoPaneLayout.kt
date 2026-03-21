@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
@@ -45,10 +46,14 @@ class TwoPaneLayout : FrameLayout {
         this@TwoPaneLayout.addView(this)
     }
     private val dragHandle: View = View(context).apply {
-        layoutParams = LayoutParams(12.dp(context), 50.dp(context))
+        layoutParams = LayoutParams(16.dp(context), 44.dp(context))
         visibility = GONE
-        alpha = 0.3f
-        setBackgroundColor(resolveColorControlNormal())
+        alpha = 0.5f
+        background = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 8.dp(context).toFloat()
+            setColor(resolveColorControlNormal())
+        }
         this@TwoPaneLayout.addView(this)
     }
 
@@ -181,10 +186,8 @@ class TwoPaneLayout : FrameLayout {
             separator.visibility = VISIBLE
             separator.bringToFront()
 
-            val halfDragHandleWidth = dragHandle.measuredWidth / 2
-            dragHandle.x = (resizedPosition - halfDragHandleWidth).toFloat()
+            dragHandle.x = (resizedPosition - dragHandle.measuredWidth / 2).toFloat()
             dragHandle.y = (measuredHeight / 2 - dragHandle.measuredHeight / 2).toFloat()
-            dragHandle.setPadding(halfDragHandleWidth, 0, halfDragHandleWidth, 0)
             dragHandle.visibility = VISIBLE
             dragHandle.bringToFront()
         } else {
@@ -207,10 +210,8 @@ class TwoPaneLayout : FrameLayout {
             separator.visibility = VISIBLE
             separator.bringToFront()
 
-            val halfDragHandleHeight = dragHandle.measuredHeight / 2
-            dragHandle.x = (measuredWidth/ 2 - dragHandle.measuredWidth/ 2).toFloat()
-            dragHandle.y = (resizedPosition - halfDragHandleHeight).toFloat()
-            dragHandle.setPadding(0, halfDragHandleHeight, 0, halfDragHandleHeight)
+            dragHandle.x = (measuredWidth / 2 - dragHandle.measuredWidth / 2).toFloat()
+            dragHandle.y = (resizedPosition - dragHandle.measuredHeight / 2).toFloat()
             dragHandle.visibility = VISIBLE
             dragHandle.bringToFront()
         }
@@ -245,13 +246,13 @@ class TwoPaneLayout : FrameLayout {
             dY = 0F
             finalY = (measuredHeight / 2).toFloat()
 
-            val params = LayoutParams(1, LayoutParams.MATCH_PARENT)
+            val params = LayoutParams(2.dp(context), LayoutParams.MATCH_PARENT)
             separator.layoutParams = params
             separator.y = 0F
-            val floatingLineParams = LayoutParams(2.dp(context), LayoutParams.MATCH_PARENT)
+            val floatingLineParams = LayoutParams(3.dp(context), LayoutParams.MATCH_PARENT)
             floatingLine.layoutParams = floatingLineParams
             floatingLine.y = 0F
-            val dragParams = LayoutParams(12.dp(context), 50.dp(context))
+            val dragParams = LayoutParams(16.dp(context), 44.dp(context))
             dragHandle.layoutParams = dragParams
 
             dragHandle.setOnTouchListener { view, event ->
@@ -277,7 +278,7 @@ class TwoPaneLayout : FrameLayout {
                     }
                     MotionEvent.ACTION_UP -> {
                         floatingLine.visibility = GONE
-                        dragHandle.alpha = 0.3F
+                        dragHandle.alpha = 0.5F
                         adjustPaneSize(finalX.toInt())
                     }
                 }
@@ -287,13 +288,13 @@ class TwoPaneLayout : FrameLayout {
             dX = 0F
             finalX = (measuredWidth / 2).toFloat()
 
-            val params = LayoutParams(LayoutParams.MATCH_PARENT, 1)
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, 2.dp(context))
             separator.layoutParams = params
             separator.x = 0F
-            val floatingLineParams = LayoutParams(LayoutParams.MATCH_PARENT, 2.dp(context))
+            val floatingLineParams = LayoutParams(LayoutParams.MATCH_PARENT, 3.dp(context))
             floatingLine.layoutParams = floatingLineParams
             floatingLine.x = 0F
-            val dragParams = LayoutParams(50.dp(context), 12.dp(context))
+            val dragParams = LayoutParams(44.dp(context), 16.dp(context))
             dragHandle.layoutParams = dragParams
 
             dragHandle.setOnTouchListener { view, event ->
@@ -319,7 +320,7 @@ class TwoPaneLayout : FrameLayout {
                     }
                     MotionEvent.ACTION_UP -> {
                         floatingLine.visibility = GONE
-                        dragHandle.alpha = 0.3F
+                        dragHandle.alpha = 0.5F
                         adjustPaneSize(finalY.toInt())
                     }
                 }
