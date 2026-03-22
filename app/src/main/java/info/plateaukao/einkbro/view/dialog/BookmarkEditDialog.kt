@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -60,6 +62,8 @@ class BookmarkEditDialog(
         }
 
         val composeView = ComposeView(activity).apply {
+            setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             setContent {
                 MyTheme {
                     Column(
@@ -72,7 +76,6 @@ class BookmarkEditDialog(
                             onValueChange = { titleState.value = it },
                             label = { Text(stringResource(R.string.dialog_title_hint)) },
                             modifier = Modifier.fillMaxWidth(),
-                            minLines = 2,
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
                             ),
@@ -88,6 +91,8 @@ class BookmarkEditDialog(
                                 ),
                             )
                         }
+                        // Folder row: label + dropdown + add folder icon
+                        val folders = foldersState.value
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -96,9 +101,39 @@ class BookmarkEditDialog(
                         ) {
                             Text(
                                 text = "Folder:",
-                                modifier = Modifier.weight(1f),
                                 color = MaterialTheme.colors.onBackground,
+                                modifier = Modifier.padding(end = 8.dp),
                             )
+                            if (folders.isNotEmpty()) {
+                                val selectedName = folders.getOrNull(selectedFolderIndex.value)?.title ?: ""
+                                OutlinedTextField(
+                                    value = selectedName,
+                                    onValueChange = {},
+                                    readOnly = true,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clickable { dropdownExpanded.value = true },
+                                    enabled = false,
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        disabledTextColor = MaterialTheme.colors.onBackground,
+                                        disabledBorderColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                                    ),
+                                )
+                                DropdownMenu(
+                                    expanded = dropdownExpanded.value,
+                                    onDismissRequest = { dropdownExpanded.value = false },
+                                ) {
+                                    folders.forEachIndexed { index, folder ->
+                                        DropdownMenuItem(onClick = {
+                                            selectedFolderIndex.value = index
+                                            bookmark.parent = folder.id
+                                            dropdownExpanded.value = false
+                                        }) {
+                                            Text(folder.title)
+                                        }
+                                    }
+                                }
+                            }
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_add_folder),
                                 contentDescription = null,
@@ -128,38 +163,6 @@ class BookmarkEditDialog(
                                         }
                                     }
                             )
-                        }
-                        // Dropdown for folder selection
-                        val folders = foldersState.value
-                        if (folders.isNotEmpty()) {
-                            val selectedName = folders.getOrNull(selectedFolderIndex.value)?.title ?: ""
-                            OutlinedTextField(
-                                value = selectedName,
-                                onValueChange = {},
-                                readOnly = true,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { dropdownExpanded.value = true },
-                                enabled = false,
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    disabledTextColor = MaterialTheme.colors.onBackground,
-                                    disabledBorderColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-                                ),
-                            )
-                            DropdownMenu(
-                                expanded = dropdownExpanded.value,
-                                onDismissRequest = { dropdownExpanded.value = false },
-                            ) {
-                                folders.forEachIndexed { index, folder ->
-                                    DropdownMenuItem(onClick = {
-                                        selectedFolderIndex.value = index
-                                        bookmark.parent = folder.id
-                                        dropdownExpanded.value = false
-                                    }) {
-                                        Text(folder.title)
-                                    }
-                                }
-                            }
                         }
                     }
                 }
