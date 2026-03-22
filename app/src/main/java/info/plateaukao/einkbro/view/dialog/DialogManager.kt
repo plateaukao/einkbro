@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -74,6 +76,8 @@ class DialogManager(
         var dialogRef: Dialog? = null
 
         val composeView = ComposeView(activity).apply {
+            setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             setContent {
                 MyTheme {
                     Column(modifier = Modifier.fillMaxWidth()) {
@@ -112,7 +116,11 @@ class DialogManager(
 
         dialogRef = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .apply { setView(composeView) }
-            .show()
+            .create().apply {
+                window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+                window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
+            }
+        dialogRef!!.show()
     }
 
     private fun getFileSizeString(uri: String): String {
@@ -132,6 +140,8 @@ class DialogManager(
         val extensionState = mutableStateOf(if (extension.length <= 8) extension else "")
 
         val composeView = ComposeView(activity).apply {
+            setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             setContent {
                 MyTheme {
                     Column(
@@ -203,6 +213,8 @@ class DialogManager(
             .create().apply {
                 window?.setGravity(if (config.isToolbarOnTop || showInCenter) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+                window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+                window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             }
         dialog.show()
         return dialog
@@ -216,6 +228,8 @@ class DialogManager(
             .create().apply {
                 window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+                window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+                window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             }
         dialog.show()
         return dialog
@@ -319,6 +333,8 @@ class DialogManager(
         var dialogRef: Dialog? = null
 
         val composeView = ComposeView(activity).apply {
+            setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             setContent {
                 MyTheme {
                     Column(

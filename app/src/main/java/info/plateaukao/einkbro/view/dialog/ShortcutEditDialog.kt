@@ -14,6 +14,8 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
@@ -35,6 +37,8 @@ class ShortcutEditDialog(
 
     fun show() {
         val composeView = ComposeView(activity).apply {
+            setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             setContent {
                 MyTheme {
                     Column(
