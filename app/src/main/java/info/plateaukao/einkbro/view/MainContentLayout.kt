@@ -73,7 +73,7 @@ class MainContentLayout(
             }
 
             // SwipeRefreshLayout
-            val swipeRefreshLayout = SwipeRefreshLayout(context).apply {
+            val swipeRefreshLayout = MultiTouchSwipeRefreshLayout(context).apply {
                 id = R.id.swipe_refresh_layout
                 layoutParams = ConstraintLayout.LayoutParams(
                     ConstraintLayout.LayoutParams.MATCH_PARENT,
