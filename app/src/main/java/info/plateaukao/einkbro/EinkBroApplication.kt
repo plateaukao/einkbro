@@ -29,6 +29,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
 import info.plateaukao.einkbro.service.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
+import info.plateaukao.einkbro.service.TtsNotificationManager
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.util.WebViewUtil
 import io.github.edsuns.adfilter.AdFilter
@@ -62,6 +63,7 @@ class EinkBroApplication : Application() {
         single { Javascript(androidContext()) }
         single { Cookie(androidContext()) }
         single { ttsManager }
+        single { TtsNotificationManager(androidContext()) }
         single { InstapaperRepository() }
         single { SearchSuggestionViewModel() }
     }
