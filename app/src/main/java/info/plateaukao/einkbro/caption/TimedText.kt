@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TimedText(
-    @SerialName("wireMagic") val wireMagic: String,
-    @SerialName("pens") val pens: List<Pen>,
-    @SerialName("wsWinStyles") val wsWinStyles: List<WsWinStyle>,
-    @SerialName("wpWinPositions") val wpWinPositions: List<WpWinPosition>,
-    @SerialName("events") val events: MutableList<Event>
+    @SerialName("wireMagic") val wireMagic: String = "",
+    @SerialName("pens") val pens: List<Pen> = emptyList(),
+    @SerialName("wsWinStyles") val wsWinStyles: List<WsWinStyle> = emptyList(),
+    @SerialName("wpWinPositions") val wpWinPositions: List<WpWinPosition> = emptyList(),
+    @SerialName("events") val events: MutableList<Event> = mutableListOf()
 )
 
 @Serializable

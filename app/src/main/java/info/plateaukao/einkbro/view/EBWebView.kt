@@ -816,6 +816,18 @@ open class EBWebView(
             super.dispatchKeyEvent(event)
         }
 
+    var hasVideo = false
+
+    var isAudioOnlyMode = false
+    fun toggleAudioOnlyMode() {
+        isAudioOnlyMode = !isAudioOnlyMode
+        if (isAudioOnlyMode) {
+            evaluateJsFile("audio_only_mode.js")
+        } else {
+            evaluateJsFile("audio_only_mode_off.js")
+        }
+    }
+
     var isVerticalRead = false
     fun toggleVerticalRead() {
         isVerticalRead = !isVerticalRead

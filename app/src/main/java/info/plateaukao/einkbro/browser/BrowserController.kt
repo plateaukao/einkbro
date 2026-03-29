@@ -131,6 +131,10 @@ interface BrowserController {
     fun sendRightKey()
     //endregion
 
+    //region Audio/Video
+    fun toggleAudioOnlyMode()
+    //endregion
+
     //region AI Features
     fun summarizeContent()
     fun chatWithWeb(useSplitScreen: Boolean = false, content: String? = null, runWithAction: ChatGPTActionInfo? = null)
