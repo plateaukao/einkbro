@@ -177,7 +177,7 @@ enum class ToolbarAction(
         titleResId = R.string.chat_with_web,
     ),
     PageAi(
-        imageVector = Icons.AutoMirrored.Outlined.Article,
+        iconResId = R.drawable.ic_chat_gpt,
         titleResId = R.string.page_ai,
     );
 
