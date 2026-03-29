@@ -2884,13 +2884,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ViewUnit.showKeyboard(this)
     }
 
-    override fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
-        if (uri == null) {
-            epubManager.showWriteEpubFilePicker(writeEpubFilePickerLauncher, ebWebView.title ?: "einkbro")
-        } else {
-            saveEpub(uri)
-        }
-    }
+    override fun showEpubDialog() = dialogManager.showEpubDialog(
+        onSaveEpub = { uri ->
+            if (uri == null) {
+                epubManager.showWriteEpubFilePicker(writeEpubFilePickerLauncher, ebWebView.title ?: "einkbro")
+            } else {
+                saveEpub(uri)
+            }
+        },
+        onOpenEpub = { uri ->
+            if (uri != null) {
+                HelperUnit.openFile(this, uri)
+            } else {
+                epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
+            }
+        },
+    )
 
     protected fun readArticle() {
         lifecycleScope.launch {

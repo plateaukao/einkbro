@@ -88,7 +88,7 @@ class ToolbarActionHandler(
         ToolbarAction.Translation -> browserController.showTranslation()
         ToolbarAction.TranslateByParagraph -> browserController.translate(TranslationMode.TRANSLATE_BY_PARAGRAPH)
         ToolbarAction.VerticalLayout -> browserController.toggleVerticalRead()
-        ToolbarAction.SaveEpub -> browserController.showSaveEpubDialog()
+        ToolbarAction.SaveEpub -> browserController.showEpubDialog()
         ToolbarAction.ShareLink -> browserController.shareLink()
         ToolbarAction.InvertColor -> browserController.invertColors()
         ToolbarAction.ChatWithWeb -> browserController.chatWithWeb()

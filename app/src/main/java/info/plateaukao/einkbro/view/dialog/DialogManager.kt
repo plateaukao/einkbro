@@ -12,10 +12,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.webkit.URLUtil
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -23,7 +29,10 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -67,10 +76,9 @@ class DialogManager(
         max = 100
     }
 
-    fun showSaveEpubDialog(
-        showAddNewEpub: Boolean = true,
-        openEpubAction: (() -> Unit)? = null,
-        onNextAction: (Uri?) -> Unit,
+    fun showEpubDialog(
+        onSaveEpub: (Uri?) -> Unit,
+        onOpenEpub: (Uri?) -> Unit,
     ) {
         val epubFiles = mutableStateOf(config.savedEpubFileInfos.reversed())
         var dialogRef: Dialog? = null
@@ -80,34 +88,90 @@ class DialogManager(
             setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             setContent {
                 MyTheme {
+                    var selectedTab by remember { mutableStateOf(0) }
+                    val tabTitles = listOf(
+                        stringResource(R.string.menu_save_epub),
+                        stringResource(R.string.menu_open_epub),
+                    )
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        if (showAddNewEpub) {
-                            EpubListItem(
-                                title = stringResource(R.string.new_epub_or_from_picker),
-                                showRemove = false,
-                                onClick = { onNextAction(null); dialogRef?.dismiss() },
-                            )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Min),
+                        ) {
+                            tabTitles.forEachIndexed { index, title ->
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clickable(
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            indication = null,
+                                        ) { selectedTab = index }
+                                        .padding(vertical = 12.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Text(
+                                            text = title,
+                                            color = MaterialTheme.colors.onSurface,
+                                        )
+                                        if (selectedTab == index) {
+                                            Spacer(modifier = Modifier.height(4.dp))
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .height(2.dp)
+                                                    .padding(horizontal = 16.dp)
+                                                    .background(MaterialTheme.colors.onSurface)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        if (openEpubAction != null) {
-                            EpubListItem(
-                                title = stringResource(R.string.open_epub),
-                                showRemove = false,
-                                onClick = { openEpubAction(); dialogRef?.dismiss() },
-                            )
-                        }
-                        epubFiles.value.forEach { epubFileInfo ->
-                            EpubListItem(
-                                title = "${epubFileInfo.title} (${getFileSizeString(epubFileInfo.uri)})",
-                                showRemove = true,
-                                onClick = {
-                                    onNextAction(epubFileInfo.uri.toUri())
-                                    dialogRef?.dismiss()
-                                },
-                                onRemove = {
-                                    config.removeSavedEpubFile(epubFileInfo)
-                                    epubFiles.value = config.savedEpubFileInfos.reversed()
-                                },
-                            )
+                        when (selectedTab) {
+                            0 -> {
+                                EpubListItem(
+                                    title = stringResource(R.string.new_epub_or_from_picker),
+                                    showRemove = false,
+                                    onClick = { onSaveEpub(null); dialogRef?.dismiss() },
+                                )
+                                epubFiles.value.forEach { epubFileInfo ->
+                                    EpubListItem(
+                                        title = "${epubFileInfo.title} (${getFileSizeString(epubFileInfo.uri)})",
+                                        showRemove = true,
+                                        onClick = {
+                                            onSaveEpub(epubFileInfo.uri.toUri())
+                                            dialogRef?.dismiss()
+                                        },
+                                        onRemove = {
+                                            config.removeSavedEpubFile(epubFileInfo)
+                                            epubFiles.value = config.savedEpubFileInfos.reversed()
+                                        },
+                                    )
+                                }
+                            }
+                            1 -> {
+                                EpubListItem(
+                                    title = stringResource(R.string.open_epub),
+                                    showRemove = false,
+                                    onClick = { onOpenEpub(null); dialogRef?.dismiss() },
+                                )
+                                epubFiles.value.forEach { epubFileInfo ->
+                                    EpubListItem(
+                                        title = "${epubFileInfo.title} (${getFileSizeString(epubFileInfo.uri)})",
+                                        showRemove = true,
+                                        onClick = {
+                                            onOpenEpub(epubFileInfo.uri.toUri())
+                                            dialogRef?.dismiss()
+                                        },
+                                        onRemove = {
+                                            config.removeSavedEpubFile(epubFileInfo)
+                                            epubFiles.value = config.savedEpubFileInfos.reversed()
+                                        },
+                                    )
+                                }
+                            }
                         }
                     }
                 }

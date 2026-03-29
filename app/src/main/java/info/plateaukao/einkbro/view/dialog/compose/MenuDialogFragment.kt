@@ -32,7 +32,6 @@ import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
 import androidx.compose.material.icons.automirrored.outlined.Feed
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
 import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.automirrored.outlined.SendToMobile
 import androidx.compose.material.icons.filled.RecordVoiceOver
@@ -85,11 +84,10 @@ import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CloseTab
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CopyLink
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenEpub
+import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Epub
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenHome
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenWith
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Quit
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SaveEpub
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.SavePdf
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Settings
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.ShareLink
@@ -133,7 +131,7 @@ enum class MenuItemType {
     Tts, QuickToggle, OpenHome, CloseTab, Quit,
     SplitScreen, Translate, VerticalRead, ReaderMode, TouchSetting, ToolbarSetting,
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
-    SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
+    SetHome, SaveBookmark, Epub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
     SaveArchive, Highlights, InvertColor, ChatWithWeb, Instapaper
 }
@@ -233,8 +231,7 @@ private fun MenuItems(
                     Icons.Outlined.Save,
                     onLongClicked = { onLongClicked(MenuItemType.SaveArchive) },
                 ) { onClicked(MenuItemType.SaveArchive) }
-                MenuItem(R.string.menu_open_epub, Icons.AutoMirrored.Outlined.LibraryBooks) { onClicked(OpenEpub) }
-                MenuItem(R.string.menu_save_epub, Icons.AutoMirrored.Outlined.Article) { onClicked(SaveEpub) }
+                MenuItem(R.string.menu_epub, Icons.AutoMirrored.Outlined.Article) { onClicked(Epub) }
                 MenuItem(R.string.menu_save_pdf, Icons.Outlined.PictureAsPdf) { onClicked(SavePdf) }
             }
         } else {
@@ -244,7 +241,7 @@ private fun MenuItems(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MenuItem(R.string.menu_save_epub, Icons.AutoMirrored.Outlined.Feed) { onClicked(SaveEpub) }
+                MenuItem(R.string.menu_epub, Icons.AutoMirrored.Outlined.Feed) { onClicked(Epub) }
                 MenuItem(R.string.copy_link, Icons.Outlined.CopyAll) { onClicked(CopyLink) }
                 MenuItem(
                     R.string.menu_share_link,
