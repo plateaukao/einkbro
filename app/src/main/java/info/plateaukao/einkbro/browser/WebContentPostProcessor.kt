@@ -41,11 +41,15 @@ class WebContentPostProcessor : KoinComponent {
             ebWebView.evaluateJsFile("video_auto_fullscreen.js")
         }
 
-        // Detect if page has video elements
-        ebWebView.evaluateJavascript(
-            "(function() { return document.querySelectorAll('video, iframe[src*=\"youtube\"], iframe[src*=\"vimeo\"]').length > 0; })()"
-        ) { result ->
-            ebWebView.hasVideo = result == "true"
+        // Detect if page has video elements: URL-based for known sites, DOM-based as fallback
+        if (isVideoSiteUrl(url)) {
+            ebWebView.hasVideo = true
+        } else {
+            ebWebView.evaluateJavascript(
+                "(function() { return document.querySelectorAll('video, iframe[src*=\"youtube\"], iframe[src*=\"vimeo\"]').length > 0; })()"
+            ) { result ->
+                ebWebView.hasVideo = result == "true"
+            }
         }
 
         if (ebWebView.isAudioOnlyMode) {
@@ -96,5 +100,18 @@ class WebContentPostProcessor : KoinComponent {
         val urlScriptMap = mapOf(
             "github.com" to "github_include_fragment.js"
         )
+
+        private val videoSitePatterns = listOf(
+            "youtube.com/watch",
+            "youtube.com/shorts",
+            "youtu.be/",
+            "vimeo.com/",
+            "dailymotion.com/video",
+            "twitch.tv/",
+            "bilibili.com/video",
+        )
+
+        fun isVideoSiteUrl(url: String): Boolean =
+            videoSitePatterns.any { url.contains(it) }
     }
 }
