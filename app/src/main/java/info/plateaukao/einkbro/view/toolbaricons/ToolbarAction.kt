@@ -179,6 +179,15 @@ enum class ToolbarAction(
     PageAi(
         iconResId = R.drawable.ic_chat_gpt,
         titleResId = R.string.page_ai,
+    ),
+    AudioOnly(
+        iconResId = R.drawable.ic_audio_only_off,
+        titleResId = R.string.audio_only_mode,
+        iconActiveInfo = IconActiveInfo(
+            true,
+            R.drawable.ic_audio_only_on,
+            R.drawable.ic_audio_only_off
+        )
     );
 
 

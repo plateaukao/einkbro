@@ -25,6 +25,7 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TOC
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Touch
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionLeftRight
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionUpDown
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.AudioOnly
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Tts
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
@@ -39,6 +40,7 @@ class ComposeToolbarViewController(
     private val onIconLongClick: (ToolbarAction) -> Unit,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
+    private val isAudioOnlyMode: () -> Boolean = { false },
 ) : KoinComponent {
     private val config: ConfigManager by inject()
 
@@ -157,6 +159,7 @@ class ComposeToolbarViewController(
                 )
 
                 Tts -> ToolbarActionInfo(toolbarAction, ttsViewModel.isReading())
+                AudioOnly -> ToolbarActionInfo(toolbarAction, isAudioOnlyMode())
                 else -> ToolbarActionInfo(toolbarAction, false)
             }
         }

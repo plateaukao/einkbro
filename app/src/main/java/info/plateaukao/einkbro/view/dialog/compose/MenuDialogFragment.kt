@@ -60,6 +60,8 @@ import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.TouchApp
+import androidx.compose.material.icons.outlined.Headset
+import androidx.compose.material.icons.outlined.HeadsetOff
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.outlined.ViewColumn
 import androidx.compose.material.icons.outlined.ViewStream
@@ -96,6 +98,8 @@ import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Shortcut
 class MenuDialogFragment(
     private val url: String,
     private val isSpeaking: Boolean,
+    private val isAudioOnly: Boolean = false,
+    private val hasVideo: Boolean = false,
     private val itemClicked: (MenuItemType) -> Unit,
     private val itemLongClicked: (MenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
@@ -107,6 +111,8 @@ class MenuDialogFragment(
                 config.boldFontStyle,
                 config.blackFontStyle,
                 isSpeaking,
+                isAudioOnly,
+                hasVideo,
                 config.showShareSaveMenu,
                 config.showContentMenu,
                 config.hasInvertedColor(url),
@@ -133,7 +139,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, Epub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, Highlights, InvertColor, ChatWithWeb, Instapaper
+    SaveArchive, Highlights, InvertColor, ChatWithWeb, Instapaper, AudioOnly
 }
 
 @Composable
@@ -142,6 +148,8 @@ private fun MenuItems(
     boldFont: Boolean,
     blackFont: Boolean,
     isSpeaking: Boolean,
+    isAudioOnly: Boolean,
+    hasVideo: Boolean,
     showShareSaveMenu: Boolean,
     showContentMenu: Boolean,
     hasInvertedColor: Boolean,
@@ -373,6 +381,12 @@ private fun MenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+            if (hasVideo) {
+                val audioOnlyIcon = if (isAudioOnly) Icons.Outlined.Headset else Icons.Outlined.HeadsetOff
+                MenuItem(R.string.audio_only_mode, audioOnlyIcon) {
+                    onClicked(MenuItemType.AudioOnly)
+                }
+            }
             MenuItem(R.string.menu_other_searchSite, Icons.Outlined.Search) {
                 onClicked(
                     MenuItemType.Search
@@ -524,6 +538,8 @@ private fun PreviewMenuItems() {
             boldFont = false,
             blackFont = false,
             isSpeaking = false,
+            isAudioOnly = false,
+            hasVideo = false,
             showShareSaveMenu = false,
             showContentMenu = false,
             hasInvertedColor = false,
