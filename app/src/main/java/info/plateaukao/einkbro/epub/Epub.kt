@@ -20,6 +20,7 @@ data class EpubBook(
     val images: List<Image>,
     val toc: List<ToCEntry> = emptyList(),
     val rootPath: String = "",
+    val isCreatedByEinkBro: Boolean = false,
 ) {
     data class Chapter(
         val absPath: String,

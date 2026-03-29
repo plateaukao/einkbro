@@ -9,6 +9,8 @@ import info.plateaukao.einkbro.epub.EpubReaderView
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.view.dialog.compose.TocDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.TocItem
 import kotlinx.coroutines.launch
 
 class EpubReaderActivity: BrowserActivity() {
@@ -28,7 +30,26 @@ class EpubReaderActivity: BrowserActivity() {
     }
 
     override fun showTocDialog() {
-        epubReader.showTocDialog()
+        if (epubReader.isEinkBroEpub) {
+            showEditableTocDialog()
+        } else {
+            epubReader.showTocDialog()
+        }
+    }
+
+    private fun showEditableTocDialog() {
+        val chapters = epubReader.epubChapters
+        val tocItems = chapters.mapIndexed { index, chapter ->
+            TocItem(title = chapter.title, originalIndex = index)
+        }
+        TocDialogFragment(
+            chapters = tocItems,
+            isEditable = true,
+            onNavigate = { originalIndex -> epubReader.navigateToChapter(originalIndex) },
+            onTocChanged = { newItems ->
+                epubReader.applyTocChanges(newItems.map { it.originalIndex })
+            },
+        ).show(supportFragmentManager, "TocDialog")
     }
     override fun dispatchIntent(intent: Intent) {
         when (intent.action) {

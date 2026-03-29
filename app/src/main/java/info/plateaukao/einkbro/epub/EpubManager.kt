@@ -27,6 +27,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
 import nl.siegmann.epublib.domain.Book
+import nl.siegmann.epublib.domain.Identifier
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.epub.EpubWriter
@@ -200,6 +201,7 @@ class EpubManager(private val context: Context) : KoinComponent {
     private fun createBook(domain: String, bookName: String): Book = Book().apply {
         metadata.addTitle(bookName)
         metadata.addAuthor(Author(domain, "EinkBro App"))
+        metadata.identifiers.add(Identifier(EINKBRO_IDENTIFIER_SCHEME, EINKBRO_IDENTIFIER_VALUE))
     }
 
     private fun openBook(uri: Uri): Book? {
@@ -310,7 +312,26 @@ class EpubManager(private val context: Context) : KoinComponent {
 
     private val saveImageDispatcher = Executors.newFixedThreadPool(4).asCoroutineDispatcher()
 
+    fun saveTocChanges(
+        fileUri: Uri,
+        remainingIndices: List<Int>,
+    ) {
+        val book = openBook(fileUri) ?: return
+        val tocRefs = book.tableOfContents.tocReferences
+        val spineRefs = book.spine.spineReferences
+
+        val newTocRefs = remainingIndices.mapNotNull { tocRefs.getOrNull(it) }
+        val newSpineRefs = remainingIndices.mapNotNull { spineRefs.getOrNull(it) }
+
+        book.tableOfContents.tocReferences = newTocRefs
+        book.spine.spineReferences = newSpineRefs
+
+        saveBook(book, fileUri)
+    }
+
     companion object {
         private const val TAG = "EpubManager"
+        const val EINKBRO_IDENTIFIER_SCHEME = "einkbro-generator"
+        const val EINKBRO_IDENTIFIER_VALUE = "EinkBro"
     }
 }
