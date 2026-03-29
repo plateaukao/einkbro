@@ -95,8 +95,7 @@ class MenuActionHandler(
             MenuItemType.Highlights -> IntentUnit.gotoHighlights(activity)
             MenuItemType.SetHome -> config.favoriteUrl = ebWebView.url.orEmpty()
             MenuItemType.SaveBookmark -> browserController.saveBookmark()
-            MenuItemType.OpenEpub -> openSavedEpub()
-            MenuItemType.SaveEpub -> browserController.showSaveEpubDialog()
+            MenuItemType.Epub -> browserController.showEpubDialog()
             MenuItemType.SavePdf -> printPDF(ebWebView)
 
             MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
@@ -129,17 +128,6 @@ class MenuActionHandler(
                     .setPrimaryClip(clip)
                 EBToast.show(activity, "String is Copied!")
             }
-        }
-    }
-
-    private fun openSavedEpub() = if (config.savedEpubFileInfos.isEmpty()) {
-        browserController.showOpenEpubFilePicker()
-    } else {
-        dialogManager.showSaveEpubDialog(
-            showAddNewEpub = false,
-            openEpubAction = { browserController.showOpenEpubFilePicker() },
-        ) { uri ->
-            HelperUnit.openFile(activity, uri ?: return@showSaveEpubDialog)
         }
     }
 

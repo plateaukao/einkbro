@@ -46,7 +46,7 @@ interface BrowserController {
 
     //region File Handling
     fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
-    fun showSaveEpubDialog()
+    fun showEpubDialog()
     fun showWebArchiveFilePicker()
     fun showOpenEpubFilePicker()
     fun savePageForLater()
