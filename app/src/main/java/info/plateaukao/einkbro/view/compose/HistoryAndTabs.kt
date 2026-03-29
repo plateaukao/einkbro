@@ -223,6 +223,7 @@ fun PreviewTabs(
                         )
                         .width(itemWidth.dp),
                     showCloseButton = false,
+                    isFocused = index == albumFocusIndex.value,
                     album = album
                 ) { closeAction(album) }
             }
@@ -253,6 +254,7 @@ fun PreviewTabs(
                                 closeAction(album)
                             }
                         ),
+                    isFocused = index == albumFocusIndex.value,
                     album = album
                 ) {
                     closeAction(album)
@@ -280,10 +282,11 @@ private fun TabItem(
     modifier: Modifier,
     album: Album,
     showCloseButton: Boolean = true,
+    isFocused: Boolean = false,
     closeAction: () -> Unit,
 ) {
     val tabInfo = album.toTabInfo()
-    val borderWidth = if (album.isActivated) 1.dp else -1.dp
+    val borderWidth = if (isFocused) 1.dp else -1.dp
 
     Row(
         modifier = modifier
@@ -333,7 +336,7 @@ private fun TabItem(
             color = MaterialTheme.colors.onBackground,
         )
 
-        if (showCloseButton || album.isActivated) {
+        if (showCloseButton || isFocused) {
             ActionIcon(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 iconResId = R.drawable.icon_close,
