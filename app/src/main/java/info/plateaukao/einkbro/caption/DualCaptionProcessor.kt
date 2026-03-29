@@ -1,11 +1,15 @@
 package info.plateaukao.einkbro.caption
 
+import android.webkit.CookieManager
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.unit.BrowserUnit
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.net.HttpURLConnection
+import java.net.URL
 
 class DualCaptionProcessor : KoinComponent {
     private val config: ConfigManager by inject()
@@ -18,13 +22,12 @@ class DualCaptionProcessor : KoinComponent {
     fun processUrl(url: String): String? {
         if (!url.contains(urlWithCaption)) return null
 
-        if (config.dualCaptionLocale.isEmpty()) return runBlocking { String(BrowserUnit.getResourceFromUrl(url)) }
-
+        if (config.dualCaptionLocale.isEmpty()) return runBlocking { String(fetchWithCookies(url)) }
 
         try {
             val newUrl = "$url&tlang=${config.dualCaptionLocale}"
-            val oldCaption = runBlocking { BrowserUnit.getResourceFromUrl(url) }
-            val newCaption = runBlocking { BrowserUnit.getResourceFromUrl(newUrl) }
+            val oldCaption = runBlocking { fetchWithCookies(url) }
+            val newCaption = runBlocking { fetchWithCookies(newUrl) }
             val oldCaptionJson = json.decodeFromString(serializer, String(oldCaption))
             val newCaptionJson = json.decodeFromString(serializer, String(newCaption))
 
@@ -69,6 +72,25 @@ class DualCaptionProcessor : KoinComponent {
         }
         sb.append("</body></html>")
         return sb.toString().replace("<br><br><br>", "<br><br>").replace("<br><br><br>", "<br><br>")
+    }
+
+    private suspend fun fetchWithCookies(url: String): ByteArray {
+        return withContext(Dispatchers.IO) {
+            try {
+                val connection = URL(url).openConnection() as HttpURLConnection
+                connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36")
+                CookieManager.getInstance().getCookie(url)?.let {
+                    connection.addRequestProperty("Cookie", it)
+                }
+                connection.connectTimeout = 10000
+                connection.connect()
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    connection.inputStream.use { it.readBytes() }
+                } else ByteArray(0)
+            } catch (e: Exception) {
+                ByteArray(0)
+            }
+        }
     }
 
     companion object {
