@@ -419,7 +419,11 @@
     <string name="image_adjust">Image Adjust</string>
     <string name="bookmark_new_file">Create new file</string>
     <string name="bookmark_open_file">Link existing file</string>
-    <string name="menu_save_archive">Save as archive</string>
+    <string name="menu_save_archive">Save for later</string>
+    <string name="toast_saved_page">Page saved. Long press this icon to view saved list.</string>
+    <string name="toast_save_page_failed">Failed to save page</string>
+    <string name="saved_pages">Saved Pages</string>
+    <string name="no_saved_pages">No saved pages yet</string>
     <string name="setting_title_sync_bookmarks">Sync bookmarks</string>
     <string name="setting_title_setup_bookmarks_location">Configure remote bookmark file location</string>
     <string name="setting_summary_setup_bookmarks_location">Select or create a file in Google Drive or other location that supports remote sync</string>

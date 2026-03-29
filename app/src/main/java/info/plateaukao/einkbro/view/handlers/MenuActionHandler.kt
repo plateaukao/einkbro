@@ -48,6 +48,8 @@ class MenuActionHandler(
 
             MenuItemType.Instapaper -> browserController.configureInstapaper()
 
+            MenuItemType.SaveArchive -> browserController.showSavedPages()
+
             else -> Unit
         }
 
@@ -109,7 +111,7 @@ class MenuActionHandler(
             MenuItemType.BlackFont -> config::blackFontStyle.toggle()
             MenuItemType.Search -> browserController.showSearchPanel()
             MenuItemType.Download -> BrowserUnit.openDownloadFolder(activity)
-            MenuItemType.SaveArchive -> browserController.showWebArchiveFilePicker()
+            MenuItemType.SaveArchive -> browserController.savePageForLater()
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
             MenuItemType.ChatWithWeb -> browserController.chatWithWeb()

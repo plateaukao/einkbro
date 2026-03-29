@@ -227,6 +227,9 @@
         <activity
             android:name=".activity.AdBlockSettingActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.SavedPagesActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".service.TtsNotificationReceiver"

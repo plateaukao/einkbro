@@ -37,8 +37,9 @@ import org.koin.core.component.inject
         ChatGptQuery::class,
         DomainConfiguration::class,
         TranslationCache::class,
+        SavedPage::class,
     ],
-    version = 7,
+    version = 8,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -49,6 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun chatGptQueryDao(): ChatGptQueryDao
     abstract fun domainConfigurationDao(): DomainConfigurationDao
     abstract fun translationCacheDao(): TranslationCacheDao
+    abstract fun savedPageDao(): SavedPageDao
 }
 
 @Dao
@@ -211,6 +213,12 @@ class BookmarkManager(context: Context) : KoinComponent {
         }
     }
 
+    private val migration7To8: Migration = object : Migration(7, 8) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `saved_pages` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `filePath` TEXT NOT NULL, `savedAt` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
@@ -218,6 +226,7 @@ class BookmarkManager(context: Context) : KoinComponent {
         .addMigrations(migration4To5)
         .addMigrations(migration5To6)
         .addMigrations(migration6To7)
+        .addMigrations(migration7To8)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -230,6 +239,7 @@ class BookmarkManager(context: Context) : KoinComponent {
     private val chatGptQueryDao = database.chatGptQueryDao()
     private val domainConfigurationDao = database.domainConfigurationDao()
     private val translationCacheDao = database.translationCacheDao()
+    private val savedPageDao = database.savedPageDao()
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
@@ -402,6 +412,16 @@ class BookmarkManager(context: Context) : KoinComponent {
 
     suspend fun deleteOldTranslationCache(timestamp: Long) =
         translationCacheDao.deleteOldCache(timestamp)
+
+    // -- Saved Pages --
+
+    fun getAllSavedPages(): Flow<List<SavedPage>> = savedPageDao.getAllSavedPages()
+
+    suspend fun insertSavedPage(savedPage: SavedPage) = savedPageDao.insert(savedPage)
+
+    suspend fun deleteSavedPage(savedPage: SavedPage) = savedPageDao.delete(savedPage)
+
+    suspend fun deleteSavedPageById(id: Int) = savedPageDao.deleteById(id)
 
     enum class SortMode {
         BY_ORDER,
