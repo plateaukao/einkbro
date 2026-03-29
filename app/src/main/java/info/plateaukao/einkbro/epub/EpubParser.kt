@@ -105,6 +105,10 @@ suspend fun epubParser(
 
     val metadataDesc = metadata.selectFirstChildTag("dc:description")?.textContent
 
+    val isCreatedByEinkBro = metadata.selectChildTag("dc:identifier")
+        .any { it.textContent?.trim() == EpubManager.EINKBRO_IDENTIFIER_VALUE }
+            || metadataCreator?.contains("EinkBro App") == true
+
     val metadataCoverId = metadata
         .selectChildTag("meta")
         .find { it.getAttributeValue("name") == "cover" }
@@ -343,5 +347,6 @@ suspend fun epubParser(
         chapters = chapters.toList(),
         images = images.toList(),
         rootPath = rootPath,
+        isCreatedByEinkBro = isCreatedByEinkBro,
     )
 }

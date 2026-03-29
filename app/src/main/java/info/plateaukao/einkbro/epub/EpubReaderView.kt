@@ -10,7 +10,10 @@ import androidx.appcompat.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.view.EBWebView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.math.min
@@ -24,6 +27,7 @@ class EpubReaderView(
     browserController: BrowserController?,
 ) : EBWebView(context, browserController) {
     private lateinit var epub: EpubBook
+    private var fileUri: Uri? = null
     private val chapterList: ArrayList<Chapter> = ArrayList()
     var chapterNumber = 0
     var chapterPartPosition = 0
@@ -79,6 +83,7 @@ elements[i].style.color='white';
     }
 
     suspend fun openEpubFile(uri: Uri) {
+        fileUri = uri
         withContext(IO) {
             val epub = context.contentResolver.openInputStream(uri).use { epubParser(context, inputStream = it!!) }
             this@EpubReaderView.epub = epub
@@ -136,6 +141,9 @@ elements[i].style.color='white';
         }, 100)
     }
 
+    val isEinkBroEpub: Boolean get() = ::epub.isInitialized && epub.isCreatedByEinkBro
+    val epubChapters: List<EpubBook.Chapter> get() = epub.chapters
+
     fun showTocDialog() {
         try {
             val items = epub.chapters.map { it.title }.toTypedArray()
@@ -155,6 +163,33 @@ elements[i].style.color='white';
                 .show()
         } catch (e: Exception) {
             Log.e("EpubReaderView", e.toString())
+        }
+    }
+
+    fun navigateToChapter(chapterIndex: Int) {
+        if (chapterIndex in epub.chapters.indices) {
+            gotoChapter(epub.chapters[chapterIndex])
+            chapterNumber = chapterIndex
+            chapterPartPosition = 0
+            listener.onChapterChangeListener(chapterIndex)
+        }
+    }
+
+    fun applyTocChanges(remainingOriginalIndices: List<Int>) {
+        val newChapters = remainingOriginalIndices.mapNotNull { epub.chapters.getOrNull(it) }
+        epub = epub.copy(chapters = newChapters)
+
+        if (chapterNumber >= epub.chapters.size) {
+            chapterNumber = epub.chapters.size - 1
+        }
+
+        val uri = fileUri ?: return
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                EpubManager(context).saveTocChanges(uri, remainingOriginalIndices)
+            } catch (e: Exception) {
+                Log.e("EpubReaderView", "Failed to save TOC changes", e)
+            }
         }
     }
 
