@@ -9,6 +9,8 @@ import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.service.OpenAiRepository
 import info.plateaukao.einkbro.service.TranslateRepository
 import info.plateaukao.einkbro.service.TtsManager
+import info.plateaukao.einkbro.service.TtsNotificationAction
+import info.plateaukao.einkbro.service.TtsNotificationManager
 import info.plateaukao.einkbro.tts.ByteArrayMediaDataSource
 import info.plateaukao.einkbro.tts.CustomMediaPlayer
 import info.plateaukao.einkbro.tts.ETts
@@ -32,10 +34,14 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private val ttsManager: TtsManager by inject()
 
+    private val ttsNotificationManager: TtsNotificationManager by inject()
+
     private val eTts: ETts = ETts()
 
     private val mediaPlayer by lazy { CustomMediaPlayer() }
     private var byteArrayChannel: Channel<ChannelData>? = null
+
+    private var pageTitle: String = ""
 
     private val _readProgress = MutableStateFlow(ReadProgress(0, 0, 0))
     val readProgress: StateFlow<ReadProgress> get() = _readProgress
@@ -60,7 +66,22 @@ class TtsViewModel : ViewModel(), KoinComponent {
     private val _currentReadingContent = MutableStateFlow("")
     val currentReadingContent: StateFlow<String> get() = _currentReadingContent
 
-    fun readArticle(text: String) {
+    init {
+        viewModelScope.launch {
+            ttsNotificationManager.actionFlow.collect { action ->
+                when (action) {
+                    TtsNotificationAction.PLAY_PAUSE -> pauseOrResume()
+                    TtsNotificationAction.STOP -> stop()
+                    TtsNotificationAction.CLOSE -> reset()
+                }
+            }
+        }
+    }
+
+    fun readArticle(text: String, title: String = "") {
+        if (title.isNotEmpty()) {
+            pageTitle = title
+        }
 
         articlesToBeRead.add(text)
         if (isReading()) {
@@ -68,6 +89,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
             return
         } else {
             _readingState.value = TtsReadingState.PREPARING
+            updateNotification()
         }
 
         viewModelScope.launch {
@@ -91,6 +113,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
             _currentReadingContent.value = ""
             _readProgress.value = ReadProgress(0, 0, 0)
             _readingState.value = TtsReadingState.IDLE
+            updateNotification()
         }
 
 //        if (Build.MODEL.startsWith("Pixel 8")) {
@@ -102,6 +125,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
 
     private suspend fun readBySystemTts(text: String) {
         _readingState.value = TtsReadingState.PLAYING
+        updateNotification()
         ttsManager.readText(
             text,
             onProgress = { index, total, currentContent ->
@@ -121,6 +145,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
             //_currentReadingContent.value = it
             maybeInsertTranslationText(text)
         }
+        updateNotification()
     }
 
     private val translationSeparator = "\n---\n"
@@ -176,6 +201,10 @@ class TtsViewModel : ViewModel(), KoinComponent {
             updateReadProgress(index = index + 1, total = chunks.size, text)
 
             if (byteArray != null) {
+                if (_readingState.value == TtsReadingState.PREPARING) {
+                    _readingState.value = TtsReadingState.PLAYING
+                    updateNotification()
+                }
                 playAudioByteArray(byteArray)
             } else {
                 Log.e("TtsViewModel", "byteArray is null for $text")
@@ -214,6 +243,7 @@ class TtsViewModel : ViewModel(), KoinComponent {
             Log.e("TtsViewModel", "pauseOrResume: ${e.message}")
             mediaPlayer.reset()
         }
+        updateNotification()
     }
 
     fun hasNextArticle(): Boolean = articlesToBeRead.isNotEmpty()
@@ -227,6 +257,8 @@ class TtsViewModel : ViewModel(), KoinComponent {
         stop()
         _currentReadingContent.value = ""
         _readingState.value = TtsReadingState.IDLE
+        pageTitle = ""
+        ttsNotificationManager.dismissNotification()
     }
 
     fun stop() {
@@ -241,6 +273,15 @@ class TtsViewModel : ViewModel(), KoinComponent {
     }
 
     fun isReading(): Boolean = _readingState.value != TtsReadingState.IDLE
+
+    private fun updateNotification() {
+        ttsNotificationManager.updateNotification(
+            title = pageTitle,
+            readingState = _readingState.value,
+            progress = _readProgress.value.toString(),
+            currentText = _currentReadingContent.value,
+        )
+    }
 
     fun toggleShowCurrentText() {
         config::ttsShowCurrentText.toggle()

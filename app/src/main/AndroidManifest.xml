@@ -228,6 +228,10 @@
             android:name=".activity.AdBlockSettingActivity"
             android:exported="false" />
 
+        <receiver
+            android:name=".service.TtsNotificationReceiver"
+            android:exported="false" />
+
         <service
             android:name=".service.ClearService"
             android:icon="@mipmap/ic_launcher"

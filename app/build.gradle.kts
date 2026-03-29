@@ -181,5 +181,8 @@ dependencies {
     // adfilter
 
     implementation("androidx.work:work-runtime-ktx:2.7.0")
+
+    // media session for TTS notification
+    implementation("androidx.media:media:1.7.0")
 }
 

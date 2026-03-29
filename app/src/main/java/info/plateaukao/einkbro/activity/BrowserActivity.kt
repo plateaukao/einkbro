@@ -691,7 +691,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             val fullText = ebWebView.getRawText()
             // read from selected sentence to the end of the article
             val startIndex = fullText.indexOf(selectedSentence)
-            ttsViewModel.readArticle(fullText.substring(startIndex))
+            ttsViewModel.readArticle(fullText.substring(startIndex), ebWebView.title.orEmpty())
         }
     }
 
@@ -2658,7 +2658,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 lifecycleScope.launch {
                     val content = toBeReadWebView.getRawText()
                     if (content.isNotEmpty()) {
-                        ttsViewModel.readArticle(content)
+                        ttsViewModel.readArticle(content, toBeReadWebView.title.orEmpty())
                     }
                     // remove self
                     if (toBeReadProcessUrlList.isNotEmpty()) {
@@ -2893,7 +2893,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     protected fun readArticle() {
         lifecycleScope.launch {
-            ttsViewModel.readArticle(ebWebView.getRawText())
+            ttsViewModel.readArticle(ebWebView.getRawText(), ebWebView.title.orEmpty())
         }
     }
 
