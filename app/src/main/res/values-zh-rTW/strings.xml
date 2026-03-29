@@ -339,7 +339,11 @@
     <string name="image_adjust">加強圖片</string>
     <string name="bookmark_new_file">建立新檔案</string>
     <string name="bookmark_open_file">開啟既有檔案</string>
-    <string name="menu_save_archive">儲存網頁</string>
+    <string name="menu_save_archive">稍後閱讀</string>
+    <string name="toast_saved_page">已儲存網頁。長按此圖示可開啟稍後閱讀清單。</string>
+    <string name="toast_save_page_failed">儲存網頁失敗</string>
+    <string name="saved_pages">已儲存的網頁</string>
+    <string name="no_saved_pages">尚無儲存的網頁</string>
     <string name="setting_title_sync_bookmarks">同步書籤</string>
     <string name="setting_summary_setup_bookmarks_location">Select a file in Google Drive or other file location that supports remote sync.</string>
     <string name="setting_summary_import_appData">Import app data by choosing a zip file that is previously exported.</string>

@@ -227,11 +227,12 @@ private fun MenuItems(
                     Icons.Outlined.CloudUpload,
                     onLongClicked = { onLongClicked(MenuItemType.Instapaper) },
                 ) { onClicked(MenuItemType.Instapaper) }
-                MenuItem(R.string.menu_save_archive, 0, Icons.Outlined.Save) {
-                    onClicked(
-                        MenuItemType.SaveArchive
-                    )
-                }
+                MenuItem(
+                    R.string.menu_save_archive,
+                    0,
+                    Icons.Outlined.Save,
+                    onLongClicked = { onLongClicked(MenuItemType.SaveArchive) },
+                ) { onClicked(MenuItemType.SaveArchive) }
                 MenuItem(R.string.menu_open_epub, Icons.AutoMirrored.Outlined.LibraryBooks) { onClicked(OpenEpub) }
                 MenuItem(R.string.menu_save_epub, Icons.AutoMirrored.Outlined.Article) { onClicked(SaveEpub) }
                 MenuItem(R.string.menu_save_pdf, Icons.Outlined.PictureAsPdf) { onClicked(SavePdf) }

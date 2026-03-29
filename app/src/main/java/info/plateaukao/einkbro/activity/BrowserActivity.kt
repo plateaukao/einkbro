@@ -79,6 +79,7 @@ import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.SavedPage
 import info.plateaukao.einkbro.database.Highlight
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
@@ -2910,6 +2911,43 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showWebArchiveFilePicker() {
         val fileName = "${ebWebView.title}.mht"
         BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
+    }
+
+    override fun savePageForLater() {
+        val title = ebWebView.title.orEmpty()
+        val url = ebWebView.url.orEmpty()
+        if (url.isBlank()) return
+
+        val savedPagesDir = File(filesDir, "saved_pages")
+        if (!savedPagesDir.exists()) savedPagesDir.mkdirs()
+        val fileName = "${System.currentTimeMillis()}.mht"
+        val filePath = File(savedPagesDir, fileName).absolutePath
+
+        ebWebView.saveWebArchive(filePath, false) { savedPath ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                if (savedPath != null) {
+                    bookmarkManager.insertSavedPage(
+                        SavedPage(
+                            title = title,
+                            url = url,
+                            filePath = savedPath,
+                            savedAt = System.currentTimeMillis(),
+                        )
+                    )
+                    withContext(Dispatchers.Main) {
+                        EBToast.show(this@BrowserActivity, R.string.toast_saved_page)
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        EBToast.show(this@BrowserActivity, R.string.toast_save_page_failed)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun showSavedPages() {
+        startActivity(SavedPagesActivity.createIntent(this))
     }
 
     override fun showOpenEpubFilePicker() =

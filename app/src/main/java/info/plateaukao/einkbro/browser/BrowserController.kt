@@ -49,6 +49,8 @@ interface BrowserController {
     fun showSaveEpubDialog()
     fun showWebArchiveFilePicker()
     fun showOpenEpubFilePicker()
+    fun savePageForLater()
+    fun showSavedPages()
     //endregion
 
     //region Input Handling
