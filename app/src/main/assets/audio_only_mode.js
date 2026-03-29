@@ -32,17 +32,5 @@
         }
     }
 
-    // Attempt to set quality now and after a short delay (player may not be ready)
     setLowestQuality();
-    setTimeout(setLowestQuality, 2000);
-    setTimeout(setLowestQuality, 5000);
-
-    // Observe for dynamically added videos
-    var observer = new MutationObserver(function() {
-        setLowestQuality();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    // Store observer reference for cleanup
-    window.__audioOnlyObserver = observer;
 })();
