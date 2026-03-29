@@ -1421,9 +1421,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         // when showing a new album, should turn off externalSearch button visibility
         externalSearchViewModel.setButtonVisibility(false)
         runOnUiThread {
-            composeToolbarViewController.updateFocusIndex(
-                albumViewModel.albums.value.indexOfFirst { it.isActivated }
-            )
+            val index = albumViewModel.albums.value.indexOfFirst { it.isActivated }
+            composeToolbarViewController.updateFocusIndex(index)
+            albumViewModel.focusIndex.intValue = index
         }
         updateLanguageLabel()
     }
