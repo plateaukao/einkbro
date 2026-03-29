@@ -41,6 +41,17 @@ class WebContentPostProcessor : KoinComponent {
             ebWebView.evaluateJsFile("video_auto_fullscreen.js")
         }
 
+        // Detect if page has video elements
+        ebWebView.evaluateJavascript(
+            "(function() { return document.querySelectorAll('video, iframe[src*=\"youtube\"], iframe[src*=\"vimeo\"]').length > 0; })()"
+        ) { result ->
+            ebWebView.hasVideo = result == "true"
+        }
+
+        if (ebWebView.isAudioOnlyMode) {
+            ebWebView.evaluateJsFile("audio_only_mode.js")
+        }
+
         if (ebWebView.shouldUseReaderFont()) {
             ebWebView.settings.textZoom = configManager.readerFontSize
         } else {

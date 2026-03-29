@@ -275,6 +275,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             { toolbarActionHandler.handleLongClick(it) },
             onTabClick = { it.showOrJumpToTop() },
             onTabLongClick = { it.remove() },
+            isAudioOnlyMode = { if (::ebWebView.isInitialized) ebWebView.isAudioOnlyMode else false },
         )
     }
 
@@ -756,6 +757,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun pageUp() = ebWebView.pageUpWithNoAnimation()
     override fun toggleReaderMode() = ebWebView.toggleReaderMode()
     override fun toggleVerticalRead() = ebWebView.toggleVerticalRead()
+    override fun toggleAudioOnlyMode() = ebWebView.toggleAudioOnlyMode()
     override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
 
     override fun sendPageUpKey() = ebWebView.sendPageUpKey()
@@ -2913,6 +2915,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         MenuDialogFragment(
             ebWebView.url.orEmpty(),
             ttsViewModel.isReading(),
+            ebWebView.isAudioOnlyMode,
+            ebWebView.hasVideo,
             { menuActionHandler.handle(it, ebWebView) },
             { menuActionHandler.handleLongClick(it) }
         ).show(supportFragmentManager, "menu_dialog")
