@@ -1,0 +1,10 @@
+* Add audio-only mode to hide video while keeping audio and captions
+* Add read-it-later feature replacing save-as-archive
+* Add MediaStyle notification with play/pause/stop/close for TTS
+* Add EinkBro identifier to saved EPUBs and editable TOC with drag-and-drop
+* Cache translated images to disk and batch translate all remaining images
+* Improve dual caption reliability and translate-by-paragraph stability
+* Fix pull-to-refresh intercepting two-finger swipe gestures
+* Fix toolbar position switching crash
+* Refactor: remove all layout XMLs, convert to Compose
+* Enhanced TwoPaneLayout divider with drag handle
