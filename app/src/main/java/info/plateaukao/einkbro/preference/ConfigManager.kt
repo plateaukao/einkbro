@@ -518,6 +518,19 @@ class ConfigManager(
             }
         }
 
+    var readerToolbarActions: List<ToolbarAction>
+        get() {
+            val iconListString =
+                sp.getString(K_READER_TOOLBAR_ICONS, "").orEmpty()
+            if (iconListString.isBlank()) return ToolbarAction.defaultReaderActions
+            return iconStringToEnumList(iconListString)
+        }
+        set(value) {
+            sp.edit {
+                putString(K_READER_TOOLBAR_ICONS, value.map { it.ordinal }.joinToString(","))
+            }
+        }
+
     var customFontInfo: CustomFontInfo?
         get() = sp.getString(K_CUSTOM_FONT, "")?.toCustomFontInfo()
         set(value) {
@@ -876,6 +889,7 @@ class ConfigManager(
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
+        const val K_READER_TOOLBAR_ICONS = "sp_reader_toolbar_icons"
         const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
         const val K_SEND_PAGE_NAV_KEY_LIST = "sp_send_page_nav_key_list"
         const val K_TRANSLATE_SITE_LIST = "sp_translate_site_list"

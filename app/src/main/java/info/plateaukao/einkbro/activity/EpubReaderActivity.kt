@@ -29,6 +29,11 @@ class EpubReaderActivity: BrowserActivity() {
         hideOverview()
     }
 
+    override fun onResume() {
+        super.onResume()
+        composeToolbarViewController.updateIcons()
+    }
+
     override fun showTocDialog() {
         if (epubReader.isEinkBroEpub) {
             showEditableTocDialog()

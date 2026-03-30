@@ -9,6 +9,7 @@ import android.print.PrintManager
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.activity.ToolbarConfigActivity
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -67,11 +68,9 @@ class MenuActionHandler(
             MenuItemType.ReaderMode -> browserController.toggleReaderMode()
             MenuItemType.TouchSetting -> browserController.showTouchAreaDialog()
             MenuItemType.ToolbarSetting -> {
-//                ToolbarConfigDialogFragment().show(
-//                    activity.supportFragmentManager,
-//                    "toolbar_config"
-//                )
-                activity.startActivity(Intent(activity, ToolbarConfigActivity::class.java))
+                activity.startActivity(Intent(activity, ToolbarConfigActivity::class.java).apply {
+                    putExtra(ToolbarConfigActivity.EXTRA_IS_READER_MODE, activity is EpubReaderActivity)
+                })
             }
 
             MenuItemType.ReceiveData -> browserController.toggleReceiveLink()
