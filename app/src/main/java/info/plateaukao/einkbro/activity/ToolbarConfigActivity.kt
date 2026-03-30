@@ -63,7 +63,8 @@ class ToolbarConfigActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val iconEnums = config.toolbarActions
+        val isReaderMode = intent.getBooleanExtra(EXTRA_IS_READER_MODE, false)
+        val iconEnums = if (isReaderMode) config.readerToolbarActions else config.toolbarActions
         val toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
 
         setContent {
@@ -73,7 +74,7 @@ class ToolbarConfigActivity : ComponentActivity() {
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text(text = stringResource(id = R.string.toolbars))
+                                Text(text = stringResource(id = if (isReaderMode) R.string.reader_toolbar else R.string.toolbars))
                             },
                             navigationIcon = {
                                 IconButton(onClick = { finish() }) {
@@ -86,7 +87,11 @@ class ToolbarConfigActivity : ComponentActivity() {
                                 }
                                 IconButton(onClick = {
                                     // save the toolbarActionInfoList
-                                    config.toolbarActions = list.value.map { it.toolbarAction }
+                                    if (isReaderMode) {
+                                        config.readerToolbarActions = list.value.map { it.toolbarAction }
+                                    } else {
+                                        config.toolbarActions = list.value.map { it.toolbarAction }
+                                    }
                                     finish()
                                 }) {
                                     Icon(Icons.Filled.Done, contentDescription = null)
@@ -118,6 +123,10 @@ class ToolbarConfigActivity : ComponentActivity() {
         } else {
             super.attachBaseContext(newBase)
         }
+    }
+
+    companion object {
+        const val EXTRA_IS_READER_MODE = "extra_is_reader_mode"
     }
 }
 

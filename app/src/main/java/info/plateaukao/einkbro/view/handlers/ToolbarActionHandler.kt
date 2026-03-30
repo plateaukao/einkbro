@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view.handlers
 
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
+import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.activity.ToolbarConfigActivity
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -60,7 +61,9 @@ class ToolbarActionHandler(
         ToolbarAction.FullScreen -> browserController.toggleFullscreen()
         ToolbarAction.GoogleInPlace -> browserController.translate(TranslationMode.GOOGLE_IN_PLACE)
         ToolbarAction.IconSetting ->
-            activity.startActivity(Intent(activity, ToolbarConfigActivity::class.java))
+            activity.startActivity(Intent(activity, ToolbarConfigActivity::class.java).apply {
+                putExtra(ToolbarConfigActivity.EXTRA_IS_READER_MODE, activity is EpubReaderActivity)
+            })
 
         ToolbarAction.IncreaseFont -> browserController.increaseFontSize()
         ToolbarAction.InputUrl -> browserController.focusOnInput()

@@ -12,20 +12,14 @@ import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.compose.ComposedToolbar
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
+import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.AudioOnly
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.BoldFont
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.CloseTab
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Desktop
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Font
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.FullScreen
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.PageInfo
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Refresh
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.RotateScreen
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Settings
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TOC
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Touch
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionLeftRight
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.TouchDirectionUpDown
-import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.AudioOnly
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Tts
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
@@ -44,21 +38,10 @@ class ComposeToolbarViewController(
 ) : KoinComponent {
     private val config: ConfigManager by inject()
 
-    private val readerToolbarActions: List<ToolbarAction> = listOf(
-        RotateScreen,
-        FullScreen,
-        BoldFont,
-        Font,
-        Touch,
-        TOC,
-        PageInfo,
-        Settings,
-        CloseTab,
-    )
-
     private var isLoading: Boolean = false
 
-    private var isReader: Boolean = false
+    var isReader: Boolean = false
+        private set
 
     // State previously held by ToolbarComposeView
     var toolbarActionInfoList: List<ToolbarActionInfo> by mutableStateOf(emptyList())
@@ -73,7 +56,7 @@ class ComposeToolbarViewController(
     private val onTabLongClick: (Album) -> Unit = onTabLongClick
 
     init {
-        val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
+        val iconEnums = if (isReader) config.readerToolbarActions else config.toolbarActions
         toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
         shouldShowTabs = config.shouldShowTabBar
 
@@ -131,7 +114,7 @@ class ComposeToolbarViewController(
     }
 
     fun updateIcons(actionToUpdate: ToolbarAction? = null) {
-        val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
+        val iconEnums = if (isReader) config.readerToolbarActions else config.toolbarActions
         // only update specific icon is specified.
         if (actionToUpdate != null && !iconEnums.contains(actionToUpdate)) {
             return

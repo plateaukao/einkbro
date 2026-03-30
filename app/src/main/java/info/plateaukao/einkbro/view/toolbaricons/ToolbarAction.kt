@@ -215,6 +215,17 @@ enum class ToolbarAction(
             TabCount,
             Settings,
         )
+        val defaultReaderActions: List<ToolbarAction> = listOf(
+            RotateScreen,
+            FullScreen,
+            BoldFont,
+            Font,
+            Touch,
+            TOC,
+            PageInfo,
+            Settings,
+            CloseTab,
+        )
     }
 
     fun getCurrentResId(state: Boolean): Int =
