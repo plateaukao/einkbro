@@ -342,7 +342,7 @@
     <string name="menu_receive">Receive link</string> <!-- Can other types of data be recieved with this option except link? Is they can, change this back; if not - it's better to leave this variant for overall language consistency -->
     <string name="copy_link">Copy link</string>
     <string name="setting_title_background_loading">Load non-active tabs</string>
-    <string name="setting_summary_background_loading">If tab is not activated, still load it\'s content in background</string>
+    <string name="setting_summary_background_loading">If tab is not activated, still load its content in background</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
     <string name="setting_title_search">Search</string>
     <string name="dialog_toc_title">Table of Contents</string>
