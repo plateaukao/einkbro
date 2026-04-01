@@ -108,27 +108,28 @@ class EBWebViewClient(
             addHistoryAction(ebWebView.albumTitle, url)
         }
 
-        // test
+        // touch target tracking for link detection
         ebWebView.evaluateJavascript(
             """
-                    function findTargetWithA(e){
-                        var tt = e;
-                        while(tt){
-                            if(tt.tagName.toLowerCase() == "a"){
-                                break;
+                    (function(){
+                        if(window.__einkbroTouchInit) return;
+                        window.__einkbroTouchInit = true;
+                        function findTargetWithA(e){
+                            var tt = e;
+                            while(tt){
+                                if(tt.tagName.toLowerCase() == "a"){
+                                    break;
+                                }
+                                tt = tt.parentElement;
                             }
-                            tt = tt.parentElement;
+                            return tt;
                         }
-                        return tt;
-                    }
-                    const w=window;
-                    w.addEventListener('touchstart',wrappedOnDownFunc);
-                    function wrappedOnDownFunc(e){
-                        if(e.touches.length==1){
-                            w._touchTarget = findTargetWithA(e.touches[0].target);
-                        }
-                        console.log('hey touched something ' +w._touchTarget);
-                    }
+                        window.addEventListener('touchstart', function(e){
+                            if(e.touches.length==1){
+                                window._touchTarget = findTargetWithA(e.touches[0].target);
+                            }
+                        });
+                    })();
         """.trimIndent(), null
         )
 
