@@ -336,6 +336,7 @@ class ConfigManager(
 
     var enableZoomTextWrapReflow by BooleanPreference(sp, K_ENABLE_ZOOM_TEXT_WRAP_REFLOW, false)
     var zoomInCustomView by BooleanPreference(sp, "sp_zoom_in_custom_view", false)
+    var readerKeepExtraContent by BooleanPreference(sp, "sp_reader_keep_extra_content", false)
 
     private val K_RECENT_USED_TTS_VOICES = "sp_recent_used_tts_voices"
     var recentUsedTtsVoices: MutableList<VoiceItem>

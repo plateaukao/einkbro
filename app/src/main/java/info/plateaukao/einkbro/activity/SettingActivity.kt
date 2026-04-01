@@ -923,6 +923,12 @@ class SettingActivity : FragmentActivity() {
                 TranslationLanguageDialog(this@SettingActivity).showDualCaptionLocale()
             }
         },
+        BooleanSettingItem(
+            R.string.setting_title_reader_keep_extra_content,
+            0,
+            R.string.setting_summary_reader_keep_extra_content,
+            config::readerKeepExtraContent,
+        ),
     )
     private val userAgentSettingItems = listOf(
         BooleanSettingItem(
