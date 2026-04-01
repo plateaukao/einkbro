@@ -745,7 +745,7 @@ open class EBWebView(
             continuation.resume(rawHtmlCache!!)
         } else if (!isReaderModeOn && !isTranslatePage) {
             injectMozReaderModeJs(false)
-            evaluateJavascript(String.format(getReaderModeBodyHtmlJs, url)) { html ->
+            evaluateJavascript(String.format(getReaderModeBodyHtmlJs(config.readerKeepExtraContent), url)) { html ->
                 val processedHtml = HelperUnit.unescapeJava(html)
                 val rawHtml =
                     processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
@@ -772,7 +772,7 @@ open class EBWebView(
             continuation.resume(DualCaptionProcessor().convertToHtml(dualCaption ?: ""))
         } else if (!isReaderModeOn) {
             evaluateMozReaderModeJs {
-                evaluateJavascript(getReaderModeBodyTextJs) { text ->
+                evaluateJavascript(getReaderModeBodyTextJs(config.readerKeepExtraContent)) { text ->
                     if (text == "null") {
                         continuation.resume("")
                     } else {
@@ -849,7 +849,7 @@ open class EBWebView(
             evaluateMozReaderModeJs(isVertical) {
                 evaluateJavascript(
                     "(function() { ${
-                        String.format(replaceWithReaderModeBodyJs, url)
+                        String.format(replaceWithReaderModeBodyJs(config.readerKeepExtraContent), url)
                     } })();"
                 ) { _ ->
                     if (isVertical) {
@@ -1221,12 +1221,17 @@ open class EBWebView(
             }
         """
 
-        private const val readabilityOptions =
-            "{classesToPreserve: preservedClasses, overwriteImgSrc: true}"
+        private fun readabilityOptions(keepExtraContent: Boolean): String {
+            return if (keepExtraContent) {
+                "{classesToPreserve: preservedClasses, overwriteImgSrc: true, keepExtraContent: true}"
+            } else {
+                "{classesToPreserve: preservedClasses, overwriteImgSrc: true}"
+            }
+        }
 
-        private const val replaceWithReaderModeBodyJs = """
+        private fun replaceWithReaderModeBodyJs(keepExtraContent: Boolean) = """
             var documentClone = document.cloneNode(true);
-            var article = new Readability(documentClone, $readabilityOptions).parse();
+            var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
             document.innerHTMLCache = document.body.innerHTML;
 
             article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
@@ -1236,20 +1241,21 @@ open class EBWebView(
             document.getElementsByName('viewport')[0].setAttribute('content', 'width=device-width');
         """
 
-        private const val getReaderModeBodyHtmlJs = """
+        private fun getReaderModeBodyHtmlJs(keepExtraContent: Boolean) = """
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
-                var article = new Readability(documentClone, $readabilityOptions).parse();
+                var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
                 article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
                 var bodyOuterHTML = createHtmlBodyWithUrl(article, "%s")
                 var headOuterHTML = document.head.outerHTML;
                 return ('<html>'+ headOuterHTML + bodyOuterHTML +'</html>');
             })()
         """
-        private const val getReaderModeBodyTextJs = """
+
+        private fun getReaderModeBodyTextJs(keepExtraContent: Boolean) = """
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
-                var article = new Readability(documentClone, $readabilityOptions).parse();
+                var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
                 return article.title + ', ' + article.textContent;
             })()
         """

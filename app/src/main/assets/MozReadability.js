@@ -56,6 +56,10 @@ function Readability(doc, options) {
     options.classesToPreserve || []
   );
   this._keepClasses = !!options.keepClasses;
+  this._keepExtraContent = !!options.keepExtraContent;
+  if (this._keepExtraContent) {
+    this._keepClasses = true;
+  }
   this._serializer =
     options.serializer ||
     function (el) {
@@ -658,8 +662,10 @@ Readability.prototype = {
   _prepDocument() {
     var doc = this._doc;
 
-    // Remove all style tags in head
-    this._removeNodes(this._getAllNodesWithTag(doc, ["style"]));
+    // Remove all style tags in head (unless keepExtraContent is on)
+    if (!this._keepExtraContent) {
+      this._removeNodes(this._getAllNodesWithTag(doc, ["style"]));
+    }
 
     if (doc.body) {
       this._replaceBrs(doc.body);
@@ -1113,11 +1119,18 @@ Readability.prototype = {
         }
 
         // Remove unlikely candidates
+        // Note: parentheses around the unlikelyCandidates/ad-content OR were added so that
+        // the ancestor/tag guards (table, code, BODY, A) apply to both branches consistently.
         if (stripUnlikelyCandidates) {
+          var isMathElement = this._keepExtraContent &&
+            (node.tagName.toLowerCase().startsWith("mjx-") ||
+             node.tagName === "MATH" ||
+             (matchString && /MathJax|katex/i.test(matchString)));
           if (
-            (this.REGEXPS.unlikelyCandidates.test(matchString) &&
+            !isMathElement &&
+            ((this.REGEXPS.unlikelyCandidates.test(matchString) &&
               !this.REGEXPS.okMaybeItsACandidate.test(matchString)) ||
-            matchString.indexOf("ad-content") !== -1 && // Force remove ad-content
+            matchString.indexOf("ad-content") !== -1) && // Force remove ad-content
             !this._hasAncestorTag(node, "table") &&
             !this._hasAncestorTag(node, "code") &&
             node.tagName !== "BODY" &&
@@ -1978,7 +1991,24 @@ Readability.prototype = {
    * @param Element
    **/
   _removeScripts(doc) {
-    this._removeNodes(this._getAllNodesWithTag(doc, ["script", "noscript"]));
+    if (this._keepExtraContent) {
+      // Keep MathJax/KaTeX related scripts, remove others
+      this._removeNodes(this._getAllNodesWithTag(doc, ["script", "noscript"]), function(node) {
+        var type = node.getAttribute("type") || "";
+        var src = node.getAttribute("src") || "";
+        var id = node.getAttribute("id") || "";
+        // Preserve math-related script types and MathJax/KaTeX library scripts
+        if (type.indexOf("math") !== -1 ||
+            src.indexOf("mathjax") !== -1 || src.indexOf("MathJax") !== -1 ||
+            src.indexOf("katex") !== -1 || src.indexOf("KaTeX") !== -1 ||
+            id.indexOf("MathJax") !== -1) {
+          return false;
+        }
+        return true;
+      });
+    } else {
+      this._removeNodes(this._getAllNodesWithTag(doc, ["script", "noscript"]));
+    }
   },
 
   /**
@@ -2005,6 +2035,16 @@ Readability.prototype = {
   },
 
   _isElementWithoutContent(node) {
+    if (this._keepExtraContent) {
+      var tag = node.tagName ? node.tagName.toLowerCase() : "";
+      if (tag.startsWith("mjx-") || tag === "math" ||
+          node.getElementsByTagName("svg").length > 0 ||
+          node.getElementsByTagName("math").length > 0 ||
+          node.getElementsByTagName("mjx-container").length > 0 ||
+          node.getElementsByClassName("katex").length > 0) {
+        return false;
+      }
+    }
     return (
       node.nodeType === this.ELEMENT_NODE &&
       !node.textContent.trim().length &&
@@ -2093,6 +2133,15 @@ Readability.prototype = {
   _cleanStyles(e) {
     if (!e || e.tagName.toLowerCase() === "svg") {
       return;
+    }
+
+    if (this._keepExtraContent) {
+      var tag = e.tagName.toLowerCase();
+      // Skip MathJax custom elements, MathML, and KaTeX elements
+      if (tag === "math" || tag.startsWith("mjx-") ||
+          (e.getAttribute("class") || "").match(/MathJax|katex/i)) {
+        return;
+      }
     }
 
     // Remove `style` and deprecated presentational attributes
@@ -2709,7 +2758,8 @@ Readability.prototype = {
         node.getAttribute("aria-hidden") != "true" ||
         (node.className &&
           node.className.includes &&
-          node.className.includes("fallback-image")))
+          node.className.includes("fallback-image")) ||
+        (this._keepExtraContent && node.tagName && node.tagName.toLowerCase().startsWith("mjx-")))
     );
   },
 

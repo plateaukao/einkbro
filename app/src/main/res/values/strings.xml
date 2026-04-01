@@ -653,4 +653,6 @@
     <string name="setting_summary_text_wrap_reflow">Reflow text when zooming</string>
     <string name="setting_title_zoom_in_custom_view">Zoom in Custom View</string>
     <string name="setting_summary_zoom_in_custom_view">Enable 2-finger zoom in fullscreen mode (default: false)</string>
+    <string name="setting_title_reader_keep_extra_content">Reader Mode: Keep Extra Content</string>
+    <string name="setting_summary_reader_keep_extra_content">Preserve styles, classes, and math (MathJax/KaTeX) in reader mode</string>
 </resources>
