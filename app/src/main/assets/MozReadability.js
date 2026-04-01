@@ -2142,6 +2142,14 @@ Readability.prototype = {
           (e.getAttribute("class") || "").match(/MathJax|katex/i)) {
         return;
       }
+      // Skip code elements with inlined styles
+      if (tag === "pre" || (tag === "code" && e.parentElement && e.parentElement.tagName === "PRE")) {
+        return;
+      }
+      // Skip syntax-highlighted spans inside pre (preserve inline color styles)
+      if (e.style && e.style.color && e.closest && e.closest("pre")) {
+        return;
+      }
     }
 
     // Remove `style` and deprecated presentational attributes
@@ -2993,5 +3001,40 @@ function setPadding(paddingValue) {
   var elements = document.getElementsByClassName('mozac-readerview-body');
   for (var i = 0; i < elements.length; i++) {
     elements[i].style.padding = paddingValue + 'px';
+  }
+}
+
+// Inline computed styles on code elements so they survive Readability's style stripping.
+// Must be called on the live document before cloneNode.
+function inlineCodeStyles() {
+  var codeProps = ['color', 'background-color', 'font-style', 'font-weight', 'text-decoration'];
+  var blockProps = ['background-color', 'color', 'padding', 'border-radius', 'border',
+                    'font-family', 'font-size', 'white-space', 'overflow', 'margin-bottom'];
+
+  // Inline styles on pre elements
+  var pres = document.querySelectorAll('pre');
+  for (var i = 0; i < pres.length; i++) {
+    var cs = window.getComputedStyle(pres[i]);
+    for (var j = 0; j < blockProps.length; j++) {
+      pres[i].style.setProperty(blockProps[j], cs.getPropertyValue(blockProps[j]), 'important');
+    }
+  }
+
+  // Inline styles on code elements inside pre
+  var codes = document.querySelectorAll('pre code');
+  for (var i = 0; i < codes.length; i++) {
+    var cs = window.getComputedStyle(codes[i]);
+    for (var j = 0; j < blockProps.length; j++) {
+      codes[i].style.setProperty(blockProps[j], cs.getPropertyValue(blockProps[j]), 'important');
+    }
+  }
+
+  // Inline color styles on syntax-highlighted spans
+  var spans = document.querySelectorAll('pre [class*="hljs"], pre [class*="token"], pre [class*="keyword"], pre [class*="string"], pre [class*="comment"]');
+  for (var i = 0; i < spans.length; i++) {
+    var cs = window.getComputedStyle(spans[i]);
+    for (var j = 0; j < codeProps.length; j++) {
+      spans[i].style.setProperty(codeProps[j], cs.getPropertyValue(codeProps[j]), 'important');
+    }
   }
 }
