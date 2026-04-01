@@ -1230,6 +1230,7 @@ open class EBWebView(
         }
 
         private fun replaceWithReaderModeBodyJs(keepExtraContent: Boolean) = """
+            ${if (keepExtraContent) "inlineCodeStyles();" else ""}
             var documentClone = document.cloneNode(true);
             var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
             document.innerHTMLCache = document.body.innerHTML;
@@ -1243,6 +1244,7 @@ open class EBWebView(
 
         private fun getReaderModeBodyHtmlJs(keepExtraContent: Boolean) = """
             javascript:(function() {
+                ${if (keepExtraContent) "inlineCodeStyles();" else ""}
                 var documentClone = document.cloneNode(true);
                 var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
                 article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
