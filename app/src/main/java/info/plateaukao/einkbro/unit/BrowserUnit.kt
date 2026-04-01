@@ -20,6 +20,7 @@ import android.os.Message
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.URLUtil
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebView.HitTestResult.ANCHOR_TYPE
 import android.webkit.WebView.HitTestResult.IMAGE_ANCHOR_TYPE
@@ -361,6 +362,11 @@ object BrowserUnit : KoinComponent {
             return
         }
 
+        if (url.startsWith("data:")) {
+            saveDataUrl(activity, url, mimeType)
+            return
+        }
+
         val filename = Uri.decode(guessFilename(url, contentDisposition, mimeType))
 
         if (hasExactFilename(contentDisposition)) {
@@ -380,6 +386,44 @@ object BrowserUnit : KoinComponent {
         }
     }
 
+    private fun saveDataUrl(activity: Activity, dataUrl: String, fallbackMimeType: String) {
+        try {
+            val header = dataUrl.substring(dataUrl.indexOf(":") + 1, dataUrl.indexOf(","))
+            val dataMimeType = if (header.contains(";")) {
+                header.substring(0, header.indexOf(";"))
+            } else {
+                header
+            }
+            val isBase64 = header.contains("base64", ignoreCase = true)
+            val rawData = dataUrl.substring(dataUrl.indexOf(",") + 1)
+
+            val effectiveMimeType = dataMimeType.ifEmpty { fallbackMimeType }
+            val ext = android.webkit.MimeTypeMap.getSingleton()
+                .getExtensionFromMimeType(effectiveMimeType) ?: "bin"
+            val filename = "download_${System.currentTimeMillis()}.$ext"
+
+            val downloadsDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val destFile = File(downloadsDir, filename)
+
+            val bytes = if (isBase64) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Base64.getDecoder().decode(rawData)
+                } else {
+                    android.util.Base64.decode(rawData, android.util.Base64.DEFAULT)
+                }
+            } else {
+                java.net.URLDecoder.decode(rawData, "UTF-8").toByteArray()
+            }
+
+            destFile.writeBytes(bytes)
+            showShort(activity, R.string.toast_downloadComplete)
+        } catch (e: Exception) {
+            Log.w("browser", "Failed to save data URL: $e")
+            showShort(activity, R.string.error_download_link_invalid)
+        }
+    }
+
     private fun hasExactFilename(contentDisposition: String): Boolean =
         parseContentDispositionFilename(contentDisposition) != null
 
@@ -391,25 +435,80 @@ object BrowserUnit : KoinComponent {
         filename: String
     ) {
         val cookie = CookieManager.getInstance().getCookie(url)
+        val userAgent = WebSettings.getDefaultUserAgent(activity)
         if (Uri.parse(url).host == null) {
             showShort(activity, R.string.error_download_link_invalid)
             return
         }
-        val request = DownloadManager.Request(Uri.parse(url)).apply {
-            if (cookie != null) addRequestHeader("Cookie", cookie)
-            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            setTitle(filename)
-            setMimeType(mimeType)
+        try {
+            val request = DownloadManager.Request(Uri.parse(url)).apply {
+                if (cookie != null) addRequestHeader("Cookie", cookie)
+                addRequestHeader("User-Agent", userAgent)
+                setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                setTitle(filename)
+                setMimeType(mimeType)
+                try {
+                    setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+                } catch (e: Exception) {
+                    val downloadsDir =
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    setDestinationUri(Uri.fromFile(java.io.File(downloadsDir, filename)))
+                }
+            }
+            val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            downloadFileId = manager.enqueue(request)
+            showShort(activity, R.string.toast_start_download)
+        } catch (e: Exception) {
+            Log.w("browser", "DownloadManager failed, falling back to direct download: $e")
+            directDownload(activity, url, cookie, userAgent, filename, mimeType)
+        }
+    }
+
+    private fun directDownload(
+        activity: Activity,
+        url: String,
+        cookie: String?,
+        userAgent: String,
+        filename: String,
+        mimeType: String
+    ) {
+        showShort(activity, R.string.toast_start_download)
+        (activity as LifecycleOwner).lifecycleScope.launch(Dispatchers.IO) {
             try {
-                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+                val connection = URL(url).openConnection() as HttpURLConnection
+                connection.instanceFollowRedirects = true
+                connection.addRequestProperty("User-Agent", userAgent)
+                if (cookie != null) connection.addRequestProperty("Cookie", cookie)
+                connection.connectTimeout = 15000
+                connection.readTimeout = 30000
+                connection.connect()
+
+                if (connection.responseCode != HttpURLConnection.HTTP_OK) {
+                    withContext(Dispatchers.Main) {
+                        showShort(activity, R.string.error_download_link_invalid)
+                    }
+                    return@launch
+                }
+
+                val downloadsDir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                val destFile = File(downloadsDir, filename)
+                connection.inputStream.use { input ->
+                    destFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                withContext(Dispatchers.Main) {
+                    showShort(activity, R.string.toast_downloadComplete)
+                }
             } catch (e: Exception) {
-                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                setDestinationUri(Uri.fromFile(java.io.File(downloadsDir, filename)))
+                Log.w("browser", "Direct download also failed: $e")
+                withContext(Dispatchers.Main) {
+                    showShort(activity, R.string.error_download_link_invalid)
+                }
             }
         }
-        val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        downloadFileId = manager.enqueue(request)
-        showShort(activity, R.string.toast_start_download)
     }
 
     @JvmStatic

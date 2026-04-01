@@ -40,6 +40,7 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.webkit.CookieManager
+import android.webkit.WebSettings
 import android.webkit.ValueCallback
 import android.view.ScaleGestureDetector
 import android.webkit.WebChromeClient.CustomViewCallback
@@ -2794,6 +2795,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val source = Uri.parse(url)
         val request = Request(source).apply {
             addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
+            addRequestHeader("User-Agent", WebSettings.getDefaultUserAgent(this@BrowserActivity))
             setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             try {
                 setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
