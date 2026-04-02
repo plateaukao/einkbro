@@ -11,7 +11,6 @@ import io.github.edsuns.adfilter.impl.Constants.KEY_DOWNLOAD_URL
 import io.github.edsuns.adfilter.impl.Constants.KEY_FILTER_ID
 import io.github.edsuns.net.HttpRequest
 import timber.log.Timber
-import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 /**
@@ -44,8 +43,8 @@ internal class DownloadWorker(context: Context, params: WorkerParameters) : Work
                     KEY_DOWNLOADED_DATA to dataName
                 )
             )
-        } catch (e: IOException) {
-            Timber.v(e, "Failed to download: $url $id")
+        } catch (e: Exception) {
+            Timber.w(e, "Failed to download: $url $id")
         }
         return Result.failure(inputData)
     }
