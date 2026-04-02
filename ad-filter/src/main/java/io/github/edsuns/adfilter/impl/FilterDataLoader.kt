@@ -14,12 +14,16 @@ internal class FilterDataLoader(
 
     fun load(id: String) {
         if (binaryDataStore.hasData(id)) {
-            val client = AdBlockClient(id)
-            client.loadProcessedData(binaryDataStore.loadData(id))
-            if (id == ID_CUSTOM) {
-                detector.customFilterClient = client
-            } else {
-                detector.addClient(client)
+            try {
+                val client = AdBlockClient(id)
+                client.loadProcessedData(binaryDataStore.loadData(id))
+                if (id == ID_CUSTOM) {
+                    detector.customFilterClient = client
+                } else {
+                    detector.addClient(client)
+                }
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to load filter data: $id")
             }
         } else {
             Timber.v("Couldn't find client processed data: $id")

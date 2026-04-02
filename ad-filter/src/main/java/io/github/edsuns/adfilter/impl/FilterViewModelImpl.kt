@@ -55,7 +55,13 @@ internal class FilterViewModelImpl(
      * [Filter.id] to [Filter]
      */
     private val _filterMap: MutableStateFlow<Map<String, Filter>> =
-        MutableStateFlow(Json.decodeFromString(sharedPreferences.filterMap))
+        MutableStateFlow(
+            try {
+                Json.decodeFromString(sharedPreferences.filterMap)
+            } catch (_: Exception) {
+                emptyMap()
+            }
+        )
 
     override val filters: StateFlow<Map<String, Filter>> = _filterMap.asStateFlow()
     override fun updateFilterByFilterId(id: String, filter: Filter) {
@@ -79,23 +85,33 @@ internal class FilterViewModelImpl(
     }
 
     init {
-        workManager.pruneWork()
-        // clear bad running download state
-        filters.value.values.forEach { filter ->
-            if (filter.downloadState.isRunning) {
-                val list = workManager.getWorkInfosForUniqueWork(filter.id).get()
-                if (list == null || list.isEmpty()) {
-                    val updatedFilter = filter.copy(downloadState = DownloadState.FAILED)
-                    updateFilterByFilterId(filter.id, updatedFilter)
-                } else {
-                    if (list[0].state == WorkInfo.State.ENQUEUED
-                        && filter.downloadState != DownloadState.ENQUEUED
-                    ) {
-                        val updatedFilter = filter.copy(downloadState = DownloadState.ENQUEUED)
+        try {
+            workManager.pruneWork()
+            // clear bad running download state
+            filters.value.values.forEach { filter ->
+                if (filter.downloadState.isRunning) {
+                    try {
+                        val list = workManager.getWorkInfosForUniqueWork(filter.id).get()
+                        if (list == null || list.isEmpty()) {
+                            val updatedFilter = filter.copy(downloadState = DownloadState.FAILED)
+                            updateFilterByFilterId(filter.id, updatedFilter)
+                        } else {
+                            if (list[0].state == WorkInfo.State.ENQUEUED
+                                && filter.downloadState != DownloadState.ENQUEUED
+                            ) {
+                                val updatedFilter =
+                                    filter.copy(downloadState = DownloadState.ENQUEUED)
+                                updateFilterByFilterId(filter.id, updatedFilter)
+                            }
+                        }
+                    } catch (_: Exception) {
+                        val updatedFilter = filter.copy(downloadState = DownloadState.FAILED)
                         updateFilterByFilterId(filter.id, updatedFilter)
                     }
                 }
             }
+        } catch (_: Exception) {
+            // guard against WorkManager or SharedPreferences failures during init
         }
     }
 
