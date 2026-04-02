@@ -468,6 +468,7 @@ class SettingActivity : FragmentActivity() {
     )
 
     private val behaviorSettingItems = listOf(
+        // Tab behavior
         BooleanSettingItem(
             R.string.setting_title_saveTabs,
             0,
@@ -493,6 +494,14 @@ class SettingActivity : FragmentActivity() {
             config::closeTabWhenNoMoreBackHistory,
         ),
         BooleanSettingItem(
+            R.string.setting_title_confirm_tab_close,
+            0,
+            R.string.setting_summary_confirm_tab_close,
+            config::confirmTabClose,
+        ),
+        DividerSettingItem(),
+        // URL & navigation
+        BooleanSettingItem(
             R.string.setting_title_trim_input_url,
             0,
             R.string.setting_summary_trim_input_url,
@@ -505,6 +514,20 @@ class SettingActivity : FragmentActivity() {
             config::shouldPruneQueryParameters,
         ),
         BooleanSettingItem(
+            R.string.setting_title_enable_url_drag_to_action,
+            0,
+            R.string.setting_summary_enable_url_drag_to_action,
+            config::enableDragUrlToAction,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_show_bookmarks_input_bar,
+            0,
+            R.string.setting_summary_show_bookmarks_input_bar,
+            config::showBookmarksInInputBar,
+        ),
+        DividerSettingItem(),
+        // Video
+        BooleanSettingItem(
             R.string.setting_title_video_auto_fullscreen,
             0,
             R.string.setting_summary_video_auto_fullscreen,
@@ -516,18 +539,8 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_video_pip,
             config::enableVideoPip,
         ),
-        BooleanSettingItem(
-            R.string.setting_title_screen_awake,
-            0,
-            R.string.setting_summary_screen_awake,
-            config::keepAwake,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_confirm_tab_close,
-            0,
-            R.string.setting_summary_confirm_tab_close,
-            config::confirmTabClose,
-        ),
+        DividerSettingItem(),
+        // Input & controls
         BooleanSettingItem(
             R.string.setting_title_vi_binding,
             0,
@@ -546,30 +559,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_useUpDownKey,
             config::useUpDownPageTurn,
         ),
+        DividerSettingItem(),
+        // Display & rendering
         BooleanSettingItem(
-            R.string.setting_title_show_bookmarks_input_bar,
+            R.string.setting_title_screen_awake,
             0,
-            R.string.setting_summary_show_bookmarks_input_bar,
-            config::showBookmarksInInputBar,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_enable_ssl_error_dialog,
-            0,
-            R.string.setting_summary_enable_ssl_error_dialog,
-            config::enableCertificateErrorDialog,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_enable_web_cache,
-            0,
-            R.string.setting_summary_enabling_web_cache,
-            config::webLoadCacheFirst,
-        )
-        // add a boolean setting to enable/disable url drag to action feature
-        , BooleanSettingItem(
-            R.string.setting_title_enable_url_drag_to_action,
-            0,
-            R.string.setting_summary_enable_url_drag_to_action,
-            config::enableDragUrlToAction,
+            R.string.setting_summary_screen_awake,
+            config::keepAwake,
         ),
         BooleanSettingItem(
             R.string.setting_title_text_wrap_reflow,
@@ -582,7 +578,21 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_zoom_in_custom_view,
             config::zoomInCustomView,
-        )
+        ),
+        DividerSettingItem(),
+        // Security & network
+        BooleanSettingItem(
+            R.string.setting_title_enable_ssl_error_dialog,
+            0,
+            R.string.setting_summary_enable_ssl_error_dialog,
+            config::enableCertificateErrorDialog,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_enable_web_cache,
+            0,
+            R.string.setting_summary_enabling_web_cache,
+            config::webLoadCacheFirst,
+        ),
     )
 
     private val toolbarSettingItems = listOf(
