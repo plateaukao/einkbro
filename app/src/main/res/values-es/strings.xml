@@ -342,11 +342,7 @@
     <string name="setting_title_video_pip">Mostrar video en una ventana pequeña</string>
     <string name="setting_summary_video_pip">Cuando se reproduce un video en pantalla completa y se sale, mostrar una ventana pequeña para continuar la reproducción del video</string>
     <string name="empty_whitelist_hint">Haz clic en el botón de la parte superior derecha para añadir un nuevo dominio</string>
-    <string name="google_text">Modo de texto de Google</string>
-    <string name="papago_text">Modo de texto de Papago</string>
-    <string name="papago_full_page">Papago página completa</string>
     <string name="google_full_page">Google página completa</string>
-    <string name="papago_dual_pane">Papago ventana dividida</string>
     <string name="google_in_place">Google en el lugar</string>
     <string name="setting_title_update_adblock">Actualizar contenido de AdBlock</string>
     <string name="setting_summary_update_adblock">Desencadenar actualización de sitios web de AdBlock ahora</string>
@@ -391,14 +387,12 @@
     <string name="setting_summary_show_default_text_menu">Después de seleccionar texto, mostrar el menú de acción predeterminado del sistema</string>
     <string name="google_translate">Google Translate</string>
     <string name="translate_by_paragraph">Traducir por párrafo</string>
-    <string name="onyx">Onyx</string>
     <string name="translate_processing">Procesando…</string>
     <string name="translation_language">Idioma de traducción</string>
     <string name="misc">Varios</string>
     <string name="translate_papago">Secreto de la API de Papago</string>
     <string name="translate_papago_summary">Si quieres usar el servicio de traducción de Papago, introduce tu secreto de la API</string>
     <string name="papago">Papago</string>
-    <string name="papago_translate_by_paragraph">Papago por párrafo</string>
     <string name="source_language">Idioma de origen</string>
     <string name="inter_translate">Inter Traducir</string>
     <string name="translate_image_key">Clave para la traducción de imágenes</string>

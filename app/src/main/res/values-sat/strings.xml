@@ -383,11 +383,7 @@
     <string name="setting_title_video_pip">ᱦᱩᱰᱤᱧ ᱡᱷᱚᱨᱠᱟ ᱨᱮ ᱣᱤᱰᱤᱭᱚ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_video_pip">ᱡᱚᱠᱷᱚᱱ ᱵᱷᱤᱰᱤᱭᱳ ᱮᱱᱮᱡ ᱡᱷᱚᱜ ᱟᱨ ᱪᱟᱞᱟᱜ ᱠᱟᱱᱟ, ᱵᱷᱤᱰᱤᱭᱳ ᱫᱮᱠᱷᱟᱣ ᱡᱷᱚᱜ ᱦᱩᱰᱤᱧ ᱡᱷᱚᱨᱠᱟ ᱛᱮ ᱞᱟᱦᱟᱜ ᱢᱮ ᱾</string>
     <string name="empty_whitelist_hint">ᱢᱤᱫ ᱱᱟᱣᱟ ᱰᱳᱢᱮᱱ ᱥᱮᱞᱮᱫ ᱞᱟᱹᱜᱤᱫ ᱪᱮᱛᱟᱱ ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ</string>
-    <string name="google_text">Google ᱚᱞ ᱢᱳᱰ</string>
-    <string name="papago_text">Papago ᱚᱞ ᱢᱳᱰ</string>
-    <string name="papago_full_page">Papago ᱯᱩᱨᱟ ᱥᱟᱦᱴᱟ</string>
     <string name="google_full_page">Google ᱡᱷᱚᱛᱚ ᱥᱟᱦᱴᱟ</string>
-    <string name="papago_dual_pane">Papago ᱰᱩᱣᱟᱞ ᱯᱮᱱ</string>
     <string name="google_in_place">Google in-Place</string>
     <string name="setting_title_update_adblock">AdBlock ᱡᱤᱱᱤᱥᱠᱚ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
     <string name="setting_summary_update_adblock">ᱱᱤᱛᱚᱜ AdBlock ᱣᱮᱵᱥᱟᱭᱤᱴᱠᱚ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ ᱾</string>
@@ -432,14 +428,12 @@
     <string name="setting_summary_show_default_text_menu">ᱚᱞ ᱵᱟᱪᱷᱟᱣ ᱛᱟᱭᱚᱢ, ᱥᱤᱥᱴᱚᱢ ᱢᱩᱞ ᱢᱮᱱᱩ ᱫᱮᱠᱷᱟᱣ ᱢᱮ ᱾</string>
     <string name="google_translate">ᱜᱩᱜᱚᱞ ᱛᱚᱨᱡᱚᱢᱟ</string>
     <string name="translate_by_paragraph">ᱯᱟᱨᱟᱜᱽᱨᱟᱯᱷ ᱛᱮ ᱛᱚᱨᱡᱚᱢᱟᱭ ᱢᱮ</string>
-    <string name="onyx">Onyx</string>
     <string name="translate_processing">ᱯᱨᱚᱥᱮᱥᱤᱝ...</string>
     <string name="translation_language">ᱯᱟᱹᱨᱥᱤ ᱛᱚᱨᱡᱚᱢᱟ</string>
     <string name="misc">ᱢᱤᱥᱠ</string>
     <string name="translate_papago">Naver Papago API ᱜᱩᱯᱛ</string>
     <string name="translate_papago_summary">ᱡᱩᱫᱤ ᱟᱢ Naver Papago ᱛᱚᱨᱡᱚᱢᱟ ᱥᱮᱵᱟ ᱵᱮᱵᱷᱟᱨᱮᱢ, ᱫᱟᱭᱟᱠᱟᱛᱮ ᱟᱢᱟᱜ API ᱟᱫᱮᱨ ᱢᱮ ᱾</string>
     <string name="papago">Papago</string>
-    <string name="papago_translate_by_paragraph">Paragraph ᱛᱮ Papago</string>
     <string name="source_language">ᱥᱨᱚᱛ ᱯᱟᱹᱨᱥᱤ</string>
     <string name="inter_translate">Inter ᱛᱚᱨᱡᱚᱢᱟ</string>
     <string name="translate_image_key">ᱪᱤᱛᱟᱹᱨ ᱛᱚᱨᱡᱚᱢᱟ ᱞᱟᱹᱜᱤᱫ ᱪᱟᱹᱵᱤ</string>

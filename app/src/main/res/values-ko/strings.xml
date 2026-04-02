@@ -396,11 +396,7 @@
     <string name="setting_title_video_pip">작은 창에 비디오 표시</string>
     <string name="setting_summary_video_pip">전체 화면에서 비디오를 재생하고 나갈 때 작은 창에 비디오 재생을 계속 표시합니다.</string>
     <string name="empty_whitelist_hint">오른쪽 상단 버튼을 클릭하여 새 도메인을 추가하세요.</string>
-    <string name="google_text">Google 텍스트 모드</string>
-    <string name="papago_text">파파고 텍스트 모드</string>
-    <string name="papago_full_page">파파고 전체 페이지</string>
     <string name="google_full_page">Google 전체 페이지</string>
-    <string name="papago_dual_pane">파파고 이중 창</string>
     <string name="google_in_place">Google 제자리</string>
     <string name="setting_title_update_adblock">AdBlock 콘텐츠 업데이트</string>
     <string name="setting_summary_update_adblock">지금 AdBlock 웹 사이트 업데이트를 트리거합니다.</string>
@@ -445,14 +441,12 @@
     <string name="setting_summary_show_default_text_menu">텍스트를 선택한 후 시스템 기본 동작 메뉴를 표시합니다.</string>
     <string name="google_translate">Google 번역</string>
     <string name="translate_by_paragraph">단락별 번역</string>
-    <string name="onyx">Onyx</string>
     <string name="translate_processing">처리 중...</string>
     <string name="translation_language">번역 언어</string>
     <string name="misc">기타</string>
     <string name="translate_papago">네이버 파파고 API 시크릿</string>
     <string name="translate_papago_summary">네이버 파파고 번역 서비스를 사용하려면 API 시크릿을 입력하십시오.</string>
     <string name="papago">파파고</string>
-    <string name="papago_translate_by_paragraph">파파고 단락별 번역</string>
     <string name="source_language">원본 언어</string>
     <string name="inter_translate">Inter 번역</string>
     <string name="translate_image_key">이미지 번역 키</string>

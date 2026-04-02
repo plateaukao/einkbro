@@ -98,7 +98,6 @@ class ToolbarConfigDialogFragment : ComposeDialogFragment() {
                     .filter { it.isAddable }
                     .filterNot { config.toolbarActions.contains(it) }
                     // hide papago action if papago api key is not set
-                    .filterNot { config.imageApiKey.isBlank() && it == ToolbarAction.PapagoByParagraph }
                     .map { ToolbarActionItemInfo(it, false) }
 }
 

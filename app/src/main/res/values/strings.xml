@@ -402,11 +402,7 @@
     <string name="setting_title_video_pip">Show video in small window</string>
     <string name="setting_summary_video_pip">When playing video in fullscreen and leaving, show small window to continue video playback</string>
     <string name="empty_whitelist_hint">Please click on top right button to add a new domain</string>
-    <string name="google_text">Google Text Mode</string>
-    <string name="papago_text">Papago Text Mode</string>
-    <string name="papago_full_page">Papago Whole Page</string>
     <string name="google_full_page">Google Whole Page</string>
-    <string name="papago_dual_pane">Papago Dual Pane</string>
     <string name="google_in_place">Google in-place</string>
     <string name="setting_title_update_adblock">Update AdBlock content</string>
     <string name="setting_summary_update_adblock">Trigger update AdBlock websites now</string>
@@ -458,14 +454,12 @@
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu</string>
     <string name="google_translate">Google Translate</string>
     <string name="translate_by_paragraph">Translate by Paragraph</string>
-    <string name="onyx">Onyx</string>
     <string name="translate_processing">Processing…</string>
     <string name="translation_language">Translation Language</string>
     <string name="misc">Misc</string>
     <string name="translate_papago">Naver Papago API Secret</string>
     <string name="translate_papago_summary">If you want to use Naver Papago translate service, please enter your API secret</string>
     <string name="papago">Papago</string>
-    <string name="papago_translate_by_paragraph">Papago by Paragraph</string>
     <string name="source_language">Source Language</string>
     <string name="inter_translate">Inter Translate</string>
     <string name="translate_image_key">Key for image translation</string>

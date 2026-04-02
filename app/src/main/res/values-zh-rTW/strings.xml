@@ -319,10 +319,7 @@
     <string name="setting_title_video_pip">支援用小視窗播放影片</string>
     <string name="setting_summary_video_pip">播放影片時，如果離開 EinkBro，會將影片以小視窗顯示</string>
     <string name="empty_whitelist_hint">請按右上角新增網域。</string>
-    <string name="google_text">Google 純文字模式</string>
-    <string name="papago_text">Papago 純文字模式</string>
     <string name="google_full_page">Google 整頁翻譯</string>
-    <string name="papago_dual_pane">Papago 整頁翻譯</string>
     <string name="google_in_place">Google 即時翻譯</string>
     <string name="setting_title_update_adblock">更新廣告阻擋資料</string>
     <string name="setting_summary_update_adblock">更新廣告的網站資料列表</string>

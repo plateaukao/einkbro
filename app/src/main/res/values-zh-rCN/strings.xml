@@ -387,10 +387,7 @@
     <string name="setting_title_video_pip">在小窗口显示视频</string>
     <string name="setting_summary_video_pip">在全屏播放视频并离开时，显示小窗口继续播放。</string>
     <string name="empty_whitelist_hint">请单击右上角按钮添加新域名</string>
-    <string name="google_text">谷歌文本模式</string>
-    <string name="papago_text">Papago文本模式</string>
     <string name="google_full_page">谷歌整页</string>
-    <string name="papago_dual_pane">Papago双窗口</string>
     <string name="google_in_place">谷歌原貌</string>
     <string name="setting_title_update_adblock">更新Adblock内容</string>
     <string name="setting_summary_update_adblock">Adblock网站更新列表</string>

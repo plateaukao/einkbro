@@ -386,11 +386,7 @@
     <string name="setting_title_video_pip">Tampilkan video di jendela kecil</string>
     <string name="setting_summary_video_pip">Saat memutar video dalam layar penuh dan keluar, tampilkan jendela kecil untuk melanjutkan pemutaran.</string>
     <string name="empty_whitelist_hint">Silahkan klik tombol kanan atas untuk menambahkan domain baru</string>
-    <string name="google_text">Mode Teks Google</string>
-    <string name="papago_text">Mode Teks Papago</string>
-    <string name="papago_full_page">Papago Seluruh Halaman</string>
     <string name="google_full_page">Google Seluruh Halaman</string>
-    <string name="papago_dual_pane">Panel Ganda Papago</string>
     <string name="google_in_place">Google di tempat</string>
     <string name="setting_title_update_adblock">Perbarui konten Adblock</string>
     <string name="setting_summary_update_adblock">Mulai perbarui situs web adblock sekarang</string>
