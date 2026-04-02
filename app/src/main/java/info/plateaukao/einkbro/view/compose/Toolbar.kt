@@ -47,6 +47,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,6 +56,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.dialog.compose.ComposeDialogFragment
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
@@ -144,7 +147,7 @@ fun ComposedIconBar(
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
     val shouldRowFixed = toolbarActionInfos.find { it.toolbarAction in listOf(Spacer1, Spacer2) } != null
-            && calculateSpacerWidth(toolbarActionInfos) > 50.dp
+            && calculateSpacerWidth(toolbarActionInfos) > 5.dp
 
     Row(
         modifier = Modifier
@@ -293,7 +296,7 @@ private fun calculateSpacerWidth(list: List<ToolbarActionInfo>): Dp {
         }.sumDp()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val leftWidth = screenWidth - totalActionIconWidth
-    val spacerWidth = (if (leftWidth > 50.dp) leftWidth else 50.dp) / spacerCount
+    val spacerWidth = (if (leftWidth > 5.dp) leftWidth else 5.dp) / spacerCount
     return spacerWidth
 }
 
@@ -346,6 +349,8 @@ fun PageInfoIcon(
     onClick: (ToolbarAction) -> Unit,
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
+    val iconCenterXRef = remember { intArrayOf(-1) }
+
     Text(
         text = pageInfo,
         color = MaterialTheme.colors.onBackground,
@@ -355,9 +360,19 @@ fun PageInfoIcon(
             .padding(2.dp)
             .defaultMinSize(minWidth = 46.dp)
             .wrapContentWidth()
+            .onGloballyPositioned { coordinates ->
+                iconCenterXRef[0] =
+                    (coordinates.positionInWindow().x + coordinates.size.width / 2f).toInt()
+            }
             .combinedClickable(
-                onClick = { onClick(PageInfo) },
-                onLongClick = onLongClick?.let { { it.invoke(PageInfo) } },
+                onClick = {
+                    ComposeDialogFragment.anchorX = iconCenterXRef[0]
+                    onClick(PageInfo)
+                },
+                onLongClick = onLongClick?.let { {
+                    ComposeDialogFragment.anchorX = iconCenterXRef[0]
+                    it.invoke(PageInfo)
+                } },
             )
     )
 }
@@ -372,7 +387,7 @@ fun ToolbarIcon(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 0.5.dp else (-1).dp
+    val iconCenterXRef = remember { intArrayOf(-1) }
 
     val modifier = Modifier
         .fillMaxHeight()
@@ -381,14 +396,25 @@ fun ToolbarIcon(
         .combinedClickable(
             indication = null,
             interactionSource = interactionSource,
-            onClick = { onClick(toolbarAction) },
-            onLongClick = onLongClick?.let { { it.invoke(toolbarAction) } },
+            onClick = {
+                ComposeDialogFragment.anchorX = iconCenterXRef[0]
+                onClick(toolbarAction)
+            },
+            onLongClick = onLongClick?.let { {
+                ComposeDialogFragment.anchorX = iconCenterXRef[0]
+                it.invoke(toolbarAction)
+            } },
         )
         .padding(6.dp)
         .testTag(toolbarAction.name.lowercase())
 
     Box(
-        modifier = Modifier.padding(top = 3.dp)
+        modifier = Modifier
+            .padding(top = 3.dp)
+            .onGloballyPositioned { coordinates ->
+                iconCenterXRef[0] =
+                    (coordinates.positionInWindow().x + coordinates.size.width / 2f).toInt()
+            }
     ) {
         if (pressed) {
             Box(
@@ -429,12 +455,24 @@ private fun TabCountIcon(
     else
         Modifier.border(1.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
 
+    val iconCenterXRef = remember { intArrayOf(-1) }
+
     Box(
         modifier = Modifier
             .size(toolbarIconWidth)
+            .onGloballyPositioned { coordinates ->
+                iconCenterXRef[0] =
+                    (coordinates.positionInWindow().x + coordinates.size.width / 2f).toInt()
+            }
             .combinedClickable(
-                onClick = { onClick(TabCount) },
-                onLongClick = onLongClick?.let { { it.invoke(TabCount) } },
+                onClick = {
+                    ComposeDialogFragment.anchorX = iconCenterXRef[0]
+                    onClick(TabCount)
+                },
+                onLongClick = onLongClick?.let { {
+                    ComposeDialogFragment.anchorX = iconCenterXRef[0]
+                    it.invoke(TabCount)
+                } },
             ),
         contentAlignment = Alignment.Center
     ) {

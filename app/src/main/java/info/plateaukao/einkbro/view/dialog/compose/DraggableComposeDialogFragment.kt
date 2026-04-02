@@ -9,6 +9,10 @@ import android.view.Window
 import android.view.WindowManager
 
 abstract class DraggableComposeDialogFragment: ComposeDialogFragment() {
+    override fun adjustHorizontalPosition() {
+        // Draggable dialogs use setupDialogPosition() for their own positioning
+    }
+
     private var initialTouchX: Float = 0f
     private var initialTouchY: Float = 0f
     private var initialX: Int = 0
