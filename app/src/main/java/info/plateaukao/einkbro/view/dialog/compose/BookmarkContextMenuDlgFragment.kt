@@ -37,6 +37,10 @@ class BookmarkContextMenuDlgFragment(
     private val anchorPoint: Point? = null,
     private val onClicked: (ContextMenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
+    override fun adjustHorizontalPosition() {
+        // Uses own anchor-point positioning
+    }
+
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {

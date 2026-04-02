@@ -29,9 +29,17 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
     protected lateinit var composeView: ComposeView
 
     protected var shouldShowInCenter: Boolean = false
+    private var dialogAnchorX: Int = -1
+
+    companion object {
+        /** Horizontal center X (px) of the last clicked toolbar icon. Set by toolbar, consumed by dialog. */
+        var anchorX: Int = -1
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NO_FRAME, 0)
+        dialogAnchorX = anchorX
+        anchorX = -1
         return super.onCreateDialog(savedInstanceState)
     }
 
@@ -41,7 +49,12 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
             window?.attributes?.windowAnimations = 0
             val w = window ?: return
             if (!shouldShowInCenter) {
-                w.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.END)
+                val verticalGravity = if (config.isToolbarOnTop) Gravity.TOP else Gravity.BOTTOM
+                if (dialogAnchorX >= 0) {
+                    w.setGravity(verticalGravity or Gravity.START)
+                } else {
+                    w.setGravity(verticalGravity or Gravity.END)
+                }
             }
             w.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -59,6 +72,33 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
         setupComposeView()
 
         return composeView
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adjustHorizontalPosition()
+    }
+
+    protected open fun adjustHorizontalPosition() {
+        if (dialogAnchorX < 0 || shouldShowInCenter) return
+
+        val window = dialog?.window ?: return
+        // Hide while repositioning to avoid visible jump from left edge
+        window.attributes = window.attributes.apply { alpha = 0f }
+
+        window.decorView.post {
+            val w = dialog?.window ?: return@post
+            val dialogWidth = w.decorView.width
+            val screenWidth = resources.displayMetrics.widthPixels
+            val targetX = if (dialogWidth > 0 && screenWidth > 0) {
+                (dialogAnchorX - dialogWidth / 2)
+                    .coerceIn(0, maxOf(0, screenWidth - dialogWidth))
+            } else 0
+            w.attributes = w.attributes.apply {
+                x = targetX
+                alpha = 1f
+            }
+        }
     }
 
     abstract fun setupComposeView()
