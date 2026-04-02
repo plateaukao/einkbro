@@ -193,15 +193,10 @@ class TwoPaneController(
 
     fun showTranslation(webView: EBWebView) {
         when (config.translationMode) {
-            TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
-            TranslationMode.PAPAGO_URL, TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
-            TranslationMode.ONYX, TranslationMode.PAPAGO, TranslationMode.GOOGLE ->
-                EBToast.showShort(activity, "No more supported")
-
+            TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
 
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE, webView)
-            TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.PAPAGO, webView)
             TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL, webView)
 
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateByScreen()
@@ -257,10 +252,7 @@ class TwoPaneController(
         twoPaneLayout.shouldShowSecondPane = true
 
         // handle translate url
-        if (config.translationMode == TranslationMode.PAPAGO_URL) {
-            translateUrl(buildPUrlTranslateUrl(text))
-            return
-        } else if (config.translationMode == TranslationMode.GOOGLE_URL) {
+        if (config.translationMode == TranslationMode.GOOGLE_URL) {
             translateUrl(buildGUrlTranslateUrl(text))
             return
         }
@@ -269,12 +261,7 @@ class TwoPaneController(
 
     fun showTranslationConfigDialog(translateDirectly: Boolean) {
         val enumValues: List<TranslationMode> = TranslationMode.entries.toMutableList().apply {
-            // remove not supported translation modes
-            remove(TranslationMode.ONYX)
-            remove(TranslationMode.PAPAGO)
-            remove(TranslationMode.GOOGLE)
             if (config.imageApiKey.isBlank()) {
-                remove(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
                 remove(TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN)
             }
         }
@@ -310,22 +297,6 @@ class TwoPaneController(
         translationPanel.addView(webView, 0, params)
 
         return webView
-    }
-
-    private fun buildPUrlTranslateUrl(url: String): String {
-        val uri = Uri.Builder().scheme("https").authority("papago.naver.net").path("website")
-            .appendQueryParameter("locale", "en").appendQueryParameter("source", "auto")
-            .appendQueryParameter("target", "ja").appendQueryParameter("url", url).build()
-        return uri.toString()
-    }
-
-    private fun buildPTranslateUrl(text: String): String {
-        val shortenedText: String = if (text.length > TRANSLATION_TEXT_THRESHOLD) text.substring(
-            0, TRANSLATION_TEXT_THRESHOLD
-        ) else text
-        val uri = Uri.Builder().scheme("https").authority("papago.naver.com")
-            .appendQueryParameter("st", shortenedText).build()
-        return uri.toString()
     }
 
     private fun buildGUrlTranslateUrl(url: String): String {

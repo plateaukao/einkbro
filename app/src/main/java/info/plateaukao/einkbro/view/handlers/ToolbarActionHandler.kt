@@ -30,10 +30,6 @@ class ToolbarActionHandler(
         ToolbarAction.PageDown -> browserController.jumpToBottom()
         ToolbarAction.PageInfo -> browserController.summarizeContent()
         ToolbarAction.PageUp -> browserController.jumpToTop()
-        ToolbarAction.PapagoByParagraph -> browserController.configureTranslationLanguage(
-            TRANSLATE_API.PAPAGO
-        )
-
         ToolbarAction.Refresh -> browserController.toggleFullscreen()
         ToolbarAction.Settings -> browserController.showFastToggleDialog()
         ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
@@ -72,7 +68,6 @@ class ToolbarActionHandler(
         ToolbarAction.PageDown -> browserController.pageDown()
         ToolbarAction.PageInfo -> {}
         ToolbarAction.PageUp -> browserController.pageUp()
-        ToolbarAction.PapagoByParagraph -> browserController.translate(TranslationMode.PAPAGO_TRANSLATE_BY_PARAGRAPH)
         ToolbarAction.ReaderMode -> browserController.toggleReaderMode()
         ToolbarAction.Refresh -> browserController.refreshAction()
         ToolbarAction.RotateScreen -> browserController.rotateScreen()

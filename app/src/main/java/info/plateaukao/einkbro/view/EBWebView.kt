@@ -998,14 +998,8 @@ open class EBWebView(
 
     fun hideTranslateContext() {
         when (config.translationMode) {
-            TranslationMode.GOOGLE ->
-                evaluateJavascript(hideGTranslateContext, null)
-
             TranslationMode.GOOGLE_URL ->
                 evaluateJavascript(hideGUrlTranslateContext, null)
-
-            TranslationMode.PAPAGO ->
-                evaluateJavascript(hidePTranslateContext, null)
 
             else -> Unit
         }
@@ -1113,19 +1107,6 @@ open class EBWebView(
                     "else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});" +
                     "var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
 
-        private const val hidePTranslateContext = """
-            javascript:(function() {
-                // document.getElementById("sourceEditArea").style.display="none";
-                document.getElementById("targetEditArea").scrollIntoView();
-            })()
-        """
-        private const val hideGTranslateContext = """
-            javascript:(function() {
-                document.getElementsByTagName("header")[0].remove();
-                document.querySelector("span[lang]").style.display = "none";
-                document.querySelector("div[data-location]").style.display = "none";
-            })()
-            """
         private const val hideGUrlTranslateContext = """
             javascript:(function() {
                 document.querySelector('#gt-nvframe').style = "height:0px";

@@ -651,7 +651,9 @@ class ConfigManager(
         set(value) = sp.edit { putInt(K_READER_FONT_TYPE, value.ordinal) }
 
     var translationMode: TranslationMode
-        get() = TranslationMode.entries[sp.getInt(K_TRANSLATION_MODE, 6)]
+        get() = sp.getInt(K_TRANSLATION_MODE, TranslationMode.TRANSLATE_BY_PARAGRAPH.ordinal).let { index ->
+            TranslationMode.entries.getOrElse(index) { TranslationMode.TRANSLATE_BY_PARAGRAPH }
+        }
         set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal) }
 
     var highlightStyle: HighlightStyle
@@ -1153,15 +1155,9 @@ enum class FabPosition {
 }
 
 enum class TranslationMode(val labelResId: Int) {
-    ONYX(R.string.onyx),
-    GOOGLE(R.string.google_text),
-    PAPAGO(R.string.papago_text),
-    PAPAGO_URL(R.string.papago_full_page),
     GOOGLE_URL(R.string.google_full_page),
-    PAPAGO_DUAL(R.string.papago_dual_pane),
     GOOGLE_IN_PLACE(R.string.google_in_place),
     TRANSLATE_BY_PARAGRAPH(R.string.translate_by_paragraph),
-    PAPAGO_TRANSLATE_BY_PARAGRAPH(R.string.papago_translate_by_paragraph),
     PAPAGO_TRANSLATE_BY_SCREEN(R.string.papago_translate_by_screen),
     DEEPL_BY_PARAGRAPH(R.string.deepl_translate_by_paragraph),
     OPENAI_BY_PARAGRAPH(R.string.openai_translate_by_paragraph),

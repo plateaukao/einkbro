@@ -396,11 +396,7 @@
     <string name="setting_title_video_pip">Включить режим Картинка-в-картинке</string>
     <string name="setting_summary_video_pip">Если выйти из приложения во время воспроизведения видео в полноэкранном режиме, автоматически включится маленькое окошко, в котором будет продолжено воспроизведение</string>
     <string name="empty_whitelist_hint">Пожалуйста, добавьте новый домен с помощью кнопки плюса в правом верхнем углу</string>
-    <string name="google_text">Google: Режим Текста</string>
-    <string name="papago_text">Papago: Режим Текста</string>
-    <string name="papago_full_page">Papago: Вся Страница</string>
     <string name="google_full_page">Google: Вся страница</string>
-    <string name="papago_dual_pane">Papago: В Режиме Разделённой Панели</string>
     <string name="google_in_place">Google: На Месте</string>
     <string name="setting_title_update_adblock">Обновить конфигурацию AdBlock</string>
     <string name="setting_summary_update_adblock">Запустить обновление сайтов AdBlock</string>
@@ -445,14 +441,12 @@
     <string name="setting_summary_show_default_text_menu">При выделении текста показывать системное меню действий</string>
     <string name="google_translate">Google Переводчик</string>
     <string name="translate_by_paragraph">Translate by Paragraph</string>
-    <string name="onyx">Onyx</string>
     <string name="translate_processing">Обработка…</string>
     <string name="translation_language">Язык перевода</string>
     <string name="misc">Разное</string>
     <string name="translate_papago">Секретный API-Ключ Naver Papago</string>
     <string name="translate_papago_summary">Если вы хотите использовать переводчик Naver Papago, пожалуйста, введите ваш секретный API-ключ</string>
     <string name="papago">Papago</string>
-    <string name="papago_translate_by_paragraph">Papago by Paragraph</string>
     <string name="source_language">Исходный Язык</string>
     <string name="inter_translate">Inter Translate</string>
     <string name="translate_image_key">Ключ Для Перевода Изображений</string>

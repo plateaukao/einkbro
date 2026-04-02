@@ -122,10 +122,6 @@ enum class ToolbarAction(
         imageVector = Icons.AutoMirrored.Outlined.Segment,
         titleResId = R.string.inter_translate
     ),
-    PapagoByParagraph(
-        iconResId = R.drawable.ic_papago,
-        titleResId = R.string.papago
-    ),
     MoveToBackground(
         imageVector = Icons.Outlined.Minimize,
         titleResId = R.string.move_to_background
