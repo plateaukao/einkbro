@@ -663,6 +663,9 @@ private fun TabCountIcon(
     val iconCenterXRef = remember { intArrayOf(-1) }
     val iconCenterYRef = remember { intArrayOf(-1) }
 
+    val parts = count.split("/")
+    val hasFraction = parts.size == 2
+
     Box(
         modifier = Modifier
             .size(toolbarIconWidth)
@@ -685,17 +688,55 @@ private fun TabCountIcon(
             ),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            modifier = Modifier
-                .height(28.dp)
-                .width(28.dp)
-                .then(border)
-                .padding(top = 2.dp),
-            text = count,
-            textAlign = TextAlign.Center,
-            fontSize = 16.sp,
-            color = MaterialTheme.colors.onBackground,
-        )
+        if (hasFraction) {
+            Box(
+                modifier = Modifier
+                    .height(28.dp)
+                    .width(28.dp)
+                    .then(border),
+            ) {
+                // current tab number — top-left
+                Text(
+                    text = parts[0],
+                    fontSize = 11.sp,
+                    lineHeight = 11.sp,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(start = 4.dp, top = 2.dp),
+                )
+                // slash — center
+                Text(
+                    text = "/",
+                    fontSize = 11.sp,
+                    lineHeight = 11.sp,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+                // total count — bottom-right
+                Text(
+                    text = parts[1],
+                    fontSize = 11.sp,
+                    lineHeight = 11.sp,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 4.dp, bottom = 2.dp),
+                )
+            }
+        } else {
+            Text(
+                modifier = Modifier
+                    .height(28.dp)
+                    .width(28.dp)
+                    .then(border)
+                    .padding(top = 2.dp),
+                text = count,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                color = MaterialTheme.colors.onBackground,
+            )
+        }
     }
 }
 
@@ -739,6 +780,14 @@ inline fun Modifier.conditional(
 @Composable
 fun PreviewTabCount() {
     MyTheme {
+        TabCountIcon(false, "2/5", {}, {})
+    }
+}
+
+@Preview
+@Composable
+fun PreviewTabCountSingle() {
+    MyTheme {
         TabCountIcon(false, "3", {}, {})
     }
 }
@@ -747,7 +796,7 @@ fun PreviewTabCount() {
 @Composable
 fun PreviewTabCountIncognito() {
     MyTheme {
-        TabCountIcon(true, "3", {}, {})
+        TabCountIcon(true, "2/5", {}, {})
     }
 }
 
