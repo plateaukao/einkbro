@@ -1924,7 +1924,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_DARK_MODE -> config.restartChanged = true
                 ConfigManager.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
                 ConfigManager.K_TOOLBAR_POSITION -> {
-                    composeToolbarViewController.isVertical = config.isVerticalToolbar
+                    composeToolbarViewController.updateIcons()
                     ViewUnit.updateAppbarPosition(binding)
                 }
 

@@ -43,7 +43,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 class ToolbarConfigDialogFragment : ComposeDialogFragment() {
     override fun setupComposeView() {
         val actionInfoList = getCurrentActionList()
-        val isVerticalMode = config.isVerticalToolbar && config.shouldUseLargeToolbarConfig
+        val isVerticalMode = config.isVerticalToolbar
         composeView.setContent {
             MyTheme {
                 val orientation = if (isVerticalMode) {
