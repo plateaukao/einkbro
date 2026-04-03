@@ -328,6 +328,11 @@
     <string name="menu_quickToggle">Quick toggle</string>
     <string name="setting_title_toolbar_top">Toolbar on top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen</string>
+    <string name="setting_title_toolbar_position">Toolbar position</string>
+    <string name="toolbar_position_bottom">Bottom</string>
+    <string name="toolbar_position_top">Top</string>
+    <string name="toolbar_position_left">Left</string>
+    <string name="toolbar_position_right">Right</string>
     <string name="setting_title_vi_binding">Vi key binding</string>
     <string name="setting_summary_vi_binding">Enable Vi key bindings for faster keyboard navigation</string>
     <string name="edit_custom_font">Edit Custom Font</string>

@@ -1923,6 +1923,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_DARK_MODE -> config.restartChanged = true
                 ConfigManager.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
+                ConfigManager.K_TOOLBAR_POSITION -> {
+                    composeToolbarViewController.isVertical = config.isVerticalToolbar
+                    ViewUnit.updateAppbarPosition(binding)
+                }
 
                 ConfigManager.K_NAV_POSITION -> config.restartChanged = true
 
@@ -2367,8 +2371,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
 
-        composeToolbarViewController.hide()
-
         val textOrUrl = if (ebWebView.url?.startsWith("data:") != true) {
             val url = ebWebView.url.orEmpty()
             TextFieldValue(url, selection = TextRange(0, url.length))
@@ -2387,8 +2389,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
 
-        composeToolbarViewController.hide()
-        binding.appBar.visibility = INVISIBLE
+        if (config.isVerticalToolbar) {
+            // Keep toolbar visible on the side; constrain inputUrl next to it
+            adjustInputUrlForVerticalToolbar()
+        } else {
+            composeToolbarViewController.hide()
+            binding.appBar.visibility = INVISIBLE
+        }
         binding.contentSeparator.visibility = INVISIBLE
         binding.inputUrl.visibility = VISIBLE
         binding.inputUrl.postDelayed(
@@ -2401,6 +2408,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
             }, 200
         )
+    }
+
+    private fun adjustInputUrlForVerticalToolbar() {
+        val constraintSet = androidx.constraintlayout.widget.ConstraintSet().apply {
+            clone(binding.root)
+            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
+            if (config.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Left) {
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, binding.appBar.id, androidx.constraintlayout.widget.ConstraintSet.END)
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.END)
+            } else {
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.START)
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, binding.appBar.id, androidx.constraintlayout.widget.ConstraintSet.START)
+            }
+        }
+        constraintSet.applyTo(binding.root)
     }
 
     private fun getClipboardText(): String =
@@ -2819,6 +2842,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.inputUrl.visibility = INVISIBLE
         composeToolbarViewController.show()
         ViewUnit.hideKeyboard(this)
+
+        // Restore inputUrl constraints to full-screen overlay for next focusOnInput
+        if (config.isVerticalToolbar) {
+            resetInputUrlConstraints()
+        }
+    }
+
+    private fun resetInputUrlConstraints() {
+        val constraintSet = androidx.constraintlayout.widget.ConstraintSet().apply {
+            clone(binding.root)
+            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
+            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.START)
+            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.END)
+        }
+        constraintSet.applyTo(binding.root)
     }
 
     override fun toggleFullscreen() {

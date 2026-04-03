@@ -603,11 +603,17 @@ class SettingActivity : FragmentActivity() {
         ) {
             startActivity(Intent(this, ToolbarConfigActivity::class.java))
         },
-        BooleanSettingItem(
-            R.string.setting_title_toolbar_top,
+        ListSettingWithEnumItem(
+            R.string.setting_title_toolbar_position,
             0,
-            R.string.setting_summary_toolbar_top,
-            config::isToolbarOnTop,
+            0,
+            config::toolbarPosition,
+            listOf(
+                R.string.toolbar_position_bottom,
+                R.string.toolbar_position_top,
+                R.string.toolbar_position_left,
+                R.string.toolbar_position_right,
+            )
         ),
         BooleanSettingItem(
             R.string.setting_title_hideToolbar,

@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.ToolbarPosition
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -30,16 +31,21 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
 
     protected var shouldShowInCenter: Boolean = false
     private var dialogAnchorX: Int = -1
+    private var dialogAnchorY: Int = -1
 
     companion object {
         /** Horizontal center X (px) of the last clicked toolbar icon. Set by toolbar, consumed by dialog. */
         var anchorX: Int = -1
+        /** Vertical center Y (px) of the last clicked toolbar icon. Set by toolbar, consumed by dialog. */
+        var anchorY: Int = -1
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NO_FRAME, 0)
         dialogAnchorX = anchorX
+        dialogAnchorY = anchorY
         anchorX = -1
+        anchorY = -1
         return super.onCreateDialog(savedInstanceState)
     }
 
@@ -49,11 +55,16 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
             window?.attributes?.windowAnimations = 0
             val w = window ?: return
             if (!shouldShowInCenter) {
-                val verticalGravity = if (config.isToolbarOnTop) Gravity.TOP else Gravity.BOTTOM
-                if (dialogAnchorX >= 0) {
-                    w.setGravity(verticalGravity or Gravity.START)
+                if (config.isVerticalToolbar) {
+                    val horizontalGravity = if (config.toolbarPosition == ToolbarPosition.Left) Gravity.START else Gravity.END
+                    w.setGravity(Gravity.TOP or horizontalGravity)
                 } else {
-                    w.setGravity(verticalGravity or Gravity.END)
+                    val verticalGravity = if (config.isToolbarOnTop) Gravity.TOP else Gravity.BOTTOM
+                    if (dialogAnchorX >= 0) {
+                        w.setGravity(verticalGravity or Gravity.START)
+                    } else {
+                        w.setGravity(verticalGravity or Gravity.END)
+                    }
                 }
             }
             w.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
@@ -76,7 +87,11 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
 
     override fun onStart() {
         super.onStart()
-        adjustHorizontalPosition()
+        if (config.isVerticalToolbar) {
+            adjustVerticalPosition()
+        } else {
+            adjustHorizontalPosition()
+        }
     }
 
     protected open fun adjustHorizontalPosition() {
@@ -96,6 +111,27 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
             } else 0
             w.attributes = w.attributes.apply {
                 x = targetX
+                alpha = 1f
+            }
+        }
+    }
+
+    protected open fun adjustVerticalPosition() {
+        if (dialogAnchorY < 0 || shouldShowInCenter) return
+
+        val window = dialog?.window ?: return
+        window.attributes = window.attributes.apply { alpha = 0f }
+
+        window.decorView.post {
+            val w = dialog?.window ?: return@post
+            val dialogHeight = w.decorView.height
+            val screenHeight = resources.displayMetrics.heightPixels
+            val targetY = if (dialogHeight > 0 && screenHeight > 0) {
+                (dialogAnchorY - dialogHeight / 2)
+                    .coerceIn(0, maxOf(0, screenHeight - dialogHeight))
+            } else 0
+            w.attributes = w.attributes.apply {
+                y = targetY
                 alpha = 1f
             }
         }
