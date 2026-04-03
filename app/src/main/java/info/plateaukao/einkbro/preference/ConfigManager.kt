@@ -549,6 +549,12 @@ class ConfigManager(
             }
         }
 
+    var fontFolderUri: String?
+        get() = sp.getString(K_FONT_FOLDER_URI, null)
+        set(value) {
+            sp.edit { putString(K_FONT_FOLDER_URI, value.orEmpty()) }
+        }
+
     var recentBookmarks: List<RecentBookmark>
         get() {
             val string = sp.getString(K_RECENT_BOOKMARKS, "").orEmpty()
@@ -942,6 +948,7 @@ class ConfigManager(
         const val K_CUSTOM_FONT = "sp_custom_font"
         const val K_READER_CUSTOM_FONT = "sp_reader_custom_font"
         const val K_CUSTOM_FONT_CHANGED = "sp_custom_font_changed"
+        const val K_FONT_FOLDER_URI = "sp_font_folder_uri"
         const val K_FONT_TYPE = "sp_font_type"
         const val K_READER_FONT_TYPE = "sp_reader_font_type"
         const val K_TOOLBAR_TOP = "sp_toolbar_top"

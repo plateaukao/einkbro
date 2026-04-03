@@ -135,6 +135,7 @@ import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
@@ -327,7 +328,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val recordDb: RecordDb by inject()
 
-    private lateinit var customFontResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var createWebArchivePickerLauncher: ActivityResultLauncher<Intent>
@@ -1050,8 +1050,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
-        customFontResultLauncher =
-            IntentUnit.createResultLauncher(this) { handleFontSelectionResult(it) }
         openBookmarkFileLauncher = backupUnit.createOpenBookmarkFileLauncher(this)
         createBookmarkFileLauncher = backupUnit.createCreateBookmarkFileLauncher(this)
         createWebArchivePickerLauncher =
@@ -1071,11 +1069,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (result.resultCode != RESULT_OK) return
         val uri = result.data?.data ?: return
         HelperUnit.openFile(this, uri)
-    }
-
-    private fun handleFontSelectionResult(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK) return
-        BrowserUnit.handleFontSelectionResult(this, result, ebWebView.shouldUseReaderFont())
     }
 
     private fun handleWebViewFileChooser(result: ActivityResult) {
@@ -1433,7 +1426,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (ebWebView.isTranslatePage || ebWebView.isTranslateByParagraph) VISIBLE else GONE
     }
 
-    private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
+    private fun openCustomFontPicker() {
+        FontBrowserDialogFragment(isReaderMode = ebWebView.shouldUseReaderFont()).show(
+            supportFragmentManager,
+            "font_browser_dialog"
+        )
+    }
 
     override fun showOverview() = overviewDialogController.show()
 
