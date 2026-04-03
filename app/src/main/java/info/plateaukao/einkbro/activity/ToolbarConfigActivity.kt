@@ -53,9 +53,17 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import org.koin.android.ext.android.inject
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.ToolbarPosition
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.ReorderableComposedIconBar
+import info.plateaukao.einkbro.view.compose.ReorderableComposedIconColumn
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.background
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 
 class ToolbarConfigActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
@@ -100,7 +108,10 @@ class ToolbarConfigActivity : ComponentActivity() {
                         )
                     },
                     content = { padding ->
-                        ToolbarConfigPanel(list)
+                        ToolbarConfigPanel(
+                            list = list,
+                            isVerticalPreview = config.isVerticalToolbar,
+                        )
                     }
                 )
             }
@@ -132,28 +143,107 @@ class ToolbarConfigActivity : ComponentActivity() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
+fun ToolbarConfigPanel(
+    list: MutableState<List<ToolbarActionInfo>>,
+    isVerticalPreview: Boolean = false,
+) {
     val isLandscape = ViewUnit.isLandscape(LocalContext.current)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 8.dp, start = 1.dp, end = 1.dp, bottom = 50.dp),
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        Column(
+    val onRemoveAction: (ToolbarAction) -> Unit = { action ->
+        if (action != ToolbarAction.Settings) {
+            list.value = list.value.toMutableList().apply {
+                val info = find { it.toolbarAction == action }
+                remove(info)
+            }
+        }
+    }
+
+    if (isVerticalPreview) {
+        // Side preview layout: preview column on left/right, available actions in center
+        Row(
             modifier = Modifier
-                .weight(1f),
-            verticalArrangement = Arrangement.Bottom
+                .fillMaxSize()
+                .padding(top = 8.dp, bottom = 50.dp),
         ) {
-            Row(verticalAlignment = Alignment.Bottom) {
+            // Vertical preview bar on the left side
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(50.dp)
+                    .border(1.dp, MaterialTheme.colors.onBackground),
+            ) {
+                ReorderableComposedIconColumn(
+                    list = list,
+                    title = "Toolbar Configuration",
+                    tabCount = "7",
+                    pageInfo = "4/21",
+                    onClick = onRemoveAction,
+                )
+            }
+            // Available actions
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp, end = 1.dp),
+                verticalArrangement = Arrangement.Top,
+            ) {
                 Text(
-                    modifier = Modifier.padding(start = 10.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 5.dp),
                     text = "Available Actions",
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.h6
                 )
-                if (isLandscape) {
+                Text(
+                    modifier = Modifier.padding(start = 10.dp, bottom = 5.dp),
+                    text = "click icon to add; click preview to remove; long click to reorder",
+                    color = MaterialTheme.colors.onBackground,
+                    style = MaterialTheme.typography.caption
+                )
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxWidth(),
+                    columns = GridCells.Adaptive(84.dp),
+                ) {
+                    val selectedActions = list.value.map { it.toolbarAction }
+                    val otherActionInfos = ToolbarAction.entries
+                        .filter { it !in selectedActions }
+                        .toToolbarActionInfoList()
+                    itemsIndexed(otherActionInfos) { index, info ->
+                        AvailableActionItem(info) {
+                            list.value = list.value.toMutableList().apply { add(info) }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        // Original horizontal preview layout
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 8.dp, start = 1.dp, end = 1.dp, bottom = 50.dp),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text(
+                        modifier = Modifier.padding(start = 10.dp, bottom = 5.dp),
+                        text = "Available Actions",
+                        color = MaterialTheme.colors.onBackground,
+                        style = MaterialTheme.typography.h6
+                    )
+                    if (isLandscape) {
+                        Text(
+                            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
+                            text = "click icon to add it to the toolbar",
+                            color = MaterialTheme.colors.onBackground,
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
+                }
+                if (!isLandscape) {
                     Text(
                         modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
                         text = "click icon to add it to the toolbar",
@@ -161,104 +251,91 @@ fun ToolbarConfigPanel(list: MutableState<List<ToolbarActionInfo>>) {
                         style = MaterialTheme.typography.caption
                     )
                 }
-            }
-            if (!isLandscape) {
-                Text(
-                    modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
-                    text = "click icon to add it to the toolbar",
-                    color = MaterialTheme.colors.onBackground,
-                    style = MaterialTheme.typography.caption
-                )
-            }
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                columns = GridCells.Adaptive(84.dp),
-            ) {
-                val selectedActions = list.value.map { it.toolbarAction }
-                val otherActionInfos = ToolbarAction.entries
-                    .filter { it !in selectedActions }
-                    .toToolbarActionInfoList()
-                itemsIndexed(otherActionInfos) { index, info ->
-                    Column(
-                        modifier = Modifier
-                            .padding(vertical = 5.dp)
-                            .clickable {
-                                list.value = list.value.toMutableList().apply {
-                                    add(info)
-                                }
-                            },
-                    ) {
-                        Icon(
-                            imageVector = info.toolbarAction.imageVector
-                                ?: ImageVector.vectorResource(id = info.toolbarAction.iconResId),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(48.dp)
-                                .padding(horizontal = 6.dp)
-                                .align(Alignment.CenterHorizontally),
-                            tint = MaterialTheme.colors.onBackground
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally),
-                            text = stringResource(id = info.toolbarAction.titleResId),
-                            textAlign = TextAlign.Center,
-                            fontSize = 10.sp,
-                            lineHeight = 14.sp,
-                            color = MaterialTheme.colors.onBackground
-                        )
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxWidth(),
+                    columns = GridCells.Adaptive(84.dp),
+                ) {
+                    val selectedActions = list.value.map { it.toolbarAction }
+                    val otherActionInfos = ToolbarAction.entries
+                        .filter { it !in selectedActions }
+                        .toToolbarActionInfoList()
+                    itemsIndexed(otherActionInfos) { index, info ->
+                        AvailableActionItem(info) {
+                            list.value = list.value.toMutableList().apply { add(info) }
+                        }
                     }
                 }
             }
-        }
-        Spacer(modifier = Modifier.size(10.dp))
-        Row(verticalAlignment = Alignment.Bottom) {
-            Text(
-                modifier = Modifier.padding(10.dp),
-                text = "Preview",
-                color = MaterialTheme.colors.onBackground,
-                style = MaterialTheme.typography.h6
-            )
-            if (isLandscape) {
+            Spacer(modifier = Modifier.size(10.dp))
+            Row(verticalAlignment = Alignment.Bottom) {
                 Text(
-                    modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
+                    modifier = Modifier.padding(10.dp),
+                    text = "Preview",
+                    color = MaterialTheme.colors.onBackground,
+                    style = MaterialTheme.typography.h6
+                )
+                if (isLandscape) {
+                    Text(
+                        modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
+                        text = "click icon to remove it from the toolbar; long click to drag icon to reorder",
+                        color = MaterialTheme.colors.onBackground,
+                        style = MaterialTheme.typography.caption
+                    )
+                }
+            }
+            if (!isLandscape) {
+                Text(
+                    modifier = Modifier.padding(start = 10.dp, bottom = 20.dp),
                     text = "click icon to remove it from the toolbar; long click to drag icon to reorder",
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.caption
                 )
             }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, MaterialTheme.colors.onBackground),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                ReorderableComposedIconBar(
+                    list = list,
+                    title = "Toolbar Configuration",
+                    tabCount = "7",
+                    pageInfo = "4/21",
+                    onClick = onRemoveAction,
+                )
+            }
         }
-        if (!isLandscape) {
-            Text(
-                modifier = Modifier.padding(start = 10.dp, bottom = 20.dp),
-                text = "click icon to remove it from the toolbar; long click to drag icon to reorder",
-                color = MaterialTheme.colors.onBackground,
-                style = MaterialTheme.typography.caption
-            )
-        }
-        Box(
+    }
+}
+
+@Composable
+private fun AvailableActionItem(info: ToolbarActionInfo, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .padding(vertical = 5.dp)
+            .clickable(onClick = onClick),
+    ) {
+        Icon(
+            imageVector = info.toolbarAction.imageVector
+                ?: ImageVector.vectorResource(id = info.toolbarAction.iconResId),
+            contentDescription = null,
+            modifier = Modifier
+                .size(48.dp)
+                .padding(horizontal = 6.dp)
+                .align(Alignment.CenterHorizontally),
+            tint = MaterialTheme.colors.onBackground
+        )
+        Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colors.onBackground),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            ReorderableComposedIconBar(
-                list = list,
-                title = "Toolbar Configuration",
-                tabCount = "7",
-                pageInfo = "4/21",
-                onClick = { action ->
-                    if (action != ToolbarAction.Settings) {
-                        list.value = list.value.toMutableList().apply {
-                            val info = find { it.toolbarAction == action }
-                            remove(info)
-                        }
-                    }
-                },
-            )
-        }
+                .align(Alignment.CenterHorizontally),
+            text = stringResource(id = info.toolbarAction.titleResId),
+            textAlign = TextAlign.Center,
+            fontSize = 10.sp,
+            lineHeight = 14.sp,
+            color = MaterialTheme.colors.onBackground
+        )
     }
 }
 

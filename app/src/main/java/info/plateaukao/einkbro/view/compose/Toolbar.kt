@@ -76,6 +76,7 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Time
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.Title
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import kotlinx.coroutines.delay
+import sh.calvin.reorderable.ReorderableColumn
 import sh.calvin.reorderable.ReorderableRow
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -367,6 +368,68 @@ fun ReorderableComposedIconBar(
                         tabCount,
                         null,
                         pageInfo,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ReorderableComposedIconColumn(
+    list: MutableState<List<ToolbarActionInfo>>,
+    title: String,
+    tabCount: String,
+    pageInfo: String,
+    onClick: (ToolbarAction) -> Unit,
+) {
+    ReorderableColumn(
+        modifier = Modifier
+            .width(50.dp)
+            .fillMaxHeight()
+            .background(MaterialTheme.colors.background)
+            .verticalScroll(rememberScrollState()),
+        list = list.value,
+        onSettle = { fromIndex, toIndex ->
+            list.value = list.value.toMutableList().apply {
+                add(toIndex, removeAt(fromIndex))
+            }
+        },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+    ) { _, toolbarActionInfo, isDragging ->
+        key(toolbarActionInfo) {
+            val toolbarAction = toolbarActionInfo.toolbarAction
+            Box(
+                modifier = Modifier
+                    .longPressDraggableHandle()
+                    .border(
+                        if (isDragging) 1.5.dp else (-1).dp,
+                        MaterialTheme.colors.onBackground,
+                        RoundedCornerShape(3.dp)
+                    )
+                    .conditional(toolbarAction in listOf(Spacer1, Spacer2, Time)) {
+                        clickable(onClick = { onClick(toolbarAction) })
+                    }
+            ) {
+                if (toolbarAction in listOf(Spacer1, Spacer2)) {
+                    Spacer(
+                        modifier = Modifier
+                            .width(40.dp)
+                            .height(toolbarIconWidth)
+                            .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.onBackground)
+                    )
+                } else {
+                    CreateToolbarIcon(
+                        toolbarActionInfo,
+                        list.value,
+                        onClick,
+                        title,
+                        false,
+                        tabCount,
+                        null,
+                        pageInfo,
+                        isVertical = true,
                     )
                 }
             }
