@@ -110,7 +110,7 @@ class ToolbarConfigActivity : ComponentActivity() {
                     content = { padding ->
                         ToolbarConfigPanel(
                             list = list,
-                            isVerticalPreview = config.isVerticalToolbar && config.shouldUseLargeToolbarConfig,
+                            isVerticalPreview = config.isVerticalToolbar,
                         )
                     }
                 )
@@ -162,8 +162,7 @@ fun ToolbarConfigPanel(
         // Side preview layout: preview column on left/right, available actions in center
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 8.dp, bottom = 50.dp),
+                .fillMaxSize(),
         ) {
             // Vertical preview bar on the left side
             Box(
