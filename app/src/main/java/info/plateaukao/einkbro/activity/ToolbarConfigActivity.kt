@@ -110,7 +110,7 @@ class ToolbarConfigActivity : ComponentActivity() {
                     content = { padding ->
                         ToolbarConfigPanel(
                             list = list,
-                            isVerticalPreview = config.isVerticalToolbar,
+                            isVerticalPreview = config.isVerticalToolbar && config.shouldUseLargeToolbarConfig,
                         )
                     }
                 )

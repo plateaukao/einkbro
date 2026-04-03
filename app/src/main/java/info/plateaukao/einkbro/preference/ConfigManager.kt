@@ -517,10 +517,13 @@ class ConfigManager(
         return hasInvertedColor(url)
     }
 
+    val shouldUseLargeToolbarConfig: Boolean
+        get() = if (isVerticalToolbar) !ViewUnit.isLandscape(context) else ViewUnit.isLandscape(context)
+
     var toolbarActions: List<ToolbarAction>
         get() {
             val key =
-                if (isVerticalToolbar || ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
+                if (shouldUseLargeToolbarConfig) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
             val iconListString =
                 sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())).orEmpty()
             return iconStringToEnumList(iconListString)
@@ -528,7 +531,7 @@ class ConfigManager(
         set(value) {
             sp.edit {
                 val key =
-                    if (isVerticalToolbar || ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
+                    if (shouldUseLargeToolbarConfig) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
                 putString(key, value.map { it.ordinal }.joinToString(","))
             }
         }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -42,10 +43,16 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 class ToolbarConfigDialogFragment : ComposeDialogFragment() {
     override fun setupComposeView() {
         val actionInfoList = getCurrentActionList()
+        val isVerticalMode = config.isVerticalToolbar && config.shouldUseLargeToolbarConfig
         composeView.setContent {
             MyTheme {
+                val orientation = if (isVerticalMode) {
+                    Modifier.wrapContentWidth().heightIn(max = 500.dp)
+                } else {
+                    Modifier.width(IntrinsicSize.Max)
+                }
                 Column(
-                    Modifier.width(IntrinsicSize.Max),
+                    orientation,
                     horizontalAlignment = Alignment.End,
                 ) {
                     var rememberList by remember { mutableStateOf(actionInfoList) }
