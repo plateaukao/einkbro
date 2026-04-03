@@ -270,7 +270,6 @@ object ViewUnit: KoinComponent {
 
     fun createCountString(superScript: Int, subScript: Int): String {
         if (subScript == 0 || superScript == 0) return "1"
-        if (subScript >= 10) return subScript.toString()
 
         if (subScript == superScript) return subScript.toString()
 

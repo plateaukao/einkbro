@@ -2,6 +2,7 @@
 
 package info.plateaukao.einkbro.view.compose
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -60,6 +61,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.dialog.compose.ComposeDialogFragment
@@ -665,6 +667,8 @@ private fun TabCountIcon(
 
     val parts = count.split("/")
     val hasFraction = parts.size == 2
+    val hasLargeNumber = hasFraction && (parts[0].length > 1 || parts[1].length > 1)
+    val fractionFontSize = if (hasLargeNumber) 9.sp else 11.sp
 
     Box(
         modifier = Modifier
@@ -696,32 +700,61 @@ private fun TabCountIcon(
                     .then(border),
             ) {
                 // current tab number — top-left
+                val bothSingleDigit = parts[0].length == 1 && parts[1].length == 1
+                val currentPadStart = when {
+                    bothSingleDigit -> 6.dp
+                    parts[0].length == 1 && parts[1].length > 1 -> 5.dp
+                    else -> 3.dp
+                }
+                val currentPadTop = when {
+                    bothSingleDigit -> 2.dp
+                    parts[0].length == 1 && parts[1].length > 1 -> 2.dp
+                    else -> 1.dp
+                }
                 Text(
                     text = parts[0],
-                    fontSize = 11.sp,
-                    lineHeight = 11.sp,
+                    fontSize = fractionFontSize,
+                    lineHeight = fractionFontSize,
                     color = MaterialTheme.colors.onBackground,
                     modifier = Modifier
                         .align(Alignment.TopStart)
-                        .padding(start = 4.dp, top = 2.dp),
+                        .padding(start = currentPadStart, top = currentPadTop),
                 )
-                // slash — center
-                Text(
-                    text = "/",
-                    fontSize = 11.sp,
-                    lineHeight = 11.sp,
-                    color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.align(Alignment.Center),
-                )
+                // diagonal slash line
+                val slashColor = MaterialTheme.colors.onBackground
+                Canvas(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(28.dp),
+                ) {
+                    val strokeWidth = 0.5.dp.toPx()
+                    val lineLength = size.minDimension * 0.40f
+                    val centerX = size.width / 2f
+                    val centerY = size.height / 2f
+                    drawLine(
+                        color = slashColor,
+                        start = Offset(
+                            centerX + lineLength / 2f,
+                            centerY - lineLength / 2f,
+                        ),
+                        end = Offset(
+                            centerX - lineLength / 2f,
+                            centerY + lineLength / 2f,
+                        ),
+                        strokeWidth = strokeWidth,
+                    )
+                }
                 // total count — bottom-right
+                val totalPadEnd = if (bothSingleDigit) 6.dp else 3.dp
+                val totalPadBottom = if (bothSingleDigit) 2.dp else 1.dp
                 Text(
                     text = parts[1],
-                    fontSize = 11.sp,
-                    lineHeight = 11.sp,
+                    fontSize = fractionFontSize,
+                    lineHeight = fractionFontSize,
                     color = MaterialTheme.colors.onBackground,
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(end = 4.dp, bottom = 2.dp),
+                        .padding(end = totalPadEnd, bottom = totalPadBottom),
                 )
             }
         } else {
@@ -789,6 +822,14 @@ fun PreviewTabCount() {
 fun PreviewTabCountSingle() {
     MyTheme {
         TabCountIcon(false, "3", {}, {})
+    }
+}
+
+@Preview
+@Composable
+fun PreviewTabCountLarge() {
+    MyTheme {
+        TabCountIcon(false, "3/12", {}, {})
     }
 }
 
