@@ -26,6 +26,7 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView.LAYER_TYPE_HARDWARE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
 import info.plateaukao.einkbro.EinkBroApplication
@@ -281,18 +282,23 @@ object ViewUnit: KoinComponent {
 
 
     fun updateAppbarPosition(binding: MainActivityLayout) {
-        if (config.isToolbarOnTop) {
-            moveAppbarToTop(binding)
-        } else {
-            moveAppbarToBottom(binding)
+        when (config.toolbarPosition) {
+            info.plateaukao.einkbro.preference.ToolbarPosition.Top -> moveAppbarToTop(binding)
+            info.plateaukao.einkbro.preference.ToolbarPosition.Left -> moveAppbarToLeft(binding)
+            info.plateaukao.einkbro.preference.ToolbarPosition.Right -> moveAppbarToRight(binding)
+            else -> moveAppbarToBottom(binding)
         }
     }
 
 
     private fun moveAppbarToBottom(binding: MainActivityLayout) {
+        setAppbarHorizontalLayoutParams(binding)
+        binding.contentSeparator.visibility = android.view.View.VISIBLE
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.TOP)
+            clear(binding.appBar.id, ConstraintSet.START)
+            clear(binding.appBar.id, ConstraintSet.END)
             connect(
                 binding.appBar.id,
                 ConstraintSet.BOTTOM,
@@ -309,6 +315,18 @@ object ViewUnit: KoinComponent {
             )
             connect(
                 binding.twoPanelLayout.id,
+                ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.START
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.END,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END
+            )
+            connect(
+                binding.twoPanelLayout.id,
                 ConstraintSet.TOP,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.TOP
@@ -321,6 +339,8 @@ object ViewUnit: KoinComponent {
             )
 
             clear(binding.contentSeparator.id, ConstraintSet.TOP)
+            clear(binding.contentSeparator.id, ConstraintSet.START)
+            clear(binding.contentSeparator.id, ConstraintSet.END)
             connect(
                 binding.contentSeparator.id,
                 ConstraintSet.BOTTOM,
@@ -332,9 +352,13 @@ object ViewUnit: KoinComponent {
     }
 
     private fun moveAppbarToTop(binding: MainActivityLayout) {
+        setAppbarHorizontalLayoutParams(binding)
+        binding.contentSeparator.visibility = android.view.View.VISIBLE
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.BOTTOM)
+            clear(binding.appBar.id, ConstraintSet.START)
+            clear(binding.appBar.id, ConstraintSet.END)
             connect(
                 binding.appBar.id,
                 ConstraintSet.TOP,
@@ -343,6 +367,18 @@ object ViewUnit: KoinComponent {
                 0
             )
 
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.START
+            )
+            connect(
+                binding.twoPanelLayout.id,
+                ConstraintSet.END,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END
+            )
             connect(
                 binding.twoPanelLayout.id,
                 ConstraintSet.TOP,
@@ -357,6 +393,8 @@ object ViewUnit: KoinComponent {
             )
 
             clear(binding.contentSeparator.id, ConstraintSet.BOTTOM)
+            clear(binding.contentSeparator.id, ConstraintSet.START)
+            clear(binding.contentSeparator.id, ConstraintSet.END)
             connect(
                 binding.contentSeparator.id,
                 ConstraintSet.TOP,
@@ -365,6 +403,79 @@ object ViewUnit: KoinComponent {
             )
         }
         constraintSet.applyTo(binding.root)
+    }
+
+    private fun moveAppbarToLeft(binding: MainActivityLayout) {
+        setAppbarVerticalLayoutParams(binding)
+        binding.contentSeparator.visibility = android.view.View.GONE
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(binding.appBar.id, ConstraintSet.TOP)
+            clear(binding.appBar.id, ConstraintSet.BOTTOM)
+            clear(binding.appBar.id, ConstraintSet.END)
+            connect(binding.appBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            connect(binding.appBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            connect(binding.appBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+            connect(binding.twoPanelLayout.id, ConstraintSet.START, binding.appBar.id, ConstraintSet.END)
+            connect(binding.twoPanelLayout.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun moveAppbarToRight(binding: MainActivityLayout) {
+        setAppbarVerticalLayoutParams(binding)
+        binding.contentSeparator.visibility = android.view.View.GONE
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(binding.appBar.id, ConstraintSet.TOP)
+            clear(binding.appBar.id, ConstraintSet.BOTTOM)
+            clear(binding.appBar.id, ConstraintSet.START)
+            connect(binding.appBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            connect(binding.appBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            connect(binding.appBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+            connect(binding.twoPanelLayout.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            connect(binding.twoPanelLayout.id, ConstraintSet.END, binding.appBar.id, ConstraintSet.START)
+            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun setAppbarHorizontalLayoutParams(binding: MainActivityLayout) {
+        binding.appBar.layoutParams = (binding.appBar.layoutParams as ConstraintLayout.LayoutParams).apply {
+            width = ConstraintLayout.LayoutParams.MATCH_PARENT
+            height = ConstraintLayout.LayoutParams.WRAP_CONTENT
+        }
+        // Restore children to MATCH_PARENT width for horizontal toolbar
+        binding.composeIconBar.layoutParams = (binding.composeIconBar.layoutParams as android.widget.FrameLayout.LayoutParams).apply {
+            width = android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            height = android.widget.FrameLayout.LayoutParams.WRAP_CONTENT
+        }
+        binding.mainSearchPanel.layoutParams = (binding.mainSearchPanel.layoutParams as android.widget.FrameLayout.LayoutParams).apply {
+            width = android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            height = android.widget.FrameLayout.LayoutParams.WRAP_CONTENT
+        }
+    }
+
+    private fun setAppbarVerticalLayoutParams(binding: MainActivityLayout) {
+        val toolbarWidthPx = (50 * binding.root.context.resources.displayMetrics.density).toInt()
+        binding.appBar.layoutParams = (binding.appBar.layoutParams as ConstraintLayout.LayoutParams).apply {
+            width = toolbarWidthPx
+            height = ConstraintSet.MATCH_CONSTRAINT
+        }
+        // Children fill the fixed-width appBar
+        binding.composeIconBar.layoutParams = (binding.composeIconBar.layoutParams as android.widget.FrameLayout.LayoutParams).apply {
+            width = android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            height = android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+        }
+        binding.mainSearchPanel.layoutParams = (binding.mainSearchPanel.layoutParams as android.widget.FrameLayout.LayoutParams).apply {
+            width = android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            height = android.widget.FrameLayout.LayoutParams.WRAP_CONTENT
+        }
     }
 }
 

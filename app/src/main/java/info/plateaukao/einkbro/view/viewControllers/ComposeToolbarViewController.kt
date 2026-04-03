@@ -50,6 +50,8 @@ class ComposeToolbarViewController(
     var tabCount by mutableStateOf("")
     var pageInfo by mutableStateOf("")
     var isIncognito by mutableStateOf(false)
+    var isVertical by mutableStateOf(config.isVerticalToolbar)
+    var isToolbarOnRight by mutableStateOf(config.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right)
     var albumFocusIndex = mutableStateOf(0)
 
     private val onTabClick: (Album) -> Unit = onTabClick
@@ -63,12 +65,14 @@ class ComposeToolbarViewController(
         composeView.setContent {
             MyTheme {
                 ComposedToolbar(
-                    showTabs = shouldShowTabs,
+                    showTabs = shouldShowTabs && !isVertical,
                     toolbarActionInfoList,
                     title = title,
                     tabCount = tabCount,
                     pageInfo = pageInfo,
                     isIncognito = isIncognito,
+                    isVertical = isVertical,
+                    isToolbarOnRight = isToolbarOnRight,
                     onIconClick = onIconClick,
                     onIconLongClick = onIconLongClick,
                     albumList = albums,
@@ -122,6 +126,8 @@ class ComposeToolbarViewController(
 
         toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
         isIncognito = config.isIncognitoMode
+        isVertical = config.isVerticalToolbar
+        isToolbarOnRight = config.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right
     }
 
     private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo> {

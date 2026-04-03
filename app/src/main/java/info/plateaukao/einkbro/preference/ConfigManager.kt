@@ -51,7 +51,21 @@ class ConfigManager(
 
     var enableWebBkgndLoad by BooleanPreference(sp, K_BKGND_LOAD, true)
     var enableJavascript by BooleanPreference(sp, K_JAVASCRIPT, true)
-    var isToolbarOnTop by BooleanPreference(sp, K_TOOLBAR_TOP, false)
+    var toolbarPosition: ToolbarPosition
+        get() {
+            val posOrdinal = sp.getInt(K_TOOLBAR_POSITION, -1)
+            if (posOrdinal >= 0) return ToolbarPosition.entries.getOrElse(posOrdinal) { ToolbarPosition.Bottom }
+            // migrate from old boolean preference
+            return if (sp.getBoolean(K_TOOLBAR_TOP, false)) ToolbarPosition.Top else ToolbarPosition.Bottom
+        }
+        set(value) = sp.edit { putInt(K_TOOLBAR_POSITION, value.ordinal) }
+
+    var isToolbarOnTop: Boolean
+        get() = toolbarPosition == ToolbarPosition.Top
+        set(value) { toolbarPosition = if (value) ToolbarPosition.Top else ToolbarPosition.Bottom }
+
+    val isVerticalToolbar: Boolean
+        get() = toolbarPosition == ToolbarPosition.Left || toolbarPosition == ToolbarPosition.Right
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
     var isMultitouchEnabled by BooleanPreference(sp, K_MULTITOUCH, false)
     var useUpDownPageTurn by BooleanPreference(sp, K_UPDOWN_PAGE_TURN, false)
@@ -952,6 +966,7 @@ class ConfigManager(
         const val K_FONT_TYPE = "sp_font_type"
         const val K_READER_FONT_TYPE = "sp_reader_font_type"
         const val K_TOOLBAR_TOP = "sp_toolbar_top"
+        const val K_TOOLBAR_POSITION = "sp_toolbar_position"
         const val K_VI_BINDING = "sp_enable_vi_binding"
         const val K_MEDIA_CONTINUE = "sp_media_continue"
         const val K_RECENT_BOOKMARKS = "sp_recent_bookmarks"
@@ -1233,6 +1248,10 @@ enum class TranslationTextStyle(
 
 enum class SaveHistoryMode {
     SAVE_WHEN_OPEN, SAVE_WHEN_CLOSE, DISABLED
+}
+
+enum class ToolbarPosition {
+    Bottom, Top, Left, Right
 }
 
 fun KMutableProperty0<Boolean>.toggle() = set(!get())
