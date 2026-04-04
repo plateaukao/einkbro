@@ -113,6 +113,7 @@ class ConfigManager(
     var enableRemoteAccess by BooleanPreference(sp, K_ENABLE_REMOTE_ACCESS, true)
     var enableImages by BooleanPreference(sp, K_ENABLE_IMAGES, true)
     var enableVideoAutoFullscreen by BooleanPreference(sp, K_ENABLE_VIDEO_AUTO_FULLSCREEN, false)
+    var enableVideoAutoplay by BooleanPreference(sp, K_ENABLE_VIDEO_AUTOPLAY, false)
     var enableVideoPip by BooleanPreference(sp, K_ENABLE_VIDEO_PIP, false)
     var autoUpdateAdblock by BooleanPreference(sp, K_AUTO_UPDATE_ADBLOCK, false)
     var enableCertificateErrorDialog by BooleanPreference(sp, CERTIFICATE_ERROR_DIALOG, true)
@@ -1009,6 +1010,7 @@ class ConfigManager(
         const val K_ENABLE_REMOTE_ACCESS = "sp_remote"
         const val K_ENABLE_IMAGES = "SP_IMAGES_9"
         const val K_ENABLE_VIDEO_AUTO_FULLSCREEN = "sp_video_auto_fullscreen"
+        const val K_ENABLE_VIDEO_AUTOPLAY = "sp_video_autoplay"
         const val K_ENABLE_VIDEO_PIP = "sp_video_auto_pip"
         const val K_ADBLOCK_HOSTS_URL = "ab_hosts"
         const val K_AUTO_UPDATE_ADBLOCK = "sp_auto_update_adblock"
