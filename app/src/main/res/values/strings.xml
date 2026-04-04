@@ -410,6 +410,8 @@
     <string name="title_activity_setting">SettingActivity</string>
     <string name="setting_title_video_auto_fullscreen">Enable video play in fullscreen</string>
     <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen</string>
+    <string name="setting_title_video_autoplay">Allow video autoplay</string>
+    <string name="setting_summary_video_autoplay">Allow videos to play automatically without user interaction</string>
     <string name="setting_title_video_pip">Show video in small window</string>
     <string name="setting_summary_video_pip">When playing video in fullscreen and leaving, show small window to continue video playback</string>
     <string name="empty_whitelist_hint">Please click on top right button to add a new domain</string>

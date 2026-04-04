@@ -542,6 +542,12 @@ class SettingActivity : FragmentActivity() {
         DividerSettingItem(),
         // Video
         BooleanSettingItem(
+            R.string.setting_title_video_autoplay,
+            0,
+            R.string.setting_summary_video_autoplay,
+            config::enableVideoAutoplay,
+        ),
+        BooleanSettingItem(
             R.string.setting_title_video_auto_fullscreen,
             0,
             R.string.setting_summary_video_auto_fullscreen,

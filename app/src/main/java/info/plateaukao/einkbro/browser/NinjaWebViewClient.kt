@@ -83,6 +83,10 @@ class EBWebViewClient(
         if (config.adBlock) {
             adFilter.performScript(view, url)
         }
+
+        if (!config.enableVideoAutoplay) {
+            ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
+        }
     }
 
     override fun onPageFinished(view: WebView, url: String) {
