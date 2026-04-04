@@ -435,6 +435,20 @@ class SettingActivity : FragmentActivity() {
             )
         ),
         ListSettingWithEnumItem(
+            R.string.eink_image_adjustment,
+            0,
+            R.string.eink_image_adjustment_summary,
+            config::einkImageAdjustment,
+            listOf(
+                R.string.eink_image_off,
+                R.string.eink_image_10,
+                R.string.eink_image_30,
+                R.string.eink_image_50,
+                R.string.eink_image_70,
+                R.string.eink_image_100,
+            )
+        ),
+        ListSettingWithEnumItem(
             R.string.setting_title_nav_pos,
             0,
             R.string.setting_summary_nav_pos,

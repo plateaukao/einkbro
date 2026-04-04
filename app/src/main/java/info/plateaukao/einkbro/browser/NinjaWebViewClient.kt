@@ -33,7 +33,9 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.EinkImageProcessor
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -266,7 +268,50 @@ class EBWebViewClient(
             }
         }
 
+        processEinkImageRequest(request)?.let { return it }
+
         return handleWebRequest(view, request.url) ?: super.shouldInterceptRequest(view, request)
+    }
+
+    private fun processEinkImageRequest(request: WebResourceRequest): WebResourceResponse? {
+        val adjustment = config.einkImageAdjustment
+        if (adjustment == EinkImageAdjustment.OFF) return null
+
+        val url = request.url.toString()
+        val mimeType = getImageMimeType(url) ?: return null
+
+        return try {
+            val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
+            request.requestHeaders?.forEach { (key, value) ->
+                connection.setRequestProperty(key, value)
+            }
+            connection.connectTimeout = 10_000
+            connection.readTimeout = 10_000
+
+            val inputStream = connection.inputStream
+            val processedStream = EinkImageProcessor.processStream(
+                inputStream, mimeType, adjustment.strength
+            )
+            inputStream.close()
+
+            if (processedStream != null) {
+                WebResourceResponse(mimeType, null, processedStream)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun getImageMimeType(url: String): String? {
+        val lower = url.substringBefore('?').substringBefore('#').lowercase()
+        return when {
+            lower.endsWith(".jpg") || lower.endsWith(".jpeg") -> "image/jpeg"
+            lower.endsWith(".png") -> "image/png"
+            lower.endsWith(".webp") -> "image/webp"
+            else -> null
+        }
     }
 
     private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
