@@ -699,6 +699,18 @@ class ConfigManager(
         get() = DarkMode.entries[sp.getString(K_DARK_MODE, "2")?.toInt() ?: 2]
         set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
 
+    var einkImageAdjustment: EinkImageAdjustment
+        get() = try {
+            EinkImageAdjustment.entries.getOrElse(
+                sp.getInt(K_ENABLE_IMAGE_ADJUSTMENT, 0)
+            ) { EinkImageAdjustment.OFF }
+        } catch (e: ClassCastException) {
+            // migrate from old boolean preference
+            sp.edit { remove(K_ENABLE_IMAGE_ADJUSTMENT) }
+            EinkImageAdjustment.OFF
+        }
+        set(value) = sp.edit { putInt(K_ENABLE_IMAGE_ADJUSTMENT, value.ordinal) }
+
     var newTabBehavior: NewTabBehavior
         get() = NewTabBehavior.entries[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_NEW_TAB_BEHAVIOR, value.ordinal.toString()) }
@@ -1251,6 +1263,15 @@ enum class TranslationTextStyle(
 
 enum class SaveHistoryMode {
     SAVE_WHEN_OPEN, SAVE_WHEN_CLOSE, DISABLED
+}
+
+enum class EinkImageAdjustment(val strength: Int, val labelResId: Int) {
+    OFF(0, R.string.eink_image_off),
+    LEVEL_10(10, R.string.eink_image_10),
+    LEVEL_30(30, R.string.eink_image_30),
+    LEVEL_50(50, R.string.eink_image_50),
+    LEVEL_70(70, R.string.eink_image_70),
+    LEVEL_100(100, R.string.eink_image_100),
 }
 
 enum class ToolbarPosition {

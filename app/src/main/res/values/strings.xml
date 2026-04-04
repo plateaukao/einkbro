@@ -428,6 +428,14 @@
     <string name="manual">Manual</string>
     <string name="black_font">Black font</string>
     <string name="image_adjust">Image Adjust</string>
+    <string name="eink_image_adjustment">E-ink Image Optimization</string>
+    <string name="eink_image_adjustment_summary">Adjust web images (JPEG/PNG/WebP) for better e-ink display</string>
+    <string name="eink_image_off">Off</string>
+    <string name="eink_image_10">10%</string>
+    <string name="eink_image_30">30%</string>
+    <string name="eink_image_50">50%</string>
+    <string name="eink_image_70">70%</string>
+    <string name="eink_image_100">100%</string>
     <string name="bookmark_new_file">Create new file</string>
     <string name="bookmark_open_file">Link existing file</string>
     <string name="menu_save_archive">Save for later</string>
