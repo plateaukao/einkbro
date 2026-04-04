@@ -22,7 +22,7 @@ object EinkImageProcessor {
 
     private fun clamp(v: Int): Int = v.coerceIn(0, 255)
 
-    private fun buildToneLUT(gamma: Double, k: Double): IntArray {
+    private fun buildToneLUT(gamma: Double, k: Double, shadowLift: Double): IntArray {
         val lut = IntArray(256)
         val sig0: Double
         val sigRange: Double
@@ -37,6 +37,10 @@ object EinkImageProcessor {
             var v = Math.pow(i / 255.0, 1.0 / gamma) // gamma lift
             if (k > 0.01) { // S-curve contrast
                 v = (1.0 / (1.0 + exp(-k * (v - 0.5))) - sig0) / sigRange
+            }
+            // Shadow lift: raise black point so dark tones don't collapse on e-ink
+            if (shadowLift > 0.0) {
+                v = shadowLift + v * (1.0 - shadowLift)
             }
             lut[i] = (v * 255.0 + 0.5).toInt().coerceIn(0, 255)
         }
@@ -53,9 +57,10 @@ object EinkImageProcessor {
         val t = strength / 100.0
         val gamma = 1.0 + t * 1.0       // 1.0 → 2.0
         val sat = 1.0 + t * 0.8         // 1.0 → 1.8
-        val sCurveK = t * 8.0           // 0   → 8
+        val sCurveK = t * 5.0           // 0   → 5  (gentler to preserve dark detail)
+        val shadowLift = t * 0.08       // 0   → 8% black-point raise
 
-        val lut = buildToneLUT(gamma, sCurveK)
+        val lut = buildToneLUT(gamma, sCurveK, shadowLift)
 
         val w = bitmap.width
         val h = bitmap.height
