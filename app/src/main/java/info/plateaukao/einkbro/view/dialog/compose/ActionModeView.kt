@@ -60,6 +60,7 @@ fun ActionModeMenu(
                 info.title,
                 if (showIcons) info.drawable else null,
                 if (showIcons) info.imageVector else null,
+                cornerDrawable = if (showIcons) info.cornerDrawable else null,
                 onClicked = {
                     info.action?.invoke()
                     if (info.closeMenu) onClicked(info.intent)
@@ -78,6 +79,7 @@ fun ActionMenuItem(
     title: String,
     iconDrawable: Drawable?,
     imageVector: ImageVector? = null,
+    cornerDrawable: Drawable? = null,
     onClicked: () -> Unit = {},
     onLongClicked: () -> Unit = {},
 ) {
@@ -90,7 +92,7 @@ fun ActionMenuItem(
         else -> 45.dp
     }
 
-    val fontSize = if (iconDrawable == null && imageVector == null) 12.sp else
+    val fontSize = if (cornerDrawable != null || (iconDrawable == null && imageVector == null)) 12.sp else
         if (configuration.screenWidthDp > 500) 10.sp else 8.sp
     Box(
         modifier = Modifier
@@ -106,50 +108,84 @@ fun ActionMenuItem(
                     .align(Alignment.TopStart)
             )
         }
-        Column(
-            modifier = Modifier
-                .wrapContentHeight()
-                .padding(8.dp)
-                .combinedClickable(
-                    indication = null,
-                    interactionSource = interactionSource,
-                    onClick = onClicked,
-                    onLongClick = onLongClicked,
-                ),
-
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (iconDrawable != null) {
-                Image(
-                    painter = rememberDrawablePainter(drawable = iconDrawable),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(44.dp)
-                        .padding(horizontal = 6.dp),
-                )
-            }
-            if (imageVector != null) {
-                Image(
-                    imageVector = imageVector,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(44.dp)
-                        .padding(horizontal = 6.dp),
-                )
-            }
-            if (title.isNotEmpty()) {
+        if (cornerDrawable != null) {
+            // GPT action: title centered, small type icon at bottom-right
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .combinedClickable(
+                        indication = null,
+                        interactionSource = interactionSource,
+                        onClick = onClicked,
+                        onLongClick = onLongClicked,
+                    )
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center,
+            ) {
                 Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
                     text = title,
                     textAlign = TextAlign.Center,
                     maxLines = 2,
                     lineHeight = fontSize,
                     fontSize = fontSize,
-                    color = MaterialTheme.colors.onBackground
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.padding(bottom = 14.dp, top = 14.dp),
                 )
+                Image(
+                    painter = rememberDrawablePainter(drawable = cornerDrawable),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .align(Alignment.BottomEnd),
+                )
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(8.dp)
+                    .combinedClickable(
+                        indication = null,
+                        interactionSource = interactionSource,
+                        onClick = onClicked,
+                        onLongClick = onLongClicked,
+                    ),
+
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (iconDrawable != null) {
+                    Image(
+                        painter = rememberDrawablePainter(drawable = iconDrawable),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(44.dp)
+                            .padding(horizontal = 6.dp),
+                    )
+                }
+                if (imageVector != null) {
+                    Image(
+                        imageVector = imageVector,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(44.dp)
+                            .padding(horizontal = 6.dp),
+                    )
+                }
+                if (title.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        text = title,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        lineHeight = fontSize,
+                        fontSize = fontSize,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
             }
         }
     }

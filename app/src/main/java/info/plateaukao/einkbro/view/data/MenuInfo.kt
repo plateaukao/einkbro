@@ -14,6 +14,7 @@ data class MenuInfo(
     val closeMenu: Boolean = true,
     val action: (() -> Unit)? = null,
     val longClickAction: (() -> Unit)? = null,
+    val cornerDrawable: Drawable? = null, // optional small icon at bottom-right corner (e.g. GPT type)
 )
 
 fun ResolveInfo.toMenuInfo(pm: PackageManager): MenuInfo {
