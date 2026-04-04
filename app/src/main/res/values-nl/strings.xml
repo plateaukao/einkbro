@@ -203,4 +203,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Werkbalkpositie</string>
+    <string name="toolbar_position_bottom">Onder</string>
+    <string name="toolbar_position_top">Boven</string>
+    <string name="toolbar_position_left">Links</string>
+    <string name="toolbar_position_right">Rechts</string>
+    <string name="font_folder">Lettertypemap</string>
+    <string name="select_font_folder">Lettertypemap selecteren</string>
+    <string name="change_folder">Map wijzigen</string>
+    <string name="search_fonts">Lettertypen zoeken…</string>
+    <string name="no_fonts_found">Geen lettertypen gevonden in deze map</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink beeldoptimalisatie</string>
+    <string name="eink_image_adjustment_summary">Webafbeeldingen (JPEG/PNG/WebP) aanpassen voor betere E-ink weergave</string>
+    <string name="eink_image_off">Uit</string>
+    <string name="setting_title_reader_keep_extra_content">Leesmodus: Extra inhoud behouden</string>
+    <string name="setting_summary_reader_keep_extra_content">Stijlen, klassen en formules (MathJax/KaTeX) behouden in leesmodus</string>
 </resources>

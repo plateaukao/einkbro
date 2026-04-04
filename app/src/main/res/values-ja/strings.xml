@@ -234,4 +234,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">ツールバーの位置</string>
+    <string name="toolbar_position_bottom">下部</string>
+    <string name="toolbar_position_top">上部</string>
+    <string name="toolbar_position_left">左側</string>
+    <string name="toolbar_position_right">右側</string>
+    <string name="font_folder">フォントフォルダ</string>
+    <string name="select_font_folder">フォントフォルダを選択</string>
+    <string name="change_folder">フォルダを変更</string>
+    <string name="search_fonts">フォントを検索…</string>
+    <string name="no_fonts_found">このフォルダにフォントが見つかりません</string>
+    <string name="font_preview_text">あいうえお AaBb 123</string>
+    <string name="eink_image_adjustment">E-ink画像最適化</string>
+    <string name="eink_image_adjustment_summary">ウェブ画像（JPEG/PNG/WebP）をE-inkディスプレイ向けに調整</string>
+    <string name="eink_image_off">オフ</string>
+    <string name="setting_title_reader_keep_extra_content">リーダーモード：追加コンテンツを保持</string>
+    <string name="setting_summary_reader_keep_extra_content">リーダーモードでスタイル、クラス、数式（MathJax/KaTeX）を保持</string>
 </resources>

@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">מיקום סרגל הכלים</string>
+    <string name="toolbar_position_bottom">למטה</string>
+    <string name="toolbar_position_top">למעלה</string>
+    <string name="toolbar_position_left">שמאל</string>
+    <string name="toolbar_position_right">ימין</string>
+    <string name="font_folder">תיקיית גופנים</string>
+    <string name="select_font_folder">בחירת תיקיית גופנים</string>
+    <string name="change_folder">שינוי תיקייה</string>
+    <string name="search_fonts">חיפוש גופנים…</string>
+    <string name="no_fonts_found">לא נמצאו גופנים בתיקייה זו</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">אופטימיזציית תמונות E-ink</string>
+    <string name="eink_image_adjustment_summary">התאמת תמונות אינטרנט (JPEG/PNG/WebP) לתצוגת E-ink טובה יותר</string>
+    <string name="eink_image_off">כבוי</string>
+    <string name="setting_title_reader_keep_extra_content">מצב קריאה: שמירה על תוכן נוסף</string>
+    <string name="setting_summary_reader_keep_extra_content">שמירה על סגנונות, מחלקות ונוסחאות (MathJax/KaTeX) במצב קריאה</string>
 </resources>

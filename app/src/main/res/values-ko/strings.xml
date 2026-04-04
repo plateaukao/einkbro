@@ -545,4 +545,20 @@
     <string name="setting_app_locale">UI 언어</string>
     <string name="setting_summary_app_locale">인터페이스 언어를 구성합니다.</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
+    <string name="setting_title_toolbar_position">도구 모음 위치</string>
+    <string name="toolbar_position_bottom">하단</string>
+    <string name="toolbar_position_top">상단</string>
+    <string name="toolbar_position_left">왼쪽</string>
+    <string name="toolbar_position_right">오른쪽</string>
+    <string name="font_folder">글꼴 폴더</string>
+    <string name="select_font_folder">글꼴 폴더 선택</string>
+    <string name="change_folder">폴더 변경</string>
+    <string name="search_fonts">글꼴 검색…</string>
+    <string name="no_fonts_found">이 폴더에서 글꼴을 찾을 수 없습니다</string>
+    <string name="font_preview_text">가나다 AaBb 123</string>
+    <string name="eink_image_adjustment">E-ink 이미지 최적화</string>
+    <string name="eink_image_adjustment_summary">E-ink 디스플레이에 맞게 웹 이미지(JPEG/PNG/WebP) 조정</string>
+    <string name="eink_image_off">끄기</string>
+    <string name="setting_title_reader_keep_extra_content">리더 모드: 추가 콘텐츠 유지</string>
+    <string name="setting_summary_reader_keep_extra_content">리더 모드에서 스타일, 클래스 및 수식(MathJax/KaTeX) 보존</string>
 </resources>

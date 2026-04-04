@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Verktygsfältets position</string>
+    <string name="toolbar_position_bottom">Nedre</string>
+    <string name="toolbar_position_top">Övre</string>
+    <string name="toolbar_position_left">Vänster</string>
+    <string name="toolbar_position_right">Höger</string>
+    <string name="font_folder">Typsnittsmapp</string>
+    <string name="select_font_folder">Välj typsnittsmapp</string>
+    <string name="change_folder">Byt mapp</string>
+    <string name="search_fonts">Sök typsnitt…</string>
+    <string name="no_fonts_found">Inga typsnitt hittades i denna mapp</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink bildoptimering</string>
+    <string name="eink_image_adjustment_summary">Anpassa webbbilder (JPEG/PNG/WebP) för bättre E-ink-visning</string>
+    <string name="eink_image_off">Av</string>
+    <string name="setting_title_reader_keep_extra_content">Läsläge: Behåll extra innehåll</string>
+    <string name="setting_summary_reader_keep_extra_content">Bevara stilar, klasser och formler (MathJax/KaTeX) i läsläge</string>
 </resources>

@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">موضع شريط الأدوات</string>
+    <string name="toolbar_position_bottom">أسفل</string>
+    <string name="toolbar_position_top">أعلى</string>
+    <string name="toolbar_position_left">يسار</string>
+    <string name="toolbar_position_right">يمين</string>
+    <string name="font_folder">مجلد الخطوط</string>
+    <string name="select_font_folder">اختيار مجلد الخطوط</string>
+    <string name="change_folder">تغيير المجلد</string>
+    <string name="search_fonts">البحث عن خطوط…</string>
+    <string name="no_fonts_found">لم يتم العثور على خطوط في هذا المجلد</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">تحسين صور E-ink</string>
+    <string name="eink_image_adjustment_summary">ضبط صور الويب (JPEG/PNG/WebP) لعرض أفضل على E-ink</string>
+    <string name="eink_image_off">إيقاف</string>
+    <string name="setting_title_reader_keep_extra_content">وضع القراءة: الاحتفاظ بالمحتوى الإضافي</string>
+    <string name="setting_summary_reader_keep_extra_content">الاحتفاظ بالأنماط والفئات والرياضيات (MathJax/KaTeX) في وضع القراءة</string>
 </resources>

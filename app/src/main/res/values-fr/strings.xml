@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Position de la barre d\'outils</string>
+    <string name="toolbar_position_bottom">Bas</string>
+    <string name="toolbar_position_top">Haut</string>
+    <string name="toolbar_position_left">Gauche</string>
+    <string name="toolbar_position_right">Droite</string>
+    <string name="font_folder">Dossier de polices</string>
+    <string name="select_font_folder">Sélectionner le dossier de polices</string>
+    <string name="change_folder">Changer de dossier</string>
+    <string name="search_fonts">Rechercher des polices…</string>
+    <string name="no_fonts_found">Aucune police trouvée dans ce dossier</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Optimisation d\'image E-ink</string>
+    <string name="eink_image_adjustment_summary">Ajuster les images web (JPEG/PNG/WebP) pour un meilleur affichage E-ink</string>
+    <string name="eink_image_off">Désactivé</string>
+    <string name="setting_title_reader_keep_extra_content">Mode lecture : Conserver le contenu supplémentaire</string>
+    <string name="setting_summary_reader_keep_extra_content">Conserver les styles, classes et formules (MathJax/KaTeX) en mode lecture</string>
 </resources>

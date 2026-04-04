@@ -497,4 +497,20 @@
     <string name="pink">ᱜᱩᱞᱟᱹᱯ</string>
     <string name="setting_title_github_update">ᱱᱟᱶᱟ ᱨᱤᱞᱤᱡᱽ ᱛᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
+    <string name="setting_title_toolbar_position">Toolbar position</string>
+    <string name="toolbar_position_bottom">Bottom</string>
+    <string name="toolbar_position_top">Top</string>
+    <string name="toolbar_position_left">Left</string>
+    <string name="toolbar_position_right">Right</string>
+    <string name="font_folder">Font Folder</string>
+    <string name="select_font_folder">Select Font Folder</string>
+    <string name="change_folder">Change Folder</string>
+    <string name="search_fonts">Search fonts…</string>
+    <string name="no_fonts_found">No fonts found in this folder</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink Image Optimization</string>
+    <string name="eink_image_adjustment_summary">Adjust web images (JPEG/PNG/WebP) for better e-ink display</string>
+    <string name="eink_image_off">Off</string>
+    <string name="setting_title_reader_keep_extra_content">Reader Mode: Keep Extra Content</string>
+    <string name="setting_summary_reader_keep_extra_content">Preserve styles, classes, and math (MathJax/KaTeX) in reader mode</string>
 </resources>

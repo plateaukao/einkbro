@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Værktøjslinjens placering</string>
+    <string name="toolbar_position_bottom">Bund</string>
+    <string name="toolbar_position_top">Top</string>
+    <string name="toolbar_position_left">Venstre</string>
+    <string name="toolbar_position_right">Højre</string>
+    <string name="font_folder">Skrifttypemappe</string>
+    <string name="select_font_folder">Vælg skrifttypemappe</string>
+    <string name="change_folder">Skift mappe</string>
+    <string name="search_fonts">Søg skrifttyper…</string>
+    <string name="no_fonts_found">Ingen skrifttyper fundet i denne mappe</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink billedoptimering</string>
+    <string name="eink_image_adjustment_summary">Tilpas webbilleder (JPEG/PNG/WebP) til bedre E-ink visning</string>
+    <string name="eink_image_off">Fra</string>
+    <string name="setting_title_reader_keep_extra_content">Læsetilstand: Behold ekstra indhold</string>
+    <string name="setting_summary_reader_keep_extra_content">Bevar typografier, klasser og matematik (MathJax/KaTeX) i læsetilstand</string>
 </resources>

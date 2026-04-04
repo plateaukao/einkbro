@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Nutsbalkposisie</string>
+    <string name="toolbar_position_bottom">Onder</string>
+    <string name="toolbar_position_top">Bo</string>
+    <string name="toolbar_position_left">Links</string>
+    <string name="toolbar_position_right">Regs</string>
+    <string name="font_folder">Lettertipevouer</string>
+    <string name="select_font_folder">Kies lettertipevouer</string>
+    <string name="change_folder">Verander vouer</string>
+    <string name="search_fonts">Soek lettertipes…</string>
+    <string name="no_fonts_found">Geen lettertipes gevind in hierdie vouer nie</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink beeldoptimalisering</string>
+    <string name="eink_image_adjustment_summary">Pas webbeelde (JPEG/PNG/WebP) aan vir beter E-ink-vertoning</string>
+    <string name="eink_image_off">Af</string>
+    <string name="setting_title_reader_keep_extra_content">Leesmodus: Behou ekstra inhoud</string>
+    <string name="setting_summary_reader_keep_extra_content">Behou style, klasse en formules (MathJax/KaTeX) in leesmodus</string>
 </resources>

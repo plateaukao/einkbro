@@ -537,4 +537,20 @@
     <string name="suggestion">"Search: "</string>
     <string name="setting_title_search_suggestion">Search suggestions</string>
     <string name="setting_summary_search_suggestion">"while inputting content, show search suggestions "</string>
+    <string name="setting_title_toolbar_position">工具列位置</string>
+    <string name="toolbar_position_bottom">底部</string>
+    <string name="toolbar_position_top">頂部</string>
+    <string name="toolbar_position_left">左側</string>
+    <string name="toolbar_position_right">右側</string>
+    <string name="font_folder">字型資料夾</string>
+    <string name="select_font_folder">選擇字型資料夾</string>
+    <string name="change_folder">變更資料夾</string>
+    <string name="search_fonts">搜尋字型…</string>
+    <string name="no_fonts_found">此資料夾中未找到字型</string>
+    <string name="font_preview_text">你好世界 AaBb 123</string>
+    <string name="eink_image_adjustment">E-ink 圖片最佳化</string>
+    <string name="eink_image_adjustment_summary">調整網頁圖片（JPEG/PNG/WebP）以獲得更好的 E-ink 顯示效果</string>
+    <string name="eink_image_off">關閉</string>
+    <string name="setting_title_reader_keep_extra_content">閱讀模式：保留額外內容</string>
+    <string name="setting_summary_reader_keep_extra_content">在閱讀模式中保留樣式、類別和數學公式（MathJax/KaTeX）</string>
 </resources>

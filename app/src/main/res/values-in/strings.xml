@@ -441,4 +441,20 @@
     <string name="pink">Pink</string>
     <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
+    <string name="setting_title_toolbar_position">Posisi bilah alat</string>
+    <string name="toolbar_position_bottom">Bawah</string>
+    <string name="toolbar_position_top">Atas</string>
+    <string name="toolbar_position_left">Kiri</string>
+    <string name="toolbar_position_right">Kanan</string>
+    <string name="font_folder">Folder font</string>
+    <string name="select_font_folder">Pilih folder font</string>
+    <string name="change_folder">Ubah folder</string>
+    <string name="search_fonts">Cari font…</string>
+    <string name="no_fonts_found">Tidak ada font ditemukan di folder ini</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Optimasi gambar E-ink</string>
+    <string name="eink_image_adjustment_summary">Sesuaikan gambar web (JPEG/PNG/WebP) untuk tampilan E-ink yang lebih baik</string>
+    <string name="eink_image_off">Mati</string>
+    <string name="setting_title_reader_keep_extra_content">Mode Baca: Pertahankan Konten Tambahan</string>
+    <string name="setting_summary_reader_keep_extra_content">Pertahankan gaya, kelas, dan rumus (MathJax/KaTeX) dalam mode baca</string>
 </resources>

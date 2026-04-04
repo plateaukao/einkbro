@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Vị trí thanh công cụ</string>
+    <string name="toolbar_position_bottom">Dưới</string>
+    <string name="toolbar_position_top">Trên</string>
+    <string name="toolbar_position_left">Trái</string>
+    <string name="toolbar_position_right">Phải</string>
+    <string name="font_folder">Thư mục phông chữ</string>
+    <string name="select_font_folder">Chọn thư mục phông chữ</string>
+    <string name="change_folder">Đổi thư mục</string>
+    <string name="search_fonts">Tìm phông chữ…</string>
+    <string name="no_fonts_found">Không tìm thấy phông chữ trong thư mục này</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Tối ưu hình ảnh E-ink</string>
+    <string name="eink_image_adjustment_summary">Điều chỉnh hình ảnh web (JPEG/PNG/WebP) cho hiển thị E-ink tốt hơn</string>
+    <string name="eink_image_off">Tắt</string>
+    <string name="setting_title_reader_keep_extra_content">Chế độ đọc: Giữ nội dung bổ sung</string>
+    <string name="setting_summary_reader_keep_extra_content">Giữ lại kiểu, lớp và công thức (MathJax/KaTeX) trong chế độ đọc</string>
 </resources>

@@ -196,4 +196,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Pozycja paska narzędzi</string>
+    <string name="toolbar_position_bottom">Na dole</string>
+    <string name="toolbar_position_top">Na górze</string>
+    <string name="toolbar_position_left">Po lewej</string>
+    <string name="toolbar_position_right">Po prawej</string>
+    <string name="font_folder">Folder czcionek</string>
+    <string name="select_font_folder">Wybierz folder czcionek</string>
+    <string name="change_folder">Zmień folder</string>
+    <string name="search_fonts">Szukaj czcionek…</string>
+    <string name="no_fonts_found">Nie znaleziono czcionek w tym folderze</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Optymalizacja obrazów E-ink</string>
+    <string name="eink_image_adjustment_summary">Dostosuj obrazy (JPEG/PNG/WebP) do lepszego wyświetlania na E-ink</string>
+    <string name="eink_image_off">Wył.</string>
+    <string name="setting_title_reader_keep_extra_content">Tryb czytnika: Zachowaj dodatkową zawartość</string>
+    <string name="setting_summary_reader_keep_extra_content">Zachowaj style, klasy i wzory (MathJax/KaTeX) w trybie czytnika</string>
 </resources>
