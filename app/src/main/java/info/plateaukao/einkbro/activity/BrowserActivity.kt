@@ -3138,6 +3138,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
         if (actionModeView == null) {
             actionModeView = ComposeView(this).apply {
+                id = View.generateViewId()
                 setContent {
                     val text by actionModeMenuViewModel.selectedText.collectAsState()
                     MyTheme {
