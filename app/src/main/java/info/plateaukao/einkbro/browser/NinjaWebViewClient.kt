@@ -73,6 +73,13 @@ class EBWebViewClient(
         onPageFinishedAction = action
     }
 
+    override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
+        super.doUpdateVisitedHistory(view, url, isReload)
+        // Update hasVideo for SPA navigations (e.g., YouTube client-side routing)
+        // where onPageFinished doesn't fire
+        ebWebView.hasVideo = WebContentPostProcessor.isVideoSiteUrl(url)
+    }
+
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         ebWebView.isInnerScrollAtTop = true
