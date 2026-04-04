@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Posició de la barra d\'eines</string>
+    <string name="toolbar_position_bottom">A baix</string>
+    <string name="toolbar_position_top">A dalt</string>
+    <string name="toolbar_position_left">Esquerra</string>
+    <string name="toolbar_position_right">Dreta</string>
+    <string name="font_folder">Carpeta de fonts</string>
+    <string name="select_font_folder">Seleccionar carpeta de fonts</string>
+    <string name="change_folder">Canviar carpeta</string>
+    <string name="search_fonts">Cercar fonts…</string>
+    <string name="no_fonts_found">No s\'han trobat fonts en aquesta carpeta</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Optimització d\'imatge E-ink</string>
+    <string name="eink_image_adjustment_summary">Ajustar imatges web (JPEG/PNG/WebP) per a una millor visualització E-ink</string>
+    <string name="eink_image_off">Desactivat</string>
+    <string name="setting_title_reader_keep_extra_content">Mode lectura: Conservar contingut addicional</string>
+    <string name="setting_summary_reader_keep_extra_content">Conservar estils, classes i fórmules (MathJax/KaTeX) en mode lectura</string>
 </resources>

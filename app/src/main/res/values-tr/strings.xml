@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Araç çubuğu konumu</string>
+    <string name="toolbar_position_bottom">Alt</string>
+    <string name="toolbar_position_top">Üst</string>
+    <string name="toolbar_position_left">Sol</string>
+    <string name="toolbar_position_right">Sağ</string>
+    <string name="font_folder">Yazı tipi klasörü</string>
+    <string name="select_font_folder">Yazı tipi klasörü seçin</string>
+    <string name="change_folder">Klasörü değiştir</string>
+    <string name="search_fonts">Yazı tiplerini ara…</string>
+    <string name="no_fonts_found">Bu klasörde yazı tipi bulunamadı</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink görüntü optimizasyonu</string>
+    <string name="eink_image_adjustment_summary">Web görüntülerini (JPEG/PNG/WebP) daha iyi E-ink görüntüleme için ayarlayın</string>
+    <string name="eink_image_off">Kapalı</string>
+    <string name="setting_title_reader_keep_extra_content">Okuyucu Modu: Ekstra İçeriği Koru</string>
+    <string name="setting_summary_reader_keep_extra_content">Okuyucu modunda stilleri, sınıfları ve matematiği (MathJax/KaTeX) koru</string>
 </resources>

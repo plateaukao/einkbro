@@ -195,4 +195,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Розташування панелі інструментів</string>
+    <string name="toolbar_position_bottom">Внизу</string>
+    <string name="toolbar_position_top">Вгорі</string>
+    <string name="toolbar_position_left">Ліворуч</string>
+    <string name="toolbar_position_right">Праворуч</string>
+    <string name="font_folder">Папка шрифтів</string>
+    <string name="select_font_folder">Вибрати папку шрифтів</string>
+    <string name="change_folder">Змінити папку</string>
+    <string name="search_fonts">Пошук шрифтів…</string>
+    <string name="no_fonts_found">У цій папці шрифтів не знайдено</string>
+    <string name="font_preview_text">АаБбВв 123</string>
+    <string name="eink_image_adjustment">Оптимізація зображень для E-ink</string>
+    <string name="eink_image_adjustment_summary">Налаштування веб-зображень (JPEG/PNG/WebP) для кращого відображення на E-ink</string>
+    <string name="eink_image_off">Вимк.</string>
+    <string name="setting_title_reader_keep_extra_content">Режим читання: зберігати додатковий вміст</string>
+    <string name="setting_summary_reader_keep_extra_content">Зберігати стилі, класи та формули (MathJax/KaTeX) в режимі читання</string>
 </resources>

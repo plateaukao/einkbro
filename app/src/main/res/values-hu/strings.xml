@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Eszköztár helyzete</string>
+    <string name="toolbar_position_bottom">Alul</string>
+    <string name="toolbar_position_top">Felül</string>
+    <string name="toolbar_position_left">Bal</string>
+    <string name="toolbar_position_right">Jobb</string>
+    <string name="font_folder">Betűtípus mappa</string>
+    <string name="select_font_folder">Betűtípus mappa kiválasztása</string>
+    <string name="change_folder">Mappa módosítása</string>
+    <string name="search_fonts">Betűtípusok keresése…</string>
+    <string name="no_fonts_found">Nem található betűtípus ebben a mappában</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink képoptimalizálás</string>
+    <string name="eink_image_adjustment_summary">Webképek (JPEG/PNG/WebP) beállítása a jobb E-ink megjelenítéshez</string>
+    <string name="eink_image_off">Ki</string>
+    <string name="setting_title_reader_keep_extra_content">Olvasó mód: Extra tartalom megtartása</string>
+    <string name="setting_summary_reader_keep_extra_content">Stílusok, osztályok és képletek (MathJax/KaTeX) megőrzése olvasó módban</string>
 </resources>

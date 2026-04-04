@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Позиција траке са алатима</string>
+    <string name="toolbar_position_bottom">Доле</string>
+    <string name="toolbar_position_top">Горе</string>
+    <string name="toolbar_position_left">Лево</string>
+    <string name="toolbar_position_right">Десно</string>
+    <string name="font_folder">Фасцикла фонтова</string>
+    <string name="select_font_folder">Изаберите фасциклу фонтова</string>
+    <string name="change_folder">Промени фасциклу</string>
+    <string name="search_fonts">Претражи фонтове…</string>
+    <string name="no_fonts_found">Нису пронађени фонтови у овој фасцикли</string>
+    <string name="font_preview_text">АаБбВв 123</string>
+    <string name="eink_image_adjustment">Оптимизација слика за E-ink</string>
+    <string name="eink_image_adjustment_summary">Подесите веб слике (JPEG/PNG/WebP) за бољи приказ на E-ink екрану</string>
+    <string name="eink_image_off">Искључено</string>
+    <string name="setting_title_reader_keep_extra_content">Режим читања: Задржи додатни садржај</string>
+    <string name="setting_summary_reader_keep_extra_content">Задржи стилове, класе и формуле (MathJax/KaTeX) у режиму читања</string>
 </resources>

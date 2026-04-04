@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Poziția barei de instrumente</string>
+    <string name="toolbar_position_bottom">Jos</string>
+    <string name="toolbar_position_top">Sus</string>
+    <string name="toolbar_position_left">Stânga</string>
+    <string name="toolbar_position_right">Dreapta</string>
+    <string name="font_folder">Dosar fonturi</string>
+    <string name="select_font_folder">Selectare dosar fonturi</string>
+    <string name="change_folder">Schimbă dosarul</string>
+    <string name="search_fonts">Caută fonturi…</string>
+    <string name="no_fonts_found">Nu s-au găsit fonturi în acest dosar</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Optimizare imagini E-ink</string>
+    <string name="eink_image_adjustment_summary">Ajustați imaginile web (JPEG/PNG/WebP) pentru o afișare E-ink mai bună</string>
+    <string name="eink_image_off">Oprit</string>
+    <string name="setting_title_reader_keep_extra_content">Mod citire: Păstrare conținut suplimentar</string>
+    <string name="setting_summary_reader_keep_extra_content">Păstrarea stilurilor, claselor și formulelor (MathJax/KaTeX) în modul citire</string>
 </resources>

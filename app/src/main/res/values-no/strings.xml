@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Verktøylinjeplassering</string>
+    <string name="toolbar_position_bottom">Bunn</string>
+    <string name="toolbar_position_top">Topp</string>
+    <string name="toolbar_position_left">Venstre</string>
+    <string name="toolbar_position_right">Høyre</string>
+    <string name="font_folder">Skrifttypemappe</string>
+    <string name="select_font_folder">Velg skrifttypemappe</string>
+    <string name="change_folder">Endre mappe</string>
+    <string name="search_fonts">Søk skrifttyper…</string>
+    <string name="no_fonts_found">Ingen skrifttyper funnet i denne mappen</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink bildeoptimalisering</string>
+    <string name="eink_image_adjustment_summary">Juster nettbilder (JPEG/PNG/WebP) for bedre E-ink-visning</string>
+    <string name="eink_image_off">Av</string>
+    <string name="setting_title_reader_keep_extra_content">Lesemodus: Behold ekstra innhold</string>
+    <string name="setting_summary_reader_keep_extra_content">Bevar stiler, klasser og matematikk (MathJax/KaTeX) i lesemodus</string>
 </resources>

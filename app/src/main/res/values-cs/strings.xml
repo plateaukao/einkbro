@@ -200,4 +200,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Pozice panelu nástrojů</string>
+    <string name="toolbar_position_bottom">Dole</string>
+    <string name="toolbar_position_top">Nahoře</string>
+    <string name="toolbar_position_left">Vlevo</string>
+    <string name="toolbar_position_right">Vpravo</string>
+    <string name="font_folder">Složka písem</string>
+    <string name="select_font_folder">Vybrat složku písem</string>
+    <string name="change_folder">Změnit složku</string>
+    <string name="search_fonts">Hledat písma…</string>
+    <string name="no_fonts_found">V této složce nebyla nalezena žádná písma</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Optimalizace obrázků pro E-ink</string>
+    <string name="eink_image_adjustment_summary">Upravit webové obrázky (JPEG/PNG/WebP) pro lepší zobrazení na E-ink</string>
+    <string name="eink_image_off">Vypnuto</string>
+    <string name="setting_title_reader_keep_extra_content">Režim čtení: Zachovat další obsah</string>
+    <string name="setting_summary_reader_keep_extra_content">Zachovat styly, třídy a vzorce (MathJax/KaTeX) v režimu čtení</string>
 </resources>

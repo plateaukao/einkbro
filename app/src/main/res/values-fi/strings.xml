@@ -204,4 +204,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Työkalurivin sijainti</string>
+    <string name="toolbar_position_bottom">Alareuna</string>
+    <string name="toolbar_position_top">Yläreuna</string>
+    <string name="toolbar_position_left">Vasen</string>
+    <string name="toolbar_position_right">Oikea</string>
+    <string name="font_folder">Fonttikansio</string>
+    <string name="select_font_folder">Valitse fonttikansio</string>
+    <string name="change_folder">Vaihda kansiota</string>
+    <string name="search_fonts">Etsi fontteja…</string>
+    <string name="no_fonts_found">Fontteja ei löytynyt tästä kansiosta</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-ink-kuvan optimointi</string>
+    <string name="eink_image_adjustment_summary">Säädä verkkokuvia (JPEG/PNG/WebP) parempaan E-ink-näyttöön</string>
+    <string name="eink_image_off">Pois</string>
+    <string name="setting_title_reader_keep_extra_content">Lukutila: Säilytä lisäsisältö</string>
+    <string name="setting_summary_reader_keep_extra_content">Säilytä tyylit, luokat ja kaavat (MathJax/KaTeX) lukutilassa</string>
 </resources>

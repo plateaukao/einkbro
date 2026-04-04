@@ -193,4 +193,20 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Symbolleistenposition</string>
+    <string name="toolbar_position_bottom">Unten</string>
+    <string name="toolbar_position_top">Oben</string>
+    <string name="toolbar_position_left">Links</string>
+    <string name="toolbar_position_right">Rechts</string>
+    <string name="font_folder">Schriftartenordner</string>
+    <string name="select_font_folder">Schriftartenordner auswählen</string>
+    <string name="change_folder">Ordner ändern</string>
+    <string name="search_fonts">Schriftarten suchen…</string>
+    <string name="no_fonts_found">Keine Schriftarten in diesem Ordner gefunden</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">E-Ink-Bildoptimierung</string>
+    <string name="eink_image_adjustment_summary">Webbilder (JPEG/PNG/WebP) für bessere E-Ink-Anzeige anpassen</string>
+    <string name="eink_image_off">Aus</string>
+    <string name="setting_title_reader_keep_extra_content">Lesemodus: Zusätzliche Inhalte beibehalten</string>
+    <string name="setting_summary_reader_keep_extra_content">Stile, Klassen und Formeln (MathJax/KaTeX) im Lesemodus beibehalten</string>
 </resources>

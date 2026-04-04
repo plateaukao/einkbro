@@ -552,4 +552,20 @@
     <string name="summary_gpt_type">Tipo de GPT para resumir contenido web</string>
     <string name="setting_summary_summary_gpt_type">Elige el motor GPT para la resumición de contenido</string>
     <string name="menu_summarize">Resumir</string>
+    <string name="setting_title_toolbar_position">Posición de la barra de herramientas</string>
+    <string name="toolbar_position_bottom">Abajo</string>
+    <string name="toolbar_position_top">Arriba</string>
+    <string name="toolbar_position_left">Izquierda</string>
+    <string name="toolbar_position_right">Derecha</string>
+    <string name="font_folder">Carpeta de fuentes</string>
+    <string name="select_font_folder">Seleccionar carpeta de fuentes</string>
+    <string name="change_folder">Cambiar carpeta</string>
+    <string name="search_fonts">Buscar fuentes…</string>
+    <string name="no_fonts_found">No se encontraron fuentes en esta carpeta</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Optimización de imagen E-ink</string>
+    <string name="eink_image_adjustment_summary">Ajustar imágenes web (JPEG/PNG/WebP) para mejor visualización E-ink</string>
+    <string name="eink_image_off">Desactivado</string>
+    <string name="setting_title_reader_keep_extra_content">Modo lectura: Conservar contenido adicional</string>
+    <string name="setting_summary_reader_keep_extra_content">Conservar estilos, clases y fórmulas (MathJax/KaTeX) en modo lectura</string>
 </resources>

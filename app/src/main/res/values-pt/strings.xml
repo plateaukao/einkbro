@@ -192,4 +192,20 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
+    <string name="setting_title_toolbar_position">Posição da barra de ferramentas</string>
+    <string name="toolbar_position_bottom">Inferior</string>
+    <string name="toolbar_position_top">Superior</string>
+    <string name="toolbar_position_left">Esquerda</string>
+    <string name="toolbar_position_right">Direita</string>
+    <string name="font_folder">Pasta de fontes</string>
+    <string name="select_font_folder">Selecionar pasta de fontes</string>
+    <string name="change_folder">Alterar pasta</string>
+    <string name="search_fonts">Pesquisar fontes…</string>
+    <string name="no_fonts_found">Nenhuma fonte encontrada nesta pasta</string>
+    <string name="font_preview_text">AaBbCc 123</string>
+    <string name="eink_image_adjustment">Otimização de imagem E-ink</string>
+    <string name="eink_image_adjustment_summary">Ajustar imagens web (JPEG/PNG/WebP) para melhor exibição E-ink</string>
+    <string name="eink_image_off">Desativado</string>
+    <string name="setting_title_reader_keep_extra_content">Modo leitura: Manter conteúdo extra</string>
+    <string name="setting_summary_reader_keep_extra_content">Preservar estilos, classes e fórmulas (MathJax/KaTeX) no modo leitura</string>
 </resources>
