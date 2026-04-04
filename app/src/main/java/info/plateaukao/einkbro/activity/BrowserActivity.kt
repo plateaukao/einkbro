@@ -1443,22 +1443,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val currentUrl = url ?: ebWebView.url ?: return
         var nonNullTitle = title ?: HelperUnit.secString(ebWebView.title)
         try {
-            lifecycleScope.launch {
-                BookmarkEditDialog(
-                    this@BrowserActivity,
-                    bookmarkViewModel,
-                    Bookmark(
-                        nonNullTitle.pruneWebTitle(),
-                        currentUrl, order = if (ViewUnit.isWideLayout(this@BrowserActivity)) 999 else 0
-                    ),
-                    {
-                        handleBookmarkSync(true)
-                        ViewUnit.hideKeyboard(this@BrowserActivity)
-                        EBToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                    },
-                    { ViewUnit.hideKeyboard(this@BrowserActivity) }
-                ).show()
-            }
+            BookmarkEditDialog(
+                bookmarkViewModel,
+                Bookmark(
+                    nonNullTitle.pruneWebTitle(),
+                    currentUrl, order = if (ViewUnit.isWideLayout(this@BrowserActivity)) 999 else 0
+                ),
+                {
+                    handleBookmarkSync(true)
+                    ViewUnit.hideKeyboard(this@BrowserActivity)
+                    EBToast.show(this@BrowserActivity, R.string.toast_edit_successful)
+                },
+                { ViewUnit.hideKeyboard(this@BrowserActivity) }
+            ).show(supportFragmentManager, "bookmark_edit")
         } catch (e: Exception) {
             e.printStackTrace()
             EBToast.show(this, R.string.toast_error)

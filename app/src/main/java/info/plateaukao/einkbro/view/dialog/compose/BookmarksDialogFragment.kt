@@ -202,7 +202,6 @@ class BookmarksDialogFragment(
                 }
 
                 ContextMenuItemType.Edit -> BookmarkEditDialog(
-                    requireActivity(),
                     bookmarkViewModel,
                     bookmark,
                     {
@@ -210,7 +209,7 @@ class BookmarksDialogFragment(
                         syncBookmarksAction(true)
                     },
                     { ViewUnit.hideKeyboard(requireActivity()) }
-                ).show()
+                ).show(parentFragmentManager, "bookmark_edit")
 
                 ContextMenuItemType.Delete -> lifecycleScope.launch {
                     bookmarkViewModel.deleteBookmark(bookmark)
