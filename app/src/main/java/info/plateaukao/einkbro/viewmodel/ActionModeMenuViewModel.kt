@@ -168,9 +168,9 @@ class ActionModeMenuViewModel : ViewModel(), KoinComponent {
                     0 + index,
                     MenuInfo(
                         actionInfo.name,
-                        drawable = ContextCompat.getDrawable(context, iconRes),
                         action = { _actionModeMenuState.value = ActionModeMenuState.Gpt(index) },
-                        longClickAction = { translationViewModel.showEditGptActionDialog(index) }
+                        longClickAction = { translationViewModel.showEditGptActionDialog(index) },
+                        cornerDrawable = ContextCompat.getDrawable(context, iconRes),
                     )
                 )
             }
