@@ -449,7 +449,7 @@ object ViewUnit: KoinComponent {
         val progressBar = binding.activityMainContent.mainProgressBar
         val root = binding.activityMainContent.root
         val density = root.context.resources.displayMetrics.density
-        val barThickness = (4 * density).toInt()
+        val barThickness = (2 * density).toInt()
 
         // Use post to get actual dimensions after layout
         root.post {
