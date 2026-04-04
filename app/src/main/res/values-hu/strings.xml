@@ -3,204 +3,192 @@
 <resources>
     <!-- App -->
     <string name="app_name">EinkBro</string>
-    <string name="list_empty">Current list is empty</string>
-    <string name="bookmarks">Bookmarks</string>
-    <string name="album_title_history">History</string>
-    <string name="album_title_home">Home</string>
-    <string name="search_hint">Search</string>
+    
+    
+    
+    
+    
     <!-- Menu -->
-    <string name="main_menu_new_tab">New tab (background)</string>
-    <string name="main_menu_new_tabOpen">New tab (foreground)</string>
-    <string name="main_omnibox_input_hint">Search or type URL</string>
-    <string name="menu_open_with">Open link with …</string>
-    <string name="menu_quit">Quit</string>
-    <string name="menu_openFav">Open Favorite</string>
-    <string name="menu_delete">Delete</string>
-    <string name="menu_delete_list">Delete list</string>
-    <string name="menu_edit">Edit</string>
-    <string name="menu_closeTab">Close tab</string>
-    <string name="menu_download">Open downloads</string>
-    <string name="menu_fav">Set as start site</string>
-    <string name="menu_sc">Shortcut on home screen</string>
-    <string name="menu_share_link">Share link</string>
-    <string name="menu_save_screenshot">Save screenshot</string>
-    <string name="menu_save_bookmark">Save as bookmark</string>
-    <string name="menu_save_as">Save as …</string>
-    <string name="menu_save_pdf">Save as PDF</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
-    <string name="menu_other_searchSite">Search on site</string>
-    <string name="menu_other_info">About EinkBro</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- Dialog -->
-    <string name="dialog_title_hint">Title:</string>
-    <string name="dialog_url_hint">Url:</string>
-    <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
-    <string name="dialog_title_download">Do you want to download the file?</string>
-    <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
+    
+    
+    
+    
+    
     <!-- Settings -->
-    <string name="setting_label">Settings</string>
+    
     <!-- browser setting -->
-    <string name="setting_title_clear_control">Data Control</string>
-    <string name="setting_title_start_control">Start Control</string>
-    <string name="setting_title_search_engine">Search Engine</string>
-    <string name="setting_summary_search_engine_google">Google</string>
-    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
-    <string name="setting_summary_search_engine_startpage">StartPage</string>
-    <string name="setting_summary_search_engine_bing">Bing</string>
-    <string name="setting_summary_search_engine_baidu">Baidu</string>
-    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
-    <string name="setting_summary_search_engine_searx">Searx</string>
-    <string name="setting_summary_search_engine_qwant">Qwant</string>
-    <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font_size">Font size</string>
-    <string name="setting_summary_font_size">Change the font size for displaying websites.</string>
-    <string name="setting_title_remote">Remote content</string>
-    <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
-        Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- browser start -->
-    <string name="setting_title_images">Images</string>
-    <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
-    websites faster.</string>
-    <string name="setting_title_cookie">Cookies</string>
-    <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
-    <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
-    use them for example to store user settings (for example search settings). But they could also be used to collect personal
-        user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
-    <string name="setting_title_whitelistCookie">Cookie whitelist</string>
-    <string name="setting_summary_whitelistCookie">If you disable Cookies, you can use this whitelist to allow sites you
-        trust to use save cookies.</string>
-    <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
-        loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
-    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
-    <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
-        trust to use javascript.</string>
-    <string name="setting_title_adblock">AdBlock</string>
-    <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
-    <string name="setting_title_whitelist">AdBlock whitelist</string>
-    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
-    <string name="setting_title_location">Location</string>
-    <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
-        need this enabled.</string>
-    <string name="setting_title_history">History</string>
-    <string name="setting_summary_history">Save the history of visited websites.</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
-        place.</string>
-    <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_summary_quit">Every time you quit EinkBro all above checked data will be deleted.</string>
-    <string name="clear_title_cache">Clear Cache</string>
-    <string name="clear_title_cookie">Clear Cookies</string>
-    <string name="clear_title_history">Clear History</string>
-    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local webview storage\"</string>
-    <string name="clear_title_deleteDatabase">Delete database</string>
-    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- App setting -->
-    <string name="setting_title_ui">Behavior/UI</string>
-    <string name="setting_title_data">Backup</string>
-    <string name="setting_title_fav">Favorite</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_title_userAgent">Custom user agent</string>
+    
+    
+    
+    
+    
     <!-- App behavior -->
-    <string name="setting_title_hideToolbar">Hide toolbar</string>
-    <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
-    leave fullscreen mode.</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
-    <string name="setting_title_nav">Navigation button</string>
-    <string name="setting_title_nav_pos">Position</string>
-    <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
-    <string name="setting_summary_nav_pos_right">Right</string>
-    <string name="setting_summary_nav_pos_left">Left</string>
-    <string name="setting_summary_nav_pos_center">Center</string>
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
-    <string name="setting_title_confirm_tab_close">Confirm tab close</string>
-    <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
-    <string name="setting_overView">Overview</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
-    <string name="setting_gesture_up">Swipe up</string>
-    <string name="setting_gesture_down">Swipe down</string>
-    <string name="setting_gesture_left">Swipe left</string>
-    <string name="setting_gesture_right">Swipe right</string>
-    <string name="nothing">Nothing</string>
-    <string name="forward_in_history">Forward in history</string>
-    <string name="back_in_history">Back in history</string>
-    <string name="scroll_to_top">Scroll to top</string>
-    <string name="scroll_to_bottom">Scroll to bottom</string>
-    <string name="switch_to_left_tab">Switch to left tab</string>
-    <string name="switch_to_right_tab">Switch to right tab</string>
-    <string name="show_overview">Show overview</string>
-    <string name="open_new_tab">Open new tab</string>
-    <string name="close_tab">Close tab</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- Data -->
-    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
-    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- Others setting -->
-    <string name="setting_title_license">License</string>
+    
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
-    <string name="toast_copy_successful">Successfully copied</string>
-    <string name="toast_delete_successful">Successfully deleted</string>
-    <string name="toast_domain_already_exists">Domain already exists</string>
-    <string name="toast_export_successful">Exported as:&#160;</string>
-    <string name="toast_export_failed">Failed to export</string>
-    <string name="toast_import_successful">Imported count:&#160;</string>
-    <string name="toast_import_failed">Failed to import</string>
-    <string name="toast_input_empty">You haven\'t input anything</string>
-    <string name="toast_invalid_domain">Invalid domain</string>
-    <string name="toast_load_error">Can\'t load this URL</string>
-    <string name="toast_share_failed">Can\'t share this page</string>
-    <string name="toast_start_download">Starting download</string>
-    <string name="toast_wait_a_minute">Please wait for a moment</string>
-    <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
-    <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
-    <string name="toast_close_tab">Do you want to close current tab?</string>
-    <string name="toast_downloadComplete">Download complete. Open file?</string>
-    <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Clear</string>
-    <string name="whitelist_edit_hint">Domain</string>
-    <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
-    <string name="text_select">Select text</string>
-    <string name="show_context_menu_icons">Show icons on action menus</string>
-    <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
-    <string name="use_it_on_tts">Use OpenAI TTS Api</string>
-    <string name="setting_summary_use_gpt_for_tts">Use OpenAI API to read web content</string>
-    <string name="highlight">Highlight</string>
-    <string name="menu_highlights">Highlights</string>
-    <string name="articles">Articles</string>
-    <string name="highlights">Highlights</string>
-    <string name="menu_invert_color">Invert color</string>
-    <string name="setting_title_highlight_style">Highlight Style</string>
-    <string name="setting_summary_highlight_style">Choose a style for text highlight</string>
-    <string name="underline">Underline</string>
-    <string name="yellow">Yellow</string>
-    <string name="green">Green</string>
-    <string name="blue">Blue</string>
-    <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
-    <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
@@ -220,4 +208,578 @@
     <string name="eink_image_off">Ki</string>
     <string name="setting_title_reader_keep_extra_content">Olvasó mód: Extra tartalom megtartása</string>
     <string name="setting_summary_reader_keep_extra_content">Stílusok, osztályok és képletek (MathJax/KaTeX) megőrzése olvasó módban</string>
+    <string name="list_empty">Az aktuális lista üres.</string>
+    <string name="bookmarks">Könyvjelzők</string>
+    <string name="album_title_history">Előzmények</string>
+    <string name="album_title_home">Kezdőlap</string>
+    <string name="search_hint">Keresés</string>
+    <string name="main_menu_new_tab">Új lap a háttérben</string>
+    <string name="main_menu_new_tabOpen">Új lap</string>
+    <string name="main_omnibox_input_hint">Keresés vagy URL megadása</string>
+    <string name="menu_open_with">Hivatkozás megnyitása…</string>
+    <string name="menu_quit">Kilépés</string>
+    <string name="menu_openFav">Kedvenc megnyitása</string>
+    <string name="menu_delete">Törlés</string>
+    <string name="menu_delete_list">Lista törlése</string>
+    <string name="menu_edit">Szerkesztés</string>
+    <string name="menu_closeTab">Lap bezárása</string>
+    <string name="menu_download">Letöltések</string>
+    <string name="menu_fav">Mentés kezdőlapként</string>
+    <string name="menu_sc">Parancsikon a kezdőképernyőn</string>
+    <string name="menu_share_link">Hivatkozás megosztása</string>
+    <string name="menu_save_screenshot">Képernyőkép mentése</string>
+    <string name="menu_save_bookmark">Mentés könyvjelzőként</string>
+    <string name="menu_save_as">Mentés másként…</string>
+    <string name="menu_save_pdf">Mentés PDF-ként</string>
+    <string name="menu_shareClipboard">Másolás a vágólapra</string>
+    <string name="menu_other_searchSite">Keresés az oldalon</string>
+    <string name="audio_only_mode">Csak hang</string>
+    <string name="menu_other_info">Az EinkBro névjegye</string>
+    <string name="dialog_title_hint">Cím:</string>
+    <string name="dialog_url_hint">URL:</string>
+    <string name="dialog_extension_hint">Kiterjesztés (például: \".jpg\"):</string>
+    <string name="dialog_title_download">Letölti a fájlt?</string>
+    <string name="dialog_content_resubmission">Újraküldi az adatokat?</string>
+    <string name="setting_label">Beállítások</string>
+    <string name="setting_title_clear_control">Adatvezérlés</string>
+    <string name="setting_title_start_control">Indítási vezérlés</string>
+    <string name="setting_title_search_engine">Keresőmotor</string>
+    <string name="setting_summary_search_engine">Válasszon keresőmotort</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">Startpage</string>
+    <string name="setting_summary_search_engine_startpage_de">Startpage (de)</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_yandex">Yandex</string>
+    <string name="setting_summary_search_engine_rambler">Rambler</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
+    <string name="setting_summary_search_engine_ecosia">Ecosia</string>
+    <string name="setting_title_font_size">Betűméret</string>
+    <string name="setting_summary_font_size">Betűméret módosítása a weboldalak megjelenítéséhez</string>
+    <string name="setting_title_remote">Távoli tartalom</string>
+    <string name="setting_summary_remote">Távoli tartalom engedélyezése, amely nem közvetlenül a meglátogatott webhelyről származik.
+        Letiltása növeli a biztonságot, a sebességet és adatot takarít meg, de egyes tartalmak nem jelennek meg</string>
+    <string name="setting_title_save_data">\"Adattakarékos\" kérés</string>
+    <string name="setting_summary_save_data">Közölje a webhelyekkel, hogy szeretne adatot takarítani. A támogatott webhelyek gyorsabban töltődnek be</string>
+    <string name="setting_title_images">Képek</string>
+    <string name="setting_summary_images">Hálózati képek engedélyezése. Letiltása hasznos lehet mobiladat megtakarításához és a webhelyek gyorsabb betöltéséhez</string>
+    <string name="setting_title_cookie">Sütik</string>
+    <string name="setting_summary_cookie">Sütik engedélyezése. A sütik kis szöveges fájlok, amelyeket az eszközén tárolnak. A webhelyek
+        például felhasználói beállítások (pl. keresési beállítások) tárolására használják, de személyes
+        felhasználói adatok gyűjtésére is használhatók. A harmadik féltől származó sütik (amelyek hirdetési célú felhasználói adatokat gyűjtenek) mindig le vannak tiltva</string>
+    <string name="setting_summary_cookie_delete">Ha engedélyezve van, az összes süti törlődik, beleértve a megbízható webhelyek sütikeit is</string>
+    <string name="setting_title_whitelistCookie">Süti engedélyezési lista</string>
+    <string name="setting_summary_whitelistCookie">Ha letiltotta a sütiket, ezzel az engedélyezési listával engedélyezheti a megbízható webhelyek sütikeinek használatát</string>
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">JavaScript engedélyezése. Sok webhelynek szüksége van rá a működéséhez (menük,
+        képek betöltése és megjelenítése stb.), de támadásokra is használható</string>
+    <string name="setting_title_whitelistJS">JavaScript engedélyezési lista</string>
+    <string name="setting_summary_whitelistJS">Ha letiltotta a JavaScriptet, ezzel az engedélyezési listával engedélyezheti a megbízható webhelyek JavaScript használatát</string>
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">AdBlock engedélyezése a zavaró hirdetések blokkolásához. A webhelyek gyorsabban töltődnek be engedélyezve</string>
+    <string name="setting_title_whitelist">AdBlock engedélyezési lista</string>
+    <string name="setting_summary_whitelist">Ezen webhelyek hirdetéseket jeleníthetnek meg. Egyes webhelyek nem működnek, ha az AdBlock engedélyezve van</string>
+    <string name="setting_title_location">Hely</string>
+    <string name="setting_summary_location">A webhelyek hozzáférhetnek a tartózkodási helyéhez. Egyes webhelyeknek (pl. Google Maps navigáció)
+        szüksége van erre</string>
+    <string name="setting_title_history">Előzmények</string>
+    <string name="setting_summary_history">Meglátogatott webhelyek előzményeinek mentése</string>
+    <string name="save_history_mode_save_when_open">Mentés lap megnyitásakor</string>
+    <string name="save_history_mode_save_when_close">Mentés lap bezárásakor</string>
+    <string name="save_history_mode_disabled">Ne mentse</string>
+    <string name="data_summary">Minden fájl az \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
+        könyvtárba kerül exportálásra az SD-kártyán. Ez a könyvtár TÖRLŐDIK, ha eltávolítja az EinkBro-t, ezért rendszeresen készítsen biztonsági mentést</string>
+    <string name="clear_title_quit">Törlés kilépéskor</string>
+    <string name="clear_summary_quit">Minden alkalommal, amikor kilép az EinkBro-ból, a fent jelölt adatok törlődnek</string>
+    <string name="clear_title_cache">Gyorsítótár törlése</string>
+    <string name="clear_title_cookie">Sütik törlése</string>
+    <string name="clear_title_history">Előzmények törlése</string>
+    <string name="clear_title_indexedDB">\"Indexelt adatbázisok\" és \"helyi WebView tár\" törlése</string>
+    <string name="clear_title_deleteDatabase">Adatbázis törlése</string>
+    <string name="clear_summary_deleteDatabase">A teljes adatbázis törlése (kezdőlap, könyvjelzők, előzmények és engedélyezési listák)</string>
+    <string name="setting_title_ui">Felület</string>
+    <string name="setting_title_data">Biztonsági mentés</string>
+    <string name="setting_title_fav">Kedvenc</string>
+    <string name="setting_title_searchEngine">Egyéni keresőmotor</string>
+    <string name="setting_title_userAgent">Egyéni User Agent</string>
+    <string name="setting_title_toolbar">Eszköztár</string>
+    <string name="setting_title_hideToolbar">Eszköztár elrejtése</string>
+    <string name="setting_summary_hide">Webhelyek görgetésekor a teljes képernyő használata. A Vissza gomb megnyomásával kilép a teljes képernyős módból</string>
+    <string name="setting_title_theme">Felület</string>
+    <string name="setting_title_behavior">Viselkedés</string>
+    <string name="setting_title_toolbarShow">Eszköztár először</string>
+    <string name="setting_summary_toolbarShow">A Vissza gomb megnyomásával az eszköztár láthatóvá válik, mielőtt visszalépne az előzményekben</string>
+    <string name="setting_title_nav">Navigációs gomb</string>
+    <string name="setting_title_nav_pos">Lebegő gomb pozíciója</string>
+    <string name="setting_summary_nav_pos">Döntse el, hol legyen a \"Navigációs gomb\"</string>
+    <string name="setting_summary_nav_pos_right">Jobb</string>
+    <string name="setting_summary_nav_pos_left">Bal</string>
+    <string name="setting_summary_nav_pos_center">Középen</string>
+    <string name="setting_summary_nav_pos_not_show">Ne jelenjen meg</string>
+    <string name="setting_summary_nav_pos_custom">Egyéni</string>
+    <string name="setting_summary_tab">Mi jelenjen meg az \"Áttekintés\" indításakor? (kezdőoldal, könyvjelzők…)</string>
+    <string name="setting_title_confirm_tab_close">Lap bezárásának megerősítése</string>
+    <string name="setting_summary_confirm_tab_close">Megerősítő párbeszédablak lap bezárásakor</string>
+    <string name="setting_overView">Áttekintés</string>
+    <string name="setting_title_saveTabs">Lapok mentése</string>
+    <string name="setting_summary_saveTabs">Lapok mentése, hogy legközelebb megnyithatók legyenek</string>
+    <string name="setting_gestures">Gesztusok</string>
+    <string name="setting_gestures_use_title">Gesztusok használata a lebegő gombon</string>
+    <string name="setting_gestures_use_summary">Pöccintsen a \"lebegő gombon\" műveletek végrehajtásához</string>
+    <string name="setting_multitouch_use_title">Két ujjas húzás gesztusok</string>
+    <string name="setting_multitouch_use_summary">Két ujjas húzás a webtartalmon műveletek aktiválásához</string>
+    <string name="setting_title_two_finger_swipe">Két ujjas húzás</string>
+    <string name="setting_gesture_up">Felfelé húzás</string>
+    <string name="setting_gesture_down">Lefelé húzás</string>
+    <string name="setting_gesture_left">Balra húzás</string>
+    <string name="setting_gesture_right">Jobbra húzás</string>
+    <string name="nothing">Semmi</string>
+    <string name="forward_in_history">Előre az előzményekben</string>
+    <string name="back_in_history">Vissza az előzményekben</string>
+    <string name="scroll_to_top">Görgetés felülre</string>
+    <string name="scroll_to_bottom">Görgetés alulra</string>
+    <string name="switch_to_left_tab">Váltás bal lapra</string>
+    <string name="switch_to_right_tab">Váltás jobb lapra</string>
+    <string name="show_overview">Áttekintés megjelenítése</string>
+    <string name="open_new_tab">Új lap megnyitása</string>
+    <string name="close_tab">Lap bezárása</string>
+    <string name="page_up">Oldal fel</string>
+    <string name="page_down">Oldal le</string>
+    <string name="export_whitelistAdBlock">AdBlock engedélyezési lista exportálása</string>
+    <string name="export_whitelistJS">JavaScript engedélyezési lista exportálása</string>
+    <string name="export_whitelistCookie">Süti engedélyezési lista exportálása</string>
+    <string name="setting_title_export_appData">Alkalmazásadatok exportálása</string>
+    <string name="setting_title_import_appData">Alkalmazásadatok importálása</string>
+    <string name="setting_summary_export_appData">Alkalmazásadatok exportálása (Előzmények, Könyvjelzők)
+        és személyes beállítások</string>
+    <string name="setting_summary_import_appData">Alkalmazásadatok importálása korábban exportált zip fájl kiválasztásával</string>
+    <string name="title_appData">Alkalmazásadatok</string>
+    <string name="hint_database">Ez törli az összes jelenlegi elemet. Folytatja?</string>
+    <string name="setting_title_license">Licenc</string>
+    <string name="toast_add_whitelist_successful">Domain sikeresen hozzáadva</string>
+    <string name="toast_copy_successful">Sikeresen másolva</string>
+    <string name="toast_delete_successful">Sikeresen törölve</string>
+    <string name="toast_domain_already_exists">A domain már létezik</string>
+    <string name="toast_export_successful">Exportálva mint:&#160;</string>
+    <string name="toast_export_failed">Az exportálás sikertelen</string>
+    <string name="toast_import_successful">Importált számú:&#160;</string>
+    <string name="toast_import_failed">Az importálás sikertelen</string>
+    <string name="toast_input_empty">Nem adott meg semmit</string>
+    <string name="toast_invalid_domain">Érvénytelen domain</string>
+    <string name="toast_load_error">Nem lehet betölteni ezt az URL-t</string>
+    <string name="toast_share_failed">Nem lehet megosztani ezt az oldalt</string>
+    <string name="toast_start_download">Letöltés indítása</string>
+    <string name="toast_wait_a_minute">Kérjük, várjon egy pillanatot</string>
+    <string name="toast_error">Hoppá, valami hiba történt…</string>
+    <string name="toast_edit_successful">Sikeresen mentve!</string>
+    <string name="toast_webview_forward">Nem lehet betölteni a következő oldalt</string>
+    <string name="toast_restart">A módosítások alkalmazásához újra kell indítania az EinkBro-t. Bezárja most?</string>
+    <string name="toast_close_tab">Bezárja az aktuális lapot?</string>
+    <string name="toast_downloadComplete">Letöltés kész. Megnyitja a fájlt?</string>
+    <string name="toast_backup">Biztonsági mentést készít? Ez felülírja a régi mentést.</string>
+    <string name="whitelist_menu_clear">Törlés</string>
+    <string name="whitelist_edit_hint">Domain</string>
+    <string name="whitelist_add">Hozzáadás</string>
+    <string name="setting_summary_desktop">Webhely asztali mód támogatása</string>
+    <string name="history">Előzmények</string>
+    <string name="location">Hely</string>
+    <string name="media_continue">Háttérben lejátszás</string>
+    <string name="show_touch_area_hint">Érintési terület keretének megjelenítése</string>
+    <string name="touch_left_side">Bal</string>
+    <string name="touch_right_side">Jobb</string>
+    <string name="bold_font">Félkövér betű</string>
+    <string name="white_background">Fehér háttér</string>
+    <string name="setting_summary_bold_font">Félkövér betűstílus alkalmazása (az aktuális oldal újratöltése szükséges)</string>
+    <string name="desktop_mode">Asztali mód</string>
+    <string name="setting_title_page_left_value">Oldal fenntartott magassága</string>
+    <string name="setting_summary_page_left_value">Mennyi magasságot tartalékoljon a következő oldalra lapozáskor (pl. 50 vagy 10%)</string>
+    <string name="setting_title_pdf_paper_size">Nyomtatott PDF papírméret</string>
+    <string name="vertical_read">Függőleges mód</string>
+    <string name="reader_mode">Olvasó mód</string>
+    <string name="touch_area_setting">Érintés beállításai</string>
+    <string name="toolbar_setting">Eszköztár beállításai</string>
+    <string name="menu_epub">EPUB</string>
+    <string name="menu_save_epub">EPUB mentése</string>
+    <string name="saving_epub">EPUB mentése</string>
+    <string name="menu_open_epub">EPUB megnyitása</string>
+    <string name="new_epub_or_from_picker">Új EPUB vagy fájlválasztóból</string>
+    <string name="title">Fejezet neve</string>
+    <string name="title_in_toc">Tartalomjegyzék</string>
+    <string name="book_name">Könyv neve</string>
+    <string name="book_name_description">Adja meg a könyv nevét</string>
+    <string name="volume_page_turn">Hangerő gomb</string>
+    <string name="volume_page_turn_paused">Hangerőgombos lapozás szüneteltetve 5 másodpercre</string>
+    <string name="volume_page_turn_resumed">Hangerőgombos lapozás folytatva</string>
+    <string name="folder_name">Könyvjelző mappa neve</string>
+    <string name="folder_name_description">Adja meg a könyvjelző mappa nevét</string>
+    <string name="setting_title_export_bookmarks">Könyvjelzők exportálása</string>
+    <string name="setting_title_import_bookmarks">Könyvjelzők importálása</string>
+    <string name="setting_title_incognito">Inkognitó mód</string>
+    <string name="back">Vissza</string>
+    <string name="refresh">Frissítés</string>
+    <string name="touch_turn_page">Érintéses lapozás</string>
+    <string name="tab_preview">Lap előnézet</string>
+    <string name="font_size">Betűméret</string>
+    <string name="settings">Beállítások</string>
+    <string name="toolbars">Eszköztár beállításai</string>
+    <string name="reader_toolbar">Olvasó eszköztár beállításai</string>
+    <string name="font_size_increase">Betű növelése</string>
+    <string name="font_size_decrease">Betű csökkentése</string>
+    <string name="fullscreen">Teljes képernyő</string>
+    <string name="forward">Előre</string>
+    <string name="rotate">Forgatás</string>
+    <string name="translate">Fordítás</string>
+    <string name="toolbar_title">Cím</string>
+    <string name="setting_title_screen_awake">Képernyő ébren tartása</string>
+    <string name="setting_summary_screen_awake">A képernyő mindig ébren marad</string>
+    <string name="middle">Középen</string>
+    <string name="bottom">Alul</string>
+    <string name="input_url">URL megadása</string>
+    <string name="setting_title_useUpDown">Fel/Le gomb használata</string>
+    <string name="setting_summary_useUpDownKey">Fel/Le gomb használata lapozáshoz. Hasznos Bluetooth eszközökhöz</string>
+    <string name="setting_title_process_text">Egyéni külső keresési URL</string>
+    <string name="split_screen">Osztott képernyő</string>
+    <string name="dark_mode">Sötét mód</string>
+    <string name="setting_summary_dark_mode">Sötét mód beállítása</string>
+    <string name="hie_touch_area_when_input">Elrejtés gépeléskor</string>
+    <string name="switch_touch_area_action">Fel/le irány váltása</string>
+    <string name="switch_touch_area_action_short">Irány váltása</string>
+    <string name="no_previous_page">Nincs előző oldal!</string>
+    <string name="font_custom">Egyéni betűtípus fájl kiválasztása</string>
+    <string name="translation_mode">Fordítási mód</string>
+    <string name="system_default">Alapértelmezett</string>
+    <string name="serif">Serif</string>
+    <string name="googleserif">Google Serif</string>
+    <string name="custom_font">Egyéni</string>
+    <string name="setting_title_font">Betűtípus</string>
+    <string name="font_type">Betűtípus</string>
+    <string name="menu_quickToggle">Gyors váltás</string>
+    <string name="setting_title_toolbar_top">Eszköztár felül</string>
+    <string name="setting_summary_toolbar_top">Eszköztár megjelenítése a képernyő tetején</string>
+    <string name="setting_title_vi_binding">Vi billentyűkiosztás</string>
+    <string name="setting_summary_vi_binding">Vi billentyűkiosztás engedélyezése a gyorsabb billentyűzetes navigációhoz</string>
+    <string name="edit_custom_font">Egyéni betűtípus szerkesztése</string>
+    <string name="cannot_open_file">A fájl nem nyitható meg. Kérjük, nyissa meg újra a fájlválasztóból</string>
+    <string name="setting_recent_bookmarks">Legutóbb használt könyvjelzők megjelenítése</string>
+    <string name="setting_summary_recent_bookmarks">Legutóbb használt könyvjelzők megjelenítése új lap megnyitásakor</string>
+    <string name="setting_clear_recent_bookmarks">Legutóbbi könyvjelző lista törlése</string>
+    <string name="setting_summary_clear_recent_bookmarks">Legutóbb használt könyvjelzők listájának törlése</string>
+    <string name="recently_used_bookmarks">Legutóbb használt könyvjelzők</string>
+    <string name="menu_send_link">Hivatkozás küldése</string>
+    <string name="done">Bezárás az átvitel befejezésekor</string>
+    <string name="menu_receive">Hivatkozás fogadása</string>
+    <string name="copy_link">Hivatkozás másolása</string>
+    <string name="setting_title_background_loading">Nem aktív lapok betöltése</string>
+    <string name="setting_summary_background_loading">Ha a lap nem aktív, a tartalmát a háttérben tölti be</string>
+    <string name="dialog_content_ssl_error">A webhely tanúsítványa nem megbízható. Folytatja?</string>
+    <string name="setting_title_search">Keresés</string>
+    <string name="dialog_toc_title">Tartalomjegyzék</string>
+    <string name="toc_delete">Törlés</string>
+    <string name="latest_release">Legújabb kiadás</string>
+    <string name="project_site">Projekt oldal</string>
+    <string name="facebook_groups">Facebook csoportok</string>
+    <string name="changelogs">Újdonságok</string>
+    <string name="medium_articles">Medium cikkek</string>
+    <string name="contributors">Közreműködők</string>
+    <string name="turn_on">Be</string>
+    <string name="turn_off">Ki</string>
+    <string name="title_touch_area">Érintési terület</string>
+    <string name="title_about">Névjegy</string>
+    <string name="setting_title_auto_fill_form">Űrlapadatok automatikus kitöltése</string>
+    <string name="setting_summary_auto_fill_form">Űrlapadatok automatikus kitöltése, ha engedélyezve van</string>
+    <string name="setting_title_trim_input_url">Beviteli szöveg vágása</string>
+    <string name="setting_summary_trim_input_url">A http előtagot megelőző szöveg eltávolítása a beviteli tartalomból</string>
+    <string name="no_bookmarks">Tartsa hosszan nyomva a Könyvjelzők ikont könyvjelzők hozzáadásához</string>
+    <string name="always_enable_zoom">Tartalom nagyítás mindig engedélyezve</string>
+    <string name="setting_summary_enable_zoom">Egyes webhelyek tartalmának nagyíthatóvá tétele</string>
+    <string name="setting_title_debug">WebView hibakeresés</string>
+    <string name="setting_summary_debug">Engedélyezze ezt a lehetőséget a WebView hibakereséséhez</string>
+    <string name="setting_title_prune_query_parameter">Követési paraméterek eltávolítása az URL-ből</string>
+    <string name="setting_summary_prune_query_parameter">Az utm_medium, utm_source stb. paraméterek eltávolítása az URL-ből</string>
+    <string name="setting_title_show_tab_bar">Lapsáv megjelenítése</string>
+    <string name="setting_summary_show_tab_bar">Lapsáv mindig megjelenítése az eszköztár felett</string>
+    <string name="error_download_link_invalid">A letöltési hivatkozás érvénytelen</string>
+    <string name="duplicate_tab">Lap másolása</string>
+    <string name="password">Jelszó</string>
+    <string name="user_name">Felhasználónév</string>
+    <string name="authentication">Hitelesítés</string>
+    <string name="twitter">Twitter</string>
+    <string name="setting_title_edit_homepage">Kezdőlap URL szerkesztése</string>
+    <string name="setting_title_plus_behavior">Új lap viselkedése</string>
+    <string name="setting_summary_plus_behavior">Mi jelenjen meg új lap hozzáadásakor</string>
+    <string name="setting_title_translated_langs">Fordítási nyelvek a Google Translate-hez</string>
+    <string name="setting_summary_translated_langs">Nyelvek testreszabása a fordításhoz (pl. en, fr, de, zh-TW, zh-CN)</string>
+    <string name="menu">Menü</string>
+    <string name="copy_text">Szöveg másolása</string>
+    <string name="menu_tts">Tartalom felolvasása</string>
+    <string name="read_speed">Felolvasási sebesség</string>
+    <string name="toast_send_link_failed">A hivatkozás küldése sikertelen</string>
+    <string name="toast_receive_link_failed">A hivatkozás fogadása sikertelen</string>
+    <string name="setting_summary_custom_process_text_url">Állítsa be az URL előtagot, amelyet a kijelölt szöveg kereséséhez használ másik alkalmazásból</string>
+    <string name="not_supported">Nem támogatott</string>
+    <string name="plus_start_input_url">URL megadása</string>
+    <string name="plus_show_homepage">Kezdőlap megjelenítése</string>
+    <string name="plus_show_bookmarks">Legutóbbi könyvjelzők megjelenítése</string>
+    <string name="dark_mode_follow_system">Rendszerbeállítás követése</string>
+    <string name="dark_mode_force_on">Kényszerített bekapcsolás</string>
+    <string name="dark_mode_disabled">Kikapcsolva</string>
+    <string name="title_activity_setting">Beállítások</string>
+    <string name="setting_title_video_auto_fullscreen">Videó lejátszása teljes képernyőn</string>
+    <string name="setting_summary_video_auto_fullscreen">Videó indításakor automatikus átméretezés teljes képernyőre</string>
+    <string name="setting_title_video_pip">Videó megjelenítése kis ablakban</string>
+    <string name="setting_summary_video_pip">Teljes képernyős videó lejátszásának folytatása kis ablakban kilépéskor</string>
+    <string name="empty_whitelist_hint">Kattintson a jobb felső gombra új domain hozzáadásához</string>
+    <string name="google_full_page">Google – teljes oldal</string>
+    <string name="google_in_place">Google – helyben</string>
+    <string name="setting_title_update_adblock">AdBlock tartalom frissítése</string>
+    <string name="setting_summary_update_adblock">AdBlock webhelyek frissítésének indítása most</string>
+    <string name="setting_title_adblock_url">AdBlock lista URL</string>
+    <string name="setting_summary_adblock_url">Szerkessze ezt az URL-t, ha más AdBlock tartalmat szeretne használni</string>
+    <string name="setting_title_adblock_auto_update">AdBlock automatikus frissítés</string>
+    <string name="setting_summary_adblock_auto_update">AdBlock tartalom automatikus frissítése hetente</string>
+    <string name="toast_adblock_updated">AdBlock frissítve!</string>
+    <string name="toast_backup_successful">Biztonsági mentés sikeres!</string>
+    <string name="setting_title_enable_ssl_error_dialog">SSL hiba párbeszédablak megjelenítése</string>
+    <string name="setting_summary_enable_ssl_error_dialog">Hiba párbeszédablak megjelenítése SSL probléma esetén</string>
+    <string name="manual">Kézi</string>
+    <string name="black_font">Fekete betű</string>
+    <string name="image_adjust">Kép beállítása</string>
+    <string name="eink_image_10">10%</string>
+    <string name="eink_image_30">30%</string>
+    <string name="eink_image_50">50%</string>
+    <string name="eink_image_70">70%</string>
+    <string name="eink_image_100">100%</string>
+    <string name="bookmark_new_file">Új fájl létrehozása</string>
+    <string name="bookmark_open_file">Meglévő fájl csatolása</string>
+    <string name="menu_save_archive">Mentés későbbre</string>
+    <string name="toast_saved_page">Oldal mentve. Tartsa hosszan nyomva ezt az ikont a mentett lista megtekintéséhez.</string>
+    <string name="toast_save_page_failed">Az oldal mentése sikertelen</string>
+    <string name="saved_pages">Mentett oldalak</string>
+    <string name="no_saved_pages">Még nincsenek mentett oldalak</string>
+    <string name="setting_title_sync_bookmarks">Könyvjelzők szinkronizálása</string>
+    <string name="setting_title_setup_bookmarks_location">Távoli könyvjelző fájl helyének beállítása</string>
+    <string name="setting_summary_setup_bookmarks_location">Válasszon vagy hozzon létre fájlt a Google Drive-on vagy más, távoli szinkronizálást támogató helyen</string>
+    <string name="dialog_message_sync_bookmark_file">A könyvjelzők szinkronizálásához létre kell hoznia vagy meg kell nyitnia egy könyvjelző fájlt a Google Drive-ról vagy más távoli szolgáltatásból a rendszer fájlválasztóval</string>
+    <string name="dialog_title_bookmark_sync">Könyvjelző fájl beállítása</string>
+    <string name="settings_title_back_key_behavior">Vissza gomb viselkedése</string>
+    <string name="settings_summary_back_key_behavior">Lap bezárása, ha már az előzmények első oldalán van</string>
+    <string name="page_count">Oldalszám</string>
+    <string name="setting_title_userAgent_toggle">Egyéni User Agent engedélyezése</string>
+    <string name="setting_summary_userAgent">Adja meg az egyéni User Agent karakterláncot</string>
+    <string name="setting_summary_userAgent_toggle">Egyéni User Agent engedélyezése</string>
+    <string name="content_adjustment">Tartalom beállítása</string>
+    <string name="share_save"><![CDATA[Megosztás és mentés]]></string>
+    <string name="menu_gpt">ChatGPT</string>
+    <string name="setting_title_chat_gpt">GPT beállítások</string>
+    <string name="setting_title_edit_gpt_api_key">OpenAI kulcs</string>
+    <string name="setting_summary_edit_gpt_api_key">Adja meg a kulcsot a funkció használatához</string>
+    <string name="setting_title_edit_gpt_system_prompt">ChatGPT rendszer prompt</string>
+    <string name="setting_summary_edit_gpt_prompt">Állítson be szerepet a ChatGPT-nek, pl. \"Te egy tolmács vagy\"</string>
+    <string name="setting_title_edit_gpt_user_prompt_prefix">Felhasználói prompt előtag</string>
+    <string name="setting_summary_edit_gpt_user_prompt">Szerkessze a felhasználói prompt előtagot, pl. \"Fordítsd le a következő tartalmat angolra:\"</string>
+    <string name="gpt_api_key_not_set">Adja hozzá az OpenAI kulcsot a Beállításokban</string>
+    <string name="gpt_scope">Hatókör</string>
+    <string name="gpt_scope_text_selection">Szöveg kijelölés</string>
+    <string name="gpt_scope_whole_page">Teljes oldal</string>
+    <string name="dialog_touch_area_enable">Érintéses lapozás engedélyezése</string>
+    <string name="show_default_text_menu">Alapértelmezett szövegmenü megjelenítése</string>
+    <string name="setting_summary_show_default_text_menu">Szöveg kijelölése után a rendszer alapértelmezett művelet menüjének megjelenítése</string>
+    <string name="google_translate">Google Translate</string>
+    <string name="translate_by_paragraph">Fordítás bekezdésenként</string>
+    <string name="translate_processing">Feldolgozás…</string>
+    <string name="translation_language">Fordítási nyelv</string>
+    <string name="misc">Egyéb</string>
+    <string name="translate_papago">Naver Papago API kulcs</string>
+    <string name="translate_papago_summary">Ha a Naver Papago fordítási szolgáltatást szeretné használni, adja meg az API kulcsát</string>
+    <string name="papago">Papago</string>
+    <string name="source_language">Forrásnyelv</string>
+    <string name="inter_translate">Inter Translate</string>
+    <string name="translate_image_key">Képfordítási kulcs</string>
+    <string name="translate_image_key_summary">Adja meg a szükséges kulcsot a képfordítás funkció használatához</string>
+    <string name="papago_language_setting">Nyelvi beállítás</string>
+    <string name="toggle_touch_turn_page">Érintéses lapozás váltása</string>
+    <string name="use_it_on_dict_search">ChatGPT használata szótárkeresésben</string>
+    <string name="setting_summary_search_in_dict">Olvasóban való kereséskor ChatGPT használata az eredményekhez</string>
+    <string name="menu_expand_menu">Több megjelenítése</string>
+    <string name="hide_statusbar">Állapotsor elrejtése</string>
+    <string name="setting_summary_hide_statusbar">Állapotsor mindig rejtett</string>
+    <string name="enable_touch_area_as_arrow_key">Hosszú nyomás ← → gombként</string>
+    <string name="setting_title_chat_stream">Folyamatos válasz</string>
+    <string name="setting_summary_chat_stream">A válasz karakterenként jelenik meg, így gyorsabb</string>
+    <string name="re_select">Szöveg újra kijelölése</string>
+    <string name="setting_dual_caption">Kettős felirat a YouTube-on</string>
+    <string name="setting_summary_dual_caption">Válassza ki a második felirat nyelvét</string>
+    <string name="naver_translate">Naver Translate</string>
+    <string name="setting_title_gpt_model_name">OpenAI modell neve</string>
+    <string name="setting_summary_gpt_model_name">Alapértelmezett: gpt-4.1. Szükség esetén adjon meg más modellnevet</string>
+    <string name="split_search">Osztott keresés</string>
+    <string name="papago_translate_by_screen">Papago – képernyő</string>
+    <string name="split_search_settings">Osztott keresés beállításai</string>
+    <string name="setting_title_split_search_setting">Osztott keresés beállításai</string>
+    <string name="setting_summary_split_search_setting">Egyéni keresés és eredmények megnyitása osztott képernyőn</string>
+    <string name="description_split_screen_string_pattern">Egyéni keresési URL a kulcsszó pozíciójával: %s</string>
+    <string name="description_split_screen_title">Adja meg a kontextusmenü címeként megjelenítendő nevet</string>
+    <string name="send_type">Küldés típusa</string>
+    <string name="current_url">Aktuális URL</string>
+    <string name="text_selection_search">Kijelölt szöveg keresése</string>
+    <string name="send_to_remote_terminate">Távoli szövegkeresés leállítása</string>
+    <string name="receive_link_terminate">Hivatkozás fogadásának leállítása</string>
+    <string name="receive_once">Fogadás egyszer</string>
+    <string name="setting_title_search_in_same_tab">Lap a külső kereséshez</string>
+    <string name="setting_summary_search_in_same_tab">Ugyanaz a lap a külső kereséshez</string>
+    <string name="move_to_background">Kis méret</string>
+    <string name="setting_title_gpt_prompt_for_web_page">Prompt a teljes weboldal tartalomhoz</string>
+    <string name="setting_summary_gpt_prompt_for_web_page">Adja meg a promptot a weboldal teljes tartalmának feldolgozásához (pl. \"Foglalja össze 300 szóban:\")</string>
+    <string name="setting_title_next_tab">Következő lap megjelenítése</string>
+    <string name="setting_summary_next_tab">Következő lap megjelenítése az aktuális bezárásakor (különben az előzőt mutatja)</string>
+    <string name="touch_area_long">Két oldal</string>
+    <string name="setting_title_gpt_action_list">ChatGPT művelet meghatározása</string>
+    <string name="setting_summary_gpt_action_list">Különböző promptok meghatározása különböző ChatGPT műveletekhez</string>
+    <string name="gpt_actions_title">ChatGPT műveletek</string>
+    <string name="text_select">Szöveg kijelölése</string>
+    <string name="show_context_menu_icons">Ikonok megjelenítése a művelet menükben</string>
+    <string name="setting_summary_show_context_menu_icons">Ikonok megjelenítése/elrejtése a művelet menükben az egyszerűsítés érdekében</string>
+    <string name="use_it_on_tts">OpenAI TTS API használata</string>
+    <string name="setting_summary_use_gpt_for_tts">OpenAI API használata webtartalom felolvasásához</string>
+    <string name="highlight">Kiemelés</string>
+    <string name="menu_highlights">Kiemelések</string>
+    <string name="articles">Cikkek</string>
+    <string name="highlights">Kiemelések</string>
+    <string name="menu_invert_color">Szín invertálása</string>
+    <string name="setting_title_highlight_style">Kiemelés stílusa</string>
+    <string name="setting_summary_highlight_style">Válasszon stílust a szöveg kiemeléséhez</string>
+    <string name="underline">Aláhúzás</string>
+    <string name="yellow">Sárga</string>
+    <string name="green">Zöld</string>
+    <string name="blue">Kék</string>
+    <string name="pink">Rózsaszín</string>
+    <string name="setting_title_github_update">Frissítés a legújabb verzióra</string>
+    <string name="setting_title_github_snapshot">Frissítés tesztverziával</string>
+    <string name="setting_title_use_custom_gpt_url">Alternatív szerver használata</string>
+    <string name="setting_summary_use_custom_gpt_url">Más API szerver URL használata</string>
+    <string name="setting_title_custom_gpt_url">Egyéni host URL</string>
+    <string name="setting_summary_custom_gpt_url">Adja meg az alternatív OpenAI szerver URL-t</string>
+    <string name="setting_title_enable_inplace_translate">Bekezdések fordítása az aktuális lapon</string>
+    <string name="setting_summary_enable_inplace_translate">Bekezdés fordításának megjelenítése az aktuális vagy új lapon</string>
+    <string name="setting_title_show_bookmarks_input_bar">Könyvjelzők megjelenítése URL szerkesztésekor</string>
+    <string name="setting_summary_show_bookmarks_input_bar">Könyvjelző találatok megjelenítése szöveg gépelésekor a címsorban</string>
+    <string name="setting_tts_locale">Szövegfelolvasás nyelve</string>
+    <string name="setting_title_external_search_pop">Felugró ablak használata PROCESS_TEXT eseménynél</string>
+    <string name="setting_summary_external_search_pop">Keresés felugró szótárként (alkalmas olvasó alkalmazások szótár integrációjához)</string>
+    <string name="cannot_save_epub">Hiba történt az EPUB mentésekor. Kérjük, próbálja újra később</string>
+    <string name="deepl_translate">DeepL</string>
+    <string name="wenkai_tc">WenKai(TC)</string>
+    <string name="mincho_ja">Mincho(JA)</string>
+    <string name="gamja_flower_ko">Gamja Flower(KO)</string>
+    <string name="setting_title_use_gemini">Google Gemini modell használata</string>
+    <string name="setting_summary_use_gemini">Google Gemini modell használata</string>
+    <string name="setting_title_gemini_key">Gemini API kulcs</string>
+    <string name="setting_summary_gemini_key">Adja meg a Gemini API kulcsot</string>
+    <string name="enable_fix_scroll">Görgetés javítása</string>
+    <string name="setting_title_other_model_name">Alternatív modell neve</string>
+    <string name="setting_summary_other_model_name">Adja meg a modell nevét az alternatív GPT szerverhez</string>
+    <string name="setting_title_gemini_model_name">Gemini modell neve</string>
+    <string name="setting_summary_gemini_model_name">Adja meg a Gemini modell nevét (alapértelmezett: gemini-2.5-flash)</string>
+    <string name="setting_title_gpt_query_list">GPT eredmény előzmények</string>
+    <string name="setting_summary_gpt_query_list">Mentett GPT lekérdezési eredmények</string>
+    <string name="enable_touch_area_as_page_key">Page Up/Down gombként</string>
+    <string name="translate_this_site">Oldal fordítása</string>
+    <string name="select_sentence">Mondat kijelölése</string>
+    <string name="select_paragraph">Bekezdés kijelölése</string>
+    <string name="toast_saved">Mentve!</string>
+    <string name="setting_app_locale">Alkalmazás nyelve</string>
+    <string name="setting_summary_app_locale">Felület nyelvének módosítása</string>
+    <string name="drag_to_reorder">Húzza a könyvjelzők átrendezéséhez</string>
+    <string name="gpt_action_drag_handle">Húzza a ChatGPT műveletek átrendezéséhez</string>
+    <string name="page_ai">Page AI</string>
+    <string name="page_ai_action_title">Page AI műveletek</string>
+    <string name="page_ai_action_empty">Nincsenek elérhető Page AI műveletek; adjon hozzá egyet a GPT műveleteknél (teljes oldal hatókör).</string>
+    <string name="toolbar_time">Aktuális idő</string>
+    <string name="setting_title_disable_long_press_toucharea">Hosszú nyomás letiltása az érintési területen</string>
+    <string name="setting_summary_disable_long_press_toucharea">Ne indítson műveleteket az érintési terület hosszú nyomásakor</string>
+    <string name="expand_space">Tér bővítése</string>
+    <string name="open_epub">EPUB fájl megnyitása</string>
+    <string name="setting_title_enable_web_cache">Webes gyorsítótár engedélyezése</string>
+    <string name="setting_summary_enabling_web_cache">Webtartalom gyorsabb betöltése a webes gyorsítótár engedélyezésével</string>
+    <string name="touch_custom">Egyéni</string>
+    <string name="key_page_up">Page Up billentyű küldése</string>
+    <string name="key_page_down">Page Down billentyű küldése</string>
+    <string name="key_left">Bal billentyű küldése</string>
+    <string name="key_right">Jobb billentyű küldése</string>
+    <string name="touch_aciton_settings">Művelet beállítások</string>
+    <string name="summary_touch_aciton_settings">Műveletek beállítása az érintési területhez</string>
+    <string name="setting_title_touch_area_actions">Érintési terület kattintási műveletek</string>
+    <string name="setting_touch_up_click">Felfelé kattintás művelet</string>
+    <string name="setting_touch_up_long_click">Felfelé hosszú kattintás művelet</string>
+    <string name="setting_touch_down_click">Lefelé kattintás művelet</string>
+    <string name="setting_touch_down_long_click">Lefelé hosszú kattintás művelet</string>
+    <string name="setting_floating_button_long_click">Hosszú nyomás</string>
+    <string name="setting_tts_type">Szövegfelolvasó motor</string>
+    <string name="setting_tts_voice">Hang</string>
+    <string name="system_settings">Rendszerbeállítások</string>
+    <string name="other_voices">Egyéb hangok…</string>
+    <string name="close">Bezárás</string>
+    <string name="added_to_read_list">Hozzáadva az olvasási listához</string>
+    <string name="tts_type_gpt">OpenAI</string>
+    <string name="tts_type_etts">ReadAloud</string>
+    <string name="tts_type_system">Beépített</string>
+    <string name="toolbar_icons">Eszköztár ikonok</string>
+    <string name="toolbar_icons_description">Eszköztár ikonok elrendezése</string>
+    <string name="gesture_on_floating_button">Lebegő gomb gesztusok</string>
+    <string name="openai">OpenAI</string>
+    <string name="openai_compatible_server">OpenAI kompatibilis szerver</string>
+    <string name="google_gemini">Google Gemini</string>
+    <string name="none">Nincs</string>
+    <string name="dashed_border">Szaggatott keret</string>
+    <string name="vertical_line">Függőleges vonal</string>
+    <string name="setting_title_translation_style">Fordítási szövegblokk stílusa</string>
+    <string name="setting_summary_translation_style">Válassza ki a bekezdésfordítás stílusát</string>
+    <string name="gray">Szürke</string>
+    <string name="bold">Félkövér</string>
+    <string name="deepl_translate_by_paragraph">DeepL – bekezdésenként</string>
+    <string name="dialog_message_remove_highlight">Eltávolítja a kiemelést?</string>
+    <string name="read_from_here">Innen</string>
+    <string name="setting_title_reader_mode_padding">Olvasó mód margó</string>
+    <string name="setting_summary_reader_mode_padding">Margó értéke (px-ben) az olvasó módhoz, alapértelmezett érték 10</string>
+    <string name="iansui_tc">iansui(TC)</string>
+    <string name="openai_translate_by_paragraph">OpenAI – bekezdésenként</string>
+    <string name="gemini_translate_by_paragraph">Gemini – bekezdésenként</string>
+    <string name="setting_title_gpt_prompt_for_tts">Hangkimeneti utasítások</string>
+    <string name="setting_summary_gpt_prompt_for_tts">Utasítások a gpt-4o-mini-tts modell használatakor.</string>
+    <string name="setting_title_gpt_audio_model_name">OpenAI TTS modell neve</string>
+    <string name="setting_summary_gpt_audio_model_name">Elérhető lehetőségek: tts-1 (alapértelmezett), tts-1-hd, gpt-4o-mini-tts</string>
+    <string name="chat_with_web">Csevegés a weboldallal</string>
+    <string name="web_content_processing">Webtartalom feldolgozás</string>
+    <string name="web_processing_gpt_type">GPT motor</string>
+    <string name="setting_summary_web_processing_gpt_type">Válassza ki a motort a webtartalom feldolgozásához</string>
+    <string name="self_hosted">Saját üzemeltetés</string>
+    <string name="summary_gpt_type">GPT típus webtartalom összefoglaláshoz</string>
+    <string name="setting_summary_summary_gpt_type">Válassza ki a GPT motort a tartalom összefoglalásához</string>
+    <string name="menu_summarize">Összefoglalás</string>
+    <string name="setting_title_remote_query">Távoli lekérdezési művelet</string>
+    <string name="sc_disable_adblock_short">AdBlock nélkül</string>
+    <string name="sc_disable_adblock_long">AdBlock nélkül</string>
+    <string name="sc_disable_adblock_disabled">AdBlock nélkül</string>
+    <string name="menu_instapaper">Instapaper</string>
+    <string name="added_to_instapaper">Hozzáadva az Instapaper-hez</string>
+    <string name="failed_to_add_to_instapaper">Sikertelen</string>
+    <string name="instapaper_username_hint">Felhasználónév vagy e-mail</string>
+    <string name="instapaper_password_hint">Jelszó</string>
+    <string name="instapaper_create_account">Fiók létrehozása</string>
+    <string name="url_empty">Az URL üres</string>
+    <string name="setting_summary_nav_pos_reset_custom">Egyéni pozíció visszaállítása</string>
+    <string name="setting_title_enable_url_drag_to_action">1 érintés URL művelethez</string>
+    <string name="setting_summary_enable_url_drag_to_action">Tartsa hosszan nyomva az URL-t és húzza az elemre az aktiváláshoz</string>
+    <string name="suggestion">"Keresés: "</string>
+    <string name="setting_title_search_suggestion">Keresési javaslatok</string>
+    <string name="setting_summary_search_suggestion">"Tartalom gépelésekor keresési javaslatok megjelenítése "</string>
+    <string name="custom_scale">Egyéni betűméretezés</string>
+    <string name="custom_scale_desc">Adja meg a kívánt betűméretezést (%)</string>
+    <string name="setting_title_text_wrap_reflow">Szövegtördelés</string>
+    <string name="setting_summary_text_wrap_reflow">Szöveg újratördelése nagyításkor</string>
+    <string name="setting_title_zoom_in_custom_view">Nagyítás egyéni nézetben</string>
+    <string name="setting_summary_zoom_in_custom_view">Két ujjas nagyítás engedélyezése teljes képernyős módban (alapértelmezett: ki)</string>
 </resources>
