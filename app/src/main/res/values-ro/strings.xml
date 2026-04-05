@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Exportare date aplicație</string>
+    <string name="setting_title_import_appData">Importare date aplicație</string>
+    <string name="setting_summary_export_appData">Exportare date aplicație (Istoric, Marcaje) și setările personale</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -613,6 +612,18 @@
     <string name="setting_summary_nav_pos_not_show">Nu afișa</string>
     <string name="setting_summary_nav_pos_custom">Personalizat</string>
     <string name="setting_summary_import_appData">Importare date prin alegerea unui fișier zip cu datele exportate anterior</string>
+    <string name="backup_category_all_preferences">Toate preferințele</string>
+    <string name="backup_category_gpt_settings">Setări GPT</string>
+    <string name="backup_category_bookmarks">Marcaje</string>
+    <string name="backup_category_history">Istoric</string>
+    <string name="dialog_title_backup_categories">Selectați datele pentru copie de siguranță</string>
+    <string name="dialog_title_restore_categories">Selectați datele pentru restaurare</string>
+    <string name="setting_title_share_appData">Partajare date aplicație</string>
+    <string name="setting_summary_share_appData">Partajare date aplicație către alt dispozitiv prin rețea locală</string>
+    <string name="setting_title_receive_appData">Primire date aplicație</string>
+    <string name="setting_summary_receive_appData">Primire date aplicație de pe alt dispozitiv prin rețea locală</string>
+    <string name="share_broadcasting">Se transmite în rețeaua locală…</string>
+    <string name="share_waiting">Se așteaptă date de pe alt dispozitiv…</string>
     <string name="setting_title_github_snapshot">Actualizare cu instantaneu</string>
     <string name="audio_only_mode">Doar audio</string>
 </resources>

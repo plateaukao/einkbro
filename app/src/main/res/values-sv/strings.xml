@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Exportera appdata</string>
+    <string name="setting_title_import_appData">Importera appdata</string>
+    <string name="setting_summary_export_appData">Exportera appdata (Historik, Bokmärken) och dina personliga inställningar</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -428,6 +427,18 @@
     <string name="setting_summary_gpt_query_list">Sparade GPT-frågeresultat</string>
     <string name="setting_summary_hide_statusbar">Dölj alltid statusfältet</string>
     <string name="setting_summary_import_appData">Importera appdata genom att välja en zip-fil med tidigare exporterade data</string>
+    <string name="backup_category_all_preferences">Alla inställningar</string>
+    <string name="backup_category_gpt_settings">GPT-inställningar</string>
+    <string name="backup_category_bookmarks">Bokmärken</string>
+    <string name="backup_category_history">Historik</string>
+    <string name="dialog_title_backup_categories">Välj data att säkerhetskopiera</string>
+    <string name="dialog_title_restore_categories">Välj data att återställa</string>
+    <string name="setting_title_share_appData">Dela appdata</string>
+    <string name="setting_summary_share_appData">Dela appdata till en annan enhet via lokalt nätverk</string>
+    <string name="setting_title_receive_appData">Ta emot appdata</string>
+    <string name="setting_summary_receive_appData">Ta emot appdata från en annan enhet via lokalt nätverk</string>
+    <string name="share_broadcasting">Sänder på lokalt nätverk…</string>
+    <string name="share_waiting">Väntar på data från en annan enhet…</string>
     <string name="setting_summary_nav_pos_custom">Anpassad</string>
     <string name="setting_summary_nav_pos_not_show">Visa inte</string>
     <string name="setting_summary_nav_pos_reset_custom">Återställ anpassad position</string>

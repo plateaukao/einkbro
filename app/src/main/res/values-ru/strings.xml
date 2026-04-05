@@ -205,10 +205,21 @@
     <string name="export_whitelistCookie">Эксп-ровать белый список куки</string>
 
     <string name="setting_title_export_appData">Экспортировать данные</string>
-    <string name="setting_summary_export_appData">Экспортировать данные браузера (стартовая страница + предпросмотры, история, закладки)
-        и ваши настройки</string>
+    <string name="setting_summary_export_appData">Экспортировать данные браузера (История, Закладки) и ваши настройки</string>
     <string name="setting_title_import_appData">Импортировать данные</string>
     <string name="setting_summary_import_appData">Импортировать данные браузера с помощью zip-файла с экспортированными данными</string>
+    <string name="backup_category_all_preferences">Все настройки</string>
+    <string name="backup_category_gpt_settings">Настройки GPT</string>
+    <string name="backup_category_bookmarks">Закладки</string>
+    <string name="backup_category_history">История</string>
+    <string name="dialog_title_backup_categories">Выберите данные для резервного копирования</string>
+    <string name="dialog_title_restore_categories">Выберите данные для восстановления</string>
+    <string name="setting_title_share_appData">Поделиться данными приложения</string>
+    <string name="setting_summary_share_appData">Отправить данные приложения на другое устройство по локальной сети</string>
+    <string name="setting_title_receive_appData">Получить данные приложения</string>
+    <string name="setting_summary_receive_appData">Получить данные приложения с другого устройства по локальной сети</string>
+    <string name="share_broadcasting">Трансляция в локальной сети…</string>
+    <string name="share_waiting">Ожидание данных с другого устройства…</string>
 
     <string name="title_appData">Данные приложения</string>
     <string name="hint_database">Это приведет к удалению всех данных элементов. Продолжить?</string>

@@ -135,7 +135,7 @@
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportar dados da aplicação</string>
     <string name="setting_title_import_appData">Importar dados da aplicação</string>
-    <string name="setting_summary_export_appData">Exportar dados da aplicação (página inicial + pré-visualizações, histórico, marcadores) e definições do utilizador.</string>
+    <string name="setting_summary_export_appData">Exportar dados da aplicação (Histórico, Marcadores) e definições do utilizador</string>
     <string name="title_appData">Dados da aplicação</string>
     <string name="hint_database">Está prestes a apagar todos os dados da aplicação. Tem a certeza?</string>
     <!-- Others setting -->
@@ -202,6 +202,18 @@
     <string name="page_up">Página acima</string>
     <string name="page_down">Página abaixo</string>
     <string name="setting_summary_import_appData">Importar dados da aplicação selecionando um ficheiro zip com dados exportados anteriormente</string>
+    <string name="backup_category_all_preferences">Todas as preferências</string>
+    <string name="backup_category_gpt_settings">Definições de GPT</string>
+    <string name="backup_category_bookmarks">Marcadores</string>
+    <string name="backup_category_history">Histórico</string>
+    <string name="dialog_title_backup_categories">Selecionar dados para cópia de segurança</string>
+    <string name="dialog_title_restore_categories">Selecionar dados para restaurar</string>
+    <string name="setting_title_share_appData">Partilhar dados da aplicação</string>
+    <string name="setting_summary_share_appData">Partilhar dados da aplicação para outro dispositivo pela rede local</string>
+    <string name="setting_title_receive_appData">Receber dados da aplicação</string>
+    <string name="setting_summary_receive_appData">Receber dados da aplicação de outro dispositivo pela rede local</string>
+    <string name="share_broadcasting">A transmitir na rede local…</string>
+    <string name="share_waiting">À espera de dados de outro dispositivo…</string>
     <string name="setting_summary_nav_pos_not_show">Não mostrar</string>
     <string name="setting_summary_nav_pos_custom">Personalizado</string>
     <string name="setting_summary_desktop">Suporte para o modo de desktop do site</string>

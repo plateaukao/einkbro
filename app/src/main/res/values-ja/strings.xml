@@ -142,10 +142,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
+    <string name="setting_title_export_appData">アプリデータのエクスポート</string>
     <string name="setting_title_import_appData">アプリデータのインポート</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_summary_export_appData">アプリデータ（履歴、ブックマーク）と個人設定をエクスポート</string>
     <string name="title_appData">アプリデータ</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -444,6 +443,18 @@
     <string name="setting_summary_gpt_query_list">保存されたGPTクエリ結果</string>
     <string name="setting_summary_hide_statusbar">常にステータスバーを非表示</string>
     <string name="setting_summary_import_appData">以前エクスポートしたデータのzipファイルを選択してインポート</string>
+    <string name="backup_category_all_preferences">すべての設定</string>
+    <string name="backup_category_gpt_settings">GPT設定</string>
+    <string name="backup_category_bookmarks">ブックマーク</string>
+    <string name="backup_category_history">履歴</string>
+    <string name="dialog_title_backup_categories">バックアップするデータを選択</string>
+    <string name="dialog_title_restore_categories">復元するデータを選択</string>
+    <string name="setting_title_share_appData">アプリデータの共有</string>
+    <string name="setting_summary_share_appData">ローカルネットワーク経由で他のデバイスにアプリデータを共有</string>
+    <string name="setting_title_receive_appData">アプリデータの受信</string>
+    <string name="setting_summary_receive_appData">ローカルネットワーク経由で他のデバイスからアプリデータを受信</string>
+    <string name="share_broadcasting">ローカルネットワークで配信中…</string>
+    <string name="share_waiting">他のデバイスからのデータを待機中…</string>
     <string name="setting_summary_nav_pos_custom">カスタム</string>
     <string name="setting_summary_nav_pos_not_show">表示しない</string>
     <string name="setting_summary_nav_pos_reset_custom">カスタム位置をリセット</string>

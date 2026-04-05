@@ -184,7 +184,7 @@
 
     <string name="setting_title_export_appData">导出应用程序数据</string>
     <string name="setting_title_import_appData">导入应用程序数据</string>
-    <string name="setting_summary_export_appData">导出应用程序数据 (起始页 + 预览、历史记录、书签) 以及您的个人设置。</string>
+    <string name="setting_summary_export_appData">导出应用程序数据（历史记录、书签）及您的个人设置</string>
     <string name="title_appData">应用程序数据</string>
     <string name="hint_database">这将删除当前的所有网址，是否继续？</string>
 
@@ -409,6 +409,18 @@
     <string name="setting_title_setup_bookmarks_location">配置书签位置</string>
     <string name="setting_summary_setup_bookmarks_location">在 Google Drive 或其他支持远程同步的文件位置选择文件。</string>
     <string name="setting_summary_import_appData">通过选择以前导出的zip文件导入应用程序数据。</string>
+    <string name="backup_category_all_preferences">所有偏好设置</string>
+    <string name="backup_category_gpt_settings">GPT 设置</string>
+    <string name="backup_category_bookmarks">书签</string>
+    <string name="backup_category_history">历史记录</string>
+    <string name="dialog_title_backup_categories">选择要备份的数据</string>
+    <string name="dialog_title_restore_categories">选择要恢复的数据</string>
+    <string name="setting_title_share_appData">共享应用数据</string>
+    <string name="setting_summary_share_appData">通过本地网络将应用数据共享到另一台设备</string>
+    <string name="setting_title_receive_appData">接收应用数据</string>
+    <string name="setting_summary_receive_appData">通过本地网络从另一台设备接收应用数据</string>
+    <string name="share_broadcasting">正在本地网络上广播…</string>
+    <string name="share_waiting">正在等待来自另一台设备的数据…</string>
     <string name="dialog_message_sync_bookmark_file">"要同步书签，您需要使用系统文件选择器从 Google Drive 或与其他远程服务同步的文件中创建或打开书签文件。"</string>
     <string name="dialog_title_bookmark_sync">书签文件设置</string>
     <string name="settings_title_back_key_behavior">返回键行为</string>

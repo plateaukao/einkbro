@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">ייצוא נתוני אפליקציה</string>
+    <string name="setting_title_import_appData">ייבוא נתוני אפליקציה</string>
+    <string name="setting_summary_export_appData">ייצוא נתוני אפליקציה (היסטוריה, סימניות) וההגדרות האישיות שלך</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -238,6 +237,18 @@
     <string name="page_up">עמוד למעלה</string>
     <string name="page_down">עמוד למטה</string>
     <string name="setting_summary_import_appData">ייבוא נתוני אפליקציה על ידי בחירת קובץ zip עם נתונים שיוצאו בעבר</string>
+    <string name="backup_category_all_preferences">כל ההעדפות</string>
+    <string name="backup_category_gpt_settings">הגדרות GPT</string>
+    <string name="backup_category_bookmarks">סימניות</string>
+    <string name="backup_category_history">היסטוריה</string>
+    <string name="dialog_title_backup_categories">בחר נתונים לגיבוי</string>
+    <string name="dialog_title_restore_categories">בחר נתונים לשחזור</string>
+    <string name="setting_title_share_appData">שיתוף נתוני אפליקציה</string>
+    <string name="setting_summary_share_appData">שיתוף נתוני אפליקציה למכשיר אחר דרך רשת מקומית</string>
+    <string name="setting_title_receive_appData">קבלת נתוני אפליקציה</string>
+    <string name="setting_summary_receive_appData">קבלת נתוני אפליקציה ממכשיר אחר דרך רשת מקומית</string>
+    <string name="share_broadcasting">משדר ברשת המקומית…</string>
+    <string name="share_waiting">ממתין לנתונים ממכשיר אחר…</string>
     <string name="setting_summary_desktop">תמיכה במצב שולחן עבודה של אתר</string>
     <string name="history">היסטוריה</string>
     <string name="location">מיקום</string>

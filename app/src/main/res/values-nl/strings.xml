@@ -143,10 +143,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">App-gegevens exporteren</string>
+    <string name="setting_title_import_appData">App-gegevens importeren</string>
+    <string name="setting_summary_export_appData">App-gegevens exporteren (Geschiedenis, Bladwijzers) en uw persoonlijke instellingen</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">Dit verwijdert al je huidige instellingen en gegevens. Wil je doorgaan?</string>
     <!-- Others setting -->
@@ -614,4 +613,16 @@
     <string name="save_history_mode_save_when_close">Opslaan bij sluiten tabblad</string>
     <string name="save_history_mode_disabled">Niet opslaan</string>
     <string name="setting_summary_import_appData">App-gegevens importeren door een ZIP-bestand te kiezen met eerder geëxporteerde gegevens</string>
+    <string name="backup_category_all_preferences">Alle voorkeuren</string>
+    <string name="backup_category_gpt_settings">GPT-instellingen</string>
+    <string name="backup_category_bookmarks">Bladwijzers</string>
+    <string name="backup_category_history">Geschiedenis</string>
+    <string name="dialog_title_backup_categories">Selecteer gegevens om te back-uppen</string>
+    <string name="dialog_title_restore_categories">Selecteer gegevens om te herstellen</string>
+    <string name="setting_title_share_appData">App-gegevens delen</string>
+    <string name="setting_summary_share_appData">App-gegevens delen met een ander apparaat via het lokale netwerk</string>
+    <string name="setting_title_receive_appData">App-gegevens ontvangen</string>
+    <string name="setting_summary_receive_appData">App-gegevens ontvangen van een ander apparaat via het lokale netwerk</string>
+    <string name="share_broadcasting">Uitzenden op lokaal netwerk…</string>
+    <string name="share_waiting">Wachten op gegevens van een ander apparaat…</string>
 </resources>

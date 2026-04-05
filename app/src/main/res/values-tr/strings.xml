@@ -146,8 +146,7 @@
     <string name="export_whitelistCookie">Cerez_beyazliste_aktarim</string>
     <string name="setting_title_export_appData">Uygulama verilerini dışa aktar</string>
     <string name="setting_title_import_appData">Uygulama verilerini içe aktar</string>
-    <string name="setting_summary_export_appData">Uygulama verilerini (Başlangıç sayfası + önizlemeler, Geçmiş, Yer imleri)
-        ve kişisel ayarlarınızı dışa aktarın.</string>
+    <string name="setting_summary_export_appData">Uygulama verilerini (Geçmiş, Yer İmleri) ve kişisel ayarlarınızı dışa aktarın</string>
     <string name="title_appData">Uygulama verileri</string>
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
     <!-- Others setting -->
@@ -238,6 +237,18 @@
     <string name="page_up">Sayfa Yukarı</string>
     <string name="page_down">Sayfa Aşağı</string>
     <string name="setting_summary_import_appData">Daha önce dışa aktarılmış verileri içeren bir zip dosyası seçerek uygulama verilerini içe aktarın</string>
+    <string name="backup_category_all_preferences">Tüm Tercihler</string>
+    <string name="backup_category_gpt_settings">GPT Ayarları</string>
+    <string name="backup_category_bookmarks">Yer İmleri</string>
+    <string name="backup_category_history">Geçmiş</string>
+    <string name="dialog_title_backup_categories">Yedeklenecek verileri seçin</string>
+    <string name="dialog_title_restore_categories">Geri yüklenecek verileri seçin</string>
+    <string name="setting_title_share_appData">Uygulama verilerini paylaş</string>
+    <string name="setting_summary_share_appData">Uygulama verilerini yerel ağ üzerinden başka bir cihaza paylaş</string>
+    <string name="setting_title_receive_appData">Uygulama verilerini al</string>
+    <string name="setting_summary_receive_appData">Uygulama verilerini yerel ağ üzerinden başka bir cihazdan al</string>
+    <string name="share_broadcasting">Yerel ağda yayınlanıyor…</string>
+    <string name="share_waiting">Başka bir cihazdan veri bekleniyor…</string>
     <string name="setting_summary_desktop">Web sitesinin masaüstü modunu destekle</string>
     <string name="history">Geçmiş</string>
     <string name="location">Konum</string>

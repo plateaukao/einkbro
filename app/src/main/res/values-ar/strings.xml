@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">تصدير بيانات التطبيق</string>
+    <string name="setting_title_import_appData">استيراد بيانات التطبيق</string>
+    <string name="setting_summary_export_appData">تصدير بيانات التطبيق (السجل، الإشارات المرجعية) وإعداداتك الشخصية</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -238,6 +237,18 @@
     <string name="page_up">صفحة لأعلى</string>
     <string name="page_down">صفحة لأسفل</string>
     <string name="setting_summary_import_appData">استيراد بيانات التطبيق باختيار ملف مضغوط يحتوي على بيانات تم تصديرها مسبقاً</string>
+    <string name="backup_category_all_preferences">جميع التفضيلات</string>
+    <string name="backup_category_gpt_settings">إعدادات GPT</string>
+    <string name="backup_category_bookmarks">الإشارات المرجعية</string>
+    <string name="backup_category_history">السجل</string>
+    <string name="dialog_title_backup_categories">اختر البيانات للنسخ الاحتياطي</string>
+    <string name="dialog_title_restore_categories">اختر البيانات للاستعادة</string>
+    <string name="setting_title_share_appData">مشاركة بيانات التطبيق</string>
+    <string name="setting_summary_share_appData">مشاركة بيانات التطبيق إلى جهاز آخر عبر الشبكة المحلية</string>
+    <string name="setting_title_receive_appData">استقبال بيانات التطبيق</string>
+    <string name="setting_summary_receive_appData">استقبال بيانات التطبيق من جهاز آخر عبر الشبكة المحلية</string>
+    <string name="share_broadcasting">جارٍ البث على الشبكة المحلية…</string>
+    <string name="share_waiting">في انتظار البيانات من جهاز آخر…</string>
     <string name="setting_summary_desktop">دعم وضع سطح المكتب للموقع</string>
     <string name="history">السجل</string>
     <string name="location">الموقع</string>

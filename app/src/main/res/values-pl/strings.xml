@@ -136,10 +136,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Eksportuj dane aplikacji</string>
+    <string name="setting_title_import_appData">Importuj dane aplikacji</string>
+    <string name="setting_summary_export_appData">Eksportuj dane aplikacji (Historia, Zakładki) i ustawienia osobiste</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">Ta opcja wymaże twoje aktualne ustawienia i dane. Kontynuować?</string>
     <!-- Others setting -->
@@ -230,6 +229,18 @@
     <string name="page_down">Strona w dół</string>
     <string name="audio_only_mode">Tylko dźwięk</string>
     <string name="setting_summary_import_appData">Importuj dane aplikacji, wybierając plik zip z wcześniej wyeksportowanymi danymi</string>
+    <string name="backup_category_all_preferences">Wszystkie preferencje</string>
+    <string name="backup_category_gpt_settings">Ustawienia GPT</string>
+    <string name="backup_category_bookmarks">Zakładki</string>
+    <string name="backup_category_history">Historia</string>
+    <string name="dialog_title_backup_categories">Wybierz dane do kopii zapasowej</string>
+    <string name="dialog_title_restore_categories">Wybierz dane do przywrócenia</string>
+    <string name="setting_title_share_appData">Udostępnij dane aplikacji</string>
+    <string name="setting_summary_share_appData">Udostępnij dane aplikacji innemu urządzeniu przez sieć lokalną</string>
+    <string name="setting_title_receive_appData">Odbierz dane aplikacji</string>
+    <string name="setting_summary_receive_appData">Odbierz dane aplikacji z innego urządzenia przez sieć lokalną</string>
+    <string name="share_broadcasting">Nadawanie w sieci lokalnej…</string>
+    <string name="share_waiting">Oczekiwanie na dane z innego urządzenia…</string>
     <string name="setting_summary_desktop">Obsługa trybu komputerowego witryn</string>
     <string name="history">Historia</string>
     <string name="location">Lokalizacja</string>

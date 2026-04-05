@@ -137,8 +137,7 @@
     <string name="export_whitelistCookie">esporta_whitelist_cookie</string>
     <string name="setting_title_export_appData">Esporta dati dell\'app</string>
     <string name="setting_title_import_appData">Importa dati dell\'app</string>
-    <string name="setting_summary_export_appData">Esporta i dati dell\' app (pagina iniziale + anteprime, cronologia, segnalibri)
-        e le tue impostazioni personali.</string>
+    <string name="setting_summary_export_appData">Esporta i dati dell\'app (Cronologia, Segnalibri) e le tue impostazioni personali</string>
     <string name="title_appData">Dati app</string>
     <string name="hint_database">In questo modo verranno eliminate tutte le impostazioni e i dati correnti. Continuare?</string>
     <!-- Others setting -->
@@ -604,6 +603,18 @@
     <string name="setting_summary_nav_pos_not_show">Non mostrare</string>
     <string name="setting_summary_nav_pos_custom">Personalizzato</string>
     <string name="setting_summary_import_appData">Importa i dati scegliendo un file zip con i dati precedentemente esportati</string>
+    <string name="backup_category_all_preferences">Tutte le preferenze</string>
+    <string name="backup_category_gpt_settings">Impostazioni GPT</string>
+    <string name="backup_category_bookmarks">Segnalibri</string>
+    <string name="backup_category_history">Cronologia</string>
+    <string name="dialog_title_backup_categories">Seleziona dati da salvare</string>
+    <string name="dialog_title_restore_categories">Seleziona dati da ripristinare</string>
+    <string name="setting_title_share_appData">Condividi dati dell\'app</string>
+    <string name="setting_summary_share_appData">Condividi dati dell\'app a un altro dispositivo tramite rete locale</string>
+    <string name="setting_title_receive_appData">Ricevi dati dell\'app</string>
+    <string name="setting_summary_receive_appData">Ricevi dati dell\'app da un altro dispositivo tramite rete locale</string>
+    <string name="share_broadcasting">Trasmissione sulla rete locale…</string>
+    <string name="share_waiting">In attesa di dati da un altro dispositivo…</string>
     <string name="setting_title_github_snapshot">Aggiorna con snapshot</string>
     <string name="audio_only_mode">Solo audio</string>
 </resources>

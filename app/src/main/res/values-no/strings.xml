@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Eksporter app-data</string>
+    <string name="setting_title_import_appData">Importer app-data</string>
+    <string name="setting_summary_export_appData">Eksporter app-data (Historikk, Bokmerker) og dine personlige innstillinger</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -428,6 +427,18 @@
     <string name="setting_summary_gpt_query_list">Lagrede GPT-søkeresultater</string>
     <string name="setting_summary_hide_statusbar">Skjul statuslinjen alltid</string>
     <string name="setting_summary_import_appData">Importer app-data ved å velge en zip-fil med tidligere eksporterte data</string>
+    <string name="backup_category_all_preferences">Alle innstillinger</string>
+    <string name="backup_category_gpt_settings">GPT-innstillinger</string>
+    <string name="backup_category_bookmarks">Bokmerker</string>
+    <string name="backup_category_history">Historikk</string>
+    <string name="dialog_title_backup_categories">Velg data for sikkerhetskopiering</string>
+    <string name="dialog_title_restore_categories">Velg data for gjenoppretting</string>
+    <string name="setting_title_share_appData">Del app-data</string>
+    <string name="setting_summary_share_appData">Del app-data til en annen enhet over lokalt nettverk</string>
+    <string name="setting_title_receive_appData">Motta app-data</string>
+    <string name="setting_summary_receive_appData">Motta app-data fra en annen enhet over lokalt nettverk</string>
+    <string name="share_broadcasting">Kringkaster på lokalt nettverk…</string>
+    <string name="share_waiting">Venter på data fra en annen enhet…</string>
     <string name="setting_summary_nav_pos_custom">Egendefinert</string>
     <string name="setting_summary_nav_pos_not_show">Ikke vis</string>
     <string name="setting_summary_nav_pos_reset_custom">Tilbakestill egendefinert posisjon</string>

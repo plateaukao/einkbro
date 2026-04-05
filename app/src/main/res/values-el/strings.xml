@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Εξαγωγή δεδομένων εφαρμογής</string>
+    <string name="setting_title_import_appData">Εισαγωγή δεδομένων εφαρμογής</string>
+    <string name="setting_summary_export_appData">Εξαγωγή δεδομένων εφαρμογής (Ιστορικό, Σελιδοδείκτες) και των προσωπικών σας ρυθμίσεων</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -238,6 +237,18 @@
     <string name="page_up">Σελίδα πάνω</string>
     <string name="page_down">Σελίδα κάτω</string>
     <string name="setting_summary_import_appData">Εισαγωγή δεδομένων εφαρμογής επιλέγοντας ένα αρχείο zip με δεδομένα που εξήχθησαν προηγουμένως</string>
+    <string name="backup_category_all_preferences">Όλες οι προτιμήσεις</string>
+    <string name="backup_category_gpt_settings">Ρυθμίσεις GPT</string>
+    <string name="backup_category_bookmarks">Σελιδοδείκτες</string>
+    <string name="backup_category_history">Ιστορικό</string>
+    <string name="dialog_title_backup_categories">Επιλογή δεδομένων για αντίγραφο ασφαλείας</string>
+    <string name="dialog_title_restore_categories">Επιλογή δεδομένων για επαναφορά</string>
+    <string name="setting_title_share_appData">Κοινοποίηση δεδομένων εφαρμογής</string>
+    <string name="setting_summary_share_appData">Κοινοποίηση δεδομένων εφαρμογής σε άλλη συσκευή μέσω τοπικού δικτύου</string>
+    <string name="setting_title_receive_appData">Λήψη δεδομένων εφαρμογής</string>
+    <string name="setting_summary_receive_appData">Λήψη δεδομένων εφαρμογής από άλλη συσκευή μέσω τοπικού δικτύου</string>
+    <string name="share_broadcasting">Εκπομπή στο τοπικό δίκτυο…</string>
+    <string name="share_waiting">Αναμονή δεδομένων από άλλη συσκευή…</string>
     <string name="setting_summary_desktop">Υποστήριξη λειτουργίας επιφάνειας εργασίας ιστοσελίδας</string>
     <string name="history">Ιστορικό</string>
     <string name="location">Τοποθεσία</string>

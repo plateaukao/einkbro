@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Vie sovellustiedot</string>
+    <string name="setting_title_import_appData">Tuo sovellustiedot</string>
+    <string name="setting_summary_export_appData">Vie sovellustiedot (historia, kirjanmerkit) ja henkilökohtaiset asetukset</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -428,6 +427,18 @@
     <string name="setting_summary_gpt_query_list">Tallennetut GPT-kyselytulokset</string>
     <string name="setting_summary_hide_statusbar">Piilota tilarivi aina</string>
     <string name="setting_summary_import_appData">Tuo sovellustiedot valitsemalla zip-tiedosto aiemmin viedyistä tiedoista</string>
+    <string name="backup_category_all_preferences">Kaikki asetukset</string>
+    <string name="backup_category_gpt_settings">GPT-asetukset</string>
+    <string name="backup_category_bookmarks">Kirjanmerkit</string>
+    <string name="backup_category_history">Historia</string>
+    <string name="dialog_title_backup_categories">Valitse varmuuskopioitavat tiedot</string>
+    <string name="dialog_title_restore_categories">Valitse palautettavat tiedot</string>
+    <string name="setting_title_share_appData">Jaa sovellustiedot</string>
+    <string name="setting_summary_share_appData">Jaa sovellustiedot toiseen laitteeseen paikallisverkon kautta</string>
+    <string name="setting_title_receive_appData">Vastaanota sovellustiedot</string>
+    <string name="setting_summary_receive_appData">Vastaanota sovellustiedot toisesta laitteesta paikallisverkon kautta</string>
+    <string name="share_broadcasting">Lähetetään paikallisverkossa…</string>
+    <string name="share_waiting">Odotetaan tietoja toisesta laitteesta…</string>
     <string name="setting_summary_nav_pos_custom">Mukautettu</string>
     <string name="setting_summary_nav_pos_not_show">Älä näytä</string>
     <string name="setting_summary_nav_pos_reset_custom">Nollaa mukautettu sijainti</string>

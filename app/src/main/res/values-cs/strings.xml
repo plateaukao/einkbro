@@ -142,8 +142,7 @@
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportovat data aplikace</string>
     <string name="setting_title_import_appData">Importovat data aplikace</string>
-    <string name="setting_summary_export_appData">Exportovat data aplikace (Úvodní stránka + náhledy, historie, záložky)
-        a vaše osobní nastavení.</string>
+    <string name="setting_summary_export_appData">Exportovat data aplikace (Historie, Záložky) a vaše osobní nastavení</string>
     <string name="title_appData">Data aplikace</string>
     <string name="hint_database">Toto vymaže všechna vaše aktuální nastavení a data. Chcete pokračovat?</string>
     <!-- Others setting -->
@@ -234,6 +233,18 @@
     <string name="page_down">O stránku dolů</string>
     <string name="audio_only_mode">Pouze zvuk</string>
     <string name="setting_summary_import_appData">Importovat data aplikace výběrem souboru zip s dříve exportovanými daty</string>
+    <string name="backup_category_all_preferences">Všechna nastavení</string>
+    <string name="backup_category_gpt_settings">Nastavení GPT</string>
+    <string name="backup_category_bookmarks">Záložky</string>
+    <string name="backup_category_history">Historie</string>
+    <string name="dialog_title_backup_categories">Vyberte data k zálohování</string>
+    <string name="dialog_title_restore_categories">Vyberte data k obnovení</string>
+    <string name="setting_title_share_appData">Sdílet data aplikace</string>
+    <string name="setting_summary_share_appData">Sdílet data aplikace do jiného zařízení přes místní síť</string>
+    <string name="setting_title_receive_appData">Přijmout data aplikace</string>
+    <string name="setting_summary_receive_appData">Přijmout data aplikace z jiného zařízení přes místní síť</string>
+    <string name="share_broadcasting">Vysílání v místní síti…</string>
+    <string name="share_waiting">Čekání na data z jiného zařízení…</string>
     <string name="setting_summary_desktop">Podpora režimu plochy webu</string>
     <string name="history">Historie</string>
     <string name="location">Poloha</string>
