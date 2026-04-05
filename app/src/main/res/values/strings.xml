@@ -425,6 +425,12 @@
     <string name="setting_summary_adblock_auto_update">Auto update AdBlock content weekly</string>
     <string name="toast_adblock_updated">AdBlock is updated!</string>
     <string name="toast_backup_successful">Backup successful!</string>
+    <string name="backup_category_all_preferences">All Preferences</string>
+    <string name="backup_category_gpt_settings">GPT Settings</string>
+    <string name="backup_category_bookmarks">Bookmarks</string>
+    <string name="backup_category_history">History</string>
+    <string name="dialog_title_backup_categories">Select data to backup</string>
+    <string name="dialog_title_restore_categories">Select data to restore</string>
     <string name="setting_title_enable_ssl_error_dialog">Show SSL error dialog</string>
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog</string>
     <string name="manual">Manual</string>

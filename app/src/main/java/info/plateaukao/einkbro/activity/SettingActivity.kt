@@ -69,6 +69,7 @@ import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.SettingScreen
 import info.plateaukao.einkbro.setting.ValueSettingItem
 import info.plateaukao.einkbro.setting.VersionSettingItem
+import info.plateaukao.einkbro.unit.BackupCategory
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -86,6 +87,8 @@ class SettingActivity : FragmentActivity() {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
+
+    private var pendingBackupCategories: Set<BackupCategory> = emptySet()
 
     private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
@@ -279,13 +282,28 @@ class SettingActivity : FragmentActivity() {
         when (requestCode) {
             DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.exportBookmarks(uri)
             DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.importBookmarks(uri)
-            DialogManager.EXPORT_BACKUP_REQUEST_CODE -> backupUnit.backupData(this, uri)
-            DialogManager.IMPORT_BACKUP_REQUEST_CODE -> if (backupUnit.restoreBackupData(
-                    this,
-                    uri
-                )
-            ) {
-                dialogManager.showRestartConfirmDialog()
+            DialogManager.EXPORT_BACKUP_REQUEST_CODE -> {
+                val categories = pendingBackupCategories
+                pendingBackupCategories = emptySet()
+                if (categories.isNotEmpty()) {
+                    backupUnit.backupData(this, uri, categories)
+                }
+            }
+
+            DialogManager.IMPORT_BACKUP_REQUEST_CODE -> {
+                val available = backupUnit.getAvailableCategories(this, uri)
+                if (available == null) {
+                    // Legacy format: restore everything as before
+                    if (backupUnit.restoreLegacyBackupData(this, uri)) {
+                        dialogManager.showRestartConfirmDialog()
+                    }
+                } else {
+                    dialogManager.showRestoreCategoryDialog(available) { selected ->
+                        if (backupUnit.restoreBackupData(this, uri, selected)) {
+                            dialogManager.showRestartConfirmDialog()
+                        }
+                    }
+                }
             }
         }
     }
@@ -827,7 +845,12 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_export_appData,
             0,
             R.string.setting_summary_export_appData
-        ) { dialogManager.showBackupFilePicker() },
+        ) {
+            dialogManager.showBackupCategoryDialog { categories ->
+                pendingBackupCategories = categories
+                dialogManager.showBackupFilePicker()
+            }
+        },
         ActionSettingItem(
             R.string.setting_title_import_appData,
             0,
