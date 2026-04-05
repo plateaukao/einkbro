@@ -245,7 +245,6 @@ class ConfigManager(
         K_ADBLOCK_HOSTS_URL,
         ADBLOCK_URL_DEFAULT
     )
-    var bookmarkSyncUrl by StringPreference(sp, K_BOOKMARK_SYNC_URL, "")
 
     var gptApiKey by StringPreference(sp, K_GPT_API_KEY, "")
 
@@ -1016,7 +1015,6 @@ class ConfigManager(
         const val K_AUTO_UPDATE_ADBLOCK = "sp_auto_update_adblock"
         const val CERTIFICATE_ERROR_DIALOG = "sp_certificate_error_dialog"
         const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
-        const val K_BOOKMARK_SYNC_URL = "sp_bookmark_sync_url"
         const val K_CLOSE_TAB_WHEN_BACK = "sp_close_tab_when_no_more_back_history"
         const val K_ENABLE_CUSTOM_USER_AGENT = "sp_custom_user_agent"
         const val K_SHOW_SHARE_SAVE_MENU = "sp_show_share_save_menu"

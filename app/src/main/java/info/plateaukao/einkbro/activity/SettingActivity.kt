@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -71,7 +70,6 @@ import info.plateaukao.einkbro.setting.ValueSettingItem
 import info.plateaukao.einkbro.setting.VersionSettingItem
 import info.plateaukao.einkbro.unit.BackupCategory
 import info.plateaukao.einkbro.unit.BackupUnit
-import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
@@ -92,15 +90,11 @@ class SettingActivity : FragmentActivity() {
 
     private var pendingBackupCategories: Set<BackupCategory> = emptySet()
 
-    private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
-    private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
 
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        openBookmarkFileLauncher = backupUnit.createOpenBookmarkFileLauncher(this)
-        createBookmarkFileLauncher = backupUnit.createCreateBookmarkFileLauncher(this)
 
         val routeName = intent.getStringExtra(KEY_ROUTE) ?: Main.name
         setContent {
@@ -921,20 +915,6 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_import_bookmarks,
             0,
         ) { dialogManager.showImportBookmarkFilePicker() },
-        ActionSettingItem(
-            R.string.setting_title_setup_bookmarks_location,
-            0,
-            R.string.setting_summary_setup_bookmarks_location,
-        ) {
-            dialogManager.showCreateOrOpenBookmarkFileDialog(
-                { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
-                { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
-            )
-        },
-        ActionSettingItem(
-            R.string.setting_title_sync_bookmarks,
-            0,
-        ) { handleBookmarkSync(true) },
     )
 
     private val clearDataSettingItems = listOf(
@@ -1282,9 +1262,6 @@ class SettingActivity : FragmentActivity() {
         ),
     )
 
-    private fun handleBookmarkSync(forceUpload: Boolean) {
-        backupUnit.handleBookmarkSync(forceUpload)
-    }
 
     @Suppress("DEPRECATION")
     private fun hideStatusBar() {

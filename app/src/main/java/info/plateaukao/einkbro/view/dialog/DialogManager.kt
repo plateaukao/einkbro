@@ -537,19 +537,6 @@ class DialogManager(
         )
     }
 
-    fun showCreateOrOpenBookmarkFileDialog(
-        createFileAction: () -> Unit,
-        openFileAction: () -> Unit,
-    ) {
-        val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
-            .setPositiveButton(R.string.bookmark_new_file) { _, _ -> createFileAction() }
-            .apply {
-                setTitle(context.getString(R.string.dialog_title_bookmark_sync))
-                setMessage(context.getString(R.string.dialog_message_sync_bookmark_file))
-                setNegativeButton(R.string.bookmark_open_file) { _, _ -> openFileAction() }
-            }
-        dialog.show()
-    }
 
     companion object {
         const val EXPORT_BOOKMARKS_REQUEST_CODE = 2345

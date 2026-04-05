@@ -331,8 +331,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var createWebArchivePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var openBookmarkFileLauncher: ActivityResultLauncher<Intent>
-    private lateinit var createBookmarkFileLauncher: ActivityResultLauncher<Intent>
     private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
     private lateinit var openEpubFilePickerLauncher: ActivityResultLauncher<Intent>
 
@@ -1050,8 +1048,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initLaunchers() {
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
-        openBookmarkFileLauncher = backupUnit.createOpenBookmarkFileLauncher(this)
-        createBookmarkFileLauncher = backupUnit.createCreateBookmarkFileLauncher(this)
         createWebArchivePickerLauncher =
             IntentUnit.createResultLauncher(this) { saveWebArchive(it) }
         writeEpubFilePickerLauncher =
@@ -1450,7 +1446,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     currentUrl, order = if (ViewUnit.isWideLayout(this@BrowserActivity)) 999 else 0
                 ),
                 {
-                    handleBookmarkSync(true)
                     ViewUnit.hideKeyboard(this@BrowserActivity)
                     EBToast.show(this@BrowserActivity, R.string.toast_edit_successful)
                 },
@@ -2024,21 +2019,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 )
             },
             splitScreenAction = { url -> toggleSplitScreen(url) },
-            syncBookmarksAction = this::handleBookmarkSync,
-            linkBookmarksAction = this::linkBookmarkSync
         ).show(supportFragmentManager, "bookmarks dialog")
-
-    private fun handleBookmarkSync(forceUpload: Boolean = false) {
-        if (config.bookmarkSyncUrl.isNotEmpty()) backupUnit.handleBookmarkSync(forceUpload)
-    }
-
-    private fun linkBookmarkSync() {
-        backupUnit.linkBookmarkSync(
-            dialogManager,
-            createBookmarkFileLauncher,
-            openBookmarkFileLauncher
-        )
-    }
 
     private val searchPanelFocusRequester = FocusRequester()
 
