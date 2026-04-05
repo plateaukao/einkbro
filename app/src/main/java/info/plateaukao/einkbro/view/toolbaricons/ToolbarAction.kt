@@ -173,7 +173,7 @@ enum class ToolbarAction(
         titleResId = R.string.chat_with_web,
     ),
     PageAi(
-        iconResId = R.drawable.ic_chat_gpt,
+        iconResId = R.drawable.ic_robot,
         titleResId = R.string.page_ai,
     ),
     AudioOnly(
