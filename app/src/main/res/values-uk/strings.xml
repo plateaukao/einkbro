@@ -135,10 +135,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Експортувати дані додатку</string>
+    <string name="setting_title_import_appData">Імпортувати дані додатку</string>
+    <string name="setting_summary_export_appData">Експортувати дані додатку (Історія, Закладки) та ваші особисті налаштування</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">Це призведе до видалення всіх поточних налаштувань і даних. Продовжити?</string>
     <!-- Others setting -->
@@ -416,6 +415,18 @@
     <string name="setting_summary_gpt_query_list">Збережена історія результатів GPT</string>
     <string name="setting_summary_hide_statusbar">Завжди приховувати рядок стану</string>
     <string name="setting_summary_import_appData">Імпортувати дані, обравши zip-файл з раніше експортованими даними</string>
+    <string name="backup_category_all_preferences">Усі налаштування</string>
+    <string name="backup_category_gpt_settings">Налаштування GPT</string>
+    <string name="backup_category_bookmarks">Закладки</string>
+    <string name="backup_category_history">Історія</string>
+    <string name="dialog_title_backup_categories">Оберіть дані для резервного копіювання</string>
+    <string name="dialog_title_restore_categories">Оберіть дані для відновлення</string>
+    <string name="setting_title_share_appData">Поділитися даними додатку</string>
+    <string name="setting_summary_share_appData">Надіслати дані додатку на інший пристрій через локальну мережу</string>
+    <string name="setting_title_receive_appData">Отримати дані додатку</string>
+    <string name="setting_summary_receive_appData">Отримати дані додатку з іншого пристрою через локальну мережу</string>
+    <string name="share_broadcasting">Трансляція в локальній мережі…</string>
+    <string name="share_waiting">Очікування даних з іншого пристрою…</string>
     <string name="setting_summary_nav_pos_custom">Настроюваний</string>
     <string name="setting_summary_nav_pos_not_show">Не показувати</string>
     <string name="setting_summary_nav_pos_reset_custom">Скинути користувацьку позицію</string>

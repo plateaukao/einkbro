@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Извези податке апликације</string>
+    <string name="setting_title_import_appData">Увези податке апликације</string>
+    <string name="setting_summary_export_appData">Извези податке апликације (Историја, Обележивачи) и лична подешавања</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -425,6 +424,18 @@
     <string name="setting_summary_gpt_query_list">Сачувани GPT резултати</string>
     <string name="setting_summary_hide_statusbar">Увек сакриј статусну траку</string>
     <string name="setting_summary_import_appData">Увезите податке апликације избором zip датотеке са претходно извезеним подацима</string>
+    <string name="backup_category_all_preferences">Сва подешавања</string>
+    <string name="backup_category_gpt_settings">GPT подешавања</string>
+    <string name="backup_category_bookmarks">Обележивачи</string>
+    <string name="backup_category_history">Историја</string>
+    <string name="dialog_title_backup_categories">Изаберите податке за резервну копију</string>
+    <string name="dialog_title_restore_categories">Изаберите податке за враћање</string>
+    <string name="setting_title_share_appData">Дели податке апликације</string>
+    <string name="setting_summary_share_appData">Дели податке апликације на други уређај преко локалне мреже</string>
+    <string name="setting_title_receive_appData">Прими податке апликације</string>
+    <string name="setting_summary_receive_appData">Прими податке апликације са другог уређаја преко локалне мреже</string>
+    <string name="share_broadcasting">Емитовање на локалној мрежи…</string>
+    <string name="share_waiting">Чекање на податке са другог уређаја…</string>
     <string name="setting_summary_nav_pos_custom">Прилагођено</string>
     <string name="setting_summary_nav_pos_not_show">Не приказуј</string>
     <string name="setting_summary_nav_pos_reset_custom">Поништи прилагођену позицију</string>

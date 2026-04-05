@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">exporter liste blanche AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Exporter les données de l\'application</string>
+    <string name="setting_title_import_appData">Importer les données de l\'application</string>
+    <string name="setting_summary_export_appData">Exporter les données de l\'application (Historique, Signets) et vos paramètres personnels</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">Cela supprimera tous vos paramètres et données actuels. Allez-vous procéder?</string>
     <!-- Others setting -->
@@ -613,6 +612,18 @@
     <string name="setting_summary_nav_pos_not_show">Ne pas afficher</string>
     <string name="setting_summary_nav_pos_custom">Personnalisé</string>
     <string name="setting_summary_import_appData">Importer les données en choisissant un fichier zip avec les données précédemment exportées</string>
+    <string name="backup_category_all_preferences">Toutes les préférences</string>
+    <string name="backup_category_gpt_settings">Paramètres GPT</string>
+    <string name="backup_category_bookmarks">Signets</string>
+    <string name="backup_category_history">Historique</string>
+    <string name="dialog_title_backup_categories">Sélectionner les données à sauvegarder</string>
+    <string name="dialog_title_restore_categories">Sélectionner les données à restaurer</string>
+    <string name="setting_title_share_appData">Partager les données de l\'application</string>
+    <string name="setting_summary_share_appData">Partager les données de l\'application vers un autre appareil via le réseau local</string>
+    <string name="setting_title_receive_appData">Recevoir les données de l\'application</string>
+    <string name="setting_summary_receive_appData">Recevoir les données de l\'application depuis un autre appareil via le réseau local</string>
+    <string name="share_broadcasting">Diffusion sur le réseau local…</string>
+    <string name="share_waiting">En attente de données d\'un autre appareil…</string>
     <string name="setting_title_github_snapshot">Mettre à jour avec un instantané</string>
     <string name="audio_only_mode">Audio uniquement</string>
 </resources>

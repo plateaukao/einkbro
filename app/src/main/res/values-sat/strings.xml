@@ -193,7 +193,19 @@
         <string name="setting_summary_export_appData">ᱮᱯ ᱰᱮᱴᱟ (ᱱᱟᱜᱟᱢ, ᱵᱩᱠᱢᱟᱨᱠᱠᱚ) ᱟᱨ ᱟᱢᱟᱜ ᱱᱤᱡᱮᱨᱟᱜ ᱥᱟᱡᱟᱣᱠᱚ ᱵᱷᱮᱡᱟᱭ ᱢᱮ ᱾</string>
     <string name="setting_title_import_appData">ᱮᱯ ᱰᱟᱴᱟ ᱟᱹᱜᱩᱭ ᱢᱮ</string>
     <string name="setting_summary_import_appData">ᱢᱟᱲᱟᱝ ᱛᱮ ᱵᱷᱮᱡᱟ ᱟᱠᱟᱱ ᱰᱟᱴᱟ ᱥᱟᱶ ᱢᱤᱫ zip ᱨᱮᱫᱽ ᱵᱟᱪᱷᱟᱣ ᱠᱟᱛᱮ ᱮᱯ ᱰᱟᱴᱟ ᱟᱹᱜᱩᱭᱢᱮ ᱾</string>
-    
+    <string name="backup_category_all_preferences">ᱡᱷᱚᱛᱚ ᱯᱟᱥᱱᱫᱠᱚ</string>
+    <string name="backup_category_gpt_settings">GPT ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="backup_category_bookmarks">ᱵᱩᱠᱢᱟᱨᱠᱠᱚ</string>
+    <string name="backup_category_history">ᱱᱟᱜᱟᱢ</string>
+    <string name="dialog_title_backup_categories">ᱵᱮᱠᱟᱯ ᱞᱟᱹᱜᱤᱫ ᱰᱟᱴᱟ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+    <string name="dialog_title_restore_categories">ᱨᱤᱥᱴᱚᱨ ᱞᱟᱹᱜᱤᱫ ᱰᱟᱴᱟ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_title_share_appData">ᱮᱯ ᱰᱮᱴᱟ ᱦᱟᱹᱴᱤᱧ ᱢᱮ</string>
+    <string name="setting_summary_share_appData">ᱞᱚᱠᱟᱞ ᱱᱮᱴᱣᱚᱨᱠ ᱨᱮ ᱮᱴᱟᱜ ᱰᱤᱵᱷᱟᱭᱥ ᱨᱮ ᱮᱯ ᱰᱮᱴᱟ ᱦᱟᱹᱴᱤᱧ ᱢᱮ</string>
+    <string name="setting_title_receive_appData">ᱮᱯ ᱰᱮᱴᱟ ᱟᱹᱜᱩᱭ ᱢᱮ</string>
+    <string name="setting_summary_receive_appData">ᱞᱚᱠᱟᱞ ᱱᱮᱴᱣᱚᱨᱠ ᱨᱮ ᱮᱴᱟᱜ ᱰᱤᱵᱷᱟᱭᱥ ᱠᱷᱚᱱ ᱮᱯ ᱰᱮᱴᱟ ᱟᱹᱜᱩᱭ ᱢᱮ</string>
+    <string name="share_broadcasting">ᱞᱚᱠᱟᱞ ᱱᱮᱴᱣᱚᱨᱠ ᱨᱮ ᱵᱽᱨᱚᱰᱠᱟᱥᱴ ᱦᱩᱭ ᱟᱠᱟᱱᱟ…</string>
+    <string name="share_waiting">ᱮᱴᱟᱜ ᱰᱤᱵᱷᱟᱭᱥ ᱠᱷᱚᱱ ᱰᱟᱴᱟ ᱞᱟᱹᱜᱤᱫ ᱱᱮᱞ ᱟᱠᱟᱱᱟ…</string>
+
     <string name="title_appData">ᱮᱯ ᱰᱮᱴᱟ</string>
     <string name="hint_database">ᱱᱚᱶᱟ ᱫᱚ ᱟᱢᱟᱜ ᱡᱷᱚᱛᱚ ᱡᱤᱱᱤᱥ ᱠᱚ ᱢᱮᱴᱟᱣ ᱟᱭ ᱾ ᱢᱟᱲᱟᱝ ᱥᱮᱫᱚᱜᱟᱢ ᱥᱮ ?</string>
 

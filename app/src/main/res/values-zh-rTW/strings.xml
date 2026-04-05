@@ -143,10 +143,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">匯出應用程式資料</string>
+    <string name="setting_title_import_appData">匯入應用程式資料</string>
+    <string name="setting_summary_export_appData">匯出應用程式資料（歷史紀錄、書籤）及您的個人設定</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">確定要刪除所有項目嗎？</string>
     <!-- Others setting -->
@@ -343,7 +342,19 @@
     <string name="no_saved_pages">尚無儲存的網頁</string>
     <string name="setting_title_sync_bookmarks">同步書籤</string>
     <string name="setting_summary_setup_bookmarks_location">Select a file in Google Drive or other file location that supports remote sync.</string>
-    <string name="setting_summary_import_appData">Import app data by choosing a zip file that is previously exported.</string>
+    <string name="setting_summary_import_appData">選擇先前匯出的 zip 檔案來匯入應用程式資料</string>
+    <string name="backup_category_all_preferences">所有偏好設定</string>
+    <string name="backup_category_gpt_settings">GPT 設定</string>
+    <string name="backup_category_bookmarks">書籤</string>
+    <string name="backup_category_history">歷史紀錄</string>
+    <string name="dialog_title_backup_categories">選擇要備份的資料</string>
+    <string name="dialog_title_restore_categories">選擇要還原的資料</string>
+    <string name="setting_title_share_appData">分享應用程式資料</string>
+    <string name="setting_summary_share_appData">透過區域網路將應用程式資料分享至另一台裝置</string>
+    <string name="setting_title_receive_appData">接收應用程式資料</string>
+    <string name="setting_summary_receive_appData">透過區域網路從另一台裝置接收應用程式資料</string>
+    <string name="share_broadcasting">正在區域網路上廣播…</string>
+    <string name="share_waiting">正在等待來自另一台裝置的資料…</string>
     <string name="dialog_message_sync_bookmark_file">"To sync bookmarks, you need to use system file picker to create or open a bookmark file from Google Drive or a file that is synced with other remote service. "</string>
     <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
     <string name="settings_title_back_key_behavior">返回鍵行為</string>

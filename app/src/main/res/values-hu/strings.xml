@@ -353,9 +353,20 @@
     <string name="export_whitelistCookie">Süti engedélyezési lista exportálása</string>
     <string name="setting_title_export_appData">Alkalmazásadatok exportálása</string>
     <string name="setting_title_import_appData">Alkalmazásadatok importálása</string>
-    <string name="setting_summary_export_appData">Alkalmazásadatok exportálása (Előzmények, Könyvjelzők)
-        és személyes beállítások</string>
+    <string name="setting_summary_export_appData">Alkalmazásadatok exportálása (Előzmények, Könyvjelzők) és személyes beállítások</string>
     <string name="setting_summary_import_appData">Alkalmazásadatok importálása korábban exportált zip fájl kiválasztásával</string>
+    <string name="backup_category_all_preferences">Minden beállítás</string>
+    <string name="backup_category_gpt_settings">GPT beállítások</string>
+    <string name="backup_category_bookmarks">Könyvjelzők</string>
+    <string name="backup_category_history">Előzmények</string>
+    <string name="dialog_title_backup_categories">Válassza ki a mentendő adatokat</string>
+    <string name="dialog_title_restore_categories">Válassza ki a visszaállítandó adatokat</string>
+    <string name="setting_title_share_appData">Alkalmazásadatok megosztása</string>
+    <string name="setting_summary_share_appData">Alkalmazásadatok megosztása egy másik eszközzel helyi hálózaton keresztül</string>
+    <string name="setting_title_receive_appData">Alkalmazásadatok fogadása</string>
+    <string name="setting_summary_receive_appData">Alkalmazásadatok fogadása egy másik eszközről helyi hálózaton keresztül</string>
+    <string name="share_broadcasting">Küldés a helyi hálózaton…</string>
+    <string name="share_waiting">Várakozás adatokra egy másik eszközről…</string>
     <string name="title_appData">Alkalmazásadatok</string>
     <string name="hint_database">Ez törli az összes jelenlegi elemet. Folytatja?</string>
     <string name="setting_title_license">Licenc</string>

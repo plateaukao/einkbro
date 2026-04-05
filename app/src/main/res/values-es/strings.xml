@@ -162,6 +162,18 @@
     <string name="setting_summary_export_appData">Exportar datos de la app (Historial, Marcadores) y tus ajustes personales</string>
     <string name="setting_title_import_appData">Importar datos de la app</string>
     <string name="setting_summary_import_appData">Importar datos de la app seleccionando un archivo zip con datos exportados anteriormente</string>
+    <string name="backup_category_all_preferences">Todas las preferencias</string>
+    <string name="backup_category_gpt_settings">Configuración de GPT</string>
+    <string name="backup_category_bookmarks">Marcadores</string>
+    <string name="backup_category_history">Historial</string>
+    <string name="dialog_title_backup_categories">Seleccionar datos para respaldar</string>
+    <string name="dialog_title_restore_categories">Seleccionar datos para restaurar</string>
+    <string name="setting_title_share_appData">Compartir datos de la app</string>
+    <string name="setting_summary_share_appData">Compartir datos de la app a otro dispositivo por red local</string>
+    <string name="setting_title_receive_appData">Recibir datos de la app</string>
+    <string name="setting_summary_receive_appData">Recibir datos de la app desde otro dispositivo por red local</string>
+    <string name="share_broadcasting">Transmitiendo en la red local…</string>
+    <string name="share_waiting">Esperando datos de otro dispositivo…</string>
     <string name="title_appData">Datos de la app</string>
     <string name="hint_database">Esto eliminará todos los elementos de aquí. ¿Proceder?</string>
 

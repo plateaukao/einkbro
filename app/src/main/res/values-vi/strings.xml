@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Xuất dữ liệu ứng dụng</string>
+    <string name="setting_title_import_appData">Nhập dữ liệu ứng dụng</string>
+    <string name="setting_summary_export_appData">Xuất dữ liệu ứng dụng (Lịch sử, Dấu trang) và cài đặt cá nhân của bạn</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -429,6 +428,18 @@
     <string name="setting_summary_gpt_query_list">Kết quả truy vấn GPT đã lưu</string>
     <string name="setting_summary_hide_statusbar">Luôn ẩn thanh trạng thái</string>
     <string name="setting_summary_import_appData">Nhập dữ liệu ứng dụng bằng cách chọn tệp zip đã xuất trước đó</string>
+    <string name="backup_category_all_preferences">Tất cả tùy chọn</string>
+    <string name="backup_category_gpt_settings">Cài đặt GPT</string>
+    <string name="backup_category_bookmarks">Dấu trang</string>
+    <string name="backup_category_history">Lịch sử</string>
+    <string name="dialog_title_backup_categories">Chọn dữ liệu để sao lưu</string>
+    <string name="dialog_title_restore_categories">Chọn dữ liệu để khôi phục</string>
+    <string name="setting_title_share_appData">Chia sẻ dữ liệu ứng dụng</string>
+    <string name="setting_summary_share_appData">Chia sẻ dữ liệu ứng dụng đến thiết bị khác qua mạng nội bộ</string>
+    <string name="setting_title_receive_appData">Nhận dữ liệu ứng dụng</string>
+    <string name="setting_summary_receive_appData">Nhận dữ liệu ứng dụng từ thiết bị khác qua mạng nội bộ</string>
+    <string name="share_broadcasting">Đang phát trên mạng nội bộ…</string>
+    <string name="share_waiting">Đang chờ dữ liệu từ thiết bị khác…</string>
     <string name="setting_summary_nav_pos_custom">Tùy chỉnh</string>
     <string name="setting_summary_nav_pos_not_show">Không hiển thị</string>
     <string name="setting_summary_nav_pos_reset_custom">Đặt lại vị trí tùy chỉnh</string>

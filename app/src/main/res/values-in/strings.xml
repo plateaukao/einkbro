@@ -196,8 +196,7 @@
 
     <string name="setting_title_export_appData">Ekspor data aplikasi</string>
     <string name="setting_title_import_appData">Impor data aplikasi</string>
-    <string name="setting_summary_export_appData">Ekspor data aplikasi (Riwayat, Bookmarks)
-        dan pengaturan pribadi Anda.</string>
+    <string name="setting_summary_export_appData">Ekspor data aplikasi (Riwayat, Bookmark) dan pengaturan pribadi Anda</string>
     <string name="title_appData">Data aplikasi</string>
     <string name="hint_database">Tindakan ini akan menghapus semua item di sini. Apakah Anda akan melanjutkan?</string>
 
@@ -408,6 +407,18 @@
     <string name="setting_title_setup_bookmarks_location">Konfigurasikan lokasi bookmark</string>
     <string name="setting_summary_setup_bookmarks_location">Pilih file di Google Drive atau lokasi file lain yang mendukung sinkronisasi jarak jauh.</string>
     <string name="setting_summary_import_appData">Impor data aplikasi dengan memilih file zip yang sebelumnya diekspor.</string>
+    <string name="backup_category_all_preferences">Semua Preferensi</string>
+    <string name="backup_category_gpt_settings">Pengaturan GPT</string>
+    <string name="backup_category_bookmarks">Bookmark</string>
+    <string name="backup_category_history">Riwayat</string>
+    <string name="dialog_title_backup_categories">Pilih data untuk dicadangkan</string>
+    <string name="dialog_title_restore_categories">Pilih data untuk dipulihkan</string>
+    <string name="setting_title_share_appData">Bagikan data aplikasi</string>
+    <string name="setting_summary_share_appData">Bagikan data aplikasi ke perangkat lain melalui jaringan lokal</string>
+    <string name="setting_title_receive_appData">Terima data aplikasi</string>
+    <string name="setting_summary_receive_appData">Terima data aplikasi dari perangkat lain melalui jaringan lokal</string>
+    <string name="share_broadcasting">Menyiarkan di jaringan lokal…</string>
+    <string name="share_waiting">Menunggu data dari perangkat lain…</string>
     <string name="dialog_message_sync_bookmark_file">"Untuk menyinkronkan bookmark, Anda perlu menggunakan pemilih file sistem untuk membuat atau membuka file bookmark dari Google Drive atau file yang disinkronkan dengan layanan jarak jauh lainnya. "</string>
     <string name="dialog_title_bookmark_sync">Pengaturan File Bookmark</string>
     <string name="settings_title_back_key_behavior">Perilaku tombol kembali</string>

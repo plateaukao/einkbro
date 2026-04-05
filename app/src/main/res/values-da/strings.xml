@@ -144,10 +144,9 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_title_export_appData">Eksportér app-data</string>
+    <string name="setting_title_import_appData">Importér app-data</string>
+    <string name="setting_summary_export_appData">Eksportér app-data (Historik, Bogmærker) og dine personlige indstillinger</string>
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
@@ -428,6 +427,18 @@
     <string name="setting_summary_gpt_query_list">Gemte GPT-forespørgselsresultater</string>
     <string name="setting_summary_hide_statusbar">Skjul altid statuslinjen</string>
     <string name="setting_summary_import_appData">Importér app-data ved at vælge en zip-fil med tidligere eksporterede data</string>
+    <string name="backup_category_all_preferences">Alle præferencer</string>
+    <string name="backup_category_gpt_settings">GPT-indstillinger</string>
+    <string name="backup_category_bookmarks">Bogmærker</string>
+    <string name="backup_category_history">Historik</string>
+    <string name="dialog_title_backup_categories">Vælg data til sikkerhedskopiering</string>
+    <string name="dialog_title_restore_categories">Vælg data til gendannelse</string>
+    <string name="setting_title_share_appData">Del app-data</string>
+    <string name="setting_summary_share_appData">Del app-data til en anden enhed via lokalt netværk</string>
+    <string name="setting_title_receive_appData">Modtag app-data</string>
+    <string name="setting_summary_receive_appData">Modtag app-data fra en anden enhed via lokalt netværk</string>
+    <string name="share_broadcasting">Udsender på lokalt netværk…</string>
+    <string name="share_waiting">Venter på data fra en anden enhed…</string>
     <string name="setting_summary_nav_pos_custom">Brugerdefineret</string>
     <string name="setting_summary_nav_pos_not_show">Vis ikke</string>
     <string name="setting_summary_nav_pos_reset_custom">Nulstil brugerdefineret position</string>

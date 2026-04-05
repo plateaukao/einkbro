@@ -136,7 +136,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">App-Daten exportieren</string>
     <string name="setting_title_import_appData">App-Daten importieren</string>
-    <string name="setting_summary_export_appData">Exportiere App-Daten (Startpage &amp; Vorschauen, Verlauf, Lesezeichen) und deine persönlichen Einstellungen.</string>
+    <string name="setting_summary_export_appData">App-Daten exportieren (Verlauf, Lesezeichen) und deine persönlichen Einstellungen</string>
     <string name="title_appData">App-Daten</string>
     <string name="hint_database">Dies löscht alle aktuellen Einstellungen und Daten. Willst du fortfahren?</string>
     <!-- Others setting -->
@@ -604,4 +604,16 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="save_history_mode_save_when_close">Beim Schließen des Tabs speichern</string>
     <string name="save_history_mode_disabled">Nicht speichern</string>
     <string name="setting_summary_import_appData">App-Daten importieren, indem eine ZIP-Datei mit zuvor exportierten Daten ausgewählt wird</string>
+    <string name="backup_category_all_preferences">Alle Einstellungen</string>
+    <string name="backup_category_gpt_settings">GPT-Einstellungen</string>
+    <string name="backup_category_bookmarks">Lesezeichen</string>
+    <string name="backup_category_history">Verlauf</string>
+    <string name="dialog_title_backup_categories">Daten zum Sichern auswählen</string>
+    <string name="dialog_title_restore_categories">Daten zum Wiederherstellen auswählen</string>
+    <string name="setting_title_share_appData">App-Daten teilen</string>
+    <string name="setting_summary_share_appData">App-Daten über lokales Netzwerk an ein anderes Gerät senden</string>
+    <string name="setting_title_receive_appData">App-Daten empfangen</string>
+    <string name="setting_summary_receive_appData">App-Daten von einem anderen Gerät über lokales Netzwerk empfangen</string>
+    <string name="share_broadcasting">Sende im lokalen Netzwerk…</string>
+    <string name="share_waiting">Warte auf Daten von einem anderen Gerät…</string>
 </resources>
