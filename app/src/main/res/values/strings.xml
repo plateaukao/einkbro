@@ -431,6 +431,12 @@
     <string name="backup_category_history">History</string>
     <string name="dialog_title_backup_categories">Select data to backup</string>
     <string name="dialog_title_restore_categories">Select data to restore</string>
+    <string name="setting_title_share_appData">Share app data</string>
+    <string name="setting_summary_share_appData">Share app data to another device over local network</string>
+    <string name="setting_title_receive_appData">Receive app data</string>
+    <string name="setting_summary_receive_appData">Receive app data from another device over local network</string>
+    <string name="share_broadcasting">Broadcasting on local network…</string>
+    <string name="share_waiting">Waiting for data from another device…</string>
     <string name="setting_title_enable_ssl_error_dialog">Show SSL error dialog</string>
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog</string>
     <string name="manual">Manual</string>

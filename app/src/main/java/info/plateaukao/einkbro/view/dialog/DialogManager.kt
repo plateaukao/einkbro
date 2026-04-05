@@ -377,39 +377,51 @@ class DialogManager(
     fun showBackupCategoryDialog(
         onSelected: (Set<BackupCategory>) -> Unit,
     ) {
-        val categories = BackupCategory.entries.toTypedArray()
-        val labels = categories.map { activity.getString(it.displayNameResId) }.toTypedArray()
-        val checked = BooleanArray(categories.size) { true }
-
-        AlertDialog.Builder(activity, R.style.TouchAreaDialog)
-            .setTitle(R.string.dialog_title_backup_categories)
-            .setMultiChoiceItems(labels, checked) { _, which, isChecked ->
-                checked[which] = isChecked
-            }
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                val selected = categories.filterIndexed { i, _ -> checked[i] }.toSet()
-                if (selected.isNotEmpty()) onSelected(selected)
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .create().apply {
-                window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
-                window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
-            }
-            .show()
+        showCategoryDialog(
+            R.string.dialog_title_backup_categories,
+            BackupCategory.entries.toTypedArray(),
+            onSelected,
+        )
     }
 
     fun showRestoreCategoryDialog(
         availableCategories: Set<BackupCategory>,
         onSelected: (Set<BackupCategory>) -> Unit,
     ) {
-        val categories = availableCategories.toTypedArray()
+        showCategoryDialog(
+            R.string.dialog_title_restore_categories,
+            availableCategories.toTypedArray(),
+            onSelected,
+        )
+    }
+
+    private fun showCategoryDialog(
+        titleResId: Int,
+        categories: Array<BackupCategory>,
+        onSelected: (Set<BackupCategory>) -> Unit,
+    ) {
         val labels = categories.map { activity.getString(it.displayNameResId) }.toTypedArray()
         val checked = BooleanArray(categories.size) { true }
+        val allPrefsIndex = categories.indexOf(BackupCategory.ALL_PREFERENCES)
+        val gptIndex = categories.indexOf(BackupCategory.GPT_SETTINGS)
 
-        AlertDialog.Builder(activity, R.style.TouchAreaDialog)
-            .setTitle(R.string.dialog_title_restore_categories)
-            .setMultiChoiceItems(labels, checked) { _, which, isChecked ->
+        val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+            .setTitle(titleResId)
+            .setMultiChoiceItems(labels, checked) { dialogInterface, which, isChecked ->
                 checked[which] = isChecked
+                val alertDialog = dialogInterface as AlertDialog
+                if (which == allPrefsIndex && gptIndex >= 0) {
+                    if (isChecked) {
+                        alertDialog.listView.setItemChecked(gptIndex, true)
+                        checked[gptIndex] = true
+                    }
+                    setItemEnabled(alertDialog, gptIndex, !isChecked)
+                }
+                // revert if user taps GPT while ALL_PREFERENCES is checked
+                if (which == gptIndex && allPrefsIndex >= 0 && checked[allPrefsIndex]) {
+                    alertDialog.listView.setItemChecked(gptIndex, true)
+                    checked[gptIndex] = true
+                }
             }
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 val selected = categories.filterIndexed { i, _ -> checked[i] }.toSet()
@@ -420,7 +432,19 @@ class DialogManager(
                 window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             }
-            .show()
+
+        dialog.setOnShowListener {
+            if (allPrefsIndex >= 0 && gptIndex >= 0 && checked[allPrefsIndex]) {
+                setItemEnabled(dialog, gptIndex, false)
+            }
+        }
+        dialog.show()
+    }
+
+    private fun setItemEnabled(dialog: AlertDialog, index: Int, enabled: Boolean) {
+        val view = dialog.listView.getChildAt(index) ?: return
+        view.isEnabled = enabled
+        view.alpha = if (enabled) 1f else 0.5f
     }
 
 //    fun showRemoveHighlightConfirmDialog(

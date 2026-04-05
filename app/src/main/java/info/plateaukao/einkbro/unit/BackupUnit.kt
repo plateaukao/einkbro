@@ -60,66 +60,84 @@ class BackupUnit(
     fun backupData(context: Context, uri: Uri, categories: Set<BackupCategory>): Boolean {
         try {
             val fos = context.contentResolver.openOutputStream(uri) ?: return false
-            val zos = ZipOutputStream(fos)
-
-            // Write manifest
-            val manifest = JSONObject().apply {
-                put("version", 2)
-                put("categories", JSONArray(categories.map { it.name }))
-            }
-            zos.putNextEntry(ZipEntry(MANIFEST_FILE))
-            zos.write(manifest.toString().toByteArray())
-            zos.closeEntry()
-
-            if (BackupCategory.ALL_PREFERENCES in categories) {
-                val sharedPrefsDirectory = File(SHARED_PREFS_PATH)
-                val sharedPrefsFiles = sharedPrefsDirectory.listFiles()
-                if (sharedPrefsFiles != null) {
-                    for (sharedPrefsFile in sharedPrefsFiles) {
-                        writeFileToZip(zos, sharedPrefsFile, "shared_prefs/${sharedPrefsFile.name}")
-                    }
-                }
-            }
-
-            if (BackupCategory.GPT_SETTINGS in categories) {
-                val gptJson = exportGptSettings()
-                zos.putNextEntry(ZipEntry(GPT_SETTINGS_FILE))
-                zos.write(gptJson.toString().toByteArray())
-                zos.closeEntry()
-            }
-
-            if (BackupCategory.BOOKMARKS in categories) {
-                val bookmarks = kotlinx.coroutines.runBlocking {
-                    bookmarkManager.getAllBookmarks()
-                }
-                zos.putNextEntry(ZipEntry(BOOKMARKS_FILE))
-                zos.write(bookmarks.toJsonString().toByteArray())
-                zos.closeEntry()
-            }
-
-            if (BackupCategory.HISTORY in categories) {
-                val history = recordDb.listAllHistory()
-                val jsonArray = JSONArray()
-                for (record in history) {
-                    jsonArray.put(JSONObject().apply {
-                        put("title", record.title)
-                        put("url", record.url)
-                        put("time", record.time)
-                    })
-                }
-                zos.putNextEntry(ZipEntry(HISTORY_FILE))
-                zos.write(jsonArray.toString().toByteArray())
-                zos.closeEntry()
-            }
-
-            zos.close()
-            fos.close()
+            writeBackupZip(fos, categories)
             EBToast.show(context, R.string.toast_backup_successful)
             return true
         } catch (e: IOException) {
             e.printStackTrace()
             return false
         }
+    }
+
+    fun backupToTempFile(categories: Set<BackupCategory>): File? {
+        return try {
+            val tempFile = File(context.cacheDir, "backup_share.zip")
+            writeBackupZip(FileOutputStream(tempFile), categories)
+            tempFile
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun writeBackupZip(
+        outputStream: java.io.OutputStream,
+        categories: Set<BackupCategory>,
+    ) {
+        val zos = ZipOutputStream(outputStream)
+
+        // Write manifest
+        val manifest = JSONObject().apply {
+            put("version", 2)
+            put("categories", JSONArray(categories.map { it.name }))
+        }
+        zos.putNextEntry(ZipEntry(MANIFEST_FILE))
+        zos.write(manifest.toString().toByteArray())
+        zos.closeEntry()
+
+        if (BackupCategory.ALL_PREFERENCES in categories) {
+            val sharedPrefsDirectory = File(SHARED_PREFS_PATH)
+            val sharedPrefsFiles = sharedPrefsDirectory.listFiles()
+            if (sharedPrefsFiles != null) {
+                for (sharedPrefsFile in sharedPrefsFiles) {
+                    writeFileToZip(zos, sharedPrefsFile, "shared_prefs/${sharedPrefsFile.name}")
+                }
+            }
+        }
+
+        if (BackupCategory.GPT_SETTINGS in categories) {
+            val gptJson = exportGptSettings()
+            zos.putNextEntry(ZipEntry(GPT_SETTINGS_FILE))
+            zos.write(gptJson.toString().toByteArray())
+            zos.closeEntry()
+        }
+
+        if (BackupCategory.BOOKMARKS in categories) {
+            val bookmarks = kotlinx.coroutines.runBlocking {
+                bookmarkManager.getAllBookmarks()
+            }
+            zos.putNextEntry(ZipEntry(BOOKMARKS_FILE))
+            zos.write(bookmarks.toJsonString().toByteArray())
+            zos.closeEntry()
+        }
+
+        if (BackupCategory.HISTORY in categories) {
+            val history = recordDb.listAllHistory()
+            val jsonArray = JSONArray()
+            for (record in history) {
+                jsonArray.put(JSONObject().apply {
+                    put("title", record.title)
+                    put("url", record.url)
+                    put("time", record.time)
+                })
+            }
+            zos.putNextEntry(ZipEntry(HISTORY_FILE))
+            zos.write(jsonArray.toString().toByteArray())
+            zos.closeEntry()
+        }
+
+        zos.close()
+        outputStream.close()
     }
 
     /**
@@ -213,6 +231,94 @@ class BackupUnit(
             }
             zis.close()
             fis.close()
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    fun getAvailableCategories(file: File): Set<BackupCategory>? {
+        try {
+            val zis = ZipInputStream(file.inputStream())
+            var zipEntry = zis.nextEntry
+            while (zipEntry != null) {
+                if (zipEntry.name == MANIFEST_FILE) {
+                    val content = zis.readBytes()
+                    val manifest = JSONObject(String(content))
+                    val categoriesArray = manifest.getJSONArray("categories")
+                    val categories = mutableSetOf<BackupCategory>()
+                    for (i in 0 until categoriesArray.length()) {
+                        try {
+                            categories.add(BackupCategory.valueOf(categoriesArray.getString(i)))
+                        } catch (_: IllegalArgumentException) { }
+                    }
+                    zis.close()
+                    return categories
+                }
+                zipEntry = zis.nextEntry
+            }
+            zis.close()
+            return null
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
+    fun restoreBackupData(
+        file: File,
+        categories: Set<BackupCategory>,
+    ): Boolean {
+        try {
+            val zis = ZipInputStream(file.inputStream())
+            var zipEntry = zis.nextEntry
+            while (zipEntry != null) {
+                when {
+                    zipEntry.name == MANIFEST_FILE -> { /* skip */ }
+
+                    zipEntry.name.startsWith("shared_prefs/")
+                            && BackupCategory.ALL_PREFERENCES in categories -> {
+                        val fileName = zipEntry.name.removePrefix("shared_prefs/")
+                        val target = File("$SHARED_PREFS_PATH$fileName")
+                        writeStreamToFile(zis, target)
+                    }
+
+                    zipEntry.name == GPT_SETTINGS_FILE
+                            && BackupCategory.GPT_SETTINGS in categories -> {
+                        val content = zis.readBytes()
+                        importGptSettings(JSONObject(String(content)))
+                    }
+
+                    zipEntry.name == BOOKMARKS_FILE
+                            && BackupCategory.BOOKMARKS in categories -> {
+                        val content = zis.readBytes()
+                        val bookmarks = JSONArray(String(content))
+                            .toJSONObjectList()
+                            .map { it.toBookmark() }
+                        kotlinx.coroutines.runBlocking {
+                            bookmarkManager.overwriteBookmarks(bookmarks)
+                        }
+                    }
+
+                    zipEntry.name == HISTORY_FILE
+                            && BackupCategory.HISTORY in categories -> {
+                        val content = zis.readBytes()
+                        val jsonArray = JSONArray(String(content))
+                        val records = (0 until jsonArray.length()).map { i ->
+                            val obj = jsonArray.getJSONObject(i)
+                            Record(
+                                obj.optString("title"),
+                                obj.optString("url"),
+                                obj.optLong("time"),
+                            )
+                        }
+                        recordDb.replaceAllHistory(records)
+                    }
+                }
+                zipEntry = zis.nextEntry
+            }
+            zis.close()
             return true
         } catch (e: Exception) {
             e.printStackTrace()

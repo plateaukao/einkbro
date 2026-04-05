@@ -74,6 +74,7 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
+import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -81,6 +82,7 @@ import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
 class SettingActivity : FragmentActivity() {
@@ -315,6 +317,46 @@ class SettingActivity : FragmentActivity() {
             )
         } else {
             super.attachBaseContext(newBase)
+        }
+    }
+
+    private fun shareAppData(categories: Set<BackupCategory>) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val tempFile = backupUnit.backupToTempFile(categories) ?: return@launch
+            withContext(Dispatchers.Main) {
+                ShareUtil.startServingFile(lifecycleScope, tempFile)
+                dialogManager.showOkCancelDialog(
+                    title = getString(R.string.setting_title_share_appData),
+                    message = getString(R.string.share_broadcasting),
+                    okAction = { ShareUtil.stopBroadcast(); tempFile.delete() },
+                    showNegativeButton = false,
+                )
+            }
+        }
+    }
+
+    private fun receiveAppData() {
+        val tempFile = java.io.File(cacheDir, "backup_receive.zip")
+        val dialog = dialogManager.showOkCancelDialog(
+            title = getString(R.string.setting_title_receive_appData),
+            message = getString(R.string.share_waiting),
+            okAction = { ShareUtil.stopBroadcast() },
+            showNegativeButton = false,
+        )
+
+        ShareUtil.startReceivingFile(lifecycleScope, tempFile) { file ->
+            dialog.dismiss()
+            val available = backupUnit.getAvailableCategories(file)
+            if (available != null) {
+                dialogManager.showRestoreCategoryDialog(available) { selected ->
+                    if (backupUnit.restoreBackupData(file, selected)) {
+                        dialogManager.showRestartConfirmDialog()
+                    }
+                    file.delete()
+                }
+            } else {
+                file.delete()
+            }
         }
     }
 
@@ -856,6 +898,20 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_import_appData
         ) { dialogManager.showImportBackupFilePicker() },
+        ActionSettingItem(
+            R.string.setting_title_share_appData,
+            0,
+            R.string.setting_summary_share_appData
+        ) {
+            dialogManager.showBackupCategoryDialog { categories ->
+                shareAppData(categories)
+            }
+        },
+        ActionSettingItem(
+            R.string.setting_title_receive_appData,
+            0,
+            R.string.setting_summary_receive_appData
+        ) { receiveAppData() },
         DividerSettingItem(),
         ActionSettingItem(
             R.string.setting_title_export_bookmarks,
