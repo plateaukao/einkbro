@@ -6,9 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
@@ -17,9 +15,7 @@ import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
-import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.EBToast
-import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -54,7 +50,6 @@ class BackupUnit(
 ) : KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
     private val recordDb: RecordDb by inject()
-    private val config: ConfigManager by inject()
     private val sp: SharedPreferences by inject()
 
     fun backupData(context: Context, uri: Uri, categories: Set<BackupCategory>): Boolean {
@@ -425,9 +420,6 @@ class BackupUnit(
                     Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT)
                         .show()
                 }
-                if (e is SecurityException) {
-                    config.bookmarkSyncUrl = ""
-                }
             }
         }
     }
@@ -531,50 +523,8 @@ class BackupUnit(
                             .show()
                     }
                 }
-                if (e is SecurityException) {
-                    config.bookmarkSyncUrl = ""
-                }
             }
         }
-    }
-
-    fun createOpenBookmarkFileLauncher(activity: ComponentActivity) =
-        IntentUnit.createResultLauncher(activity) { linkToBookmarkSyncFile(it) }
-
-    fun createCreateBookmarkFileLauncher(activity: ComponentActivity) =
-        IntentUnit.createResultLauncher(activity) { createBookmarkSyncFile(it) }
-
-    fun handleBookmarkSync(
-        forceUpload: Boolean = false,
-    ) {
-        if (forceUpload) {
-            exportBookmarks(Uri.parse(config.bookmarkSyncUrl), false)
-        } else {
-            importBookmarks(Uri.parse(config.bookmarkSyncUrl))
-        }
-    }
-
-    fun linkBookmarkSync(
-        dialogManager: DialogManager,
-        createBookmarkFileLauncher: ActivityResultLauncher<Intent>,
-        openBookmarkFileLauncher: ActivityResultLauncher<Intent>,
-    ) {
-        dialogManager.showCreateOrOpenBookmarkFileDialog(
-            { BrowserUnit.createBookmarkFilePicker(createBookmarkFileLauncher) },
-            { BrowserUnit.openBookmarkFilePicker(openBookmarkFileLauncher) }
-        )
-    }
-
-    private fun linkToBookmarkSyncFile(result: ActivityResult) {
-        val uri = preprocessActivityResult(result) ?: return
-        importBookmarks(uri)
-        config.bookmarkSyncUrl = uri.toString()
-    }
-
-    private fun createBookmarkSyncFile(result: ActivityResult) {
-        val uri = preprocessActivityResult(result) ?: return
-        exportBookmarks(uri)
-        config.bookmarkSyncUrl = uri.toString()
     }
 
     fun preprocessActivityResult(result: ActivityResult): Uri? {

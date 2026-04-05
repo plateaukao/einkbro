@@ -74,8 +74,6 @@ class BookmarksDialogFragment(
     private val gotoUrlAction: (String) -> Unit,
     private val bookmarkIconClickAction: (String, String, Boolean) -> Unit,
     private val splitScreenAction: (String) -> Unit,
-    private val syncBookmarksAction: (Boolean) -> Unit,
-    private val linkBookmarksAction: () -> Unit,
 ) : ComposeDialogFragment(), KoinComponent {
 
     private lateinit var bookmarksUpdateJob: Job
@@ -102,8 +100,6 @@ class BookmarksDialogFragment(
                     inSortMode = shouldShowDragHandle.value,
                     isGridView = isGridView.value,
                     upParentAction = { bookmarkViewModel.outOfFolder() },
-                    syncBookmarksAction = syncBookmarksAction,
-                    linkBookmarksAction = linkBookmarksAction,
                     toggleGridViewAction = {
                         isGridView.value = !isGridView.value
                         config.isBookmarkGridView = isGridView.value
@@ -204,16 +200,12 @@ class BookmarksDialogFragment(
                 ContextMenuItemType.Edit -> BookmarkEditDialog(
                     bookmarkViewModel,
                     bookmark,
-                    {
-                        ViewUnit.hideKeyboard(requireActivity())
-                        syncBookmarksAction(true)
-                    },
+                    { ViewUnit.hideKeyboard(requireActivity()) },
                     { ViewUnit.hideKeyboard(requireActivity()) }
                 ).show(parentFragmentManager, "bookmark_edit")
 
                 ContextMenuItemType.Delete -> lifecycleScope.launch {
                     bookmarkViewModel.deleteBookmark(bookmark)
-                    syncBookmarksAction(true)
                 }
 
                 else -> Unit
@@ -229,8 +221,6 @@ fun DialogPanel(
     inSortMode: Boolean = false,
     isGridView: Boolean = false,
     upParentAction: (Bookmark) -> Unit,
-    syncBookmarksAction: (Boolean) -> Unit,
-    linkBookmarksAction: () -> Unit,
     closeAction: () -> Unit,
     reorderBookmarkAction: () -> Unit,
     toggleGridViewAction: () -> Unit = {},
@@ -272,14 +262,6 @@ fun DialogPanel(
                     .padding(horizontal = 5.dp),
                 iconResId = if (inSortMode) R.drawable.icon_list else R.drawable.ic_sort,
                 action = { reorderBookmarkAction() },
-            )
-            ActionIcon(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(horizontal = 5.dp),
-                iconResId = R.drawable.ic_sync,
-                action = { syncBookmarksAction(false) },
-                longClickAction = { linkBookmarksAction() }
             )
             ActionIcon(
                 modifier = Modifier
@@ -583,8 +565,6 @@ private fun PreviewDialogPanel() {
             //{},
             inSortMode = false,
             upParentAction = {},
-            syncBookmarksAction = {},
-            linkBookmarksAction = {},
             closeAction = {},
             reorderBookmarkAction = {},
         ) {

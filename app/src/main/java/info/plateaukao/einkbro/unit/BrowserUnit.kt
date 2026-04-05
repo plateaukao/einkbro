@@ -640,24 +640,6 @@ object BrowserUnit : KoinComponent {
         resultLauncher.launch(intent)
     }
 
-    fun openBookmarkFilePicker(resultLauncher: ActivityResultLauncher<Intent>) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = Constants.MIME_TYPE_ANY
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-        resultLauncher.launch(intent)
-    }
-
-    fun createBookmarkFilePicker(resultLauncher: ActivityResultLauncher<Intent>) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = Constants.MIME_TYPE_ANY
-        intent.putExtra(Intent.EXTRA_TITLE, "einkbro_bookmarks.json")
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-
-        resultLauncher.launch(intent)
-    }
 
     fun createFilePicker(resultLauncher: ActivityResultLauncher<Intent>, title: String) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
