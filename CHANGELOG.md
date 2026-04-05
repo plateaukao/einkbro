@@ -1,3 +1,80 @@
+### 15.10.0
+#### Features
+* Share/receive app data over local network
+* Selective backup/restore with category chooser
+* Video autoplay toggle in Behavior Settings
+* E-ink image optimization for web resources (JPEG/PNG/WebP)
+* Vertical toolbar mode (left/right side positioning)
+* Font folder browser with preview and search
+* Anchor toolbar dialogs horizontally near the clicked icon
+* Preserve code snippet styling in reader mode when keepExtraContent is on
+* Option to preserve MathJax/KaTeX math in reader mode
+* Make e-reader toolbar actions configurable, separate from browser toolbar
+* GPT type icon indicator in context menu for GPT actions
+* Ad-block scriptlet injection with crash guards
+
+#### Improvements
+* Redesign GPT result history UI with card-style layout
+* Group behavior settings into logical sections with dividers
+* Show vertical preview in toolbar config when in vertical mode
+* Use landscape toolbar config for vertical toolbar mode
+* Improve tab count icon with Canvas slash, support 10+ tabs
+* Convert BookmarkEditDialog to ComposeDialogFragment
+* Remove deprecated translation modes (Onyx, Google Text, Papago Text/URL/Dual)
+* Remove bookmark sync URL feature
+
+#### Fixes
+* Show audio-only button on YouTube SPA navigations
+* Preserve dark detail in e-ink image processing
+* Fix e-ink image processing broken on Instagram and CDN-served images
+* Make progress bar thinner (2dp) in vertical toolbar mode
+* Reposition progress bar to match toolbar position in vertical mode
+* Prevent ConstraintSet crash in vertical toolbar mode
+* Reload toolbar icons when position changes
+* Improve download reliability with User-Agent, cookie auth, and data URL support
+* Wrap injected touch-tracking JS in IIFE to fix libbyapp.com
+
+#### Translations
+* Add translations for backup/share strings across all 30 locales
+* Add missing translations for all 30 locales to 100% coverage
+
+---
+
+### 15.9.0
+#### Features
+* Audio-only mode to hide video while keeping audio and captions
+* Read-it-later feature replacing save-as-archive
+* MediaStyle notification with play/pause/stop/close for TTS
+* Add EinkBro identifier to saved EPUBs and editable TOC with drag-and-drop
+* Cache translated images to disk and skip delay for cached results
+* Long-click translate icon to batch translate all remaining images
+* Show translated image as overlay on top of original image
+
+#### Improvements
+* Combine open/save EPUB menu items into single tabbed dialog
+* Use GPT icon for Page AI toolbar action to avoid confusion with EPUB
+* Compact BookmarkEditDialog title field and inline folder row
+* Enhance TwoPaneLayout divider with elegant pill-shaped drag handle
+* Remove all remaining layout XMLs, convert to Compose/programmatic views
+* Remove all AbstractComposeView wrapper classes
+* Update README with organized features and fresh screenshots
+
+#### Fixes
+* Detect video sites by URL so audio-only icon shows on first load
+* Tab list border now correctly highlights only the active tab
+* Remove redundant setTimeout and MutationObserver from audio-only mode
+* Improve dual caption reliability with proper cookies and User-Agent
+* Prevent pull-to-refresh from intercepting two-finger swipe gestures
+* Crash due to ComposeView refactoring
+* Prevent content shift during translate by paragraph
+* Toolbar position switching crash when moving to top
+* Remove error toast when image translation fails
+* Improve text translation observer robustness and JS escaping
+* Exclude img alt text from paragraph translation
+* Fix grammar in Settings -> Behaviour
+
+---
+
 ### 15.8.0
 #### Fixes
 * Page info and jump-to-top for inner scroll containers
