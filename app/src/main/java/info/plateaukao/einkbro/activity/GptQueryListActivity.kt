@@ -10,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,8 +21,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -194,20 +198,16 @@ fun GptQueriesScreen(
 
     LazyColumn(
         state = listState,
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
     ) {
         items(gptQueries.size) { index ->
             val gptQuery = gptQueries[index]
             QueryItem(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.padding(vertical = 4.dp),
                 gptQuery = gptQuery,
                 forceExpand = forceExpandIndex.value == index,
-                postAction = { coroutineScope.launch { listState.scrollToItem(index) } },
                 onLinkClick = { onLinkClick(gptQuery) },
                 deleteQuery = { gptQueryViewModel.deleteGptQuery(gptQuery) }
-            )
-            if (index < gptQueries.lastIndex) Divider(
-                thickness = 8.dp,
-                color = MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
             )
         }
     }
@@ -219,11 +219,9 @@ fun QueryItem(
     modifier: Modifier,
     gptQuery: ChatGptQuery,
     forceExpand: Boolean = false,
-    postAction: () -> Unit = {},
     onLinkClick: () -> Unit = {},
     deleteQuery: () -> Unit,
 ) {
-    // use a remember to toggle result widget visibility
     var showResult by remember { mutableStateOf(false) }
     val queryString = if (gptQuery.selectedText.contains("<<") &&
         gptQuery.selectedText.contains(">>")
@@ -234,94 +232,98 @@ fun QueryItem(
     }
 
     val interactionSource = remember { MutableInteractionSource() }
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = {
-                    showResult = !showResult
-                    postAction()
-                },
-                onLongClick = { deleteQuery() }
-            )
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(4.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colors.onBackground.copy(alpha = 0.3f)),
+        backgroundColor = MaterialTheme.colors.background,
+        elevation = 0.dp,
     ) {
-        Text(
-            modifier = Modifier.padding(bottom = 5.dp),
-            text = queryString,
-            color = MaterialTheme.colors.onBackground
-        )
-        if (showResult || forceExpand) {
-            Divider(
-                modifier = Modifier.padding(horizontal = 10.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colors.onBackground
-            )
-            Text(
-                modifier = Modifier.padding(top = 5.dp),
-                text = HelperUnit.parseMarkdown(gptQuery.result),
-                color = MaterialTheme.colors.onBackground
-            )
-        }
-        Row(
-            modifier = Modifier.align(Alignment.End),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier
+                .combinedClickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = { showResult = !showResult },
+                    onLongClick = { deleteQuery() }
+                )
+                .padding(12.dp)
         ) {
             Text(
-                modifier = Modifier.padding(end = 10.dp),
-                text = gptQuery.model,
-                style = MaterialTheme.typography.caption.copy(
-                    color = MaterialTheme.colors.onBackground
-                )
+                text = queryString,
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.body1,
             )
-            if (gptQuery.url.isNotEmpty()) {
-                Spacer(modifier = Modifier.size(10.dp))
+            if (showResult || forceExpand) {
+                Divider(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    thickness = 1.dp,
+                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.2f),
+                )
+                Text(
+                    text = HelperUnit.parseMarkdown(gptQuery.result),
+                    color = MaterialTheme.colors.onBackground,
+                    style = MaterialTheme.typography.body2,
+                )
+            }
+            // metadata footer
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = gptQuery.model,
+                    style = MaterialTheme.typography.caption.copy(
+                        color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f)
+                    )
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(gptQuery.date),
+                    style = MaterialTheme.typography.caption.copy(
+                        color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f)
+                    )
+                )
+                if (gptQuery.url.isNotEmpty()) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        modifier = Modifier
+                            .size(18.dp)
+                            .clickable { onLinkClick() },
+                        imageVector = ImageVector.vectorResource(id = R.drawable.icon_exit),
+                        contentDescription = "link",
+                        tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
                 Icon(
                     modifier = Modifier
-                        .size(20.dp)
-                        .clickable {
-                            onLinkClick()
-                        },
-                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_exit),
-                    contentDescription = "link",
-                    tint = MaterialTheme.colors.onBackground
+                        .size(18.dp)
+                        .clickable { deleteQuery() },
+                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_delete),
+                    contentDescription = "delete",
+                    tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
                 )
-                Spacer(modifier = Modifier.size(10.dp))
             }
-            Text(
-                text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(gptQuery.date),
-                style = MaterialTheme.typography.caption.copy(
-                    color = MaterialTheme.colors.onBackground
-                )
-            )
-            Spacer(modifier = Modifier.size(10.dp))
-            Icon(
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable { deleteQuery() },
-                imageVector = ImageVector.vectorResource(id = R.drawable.icon_delete),
-                contentDescription = "delete",
-                tint = MaterialTheme.colors.onBackground
-            )
         }
     }
 }
 
-// theme white
 @Preview(showBackground = true)
 @Composable
 fun PreviewQueryItem() {
     MyTheme {
         QueryItem(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(8.dp),
             gptQuery = ChatGptQuery(
                 selectedText = "selected text",
                 result = "result",
                 date = System.currentTimeMillis(),
                 url = "https://example.com",
-                model = "model",
+                model = "gpt-4o",
             ),
             onLinkClick = {},
             deleteQuery = {}
