@@ -49,6 +49,7 @@ import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.unit.BackupCategory
 import info.plateaukao.einkbro.unit.BrowserUnit.restartApp
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
@@ -371,6 +372,55 @@ class DialogManager(
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_ANY
         activity.startActivityForResult(intent, IMPORT_BACKUP_REQUEST_CODE)
+    }
+
+    fun showBackupCategoryDialog(
+        onSelected: (Set<BackupCategory>) -> Unit,
+    ) {
+        val categories = BackupCategory.entries.toTypedArray()
+        val labels = categories.map { activity.getString(it.displayNameResId) }.toTypedArray()
+        val checked = BooleanArray(categories.size) { true }
+
+        AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+            .setTitle(R.string.dialog_title_backup_categories)
+            .setMultiChoiceItems(labels, checked) { _, which, isChecked ->
+                checked[which] = isChecked
+            }
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                val selected = categories.filterIndexed { i, _ -> checked[i] }.toSet()
+                if (selected.isNotEmpty()) onSelected(selected)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create().apply {
+                window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
+                window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+            }
+            .show()
+    }
+
+    fun showRestoreCategoryDialog(
+        availableCategories: Set<BackupCategory>,
+        onSelected: (Set<BackupCategory>) -> Unit,
+    ) {
+        val categories = availableCategories.toTypedArray()
+        val labels = categories.map { activity.getString(it.displayNameResId) }.toTypedArray()
+        val checked = BooleanArray(categories.size) { true }
+
+        AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+            .setTitle(R.string.dialog_title_restore_categories)
+            .setMultiChoiceItems(labels, checked) { _, which, isChecked ->
+                checked[which] = isChecked
+            }
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                val selected = categories.filterIndexed { i, _ -> checked[i] }.toSet()
+                if (selected.isNotEmpty()) onSelected(selected)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create().apply {
+                window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
+                window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+            }
+            .show()
     }
 
 //    fun showRemoveHighlightConfirmDialog(

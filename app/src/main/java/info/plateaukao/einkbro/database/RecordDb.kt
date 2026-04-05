@@ -185,6 +185,38 @@ class RecordDb(
         return list
     }
 
+    fun listAllHistory(): List<Record> {
+        val list = mutableListOf<Record>()
+        val cursor = database.query(
+            RecordUnit.TABLE_HISTORY,
+            arrayOf(RecordUnit.COLUMN_TITLE, RecordUnit.COLUMN_URL, RecordUnit.COLUMN_TIME),
+            null, null, null, null,
+            "${RecordUnit.COLUMN_TIME} desc"
+        )
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            list.add(getRecord(cursor))
+            cursor.moveToNext()
+        }
+        cursor.close()
+        return list
+    }
+
+    fun replaceAllHistory(records: List<Record>) {
+        database.transaction {
+            execSQL("DELETE FROM ${RecordUnit.TABLE_HISTORY}")
+            for (record in records) {
+                if (record.title.isNullOrBlank() || record.url.isBlank() || record.time < 0L) continue
+                val values = ContentValues().apply {
+                    put(RecordUnit.COLUMN_TITLE, record.title.trim())
+                    put(RecordUnit.COLUMN_URL, record.url.trim())
+                    put(RecordUnit.COLUMN_TIME, record.time)
+                }
+                insert(RecordUnit.TABLE_HISTORY, null, values)
+            }
+        }
+    }
+
     fun close() = database.close()
 }
 

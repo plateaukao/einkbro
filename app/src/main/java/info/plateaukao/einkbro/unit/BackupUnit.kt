@@ -3,16 +3,19 @@ package info.plateaukao.einkbro.unit
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.FileProvider
+import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.EBToast
@@ -37,6 +40,13 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
+enum class BackupCategory(val displayNameResId: Int) {
+    ALL_PREFERENCES(R.string.backup_category_all_preferences),
+    GPT_SETTINGS(R.string.backup_category_gpt_settings),
+    BOOKMARKS(R.string.backup_category_bookmarks),
+    HISTORY(R.string.backup_category_history),
+}
+
 
 @OptIn(DelicateCoroutinesApi::class)
 class BackupUnit(
@@ -45,46 +55,61 @@ class BackupUnit(
     private val bookmarkManager: BookmarkManager by inject()
     private val recordDb: RecordDb by inject()
     private val config: ConfigManager by inject()
+    private val sp: SharedPreferences by inject()
 
-    fun backupData(context: Context, uri: Uri): Boolean {
+    fun backupData(context: Context, uri: Uri, categories: Set<BackupCategory>): Boolean {
         try {
             val fos = context.contentResolver.openOutputStream(uri) ?: return false
             val zos = ZipOutputStream(fos)
 
-            // Add databases to the zip file
-            val dbDirectory = File(DATABASE_PATH)
-            val dbFiles = dbDirectory.listFiles()
-            if (dbFiles != null) {
-                for (dbFile in dbFiles) {
-                    val fis = FileInputStream(dbFile)
-                    zos.putNextEntry(ZipEntry(dbFile.name))
-                    val buffer = ByteArray(1024)
-                    var length = fis.read(buffer)
-                    while (length > 0) {
-                        zos.write(buffer, 0, length)
-                        length = fis.read(buffer)
+            // Write manifest
+            val manifest = JSONObject().apply {
+                put("version", 2)
+                put("categories", JSONArray(categories.map { it.name }))
+            }
+            zos.putNextEntry(ZipEntry(MANIFEST_FILE))
+            zos.write(manifest.toString().toByteArray())
+            zos.closeEntry()
+
+            if (BackupCategory.ALL_PREFERENCES in categories) {
+                val sharedPrefsDirectory = File(SHARED_PREFS_PATH)
+                val sharedPrefsFiles = sharedPrefsDirectory.listFiles()
+                if (sharedPrefsFiles != null) {
+                    for (sharedPrefsFile in sharedPrefsFiles) {
+                        writeFileToZip(zos, sharedPrefsFile, "shared_prefs/${sharedPrefsFile.name}")
                     }
-                    zos.closeEntry()
-                    fis.close()
                 }
             }
 
-            // Add shared preferences to the zip file
-            val sharedPrefsDirectory = File(SHARED_PREFS_PATH)
-            val sharedPrefsFiles = sharedPrefsDirectory.listFiles()
-            if (sharedPrefsFiles != null) {
-                for (sharedPrefsFile in sharedPrefsFiles) {
-                    val fis = FileInputStream(sharedPrefsFile)
-                    zos.putNextEntry(ZipEntry(sharedPrefsFile.name))
-                    val buffer = ByteArray(1024)
-                    var length = fis.read(buffer)
-                    while (length > 0) {
-                        zos.write(buffer, 0, length)
-                        length = fis.read(buffer)
-                    }
-                    zos.closeEntry()
-                    fis.close()
+            if (BackupCategory.GPT_SETTINGS in categories) {
+                val gptJson = exportGptSettings()
+                zos.putNextEntry(ZipEntry(GPT_SETTINGS_FILE))
+                zos.write(gptJson.toString().toByteArray())
+                zos.closeEntry()
+            }
+
+            if (BackupCategory.BOOKMARKS in categories) {
+                val bookmarks = kotlinx.coroutines.runBlocking {
+                    bookmarkManager.getAllBookmarks()
                 }
+                zos.putNextEntry(ZipEntry(BOOKMARKS_FILE))
+                zos.write(bookmarks.toJsonString().toByteArray())
+                zos.closeEntry()
+            }
+
+            if (BackupCategory.HISTORY in categories) {
+                val history = recordDb.listAllHistory()
+                val jsonArray = JSONArray()
+                for (record in history) {
+                    jsonArray.put(JSONObject().apply {
+                        put("title", record.title)
+                        put("url", record.url)
+                        put("time", record.time)
+                    })
+                }
+                zos.putNextEntry(ZipEntry(HISTORY_FILE))
+                zos.write(jsonArray.toString().toByteArray())
+                zos.closeEntry()
             }
 
             zos.close()
@@ -97,7 +122,106 @@ class BackupUnit(
         }
     }
 
-    fun restoreBackupData(context: Context, uri: Uri): Boolean {
+    /**
+     * Returns available categories in the zip, or null if it's a legacy backup format.
+     */
+    fun getAvailableCategories(context: Context, uri: Uri): Set<BackupCategory>? {
+        try {
+            val fis = context.contentResolver.openInputStream(uri) ?: return null
+            val zis = ZipInputStream(fis)
+            var zipEntry = zis.nextEntry
+            while (zipEntry != null) {
+                if (zipEntry.name == MANIFEST_FILE) {
+                    val content = zis.readBytes()
+                    val manifest = JSONObject(String(content))
+                    val categoriesArray = manifest.getJSONArray("categories")
+                    val categories = mutableSetOf<BackupCategory>()
+                    for (i in 0 until categoriesArray.length()) {
+                        try {
+                            categories.add(BackupCategory.valueOf(categoriesArray.getString(i)))
+                        } catch (_: IllegalArgumentException) { }
+                    }
+                    zis.close()
+                    fis.close()
+                    return categories
+                }
+                zipEntry = zis.nextEntry
+            }
+            zis.close()
+            fis.close()
+            return null // legacy format
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
+    fun restoreBackupData(
+        context: Context,
+        uri: Uri,
+        categories: Set<BackupCategory>,
+    ): Boolean {
+        try {
+            val fis = context.contentResolver.openInputStream(uri) ?: return false
+            val zis = ZipInputStream(fis)
+
+            var zipEntry = zis.nextEntry
+            while (zipEntry != null) {
+                when {
+                    zipEntry.name == MANIFEST_FILE -> { /* skip */ }
+
+                    zipEntry.name.startsWith("shared_prefs/")
+                            && BackupCategory.ALL_PREFERENCES in categories -> {
+                        val fileName = zipEntry.name.removePrefix("shared_prefs/")
+                        val file = File("$SHARED_PREFS_PATH$fileName")
+                        writeStreamToFile(zis, file)
+                    }
+
+                    zipEntry.name == GPT_SETTINGS_FILE
+                            && BackupCategory.GPT_SETTINGS in categories -> {
+                        val content = zis.readBytes()
+                        importGptSettings(JSONObject(String(content)))
+                    }
+
+                    zipEntry.name == BOOKMARKS_FILE
+                            && BackupCategory.BOOKMARKS in categories -> {
+                        val content = zis.readBytes()
+                        val bookmarks = JSONArray(String(content))
+                            .toJSONObjectList()
+                            .map { it.toBookmark() }
+                        kotlinx.coroutines.runBlocking {
+                            bookmarkManager.overwriteBookmarks(bookmarks)
+                        }
+                    }
+
+                    zipEntry.name == HISTORY_FILE
+                            && BackupCategory.HISTORY in categories -> {
+                        val content = zis.readBytes()
+                        val jsonArray = JSONArray(String(content))
+                        val records = (0 until jsonArray.length()).map { i ->
+                            val obj = jsonArray.getJSONObject(i)
+                            Record(
+                                obj.optString("title"),
+                                obj.optString("url"),
+                                obj.optLong("time"),
+                            )
+                        }
+                        recordDb.replaceAllHistory(records)
+                    }
+                }
+                zipEntry = zis.nextEntry
+            }
+            zis.close()
+            fis.close()
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    /** Legacy restore: restores everything from old-format zip (no manifest). */
+    fun restoreLegacyBackupData(context: Context, uri: Uri): Boolean {
         try {
             bookmarkManager.database.close()
             recordDb.close()
@@ -113,14 +237,7 @@ class BackupUnit(
                     ) "$DATABASE_PATH${zipEntry.name}"
                     else "$SHARED_PREFS_PATH${zipEntry.name}"
                 )
-                val fos = FileOutputStream(file)
-                val buffer = ByteArray(1024)
-                var length = zis.read(buffer)
-                while (length > 0) {
-                    fos.write(buffer, 0, length)
-                    length = zis.read(buffer)
-                }
-                fos.close()
+                writeStreamToFile(zis, file)
                 zipEntry = zis.nextEntry
             }
             zis.close()
@@ -130,6 +247,52 @@ class BackupUnit(
             e.printStackTrace()
             return false
         }
+    }
+
+    private fun exportGptSettings(): JSONObject {
+        val json = JSONObject()
+        val allPrefs = sp.all
+        for (key in GPT_PREF_KEYS) {
+            val value = allPrefs[key] ?: continue
+            when (value) {
+                is Boolean -> json.put(key, value)
+                is Int -> json.put(key, value)
+                is Long -> json.put(key, value)
+                is Float -> json.put(key, value.toDouble())
+                is String -> json.put(key, value)
+                else -> json.put(key, value.toString())
+            }
+        }
+        return json
+    }
+
+    private fun importGptSettings(json: JSONObject) {
+        sp.edit {
+            for (key in json.keys()) {
+                when (val value = json.get(key)) {
+                    is Boolean -> putBoolean(key, value)
+                    is Int -> putInt(key, value)
+                    is Long -> putLong(key, value)
+                    is Double -> putFloat(key, value.toFloat())
+                    is String -> putString(key, value)
+                    else -> putString(key, value.toString())
+                }
+            }
+        }
+    }
+
+    private fun writeFileToZip(zos: ZipOutputStream, file: File, entryName: String) {
+        val fis = FileInputStream(file)
+        zos.putNextEntry(ZipEntry(entryName))
+        fis.copyTo(zos)
+        zos.closeEntry()
+        fis.close()
+    }
+
+    private fun writeStreamToFile(zis: ZipInputStream, file: File) {
+        val fos = FileOutputStream(file)
+        zis.copyTo(fos)
+        fos.close()
     }
 
     fun importBookmarks(uri: Uri) {
@@ -341,6 +504,34 @@ class BackupUnit(
     companion object {
         private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
         private const val SHARED_PREFS_PATH = "/data/data/info.plateaukao.einkbro/shared_prefs/"
+        private const val MANIFEST_FILE = "_manifest.json"
+        private const val GPT_SETTINGS_FILE = "gpt_settings.json"
+        private const val BOOKMARKS_FILE = "bookmarks.json"
+        private const val HISTORY_FILE = "history.json"
+
+        private val GPT_PREF_KEYS = listOf(
+            "sp_gpt_api_key",
+            "sp_gemini_api_key",
+            "sp_gpt_system_prompt",
+            "sp_gpt_user_prompt",
+            "sp_gpt_user_prompt_web_page",
+            "sp_gp_model",
+            "sp_gpt_voice_model",
+            "sp_gpt_voice_prompt",
+            "sp_alternative_model",
+            "sp_gemini_model",
+            "sp_use_openai_tts",
+            "sp_external_search_with_gpt",
+            "sp_enable_open_ai_stream",
+            "sp_gpt_action_items",
+            "sp_gpt_action_external",
+            "sp_gpt_for_chat_web",
+            "sp_gpt_for_summary",
+            "sp_gpt_server_url",
+            "sp_use_custom_gpt_url",
+            "sp_use_gemini_api",
+            "K_GPT_VOICE_OPTION",
+        )
     }
 }
 
