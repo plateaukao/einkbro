@@ -103,7 +103,7 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
     @Synchronized
     private fun loadDomains() {
         whitelist.clear()
-        whitelist.addAll(recordDb.listDomains(RecordUnit.TABLE_WHITELIST))
+        whitelist.addAll(recordDb.listDomains(dbTable))
     }
 
     @Throws(URISyntaxException::class)

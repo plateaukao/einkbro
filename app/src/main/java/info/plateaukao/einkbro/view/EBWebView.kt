@@ -313,9 +313,7 @@ open class EBWebView(
     }
 
     fun updateUserAgentString() {
-        val defaultUserAgentString = WebSettings.getDefaultUserAgent(context)
-            .replace("wv", "")
-            .replace(Regex("Version/\\d+\\.\\d+\\s"), "")
+        val defaultUserAgentString = getDefaultUserAgent(context)
         val prefix: String =
             defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
 
@@ -1074,6 +1072,16 @@ open class EBWebView(
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
+
+        // Cache the default user agent string to avoid calling the expensive
+        // WebSettings.getDefaultUserAgent() on every WebView creation.
+        private var cachedDefaultUserAgent: String? = null
+        fun getDefaultUserAgent(context: Context): String {
+            return cachedDefaultUserAgent ?: WebSettings.getDefaultUserAgent(context)
+                .replace("wv", "")
+                .replace(Regex("Version/\\d+\\.\\d+\\s"), "")
+                .also { cachedDefaultUserAgent = it }
+        }
 
 
         // make a String extension to wrap it with Javascript function
