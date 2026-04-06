@@ -72,6 +72,10 @@ class TtsNotificationManager(private val context: Context) {
             return
         }
 
+        // Skip notification and MediaSession activation during PREPARING to avoid
+        // triggering E-ink screen power cycling before audio actually starts.
+        if (readingState == TtsReadingState.PREPARING) return
+
         val displayTitle = title.ifEmpty { "EinkBro TTS" }
         updateMediaSession(displayTitle, readingState, progress)
 

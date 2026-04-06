@@ -176,6 +176,7 @@ import info.plateaukao.einkbro.viewmodel.RemoteConnViewModel
 import info.plateaukao.einkbro.viewmodel.SplitSearchViewModel
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
+import info.plateaukao.einkbro.viewmodel.TtsReadingState
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
@@ -468,8 +469,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initTtsViewModel() {
         lifecycleScope.launch {
-            ttsViewModel.readingState.collect { _ ->
+            ttsViewModel.readingState.collect { state ->
                 composeToolbarViewController.updateIcons()
+
+                if (state != TtsReadingState.IDLE) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                } else if (!config.keepAwake) {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                }
             }
         }
     }
