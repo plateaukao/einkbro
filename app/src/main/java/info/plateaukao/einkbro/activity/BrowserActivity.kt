@@ -2117,7 +2117,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 if (preloadedWebView == null) {
                     preloadedWebView = createebWebView()
                 }
-            }, 2000)
+            }, 500)
         }
     }
 

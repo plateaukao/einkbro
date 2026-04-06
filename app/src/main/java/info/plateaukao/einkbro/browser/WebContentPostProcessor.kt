@@ -69,6 +69,9 @@ class WebContentPostProcessor : KoinComponent {
             ebWebView.showTranslation()
         }
 
+        // DNS prefetch for links on the page
+        ebWebView.evaluateJsFile("dns_prefetch.js")
+
         // text selection handling
         ebWebView.addSelectionChangeListener()
 
