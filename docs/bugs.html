@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bug Report — EinkBro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">User Guide</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="develop.html">Develop</a></li>
+      <li><a href="bugs.html" class="active">Bug Report</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>Bug Report</h1>
+<p>Found a bug or have an idea for a new feature? We track all issues on GitHub.</p>
+
+<div class="card-grid">
+  <a href="https://github.com/plateaukao/einkbro/issues/new" class="card">
+    <h3>Report a Bug</h3>
+    <p>Open a new issue on GitHub with details about the problem you've encountered.</p>
+  </a>
+  <a href="https://github.com/plateaukao/einkbro/issues" class="card">
+    <h3>Browse Existing Issues</h3>
+    <p>Check if your issue has already been reported, or find workarounds for known problems.</p>
+  </a>
+</div>
+
+<h2>What to Include</h2>
+<p>A good bug report helps us fix the problem faster. Please include:</p>
+
+<dl class="report-template">
+  <dt>Device Model</dt>
+  <dd>e.g., Boox Note Air 3, Kobo Elipsa 2E, Kindle Scribe, or standard Android phone/tablet</dd>
+
+  <dt>Android Version</dt>
+  <dd>e.g., Android 12. Check in your device's Settings &rarr; About.</dd>
+
+  <dt>WebView Version</dt>
+  <dd>Found in EinkBro Settings &rarr; About, or your device's system settings under WebView.</dd>
+
+  <dt>EinkBro Version</dt>
+  <dd>e.g., 15.10.0. Shown in EinkBro Settings &rarr; About.</dd>
+
+  <dt>Steps to Reproduce</dt>
+  <dd>Numbered list of exact steps to trigger the bug. The more specific, the better.</dd>
+
+  <dt>Expected Behavior</dt>
+  <dd>What you expected to happen.</dd>
+
+  <dt>Actual Behavior</dt>
+  <dd>What actually happened. Include any error messages.</dd>
+
+  <dt>Screenshots / Screen Recording</dt>
+  <dd>If the bug is visual, a screenshot is extremely helpful. Use the full-page screenshot feature if relevant.</dd>
+</dl>
+
+<h2>Common Troubleshooting</h2>
+<p>Before reporting, try these common fixes:</p>
+
+<h3>Pages not loading or displaying incorrectly</h3>
+<ul>
+  <li><strong>Clear cache</strong> &mdash; Settings &rarr; Data Control &rarr; Clear Cache</li>
+  <li><strong>Check JavaScript</strong> &mdash; Ensure JavaScript is enabled (Settings &rarr; Start Control &rarr; JavaScript), or that the site is in your whitelist</li>
+  <li><strong>Check Cookies</strong> &mdash; Some sites require cookies. Enable in Settings &rarr; Start Control &rarr; Cookies</li>
+  <li><strong>Disable AdBlock</strong> &mdash; Some sites break with ad blocking. Add the site to the AdBlock Whitelist</li>
+  <li><strong>Update WebView</strong> &mdash; An outdated Android System WebView can cause rendering issues. Update it via Google Play Store or your device's app store</li>
+</ul>
+
+<h3>Performance issues</h3>
+<ul>
+  <li><strong>Enable web cache</strong> &mdash; Settings &rarr; Behavior &rarr; Enable Web Cache</li>
+  <li><strong>Disable images</strong> &mdash; Settings &rarr; Start Control &rarr; Images (toggle off for faster loading on slow connections)</li>
+  <li><strong>Use reader mode</strong> &mdash; Strips heavy page elements for faster rendering</li>
+  <li><strong>Request Save Data</strong> &mdash; Settings &rarr; Start Control &rarr; Request 'Save Data' (tells websites to serve lighter content)</li>
+</ul>
+
+<h3>Translation not working</h3>
+<ul>
+  <li>Ensure you have an internet connection</li>
+  <li>For image translation, check that the API key is set in Settings &rarr; Misc &rarr; Translate Image API Key</li>
+  <li>For AI-based translation, verify your API key in Settings &rarr; GPT</li>
+</ul>
+
+<h3>AI features not working</h3>
+<ul>
+  <li>Verify your OpenAI or Gemini API key in Settings &rarr; GPT</li>
+  <li>Check that the model name is correct (default: <code>gpt-4.1</code> for OpenAI, <code>gemini-2.5-flash</code> for Gemini)</li>
+  <li>For self-hosted servers, ensure the Custom Host URL is accessible from your device</li>
+</ul>
+
+<h2>Feature Requests</h2>
+<p>Have an idea for a new feature? Open a GitHub issue with the <strong>[Feature Request]</strong> prefix in the title. Describe:</p>
+<ul>
+  <li>What you'd like to see</li>
+  <li>Why it would be useful (especially for E-Ink device users)</li>
+  <li>How you envision it working</li>
+</ul>
+
+<h2>Contributing a Fix</h2>
+<p>If you can fix the bug yourself, we welcome pull requests:</p>
+<ol>
+  <li><strong>Fork</strong> the <a href="https://github.com/plateaukao/einkbro">repository</a></li>
+  <li>Create a branch from <code>main</code></li>
+  <li>Make your fix and test it (ideally on an E-Ink device)</li>
+  <li>Submit a <strong>Pull Request</strong> referencing the issue number</li>
+</ol>
+<p>See the <a href="develop.html">Developer Guide</a> for build instructions and architecture details.</p>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> is open-source software. <a href="https://github.com/plateaukao/einkbro">View on GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EinkBro — Android Browser for E-Ink Devices</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">User Guide</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="develop.html">Develop</a></li>
+      <li><a href="bugs.html">Bug Report</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>EinkBro</h1>
+  <p class="hero__tagline">Android Browser for E-Ink Devices</p>
+  <a href="download.html" class="hero__cta">Download Latest Release</a>
+</header>
+
+<section class="features">
+  <div class="container">
+    <h2 class="features__heading">Features</h2>
+    <div class="features__grid">
+
+      <a href="guide.html#feature-reader" class="feature-card">
+        <span class="feature-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M21,5c-1.11-0.35-2.33-0.5-3.5-0.5c-1.95,0-4.05,0.4-5.5,1.5c-1.45-1.1-3.55-1.5-5.5-1.5S2.45,4.9,1,6v14.65 c0,0.25,0.25,0.5,0.5,0.5c0.1,0,0.15-0.05,0.25-0.05C3.1,20.45,5.05,20,6.5,20c1.95,0,4.05,0.4,5.5,1.5 c1.35-0.85,3.8-1.5,5.5-1.5c1.65,0,3.35,0.3,4.75,1.05c0.1,0.05,0.15,0.05,0.25,0.05c0.25,0,0.5-0.25,0.5-0.5V6 C22.4,5.55,21.75,5.25,21,5z M21,18.5c-1.1-0.35-2.3-0.5-3.5-0.5c-1.7,0-4.15,0.65-5.5,1.5V8c1.35-0.85,3.8-1.5,5.5-1.5 c1.2,0,2.4,0.15,3.5,0.5V18.5z"/></svg>
+        </span>
+        <h3>E-Ink Optimized Reading</h3>
+        <p>Tap screen edges or use volume keys to turn pages. Reader mode, vertical text layout, custom fonts, bold toggle, and zero animations.</p>
+      </a>
+
+      <a href="guide.html#feature-ai" class="feature-card">
+        <span class="feature-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20,9V7c0-1.1-0.9-2-2-2h-3c0-1.66-1.34-3-3-3S9,3.34,9,5H6C4.9,5,4,5.9,4,7v2c-1.66,0-3,1.34-3,3s1.34,3,3,3v4c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2v-4c1.66,0,3-1.34,3-3S21.66,9,20,9zM18,19H6V7h12V19zM9,10c-0.83,0-1.5,0.67-1.5,1.5S8.17,13,9,13s1.5-0.67,1.5-1.5S9.83,10,9,10zM15,10c-0.83,0-1.5,0.67-1.5,1.5S14.17,13,15,13s1.5-0.67,1.5-1.5S15.83,10,15,10zM8,15h8v2H8V15z"/></svg>
+        </span>
+        <h3>AI Integration</h3>
+        <p>Chat with web pages, summarize content, and run custom AI actions. Supports OpenAI, Google Gemini, Ollama, and custom servers.</p>
+      </a>
+
+      <a href="guide.html#feature-translate" class="feature-card">
+        <span class="feature-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.87,15.07l-2.54-2.51.03-.03A17.52,17.52,0,0,0,14.07,4H17V2H10V0H8V2H1V4H12.17A15.4,15.4,0,0,1,9,11.35,15.4,15.4,0,0,1,5.16,6H3.16a17.47,17.47,0,0,0,4.84,7.35L1.46,19.89l1.41,1.41L9,15.16l3.88,3.88.97-2.59L12.87,15.07ZM18.5,10l-4.5,12h2l1.12-3h4.75L23,22h2L20.5,10Zm-2.62,7,1.62-4.33L19.12,17Z"/></svg>
+        </span>
+        <h3>Translation</h3>
+        <p>Paragraph-by-paragraph inline translation, full-page translation, and image text translation. Multiple providers including DeepL and Google.</p>
+      </a>
+
+      <a href="guide.html#feature-epub" class="feature-card">
+        <span class="feature-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V4C20,2.9,19.1,2,18,2z M9,4h2v5l-1-0.75L9,9V4z M18,20H6V4h1v9l3-2.25L13,13V4h5V20z"/></svg>
+        </span>
+        <h3>Save &amp; Export</h3>
+        <p>Export to EPUB with chapters and images, save as PDF, archive as MHT, capture full-page screenshots, or send to Instapaper.</p>
+      </a>
+
+      <a href="guide.html#toolbar-actions" class="feature-card">
+        <span class="feature-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M3,17v2h6v-2H3z M3,5v2h10V5H3z M13,21v-2h8v-2h-8v-2h-2v6H13z M7,9v2H3v2h4v2h2V9H7z M21,13v-2H11v2H21z M15,9h2V7h4V5h-4V3h-2V9z"/></svg>
+        </span>
+        <h3>Customizable UI</h3>
+        <p>40+ configurable toolbar actions with drag reordering. Top, bottom, or side toolbar. Split screen, floating button, and gesture navigation.</p>
+      </a>
+
+      <a href="guide.html#settings-startcontrol" class="feature-card">
+        <span class="feature-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M12,11.99h7c-0.53,4.12-3.28,7.79-7,8.94V12H5V6.3l7-3.11V11.99z"/></svg>
+        </span>
+        <h3>Privacy &amp; Browsing</h3>
+        <p>Built-in ad blocker, JavaScript/cookie whitelists, tracking parameter pruning, incognito mode, and per-site desktop mode.</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="gallery">
+  <div class="container">
+    <h2 class="gallery__heading">Screenshots</h2>
+    <div class="gallery__grid">
+      <figure class="gallery__item"><img src="images/01_main_browsing.png" alt="Main browsing" loading="lazy"><figcaption>Main Browsing</figcaption></figure>
+      <figure class="gallery__item"><img src="images/02_menu_panel.png" alt="Menu panel" loading="lazy"><figcaption>Menu Panel</figcaption></figure>
+      <figure class="gallery__item"><img src="images/03_translate.png" alt="Translation" loading="lazy"><figcaption>Translation</figcaption></figure>
+      <figure class="gallery__item"><img src="images/04_chat_with_web.png" alt="Chat with Web" loading="lazy"><figcaption>Chat with Web</figcaption></figure>
+      <figure class="gallery__item"><img src="images/05_bookmarks.png" alt="Bookmarks list" loading="lazy"><figcaption>Bookmarks (List)</figcaption></figure>
+      <figure class="gallery__item"><img src="images/06_toolbar_config.png" alt="Toolbar config" loading="lazy"><figcaption>Toolbar Config</figcaption></figure>
+      <figure class="gallery__item"><img src="images/07_touch_setting.png" alt="Touch setting" loading="lazy"><figcaption>Touch Setting</figcaption></figure>
+      <figure class="gallery__item"><img src="images/08_settings.png" alt="Settings" loading="lazy"><figcaption>Settings</figcaption></figure>
+      <figure class="gallery__item"><img src="images/09_vertical_read.png" alt="Vertical reading" loading="lazy"><figcaption>Vertical Read</figcaption></figure>
+      <figure class="gallery__item"><img src="images/10_font_size.png" alt="Font size" loading="lazy"><figcaption>Font Size</figcaption></figure>
+      <figure class="gallery__item"><img src="images/11_bookmarks_grid.png" alt="Bookmarks grid" loading="lazy"><figcaption>Bookmarks (Grid)</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> is open-source software. <a href="https://github.com/plateaukao/einkbro">View on GitHub</a></p>
+    <p>App icon by <a href="https://www.flaticon.com/authors/turkkub">turkkub</a> from Flaticon</p>
+  </div>
+</footer>
+
+</body>
+</html>

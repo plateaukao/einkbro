@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Guide — EinkBro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">User Guide</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="develop.html" class="active">Develop</a></li>
+      <li><a href="bugs.html">Bug Report</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>Developer Guide</h1>
+<p>EinkBro is built with Kotlin and modern Android development practices. This guide covers the architecture, build process, and key development areas for contributors.</p>
+
+<h2>Architecture Overview</h2>
+
+<div class="arch-diagram">┌─────────────────────────────────────────────────┐
+│                    app module                    │
+│                                                  │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
+│  │ Activity  │  │ ViewModel │  │  Repository  │  │
+│  │ (Compose) │──│ (StateFlow│──│  (Room, API) │  │
+│  └──────────┘  │  LiveData)│  └──────────────┘  │
+│                └───────────┘                     │
+│                                                  │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
+│  │ EBWebView│  │   Koin    │  │   Services   │  │
+│  │ (Custom  │  │   (DI)    │  │ (Translation │  │
+│  │ WebView) │  │           │  │  TTS, AI)    │  │
+│  └──────────┘  └───────────┘  └──────────────┘  │
+├─────────────────────────────────────────────────┤
+│              ad-filter module                    │
+│  JS scriptlets · FilterViewModel · filter logic  │
+├─────────────────────────────────────────────────┤
+│             adblock-client module                │
+│          Native C++ via CMake (JNI)              │
+└─────────────────────────────────────────────────┘</div>
+
+<h3>Core Patterns</h3>
+<ul>
+  <li><strong>MVVM</strong> &mdash; ViewModels with LiveData/StateFlow for UI state management</li>
+  <li><strong>Repository Pattern</strong> &mdash; Data layer abstraction (e.g., <code>OpenAiRepository.kt</code>)</li>
+  <li><strong>Dependency Injection</strong> &mdash; Koin container configured in <code>EinkBroApplication.kt</code></li>
+  <li><strong>Room Database</strong> &mdash; Local persistence with KSP annotation processing</li>
+  <li><strong>Jetpack Compose</strong> &mdash; UI components (dialogs, settings, toolbar, menus)</li>
+</ul>
+
+<h3>Module Structure</h3>
+<table>
+<thead><tr><th>Module</th><th>Purpose</th><th>Key Technologies</th></tr></thead>
+<tbody>
+<tr><td><strong>app</strong></td><td>Main browser application</td><td>Kotlin, Compose, Room, Koin, WebView</td></tr>
+<tr><td><strong>ad-filter</strong></td><td>Ad-blocking logic and JS scriptlets</td><td>JavaScript, FilterViewModel</td></tr>
+<tr><td><strong>adblock-client</strong></td><td>Native ad-blocking implementation</td><td>C++, CMake, JNI</td></tr>
+</tbody>
+</table>
+
+<h3>Key Components</h3>
+<table>
+<thead><tr><th>Component</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>EinkBroApplication.kt</code></td><td>Application class; initializes Koin DI container</td></tr>
+<tr><td><code>BrowserActivity.kt</code></td><td>Main activity (<code>singleInstance</code> launch mode); handles all browser UI</td></tr>
+<tr><td><code>EBWebView.kt</code></td><td>Custom WebView with E-Ink optimizations (scroll behavior, reader mode CSS injection, JS interfaces)</td></tr>
+<tr><td><code>GptActionsActivity.kt</code></td><td>UI for AI/ChatGPT interactions</td></tr>
+<tr><td><code>OpenAiRepository.kt</code></td><td>API communication layer for OpenAI, Gemini, and compatible servers</td></tr>
+<tr><td><code>ChatGptQuery.kt</code></td><td>Room database entity for persisting GPT query results</td></tr>
+<tr><td><code>ConfigManager.kt</code></td><td>SharedPreferences wrapper with Kotlin property delegates for all settings</td></tr>
+<tr><td><code>ToolbarAction.kt</code></td><td>Enum defining all 43 toolbar actions with icons, labels, and states</td></tr>
+<tr><td><code>MenuDialogFragment.kt</code></td><td>Compose-based action menu with collapsible sections</td></tr>
+</tbody>
+</table>
+
+<h2>Build Configuration</h2>
+
+<table>
+<thead><tr><th>Property</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Min SDK</td><td>24 (Android 7.0)</td></tr>
+<tr><td>Target SDK</td><td>34 (Android 14)</td></tr>
+<tr><td>JVM Target</td><td>Java 17</td></tr>
+<tr><td>Kotlin</td><td>2.0.0 with KSP</td></tr>
+<tr><td>ABI Splits</td><td>arm64-v8a, armeabi-v7a, x86, x86_64</td></tr>
+</tbody>
+</table>
+
+<h2>Build Commands</h2>
+
+<h3>Development</h3>
+<pre><code># Build debug APK
+./gradlew assembleDebug
+
+# Build release APK
+./gradlew assembleRelease
+
+# Build releaseDebuggable variant
+./gradlew assembleReleaseDebuggable
+
+# Install debug on connected device
+./gradlew installDebug
+
+# Clean build
+./gradlew clean</code></pre>
+
+<h3>Testing</h3>
+<pre><code># Run unit tests
+./gradlew test
+
+# Run instrumented tests
+./gradlew connectedAndroidTest
+
+# Run lint checks
+./gradlew lint
+
+# Debug lint only
+./gradlew lintDebug</code></pre>
+
+<h2>Key Development Areas</h2>
+
+<h3>WebView Customization</h3>
+<p>E-Ink specific WebView optimizations are implemented in <code>EBWebView.kt</code>:</p>
+<ul>
+  <li>Custom scroll behavior tuned for E-Ink refresh patterns</li>
+  <li>Reader mode CSS injection for clean content display</li>
+  <li>JavaScript interfaces for native feature integration (touch tracking, page info, etc.)</li>
+  <li>JS files are stored in <code>assets/</code> and loaded at runtime</li>
+</ul>
+
+<h3>AI Integration</h3>
+<p>ChatGPT/AI functionality spans several components:</p>
+<ul>
+  <li><code>GptActionsActivity.kt</code> &mdash; UI for AI chat interactions</li>
+  <li><code>OpenAiRepository.kt</code> &mdash; API communication for OpenAI, Gemini, and self-hosted servers</li>
+  <li><code>ChatGptQuery.kt</code> &mdash; Room entity for persisting query history</li>
+  <li>Custom GPT actions defined by users with system prompts</li>
+</ul>
+
+<h3>EPUB Processing</h3>
+<p>Complete EPUB reading and writing using EPubLib:</p>
+<ul>
+  <li>Parse and render EPUB content within the browser</li>
+  <li>Export web content to EPUB with images and multi-chapter support</li>
+  <li>Editable table of contents with drag-and-drop reordering</li>
+</ul>
+
+<h3>Translation Services</h3>
+<p>Multi-provider translation with paragraph-level, full-page, and image translation. Providers include Google Translate, DeepL, and AI-based translation via OpenAI/Gemini.</p>
+
+<h2>Database &amp; Schema</h2>
+<p>Room database schemas are stored in <code>app/schemas/</code>. When modifying entities, ensure migration paths are properly defined. Key entities include bookmarks, history records, GPT queries, and whitelists.</p>
+
+<h2>Internationalization</h2>
+<p>The project supports 25+ languages managed through <strong>Crowdin</strong>. Translation files follow standard Android format at <code>res/values-*/strings.xml</code>. Do not edit translation files directly &mdash; changes should go through Crowdin.</p>
+
+<h2>ProGuard</h2>
+<p>Release builds use ProGuard for code obfuscation and optimization:</p>
+<ul>
+  <li><code>app/proguard-rules.txt</code> &mdash; Release builds</li>
+  <li><code>app/proguard-rules.pro</code> &mdash; ReleaseDebuggable builds</li>
+</ul>
+
+<h2>Contributing</h2>
+<ol>
+  <li><strong>Fork</strong> the repository on GitHub</li>
+  <li>Create a <strong>feature branch</strong> from <code>main</code></li>
+  <li>Make your changes and test on an E-Ink device if possible</li>
+  <li>Submit a <strong>Pull Request</strong> with a clear description of changes</li>
+</ol>
+<p>The project uses Fastlane for deployment automation and supports F-Droid distribution.</p>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> is open-source software. <a href="https://github.com/plateaukao/einkbro">View on GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

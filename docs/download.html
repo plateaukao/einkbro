@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download — EinkBro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">User Guide</a></li>
+      <li><a href="download.html" class="active">Download</a></li>
+      <li><a href="develop.html">Develop</a></li>
+      <li><a href="bugs.html">Bug Report</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>Download EinkBro</h1>
+
+<div class="card-grid">
+
+  <a href="https://github.com/plateaukao/einkbro/releases" class="card">
+    <h3>GitHub Releases</h3>
+    <p>Download the latest stable APK directly from GitHub. Multiple architecture variants are available (arm64-v8a, armeabi-v7a, x86, x86_64).</p>
+  </a>
+
+  <a href="https://f-droid.org/packages/info.plateaukao.einkbro/" class="card">
+    <h3>F-Droid</h3>
+    <p>Install from the F-Droid free software repository. Updates may be slightly delayed compared to GitHub releases.</p>
+  </a>
+
+  <a href="https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-arm64-v8a-release.apk.zip" class="card">
+    <h3>Snapshot / Nightly</h3>
+    <p>Get the latest development build from the CI pipeline. These builds include the newest features but may be less stable.</p>
+  </a>
+
+</div>
+
+<h2>Installation</h2>
+<ol>
+  <li>Download the APK for your device architecture (most E-Ink devices use <strong>arm64-v8a</strong>)</li>
+  <li>On your device, go to <strong>Settings &rarr; Security</strong> and enable <strong>Unknown Sources</strong> (or allow installation from your file manager/browser)</li>
+  <li>Open the downloaded APK file and tap <strong>Install</strong></li>
+  <li>Once installed, open EinkBro and start browsing</li>
+</ol>
+<p><strong>Tip:</strong> If you're unsure which architecture your device uses, download the <code>arm64-v8a</code> variant first &mdash; it works on most modern E-Ink devices including Boox, Kobo (with Play Store), and Kindle (with sideloading).</p>
+
+<hr>
+
+<h2>Changelog</h2>
+
+<div class="changelog-version">
+<h3>15.10.0</h3>
+
+<h4>Features</h4>
+<ul>
+  <li>Share/receive app data over local network</li>
+  <li>Selective backup/restore with category chooser</li>
+  <li>Video autoplay toggle in Behavior Settings</li>
+  <li>E-ink image optimization for web resources (JPEG/PNG/WebP)</li>
+  <li>Vertical toolbar mode (left/right side positioning)</li>
+  <li>Font folder browser with preview and search</li>
+  <li>Anchor toolbar dialogs horizontally near the clicked icon</li>
+  <li>Preserve code snippet styling in reader mode when keepExtraContent is on</li>
+  <li>Option to preserve MathJax/KaTeX math in reader mode</li>
+  <li>Make e-reader toolbar actions configurable, separate from browser toolbar</li>
+  <li>GPT type icon indicator in context menu for GPT actions</li>
+  <li>Ad-block scriptlet injection with crash guards</li>
+</ul>
+
+<h4>Improvements</h4>
+<ul>
+  <li>Redesign GPT result history UI with card-style layout</li>
+  <li>Group behavior settings into logical sections with dividers</li>
+  <li>Show vertical preview in toolbar config when in vertical mode</li>
+  <li>Use landscape toolbar config for vertical toolbar mode</li>
+  <li>Improve tab count icon with Canvas slash, support 10+ tabs</li>
+  <li>Convert BookmarkEditDialog to ComposeDialogFragment</li>
+  <li>Remove deprecated translation modes (Onyx, Google Text, Papago Text/URL/Dual)</li>
+  <li>Remove bookmark sync URL feature</li>
+</ul>
+
+<h4>Fixes</h4>
+<ul>
+  <li>Show audio-only button on YouTube SPA navigations</li>
+  <li>Preserve dark detail in e-ink image processing</li>
+  <li>Fix e-ink image processing broken on Instagram and CDN-served images</li>
+  <li>Make progress bar thinner (2dp) in vertical toolbar mode</li>
+  <li>Reposition progress bar to match toolbar position in vertical mode</li>
+  <li>Prevent ConstraintSet crash in vertical toolbar mode</li>
+  <li>Reload toolbar icons when position changes</li>
+  <li>Improve download reliability with User-Agent, cookie auth, and data URL support</li>
+  <li>Wrap injected touch-tracking JS in IIFE to fix libbyapp.com</li>
+</ul>
+</div>
+
+<div class="changelog-version">
+<h3>15.9.0</h3>
+
+<h4>Features</h4>
+<ul>
+  <li>Audio-only mode to hide video while keeping audio and captions</li>
+  <li>Read-it-later feature replacing save-as-archive</li>
+  <li>MediaStyle notification with play/pause/stop/close for TTS</li>
+  <li>Add EinkBro identifier to saved EPUBs and editable TOC with drag-and-drop</li>
+  <li>Cache translated images to disk and skip delay for cached results</li>
+  <li>Long-click translate icon to batch translate all remaining images</li>
+  <li>Show translated image as overlay on top of original image</li>
+</ul>
+
+<h4>Improvements</h4>
+<ul>
+  <li>Combine open/save EPUB menu items into single tabbed dialog</li>
+  <li>Use GPT icon for Page AI toolbar action to avoid confusion with EPUB</li>
+  <li>Compact BookmarkEditDialog title field and inline folder row</li>
+  <li>Enhance TwoPaneLayout divider with elegant pill-shaped drag handle</li>
+  <li>Remove all remaining layout XMLs, convert to Compose/programmatic views</li>
+  <li>Remove all AbstractComposeView wrapper classes</li>
+  <li>Update README with organized features and fresh screenshots</li>
+</ul>
+
+<h4>Fixes</h4>
+<ul>
+  <li>Detect video sites by URL so audio-only icon shows on first load</li>
+  <li>Tab list border now correctly highlights only the active tab</li>
+  <li>Improve dual caption reliability with proper cookies and User-Agent</li>
+  <li>Prevent pull-to-refresh from intercepting two-finger swipe gestures</li>
+  <li>Toolbar position switching crash when moving to top</li>
+  <li>Improve text translation observer robustness and JS escaping</li>
+</ul>
+</div>
+
+<div class="changelog-version">
+<h3>15.8.0</h3>
+
+<h4>Fixes</h4>
+<ul>
+  <li>Page info and jump-to-top for inner scroll containers</li>
+  <li>Generic JS-based pagination for inner scroll containers</li>
+  <li>Crash when opening EPUB3 files from file explorer</li>
+  <li>Pull-to-refresh only triggers at top of page</li>
+  <li>Prevent pull-to-refresh from intercepting two-finger gestures</li>
+  <li>Polyfill GitHub's include-fragment for older WebView versions</li>
+  <li>Improve download filename parsing with proper RFC 5987/6266 support</li>
+  <li>Skip filename dialog when content-disposition provides exact name</li>
+  <li>Sort history URLs newest-first in URL bar suggestions</li>
+  <li>Request persistent write permission for EPUB file URIs</li>
+  <li>Update Edge TTS to use Chromium 143 headers and MUID cookie</li>
+</ul>
+</div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> is open-source software. <a href="https://github.com/plateaukao/einkbro">View on GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
