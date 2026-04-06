@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Guide — EinkBro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html" class="active">User Guide</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="develop.html">Develop</a></li>
+      <li><a href="bugs.html">Bug Report</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container guide-layout">
+
+<!-- Sidebar TOC -->
+<aside class="guide-sidebar">
+  <div class="toc-section">Getting Started</div>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#first-launch">First Launch</a></li>
+  </ul>
+  <div class="toc-section">Toolbar</div>
+  <ul>
+    <li><a href="#toolbar-actions">All Toolbar Actions</a></li>
+    <li><a href="#toolbar-config">Customization</a></li>
+  </ul>
+  <div class="toc-section">Action Menu</div>
+  <ul>
+    <li><a href="#action-menu">Menu Overview</a></li>
+    <li><a href="#menu-row1">Row 1: Quick Actions</a></li>
+    <li><a href="#menu-share">Share &amp; Save</a></li>
+    <li><a href="#menu-content">Content Adjustment</a></li>
+    <li><a href="#menu-bottom">Bottom Row</a></li>
+  </ul>
+  <div class="toc-section">Settings</div>
+  <ul>
+    <li><a href="#settings-ui">UI</a></li>
+    <li><a href="#settings-toolbar">Toolbar</a></li>
+    <li><a href="#settings-behavior">Behavior</a></li>
+    <li><a href="#settings-gestures">Gestures</a></li>
+    <li><a href="#settings-backup">Backup</a></li>
+    <li><a href="#settings-startcontrol">Start Control</a></li>
+    <li><a href="#settings-datacontrol">Data Control</a></li>
+    <li><a href="#settings-search">Search</a></li>
+    <li><a href="#settings-misc">Misc</a></li>
+    <li><a href="#settings-gpt">GPT Settings</a></li>
+  </ul>
+  <div class="toc-section">Features</div>
+  <ul>
+    <li><a href="#feature-reader">Reader Mode</a></li>
+    <li><a href="#feature-split">Split Screen</a></li>
+    <li><a href="#feature-translate">Translation</a></li>
+    <li><a href="#feature-epub">EPUB Export</a></li>
+    <li><a href="#feature-touch">Touch Page Turning</a></li>
+    <li><a href="#feature-ai">AI / ChatGPT</a></li>
+  </ul>
+</aside>
+
+<!-- Main Content -->
+<main>
+
+<!-- ==================== GETTING STARTED ==================== -->
+<h1>User Guide</h1>
+
+<section id="overview">
+<h2>Overview</h2>
+<p>EinkBro is a browser specifically designed for E-Ink devices. As E-Ink screens have gotten faster and more capable, more people are browsing the web on e-readers. But mainstream browsers are full of animations, dimming effects, and UI patterns that look terrible on E-Ink displays.</p>
+<p>EinkBro follows two core design principles:</p>
+<ul>
+  <li><strong>Minimize repaint counts</strong> &mdash; fewer screen refreshes means a smoother experience</li>
+  <li><strong>Minimize repaint area</strong> &mdash; smaller updates reduce ghosting artifacts</li>
+</ul>
+<p>The result is a browser with high-contrast icons, no animations, and features like page-turning by touch areas, volume keys, reader mode, vertical text layout, and AI-powered content interaction.</p>
+</section>
+
+<section id="first-launch">
+<h2>First Launch</h2>
+<p>When you first open EinkBro, you'll see a bottom toolbar with configurable action icons. The default layout includes:</p>
+<ul>
+  <li><strong>Phone</strong>: New Tab, Touch, Reader Mode, Refresh, Back, Bookmark, Tab Count, Input URL, Settings</li>
+  <li><strong>Tablet</strong>: Title, New Tab, Touch, Reader Mode, Refresh, Back, Bookmark, Tab Count, Settings</li>
+</ul>
+<p>Tap the <strong>Settings</strong> icon (hamburger menu) to open the Action Menu, which gives access to all browser functions.</p>
+<a href="images/toolbar_bottom.png" target="_blank"><img src="images/toolbar_bottom.png" alt="Bottom toolbar" class="device-img"></a>
+</section>
+
+<!-- ==================== TOOLBAR ACTIONS ==================== -->
+<section id="toolbar-actions">
+<h2>Toolbar Actions</h2>
+<p>EinkBro has over 40 toolbar actions. You can add any of them to your toolbar and reorder them freely. Below is the complete reference.</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th style="width:40px">Icon</th><th>Action</th><th>Click</th><th>Long Click</th></tr>
+</thead>
+<tbody>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">info</span></td>
+  <td><strong>Title</strong></td>
+  <td>Edit current URL; type keyword to search</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">arrow_back</span></td>
+  <td><strong>Back</strong></td>
+  <td>Go to previous page</td>
+  <td>Show recent 5 web histories</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/></svg></td>
+  <td><strong>Refresh</strong></td>
+  <td>Reload current page (shows Stop icon while loading)</td>
+  <td>Enter fullscreen</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M9,11.24V7.5C9,6.12 10.12,5 11.5,5S14,6.12 14,7.5v3.74c1.21,-0.81 2,-2.18 2,-3.74C16,5.01 13.99,3 11.5,3S7,5.01 7,7.5C7,9.06 7.79,10.43 9,11.24zM18.84,15.87l-4.54,-2.26c-0.17,-0.07 -0.35,-0.11 -0.54,-0.11H13v-6C13,6.67 12.33,6 11.5,6S10,6.67 10,7.5v10.74c-3.6,-0.76 -3.54,-0.75 -3.67,-0.75c-0.31,0 -0.59,0.13 -0.79,0.33l-0.79,0.8l4.94,4.94C9.96,23.83 10.34,24 10.75,24h6.79c0.75,0 1.33,-0.55 1.44,-1.28l0.75,-5.27c0.01,-0.07 0.02,-0.14 0.02,-0.2C19.75,16.63 19.37,16.09 18.84,15.87z"/></svg></td>
+  <td><strong>Touch Turn Page</strong></td>
+  <td>Toggle touch page-turning</td>
+  <td>Show touch configuration dialog</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">upload</span></td>
+  <td><strong>Page Up</strong></td>
+  <td>Scroll up by one page</td>
+  <td>Scroll to top</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">download</span></td>
+  <td><strong>Page Down</strong></td>
+  <td>Scroll down by one page</td>
+  <td>Scroll to bottom</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">looks_one</span></td>
+  <td><strong>Tab Count</strong></td>
+  <td>Show tab list</td>
+  <td>Enable incognito mode</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">format_size</span></td>
+  <td><strong>Font Size</strong></td>
+  <td>Show font size dialog</td>
+  <td>Enter reader mode</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">menu</span></td>
+  <td><strong>Settings (Menu)</strong></td>
+  <td>Show action menu</td>
+  <td>Show quick access dialog</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">bookmarks</span></td>
+  <td><strong>Bookmarks</strong></td>
+  <td>Show bookmarks</td>
+  <td>Add current URL to bookmarks</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">straighten</span></td>
+  <td><strong>Toolbar Setting</strong></td>
+  <td>Open toolbar configuration</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">view_column</span></td>
+  <td><strong>Vertical Layout</strong></td>
+  <td>Toggle vertical reading mode</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">chrome_reader_mode</span></td>
+  <td><strong>Reader Mode</strong></td>
+  <td>Toggle reader mode</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M15,10.5C15,11.3 14.3,12 13.5,12C14.3,12 15,12.7 15,13.5V15A2,2 0 0,1 13,17H9V7H13A2,2 0 0,1 15,9V10.5M13,15V13H11V15H13M13,11V9H11V11H13M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></td>
+  <td><strong>Bold Font</strong></td>
+  <td>Toggle bold font style</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">text_increase</span></td>
+  <td><strong>Increase Font</strong></td>
+  <td>Increase font size by 10%</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">text_decrease</span></td>
+  <td><strong>Decrease Font</strong></td>
+  <td>Decrease font size by 10%</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">fullscreen</span></td>
+  <td><strong>Fullscreen</strong></td>
+  <td>Enter fullscreen mode</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">arrow_forward</span></td>
+  <td><strong>Forward</strong></td>
+  <td>Go to next page</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">rotate_right</span></td>
+  <td><strong>Rotate Screen</strong></td>
+  <td>Rotate screen orientation</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">translate</span></td>
+  <td><strong>Translation</strong></td>
+  <td>Translate current page</td>
+  <td>Show different translate modes</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">cancel_presentation</span></td>
+  <td><strong>Close Tab</strong></td>
+  <td>Close current tab</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">edit</span></td>
+  <td><strong>Input URL</strong></td>
+  <td>Show pen icon to edit URL (no web title)</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">library_add</span></td>
+  <td><strong>New Tab</strong></td>
+  <td>Create a new tab</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z"/></svg></td>
+  <td><strong>Desktop Mode</strong></td>
+  <td>Toggle desktop user agent</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">toc</span></td>
+  <td><strong>TOC</strong></td>
+  <td>Show table of contents (EPUB/reader)</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">search</span></td>
+  <td><strong>Search</strong></td>
+  <td>Search text on current page</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">folder_copy</span></td>
+  <td><strong>Duplicate Tab</strong></td>
+  <td>Duplicate current tab</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">record_voice_over</span></td>
+  <td><strong>TTS (Read Aloud)</strong></td>
+  <td>Read web content aloud</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M7,15H5.5v-4.5H4V9h3V15zM13.5,13.5h-3v-1h2c0.55,0 1,-0.45 1,-1V10c0,-0.55 -0.45,-1 -1,-1H9v1.5h3v1h-2c-0.55,0 -1,0.45 -1,1V15h4.5V13.5zM19.5,14v-4c0,-0.55 -0.45,-1 -1,-1H15v1.5h3v1h-2v1h2v1h-3V15h3.5C19.05,15 19.5,14.55 19.5,14z"/></svg></td>
+  <td><strong>Page Info</strong></td>
+  <td>Show page position / page count</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">g_translate</span></td>
+  <td><strong>Google In-Place</strong></td>
+  <td>Google Translate in-place</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">segment</span></td>
+  <td><strong>Translate by Paragraph</strong></td>
+  <td>Inline paragraph-by-paragraph translation</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">minimize</span></td>
+  <td><strong>Move to Background</strong></td>
+  <td>Move browser to background</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">swipe_vertical</span></td>
+  <td><strong>Touch Direction Up/Down</strong></td>
+  <td>Toggle touch area direction (up/down)</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">swipe</span></td>
+  <td><strong>Touch Direction Left/Right</strong></td>
+  <td>Toggle touch area direction (left/right)</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">schedule</span></td>
+  <td><strong>Time</strong></td>
+  <td>Show current time on toolbar</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">space_bar</span></td>
+  <td><strong>Spacer</strong></td>
+  <td>Flexible space between icons</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">share</span></td>
+  <td><strong>Share Link</strong></td>
+  <td>Share current page link</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">article</span></td>
+  <td><strong>Save EPUB</strong></td>
+  <td>Save/open EPUB dialog</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">invert_colors</span></td>
+  <td><strong>Invert Color</strong></td>
+  <td>Invert page colors</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">chat</span></td>
+  <td><strong>Chat With Web</strong></td>
+  <td>Open AI chat about current page</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M20,9V7c0,-1.1 -0.9,-2 -2,-2h-3c0,-1.66 -1.34,-3 -3,-3S9,3.34 9,5H6C4.9,5 4,5.9 4,7v2c-1.66,0 -3,1.34 -3,3s1.34,3 3,3v4c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2v-4c1.66,0 3,-1.34 3,-3S21.66,9 20,9zM18,19H6V7h12V19zM9,10c-0.83,0 -1.5,0.67 -1.5,1.5S8.17,13 9,13s1.5,-0.67 1.5,-1.5S9.83,10 9,10zM15,10c-0.83,0 -1.5,0.67 -1.5,1.5S14.17,13 15,13s1.5,-0.67 1.5,-1.5S15.83,10 15,10zM8,15h8v2H8V15z"/></svg></td>
+  <td><strong>Page AI</strong></td>
+  <td>Run AI actions on full page content</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12,3c-4.97,0 -9,4.03 -9,9v7c0,1.1 0.9,2 2,2h4v-8H5v-1c0,-3.87 3.13,-7 7,-7s7,3.13 7,7v1h-4v8h4c1.1,0 2,-0.9 2,-2v-7c0,-4.97 -4.03,-9 -9,-9zM7,14v4H5v-4h2zM19,18h-2v-4h2v4z"/></svg></td>
+  <td><strong>Audio Only</strong></td>
+  <td>Hide video, keep audio and captions</td>
+  <td>&mdash;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="toolbar-config">
+<h2>Toolbar Customization</h2>
+<p>Open <strong>Action Menu &rarr; Toolbar icons</strong> (or add the Toolbar Setting button to your toolbar). Check any item to add it to the toolbar. Drag the handle on the right side to reorder items.</p>
+<a href="images/06_toolbar_config.png" target="_blank"><img src="images/06_toolbar_config.png" alt="Toolbar configuration" class="device-img"></a>
+<p>The toolbar position can be set to <strong>Bottom</strong>, <strong>Top</strong>, <strong>Left</strong>, or <strong>Right</strong> in <a href="#settings-toolbar">Settings &rarr; Toolbar</a>.</p>
+</section>
+
+<!-- ==================== ACTION MENU ==================== -->
+<section id="action-menu">
+<h2>Action Menu</h2>
+<p>Tap the <strong>Settings</strong> (hamburger) icon on the toolbar to open the action menu. It contains all browser functions organized in scrollable rows.</p>
+<a href="images/action_menu.png" target="_blank"><img src="images/action_menu.png" alt="Action Menu" class="device-img"></a>
+</section>
+
+<section id="menu-row1">
+<h3>Row 1: Quick Actions</h3>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>Highlights</strong> &mdash; View and manage text highlights</span>
+    <span class="action-item"><strong>Save as homepage</strong> &mdash; Set current URL as home</span>
+    <span class="action-item"><strong>Open homepage</strong> &mdash; Navigate to homepage</span>
+    <span class="action-item"><strong>Close tab</strong> &mdash; Close current tab (closes app if last tab)</span>
+    <span class="action-item"><strong>Quit</strong> &mdash; Exit EinkBro</span>
+  </div>
+</div>
+</section>
+
+<section id="menu-share">
+<h3>Share &amp; Save</h3>
+<p>Collapsible section with two rows of sharing and saving actions:</p>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>Receive link</strong> &mdash; Receive URL from another device via local network</span>
+    <span class="action-item"><strong>Save as bookmark</strong> &mdash; Bookmark current page</span>
+    <span class="action-item"><strong>Shortcut on home screen</strong> &mdash; Add shortcut to Android home</span>
+    <span class="action-item"><strong>Open link with&hellip;</strong> &mdash; Open URL in another app (YouTube, Maps, etc.)</span>
+    <span class="action-item"><strong>Copy link</strong> &mdash; Copy URL to clipboard</span>
+    <span class="action-item"><strong>Share link</strong> &mdash; Share URL to other apps</span>
+    <span class="action-item"><strong>Send link</strong> &mdash; Send URL to another device running EinkBro or Shakira</span>
+    <span class="action-item"><strong>Instapaper</strong> &mdash; Save to Instapaper</span>
+    <span class="action-item"><strong>Save for later</strong> &mdash; Read-it-later (local)</span>
+    <span class="action-item"><strong>EPUB</strong> &mdash; Open or save as EPUB</span>
+    <span class="action-item"><strong>Save as PDF</strong> &mdash; Export to PDF with configurable paper sizes</span>
+  </div>
+</div>
+</section>
+
+<section id="menu-content">
+<h3>Content Adjustment</h3>
+<p>Collapsible section with content display and transformation tools:</p>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>Chat With Web</strong> &mdash; AI chat about current page</span>
+    <span class="action-item"><strong>Split screen</strong> &mdash; Open a second panel alongside current page</span>
+    <span class="action-item"><strong>Translate</strong> &mdash; Translate current page</span>
+    <span class="action-item"><strong>Vertical mode</strong> &mdash; Vertical text layout for CJK content</span>
+    <span class="action-item"><strong>Reader mode</strong> &mdash; Strip clutter for clean reading</span>
+    <span class="action-item"><strong>Touch setting</strong> &mdash; Configure touch areas</span>
+    <span class="action-item"><strong>Read content</strong> &mdash; TTS: read page aloud</span>
+    <span class="action-item"><strong>Invert colors</strong> &mdash; Invert page colors</span>
+    <span class="action-item"><strong>White background</strong> &mdash; Force white background (helps on dark sites)</span>
+    <span class="action-item"><strong>Black font</strong> &mdash; Force black font color</span>
+    <span class="action-item"><strong>Bold font</strong> &mdash; Make all text bold for E-Ink readability</span>
+    <span class="action-item"><strong>Font size</strong> &mdash; Adjust font size and font style</span>
+  </div>
+</div>
+</section>
+
+<section id="menu-bottom">
+<h3>Bottom Row</h3>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>Search on site</strong> &mdash; Find text on current page</span>
+    <span class="action-item"><strong>Downloads</strong> &mdash; Open system downloads folder</span>
+    <span class="action-item"><strong>Toolbar icons</strong> &mdash; Configure toolbar</span>
+    <span class="action-item"><strong>Quick toggle</strong> &mdash; Fast-toggle Incognito, AdBlock, JS, Cookies, History, Location, Volume keys, Background media, Desktop mode</span>
+    <span class="action-item"><strong>Settings</strong> &mdash; Open Settings screen</span>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SETTINGS ==================== -->
+
+<section id="settings-ui" class="settings-section">
+<h2>Settings: UI</h2>
+<a href="images/settings_ui.png" target="_blank"><img src="images/settings_ui.png" alt="UI Settings" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">App Language</div><div class="setting-item__desc">Change interface language. Default: system language.</div></div>
+<div class="setting-item"><div class="setting-item__name">Hide Statusbar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Always hide the system status bar. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Desktop Mode</div><div class="setting-item__desc"><span class="tag">Toggle</span> Request desktop versions of websites. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Always Enable Content Zooming</div><div class="setting-item__desc"><span class="tag">Toggle</span> Force all content to be zoomable, even on sites that disable it. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Show Default Selected Text Menu</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show the system default text selection menu after selecting text. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Show Icons on Action Menus</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show/hide icons in action menus. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Page Reserved Height</div><div class="setting-item__desc"><span class="tag">Input</span> Pixels or percentage reserved when turning to the next page (overlap for context). Default: <code>80</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Padding for Reader Mode</div><div class="setting-item__desc"><span class="tag">Input</span> Padding in px for reader mode content. Default: <code>10</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Dark Mode</div><div class="setting-item__desc"><span class="tag">Select</span> Options: <code>Follow system</code>, <code>Force On</code>, <code>Disabled</code>. Default: Follow system.</div></div>
+<div class="setting-item"><div class="setting-item__name">E-ink Image Optimization</div><div class="setting-item__desc"><span class="tag">Select</span> Adjust web images for E-Ink display. Options: <code>Off</code>, <code>10%</code>, <code>30%</code>, <code>50%</code>, <code>70%</code>, <code>100%</code>. Default: Off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Floating Button Position</div><div class="setting-item__desc"><span class="tag">Select</span> Position of the navigation floating button. Options: <code>Right</code>, <code>Left</code>, <code>Center</code>, <code>Don't show</code>, <code>Custom</code>. Default: Right.</div></div>
+<div class="setting-item"><div class="setting-item__name">New Tab Behavior</div><div class="setting-item__desc"><span class="tag">Select</span> What to show when opening a new tab. Options: <code>Start input URL</code>, <code>Show homepage</code>, <code>Show bookmarks</code>. Default: Start input URL.</div></div>
+<div class="setting-item"><div class="setting-item__name">Clear Recent Bookmark List</div><div class="setting-item__desc"><span class="tag">Action</span> Clear the list of recently used bookmarks.</div></div>
+</section>
+
+<section id="settings-toolbar" class="settings-section">
+<h2>Settings: Toolbar</h2>
+<a href="images/settings_toolbar.png" target="_blank"><img src="images/settings_toolbar.png" alt="Toolbar Settings" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">Configure Toolbar Icons</div><div class="setting-item__desc"><span class="tag">Action</span> Open the toolbar icon picker and reorder interface.</div></div>
+<div class="setting-item"><div class="setting-item__name">Toolbar Position</div><div class="setting-item__desc"><span class="tag">Select</span> Options: <code>Bottom</code>, <code>Top</code>, <code>Left</code>, <code>Right</code>. Default: Bottom.</div></div>
+<div class="setting-item"><div class="setting-item__name">Hide Toolbar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Hide toolbar while scrolling for full-screen browsing. Press Back to restore. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Toolbar First</div><div class="setting-item__desc"><span class="tag">Toggle</span> Back button shows toolbar first before navigating back. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Show Tab Bar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Always show the tab bar above/beside the toolbar. Default: off.</div></div>
+</section>
+
+<section id="settings-behavior" class="settings-section">
+<h2>Settings: Behavior</h2>
+<a href="images/settings_behavior.png" target="_blank"><img src="images/settings_behavior.png" alt="Behavior Settings" class="device-img"></a>
+
+<h4>Tab Management</h4>
+<div class="setting-item"><div class="setting-item__name">Save Tabs</div><div class="setting-item__desc"><span class="tag">Toggle</span> Restore tabs from previous session. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Load Non-Active Tabs</div><div class="setting-item__desc"><span class="tag">Toggle</span> Load background tabs in the background. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Show Next Tab</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show next (not previous) tab when closing current. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Back Key Behavior</div><div class="setting-item__desc"><span class="tag">Toggle</span> Close tab when already at first page in history. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Confirm Tab Close</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show confirmation dialog when closing a tab. Default: off.</div></div>
+
+<h4>URL &amp; Navigation</h4>
+<div class="setting-item"><div class="setting-item__name">Trim Input Text Content</div><div class="setting-item__desc"><span class="tag">Toggle</span> Remove non-http prefix text from pasted input. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Prune Tracking Query Parameters</div><div class="setting-item__desc"><span class="tag">Toggle</span> Strip <code>utm_*</code> and other tracking params from URLs. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">1 Touch to URL Action</div><div class="setting-item__desc"><span class="tag">Toggle</span> Long-click on URL and drag to item to trigger action. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Show Bookmarks When Editing URL</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show matching bookmarks while typing in URL bar. Default: off.</div></div>
+
+<h4>Video</h4>
+<div class="setting-item"><div class="setting-item__name">Allow Video Autoplay</div><div class="setting-item__desc"><span class="tag">Toggle</span> Allow videos to play automatically. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Enable Video Play in Fullscreen</div><div class="setting-item__desc"><span class="tag">Toggle</span> Auto-resize video to fullscreen when playing. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Show Video in Small Window</div><div class="setting-item__desc"><span class="tag">Toggle</span> Picture-in-picture when leaving fullscreen video. Default: off.</div></div>
+
+<h4>Input &amp; Controls</h4>
+<div class="setting-item"><div class="setting-item__name">Vi Key Binding</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable Vi-style keyboard shortcuts. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Disable Long Press on Touch Area</div><div class="setting-item__desc"><span class="tag">Toggle</span> Prevent long-press actions in touch areas. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Use Up/Down Key</div><div class="setting-item__desc"><span class="tag">Toggle</span> Use D-pad up/down for page turning (Bluetooth keyboards). Default: off.</div></div>
+
+<h4>Display &amp; Rendering</h4>
+<div class="setting-item"><div class="setting-item__name">Keep Screen Awake</div><div class="setting-item__desc"><span class="tag">Toggle</span> Prevent screen from turning off. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Text Wrap Reflow</div><div class="setting-item__desc"><span class="tag">Toggle</span> Reflow text when zooming for easier reading. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Zoom in Custom View</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable 2-finger zoom in fullscreen mode. Default: off.</div></div>
+
+<h4>Security &amp; Network</h4>
+<div class="setting-item"><div class="setting-item__name">Show SSL Error Dialog</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show dialog when SSL certificate errors occur. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Enable Web Cache</div><div class="setting-item__desc"><span class="tag">Toggle</span> Cache web content for faster loading. Default: off.</div></div>
+</section>
+
+<section id="settings-gestures" class="settings-section">
+<h2>Settings: Gestures</h2>
+<a href="images/settings_gestures.png" target="_blank"><img src="images/settings_gestures.png" alt="Gestures Settings" class="device-img"></a>
+
+<h4>Touch Area Click Actions</h4>
+<p>Configure what happens when you tap or long-press the touch page-turning areas. Each can be set to: Page Up, Page Down, Scroll Up, Scroll Down, Scroll to Top, Scroll to Bottom, Overview, and more.</p>
+<div class="setting-item"><div class="setting-item__name">Up Click Action</div><div class="setting-item__desc"><span class="tag">Select</span> Default: Page Up.</div></div>
+<div class="setting-item"><div class="setting-item__name">Up Long Click Action</div><div class="setting-item__desc"><span class="tag">Select</span> Default: Scroll to Top.</div></div>
+<div class="setting-item"><div class="setting-item__name">Down Click Action</div><div class="setting-item__desc"><span class="tag">Select</span> Default: Page Down.</div></div>
+<div class="setting-item"><div class="setting-item__name">Down Long Click Action</div><div class="setting-item__desc"><span class="tag">Select</span> Default: Scroll to Bottom.</div></div>
+
+<h4>Two Finger Swipe Gestures</h4>
+<div class="setting-item"><div class="setting-item__name">Two Finger Swipe Gestures</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable two-finger swipe on web content. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Swipe Up / Down / Left / Right</div><div class="setting-item__desc"><span class="tag">Select</span> Configurable action for each swipe direction.</div></div>
+
+<h4>Floating Button Gestures</h4>
+<div class="setting-item"><div class="setting-item__name">Use Gestures on Floating Button</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable swipe gestures on the floating navigation button. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Swipe Up / Down / Left / Right</div><div class="setting-item__desc"><span class="tag">Select</span> Configurable action for each swipe direction on the floating button.</div></div>
+<div class="setting-item"><div class="setting-item__name">Long Click</div><div class="setting-item__desc"><span class="tag">Select</span> Action for long-pressing the floating button. Default: Overview.</div></div>
+</section>
+
+<section id="settings-backup" class="settings-section">
+<h2>Settings: Backup</h2>
+<a href="images/settings_backup.png" target="_blank"><img src="images/settings_backup.png" alt="Backup Settings" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">Export App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Export history, bookmarks, and settings as a zip file.</div></div>
+<div class="setting-item"><div class="setting-item__name">Import App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Import from a previously exported zip file.</div></div>
+<div class="setting-item"><div class="setting-item__name">Share App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Share app data to another device over local network.</div></div>
+<div class="setting-item"><div class="setting-item__name">Receive App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Receive app data from another device over local network.</div></div>
+<div class="setting-item"><div class="setting-item__name">Export Bookmarks</div><div class="setting-item__desc"><span class="tag">Action</span> Export bookmarks to a file.</div></div>
+<div class="setting-item"><div class="setting-item__name">Import Bookmarks</div><div class="setting-item__desc"><span class="tag">Action</span> Import bookmarks from a file.</div></div>
+</section>
+
+<section id="settings-startcontrol" class="settings-section">
+<h2>Settings: Start Control</h2>
+<a href="images/settings_startcontrol.png" target="_blank"><img src="images/settings_startcontrol.png" alt="Start Control Settings" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">Images</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable network images. Disabling saves data. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Auto Fill Form Data</div><div class="setting-item__desc"><span class="tag">Toggle</span> Auto-fill form fields. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">History</div><div class="setting-item__desc"><span class="tag">Select</span> Options: <code>Save when opening</code>, <code>Save when closing</code>, <code>Disabled</code>. Default: Save when opening.</div></div>
+<div class="setting-item"><div class="setting-item__name">Debug WebView</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable remote WebView debugging via Chrome DevTools. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Remote Content</div><div class="setting-item__desc"><span class="tag">Toggle</span> Allow third-party content (ads, analytics, etc.). Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Location</div><div class="setting-item__desc"><span class="tag">Toggle</span> Allow websites to access your location. Default: off.</div></div>
+
+<h4>AdBlock</h4>
+<div class="setting-item"><div class="setting-item__name">AdBlock</div><div class="setting-item__desc"><span class="tag">Toggle</span> Block ads for faster page loading. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Update AdBlock Content</div><div class="setting-item__desc"><span class="tag">Action</span> Manually trigger ad-block filter list update.</div></div>
+<div class="setting-item"><div class="setting-item__name">AdBlock Whitelist</div><div class="setting-item__desc"><span class="tag">Action</span> Sites allowed to show ads.</div></div>
+
+<h4>JavaScript</h4>
+<div class="setting-item"><div class="setting-item__name">JavaScript</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable JavaScript. Many sites need this. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">JavaScript Whitelist</div><div class="setting-item__desc"><span class="tag">Action</span> Allow JavaScript only for trusted sites (when JS is globally disabled).</div></div>
+
+<h4>Cookies</h4>
+<div class="setting-item"><div class="setting-item__name">Cookies</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable cookies. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Cookie Whitelist</div><div class="setting-item__desc"><span class="tag">Action</span> Allow cookies only for trusted sites (when cookies are globally disabled).</div></div>
+
+<div class="setting-item"><div class="setting-item__name">Request 'Save Data'</div><div class="setting-item__desc"><span class="tag">Toggle</span> Tell websites you prefer reduced data usage. Default: on.</div></div>
+</section>
+
+<section id="settings-datacontrol" class="settings-section">
+<h2>Settings: Data Control</h2>
+<a href="images/settings_datacontrol.png" target="_blank"><img src="images/settings_datacontrol.png" alt="Data Control Settings" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">Clear Cache</div><div class="setting-item__desc"><span class="tag">Toggle</span> Clear cached web data.</div></div>
+<div class="setting-item"><div class="setting-item__name">Clear History</div><div class="setting-item__desc"><span class="tag">Toggle</span> Clear browsing history.</div></div>
+<div class="setting-item"><div class="setting-item__name">Clear Indexed DB &amp; Local Storage</div><div class="setting-item__desc"><span class="tag">Toggle</span> Clear IndexedDB and WebView local storage.</div></div>
+<div class="setting-item"><div class="setting-item__name">Clear Cookies</div><div class="setting-item__desc"><span class="tag">Toggle</span> Delete all cookies, including for whitelisted sites.</div></div>
+<div class="setting-item"><div class="setting-item__name">Clear On App Exit</div><div class="setting-item__desc"><span class="tag">Toggle</span> Automatically clear all checked data types when quitting. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Delete Database</div><div class="setting-item__desc"><span class="tag">Action</span> <strong>Danger:</strong> Delete the entire database (bookmarks, history, whitelists).</div></div>
+</section>
+
+<section id="settings-search" class="settings-section">
+<h2>Settings: Search</h2>
+<a href="images/settings_search.png" target="_blank"><img src="images/settings_search.png" alt="Search Settings" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">Search Engine</div><div class="setting-item__desc"><span class="tag">Select</span> Options: <code>Google</code>, <code>Bing</code>, <code>DuckDuckGo</code>, <code>Startpage</code>, <code>Startpage (de)</code>, <code>Baidu</code>, <code>Searx</code>, <code>Qwant</code>, <code>Ecosia</code>, <code>Yandex</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Custom Search Engine URL</div><div class="setting-item__desc"><span class="tag">Input</span> Custom search URL with <code>%s</code> placeholder. Default: <code>https://www.google.com/search?q=%s</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Search Suggestions</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show search suggestions while typing. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">Custom External Search URL</div><div class="setting-item__desc"><span class="tag">Input</span> URL prefix for searching text highlighted from other apps.</div></div>
+<div class="setting-item"><div class="setting-item__name">Use Popup for PROCESS_TEXT</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show search as popup dictionary (useful for reader apps). Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Split Search Settings</div><div class="setting-item__desc"><span class="tag">Action</span> Configure search + split-screen result opening.</div></div>
+<div class="setting-item"><div class="setting-item__name">Tab for External Search</div><div class="setting-item__desc"><span class="tag">Toggle</span> Reuse the same tab for external search queries. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Remote Query Action</div><div class="setting-item__desc"><span class="tag">Select</span> Action for remote queries. Default: Search. Can also use custom ChatGPT actions.</div></div>
+</section>
+
+<section id="settings-misc" class="settings-section">
+<h2>Settings: Misc</h2>
+<a href="images/settings_misc.png" target="_blank"><img src="images/settings_misc.png" alt="Misc Settings" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">Highlight Style</div><div class="setting-item__desc"><span class="tag">Select</span> Choose visual style for text highlights.</div></div>
+<div class="setting-item"><div class="setting-item__name">Translation Text Block Style</div><div class="setting-item__desc"><span class="tag">Select</span> Choose display style for paragraph translation.</div></div>
+<div class="setting-item"><div class="setting-item__name">Custom User Agent</div><div class="setting-item__desc"><span class="tag">Action</span> Enable and set a custom User-Agent string.</div></div>
+<div class="setting-item"><div class="setting-item__name">Edit Homepage URL</div><div class="setting-item__desc"><span class="tag">Input</span> Set your preferred homepage URL.</div></div>
+<div class="setting-item"><div class="setting-item__name">Printed PDF Paper Size</div><div class="setting-item__desc"><span class="tag">Action</span> Select paper size for PDF printing.</div></div>
+<div class="setting-item"><div class="setting-item__name">Translation Languages</div><div class="setting-item__desc"><span class="tag">Input</span> Customize languages for Google Translate (e.g., <code>en, fr, de, zh-TW, zh-CN</code>).</div></div>
+<div class="setting-item"><div class="setting-item__name">Translate Image API Key</div><div class="setting-item__desc"><span class="tag">Input</span> API key for image translation service.</div></div>
+<div class="setting-item"><div class="setting-item__name">Dual Captions for YouTube</div><div class="setting-item__desc"><span class="tag">Action</span> Select language for second subtitle track on YouTube.</div></div>
+<div class="setting-item"><div class="setting-item__name">Reader Mode: Keep Extra Content</div><div class="setting-item__desc"><span class="tag">Toggle</span> Preserve styles, classes, and math (MathJax/KaTeX) in reader mode. Default: off.</div></div>
+</section>
+
+<section id="settings-gpt" class="settings-section">
+<h2>Settings: GPT</h2>
+<a href="images/settings_gpt.png" target="_blank"><img src="images/settings_gpt.png" alt="GPT Settings" class="device-img"></a>
+
+<h4>General</h4>
+<div class="setting-item"><div class="setting-item__name">GPT Result History</div><div class="setting-item__desc"><span class="tag">Action</span> View saved GPT query results.</div></div>
+<div class="setting-item"><div class="setting-item__name">ChatGPT Action Definition</div><div class="setting-item__desc"><span class="tag">Action</span> Define custom prompts for different AI actions.</div></div>
+<div class="setting-item"><div class="setting-item__name">Use ChatGPT in Dictionary Search</div><div class="setting-item__desc"><span class="tag">Toggle</span> Use AI for dictionary lookups in reader apps. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Reply In-Stream</div><div class="setting-item__desc"><span class="tag">Toggle</span> Stream responses character by character. Default: on.</div></div>
+
+<h4>Web Content Processing</h4>
+<div class="setting-item"><div class="setting-item__name">Summary GPT Type</div><div class="setting-item__desc"><span class="tag">Select</span> Engine for summarization. Options: <code>Default</code>, <code>OpenAI</code>, <code>Self-hosted</code>, <code>Google Gemini</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Prompt for Full Webpage Content</div><div class="setting-item__desc"><span class="tag">Input</span> Prompt sent with full page content. Default: <code>Summarize in 50 words:</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Web Processing GPT Type</div><div class="setting-item__desc"><span class="tag">Select</span> Engine for web content processing. Same options as Summary GPT Type.</div></div>
+
+<h4>OpenAI</h4>
+<div class="setting-item"><div class="setting-item__name">OpenAI API Key</div><div class="setting-item__desc"><span class="tag">Input</span> Your OpenAI API key.</div></div>
+<div class="setting-item"><div class="setting-item__name">OpenAI Model Name</div><div class="setting-item__desc"><span class="tag">Input</span> Default: <code>gpt-4.1</code>. Can use other OpenAI models.</div></div>
+<div class="setting-item"><div class="setting-item__name">Use OpenAI API to Read Web Content</div><div class="setting-item__desc"><span class="tag">Toggle</span> Use OpenAI TTS for text-to-speech. Default: on.</div></div>
+<div class="setting-item"><div class="setting-item__name">OpenAI TTS Model Name</div><div class="setting-item__desc"><span class="tag">Input</span> Options: <code>tts-1</code> (default), <code>tts-1-hd</code>, <code>gpt-4o-mini-tts</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Audio Output Instructions</div><div class="setting-item__desc"><span class="tag">Input</span> Voice instructions when using <code>gpt-4o-mini-tts</code> model.</div></div>
+
+<h4>OpenAI Compatible Server</h4>
+<div class="setting-item"><div class="setting-item__name">Use Alternative Server</div><div class="setting-item__desc"><span class="tag">Toggle</span> Connect to a custom OpenAI-compatible API. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Alternative Model Name</div><div class="setting-item__desc"><span class="tag">Input</span> Model name for the alternative server.</div></div>
+<div class="setting-item"><div class="setting-item__name">Custom Host URL</div><div class="setting-item__desc"><span class="tag">Input</span> Server URL. Default: <code>https://api.openai.com</code>.</div></div>
+
+<h4>Google Gemini</h4>
+<div class="setting-item"><div class="setting-item__name">Use Google Gemini Model</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable Gemini as AI provider. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Gemini API Key</div><div class="setting-item__desc"><span class="tag">Input</span> Your Google Gemini API key.</div></div>
+<div class="setting-item"><div class="setting-item__name">Gemini Model Name</div><div class="setting-item__desc"><span class="tag">Input</span> Default: <code>gemini-2.5-flash</code>.</div></div>
+</section>
+
+<!-- ==================== FEATURE GUIDES ==================== -->
+
+<section id="feature-reader">
+<h2>Reader Mode</h2>
+<p>Reader mode strips away headers, sidebars, footers, and ads, leaving only the main article content. It's ideal for long-form reading on E-Ink screens.</p>
+<ul>
+  <li>Activate via <strong>Reader Mode</strong> toolbar button or <strong>Action Menu &rarr; Reader mode</strong></li>
+  <li>Long-press the <strong>Font Size</strong> toolbar button also enters reader mode</li>
+  <li>Customize padding in <a href="#settings-ui">Settings &rarr; UI &rarr; Padding for Reader Mode</a></li>
+  <li>Enable <strong>Keep Extra Content</strong> in <a href="#settings-misc">Settings &rarr; Misc</a> to preserve math notation (MathJax/KaTeX) and styling</li>
+  <li>Reader mode has its own toolbar configuration with: Rotate, Fullscreen, Bold Font, Font Size, Touch, TOC, Page Info, Settings, Close Tab</li>
+</ul>
+</section>
+
+<section id="feature-split">
+<h2>Split Screen</h2>
+<p>Split screen opens a second web panel alongside the current page. Useful for reading news lists while viewing articles, or for AI chat alongside content.</p>
+<ul>
+  <li>Activate via <strong>Action Menu &rarr; Split screen</strong> or long-press any link</li>
+  <li>The split panel has its own mini toolbar (top to bottom):
+    <ul>
+      <li><strong>Orientation</strong> &mdash; Toggle vertical/horizontal split. Long-click flips the two screens.</li>
+      <li><strong>Dual screen link</strong> &mdash; When enabled, clicking links in main panel opens in the second panel</li>
+      <li><strong>Scroll sync</strong> &mdash; Synchronize scrolling between panels (useful for translation comparison)</li>
+      <li><strong>Font size +/&minus;</strong> &mdash; Adjust font in the split panel</li>
+      <li><strong>Close</strong> &mdash; Close split screen</li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<section id="feature-translate">
+<h2>Translation</h2>
+<p>EinkBro offers multiple translation methods:</p>
+<h4>Paragraph-by-Paragraph Translation</h4>
+<p>Translates each paragraph inline, showing the translation alongside the original text. Activate via the <strong>Translate by Paragraph</strong> toolbar action or long-press the Translate button for mode selection. Providers: Google Translate, DeepL, OpenAI, Gemini.</p>
+
+<h4>Full Page Translation</h4>
+<p>Translates the entire page via Google Translate. Activate via <strong>Action Menu &rarr; Translate</strong> or the <strong>Translation</strong> toolbar button.</p>
+
+<h4>Image Translation</h4>
+<p>Translates text within images. Results are cached to disk for faster subsequent access. Long-click the translate icon to batch-translate all remaining images. Requires an API key configured in <a href="#settings-misc">Settings &rarr; Misc &rarr; Translate Image API Key</a>.</p>
+
+<h4>Dual Captions</h4>
+<p>Display subtitles in two languages on YouTube videos. Configure in <a href="#settings-misc">Settings &rarr; Misc &rarr; Dual Captions for YouTube</a>.</p>
+<a href="images/03_translate.png" target="_blank"><img src="images/03_translate.png" alt="Translation" class="device-img"></a>
+</section>
+
+<section id="feature-epub">
+<h2>EPUB Export</h2>
+<p>Save web articles as EPUB ebook files, complete with images and table of contents.</p>
+<ul>
+  <li>Activate via <strong>Action Menu &rarr; EPUB</strong></li>
+  <li>The dialog has tabs for opening existing EPUBs and saving new ones</li>
+  <li>Save multiple web pages into the same EPUB &mdash; each becomes a chapter</li>
+  <li>Drag and drop to reorder chapters in the TOC editor</li>
+  <li>EPUB files include an EinkBro identifier for easy identification</li>
+  <li>Content must be reader-mode compatible for best results</li>
+</ul>
+</section>
+
+<section id="feature-touch">
+<h2>Touch Page Turning</h2>
+<p>EinkBro's signature feature for E-Ink devices. Tap the left or right (or top/bottom) edges of the screen to page up/down, just like turning pages in an e-book.</p>
+<ul>
+  <li>Enable via the <strong>Touch Turn Page</strong> toolbar button</li>
+  <li>Configure touch areas and actions in <a href="#settings-gestures">Settings &rarr; Gestures</a></li>
+  <li>Choose between left/right or up/down touch area layout</li>
+  <li>Long-press volume key temporarily disables page turning for 5 seconds</li>
+  <li>Volume keys can also be used for page turning (enable in Quick Toggle)</li>
+  <li>Adjust <strong>Page Reserved Height</strong> in <a href="#settings-ui">Settings &rarr; UI</a> to control overlap between pages</li>
+</ul>
+<a href="images/07_touch_setting.png" target="_blank"><img src="images/07_touch_setting.png" alt="Touch setting" class="device-img"></a>
+</section>
+
+<section id="feature-ai">
+<h2>AI / ChatGPT Integration</h2>
+<p>Interact with web content using AI directly in the browser.</p>
+<h4>Chat With Web</h4>
+<p>Open a split-screen AI chat panel to ask questions about the current page. Activate via the <strong>Chat With Web</strong> toolbar button or <strong>Action Menu &rarr; Chat With Web</strong>.</p>
+
+<h4>Page AI</h4>
+<p>Run AI actions on the full page content (e.g., summarize, extract key points). Uses the prompt configured in <a href="#settings-gpt">Settings &rarr; GPT &rarr; Prompt for Full Webpage Content</a>.</p>
+
+<h4>Custom GPT Actions</h4>
+<p>Define reusable AI actions with custom system prompts in <a href="#settings-gpt">Settings &rarr; GPT &rarr; ChatGPT Action Definition</a>. These appear in the text selection context menu and can be triggered on selected text or full page content.</p>
+
+<h4>Supported Providers</h4>
+<ul>
+  <li><strong>OpenAI</strong> &mdash; GPT-4.1 and other models via API key</li>
+  <li><strong>Google Gemini</strong> &mdash; Gemini 2.5 Flash and others</li>
+  <li><strong>Self-hosted / Ollama</strong> &mdash; Any OpenAI-compatible server via custom host URL</li>
+</ul>
+<a href="images/04_chat_with_web.png" target="_blank"><img src="images/04_chat_with_web.png" alt="Chat with Web" class="device-img"></a>
+</section>
+
+</main>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> is open-source software. <a href="https://github.com/plateaukao/einkbro">View on GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
