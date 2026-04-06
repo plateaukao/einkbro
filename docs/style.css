@@ -270,16 +270,14 @@ th {
   letter-spacing: 0.05em;
   color: var(--mid);
   border-bottom: 2px solid var(--ink);
-  position: sticky;
-  top: var(--nav-h);
   background: var(--paper);
 }
 tr:hover { background: var(--wash); }
 
 /* --- Toolbar icon cells --- */
 .tb-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  padding: 0.3rem 0.2rem !important;
 }
 .tb-icon svg {
   display: block;
@@ -436,6 +434,8 @@ tr:hover { background: var(--wash); }
   .gallery__grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   .action-item { white-space: normal; }
   .device-img { width: 240px; }
+  th, td { padding: 0.4rem 0.5rem; }
+  table { font-size: 0.84rem; }
   .arch-diagram { font-size: 0.72rem; padding: 1rem; }
   .container { padding: 0 1rem; }
   .card-grid { grid-template-columns: 1fr; }
@@ -444,8 +444,11 @@ tr:hover { background: var(--wash); }
   .hero h1 { font-size: 1.8rem; }
   .hero { padding: 3rem 1rem 2.5rem; }
   .features__grid { grid-template-columns: 1fr; }
-  table { font-size: 0.8rem; min-width: 500px; }
-  th, td { padding: 0.4rem 0.5rem; }
+  table { font-size: 0.78rem; }
+  th, td { padding: 0.35rem 0.4rem; }
+  .tb-icon { width: 24px; padding: 0.2rem 0.1rem !important; }
+  .tb-icon svg { width: 20px; height: 20px; min-width: 20px; min-height: 20px; }
+  .tb-icon .material-symbols-outlined { font-size: 20px; }
   .device-img { width: 200px; }
   .gallery__grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
