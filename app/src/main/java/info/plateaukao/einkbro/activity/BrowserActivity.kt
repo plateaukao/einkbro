@@ -1306,6 +1306,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (level >= TRIM_MEMORY_MODERATE) {
+            // Under memory pressure: pause all background WebViews and release the preloaded one
+            for (controller in browserContainer.list()) {
+                if (controller != currentAlbumController) {
+                    controller.pauseWebView()
+                }
+            }
+            preloadedWebView?.destroy()
+            preloadedWebView = null
+        }
+    }
+
     override fun onDestroy() {
         ttsViewModel.reset()
 
@@ -1740,7 +1754,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     addAlbum(
                         title = albumInfo.title,
                         url = albumInfo.url,
-                        foreground = (index == savedIndex)
+                        foreground = (index == savedIndex),
+                        // Don't preload during batch restore — avoid creating throwaway WebViews.
+                        // Only preload after the last tab is restored.
+                        enablePreloadWebView = (index == albumList.lastIndex),
                     )
                 }
             } else {
