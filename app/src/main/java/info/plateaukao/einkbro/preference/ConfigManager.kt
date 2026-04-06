@@ -1202,6 +1202,8 @@ enum class TranslationMode(val labelResId: Int) {
     DEEPL_BY_PARAGRAPH(R.string.deepl_translate_by_paragraph),
     OPENAI_BY_PARAGRAPH(R.string.openai_translate_by_paragraph),
     GEMINI_BY_PARAGRAPH(R.string.gemini_translate_by_paragraph),
+    OPENAI_IN_PLACE(R.string.openai_in_place),
+    GEMINI_IN_PLACE(R.string.gemini_in_place),
 }
 
 enum class FontType(val resId: Int) {

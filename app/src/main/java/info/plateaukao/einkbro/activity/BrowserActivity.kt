@@ -773,10 +773,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         when (translationMode) {
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
             TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL)
-
+            TranslationMode.OPENAI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.OPENAI)
+            TranslationMode.GEMINI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GEMINI)
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateWebView()
             TranslationMode.GOOGLE_IN_PLACE -> ebWebView.addGoogleTranslation()
-            else -> Unit
+            TranslationMode.OPENAI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.OPENAI)
+            TranslationMode.GEMINI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.GEMINI)
+            TranslationMode.GOOGLE_URL -> Unit
         }
     }
 
@@ -1550,6 +1553,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    private fun translateInPlaceReplace(
+        translateApi: TRANSLATE_API,
+        webView: EBWebView = ebWebView,
+    ) {
+        lifecycleScope.launch {
+            webView.translateApi = translateApi
+            webView.translateByParagraphInPlaceReplace()
+            if (webView == ebWebView) {
+                languageLabelView?.visibility = VISIBLE
+            }
+        }
+    }
+
     private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
 
     override fun showTranslation(webView: EBWebView?) {
@@ -1799,7 +1815,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun showTranslationConfigDialog(translateDirectly: Boolean) {
         maybeInitTwoPaneController()
-        TranslationConfigDlgFragment(ebWebView.url.orEmpty()) { shouldTranslate ->
+        TranslationConfigDlgFragment(ebWebView.url.orEmpty(), translateDirectly) { shouldTranslate ->
             if (shouldTranslate) {
                 translate(config.translationMode)
             } else {

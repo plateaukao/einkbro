@@ -645,6 +645,8 @@
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi by Paragraph</string>
     <string name="gemini_translate_by_paragraph">Gemini by Paragraph</string>
+    <string name="openai_in_place">OpenAI in-place</string>
+    <string name="gemini_in_place">Gemini in-place</string>
     <string name="setting_title_gpt_prompt_for_tts">audio output instructions</string>
     <string name="setting_summary_gpt_prompt_for_tts">instructions when gpt-4o-mini-tts model is used.</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS model name</string>

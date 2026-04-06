@@ -23,6 +23,7 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 
 class TranslationConfigDlgFragment(
     private val url: String,
+    private val translateDirectly: Boolean = false,
     private val onToggledAction: (Boolean) -> Unit,
 ) : ComposeDialogFragment() {
     override fun setupComposeView() {
@@ -41,7 +42,7 @@ class TranslationConfigDlgFragment(
                     translationModeChanged = {
                         config.translationMode = it
                         translationMode.value = it
-                        if (config.shouldTranslateSite(url)) {
+                        if (translateDirectly || config.shouldTranslateSite(url)) {
                             onToggledAction(true)
                             dismiss()
                         }

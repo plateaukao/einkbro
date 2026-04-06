@@ -198,11 +198,19 @@ class TwoPaneController(
 
             TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE, webView)
             TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL, webView)
+            TranslationMode.OPENAI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.OPENAI, webView)
+            TranslationMode.GEMINI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GEMINI, webView)
 
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateByScreen()
-            TranslationMode.GEMINI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GEMINI, webView)
-            TranslationMode.OPENAI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.OPENAI, webView)
+
+            TranslationMode.OPENAI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.OPENAI, webView)
+            TranslationMode.GEMINI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.GEMINI, webView)
         }
+    }
+
+    private fun translateInPlaceReplace(translateApi: TRANSLATE_API, webView: EBWebView) {
+        webView.translateApi = translateApi
+        webView.translateByParagraphInPlaceReplace()
     }
 
     fun scrollChange(offset: Int) {

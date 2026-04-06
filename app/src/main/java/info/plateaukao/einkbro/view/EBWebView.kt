@@ -878,6 +878,14 @@ open class EBWebView(
         evaluateJavascript(clearTranslationElementsJs, null)
     }
 
+    fun translateByParagraphInPlaceReplace() {
+        evaluateJavascript("window._translateInPlace = true;", null)
+        evaluateJsFile("translate_by_paragraph.js") {
+            evaluateJsFile("text_node_monitor.js", false)
+            isTranslateByParagraph = true
+        }
+    }
+
     fun translateByParagraphInPlace() {
         val textBlockStyle = when (config.translationTextStyle) {
             TranslationTextStyle.NONE -> translatedPCssNone
@@ -1373,6 +1381,7 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
             javascript:(function() {
                 document.body.innerHTML = document.originalInnerHTML;
                 document.body.classList.remove("translated");
+                window._translateInPlace = false;
             })()
         """.trimIndent()
     }
