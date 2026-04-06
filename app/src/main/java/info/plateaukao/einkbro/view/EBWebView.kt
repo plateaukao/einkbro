@@ -290,7 +290,7 @@ open class EBWebView(
             allowFileAccessFromFileURLs = config.enableRemoteAccess
             allowFileAccess = true
             allowUniversalAccessFromFileURLs = config.enableRemoteAccess
-            domStorageEnabled = config.enableRemoteAccess
+            domStorageEnabled = true
             databaseEnabled = true
             blockNetworkImage = !config.enableImages
             javaScriptEnabled = config.enableJavascript
@@ -298,6 +298,7 @@ open class EBWebView(
             setSupportMultipleWindows(config.enableJavascript)
             setGeolocationEnabled(config.shareLocation)
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            mediaPlaybackRequiresUserGesture = !config.enableVideoAutoplay
             setRenderPriority(WebSettings.RenderPriority.HIGH)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -354,8 +355,8 @@ open class EBWebView(
     }
 
     val requestHeaders: HashMap<String, String> = HashMap<String, String>().apply {
-        "DNT" to "1"
-        "Save-Data" to if (config.enableSaveData) "on" else "off"
+        put("DNT", "1")
+        put("Save-Data", if (config.enableSaveData) "on" else "off")
     }
 
     /* continue playing if preference is set */

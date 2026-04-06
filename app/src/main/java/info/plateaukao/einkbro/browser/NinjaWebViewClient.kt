@@ -35,6 +35,7 @@ import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.unit.EinkImageProcessor
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
@@ -62,6 +63,8 @@ class EBWebViewClient(
     private val adFilter: AdFilter = AdFilter.get()
 
     private val dualCaptionProcessor = DualCaptionProcessor()
+
+    private val einkImageCache = EinkImageCache(context)
 
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
@@ -271,6 +274,11 @@ class EBWebViewClient(
         view: WebView,
         request: WebResourceRequest,
     ): WebResourceResponse? {
+        // Fast analytics/tracker blocking (lightweight check before expensive ad-filter)
+        if (config.blockAnalytics && isAnalyticsUrl(request.url.toString())) {
+            return WebResourceResponse("text/plain", "UTF-8", ByteArrayInputStream(ByteArray(0)))
+        }
+
         if (config.adBlock) {
             val result = adFilter.shouldIntercept(view, request)
             if (result.shouldBlock) {
@@ -290,6 +298,12 @@ class EBWebViewClient(
 
         val url = request.url.toString()
         if (!looksLikeImageUrl(url) && !hasImageAcceptHeader(request)) return null
+
+        // Check cache first
+        einkImageCache.get(url, adjustment.strength)?.let { cachedStream ->
+            val mimeType = getImageMimeFromUrl(url) ?: "image/jpeg"
+            return WebResourceResponse(mimeType, null, cachedStream)
+        }
 
         return try {
             val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
@@ -323,6 +337,10 @@ class EBWebViewClient(
             inputStream.close()
 
             if (processedStream != null) {
+                // Cache the processed image bytes
+                val processedBytes = processedStream.readBytes()
+                einkImageCache.put(url, adjustment.strength, processedBytes)
+
                 // Forward response headers so CORS / caching / JS fetch still work
                 val responseHeaders = mutableMapOf<String, String>()
                 var i = 0
@@ -338,7 +356,7 @@ class EBWebViewClient(
                 }
                 WebResourceResponse(
                     mimeType, null, statusCode, connection.responseMessage ?: "OK",
-                    responseHeaders, processedStream
+                    responseHeaders, ByteArrayInputStream(processedBytes)
                 )
             } else {
                 connection.disconnect()
@@ -381,6 +399,9 @@ class EBWebViewClient(
             else -> null
         }
     }
+
+    private fun isAnalyticsUrl(url: String): Boolean =
+        ANALYTICS_DOMAINS.any { url.contains(it) }
 
     private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
         val url = uri.toString()
@@ -545,5 +566,20 @@ class EBWebViewClient(
 
     companion object {
         private const val TAG = "ebWebViewClient"
+
+        private val ANALYTICS_DOMAINS = listOf(
+            "google-analytics.com",
+            "googletagmanager.com",
+            "connect.facebook.net",
+            "platform.twitter.com/widgets.js",
+            "cdn.segment.com",
+            "static.hotjar.com",
+            "bat.bing.com",
+            "mc.yandex.ru",
+            "analytics.tiktok.com",
+            "snap.licdn.com",
+            "cdn.mouseflow.com",
+            "cdn.heapanalytics.com",
+        )
     }
 }

@@ -138,6 +138,8 @@ class ConfigManager(
 
     var enableSaveData by BooleanPreference(sp, K_ENABLE_SAVE_DATA, true)
 
+    var blockAnalytics by BooleanPreference(sp, K_BLOCK_ANALYTICS, false)
+
     var hideStatusbar by BooleanPreference(sp, K_HIDE_STATUSBAR, false)
 
     var enableOpenAiStream by BooleanPreference(sp, K_ENABLE_OPEN_AI_STREAM, true)
@@ -1060,6 +1062,7 @@ class ConfigManager(
         const val K_EXTERNAL_SEARCH_WITH_GPT = "sp_external_search_with_gpt"
         const val K_EXTERNAL_SEARCH_WITH_POPUP = "sp_external_search_with_pop"
         const val K_ENABLE_SAVE_DATA = "sp_enable_save_data"
+        const val K_BLOCK_ANALYTICS = "sp_block_analytics"
         const val K_HIDE_STATUSBAR = "sp_hide_statusbar"
 
         const val K_ENABLE_OPEN_AI_STREAM = "sp_enable_open_ai_stream"
