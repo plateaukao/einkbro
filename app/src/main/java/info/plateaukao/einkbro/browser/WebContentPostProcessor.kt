@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.browser
 
 import android.app.Application
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBWebView
@@ -64,6 +65,11 @@ class WebContentPostProcessor : KoinComponent {
 
         // inject page scroll helper for JS-based pagination (works with inner scroll containers)
         ebWebView.evaluateJsFile("fix_scrolling.js", withPrefix = false)
+
+        // inject ebook touch mode JS (tap left/right to page up/down within WebView)
+        if (configManager.touchAreaType == TouchAreaType.Ebook && configManager.enableTouchTurn) {
+            ebWebView.evaluateJsFile("ebook_touch.js", withPrefix = false)
+        }
 
         if (configManager.shouldTranslateSite(url)) {
             ebWebView.showTranslation()

@@ -352,6 +352,7 @@
     <string name="done">Close when transfer is done</string>
     <string name="menu_receive">Receive link</string> <!-- Can other types of data be recieved with this option except link? Is they can, change this back; if not - it's better to leave this variant for overall language consistency -->
     <string name="copy_link">Copy link</string>
+    <string name="go_to">Go to</string>
     <string name="setting_title_background_loading">Load non-active tabs</string>
     <string name="setting_summary_background_loading">If tab is not activated, still load its content in background</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
@@ -534,6 +535,7 @@
     <string name="setting_title_next_tab">Show next tab</string>
     <string name="setting_summary_next_tab">Show next tab when current one is closed (otherwise show previous one)</string>
     <string name="touch_area_long">Two sides</string>
+    <string name="touch_area_ebook">Ebook</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
