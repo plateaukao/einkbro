@@ -59,6 +59,7 @@
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
+            tapHandled = false;
         }
     }, true);
 })();
