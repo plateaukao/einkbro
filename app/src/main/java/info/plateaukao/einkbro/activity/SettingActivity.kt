@@ -229,7 +229,7 @@ class SettingActivity : FragmentActivity() {
                                                 R.string.setting_title_github_update,
                                                 0,
                                             ) { progressCallback ->
-                                                lifecycleScope.launch(Dispatchers.IO) {
+                                                withContext(Dispatchers.IO) {
                                                     HelperUnit.upgradeToLatestRelease(this@SettingActivity) { progress, progressText ->
                                                         progressCallback.updateProgress(progress, progressText)
                                                     }
@@ -240,7 +240,7 @@ class SettingActivity : FragmentActivity() {
                                                 R.string.setting_title_github_snapshot,
                                                 0,
                                             ) { progressCallback ->
-                                                lifecycleScope.launch(Dispatchers.IO) {
+                                                withContext(Dispatchers.IO) {
                                                     HelperUnit.upgradeFromSnapshot(this@SettingActivity) { progress, progressText ->
                                                         progressCallback.updateProgress(progress, progressText)
                                                     }

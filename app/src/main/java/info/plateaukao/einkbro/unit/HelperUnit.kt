@@ -414,7 +414,7 @@ object HelperUnit {
         }
     }
 
-    private fun installApkFromFile(context: Context, file: File) {
+    private suspend fun installApkFromFile(context: Context, file: File) {
         val apkUri = FileProvider.getUriForFile(
             context,
             BuildConfig.APPLICATION_ID + ".fileprovider",
@@ -438,7 +438,9 @@ object HelperUnit {
                 putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, context.packageName)
             }
 
-        context.startActivity(intent)
+        withContext(Dispatchers.Main) {
+            context.startActivity(intent)
+        }
     }
 
     private suspend fun downloadFileWithProgress(
@@ -514,10 +516,11 @@ object HelperUnit {
 
         progressCallback?.invoke(0.7f, "Processing ZIP entries")
 
+        var found = false
         var zipEntry = zipInputStream.nextEntry
         while (zipEntry != null) {
-            if (zipEntry.name == "app-arm64-v8a-release.apk") {
-                progressCallback?.invoke(0.8f, "Extracting ${zipEntry.name}")
+            if (zipEntry.name.endsWith(".apk")) {
+                progressCallback?.invoke(0.75f, "Extracting ${zipEntry.name}")
 
                 val tempFile = File("${context.cacheDir.absolutePath}/app.apk")
                 if (tempFile.exists()) {
@@ -525,18 +528,39 @@ object HelperUnit {
                 }
                 tempFile.createNewFile()
                 tempFile.deleteOnExit()
-                FileOutputStream(tempFile).use { fos -> zipInputStream.copyTo(fos) }
+
+                val entrySize = zipEntry.size // uncompressed size, may be -1
+                FileOutputStream(tempFile).use { fos ->
+                    val buffer = ByteArray(8192)
+                    var totalBytesWritten = 0L
+                    var bytesRead: Int
+                    while (zipInputStream.read(buffer).also { bytesRead = it } != -1) {
+                        fos.write(buffer, 0, bytesRead)
+                        totalBytesWritten += bytesRead
+                        if (entrySize > 0) {
+                            val extractProgress = 0.75f + (totalBytesWritten.toFloat() / entrySize.toFloat()) * 0.15f
+                            val extractedMB = totalBytesWritten / 1024 / 1024
+                            val totalMB = entrySize / 1024 / 1024
+                            progressCallback?.invoke(extractProgress, "Extracting: ${extractedMB}MB / ${totalMB}MB")
+                        }
+                    }
+                }
 
                 progressCallback?.invoke(0.9f, "Preparing APK installation")
                 installApkFromFile(context, tempFile)
                 progressCallback?.invoke(1.0f, "Snapshot update ready to install")
 
+                found = true
                 break
             }
             zipEntry = zipInputStream.nextEntry
         }
         zipInputStream.closeEntry()
         zipInputStream.close()
+
+        if (!found) {
+            throw IOException("No APK found in snapshot archive")
+        }
     }
 
     @Suppress("DEPRECATION")
