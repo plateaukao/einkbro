@@ -4,12 +4,20 @@
 
     var userGesture = false;
 
-    ['click', 'touchstart', 'touchend'].forEach(function(evt) {
-        document.addEventListener(evt, function() {
-            userGesture = true;
-            setTimeout(function() { userGesture = false; }, 2000);
-        }, true);
-    });
+    // Only treat genuine user interactions as gestures that allow video playback.
+    // In Ebook touch mode, page-turn taps fire touchstart/touchend constantly —
+    // skip those so they don't open a window for autoplay.
+    function markGesture() {
+        userGesture = true;
+        setTimeout(function() { userGesture = false; }, 2000);
+    }
+    document.addEventListener('click', function() { markGesture(); }, true);
+    document.addEventListener('touchstart', function() {
+        if (!window.__einkbroEbookTouchEnabled) markGesture();
+    }, true);
+    document.addEventListener('touchend', function() {
+        if (!window.__einkbroEbookTouchEnabled) markGesture();
+    }, true);
 
     // Override .play() to return NotAllowedError (same as native browser blocking).
     // Returning Promise.resolve() would trick sites into thinking play succeeded,
