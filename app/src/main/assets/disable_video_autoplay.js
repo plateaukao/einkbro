@@ -11,20 +11,22 @@
         }, true);
     });
 
-    // Layer 1: Override .play() via defineProperty (harder to overwrite)
+    // Override .play() to return NotAllowedError (same as native browser blocking).
+    // Returning Promise.resolve() would trick sites into thinking play succeeded,
+    // causing them to retry through alternative paths.
     var _origPlay = HTMLMediaElement.prototype.play;
+    var blockedError = new DOMException('play() was blocked because user preference', 'NotAllowedError');
     Object.defineProperty(HTMLMediaElement.prototype, 'play', {
         configurable: true,
         enumerable: true,
         writable: true,
         value: function() {
             if (userGesture) return _origPlay.call(this);
-            this.pause();
-            return Promise.resolve();
+            return Promise.reject(blockedError);
         }
     });
 
-    // Layer 2: Intercept IntersectionObserver — Instagram's autoplay trigger
+    // Intercept IntersectionObserver — Instagram's autoplay trigger
     var _OrigIO = window.IntersectionObserver;
     if (_OrigIO) {
         window.IntersectionObserver = function(callback, options) {
@@ -52,7 +54,7 @@
         });
     }
 
-    // Layer 3: Intercept video element creation
+    // Strip autoplay attribute from dynamically created videos
     var _createElement = document.createElement.bind(document);
     document.createElement = function(tag) {
         var el = _createElement(tag);
@@ -62,44 +64,38 @@
         }
         return el;
     };
-    // Preserve prototype chain and static properties
     document.createElement.__proto__ = _createElement.__proto__;
 
-    // Layer 4: Event-based catch-all
+    // Event-based catch-all: pause any non-user-initiated playback
     document.addEventListener('play', function(e) {
         if (!userGesture && e.target instanceof HTMLMediaElement) {
             e.target.pause();
         }
     }, true);
 
-    // Layer 5: Handle existing elements
-    function disableAutoplay(el) {
+    // Handle existing elements
+    document.querySelectorAll('video, audio').forEach(function(el) {
         el.removeAttribute('autoplay');
         el.autoplay = false;
         if (!el.paused && !userGesture) el.pause();
-    }
-    document.querySelectorAll('video, audio').forEach(disableAutoplay);
+    });
 
-    // Layer 6: MutationObserver for dynamically added elements
+    // Watch for dynamically added video/audio elements
     new MutationObserver(function(mutations) {
         mutations.forEach(function(m) {
             m.addedNodes.forEach(function(node) {
                 if (node.nodeType !== 1) return;
                 if (node.tagName === 'VIDEO' || node.tagName === 'AUDIO') {
-                    disableAutoplay(node);
+                    node.removeAttribute('autoplay');
+                    node.autoplay = false;
                 }
                 if (node.querySelectorAll) {
-                    node.querySelectorAll('video, audio').forEach(disableAutoplay);
+                    node.querySelectorAll('video, audio').forEach(function(el) {
+                        el.removeAttribute('autoplay');
+                        el.autoplay = false;
+                    });
                 }
             });
         });
     }).observe(document.documentElement || document, {childList: true, subtree: true});
-
-    // Layer 7: Periodic sweep as last resort
-    setInterval(function() {
-        if (userGesture) return;
-        document.querySelectorAll('video').forEach(function(v) {
-            if (!v.paused) v.pause();
-        });
-    }, 500);
 })();
