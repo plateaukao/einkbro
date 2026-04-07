@@ -2,34 +2,12 @@
     if (window.__einkbroAutoplayBlocked) return;
     window.__einkbroAutoplayBlocked = true;
 
-    var userGesture = false;
-
-    // Only treat genuine user interactions as gestures that allow video playback.
-    // In Ebook touch mode, page-turn taps fire touchstart/touchend constantly —
-    // skip those so they don't open a window for autoplay.
-    function markGesture() {
-        userGesture = true;
-        setTimeout(function() { userGesture = false; }, 2000);
-    }
-    document.addEventListener('click', function() { markGesture(); }, true);
-    document.addEventListener('touchstart', function() {
-        if (!window.__einkbroEbookTouchEnabled) markGesture();
-    }, true);
-    document.addEventListener('touchend', function() {
-        if (!window.__einkbroEbookTouchEnabled) markGesture();
-    }, true);
-
-    // Override .play() to return NotAllowedError (same as native browser blocking).
-    // Returning Promise.resolve() would trick sites into thinking play succeeded,
-    // causing them to retry through alternative paths.
-    var _origPlay = HTMLMediaElement.prototype.play;
     var blockedError = new DOMException('play() was blocked because user preference', 'NotAllowedError');
     Object.defineProperty(HTMLMediaElement.prototype, 'play', {
         configurable: true,
         enumerable: true,
         writable: true,
         value: function() {
-            if (userGesture) return _origPlay.call(this);
             return Promise.reject(blockedError);
         }
     });
@@ -39,7 +17,6 @@
     if (_OrigIO) {
         window.IntersectionObserver = function(callback, options) {
             var wrappedCallback = function(entries, observer) {
-                if (userGesture) return callback.call(this, entries, observer);
                 var modified = entries.map(function(entry) {
                     var target = entry.target;
                     var hasVideo = (target.tagName === 'VIDEO') ||
@@ -74,18 +51,16 @@
     };
     document.createElement.__proto__ = _createElement.__proto__;
 
-    // Event-based catch-all: pause any non-user-initiated playback
+    // Event-based catch-all
     document.addEventListener('play', function(e) {
-        if (!userGesture && e.target instanceof HTMLMediaElement) {
-            e.target.pause();
-        }
+        if (e.target instanceof HTMLMediaElement) e.target.pause();
     }, true);
 
     // Handle existing elements
     document.querySelectorAll('video, audio').forEach(function(el) {
         el.removeAttribute('autoplay');
         el.autoplay = false;
-        if (!el.paused && !userGesture) el.pause();
+        if (!el.paused) el.pause();
     });
 
     // Watch for dynamically added video/audio elements
