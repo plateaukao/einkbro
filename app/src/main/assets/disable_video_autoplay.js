@@ -2,33 +2,6 @@
     if (window.__einkbroAutoplayBlocked) return;
     window.__einkbroAutoplayBlocked = true;
 
-    // Intercept IntersectionObserver — Instagram's autoplay trigger
-    var _OrigIO = window.IntersectionObserver;
-    if (_OrigIO) {
-        window.IntersectionObserver = function(callback, options) {
-            var wrappedCallback = function(entries, observer) {
-                var modified = entries.map(function(entry) {
-                    var target = entry.target;
-                    var hasVideo = (target.tagName === 'VIDEO') ||
-                        (target.querySelector && target.querySelector('video'));
-                    if (hasVideo) {
-                        return Object.create(entry, {
-                            isIntersecting: { value: false },
-                            intersectionRatio: { value: 0 }
-                        });
-                    }
-                    return entry;
-                });
-                return callback.call(this, modified, observer);
-            };
-            return new _OrigIO(wrappedCallback, options);
-        };
-        window.IntersectionObserver.prototype = _OrigIO.prototype;
-        Object.keys(_OrigIO).forEach(function(k) {
-            window.IntersectionObserver[k] = _OrigIO[k];
-        });
-    }
-
     // Strip autoplay attribute from dynamically created videos
     var _createElement = document.createElement.bind(document);
     document.createElement = function(tag) {
