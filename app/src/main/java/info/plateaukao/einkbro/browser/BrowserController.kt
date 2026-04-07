@@ -124,6 +124,11 @@ interface BrowserController {
     fun updatePageInfo(info: String)
     //endregion
 
+    //region Action Mode
+    fun isActionModeActive(): Boolean = false
+    fun dismissActionMode() {}
+    //endregion
+
     //region Key Sending
     fun sendPageUpKey()
     fun sendPageDownKey()

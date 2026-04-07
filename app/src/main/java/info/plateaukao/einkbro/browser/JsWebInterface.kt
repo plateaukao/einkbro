@@ -173,6 +173,15 @@ class JsWebInterface(private val webView: EBWebView) :
     }
 
     @JavascriptInterface
+    fun dismissActionMode(): Boolean {
+        val controller = webView.browserController ?: return false
+        return if (controller.isActionModeActive()) {
+            webView.post { controller.dismissActionMode() }
+            true
+        } else false
+    }
+
+    @JavascriptInterface
     fun ebookPageUp() {
         webView.post {
             if (!configManager.switchTouchAreaAction) webView.pageUpWithNoAnimation()

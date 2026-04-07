@@ -624,8 +624,8 @@ open class EBWebView(
         evaluateJavascript(
             """
             javascript:(function() {
-                     var sel = w.getSelection();
-                     sel.removeAllRanges();
+                     var sel = window.getSelection();
+                     if (sel) sel.removeAllRanges();
                  }
             )()
         """.trimIndent()

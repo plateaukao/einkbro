@@ -41,6 +41,9 @@
         e.preventDefault();
         tapHandled = true;
 
+        // if action mode (text selection menu) is active, dismiss it instead of scrolling
+        if (androidApp.dismissActionMode()) return;
+
         var midX = window.innerWidth / 2;
         if (touchStartX < midX) {
             androidApp.ebookPageUp();
