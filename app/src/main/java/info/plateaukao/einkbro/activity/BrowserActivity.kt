@@ -89,6 +89,7 @@ import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.AlbumInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FabPosition
 import info.plateaukao.einkbro.preference.FontType
@@ -1968,10 +1969,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_ENABLE_TOUCH -> {
                     updateTouchView()
                     touchController.toggleTouchPageTurn(config.enableTouchTurn)
+                    if (config.touchAreaType == TouchAreaType.Ebook) {
+                        ebWebView.toggleEbookTouchMode(config.enableTouchTurn)
+                    }
                 }
 
                 ConfigManager.K_TOUCH_AREA_ACTION_SWITCH -> {
                     updateTouchView()
+                }
+
+                ConfigManager.K_TOUCH_AREA_TYPE -> {
+                    ebWebView.toggleEbookTouchMode(
+                        config.touchAreaType == TouchAreaType.Ebook && config.enableTouchTurn
+                    )
                 }
 
                 ConfigManager.K_GPT_ACTION_ITEMS ->
@@ -2615,6 +2625,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     linkImageUrl.isNotBlank(),
                     config.imageApiKey.isNotBlank(),
                     rawPoint,
+                    isEbookMode = config.touchAreaType == TouchAreaType.Ebook,
                     itemClicked = {
                         this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
                         activeContextMenuDialog = null
@@ -2653,6 +2664,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 this,
                 BrowserUnit.stripUrlQuery(url)
             )
+
+            ContextMenuItemType.GotoLink -> ebWebView.loadUrl(url)
 
             ContextMenuItemType.SelectText -> ebWebView.post {
                 ebWebView.selectLinkText(longPressPoint)

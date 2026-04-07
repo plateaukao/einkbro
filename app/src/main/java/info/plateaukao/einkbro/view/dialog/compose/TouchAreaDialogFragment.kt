@@ -36,6 +36,7 @@ import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.preference.TouchAreaType.BottomLeftRight
 import info.plateaukao.einkbro.preference.TouchAreaType.Left
 import info.plateaukao.einkbro.preference.TouchAreaType.MiddleLeftRight
+import info.plateaukao.einkbro.preference.TouchAreaType.Ebook
 import info.plateaukao.einkbro.preference.TouchAreaType.Right
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
@@ -113,6 +114,11 @@ fun TouchAreaContent(
                 iconResId = R.drawable.ic_touch_left
             ) { onTouchTypeClick(Left) }
             TouchAreaItem(
+                state = touchAreaType == MiddleLeftRight,
+                titleResId = R.string.middle,
+                iconResId = R.drawable.ic_touch_middle_left_right
+            ) { onTouchTypeClick(MiddleLeftRight) }
+            TouchAreaItem(
                 state = touchAreaType == Right,
                 titleResId = R.string.touch_right_side,
                 iconResId = R.drawable.ic_touch_right
@@ -125,11 +131,6 @@ fun TouchAreaContent(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             TouchAreaItem(
-                state = touchAreaType == MiddleLeftRight,
-                titleResId = R.string.middle,
-                iconResId = R.drawable.ic_touch_middle_left_right
-            ) { onTouchTypeClick(MiddleLeftRight) }
-            TouchAreaItem(
                 state = touchAreaType == BottomLeftRight,
                 titleResId = R.string.bottom,
                 iconResId = R.drawable.ic_touch_left_right
@@ -139,6 +140,11 @@ fun TouchAreaContent(
                 titleResId = R.string.touch_area_long,
                 iconResId = R.drawable.ic_touch_long
             ) { onTouchTypeClick(TouchAreaType.Long) }
+            TouchAreaItem(
+                state = touchAreaType == Ebook,
+                titleResId = R.string.touch_area_ebook,
+                iconResId = R.drawable.ic_touch_ebook
+            ) { onTouchTypeClick(Ebook) }
         }
 
         Spacer(modifier = Modifier.height(10.dp))

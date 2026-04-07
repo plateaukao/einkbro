@@ -905,6 +905,14 @@ open class EBWebView(
 
     fun addSelectionChangeListener() = evaluateJsFile("text_selection_change.js")
 
+    fun toggleEbookTouchMode(enabled: Boolean) {
+        if (enabled) {
+            evaluateJsFile("ebook_touch.js", withPrefix = false)
+        } else {
+            evaluateJavascript("window.__einkbroEbookTouchEnabled = false;", null)
+        }
+    }
+
     private var isHighlightCssInjected = false
     fun highlightTextSelection(highlightStyle: HighlightStyle) {
         if (!isHighlightCssInjected) {

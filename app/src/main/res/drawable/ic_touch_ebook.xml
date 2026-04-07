@@ -1,0 +1,19 @@
+<vector android:height="89.02439dp" android:viewportHeight="365"
+    android:viewportWidth="246" android:width="60dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- outer rectangle -->
+    <path android:fillColor="#00000000"
+        android:pathData="M2.5,2.5h240v360h-240z"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="5"/>
+    <!-- single vertical line in the middle -->
+    <path android:fillColor="#00000000"
+        android:pathData="M123,2.5L123,362.5"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="3"/>
+    <!-- up arrow on left half -->
+    <path android:fillColor="#00000000"
+        android:pathData="M55.5,209.51L55.5,182.25L45,182.25L62.5,142.25L80,182.25L69.5,182.25L69.5,209.51L62.5,209.51Z"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="1"/>
+    <!-- down arrow on right half -->
+    <path android:fillColor="#00000000"
+        android:pathData="M189.9,142.25L189.9,167.25L201,167.25L182.5,207.25L164,167.25L175.1,167.25L175.1,142.25L182.5,142.25Z"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="1"/>
+</vector>

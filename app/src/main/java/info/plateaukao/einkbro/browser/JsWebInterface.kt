@@ -173,6 +173,22 @@ class JsWebInterface(private val webView: EBWebView) :
     }
 
     @JavascriptInterface
+    fun ebookPageUp() {
+        webView.post {
+            if (!configManager.switchTouchAreaAction) webView.pageUpWithNoAnimation()
+            else webView.pageDownWithNoAnimation()
+        }
+    }
+
+    @JavascriptInterface
+    fun ebookPageDown() {
+        webView.post {
+            if (!configManager.switchTouchAreaAction) webView.pageDownWithNoAnimation()
+            else webView.pageUpWithNoAnimation()
+        }
+    }
+
+    @JavascriptInterface
     fun onInnerScrollChanged(isAtTop: Boolean, scrollTop: Int, scrollHeight: Int, clientHeight: Int) {
         webView.isInnerScrollAtTop = isAtTop
         webView.innerScrollTop = scrollTop

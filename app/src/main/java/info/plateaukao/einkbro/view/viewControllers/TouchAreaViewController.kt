@@ -154,6 +154,11 @@ class TouchAreaViewController(
             }
 
             TouchAreaType.LongLeftRight -> {}
+
+            TouchAreaType.Ebook -> {
+                // Ebook mode: no overlay touch areas; handled by JS in WebView
+                return
+            }
         }
 
         with(touchAreaPageUp) {
@@ -214,6 +219,9 @@ class TouchAreaViewController(
     }
 
     fun toggleTouchPageTurn(enabled: Boolean) {
+        if (config.touchAreaType == TouchAreaType.Ebook) return
+        if (!this::touchAreaPageUp.isInitialized) return
+
         touchAreaPageUp.visibility = if (enabled) View.VISIBLE else View.GONE
         touchAreaPageDown.visibility = if (enabled) View.VISIBLE else View.GONE
         touchAreaDragCustomize.visibility =
@@ -224,6 +232,7 @@ class TouchAreaViewController(
 
     private var disabledTemporarily = false
     fun maybeDisableTemporarily() {
+        if (config.touchAreaType == TouchAreaType.Ebook) return
         if (config.enableTouchTurn && config.touchAreaHint && config.hideTouchAreaWhenInput) {
             if (this::touchAreaPageUp.isInitialized) {
                 disabledTemporarily = true

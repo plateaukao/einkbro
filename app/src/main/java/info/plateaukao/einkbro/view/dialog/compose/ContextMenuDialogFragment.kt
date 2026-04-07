@@ -24,6 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.Segment
+import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.RecordVoiceOver
@@ -57,7 +58,7 @@ data class MenuLayout(
     val secondRowItems: List<MenuItemConfig>
 )
 
-private fun createMenuLayout(): MenuLayout {
+private fun createMenuLayout(isEbookMode: Boolean = false): MenuLayout {
     val firstRowItems = listOf(
         MenuItemConfig(
             ContextMenuItemType.NewTabForeground,
@@ -87,7 +88,11 @@ private fun createMenuLayout(): MenuLayout {
     )
 
     val secondRowItems = listOf(
-        MenuItemConfig(
+        if (isEbookMode) MenuItemConfig(
+            ContextMenuItemType.GotoLink,
+            R.string.go_to,
+            Icons.Outlined.ArrowForward
+        ) else MenuItemConfig(
             ContextMenuItemType.CopyLink,
             R.string.copy_link,
             Icons.Outlined.CopyAll
@@ -130,6 +135,7 @@ class ContextMenuDialogFragment(
     private val shouldShowAdBlock: Boolean,
     private val shouldShowTranslateImage: Boolean,
     private val anchorPoint: Point,
+    private val isEbookMode: Boolean = false,
     private val itemClicked: (ContextMenuItemType) -> Unit,
     private val itemLongClicked: (ContextMenuItemType) -> Unit = {},
 ) : ComposeDialogFragment() {
@@ -150,6 +156,7 @@ class ContextMenuDialogFragment(
                 shouldShowAdBlock,
                 shouldShowTranslateImage,
                 showIcons = config.showActionMenuIcons,
+                isEbookMode = isEbookMode,
                 hoveredItem = hoveredItemState.value,
                 onClicked = { item ->
                     dialog?.dismiss()
@@ -188,7 +195,7 @@ class ContextMenuDialogFragment(
     }
 
     private fun determineHoveredItem(x: Float, y: Float): ContextMenuItemType? {
-        val menuLayout = createMenuLayout()
+        val menuLayout = createMenuLayout(isEbookMode)
 
         // Calculate precise dimensions based on MenuItem logic
         val screenWidthDp = resources.configuration.screenWidthDp
@@ -276,11 +283,12 @@ private fun ContextMenuItems(
     shouldShowAdBlock: Boolean = true,
     shouldShowTranslateImage: Boolean = false,
     showIcons: Boolean = true,
+    isEbookMode: Boolean = false,
     hoveredItem: ContextMenuItemType? = null,
     onClicked: (ContextMenuItemType) -> Unit,
     onLongClicked: (ContextMenuItemType) -> Unit = {},
 ) {
-    val menuLayout = createMenuLayout()
+    val menuLayout = createMenuLayout(isEbookMode)
 
     Column(
         modifier = Modifier
@@ -373,7 +381,7 @@ enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
     ShareLink, CopyLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
-    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete, Summarize
+    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete, Summarize, GotoLink
 }
 
 @Preview(showBackground = true)
