@@ -2,16 +2,6 @@
     if (window.__einkbroAutoplayBlocked) return;
     window.__einkbroAutoplayBlocked = true;
 
-    var blockedError = new DOMException('play() was blocked because user preference', 'NotAllowedError');
-    Object.defineProperty(HTMLMediaElement.prototype, 'play', {
-        configurable: true,
-        enumerable: true,
-        writable: true,
-        value: function() {
-            return Promise.reject(blockedError);
-        }
-    });
-
     // Intercept IntersectionObserver — Instagram's autoplay trigger
     var _OrigIO = window.IntersectionObserver;
     if (_OrigIO) {
@@ -50,11 +40,6 @@
         return el;
     };
     document.createElement.__proto__ = _createElement.__proto__;
-
-    // Event-based catch-all
-    document.addEventListener('play', function(e) {
-        if (e.target instanceof HTMLMediaElement) e.target.pause();
-    }, true);
 
     // Handle existing elements
     document.querySelectorAll('video, audio').forEach(function(el) {
