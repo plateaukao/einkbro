@@ -199,6 +199,7 @@ class TouchAreaViewController(
     }
 
     fun hideTouchAreaHint() {
+        if (!this::touchAreaPageUp.isInitialized) return
         binding.root.post {
             touchAreaPageUp.setBackgroundColor(Color.TRANSPARENT)
             touchAreaPageDown.setBackgroundColor(Color.TRANSPARENT)
