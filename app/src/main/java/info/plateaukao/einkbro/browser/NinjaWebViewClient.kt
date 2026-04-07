@@ -102,6 +102,12 @@ class EBWebViewClient(
     override fun onPageFinished(view: WebView, url: String) {
         ebWebView.updateCssStyle()
 
+        // Re-inject autoplay blocker in onPageFinished to ensure it's in the correct page context
+        // (onPageStarted injection may race with the page's own scripts)
+        if (!config.enableVideoAutoplay) {
+            ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
+        }
+
         Log.d("ebWebViewClient", "onPageFinished: ${ebWebView.url}\n$url")
         webContentPostProcessor.postProcess(ebWebView, url)
 
