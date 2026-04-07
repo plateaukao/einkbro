@@ -3209,6 +3209,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         actionModeMenuViewModel.updateActionMode(null)
     }
 
+    override fun isActionModeActive(): Boolean = actionModeMenuViewModel.isInActionMode()
+
+    override fun dismissActionMode() {
+        ebWebView.removeTextSelection()
+        actionModeMenuViewModel.updateActionMode(null)
+    }
+
     // - action mode handling
 
     companion object {
