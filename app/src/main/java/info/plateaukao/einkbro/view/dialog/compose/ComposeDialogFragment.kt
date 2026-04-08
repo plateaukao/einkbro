@@ -52,8 +52,8 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
     private fun setupDialog() {
         dialog?.apply {
             setCanceledOnTouchOutside(true)
-            window?.attributes?.windowAnimations = 0
             val w = window ?: return
+            w.attributes = w.attributes.apply { windowAnimations = 0 }
             if (!shouldShowInCenter) {
                 if (config.isVerticalToolbar) {
                     val horizontalGravity = if (config.toolbarPosition == ToolbarPosition.Left) Gravity.START else Gravity.END

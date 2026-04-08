@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -84,10 +85,24 @@ class BookmarksDialogFragment(
 
     private val isGridView = mutableStateOf(false)
 
+    private val showRunnable = Runnable {
+        dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 1f } }
+    }
+
     override fun setupComposeView() {
         isGridView.value = config.isBookmarkGridView
         bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
+        }
+
+        composeView.addOnLayoutChangeListener { view, _, _, right, bottom, _, _, oldRight, oldBottom ->
+            val oldW = oldRight; val newW = right
+            val oldH = oldBottom; val newH = bottom
+            if (oldH > 0 && newH > 0 && (oldH != newH || oldW != newW)) {
+                dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 0f } }
+                view.removeCallbacks(showRunnable)
+                view.postDelayed(showRunnable, 300)
+            }
         }
 
         composeView.setContent {
@@ -295,14 +310,17 @@ fun BookmarkList(
     onBookmarkIconClick: OnBookmarkIconClick,
     onBookmarkLongClick: OnBookmarkLongClick,
 ) {
-    val lazyGridState = rememberLazyGridState()
-    val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
-        onItemMoved(from.index, to.index)
-    }
+    // key() forces full recreation (no animation) when folder or view mode changes
+    key(bookmarkViewModel.currentFolder.value.id, isGridView) {
+        val lazyGridState = rememberLazyGridState()
+        val reorderableLazyGridState =
+            rememberReorderableLazyGridState(lazyGridState) { from, to ->
+                onItemMoved(from.index, to.index)
+            }
 
-    // Use RTL layout direction for grid mode so items fill right-to-left within each row
-    CompositionLocalProvider(
-        LocalLayoutDirection provides if (isGridView) LayoutDirection.Rtl else LayoutDirection.Ltr
+        // Use RTL layout direction for grid mode so items fill right-to-left within each row
+        CompositionLocalProvider(
+            LocalLayoutDirection provides if (isGridView) LayoutDirection.Rtl else LayoutDirection.Ltr
     ) {
         LazyVerticalGrid(
             modifier = Modifier.wrapContentHeight(),
@@ -400,6 +418,7 @@ fun BookmarkList(
                 }
             }
         }
+    }
     }
 }
 
