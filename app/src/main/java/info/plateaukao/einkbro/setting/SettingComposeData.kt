@@ -65,11 +65,10 @@ open class ActionSettingItem(
 data class ProgressState(
     val isRunning: Boolean = false,
     val progress: Float = 0f,
-    val progressText: String = ""
 )
 
 interface ProgressCallback {
-    suspend fun updateProgress(progress: Float, progressText: String)
+    suspend fun updateProgress(progress: Float)
 }
 
 class ProgressActionSettingItem(
