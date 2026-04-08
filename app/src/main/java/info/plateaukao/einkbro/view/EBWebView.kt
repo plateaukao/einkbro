@@ -632,6 +632,15 @@ open class EBWebView(
         ) {}
     }
 
+    fun clickLinkElement(point: Point) {
+        evaluateJavascript("window.__einkbroEbookTouchEnabled = false;") {
+            simulateClick(point)
+            postDelayed({
+                evaluateJavascript("window.__einkbroEbookTouchEnabled = true;", null)
+            }, 200)
+        }
+    }
+
     var isSelectingText = false
     fun selectLinkText(point: Point) {
         evaluateJavascript(
