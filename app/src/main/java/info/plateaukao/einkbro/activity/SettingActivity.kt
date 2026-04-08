@@ -230,8 +230,8 @@ class SettingActivity : FragmentActivity() {
                                                 0,
                                             ) { progressCallback ->
                                                 withContext(Dispatchers.IO) {
-                                                    HelperUnit.upgradeToLatestRelease(this@SettingActivity) { progress, progressText ->
-                                                        progressCallback.updateProgress(progress, progressText)
+                                                    HelperUnit.upgradeToLatestRelease(this@SettingActivity) { progress ->
+                                                        progressCallback.updateProgress(progress)
                                                     }
                                                 }
                                             })
@@ -241,8 +241,8 @@ class SettingActivity : FragmentActivity() {
                                                 0,
                                             ) { progressCallback ->
                                                 withContext(Dispatchers.IO) {
-                                                    HelperUnit.upgradeFromSnapshot(this@SettingActivity) { progress, progressText ->
-                                                        progressCallback.updateProgress(progress, progressText)
+                                                    HelperUnit.upgradeFromSnapshot(this@SettingActivity) { progress ->
+                                                        progressCallback.updateProgress(progress)
                                                     }
                                                 }
                                             })

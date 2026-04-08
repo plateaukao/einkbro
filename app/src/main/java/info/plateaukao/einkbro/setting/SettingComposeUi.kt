@@ -342,11 +342,10 @@ fun ProgressActionSettingItemUi(
                     progressState.value = ProgressState(isRunning = true)
                     
                     val progressCallback = object : ProgressCallback {
-                        override suspend fun updateProgress(progress: Float, progressText: String) {
+                        override suspend fun updateProgress(progress: Float) {
                             progressState.value = ProgressState(
                                 isRunning = true,
                                 progress = progress,
-                                progressText = progressText
                             )
                         }
                     }
@@ -404,38 +403,13 @@ fun ProgressActionSettingItemUi(
             }
         }
         
-        if (progressState.value.isRunning) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                if (progressState.value.progress > 0f) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        if (progressState.value.progressText.isNotEmpty()) {
-                            Text(
-                                text = progressState.value.progressText,
-                                fontSize = 10.sp,
-                                color = MaterialTheme.colors.onBackground,
-                                modifier = Modifier.weight(1f)
-                            )
-                        } else {
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
-                        
-                        Text(
-                            text = "${(progressState.value.progress * 100).toInt()}%",
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colors.primary,
-                            modifier = Modifier.padding(start = 8.dp)
-                        )
-                    }
-                }
-            }
+        if (progressState.value.isRunning && progressState.value.progress > 0f) {
+            Text(
+                text = "${(progressState.value.progress * 100).toInt()}%",
+                fontSize = 10.sp,
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            )
         }
     }
 }
