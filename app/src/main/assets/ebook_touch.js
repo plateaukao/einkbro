@@ -1,4 +1,5 @@
 (function() {
+    window.__einkbroEbookTouchEnabled = true;
     // Remove existing listeners before (re-)installing
     if (window.__einkbroEbookTouchCleanup) {
         window.__einkbroEbookTouchCleanup();
@@ -32,6 +33,7 @@
     }
 
     function onTouchEnd(e) {
+        if (!window.__einkbroEbookTouchEnabled) return;
         if (touchMoved) return;
         if (e.changedTouches.length !== 1) return;
 
