@@ -2982,6 +2982,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ttsViewModel.isReading(),
             ebWebView.isAudioOnlyMode,
             ebWebView.hasVideo,
+            config.enableTouchTurn,
             { menuActionHandler.handle(it, ebWebView) },
             { menuActionHandler.handleLongClick(it) }
         ).show(supportFragmentManager, "menu_dialog")

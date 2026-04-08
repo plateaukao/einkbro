@@ -59,7 +59,6 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Straighten
-import androidx.compose.material.icons.outlined.TouchApp
 import androidx.compose.material.icons.outlined.Headset
 import androidx.compose.material.icons.outlined.HeadsetOff
 import androidx.compose.material.icons.outlined.Translate
@@ -100,6 +99,7 @@ class MenuDialogFragment(
     private val isSpeaking: Boolean,
     private val isAudioOnly: Boolean = false,
     private val hasVideo: Boolean = false,
+    private val isTouchPaginationEnabled: Boolean = false,
     private val itemClicked: (MenuItemType) -> Unit,
     private val itemLongClicked: (MenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
@@ -131,6 +131,7 @@ class MenuDialogFragment(
                 config.showShareSaveMenu,
                 config.showContentMenu,
                 config.hasInvertedColor(url),
+                isTouchPaginationEnabled,
                 { config::showShareSaveMenu.toggle() },
                 { config::showContentMenu.toggle() },
                 { dialog?.dismiss(); itemClicked(it) },
@@ -169,6 +170,7 @@ private fun MenuItems(
     showShareSaveMenu: Boolean,
     showContentMenu: Boolean,
     hasInvertedColor: Boolean,
+    isTouchPaginationEnabled: Boolean,
     toggleShareSaveMenu: () -> Unit,
     toggleContentMenu: () -> Unit,
     onClicked: (MenuItemType) -> Unit,
@@ -320,9 +322,11 @@ private fun MenuItems(
                     R.string.reader_mode,
                     Icons.AutoMirrored.Outlined.ChromeReaderMode,
                 ) { onClicked(MenuItemType.ReaderMode) }
+                val touchRes =
+                    if (isTouchPaginationEnabled) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
                 MenuItem(
                     R.string.touch_area_setting,
-                    Icons.Outlined.TouchApp,
+                    touchRes,
                     onLongClicked = { onLongClicked(MenuItemType.TouchSetting) },
                 ) {
                     onClicked(
@@ -559,6 +563,7 @@ private fun PreviewMenuItems() {
             showShareSaveMenu = false,
             showContentMenu = false,
             hasInvertedColor = false,
+            isTouchPaginationEnabled = false,
             {},
             {},
             {},
