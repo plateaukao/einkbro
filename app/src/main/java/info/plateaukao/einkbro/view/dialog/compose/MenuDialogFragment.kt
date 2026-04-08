@@ -104,7 +104,22 @@ class MenuDialogFragment(
     private val itemLongClicked: (MenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
 
-    override fun setupComposeView() = composeView.setContent {
+    private val showRunnable = Runnable {
+        dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 1f } }
+    }
+
+    override fun setupComposeView() {
+        composeView.addOnLayoutChangeListener { view, _, _, right, bottom, _, _, oldRight, oldBottom ->
+            val oldW = oldRight; val newW = right
+            val oldH = oldBottom; val newH = bottom
+            if (oldH > 0 && newH > 0 && (oldH != newH || oldW != newW)) {
+                dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 0f } }
+                view.removeCallbacks(showRunnable)
+                view.postDelayed(showRunnable, 300)
+            }
+        }
+
+        composeView.setContent {
         MyTheme {
             MenuItems(
                 config.whiteBackground(url),
@@ -122,6 +137,7 @@ class MenuDialogFragment(
                 this::runItemLongClickAndDismiss
             )
         }
+    }
     }
 
     private fun runItemLongClickAndDismiss(menuItemType: MenuItemType) {
