@@ -918,7 +918,7 @@ open class EBWebView(
         if (enabled) {
             evaluateJsFile("ebook_touch.js", withPrefix = false)
         } else {
-            evaluateJavascript("window.__einkbroEbookTouchEnabled = false;", null)
+            evaluateJavascript("if(window.__einkbroEbookTouchCleanup) window.__einkbroEbookTouchCleanup();", null)
         }
     }
 
