@@ -1979,9 +1979,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 }
 
                 ConfigManager.K_TOUCH_AREA_TYPE -> {
-                    ebWebView.toggleEbookTouchMode(
-                        config.touchAreaType == TouchAreaType.Ebook && config.enableTouchTurn
-                    )
+                    ebWebView.toggleEbookTouchMode(config.isEbookModeActive)
                 }
 
                 ConfigManager.K_GPT_ACTION_ITEMS ->
@@ -2625,7 +2623,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     linkImageUrl.isNotBlank(),
                     config.imageApiKey.isNotBlank(),
                     rawPoint,
-                    isEbookMode = config.touchAreaType == TouchAreaType.Ebook,
+                    isEbookMode = config.isEbookModeActive,
                     itemClicked = {
                         this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
                         activeContextMenuDialog = null
@@ -2643,7 +2641,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 isInLongPressMode = true
                 contextMenuDialog.show(supportFragmentManager, "contextMenu")
             }
-        } else if (config.touchAreaType == TouchAreaType.Ebook && config.enableTouchTurn) {
+        } else if (config.isEbookModeActive) {
             // No link found — simulate click for non-link clickable elements
             ebWebView.clickLinkElement(longPressPoint)
         }
