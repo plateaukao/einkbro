@@ -17,17 +17,17 @@ import java.util.*
 
 class AdBlock(context: Context) : BaseWebConfig(context) {
     override val dbTable: String = RecordUnit.TABLE_WHITELIST
-    init { loadHosts("hosts.txt") }
+    init { loadDomains(); loadHosts("hosts.txt") }
 }
 
 class Javascript(context: Context) : BaseWebConfig(context) {
     override val dbTable: String = RecordUnit.TABLE_JAVASCRIPT
-    init { loadHosts("javaHosts.txt") }
+    init { loadDomains(); loadHosts("javaHosts.txt") }
 }
 
 class Cookie(context: Context) : BaseWebConfig(context) {
     override val dbTable: String = RecordUnit.TABLE_COOKIE
-    init { loadHosts("cookieHosts.txt") }
+    init { loadDomains(); loadHosts("cookieHosts.txt") }
 }
 
 abstract class BaseWebConfig(private val context: Context) : KoinComponent, DomainInterface {
@@ -40,10 +40,6 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
     private val locale = Locale.getDefault()
 
     abstract val dbTable: String
-
-    init {
-        loadDomains()
-    }
 
     fun isWhite(url: String): Boolean {
         for (domain in whitelist) {
@@ -101,7 +97,7 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
     }
 
     @Synchronized
-    private fun loadDomains() {
+    protected fun loadDomains() {
         whitelist.clear()
         whitelist.addAll(recordDb.listDomains(dbTable))
     }
