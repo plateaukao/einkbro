@@ -155,7 +155,10 @@ class BookmarksDialogFragment(
                                     config.addRecentBookmark(it)
                                     dialog?.dismiss()
                                 } else {
+                                    dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 0f } }
                                     bookmarkViewModel.intoFolder(it)
+                                    composeView.removeCallbacks(showRunnable)
+                                    composeView.postDelayed(showRunnable, 300)
                                 }
                             },
                             onBookmarkIconClick = {
