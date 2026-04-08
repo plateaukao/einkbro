@@ -2665,7 +2665,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 BrowserUnit.stripUrlQuery(url)
             )
 
-            ContextMenuItemType.GotoLink -> ebWebView.loadUrl(url)
+            ContextMenuItemType.GotoLink -> ebWebView.clickLinkElement(longPressPoint)
 
             ContextMenuItemType.SelectText -> ebWebView.post {
                 ebWebView.selectLinkText(longPressPoint)

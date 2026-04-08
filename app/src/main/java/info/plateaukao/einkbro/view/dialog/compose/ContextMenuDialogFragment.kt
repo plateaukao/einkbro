@@ -24,7 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.Segment
-import androidx.compose.material.icons.outlined.ArrowForward
+import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.RecordVoiceOver
@@ -91,7 +91,7 @@ private fun createMenuLayout(isEbookMode: Boolean = false): MenuLayout {
         if (isEbookMode) MenuItemConfig(
             ContextMenuItemType.GotoLink,
             R.string.go_to,
-            Icons.Outlined.ArrowForward
+            Icons.Outlined.Fingerprint
         ) else MenuItemConfig(
             ContextMenuItemType.CopyLink,
             R.string.copy_link,
