@@ -330,6 +330,9 @@ class ConfigManager(
             sp.edit(true) { putInt(K_TOUCH_AREA_TYPE, value.ordinal) }
         }
 
+    val isEbookModeActive: Boolean
+        get() = touchAreaType == TouchAreaType.Ebook && enableTouchTurn
+
     var pdfPaperSize: PaperSize
         get() = PaperSize.entries[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
         set(value) {
