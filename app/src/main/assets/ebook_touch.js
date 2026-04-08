@@ -1,7 +1,8 @@
 (function() {
-    window.__einkbroEbookTouchEnabled = true;
-    if (window.__einkbroEbookTouchInstalled) return;
-    window.__einkbroEbookTouchInstalled = true;
+    // Remove existing listeners before (re-)installing
+    if (window.__einkbroEbookTouchCleanup) {
+        window.__einkbroEbookTouchCleanup();
+    }
 
     var touchStartX = 0;
     var touchStartY = 0;
@@ -11,16 +12,16 @@
     var MOVE_THRESHOLD = 15;
     var LONG_PRESS_MS = 400;
 
-    document.addEventListener('touchstart', function(e) {
+    function onTouchStart(e) {
         if (e.touches.length !== 1) return;
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
         touchStartTime = Date.now();
         touchMoved = false;
         tapHandled = false;
-    }, true);
+    }
 
-    document.addEventListener('touchmove', function(e) {
+    function onTouchMove(e) {
         if (touchMoved) return;
         if (e.touches.length !== 1) return;
         var dx = Math.abs(e.touches[0].clientX - touchStartX);
@@ -28,10 +29,9 @@
         if (dx > MOVE_THRESHOLD || dy > MOVE_THRESHOLD) {
             touchMoved = true;
         }
-    }, true);
+    }
 
-    document.addEventListener('touchend', function(e) {
-        if (!window.__einkbroEbookTouchEnabled) return;
+    function onTouchEnd(e) {
         if (touchMoved) return;
         if (e.changedTouches.length !== 1) return;
 
@@ -50,16 +50,29 @@
         } else {
             androidApp.ebookPageDown();
         }
-    }, true);
+    }
 
     // Block ALL clicks — WebView handles link navigation at native level
     // and touchend preventDefault alone doesn't stop it
-    document.addEventListener('click', function(e) {
+    function onClick(e) {
         if (tapHandled) {
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
             tapHandled = false;
         }
-    }, true);
+    }
+
+    document.addEventListener('touchstart', onTouchStart, true);
+    document.addEventListener('touchmove', onTouchMove, true);
+    document.addEventListener('touchend', onTouchEnd, true);
+    document.addEventListener('click', onClick, true);
+
+    window.__einkbroEbookTouchCleanup = function() {
+        document.removeEventListener('touchstart', onTouchStart, true);
+        document.removeEventListener('touchmove', onTouchMove, true);
+        document.removeEventListener('touchend', onTouchEnd, true);
+        document.removeEventListener('click', onClick, true);
+        window.__einkbroEbookTouchCleanup = null;
+    };
 })();

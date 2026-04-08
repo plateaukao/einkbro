@@ -2643,7 +2643,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 isInLongPressMode = true
                 contextMenuDialog.show(supportFragmentManager, "contextMenu")
             }
-        } else if (config.touchAreaType == TouchAreaType.Ebook) {
+        } else if (config.touchAreaType == TouchAreaType.Ebook && config.enableTouchTurn) {
             // No link found — simulate click for non-link clickable elements
             ebWebView.clickLinkElement(longPressPoint)
         }
