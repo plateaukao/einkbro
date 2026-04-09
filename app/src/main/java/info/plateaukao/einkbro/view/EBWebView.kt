@@ -124,12 +124,105 @@ open class EBWebView(
     var wasAtTopOnTouchStart: Boolean = true
         private set
 
+    // Ebook touch gesture tracking — native interception replaces ebook_touch.js
+    // so that taps on iframes (Instagram/Twitter embeds) also trigger page turns.
+    private var ebookTouchStartX = 0f
+    private var ebookTouchStartY = 0f
+    private var ebookTouchStartTime = 0L
+    private var ebookTouchTracking = false
+    private var ebookTouchMoved = false
+    private var ebookTouchMulti = false
+    private var ebookTouchTemporarilyDisabled = false
+
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             wasAtTopOnTouchStart = scrollY == 0 && isInnerScrollAtTop
         }
-        return super.onTouchEvent(event)
+
+        if (!config.isEbookModeActive || ebookTouchTemporarilyDisabled) {
+            return super.dispatchTouchEvent(event)
+        }
+
+        val moveThresholdPx = EBOOK_MOVE_THRESHOLD_DP.dp(context)
+
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                ebookTouchStartX = event.x
+                ebookTouchStartY = event.y
+                ebookTouchStartTime = SystemClock.uptimeMillis()
+                ebookTouchTracking = true
+                ebookTouchMoved = false
+                ebookTouchMulti = false
+                return super.dispatchTouchEvent(event)
+            }
+
+            MotionEvent.ACTION_POINTER_DOWN -> {
+                ebookTouchMulti = true
+                ebookTouchTracking = false
+                return super.dispatchTouchEvent(event)
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                if (ebookTouchTracking && !ebookTouchMoved) {
+                    val dx = Math.abs(event.x - ebookTouchStartX)
+                    val dy = Math.abs(event.y - ebookTouchStartY)
+                    if (dx > moveThresholdPx || dy > moveThresholdPx) {
+                        ebookTouchMoved = true
+                        ebookTouchTracking = false
+                    }
+                }
+                return super.dispatchTouchEvent(event)
+            }
+
+            MotionEvent.ACTION_UP -> {
+                if (!ebookTouchTracking) {
+                    return super.dispatchTouchEvent(event)
+                }
+
+                ebookTouchTracking = false
+
+                val duration = SystemClock.uptimeMillis() - ebookTouchStartTime
+                if (duration > EBOOK_LONG_PRESS_MS) {
+                    return super.dispatchTouchEvent(event)
+                }
+
+                // Check if action mode (text selection) is active — dismiss instead of paginating
+                val controller = browserController
+                if (controller != null && controller.isActionModeActive()) {
+                    sendCancelEvent(event)
+                    post { controller.dismissActionMode() }
+                    return true
+                }
+
+                // Qualifying ebook tap — paginate
+                sendCancelEvent(event)
+
+                val midX = width / 2f
+                if (!config.switchTouchAreaAction) {
+                    if (ebookTouchStartX < midX) pageUpWithNoAnimation()
+                    else pageDownWithNoAnimation()
+                } else {
+                    if (ebookTouchStartX < midX) pageDownWithNoAnimation()
+                    else pageUpWithNoAnimation()
+                }
+                return true
+            }
+
+            MotionEvent.ACTION_CANCEL -> {
+                ebookTouchTracking = false
+                return super.dispatchTouchEvent(event)
+            }
+        }
+
+        return super.dispatchTouchEvent(event)
+    }
+
+    private fun sendCancelEvent(upEvent: MotionEvent) {
+        val cancelEvent = MotionEvent.obtain(upEvent)
+        cancelEvent.action = MotionEvent.ACTION_CANCEL
+        super.dispatchTouchEvent(cancelEvent)
+        cancelEvent.recycle()
     }
 
     override fun onScrollChanged(l: Int, t: Int, old_l: Int, old_t: Int) {
@@ -633,12 +726,9 @@ open class EBWebView(
     }
 
     fun clickLinkElement(point: Point) {
-        evaluateJavascript("window.__einkbroEbookTouchEnabled = false;") {
-            simulateClick(point)
-            postDelayed({
-                evaluateJavascript("window.__einkbroEbookTouchEnabled = true;", null)
-            }, 200)
-        }
+        ebookTouchTemporarilyDisabled = true
+        simulateClick(point)
+        postDelayed({ ebookTouchTemporarilyDisabled = false }, 200)
     }
 
     var isSelectingText = false
@@ -915,11 +1005,8 @@ open class EBWebView(
     fun addSelectionChangeListener() = evaluateJsFile("text_selection_change.js")
 
     fun toggleEbookTouchMode(enabled: Boolean) {
-        if (enabled) {
-            evaluateJsFile("ebook_touch.js", withPrefix = false)
-        } else {
-            evaluateJavascript("if(window.__einkbroEbookTouchCleanup) window.__einkbroEbookTouchCleanup();", null)
-        }
+        // Native touch interception in dispatchTouchEvent() handles ebook mode.
+        // No JS injection needed — config.isEbookModeActive gates the behavior.
     }
 
     private var isHighlightCssInjected = false
@@ -1097,6 +1184,8 @@ open class EBWebView(
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
+        private const val EBOOK_MOVE_THRESHOLD_DP = 15
+        private const val EBOOK_LONG_PRESS_MS = 400L
 
         // Cache the default user agent string to avoid calling the expensive
         // WebSettings.getDefaultUserAgent() on every WebView creation.

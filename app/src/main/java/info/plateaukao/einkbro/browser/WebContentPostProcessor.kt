@@ -65,11 +65,6 @@ class WebContentPostProcessor : KoinComponent {
         // inject page scroll helper for JS-based pagination (works with inner scroll containers)
         ebWebView.evaluateJsFile("fix_scrolling.js", withPrefix = false)
 
-        // inject ebook touch mode JS (tap left/right to page up/down within WebView)
-        if (configManager.isEbookModeActive) {
-            ebWebView.evaluateJsFile("ebook_touch.js", withPrefix = false)
-        }
-
         if (configManager.shouldTranslateSite(url)) {
             ebWebView.showTranslation()
         }
