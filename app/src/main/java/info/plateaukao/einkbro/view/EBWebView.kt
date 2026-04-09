@@ -1004,11 +1004,6 @@ open class EBWebView(
 
     fun addSelectionChangeListener() = evaluateJsFile("text_selection_change.js")
 
-    fun toggleEbookTouchMode(enabled: Boolean) {
-        // Native touch interception in dispatchTouchEvent() handles ebook mode.
-        // No JS injection needed — config.isEbookModeActive gates the behavior.
-    }
-
     private var isHighlightCssInjected = false
     fun highlightTextSelection(highlightStyle: HighlightStyle) {
         if (!isHighlightCssInjected) {
