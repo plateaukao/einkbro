@@ -1969,17 +1969,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_ENABLE_TOUCH -> {
                     updateTouchView()
                     touchController.toggleTouchPageTurn(config.enableTouchTurn)
-                    if (config.touchAreaType == TouchAreaType.Ebook) {
-                        ebWebView.toggleEbookTouchMode(config.enableTouchTurn)
-                    }
                 }
 
                 ConfigManager.K_TOUCH_AREA_ACTION_SWITCH -> {
                     updateTouchView()
-                }
-
-                ConfigManager.K_TOUCH_AREA_TYPE -> {
-                    ebWebView.toggleEbookTouchMode(config.isEbookModeActive)
                 }
 
                 ConfigManager.K_GPT_ACTION_ITEMS ->
