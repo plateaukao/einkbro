@@ -10,6 +10,9 @@ interface HistoryDao {
     @Insert
     suspend fun insert(record: HistoryRecord)
 
+    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    fun insertSync(record: HistoryRecord)
+
     @Query("SELECT * FROM HISTORY ORDER BY TIME DESC")
     suspend fun getAllHistory(): List<HistoryRecord>
 

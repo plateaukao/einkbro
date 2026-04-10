@@ -176,7 +176,7 @@ interface BookmarkDao {
     }
 }
 
-class BookmarkManager(context: Context) : KoinComponent {
+class BookmarkManager(private val context: Context) : KoinComponent {
     val config: ConfigManager by inject()
     private val coroutineScope: CoroutineScope by inject()
 
@@ -262,8 +262,64 @@ class BookmarkManager(context: Context) : KoinComponent {
                 convertConfigToDomainConfiguration()
                 config.version = BuildConfig.VERSION_NAME
             }
+            migrateNinja4DbIfNeeded()
             faviconInfos.addAll(getAllFavicons())
             config.domainConfigurationMap.putAll(getAllDomainConfigurations())
+        }
+    }
+
+    /**
+     * One-time migration: copies data from the old Ninja4.db (raw SQLite)
+     * into the new Room tables (HISTORY, WHITELIST, JAVASCRIPT, COOKIE).
+     * After successful migration, deletes the old database file.
+     */
+    private fun migrateNinja4DbIfNeeded() {
+        val oldDbFile = context.getDatabasePath("Ninja4.db")
+        if (!oldDbFile.exists()) return
+
+        try {
+            val oldDb = android.database.sqlite.SQLiteDatabase.openDatabase(
+                oldDbFile.absolutePath, null, android.database.sqlite.SQLiteDatabase.OPEN_READONLY
+            )
+
+            // Migrate history
+            oldDb.rawQuery("SELECT TITLE, URL, TIME FROM HISTORY", null)?.use { cursor ->
+                while (cursor.moveToNext()) {
+                    val title = cursor.getString(0) ?: continue
+                    val url = cursor.getString(1) ?: continue
+                    val time = cursor.getLong(2)
+                    database.historyDao().insertSync(
+                        HistoryRecord(TITLE = title.trim(), URL = url.trim(), TIME = time)
+                    )
+                }
+            }
+
+            // Migrate domain lists
+            for ((tableName, inserter) in listOf(
+                "WHITELIST" to { domain: String -> database.domainListDao().insertWhitelistSync(WhitelistDomain(domain)) },
+                "JAVASCRIPT" to { domain: String -> database.domainListDao().insertJavascriptSync(JavascriptDomain(domain)) },
+                "COOKIE" to { domain: String -> database.domainListDao().insertCookieSync(CookieDomain(domain)) },
+            )) {
+                try {
+                    oldDb.rawQuery("SELECT DOMAIN FROM $tableName", null)?.use { cursor ->
+                        while (cursor.moveToNext()) {
+                            val domain = cursor.getString(0) ?: continue
+                            inserter(domain.trim())
+                        }
+                    }
+                } catch (_: Exception) {
+                    // Table might not exist in old db — skip silently
+                }
+            }
+
+            oldDb.close()
+            // Delete old database files after successful migration
+            oldDbFile.delete()
+            context.getDatabasePath("Ninja4.db-journal").delete()
+            context.getDatabasePath("Ninja4.db-wal").delete()
+            context.getDatabasePath("Ninja4.db-shm").delete()
+        } catch (e: Exception) {
+            Log.w("BookmarkManager", "Failed to migrate Ninja4.db: ${e.message}")
         }
     }
 
