@@ -147,6 +147,9 @@ import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TranslationConfigDlgFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
+import info.plateaukao.einkbro.activity.delegates.FileHandlingDelegate
+import info.plateaukao.einkbro.activity.delegates.TabManager
+import info.plateaukao.einkbro.activity.delegates.TranslationDelegate
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
@@ -202,7 +205,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var videoView: VideoView? = null
     private var customView: View? = null
-    private var languageLabelView: TextView? = null
 
 
     // Layouts
@@ -215,7 +217,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // Others
     private var downloadReceiver: BroadcastReceiver? = null
     private val config: ConfigManager by inject()
-    private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private val ttsViewModel: TtsViewModel by viewModels()
 
@@ -247,7 +248,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var searchOnSite = false
     private var customViewCallback: CustomViewCallback? = null
     private var currentAlbumController: AlbumController? = null
-    private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
     private lateinit var binding: MainActivityLayout
 
@@ -261,6 +261,55 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val toolbarActionHandler: ToolbarActionHandler by lazy {
         ToolbarActionHandler(this)
+    }
+
+    protected val translationDelegate: TranslationDelegate by lazy {
+        TranslationDelegate(
+            activity = this,
+            config = config,
+            translationViewModel = translationViewModel,
+            actionModeMenuViewModel = actionModeMenuViewModel,
+            webViewProvider = { ebWebView },
+            focusedWebViewProvider = { getFocusedWebView() },
+            externalSearchWebViewProvider = { externalSearchWebView },
+            twoPaneControllerProvider = { twoPaneController },
+            isTwoPaneControllerInitialized = { isTwoPaneControllerInitialized() },
+            maybeInitTwoPaneController = { maybeInitTwoPaneController() },
+            addAlbum = { tabManager.addAlbum() },
+        )
+    }
+
+    val tabManager: TabManager by lazy {
+        TabManager(
+            activity = this,
+            config = config,
+            browserContainer = browserContainer,
+            albumViewModel = albumViewModel,
+            bookmarkManager = bookmarkManager,
+            externalSearchViewModel = externalSearchViewModel,
+            webViewProvider = { ebWebView },
+            currentAlbumControllerProvider = { currentAlbumController },
+            setCurrentAlbumController = { currentAlbumController = it },
+            setEbWebView = { ebWebView = it },
+            mainContentLayoutProvider = { mainContentLayout },
+            progressBarProvider = { progressBar },
+            composeToolbarViewControllerProvider = { composeToolbarViewController },
+            fabImageViewControllerProvider = { fabImageViewController },
+            createWebView = { createebWebView() },
+            createTouchListener = { createMultiTouchTouchListener(it) },
+            keyHandlerSetWebView = { keyHandler.setWebView(it) },
+            addHistoryAction = { title, url -> addHistory(title, url) },
+            adFilterProvider = { adFilter },
+            updateLanguageLabel = { translationDelegate.updateLanguageLabel() },
+        )
+    }
+
+    val fileHandlingDelegate: FileHandlingDelegate by lazy {
+        FileHandlingDelegate(
+            activity = this,
+            webViewProvider = { ebWebView },
+            bookmarkManager = bookmarkManager,
+        )
     }
 
     private val albumViewModel: AlbumViewModel by viewModels()
@@ -282,32 +331,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    override fun newATab() {
-        // fix: https://github.com/plateaukao/einkbro/issues/343
-        if (searchOnSite) {
-            hideSearchPanel()
-        }
+    override fun newATab() = tabManager.newATab(searchOnSite, { hideSearchPanel() }, { focusOnInput() })
 
-        when (config.newTabBehavior) {
-            NewTabBehavior.START_INPUT -> {
-                addAlbum(getString(R.string.app_name), "")
-                focusOnInput()
-            }
-
-            NewTabBehavior.SHOW_HOME -> addAlbum("", config.favoriteUrl)
-            NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
-                addAlbum("", "")
-                BrowserUnit.loadRecentlyUsedBookmarks(ebWebView)
-            }
-        }
-    }
-
-    override fun duplicateTab() {
-        val webView = currentAlbumController as EBWebView
-        val title = webView.title.orEmpty()
-        val url = webView.url ?: return
-        addAlbum(title, url)
-    }
+    override fun duplicateTab() = tabManager.duplicateTab()
 
     override fun refreshAction() {
         if (ebWebView.isLoadFinish && ebWebView.url?.isNotEmpty() == true) {
@@ -329,11 +355,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val recordDb: RecordDb by inject()
 
-    private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var createWebArchivePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
-    private lateinit var openEpubFilePickerLauncher: ActivityResultLauncher<Intent>
+    // File-related launchers moved to fileHandlingDelegate
 
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
@@ -412,11 +434,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
-        initLanguageLabel()
+        translationDelegate.initLanguageLabel()
         initTouchAreaViewController()
         initTextSearchButton()
         initExternalSearchCloseButton()
-        initTranslationViewModel()
+        translationDelegate.initTranslationViewModel()
         initTtsViewModel()
 
         if (config.hideStatusbar) {
@@ -475,17 +497,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun initTranslationViewModel() {
-        lifecycleScope.launch {
-            translationViewModel.showEditDialogWithIndex.collect { index ->
-                if (index == -1) return@collect
-                ShowEditGptActionDialogFragment(index)
-                    .showNow(supportFragmentManager, "editGptAction")
-                translationViewModel.resetEditDialogIndex()
-            }
-        }
-
-    }
+    // Translation initialization delegated to translationDelegate
 
     private fun handleWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(
@@ -697,14 +709,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private suspend fun updateTranslationInput() {
-        // need to handle where data is from: ebWebView or twoPaneController.getSecondWebView()
-        with(translationViewModel) {
-            updateInputMessage(actionModeMenuViewModel.selectedText.value)
-            updateMessageWithContext(getFocusedWebView().getSelectedTextWithContext())
-            url = getFocusedWebView().url.orEmpty()
-        }
-    }
+    private suspend fun updateTranslationInput() =
+        translationDelegate.updateTranslationInput()
 
     private suspend fun highlightText(highlightStyle: HighlightStyle) {
         val focusedWebView = getFocusedWebView()
@@ -727,28 +733,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun isInSplitSearchMode(): Boolean =
         splitSearchViewModel.state != null && twoPaneController.isSecondPaneDisplayed()
 
-    private fun initLanguageLabel() {
-        languageLabelView = findViewById(R.id.translation_language)
-        lifecycleScope.launch {
-            translationViewModel.translationLanguage.collect {
-                ViewUnit.updateLanguageLabel(languageLabelView!!, it)
-            }
-        }
-
-        languageLabelView?.setOnClickListener {
-            lifecycleScope.launch {
-                val translationLanguage =
-                    TranslationLanguageDialog(this@BrowserActivity).show() ?: return@launch
-                translationViewModel.updateTranslationLanguage(translationLanguage)
-                ebWebView.clearTranslationElements()
-                translateByParagraph(ebWebView.translateApi)
-            }
-        }
-        languageLabelView?.setOnLongClickListener {
-            languageLabelView?.visibility = GONE
-            true
-        }
-    }
+    // Language label initialization delegated to translationDelegate
 
     override fun isAtTop(): Boolean = ebWebView.isAtTop()
     override fun jumpToTop() = ebWebView.jumpToTop()
@@ -770,36 +755,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ebWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
     }
 
-    override fun translate(translationMode: TranslationMode) {
-        when (translationMode) {
-            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-            TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL)
-            TranslationMode.OPENAI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.OPENAI)
-            TranslationMode.GEMINI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GEMINI)
-            TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateWebView()
-            TranslationMode.GOOGLE_IN_PLACE -> ebWebView.addGoogleTranslation()
-            TranslationMode.OPENAI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.OPENAI)
-            TranslationMode.GEMINI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.GEMINI)
-            TranslationMode.GOOGLE_URL -> Unit
-        }
-    }
+    override fun translate(translationMode: TranslationMode) =
+        translationDelegate.translate(translationMode)
 
-    override fun resetTranslateUI() {
-        languageLabelView?.visibility = GONE
-    }
+    override fun resetTranslateUI() = translationDelegate.resetTranslateUI()
 
-    override fun configureTranslationLanguage(translateApi: TRANSLATE_API) {
-        LanguageSettingDialogFragment(translateApi, translationViewModel) {
-            if (translateApi == TRANSLATE_API.GOOGLE) {
-                translateByParagraph(TRANSLATE_API.GOOGLE)
-            } else if (translateApi == TRANSLATE_API.PAPAGO) {
-                translateByParagraph(TRANSLATE_API.PAPAGO)
-            } else if (translateApi == TRANSLATE_API.DEEPL) {
-                translateByParagraph(TRANSLATE_API.DEEPL)
-            }
-        }
-            .show(supportFragmentManager, "LanguageSettingDialog")
-    }
+    override fun configureTranslationLanguage(translateApi: TRANSLATE_API) =
+        translationDelegate.configureTranslationLanguage(translateApi)
 
     override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
 
@@ -967,18 +929,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         dialogManager.showInstapaperCredentialsDialog { name, password -> Unit }
     }
 
-    private fun showTranslationDialog(isWholePageMode: Boolean = false) {
-        supportFragmentManager.findFragmentByTag("translateDialog")?.let {
-            supportFragmentManager.beginTransaction().remove(it).commitAllowingStateLoss()
-        }
-        TranslateDialogFragment(
-            translationViewModel,
-            externalSearchWebView,
-            actionModeMenuViewModel.clickedPoint.value,
-            isWholePageMode = isWholePageMode,
-        )
-            .show(supportFragmentManager, "translateDialog")
-    }
+    private fun showTranslationDialog(isWholePageMode: Boolean = false) =
+        translationDelegate.showTranslationDialog(isWholePageMode)
 
     override fun invertColors() {
         val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
@@ -1050,87 +1002,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun initLaunchers() {
-        saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
-        createWebArchivePickerLauncher =
-            IntentUnit.createResultLauncher(this) { saveWebArchive(it) }
-        writeEpubFilePickerLauncher =
-            IntentUnit.createResultLauncher(this) {
-                val uri = backupUnit.preprocessActivityResult(it) ?: return@createResultLauncher
-                saveEpub(uri)
-            }
-        fileChooserLauncher =
-            IntentUnit.createResultLauncher(this) { handleWebViewFileChooser(it) }
-        openEpubFilePickerLauncher =
-            IntentUnit.createResultLauncher(this) { handleEpubUri(it) }
-    }
-
-    private fun handleEpubUri(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK) return
-        val uri = result.data?.data ?: return
-        HelperUnit.openFile(this, uri)
-    }
-
-    private fun handleWebViewFileChooser(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK || filePathCallback == null) {
-            filePathCallback = null
-            return
-        }
-        var results: Array<Uri>?
-        // Check that the response is a good one
-        val data = result.data
-        if (data != null) {
-            // If there is not data, then we may have taken a photo
-            val dataString = data.dataString
-            results = arrayOf(Uri.parse(dataString))
-            filePathCallback?.onReceiveValue(results)
-        }
-        filePathCallback = null
-    }
-
-    @Suppress("DEPRECATION")
-    private fun saveEpub(uri: Uri) {
-        val progressDialog =
-            dialogManager.createProgressDialog(R.string.saving_epub).apply { show() }
-        epubManager.saveEpub(
-            this,
-            uri,
-            ebWebView,
-            {
-                progressDialog.progress = it
-                if (it == 100) {
-                    progressDialog.dismiss()
-                }
-            },
-            {
-                progressDialog.dismiss()
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.cannot_save_epub,
-                    okAction = {},
-                    showInCenter = true,
-                    showNegativeButton = false,
-                )
-            }
-        )
-    }
-
-    private fun saveWebArchive(result: ActivityResult) {
-        val uri = backupUnit.preprocessActivityResult(result) ?: return
-        saveWebArchiveToUri(uri)
-    }
-
-    private fun saveWebArchiveToUri(uri: Uri) {
-        // get archive from webview
-        val filePath = File(filesDir.absolutePath + "/temp.mht").absolutePath
-        ebWebView.saveWebArchive(filePath, false) {
-            val tempFile = File(filePath)
-            contentResolver.openOutputStream(uri)?.use { outputStream ->
-                tempFile.inputStream().use { inputStream ->
-                    inputStream.copyTo(outputStream)
-                }
-            }
-        }
-    }
+    private fun initLaunchers() = fileHandlingDelegate.initLaunchers()
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
@@ -1319,8 +1191,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     controller.pauseWebView()
                 }
             }
-            preloadedWebView?.destroy()
-            preloadedWebView = null
+            tabManager.destroyPreloadedWebView()
         }
     }
 
@@ -1377,68 +1248,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun isCurrentAlbum(albumController: AlbumController): Boolean =
-        currentAlbumController == albumController
+        tabManager.isCurrentAlbum(albumController)
 
-    override fun showAlbum(controller: AlbumController) {
-        if (currentAlbumController != null) {
-            if (currentAlbumController == controller) {
-                // if it's the same controller, just scroll to top
-                if (ebWebView.isAtTop()) {
-                    ebWebView.reload()
-                } else {
-                    jumpToTop()
-                }
-                return
-            }
-            currentAlbumController?.deactivate()
-        }
+    override fun showAlbum(controller: AlbumController) = tabManager.showAlbum(controller)
 
-        // remove current view from the container first
-        val controllerView = controller as View
-        if (mainContentLayout.childCount > 0) {
-            for (i in 0 until mainContentLayout.childCount) {
-                if (mainContentLayout.getChildAt(i) == controllerView) {
-                    mainContentLayout.removeView(controllerView)
-                    break
-                }
-            }
-        }
-
-        mainContentLayout.addView(
-            controller as View,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-        )
-
-        currentAlbumController = controller
-        currentAlbumController?.activate()
-
-        updateSavedAlbumInfo()
-        updateWebViewCount()
-
-        progressBar.visibility = GONE
-        ebWebView = controller as EBWebView
-        keyHandler.setWebView(ebWebView)
-
-        updateTitle()
-        ebWebView.updatePageInfo()
-
-        // when showing a new album, should turn off externalSearch button visibility
-        externalSearchViewModel.setButtonVisibility(false)
-        runOnUiThread {
-            val index = albumViewModel.albums.value.indexOfFirst { it.isActivated }
-            composeToolbarViewController.updateFocusIndex(index)
-            albumViewModel.focusIndex.intValue = index
-        }
-        updateLanguageLabel()
-    }
-
-    private fun updateLanguageLabel() {
-        languageLabelView?.visibility =
-            if (ebWebView.isTranslatePage || ebWebView.isTranslateByParagraph) VISIBLE else GONE
-    }
+    private fun updateLanguageLabel() = translationDelegate.updateLanguageLabel()
 
     private fun openCustomFontPicker() {
         FontBrowserDialogFragment(isReaderMode = ebWebView.shouldUseReaderFont()).show(
@@ -1537,45 +1351,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun translateByParagraph(
         translateApi: TRANSLATE_API,
         webView: EBWebView = ebWebView,
-    ) {
-        translateByParagraphInPlace(translateApi, webView)
-    }
-
-    private fun translateByParagraphInPlace(
-        translateApi: TRANSLATE_API,
-        webView: EBWebView = ebWebView,
-    ) {
-        lifecycleScope.launch {
-            webView.translateApi = translateApi
-            webView.translateByParagraphInPlace()
-            if (webView == ebWebView) {
-                languageLabelView?.visibility = VISIBLE
-            }
-        }
-    }
+    ) = translationDelegate.translateByParagraph(translateApi, webView)
 
     private fun translateInPlaceReplace(
         translateApi: TRANSLATE_API,
         webView: EBWebView = ebWebView,
-    ) {
-        lifecycleScope.launch {
-            webView.translateApi = translateApi
-            webView.translateByParagraphInPlaceReplace()
-            if (webView == ebWebView) {
-                languageLabelView?.visibility = VISIBLE
-            }
-        }
-    }
+    ) = translationDelegate.translateInPlaceReplace(translateApi, webView)
 
     private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
 
-    override fun showTranslation(webView: EBWebView?) {
-        maybeInitTwoPaneController()
-
-        lifecycleScope.launch(Dispatchers.Main) {
-            twoPaneController.showTranslation(webView ?: ebWebView)
-        }
-    }
+    override fun showTranslation(webView: EBWebView?) =
+        translationDelegate.showTranslation(webView)
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(K_SHOULD_LOAD_TAB_STATE, true)
@@ -1814,17 +1600,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showTouchAreaDialog() = TouchAreaDialogFragment(ebWebView.url.orEmpty())
         .show(supportFragmentManager, "TouchAreaDialog")
 
-    override fun showTranslationConfigDialog(translateDirectly: Boolean) {
-        maybeInitTwoPaneController()
-        TranslationConfigDlgFragment(ebWebView.url.orEmpty(), translateDirectly) { shouldTranslate ->
-            if (shouldTranslate) {
-                translate(config.translationMode)
-            } else {
-                ebWebView.reload()
-            }
-        }
-            .show(supportFragmentManager, "TranslationConfigDialog")
-    }
+    override fun showTranslationConfigDialog(translateDirectly: Boolean) =
+        translationDelegate.showTranslationConfigDialog(translateDirectly)
 
     override fun attachBaseContext(newBase: Context) {
         if (config.uiLocaleLanguage.isNotEmpty()) {
@@ -2006,13 +1783,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun gotoLeftTab() {
-        nextAlbumController(false)?.let { showAlbum(it) }
-    }
+    override fun gotoLeftTab() = tabManager.gotoLeftTab()
 
-    override fun gotoRightTab() {
-        nextAlbumController(true)?.let { showAlbum(it) }
-    }
+    override fun gotoRightTab() = tabManager.gotoRightTab()
 
     private val bookmarkViewModel: BookmarkViewModel by viewModels {
         BookmarkViewModelFactory(bookmarkManager)
@@ -2101,13 +1874,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }.show(supportFragmentManager, "fast_toggle_dialog")
     }
 
-    override fun addNewTab(url: String) = addAlbum(url = url)
+    override fun addNewTab(url: String) = tabManager.addNewTab(url)
 
-    private fun getUrlMatchedBrowser(url: String): EBWebView? {
-        return browserContainer.list().firstOrNull { it.albumUrl == url } as EBWebView?
-    }
-
-    private var preloadedWebView: EBWebView? = null
+    private fun getUrlMatchedBrowser(url: String): EBWebView? =
+        tabManager.getUrlMatchedBrowser(url)
 
     open fun createebWebView(): EBWebView = EBWebView(this, this).apply {
         overScrollMode = View.OVER_SCROLL_NEVER
@@ -2120,73 +1890,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         foreground: Boolean = true,
         incognito: Boolean = false,
         enablePreloadWebView: Boolean = true,
-    ) {
-        val newWebView = (preloadedWebView ?: createebWebView()).apply {
-            this.albumTitle = title
-            this.incognito = incognito
-            setOnTouchListener(createMultiTouchTouchListener(this))
-        }
-
-        maybeCreateNewPreloadWebView(enablePreloadWebView, newWebView)
-
-        updateTabPreview(newWebView, url)
-        updateWebViewCount()
-
-        loadUrlInWebView(foreground, newWebView, url)
-
-        updateSavedAlbumInfo()
-
-        if (config.adBlock) {
-            adFilter.setupWebView(newWebView)
-        }
-    }
-
-    private fun maybeCreateNewPreloadWebView(
-        enablePreloadWebView: Boolean,
-        newWebView: EBWebView,
-    ) {
-        preloadedWebView = null
-        if (enablePreloadWebView) {
-            newWebView.postDelayed({
-                if (preloadedWebView == null) {
-                    preloadedWebView = createebWebView()
-                }
-            }, 500)
-        }
-    }
-
-    private fun updateTabPreview(newWebView: EBWebView, url: String) {
-        bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
-            newWebView.setAlbumCover(it)
-        }
-
-        val album = newWebView.album
-        if (currentAlbumController != null) {
-            val index = browserContainer.indexOf(currentAlbumController) + 1
-            browserContainer.add(newWebView, index)
-            albumViewModel.addAlbum(album, index)
-        } else {
-            browserContainer.add(newWebView)
-            albumViewModel.addAlbum(album, browserContainer.size() - 1)
-        }
-    }
-
-    private fun loadUrlInWebView(foreground: Boolean, webView: EBWebView, url: String) {
-        if (!foreground) {
-            webView.deactivate()
-            if (config.enableWebBkgndLoad) {
-                webView.loadUrl(url)
-            } else {
-                webView.initAlbumUrl = url
-            }
-        } else {
-            showAlbum(webView)
-            if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
-                webView.loadUrl(url)
-            } else if (url == BrowserUnit.URL_ABOUT_BLANK) {
-            }
-        }
-    }
+    ) = tabManager.addAlbum(title, url, foreground, incognito, enablePreloadWebView)
 
     private fun createMultiTouchTouchListener(ebWebView: EBWebView): MultitouchListener =
         object : MultitouchListener(this@BrowserActivity, ebWebView) {
@@ -2229,96 +1933,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }.apply { lifecycle.addObserver(this) }
 
-    private fun updateSavedAlbumInfo() {
-        val albumControllers = browserContainer.list()
-        val albumInfoList = albumControllers
-            .filter { !it.isTranslatePage }
-            .filter { !it.isAIPage }
-            .filter { !it.albumUrl.startsWith("data") }
-            .filter {
-                (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) ||
-                        it.initAlbumUrl.isNotBlank()
-            }
-            .map { controller ->
-                AlbumInfo(
-                    controller.albumTitle,
-                    controller.albumUrl.ifBlank { controller.initAlbumUrl },
-                )
-            }
-        config.savedAlbumInfoList = albumInfoList
-        config.currentAlbumIndex = browserContainer.indexOf(currentAlbumController)
-        // fix if current album is still with null url
-        if (albumInfoList.isNotEmpty() && config.currentAlbumIndex >= albumInfoList.size) {
-            config.currentAlbumIndex = albumInfoList.size - 1
-        }
-    }
+    private fun updateSavedAlbumInfo() = tabManager.updateSavedAlbumInfo()
 
-    private fun updateWebViewCount() {
-        val subScript = browserContainer.size()
-        val superScript = browserContainer.indexOf(currentAlbumController) + 1
-        val countString = ViewUnit.createCountString(superScript, subScript)
-        composeToolbarViewController.updateTabCount(countString)
-        fabImageViewController.updateTabCount(countString)
-    }
+    private fun updateWebViewCount() = tabManager.updateWebViewCount()
 
-    override fun updateAlbum(url: String?) {
-        if (url == null) return
-        (currentAlbumController as EBWebView).loadUrl(url)
-        updateTitle()
+    override fun updateAlbum(url: String?) = tabManager.updateAlbum(url)
 
-        updateSavedAlbumInfo()
-    }
-
-    private fun closeTabConfirmation(okAction: () -> Unit) {
-        if (!config.confirmTabClose) {
-            okAction()
-        } else {
-            dialogManager.showOkCancelDialog(
-                messageResId = R.string.toast_close_tab,
-                okAction = okAction,
-            )
-        }
-    }
-
-    override fun removeAlbum(albumController: AlbumController, showHome: Boolean) {
-        closeTabConfirmation {
-            if (config.isSaveHistoryWhenClose()) {
-                addHistory(albumController.albumTitle, albumController.albumUrl)
-            }
-
-            albumViewModel.removeAlbum(albumController.album)
-            val removeIndex = browserContainer.indexOf(albumController)
-            val currentIndex = browserContainer.indexOf(currentAlbumController)
-            browserContainer.remove(albumController)
-
-            updateSavedAlbumInfo()
-            updateWebViewCount()
-
-            if (browserContainer.isEmpty()) {
-                if (!showHome) {
-                    finish()
-                } else {
-                    ebWebView.loadUrl(config.favoriteUrl)
-                }
-            } else {
-                // only refresh album when the delete one is current one
-                if (removeIndex == currentIndex) {
-                    showAlbum(browserContainer[getNextAlbumIndexAfterRemoval(removeIndex)])
-                }
-            }
-        }
-    }
-
-    private fun getNextAlbumIndexAfterRemoval(removeIndex: Int): Int =
-        if (config.shouldShowNextAfterRemoveTab) min(browserContainer.size() - 1, removeIndex)
-        else max(0, removeIndex - 1)
+    override fun removeAlbum(albumController: AlbumController, showHome: Boolean) =
+        tabManager.removeAlbum(albumController, showHome)
 
     private fun updateTitle() {
         if (!this::ebWebView.isInitialized) return
-
-        if (this::ebWebView.isInitialized && ebWebView === currentAlbumController) {
-            composeToolbarViewController.updateTitle(ebWebView.title.orEmpty())
-        }
+        tabManager.updateTitle()
     }
 
     private fun scrollChange() {
@@ -2452,16 +2078,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         composeToolbarViewController.updateRefresh(isRunning)
     }
 
-    override fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>) {
-        this.filePathCallback?.onReceiveValue(null)
-        this.filePathCallback = filePathCallback
-        val contentSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-        contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE)
-        contentSelectionIntent.type = "*/*"
-        val chooserIntent = Intent(Intent.ACTION_CHOOSER)
-        chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent)
-        fileChooserLauncher.launch(chooserIntent)
-    }
+    override fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>) =
+        fileHandlingDelegate.showFileChooser(filePathCallback)
 
     override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
         if (view == null) {
@@ -2726,100 +2344,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         EBToast.show(this, R.string.added_to_read_list)
     }
 
-    private fun translateWebView() {
-        lifecycleScope.launch {
-            val base64String = translationViewModel.translateWebView(
-                ebWebView,
-                config.sourceLanguage,
-                config.translationLanguage,
-            )
-            if (base64String != null) {
-                val translatedImageHtml = HelperUnit.loadAssetFileToString(
-                    this@BrowserActivity, "translated_image.html"
-                ).replace("%%", base64String)
-                if (config.showTranslatedImageToSecondPanel) {
-                    maybeInitTwoPaneController()
-                    twoPaneController.showSecondPaneWithData(translatedImageHtml)
-                } else {
-                    addAlbum()
-                    ebWebView.isTranslatePage = true
-                    ebWebView.loadData(translatedImageHtml, "text/html", "utf-8")
-                }
-            } else {
-                EBToast.show(this@BrowserActivity, "Failed to translate image")
-            }
-        }
-    }
+    private fun translateWebView() = translationDelegate.translateWebView()
 
-    private fun translateImage(url: String) {
-        lifecycleScope.launch {
-            translateImageSuspend(url)
-        }
-    }
+    private fun translateImage(url: String) = translationDelegate.translateImage(url)
 
-    private suspend fun translateImageSuspend(url: String): Boolean {
-        val result = translationViewModel.translateImage(
-            ebWebView.url.orEmpty(),
-            url,
-            TranslationLanguage.KO,
-            config.translationLanguage,
-        )
-        if (result != null) {
-            val escapedUrl = url.replace("\\", "\\\\").replace("'", "\\'")
-            val js = HelperUnit.loadAssetFileToString(
-                this@BrowserActivity, "translate_image_overlay.js"
-            ).replace("%%IMAGE_URL%%", escapedUrl)
-                .replace("%%BASE64_DATA%%", result.renderedImage)
-            ebWebView.evaluateJavascript(js, null)
-            return result.imageId == "cached"
-        }
-        return false
-    }
-
-    private fun translateAllImages(imageUrl: String) {
-        lifecycleScope.launch {
-            val escapedUrl = imageUrl.replace("\\", "\\\\").replace("'", "\\'")
-            val js = HelperUnit.loadAssetFileToString(
-                this@BrowserActivity, "get_remaining_images.js"
-            ).replace("%%IMAGE_URL%%", escapedUrl)
-
-            ebWebView.evaluateJavascript(js) { result ->
-                val urlsJson = result?.trim('"')?.replace("\\\"", "\"")
-                    ?.replace("\\\\", "\\") ?: return@evaluateJavascript
-                try {
-                    val urls = org.json.JSONArray(urlsJson)
-                    val imageUrls = mutableListOf<String>()
-                    for (i in 0 until urls.length()) {
-                        imageUrls.add(urls.getString(i))
-                    }
-                    if (imageUrls.isEmpty()) return@evaluateJavascript
-
-                    EBToast.show(
-                        this@BrowserActivity,
-                        "Translating ${imageUrls.size} images..."
-                    )
-                    lifecycleScope.launch {
-                        for ((index, url) in imageUrls.withIndex()) {
-                            val wasCached = translateImageSuspend(url)
-                            if (index < imageUrls.size - 1 && !wasCached) {
-                                val base = config.imageTranslateIntervalSeconds
-                                val delayMs = ((base - 2).coerceAtLeast(1)..(base + 2)).random() * 1000L
-                                kotlinx.coroutines.delay(delayMs)
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    EBToast.show(this@BrowserActivity, "Failed to get image list")
-                }
-            }
-        }
-    }
+    private fun translateAllImages(imageUrl: String) = translationDelegate.translateAllImages(imageUrl)
 
     private fun saveFile(url: String, fileName: String = "") {
         // handle data url case
         if (url.startsWith("data:image")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                BrowserUnit.saveImageFromUrl(url, saveImageFilePickerLauncher)
+                BrowserUnit.saveImageFromUrl(url, fileHandlingDelegate.saveImageFilePickerLauncher)
             } else {
                 EBToast.show(this, "Not supported dataUrl")
             }
@@ -2942,22 +2477,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ViewUnit.showKeyboard(this)
     }
 
-    override fun showEpubDialog() = dialogManager.showEpubDialog(
-        onSaveEpub = { uri ->
-            if (uri == null) {
-                epubManager.showWriteEpubFilePicker(writeEpubFilePickerLauncher, ebWebView.title ?: "einkbro")
-            } else {
-                saveEpub(uri)
-            }
-        },
-        onOpenEpub = { uri ->
-            if (uri != null) {
-                HelperUnit.openFile(this, uri)
-            } else {
-                epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
-            }
-        },
-    )
+    override fun showEpubDialog() = fileHandlingDelegate.showEpubDialog()
 
     protected fun readArticle() {
         lifecycleScope.launch {
@@ -2978,50 +2498,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             { menuActionHandler.handleLongClick(it) }
         ).show(supportFragmentManager, "menu_dialog")
 
-    override fun showWebArchiveFilePicker() {
-        val fileName = "${ebWebView.title}.mht"
-        BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
-    }
+    override fun showWebArchiveFilePicker() = fileHandlingDelegate.showWebArchiveFilePicker()
 
-    override fun savePageForLater() {
-        val title = ebWebView.title.orEmpty()
-        val url = ebWebView.url.orEmpty()
-        if (url.isBlank()) return
+    override fun savePageForLater() = fileHandlingDelegate.savePageForLater()
 
-        val savedPagesDir = File(filesDir, "saved_pages")
-        if (!savedPagesDir.exists()) savedPagesDir.mkdirs()
-        val fileName = "${System.currentTimeMillis()}.mht"
-        val filePath = File(savedPagesDir, fileName).absolutePath
+    override fun showSavedPages() = fileHandlingDelegate.showSavedPages()
 
-        ebWebView.saveWebArchive(filePath, false) { savedPath ->
-            lifecycleScope.launch(Dispatchers.IO) {
-                if (savedPath != null) {
-                    bookmarkManager.insertSavedPage(
-                        SavedPage(
-                            title = title,
-                            url = url,
-                            filePath = savedPath,
-                            savedAt = System.currentTimeMillis(),
-                        )
-                    )
-                    withContext(Dispatchers.Main) {
-                        EBToast.show(this@BrowserActivity, R.string.toast_saved_page)
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        EBToast.show(this@BrowserActivity, R.string.toast_save_page_failed)
-                    }
-                }
-            }
-        }
-    }
-
-    override fun showSavedPages() {
-        startActivity(SavedPagesActivity.createIntent(this))
-    }
-
-    override fun showOpenEpubFilePicker() =
-        epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
+    override fun showOpenEpubFilePicker() = fileHandlingDelegate.showOpenEpubFilePicker()
 
     override fun handleTtsButton() {
         if (ttsViewModel.isReading()) {
@@ -3035,9 +2518,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         TtsLanguageDialog(this).show(ttsViewModel.getAvailableLanguages())
     }
 
-    override fun removeAlbum() {
-        currentAlbumController?.let { removeAlbum(it) }
-    }
+    override fun removeAlbum() = tabManager.removeCurrentAlbum()
 
     override fun toggleSplitScreen(url: String?) {
         maybeInitTwoPaneController()
@@ -3050,26 +2531,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         twoPaneController.showSecondPaneWithUrl(url ?: ebWebView.url.orEmpty())
     }
 
-    private fun nextAlbumController(next: Boolean): AlbumController? {
-        if (browserContainer.size() <= 1) {
-            return currentAlbumController
-        }
-
-        val list = browserContainer.list()
-        var index = list.indexOf(currentAlbumController)
-        if (next) {
-            index++
-            if (index >= list.size) {
-                return list.first()
-            }
-        } else {
-            index--
-            if (index < 0) {
-                return list.last()
-            }
-        }
-        return list[index]
-    }
+    // nextAlbumController moved to TabManager
 
     private fun getFocusedWebView(): EBWebView = when {
         ebWebView.hasFocus() -> ebWebView
