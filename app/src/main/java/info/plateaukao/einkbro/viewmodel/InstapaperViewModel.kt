@@ -2,18 +2,15 @@ package info.plateaukao.einkbro.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import info.plateaukao.einkbro.service.InstapaperRepository
-import info.plateaukao.einkbro.service.InstapaperResult
+import info.plateaukao.einkbro.data.remote.InstapaperRepository
+import info.plateaukao.einkbro.data.remote.InstapaperResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-
-class InstapaperViewModel : ViewModel(), KoinComponent {
-    
-    private val instapaperRepository: InstapaperRepository by inject()
+class InstapaperViewModel(
+    private val instapaperRepository: InstapaperRepository,
+) : ViewModel() {
     
     private val _uiState = MutableStateFlow(InstapaperUiState())
     val uiState: StateFlow<InstapaperUiState> = _uiState.asStateFlow()

@@ -1,14 +1,14 @@
-package info.plateaukao.einkbro.service
+package info.plateaukao.einkbro.data.remote
 
 import android.util.Log
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
-import info.plateaukao.einkbro.service.data.Content
-import info.plateaukao.einkbro.service.data.ContentPart
-import info.plateaukao.einkbro.service.data.RequestData
-import info.plateaukao.einkbro.service.data.ResponseData
-import info.plateaukao.einkbro.service.data.SafetySetting
+import info.plateaukao.einkbro.data.remote.model.Content
+import info.plateaukao.einkbro.data.remote.model.ContentPart
+import info.plateaukao.einkbro.data.remote.model.RequestData
+import info.plateaukao.einkbro.data.remote.model.ResponseData
+import info.plateaukao.einkbro.data.remote.model.SafetySetting
 import info.plateaukao.einkbro.viewmodel.unescape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

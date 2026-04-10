@@ -560,20 +560,20 @@ fun PreviewRoundedDragBar() {
     RoundedDragBar()
 }
 
-@Preview
-@Composable
-fun PreviewTranslateResponse() {
-    val context = LocalContext.current
-    MyTheme {
-        TranslateResponse(
-            viewModel = TranslationViewModel(),
-            showExtraIcons = true,
-            onTargetLanguageClick = {},
-            getTranslationWebView = { WebView(context) },
-            closeClick = {},
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewTranslateResponse() {
+//    val context = LocalContext.current
+//    MyTheme {
+//        TranslateResponse(
+//            viewModel = TranslationViewModel(),
+//            showExtraIcons = true,
+//            onTargetLanguageClick = {},
+//            getTranslationWebView = { WebView(context) },
+//            closeClick = {},
+//        )
+//    }
+//}
 
 private fun Modifier.conditionalScroll(applyScroll: Boolean, scrollState: ScrollState): Modifier =
     this.then(

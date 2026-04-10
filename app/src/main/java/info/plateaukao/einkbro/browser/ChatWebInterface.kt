@@ -5,8 +5,8 @@ import android.webkit.WebView
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.service.ChatMessage
-import info.plateaukao.einkbro.service.OpenAiRepository
+import info.plateaukao.einkbro.data.remote.ChatMessage
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

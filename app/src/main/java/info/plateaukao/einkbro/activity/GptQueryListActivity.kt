@@ -8,7 +8,7 @@ import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -69,7 +69,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class GptQueryListActivity : ComponentActivity()  {
-    private val gptQueryViewModel: GptQueryViewModel by viewModels()
+    private val gptQueryViewModel: GptQueryViewModel by koinViewModel()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
     private var currentKeyCode: MutableState<Int> = mutableIntStateOf(INVALID_KEYCODE)
 

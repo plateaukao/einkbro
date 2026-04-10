@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.service.GptVoiceOption
+import info.plateaukao.einkbro.data.remote.GptVoiceOption
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem

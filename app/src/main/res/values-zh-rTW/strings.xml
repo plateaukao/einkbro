@@ -347,6 +347,7 @@
     <string name="backup_category_gpt_settings">GPT 設定</string>
     <string name="backup_category_bookmarks">書籤</string>
     <string name="backup_category_history">歷史紀錄</string>
+    <string name="backup_category_webview_data">網站登入資料 (Cookies 及儲存空間)</string>
     <string name="dialog_title_backup_categories">選擇要備份的資料</string>
     <string name="dialog_title_restore_categories">選擇要還原的資料</string>
     <string name="setting_title_share_appData">分享應用程式資料</string>

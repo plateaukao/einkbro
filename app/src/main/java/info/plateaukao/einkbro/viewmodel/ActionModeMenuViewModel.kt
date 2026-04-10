@@ -25,11 +25,9 @@ import info.plateaukao.einkbro.view.dialog.compose.HighlightStyleDialogFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-
-class ActionModeMenuViewModel : ViewModel(), KoinComponent {
-    private val configManager: ConfigManager by inject()
+class ActionModeMenuViewModel(
+    private val configManager: ConfigManager,
+) : ViewModel() {
 
     private var actionMode: ActionMode? = null
     private val _clickedPoint = MutableStateFlow(Point(100, 100))
