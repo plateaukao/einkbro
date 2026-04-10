@@ -10,11 +10,11 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.preference.GptActionType
-import info.plateaukao.einkbro.service.ChatMessage
-import info.plateaukao.einkbro.service.ChatRole
-import info.plateaukao.einkbro.service.OpenAiRepository
-import info.plateaukao.einkbro.service.ImageTranslateResult
-import info.plateaukao.einkbro.service.TranslateRepository
+import info.plateaukao.einkbro.data.remote.ChatMessage
+import info.plateaukao.einkbro.data.remote.ChatRole
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.data.remote.ImageTranslateResult
+import info.plateaukao.einkbro.data.remote.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit

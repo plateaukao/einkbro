@@ -14,7 +14,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubFileInfo
 import info.plateaukao.einkbro.search.SearchEngine
-import info.plateaukao.einkbro.service.GptVoiceOption
+import info.plateaukao.einkbro.data.remote.GptVoiceOption
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.ViewUnit

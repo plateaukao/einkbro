@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.toggle
-import info.plateaukao.einkbro.service.OpenAiRepository
-import info.plateaukao.einkbro.service.TranslateRepository
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.data.remote.TranslateRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.service.TtsNotificationAction
 import info.plateaukao.einkbro.service.TtsNotificationManager

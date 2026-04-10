@@ -2,8 +2,8 @@ package info.plateaukao.einkbro.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import info.plateaukao.einkbro.service.InstapaperRepository
-import info.plateaukao.einkbro.service.InstapaperResult
+import info.plateaukao.einkbro.data.remote.InstapaperRepository
+import info.plateaukao.einkbro.data.remote.InstapaperResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
