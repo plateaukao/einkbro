@@ -3,9 +3,8 @@ package info.plateaukao.einkbro.browser
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.unit.RecordUnit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.BufferedReader
@@ -16,23 +15,23 @@ import java.net.URISyntaxException
 import java.util.*
 
 class AdBlock(context: Context) : BaseWebConfig(context) {
-    override val dbTable: String = RecordUnit.TABLE_WHITELIST
+    override val dbTable: String = RecordRepository.TABLE_WHITELIST
     init { loadDomains(); loadHosts("hosts.txt") }
 }
 
 class Javascript(context: Context) : BaseWebConfig(context) {
-    override val dbTable: String = RecordUnit.TABLE_JAVASCRIPT
+    override val dbTable: String = RecordRepository.TABLE_JAVASCRIPT
     init { loadDomains(); loadHosts("javaHosts.txt") }
 }
 
 class Cookie(context: Context) : BaseWebConfig(context) {
-    override val dbTable: String = RecordUnit.TABLE_COOKIE
+    override val dbTable: String = RecordRepository.TABLE_COOKIE
     init { loadDomains(); loadHosts("cookieHosts.txt") }
 }
 
 abstract class BaseWebConfig(private val context: Context) : KoinComponent, DomainInterface {
     private val config: ConfigManager by inject()
-    private val recordDb: RecordDb by inject()
+    private val recordDb: RecordRepository by inject()
     protected val hosts: MutableSet<String> = HashSet()
     private val whitelist: MutableList<String> = ArrayList()
 

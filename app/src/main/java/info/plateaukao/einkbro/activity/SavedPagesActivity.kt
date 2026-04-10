@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -47,7 +47,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class SavedPagesActivity : ComponentActivity() {
-    private val viewModel: SavedPageViewModel by viewModels()
+    private val viewModel: SavedPageViewModel by koinViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

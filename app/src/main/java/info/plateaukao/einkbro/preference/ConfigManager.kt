@@ -5,41 +5,33 @@ import android.content.SharedPreferences
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
-import android.print.PrintAttributes
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
-import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubFileInfo
 import info.plateaukao.einkbro.search.SearchEngine
-import info.plateaukao.einkbro.service.GptVoiceOption
-import info.plateaukao.einkbro.tts.entity.VoiceItem
-import info.plateaukao.einkbro.tts.entity.defaultVoiceItem
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.util.TranslationLanguage
-import info.plateaukao.einkbro.view.GestureType
-import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
-import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
-import info.plateaukao.einkbro.viewmodel.TtsType
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.Locale
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KMutableProperty0
-import kotlin.reflect.KProperty
 
 class ConfigManager(
     private val context: Context,
     private val sp: SharedPreferences,
 ) : KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
+
+    val ai = AiConfig(sp)
+    val tts = TtsConfig(sp)
+    val translation = TranslationConfig(sp)
+    val touch = TouchConfig(sp)
+    val display = DisplayConfig(sp)
 
     fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         sp.registerOnSharedPreferenceChangeListener(listener)
@@ -67,44 +59,23 @@ class ConfigManager(
     val isVerticalToolbar: Boolean
         get() = toolbarPosition == ToolbarPosition.Left || toolbarPosition == ToolbarPosition.Right
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
-    var isMultitouchEnabled by BooleanPreference(sp, K_MULTITOUCH, false)
-    var useUpDownPageTurn by BooleanPreference(sp, K_UPDOWN_PAGE_TURN, false)
-    var disableLongPressTouchArea by BooleanPreference(
-        sp,
-        "sp_disable_long_press_touch_area",
-        false
-    )
-    var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
-    var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
-    var boldFontStyle by BooleanPreference(sp, K_BOLD_FONT, false)
-    var blackFontStyle by BooleanPreference(sp, K_BLACK_FONT, false)
     var shouldSaveTabs by BooleanPreference(sp, K_SHOULD_SAVE_TABS, true)
     var adBlock by BooleanPreference(sp, K_ADBLOCK, true)
     var cookies by BooleanPreference(sp, K_COOKIES, true)
     var shareLocation by BooleanPreference(sp, K_SHARE_LOCATION, false)
-    var enableTouchTurn by BooleanPreference(sp, K_ENABLE_TOUCH, false)
     var keepAwake by BooleanPreference(sp, K_KEEP_AWAKE, false)
     var desktop by BooleanPreference(sp, K_DESKTOP, false)
     var continueMedia by BooleanPreference(sp, K_MEDIA_CONTINUE, false)
     var restartChanged by BooleanPreference(sp, K_RESTART_CHANGED, false)
     var autoFillForm by BooleanPreference(sp, K_AUTO_FILL, true)
     var shouldTrimInputUrl by BooleanPreference(sp, K_TRIM_INPUT_URL, false)
-    var enableZoom by BooleanPreference(sp, K_ENABLE_ZOOM, true)
     var shouldPruneQueryParameters by BooleanPreference(sp, K_PRUNE_QUERY_PARAMETERS, false)
-    var translationPanelSwitched by BooleanPreference(sp, K_TRANSLATE_PANEL_SWITCHED, false)
-    var translationScrollSync by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
-    var twoPanelLinkHere by BooleanPreference(sp, K_TWO_PANE_LINK_HERE, false)
-    var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
-    var longClickAsArrowKey by BooleanPreference(sp, K_TOUCH_AREA_ARROW_KEY, false)
-    var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
     var isBookmarkGridView by BooleanPreference(sp, K_BOOKMARK_GRID_VIEW, false)
-    var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
     var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
     var confirmTabClose by BooleanPreference(sp, K_CONFIRM_TAB_CLOSE, false)
     var shouldHideToolbar by BooleanPreference(sp, K_HIDE_TOOLBAR, false)
     var showToolbarFirst by BooleanPreference(sp, K_SHOW_TOOLBAR_FIRST, true)
-    var enableNavButtonGesture by BooleanPreference(sp, K_NAV_BUTTON_GESTURE, false)
     var clearCache by BooleanPreference(sp, K_CLEAR_CACHE, false)
     var clearIndexedDB by BooleanPreference(sp, K_CLEAR_INDEXEDDB, false)
     var clearCookies by BooleanPreference(sp, K_CLEAR_COOKIES, false)
@@ -126,25 +97,11 @@ class ConfigManager(
 
     var showDefaultActionMenu by BooleanPreference(sp, K_SHOW_DEFAULT_ACTION_MENU, false)
 
-    var showTranslatedImageToSecondPanel by BooleanPreference(
-        sp,
-        K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL,
-        true
-    )
-
-    var externalSearchWithGpt by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_GPT, false)
-
-    var externalSearchWithPopUp by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_POPUP, false)
-
     var enableSaveData by BooleanPreference(sp, K_ENABLE_SAVE_DATA, true)
 
     var blockAnalytics by BooleanPreference(sp, K_BLOCK_ANALYTICS, false)
 
     var hideStatusbar by BooleanPreference(sp, K_HIDE_STATUSBAR, false)
-
-    var enableOpenAiStream by BooleanPreference(sp, K_ENABLE_OPEN_AI_STREAM, true)
-
-    var isExternalSearchInSameTab by BooleanPreference(sp, K_EXTERNAL_SEARCH_IN_SAME_TAB, false)
 
     var shouldShowNextAfterRemoveTab by BooleanPreference(
         sp,
@@ -153,8 +110,6 @@ class ConfigManager(
     )
 
     var showActionMenuIcons by BooleanPreference(sp, K_SHOW_ACTION_MENU_ICONS, true)
-    var enableInplaceParagraphTranslate by
-    BooleanPreference(sp, K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE, true)
 
     private var originalSaveHistoryMode: SaveHistoryMode? = null
     var isIncognitoMode: Boolean
@@ -176,61 +131,12 @@ class ConfigManager(
             sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
         }
 
-    var useOpenAiTts by BooleanPreference(sp, K_USE_OPENAI_TTS, true)
-
     var webLoadCacheFirst by BooleanPreference(sp, "sp_web_load_cache_first", false)
 
     var enableSearchSuggestion by BooleanPreference(sp, "sp_enable_search_suggestion", true)
 
-    var pageReservedOffset: Int by IntPreference(sp, K_PRESERVE_HEIGHT, 80)
-
-    var pageReservedOffsetInString: String by StringPreference(
-        sp,
-        K_PRESERVE_HEIGHT_IN_STRING,
-        pageReservedOffset.toString()
-    )
-
-    private val K_TTS_LOCALE = "sp_tts_locale"
-    var ttsLocale: Locale
-        get() = Locale(
-            sp.getString(K_TTS_LOCALE, Locale.getDefault().language) ?: Locale.getDefault().language
-        )
-        set(value) {
-            sp.edit { putString(K_TTS_LOCALE, value.language) }
-        }
-
-    var fontSize: Int
-        get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
-        set(value) {
-            sp.edit { putString(K_FONT_SIZE, value.toString()) }
-        }
-    var customFontSize: Int
-        get() = sp.getString(K_CUSTOM_FONT_SIZE, "100")?.toInt() ?: fontSize
-        set(value) {
-            sp.edit { putString(K_CUSTOM_FONT_SIZE, value.toString()) }
-        }
-    var readerFontSize: Int
-        get() = sp.getString(K_READER_FONT_SIZE, fontSize.toString())?.toInt() ?: fontSize
-        set(value) {
-            sp.edit { putString(K_READER_FONT_SIZE, value.toString()) }
-        }
-
-    var ttsSpeedValue: Int
-        get() = sp.getString(K_TTS_SPEED_VALUE, "100")?.toInt() ?: 100
-        set(value) {
-            sp.edit { putString(K_TTS_SPEED_VALUE, value.toString()) }
-        }
-
-    var touchAreaCustomizeY by IntPreference(sp, K_TOUCH_AREA_OFFSET, 0)
-
-    var fontBoldness by IntPreference(sp, K_FONT_BOLDNESS, 700)
-
-    private val K_PADDING_FOR_READER_MODE = "sp_padding_for_reader_mode"
-    var paddingForReaderMode by IntPreference(sp, K_PADDING_FOR_READER_MODE, 10)
-
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
-    var preferredTranslateLanguageString by StringPreference(sp, K_TRANSLATED_LANGS)
     var searchEngine by StringPreference(
         sp,
         K_SEARCH_ENGINE,
@@ -248,189 +154,13 @@ class ConfigManager(
         ADBLOCK_URL_DEFAULT
     )
 
-    var gptApiKey by StringPreference(sp, K_GPT_API_KEY, "")
-
-    var geminiApiKey by StringPreference(sp, K_GEMINI_API_KEY, "")
-
-    var gptSystemPrompt by StringPreference(
-        sp,
-        K_GPT_SYSTEM_PROMPT,
-        "You are a good interpreter."
-    )
-    var gptUserPromptPrefix by StringPreference(
-        sp,
-        K_GPT_USER_PROMPT_PREFIX,
-        "Translate following content to English:"
-    )
-    var gptUserPromptForWebPage by StringPreference(
-        sp,
-        K_GPT_USER_PROMPT_WEB_PAGE,
-        "Summarize in 50 words:"
-    )
-    var imageApiKey by StringPreference(sp, K_IMAGE_API_KEY, "")
-    var imageTranslateIntervalSeconds by IntPreference(sp, "K_IMAGE_TRANSLATE_INTERVAL", 4)
-    var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-4.1")
-    var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
-    var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-2.5-flash")
-    var gptVoiceOption: GptVoiceOption
-        get() = GptVoiceOption.entries[sp.getInt("K_GPT_VOICE_OPTION", 0)]
-        set(value) = sp.edit { putInt("K_GPT_VOICE_OPTION", value.ordinal) }
-    var gptVoiceModel by StringPreference(sp, K_GPT_VOICE_MODEL, "tts-1")
-    var gptVoicePrompt by StringPreference(sp, K_GPT_VOICE_PROMPT, "")
-
-    var gptUrl by StringPreference(sp, K_GPT_SERVER_URL, "https://api.openai.com")
-    var useCustomGptUrl by BooleanPreference(sp, K_USE_CUSTOM_GPT_URL, false)
-    var useGeminiApi by BooleanPreference(sp, K_USE_GEMINI_API, false)
-
-    var dualCaptionLocale by StringPreference(sp, K_DUAL_CAPTION_LOCALE, "")
-
-    var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
-    var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
-    var multitouchLeft by GestureTypePreference(sp, K_MULTITOUCH_LEFT)
-    var multitouchRight by GestureTypePreference(sp, K_MULTITOUCH_RIGHT)
-    var navGestureUp by GestureTypePreference(sp, K_GESTURE_NAV_UP)
-    var navGestureDown by GestureTypePreference(sp, K_GESTURE_NAV_DOWN)
-    var navGestureLeft by GestureTypePreference(sp, K_GESTURE_NAV_LEFT)
-    var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
-    var navButtonLongClickGesture by GestureTypePreference(
-        sp,
-        K_GESTURE_NAV_LONG_CLICK,
-        defaultValue = GestureType.Overview
-    )
-
-    var upClickGesture by GestureTypePreference(
-        sp, "K_UP_CLICK_GESTURE", GestureType.PageUp
-    )
-    var downClickGesture by GestureTypePreference(
-        sp, "K_DOWN_CLICK_GESTURE", GestureType.PageDown
-    )
-    var upLongClickGesture by GestureTypePreference(
-        sp, "K_UP_LONG_CLICK_GESTURE", GestureType.ScrollToTop
-    )
-    var downLongClickGesture by GestureTypePreference(
-        sp, "K_DOWN_LONG_CLICK_GESTURE", GestureType.ScrollToBottom
-    )
-
-
-    private val K_EXTERNAL_SEARCH_METHOD = "sp_external_search_method"
-    var externalSearchMethod: TRANSLATE_API
-        get() = TRANSLATE_API.entries[sp.getInt(K_EXTERNAL_SEARCH_METHOD, 0)]
-        set(value) {
-            sp.edit { putInt(K_EXTERNAL_SEARCH_METHOD, value.ordinal) }
-        }
     var fabPosition: FabPosition
         get() = FabPosition.entries[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
             sp.edit { putString(K_NAV_POSITION, value.ordinal.toString()) }
         }
 
-    var touchAreaType: TouchAreaType
-        get() = TouchAreaType.entries[sp.getInt(K_TOUCH_AREA_TYPE, 0)]
-        set(value) {
-            sp.edit(true) { putInt(K_TOUCH_AREA_TYPE, value.ordinal) }
-        }
-
-    val isEbookModeActive: Boolean
-        get() = touchAreaType == TouchAreaType.Ebook && enableTouchTurn
-
-    var pdfPaperSize: PaperSize
-        get() = PaperSize.entries[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
-        set(value) {
-            sp.edit { putInt("pdf_paper_size", value.ordinal) }
-        }
-
-    var ttsType: TtsType
-        get() = TtsType.entries[sp.getInt("K_TTS_TYPE", 0)]
-        set(value) {
-            sp.edit { putInt("K_TTS_TYPE", value.ordinal) }
-            useOpenAiTts = value == TtsType.GPT
-        }
-
-    var ttsShowCurrentText by BooleanPreference(sp, "K_TTS_SHOW_CURRENT_TEXT", false)
-
-    var ttsShowTextTranslation by BooleanPreference(sp, "K_TTS_SHOW_TEXT_TRANSLATION", false)
-
-    // add a boolean preference for toggling url dragging
-    var enableDragUrlToAction by BooleanPreference(sp, "K_ENABLE_DRAG_URL_TO_ACTION", true)
-
-    var enableZoomTextWrapReflow by BooleanPreference(sp, K_ENABLE_ZOOM_TEXT_WRAP_REFLOW, false)
-    var zoomInCustomView by BooleanPreference(sp, "sp_zoom_in_custom_view", false)
-    var readerKeepExtraContent by BooleanPreference(sp, "sp_reader_keep_extra_content", false)
-
-    private val K_RECENT_USED_TTS_VOICES = "sp_recent_used_tts_voices"
-    var recentUsedTtsVoices: MutableList<VoiceItem>
-        get() {
-            val string = sp.getString(K_RECENT_USED_TTS_VOICES, "").orEmpty()
-            if (string.isBlank()) return mutableListOf()
-
-            return try {
-                string.split("###")
-                    .mapNotNull { Json.decodeFromString<VoiceItem>(it) }
-                    .toMutableList()
-            } catch (exception: Exception) {
-                sp.edit { remove(K_RECENT_USED_TTS_VOICES) }
-                mutableListOf()
-            }
-        }
-        set(value) {
-            val processedValue = if (value.distinct().size > 5) {
-                value.distinct().subList(0, 5)
-            } else {
-                value.distinct()
-            }
-
-            sp.edit {
-                if (processedValue.isEmpty()) {
-                    remove(K_RECENT_USED_TTS_VOICES)
-                } else {
-                    // check if the new value the same as the old one
-                    putString(
-                        K_RECENT_USED_TTS_VOICES,
-                        processedValue.joinToString("###") { Json.encodeToString(it) }
-                    )
-                }
-            }
-        }
-
-    var ettsVoice: VoiceItem
-        get() = Json.decodeFromString(
-            sp.getString(
-                "K_ETTS_VOICE", Json.encodeToString(defaultVoiceItem)
-            ) ?: Json.encodeToString(defaultVoiceItem)
-        )
-        set(value) {
-            sp.edit { putString("K_ETTS_VOICE", Json.encodeToString(value)) }
-            recentUsedTtsVoices = recentUsedTtsVoices.apply { add(0, value) }
-        }
-
     var uiLocaleLanguage by StringPreference(sp, "sp_ui_locale_language", "")
-
-    var translationLanguage: TranslationLanguage
-        get() = TranslationLanguage.entries[sp.getInt(
-            K_TRANSLATE_LANGUAGE,
-            TranslationLanguage.EN.ordinal
-        )]
-        set(value) {
-            sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) }
-        }
-
-    var sourceLanguage: TranslationLanguage
-        get() = TranslationLanguage.entries[sp.getInt(
-            K_SOURCE_LANGUAGE,
-            TranslationLanguage.KO.ordinal
-        )]
-        set(value) {
-            sp.edit { putInt(K_SOURCE_LANGUAGE, value.ordinal) }
-        }
-
-    var translationOrientation: Orientation
-        get() = Orientation.entries[sp.getInt(
-            K_TRANSLATE_ORIENTATION,
-            Orientation.Horizontal.ordinal
-        )]
-        set(value) {
-            sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) }
-        }
 
     var favoriteUrl by StringPreference(sp, K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
 
@@ -554,29 +284,6 @@ class ConfigManager(
             }
         }
 
-    var customFontInfo: CustomFontInfo?
-        get() = sp.getString(K_CUSTOM_FONT, "")?.toCustomFontInfo()
-        set(value) {
-            sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString().orEmpty()) }
-            if (fontType == FontType.CUSTOM) {
-                customFontChanged = true
-            }
-        }
-    var readerCustomFontInfo: CustomFontInfo?
-        get() = sp.getString(K_READER_CUSTOM_FONT, "")?.toCustomFontInfo()
-        set(value) {
-            sp.edit { putString(K_READER_CUSTOM_FONT, value?.toSerializedString().orEmpty()) }
-            if (fontType == FontType.CUSTOM) {
-                customFontChanged = true
-            }
-        }
-
-    var fontFolderUri: String?
-        get() = sp.getString(K_FONT_FOLDER_URI, null)
-        set(value) {
-            sp.edit { putString(K_FONT_FOLDER_URI, value.orEmpty()) }
-        }
-
     var recentBookmarks: List<RecentBookmark>
         get() {
             val string = sp.getString(K_RECENT_BOOKMARKS, "").orEmpty()
@@ -671,27 +378,6 @@ class ConfigManager(
             sp.edit { putInt(K_SAVED_ALBUM_INDEX, value) }
         }
 
-    var fontType: FontType
-        get() = FontType.entries[sp.getInt(K_FONT_TYPE, 0)]
-        set(value) = sp.edit { putInt(K_FONT_TYPE, value.ordinal) }
-    var readerFontType: FontType
-        get() = FontType.entries[sp.getInt(K_READER_FONT_TYPE, fontType.ordinal)]
-        set(value) = sp.edit { putInt(K_READER_FONT_TYPE, value.ordinal) }
-
-    var translationMode: TranslationMode
-        get() = sp.getInt(K_TRANSLATION_MODE, TranslationMode.TRANSLATE_BY_PARAGRAPH.ordinal).let { index ->
-            TranslationMode.entries.getOrElse(index) { TranslationMode.TRANSLATE_BY_PARAGRAPH }
-        }
-        set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal) }
-
-    var highlightStyle: HighlightStyle
-        get() = HighlightStyle.entries[sp.getInt(K_HIGHLIGHT_STYLE, 0)]
-        set(value) = sp.edit { putInt(K_HIGHLIGHT_STYLE, value.ordinal) }
-
-    var translationTextStyle: TranslationTextStyle
-        get() = TranslationTextStyle.entries[sp.getInt("K_TRANSLATION_TEXT_STYLE", 1)]
-        set(value) = sp.edit { putInt("K_TRANSLATION_TEXT_STYLE", value.ordinal) }
-
     var adSites: MutableSet<String>
         get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
         set(value) = sp.edit { putStringSet(K_ADBLOCK_SITES, value) }
@@ -699,22 +385,6 @@ class ConfigManager(
     var savedEpubFileInfos: List<EpubFileInfo>
         get() = sp.getString(K_SAVED_EPUBS, "")?.toEpubFileInfoList() ?: mutableListOf()
         set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value)) }
-
-    var darkMode: DarkMode
-        get() = DarkMode.entries[sp.getString(K_DARK_MODE, "2")?.toInt() ?: 2]
-        set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
-
-    var einkImageAdjustment: EinkImageAdjustment
-        get() = try {
-            EinkImageAdjustment.entries.getOrElse(
-                sp.getInt(K_ENABLE_IMAGE_ADJUSTMENT, 0)
-            ) { EinkImageAdjustment.OFF }
-        } catch (e: ClassCastException) {
-            // migrate from old boolean preference
-            sp.edit { remove(K_ENABLE_IMAGE_ADJUSTMENT) }
-            EinkImageAdjustment.OFF
-        }
-        set(value) = sp.edit { putInt(K_ENABLE_IMAGE_ADJUSTMENT, value.ordinal) }
 
     var newTabBehavior: NewTabBehavior
         get() = NewTabBehavior.entries[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
@@ -803,103 +473,124 @@ class ConfigManager(
         splitSearchItemInfoList = emptyList()
     }
 
-    var gptActionList: List<ChatGPTActionInfo>
-        get() {
-            val str = sp.getString(K_GPT_ACTION_ITEMS, "").orEmpty()
-            return if (str.isBlank()) {
-                if (gptSystemPrompt.isNotBlank() || gptUserPromptPrefix.isNotBlank()) {
-                    listOf(
-                        ChatGPTActionInfo(
-                            systemMessage = gptSystemPrompt,
-                            userMessage = gptUserPromptPrefix
-                        )
-                    )
-                } else {
-                    emptyList()
-                }
-            } else str.convertToDataClass<List<ChatGPTActionInfo>>()
-        }
-        set(value) {
-            sp.edit {
-                putString(
-                    K_GPT_ACTION_ITEMS,
-                    Json.encodeToString(value)
-                )
-            }
-        }
-
-    var gptForChatWeb: GptActionType
-        get() = GptActionType.entries[sp.getInt(K_GPT_FOR_CHAT_WEB, 0)]
-        set(value) {
-            sp.edit { putInt(K_GPT_FOR_CHAT_WEB, value.ordinal) }
-        }
-    var gptForSummary: GptActionType
-        get() = GptActionType.entries[sp.getInt(K_GPT_FOR_SUMMARY, 0)]
-        set(value) {
-            sp.edit { putInt(K_GPT_FOR_SUMMARY, value.ordinal) }
-        }
-
-    fun getDefaultActionModel(): String = if (useGeminiApi) {
-        geminiModel
-    } else if (useCustomGptUrl) {
-        alternativeModel
-    } else {
-        gptModel
-    }
-
-    fun getDefaultActionType(): GptActionType = if (useGeminiApi) {
-        GptActionType.Gemini
-    } else if (useCustomGptUrl) {
-        GptActionType.SelfHosted
-    } else {
-        GptActionType.OpenAi
-    }
-
-    fun getGptTypeModelMap(): Map<GptActionType, String> = mapOf(
-        GptActionType.Default to getDefaultActionModel(),
-        GptActionType.OpenAi to gptModel,
-        GptActionType.SelfHosted to alternativeModel,
-        GptActionType.Gemini to geminiModel
-    )
-
-
-    var gptActionForExternalSearch: ChatGPTActionInfo?
-        get() {
-            val str = sp.getString(K_GPT_ACTION_EXTERNAL, "").orEmpty()
-            return if (str.isBlank()) null
-            else str.convertToDataClass<ChatGPTActionInfo>()
-        }
-        set(value) {
-            sp.edit {
-                putString(
-                    K_GPT_ACTION_EXTERNAL,
-                    Json.encodeToString(value)
-                )
-            }
-        }
-
-    var remoteQueryActionName by StringPreference(sp, K_REMOTE_QUERY_ACTION_NAME, "Search")
-    
     var instapaperUsername by StringPreference(sp, K_INSTAPAPER_USERNAME, "")
     var instapaperPassword by StringPreference(sp, K_INSTAPAPER_PASSWORD, "")
 
-    fun addGptAction(action: ChatGPTActionInfo) {
-        gptActionList = gptActionList.toMutableList().apply { add(action) }
-    }
+    // ── Forwarding properties for backward compatibility ──
+    // These delegate to sub-configs so existing consumers still compile.
+    // Callers should migrate to config.ai.*, config.tts.*, etc.
 
-    fun deleteGptAction(action: ChatGPTActionInfo) {
-        gptActionList = gptActionList.toMutableList().apply { remove(action) }
-    }
+    // AI forwarding
+    var gptApiKey by ai::gptApiKey
+    var geminiApiKey by ai::geminiApiKey
+    var gptSystemPrompt by ai::gptSystemPrompt
+    var gptUserPromptPrefix by ai::gptUserPromptPrefix
+    var gptUserPromptForWebPage by ai::gptUserPromptForWebPage
+    var imageApiKey by ai::imageApiKey
+    var imageTranslateIntervalSeconds by ai::imageTranslateIntervalSeconds
+    var gptModel by ai::gptModel
+    var alternativeModel by ai::alternativeModel
+    var geminiModel by ai::geminiModel
+    var gptVoiceOption by ai::gptVoiceOption
+    var gptVoiceModel by ai::gptVoiceModel
+    var gptVoicePrompt by ai::gptVoicePrompt
+    var gptUrl by ai::gptUrl
+    var useCustomGptUrl by ai::useCustomGptUrl
+    var useGeminiApi by ai::useGeminiApi
+    var enableOpenAiStream by ai::enableOpenAiStream
+    var externalSearchWithGpt by ai::externalSearchWithGpt
+    var externalSearchWithPopUp by ai::externalSearchWithPopUp
+    var isExternalSearchInSameTab by ai::isExternalSearchInSameTab
+    var externalSearchMethod by ai::externalSearchMethod
+    var gptActionList by ai::gptActionList
+    var gptForChatWeb by ai::gptForChatWeb
+    var gptForSummary by ai::gptForSummary
+    var gptActionForExternalSearch by ai::gptActionForExternalSearch
+    var remoteQueryActionName by ai::remoteQueryActionName
+    fun addGptAction(action: ChatGPTActionInfo) = ai.addGptAction(action)
+    fun deleteGptAction(action: ChatGPTActionInfo) = ai.deleteGptAction(action)
+    fun deleteAllGptActions() = ai.deleteAllGptActions()
+    fun getDefaultActionModel() = ai.getDefaultActionModel()
+    fun getDefaultActionType() = ai.getDefaultActionType()
+    fun getGptTypeModelMap() = ai.getGptTypeModelMap()
 
-    fun deleteAllGptActions() {
-        gptActionList = emptyList()
-    }
+    // TTS forwarding
+    var ttsLocale by tts::ttsLocale
+    var ttsSpeedValue by tts::ttsSpeedValue
+    var ttsType by tts::ttsType
+    var ttsShowCurrentText by tts::ttsShowCurrentText
+    var ttsShowTextTranslation by tts::ttsShowTextTranslation
+    var useOpenAiTts by tts::useOpenAiTts
+    var recentUsedTtsVoices by tts::recentUsedTtsVoices
+    var ettsVoice by tts::ettsVoice
+    var dualCaptionLocale by tts::dualCaptionLocale
 
+    // Translation forwarding
+    var translationLanguage by translation::translationLanguage
+    var sourceLanguage by translation::sourceLanguage
+    var translationOrientation by translation::translationOrientation
+    var translationMode by translation::translationMode
+    var translationTextStyle by translation::translationTextStyle
+    var translationPanelSwitched by translation::translationPanelSwitched
+    var translationScrollSync by translation::translationScrollSync
+    var twoPanelLinkHere by translation::twoPanelLinkHere
+    var showTranslatedImageToSecondPanel by translation::showTranslatedImageToSecondPanel
+    var enableInplaceParagraphTranslate by translation::enableInplaceParagraphTranslate
+    var preferredTranslateLanguageString by translation::preferredTranslateLanguageString
 
-    private inline fun <reified R : Any> String.convertToDataClass() =
-        Json {
-            ignoreUnknownKeys = true
-        }.decodeFromString<R>(this)
+    // Touch forwarding
+    var enableTouchTurn by touch::enableTouchTurn
+    var isMultitouchEnabled by touch::isMultitouchEnabled
+    var useUpDownPageTurn by touch::useUpDownPageTurn
+    var disableLongPressTouchArea by touch::disableLongPressTouchArea
+    var touchAreaHint by touch::touchAreaHint
+    var volumePageTurn by touch::volumePageTurn
+    var switchTouchAreaAction by touch::switchTouchAreaAction
+    var longClickAsArrowKey by touch::longClickAsArrowKey
+    var hideTouchAreaWhenInput by touch::hideTouchAreaWhenInput
+    var enableNavButtonGesture by touch::enableNavButtonGesture
+    var touchAreaCustomizeY by touch::touchAreaCustomizeY
+    var touchAreaType by touch::touchAreaType
+    val isEbookModeActive: Boolean get() = touch.isEbookModeActive
+    var enableDragUrlToAction by touch::enableDragUrlToAction
+    var pageReservedOffset by touch::pageReservedOffset
+    var pageReservedOffsetInString by touch::pageReservedOffsetInString
+    var multitouchUp by touch::multitouchUp
+    var multitouchDown by touch::multitouchDown
+    var multitouchLeft by touch::multitouchLeft
+    var multitouchRight by touch::multitouchRight
+    var navGestureUp by touch::navGestureUp
+    var navGestureDown by touch::navGestureDown
+    var navGestureLeft by touch::navGestureLeft
+    var navGestureRight by touch::navGestureRight
+    var navButtonLongClickGesture by touch::navButtonLongClickGesture
+    var upClickGesture by touch::upClickGesture
+    var downClickGesture by touch::downClickGesture
+    var upLongClickGesture by touch::upLongClickGesture
+    var downLongClickGesture by touch::downLongClickGesture
+
+    // Display forwarding
+    var fontSize by display::fontSize
+    var customFontSize by display::customFontSize
+    var readerFontSize by display::readerFontSize
+    var fontBoldness by display::fontBoldness
+    var boldFontStyle by display::boldFontStyle
+    var blackFontStyle by display::blackFontStyle
+    var fontType by display::fontType
+    var readerFontType by display::readerFontType
+    var customFontInfo by display::customFontInfo
+    var readerCustomFontInfo by display::readerCustomFontInfo
+    var fontFolderUri by display::fontFolderUri
+    var customFontChanged by display::customFontChanged
+    var darkMode by display::darkMode
+    var einkImageAdjustment by display::einkImageAdjustment
+    var highlightStyle by display::highlightStyle
+    var enableZoom by display::enableZoom
+    var enableZoomTextWrapReflow by display::enableZoomTextWrapReflow
+    var zoomInCustomView by display::zoomInCustomView
+    var readerKeepExtraContent by display::readerKeepExtraContent
+    var paddingForReaderMode by display::paddingForReaderMode
+    var pdfPaperSize by display::pdfPaperSize
 
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
@@ -929,7 +620,6 @@ class ConfigManager(
         }
 
     companion object {
-        const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_READER_TOOLBAR_ICONS = "sp_reader_toolbar_icons"
@@ -937,15 +627,8 @@ class ConfigManager(
         const val K_SEND_PAGE_NAV_KEY_LIST = "sp_send_page_nav_key_list"
         const val K_TRANSLATE_SITE_LIST = "sp_translate_site_list"
         const val K_WHITE_BACKGROUND_LIST = "sp_white_background_list"
-        const val K_BOLD_FONT = "sp_bold_font"
-        const val K_BLACK_FONT = "sp_black_font"
         const val K_NAV_POSITION = "nav_position"
-        const val K_FONT_SIZE = "sp_fontSize"
-        const val K_CUSTOM_FONT_SIZE = "sp_customFontSize"
-        const val K_READER_FONT_SIZE = "sp_reader_fontSize"
-        const val K_TTS_SPEED_VALUE = "sp_tts_speed"
         const val K_FAVORITE_URL = "favoriteURL"
-        const val K_VOLUME_PAGE_TURN = "volume_page_turn"
         const val K_SHOULD_SAVE_TABS = "sp_shouldSaveTabs"
         const val K_SAVED_ALBUM_INFO = "sp_saved_album_info"
         const val K_SAVED_ALBUM_INDEX = "sp_saved_album_index"
@@ -955,36 +638,12 @@ class ConfigManager(
         const val K_SAVE_HISTORY = "saveHistory"
         const val K_SAVE_HISTORY_MODE = "saveHistoryMode"
         const val K_COOKIES = "SP_COOKIES_9"
-        const val K_TRANSLATION_MODE = "sp_translation_mode"
-        const val K_ENABLE_TOUCH = "sp_enable_touch"
-        const val K_TOUCH_HINT = "sp_touch_area_hint"
         const val K_KEEP_AWAKE = "sp_screen_awake"
         const val K_DESKTOP = "sp_desktop"
-        const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
-        const val K_SOURCE_LANGUAGE = "sp_source_language"
-        const val K_TRANSLATE_ORIENTATION = "sp_translate_orientation"
-        const val K_TRANSLATE_PANEL_SWITCHED = "sp_translate_panel_switched"
-        const val K_TRANSLATE_SCROLL_SYNC = "sp_translate_scroll_sync"
         const val K_ADBLOCK_SITES = "sp_adblock_sites"
         const val K_CUSTOM_USER_AGENT = "userAgent"
         const val K_WHITE_BACKGROUND = "sp_whitebackground"
-        const val K_UPDOWN_PAGE_TURN = "sp_useUpDownForPageTurn"
         const val K_CUSTOM_PROCESS_TEXT_URL = "sp_process_text_custom"
-        const val K_TWO_PANE_LINK_HERE = "sp_two_pane_link_here"
-        const val K_DARK_MODE = "sp_dark_mode"
-        const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
-        const val K_FONT_BOLDNESS = "sp_font_boldness"
-        const val K_TOUCH_AREA_ACTION_SWITCH = "sp_touch_area_action_switch"
-        const val K_TOUCH_AREA_ARROW_KEY = "sp_touch_area_arrow_key"
-        const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"
-        const val K_SAVED_EPUBS = "sp_saved_epubs"
-        const val K_MULTITOUCH = "sp_multitouch"
-        const val K_CUSTOM_FONT = "sp_custom_font"
-        const val K_READER_CUSTOM_FONT = "sp_reader_custom_font"
-        const val K_CUSTOM_FONT_CHANGED = "sp_custom_font_changed"
-        const val K_FONT_FOLDER_URI = "sp_font_folder_uri"
-        const val K_FONT_TYPE = "sp_font_type"
-        const val K_READER_FONT_TYPE = "sp_reader_font_type"
         const val K_TOOLBAR_TOP = "sp_toolbar_top"
         const val K_TOOLBAR_POSITION = "sp_toolbar_position"
         const val K_VI_BINDING = "sp_enable_vi_binding"
@@ -996,19 +655,16 @@ class ConfigManager(
         const val K_SHARE_LOCATION = "SP_LOCATION_9"
         const val K_AUTO_FILL = "sp_auto_fill"
         const val K_TRIM_INPUT_URL = "sp_trim_input_url"
-        const val K_ENABLE_ZOOM = "sp_enable_zoom"
         const val K_DEBUG_WEBVIEW = "sp_debug_webview"
         const val K_HISTORY_PURGE_TS = "sp_history_purge_ts"
         const val K_PRUNE_QUERY_PARAMETERS = "sp_prune_query_parameter"
         const val K_SHOW_TAB_BAR = "sp_show_tab_bar"
         const val K_NEW_TAB_BEHAVIOR = "sp_plus_behavior"
-        const val K_TRANSLATED_LANGS = "sp_translated_langs"
         const val K_FAB_POSITION = "sp_fab_position"
         const val K_FAB_POSITION_LAND = "sp_fab_position_land"
         const val K_CONFIRM_TAB_CLOSE = "sp_close_tab_confirm"
         const val K_HIDE_TOOLBAR = "hideToolbar"
         const val K_SHOW_TOOLBAR_FIRST = "sp_toolbarShow"
-        const val K_NAV_BUTTON_GESTURE = "sp_gestures_use"
         const val K_SEARCH_ENGINE = "SP_SEARCH_ENGINE_9"
         const val K_SEARCH_ENGINE_URL = "sp_search_engine_custom"
         const val K_ENABLE_REMOTE_ACCESS = "sp_remote"
@@ -1019,7 +675,6 @@ class ConfigManager(
         const val K_ADBLOCK_HOSTS_URL = "ab_hosts"
         const val K_AUTO_UPDATE_ADBLOCK = "sp_auto_update_adblock"
         const val CERTIFICATE_ERROR_DIALOG = "sp_certificate_error_dialog"
-        const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
         const val K_CLOSE_TAB_WHEN_BACK = "sp_close_tab_when_no_more_back_history"
         const val K_ENABLE_CUSTOM_USER_AGENT = "sp_custom_user_agent"
         const val K_SHOW_SHARE_SAVE_MENU = "sp_show_share_save_menu"
@@ -1032,64 +687,22 @@ class ConfigManager(
         const val K_CLEAR_INDEXEDDB = "sp_clear_Indexeddb"
         const val K_CLEAR_WHEN_QUIT = "SP_CLEAR_QUIT_9"
 
-        const val K_MULTITOUCH_UP = "sp_multitouch_up"
-        const val K_MULTITOUCH_DOWN = "sp_multitouch_down"
-        const val K_MULTITOUCH_LEFT = "sp_multitouch_left"
-        const val K_MULTITOUCH_RIGHT = "sp_multitouch_right"
-
-        const val K_GESTURE_NAV_UP = "setting_gesture_nav_up"
-        const val K_GESTURE_NAV_DOWN = "setting_gesture_nav_down"
-        const val K_GESTURE_NAV_LEFT = "setting_gesture_nav_left"
-        const val K_GESTURE_NAV_RIGHT = "setting_gesture_nav_right"
-        const val K_GESTURE_NAV_LONG_CLICK = "setting_gesture_nav_long_click"
-
-        const val K_GPT_API_KEY = "sp_gpt_api_key"
-        const val K_GEMINI_API_KEY = "sp_gemini_api_key"
-        const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"
-        const val K_GPT_USER_PROMPT_PREFIX = "sp_gpt_user_prompt"
-        const val K_GPT_USER_PROMPT_WEB_PAGE = "sp_gpt_user_prompt_web_page"
-        const val K_PAPAGO_API_SECRET = "sp_papago_api_secret"
-        const val K_IMAGE_API_KEY = "sp_image_api_key"
-        const val K_DUAL_CAPTION_LOCALE = "sp_dual_caption_locale"
-        const val K_GPT_MODEL = "sp_gp_model"
-        const val K_GPT_VOICE_MODEL = "sp_gpt_voice_model"
-        const val K_GPT_VOICE_PROMPT = "sp_gpt_voice_prompt"
-        const val K_ALTERNATIVE_MODEL = "sp_alternative_model"
-        const val K_GEMINI_MODEL = "sp_gemini_model"
-        const val K_SPLIT_SEARCH_STRING = "sp_split_search_prefix"
-        const val K_USE_OPENAI_TTS = "sp_use_openai_tts"
-        const val K_HIGHLIGHT_STYLE = "sp_highlight_style"
+        const val K_SAVED_EPUBS = "sp_saved_epubs"
 
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
 
-        const val K_EXTERNAL_SEARCH_WITH_GPT = "sp_external_search_with_gpt"
-        const val K_EXTERNAL_SEARCH_WITH_POPUP = "sp_external_search_with_pop"
         const val K_ENABLE_SAVE_DATA = "sp_enable_save_data"
         const val K_BLOCK_ANALYTICS = "sp_block_analytics"
         const val K_HIDE_STATUSBAR = "sp_hide_statusbar"
-
-        const val K_ENABLE_OPEN_AI_STREAM = "sp_enable_open_ai_stream"
-
-        const val K_EXTERNAL_SEARCH_IN_SAME_TAB = "sp_external_search_in_same_tab"
 
         const val K_SHOW_NEXT_AFTER_REMOVE_TAB = "sp_show_previous_after_remove_tab"
 
         const val K_SHOW_ACTION_MENU_ICONS = "sp_show_action_menu_icons"
 
-        const val K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE = "sp_enable_in_place_paragraph_translate"
-
-        const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL =
-            "sp_show_translated_image_to_second_panel"
-
-        const val K_ENABLE_ZOOM_TEXT_WRAP_REFLOW = "sp_enable_zoom_text_wrap_reflow"
-
         const val K_BOOKMARK_GRID_VIEW = "sp_bookmark_grid_view"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-
-        private val K_PRESERVE_HEIGHT = "sp_page_turn_left_value"
-        private val K_PRESERVE_HEIGHT_IN_STRING = "sp_page_turn_left_value_in_string"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
@@ -1098,19 +711,81 @@ class ConfigManager(
         private const val RECENT_BOOKMARK_LIST_SIZE = 10
 
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
-        const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
-        private const val K_GPT_ACTION_EXTERNAL = "sp_gpt_action_external"
-        private const val K_GPT_FOR_CHAT_WEB = "sp_gpt_for_chat_web"
-        private const val K_GPT_FOR_SUMMARY = "sp_gpt_for_summary"
-
-        private const val K_GPT_SERVER_URL = "sp_gpt_server_url"
-        private const val K_USE_CUSTOM_GPT_URL = "sp_use_custom_gpt_url"
-        private const val K_USE_GEMINI_API = "sp_use_gemini_api"
-
-        private const val K_REMOTE_QUERY_ACTION_NAME = "sp_remote_query_action_name"
 
         const val K_INSTAPAPER_USERNAME = "sp_instapaper_username"
         const val K_INSTAPAPER_PASSWORD = "sp_instapaper_password"
+
+        // Forwarding constants from sub-configs for backward compatibility
+        const val K_FONT_TYPE = DisplayConfig.K_FONT_TYPE
+        const val K_READER_FONT_TYPE = DisplayConfig.K_READER_FONT_TYPE
+        const val K_FONT_SIZE = DisplayConfig.K_FONT_SIZE
+        const val K_CUSTOM_FONT_SIZE = DisplayConfig.K_CUSTOM_FONT_SIZE
+        const val K_READER_FONT_SIZE = DisplayConfig.K_READER_FONT_SIZE
+        const val K_BOLD_FONT = DisplayConfig.K_BOLD_FONT
+        const val K_BLACK_FONT = DisplayConfig.K_BLACK_FONT
+        const val K_ENABLE_IMAGE_ADJUSTMENT = DisplayConfig.K_ENABLE_IMAGE_ADJUSTMENT
+        const val K_CUSTOM_FONT = DisplayConfig.K_CUSTOM_FONT
+        const val K_READER_CUSTOM_FONT = DisplayConfig.K_READER_CUSTOM_FONT
+        const val K_CUSTOM_FONT_CHANGED = DisplayConfig.K_CUSTOM_FONT_CHANGED
+        const val K_FONT_FOLDER_URI = DisplayConfig.K_FONT_FOLDER_URI
+        const val K_DARK_MODE = DisplayConfig.K_DARK_MODE
+        const val K_HIGHLIGHT_STYLE = DisplayConfig.K_HIGHLIGHT_STYLE
+        const val K_ENABLE_ZOOM = DisplayConfig.K_ENABLE_ZOOM
+        const val K_ENABLE_ZOOM_TEXT_WRAP_REFLOW = DisplayConfig.K_ENABLE_ZOOM_TEXT_WRAP_REFLOW
+        const val K_FONT_BOLDNESS = DisplayConfig.K_FONT_BOLDNESS
+
+        const val K_TTS_SPEED_VALUE = TtsConfig.K_TTS_SPEED_VALUE
+        const val K_USE_OPENAI_TTS = TtsConfig.K_USE_OPENAI_TTS
+        const val K_DUAL_CAPTION_LOCALE = TtsConfig.K_DUAL_CAPTION_LOCALE
+
+        const val K_ENABLE_TOUCH = TouchConfig.K_ENABLE_TOUCH
+        const val K_TOUCH_HINT = TouchConfig.K_TOUCH_HINT
+        const val K_VOLUME_PAGE_TURN = TouchConfig.K_VOLUME_PAGE_TURN
+        const val K_UPDOWN_PAGE_TURN = TouchConfig.K_UPDOWN_PAGE_TURN
+        const val K_MULTITOUCH = TouchConfig.K_MULTITOUCH
+        const val K_TOUCH_AREA_OFFSET = TouchConfig.K_TOUCH_AREA_OFFSET
+        const val K_TOUCH_AREA_ACTION_SWITCH = TouchConfig.K_TOUCH_AREA_ACTION_SWITCH
+        const val K_TOUCH_AREA_ARROW_KEY = TouchConfig.K_TOUCH_AREA_ARROW_KEY
+        const val K_TOUCH_AREA_HIDE_WHEN_INPUT = TouchConfig.K_TOUCH_AREA_HIDE_WHEN_INPUT
+        const val K_NAV_BUTTON_GESTURE = TouchConfig.K_NAV_BUTTON_GESTURE
+        const val K_TOUCH_AREA_TYPE = TouchConfig.K_TOUCH_AREA_TYPE
+        const val K_MULTITOUCH_UP = TouchConfig.K_MULTITOUCH_UP
+        const val K_MULTITOUCH_DOWN = TouchConfig.K_MULTITOUCH_DOWN
+        const val K_MULTITOUCH_LEFT = TouchConfig.K_MULTITOUCH_LEFT
+        const val K_MULTITOUCH_RIGHT = TouchConfig.K_MULTITOUCH_RIGHT
+        const val K_GESTURE_NAV_UP = TouchConfig.K_GESTURE_NAV_UP
+        const val K_GESTURE_NAV_DOWN = TouchConfig.K_GESTURE_NAV_DOWN
+        const val K_GESTURE_NAV_LEFT = TouchConfig.K_GESTURE_NAV_LEFT
+        const val K_GESTURE_NAV_RIGHT = TouchConfig.K_GESTURE_NAV_RIGHT
+        const val K_GESTURE_NAV_LONG_CLICK = TouchConfig.K_GESTURE_NAV_LONG_CLICK
+
+        const val K_GPT_API_KEY = AiConfig.K_GPT_API_KEY
+        const val K_GEMINI_API_KEY = AiConfig.K_GEMINI_API_KEY
+        const val K_GPT_SYSTEM_PROMPT = AiConfig.K_GPT_SYSTEM_PROMPT
+        const val K_GPT_USER_PROMPT_PREFIX = AiConfig.K_GPT_USER_PROMPT_PREFIX
+        const val K_GPT_USER_PROMPT_WEB_PAGE = AiConfig.K_GPT_USER_PROMPT_WEB_PAGE
+        const val K_IMAGE_API_KEY = AiConfig.K_IMAGE_API_KEY
+        const val K_GPT_MODEL = AiConfig.K_GPT_MODEL
+        const val K_GPT_VOICE_MODEL = AiConfig.K_GPT_VOICE_MODEL
+        const val K_GPT_VOICE_PROMPT = AiConfig.K_GPT_VOICE_PROMPT
+        const val K_ALTERNATIVE_MODEL = AiConfig.K_ALTERNATIVE_MODEL
+        const val K_GEMINI_MODEL = AiConfig.K_GEMINI_MODEL
+        const val K_EXTERNAL_SEARCH_WITH_GPT = AiConfig.K_EXTERNAL_SEARCH_WITH_GPT
+        const val K_EXTERNAL_SEARCH_WITH_POPUP = AiConfig.K_EXTERNAL_SEARCH_WITH_POPUP
+        const val K_ENABLE_OPEN_AI_STREAM = AiConfig.K_ENABLE_OPEN_AI_STREAM
+        const val K_EXTERNAL_SEARCH_IN_SAME_TAB = AiConfig.K_EXTERNAL_SEARCH_IN_SAME_TAB
+        const val K_GPT_ACTION_ITEMS = AiConfig.K_GPT_ACTION_ITEMS
+
+        const val K_TRANSLATE_LANGUAGE = TranslationConfig.K_TRANSLATE_LANGUAGE
+        const val K_SOURCE_LANGUAGE = TranslationConfig.K_SOURCE_LANGUAGE
+        const val K_TRANSLATE_ORIENTATION = TranslationConfig.K_TRANSLATE_ORIENTATION
+        const val K_TRANSLATION_MODE = TranslationConfig.K_TRANSLATION_MODE
+        const val K_TRANSLATE_PANEL_SWITCHED = TranslationConfig.K_TRANSLATE_PANEL_SWITCHED
+        const val K_TRANSLATE_SCROLL_SYNC = TranslationConfig.K_TRANSLATE_SCROLL_SYNC
+        const val K_TWO_PANE_LINK_HERE = TranslationConfig.K_TWO_PANE_LINK_HERE
+        const val K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL = TranslationConfig.K_SHOW_TRANSLATED_IMAGE_TO_SECOND_PANEL
+        const val K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE = TranslationConfig.K_ENABLE_IN_PLACE_PARAGRAPH_TRANSLATE
+        const val K_TRANSLATED_LANGS = TranslationConfig.K_TRANSLATED_LANGS
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =
@@ -1132,158 +807,5 @@ class ConfigManager(
 
 }
 
-class BooleanPreference(
-    private val sharedPreferences: SharedPreferences,
-    private val key: String,
-    private val defaultValue: Boolean = false,
-) : ReadWriteProperty<Any, Boolean> {
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
-        sharedPreferences.getBoolean(key, defaultValue)
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
-        sharedPreferences.edit { putBoolean(key, value) }
-    }
-}
-
-class IntPreference(
-    private val sharedPreferences: SharedPreferences,
-    private val key: String,
-    private val defaultValue: Int = 0,
-) : ReadWriteProperty<Any, Int> {
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): Int =
-        sharedPreferences.getInt(key, defaultValue)
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) =
-        sharedPreferences.edit { putInt(key, value) }
-}
-
-class StringPreference(
-    private val sharedPreferences: SharedPreferences,
-    private val key: String,
-    private val defaultValue: String = "",
-) : ReadWriteProperty<Any, String> {
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): String =
-        sharedPreferences.getString(key, defaultValue) ?: defaultValue
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: String) =
-        sharedPreferences.edit { putString(key, value) }
-}
-
-class GestureTypePreference(
-    private val sharedPreferences: SharedPreferences,
-    private val key: String,
-    private val defaultValue: GestureType = GestureType.NothingHappen,
-) : ReadWriteProperty<Any, GestureType> {
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): GestureType =
-        GestureType.from(sharedPreferences.getString(key, defaultValue.value) ?: defaultValue.value)
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: GestureType) =
-        sharedPreferences.edit { putString(key, value.value) }
-}
-
-
-enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.MediaSize) {
-    ISO_13("A4 (13\")", PrintAttributes.MediaSize.ISO_A4),
-    SIZE_10("A5 (10\")", PrintAttributes.MediaSize.ISO_A5),
-    ISO_67("Hisense A7 (6.7\")", PrintAttributes.MediaSize.PRC_5),
-    SIZE_8("C6 (8\")", PrintAttributes.MediaSize.ISO_C6),
-}
-
-enum class FabPosition {
-    Right, Left, Center, NotShow, Custom
-}
-
-enum class TranslationMode(val labelResId: Int) {
-    GOOGLE_URL(R.string.google_full_page),
-    GOOGLE_IN_PLACE(R.string.google_in_place),
-    TRANSLATE_BY_PARAGRAPH(R.string.translate_by_paragraph),
-    PAPAGO_TRANSLATE_BY_SCREEN(R.string.papago_translate_by_screen),
-    DEEPL_BY_PARAGRAPH(R.string.deepl_translate_by_paragraph),
-    OPENAI_BY_PARAGRAPH(R.string.openai_translate_by_paragraph),
-    GEMINI_BY_PARAGRAPH(R.string.gemini_translate_by_paragraph),
-    OPENAI_IN_PLACE(R.string.openai_in_place),
-    GEMINI_IN_PLACE(R.string.gemini_in_place),
-}
-
-enum class FontType(val resId: Int) {
-    SYSTEM_DEFAULT(R.string.system_default),
-    SERIF(R.string.serif),
-    GOOGLE_SERIF(R.string.googleserif),
-    CUSTOM(R.string.custom_font),
-    TC_IANSUI(R.string.iansui_tc),
-    JA_MINCHO(R.string.mincho_ja),
-    KO_GAMJA(R.string.gamja_flower_ko)
-}
-
-enum class DarkMode {
-    SYSTEM, FORCE_ON, DISABLED
-}
-
-enum class NewTabBehavior {
-    START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS
-}
-
-enum class HighlightStyle(
-    val color: Color?,
-    val stringResId: Int,
-    val iconResId: Int,
-) {
-    UNDERLINE(
-        null,
-        R.string.underline,
-        R.drawable.ic_underscore,
-    ),
-    BACKGROUND_YELLOW(
-        Color.Yellow,
-        R.string.yellow,
-        R.drawable.ic_highlight_color,
-    ),
-    BACKGROUND_GREEN(
-        Color.Green,
-        R.string.green,
-        R.drawable.ic_highlight_color,
-    ),
-    BACKGROUND_BLUE(
-        Color.Blue,
-        R.string.blue,
-        R.drawable.ic_highlight_color,
-    ),
-    BACKGROUND_PINK(
-        Color.Red,
-        R.string.pink,
-        R.drawable.ic_highlight_color,
-    ),
-}
-
-enum class TranslationTextStyle(
-    val stringResId: Int,
-) {
-    NONE(R.string.none),
-    DASHED_BORDER(R.string.dashed_border),
-    VERTICAL_LINE(R.string.vertical_line),
-    GRAY(R.string.gray),
-    BOLD(R.string.bold),
-}
-
-enum class SaveHistoryMode {
-    SAVE_WHEN_OPEN, SAVE_WHEN_CLOSE, DISABLED
-}
-
-enum class EinkImageAdjustment(val strength: Int, val labelResId: Int) {
-    OFF(0, R.string.eink_image_off),
-    LEVEL_10(10, R.string.eink_image_10),
-    LEVEL_30(30, R.string.eink_image_30),
-    LEVEL_50(50, R.string.eink_image_50),
-    LEVEL_70(70, R.string.eink_image_70),
-    LEVEL_100(100, R.string.eink_image_100),
-}
-
-enum class ToolbarPosition {
-    Bottom, Top, Left, Right
-}
-
-fun KMutableProperty0<Boolean>.toggle() = set(!get())
+// Property delegates moved to PreferenceDelegates.kt
+// Enums moved to PreferenceEnums.kt

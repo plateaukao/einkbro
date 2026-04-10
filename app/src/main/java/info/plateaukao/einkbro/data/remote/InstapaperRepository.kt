@@ -1,4 +1,4 @@
-package info.plateaukao.einkbro.service
+package info.plateaukao.einkbro.data.remote
 
 import android.util.Log
 import kotlinx.coroutines.Dispatchers.IO

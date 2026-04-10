@@ -10,11 +10,11 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.preference.GptActionType
-import info.plateaukao.einkbro.service.ChatMessage
-import info.plateaukao.einkbro.service.ChatRole
-import info.plateaukao.einkbro.service.OpenAiRepository
-import info.plateaukao.einkbro.service.ImageTranslateResult
-import info.plateaukao.einkbro.service.TranslateRepository
+import info.plateaukao.einkbro.data.remote.ChatMessage
+import info.plateaukao.einkbro.data.remote.ChatRole
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.data.remote.ImageTranslateResult
+import info.plateaukao.einkbro.data.remote.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
@@ -30,12 +30,10 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-
-class TranslationViewModel : ViewModel(), KoinComponent {
-    private val config: ConfigManager by inject()
-    private val bookmarkManager: BookmarkManager by inject()
+class TranslationViewModel(
+    private val config: ConfigManager,
+    private val bookmarkManager: BookmarkManager,
+) : ViewModel() {
     private val translateRepository = TranslateRepository()
 
     private lateinit var openAiRepository: OpenAiRepository

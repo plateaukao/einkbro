@@ -1,4 +1,4 @@
-package info.plateaukao.einkbro.service
+package info.plateaukao.einkbro.data.remote
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

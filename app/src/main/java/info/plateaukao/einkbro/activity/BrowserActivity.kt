@@ -6,12 +6,9 @@ import android.app.DownloadManager
 import android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE
 import android.app.DownloadManager.Request
 import android.app.PictureInPictureParams
-import android.app.SearchManager
 import android.content.BroadcastReceiver
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.ACTION_VIEW
 import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
@@ -20,8 +17,6 @@ import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.Rect
-import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -36,34 +31,19 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.ValueCallback
-import android.view.ScaleGestureDetector
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
-import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.VideoView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.Insets
@@ -71,82 +51,63 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
 import info.plateaukao.einkbro.browser.BrowserController
-import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.database.SavedPage
-import info.plateaukao.einkbro.database.Highlight
 import info.plateaukao.einkbro.database.Record
-import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.view.MainActivityLayout
-import info.plateaukao.einkbro.epub.EpubManager
-import info.plateaukao.einkbro.preference.AlbumInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.FabPosition
 import info.plateaukao.einkbro.preference.FontType
-import info.plateaukao.einkbro.preference.GptActionDisplay
-import info.plateaukao.einkbro.preference.GptActionScope
-import info.plateaukao.einkbro.preference.HighlightStyle
-import info.plateaukao.einkbro.preference.NewTabBehavior
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
 import info.plateaukao.einkbro.service.ClearService
-import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit
-import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.unit.pruneWebTitle
-import info.plateaukao.einkbro.unit.toRawPoint
-import info.plateaukao.einkbro.util.Constants.Companion.ACTION_DICT
-import info.plateaukao.einkbro.util.TranslationLanguage
 import info.plateaukao.einkbro.view.TranslationPanelView
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
-import info.plateaukao.einkbro.view.ZoomableFrameLayout
 import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.SwipeTouchListener
 import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.SendLinkDialog
-import info.plateaukao.einkbro.view.dialog.TextInputDialog
-import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
-import info.plateaukao.einkbro.view.compose.AutoCompleteTextField
 import info.plateaukao.einkbro.view.compose.ComposedSearchBar
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.ActionModeMenu
 import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.LanguageSettingDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.PageAiActionDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.ShowEditGptActionDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.TranslateDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.TranslationConfigDlgFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
+import info.plateaukao.einkbro.activity.delegates.ActionModeDelegate
+import info.plateaukao.einkbro.activity.delegates.AiChatDelegate
+import info.plateaukao.einkbro.activity.delegates.ContextMenuDelegate
+import info.plateaukao.einkbro.activity.delegates.FileHandlingDelegate
+import info.plateaukao.einkbro.activity.delegates.FullscreenDelegate
+import info.plateaukao.einkbro.activity.delegates.InputBarDelegate
+import info.plateaukao.einkbro.activity.delegates.IntentDispatchDelegate
+import info.plateaukao.einkbro.activity.delegates.TabManager
+import info.plateaukao.einkbro.activity.delegates.TranslationDelegate
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
@@ -155,18 +116,6 @@ import info.plateaukao.einkbro.view.viewControllers.FabImageViewController
 import info.plateaukao.einkbro.view.viewControllers.OverviewDialogController
 import info.plateaukao.einkbro.view.viewControllers.TouchAreaViewController
 import info.plateaukao.einkbro.view.viewControllers.TwoPaneController
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.DeeplTranslate
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.GoogleTranslate
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Gpt
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.HighlightText
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Idle
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Naver
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Papago
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SelectParagraph
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SelectSentence
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.SplitSearch
-import info.plateaukao.einkbro.viewmodel.ActionModeMenuState.Tts
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
@@ -181,17 +130,15 @@ import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 import java.io.File
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.floor
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -200,73 +147,210 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     protected lateinit var ebWebView: EBWebView
     protected open var shouldRunClearService: Boolean = true
 
-    private var videoView: VideoView? = null
-    private var customView: View? = null
-    private var languageLabelView: TextView? = null
-
-
     // Layouts
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mainContentLayout: FrameLayout
+    private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     private lateinit var translationPanelView: TranslationPanelView
 
-    private var fullscreenHolder: FrameLayout? = null
-
-    // Others
-    private var downloadReceiver: BroadcastReceiver? = null
+    // DI
     private val config: ConfigManager by inject()
-    private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
-
-    private val ttsViewModel: TtsViewModel by viewModels()
-
-    private val translationViewModel: TranslationViewModel by viewModels()
-
-    private val splitSearchViewModel: SplitSearchViewModel by viewModels()
-
-    private val remoteConnViewModel: RemoteConnViewModel by viewModels()
-
-    private val externalSearchViewModel: ExternalSearchViewModel by viewModels()
-
-    private val instapaperViewModel: InstapaperViewModel by viewModels()
-
+    private val bookmarkManager: BookmarkManager by inject()
+    private val recordDb: RecordRepository by inject()
     private val searchSuggestionViewModel: SearchSuggestionViewModel by inject()
 
-    private val keyHandler: KeyHandler by lazy { KeyHandler(this, ebWebView, config) }
+    // ViewModels
+    private val ttsViewModel: TtsViewModel by koinViewModel()
+    private val translationViewModel: TranslationViewModel by koinViewModel()
+    private val splitSearchViewModel: SplitSearchViewModel by viewModels()
+    private val remoteConnViewModel: RemoteConnViewModel by koinViewModel()
+    private val externalSearchViewModel: ExternalSearchViewModel by koinViewModel()
+    private val instapaperViewModel: InstapaperViewModel by koinViewModel()
+    private val albumViewModel: AlbumViewModel by viewModels()
+    private val bookmarkViewModel: BookmarkViewModel by viewModels { BookmarkViewModelFactory(bookmarkManager) }
+    private val actionModeMenuViewModel: ActionModeMenuViewModel by koinViewModel()
 
-    private fun prepareRecord(): Boolean {
-        val webView = currentAlbumController as EBWebView
-        val title = webView.title
-        val url = webView.url
-        return (title.isNullOrEmpty() || url.isNullOrEmpty()
-                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
-    }
-
-    private var originalOrientation = 0
-    private var searchOnSite = false
-    private var customViewCallback: CustomViewCallback? = null
+    // Controllers
+    private lateinit var touchController: TouchAreaViewController
+    private lateinit var twoPaneController: TwoPaneController
+    private lateinit var overviewDialogController: OverviewDialogController
+    private lateinit var fabImageViewController: FabImageViewController
     private var currentAlbumController: AlbumController? = null
-    private var filePathCallback: ValueCallback<Array<Uri>>? = null
+    private var downloadReceiver: BroadcastReceiver? = null
+    private var searchOnSite = false
+    private var longPressPoint: Point = Point(0, 0)
 
+    private val adFilter: AdFilter = AdFilter.get()
+    private val filterViewModel: FilterViewModel = adFilter.viewModel
+    private val browserContainer: BrowserContainer = BrowserContainer()
     private lateinit var binding: MainActivityLayout
 
-    private val bookmarkManager: BookmarkManager by inject()
-
-    private val epubManager: EpubManager by lazy { EpubManager(this) }
+    private val keyHandler: KeyHandler by lazy { KeyHandler(this, ebWebView, config) }
+    private val dialogManager: DialogManager by lazy { DialogManager(this) }
+    private val gestureHandler: GestureHandler by lazy { GestureHandler(this) }
+    private val toolbarActionHandler: ToolbarActionHandler by lazy { ToolbarActionHandler(this) }
+    private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this) }
+    private val externalSearchWebView: WebView by lazy { BrowserUnit.createNaverDictWebView(this) }
 
     private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
+    private var orientation: Int = 0
+    private var isRunning = false
+    private var fabImagePositionChanged = false
 
-    private var shouldLoadTabState: Boolean = false
+    // ── Delegates ──────────────────────────────────────────────────────────
 
-    private val toolbarActionHandler: ToolbarActionHandler by lazy {
-        ToolbarActionHandler(this)
+    private val fullscreenDelegate: FullscreenDelegate by lazy {
+        FullscreenDelegate(
+            activity = this,
+            config = config,
+            bindingProvider = { binding },
+            webViewProvider = { ebWebView },
+            currentAlbumControllerProvider = { currentAlbumController },
+            composeToolbarViewControllerProvider = { composeToolbarViewController },
+            fabImageViewControllerProvider = { fabImageViewController },
+            searchOnSiteProvider = { searchOnSite },
+            searchPanelHideAction = { searchOnSite = false; ViewUnit.hideKeyboard(this) },
+        )
     }
 
-    private val albumViewModel: AlbumViewModel by viewModels()
+    private val aiChatDelegate: AiChatDelegate by lazy {
+        AiChatDelegate(
+            activity = this,
+            config = config,
+            translationViewModel = translationViewModel,
+            webViewProvider = { ebWebView },
+            twoPaneControllerProvider = { twoPaneController },
+            isTwoPaneControllerInitialized = { isTwoPaneControllerInitialized() },
+            maybeInitTwoPaneController = { maybeInitTwoPaneController() },
+            addAlbum = { title, _ -> addAlbum(title) },
+            showTranslationDialog = { isWholePageMode -> translationDelegate.showTranslationDialog(isWholePageMode) },
+        )
+    }
 
-    private val externalSearchWebView: WebView by lazy {
-        BrowserUnit.createNaverDictWebView(this)
+    private val contextMenuDelegate: ContextMenuDelegate by lazy {
+        ContextMenuDelegate(
+            activity = this,
+            config = config,
+            ttsViewModel = ttsViewModel,
+            webViewProvider = { ebWebView },
+            addAlbum = { title, url, foreground -> addAlbum(title, url, foreground) },
+            prepareRecord = { prepareRecord() },
+            saveBookmark = { url, title -> saveBookmark(url, title) },
+            toggleSplitScreen = { url -> toggleSplitScreen(url) },
+            summarizeLinkContent = { url -> aiChatDelegate.summarizeLinkContent(url) },
+            translateImage = { url -> translationDelegate.translateImage(url) },
+            translateAllImages = { url -> translationDelegate.translateAllImages(url) },
+            saveFile = { url, fileName -> saveFile(url, fileName) },
+        )
+    }
+
+    private val inputBarDelegate: InputBarDelegate by lazy {
+        InputBarDelegate(
+            activity = this,
+            config = config,
+            bookmarkManager = bookmarkManager,
+            searchSuggestionViewModel = searchSuggestionViewModel,
+            bindingProvider = { binding },
+            webViewProvider = { ebWebView },
+            composeToolbarViewControllerProvider = { composeToolbarViewController },
+            updateAlbum = { url -> updateAlbum(url) },
+            showToolbar = { fullscreenDelegate.showToolbar() },
+            toggleFullscreen = { toggleFullscreen() },
+        )
+    }
+
+    private val intentDispatchDelegate: IntentDispatchDelegate by lazy {
+        IntentDispatchDelegate(
+            activity = this,
+            config = config,
+            externalSearchViewModel = externalSearchViewModel,
+            remoteConnViewModel = remoteConnViewModel,
+            translationViewModel = translationViewModel,
+            webViewProvider = { ebWebView },
+            currentAlbumControllerProvider = { currentAlbumController },
+            overviewDialogControllerProvider = { overviewDialogController },
+            addAlbum = { title, url, foreground -> addAlbum(title, url, foreground) },
+            updateAlbum = { url -> updateAlbum(url) },
+            showAlbum = { controller -> showAlbum(controller) },
+            getUrlMatchedBrowser = { url -> tabManager.getUrlMatchedBrowser(url) },
+            openHistoryPage = { openHistoryPage() },
+            openBookmarkPage = { openBookmarkPage() },
+            focusOnInput = { focusOnInput() },
+            readArticle = { readArticle() },
+            chatWithWeb = { useSplitScreen, content, action -> chatWithWeb(useSplitScreen, content, action) },
+            showTranslationDialog = { isWholePageMode -> translationDelegate.showTranslationDialog(isWholePageMode) },
+        )
+    }
+
+    private val actionModeDelegate: ActionModeDelegate by lazy {
+        ActionModeDelegate(
+            activity = this,
+            config = config,
+            actionModeMenuViewModel = actionModeMenuViewModel,
+            translationViewModel = translationViewModel,
+            ttsViewModel = ttsViewModel,
+            splitSearchViewModel = splitSearchViewModel,
+            remoteConnViewModel = remoteConnViewModel,
+            externalSearchViewModel = externalSearchViewModel,
+            bookmarkManager = bookmarkManager,
+            bindingProvider = { binding },
+            webViewProvider = { ebWebView },
+            getFocusedWebView = { getFocusedWebView() },
+            longPressPointProvider = { longPressPoint },
+            updateLongPressPoint = { longPressPoint = it },
+            showTranslationDialog = { isWholePageMode -> translationDelegate.showTranslationDialog(isWholePageMode) },
+            updateTranslationInput = { translationDelegate.updateTranslationInput() },
+            toggleSplitScreen = { url -> toggleSplitScreen(url) },
+            chatWithWeb = { useSplitScreen, content, action -> chatWithWeb(useSplitScreen, content, action) },
+        )
+    }
+
+    protected val translationDelegate: TranslationDelegate by lazy {
+        TranslationDelegate(
+            activity = this,
+            config = config,
+            translationViewModel = translationViewModel,
+            actionModeMenuViewModel = actionModeMenuViewModel,
+            webViewProvider = { ebWebView },
+            focusedWebViewProvider = { getFocusedWebView() },
+            externalSearchWebViewProvider = { externalSearchWebView },
+            twoPaneControllerProvider = { twoPaneController },
+            isTwoPaneControllerInitialized = { isTwoPaneControllerInitialized() },
+            maybeInitTwoPaneController = { maybeInitTwoPaneController() },
+            addAlbum = { tabManager.addAlbum() },
+        )
+    }
+
+    val tabManager: TabManager by lazy {
+        TabManager(
+            activity = this,
+            config = config,
+            browserContainer = browserContainer,
+            albumViewModel = albumViewModel,
+            bookmarkManager = bookmarkManager,
+            externalSearchViewModel = externalSearchViewModel,
+            webViewProvider = { ebWebView },
+            currentAlbumControllerProvider = { currentAlbumController },
+            setCurrentAlbumController = { currentAlbumController = it },
+            setEbWebView = { ebWebView = it },
+            mainContentLayoutProvider = { mainContentLayout },
+            progressBarProvider = { progressBar },
+            composeToolbarViewControllerProvider = { composeToolbarViewController },
+            fabImageViewControllerProvider = { fabImageViewController },
+            createWebView = { createebWebView() },
+            createTouchListener = { createMultiTouchTouchListener(it) },
+            keyHandlerSetWebView = { keyHandler.setWebView(it) },
+            addHistoryAction = { title, url -> addHistory(title, url) },
+            adFilterProvider = { adFilter },
+            updateLanguageLabel = { translationDelegate.updateLanguageLabel() },
+        )
+    }
+
+    val fileHandlingDelegate: FileHandlingDelegate by lazy {
+        FileHandlingDelegate(
+            activity = this,
+            webViewProvider = { ebWebView },
+            bookmarkManager = bookmarkManager,
+        )
     }
 
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
@@ -282,83 +366,287 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    override fun newATab() {
-        // fix: https://github.com/plateaukao/einkbro/issues/343
-        if (searchOnSite) {
-            hideSearchPanel()
-        }
+    // ── BrowserController implementation ──────────────────────────────────
 
-        when (config.newTabBehavior) {
-            NewTabBehavior.START_INPUT -> {
-                addAlbum(getString(R.string.app_name), "")
-                focusOnInput()
-            }
-
-            NewTabBehavior.SHOW_HOME -> addAlbum("", config.favoriteUrl)
-            NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
-                addAlbum("", "")
-                BrowserUnit.loadRecentlyUsedBookmarks(ebWebView)
-            }
-        }
-    }
-
-    override fun duplicateTab() {
-        val webView = currentAlbumController as EBWebView
-        val title = webView.title.orEmpty()
-        val url = webView.url ?: return
-        addAlbum(title, url)
-    }
-
+    override fun newATab() = tabManager.newATab(searchOnSite, { hideSearchPanel() }, { focusOnInput() })
+    override fun duplicateTab() = tabManager.duplicateTab()
     override fun refreshAction() {
-        if (ebWebView.isLoadFinish && ebWebView.url?.isNotEmpty() == true) {
-            ebWebView.reload()
-        } else {
-            ebWebView.stopLoading()
-        }
+        if (ebWebView.isLoadFinish && ebWebView.url?.isNotEmpty() == true) ebWebView.reload()
+        else ebWebView.stopLoading()
     }
 
-    private lateinit var overviewDialogController: OverviewDialogController
+    override fun isAtTop(): Boolean = ebWebView.isAtTop()
+    override fun jumpToTop() = ebWebView.jumpToTop()
+    override fun jumpToBottom() = ebWebView.jumpToBottom()
+    override fun pageDown() = ebWebView.pageDownWithNoAnimation()
+    override fun pageUp() = ebWebView.pageUpWithNoAnimation()
+    override fun toggleReaderMode() = ebWebView.toggleReaderMode()
+    override fun toggleVerticalRead() = ebWebView.toggleVerticalRead()
+    override fun toggleAudioOnlyMode() = ebWebView.toggleAudioOnlyMode()
+    override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
+    override fun sendPageUpKey() = ebWebView.sendPageUpKey()
+    override fun sendPageDownKey() = ebWebView.sendPageDownKey()
+    override fun sendLeftKey() { ebWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT)) }
+    override fun sendRightKey() { ebWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT)) }
 
-    private val browserContainer: BrowserContainer = BrowserContainer()
+    override fun translate(translationMode: TranslationMode) = translationDelegate.translate(translationMode)
+    override fun resetTranslateUI() = translationDelegate.resetTranslateUI()
+    override fun configureTranslationLanguage(translateApi: TRANSLATE_API) = translationDelegate.configureTranslationLanguage(translateApi)
+    override fun showTranslation(webView: EBWebView?) = translationDelegate.showTranslation(webView)
+    override fun showTranslationConfigDialog(translateDirectly: Boolean) = translationDelegate.showTranslationConfigDialog(translateDirectly)
 
-    private lateinit var touchController: TouchAreaViewController
+    override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
+    override fun toggleTextSearch() { remoteConnViewModel.toggleTextSearch() }
+    override fun toggleTouchTurnPageFeature() = config::enableTouchTurn.toggle()
+    override fun toggleSwitchTouchAreaAction() = config::switchTouchAreaAction.toggle()
 
-    private lateinit var twoPaneController: TwoPaneController
+    override fun onShowCustomView(view: View?, callback: CustomViewCallback?) = fullscreenDelegate.onShowCustomView(view, callback)
+    override fun onHideCustomView(): Boolean = fullscreenDelegate.onHideCustomView()
+    override fun toggleFullscreen() = fullscreenDelegate.toggleFullscreen()
+    override fun showOverview() = overviewDialogController.show()
+    override fun hideOverview() = overviewDialogController.hide()
+    override fun rotateScreen() = IntentUnit.rotateScreen(this)
 
-    private val dialogManager: DialogManager by lazy { DialogManager(this) }
+    override fun addHistory(title: String, url: String) {
+        lifecycleScope.launch { recordDb.addHistory(Record(title, url, System.currentTimeMillis())) }
+    }
 
-    private val recordDb: RecordDb by inject()
+    override fun isCurrentAlbum(albumController: AlbumController): Boolean = tabManager.isCurrentAlbum(albumController)
+    override fun showAlbum(controller: AlbumController) = tabManager.showAlbum(controller)
+    override fun addNewTab(url: String) = tabManager.addNewTab(url)
+    override fun removeAlbum(albumController: AlbumController, showHome: Boolean) = tabManager.removeAlbum(albumController, showHome)
+    override fun removeAlbum() = tabManager.removeCurrentAlbum()
+    override fun gotoLeftTab() = tabManager.gotoLeftTab()
+    override fun gotoRightTab() = tabManager.gotoRightTab()
+    override fun updateAlbum(url: String?) = tabManager.updateAlbum(url)
 
-    private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var createWebArchivePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
-    private lateinit var openEpubFilePickerLauncher: ActivityResultLauncher<Intent>
+    override fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>) = fileHandlingDelegate.showFileChooser(filePathCallback)
+    override fun showEpubDialog() = fileHandlingDelegate.showEpubDialog()
+    override fun showWebArchiveFilePicker() = fileHandlingDelegate.showWebArchiveFilePicker()
+    override fun showOpenEpubFilePicker() = fileHandlingDelegate.showOpenEpubFilePicker()
+    override fun savePageForLater() = fileHandlingDelegate.savePageForLater()
+    override fun showSavedPages() = fileHandlingDelegate.showSavedPages()
 
-    // Classes
-    private inner class VideoCompletionListener : OnCompletionListener,
-        MediaPlayer.OnErrorListener {
-        override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean = false
+    override fun onLongPress(message: Message, event: MotionEvent?) = contextMenuDelegate.onLongPress(message, event)
+    override fun handleKeyEvent(event: KeyEvent): Boolean = keyHandler.handleKeyEvent(event)
+    override fun focusOnInput() = inputBarDelegate.focusOnInput()
 
-        override fun onCompletion(mp: MediaPlayer) {
+    override fun summarizeContent() = aiChatDelegate.summarizeContent()
+    override fun chatWithWeb(useSplitScreen: Boolean, content: String?, runWithAction: ChatGPTActionInfo?) = aiChatDelegate.chatWithWeb(useSplitScreen, content, runWithAction)
+    override fun showPageAiActionMenu() = aiChatDelegate.showPageAiActionMenu()
+
+    override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) = actionModeDelegate.updateSelectionRect(left, top, right, bottom)
+    override fun isActionModeActive(): Boolean = actionModeDelegate.isActionModeActive()
+    override fun dismissActionMode() = actionModeDelegate.dismissActionMode()
+
+    override fun handleBackKey() {
+        ViewUnit.hideKeyboard(this)
+        if (overviewDialogController.isVisible()) hideOverview()
+        if (fullscreenDelegate.fullscreenHolder != null) {
             onHideCustomView()
+        } else if (!binding.appBar.isVisible && config.showToolbarFirst) {
+            fullscreenDelegate.showToolbar()
+        } else if (!composeToolbarViewController.isDisplayed()) {
+            composeToolbarViewController.show()
+        } else {
+            if (!ebWebView.isTranslatePage && ebWebView.canGoBack()) {
+                ebWebView.goBack()
+            } else {
+                if (config.closeTabWhenNoMoreBackHistory) removeAlbum()
+                else EBToast.show(this, R.string.no_previous_page)
+            }
         }
     }
 
-    private val adFilter: AdFilter = AdFilter.get()
-    private val filterViewModel: FilterViewModel = adFilter.viewModel
+    override fun goForward() {
+        if (ebWebView.canGoForward()) ebWebView.goForward()
+        else EBToast.show(this, R.string.toast_webview_forward)
+    }
+
+    override fun saveBookmark(url: String?, title: String?) {
+        val currentUrl = url ?: ebWebView.url ?: return
+        val nonNullTitle = title ?: HelperUnit.secString(ebWebView.title)
+        try {
+            BookmarkEditDialog(
+                bookmarkViewModel,
+                Bookmark(nonNullTitle.pruneWebTitle(), currentUrl, order = if (ViewUnit.isWideLayout(this)) 999 else 0),
+                { ViewUnit.hideKeyboard(this); EBToast.show(this, R.string.toast_edit_successful) },
+                { ViewUnit.hideKeyboard(this) }
+            ).show(supportFragmentManager, "bookmark_edit")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            EBToast.show(this, R.string.toast_error)
+        }
+    }
+
+    override fun createShortcut() = BrowserUnit.createShortcut(this, ebWebView)
+
+    override fun showSearchPanel() {
+        searchOnSite = true
+        fabImageViewController.hide()
+        binding.mainSearchPanel.visibility = VISIBLE
+        binding.mainSearchPanel.post { searchPanelFocusRequester.requestFocus(); ViewUnit.showKeyboard(this) }
+        binding.appBar.visibility = VISIBLE
+        binding.contentSeparator.visibility = VISIBLE
+        ViewUnit.showKeyboard(this)
+    }
+
+    override fun showFontSizeChangeDialog() {
+        if (ebWebView.shouldUseReaderFont()) {
+            ReaderFontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
+        } else {
+            FontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
+        }
+    }
+
+    override fun showFontBoldnessDialog() {
+        FontBoldnessDialogFragment(
+            config.fontBoldness,
+            okAction = { changedBoldness ->
+                config.fontBoldness = changedBoldness
+                ebWebView.applyFontBoldness()
+            }
+        ).show(supportFragmentManager, "FontBoldnessDialog")
+    }
+
+    override fun increaseFontSize() {
+        val fontSize = if (ebWebView.shouldUseReaderFont()) config.readerFontSize else config.fontSize
+        changeFontSize(fontSize + 20)
+    }
+
+    override fun decreaseFontSize() {
+        val fontSize = if (ebWebView.shouldUseReaderFont()) config.readerFontSize else config.fontSize
+        if (fontSize > 50) changeFontSize(fontSize - 20)
+    }
+
+    override fun invertColors() {
+        val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
+        ViewUnit.invertColor(ebWebView, hasInvertedColor)
+    }
+
+    override fun shareLink() = IntentUnit.share(this, ebWebView.title, ebWebView.url)
+
+    override fun sendToRemote(text: String) {
+        if (remoteConnViewModel.isSendingTextSearch) {
+            remoteConnViewModel.toggleTextSearch()
+            EBToast.show(this, R.string.send_to_remote_terminate)
+            return
+        }
+        SendLinkDialog(this, lifecycleScope).show(text)
+    }
+
+    override fun toggleReceiveTextSearch() {
+        if (remoteConnViewModel.isReceivingLink) {
+            remoteConnViewModel.toggleReceiveLink {}
+        } else {
+            remoteConnViewModel.toggleReceiveLink {
+                if (it.startsWith("action")) {
+                    val (_, content, actionString) = it.split("|||")
+                    val action = Json.decodeFromString<ChatGPTActionInfo>(actionString)
+                    if (action.display == info.plateaukao.einkbro.preference.GptActionDisplay.Popup) {
+                        translationViewModel.setupGptAction(action)
+                        translationViewModel.updateMessageWithContext(content)
+                        translationViewModel.updateInputMessage(content)
+                        translationDelegate.showTranslationDialog(action.scope == info.plateaukao.einkbro.preference.GptActionScope.WholePage)
+                    } else {
+                        chatWithWeb(false, content, action)
+                    }
+                } else {
+                    ebWebView.loadUrl(it)
+                }
+            }
+        }
+    }
+
+    override fun toggleReceiveLink() {
+        if (remoteConnViewModel.isReceivingLink) {
+            remoteConnViewModel.toggleReceiveLink {}
+            EBToast.show(this, R.string.receive_link_terminate)
+            return
+        }
+        ReceiveDataDialog(this, lifecycleScope).show {
+            ShareUtil.startReceiving(lifecycleScope) { url ->
+                if (url.isNotBlank()) { ebWebView.loadUrl(url); ShareUtil.stopBroadcast() }
+            }
+        }
+    }
+
+    override fun addToInstapaper() {
+        val url = ebWebView.url.orEmpty()
+        if (url.isEmpty()) { EBToast.show(this, R.string.url_empty); return }
+        instapaperViewModel.addUrl(url = url, username = config.instapaperUsername, password = config.instapaperPassword, title = ebWebView.title)
+    }
+
+    override fun configureInstapaper() { dialogManager.showInstapaperCredentialsDialog { _, _ -> Unit } }
+
+    override fun handleTtsButton() {
+        if (ttsViewModel.isReading()) TtsSettingDialogFragment().show(supportFragmentManager, "TtsSettingDialog")
+        else readArticle()
+    }
+
+    override fun showTtsLanguageDialog() { TtsLanguageDialog(this).show(ttsViewModel.getAvailableLanguages()) }
+
+    override fun toggleSplitScreen(url: String?) {
+        maybeInitTwoPaneController()
+        if (twoPaneController.isSecondPaneDisplayed() && url == null) {
+            twoPaneController.hideSecondPane()
+            splitSearchViewModel.reset()
+            return
+        }
+        twoPaneController.showSecondPaneWithUrl(url ?: ebWebView.url.orEmpty())
+    }
+
+    override fun loadInSecondPane(url: String): Boolean =
+        if (config.twoPanelLinkHere && isTwoPaneControllerInitialized() && twoPaneController.isSecondPaneDisplayed()) {
+            toggleSplitScreen(url); true
+        } else false
+
+    override fun showFastToggleDialog() {
+        if (!this::ebWebView.isInitialized) return
+        FastToggleDialogFragment { ebWebView.initPreferences(); ebWebView.reload() }.show(supportFragmentManager, "fast_toggle_dialog")
+    }
+
+    override fun showMenuDialog() = MenuDialogFragment(
+        ebWebView.url.orEmpty(), ttsViewModel.isReading(), ebWebView.isAudioOnlyMode,
+        ebWebView.hasVideo, config.enableTouchTurn,
+        { menuActionHandler.handle(it, ebWebView) }, { menuActionHandler.handleLongClick(it) }
+    ).show(supportFragmentManager, "menu_dialog")
+
+    override fun showTouchAreaDialog() = TouchAreaDialogFragment(ebWebView.url.orEmpty()).show(supportFragmentManager, "TouchAreaDialog")
+
+    override fun openHistoryPage(amount: Int) = overviewDialogController.openHistoryPage(amount)
+
+    override fun openBookmarkPage() = BookmarksDialogFragment(
+        lifecycleScope, bookmarkViewModel,
+        gotoUrlAction = { url -> updateAlbum(url) },
+        bookmarkIconClickAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+        splitScreenAction = { url -> toggleSplitScreen(url) },
+    ).show(supportFragmentManager, "bookmarks dialog")
+
+    override fun updateTitle(title: String?) = updateTitle()
+    override fun updateProgress(progress: Int) {
+        progressBar.progress = progress
+        if (progress < BrowserUnit.PROGRESS_MAX) {
+            updateRefresh(true)
+            progressBar.visibility = VISIBLE
+        } else {
+            updateRefresh(false)
+            progressBar.visibility = GONE
+            swipeRefreshLayout.isRefreshing = false
+            scrollChange()
+            tabManager.updateSavedAlbumInfo()
+        }
+    }
+
+    // ── Lifecycle ──────────────────────────────────────────────────────────
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // workaround for crash issue
-        // Caused by java.lang.NoSuchMethodException:
         super.onCreate(null)
-
-        //android.os.Debug.waitForDebugger()
 
         binding = MainActivityLayout.create(this)
 
         savedInstanceState?.let {
-            shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
+            intentDispatchDelegate.shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
         }
 
         config.restartChanged = false
@@ -378,1203 +666,82 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             !ebWebView.wasAtTopOnTouchStart || ebWebView.scrollY > 0 || !ebWebView.isInnerScrollAtTop
         }
         swipeRefreshLayout.setOnRefreshListener {
-            if (currentAlbumController != null) {
-                ebWebView.reload()
-            } else {
-                swipeRefreshLayout.isRefreshing = false
-            }
+            if (currentAlbumController != null) ebWebView.reload()
+            else swipeRefreshLayout.isRefreshing = false
         }
         ViewUnit.updateAppbarPosition(binding)
         initLaunchers()
         initToolbar()
         initSearchPanel()
-        initInputBar()
+        inputBarDelegate.initInputBar()
         initOverview()
         initTouchArea()
-        initActionModeViewModel()
+        actionModeDelegate.initActionModeViewModel()
+        actionModeDelegate.setTwoPaneChecker { isTwoPaneControllerInitialized() && twoPaneController.isSecondPaneDisplayed() }
         initInstapaperViewModel()
 
         downloadReceiver = createDownloadReceiver(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(
-                downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE),
-                RECEIVER_NOT_EXPORTED
-            )
+            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_NOT_EXPORTED)
         } else {
             registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
         }
 
-        dispatchIntent(intent)
-        // after dispatching intent, the value should be reset to false
-        shouldLoadTabState = false
+        intentDispatchDelegate.dispatchIntent(intent)
+        intentDispatchDelegate.shouldLoadTabState = false
 
-        if (config.keepAwake) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
+        if (config.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        initLanguageLabel()
+        translationDelegate.initLanguageLabel()
         initTouchAreaViewController()
         initTextSearchButton()
         initExternalSearchCloseButton()
-        initTranslationViewModel()
+        translationDelegate.initTranslationViewModel()
         initTtsViewModel()
 
-        if (config.hideStatusbar) {
-            hideStatusBar()
-        }
+        if (config.hideStatusbar) fullscreenDelegate.hideStatusBar()
 
         handleWindowInsets()
         listenKeyboardShowHide()
 
-        // post delay to update filter list
         if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             requestNotificationPermission()
         } else {
-            binding.root.postDelayed({
-                checkAdBlockerList()
-            }, 1000)
+            binding.root.postDelayed({ checkAdBlockerList() }, 1000)
         }
     }
-
-    private fun checkAdBlockerList() {
-        if (!adFilter.hasInstallation) {
-            val map = mapOf(
-                "AdGuard Base" to "https://filters.adtidy.org/extension/chromium/filters/2.txt",
-//                "EasyPrivacy Lite" to "https://filters.adtidy.org/extension/chromium/filters/118_optimized.txt",
-//                "AdGuard Tracking Protection" to "https://filters.adtidy.org/extension/chromium/filters/3.txt",
-//                "AdGuard Annoyances" to "https://filters.adtidy.org/extension/chromium/filters/14.txt",
-//                "AdGuard Chinese" to "https://filters.adtidy.org/extension/chromium/filters/224.txt",
-//                "NoCoin Filter List" to "https://filters.adtidy.org/extension/chromium/filters/242.txt"
-            )
-            for ((key, value) in map) {
-                filterViewModel.addFilter(key, value)
-            }
-            val filters = filterViewModel.filters.value
-            for ((key, _) in filters) {
-                filterViewModel.download(key)
-            }
-        }
-    }
-
-    private fun requestNotificationPermission() {
-        val requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-                if (isGranted) {
-                    checkAdBlockerList()
-                } else {
-                }
-            }
-        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-    }
-
-    private fun initTtsViewModel() {
-        lifecycleScope.launch {
-            ttsViewModel.readingState.collect { _ ->
-                composeToolbarViewController.updateIcons()
-            }
-        }
-    }
-
-    private fun initTranslationViewModel() {
-        lifecycleScope.launch {
-            translationViewModel.showEditDialogWithIndex.collect { index ->
-                if (index == -1) return@collect
-                ShowEditGptActionDialogFragment(index)
-                    .showNow(supportFragmentManager, "editGptAction")
-                translationViewModel.resetEditDialogIndex()
-            }
-        }
-
-    }
-
-    private fun handleWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(
-            binding.root
-        ) { view, windowInsets ->
-            val insetsNavigationBar: Insets =
-                windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
-            val params = view.layoutParams as FrameLayout.LayoutParams
-
-            if (config.hideStatusbar) {
-                // When keyboard is visible, adjust for keyboard height
-                // Otherwise, adjust for navigation bar
-                if (insetsKeyboard.bottom > 0) {
-                    params.bottomMargin = insetsKeyboard.bottom
-                } else if (insetsNavigationBar.bottom > 0) {
-                    params.bottomMargin = insetsNavigationBar.bottom
-                } else {
-                    params.bottomMargin = 0
-                }
-                view.layoutParams = params
-            }
-            // Return windowInsets instead of CONSUMED to allow proper inset propagation
-            // This is critical for WebView to properly resize when keyboard appears
-            windowInsets
-        }
-    }
-
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun initExternalSearchCloseButton() {
-        binding.activityMainContent.externalSearchClose.setOnClickListener {
-            moveTaskToBack(true)
-            externalSearchViewModel.setButtonVisibility(false)
-        }
-        val externalSearchContainer = binding.activityMainContent.externalSearchActionContainer
-        externalSearchViewModel.searchActions.forEach { action ->
-            val button = TextView(this).apply {
-                height = 40.dp.value.toInt()
-                textSize = 10.sp.value
-                gravity = Gravity.CENTER
-                background = getDrawable(R.drawable.background_with_border)
-                text = action.title.take(2).uppercase(Locale.getDefault())
-                setOnClickListener {
-                    externalSearchViewModel.currentSearchAction = action
-                    ebWebView.loadUrl(
-                        externalSearchViewModel.generateSearchUrl(
-                            splitSearchItemInfo = action
-                        )
-                    )
-                }
-            }
-            externalSearchContainer.addView(button, 0)
-        }
-        lifecycleScope.launch {
-            externalSearchViewModel.showButton.collect { show ->
-                externalSearchContainer.visibility = if (show) VISIBLE else INVISIBLE
-            }
-        }
-    }
-
-    private fun initTextSearchButton() {
-        val remoteTextSearch = findViewById<ImageButton>(R.id.remote_text_search)
-        remoteTextSearch.setOnClickListener {
-            remoteConnViewModel.reset()
-        }
-        lifecycleScope.launch {
-            remoteConnViewModel.remoteConnected.collect { connected ->
-                remoteTextSearch.setImageResource(
-                    if (remoteConnViewModel.isSendingTextSearch) R.drawable.ic_send
-                    else R.drawable.ic_receive
-                )
-                remoteTextSearch.isVisible = connected
-            }
-        }
-    }
-
-    private fun initTouchAreaViewController() {
-        touchController = TouchAreaViewController(binding.activityMainContent, this)
-    }
-
-    private fun initActionModeViewModel() {
-        lifecycleScope.launch {
-            actionModeMenuViewModel.actionModeMenuState.collect { state ->
-                when (state) {
-                    is HighlightText -> {
-                        lifecycleScope.launch {
-                            highlightText(state.highlightStyle)
-                            actionModeMenuViewModel.finish()
-                        }
-                    }
-
-                    GoogleTranslate, DeeplTranslate, Papago, Naver -> {
-                        val api =
-                            if (GoogleTranslate == state) TRANSLATE_API.GOOGLE
-                            else if (Papago == state) TRANSLATE_API.PAPAGO
-                            else if (DeeplTranslate == state) TRANSLATE_API.DEEPL
-                            else TRANSLATE_API.NAVER
-                        translationViewModel.updateTranslateMethod(api)
-
-                        lifecycleScope.launch {
-                            updateTranslationInput()
-                            showTranslationDialog()
-
-                            actionModeMenuViewModel.finish()
-                        }
-                    }
-
-                    is ActionModeMenuState.ReadFromHere -> readFromThisSentence()
-
-                    is Gpt -> {
-                        val gptAction = config.gptActionList[state.gptActionIndex]
-                        lifecycleScope.launch {
-                            updateTranslationInput()
-                            if (translationViewModel.hasOpenAiApiKey()) {
-                                translationViewModel.setupGptAction(gptAction)
-                                translationViewModel.url = getFocusedWebView().url.orEmpty()
-
-                                when (gptAction.display) {
-                                    GptActionDisplay.Popup -> showTranslationDialog()
-                                    GptActionDisplay.NewTab -> {
-                                        chatWithWeb(false, actionModeMenuViewModel.selectedText.value, gptAction)
-                                    }
-
-                                    GptActionDisplay.SplitScreen -> {
-                                        chatWithWeb(true, actionModeMenuViewModel.selectedText.value, gptAction)
-                                    }
-                                }
-                            } else {
-                                EBToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
-                            }
-                            actionModeMenuViewModel.finish()
-                        }
-                    }
-
-                    is SplitSearch -> {
-                        splitSearchViewModel.state = state
-                        val selectedText = actionModeMenuViewModel.selectedText.value
-                        toggleSplitScreen(splitSearchViewModel.getUrl(selectedText))
-
-                        actionModeMenuViewModel.finish()
-                    }
-
-                    is Tts -> {
-                        IntentUnit.tts(this@BrowserActivity, state.text)
-                        actionModeMenuViewModel.finish()
-                    }
-
-                    is SelectSentence -> getFocusedWebView().selectSentence(longPressPoint)
-                    is SelectParagraph -> getFocusedWebView().selectParagraph(longPressPoint)
-
-                    Idle -> Unit
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            actionModeMenuViewModel.clickedPoint.collect { point ->
-                val view = actionModeView ?: return@collect
-                ViewUnit.updateViewPosition(view, point)
-            }
-        }
-
-        lifecycleScope.launch {
-            actionModeMenuViewModel.shouldShow.collect { shouldShow ->
-                val view = actionModeView ?: return@collect
-                if (shouldShow) {
-                    val point = actionModeMenuViewModel.clickedPoint.value
-                    // when it's first time to show action mode view
-                    // need to wait until width and height is available
-                    if (view.width == 0 || view.height == 0) {
-                        view.post {
-                            ViewUnit.updateViewPosition(view, point)
-                            view.visibility = VISIBLE
-                        }
-                    } else {
-                        ViewUnit.updateViewPosition(view, point)
-                        view.visibility = VISIBLE
-                    }
-                } else {
-                    view.visibility = INVISIBLE
-                }
-            }
-        }
-    }
-
-    private fun initInstapaperViewModel() {
-        lifecycleScope.launch {
-            instapaperViewModel.uiState.collect { state ->
-                if (state.showConfigureDialog) {
-                    configureInstapaper()
-                } else if (state.successMessage != null) {
-                    EBToast.show(this@BrowserActivity, state.successMessage)
-                } else if (state.errorMessage != null) {
-                    EBToast.show(this@BrowserActivity, state.errorMessage)
-                }
-                instapaperViewModel.resetState()
-            }
-        }
-    }
-
-    private fun readFromThisSentence() {
-        lifecycleScope.launch {
-            val selectedSentence = ebWebView.getSelectedText()
-            val fullText = ebWebView.getRawText()
-            // read from selected sentence to the end of the article
-            val startIndex = fullText.indexOf(selectedSentence)
-            ttsViewModel.readArticle(fullText.substring(startIndex), ebWebView.title.orEmpty())
-        }
-    }
-
-    private suspend fun updateTranslationInput() {
-        // need to handle where data is from: ebWebView or twoPaneController.getSecondWebView()
-        with(translationViewModel) {
-            updateInputMessage(actionModeMenuViewModel.selectedText.value)
-            updateMessageWithContext(getFocusedWebView().getSelectedTextWithContext())
-            url = getFocusedWebView().url.orEmpty()
-        }
-    }
-
-    private suspend fun highlightText(highlightStyle: HighlightStyle) {
-        val focusedWebView = getFocusedWebView()
-        // work on UI first
-        focusedWebView.highlightTextSelection(highlightStyle)
-
-        // work on db saving
-        val url = focusedWebView.url.orEmpty()
-        val title = focusedWebView.title.orEmpty()
-        val article = Article(title, url, System.currentTimeMillis(), "")
-
-        val articleInDb =
-            bookmarkManager.getArticleByUrl(url) ?: bookmarkManager.insertArticle(article)
-
-        val selectedText = actionModeMenuViewModel.selectedText.value
-        val highlight = Highlight(articleInDb.id, selectedText)
-        bookmarkManager.insertHighlight(highlight)
-    }
-
-    private fun isInSplitSearchMode(): Boolean =
-        splitSearchViewModel.state != null && twoPaneController.isSecondPaneDisplayed()
-
-    private fun initLanguageLabel() {
-        languageLabelView = findViewById(R.id.translation_language)
-        lifecycleScope.launch {
-            translationViewModel.translationLanguage.collect {
-                ViewUnit.updateLanguageLabel(languageLabelView!!, it)
-            }
-        }
-
-        languageLabelView?.setOnClickListener {
-            lifecycleScope.launch {
-                val translationLanguage =
-                    TranslationLanguageDialog(this@BrowserActivity).show() ?: return@launch
-                translationViewModel.updateTranslationLanguage(translationLanguage)
-                ebWebView.clearTranslationElements()
-                translateByParagraph(ebWebView.translateApi)
-            }
-        }
-        languageLabelView?.setOnLongClickListener {
-            languageLabelView?.visibility = GONE
-            true
-        }
-    }
-
-    override fun isAtTop(): Boolean = ebWebView.isAtTop()
-    override fun jumpToTop() = ebWebView.jumpToTop()
-    override fun jumpToBottom() = ebWebView.jumpToBottom()
-    override fun pageDown() = ebWebView.pageDownWithNoAnimation()
-    override fun pageUp() = ebWebView.pageUpWithNoAnimation()
-    override fun toggleReaderMode() = ebWebView.toggleReaderMode()
-    override fun toggleVerticalRead() = ebWebView.toggleVerticalRead()
-    override fun toggleAudioOnlyMode() = ebWebView.toggleAudioOnlyMode()
-    override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
-
-    override fun sendPageUpKey() = ebWebView.sendPageUpKey()
-    override fun sendPageDownKey() = ebWebView.sendPageDownKey()
-    override fun sendLeftKey() {
-        ebWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
-    }
-
-    override fun sendRightKey() {
-        ebWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
-    }
-
-    override fun translate(translationMode: TranslationMode) {
-        when (translationMode) {
-            TranslationMode.TRANSLATE_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GOOGLE)
-            TranslationMode.DEEPL_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.DEEPL)
-            TranslationMode.OPENAI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.OPENAI)
-            TranslationMode.GEMINI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GEMINI)
-            TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateWebView()
-            TranslationMode.GOOGLE_IN_PLACE -> ebWebView.addGoogleTranslation()
-            TranslationMode.OPENAI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.OPENAI)
-            TranslationMode.GEMINI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.GEMINI)
-            TranslationMode.GOOGLE_URL -> Unit
-        }
-    }
-
-    override fun resetTranslateUI() {
-        languageLabelView?.visibility = GONE
-    }
-
-    override fun configureTranslationLanguage(translateApi: TRANSLATE_API) {
-        LanguageSettingDialogFragment(translateApi, translationViewModel) {
-            if (translateApi == TRANSLATE_API.GOOGLE) {
-                translateByParagraph(TRANSLATE_API.GOOGLE)
-            } else if (translateApi == TRANSLATE_API.PAPAGO) {
-                translateByParagraph(TRANSLATE_API.PAPAGO)
-            } else if (translateApi == TRANSLATE_API.DEEPL) {
-                translateByParagraph(TRANSLATE_API.DEEPL)
-            }
-        }
-            .show(supportFragmentManager, "LanguageSettingDialog")
-    }
-
-    override fun toggleTouchPagination() = toggleTouchTurnPageFeature()
-
-    override fun showFontBoldnessDialog() {
-        FontBoldnessDialogFragment(
-            config.fontBoldness,
-            okAction = { changedBoldness ->
-                config.fontBoldness = changedBoldness
-                ebWebView.applyFontBoldness()
-            }
-        ).show(supportFragmentManager, "FontBoldnessDialog")
-    }
-
-    override fun toggleTextSearch() {
-        remoteConnViewModel.toggleTextSearch()
-    }
-
-    override fun sendToRemote(text: String) {
-        if (remoteConnViewModel.isSendingTextSearch) {
-            remoteConnViewModel.toggleTextSearch()
-            EBToast.show(this, R.string.send_to_remote_terminate)
-            return
-        }
-
-        SendLinkDialog(this, lifecycleScope).show(text)
-    }
-
-    private val linkContentWebView: EBWebView by lazy {
-        EBWebView(this, this).apply {
-            setOnPageFinishedAction {
-                lifecycleScope.launch {
-                    val content = linkContentWebView.getRawText()
-                    loadUrl("about:blank")
-                    if (content.isNotEmpty()) {
-                        val isSuccess = translationViewModel.setupTextSummary(content)
-                        if (!isSuccess) {
-                            EBToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
-                            return@launch
-                        }
-
-                        showTranslationDialog()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun summarizeLinkContent(url: String) {
-        if (translationViewModel.hasOpenAiApiKey()) {
-            translationViewModel.url = url
-            linkContentWebView.loadUrl(url)
-        }
-    }
-
-    override fun summarizeContent() {
-        if (translationViewModel.hasOpenAiApiKey()) {
-            lifecycleScope.launch {
-                translationViewModel.url = ebWebView.url.orEmpty()
-                val isSuccess = translationViewModel.setupTextSummary(ebWebView.getRawText())
-
-                if (!isSuccess) {
-                    EBToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
-                    return@launch
-                }
-
-                showTranslationDialog()
-            }
-        }
-    }
-
-    override fun chatWithWeb(useSplitScreen: Boolean, content: String?, runWithAction: ChatGPTActionInfo?) {
-        lifecycleScope.launch {
-            val rawText = content ?: ebWebView.getRawText()
-            withContext(Dispatchers.Main) {
-                val scope = this@BrowserActivity.lifecycleScope
-                if (useSplitScreen) {
-                    maybeInitTwoPaneController()
-                    // get current web title/url
-                    val webTitle = ebWebView.title ?: "No Title"
-                    val webUrl = ebWebView.url.orEmpty()
-                    // add new tab
-                    twoPaneController.showSecondPaneAsAi(rawText, webTitle, webUrl)
-                    runWithAction?.let { twoPaneController.runGptAction(it) }
-                } else {
-                    // get current web title/url
-                    val webTitle = ebWebView.title ?: "No Title"
-                    val webUrl = ebWebView.url.orEmpty()
-                    // add new tab
-                    addAlbum("Chat With Web")
-                    runWithAction?.let { action ->
-                        ebWebView.setOnPageFinishedAction {
-                            ebWebView.setOnPageFinishedAction {}
-                            ebWebView.runGptAction(action)
-                        }
-                    }
-                    ebWebView.setupAiPage(scope, rawText, webTitle, webUrl)
-                }
-            }
-        }
-    }
-
-    override fun showPageAiActionMenu() {
-        val pageActions =
-            config.gptActionList.filter { it.scope == GptActionScope.WholePage }
-        if (pageActions.isEmpty()) {
-            EBToast.show(this, R.string.page_ai_action_empty)
-            return
-        }
-
-        PageAiActionDialogFragment(
-            actions = pageActions,
-            onActionClicked = { runPageAiAction(it) },
-            onActionLongClicked = { action ->
-                val index = config.gptActionList.indexOf(action)
-                if (index >= 0) {
-                    ShowEditGptActionDialogFragment(index)
-                        .showNow(supportFragmentManager, "editGptAction")
-                }
-            }
-        ).showNow(supportFragmentManager, "pageAiAction")
-    }
-
-    private fun runPageAiAction(action: ChatGPTActionInfo) {
-        lifecycleScope.launch {
-            if (!translationViewModel.hasOpenAiApiKey()) {
-                EBToast.show(this@BrowserActivity, R.string.gpt_api_key_not_set)
-                return@launch
-            }
-
-            val content = ebWebView.getRawText()
-            translationViewModel.setupGptAction(action)
-            translationViewModel.url = ebWebView.url.orEmpty()
-            translationViewModel.pageTitle = ebWebView.title.orEmpty()
-
-            when (action.display) {
-                GptActionDisplay.Popup -> {
-                    translationViewModel.updateInputMessage(content)
-                    translationViewModel.updateMessageWithContext(content)
-                    showTranslationDialog(isWholePageMode = true)
-                }
-
-                GptActionDisplay.NewTab -> chatWithWeb(false, content, action)
-
-                GptActionDisplay.SplitScreen -> chatWithWeb(true, content, action)
-            }
-        }
-    }
-
-    override fun addToInstapaper() {
-        val url = ebWebView.url.orEmpty()
-        if (url.isEmpty()) {
-            EBToast.show(this, R.string.url_empty)
-            return
-        }
-
-        instapaperViewModel.addUrl(
-            url = url,
-            username = config.instapaperUsername,
-            password = config.instapaperPassword,
-            title = ebWebView.title
-        )
-    }
-
-    override fun configureInstapaper() {
-        dialogManager.showInstapaperCredentialsDialog { name, password -> Unit }
-    }
-
-    private fun showTranslationDialog(isWholePageMode: Boolean = false) {
-        supportFragmentManager.findFragmentByTag("translateDialog")?.let {
-            supportFragmentManager.beginTransaction().remove(it).commitAllowingStateLoss()
-        }
-        TranslateDialogFragment(
-            translationViewModel,
-            externalSearchWebView,
-            actionModeMenuViewModel.clickedPoint.value,
-            isWholePageMode = isWholePageMode,
-        )
-            .show(supportFragmentManager, "translateDialog")
-    }
-
-    override fun invertColors() {
-        val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
-        ViewUnit.invertColor(ebWebView, hasInvertedColor)
-    }
-
-    override fun shareLink() {
-        IntentUnit.share(this, ebWebView.title, ebWebView.url)
-    }
-
-    override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
-        //Log.d("touch", "updateSelectionRect: $left, $top, $right, $bottom")
-        // 10 for the selection indicator height
-        val newPoint = Point(
-            ViewUnit.dpToPixel(right.toInt()).toInt(),
-            ViewUnit.dpToPixel(bottom.toInt() + 16).toInt()
-        )
-        if (abs(newPoint.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(15) ||
-            abs(newPoint.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(15)
-        ) {
-            actionModeView?.visibility = INVISIBLE
-        }
-        actionModeMenuViewModel.updateClickedPoint(newPoint)
-
-        // update the long press point so that it can be used for selecting sentence
-        longPressPoint = Point(
-            ViewUnit.dpToPixel(left.toInt() - 1).toInt(),
-            ViewUnit.dpToPixel(top.toInt() + 1).toInt()
-        )
-    }
-
-    override fun toggleReceiveTextSearch() {
-        if (remoteConnViewModel.isReceivingLink) {
-            remoteConnViewModel.toggleReceiveLink {}
-        } else {
-            remoteConnViewModel.toggleReceiveLink {
-                if (it.startsWith("action")) {
-                    val (_, content, actionString) = it.split("|||")
-                    val action = Json.decodeFromString<ChatGPTActionInfo>(actionString)
-                    if (action.display == GptActionDisplay.Popup) {
-                        translationViewModel.setupGptAction(action)
-                        translationViewModel.updateMessageWithContext(content)
-                        translationViewModel.updateInputMessage(content)
-                        showTranslationDialog(isWholePageMode = action.scope == GptActionScope.WholePage)
-                    } else {
-                        chatWithWeb(false, content, action)
-                    }
-                } else {
-                    ebWebView.loadUrl(it)
-                }
-            }
-        }
-    }
-
-    override fun toggleReceiveLink() {
-        if (remoteConnViewModel.isReceivingLink) {
-            remoteConnViewModel.toggleReceiveLink {}
-            EBToast.show(this, R.string.receive_link_terminate)
-            return
-        }
-
-        ReceiveDataDialog(this@BrowserActivity, lifecycleScope).show {
-            ShareUtil.startReceiving(lifecycleScope) { url ->
-                if (url.isNotBlank()) {
-                    ebWebView.loadUrl(url)
-                    ShareUtil.stopBroadcast()
-                }
-            }
-        }
-    }
-
-    private fun initLaunchers() {
-        saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(this)
-        createWebArchivePickerLauncher =
-            IntentUnit.createResultLauncher(this) { saveWebArchive(it) }
-        writeEpubFilePickerLauncher =
-            IntentUnit.createResultLauncher(this) {
-                val uri = backupUnit.preprocessActivityResult(it) ?: return@createResultLauncher
-                saveEpub(uri)
-            }
-        fileChooserLauncher =
-            IntentUnit.createResultLauncher(this) { handleWebViewFileChooser(it) }
-        openEpubFilePickerLauncher =
-            IntentUnit.createResultLauncher(this) { handleEpubUri(it) }
-    }
-
-    private fun handleEpubUri(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK) return
-        val uri = result.data?.data ?: return
-        HelperUnit.openFile(this, uri)
-    }
-
-    private fun handleWebViewFileChooser(result: ActivityResult) {
-        if (result.resultCode != RESULT_OK || filePathCallback == null) {
-            filePathCallback = null
-            return
-        }
-        var results: Array<Uri>?
-        // Check that the response is a good one
-        val data = result.data
-        if (data != null) {
-            // If there is not data, then we may have taken a photo
-            val dataString = data.dataString
-            results = arrayOf(Uri.parse(dataString))
-            filePathCallback?.onReceiveValue(results)
-        }
-        filePathCallback = null
-    }
-
-    @Suppress("DEPRECATION")
-    private fun saveEpub(uri: Uri) {
-        val progressDialog =
-            dialogManager.createProgressDialog(R.string.saving_epub).apply { show() }
-        epubManager.saveEpub(
-            this,
-            uri,
-            ebWebView,
-            {
-                progressDialog.progress = it
-                if (it == 100) {
-                    progressDialog.dismiss()
-                }
-            },
-            {
-                progressDialog.dismiss()
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.cannot_save_epub,
-                    okAction = {},
-                    showInCenter = true,
-                    showNegativeButton = false,
-                )
-            }
-        )
-    }
-
-    private fun saveWebArchive(result: ActivityResult) {
-        val uri = backupUnit.preprocessActivityResult(result) ?: return
-        saveWebArchiveToUri(uri)
-    }
-
-    private fun saveWebArchiveToUri(uri: Uri) {
-        // get archive from webview
-        val filePath = File(filesDir.absolutePath + "/temp.mht").absolutePath
-        ebWebView.saveWebArchive(filePath, false) {
-            val tempFile = File(filePath)
-            contentResolver.openOutputStream(uri)?.use { outputStream ->
-                tempFile.inputStream().use { inputStream ->
-                    inputStream.copyTo(outputStream)
-                }
-            }
-        }
-    }
-
-    override fun onUserLeaveHint() {
-        super.onUserLeaveHint()
-
-        if (isMeetPipCriteria()) {
-            enterPipMode()
-        }
-    }
-
-    private fun isMeetPipCriteria() = config.enableVideoPip &&
-            fullscreenHolder != null &&
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun enterPipMode() {
-        val params = PictureInPictureParams.Builder().build();
-        enterPictureInPictureMode(params)
-    }
-
-    private var searchJob: Job? = null
-    private var shouldRestoreFullscreen = false
-
-    // State for AutoCompleteTextField (previously in AutoCompleteTextComposeView)
-    private val inputTextOrUrl = mutableStateOf(TextFieldValue(""))
-    private val inputRecordList = mutableStateOf(listOf<Record>())
-    private val inputUrlFocusRequester = FocusRequester()
-    private var inputIsWideLayout by mutableStateOf(false)
-    private var inputShouldReverse by mutableStateOf(true)
-    private var inputHasCopiedText by mutableStateOf(false)
-
-    private fun initInputBar() {
-        binding.inputUrl.apply {
-            visibility = INVISIBLE
-            setContent {
-                MyTheme {
-                    AutoCompleteTextField(
-                        text = inputTextOrUrl,
-                        recordList = inputRecordList,
-                        bookmarkManager = bookmarkManager,
-                        focusRequester = inputUrlFocusRequester,
-                        isWideLayout = inputIsWideLayout,
-                        shouldReverse = inputShouldReverse,
-                        hasCopiedText = inputHasCopiedText,
-                        onTextSubmit = { text ->
-                            updateAlbum(text.trim())
-                            showToolbar()
-                            if (shouldRestoreFullscreen) {
-                                toggleFullscreen()
-                                shouldRestoreFullscreen = false
-                            }
-                        },
-                        onTextChange = { query ->
-                            searchJob?.cancel()
-                            searchJob = lifecycleScope.launch {
-                                kotlinx.coroutines.delay(300)
-                                withContext(Dispatchers.IO) {
-                                    searchSuggestionViewModel.updateSuggestions(query)
-                                }
-                                inputRecordList.value = searchSuggestionViewModel.suggestions.value
-                            }
-                        },
-                        onPasteClick = { updateAlbum(getClipboardText()); showToolbar() },
-                        closeAction = {
-                            showToolbar()
-                            if (shouldRestoreFullscreen) {
-                                toggleFullscreen()
-                                shouldRestoreFullscreen = false
-                            }
-                        },
-                        onRecordClick = {
-                            updateAlbum(it.url)
-                            showToolbar()
-                            if (shouldRestoreFullscreen) {
-                                toggleFullscreen()
-                                shouldRestoreFullscreen = false
-                            }
-                        },
-                    )
-                }
-            }
-        }
-    }
-
-    private fun isKeyboardDisplaying(): Boolean {
-        val rect = Rect()
-        binding.root.getWindowVisibleDisplayFrame(rect)
-        val heightDiff: Int = binding.root.rootView.height - rect.bottom
-        return heightDiff > binding.root.rootView.height * 0.15
-    }
-
-    private fun listenKeyboardShowHide() {
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            if (isKeyboardDisplaying()) { // Value should be less than keyboard's height
-                touchController.maybeDisableTemporarily()
-            } else {
-                touchController.maybeEnableAgain()
-            }
-
-            // Manual keyboard handling for pre-R devices when status bar is hidden
-            @Suppress("DEPRECATION")
-            val isFullscreen = (window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && isFullscreen) {
-                val rect = Rect()
-                binding.root.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = binding.root.rootView.height
-                val keypadHeight = screenHeight - rect.bottom
-                
-                val params = binding.root.layoutParams as FrameLayout.LayoutParams
-                if (keypadHeight > screenHeight * 0.15) { // Keyboard is open
-                    if (params.bottomMargin != keypadHeight) {
-                        params.bottomMargin = keypadHeight
-                        binding.root.layoutParams = params
-                    }
-                } else { // Keyboard is closed
-                    if (params.bottomMargin != 0) {
-                        params.bottomMargin = 0
-                        binding.root.layoutParams = params
-                    }
-                }
-            }
-        }
-    }
-
-    private var orientation: Int = 0
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags != uiMode && config.darkMode == DarkMode.SYSTEM) {
-                recreate()
-            }
-        }
-        if (newConfig.orientation != orientation) {
-            composeToolbarViewController.updateIcons()
-            orientation = newConfig.orientation
-
-            if (config.fabPosition == FabPosition.Custom) {
-                fabImageViewController.updateImagePosition(orientation)
-            }
-        }
-    }
-
-    private fun initTouchArea() = updateTouchView()
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        dispatchIntent(intent)
+        intentDispatchDelegate.dispatchIntent(intent)
     }
 
     override fun onResume() {
         super.onResume()
-        if (config.restartChanged) {
-            config.restartChanged = false
-            dialogManager.showRestartConfirmDialog()
-        }
-
+        if (config.restartChanged) { config.restartChanged = false; dialogManager.showRestartConfirmDialog() }
         updateTitle()
-        @Suppress("DEPRECATION")
-        overridePendingTransition(0, 0)
+        @Suppress("DEPRECATION") overridePendingTransition(0, 0)
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-
-        if (config.customFontChanged &&
-            (config.fontType == FontType.CUSTOM || config.readerFontType == FontType.CUSTOM)
-        ) {
-            if (!ebWebView.shouldUseReaderFont()) {
-                ebWebView.reload()
-            } else {
-                ebWebView.updateCssStyle()
-            }
+        if (config.customFontChanged && (config.fontType == FontType.CUSTOM || config.readerFontType == FontType.CUSTOM)) {
+            if (!ebWebView.shouldUseReaderFont()) ebWebView.reload() else ebWebView.updateCssStyle()
             config.customFontChanged = false
         }
-        if (!config.continueMedia) {
-            if (this::ebWebView.isInitialized) {
-                ebWebView.resumeTimers()
-            }
-        }
+        if (!config.continueMedia && this::ebWebView.isInitialized) ebWebView.resumeTimers()
     }
 
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-        if (level >= TRIM_MEMORY_MODERATE) {
-            // Under memory pressure: pause all background WebViews and release the preloaded one
-            for (controller in browserContainer.list()) {
-                if (controller != currentAlbumController) {
-                    controller.pauseWebView()
-                }
-            }
-            preloadedWebView?.destroy()
-            preloadedWebView = null
-        }
+    override fun onPause() {
+        super.onPause()
+        actionModeDelegate.onPause()
+        if (!config.continueMedia && !isMeetPipCriteria() && this::ebWebView.isInitialized) ebWebView.pauseTimers()
     }
 
     override fun onDestroy() {
         ttsViewModel.reset()
-
-        updateSavedAlbumInfo()
-
-        if (config.clearWhenQuit && shouldRunClearService) {
-            startService(Intent(this, ClearService::class.java))
-        }
-
+        tabManager.updateSavedAlbumInfo()
+        if (config.clearWhenQuit && shouldRunClearService) startService(Intent(this, ClearService::class.java))
         browserContainer.clear()
         unregisterReceiver(downloadReceiver)
-
         super.onDestroy()
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return keyHandler.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
-    }
-
-    override fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
-        return keyHandler.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event)
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        return keyHandler.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event)
-    }
-
-    override fun handleBackKey() {
-        ViewUnit.hideKeyboard(this)
-        if (overviewDialogController.isVisible()) {
-            hideOverview()
-        }
-        if (fullscreenHolder != null || customView != null || videoView != null) {
-            onHideCustomView()
-        } else if (!binding.appBar.isVisible && config.showToolbarFirst) {
-            showToolbar()
-        } else if (!composeToolbarViewController.isDisplayed()) {
-            composeToolbarViewController.show()
-        } else {
-            // disable back key when it's translate mode web page
-            if (!ebWebView.isTranslatePage && ebWebView.canGoBack()) {
-                ebWebView.goBack()
-            } else {
-                if (config.closeTabWhenNoMoreBackHistory) {
-                    removeAlbum()
-                } else {
-                    EBToast.show(this, R.string.no_previous_page)
-                }
-            }
-        }
-    }
-
-    override fun isCurrentAlbum(albumController: AlbumController): Boolean =
-        currentAlbumController == albumController
-
-    override fun showAlbum(controller: AlbumController) {
-        if (currentAlbumController != null) {
-            if (currentAlbumController == controller) {
-                // if it's the same controller, just scroll to top
-                if (ebWebView.isAtTop()) {
-                    ebWebView.reload()
-                } else {
-                    jumpToTop()
-                }
-                return
-            }
-            currentAlbumController?.deactivate()
-        }
-
-        // remove current view from the container first
-        val controllerView = controller as View
-        if (mainContentLayout.childCount > 0) {
-            for (i in 0 until mainContentLayout.childCount) {
-                if (mainContentLayout.getChildAt(i) == controllerView) {
-                    mainContentLayout.removeView(controllerView)
-                    break
-                }
-            }
-        }
-
-        mainContentLayout.addView(
-            controller as View,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-        )
-
-        currentAlbumController = controller
-        currentAlbumController?.activate()
-
-        updateSavedAlbumInfo()
-        updateWebViewCount()
-
-        progressBar.visibility = GONE
-        ebWebView = controller as EBWebView
-        keyHandler.setWebView(ebWebView)
-
-        updateTitle()
-        ebWebView.updatePageInfo()
-
-        // when showing a new album, should turn off externalSearch button visibility
-        externalSearchViewModel.setButtonVisibility(false)
-        runOnUiThread {
-            val index = albumViewModel.albums.value.indexOfFirst { it.isActivated }
-            composeToolbarViewController.updateFocusIndex(index)
-            albumViewModel.focusIndex.intValue = index
-        }
-        updateLanguageLabel()
-    }
-
-    private fun updateLanguageLabel() {
-        languageLabelView?.visibility =
-            if (ebWebView.isTranslatePage || ebWebView.isTranslateByParagraph) VISIBLE else GONE
-    }
-
-    private fun openCustomFontPicker() {
-        FontBrowserDialogFragment(isReaderMode = ebWebView.shouldUseReaderFont()).show(
-            supportFragmentManager,
-            "font_browser_dialog"
-        )
-    }
-
-    override fun showOverview() = overviewDialogController.show()
-
-    override fun hideOverview() = overviewDialogController.hide()
-
-    override fun rotateScreen() = IntentUnit.rotateScreen(this)
-
-    override fun saveBookmark(url: String?, title: String?) {
-        val currentUrl = url ?: ebWebView.url ?: return
-        var nonNullTitle = title ?: HelperUnit.secString(ebWebView.title)
-        try {
-            BookmarkEditDialog(
-                bookmarkViewModel,
-                Bookmark(
-                    nonNullTitle.pruneWebTitle(),
-                    currentUrl, order = if (ViewUnit.isWideLayout(this@BrowserActivity)) 999 else 0
-                ),
-                {
-                    ViewUnit.hideKeyboard(this@BrowserActivity)
-                    EBToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                },
-                { ViewUnit.hideKeyboard(this@BrowserActivity) }
-            ).show(supportFragmentManager, "bookmark_edit")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            EBToast.show(this, R.string.toast_error)
-        }
-    }
-
-    override fun createShortcut() = BrowserUnit.createShortcut(this, ebWebView)
-
-    override fun toggleTouchTurnPageFeature() = config::enableTouchTurn.toggle()
-
-    override fun toggleSwitchTouchAreaAction() = config::switchTouchAreaAction.toggle()
-
-    private fun updateTouchView() = composeToolbarViewController.updateIcons()
-
-    // Methods
-    override fun showFontSizeChangeDialog() {
-        if (ebWebView.shouldUseReaderFont()) {
-            ReaderFontDialogFragment { openCustomFontPicker() }.show(
-                supportFragmentManager,
-                "font_dialog"
-            )
-        } else {
-            FontDialogFragment { openCustomFontPicker() }.show(
-                supportFragmentManager,
-                "font_dialog"
-            )
-        }
-    }
-
-    private fun changeFontSize(size: Int) {
-        if (ebWebView.shouldUseReaderFont()) {
-            config.readerFontSize = size
-        } else {
-            config.fontSize = size
-        }
-    }
-
-    override fun increaseFontSize() {
-        val fontSize =
-            if (ebWebView.shouldUseReaderFont()) config.readerFontSize else config.fontSize
-        changeFontSize(fontSize + 20)
-    }
-
-    override fun decreaseFontSize() {
-        val fontSize =
-            if (ebWebView.shouldUseReaderFont()) config.readerFontSize else config.fontSize
-        if (fontSize > 50) changeFontSize(fontSize - 20)
-    }
-
-    private fun maybeInitTwoPaneController() {
-        if (!isTwoPaneControllerInitialized()) {
-            twoPaneController = TwoPaneController(
-                this,
-                lifecycleScope,
-                translationPanelView,
-                binding.twoPanelLayout,
-                { showTranslation() },
-                { if (ebWebView.isReaderModeOn) ebWebView.toggleReaderMode() },
-                { url -> ebWebView.loadUrl(url) },
-                { api, webView -> translateByParagraph(api, webView) },
-                this::translateWebView
-            )
-        }
-    }
-
-    private fun translateByParagraph(
-        translateApi: TRANSLATE_API,
-        webView: EBWebView = ebWebView,
-    ) {
-        translateByParagraphInPlace(translateApi, webView)
-    }
-
-    private fun translateByParagraphInPlace(
-        translateApi: TRANSLATE_API,
-        webView: EBWebView = ebWebView,
-    ) {
-        lifecycleScope.launch {
-            webView.translateApi = translateApi
-            webView.translateByParagraphInPlace()
-            if (webView == ebWebView) {
-                languageLabelView?.visibility = VISIBLE
-            }
-        }
-    }
-
-    private fun translateInPlaceReplace(
-        translateApi: TRANSLATE_API,
-        webView: EBWebView = ebWebView,
-    ) {
-        lifecycleScope.launch {
-            webView.translateApi = translateApi
-            webView.translateByParagraphInPlaceReplace()
-            if (webView == ebWebView) {
-                languageLabelView?.visibility = VISIBLE
-            }
-        }
-    }
-
-    private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
-
-    override fun showTranslation(webView: EBWebView?) {
-        maybeInitTwoPaneController()
-
-        lifecycleScope.launch(Dispatchers.Main) {
-            twoPaneController.showTranslation(webView ?: ebWebView)
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -1582,216 +749,215 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onSaveInstanceState(outState)
     }
 
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (level >= TRIM_MEMORY_MODERATE) {
+            for (controller in browserContainer.list()) {
+                if (controller != currentAlbumController) controller.pauseWebView()
+            }
+            tabManager.destroyPreloadedWebView()
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            if (nightModeFlags != uiMode && config.darkMode == DarkMode.SYSTEM) recreate()
+        }
+        if (newConfig.orientation != orientation) {
+            composeToolbarViewController.updateIcons()
+            orientation = newConfig.orientation
+            if (config.fabPosition == FabPosition.Custom) fabImageViewController.updateImagePosition(orientation)
+        }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (isMeetPipCriteria()) enterPipMode()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean = keyHandler.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
+    override fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean = keyHandler.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event)
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean = keyHandler.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event)
+
+    override fun onActionModeStarted(mode: ActionMode) {
+        actionModeDelegate.onActionModeStarted(mode)
+        super.onActionModeStarted(mode)
+    }
+
+    override fun onActionModeFinished(mode: ActionMode?) {
+        super.onActionModeFinished(mode)
+        actionModeDelegate.onActionModeFinished(mode)
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        if (config.uiLocaleLanguage.isNotEmpty()) super.attachBaseContext(LocaleManager.setLocale(newBase, config.uiLocaleLanguage))
+        else super.attachBaseContext(newBase)
+    }
+
+    // ── Private helpers ───────────────────────────────────────────────────
+
+    private fun prepareRecord(): Boolean {
+        val webView = currentAlbumController as EBWebView
+        val title = webView.title
+        val url = webView.url
+        return (title.isNullOrEmpty() || url.isNullOrEmpty()
+                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+    }
+
+    private fun getFocusedWebView(): EBWebView = when {
+        ebWebView.hasFocus() -> ebWebView
+        isTwoPaneControllerInitialized() && twoPaneController.getSecondWebView().hasFocus() -> twoPaneController.getSecondWebView()
+        else -> ebWebView
+    }
+
+    private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
+
+    private fun maybeInitTwoPaneController() {
+        if (!isTwoPaneControllerInitialized()) {
+            twoPaneController = TwoPaneController(
+                this, lifecycleScope, translationPanelView, binding.twoPanelLayout,
+                { showTranslation() },
+                { if (ebWebView.isReaderModeOn) ebWebView.toggleReaderMode() },
+                { url -> ebWebView.loadUrl(url) },
+                { api, webView -> translationDelegate.translateByParagraph(api, webView) },
+                this::translateWebView
+            )
+        }
+    }
+
+    private fun translateWebView() = translationDelegate.translateWebView()
+
+    private fun hideSearchPanel() = fullscreenDelegate.hideSearchPanel()
+
+    private fun changeFontSize(size: Int) {
+        if (ebWebView.shouldUseReaderFont()) config.readerFontSize = size else config.fontSize = size
+    }
+
+    private fun openCustomFontPicker() {
+        FontBrowserDialogFragment(isReaderMode = ebWebView.shouldUseReaderFont()).show(supportFragmentManager, "font_browser_dialog")
+    }
+
+    private fun updateTitle() {
+        if (!this::ebWebView.isInitialized) return
+        tabManager.updateTitle()
+    }
+
+    private fun updateRefresh(running: Boolean) {
+        if (!isRunning && running) isRunning = true
+        else if (isRunning && !running) isRunning = false
+        composeToolbarViewController.updateRefresh(isRunning)
+    }
+
+    private fun isMeetPipCriteria() = config.enableVideoPip && fullscreenDelegate.fullscreenHolder != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun enterPipMode() { enterPictureInPictureMode(PictureInPictureParams.Builder().build()) }
+
+    private fun initLaunchers() = fileHandlingDelegate.initLaunchers()
+    private fun initTouchArea() = composeToolbarViewController.updateIcons()
+    private fun initTouchAreaViewController() { touchController = TouchAreaViewController(binding.activityMainContent, this) }
+
+    protected fun readArticle() {
+        lifecycleScope.launch { ttsViewModel.readArticle(ebWebView.getRawText(), ebWebView.title.orEmpty()) }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    protected fun addAlbum(
+        title: String = "",
+        url: String = config.favoriteUrl,
+        foreground: Boolean = true,
+        incognito: Boolean = false,
+        enablePreloadWebView: Boolean = true,
+    ) = tabManager.addAlbum(title, url, foreground, incognito, enablePreloadWebView)
+
+    open fun createebWebView(): EBWebView = EBWebView(this, this).apply { overScrollMode = View.OVER_SCROLL_NEVER }
+
     @SuppressLint("InlinedApi")
-    open fun dispatchIntent(intent: Intent) {
-        if (overviewDialogController.isVisible()) {
-            overviewDialogController.hide()
-        }
+    open fun dispatchIntent(intent: Intent) = intentDispatchDelegate.dispatchIntent(intent)
 
-        when (intent.action) {
-            "", Intent.ACTION_MAIN -> {
-                initSavedTabs { addAlbum() }
-            }
-
-            ACTION_VIEW -> {
-                initSavedTabs()
-                // if webview for that url already exists, show the original tab, otherwise, create new
-                val viewUri = intent.data?.toNormalScheme() ?: return
-                if (viewUri.scheme == "content") {
-                    lifecycleScope.launch {
-                        val (filename, mimeType) = withContext(Dispatchers.IO) {
-                            val (fName, _) = HelperUnit.getFileInfoFromContentUri(this@BrowserActivity, viewUri)
-                            val mType = contentResolver.getType(viewUri)
-                            Pair(fName, mType)
-                        }
-
-                        if (filename?.endsWith(".srt") == true ||
-                            mimeType == "application/x-subrip"
-                        ) {
-                            // srt
-                            addAlbum()
-                            val htmlContent = withContext(Dispatchers.IO) {
-                                val stringList =
-                                    HelperUnit.readContentAsStringList(contentResolver, viewUri)
-                                HelperUnit.srtToHtml(stringList)
-                            }
-                            ebWebView.isPlainText = true
-                            ebWebView.rawHtmlCache = htmlContent
-                            ebWebView.loadData(htmlContent, "text/html", "utf-8")
-
-                        } else if (mimeType == "application/octet-stream") {
-                            val cachedPath = withContext(Dispatchers.IO) {
-                                HelperUnit.getCachedPathFromURI(this@BrowserActivity, viewUri)
-                            }
-                            cachedPath.let {
-                                addAlbum(url = "file://$it")
-                            }
-                        } else if (filename?.endsWith(".mht") == true) {
-                            // mht
-                            val cachedPath = withContext(Dispatchers.IO) {
-                                HelperUnit.getCachedPathFromURI(this@BrowserActivity, viewUri)
-                            }
-                            addAlbum(url = "file://$cachedPath")
-                        } else if (filename?.endsWith(".html") == true || mimeType == "text/html") {
-                            // local html
-                            updateAlbum(url = viewUri.toString())
-                        } else {
-                            // epub
-                            epubManager.showEpubReader(viewUri)
-                            finish()
-                        }
-                    }
-                } else {
-                    val url = viewUri.toString()
-                    getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
-                }
-            }
-
-            Intent.ACTION_WEB_SEARCH -> {
-                initSavedTabs()
-                val searchedKeyword = intent.getStringExtra(SearchManager.QUERY).orEmpty()
-                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
-                    ebWebView.loadUrl(searchedKeyword)
-                } else {
-                    addAlbum(url = searchedKeyword)
-                }
-            }
-
-            "sc_history" -> {
-                addAlbum(); openHistoryPage()
-            }
-
-            "sc_home" -> {
-                addAlbum(config.favoriteUrl)
-            }
-
-            "sc_bookmark" -> {
-                addAlbum(); openBookmarkPage()
-            }
-
-            "sc_disable_adblock" -> {
-                config.adBlock = false
-                BrowserUnit.restartApp(this)
-            }
-
-            Intent.ACTION_SEND -> {
-                initSavedTabs()
-                val sentKeyword = intent.getStringExtra(Intent.EXTRA_TEXT).orEmpty()
-                val url =
-                    if (BrowserUnit.isURL(sentKeyword)) sentKeyword else externalSearchViewModel.generateSearchUrl(
-                        sentKeyword
-                    )
-                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
-                    ebWebView.loadUrl(url)
-                } else {
-                    addAlbum(url = url)
-                }
-            }
-
-            Intent.ACTION_PROCESS_TEXT -> {
-                initSavedTabs()
-                val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
-
-                if (remoteConnViewModel.isSendingTextSearch) {
-                    remoteConnViewModel.sendTextSearch(
-                        externalSearchViewModel.generateSearchUrl(
-                            text
-                        )
-                    )
-                    moveTaskToBack(true)
-                    return
-                }
-
-                val url =
-                    if (BrowserUnit.isURL(text)) text else externalSearchViewModel.generateSearchUrl(
-                        text
-                    )
-                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
-                    ebWebView.loadUrl(url)
-                } else {
-                    addAlbum(url = url)
-                }
-                // set minimize button visible
-                externalSearchViewModel.setButtonVisibility(true)
-            }
-
-            ACTION_DICT -> {
-                val text = intent.getStringExtra("EXTRA_QUERY") ?: return
-
-                if (remoteConnViewModel.isSendingTextSearch) {
-                    remoteConnViewModel.sendTextSearch(
-                        externalSearchViewModel.generateSearchUrl(
-                            text
-                        )
-                    )
-                    moveTaskToBack(true)
-                    return
-                }
-
-                initSavedTabs()
-                val url = externalSearchViewModel.generateSearchUrl(text)
-                if (currentAlbumController != null && config.isExternalSearchInSameTab) {
-                    ebWebView.loadUrl(url)
-                } else {
-                    addAlbum(url = url)
-                }
-                // set minimize button visible
-                externalSearchViewModel.setButtonVisibility(true)
-            }
-
-            ACTION_READ_ALOUD -> readArticle()
-
-            null -> {
-                if (browserContainer.isEmpty()) {
-                    initSavedTabs { addAlbum() }
-                } else {
-                    return
-                }
-            }
-
-            else -> addAlbum()
-        }
-        getIntent().action = ""
-    }
-
-    private fun initSavedTabs(whenNoSavedTabs: (() -> Unit)? = null) {
-        if (currentAlbumController == null) { // newly opened Activity
-            if ((shouldLoadTabState || config.shouldSaveTabs) &&
-                config.savedAlbumInfoList.isNotEmpty()
-            ) {
-                // fix current album index is larger than album size
-                if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
-                    config.currentAlbumIndex = config.savedAlbumInfoList.size - 1
-                }
-                val albumList = config.savedAlbumInfoList.toList()
-                var savedIndex = config.currentAlbumIndex
-                // fix issue
-                if (savedIndex == -1) savedIndex = 0
-                albumList.forEachIndexed { index, albumInfo ->
-                    addAlbum(
-                        title = albumInfo.title,
-                        url = albumInfo.url,
-                        foreground = (index == savedIndex),
-                        // Don't preload during batch restore — avoid creating throwaway WebViews.
-                        // Only preload after the last tab is restored.
-                        enablePreloadWebView = (index == albumList.lastIndex),
-                    )
-                }
+    private fun saveFile(url: String, fileName: String = "") {
+        if (url.startsWith("data:image")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                BrowserUnit.saveImageFromUrl(url, fileHandlingDelegate.saveImageFilePickerLauncher)
             } else {
-                whenNoSavedTabs?.invoke()
+                EBToast.show(this, "Not supported dataUrl")
+            }
+            return
+        }
+        if (HelperUnit.needGrantStoragePermission(this)) return
+        val source = Uri.parse(url)
+        val request = DownloadManager.Request(source).apply {
+            addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
+            addRequestHeader("User-Agent", WebSettings.getDefaultUserAgent(this@BrowserActivity))
+            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            try { setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName) }
+            catch (e: Exception) {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                setDestinationUri(Uri.fromFile(File(downloadsDir, fileName)))
             }
         }
+        (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+        ViewUnit.hideKeyboard(this)
     }
+
+    private fun scrollChange() {
+        ebWebView.setScrollChangeListener(object : EBWebView.OnScrollChangeListener {
+            override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
+                ebWebView.updatePageInfo()
+                if (::twoPaneController.isInitialized) twoPaneController.scrollChange(scrollY - oldScrollY)
+                if (!config.shouldHideToolbar) return
+                val height = floor(ebWebView.contentHeight * ebWebView.resources.displayMetrics.density.toDouble()).toInt()
+                val webViewHeight = ebWebView.height
+                val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
+                if (scrollY in (oldScrollY + 1)..cutoff) {
+                    if (binding.appBar.visibility == VISIBLE) toggleFullscreen()
+                }
+            }
+        })
+    }
+
+    private fun createMultiTouchTouchListener(ebWebView: EBWebView): MultitouchListener =
+        object : MultitouchListener(this@BrowserActivity, ebWebView) {
+            private var longPressStartPoint: Point? = null
+            override fun onSwipeTop() = gestureHandler.handle(config.multitouchUp)
+            override fun onSwipeBottom() = gestureHandler.handle(config.multitouchDown)
+            override fun onSwipeRight() = gestureHandler.handle(config.multitouchRight)
+            override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
+            override fun onLongPressMove(motionEvent: MotionEvent) {
+                super.onLongPressMove(motionEvent)
+                if (config.enableDragUrlToAction && contextMenuDelegate.isInLongPressMode && contextMenuDelegate.activeContextMenuDialog != null) {
+                    contextMenuDelegate.activeContextMenuDialog?.updateHoveredItem(motionEvent.rawX, motionEvent.rawY)
+                    return
+                }
+                if (longPressStartPoint == null) { longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt()); return }
+                if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(15) ||
+                    abs(motionEvent.y - (longPressStartPoint?.y ?: 0)) > ViewUnit.dpToPixel(15)) {
+                    actionModeDelegate.actionModeViewRef?.visibility = INVISIBLE
+                    longPressStartPoint = null
+                }
+            }
+            override fun onMoveDone(motionEvent: MotionEvent) {
+                if (contextMenuDelegate.isInLongPressMode && contextMenuDelegate.activeContextMenuDialog != null) {
+                    contextMenuDelegate.activeContextMenuDialog?.onFingerLifted()
+                    contextMenuDelegate.activeContextMenuDialog = null
+                    contextMenuDelegate.isInLongPressMode = false
+                    return
+                }
+            }
+        }.apply { lifecycle.addObserver(this) }
+
+    // ── Init methods ──────────────────────────────────────────────────────
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initToolbar() {
         progressBar = findViewById(R.id.main_progress_bar)
         if (config.darkMode == DarkMode.FORCE_ON) {
-            val nightModeFlags: Int =
-                resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
-                progressBar.progressTintMode = PorterDuff.Mode.LIGHTEN
-            }
+            val nightModeFlags: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) progressBar.progressTintMode = PorterDuff.Mode.LIGHTEN
         }
         initFAB()
         if (config.enableNavButtonGesture) {
@@ -1803,260 +969,33 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
             fabImageViewController.defaultTouchListener = onNavButtonTouchListener
         }
-
         composeToolbarViewController.updateIcons()
-        // strange crash on my device. register later
-        runOnUiThread {
-            config.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
-        }
+        runOnUiThread { config.registerOnSharedPreferenceChangeListener(preferenceChangeListener) }
     }
 
-    override fun showTouchAreaDialog() = TouchAreaDialogFragment(ebWebView.url.orEmpty())
-        .show(supportFragmentManager, "TouchAreaDialog")
-
-    override fun showTranslationConfigDialog(translateDirectly: Boolean) {
-        maybeInitTwoPaneController()
-        TranslationConfigDlgFragment(ebWebView.url.orEmpty(), translateDirectly) { shouldTranslate ->
-            if (shouldTranslate) {
-                translate(config.translationMode)
-            } else {
-                ebWebView.reload()
-            }
-        }
-            .show(supportFragmentManager, "TranslationConfigDialog")
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        if (config.uiLocaleLanguage.isNotEmpty()) {
-            super.attachBaseContext(
-                LocaleManager.setLocale(newBase, config.uiLocaleLanguage)
-            )
-        } else {
-            super.attachBaseContext(newBase)
-        }
-    }
-
-    private fun updateLocale(context: Context, languageCode: String) {
-        val newContext = LocaleManager.setLocale(context, languageCode)
-        val intent = Intent(newContext, BrowserActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        context.startActivity(intent)
-    }
-
-
-    private var fabImagePositionChanged = false
-    private val preferenceChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            when (key) {
-                ConfigManager.K_HIDE_STATUSBAR -> {
-                    if (config.hideStatusbar) {
-                        hideStatusBar()
-                    } else {
-                        showStatusBar()
-                    }
-                }
-
-                ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
-                ConfigManager.K_TOOLBAR_ICONS,
-                    -> {
-                    composeToolbarViewController.updateIcons()
-                }
-
-                ConfigManager.K_SHOW_TAB_BAR -> {
-                    composeToolbarViewController.showTabbar(config.shouldShowTabBar)
-                }
-
-                ConfigManager.K_FONT_TYPE -> {
-                    if (config.fontType == FontType.SYSTEM_DEFAULT) {
-                        ebWebView.reload()
-                    } else {
-                        ebWebView.updateCssStyle()
-                    }
-                }
-
-                ConfigManager.K_READER_FONT_TYPE -> {
-                    if (config.readerFontType == FontType.SYSTEM_DEFAULT) {
-                        ebWebView.reload()
-                    } else {
-                        ebWebView.updateCssStyle()
-                    }
-                }
-
-                ConfigManager.K_FONT_SIZE -> {
-                    ebWebView.settings.textZoom = config.fontSize
-                }
-
-                ConfigManager.K_READER_FONT_SIZE -> {
-                    if (ebWebView.shouldUseReaderFont()) {
-                        ebWebView.settings.textZoom = config.readerFontSize
-                    }
-                }
-
-                ConfigManager.K_BOLD_FONT -> {
-                    composeToolbarViewController.updateIcons()
-                    if (config.boldFontStyle) {
-                        ebWebView.updateCssStyle()
-                    } else {
-                        ebWebView.reload()
-                    }
-                }
-
-                ConfigManager.K_BLACK_FONT -> {
-                    composeToolbarViewController.updateIcons()
-                    if (config.blackFontStyle) {
-                        ebWebView.updateCssStyle()
-                    } else {
-                        ebWebView.reload()
-                    }
-                }
-
-                ConfigManager.K_ENABLE_IMAGE_ADJUSTMENT -> ebWebView.reload()
-
-                ConfigManager.K_CUSTOM_FONT -> {
-                    if (config.fontType == FontType.CUSTOM) {
-                        ebWebView.updateCssStyle()
-                    }
-                }
-
-                ConfigManager.K_READER_CUSTOM_FONT -> {
-                    if (config.readerFontType == FontType.CUSTOM && ebWebView.shouldUseReaderFont()) {
-                        ebWebView.updateCssStyle()
-                    }
-                }
-
-                ConfigManager.K_IS_INCOGNITO_MODE -> {
-                    ebWebView.incognito = config.isIncognitoMode
-                    composeToolbarViewController.updateIcons()
-                    EBToast.showShort(
-                        this,
-                        "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
-                    )
-                }
-
-                ConfigManager.K_KEEP_AWAKE -> {
-                    if (config.keepAwake) {
-                        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                    } else {
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                    }
-                }
-
-                ConfigManager.K_DESKTOP -> {
-                    ebWebView.updateUserAgentString()
-                    ebWebView.reload()
-                    composeToolbarViewController.updateIcons()
-                }
-
-                ConfigManager.K_DARK_MODE -> config.restartChanged = true
-                ConfigManager.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
-                ConfigManager.K_TOOLBAR_POSITION -> {
-                    composeToolbarViewController.updateIcons()
-                    ViewUnit.updateAppbarPosition(binding)
-                }
-
-                ConfigManager.K_NAV_POSITION -> config.restartChanged = true
-
-                ConfigManager.K_TTS_SPEED_VALUE ->
-                    ttsViewModel.setSpeechRate(config.ttsSpeedValue / 100f)
-
-                ConfigManager.K_CUSTOM_USER_AGENT,
-                ConfigManager.K_ENABLE_CUSTOM_USER_AGENT,
-                    -> {
-                    ebWebView.updateUserAgentString()
-                    ebWebView.reload()
-                }
-
-                ConfigManager.K_ENABLE_TOUCH -> {
-                    updateTouchView()
-                    touchController.toggleTouchPageTurn(config.enableTouchTurn)
-                }
-
-                ConfigManager.K_TOUCH_AREA_ACTION_SWITCH -> {
-                    updateTouchView()
-                }
-
-                ConfigManager.K_GPT_ACTION_ITEMS ->
-                    actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
-            }
-        }
-
-    private lateinit var fabImageViewController: FabImageViewController
     private fun initFAB() {
         fabImageViewController = FabImageViewController(
-            orientation,
-            findViewById(R.id.fab_imageButtonNav),
-            this::showToolbar,
+            orientation, findViewById(R.id.fab_imageButtonNav),
+            { fullscreenDelegate.showToolbar() },
             longClickAction = {
-                if (config.enableNavButtonGesture) {
-                    gestureHandler.handle(config.navButtonLongClickGesture)
-                } else {
-                    showFastToggleDialog()
-                }
+                if (config.enableNavButtonGesture) gestureHandler.handle(config.navButtonLongClickGesture)
+                else showFastToggleDialog()
             }
         )
     }
 
-    private val gestureHandler: GestureHandler by lazy { GestureHandler(this) }
-
-    override fun goForward() {
-        if (ebWebView.canGoForward()) {
-            ebWebView.goForward()
-        } else {
-            EBToast.show(this, R.string.toast_webview_forward)
-        }
-    }
-
-    override fun gotoLeftTab() {
-        nextAlbumController(false)?.let { showAlbum(it) }
-    }
-
-    override fun gotoRightTab() {
-        nextAlbumController(true)?.let { showAlbum(it) }
-    }
-
-    private val bookmarkViewModel: BookmarkViewModel by viewModels {
-        BookmarkViewModelFactory(bookmarkManager)
-    }
-
-    private val actionModeMenuViewModel: ActionModeMenuViewModel by viewModels()
-
     private fun initOverview() {
         overviewDialogController = OverviewDialogController(
-            this,
-            albumViewModel.albums,
-            albumViewModel.focusIndex,
-            binding.layoutOverview,
+            this, albumViewModel.albums, albumViewModel.focusIndex, binding.layoutOverview,
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-            addIncognitoTabAction = {
-                hideOverview()
-                addAlbum(getString(R.string.app_name), "", incognito = true)
-                focusOnInput()
-            },
+            addIncognitoTabAction = { hideOverview(); addAlbum(getString(R.string.app_name), "", incognito = true); focusOnInput() },
             splitScreenAction = { url -> toggleSplitScreen(url) },
             addEmptyTabAction = { newATab() }
         )
     }
 
-    override fun openHistoryPage(amount: Int) = overviewDialogController.openHistoryPage(amount)
-
-    override fun openBookmarkPage() =
-        BookmarksDialogFragment(
-            lifecycleScope,
-            bookmarkViewModel,
-            gotoUrlAction = { url -> updateAlbum(url) },
-            bookmarkIconClickAction = { title, url, isForeground ->
-                addAlbum(
-                    title,
-                    url,
-                    isForeground
-                )
-            },
-            splitScreenAction = { url -> toggleSplitScreen(url) },
-        ).show(supportFragmentManager, "bookmarks dialog")
-
     private val searchPanelFocusRequester = FocusRequester()
-
     private fun initSearchPanel() {
         binding.mainSearchPanel.apply {
             visibility = INVISIBLE
@@ -2075,1143 +1014,156 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun searchUp(text: String) {
-        if (text.isEmpty()) {
-            EBToast.show(this, getString(R.string.toast_input_empty))
-            return
-        }
-        ViewUnit.hideKeyboard(this)
-        (currentAlbumController as EBWebView).findNext(false)
+        if (text.isEmpty()) { EBToast.show(this, getString(R.string.toast_input_empty)); return }
+        ViewUnit.hideKeyboard(this); (currentAlbumController as EBWebView).findNext(false)
     }
 
     private fun searchDown(text: String) {
-        if (text.isEmpty()) {
-            EBToast.show(this, getString(R.string.toast_input_empty))
-            return
-        }
-        ViewUnit.hideKeyboard(this)
-        (currentAlbumController as EBWebView).findNext(true)
+        if (text.isEmpty()) { EBToast.show(this, getString(R.string.toast_input_empty)); return }
+        ViewUnit.hideKeyboard(this); (currentAlbumController as EBWebView).findNext(true)
     }
 
-    override fun showFastToggleDialog() {
-        if (!this::ebWebView.isInitialized) return
-
-        FastToggleDialogFragment {
-            ebWebView.initPreferences()
-            ebWebView.reload()
-        }.show(supportFragmentManager, "fast_toggle_dialog")
-    }
-
-    override fun addNewTab(url: String) = addAlbum(url = url)
-
-    private fun getUrlMatchedBrowser(url: String): EBWebView? {
-        return browserContainer.list().firstOrNull { it.albumUrl == url } as EBWebView?
-    }
-
-    private var preloadedWebView: EBWebView? = null
-
-    open fun createebWebView(): EBWebView = EBWebView(this, this).apply {
-        overScrollMode = View.OVER_SCROLL_NEVER
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    protected fun addAlbum(
-        title: String = "",
-        url: String = config.favoriteUrl,
-        foreground: Boolean = true,
-        incognito: Boolean = false,
-        enablePreloadWebView: Boolean = true,
-    ) {
-        val newWebView = (preloadedWebView ?: createebWebView()).apply {
-            this.albumTitle = title
-            this.incognito = incognito
-            setOnTouchListener(createMultiTouchTouchListener(this))
-        }
-
-        maybeCreateNewPreloadWebView(enablePreloadWebView, newWebView)
-
-        updateTabPreview(newWebView, url)
-        updateWebViewCount()
-
-        loadUrlInWebView(foreground, newWebView, url)
-
-        updateSavedAlbumInfo()
-
-        if (config.adBlock) {
-            adFilter.setupWebView(newWebView)
+    private fun checkAdBlockerList() {
+        if (!adFilter.hasInstallation) {
+            val map = mapOf("AdGuard Base" to "https://filters.adtidy.org/extension/chromium/filters/2.txt")
+            for ((key, value) in map) filterViewModel.addFilter(key, value)
+            val filters = filterViewModel.filters.value
+            for ((key, _) in filters) filterViewModel.download(key)
         }
     }
 
-    private fun maybeCreateNewPreloadWebView(
-        enablePreloadWebView: Boolean,
-        newWebView: EBWebView,
-    ) {
-        preloadedWebView = null
-        if (enablePreloadWebView) {
-            newWebView.postDelayed({
-                if (preloadedWebView == null) {
-                    preloadedWebView = createebWebView()
+    private fun requestNotificationPermission() {
+        val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) checkAdBlockerList()
+        }
+        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    private fun initTtsViewModel() {
+        lifecycleScope.launch { ttsViewModel.readingState.collect { composeToolbarViewController.updateIcons() } }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun initExternalSearchCloseButton() {
+        binding.activityMainContent.externalSearchClose.setOnClickListener {
+            moveTaskToBack(true); externalSearchViewModel.setButtonVisibility(false)
+        }
+        val externalSearchContainer = binding.activityMainContent.externalSearchActionContainer
+        externalSearchViewModel.searchActions.forEach { action ->
+            val button = TextView(this).apply {
+                height = 40.dp.value.toInt(); textSize = 10.sp.value
+                gravity = Gravity.CENTER
+                background = getDrawable(R.drawable.background_with_border)
+                text = action.title.take(2).uppercase(Locale.getDefault())
+                setOnClickListener {
+                    externalSearchViewModel.currentSearchAction = action
+                    ebWebView.loadUrl(externalSearchViewModel.generateSearchUrl(splitSearchItemInfo = action))
                 }
-            }, 500)
-        }
-    }
-
-    private fun updateTabPreview(newWebView: EBWebView, url: String) {
-        bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
-            newWebView.setAlbumCover(it)
-        }
-
-        val album = newWebView.album
-        if (currentAlbumController != null) {
-            val index = browserContainer.indexOf(currentAlbumController) + 1
-            browserContainer.add(newWebView, index)
-            albumViewModel.addAlbum(album, index)
-        } else {
-            browserContainer.add(newWebView)
-            albumViewModel.addAlbum(album, browserContainer.size() - 1)
-        }
-    }
-
-    private fun loadUrlInWebView(foreground: Boolean, webView: EBWebView, url: String) {
-        if (!foreground) {
-            webView.deactivate()
-            if (config.enableWebBkgndLoad) {
-                webView.loadUrl(url)
-            } else {
-                webView.initAlbumUrl = url
             }
-        } else {
-            showAlbum(webView)
-            if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
-                webView.loadUrl(url)
-            } else if (url == BrowserUnit.URL_ABOUT_BLANK) {
+            externalSearchContainer.addView(button, 0)
+        }
+        lifecycleScope.launch {
+            externalSearchViewModel.showButton.collect { show ->
+                externalSearchContainer.visibility = if (show) VISIBLE else INVISIBLE
             }
         }
     }
 
-    private fun createMultiTouchTouchListener(ebWebView: EBWebView): MultitouchListener =
-        object : MultitouchListener(this@BrowserActivity, ebWebView) {
-            private var longPressStartPoint: Point? = null
-            override fun onSwipeTop() = gestureHandler.handle(config.multitouchUp)
-            override fun onSwipeBottom() = gestureHandler.handle(config.multitouchDown)
-            override fun onSwipeRight() = gestureHandler.handle(config.multitouchRight)
-            override fun onSwipeLeft() = gestureHandler.handle(config.multitouchLeft)
-            override fun onLongPressMove(motionEvent: MotionEvent) {
-                super.onLongPressMove(motionEvent)
-
-                // Handle context menu hover selection
-                if (config.enableDragUrlToAction && isInLongPressMode && activeContextMenuDialog != null) {
-                    activeContextMenuDialog?.updateHoveredItem(motionEvent.rawX, motionEvent.rawY)
-                    return
-                }
-
-                if (longPressStartPoint == null) {
-                    longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt())
-                    return
-                }
-                if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(15) ||
-                    abs(motionEvent.y - (longPressStartPoint?.y ?: 0)) > ViewUnit.dpToPixel(15)
-                ) {
-                    actionModeView?.visibility = INVISIBLE
-                    longPressStartPoint = null
-                    //Log.d("touch", "onLongPress: hide")
-                }
-            }
-
-            override fun onMoveDone(motionEvent: MotionEvent) {
-                // Handle finger lift for context menu
-                if (isInLongPressMode && activeContextMenuDialog != null) {
-                    activeContextMenuDialog?.onFingerLifted()
-                    activeContextMenuDialog = null
-                    isInLongPressMode = false
-                    return
-                }
-                //Log.d("touch", "onMoveDone")
-            }
-        }.apply { lifecycle.addObserver(this) }
-
-    private fun updateSavedAlbumInfo() {
-        val albumControllers = browserContainer.list()
-        val albumInfoList = albumControllers
-            .filter { !it.isTranslatePage }
-            .filter { !it.isAIPage }
-            .filter { !it.albumUrl.startsWith("data") }
-            .filter {
-                (it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK) ||
-                        it.initAlbumUrl.isNotBlank()
-            }
-            .map { controller ->
-                AlbumInfo(
-                    controller.albumTitle,
-                    controller.albumUrl.ifBlank { controller.initAlbumUrl },
+    private fun initTextSearchButton() {
+        val remoteTextSearch = findViewById<ImageButton>(R.id.remote_text_search)
+        remoteTextSearch.setOnClickListener { remoteConnViewModel.reset() }
+        lifecycleScope.launch {
+            remoteConnViewModel.remoteConnected.collect { connected ->
+                remoteTextSearch.setImageResource(
+                    if (remoteConnViewModel.isSendingTextSearch) R.drawable.ic_send else R.drawable.ic_receive
                 )
+                remoteTextSearch.isVisible = connected
             }
-        config.savedAlbumInfoList = albumInfoList
-        config.currentAlbumIndex = browserContainer.indexOf(currentAlbumController)
-        // fix if current album is still with null url
-        if (albumInfoList.isNotEmpty() && config.currentAlbumIndex >= albumInfoList.size) {
-            config.currentAlbumIndex = albumInfoList.size - 1
         }
     }
 
-    private fun updateWebViewCount() {
-        val subScript = browserContainer.size()
-        val superScript = browserContainer.indexOf(currentAlbumController) + 1
-        val countString = ViewUnit.createCountString(superScript, subScript)
-        composeToolbarViewController.updateTabCount(countString)
-        fabImageViewController.updateTabCount(countString)
-    }
-
-    override fun updateAlbum(url: String?) {
-        if (url == null) return
-        (currentAlbumController as EBWebView).loadUrl(url)
-        updateTitle()
-
-        updateSavedAlbumInfo()
-    }
-
-    private fun closeTabConfirmation(okAction: () -> Unit) {
-        if (!config.confirmTabClose) {
-            okAction()
-        } else {
-            dialogManager.showOkCancelDialog(
-                messageResId = R.string.toast_close_tab,
-                okAction = okAction,
-            )
+    private fun initInstapaperViewModel() {
+        lifecycleScope.launch {
+            instapaperViewModel.uiState.collect { state ->
+                if (state.showConfigureDialog) configureInstapaper()
+                else if (state.successMessage != null) EBToast.show(this@BrowserActivity, state.successMessage)
+                else if (state.errorMessage != null) EBToast.show(this@BrowserActivity, state.errorMessage)
+                instapaperViewModel.resetState()
+            }
         }
     }
 
-    override fun removeAlbum(albumController: AlbumController, showHome: Boolean) {
-        closeTabConfirmation {
-            if (config.isSaveHistoryWhenClose()) {
-                addHistory(albumController.albumTitle, albumController.albumUrl)
+    private fun handleWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insetsNavigationBar: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            if (config.hideStatusbar) {
+                params.bottomMargin = when {
+                    insetsKeyboard.bottom > 0 -> insetsKeyboard.bottom
+                    insetsNavigationBar.bottom > 0 -> insetsNavigationBar.bottom
+                    else -> 0
+                }
+                view.layoutParams = params
             }
+            windowInsets
+        }
+    }
 
-            albumViewModel.removeAlbum(albumController.album)
-            val removeIndex = browserContainer.indexOf(albumController)
-            val currentIndex = browserContainer.indexOf(currentAlbumController)
-            browserContainer.remove(albumController)
+    private fun listenKeyboardShowHide() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            if (inputBarDelegate.isKeyboardDisplaying()) touchController.maybeDisableTemporarily()
+            else touchController.maybeEnableAgain()
 
-            updateSavedAlbumInfo()
-            updateWebViewCount()
-
-            if (browserContainer.isEmpty()) {
-                if (!showHome) {
-                    finish()
+            @Suppress("DEPRECATION")
+            val isFullscreen = (window.attributes.flags and android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && isFullscreen) {
+                val rect = Rect()
+                binding.root.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = binding.root.rootView.height
+                val keypadHeight = screenHeight - rect.bottom
+                val params = binding.root.layoutParams as FrameLayout.LayoutParams
+                if (keypadHeight > screenHeight * 0.15) {
+                    if (params.bottomMargin != keypadHeight) { params.bottomMargin = keypadHeight; binding.root.layoutParams = params }
                 } else {
-                    ebWebView.loadUrl(config.favoriteUrl)
-                }
-            } else {
-                // only refresh album when the delete one is current one
-                if (removeIndex == currentIndex) {
-                    showAlbum(browserContainer[getNextAlbumIndexAfterRemoval(removeIndex)])
+                    if (params.bottomMargin != 0) { params.bottomMargin = 0; binding.root.layoutParams = params }
                 }
             }
         }
     }
 
-    private fun getNextAlbumIndexAfterRemoval(removeIndex: Int): Int =
-        if (config.shouldShowNextAfterRemoveTab) min(browserContainer.size() - 1, removeIndex)
-        else max(0, removeIndex - 1)
-
-    private fun updateTitle() {
-        if (!this::ebWebView.isInitialized) return
-
-        if (this::ebWebView.isInitialized && ebWebView === currentAlbumController) {
-            composeToolbarViewController.updateTitle(ebWebView.title.orEmpty())
-        }
-    }
-
-    private fun scrollChange() {
-        ebWebView.setScrollChangeListener(object : EBWebView.OnScrollChangeListener {
-            override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                ebWebView.updatePageInfo()
-
-                if (::twoPaneController.isInitialized) {
-                    twoPaneController.scrollChange(scrollY - oldScrollY)
-                }
-
-                if (!config.shouldHideToolbar) return
-
-                val height =
-                    floor(x = ebWebView.contentHeight * ebWebView.resources.displayMetrics.density.toDouble()).toInt()
-                val webViewHeight = ebWebView.height
-                val cutoff =
-                    height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
-                if (scrollY in (oldScrollY + 1)..cutoff) {
-                    if (binding.appBar.visibility == VISIBLE) toggleFullscreen()
-                }
+    private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        when (key) {
+            ConfigManager.K_HIDE_STATUSBAR -> { if (config.hideStatusbar) fullscreenDelegate.hideStatusBar() else fullscreenDelegate.showStatusBar() }
+            ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE, ConfigManager.K_TOOLBAR_ICONS -> composeToolbarViewController.updateIcons()
+            ConfigManager.K_SHOW_TAB_BAR -> composeToolbarViewController.showTabbar(config.shouldShowTabBar)
+            ConfigManager.K_FONT_TYPE -> { if (config.fontType == FontType.SYSTEM_DEFAULT) ebWebView.reload() else ebWebView.updateCssStyle() }
+            ConfigManager.K_READER_FONT_TYPE -> { if (config.readerFontType == FontType.SYSTEM_DEFAULT) ebWebView.reload() else ebWebView.updateCssStyle() }
+            ConfigManager.K_FONT_SIZE -> ebWebView.settings.textZoom = config.fontSize
+            ConfigManager.K_READER_FONT_SIZE -> { if (ebWebView.shouldUseReaderFont()) ebWebView.settings.textZoom = config.readerFontSize }
+            ConfigManager.K_BOLD_FONT -> { composeToolbarViewController.updateIcons(); if (config.boldFontStyle) ebWebView.updateCssStyle() else ebWebView.reload() }
+            ConfigManager.K_BLACK_FONT -> { composeToolbarViewController.updateIcons(); if (config.blackFontStyle) ebWebView.updateCssStyle() else ebWebView.reload() }
+            ConfigManager.K_ENABLE_IMAGE_ADJUSTMENT -> ebWebView.reload()
+            ConfigManager.K_CUSTOM_FONT -> { if (config.fontType == FontType.CUSTOM) ebWebView.updateCssStyle() }
+            ConfigManager.K_READER_CUSTOM_FONT -> { if (config.readerFontType == FontType.CUSTOM && ebWebView.shouldUseReaderFont()) ebWebView.updateCssStyle() }
+            ConfigManager.K_IS_INCOGNITO_MODE -> {
+                ebWebView.incognito = config.isIncognitoMode
+                composeToolbarViewController.updateIcons()
+                EBToast.showShort(this, "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled.")
             }
-        })
-
-    }
-
-    override fun updateTitle(title: String?) = updateTitle()
-
-    override fun addHistory(title: String, url: String) {
-        lifecycleScope.launch {
-            recordDb.addHistory(Record(title, url, System.currentTimeMillis()))
+            ConfigManager.K_KEEP_AWAKE -> { if (config.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) else window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
+            ConfigManager.K_DESKTOP -> { ebWebView.updateUserAgentString(); ebWebView.reload(); composeToolbarViewController.updateIcons() }
+            ConfigManager.K_DARK_MODE -> config.restartChanged = true
+            ConfigManager.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
+            ConfigManager.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
+            ConfigManager.K_NAV_POSITION -> config.restartChanged = true
+            ConfigManager.K_TTS_SPEED_VALUE -> ttsViewModel.setSpeechRate(config.ttsSpeedValue / 100f)
+            ConfigManager.K_CUSTOM_USER_AGENT, ConfigManager.K_ENABLE_CUSTOM_USER_AGENT -> { ebWebView.updateUserAgentString(); ebWebView.reload() }
+            ConfigManager.K_ENABLE_TOUCH -> { composeToolbarViewController.updateIcons(); touchController.toggleTouchPageTurn(config.enableTouchTurn) }
+            ConfigManager.K_TOUCH_AREA_ACTION_SWITCH -> composeToolbarViewController.updateIcons()
+            ConfigManager.K_GPT_ACTION_ITEMS -> actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
         }
     }
-
-    override fun updateProgress(progress: Int) {
-        progressBar.progress = progress
-
-        if (progress < BrowserUnit.PROGRESS_MAX) {
-            updateRefresh(true)
-            progressBar.visibility = VISIBLE
-        } else { // web page loading complete
-            updateRefresh(false)
-            progressBar.visibility = GONE
-            swipeRefreshLayout.isRefreshing = false
-
-            scrollChange()
-
-            updateSavedAlbumInfo()
-        }
-    }
-
-    override fun focusOnInput() {
-        if (binding.appBar.visibility != VISIBLE) {
-            shouldRestoreFullscreen = true
-
-            // Temporarily enable window adjustment for keyboard (only when in fullscreen)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                window.setDecorFitsSystemWindows(true)
-            } else {
-                @Suppress("DEPRECATION")
-                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            }
-        }
-
-        val textOrUrl = if (ebWebView.url?.startsWith("data:") != true) {
-            val url = ebWebView.url.orEmpty()
-            TextFieldValue(url, selection = TextRange(0, url.length))
-        } else {
-            TextFieldValue("")
-        }
-
-        inputTextOrUrl.value = textOrUrl
-        inputIsWideLayout = ViewUnit.isWideLayout(this)
-        inputShouldReverse = !config.isToolbarOnTop
-        inputHasCopiedText = getClipboardText().isNotEmpty()
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                searchSuggestionViewModel.initSuggestions()
-                inputRecordList.value = searchSuggestionViewModel.suggestions.value
-            }
-        }
-
-        if (config.isVerticalToolbar) {
-            // Keep toolbar visible on the side; constrain inputUrl next to it
-            adjustInputUrlForVerticalToolbar()
-        } else {
-            composeToolbarViewController.hide()
-            binding.appBar.visibility = INVISIBLE
-        }
-        binding.contentSeparator.visibility = INVISIBLE
-        binding.inputUrl.visibility = VISIBLE
-        binding.inputUrl.postDelayed(
-            {
-                ViewUnit.showKeyboard(this)
-                try {
-                    inputUrlFocusRequester.requestFocus()
-                } catch (e: IllegalStateException) {
-                    e.printStackTrace()
-                }
-            }, 200
-        )
-    }
-
-    private fun adjustInputUrlForVerticalToolbar() {
-        val constraintSet = androidx.constraintlayout.widget.ConstraintSet().apply {
-            clone(binding.root)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
-            if (config.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Left) {
-                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, binding.appBar.id, androidx.constraintlayout.widget.ConstraintSet.END)
-                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.END)
-            } else {
-                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.START)
-                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, binding.appBar.id, androidx.constraintlayout.widget.ConstraintSet.START)
-            }
-        }
-        constraintSet.applyTo(binding.root)
-    }
-
-    private fun getClipboardText(): String =
-        (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
-            .primaryClip?.getItemAt(0)?.text?.toString().orEmpty()
-
-    private var isRunning = false
-    private fun updateRefresh(running: Boolean) {
-        if (!isRunning && running) {
-            isRunning = true
-        } else if (isRunning && !running) {
-            isRunning = false
-        }
-        composeToolbarViewController.updateRefresh(isRunning)
-    }
-
-    override fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>) {
-        this.filePathCallback?.onReceiveValue(null)
-        this.filePathCallback = filePathCallback
-        val contentSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-        contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE)
-        contentSelectionIntent.type = "*/*"
-        val chooserIntent = Intent(Intent.ACTION_CHOOSER)
-        chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent)
-        fileChooserLauncher.launch(chooserIntent)
-    }
-
-    override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
-        if (view == null) {
-            return
-        }
-        if (customView != null && callback != null) {
-            callback.onCustomViewHidden()
-            return
-        }
-        customView = view
-        originalOrientation = requestedOrientation
-        fullscreenHolder = ZoomableFrameLayout(this).apply {
-            enableZoom = config.zoomInCustomView
-            addView(
-                customView,
-                FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT
-                )
-            )
-
-        }
-        ViewUnit.invertColor(view, config.hasInvertedColor(ebWebView.url.orEmpty()))
-
-        val decorView = window.decorView as FrameLayout
-        decorView.addView(
-            fullscreenHolder,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-        )
-        customView?.keepScreenOn = true
-        (currentAlbumController as View?)?.visibility = INVISIBLE
-        ViewUnit.setCustomFullscreen(
-            window,
-            true,
-            config.hideStatusbar,
-            ViewUnit.isEdgeToEdgeEnabled(resources)
-        )
-        if (view is FrameLayout) {
-            if (view.focusedChild is VideoView) {
-                videoView = view.focusedChild as VideoView
-                videoView?.setOnErrorListener(VideoCompletionListener())
-                videoView?.setOnCompletionListener(VideoCompletionListener())
-            }
-        }
-        customViewCallback = callback
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
-    }
-
-    override fun onHideCustomView(): Boolean {
-        if (customView == null || customViewCallback == null || currentAlbumController == null) {
-            return false
-        }
-
-        // fix when pressing back, the screen is whole black.
-        customViewCallback?.onCustomViewHidden()
-        customViewCallback = null
-
-        fullscreenHolder?.visibility = GONE
-        customView?.visibility = GONE
-        (window.decorView as FrameLayout).removeView(fullscreenHolder)
-        customView?.keepScreenOn = false
-        (currentAlbumController as View).visibility = VISIBLE
-        ViewUnit.setCustomFullscreen(
-            window,
-            false,
-            config.hideStatusbar,
-            ViewUnit.isEdgeToEdgeEnabled(resources)
-        )
-        fullscreenHolder = null
-        customView = null
-
-        if (videoView != null) {
-            videoView?.visibility = GONE
-            videoView?.setOnErrorListener(null)
-            videoView?.setOnCompletionListener(null)
-            videoView = null
-        }
-        requestedOrientation = originalOrientation
-
-        return true
-    }
-
-    private var previousKeyEvent: KeyEvent? = null
-    override fun handleKeyEvent(event: KeyEvent): Boolean {
-        return keyHandler.handleKeyEvent(event)
-    }
-
-    override fun loadInSecondPane(url: String): Boolean =
-        if (config.twoPanelLinkHere &&
-            isTwoPaneControllerInitialized() &&
-            twoPaneController.isSecondPaneDisplayed()
-        ) {
-            toggleSplitScreen(url)
-            true
-        } else {
-            false
-        }
-
-    private fun confirmAdSiteAddition(url: String) {
-        val host = Uri.parse(url).host.orEmpty()
-        if (config.adSites.contains(host)) {
-            confirmRemoveAdSite(host)
-        } else {
-            lifecycleScope.launch {
-                val domain = TextInputDialog(
-                    this@BrowserActivity,
-                    "Ad domain to be blocked",
-                    "",
-                    host,
-                ).show().orEmpty()
-
-                if (domain.isNotBlank()) {
-                    config.adSites = config.adSites.apply { add(domain) }
-                    ebWebView.reload()
-                }
-            }
-        }
-    }
-
-    private fun confirmRemoveAdSite(url: String) {
-        dialogManager.showOkCancelDialog(
-            title = "remove this url from blacklist?",
-            okAction = {
-                config.adSites = config.adSites.apply { remove(url) }
-                ebWebView.reload()
-            }
-        )
-    }
-
-    private var motionEvent: MotionEvent? = null
-    private var longPressPoint: Point = Point(0, 0)
-    private var activeContextMenuDialog: ContextMenuDialogFragment? = null
-    private var isInLongPressMode = false
-    override fun onLongPress(message: Message, event: MotionEvent?) {
-        if (ebWebView.isSelectingText) return
-
-        motionEvent = event
-        longPressPoint = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
-        val rawPoint = event?.toRawPoint() ?: Point(0, 0)
-
-        val url = BrowserUnit.getWebViewLinkUrl(ebWebView, message)
-        if (url.isNotBlank()) {
-            // case: image or link
-            val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ebWebView, message)
-            BrowserUnit.getWebViewLinkTitle(ebWebView) { linkTitle ->
-                val titleText = linkTitle.ifBlank { url }.toString()
-                val contextMenuDialog = ContextMenuDialogFragment(
-                    url,
-                    linkImageUrl.isNotBlank(),
-                    config.imageApiKey.isNotBlank(),
-                    rawPoint,
-                    isEbookMode = config.isEbookModeActive,
-                    itemClicked = {
-                        this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
-                        activeContextMenuDialog = null
-                        isInLongPressMode = false
-                    },
-                    itemLongClicked = {
-                        if (it == ContextMenuItemType.TranslateImage) {
-                            translateAllImages(linkImageUrl)
-                        }
-                        activeContextMenuDialog = null
-                        isInLongPressMode = false
-                    }
-                )
-                activeContextMenuDialog = contextMenuDialog
-                isInLongPressMode = true
-                contextMenuDialog.show(supportFragmentManager, "contextMenu")
-            }
-        } else if (config.isEbookModeActive) {
-            // No link found — simulate click for non-link clickable elements
-            ebWebView.clickLinkElement(longPressPoint)
-        }
-    }
-
-    private fun handleContextMenuItem(
-        contextMenuItemType: ContextMenuItemType,
-        title: String,
-        url: String,
-        imageUrl: String,
-    ) {
-        when (contextMenuItemType) {
-            ContextMenuItemType.NewTabForeground -> addAlbum(title, url)
-            ContextMenuItemType.NewTabBackground -> addAlbum(title, url, false)
-            ContextMenuItemType.ShareLink -> {
-                if (prepareRecord()) EBToast.show(this, getString(R.string.toast_share_failed))
-                else IntentUnit.share(this, title, url)
-            }
-
-            ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(
-                this,
-                BrowserUnit.stripUrlQuery(url)
-            )
-
-            ContextMenuItemType.GotoLink -> ebWebView.clickLinkElement(longPressPoint)
-
-            ContextMenuItemType.SelectText -> ebWebView.post {
-                ebWebView.selectLinkText(longPressPoint)
-            }
-
-            ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
-                this,
-                url,
-                getString(R.string.menu_open_with)
-            )
-
-            ContextMenuItemType.SaveBookmark -> saveBookmark(url, title)
-            ContextMenuItemType.SplitScreen -> toggleSplitScreen(url)
-            ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
-
-            ContextMenuItemType.TranslateImage -> translateImage(imageUrl)
-            ContextMenuItemType.Tts -> addContentToReadList(url)
-            ContextMenuItemType.Summarize -> summarizeLinkContent(url)
-            ContextMenuItemType.SaveAs -> {
-                if (url.startsWith("data:image")) {
-                    saveFile(url)
-                } else {
-                    if (imageUrl.isNotBlank()) {
-                        dialogManager.showSaveFileDialog(url = imageUrl, saveFile = this::saveFile)
-                    } else {
-                        dialogManager.showSaveFileDialog(url = url, saveFile = this::saveFile)
-                    }
-                }
-            }
-
-            else -> Unit
-        }
-    }
-
-    private val toBeReadWebView: EBWebView by lazy {
-        EBWebView(this, this).apply {
-            setOnPageFinishedAction {
-                lifecycleScope.launch {
-                    val content = toBeReadWebView.getRawText()
-                    if (content.isNotEmpty()) {
-                        ttsViewModel.readArticle(content, toBeReadWebView.title.orEmpty())
-                    }
-                    // remove self
-                    if (toBeReadProcessUrlList.isNotEmpty()) {
-                        toBeReadProcessUrlList.removeAt(0)
-                    }
-
-                    if (toBeReadProcessUrlList.isNotEmpty()) {
-                        toBeReadWebView.loadUrl(toBeReadProcessUrlList.removeAt(0))
-                    } else {
-                        toBeReadWebView.loadUrl("about:blank")
-                    }
-                }
-            }
-        }
-    }
-
-    private var toBeReadProcessUrlList: MutableList<String> = mutableListOf()
-    private fun addContentToReadList(url: String) {
-        toBeReadProcessUrlList.add(url)
-        if (toBeReadProcessUrlList.size == 1) {
-            toBeReadWebView.loadUrl(url)
-        }
-        EBToast.show(this, R.string.added_to_read_list)
-    }
-
-    private fun translateWebView() {
-        lifecycleScope.launch {
-            val base64String = translationViewModel.translateWebView(
-                ebWebView,
-                config.sourceLanguage,
-                config.translationLanguage,
-            )
-            if (base64String != null) {
-                val translatedImageHtml = HelperUnit.loadAssetFileToString(
-                    this@BrowserActivity, "translated_image.html"
-                ).replace("%%", base64String)
-                if (config.showTranslatedImageToSecondPanel) {
-                    maybeInitTwoPaneController()
-                    twoPaneController.showSecondPaneWithData(translatedImageHtml)
-                } else {
-                    addAlbum()
-                    ebWebView.isTranslatePage = true
-                    ebWebView.loadData(translatedImageHtml, "text/html", "utf-8")
-                }
-            } else {
-                EBToast.show(this@BrowserActivity, "Failed to translate image")
-            }
-        }
-    }
-
-    private fun translateImage(url: String) {
-        lifecycleScope.launch {
-            translateImageSuspend(url)
-        }
-    }
-
-    private suspend fun translateImageSuspend(url: String): Boolean {
-        val result = translationViewModel.translateImage(
-            ebWebView.url.orEmpty(),
-            url,
-            TranslationLanguage.KO,
-            config.translationLanguage,
-        )
-        if (result != null) {
-            val escapedUrl = url.replace("\\", "\\\\").replace("'", "\\'")
-            val js = HelperUnit.loadAssetFileToString(
-                this@BrowserActivity, "translate_image_overlay.js"
-            ).replace("%%IMAGE_URL%%", escapedUrl)
-                .replace("%%BASE64_DATA%%", result.renderedImage)
-            ebWebView.evaluateJavascript(js, null)
-            return result.imageId == "cached"
-        }
-        return false
-    }
-
-    private fun translateAllImages(imageUrl: String) {
-        lifecycleScope.launch {
-            val escapedUrl = imageUrl.replace("\\", "\\\\").replace("'", "\\'")
-            val js = HelperUnit.loadAssetFileToString(
-                this@BrowserActivity, "get_remaining_images.js"
-            ).replace("%%IMAGE_URL%%", escapedUrl)
-
-            ebWebView.evaluateJavascript(js) { result ->
-                val urlsJson = result?.trim('"')?.replace("\\\"", "\"")
-                    ?.replace("\\\\", "\\") ?: return@evaluateJavascript
-                try {
-                    val urls = org.json.JSONArray(urlsJson)
-                    val imageUrls = mutableListOf<String>()
-                    for (i in 0 until urls.length()) {
-                        imageUrls.add(urls.getString(i))
-                    }
-                    if (imageUrls.isEmpty()) return@evaluateJavascript
-
-                    EBToast.show(
-                        this@BrowserActivity,
-                        "Translating ${imageUrls.size} images..."
-                    )
-                    lifecycleScope.launch {
-                        for ((index, url) in imageUrls.withIndex()) {
-                            val wasCached = translateImageSuspend(url)
-                            if (index < imageUrls.size - 1 && !wasCached) {
-                                val base = config.imageTranslateIntervalSeconds
-                                val delayMs = ((base - 2).coerceAtLeast(1)..(base + 2)).random() * 1000L
-                                kotlinx.coroutines.delay(delayMs)
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    EBToast.show(this@BrowserActivity, "Failed to get image list")
-                }
-            }
-        }
-    }
-
-    private fun saveFile(url: String, fileName: String = "") {
-        // handle data url case
-        if (url.startsWith("data:image")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                BrowserUnit.saveImageFromUrl(url, saveImageFilePickerLauncher)
-            } else {
-                EBToast.show(this, "Not supported dataUrl")
-            }
-            return
-        }
-
-        if (HelperUnit.needGrantStoragePermission(this)) {
-            return
-        }
-
-        val source = Uri.parse(url)
-        val request = Request(source).apply {
-            addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-            addRequestHeader("User-Agent", WebSettings.getDefaultUserAgent(this@BrowserActivity))
-            setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            try {
-                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-            } catch (e: Exception) {
-                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                setDestinationUri(Uri.fromFile(java.io.File(downloadsDir, fileName)))
-            }
-        }
-
-        val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
-        dm.enqueue(request)
-        ViewUnit.hideKeyboard(this)
-    }
-
-    @SuppressLint("RestrictedApi")
-    private fun showToolbar() {
-        if (searchOnSite) return
-
-        showStatusBar()
-        fabImageViewController.hide()
-        binding.mainSearchPanel.visibility = INVISIBLE
-        binding.appBar.visibility = VISIBLE
-        binding.contentSeparator.visibility = VISIBLE
-        binding.inputUrl.visibility = INVISIBLE
-        composeToolbarViewController.show()
-        ViewUnit.hideKeyboard(this)
-
-        // Restore inputUrl constraints to full-screen overlay for next focusOnInput
-        if (config.isVerticalToolbar) {
-            resetInputUrlConstraints()
-        }
-    }
-
-    private fun resetInputUrlConstraints() {
-        val constraintSet = androidx.constraintlayout.widget.ConstraintSet().apply {
-            clone(binding.root)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.START)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.END)
-        }
-        constraintSet.applyTo(binding.root)
-    }
-
-    override fun toggleFullscreen() {
-        if (searchOnSite) return
-
-        if (binding.appBar.visibility == VISIBLE) {
-            if (config.fabPosition != FabPosition.NotShow) {
-                fabImageViewController.show()
-            }
-            binding.mainSearchPanel.visibility = INVISIBLE
-            binding.appBar.visibility = GONE
-            binding.contentSeparator.visibility = GONE
-            hideStatusBar()
-        } else {
-            showToolbar()
-        }
-    }
-
-    private fun hideSearchPanel() {
-        if (this::ebWebView.isInitialized) {
-            ebWebView.clearMatches()
-        }
-        searchOnSite = false
-        ViewUnit.hideKeyboard(this)
-        showToolbar()
-    }
-
-    @Suppress("DEPRECATION")
-    private fun hideStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false)
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-            if (ViewUnit.isEdgeToEdgeEnabled(resources))
-                window.insetsController?.hide(WindowInsets.Type.navigationBars())
-            binding.root.setPadding(0, 0, 0, 0)
-        } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        }
-    }
-
-
-    @Suppress("DEPRECATION")
-    private fun showStatusBar() {
-        if (config.hideStatusbar) return
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(true)
-            window.insetsController?.show(WindowInsets.Type.statusBars())
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        }
-    }
-
-    override fun showSearchPanel() {
-        searchOnSite = true
-        fabImageViewController.hide()
-        binding.mainSearchPanel.visibility = VISIBLE
-        binding.mainSearchPanel.post {
-            searchPanelFocusRequester.requestFocus()
-            ViewUnit.showKeyboard(this)
-        }
-        binding.appBar.visibility = VISIBLE
-        binding.contentSeparator.visibility = VISIBLE
-        ViewUnit.showKeyboard(this)
-    }
-
-    override fun showEpubDialog() = dialogManager.showEpubDialog(
-        onSaveEpub = { uri ->
-            if (uri == null) {
-                epubManager.showWriteEpubFilePicker(writeEpubFilePickerLauncher, ebWebView.title ?: "einkbro")
-            } else {
-                saveEpub(uri)
-            }
-        },
-        onOpenEpub = { uri ->
-            if (uri != null) {
-                HelperUnit.openFile(this, uri)
-            } else {
-                epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
-            }
-        },
-    )
-
-    protected fun readArticle() {
-        lifecycleScope.launch {
-            ttsViewModel.readArticle(ebWebView.getRawText(), ebWebView.title.orEmpty())
-        }
-    }
-
-    private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this) }
-
-    override fun showMenuDialog() =
-        MenuDialogFragment(
-            ebWebView.url.orEmpty(),
-            ttsViewModel.isReading(),
-            ebWebView.isAudioOnlyMode,
-            ebWebView.hasVideo,
-            config.enableTouchTurn,
-            { menuActionHandler.handle(it, ebWebView) },
-            { menuActionHandler.handleLongClick(it) }
-        ).show(supportFragmentManager, "menu_dialog")
-
-    override fun showWebArchiveFilePicker() {
-        val fileName = "${ebWebView.title}.mht"
-        BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
-    }
-
-    override fun savePageForLater() {
-        val title = ebWebView.title.orEmpty()
-        val url = ebWebView.url.orEmpty()
-        if (url.isBlank()) return
-
-        val savedPagesDir = File(filesDir, "saved_pages")
-        if (!savedPagesDir.exists()) savedPagesDir.mkdirs()
-        val fileName = "${System.currentTimeMillis()}.mht"
-        val filePath = File(savedPagesDir, fileName).absolutePath
-
-        ebWebView.saveWebArchive(filePath, false) { savedPath ->
-            lifecycleScope.launch(Dispatchers.IO) {
-                if (savedPath != null) {
-                    bookmarkManager.insertSavedPage(
-                        SavedPage(
-                            title = title,
-                            url = url,
-                            filePath = savedPath,
-                            savedAt = System.currentTimeMillis(),
-                        )
-                    )
-                    withContext(Dispatchers.Main) {
-                        EBToast.show(this@BrowserActivity, R.string.toast_saved_page)
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        EBToast.show(this@BrowserActivity, R.string.toast_save_page_failed)
-                    }
-                }
-            }
-        }
-    }
-
-    override fun showSavedPages() {
-        startActivity(SavedPagesActivity.createIntent(this))
-    }
-
-    override fun showOpenEpubFilePicker() =
-        epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
-
-    override fun handleTtsButton() {
-        if (ttsViewModel.isReading()) {
-            TtsSettingDialogFragment().show(supportFragmentManager, "TtsSettingDialog")
-        } else {
-            readArticle()
-        }
-    }
-
-    override fun showTtsLanguageDialog() {
-        TtsLanguageDialog(this).show(ttsViewModel.getAvailableLanguages())
-    }
-
-    override fun removeAlbum() {
-        currentAlbumController?.let { removeAlbum(it) }
-    }
-
-    override fun toggleSplitScreen(url: String?) {
-        maybeInitTwoPaneController()
-        if (twoPaneController.isSecondPaneDisplayed() && url == null) {
-            twoPaneController.hideSecondPane()
-            splitSearchViewModel.reset()
-            return
-        }
-
-        twoPaneController.showSecondPaneWithUrl(url ?: ebWebView.url.orEmpty())
-    }
-
-    private fun nextAlbumController(next: Boolean): AlbumController? {
-        if (browserContainer.size() <= 1) {
-            return currentAlbumController
-        }
-
-        val list = browserContainer.list()
-        var index = list.indexOf(currentAlbumController)
-        if (next) {
-            index++
-            if (index >= list.size) {
-                return list.first()
-            }
-        } else {
-            index--
-            if (index < 0) {
-                return list.last()
-            }
-        }
-        return list[index]
-    }
-
-    private fun getFocusedWebView(): EBWebView = when {
-        ebWebView.hasFocus() -> ebWebView
-        isTwoPaneControllerInitialized() && twoPaneController.getSecondWebView().hasFocus() -> {
-            twoPaneController.getSecondWebView()
-        }
-
-        else -> ebWebView
-    }
-
-    private val json = Json {
-        // Configure JSON serializer
-        ignoreUnknownKeys = true
-        encodeDefaults = false // Don't encode default values to reduce size
-        isLenient = true
-    }
-
-    // - action mode handling
-    override fun onActionModeStarted(mode: ActionMode) {
-        val isTextEditMode = ViewUnit.isTextEditMode(this, mode.menu)
-
-        // check isSendingLink
-        if (remoteConnViewModel.isSendingTextSearch && !isTextEditMode) {
-            mode.hide(1000000)
-            mode.menu.clear()
-            mode.finish()
-
-            lifecycleScope.launch {
-                val keyword = getFocusedWebView().getSelectedText()
-                val keywordWithContext = getFocusedWebView().getSelectedTextWithContext()
-                val action = config.gptActionList.firstOrNull { it.name == config.remoteQueryActionName }
-                val constructedUrlString =
-                    if (action != null) {
-                        val actionString = json.encodeToString(serializer = ChatGPTActionInfo.serializer(), action)
-                        "action|||$keywordWithContext|||$actionString"
-                    } else {
-                        externalSearchViewModel.generateSearchUrl(keyword)
-                    }
-                remoteConnViewModel.sendTextSearch(constructedUrlString)
-            }
-            return
-        }
-
-        if (!config.showDefaultActionMenu && !isTextEditMode && isInSplitSearchMode()) {
-            mode.hide(1000000)
-            mode.menu.clear()
-
-            lifecycleScope.launch {
-                toggleSplitScreen(splitSearchViewModel.getUrl(ebWebView.getSelectedText()))
-            }
-
-            mode.finish()
-            return
-        }
-
-        if (!actionModeMenuViewModel.isInActionMode()) {
-            actionModeMenuViewModel.updateActionMode(mode)
-
-            if (!config.showDefaultActionMenu && !isTextEditMode) {
-                mode.hide(1000000)
-                mode.menu.clear()
-                mode.finish()
-
-                lifecycleScope.launch {
-                    actionModeMenuViewModel.updateSelectedText(HelperUnit.unescapeJava(getFocusedWebView().getSelectedText()))
-                    showActionModeView(translationViewModel) {
-                        getFocusedWebView().removeTextSelection()
-                    }
-                }
-            }
-        }
-
-        if (!config.showDefaultActionMenu && !isTextEditMode) {
-            mode.menu.clear()
-        }
-
-        super.onActionModeStarted(mode)
-    }
-
-    private var actionModeView: View? = null
-    private fun showActionModeView(
-        translationViewModel: TranslationViewModel,
-        clearSelectionAction: () -> Unit,
-    ) {
-        actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
-        if (actionModeView == null) {
-            actionModeView = ComposeView(this).apply {
-                id = View.generateViewId()
-                setContent {
-                    val text by actionModeMenuViewModel.selectedText.collectAsState()
-                    MyTheme {
-                        ActionModeMenu(
-                            actionModeMenuViewModel.menuInfos,
-                            actionModeMenuViewModel.showIcons,
-                        ) { intent ->
-                            if (intent != null) {
-                                context.startActivity(intent.apply {
-                                    putExtra(Intent.EXTRA_PROCESS_TEXT, text)
-                                    putExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, true)
-                                })
-                            }
-                            clearSelectionAction()
-                            actionModeMenuViewModel.updateActionMode(null)
-                        }
-                    }
-                }
-            }
-            actionModeView?.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            actionModeView?.visibility = INVISIBLE
-            binding.root.addView(actionModeView)
-        }
-
-        actionModeMenuViewModel.show()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        actionModeMenuViewModel.finish()
-        if (!config.continueMedia && !isMeetPipCriteria()) {
-            if (this::ebWebView.isInitialized) {
-                ebWebView.pauseTimers()
-            }
-        }
-    }
-
-    override fun onActionModeFinished(mode: ActionMode?) {
-        super.onActionModeFinished(mode)
-        mode?.hide(1000000)
-        actionModeMenuViewModel.updateActionMode(null)
-    }
-
-    override fun isActionModeActive(): Boolean = actionModeMenuViewModel.isInActionMode()
-
-    override fun dismissActionMode() {
-        ebWebView.removeTextSelection()
-        actionModeMenuViewModel.updateActionMode(null)
-    }
-
-    // - action mode handling
 
     companion object {
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"

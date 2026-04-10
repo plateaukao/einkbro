@@ -1,4 +1,4 @@
-package info.plateaukao.einkbro.service.data
+package info.plateaukao.einkbro.data.remote.model
 
 import kotlinx.serialization.Serializable
 

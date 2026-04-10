@@ -17,7 +17,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
-import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.database.RecordType
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
@@ -46,7 +46,7 @@ class OverviewDialogController(
     private val addEmptyTabAction: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val recordDb: RecordDb by inject()
+    private val recordDb: RecordRepository by inject()
     private val bookmarkManager: BookmarkManager by inject()
     private val dialogManager: DialogManager = DialogManager(context as Activity)
 

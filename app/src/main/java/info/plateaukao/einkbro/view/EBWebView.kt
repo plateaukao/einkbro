@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
 import android.print.PrintDocumentAdapter
-import android.util.Base64
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -39,32 +38,22 @@ import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
-import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.HighlightStyle
-import info.plateaukao.einkbro.preference.TranslationMode
-import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
-import info.plateaukao.einkbro.unit.HelperUnit.loadAssetFile
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.max
-import kotlin.math.min
 
 
-@OptIn(DelicateCoroutinesApi::class)
+
 open class EBWebView(
     context: Context,
     var browserController: BrowserController?,
@@ -75,21 +64,48 @@ open class EBWebView(
     private val webChromeClient: EBWebChromeClient
     private val downloadListener: EBDownloadListener = EBDownloadListener(context)
     private val clickHandler: EBClickHandler
+    val jsBridge: WebViewJsBridge = WebViewJsBridge(this).apply {
+        simulateClickAction = { point -> simulateClick(point) }
+    }
 
     var dualCaption: String? = null
     var shouldHideTranslateContext: Boolean = false
 
     var baseUrl: String? = null
-    protected var isEpubReaderMode = false
     private val cookieManager: CookieManager = CookieManager.getInstance()
 
     private val config: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
     private val javascript: Javascript by inject()
     private val cookie: Cookie by inject()
+    private val coroutineScope: CoroutineScope by inject()
 
-    var translateApi: TRANSLATE_API = TRANSLATE_API.GOOGLE
-    var isTranslateByParagraph = false
+    // Helpers for delegated concerns
+    val readerHelper = WebViewReaderHelper(this, config)
+    val translationHelper = WebViewTranslationHelper(this, config)
+    val navigationHelper = WebViewNavigationHelper(this, config)
+
+    // Delegated reader state
+    var isReaderModeOn: Boolean
+        get() = readerHelper.isReaderModeOn
+        set(value) { readerHelper.isReaderModeOn = value }
+    var isVerticalRead: Boolean
+        get() = readerHelper.isVerticalRead
+        set(value) { readerHelper.isVerticalRead = value }
+    var isPlainText: Boolean
+        get() = readerHelper.isPlainText
+        set(value) { readerHelper.isPlainText = value }
+    var isEpubReaderMode: Boolean
+        get() = readerHelper.isEpubReaderMode
+        set(value) { readerHelper.isEpubReaderMode = value }
+
+    // Delegated translation state
+    var translateApi: TRANSLATE_API
+        get() = translationHelper.translateApi
+        set(value) { translationHelper.translateApi = value }
+    var isTranslateByParagraph: Boolean
+        get() = translationHelper.isTranslateByParagraph
+        set(value) { translationHelper.isTranslateByParagraph = value }
     override var isTranslatePage = false
         set(value) {
             field = value
@@ -98,8 +114,6 @@ open class EBWebView(
             }
         }
     override var isAIPage: Boolean = false
-
-    var isPlainText = false
 
     var incognito: Boolean = false
         set(value) {
@@ -236,32 +250,8 @@ open class EBWebView(
 
     fun setOnPageFinishedAction(action: () -> Unit) = webViewClient.setOnPageFinishedAction(action)
 
-    fun updateCssStyle() {
-        val fontType = if (shouldUseReaderFont()) config.readerFontType else config.fontType
-
-        val cssStyle =
-            (if (config.blackFontStyle) makeTextBlackCss else "") +
-                    (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
-                    (if (fontType == FontType.TC_IANSUI) iansuiFontCss else "") +
-                    (if (fontType == FontType.JA_MINCHO) jaMinchoFontCss else "") +
-                    (if (fontType == FontType.KO_GAMJA) koGamjaFontCss else "") +
-                    (if (fontType == FontType.SERIF) serifFontCss else "") +
-                    (if (config.whiteBackground(url.orEmpty())) whiteBackgroundCss else "") +
-                    (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
-                    (if (config.boldFontStyle)
-                        boldFontCss.replace("value", "${config.fontBoldness}") else "") +
-                    // all css are purged by epublib. need to add it back if it's epub reader mode
-                    if (isEpubReaderMode) loadAssetFile("readerview.css") else ""
-        if (cssStyle.isNotBlank()) {
-            injectCss(cssStyle.toByteArray())
-        }
-    }
-
-    private var fontNum = 0
-    private fun getCustomFontCss(): String {
-        return customFontCss.replace("mycustomfont", "mycustomfont${++fontNum}")
-            .replace("fontfamily", "fontfamily${fontNum}")
-    }
+    // Delegated to readerHelper
+    fun updateCssStyle() = readerHelper.updateCssStyle()
 
     private fun resetState(partial: Boolean = false) {
         dualCaption = null
@@ -543,7 +533,7 @@ open class EBWebView(
 
         if (originalUrl == null) return
         val host = Uri.parse(originalUrl).host ?: return
-        GlobalScope.launch {
+        coroutineScope.launch {
             bookmarkManager.insertFavicon(FaviconInfo(domain = host, bitmap.convertBytes()))
         }
     }
@@ -642,88 +632,29 @@ open class EBWebView(
         requestFocusNodeHref(click)
     }
 
-    fun isAtTop(): Boolean = if (isVerticalRead) {
-        val totalPageCount = computeHorizontalScrollRange() / shiftOffset()
-        val currentPage = totalPageCount - (floor(scrollX.toDouble() / shiftOffset()).toInt())
-        currentPage == 1
-    } else {
-        scrollY == 0 && isInnerScrollAtTop
-    }
+    //region Navigation (delegated to WebViewNavigationHelper)
 
-    fun jumpToTop() = if (isVerticalRead) {
-        scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
-    } else {
-        scrollTo(0, 0)
-        evaluateJavascript("window.__einkbroScrollToTop && window.__einkbroScrollToTop()", null)
-    }
+    fun isAtTop(): Boolean = navigationHelper.isAtTop()
 
-    fun jumpToBottom() = if (isVerticalRead) {
-        scrollTo(computeHorizontalScrollRange() - shiftOffset(), 0)
-    } else {
-        scrollTo(0, computeVerticalScrollRange() - shiftOffset())
-    }
+    fun jumpToTop() = navigationHelper.jumpToTop()
 
-    open fun pageDownWithNoAnimation() = if (isVerticalRead) {
-        scrollBy(shiftOffset(), 0)
-        scrollX = min(computeHorizontalScrollRange() - width, scrollX)
-    } else { // normal case
-        val nonNullUrl = url.orEmpty()
-        if (config.shouldSendPageNavKey(nonNullUrl)) {
-            sendPageDownKey()
-        } else {
-            jsPageScroll(1) { handled ->
-                if (!handled) {
-                    scrollBy(0, shiftOffset())
-                    scrollY = min(computeVerticalScrollRange() - shiftOffset(), scrollY)
-                }
-            }
-        }
-    }
+    fun jumpToBottom() = navigationHelper.jumpToBottom()
 
-    open fun pageUpWithNoAnimation() = if (isVerticalRead) {
-        scrollBy(-shiftOffset(), 0)
-        scrollX = max(0, scrollX)
-    } else { // normal case
-        val nonNullUrl = url.orEmpty()
-        if (config.shouldSendPageNavKey(nonNullUrl)) {
-            sendPageUpKey()
-        } else {
-            jsPageScroll(-1) { handled ->
-                if (!handled) {
-                    scrollBy(0, -shiftOffset())
-                    scrollY = max(0, scrollY)
-                }
-            }
-        }
-    }
+    open fun pageDownWithNoAnimation() = navigationHelper.pageDownWithNoAnimation()
 
-    private fun jsPageScroll(direction: Int, fallback: (Boolean) -> Unit) {
-        val offset = config.pageReservedOffsetInString
-        val offsetPercent = if (offset.endsWith('%')) offset.take(offset.length - 1).toInt() else 0
-        val offsetPx = if (offset.endsWith('%')) 0 else offset.toInt().dp(context)
-        evaluateJavascript(
-            "window.__einkbroPageScroll && window.__einkbroPageScroll($direction, ${offsetPercent / 100.0}, $offsetPx)"
-        ) { result ->
-            // result is "true" if JS scrolled an inner container, otherwise fall back to native scroll
-            fallback(result?.trim('"') == "true")
-        }
-    }
+    open fun pageUpWithNoAnimation() = navigationHelper.pageUpWithNoAnimation()
 
-    fun sendPageDownKey() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_DOWN)
+    fun sendPageDownKey() = navigationHelper.sendPageDownKey()
 
-    fun sendPageUpKey() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_UP)
+    fun sendPageUpKey() = navigationHelper.sendPageUpKey()
 
-    fun removeTextSelection() {
-        evaluateJavascript(
-            """
-            javascript:(function() {
-                     var sel = window.getSelection();
-                     if (sel) sel.removeAllRanges();
-                 }
-            )()
-        """.trimIndent()
-        ) {}
-    }
+    fun updatePageInfo() = navigationHelper.updatePageInfo()
+
+    protected fun shiftOffset(): Int = navigationHelper.shiftOffset()
+
+    //endregion
+
+    fun removeTextSelection() = jsBridge.removeTextSelection()
 
     fun clickLinkElement(point: Point) {
         ebookTouchTemporarilyDisabled = true
@@ -741,7 +672,7 @@ open class EBWebView(
                      var hrefAttr = tt.getAttribute("href");
                      tt.removeAttribute("href");
                      w._hrefAttr = hrefAttr;
-                     
+
                      var sel = w.getSelection();
                      sel.removeAllRanges();
                  }
@@ -812,41 +743,15 @@ open class EBWebView(
         )
     }
 
-    fun updatePageInfo() {
-        try {
-            val pageHeight = shiftOffset()
-            if (isVerticalRead) {
-                val totalPageCount = computeHorizontalScrollRange() / pageHeight
-                val currentPage = totalPageCount - (floor(scrollX.toDouble() / pageHeight).toInt())
-                val info = "$currentPage/$totalPageCount"
-                browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
-            } else if (innerClientHeight > 0 && computeVerticalScrollRange() <= height + pageHeight / 2) {
-                // Inner scrollable container: use JS-reported dimensions
-                val totalPageCount = innerScrollHeight / innerClientHeight
-                val currentPage = ceil((innerScrollTop + 1).toDouble() / innerClientHeight).toInt()
-                val info = "$currentPage/$totalPageCount"
-                browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
-            } else {
-                val totalPageCount = computeVerticalScrollRange() / pageHeight
-                val currentPage = ceil((scrollY + 1).toDouble() / pageHeight).toInt()
-                val info = "$currentPage/$totalPageCount"
-                browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
-            }
-        } catch (e: ArithmeticException) { // prevent divide by zero
-            browserController?.updatePageInfo("-/-")
-        }
-    }
-
     var rawHtmlCache: String? = null
     suspend fun getRawReaderHtml() = suspendCoroutine { continuation ->
         if (isPlainText && rawHtmlCache != null) {
             continuation.resume(rawHtmlCache!!)
         } else if (!isReaderModeOn && !isTranslatePage) {
-            injectMozReaderModeJs(false)
-            evaluateJavascript(String.format(getReaderModeBodyHtmlJs(config.readerKeepExtraContent), url)) { html ->
+            jsBridge.injectMozReaderModeJs(false)
+            jsBridge.getReaderModeBodyHtml(config.readerKeepExtraContent, url) { html ->
                 val processedHtml = HelperUnit.unescapeJava(html)
-                val rawHtml =
-                    processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
+                val rawHtml = processedHtml.substring(1, processedHtml.length - 1)
                 rawHtmlCache = rawHtml
                 continuation.resume(rawHtml)
             }
@@ -855,22 +760,19 @@ open class EBWebView(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
             ) { html ->
                 val processedHtml = HelperUnit.unescapeJava(html)
-                val rawHtml =
-                    processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
-                // keep html cache when it's still null
+                val rawHtml = processedHtml.substring(1, processedHtml.length - 1)
                 rawHtmlCache = rawHtmlCache ?: rawHtml
                 continuation.resume(rawHtml)
             }
         }
     }
 
-    // only works in isReadModeOn
     suspend fun getRawText() = suspendCoroutine<String> { continuation ->
         if (dualCaption != null) {
             continuation.resume(DualCaptionProcessor().convertToHtml(dualCaption ?: ""))
         } else if (!isReaderModeOn) {
-            evaluateMozReaderModeJs {
-                evaluateJavascript(getReaderModeBodyTextJs(config.readerKeepExtraContent)) { text ->
+            jsBridge.evaluateMozReaderModeJs {
+                jsBridge.getReaderModeBodyText(config.readerKeepExtraContent) { text ->
                     if (text == "null") {
                         continuation.resume("")
                     } else {
@@ -893,20 +795,6 @@ open class EBWebView(
         }
     }
 
-    protected fun shiftOffset(): Int {
-        return if (isVerticalRead) {
-            width - 40.dp(context)
-        } else {
-            val offset = config.pageReservedOffsetInString
-            if (offset.endsWith('%')) {
-                var offsetPercent = offset.take(offset.length - 1).toInt();
-                height - height * offsetPercent / 100;
-            } else {
-                height - offset.toInt().dp(context);
-            }
-        }
-    }
-
     override fun dispatchKeyEvent(event: KeyEvent): Boolean =
         if (browserController?.handleKeyEvent(event) == true) {
             true
@@ -919,271 +807,64 @@ open class EBWebView(
     var isAudioOnlyMode = false
     fun toggleAudioOnlyMode() {
         isAudioOnlyMode = !isAudioOnlyMode
-        if (isAudioOnlyMode) {
-            evaluateJsFile("audio_only_mode.js")
-        } else {
-            evaluateJsFile("audio_only_mode_off.js")
-        }
+        if (isAudioOnlyMode) jsBridge.enableAudioOnlyMode()
+        else jsBridge.disableAudioOnlyMode()
     }
 
-    var isVerticalRead = false
-    fun toggleVerticalRead() {
-        isVerticalRead = !isVerticalRead
-        if (isVerticalRead) {
-            toggleReaderMode(true)
-        } else {
-            reload()
-        }
-    }
+    //region Reader mode (delegated to WebViewReaderHelper)
 
-    fun shouldUseReaderFont(): Boolean = isReaderModeOn || isTranslatePage
+    fun toggleVerticalRead() = readerHelper.toggleVerticalRead()
 
-    var isReaderModeOn = false
-    fun toggleReaderMode(
-        isVertical: Boolean = false,
-    ) {
-        isReaderModeOn = !isReaderModeOn
-        if (isReaderModeOn) {
-            evaluateMozReaderModeJs(isVertical) {
-                evaluateJavascript(
-                    "(function() { ${
-                        String.format(replaceWithReaderModeBodyJs(config.readerKeepExtraContent), url)
-                    } })();"
-                ) { _ ->
-                    if (isVertical) {
-                        evaluateJsFile("process_text_nodes.js", false) {
-                            // need to wait for a while to jump to top, so that vertical read starts from beginning
-                            postDelayed({ jumpToTop() }, 200)
-                        }
-                    } else {
-                        // add padding
-                        setPaddingInReaderMode(config.paddingForReaderMode)
-                    }
-                }
-            }
-            settings.textZoom = config.readerFontSize
-            updateCssStyle()
-        } else {
-            disableReaderMode(isVertical)
-            settings.textZoom = config.fontSize
-        }
-    }
+    fun shouldUseReaderFont(): Boolean = readerHelper.shouldUseReaderFont()
 
-    private fun setPaddingInReaderMode(padding: Int) {
-        evaluateJavascript("javascript:setPadding($padding)", null)
-    }
+    fun toggleReaderMode(isVertical: Boolean = false) = readerHelper.toggleReaderMode(isVertical)
 
-    fun clearTranslationElements() {
-        evaluateJavascript(clearTranslationElementsJs, null)
-    }
+    fun applyFontBoldness() = readerHelper.applyFontBoldness()
 
-    fun translateByParagraphInPlaceReplace() {
-        evaluateJavascript("window._translateInPlace = true;", null)
-        evaluateJsFile("translate_by_paragraph.js") {
-            evaluateJsFile("text_node_monitor.js", false)
-            isTranslateByParagraph = true
-        }
-    }
+    //endregion
 
-    fun translateByParagraphInPlace() {
-        val textBlockStyle = when (config.translationTextStyle) {
-            TranslationTextStyle.NONE -> translatedPCssNone
-            TranslationTextStyle.DASHED_BORDER -> translatedPCssDashedBorder
-            TranslationTextStyle.VERTICAL_LINE -> translatedPCssVerticalLine
-            TranslationTextStyle.GRAY -> translatedPCssGray
-            TranslationTextStyle.BOLD -> translatedPCssBold
-        }
-        injectCss(textBlockStyle.toByteArray())
-        evaluateJsFile("translate_by_paragraph.js") {
-            evaluateJsFile("text_node_monitor.js", false)
-            isTranslateByParagraph = true
-        }
-    }
+    //region Translation (delegated to WebViewTranslationHelper)
+
+    fun clearTranslationElements() = translationHelper.clearTranslationElements()
+
+    fun translateByParagraphInPlaceReplace() = translationHelper.translateByParagraphInPlaceReplace()
+
+    fun translateByParagraphInPlace() = translationHelper.translateByParagraphInPlace()
+
+    fun addGoogleTranslation() = translationHelper.addGoogleTranslation()
+
+    fun hideTranslateContext() = translationHelper.hideTranslateContext()
+
+    //endregion
 
     fun showTranslation() = browserController?.showTranslation(this)
 
-    fun addSelectionChangeListener() = evaluateJsFile("text_selection_change.js")
+    fun addSelectionChangeListener() = jsBridge.addSelectionChangeListener()
 
-    private var isHighlightCssInjected = false
-    fun highlightTextSelection(highlightStyle: HighlightStyle) {
-        if (!isHighlightCssInjected) {
-            injectCss(loadAssetFile("highlight.css").toByteArray())
-            isHighlightCssInjected = true
-        }
+    fun highlightTextSelection(highlightStyle: HighlightStyle) =
+        jsBridge.highlightTextSelection(highlightStyle)
 
-        val className = when (highlightStyle) {
-            HighlightStyle.UNDERLINE -> "highlight_underline"
-            HighlightStyle.BACKGROUND_YELLOW -> "highlight_yellow"
-            HighlightStyle.BACKGROUND_GREEN -> "highlight_green"
-            HighlightStyle.BACKGROUND_BLUE -> "highlight_blue"
-            HighlightStyle.BACKGROUND_PINK -> "highlight_pink"
-            else -> ""
-        }
+    suspend fun getSelectedText(): String = jsBridge.getSelectedText()
 
-        evaluateJavascript(
-            String.format(loadAssetFile("text_selection_highlight.js"), className).wrapJsFunction(), null
-        )
-    }
+    fun selectSentence(point: Point) = jsBridge.selectSentence(point)
 
-    private fun disableReaderMode(isVertical: Boolean = false) {
-        val verticalCssString = if (isVertical) {
-            "var style = document.createElement('style');" +
-                    "style.type = 'text/css';" +
-                    "style.innerHTML = \"" + horizontalLayoutCss + "\";" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "parent.appendChild(style);"
-        } else {
-            ""
-        }
-
-        evaluateJavascript(
-            "javascript:(function() {" +
-                    "document.body.innerHTML = document.innerHTMLCache;" +
-                    "document.body.classList.remove(\"mozac-readerview-body\");" +
-                    verticalCssString +
-                    "window.scrollTo(0, 0);" +
-                    "})()", null
-        )
-    }
-
-    private fun evaluateMozReaderModeJs(
-        isVertical: Boolean = false,
-        postAction: (() -> Unit)? = null,
-    ) {
-        val cssByteArray =
-            loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
-        injectCss(cssByteArray)
-        if (isVertical) injectCss(verticalLayoutCss.toByteArray())
-
-        val jsString = HelperUnit.getStringFromAsset("MozReadability.js")
-        evaluateJavascript(jsString) {
-            postAction?.invoke()
-        }
-    }
-
-    private fun injectMozReaderModeJs(isVertical: Boolean = false) {
-        try {
-            val buffer = loadAssetFile("MozReadability.js").toByteArray()
-            val cssBuffer =
-                loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
-
-            val verticalCssString = if (isVertical) {
-                "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = \"" + verticalLayoutCss + "\";" +
-                        "parent.appendChild(style);"
-            } else {
-                ""
-            }
-
-
-            // String-ify the script byte-array using BASE64 encoding !!!
-            val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
-            val encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP)
-            evaluateJavascript(
-                "javascript:(function() {" +
-                        "var parent = document.getElementsByTagName('head').item(0);" +
-                        "var script = document.createElement('script');" +
-                        "script.type = 'text/javascript';" +
-                        "script.innerHTML = window.atob('" + encodedJs + "');" +
-                        "parent.appendChild(script);" +
-                        "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = window.atob('" + encodedCss + "');" +
-                        "parent.appendChild(style);" +
-                        verticalCssString +
-                        "window.scrollTo(0, 0);" +
-                        "})()", null
-            )
-
-        } catch (e: IOException) {
-            // TODO Auto-generated catch block
-            e.printStackTrace()
-        }
-    }
-
-    fun hideTranslateContext() {
-        when (config.translationMode) {
-            TranslationMode.GOOGLE_URL ->
-                evaluateJavascript(hideGUrlTranslateContext, null)
-
-            else -> Unit
-        }
-    }
-
-    private fun injectCss(bytes: ByteArray) {
-        try {
-            val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
-            loadUrl(
-                "javascript:(function() {" +
-                        "var parent = document.getElementsByTagName('head').item(0);" +
-                        "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = window.atob('" + encoded + "');" +
-                        "parent.appendChild(style)" +
-                        "})()"
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    suspend fun getSelectedText(): String = suspendCoroutine { continuation ->
-        val js = "window.getSelection().toString();"
-        evaluateJavascript(js) { value ->
-            continuation.resume(value.substring(1, value.length - 1))
-        }
-    }
-
-    fun selectSentence(point: Point) =
-        evaluateJsFile("select_sentence.js") { this.postDelayed({ simulateClick(point) }, 100) }
-
-    fun selectParagraph(point: Point) =
-        evaluateJsFile("select_paragraph.js") { this.postDelayed({ simulateClick(point) }, 100) }
+    fun selectParagraph(point: Point) = jsBridge.selectParagraph(point)
 
     suspend fun getSelectedTextWithContext(contextLength: Int = 10): String =
-        suspendCoroutine { continuation ->
-            evaluateJsFile("get_selected_text_with_context.js") { value ->
-                continuation.resume(value.substring(1, value.length - 1))
-            }
-        }
+        jsBridge.getSelectedTextWithContext(contextLength)
 
-    fun addGoogleTranslation() {
-        val str = injectGoogleTranslateV2Js()
-        evaluateJavascript(str, null)
-    }
+    fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) =
+        jsBridge.evaluateJsFile(fileName, withPrefix, callback)
 
-    private fun injectGoogleTranslateV2Js(): String =
-        String.format(
-            injectGoogleTranslateV2JsFormat,
-            if (config.preferredTranslateLanguageString.isNotEmpty()) "includedLanguages: '${config.preferredTranslateLanguageString}',"
-            else ""
-        )
-
-    private fun sendKeyEventToView(keyCode: Int) {
-        val downEvent = KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
-        dispatchKeyEvent(downEvent)
-
-        val upEvent = KeyEvent(KeyEvent.ACTION_UP, keyCode)
-        dispatchKeyEvent(upEvent)
-    }
-
-    fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) {
-        val jsContent = loadAssetFile(fileName)
-        if (withPrefix) {
-            evaluateJavascript(jsContent.wrapJsFunction(), callback)
-        } else {
-            evaluateJavascript(jsContent, callback)
-        }
-    }
+    // Public wrappers for protected scroll range methods, used by WebViewNavigationHelper
+    fun horizontalScrollRange(): Int = computeHorizontalScrollRange()
+    fun verticalScrollRange(): Int = computeVerticalScrollRange()
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
         private const val EBOOK_MOVE_THRESHOLD_DP = 15
         private const val EBOOK_LONG_PRESS_MS = 400L
 
-        // Cache the default user agent string to avoid calling the expensive
-        // WebSettings.getDefaultUserAgent() on every WebView creation.
         private var cachedDefaultUserAgent: String? = null
         fun getDefaultUserAgent(context: Context): String {
             return cachedDefaultUserAgent ?: WebSettings.getDefaultUserAgent(context)
@@ -1191,308 +872,9 @@ open class EBWebView(
                 .replace(Regex("Version/\\d+\\.\\d+\\s"), "")
                 .also { cachedDefaultUserAgent = it }
         }
-
-
-        // make a String extension to wrap it with Javascript function
-        private fun String.wrapJsFunction(): String {
-            return "javascript:(function() { $this })()"
-        }
-
-        private const val secondPart =
-            """setTimeout(
-                    function() { 
-                          var css=document.createElement('style');
-                          css.type='text/css';
-                          css.charset='UTF-8';
-                          css.appendChild(document.createTextNode('.goog-te-combo, .goog-te-banner *, .goog-te-ftab *, .goog-te-menu *, .goog-te-menu2 *, .goog-te-balloon * {font-size: 8pt !important;}'));
-                          var teef=document.getElementById(':0.container');
-                          if(teef){
-                              teef.contentDocument.head.appendChild(css);
-                          }
-                    }, 
-                    1000);"""
-
-        private const val injectGoogleTranslateV2JsFormat =
-            "!function(){!function(){function e(){" +
-                    "window.setTimeout(" +
-                    "function(){window[t].showBanner(!0)},10)}" +
-                    "function n(){" +
-                    "return new google.translate.TranslateElement({" +
-                    "autoDisplay:!1,floatPosition:0,%s pageLanguage:'auto'" +
-                    "})}" +
-                    "var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';" +
-                    "if(window[t])e();" +
-                    "else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});" +
-                    "var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
-
-        private const val hideGUrlTranslateContext = """
-            javascript:(function() {
-                document.querySelector('#gt-nvframe').style = "height:0px";
-            })()
-            """
-
-        private const val translatedPCssNone = """
-            .to-translate + p:not(.translated) {
-                margin: 0;
-                padding: 0;
-                height: 0;
-                overflow: hidden;
-            }
-            .translated {
-                padding: 5px;
-                display: inline-block;
-                line-height: 1.5;
-                max-width: 100vw;
-            }
-        """
-
-        private const val translatedPCssGray = """
-            .to-translate + p:not(.translated) {
-                margin: 0;
-                padding: 0;
-                height: 0;
-                overflow: hidden;
-            }
-            .translated {
-                color: gray;
-                padding: 5px;
-                display: inline-block;
-                max-width: 100vw;
-                line-height: 1.5;
-            }
-        """
-
-        private const val translatedPCssBold = """
-            .to-translate + p:not(.translated) {
-                margin: 0;
-                padding: 0;
-                height: 0;
-                overflow: hidden;
-            }
-            .translated {
-                font-weight: bold;
-                padding: 5px;
-                display: inline-block;
-                max-width: 100vw;
-                line-height: 1.5;
-            }
-        """
-
-        private const val translatedPCssDashedBorder = """
-            .to-translate + p:not(.translated) {
-                margin: 0;
-                padding: 0;
-                height: 0;
-                overflow: hidden;
-            }
-            .translated {
-                border: 1px dashed lightgray;
-                padding: 5px;
-                display: inline-block;
-                position: relative;
-                max-width: 100vw;
-                line-height: 1.5;
-            }
-        """
-        private const val translatedPCssVerticalLine = """
-            .to-translate + p:not(.translated) {
-                margin: 0;
-                padding: 0;
-                height: 0;
-                overflow: hidden;
-            }
-            .translated {
-                padding: 2px;
-                margin-left: 7px;
-                display: inline-block;
-                position: relative;
-                max-width: 100vw;
-                line-height: 1.5;
-            }
-            .translated::before {
-                content: '';
-                display: inline-block;
-                width: 2px;
-                height: 90%;
-                background-color: black;
-                position: absolute;
-                left: -7px;
-            }
-        """
-
-        private fun readabilityOptions(keepExtraContent: Boolean): String {
-            return if (keepExtraContent) {
-                "{classesToPreserve: preservedClasses, overwriteImgSrc: true, keepExtraContent: true}"
-            } else {
-                "{classesToPreserve: preservedClasses, overwriteImgSrc: true}"
-            }
-        }
-
-        private fun replaceWithReaderModeBodyJs(keepExtraContent: Boolean) = """
-            ${if (keepExtraContent) "inlineCodeStyles();" else ""}
-            var documentClone = document.cloneNode(true);
-            var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
-            document.innerHTMLCache = document.body.innerHTML;
-
-            article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
-
-            document.body.outerHTML = createHtmlBody(article)
-
-            document.getElementsByName('viewport')[0].setAttribute('content', 'width=device-width');
-        """
-
-        private fun getReaderModeBodyHtmlJs(keepExtraContent: Boolean) = """
-            javascript:(function() {
-                ${if (keepExtraContent) "inlineCodeStyles();" else ""}
-                var documentClone = document.cloneNode(true);
-                var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
-                article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
-                var bodyOuterHTML = createHtmlBodyWithUrl(article, "%s")
-                var headOuterHTML = document.head.outerHTML;
-                return ('<html>'+ headOuterHTML + bodyOuterHTML +'</html>');
-            })()
-        """
-
-        private fun getReaderModeBodyTextJs(keepExtraContent: Boolean) = """
-            javascript:(function() {
-                var documentClone = document.cloneNode(true);
-                var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
-                return article.title + ', ' + article.textContent;
-            })()
-        """
-
-        private const val verticalLayoutCss = "body {\n" +
-                "-webkit-writing-mode: vertical-rl;\n" +
-                "writing-mode: vertical-rl;\n" +
-                "}\n" +
-                "img {\n" +
-                "margin: 10px 10px 10px 10px;\n" +
-                "float: left;\n" +
-                "display: block;\n" +
-                "}\n"
-
-        private const val horizontalLayoutCss = "body {\n" +
-                "-webkit-writing-mode: horizontal-tb;\n" +
-                "writing-mode: horizontal-tb;\n" +
-                "}\n"
-
-        private const val notoSansSerifFontCss =
-            "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
-                    "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
-                    "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
-                    "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap');" +
-                    "* {\n" +
-                    "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
-                    "}\n"
-        private const val iansuiFontCss =
-            "@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&family=Iansui&display=swap');" +
-                    "* {\n" +
-                    "font-family: 'Iansui',serif !important;\n" +
-                    "}\n"
-        private const val jaMinchoFontCss =
-            "@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400&display=swap');" +
-                    "* {\n" +
-                    "font-family: 'Shippori Mincho',serif !important;\n" +
-                    "}\n"
-        private const val koGamjaFontCss =
-            "@import url('https://fonts.googleapis.com/css2?family=Gamja+Flower:wght@400&display=swap');" +
-                    "* {\n" +
-                    "font-family: 'Gamja Flower',serif !important;\n" +
-                    "}\n"
-        private const val serifFontCss =
-            "* {\n" +
-                    "font-family: serif !important;\n" +
-                    "}\n"
-
-        private const val customFontCss = """
-            @font-face {
-                 font-family: fontfamily;
-                 font-weight: 400;
-                 font-display: swap;
-                 src: url('mycustomfont');
-            }
-            html body * {
-              font-family: fontfamily, serif, popular-symbols, lite-glyphs-outlined, lite-glyphs-filled, snaptu-symbols !important;
-            }
-        """
-
-        private const val whiteBackgroundCss = """
-* {
-    color: #000000!important;
-    border-color: #555555 !important;
-    background-color: #FFFFFF !important;
-}
-input,select,option,button,textarea {
-	border: #FFFFFF !important;
-	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
-}
-input: focus,select: focus,option: focus,button: focus,textarea: focus,input: hover,select: hover,option: hover,button: hover,textarea: hover {
-	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
-}
-input[type=button],input[type=submit],input[type=reset],input[type=image] {
-	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
-}
-input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {
-	background: #FFFFFF !important;
-	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
-}
-        """
-
-        private const val makeTextBlackCss = """
-            * {
-                color: #000000 !important;
-            }
-            a, a * { 
-                color: #000000 !important;
-            }
-            input,select,option,button,textarea {
-                color: #000000 !important;
-            }
-            input: focus,select: focus,option: focus,button: focus,textarea: focus,input: hover,select: hover,option: hover,button: hover,textarea: hover {
-                color: #000000 !important;
-            }
-            input[type=button],input[type=submit],input[type=reset],input[type=image] {
-                color: #000000 !important;
-            }
-        """
-
-        private const val boldFontCss = "* {\n" +
-                "\tfont-weight:value !important;\n" +
-                "}\n" +
-                "a,a * {\n" +
-                "\tfont-weight:value !important;\n" +
-                "}\n" +
-                "a: visited,a: visited *,a: active,a: active * {\n" +
-                "\tfont-weight:value !important;\n" +
-                "}\n" +
-                "a: hover,a: hover * {\n" +
-                "\tfont-weight:value !important;\n" +
-                "}\n" +
-                "input,select,option,button,textarea {\n" +
-                "\tfont-weight:value !important;\n" +
-                "}\n" +
-                "input: focus,select: focus,option: focus,button: focus,textarea: focus,input: hover,select: hover,option: hover,button: hover,textarea: hover {\n" +
-                "\tfont-weight:value !important;\n" +
-                "}\n" +
-                "input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {\n" +
-                "\tfont-weight:value !important;\n" +
-                "}\n"
-
-        private val clearTranslationElementsJs = """
-            javascript:(function() {
-                document.body.innerHTML = document.originalInnerHTML;
-                document.body.classList.remove("translated");
-                window._translateInPlace = false;
-            })()
-        """.trimIndent()
     }
 
     init {
         initAlbum()
-    }
-
-    fun applyFontBoldness() {
-        val fontCss = boldFontCss.replace("value", config.fontBoldness.toString())
-        injectCss(fontCss.toByteArray())
     }
 }

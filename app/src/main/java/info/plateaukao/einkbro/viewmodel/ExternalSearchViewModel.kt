@@ -6,12 +6,11 @@ import info.plateaukao.einkbro.preference.SplitSearchItemInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.net.URLEncoder
 
-class ExternalSearchViewModel: ViewModel(), KoinComponent {
-    private val config: ConfigManager by inject()
+class ExternalSearchViewModel(
+    private val config: ConfigManager,
+) : ViewModel() {
     val searchActions = config.splitSearchItemInfoList + SplitSearchItemInfo("external", config.customProcessTextUrl, true)
     var currentSearchAction = searchActions.last()
     private var currentSearchText = ""

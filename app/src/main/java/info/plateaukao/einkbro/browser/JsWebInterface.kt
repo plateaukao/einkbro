@@ -7,15 +7,14 @@ import info.plateaukao.einkbro.database.TranslationCache
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
-import info.plateaukao.einkbro.service.ChatMessage
-import info.plateaukao.einkbro.service.ChatRole
-import info.plateaukao.einkbro.service.OpenAiRepository
-import info.plateaukao.einkbro.service.TranslateRepository
+import info.plateaukao.einkbro.data.remote.ChatMessage
+import info.plateaukao.einkbro.data.remote.ChatRole
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.data.remote.TranslateRepository
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,6 +32,7 @@ class JsWebInterface(private val webView: EBWebView) :
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
+    private val coroutineScope: CoroutineScope by inject()
 
     private fun escapeForJs(text: String): String =
         text.replace("\\", "\\\\")
@@ -46,10 +46,9 @@ class JsWebInterface(private val webView: EBWebView) :
     // deepL has a limit of 5 requests per second
     private val semaphoreForDeepL = Semaphore(1)
 
-    @OptIn(DelicateCoroutinesApi::class)
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
-        GlobalScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.IO) {
             val currentLanguage = configManager.translationLanguage.value
             val currentTime = System.currentTimeMillis()
 

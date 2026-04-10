@@ -430,6 +430,7 @@
     <string name="backup_category_gpt_settings">GPT Settings</string>
     <string name="backup_category_bookmarks">Bookmarks</string>
     <string name="backup_category_history">History</string>
+    <string name="backup_category_webview_data">Website Logins (Cookies &amp; Storage)</string>
     <string name="dialog_title_backup_categories">Select data to backup</string>
     <string name="dialog_title_restore_categories">Select data to restore</string>
     <string name="setting_title_share_appData">Share app data</string>
