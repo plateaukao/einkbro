@@ -17,6 +17,9 @@ interface DomainListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWhitelist(entry: WhitelistDomain)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertWhitelistSync(entry: WhitelistDomain)
+
     @Query("DELETE FROM WHITELIST WHERE DOMAIN = :domain")
     suspend fun deleteWhitelist(domain: String)
 
@@ -33,6 +36,9 @@ interface DomainListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertJavascript(entry: JavascriptDomain)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertJavascriptSync(entry: JavascriptDomain)
+
     @Query("DELETE FROM JAVASCRIPT WHERE DOMAIN = :domain")
     suspend fun deleteJavascript(domain: String)
 
@@ -48,6 +54,9 @@ interface DomainListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCookie(entry: CookieDomain)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCookieSync(entry: CookieDomain)
 
     @Query("DELETE FROM COOKIE WHERE DOMAIN = :domain")
     suspend fun deleteCookie(domain: String)
