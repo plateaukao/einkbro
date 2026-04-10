@@ -165,9 +165,9 @@ class TabManager(
 
     fun showAlbum(controller: AlbumController) {
         val currentAlbumController = currentAlbumControllerProvider()
-        val ebWebView = webViewProvider()
         if (currentAlbumController != null) {
             if (currentAlbumController == controller) {
+                val ebWebView = webViewProvider()
                 if (ebWebView.isAtTop()) {
                     ebWebView.reload()
                 } else {
