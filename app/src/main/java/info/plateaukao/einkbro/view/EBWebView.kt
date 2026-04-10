@@ -75,6 +75,9 @@ open class EBWebView(
     private val webChromeClient: EBWebChromeClient
     private val downloadListener: EBDownloadListener = EBDownloadListener(context)
     private val clickHandler: EBClickHandler
+    val jsBridge: WebViewJsBridge = WebViewJsBridge(this).apply {
+        simulateClickAction = { point -> simulateClick(point) }
+    }
 
     var dualCaption: String? = null
     var shouldHideTranslateContext: Boolean = false
@@ -240,26 +243,25 @@ open class EBWebView(
         val fontType = if (shouldUseReaderFont()) config.readerFontType else config.fontType
 
         val cssStyle =
-            (if (config.blackFontStyle) makeTextBlackCss else "") +
-                    (if (fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
-                    (if (fontType == FontType.TC_IANSUI) iansuiFontCss else "") +
-                    (if (fontType == FontType.JA_MINCHO) jaMinchoFontCss else "") +
-                    (if (fontType == FontType.KO_GAMJA) koGamjaFontCss else "") +
-                    (if (fontType == FontType.SERIF) serifFontCss else "") +
-                    (if (config.whiteBackground(url.orEmpty())) whiteBackgroundCss else "") +
+            (if (config.blackFontStyle) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
+                    (if (fontType == FontType.GOOGLE_SERIF) WebViewJsBridge.NOTO_SANS_SERIF_FONT_CSS else "") +
+                    (if (fontType == FontType.TC_IANSUI) WebViewJsBridge.IANSUI_FONT_CSS else "") +
+                    (if (fontType == FontType.JA_MINCHO) WebViewJsBridge.JA_MINCHO_FONT_CSS else "") +
+                    (if (fontType == FontType.KO_GAMJA) WebViewJsBridge.KO_GAMJA_FONT_CSS else "") +
+                    (if (fontType == FontType.SERIF) WebViewJsBridge.SERIF_FONT_CSS else "") +
+                    (if (config.whiteBackground(url.orEmpty())) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
                     (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
                     (if (config.boldFontStyle)
-                        boldFontCss.replace("value", "${config.fontBoldness}") else "") +
-                    // all css are purged by epublib. need to add it back if it's epub reader mode
+                        WebViewJsBridge.BOLD_FONT_CSS.replace("value", "${config.fontBoldness}") else "") +
                     if (isEpubReaderMode) loadAssetFile("readerview.css") else ""
         if (cssStyle.isNotBlank()) {
-            injectCss(cssStyle.toByteArray())
+            jsBridge.injectCss(cssStyle.toByteArray())
         }
     }
 
     private var fontNum = 0
     private fun getCustomFontCss(): String {
-        return customFontCss.replace("mycustomfont", "mycustomfont${++fontNum}")
+        return WebViewJsBridge.CUSTOM_FONT_CSS.replace("mycustomfont", "mycustomfont${++fontNum}")
             .replace("fontfamily", "fontfamily${fontNum}")
     }
 
@@ -713,17 +715,7 @@ open class EBWebView(
 
     fun sendPageUpKey() = sendKeyEventToView(KeyEvent.KEYCODE_PAGE_UP)
 
-    fun removeTextSelection() {
-        evaluateJavascript(
-            """
-            javascript:(function() {
-                     var sel = window.getSelection();
-                     if (sel) sel.removeAllRanges();
-                 }
-            )()
-        """.trimIndent()
-        ) {}
-    }
+    fun removeTextSelection() = jsBridge.removeTextSelection()
 
     fun clickLinkElement(point: Point) {
         ebookTouchTemporarilyDisabled = true
@@ -842,11 +834,10 @@ open class EBWebView(
         if (isPlainText && rawHtmlCache != null) {
             continuation.resume(rawHtmlCache!!)
         } else if (!isReaderModeOn && !isTranslatePage) {
-            injectMozReaderModeJs(false)
-            evaluateJavascript(String.format(getReaderModeBodyHtmlJs(config.readerKeepExtraContent), url)) { html ->
+            jsBridge.injectMozReaderModeJs(false)
+            jsBridge.getReaderModeBodyHtml(config.readerKeepExtraContent, url) { html ->
                 val processedHtml = HelperUnit.unescapeJava(html)
-                val rawHtml =
-                    processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
+                val rawHtml = processedHtml.substring(1, processedHtml.length - 1)
                 rawHtmlCache = rawHtml
                 continuation.resume(rawHtml)
             }
@@ -855,22 +846,19 @@ open class EBWebView(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
             ) { html ->
                 val processedHtml = HelperUnit.unescapeJava(html)
-                val rawHtml =
-                    processedHtml.substring(1, processedHtml.length - 1) // handle prefix/postfix
-                // keep html cache when it's still null
+                val rawHtml = processedHtml.substring(1, processedHtml.length - 1)
                 rawHtmlCache = rawHtmlCache ?: rawHtml
                 continuation.resume(rawHtml)
             }
         }
     }
 
-    // only works in isReadModeOn
     suspend fun getRawText() = suspendCoroutine<String> { continuation ->
         if (dualCaption != null) {
             continuation.resume(DualCaptionProcessor().convertToHtml(dualCaption ?: ""))
         } else if (!isReaderModeOn) {
-            evaluateMozReaderModeJs {
-                evaluateJavascript(getReaderModeBodyTextJs(config.readerKeepExtraContent)) { text ->
+            jsBridge.evaluateMozReaderModeJs {
+                jsBridge.getReaderModeBodyText(config.readerKeepExtraContent) { text ->
                     if (text == "null") {
                         continuation.resume("")
                     } else {
@@ -919,11 +907,8 @@ open class EBWebView(
     var isAudioOnlyMode = false
     fun toggleAudioOnlyMode() {
         isAudioOnlyMode = !isAudioOnlyMode
-        if (isAudioOnlyMode) {
-            evaluateJsFile("audio_only_mode.js")
-        } else {
-            evaluateJsFile("audio_only_mode_off.js")
-        }
+        if (isAudioOnlyMode) jsBridge.enableAudioOnlyMode()
+        else jsBridge.disableAudioOnlyMode()
     }
 
     var isVerticalRead = false
@@ -939,251 +924,76 @@ open class EBWebView(
     fun shouldUseReaderFont(): Boolean = isReaderModeOn || isTranslatePage
 
     var isReaderModeOn = false
-    fun toggleReaderMode(
-        isVertical: Boolean = false,
-    ) {
+    fun toggleReaderMode(isVertical: Boolean = false) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
-            evaluateMozReaderModeJs(isVertical) {
-                evaluateJavascript(
-                    "(function() { ${
-                        String.format(replaceWithReaderModeBodyJs(config.readerKeepExtraContent), url)
-                    } })();"
-                ) { _ ->
+            jsBridge.evaluateMozReaderModeJs(isVertical) {
+                jsBridge.replaceWithReaderModeBody(config.readerKeepExtraContent, url) { _ ->
                     if (isVertical) {
-                        evaluateJsFile("process_text_nodes.js", false) {
-                            // need to wait for a while to jump to top, so that vertical read starts from beginning
+                        jsBridge.evaluateJsFile("process_text_nodes.js", false) {
                             postDelayed({ jumpToTop() }, 200)
                         }
                     } else {
-                        // add padding
-                        setPaddingInReaderMode(config.paddingForReaderMode)
+                        jsBridge.setPaddingInReaderMode(config.paddingForReaderMode)
                     }
                 }
             }
             settings.textZoom = config.readerFontSize
             updateCssStyle()
         } else {
-            disableReaderMode(isVertical)
+            jsBridge.disableReaderMode(isVertical)
             settings.textZoom = config.fontSize
         }
     }
 
-    private fun setPaddingInReaderMode(padding: Int) {
-        evaluateJavascript("javascript:setPadding($padding)", null)
-    }
-
-    fun clearTranslationElements() {
-        evaluateJavascript(clearTranslationElementsJs, null)
-    }
+    fun clearTranslationElements() = jsBridge.clearTranslationElements()
 
     fun translateByParagraphInPlaceReplace() {
-        evaluateJavascript("window._translateInPlace = true;", null)
-        evaluateJsFile("translate_by_paragraph.js") {
-            evaluateJsFile("text_node_monitor.js", false)
-            isTranslateByParagraph = true
-        }
+        jsBridge.translateByParagraphInPlaceReplace()
+        isTranslateByParagraph = true
     }
 
     fun translateByParagraphInPlace() {
-        val textBlockStyle = when (config.translationTextStyle) {
-            TranslationTextStyle.NONE -> translatedPCssNone
-            TranslationTextStyle.DASHED_BORDER -> translatedPCssDashedBorder
-            TranslationTextStyle.VERTICAL_LINE -> translatedPCssVerticalLine
-            TranslationTextStyle.GRAY -> translatedPCssGray
-            TranslationTextStyle.BOLD -> translatedPCssBold
-        }
-        injectCss(textBlockStyle.toByteArray())
-        evaluateJsFile("translate_by_paragraph.js") {
-            evaluateJsFile("text_node_monitor.js", false)
-            isTranslateByParagraph = true
-        }
+        jsBridge.translateByParagraphInPlace(config.translationTextStyle)
+        isTranslateByParagraph = true
     }
 
     fun showTranslation() = browserController?.showTranslation(this)
 
-    fun addSelectionChangeListener() = evaluateJsFile("text_selection_change.js")
+    fun addSelectionChangeListener() = jsBridge.addSelectionChangeListener()
 
-    private var isHighlightCssInjected = false
-    fun highlightTextSelection(highlightStyle: HighlightStyle) {
-        if (!isHighlightCssInjected) {
-            injectCss(loadAssetFile("highlight.css").toByteArray())
-            isHighlightCssInjected = true
-        }
+    fun highlightTextSelection(highlightStyle: HighlightStyle) =
+        jsBridge.highlightTextSelection(highlightStyle)
 
-        val className = when (highlightStyle) {
-            HighlightStyle.UNDERLINE -> "highlight_underline"
-            HighlightStyle.BACKGROUND_YELLOW -> "highlight_yellow"
-            HighlightStyle.BACKGROUND_GREEN -> "highlight_green"
-            HighlightStyle.BACKGROUND_BLUE -> "highlight_blue"
-            HighlightStyle.BACKGROUND_PINK -> "highlight_pink"
-            else -> ""
-        }
+    fun hideTranslateContext() = jsBridge.hideTranslateContext(config.translationMode)
 
-        evaluateJavascript(
-            String.format(loadAssetFile("text_selection_highlight.js"), className).wrapJsFunction(), null
-        )
-    }
+    suspend fun getSelectedText(): String = jsBridge.getSelectedText()
 
-    private fun disableReaderMode(isVertical: Boolean = false) {
-        val verticalCssString = if (isVertical) {
-            "var style = document.createElement('style');" +
-                    "style.type = 'text/css';" +
-                    "style.innerHTML = \"" + horizontalLayoutCss + "\";" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "parent.appendChild(style);"
-        } else {
-            ""
-        }
+    fun selectSentence(point: Point) = jsBridge.selectSentence(point)
 
-        evaluateJavascript(
-            "javascript:(function() {" +
-                    "document.body.innerHTML = document.innerHTMLCache;" +
-                    "document.body.classList.remove(\"mozac-readerview-body\");" +
-                    verticalCssString +
-                    "window.scrollTo(0, 0);" +
-                    "})()", null
-        )
-    }
-
-    private fun evaluateMozReaderModeJs(
-        isVertical: Boolean = false,
-        postAction: (() -> Unit)? = null,
-    ) {
-        val cssByteArray =
-            loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
-        injectCss(cssByteArray)
-        if (isVertical) injectCss(verticalLayoutCss.toByteArray())
-
-        val jsString = HelperUnit.getStringFromAsset("MozReadability.js")
-        evaluateJavascript(jsString) {
-            postAction?.invoke()
-        }
-    }
-
-    private fun injectMozReaderModeJs(isVertical: Boolean = false) {
-        try {
-            val buffer = loadAssetFile("MozReadability.js").toByteArray()
-            val cssBuffer =
-                loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
-
-            val verticalCssString = if (isVertical) {
-                "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = \"" + verticalLayoutCss + "\";" +
-                        "parent.appendChild(style);"
-            } else {
-                ""
-            }
-
-
-            // String-ify the script byte-array using BASE64 encoding !!!
-            val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
-            val encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP)
-            evaluateJavascript(
-                "javascript:(function() {" +
-                        "var parent = document.getElementsByTagName('head').item(0);" +
-                        "var script = document.createElement('script');" +
-                        "script.type = 'text/javascript';" +
-                        "script.innerHTML = window.atob('" + encodedJs + "');" +
-                        "parent.appendChild(script);" +
-                        "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = window.atob('" + encodedCss + "');" +
-                        "parent.appendChild(style);" +
-                        verticalCssString +
-                        "window.scrollTo(0, 0);" +
-                        "})()", null
-            )
-
-        } catch (e: IOException) {
-            // TODO Auto-generated catch block
-            e.printStackTrace()
-        }
-    }
-
-    fun hideTranslateContext() {
-        when (config.translationMode) {
-            TranslationMode.GOOGLE_URL ->
-                evaluateJavascript(hideGUrlTranslateContext, null)
-
-            else -> Unit
-        }
-    }
-
-    private fun injectCss(bytes: ByteArray) {
-        try {
-            val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
-            loadUrl(
-                "javascript:(function() {" +
-                        "var parent = document.getElementsByTagName('head').item(0);" +
-                        "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = window.atob('" + encoded + "');" +
-                        "parent.appendChild(style)" +
-                        "})()"
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    suspend fun getSelectedText(): String = suspendCoroutine { continuation ->
-        val js = "window.getSelection().toString();"
-        evaluateJavascript(js) { value ->
-            continuation.resume(value.substring(1, value.length - 1))
-        }
-    }
-
-    fun selectSentence(point: Point) =
-        evaluateJsFile("select_sentence.js") { this.postDelayed({ simulateClick(point) }, 100) }
-
-    fun selectParagraph(point: Point) =
-        evaluateJsFile("select_paragraph.js") { this.postDelayed({ simulateClick(point) }, 100) }
+    fun selectParagraph(point: Point) = jsBridge.selectParagraph(point)
 
     suspend fun getSelectedTextWithContext(contextLength: Int = 10): String =
-        suspendCoroutine { continuation ->
-            evaluateJsFile("get_selected_text_with_context.js") { value ->
-                continuation.resume(value.substring(1, value.length - 1))
-            }
-        }
+        jsBridge.getSelectedTextWithContext(contextLength)
 
-    fun addGoogleTranslation() {
-        val str = injectGoogleTranslateV2Js()
-        evaluateJavascript(str, null)
-    }
-
-    private fun injectGoogleTranslateV2Js(): String =
-        String.format(
-            injectGoogleTranslateV2JsFormat,
-            if (config.preferredTranslateLanguageString.isNotEmpty()) "includedLanguages: '${config.preferredTranslateLanguageString}',"
-            else ""
-        )
+    fun addGoogleTranslation() =
+        jsBridge.addGoogleTranslation(config.preferredTranslateLanguageString)
 
     private fun sendKeyEventToView(keyCode: Int) {
         val downEvent = KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
         dispatchKeyEvent(downEvent)
-
         val upEvent = KeyEvent(KeyEvent.ACTION_UP, keyCode)
         dispatchKeyEvent(upEvent)
     }
 
-    fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) {
-        val jsContent = loadAssetFile(fileName)
-        if (withPrefix) {
-            evaluateJavascript(jsContent.wrapJsFunction(), callback)
-        } else {
-            evaluateJavascript(jsContent, callback)
-        }
-    }
+    fun evaluateJsFile(fileName: String, withPrefix: Boolean = true, callback: ValueCallback<String>? = null) =
+        jsBridge.evaluateJsFile(fileName, withPrefix, callback)
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
         private const val EBOOK_MOVE_THRESHOLD_DP = 15
         private const val EBOOK_LONG_PRESS_MS = 400L
 
-        // Cache the default user agent string to avoid calling the expensive
-        // WebSettings.getDefaultUserAgent() on every WebView creation.
         private var cachedDefaultUserAgent: String? = null
         fun getDefaultUserAgent(context: Context): String {
             return cachedDefaultUserAgent ?: WebSettings.getDefaultUserAgent(context)
@@ -1192,11 +1002,8 @@ open class EBWebView(
                 .also { cachedDefaultUserAgent = it }
         }
 
-
-        // make a String extension to wrap it with Javascript function
-        private fun String.wrapJsFunction(): String {
-            return "javascript:(function() { $this })()"
-        }
+        // All CSS constants, JS templates, and reader mode functions
+        // moved to WebViewJsBridge.kt companion object
 
         private const val secondPart =
             """setTimeout(
@@ -1491,8 +1298,5 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
         initAlbum()
     }
 
-    fun applyFontBoldness() {
-        val fontCss = boldFontCss.replace("value", config.fontBoldness.toString())
-        injectCss(fontCss.toByteArray())
-    }
+    fun applyFontBoldness() = jsBridge.applyFontBoldness(config.fontBoldness)
 }
