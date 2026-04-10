@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -67,7 +67,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class HighlightsActivity : ComponentActivity() {
-    private val highlightViewModel: HighlightViewModel by viewModels()
+    private val highlightViewModel: HighlightViewModel by koinViewModel()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private lateinit var exportHighlightsLauncher: ActivityResultLauncher<Intent>

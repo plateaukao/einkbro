@@ -151,7 +151,16 @@ dependencies {
     // Koin test features
     testImplementation("io.insert-koin:koin-test:$koinVersion")
     // Android
+    implementation("io.insert-koin:koin-android:$koinVersion")
     implementation("io.insert-koin:koin-android-compat:$koinVersion")
+
+    // Unit testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.13.12")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
+    testImplementation("androidx.room:room-testing:2.6.1")
 
     // memory leak detection
     //debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")

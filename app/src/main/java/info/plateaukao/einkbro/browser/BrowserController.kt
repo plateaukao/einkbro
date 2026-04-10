@@ -12,8 +12,8 @@ import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 
-interface BrowserController {
-    //region Tab and Album Management
+//region Sub-interface: TabController
+interface TabController {
     fun updateProgress(progress: Int)
     fun updateTitle(title: String?)
     fun addNewTab(url: String)
@@ -26,65 +26,28 @@ interface BrowserController {
     fun duplicateTab()
     fun gotoLeftTab()
     fun gotoRightTab()
-    //endregion
+}
+//endregion
 
-    //region View Management
-    fun onShowCustomView(view: View?, callback: CustomViewCallback?)
-    fun onHideCustomView(): Boolean
-    fun hideOverview()
-    fun showOverview()
-    fun toggleFullscreen()
-    fun toggleSplitScreen(url: String? = null)
-    //endregion
-
-    //region History and Bookmarks
-    fun addHistory(title: String, url: String)
-    fun saveBookmark(url: String? = null, title: String? = null)
-    fun openHistoryPage(amount: Int = 0)
-    fun openBookmarkPage()
-    //endregion
-
-    //region File Handling
-    fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
-    fun showEpubDialog()
-    fun showWebArchiveFilePicker()
-    fun showOpenEpubFilePicker()
-    fun savePageForLater()
-    fun showSavedPages()
-    //endregion
-
-    //region Input Handling
-    fun onLongPress(message: Message, event: MotionEvent?)
-    fun handleKeyEvent(event: KeyEvent): Boolean
-    fun handleBackKey()
-    fun focusOnInput()
-    //endregion
-
-    //region Navigation
+//region Sub-interface: NavigationController
+interface NavigationController {
+    // Navigation
     fun isAtTop(): Boolean
-    fun loadInSecondPane(url: String): Boolean //void updateTabs(Album album);
+    fun loadInSecondPane(url: String): Boolean
     fun goForward()
     fun jumpToTop()
     fun jumpToBottom()
     fun pageDown()
     fun pageUp()
     fun refreshAction()
-    //endregion
 
-    //region Text-to-Speech (TTS)
-    fun handleTtsButton()
-    fun showTtsLanguageDialog()
-    //endregion
+    // History and Bookmarks
+    fun addHistory(title: String, url: String)
+    fun saveBookmark(url: String? = null, title: String? = null)
+    fun openHistoryPage(amount: Int = 0)
+    fun openBookmarkPage()
 
-    //region Translation
-    fun showTranslation(webView: EBWebView? = null)
-    fun showTranslationConfigDialog(translateDirectly: Boolean)
-    fun translate(translationMode: TranslationMode)
-    fun resetTranslateUI()
-    fun configureTranslationLanguage(translateApi: TRANSLATE_API)
-    //endregion
-
-    //region Page Content Interaction
+    // Page Content Interaction
     fun toggleReaderMode()
     fun toggleVerticalRead()
     fun increaseFontSize()
@@ -93,63 +56,101 @@ interface BrowserController {
     fun showFontBoldnessDialog()
     fun invertColors()
     fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float)
-    //endregion
+}
+//endregion
 
-    //region Sharing and External Services
+//region Sub-interface: ViewStateController
+interface ViewStateController {
+    fun onShowCustomView(view: View?, callback: CustomViewCallback?)
+    fun onHideCustomView(): Boolean
+    fun hideOverview()
+    fun showOverview()
+    fun toggleFullscreen()
+    fun toggleSplitScreen(url: String? = null)
+}
+//endregion
+
+//region Sub-interface: TranslationController
+interface TranslationController {
+    fun showTranslation(webView: EBWebView? = null)
+    fun showTranslationConfigDialog(translateDirectly: Boolean)
+    fun translate(translationMode: TranslationMode)
+    fun resetTranslateUI()
+    fun configureTranslationLanguage(translateApi: TRANSLATE_API)
+}
+//endregion
+
+//region Sub-interface: TtsController
+interface TtsController {
+    fun handleTtsButton()
+    fun showTtsLanguageDialog()
+}
+//endregion
+
+//region Sub-interface: InputController
+interface InputController {
+    // Input Handling
+    fun onLongPress(message: Message, event: MotionEvent?)
+    fun handleKeyEvent(event: KeyEvent): Boolean
+    fun handleBackKey()
+    fun focusOnInput()
+
+    // File Handling
+    fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
+    fun showEpubDialog()
+    fun showWebArchiveFilePicker()
+    fun showOpenEpubFilePicker()
+    fun savePageForLater()
+    fun showSavedPages()
+
+    // Search
+    fun showSearchPanel()
+    fun toggleTextSearch()
+    fun toggleReceiveTextSearch()
+
+    // Sharing and External Services
     fun createShortcut()
     fun sendToRemote(text: String)
     fun shareLink()
     fun addToInstapaper()
     fun configureInstapaper()
-    //endregion
 
-    //region Search
-    fun showSearchPanel()
-    fun toggleTextSearch()
-    fun toggleReceiveTextSearch()
-    //endregion
-
-    //region E-Reader Specific
-    fun showTocDialog() = Unit // Specific to EReaderActivity, default implementation
-    //endregion
-
-    //region Gestures and Touch Controls
+    // Gestures and Touch Controls
     fun toggleTouchTurnPageFeature()
     fun toggleSwitchTouchAreaAction()
     fun showTouchAreaDialog()
     fun toggleTouchPagination()
-    //endregion
 
-    //region Page Information
+    // E-Reader Specific
+    fun showTocDialog() = Unit
+
+    // Page Information
     fun updatePageInfo(info: String)
-    //endregion
 
-    //region Action Mode
+    // Action Mode
     fun isActionModeActive(): Boolean = false
     fun dismissActionMode() {}
-    //endregion
 
-    //region Key Sending
+    // Key Sending
     fun sendPageUpKey()
     fun sendPageDownKey()
     fun sendLeftKey()
     fun sendRightKey()
-    //endregion
 
-    //region Audio/Video
+    // Audio/Video
     fun toggleAudioOnlyMode()
-    //endregion
 
-    //region AI Features
+    // AI Features
     fun summarizeContent()
     fun chatWithWeb(useSplitScreen: Boolean = false, content: String? = null, runWithAction: ChatGPTActionInfo? = null)
     fun showPageAiActionMenu()
-    //endregion
 
-    //region UI Toggles and Dialogs
+    // UI Toggles and Dialogs
     fun showFastToggleDialog()
     fun showMenuDialog()
     fun rotateScreen()
     fun toggleReceiveLink()
-    //endregion
 }
+//endregion
+
+interface BrowserController : TabController, NavigationController, ViewStateController, TranslationController, TtsController, InputController

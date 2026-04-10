@@ -17,9 +17,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.preference.ConfigManager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,8 +37,12 @@ import org.koin.core.component.inject
         DomainConfiguration::class,
         TranslationCache::class,
         SavedPage::class,
+        HistoryRecord::class,
+        WhitelistDomain::class,
+        JavascriptDomain::class,
+        CookieDomain::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -51,6 +54,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun domainConfigurationDao(): DomainConfigurationDao
     abstract fun translationCacheDao(): TranslationCacheDao
     abstract fun savedPageDao(): SavedPageDao
+    abstract fun historyDao(): HistoryDao
+    abstract fun domainListDao(): DomainListDao
 }
 
 @Dao
@@ -171,9 +176,9 @@ interface BookmarkDao {
     }
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 class BookmarkManager(context: Context) : KoinComponent {
     val config: ConfigManager by inject()
+    private val coroutineScope: CoroutineScope by inject()
 
     private val migration1To2: Migration = object : Migration(1, 2) {
         override fun migrate(database: SupportSQLiteDatabase) {
@@ -219,6 +224,15 @@ class BookmarkManager(context: Context) : KoinComponent {
         }
     }
 
+    private val migration8To9: Migration = object : Migration(8, 9) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `HISTORY` (`TITLE` TEXT NOT NULL, `URL` TEXT NOT NULL, `TIME` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `WHITELIST` (`DOMAIN` TEXT NOT NULL, PRIMARY KEY(`DOMAIN`))")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `JAVASCRIPT` (`DOMAIN` TEXT NOT NULL, PRIMARY KEY(`DOMAIN`))")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `COOKIE` (`DOMAIN` TEXT NOT NULL, PRIMARY KEY(`DOMAIN`))")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
@@ -227,6 +241,7 @@ class BookmarkManager(context: Context) : KoinComponent {
         .addMigrations(migration5To6)
         .addMigrations(migration6To7)
         .addMigrations(migration7To8)
+        .addMigrations(migration8To9)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -242,7 +257,7 @@ class BookmarkManager(context: Context) : KoinComponent {
     private val savedPageDao = database.savedPageDao()
 
     init {
-        GlobalScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.IO) {
             if (BuildConfig.VERSION_NAME < "11.15.0") {
                 convertConfigToDomainConfiguration()
                 config.version = BuildConfig.VERSION_NAME
@@ -392,7 +407,7 @@ class BookmarkManager(context: Context) : KoinComponent {
         }
 
     fun addDomainConfiguration(domainConfigurationData: DomainConfigurationData) =
-        GlobalScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.IO) {
             domainConfigurationDao.addDomainConfiguration(
                 DomainConfiguration(
                     domain = domainConfigurationData.domain,

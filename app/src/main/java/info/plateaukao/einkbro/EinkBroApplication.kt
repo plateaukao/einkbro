@@ -24,7 +24,7 @@ import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
 import info.plateaukao.einkbro.data.remote.InstapaperRepository
@@ -33,15 +33,25 @@ import info.plateaukao.einkbro.service.TtsNotificationManager
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.util.WebViewUtil
 import io.github.edsuns.adfilter.AdFilter
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
+import info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel
+import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
+import info.plateaukao.einkbro.viewmodel.HighlightViewModel
+import info.plateaukao.einkbro.viewmodel.InstapaperViewModel
+import info.plateaukao.einkbro.viewmodel.RemoteConnViewModel
+import info.plateaukao.einkbro.viewmodel.SavedPageViewModel
+import info.plateaukao.einkbro.viewmodel.TranslationViewModel
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 
-@OptIn(DelicateCoroutinesApi::class)
 class EinkBroApplication : Application() {
 
     private val sp: SharedPreferences by lazy {
@@ -52,13 +62,16 @@ class EinkBroApplication : Application() {
         ConfigManager(applicationContext, sp)
     }
 
-    private val ttsManager: TtsManager = TtsManager(this)
+    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    private val ttsManager: TtsManager = TtsManager(this, appScope)
 
     private val myModule = module {
+        single<CoroutineScope> { appScope }
         single { config }
         single { sp }
         single { BookmarkManager(androidContext()) }
-        single { RecordDb(androidContext()) }
+        single { RecordRepository() }
         single { AdBlock(androidContext()) }
         single { Javascript(androidContext()) }
         single { Cookie(androidContext()) }
@@ -66,6 +79,15 @@ class EinkBroApplication : Application() {
         single { TtsNotificationManager(androidContext()) }
         single { InstapaperRepository() }
         single { SearchSuggestionViewModel() }
+        viewModel { TranslationViewModel(get(), get()) }
+        viewModel { TtsViewModel(get(), get(), get()) }
+        viewModel { ActionModeMenuViewModel(get()) }
+        viewModel { ExternalSearchViewModel(get()) }
+        viewModel { RemoteConnViewModel(get()) }
+        viewModel { InstapaperViewModel(get()) }
+        viewModel { GptQueryViewModel(get()) }
+        viewModel { HighlightViewModel(get()) }
+        viewModel { SavedPageViewModel(get()) }
     }
 
     override fun onCreate() {
@@ -95,7 +117,7 @@ class EinkBroApplication : Application() {
         val filter = AdFilter.create(this)
         filter.setEnabled(config.adBlock)
         if (config.adBlock) {
-            GlobalScope.launch {
+            appScope.launch {
                 filter.viewModel.workToFilterMap.collect { notifyDownloading(it.isEmpty()) }
             }
         }
