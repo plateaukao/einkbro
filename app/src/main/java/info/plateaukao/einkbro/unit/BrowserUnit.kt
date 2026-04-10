@@ -30,16 +30,15 @@ import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.Cookie
-import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.ShortcutEditDialog
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -50,7 +49,6 @@ import java.io.InputStream
 import java.util.Objects
 import kotlin.system.exitProcess
 
-@OptIn(DelicateCoroutinesApi::class)
 object BrowserUnit : KoinComponent {
     const val PROGRESS_MAX = 100
     const val SUFFIX_PNG = ".png"
@@ -67,6 +65,7 @@ object BrowserUnit : KoinComponent {
 
     private val config: ConfigManager by inject()
     val cookie: Cookie by inject()
+    private val coroutineScope: CoroutineScope by inject()
 
     // --- Forwarding stubs for DownloadHelper (preserves existing call sites) ---
 
@@ -155,7 +154,7 @@ object BrowserUnit : KoinComponent {
         uri: Uri,
         postAction: (Uri) -> Unit
     ) {
-        GlobalScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.IO) {
             try {
                 context.contentResolver.openOutputStream(uri)
                     .use { it?.write(inputStream.readBytes()) }
@@ -221,12 +220,11 @@ object BrowserUnit : KoinComponent {
 
     @JvmStatic
     fun clearHistory(context: Context) {
-        with(RecordDb(context)) {
-            clearHistory()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                val shortcutManager = context.getSystemService(ShortcutManager::class.java)
-                Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts()
-            }
+        val recordRepository: RecordRepository by inject()
+        recordRepository.clearHistory()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            val shortcutManager = context.getSystemService(ShortcutManager::class.java)
+            Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts()
         }
     }
 

@@ -1,7 +1,7 @@
 package info.plateaukao.einkbro.search.suggestion
 
 import info.plateaukao.einkbro.database.Record
-import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.database.RecordType
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.search.SearchEngine
@@ -12,7 +12,7 @@ import org.koin.core.component.inject
 
 class SearchSuggestionViewModel : KoinComponent {
     private val config: ConfigManager by inject()
-    private val recordDb: RecordDb by inject()
+    private val recordDb: RecordRepository by inject()
 
     private val repository: SearchSuggestionsRepository by lazy {
         when (config.searchEngine) {

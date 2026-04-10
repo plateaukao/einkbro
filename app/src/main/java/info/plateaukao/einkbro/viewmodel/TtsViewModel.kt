@@ -22,19 +22,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 
-class TtsViewModel : ViewModel(), KoinComponent {
-    private val config: ConfigManager by inject()
-
-    private val ttsManager: TtsManager by inject()
-
-    private val ttsNotificationManager: TtsNotificationManager by inject()
+class TtsViewModel(
+    private val config: ConfigManager,
+    private val ttsManager: TtsManager,
+    private val ttsNotificationManager: TtsNotificationManager,
+) : ViewModel() {
 
     private val eTts: ETts = ETts()
 

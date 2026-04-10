@@ -30,12 +30,10 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-
-class TranslationViewModel : ViewModel(), KoinComponent {
-    private val config: ConfigManager by inject()
-    private val bookmarkManager: BookmarkManager by inject()
+class TranslationViewModel(
+    private val config: ConfigManager,
+    private val bookmarkManager: BookmarkManager,
+) : ViewModel() {
     private val translateRepository = TranslateRepository()
 
     private lateinit var openAiRepository: OpenAiRepository

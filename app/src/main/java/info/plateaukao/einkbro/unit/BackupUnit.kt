@@ -14,11 +14,10 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
-import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.view.EBToast
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -44,13 +43,13 @@ enum class BackupCategory(val displayNameResId: Int) {
 }
 
 
-@OptIn(DelicateCoroutinesApi::class)
 class BackupUnit(
     private val context: Context,
 ) : KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
-    private val recordDb: RecordDb by inject()
+    private val recordDb: RecordRepository by inject()
     private val sp: SharedPreferences by inject()
+    private val coroutineScope: CoroutineScope by inject()
 
     fun backupData(context: Context, uri: Uri, categories: Set<BackupCategory>): Boolean {
         try {
@@ -325,7 +324,6 @@ class BackupUnit(
     fun restoreLegacyBackupData(context: Context, uri: Uri): Boolean {
         try {
             bookmarkManager.database.close()
-            recordDb.close()
 
             val fis = context.contentResolver.openInputStream(uri) ?: return false
             val zis = ZipInputStream(fis)
@@ -397,7 +395,7 @@ class BackupUnit(
     }
 
     fun importBookmarks(uri: Uri) {
-        GlobalScope.launch {
+        coroutineScope.launch {
             try {
                 val contentString = getFileContentString(uri)
                 // detect if the content is a json array
@@ -504,7 +502,7 @@ class BackupUnit(
         (0 until length()).map { get(it) as JSONObject }
 
     fun exportBookmarks(uri: Uri, showToast: Boolean = true) {
-        GlobalScope.launch {
+        coroutineScope.launch {
             val bookmarks = bookmarkManager.getAllBookmarks()
             try {
                 context.contentResolver.openOutputStream(uri).use {
