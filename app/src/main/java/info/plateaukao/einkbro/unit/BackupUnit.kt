@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.webkit.CookieManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.core.content.FileProvider
@@ -40,6 +41,7 @@ enum class BackupCategory(val displayNameResId: Int) {
     GPT_SETTINGS(R.string.backup_category_gpt_settings),
     BOOKMARKS(R.string.backup_category_bookmarks),
     HISTORY(R.string.backup_category_history),
+    WEBVIEW_DATA(R.string.backup_category_webview_data),
 }
 
 
@@ -128,6 +130,15 @@ class BackupUnit(
             zos.putNextEntry(ZipEntry(HISTORY_FILE))
             zos.write(jsonArray.toString().toByteArray())
             zos.closeEntry()
+        }
+
+        if (BackupCategory.WEBVIEW_DATA in categories) {
+            // Flush cookies to disk before backup
+            CookieManager.getInstance().flush()
+            val webviewDir = File(WEBVIEW_DATA_PATH)
+            if (webviewDir.exists() && webviewDir.isDirectory) {
+                writeDirectoryToZip(zos, webviewDir, WEBVIEW_ZIP_PREFIX)
+            }
         }
 
         zos.close()
@@ -220,6 +231,18 @@ class BackupUnit(
                         }
                         recordDb.replaceAllHistory(records)
                     }
+
+                    zipEntry.name.startsWith(WEBVIEW_ZIP_PREFIX)
+                            && BackupCategory.WEBVIEW_DATA in categories -> {
+                        val relativePath = zipEntry.name.removePrefix(WEBVIEW_ZIP_PREFIX)
+                        val target = File(WEBVIEW_DATA_PATH + relativePath)
+                        if (zipEntry.isDirectory) {
+                            target.mkdirs()
+                        } else {
+                            target.parentFile?.mkdirs()
+                            writeStreamToFile(zis, target)
+                        }
+                    }
                 }
                 zipEntry = zis.nextEntry
             }
@@ -309,6 +332,18 @@ class BackupUnit(
                         }
                         recordDb.replaceAllHistory(records)
                     }
+
+                    zipEntry.name.startsWith(WEBVIEW_ZIP_PREFIX)
+                            && BackupCategory.WEBVIEW_DATA in categories -> {
+                        val relativePath = zipEntry.name.removePrefix(WEBVIEW_ZIP_PREFIX)
+                        val target = File(WEBVIEW_DATA_PATH + relativePath)
+                        if (zipEntry.isDirectory) {
+                            target.mkdirs()
+                        } else {
+                            target.parentFile?.mkdirs()
+                            writeStreamToFile(zis, target)
+                        }
+                    }
                 }
                 zipEntry = zis.nextEntry
             }
@@ -386,6 +421,20 @@ class BackupUnit(
         fis.copyTo(zos)
         zos.closeEntry()
         fis.close()
+    }
+
+    private fun writeDirectoryToZip(zos: ZipOutputStream, dir: File, zipPrefix: String) {
+        val files = dir.listFiles() ?: return
+        for (file in files) {
+            val entryPath = zipPrefix + file.name
+            if (file.isDirectory) {
+                zos.putNextEntry(ZipEntry("$entryPath/"))
+                zos.closeEntry()
+                writeDirectoryToZip(zos, file, "$entryPath/")
+            } else {
+                writeFileToZip(zos, file, entryPath)
+            }
+        }
     }
 
     private fun writeStreamToFile(zis: ZipInputStream, file: File) {
@@ -558,6 +607,8 @@ class BackupUnit(
     companion object {
         private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
         private const val SHARED_PREFS_PATH = "/data/data/info.plateaukao.einkbro/shared_prefs/"
+        private const val WEBVIEW_DATA_PATH = "/data/data/info.plateaukao.einkbro/app_webview/"
+        private const val WEBVIEW_ZIP_PREFIX = "app_webview/"
         private const val MANIFEST_FILE = "_manifest.json"
         private const val GPT_SETTINGS_FILE = "gpt_settings.json"
         private const val BOOKMARKS_FILE = "bookmarks.json"
