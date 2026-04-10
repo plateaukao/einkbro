@@ -27,7 +27,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
-import info.plateaukao.einkbro.service.InstapaperRepository
+import info.plateaukao.einkbro.data.remote.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.service.TtsNotificationManager
 import info.plateaukao.einkbro.unit.LocaleManager

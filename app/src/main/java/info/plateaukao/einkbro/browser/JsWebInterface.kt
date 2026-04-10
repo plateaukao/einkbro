@@ -7,10 +7,10 @@ import info.plateaukao.einkbro.database.TranslationCache
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
-import info.plateaukao.einkbro.service.ChatMessage
-import info.plateaukao.einkbro.service.ChatRole
-import info.plateaukao.einkbro.service.OpenAiRepository
-import info.plateaukao.einkbro.service.TranslateRepository
+import info.plateaukao.einkbro.data.remote.ChatMessage
+import info.plateaukao.einkbro.data.remote.ChatRole
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.data.remote.TranslateRepository
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.DelicateCoroutinesApi
