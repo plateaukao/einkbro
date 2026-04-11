@@ -101,7 +101,7 @@ class WebViewNavigationHelper(
         return if (webView.isVerticalRead) {
             webView.width - 40.dp(webView.context)
         } else {
-            val offset = config.pageReservedOffsetInString
+            val offset = config.touch.pageReservedOffsetInString
             if (offset.endsWith('%')) {
                 val offsetPercent = offset.take(offset.length - 1).toInt()
                 webView.height - webView.height * offsetPercent / 100
@@ -112,7 +112,7 @@ class WebViewNavigationHelper(
     }
 
     private fun jsPageScroll(direction: Int, fallback: (Boolean) -> Unit) {
-        val offset = config.pageReservedOffsetInString
+        val offset = config.touch.pageReservedOffsetInString
         val offsetPercent = if (offset.endsWith('%')) offset.take(offset.length - 1).toInt() else 0
         val offsetPx = if (offset.endsWith('%')) 0 else offset.toInt().dp(webView.context)
         webView.evaluateJavascript(

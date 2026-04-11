@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -25,8 +26,8 @@ import kotlinx.coroutines.launch
 class ContextMenuDelegate(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
+    private val state: BrowserState,
     private val ttsViewModel: TtsViewModel,
-    private val webViewProvider: () -> EBWebView,
     private val addAlbum: (title: String, url: String, foreground: Boolean) -> Unit,
     private val prepareRecord: () -> Boolean,
     private val saveBookmark: (url: String?, title: String?) -> Unit,
@@ -43,7 +44,7 @@ class ContextMenuDelegate(
     var isInLongPressMode = false
 
     fun onLongPress(message: Message, event: MotionEvent?) {
-        val ebWebView = webViewProvider()
+        val ebWebView = state.ebWebView
         if (ebWebView.isSelectingText) return
 
         longPressPoint = Point(event?.x?.toInt() ?: 0, event?.y?.toInt() ?: 0)
@@ -57,9 +58,9 @@ class ContextMenuDelegate(
                 val contextMenuDialog = ContextMenuDialogFragment(
                     url,
                     linkImageUrl.isNotBlank(),
-                    config.imageApiKey.isNotBlank(),
+                    config.ai.imageApiKey.isNotBlank(),
                     rawPoint,
-                    isEbookMode = config.isEbookModeActive,
+                    isEbookMode = config.touch.isEbookModeActive,
                     itemClicked = {
                         handleContextMenuItem(it, titleText, url, linkImageUrl)
                         activeContextMenuDialog = null
@@ -77,7 +78,7 @@ class ContextMenuDelegate(
                 isInLongPressMode = true
                 contextMenuDialog.show(activity.supportFragmentManager, "contextMenu")
             }
-        } else if (config.isEbookModeActive) {
+        } else if (config.touch.isEbookModeActive) {
             ebWebView.clickLinkElement(longPressPoint)
         }
     }
@@ -88,7 +89,7 @@ class ContextMenuDelegate(
         url: String,
         imageUrl: String,
     ) {
-        val ebWebView = webViewProvider()
+        val ebWebView = state.ebWebView
         when (contextMenuItemType) {
             ContextMenuItemType.NewTabForeground -> addAlbum(title, url, true)
             ContextMenuItemType.NewTabBackground -> addAlbum(title, url, false)
@@ -152,7 +153,7 @@ class ContextMenuDelegate(
 
                 if (domain.isNotBlank()) {
                     config.adSites = config.adSites.apply { add(domain) }
-                    webViewProvider().reload()
+                    state.ebWebView.reload()
                 }
             }
         }
@@ -163,7 +164,7 @@ class ContextMenuDelegate(
             title = "remove this url from blacklist?",
             okAction = {
                 config.adSites = config.adSites.apply { remove(url) }
-                webViewProvider().reload()
+                state.ebWebView.reload()
             }
         )
     }

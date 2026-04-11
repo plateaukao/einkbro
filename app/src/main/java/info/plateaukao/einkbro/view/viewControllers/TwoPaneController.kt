@@ -59,8 +59,8 @@ class TwoPaneController(
     private var isWebViewAdded: Boolean = false
 
     init {
-        twoPaneLayout.setOrientation(config.translationOrientation)
-        if (config.translationPanelSwitched) twoPaneLayout.post {
+        twoPaneLayout.setOrientation(config.translation.translationOrientation)
+        if (config.translation.translationPanelSwitched) twoPaneLayout.post {
             twoPaneLayout.switchPanels()
         }
 
@@ -90,27 +90,27 @@ class TwoPaneController(
         }
 
         translationPanel.translationOrientation.setOnLongClickListener {
-            config::translationPanelSwitched.toggle()
+            config.translation::translationPanelSwitched.toggle()
             twoPaneLayout.switchPanels()
             true
         }
 
         translationPanel.linkHere.setOnClickListener {
-            config::twoPanelLinkHere.toggle()
-            updateLinkHereView(config.twoPanelLinkHere)
+            config.translation::twoPanelLinkHere.toggle()
+            updateLinkHereView(config.translation.twoPanelLinkHere)
         }
-        updateLinkHereView(config.twoPanelLinkHere)
+        updateLinkHereView(config.translation.twoPanelLinkHere)
 
         translationPanel.syncScroll.setOnClickListener {
-            config::translationScrollSync.toggle()
-            updateSyncScrollView(config.translationScrollSync)
+            config.translation::translationScrollSync.toggle()
+            updateSyncScrollView(config.translation.translationScrollSync)
         }
-        updateSyncScrollView(config.translationScrollSync)
+        updateSyncScrollView(config.translation.translationScrollSync)
 
         translationPanel.expandedButton.setOnClickListener { showControlButtons() }
 
         val languageView = translationPanel.translationLanguage
-        ViewUnit.updateLanguageLabel(languageView, config.translationLanguage)
+        ViewUnit.updateLanguageLabel(languageView, config.translation.translationLanguage)
         translationPanel.translationLanguage.setOnClickListener {
             lifecycleScope.launch {
                 val translationLanguage =
@@ -192,7 +192,7 @@ class TwoPaneController(
     fun isSecondPaneDisplayed(): Boolean = twoPaneLayout.shouldShowSecondPane
 
     fun showTranslation(webView: EBWebView) {
-        when (config.translationMode) {
+        when (config.translation.translationMode) {
             TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
 
@@ -214,14 +214,14 @@ class TwoPaneController(
     }
 
     fun scrollChange(offset: Int) {
-        if (config.translationScrollSync) {
+        if (config.translation.translationScrollSync) {
             webView.scrollBy(0, offset)
             webView.scrollY = kotlin.math.max(0, webView.scrollY)
         }
     }
 
     private fun setOrientation(orientation: Orientation) {
-        config.translationOrientation = orientation
+        config.translation.translationOrientation = orientation
         twoPaneLayout.setOrientation(orientation)
         translationPanel.translationOrientation.setImageResource(
             if (twoPaneLayout.getOrientation() == Orientation.Vertical) R.drawable.ic_split_screen
@@ -255,12 +255,12 @@ class TwoPaneController(
 
         translationPanel.linkHere.visibility = GONE
         translationPanel.translationLanguage.visibility =
-            if (config.translationMode == TranslationMode.GOOGLE_URL) VISIBLE else GONE
+            if (config.translation.translationMode == TranslationMode.GOOGLE_URL) VISIBLE else GONE
 
         twoPaneLayout.shouldShowSecondPane = true
 
         // handle translate url
-        if (config.translationMode == TranslationMode.GOOGLE_URL) {
+        if (config.translation.translationMode == TranslationMode.GOOGLE_URL) {
             translateUrl(buildGUrlTranslateUrl(text))
             return
         }
@@ -269,7 +269,7 @@ class TwoPaneController(
 
     fun showTranslationConfigDialog(translateDirectly: Boolean) {
         val enumValues: List<TranslationMode> = TranslationMode.entries.toMutableList().apply {
-            if (config.imageApiKey.isBlank()) {
+            if (config.ai.imageApiKey.isBlank()) {
                 remove(TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN)
             }
         }
@@ -277,12 +277,12 @@ class TwoPaneController(
         val translationModeArray =
             enumValues.map { activity.getString(it.labelResId) }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
-        val selected = valueArray.indexOf(config.translationMode.ordinal)
+        val selected = valueArray.indexOf(config.translation.translationMode.ordinal)
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
             setTitle(context.getString(R.string.translation_mode))
             setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
                 dialog.dismiss()
-                config.translationMode = enumValues[which]
+                config.translation.translationMode = enumValues[which]
                 if (translateDirectly) showTranslationAction.invoke()
             }
         }.create().also {
@@ -312,7 +312,7 @@ class TwoPaneController(
         val newUri = uri.buildUpon().scheme("https")
             .authority(uri.authority?.replace(".", "-") + ".translate.goog")
             .appendQueryParameter("_x_tr_sl", "auto")
-            .appendQueryParameter("_x_tr_tl", config.translationLanguage.value) // source language
+            .appendQueryParameter("_x_tr_tl", config.translation.translationLanguage.value) // source language
             .appendQueryParameter("_x_tr_pto", "ajax,elem") // target language
             .build()
         return newUri.toString()

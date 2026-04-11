@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
-import info.plateaukao.einkbro.EinkBroApplication
 import info.plateaukao.einkbro.view.MainActivityLayout
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.TranslationLanguage
@@ -118,7 +117,7 @@ object ViewUnit: KoinComponent {
 
     @JvmStatic
     fun dpToPixel(dp: Int): Float {
-        val metrics = EinkBroApplication.instance.resources.displayMetrics
+        val metrics = android.content.res.Resources.getSystem().displayMetrics
         return dp * (metrics.densityDpi / 160f)
     }
 

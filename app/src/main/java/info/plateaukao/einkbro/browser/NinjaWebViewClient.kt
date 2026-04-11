@@ -299,7 +299,7 @@ class EBWebViewClient(
     }
 
     private fun processEinkImageRequest(request: WebResourceRequest): WebResourceResponse? {
-        val adjustment = config.einkImageAdjustment
+        val adjustment = config.display.einkImageAdjustment
         if (adjustment == EinkImageAdjustment.OFF) return null
 
         val url = request.url.toString()
@@ -439,9 +439,9 @@ class EBWebViewClient(
     private fun processCustomFontRequest(uri: Uri): WebResourceResponse? {
         if (uri.path?.contains("mycustomfont") == true) {
             val fontUri = if (!ebWebView.shouldUseReaderFont()) {
-                config.customFontInfo?.url?.toUri() ?: return null
+                config.display.customFontInfo?.url?.toUri() ?: return null
             } else {
-                config.readerCustomFontInfo?.url?.toUri() ?: return null
+                config.display.readerCustomFontInfo?.url?.toUri() ?: return null
             }
 
             try {

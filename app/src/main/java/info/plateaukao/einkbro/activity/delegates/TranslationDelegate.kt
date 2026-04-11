@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -33,9 +34,9 @@ import kotlinx.coroutines.launch
 class TranslationDelegate(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
+    private val state: BrowserState,
     private val translationViewModel: TranslationViewModel,
     private val actionModeMenuViewModel: ActionModeMenuViewModel,
-    private val webViewProvider: () -> EBWebView,
     private val focusedWebViewProvider: () -> EBWebView,
     private val externalSearchWebViewProvider: () -> WebView,
     private val twoPaneControllerProvider: () -> TwoPaneController,
@@ -69,8 +70,8 @@ class TranslationDelegate(
                 val translationLanguage =
                     TranslationLanguageDialog(activity).show() ?: return@launch
                 translationViewModel.updateTranslationLanguage(translationLanguage)
-                webViewProvider().clearTranslationElements()
-                translateByParagraph(webViewProvider().translateApi)
+                state.ebWebView.clearTranslationElements()
+                translateByParagraph(state.ebWebView.translateApi)
             }
         }
         languageLabelView?.setOnLongClickListener {
@@ -94,7 +95,7 @@ class TranslationDelegate(
             TranslationMode.OPENAI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.OPENAI)
             TranslationMode.GEMINI_BY_PARAGRAPH -> translateByParagraph(TRANSLATE_API.GEMINI)
             TranslationMode.PAPAGO_TRANSLATE_BY_SCREEN -> translateWebView()
-            TranslationMode.GOOGLE_IN_PLACE -> webViewProvider().addGoogleTranslation()
+            TranslationMode.GOOGLE_IN_PLACE -> state.ebWebView.addGoogleTranslation()
             TranslationMode.OPENAI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.OPENAI)
             TranslationMode.GEMINI_IN_PLACE -> translateInPlaceReplace(TRANSLATE_API.GEMINI)
             TranslationMode.GOOGLE_URL -> Unit
@@ -135,20 +136,20 @@ class TranslationDelegate(
         maybeInitTwoPaneController()
 
         activity.lifecycleScope.launch(Dispatchers.Main) {
-            twoPaneControllerProvider().showTranslation(webView ?: webViewProvider())
+            twoPaneControllerProvider().showTranslation(webView ?: state.ebWebView)
         }
     }
 
     fun showTranslationConfigDialog(translateDirectly: Boolean) {
         maybeInitTwoPaneController()
         TranslationConfigDlgFragment(
-            webViewProvider().url.orEmpty(),
+            state.ebWebView.url.orEmpty(),
             translateDirectly
         ) { shouldTranslate ->
             if (shouldTranslate) {
-                translate(config.translationMode)
+                translate(config.translation.translationMode)
             } else {
-                webViewProvider().reload()
+                state.ebWebView.reload()
             }
         }
             .show(activity.supportFragmentManager, "TranslationConfigDialog")
@@ -156,19 +157,19 @@ class TranslationDelegate(
 
     fun translateByParagraph(
         translateApi: TRANSLATE_API,
-        webView: EBWebView = webViewProvider(),
+        webView: EBWebView = state.ebWebView,
     ) {
         translateByParagraphInPlace(translateApi, webView)
     }
 
     private fun translateByParagraphInPlace(
         translateApi: TRANSLATE_API,
-        webView: EBWebView = webViewProvider(),
+        webView: EBWebView = state.ebWebView,
     ) {
         activity.lifecycleScope.launch {
             webView.translateApi = translateApi
             webView.translateByParagraphInPlace()
-            if (webView == webViewProvider()) {
+            if (webView == state.ebWebView) {
                 languageLabelView?.visibility = VISIBLE
             }
         }
@@ -176,12 +177,12 @@ class TranslationDelegate(
 
     fun translateInPlaceReplace(
         translateApi: TRANSLATE_API,
-        webView: EBWebView = webViewProvider(),
+        webView: EBWebView = state.ebWebView,
     ) {
         activity.lifecycleScope.launch {
             webView.translateApi = translateApi
             webView.translateByParagraphInPlaceReplace()
-            if (webView == webViewProvider()) {
+            if (webView == state.ebWebView) {
                 languageLabelView?.visibility = VISIBLE
             }
         }
@@ -190,21 +191,21 @@ class TranslationDelegate(
     fun translateWebView() {
         activity.lifecycleScope.launch {
             val base64String = translationViewModel.translateWebView(
-                webViewProvider(),
-                config.sourceLanguage,
-                config.translationLanguage,
+                state.ebWebView,
+                config.translation.sourceLanguage,
+                config.translation.translationLanguage,
             )
             if (base64String != null) {
                 val translatedImageHtml = HelperUnit.loadAssetFileToString(
                     activity, "translated_image.html"
                 ).replace("%%", base64String)
-                if (config.showTranslatedImageToSecondPanel) {
+                if (config.translation.showTranslatedImageToSecondPanel) {
                     maybeInitTwoPaneController()
                     twoPaneControllerProvider().showSecondPaneWithData(translatedImageHtml)
                 } else {
                     addAlbum()
-                    webViewProvider().isTranslatePage = true
-                    webViewProvider().loadData(translatedImageHtml, "text/html", "utf-8")
+                    state.ebWebView.isTranslatePage = true
+                    state.ebWebView.loadData(translatedImageHtml, "text/html", "utf-8")
                 }
             } else {
                 EBToast.show(activity, "Failed to translate image")
@@ -220,10 +221,10 @@ class TranslationDelegate(
 
     suspend fun translateImageSuspend(url: String): Boolean {
         val result = translationViewModel.translateImage(
-            webViewProvider().url.orEmpty(),
+            state.ebWebView.url.orEmpty(),
             url,
             TranslationLanguage.KO,
-            config.translationLanguage,
+            config.translation.translationLanguage,
         )
         if (result != null) {
             val escapedUrl = url.replace("\\", "\\\\").replace("'", "\\'")
@@ -231,7 +232,7 @@ class TranslationDelegate(
                 activity, "translate_image_overlay.js"
             ).replace("%%IMAGE_URL%%", escapedUrl)
                 .replace("%%BASE64_DATA%%", result.renderedImage)
-            webViewProvider().evaluateJavascript(js, null)
+            state.ebWebView.evaluateJavascript(js, null)
             return result.imageId == "cached"
         }
         return false
@@ -244,7 +245,7 @@ class TranslationDelegate(
                 activity, "get_remaining_images.js"
             ).replace("%%IMAGE_URL%%", escapedUrl)
 
-            webViewProvider().evaluateJavascript(js) { result ->
+            state.ebWebView.evaluateJavascript(js) { result ->
                 val urlsJson = result?.trim('"')?.replace("\\\"", "\"")
                     ?.replace("\\\\", "\\") ?: return@evaluateJavascript
                 try {
@@ -263,7 +264,7 @@ class TranslationDelegate(
                         for ((index, url) in imageUrls.withIndex()) {
                             val wasCached = translateImageSuspend(url)
                             if (index < imageUrls.size - 1 && !wasCached) {
-                                val base = config.imageTranslateIntervalSeconds
+                                val base = config.ai.imageTranslateIntervalSeconds
                                 val delayMs =
                                     ((base - 2).coerceAtLeast(1)..(base + 2)).random() * 1000L
                                 kotlinx.coroutines.delay(delayMs)
@@ -278,7 +279,7 @@ class TranslationDelegate(
     }
 
     fun updateLanguageLabel() {
-        val ebWebView = webViewProvider()
+        val ebWebView = state.ebWebView
         languageLabelView?.visibility =
             if (ebWebView.isTranslatePage || ebWebView.isTranslateByParagraph) VISIBLE else GONE
     }

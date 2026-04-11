@@ -37,7 +37,7 @@ class OpenAiRepository : KoinComponent {
 
     private val config: ConfigManager by inject()
 
-    private val apiKey: String = config.gptApiKey
+    private val apiKey: String = config.ai.gptApiKey
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -120,7 +120,7 @@ class OpenAiRepository : KoinComponent {
         doneAction: () -> Unit = {},
         failureAction: () -> Unit,
     ) {
-        if (config.geminiApiKey.isEmpty()) {
+        if (config.ai.geminiApiKey.isEmpty()) {
             appendResponseAction("no gemini api key")
             return
         }
@@ -168,8 +168,8 @@ class OpenAiRepository : KoinComponent {
     suspend fun tts(text: String): ByteArray? = suspendCoroutine { continuation ->
         val request = createTtsRequest(
             text,
-            speed = (config.ttsSpeedValue / 100F).toDouble(),
-            voiceOption = config.gptVoiceOption,
+            speed = (config.tts.ttsSpeedValue / 100F).toDouble(),
+            voiceOption = config.ai.gptVoiceOption,
         )
 
         try {
@@ -211,7 +211,7 @@ class OpenAiRepository : KoinComponent {
     suspend fun queryGemini(messages: List<ChatMessage>, gptActionInfo: ChatGPTActionInfo): String {
         return withContext(Dispatchers.IO) {
             try {
-                if (config.geminiApiKey.isEmpty()) {
+                if (config.ai.geminiApiKey.isEmpty()) {
                     return@withContext "no gemini api key"
                 }
 
@@ -241,9 +241,9 @@ class OpenAiRepository : KoinComponent {
         val apiPrefix = "https://generativelanguage.googleapis.com/v1beta/models/"
         val model = gptActionInfo.model
         val apiUrl = if (isStream)
-            "$apiPrefix$model:streamGenerateContent?key=${config.geminiApiKey}"
+            "$apiPrefix$model:streamGenerateContent?key=${config.ai.geminiApiKey}"
         else
-            "$apiPrefix$model:generateContent?key=${config.geminiApiKey}"
+            "$apiPrefix$model:generateContent?key=${config.ai.geminiApiKey}"
 
         val json = Json { ignoreUnknownKeys = true }
 
@@ -299,7 +299,7 @@ class OpenAiRepository : KoinComponent {
 
     private fun getServerUrl(gptActionType: GptActionType): String {
         return if (gptActionType == GptActionType.SelfHosted) {
-            config.gptUrl
+            config.ai.gptUrl
         } else {
             "https://api.openai.com"
         }
@@ -315,10 +315,10 @@ class OpenAiRepository : KoinComponent {
             json.encodeToString(
                 TTSRequest(
                     text,
-                    config.gptVoiceModel,
+                    config.ai.gptVoiceModel,
                     voiceOption.name.lowercase(Locale("en")),
                     speed,
-                    instructions = config.gptVoicePrompt
+                    instructions = config.ai.gptVoicePrompt
                 )
             )
                 .toRequestBody(mediaType)

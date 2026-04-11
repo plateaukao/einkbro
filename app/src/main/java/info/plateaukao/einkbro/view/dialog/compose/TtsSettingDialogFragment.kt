@@ -63,10 +63,10 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
-                val ttsType = remember { mutableStateOf(config.ttsType) }
-                val ettsVoice = remember { mutableStateOf(config.ettsVoice) }
-                val gptVoice = remember { mutableStateOf(config.gptVoiceOption) }
-                val ttsSpeedValue = remember { mutableIntStateOf(config.ttsSpeedValue) }
+                val ttsType = remember { mutableStateOf(config.tts.ttsType) }
+                val ettsVoice = remember { mutableStateOf(config.tts.ettsVoice) }
+                val gptVoice = remember { mutableStateOf(config.ai.gptVoiceOption) }
+                val ttsSpeedValue = remember { mutableIntStateOf(config.tts.ttsSpeedValue) }
                 val readProgress = ttsViewModel.readProgress.collectAsState()
                 val readingState = ttsViewModel.readingState.collectAsState()
                 val currentReadingContent = ttsViewModel.currentReadingContent.collectAsState()
@@ -92,15 +92,15 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                         MainTtsSettingDialog(
                             readingState = readingState.value,
                             selectedType = ttsType.value,
-                            selectedLocale = config.ttsLocale,
+                            selectedLocale = config.tts.ttsLocale,
                             selectedGptVoice = gptVoice.value,
                             selectedEttsVoice = ettsVoice.value,
                             selectedSpeedValue = ttsSpeedValue.value,
-                            onSpeedValueClick = { config.ttsSpeedValue = it; ttsSpeedValue.value = it },
-                            recentVoices = config.recentUsedTtsVoices,
+                            onSpeedValueClick = { config.tts.ttsSpeedValue = it; ttsSpeedValue.value = it },
+                            recentVoices = config.tts.recentUsedTtsVoices,
                             showLocaleDialog = { TtsLanguageDialog(requireContext()).show(ttsManager.getAvailableLanguages()) },
                             onTtsTypeSelected = {
-                                config.ttsType = it
+                                config.tts.ttsType = it
                                 ttsType.value = it
                             },
                             showEttsVoiceDialog = {
@@ -108,8 +108,8 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                                     ettsVoice.value = it
                                 }.show(parentFragmentManager, "ETtsVoiceDialog")
                             },
-                            onGptVoiceSelected = { config.gptVoiceOption = it; gptVoice.value = it },
-                            onVoiceSelected = { config.ettsVoice = it; ettsVoice.value = it },
+                            onGptVoiceSelected = { config.ai.gptVoiceOption = it; gptVoice.value = it },
+                            onVoiceSelected = { config.tts.ettsVoice = it; ettsVoice.value = it },
                         )
                     }
                     TtsDialogButtonBar(

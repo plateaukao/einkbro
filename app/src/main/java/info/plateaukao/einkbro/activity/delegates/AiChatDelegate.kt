@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.activity.delegates
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionDisplay
@@ -20,8 +21,8 @@ import kotlinx.coroutines.withContext
 class AiChatDelegate(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
+    private val state: BrowserState,
     private val translationViewModel: TranslationViewModel,
-    private val webViewProvider: () -> EBWebView,
     private val twoPaneControllerProvider: () -> TwoPaneController,
     private val isTwoPaneControllerInitialized: () -> Boolean,
     private val maybeInitTwoPaneController: () -> Unit,
@@ -57,7 +58,7 @@ class AiChatDelegate(
     fun summarizeContent() {
         if (translationViewModel.hasOpenAiApiKey()) {
             activity.lifecycleScope.launch {
-                val ebWebView = webViewProvider()
+                val ebWebView = state.ebWebView
                 translationViewModel.url = ebWebView.url.orEmpty()
                 val isSuccess = translationViewModel.setupTextSummary(ebWebView.getRawText())
 
@@ -73,7 +74,7 @@ class AiChatDelegate(
 
     fun chatWithWeb(useSplitScreen: Boolean, content: String?, runWithAction: ChatGPTActionInfo?) {
         activity.lifecycleScope.launch {
-            val ebWebView = webViewProvider()
+            val ebWebView = state.ebWebView
             val rawText = content ?: ebWebView.getRawText()
             withContext(Dispatchers.Main) {
                 val scope = activity.lifecycleScope
@@ -87,7 +88,7 @@ class AiChatDelegate(
                     val webTitle = ebWebView.title ?: "No Title"
                     val webUrl = ebWebView.url.orEmpty()
                     addAlbum("Chat With Web", "")
-                    val newWebView = webViewProvider()
+                    val newWebView = state.ebWebView
                     runWithAction?.let { action ->
                         newWebView.setOnPageFinishedAction {
                             newWebView.setOnPageFinishedAction {}
@@ -102,7 +103,7 @@ class AiChatDelegate(
 
     fun showPageAiActionMenu() {
         val pageActions =
-            config.gptActionList.filter { it.scope == GptActionScope.WholePage }
+            config.ai.gptActionList.filter { it.scope == GptActionScope.WholePage }
         if (pageActions.isEmpty()) {
             EBToast.show(activity, R.string.page_ai_action_empty)
             return
@@ -112,7 +113,7 @@ class AiChatDelegate(
             actions = pageActions,
             onActionClicked = { runPageAiAction(it) },
             onActionLongClicked = { action ->
-                val index = config.gptActionList.indexOf(action)
+                val index = config.ai.gptActionList.indexOf(action)
                 if (index >= 0) {
                     ShowEditGptActionDialogFragment(index)
                         .showNow(activity.supportFragmentManager, "editGptAction")
@@ -128,7 +129,7 @@ class AiChatDelegate(
                 return@launch
             }
 
-            val ebWebView = webViewProvider()
+            val ebWebView = state.ebWebView
             val content = ebWebView.getRawText()
             translationViewModel.setupGptAction(action)
             translationViewModel.url = ebWebView.url.orEmpty()

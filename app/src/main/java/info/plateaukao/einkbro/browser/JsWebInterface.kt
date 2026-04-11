@@ -51,7 +51,7 @@ class JsWebInterface(
     @JavascriptInterface
     fun getTranslation(originalText: String, elementId: String, callback: String) {
         coroutineScope.launch(Dispatchers.IO) {
-            val currentLanguage = configManager.translationLanguage.value
+            val currentLanguage = configManager.translation.translationLanguage.value
             val currentTime = System.currentTimeMillis()
 
             // Check cache for short strings
@@ -119,12 +119,12 @@ class JsWebInterface(
         return when (api) {
             TRANSLATE_API.PAPAGO -> translateRepository.pTranslate(
                 originalText,
-                configManager.translationLanguage.value
+                configManager.translation.translationLanguage.value
             ).orEmpty()
 
             TRANSLATE_API.GOOGLE -> translateRepository.gTranslateWithApi(
                 originalText,
-                configManager.translationLanguage.value
+                configManager.translation.translationLanguage.value
             ).orEmpty()
 
             TRANSLATE_API.OPENAI -> translateWithOpenAi(originalText)
@@ -133,7 +133,7 @@ class JsWebInterface(
 
             TRANSLATE_API.DEEPL -> translateRepository.deepLTranslate(
                 originalText,
-                configManager.translationLanguage
+                configManager.translation.translationLanguage
             ).orEmpty()
 
             else -> ""
@@ -142,9 +142,9 @@ class JsWebInterface(
 
     private suspend fun translateWithOpenAi(originalText: String): String {
         val chatGptActionInfo = ChatGPTActionInfo(
-            userMessage = "translate following content to ${configManager.translationLanguage.value}; no other extra explanation:\n",
+            userMessage = "translate following content to ${configManager.translation.translationLanguage.value}; no other extra explanation:\n",
             actionType = GptActionType.OpenAi,
-            model = configManager.gptModel,
+            model = configManager.ai.gptModel,
         )
         val messages = listOf((chatGptActionInfo.userMessage + originalText).toUserMessage())
         val completion = openAiRepository.chatCompletion(messages, chatGptActionInfo)
@@ -154,9 +154,9 @@ class JsWebInterface(
 
     private suspend fun translateWithGemini(originalText: String): String {
         val chatGptActionInfo = ChatGPTActionInfo(
-            userMessage = "translate following content to ${configManager.translationLanguage.value}; no other extra explanation:\n",
+            userMessage = "translate following content to ${configManager.translation.translationLanguage.value}; no other extra explanation:\n",
             actionType = GptActionType.Gemini,
-            model = configManager.geminiModel,
+            model = configManager.ai.geminiModel,
         )
         val messages = listOf((chatGptActionInfo.userMessage + originalText).toUserMessage())
         return openAiRepository.queryGemini(messages, chatGptActionInfo)
@@ -185,7 +185,7 @@ class JsWebInterface(
     @JavascriptInterface
     fun ebookPageUp() {
         webView.post {
-            if (!configManager.switchTouchAreaAction) webView.pageUpWithNoAnimation()
+            if (!configManager.touch.switchTouchAreaAction) webView.pageUpWithNoAnimation()
             else webView.pageDownWithNoAnimation()
         }
     }
@@ -193,7 +193,7 @@ class JsWebInterface(
     @JavascriptInterface
     fun ebookPageDown() {
         webView.post {
-            if (!configManager.switchTouchAreaAction) webView.pageDownWithNoAnimation()
+            if (!configManager.touch.switchTouchAreaAction) webView.pageDownWithNoAnimation()
             else webView.pageUpWithNoAnimation()
         }
     }

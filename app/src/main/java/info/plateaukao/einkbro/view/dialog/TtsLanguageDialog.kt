@@ -18,10 +18,10 @@ class TtsLanguageDialog(val context: Context) : KoinComponent {
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setTitle("Read in Which Language")
             setSingleChoiceItems(
-                availableLocalDisplayNames, availableLocales.indexOf(config.ttsLocale)
+                availableLocalDisplayNames, availableLocales.indexOf(config.tts.ttsLocale)
             ) { dialog, selectedIndex ->
                 val locale = availableLocales[selectedIndex]
-                config.ttsLocale = locale
+                config.tts.ttsLocale = locale
                 dialog.dismiss()
             }
         }.create().show()

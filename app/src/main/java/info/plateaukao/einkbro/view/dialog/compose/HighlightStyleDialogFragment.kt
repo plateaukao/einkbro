@@ -35,7 +35,7 @@ class HighlightStyleDialogFragment(
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             HighlightStyleContent(
-                config.highlightStyle
+                config.display.highlightStyle
             ) { highlightStyle ->
                 okAction(highlightStyle)
                 dismiss()

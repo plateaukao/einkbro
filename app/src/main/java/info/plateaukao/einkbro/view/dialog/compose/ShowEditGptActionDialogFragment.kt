@@ -9,19 +9,19 @@ class ShowEditGptActionDialogFragment(
     private val editActionIndex: Int = -1,
 ) : ComposeDialogFragment() {
     override fun setupComposeView() {
-        var actionList = config.gptActionList
+        var actionList = config.ai.gptActionList
         composeView.setContent {
             MyTheme {
                 GptActionDialog(
                     editActionIndex,
                     if (editActionIndex >= 0) actionList[editActionIndex] else createDefaultGptAction(),
-                    config.getGptTypeModelMap(),
+                    config.ai.getGptTypeModelMap(),
                     okAction = { modifiedAction ->
                         actionList = actionList.toMutableList().apply {
                             if (editActionIndex >= 0) set(editActionIndex, modifiedAction)
                             else add(modifiedAction)
                         }
-                        config.gptActionList = actionList
+                        config.ai.gptActionList = actionList
                         dismiss()
                     },
                     dismissAction = { dismiss() }
@@ -36,7 +36,7 @@ class ShowEditGptActionDialogFragment(
             "",
             "",
             GptActionType.Default,
-            config.getDefaultActionModel()
+            config.ai.getDefaultActionModel()
         )
     }
 }

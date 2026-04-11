@@ -6,7 +6,8 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
 import android.webkit.MimeTypeMap
-import info.plateaukao.einkbro.EinkBroApplication
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
@@ -15,7 +16,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-object FileHelper {
+object FileHelper : KoinComponent {
+    private val appContext: Context by inject()
     private val fileCache = mutableMapOf<String, String>()
 
     fun getCachedPathFromURI(context: Context, contentURI: Uri): String {
@@ -93,7 +95,7 @@ object FileHelper {
         }
 
         try {
-            val jsContent = EinkBroApplication.instance.assets.open(fileName).bufferedReader().use { it.readText() }
+            val jsContent = appContext.assets.open(fileName).bufferedReader().use { it.readText() }
             fileCache[fileName] = jsContent
             return jsContent
         } catch (e: IOException) {
@@ -104,7 +106,7 @@ object FileHelper {
     }
 
     fun getStringFromAsset(fileName: String): String =
-        EinkBroApplication.instance.assets.open(fileName).bufferedReader().use { it.readText() }
+        appContext.assets.open(fileName).bufferedReader().use { it.readText() }
 
     @JvmStatic
     fun fileName(url: String?): String {

@@ -51,18 +51,18 @@ class LanguageSettingDialogFragment(
 
     private fun changeTranslationLanguage() {
         lifecycleScope.launch {
-            config.translationLanguage =
+            config.translation.translationLanguage =
                 (TranslationLanguageDialog(requireActivity()).show() ?: return@launch)
-            translationViewModel.updateTranslationLanguage(config.translationLanguage)
+            translationViewModel.updateTranslationLanguage(config.translation.translationLanguage)
         }
     }
 
     private fun changeSourceLanguage() {
         lifecycleScope.launch {
-            config.sourceLanguage =
+            config.translation.sourceLanguage =
                 TranslationLanguageDialog(requireActivity()).showPapagoSourceLanguage()
                     ?: return@launch
-            translationViewModel.updateSourceLanguage(config.sourceLanguage)
+            translationViewModel.updateSourceLanguage(config.translation.sourceLanguage)
         }
     }
 }

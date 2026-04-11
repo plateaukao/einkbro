@@ -53,7 +53,7 @@ open class MultitouchListener(
             MotionEvent.ACTION_UP -> onMoveDone(event)
         }
 
-        if (!config.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)
+        if (!config.touch.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)
 
         if (!inSwipe && event.pointerCount != touchCount) {
             return gestureDetector.onTouchEvent(event)

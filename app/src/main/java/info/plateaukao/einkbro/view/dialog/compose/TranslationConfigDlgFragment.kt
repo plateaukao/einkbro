@@ -28,7 +28,7 @@ class TranslationConfigDlgFragment(
 ) : ComposeDialogFragment() {
     override fun setupComposeView() {
         composeView.setContent {
-            val translationMode = remember { mutableStateOf(config.translationMode) }
+            val translationMode = remember { mutableStateOf(config.translation.translationMode) }
             val site = Uri.parse(url).host ?: "Unknown"
             MyTheme {
                 TranslationConfigScreen(
@@ -40,7 +40,7 @@ class TranslationConfigDlgFragment(
                         dismiss()
                     },
                     translationModeChanged = {
-                        config.translationMode = it
+                        config.translation.translationMode = it
                         translationMode.value = it
                         if (translateDirectly || config.shouldTranslateSite(url)) {
                             onToggledAction(true)

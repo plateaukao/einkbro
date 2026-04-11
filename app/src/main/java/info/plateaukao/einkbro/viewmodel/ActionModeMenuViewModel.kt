@@ -112,7 +112,7 @@ class ActionModeMenuViewModel(
                 action = { _actionModeMenuState.value = ActionModeMenuState.ReadFromHere }
             )
         )
-        if (configManager.imageApiKey.isNotEmpty()) {
+        if (configManager.ai.imageApiKey.isNotEmpty()) {
             menuInfos.add(
                 0,
                 MenuInfo(
@@ -139,7 +139,7 @@ class ActionModeMenuViewModel(
                 action = { _actionModeMenuState.value = ActionModeMenuState.GoogleTranslate }
             )
         )
-        if (configManager.imageApiKey.isNotBlank()) {
+        if (configManager.ai.imageApiKey.isNotBlank()) {
             menuInfos.add(
                 0,
                 MenuInfo(
@@ -149,12 +149,12 @@ class ActionModeMenuViewModel(
                 )
             )
         }
-        if (configManager.gptActionList.isNotEmpty()) {
-            configManager.gptActionList.forEachIndexed { index, actionInfo ->
+        if (configManager.ai.gptActionList.isNotEmpty()) {
+            configManager.ai.gptActionList.forEachIndexed { index, actionInfo ->
                 if (actionInfo.scope != GptActionScope.TextSelection) return@forEachIndexed
 
                 val actionType = actionInfo.actionType.takeIf { it != GptActionType.Default }
-                    ?: configManager.getDefaultActionType()
+                    ?: configManager.ai.getDefaultActionType()
 
                 val iconRes = when (actionType) {
                     GptActionType.OpenAi -> R.drawable.ic_chat_gpt
@@ -228,7 +228,7 @@ class ActionModeMenuViewModel(
                 imageVector = Icons.Outlined.EditNote,
                 action = {
                     _actionModeMenuState.value =
-                        ActionModeMenuState.HighlightText(configManager.highlightStyle)
+                        ActionModeMenuState.HighlightText(configManager.display.highlightStyle)
                 },
                 longClickAction = {
                     hide()
@@ -236,7 +236,7 @@ class ActionModeMenuViewModel(
                         clickedPoint.value,
                         okAction = { style ->
                             _actionModeMenuState.value = ActionModeMenuState.Idle
-                            configManager.highlightStyle = style
+                            configManager.display.highlightStyle = style
                             _actionModeMenuState.value = ActionModeMenuState.HighlightText(style)
                         },
                         onDismissAction = {

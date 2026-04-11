@@ -5,6 +5,10 @@ import android.content.Context
 import android.util.Log
 import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.preference.ConfigManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.BufferedReader
@@ -16,22 +20,23 @@ import java.util.*
 
 class AdBlock(context: Context) : BaseWebConfig(context) {
     override val dbTable: String = RecordRepository.TABLE_WHITELIST
-    init { loadDomains(); loadHosts("hosts.txt") }
+    override val hostsFile: String = "hosts.txt"
 }
 
 class Javascript(context: Context) : BaseWebConfig(context) {
     override val dbTable: String = RecordRepository.TABLE_JAVASCRIPT
-    init { loadDomains(); loadHosts("javaHosts.txt") }
+    override val hostsFile: String = "javaHosts.txt"
 }
 
 class Cookie(context: Context) : BaseWebConfig(context) {
     override val dbTable: String = RecordRepository.TABLE_COOKIE
-    init { loadDomains(); loadHosts("cookieHosts.txt") }
+    override val hostsFile: String = "cookieHosts.txt"
 }
 
 abstract class BaseWebConfig(private val context: Context) : KoinComponent, DomainInterface {
     private val config: ConfigManager by inject()
     private val recordDb: RecordRepository by inject()
+    private val coroutineScope: CoroutineScope by inject()
     protected val hosts: MutableSet<String> = HashSet()
     private val whitelist: MutableList<String> = ArrayList()
 
@@ -39,6 +44,14 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
     private val locale = Locale.getDefault()
 
     abstract val dbTable: String
+    abstract val hostsFile: String
+
+    init {
+        coroutineScope.launch {
+            loadDomains()
+            loadHosts(hostsFile)
+        }
+    }
 
     fun isWhite(url: String): Boolean {
         for (domain in whitelist) {
@@ -62,25 +75,25 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
         return config.adSites.any { it.contains(domain, true) }
     }
 
-    override fun getDomains() = recordDb.listDomains(dbTable)
+    override suspend fun getDomains() = recordDb.listDomains(dbTable)
 
-    override fun addDomain(domain: String) {
+    override suspend fun addDomain(domain: String) {
         recordDb.addDomain(domain, dbTable)
         whitelist.add(domain)
     }
 
-    override fun deleteDomain(domain: String) {
+    override suspend fun deleteDomain(domain: String) {
         recordDb.deleteDomain(domain, dbTable)
         whitelist.remove(domain)
     }
 
-    override fun deleteAllDomains() {
+    override suspend fun deleteAllDomains() {
         recordDb.deleteAllDomains(dbTable)
         whitelist.clear()
     }
 
-    protected fun loadHosts(filename: String) {
-        val thread = Thread {
+    private suspend fun loadHosts(filename: String) {
+        withContext(Dispatchers.IO) {
             val manager = context.assets
             try {
                 val reader = BufferedReader(InputStreamReader(manager.open(filename)))
@@ -92,13 +105,14 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
                 Log.w("browser", "Error loading hosts", i)
             }
         }
-        thread.start()
     }
 
-    @Synchronized
-    protected fun loadDomains() {
-        whitelist.clear()
-        whitelist.addAll(recordDb.listDomains(dbTable))
+    private suspend fun loadDomains() {
+        val domains = recordDb.listDomains(dbTable)
+        synchronized(whitelist) {
+            whitelist.clear()
+            whitelist.addAll(domains)
+        }
     }
 
     @Throws(URISyntaxException::class)

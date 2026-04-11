@@ -8,6 +8,7 @@ import android.view.View
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.MainContentLayout
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.browser.BrowserAction
@@ -29,17 +30,17 @@ class TouchAreaViewController(
     private lateinit var touchAreaPageDown: View
     private lateinit var touchAreaDragCustomize: View
 
-    private val pageUpAction = { gestureHandler.handle(config.upClickGesture) }
-    private val pageTopAction = { gestureHandler.handle(config.upLongClickGesture) }
-    private val pageDownAction = { gestureHandler.handle(config.downClickGesture) }
-    private val pageBottomAction = { gestureHandler.handle(config.downLongClickGesture) }
+    private val pageUpAction = { gestureHandler.handle(config.touch.upClickGesture) }
+    private val pageTopAction = { gestureHandler.handle(config.touch.upLongClickGesture) }
+    private val pageDownAction = { gestureHandler.handle(config.touch.downClickGesture) }
+    private val pageBottomAction = { gestureHandler.handle(config.touch.downLongClickGesture) }
     private val keyLeftAction = { gestureHandler.handle(GestureType.KeyLeft) }
     private val keyRightAction = { gestureHandler.handle(GestureType.KeyRight) }
 
     private val touchAreaChangeListener: OnSharedPreferenceChangeListener by lazy {
         OnSharedPreferenceChangeListener { _, key ->
-            if (key == ConfigManager.K_TOUCH_HINT) {
-                if (config.touchAreaHint) {
+            if (key == TouchConfig.K_TOUCH_HINT) {
+                if (config.touch.touchAreaHint) {
                     showTouchAreaHint()
                 } else {
                     hideTouchAreaHint()
@@ -48,19 +49,19 @@ class TouchAreaViewController(
                 updateTouchAreaType()
             }
 
-            if (key == ConfigManager.K_TOUCH_AREA_TYPE) {
+            if (key == TouchConfig.K_TOUCH_AREA_TYPE) {
                 updateTouchAreaType()
                 // reset offset when type is changed
-                config.touchAreaCustomizeY = 0
+                config.touch.touchAreaCustomizeY = 0
             }
         }
     }
 
     init {
         updateTouchAreaType()
-        if (config.touchAreaCustomizeY != 0 && allowMoveTouchArea()) {
+        if (config.touch.touchAreaCustomizeY != 0 && allowMoveTouchArea()) {
             binding.root.post {
-                updateTouchAreaCustomizeY(config.touchAreaCustomizeY)
+                updateTouchAreaCustomizeY(config.touch.touchAreaCustomizeY)
             }
         }
         // after optimization, don't know why registration is gone.
@@ -93,7 +94,7 @@ class TouchAreaViewController(
     }
 
     private fun updateTouchAreaCustomizeY(customizeY: Int) {
-        config.touchAreaCustomizeY = customizeY
+        config.touch.touchAreaCustomizeY = customizeY
         val upDownDiffY = touchAreaPageDown.y - touchAreaPageUp.y
         touchAreaDragCustomize.y = (customizeY - touchAreaDragCustomize.height / 2).toFloat()
         touchAreaPageUp.y = customizeY.toFloat()
@@ -120,7 +121,7 @@ class TouchAreaViewController(
             }
         }
 
-        when (config.touchAreaType) {
+        when (config.touch.touchAreaType) {
             TouchAreaType.BottomLeftRight -> {
                 touchAreaPageUp = binding.touchAreaBottomLeft
                 touchAreaPageDown = binding.touchAreaBottomRight
@@ -162,38 +163,38 @@ class TouchAreaViewController(
         }
 
         with(touchAreaPageUp) {
-            setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
+            setOnClickListener { if (!config.touch.switchTouchAreaAction) pageUpAction() else pageDownAction() }
             setOnLongClickListener {
-                if (config.disableLongPressTouchArea) return@setOnLongClickListener false
+                if (config.touch.disableLongPressTouchArea) return@setOnLongClickListener false
 
-                if (config.longClickAsArrowKey) {
+                if (config.touch.longClickAsArrowKey) {
                     keyLeftAction()
                     return@setOnLongClickListener true
                 }
-                if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true
+                if (!config.touch.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true
             }
         }
         with(touchAreaPageDown) {
-            setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
+            setOnClickListener { if (!config.touch.switchTouchAreaAction) pageDownAction() else pageUpAction() }
             setOnLongClickListener {
-                if (config.disableLongPressTouchArea) return@setOnLongClickListener false
+                if (config.touch.disableLongPressTouchArea) return@setOnLongClickListener false
 
-                if (config.longClickAsArrowKey) {
+                if (config.touch.longClickAsArrowKey) {
                     keyRightAction()
                     return@setOnLongClickListener true
                 }
-                if (!config.switchTouchAreaAction) pageBottomAction() else pageTopAction(); true
+                if (!config.touch.switchTouchAreaAction) pageBottomAction() else pageTopAction(); true
             }
         }
         with(touchAreaDragCustomize) {
             setOnTouchListener { view, event -> customOnTouch(view, event) }
         }
 
-        if (config.enableTouchTurn) {
+        if (config.touch.enableTouchTurn) {
             touchAreaPageUp.visibility = View.VISIBLE
             touchAreaPageDown.visibility = View.VISIBLE
             touchAreaDragCustomize.visibility =
-                if (config.touchAreaHint && allowMoveTouchArea()) View.VISIBLE else View.GONE
+                if (config.touch.touchAreaHint && allowMoveTouchArea()) View.VISIBLE else View.GONE
             showTouchAreaHint()
         }
     }
@@ -209,7 +210,7 @@ class TouchAreaViewController(
     private fun showTouchAreaHint() {
         touchAreaPageUp.setBackgroundResource(R.drawable.touch_area_border)
         touchAreaPageDown.setBackgroundResource(R.drawable.touch_area_border)
-        if (!config.touchAreaHint) {
+        if (!config.touch.touchAreaHint) {
             Timer("showTouchAreaHint", false)
                 .schedule(object : TimerTask() {
                     override fun run() {
@@ -220,7 +221,7 @@ class TouchAreaViewController(
     }
 
     fun toggleTouchPageTurn(enabled: Boolean) {
-        if (config.touchAreaType == TouchAreaType.Ebook) return
+        if (config.touch.touchAreaType == TouchAreaType.Ebook) return
         if (!this::touchAreaPageUp.isInitialized) return
 
         touchAreaPageUp.visibility = if (enabled) View.VISIBLE else View.GONE
@@ -233,8 +234,8 @@ class TouchAreaViewController(
 
     private var disabledTemporarily = false
     fun maybeDisableTemporarily() {
-        if (config.touchAreaType == TouchAreaType.Ebook) return
-        if (config.enableTouchTurn && config.touchAreaHint && config.hideTouchAreaWhenInput) {
+        if (config.touch.touchAreaType == TouchAreaType.Ebook) return
+        if (config.touch.enableTouchTurn && config.touch.touchAreaHint && config.touch.hideTouchAreaWhenInput) {
             if (this::touchAreaPageUp.isInitialized) {
                 disabledTemporarily = true
                 with(touchAreaPageUp) {
@@ -258,14 +259,14 @@ class TouchAreaViewController(
     fun maybeEnableAgain() {
         if (
             disabledTemporarily &&
-            config.enableTouchTurn &&
-            config.touchAreaHint &&
-            config.hideTouchAreaWhenInput
+            config.touch.enableTouchTurn &&
+            config.touch.touchAreaHint &&
+            config.touch.hideTouchAreaWhenInput
         ) {
             disabledTemporarily = false
             updateTouchAreaType()
         }
     }
 
-    private fun allowMoveTouchArea(): Boolean = config.touchAreaType != TouchAreaType.Long
+    private fun allowMoveTouchArea(): Boolean = config.touch.touchAreaType != TouchAreaType.Long
 }

@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.activity.SavedPagesActivity
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.SavedPage
@@ -27,7 +28,7 @@ import java.io.File
 
 class FileHandlingDelegate(
     private val activity: FragmentActivity,
-    private val webViewProvider: () -> EBWebView,
+    private val state: BrowserState,
     private val bookmarkManager: BookmarkManager,
 ) {
     private val backupUnit: BackupUnit by lazy { BackupUnit(activity) }
@@ -84,7 +85,7 @@ class FileHandlingDelegate(
         epubManager.saveEpub(
             activity,
             uri,
-            webViewProvider(),
+            state.ebWebView,
             {
                 progressDialog.progress = it
                 if (it == 100) {
@@ -110,7 +111,7 @@ class FileHandlingDelegate(
 
     private fun saveWebArchiveToUri(uri: Uri) {
         val filePath = File(activity.filesDir.absolutePath + "/temp.mht").absolutePath
-        webViewProvider().saveWebArchive(filePath, false) {
+        state.ebWebView.saveWebArchive(filePath, false) {
             val tempFile = File(filePath)
             activity.contentResolver.openOutputStream(uri)?.use { outputStream ->
                 tempFile.inputStream().use { inputStream ->
@@ -136,7 +137,7 @@ class FileHandlingDelegate(
             if (uri == null) {
                 epubManager.showWriteEpubFilePicker(
                     writeEpubFilePickerLauncher,
-                    webViewProvider().title ?: "einkbro"
+                    state.ebWebView.title ?: "einkbro"
                 )
             } else {
                 saveEpub(uri)
@@ -152,12 +153,12 @@ class FileHandlingDelegate(
     )
 
     fun showWebArchiveFilePicker() {
-        val fileName = "${webViewProvider().title}.mht"
+        val fileName = "${state.ebWebView.title}.mht"
         BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
     }
 
     fun savePageForLater() {
-        val ebWebView = webViewProvider()
+        val ebWebView = state.ebWebView
         val title = ebWebView.title.orEmpty()
         val url = ebWebView.url.orEmpty()
         if (url.isBlank()) return

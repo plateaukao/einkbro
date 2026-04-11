@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionDisplay
@@ -42,6 +43,7 @@ import kotlinx.serialization.json.Json
 class ActionModeDelegate(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
+    private val browserState: BrowserState,
     private val actionModeMenuViewModel: ActionModeMenuViewModel,
     private val translationViewModel: TranslationViewModel,
     private val ttsViewModel: TtsViewModel,
@@ -49,11 +51,7 @@ class ActionModeDelegate(
     private val remoteConnViewModel: info.plateaukao.einkbro.viewmodel.RemoteConnViewModel,
     private val externalSearchViewModel: info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel,
     private val bookmarkManager: BookmarkManager,
-    private val bindingProvider: () -> MainActivityLayout,
-    private val webViewProvider: () -> EBWebView,
     private val getFocusedWebView: () -> EBWebView,
-    private val longPressPointProvider: () -> Point,
-    private val updateLongPressPoint: (Point) -> Unit,
     private val showTranslationDialog: (isWholePageMode: Boolean) -> Unit,
     private val updateTranslationInput: suspend () -> Unit,
     private val toggleSplitScreen: (url: String?) -> Unit,
@@ -96,7 +94,7 @@ class ActionModeDelegate(
                     is ActionModeMenuState.ReadFromHere -> readFromThisSentence()
 
                     is Gpt -> {
-                        val gptAction = config.gptActionList[state.gptActionIndex]
+                        val gptAction = config.ai.gptActionList[state.gptActionIndex]
                         activity.lifecycleScope.launch {
                             updateTranslationInput()
                             if (translationViewModel.hasOpenAiApiKey()) {
@@ -131,8 +129,8 @@ class ActionModeDelegate(
                         actionModeMenuViewModel.finish()
                     }
 
-                    is SelectSentence -> getFocusedWebView().selectSentence(longPressPointProvider())
-                    is SelectParagraph -> getFocusedWebView().selectParagraph(longPressPointProvider())
+                    is SelectSentence -> getFocusedWebView().selectSentence(browserState.longPressPoint)
+                    is SelectParagraph -> getFocusedWebView().selectParagraph(browserState.longPressPoint)
                     Idle -> Unit
                 }
             }
@@ -168,7 +166,7 @@ class ActionModeDelegate(
 
     private fun readFromThisSentence() {
         activity.lifecycleScope.launch {
-            val ebWebView = webViewProvider()
+            val ebWebView = browserState.ebWebView
             val selectedSentence = ebWebView.getSelectedText()
             val fullText = ebWebView.getRawText()
             val startIndex = fullText.indexOf(selectedSentence)
@@ -203,7 +201,7 @@ class ActionModeDelegate(
             activity.lifecycleScope.launch {
                 val keyword = getFocusedWebView().getSelectedText()
                 val keywordWithContext = getFocusedWebView().getSelectedTextWithContext()
-                val action = config.gptActionList.firstOrNull { it.name == config.remoteQueryActionName }
+                val action = config.ai.gptActionList.firstOrNull { it.name == config.ai.remoteQueryActionName }
                 val constructedUrlString =
                     if (action != null) {
                         val actionString = json.encodeToString(serializer = ChatGPTActionInfo.serializer(), action)
@@ -221,7 +219,7 @@ class ActionModeDelegate(
             mode.menu.clear()
 
             activity.lifecycleScope.launch {
-                toggleSplitScreen(splitSearchViewModel.getUrl(webViewProvider().getSelectedText()))
+                toggleSplitScreen(splitSearchViewModel.getUrl(browserState.ebWebView.getSelectedText()))
             }
 
             mode.finish()
@@ -291,7 +289,7 @@ class ActionModeDelegate(
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             actionModeView?.visibility = INVISIBLE
-            bindingProvider().root.addView(actionModeView)
+            browserState.binding.root.addView(actionModeView)
         }
 
         actionModeMenuViewModel.show()
@@ -309,11 +307,9 @@ class ActionModeDelegate(
         }
         actionModeMenuViewModel.updateClickedPoint(newPoint)
 
-        updateLongPressPoint(
-            Point(
-                ViewUnit.dpToPixel(left.toInt() - 1).toInt(),
-                ViewUnit.dpToPixel(top.toInt() + 1).toInt()
-            )
+        browserState.longPressPoint = Point(
+            ViewUnit.dpToPixel(left.toInt() - 1).toInt(),
+            ViewUnit.dpToPixel(top.toInt() + 1).toInt()
         )
     }
 
@@ -325,7 +321,7 @@ class ActionModeDelegate(
     fun isActionModeActive(): Boolean = actionModeMenuViewModel.isInActionMode()
 
     fun dismissActionMode() {
-        webViewProvider().removeTextSelection()
+        browserState.ebWebView.removeTextSelection()
         actionModeMenuViewModel.updateActionMode(null)
     }
 

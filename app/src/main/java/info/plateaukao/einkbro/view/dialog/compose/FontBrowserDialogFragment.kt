@@ -69,14 +69,14 @@ class FontBrowserDialogFragment(
         if (uri != null) {
             val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             requireContext().contentResolver.takePersistableUriPermission(uri, takeFlags)
-            config.fontFolderUri = uri.toString()
+            config.display.fontFolderUri = uri.toString()
             folderUri.value = uri.toString()
         }
     }
 
     override fun setupComposeView() {
         shouldShowInCenter = true
-        folderUri.value = config.fontFolderUri
+        folderUri.value = config.display.fontFolderUri
 
         composeView.setContent {
             MyTheme {
@@ -85,11 +85,11 @@ class FontBrowserDialogFragment(
                     onSelectFolder = { folderPickerLauncher.launch(null) },
                     onFontSelected = { fontInfo ->
                         if (isReaderMode) {
-                            config.readerCustomFontInfo = fontInfo
-                            config.readerFontType = FontType.CUSTOM
+                            config.display.readerCustomFontInfo = fontInfo
+                            config.display.readerFontType = FontType.CUSTOM
                         } else {
-                            config.customFontInfo = fontInfo
-                            config.fontType = FontType.CUSTOM
+                            config.display.customFontInfo = fontInfo
+                            config.display.fontType = FontType.CUSTOM
                         }
                         dismiss()
                     },

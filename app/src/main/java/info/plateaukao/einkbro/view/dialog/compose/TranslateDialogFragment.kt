@@ -92,7 +92,7 @@ class TranslateDialogFragment(
         MyTheme {
             TranslateResponse(
                 translationViewModel,
-                showExtraIcons = config.imageApiKey.isNotBlank(),
+                showExtraIcons = config.ai.imageApiKey.isNotBlank(),
                 this::changeTranslationLanguage,
                 this::getTranslationWebView,
                 closeAction ?: { dismiss() },
@@ -158,7 +158,7 @@ class TranslateDialogFragment(
             override fun dispatchKeyEvent(event: KeyEvent): Boolean {
                 val keyCode = event.keyCode
                 if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-                    if (config.volumePageTurn) {
+                    if (config.touch.volumePageTurn) {
                         if (event.action == KeyEvent.ACTION_DOWN) {
                             translationViewModel.emitScrollEvent(keyCode == KeyEvent.KEYCODE_VOLUME_UP)
                         }

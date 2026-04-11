@@ -161,7 +161,7 @@ open class EBWebView(
             wasAtTopOnTouchStart = scrollY == 0 && isInnerScrollAtTop
         }
 
-        if (!config.isEbookModeActive || ebookTouchTemporarilyDisabled) {
+        if (!config.touch.isEbookModeActive || ebookTouchTemporarilyDisabled) {
             return super.dispatchTouchEvent(event)
         }
 
@@ -220,7 +220,7 @@ open class EBWebView(
                 sendCancelEvent(event)
 
                 val midX = width / 2f
-                if (!config.switchTouchAreaAction) {
+                if (!config.touch.switchTouchAreaAction) {
                     if (ebookTouchStartX < midX) pageUpWithNoAnimation()
                     else pageDownWithNoAnimation()
                 } else {
@@ -274,7 +274,7 @@ open class EBWebView(
 
     override fun reload() {
         resetState()
-        settings.textZoom = config.fontSize
+        settings.textZoom = config.display.fontSize
         settings.cacheMode = WebSettings.LOAD_DEFAULT
         super.reload()
 
@@ -285,7 +285,7 @@ open class EBWebView(
 
     override fun goBack() {
         resetState()
-        settings.textZoom = config.fontSize
+        settings.textZoom = config.display.fontSize
         super.goBack()
     }
 
@@ -327,7 +327,7 @@ open class EBWebView(
 
     @Suppress("DEPRECATION")
     private fun updateDarkMode() {
-        if (config.darkMode == DarkMode.DISABLED) {
+        if (config.display.darkMode == DarkMode.DISABLED) {
             return
         }
 
@@ -341,7 +341,7 @@ open class EBWebView(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
-                config.darkMode == DarkMode.FORCE_ON
+                config.display.darkMode == DarkMode.FORCE_ON
             ) {
                 settings.forceDark = WebSettings.FORCE_DARK_ON
                 // when in dark mode, the default background color will be the activity background
@@ -378,7 +378,7 @@ open class EBWebView(
             if (config.webLoadCacheFirst)
                 cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
 
-            textZoom = config.fontSize
+            textZoom = config.display.fontSize
             allowFileAccessFromFileURLs = config.enableRemoteAccess
             allowFileAccess = true
             allowUniversalAccessFromFileURLs = config.enableRemoteAccess
@@ -761,7 +761,7 @@ open class EBWebView(
             continuation.resume(rawHtmlCache!!)
         } else if (!isReaderModeOn && !isTranslatePage) {
             jsBridge.injectMozReaderModeJs(false)
-            jsBridge.getReaderModeBodyHtml(config.readerKeepExtraContent, url) { html ->
+            jsBridge.getReaderModeBodyHtml(config.display.readerKeepExtraContent, url) { html ->
                 val processedHtml = HelperUnit.unescapeJava(html)
                 val rawHtml = processedHtml.substring(1, processedHtml.length - 1)
                 rawHtmlCache = rawHtml
@@ -784,7 +784,7 @@ open class EBWebView(
             continuation.resume(DualCaptionProcessor().convertToHtml(dualCaption ?: ""))
         } else if (!isReaderModeOn) {
             jsBridge.evaluateMozReaderModeJs {
-                jsBridge.getReaderModeBodyText(config.readerKeepExtraContent) { text ->
+                jsBridge.getReaderModeBodyText(config.display.readerKeepExtraContent) { text ->
                     if (text == "null") {
                         continuation.resume("")
                     } else {

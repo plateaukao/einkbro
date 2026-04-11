@@ -30,31 +30,31 @@ class WebViewReaderHelper(
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
             webView.jsBridge.evaluateMozReaderModeJs(isVertical) {
-                webView.jsBridge.replaceWithReaderModeBody(config.readerKeepExtraContent, webView.url) { _ ->
+                webView.jsBridge.replaceWithReaderModeBody(config.display.readerKeepExtraContent, webView.url) { _ ->
                     if (isVertical) {
                         webView.jsBridge.evaluateJsFile("process_text_nodes.js", false) {
                             webView.postDelayed({ webView.jumpToTop() }, 200)
                         }
                     } else {
-                        webView.jsBridge.setPaddingInReaderMode(config.paddingForReaderMode)
+                        webView.jsBridge.setPaddingInReaderMode(config.display.paddingForReaderMode)
                     }
                 }
             }
-            webView.settings.textZoom = config.readerFontSize
+            webView.settings.textZoom = config.display.readerFontSize
             updateCssStyle()
         } else {
             webView.jsBridge.disableReaderMode(isVertical)
-            webView.settings.textZoom = config.fontSize
+            webView.settings.textZoom = config.display.fontSize
         }
     }
 
-    fun applyFontBoldness() = webView.jsBridge.applyFontBoldness(config.fontBoldness)
+    fun applyFontBoldness() = webView.jsBridge.applyFontBoldness(config.display.fontBoldness)
 
     fun updateCssStyle() {
-        val fontType = if (shouldUseReaderFont()) config.readerFontType else config.fontType
+        val fontType = if (shouldUseReaderFont()) config.display.readerFontType else config.display.fontType
 
         val cssStyle =
-            (if (config.blackFontStyle) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
+            (if (config.display.blackFontStyle) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
                     (if (fontType == FontType.GOOGLE_SERIF) WebViewJsBridge.NOTO_SANS_SERIF_FONT_CSS else "") +
                     (if (fontType == FontType.TC_IANSUI) WebViewJsBridge.IANSUI_FONT_CSS else "") +
                     (if (fontType == FontType.JA_MINCHO) WebViewJsBridge.JA_MINCHO_FONT_CSS else "") +
@@ -62,8 +62,8 @@ class WebViewReaderHelper(
                     (if (fontType == FontType.SERIF) WebViewJsBridge.SERIF_FONT_CSS else "") +
                     (if (config.whiteBackground(webView.url.orEmpty())) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
                     (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
-                    (if (config.boldFontStyle)
-                        WebViewJsBridge.BOLD_FONT_CSS.replace("value", "${config.fontBoldness}") else "") +
+                    (if (config.display.boldFontStyle)
+                        WebViewJsBridge.BOLD_FONT_CSS.replace("value", "${config.display.fontBoldness}") else "") +
                     if (isEpubReaderMode) loadAssetFile("readerview.css") else ""
         if (cssStyle.isNotBlank()) {
             webView.jsBridge.injectCss(cssStyle.toByteArray())
