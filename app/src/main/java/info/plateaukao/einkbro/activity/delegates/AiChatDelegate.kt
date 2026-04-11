@@ -87,13 +87,14 @@ class AiChatDelegate(
                     val webTitle = ebWebView.title ?: "No Title"
                     val webUrl = ebWebView.url.orEmpty()
                     addAlbum("Chat With Web", "")
+                    val newWebView = webViewProvider()
                     runWithAction?.let { action ->
-                        ebWebView.setOnPageFinishedAction {
-                            ebWebView.setOnPageFinishedAction {}
-                            ebWebView.runGptAction(action)
+                        newWebView.setOnPageFinishedAction {
+                            newWebView.setOnPageFinishedAction {}
+                            newWebView.runGptAction(action)
                         }
                     }
-                    webViewProvider().setupAiPage(scope, rawText, webTitle, webUrl)
+                    newWebView.setupAiPage(scope, rawText, webTitle, webUrl)
                 }
             }
         }
