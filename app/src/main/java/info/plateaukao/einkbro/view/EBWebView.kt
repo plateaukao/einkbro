@@ -279,7 +279,7 @@ open class EBWebView(
         super.reload()
 
         postDelayed({
-            if (config.webLoadCacheFirst) settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+            if (config.browser.webLoadCacheFirst) settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         }, 2000)
     }
 
@@ -309,7 +309,7 @@ open class EBWebView(
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initWebView() {
-        if (BuildConfig.DEBUG || config.debugWebView) {
+        if (BuildConfig.DEBUG || config.browser.debugWebView) {
             setWebContentsDebuggingEnabled(true)
         }
 
@@ -375,33 +375,33 @@ open class EBWebView(
 
         with(settings) {
             // don't load cache by default, so that it won't cause some issues
-            if (config.webLoadCacheFirst)
+            if (config.browser.webLoadCacheFirst)
                 cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
 
             textZoom = config.display.fontSize
-            allowFileAccessFromFileURLs = config.enableRemoteAccess
+            allowFileAccessFromFileURLs = config.browser.enableRemoteAccess
             allowFileAccess = true
-            allowUniversalAccessFromFileURLs = config.enableRemoteAccess
+            allowUniversalAccessFromFileURLs = config.browser.enableRemoteAccess
             domStorageEnabled = true
             databaseEnabled = true
-            blockNetworkImage = !config.enableImages
-            javaScriptEnabled = config.enableJavascript
-            javaScriptCanOpenWindowsAutomatically = config.enableJavascript
-            setSupportMultipleWindows(config.enableJavascript)
-            setGeolocationEnabled(config.shareLocation)
+            blockNetworkImage = !config.browser.enableImages
+            javaScriptEnabled = config.browser.enableJavascript
+            javaScriptCanOpenWindowsAutomatically = config.browser.enableJavascript
+            setSupportMultipleWindows(config.browser.enableJavascript)
+            setGeolocationEnabled(config.browser.shareLocation)
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-            mediaPlaybackRequiresUserGesture = !config.enableVideoAutoplay
+            mediaPlaybackRequiresUserGesture = !config.browser.enableVideoAutoplay
             setRenderPriority(WebSettings.RenderPriority.HIGH)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 importantForAutofill =
-                    if (config.autoFillForm) IMPORTANT_FOR_AUTOFILL_YES else IMPORTANT_FOR_AUTOFILL_NO
+                    if (config.browser.autoFillForm) IMPORTANT_FOR_AUTOFILL_YES else IMPORTANT_FOR_AUTOFILL_NO
             } else {
-                saveFormData = config.autoFillForm
+                saveFormData = config.browser.autoFillForm
             }
         }
-        webViewClient.enableAdBlock(config.adBlock)
-        toggleCookieSupport(config.cookies)
+        webViewClient.enableAdBlock(config.browser.adBlock)
+        toggleCookieSupport(config.browser.cookies)
     }
 
     fun updateUserAgentString() {
@@ -409,15 +409,15 @@ open class EBWebView(
         val prefix: String =
             defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
 
-        val isDesktopMode = config.desktop
+        val isDesktopMode = config.browser.desktop
         try {
             when {
                 isDesktopMode ->
                     settings.userAgentString =
                         defaultUserAgentString.replace(prefix, BrowserUnit.UA_DESKTOP_PREFIX)
 
-                config.enableCustomUserAgent && config.customUserAgent.isNotBlank() ->
-                    settings.userAgentString = config.customUserAgent
+                config.browser.enableCustomUserAgent && config.browser.customUserAgent.isNotBlank() ->
+                    settings.userAgentString = config.browser.customUserAgent
 
                 else ->
                     settings.userAgentString =
@@ -446,12 +446,12 @@ open class EBWebView(
 
     val requestHeaders: HashMap<String, String> = HashMap<String, String>().apply {
         put("DNT", "1")
-        put("Save-Data", if (config.enableSaveData) "on" else "off")
+        put("Save-Data", if (config.browser.enableSaveData) "on" else "off")
     }
 
     /* continue playing if preference is set */
     override fun onWindowVisibilityChanged(visibility: Int) {
-        if (config.continueMedia) {
+        if (config.browser.continueMedia) {
             if (visibility != GONE && visibility != INVISIBLE) super.onWindowVisibilityChanged(
                 VISIBLE
             )
@@ -471,8 +471,8 @@ open class EBWebView(
             setAlbumCover(it)
         }
 
-        settings.javaScriptEnabled = config.enableJavascript || javascript.isWhite(url)
-        toggleCookieSupport(config.cookies || cookie.isWhite(url))
+        settings.javaScriptEnabled = config.browser.enableJavascript || javascript.isWhite(url)
+        toggleCookieSupport(config.browser.cookies || cookie.isWhite(url))
 
         super.loadUrl(url, additionalHttpHeaders)
     }
@@ -511,8 +511,8 @@ open class EBWebView(
             setAlbumCover(it)
         }
 
-        settings.javaScriptEnabled = config.enableJavascript || javascript.isWhite(url)
-        toggleCookieSupport(config.cookies || cookie.isWhite(url))
+        settings.javaScriptEnabled = config.browser.enableJavascript || javascript.isWhite(url)
+        toggleCookieSupport(config.browser.cookies || cookie.isWhite(url))
 
         super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }
@@ -575,7 +575,7 @@ open class EBWebView(
         album.activate()
 
         // handle incognito case
-        if (incognito || !config.cookies) {
+        if (incognito || !config.browser.cookies) {
             toggleCookieSupport(false)
         } else {
             toggleCookieSupport(true)
@@ -592,7 +592,7 @@ open class EBWebView(
         clearFocus()
         isForeground = false
         album.deactivate()
-        if (!config.enableWebBkgndLoad) pauseWebView()
+        if (!config.tab.enableWebBkgndLoad) pauseWebView()
     }
 
     override fun pauseWebView() {

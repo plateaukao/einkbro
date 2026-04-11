@@ -15,7 +15,7 @@ class SearchSuggestionViewModel : KoinComponent {
     private val recordDb: RecordRepository by inject()
 
     private val repository: SearchSuggestionsRepository by lazy {
-        when (config.searchEngine) {
+        when (config.browser.searchEngine) {
             SearchEngine.DUCKDUCKGO.ordinal.toString() -> DuckDuckGoSuggestionsRepository()
             else -> GoogleSuggestionsRepository()
         }
@@ -28,7 +28,7 @@ class SearchSuggestionViewModel : KoinComponent {
     private var historyAndBookmarkRecords = listOf<Record>()
     private var queryString = ""
     suspend fun initSuggestions() {
-        historyAndBookmarkRecords = recordDb.listEntries(config.showBookmarksInInputBar)
+        historyAndBookmarkRecords = recordDb.listEntries(config.browser.showBookmarksInInputBar)
         _suggestions.value = historyAndBookmarkRecords
         queryString = ""
     }
@@ -53,7 +53,7 @@ class SearchSuggestionViewModel : KoinComponent {
                     it.url.contains(query, ignoreCase = true)
         }
 
-        if ((query.length <= 1 && filteredRecords.isNotEmpty()) || !config.enableSearchSuggestion) {
+        if ((query.length <= 1 && filteredRecords.isNotEmpty()) || !config.browser.enableSearchSuggestion) {
             _suggestions.value = filteredRecords
             return
         }

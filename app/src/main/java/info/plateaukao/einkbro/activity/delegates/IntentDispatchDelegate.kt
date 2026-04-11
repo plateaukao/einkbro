@@ -138,7 +138,7 @@ class IntentDispatchDelegate(
             }
 
             "sc_disable_adblock" -> {
-                config.adBlock = false
+                config.browser.adBlock = false
                 BrowserUnit.restartApp(activity)
             }
 
@@ -214,14 +214,14 @@ class IntentDispatchDelegate(
 
     fun initSavedTabs(whenNoSavedTabs: (() -> Unit)? = null) {
         if (state.currentAlbumController == null) {
-            if (config.savedAlbumInfoList.isNotEmpty() &&
-                (config.shouldSaveTabs || shouldLoadTabState)
+            if (config.tab.savedAlbumInfoList.isNotEmpty() &&
+                (config.tab.shouldSaveTabs || shouldLoadTabState)
             ) {
-                if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
-                    config.currentAlbumIndex = config.savedAlbumInfoList.size - 1
+                if (config.tab.currentAlbumIndex >= config.tab.savedAlbumInfoList.size) {
+                    config.tab.currentAlbumIndex = config.tab.savedAlbumInfoList.size - 1
                 }
-                val albumList = config.savedAlbumInfoList.toList()
-                var savedIndex = config.currentAlbumIndex
+                val albumList = config.tab.savedAlbumInfoList.toList()
+                var savedIndex = config.tab.currentAlbumIndex
                 if (savedIndex == -1) savedIndex = 0
                 albumList.forEachIndexed { index, albumInfo ->
                     addAlbum(

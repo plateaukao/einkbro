@@ -65,7 +65,10 @@ import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.view.MainActivityLayout
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.AiConfig
+import info.plateaukao.einkbro.preference.BrowserConfig
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.TabConfig
+import info.plateaukao.einkbro.preference.UiConfig
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.DisplayConfig
 import info.plateaukao.einkbro.preference.TouchConfig
@@ -521,7 +524,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (overviewDialogController.isVisible()) hideOverview()
         if (fullscreenDelegate.fullscreenHolder != null) {
             onHideCustomView()
-        } else if (!binding.appBar.isVisible && config.showToolbarFirst) {
+        } else if (!binding.appBar.isVisible && config.ui.showToolbarFirst) {
             fullscreenDelegate.showToolbar()
         } else if (!composeToolbarViewController.isDisplayed()) {
             composeToolbarViewController.show()
@@ -529,7 +532,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (!ebWebView.isTranslatePage && ebWebView.canGoBack()) {
                 ebWebView.goBack()
             } else {
-                if (config.closeTabWhenNoMoreBackHistory) removeAlbum()
+                if (config.tab.closeTabWhenNoMoreBackHistory) removeAlbum()
                 else EBToast.show(this, R.string.no_previous_page)
             }
         }
@@ -768,7 +771,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         intentDispatchDelegate.dispatchIntent(intent)
         intentDispatchDelegate.shouldLoadTabState = false
 
-        if (config.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        if (config.ui.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         translationDelegate.initLanguageLabel()
         initTouchAreaViewController()
@@ -777,7 +780,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         translationDelegate.initTranslationViewModel()
         initTtsViewModel()
 
-        if (config.hideStatusbar) fullscreenDelegate.hideStatusBar()
+        if (config.ui.hideStatusbar) fullscreenDelegate.hideStatusBar()
 
         handleWindowInsets()
         listenKeyboardShowHide()
@@ -805,13 +808,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (!ebWebView.shouldUseReaderFont()) ebWebView.reload() else ebWebView.updateCssStyle()
             config.display.customFontChanged = false
         }
-        if (!config.continueMedia && browserState.isWebViewInitialized) ebWebView.resumeTimers()
+        if (!config.browser.continueMedia && browserState.isWebViewInitialized) ebWebView.resumeTimers()
     }
 
     override fun onPause() {
         super.onPause()
         actionModeDelegate.onPause()
-        if (!config.continueMedia && !isMeetPipCriteria() && browserState.isWebViewInitialized) ebWebView.pauseTimers()
+        if (!config.browser.continueMedia && !isMeetPipCriteria() && browserState.isWebViewInitialized) ebWebView.pauseTimers()
     }
 
     override fun onDestroy() {
@@ -847,7 +850,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (newConfig.orientation != orientation) {
             composeToolbarViewController.updateIcons()
             orientation = newConfig.orientation
-            if (config.fabPosition == FabPosition.Custom) fabImageViewController.updateImagePosition(orientation)
+            if (config.ui.fabPosition == FabPosition.Custom) fabImageViewController.updateImagePosition(orientation)
         }
     }
 
@@ -945,7 +948,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         composeToolbarViewController.updateRefresh(isRunning)
     }
 
-    private fun isMeetPipCriteria() = config.enableVideoPip && fullscreenDelegate.fullscreenHolder != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+    private fun isMeetPipCriteria() = config.browser.enableVideoPip && fullscreenDelegate.fullscreenHolder != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun enterPipMode() { enterPictureInPictureMode(PictureInPictureParams.Builder().build()) }
@@ -1002,7 +1005,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
                 ebWebView.updatePageInfo()
                 if (::twoPaneController.isInitialized) twoPaneController.scrollChange(scrollY - oldScrollY)
-                if (!config.shouldHideToolbar) return
+                if (!config.ui.shouldHideToolbar) return
                 val height = floor(ebWebView.contentHeight * ebWebView.resources.displayMetrics.density.toDouble()).toInt()
                 val webViewHeight = ebWebView.height
                 val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
@@ -1191,7 +1194,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             val insetsNavigationBar: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
             val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
             val params = view.layoutParams as FrameLayout.LayoutParams
-            if (config.hideStatusbar) {
+            if (config.ui.hideStatusbar) {
                 params.bottomMargin = when {
                     insetsKeyboard.bottom > 0 -> insetsKeyboard.bottom
                     insetsNavigationBar.bottom > 0 -> insetsNavigationBar.bottom
@@ -1227,9 +1230,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
-            ConfigManager.K_HIDE_STATUSBAR -> { if (config.hideStatusbar) fullscreenDelegate.hideStatusBar() else fullscreenDelegate.showStatusBar() }
-            ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE, ConfigManager.K_TOOLBAR_ICONS -> composeToolbarViewController.updateIcons()
-            ConfigManager.K_SHOW_TAB_BAR -> composeToolbarViewController.showTabbar(config.shouldShowTabBar)
+            UiConfig.K_HIDE_STATUSBAR -> { if (config.ui.hideStatusbar) fullscreenDelegate.hideStatusBar() else fullscreenDelegate.showStatusBar() }
+            UiConfig.K_TOOLBAR_ICONS_FOR_LARGE, UiConfig.K_TOOLBAR_ICONS -> composeToolbarViewController.updateIcons()
+            TabConfig.K_SHOW_TAB_BAR -> composeToolbarViewController.showTabbar(config.tab.shouldShowTabBar)
             DisplayConfig.K_FONT_TYPE -> { if (config.display.fontType == FontType.SYSTEM_DEFAULT) ebWebView.reload() else ebWebView.updateCssStyle() }
             DisplayConfig.K_READER_FONT_TYPE -> { if (config.display.readerFontType == FontType.SYSTEM_DEFAULT) ebWebView.reload() else ebWebView.updateCssStyle() }
             DisplayConfig.K_FONT_SIZE -> ebWebView.settings.textZoom = config.display.fontSize
@@ -1244,14 +1247,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 composeToolbarViewController.updateIcons()
                 EBToast.showShort(this, "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled.")
             }
-            ConfigManager.K_KEEP_AWAKE -> { if (config.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) else window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
-            ConfigManager.K_DESKTOP -> { ebWebView.updateUserAgentString(); ebWebView.reload(); composeToolbarViewController.updateIcons() }
+            UiConfig.K_KEEP_AWAKE -> { if (config.ui.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) else window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
+            BrowserConfig.K_DESKTOP -> { ebWebView.updateUserAgentString(); ebWebView.reload(); composeToolbarViewController.updateIcons() }
             DisplayConfig.K_DARK_MODE -> config.restartChanged = true
-            ConfigManager.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
-            ConfigManager.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
-            ConfigManager.K_NAV_POSITION -> config.restartChanged = true
+            UiConfig.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
+            UiConfig.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
+            UiConfig.K_NAV_POSITION -> config.restartChanged = true
             TtsConfig.K_TTS_SPEED_VALUE -> ttsViewModel.setSpeechRate(config.tts.ttsSpeedValue / 100f)
-            ConfigManager.K_CUSTOM_USER_AGENT, ConfigManager.K_ENABLE_CUSTOM_USER_AGENT -> { ebWebView.updateUserAgentString(); ebWebView.reload() }
+            BrowserConfig.K_CUSTOM_USER_AGENT, BrowserConfig.K_ENABLE_CUSTOM_USER_AGENT -> { ebWebView.updateUserAgentString(); ebWebView.reload() }
             TouchConfig.K_ENABLE_TOUCH -> { composeToolbarViewController.updateIcons(); touchController.toggleTouchPageTurn(config.touch.enableTouchTurn) }
             TouchConfig.K_TOUCH_AREA_ACTION_SWITCH -> composeToolbarViewController.updateIcons()
             AiConfig.K_GPT_ACTION_ITEMS -> actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)

@@ -50,7 +50,7 @@ class ToolbarActionHandler(
         ToolbarAction.Bookmark -> dispatch(BrowserAction.OpenBookmarkPage)
         ToolbarAction.CloseTab -> dispatch(BrowserAction.RemoveAlbum)
         ToolbarAction.DecreaseFont -> dispatch(BrowserAction.DecreaseFontSize)
-        ToolbarAction.Desktop -> config::desktop.toggle()
+        ToolbarAction.Desktop -> config.browser::desktop.toggle()
         ToolbarAction.DuplicateTab -> dispatch(BrowserAction.DuplicateTab)
         ToolbarAction.Font -> dispatch(BrowserAction.ShowFontSizeChangeDialog)
         ToolbarAction.Forward -> dispatch(BrowserAction.GoForward)

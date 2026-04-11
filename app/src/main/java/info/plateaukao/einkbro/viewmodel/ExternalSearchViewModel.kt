@@ -11,7 +11,7 @@ import java.net.URLEncoder
 class ExternalSearchViewModel(
     private val config: ConfigManager,
 ) : ViewModel() {
-    val searchActions = config.splitSearchItemInfoList + SplitSearchItemInfo("external", config.customProcessTextUrl, true)
+    val searchActions = config.splitSearchItemInfoList + SplitSearchItemInfo("external", config.browser.customProcessTextUrl, true)
     var currentSearchAction = searchActions.last()
     private var currentSearchText = ""
 

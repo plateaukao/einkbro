@@ -43,7 +43,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 class ToolbarConfigDialogFragment : ComposeDialogFragment() {
     override fun setupComposeView() {
         val actionInfoList = getCurrentActionList()
-        val isVerticalMode = config.isVerticalToolbar
+        val isVerticalMode = config.ui.isVerticalToolbar
         composeView.setContent {
             MyTheme {
                 val orientation = if (isVerticalMode) {
@@ -89,7 +89,7 @@ class ToolbarConfigDialogFragment : ComposeDialogFragment() {
                     DialogButtonBar(
                         dismissAction = { dialog?.dismiss() },
                         okAction = {
-                            config.toolbarActions =
+                            config.ui.toolbarActions =
                                 rememberList.filter { it.isOn }.map { it.toolbarAction }
                         }
                     )
@@ -99,11 +99,11 @@ class ToolbarConfigDialogFragment : ComposeDialogFragment() {
     }
 
     private fun getCurrentActionList(): List<ToolbarActionItemInfo> =
-        config.toolbarActions.map { ToolbarActionItemInfo(it, true) } +
+        config.ui.toolbarActions.map { ToolbarActionItemInfo(it, true) } +
                 ToolbarAction.entries
                     // need to filter only addable actions here
                     .filter { it.isAddable }
-                    .filterNot { config.toolbarActions.contains(it) }
+                    .filterNot { config.ui.toolbarActions.contains(it) }
                     // hide papago action if papago api key is not set
                     .map { ToolbarActionItemInfo(it, false) }
 }

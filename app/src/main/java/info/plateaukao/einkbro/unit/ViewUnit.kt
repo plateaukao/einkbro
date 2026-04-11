@@ -277,7 +277,7 @@ object ViewUnit: KoinComponent {
 
 
     fun updateAppbarPosition(binding: MainActivityLayout) {
-        when (config.toolbarPosition) {
+        when (config.ui.toolbarPosition) {
             info.plateaukao.einkbro.preference.ToolbarPosition.Top -> moveAppbarToTop(binding)
             info.plateaukao.einkbro.preference.ToolbarPosition.Left -> moveAppbarToLeft(binding)
             info.plateaukao.einkbro.preference.ToolbarPosition.Right -> moveAppbarToRight(binding)

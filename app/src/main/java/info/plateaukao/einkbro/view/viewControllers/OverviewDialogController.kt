@@ -102,7 +102,7 @@ class OverviewDialogController(
 
     private fun updateState(showHistory: Boolean = false) {
         isHistoryOpen = showHistory
-        shouldReverse = !config.isToolbarOnTop
+        shouldReverse = !config.ui.isToolbarOnTop
         shouldShowTwoColumns = isWideLayout()
         recordList = currentRecordList.toList()
     }
@@ -131,7 +131,7 @@ class OverviewDialogController(
 
     private fun refreshHistoryList(amount: Int = 0) {
         lifecycleScope.launch {
-            val shouldReverse = !config.isToolbarOnTop
+            val shouldReverse = !config.ui.isToolbarOnTop
             val finalList = getLatestRecords(amount, shouldReverse)
             currentRecordList.clear()
             currentRecordList.addAll(finalList)

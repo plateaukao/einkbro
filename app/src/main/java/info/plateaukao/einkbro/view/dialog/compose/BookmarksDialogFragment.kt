@@ -90,7 +90,7 @@ class BookmarksDialogFragment(
     }
 
     override fun setupComposeView() {
-        isGridView.value = config.isBookmarkGridView
+        isGridView.value = config.ui.isBookmarkGridView
         bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
         }
@@ -117,7 +117,7 @@ class BookmarksDialogFragment(
                     upParentAction = { bookmarkViewModel.outOfFolder() },
                     toggleGridViewAction = {
                         isGridView.value = !isGridView.value
-                        config.isBookmarkGridView = isGridView.value
+                        config.ui.isBookmarkGridView = isGridView.value
                     },
                     reorderBookmarkAction = {
                         if (shouldShowDragHandle.value) {
@@ -142,7 +142,7 @@ class BookmarksDialogFragment(
                             bookmarkViewModel = bookmarkViewModel,
                             showTwoColumn = showTwoColumn,
                             isGridView = isGridView.value,
-                            shouldReverse = !config.isToolbarOnTop,
+                            shouldReverse = !config.ui.isToolbarOnTop,
                             shouldShowDragHandle = shouldShowDragHandle.value,
                             onItemMoved = { from, to ->
                                 bookmarks.value =

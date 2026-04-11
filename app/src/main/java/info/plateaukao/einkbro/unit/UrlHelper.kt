@@ -89,7 +89,7 @@ object UrlHelper : KoinComponent {
         }
 
         // remove prefix non-url part
-        if (config.shouldTrimInputUrl) {
+        if (config.browser.shouldTrimInputUrl) {
             var foundIndex = query.indexOf(URL_SCHEME_HTTPS)
             if (foundIndex > 0) {
                 query = query.substring(foundIndex)
@@ -115,7 +115,7 @@ object UrlHelper : KoinComponent {
         } catch (u: UnsupportedEncodingException) {
             Log.w("browser", "Unsupported Encoding Exception")
         }
-        return when (config.searchEngine.toInt()) {
+        return when (config.browser.searchEngine.toInt()) {
             0 -> SEARCH_ENGINE_STARTPAGE + query
             1 -> SEARCH_ENGINE_STARTPAGE_DE + query
             2 -> SEARCH_ENGINE_BAIDU + query
@@ -123,7 +123,7 @@ object UrlHelper : KoinComponent {
             6 -> SEARCH_ENGINE_SEARX + query
             7 -> SEARCH_ENGINE_QWANT + query
             8 -> SEARCH_ENGINE_ECOSIA + query
-            9 -> config.searchEngineUrl + query
+            9 -> config.browser.searchEngineUrl + query
             10 -> SEARCH_ENGINE_YANDEX + query
             5 -> SEARCH_ENGINE_GOOGLE + query
             4 -> SEARCH_ENGINE_DUCKDUCKGO + query
@@ -132,7 +132,7 @@ object UrlHelper : KoinComponent {
     }
 
     fun stripUrlQuery(url: String): String {
-        if (!config.shouldPruneQueryParameters) return url
+        if (!config.browser.shouldPruneQueryParameters) return url
 
         try {
             var strippedCount = 0

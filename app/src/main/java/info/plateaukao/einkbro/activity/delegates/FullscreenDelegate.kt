@@ -78,7 +78,7 @@ class FullscreenDelegate(
         ViewUnit.setCustomFullscreen(
             activity.window,
             true,
-            config.hideStatusbar,
+            config.ui.hideStatusbar,
             ViewUnit.isEdgeToEdgeEnabled(activity.resources)
         )
         if (view is FrameLayout) {
@@ -108,7 +108,7 @@ class FullscreenDelegate(
         ViewUnit.setCustomFullscreen(
             activity.window,
             false,
-            config.hideStatusbar,
+            config.ui.hideStatusbar,
             ViewUnit.isEdgeToEdgeEnabled(activity.resources)
         )
         fullscreenHolder = null
@@ -129,7 +129,7 @@ class FullscreenDelegate(
 
         val binding = state.binding
         if (binding.appBar.visibility == VISIBLE) {
-            if (config.fabPosition != FabPosition.NotShow) {
+            if (config.ui.fabPosition != FabPosition.NotShow) {
                 state.fabImageViewController.show()
             }
             binding.mainSearchPanel.visibility = View.INVISIBLE
@@ -154,7 +154,7 @@ class FullscreenDelegate(
         state.composeToolbarViewController.show()
         ViewUnit.hideKeyboard(activity)
 
-        if (config.isVerticalToolbar) {
+        if (config.ui.isVerticalToolbar) {
             resetInputUrlConstraints()
         }
     }
@@ -174,7 +174,7 @@ class FullscreenDelegate(
 
     @Suppress("DEPRECATION")
     fun showStatusBar() {
-        if (config.hideStatusbar) return
+        if (config.ui.hideStatusbar) return
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             activity.window.setDecorFitsSystemWindows(true)

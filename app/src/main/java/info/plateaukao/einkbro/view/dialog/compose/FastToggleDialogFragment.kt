@@ -72,7 +72,7 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             onClicked(true)
         }
         ToggleItem(
-            state = config.adBlock,
+            state = config.browser.adBlock,
             titleResId = R.string.setting_title_adblock, imageVector = Icons.Outlined.Block,
             onEditAction = {
                 context.startActivity(
@@ -83,11 +83,11 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
                 )
             }
         ) {
-            config::adBlock.toggle()
+            config.browser::adBlock.toggle()
             onClicked(true)
         }
         ToggleItem(
-            state = config.enableJavascript,
+            state = config.browser.enableJavascript,
             titleResId = R.string.setting_title_javascript, imageVector = Icons.Outlined.Terminal,
             onEditAction = {
                 context.startActivity(
@@ -98,28 +98,28 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
                 )
             }
         ) {
-            config::enableJavascript.toggle()
+            config.browser::enableJavascript.toggle()
             onClicked(true)
         }
         ToggleItem(
-            state = config.cookies,
+            state = config.browser.cookies,
             titleResId = R.string.setting_title_cookie, imageVector = Icons.Outlined.Cookie,
             onEditAction = {
                 context.startActivity(DataListActivity.createIntent(context, WhiteListType.Cookie))
             }
         ) {
-            config::cookies.toggle()
+            config.browser::cookies.toggle()
             onClicked(true)
         }
         ToggleItem(
-            state = config.isSaveHistoryOn(),
+            state = config.tab.isSaveHistoryOn(),
             titleResId = R.string.history, imageVector = Icons.Outlined.AccessTime
         ) { on ->
             if (on) {
-                config.saveHistoryMode = config.toggledSaveHistoryMode
+                config.tab.saveHistoryMode = config.tab.toggledSaveHistoryMode
             } else {
-                config.toggledSaveHistoryMode = config.saveHistoryMode
-                config.saveHistoryMode = SaveHistoryMode.DISABLED
+                config.tab.toggledSaveHistoryMode = config.tab.saveHistoryMode
+                config.tab.saveHistoryMode = SaveHistoryMode.DISABLED
             }
             onClicked(false)
         }
@@ -127,10 +127,10 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
         Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
 
         ToggleItem(
-            state = config.shareLocation,
+            state = config.browser.shareLocation,
             titleResId = R.string.location, imageVector = Icons.Outlined.LocationOn
         ) {
-            config::shareLocation.toggle()
+            config.browser::shareLocation.toggle()
             onClicked(false)
         }
         ToggleItem(
@@ -141,17 +141,17 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             onClicked(false)
         }
         ToggleItem(
-            state = config.continueMedia,
+            state = config.browser.continueMedia,
             titleResId = R.string.media_continue, imageVector = Icons.Outlined.MusicNote
         ) {
-            config::continueMedia.toggle()
+            config.browser::continueMedia.toggle()
             onClicked(false)
         }
         ToggleItem(
-            state = config.desktop,
+            state = config.browser.desktop,
             titleResId = R.string.desktop_mode, imageVector = Icons.Outlined.DesktopWindows
         ) {
-            config::desktop.toggle()
+            config.browser::desktop.toggle()
             onClicked(false)
         }
     }

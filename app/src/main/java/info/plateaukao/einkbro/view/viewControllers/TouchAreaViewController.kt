@@ -81,7 +81,7 @@ class TouchAreaViewController(
             MotionEvent.ACTION_MOVE -> {
                 // need to consider whether top part height is occupied by toolbar
                 val currentViewY =
-                    event.rawY - dY - view.height - (if (config.isToolbarOnTop) ViewUnit.dpToPixel(
+                    event.rawY - dY - view.height - (if (config.ui.isToolbarOnTop) ViewUnit.dpToPixel(
                         50
                     ) else 0).toInt()
                 val customizeY = currentViewY + view.height / 2

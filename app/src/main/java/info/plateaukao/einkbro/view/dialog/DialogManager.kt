@@ -276,7 +276,7 @@ class DialogManager(
                 }
             }
             .create().apply {
-                window?.setGravity(if (config.isToolbarOnTop || showInCenter) Gravity.CENTER else Gravity.BOTTOM)
+                window?.setGravity(if (config.ui.isToolbarOnTop || showInCenter) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
                 window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
                 window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
@@ -291,7 +291,7 @@ class DialogManager(
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .setView(view)
             .create().apply {
-                window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
+                window?.setGravity(if (config.ui.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
                 window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
                 window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
@@ -432,7 +432,7 @@ class DialogManager(
             }
             .setNegativeButton(android.R.string.cancel, null)
             .create().apply {
-                window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
+                window?.setGravity(if (config.ui.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             }
 

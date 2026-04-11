@@ -128,12 +128,12 @@ class MenuDialogFragment(
                 isSpeaking,
                 isAudioOnly,
                 hasVideo,
-                config.showShareSaveMenu,
-                config.showContentMenu,
+                config.ui.showShareSaveMenu,
+                config.ui.showContentMenu,
                 config.hasInvertedColor(url),
                 isTouchPaginationEnabled,
-                { config::showShareSaveMenu.toggle() },
-                { config::showContentMenu.toggle() },
+                { config.ui::showShareSaveMenu.toggle() },
+                { config.ui::showContentMenu.toggle() },
                 { dialog?.dismiss(); itemClicked(it) },
                 this::runItemLongClickAndDismiss
             )

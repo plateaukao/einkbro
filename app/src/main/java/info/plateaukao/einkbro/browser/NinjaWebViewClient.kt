@@ -90,11 +90,11 @@ class EBWebViewClient(
         ebWebView.innerScrollHeight = 0
         ebWebView.innerClientHeight = 0
 
-        if (config.adBlock) {
+        if (config.browser.adBlock) {
             adFilter.performScript(view, url)
         }
 
-        if (!config.enableVideoAutoplay) {
+        if (!config.browser.enableVideoAutoplay) {
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
         }
     }
@@ -104,7 +104,7 @@ class EBWebViewClient(
 
         // Re-inject autoplay blocker in onPageFinished to ensure it's in the correct page context
         // (onPageStarted injection may race with the page's own scripts)
-        if (!config.enableVideoAutoplay) {
+        if (!config.browser.enableVideoAutoplay) {
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
         }
 
@@ -122,7 +122,7 @@ class EBWebViewClient(
         }, 1000)
 
         // skip translation pages
-        if (config.isSaveHistoryWhenLoad() &&
+        if (config.tab.isSaveHistoryWhenLoad() &&
             !ebWebView.incognito &&
             !isTranslationDomain(url) &&
             url != BrowserUnit.URL_ABOUT_BLANK
@@ -281,11 +281,11 @@ class EBWebViewClient(
         request: WebResourceRequest,
     ): WebResourceResponse? {
         // Fast analytics/tracker blocking (lightweight check before expensive ad-filter)
-        if (config.blockAnalytics && isAnalyticsUrl(request.url.toString())) {
+        if (config.browser.blockAnalytics && isAnalyticsUrl(request.url.toString())) {
             return WebResourceResponse("text/plain", "UTF-8", ByteArrayInputStream(ByteArray(0)))
         }
 
-        if (config.adBlock) {
+        if (config.browser.adBlock) {
             val result = adFilter.shouldIntercept(view, request)
             if (result.shouldBlock) {
                 //Log.d("EBWebViewClient", "blocked\n rule: ${result.rule}\n url:${result.resourceUrl}")
@@ -412,7 +412,7 @@ class EBWebViewClient(
     private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
         val url = uri.toString()
 
-        if (!config.cookies) {
+        if (!config.browser.cookies) {
             if (cookie.isWhite(url)) {
                 val manager = CookieManager.getInstance()
                 manager.getCookie(url)
@@ -557,7 +557,7 @@ class EBWebViewClient(
         }
 
         Log.e(TAG, "onReceivedSslError: $message")
-        if (config.enableCertificateErrorDialog) {
+        if (config.browser.enableCertificateErrorDialog) {
             dialogManager.showOkCancelDialog(
                 title = title,
                 message = message,

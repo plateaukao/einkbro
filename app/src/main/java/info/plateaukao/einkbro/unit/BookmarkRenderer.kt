@@ -33,7 +33,7 @@ object BookmarkRenderer : KoinComponent {
 
     fun getRecentBookmarksContent(context: Context): String {
         if (config.recentBookmarks.isEmpty()) return ""
-        val alignBottom = !config.isToolbarOnTop
+        val alignBottom = !config.ui.isToolbarOnTop
         val bookmarks = if (alignBottom) config.recentBookmarks.reversed() else config.recentBookmarks
         val content = bookmarks.joinToString(separator = "\n") {
             val initial = it.name.firstOrNull()?.uppercase() ?: "#"

@@ -35,9 +35,9 @@ class RecordRepository : KoinComponent {
 
     private suspend fun purgeOldHistoryItem(days: Int) {
         val currentTimestamp = System.currentTimeMillis()
-        if (currentTimestamp - config.purgeHistoryTimestamp < (1000L * 60 * 60 * 24 * 2)) return
+        if (currentTimestamp - config.tab.purgeHistoryTimestamp < (1000L * 60 * 60 * 24 * 2)) return
 
-        config.purgeHistoryTimestamp = currentTimestamp
+        config.tab.purgeHistoryTimestamp = currentTimestamp
         val tsBefore = currentTimestamp - (1000L * 60 * 60 * 24) * days
         historyDao.deleteOlderThan(tsBefore)
     }

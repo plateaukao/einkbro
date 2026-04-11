@@ -214,7 +214,7 @@ class ActionModeDelegate(
             return
         }
 
-        if (!config.showDefaultActionMenu && !isTextEditMode && isInSplitSearchMode()) {
+        if (!config.ui.showDefaultActionMenu && !isTextEditMode && isInSplitSearchMode()) {
             mode.hide(1000000)
             mode.menu.clear()
 
@@ -229,7 +229,7 @@ class ActionModeDelegate(
         if (!actionModeMenuViewModel.isInActionMode()) {
             actionModeMenuViewModel.updateActionMode(mode)
 
-            if (!config.showDefaultActionMenu && !isTextEditMode) {
+            if (!config.ui.showDefaultActionMenu && !isTextEditMode) {
                 mode.hide(1000000)
                 mode.menu.clear()
                 mode.finish()
@@ -243,7 +243,7 @@ class ActionModeDelegate(
             }
         }
 
-        if (!config.showDefaultActionMenu && !isTextEditMode) {
+        if (!config.ui.showDefaultActionMenu && !isTextEditMode) {
             mode.menu.clear()
         }
     }
