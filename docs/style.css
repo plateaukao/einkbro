@@ -58,7 +58,7 @@ pre {
   background: var(--ink);
   color: var(--paper);
   padding: 1.2rem 1.4rem;
-  border-radius: 4px;
+  border-radius: 7px;
   overflow-x: auto;
   margin-bottom: 1.5rem;
   line-height: 1.6;
@@ -142,6 +142,7 @@ img { max-width: 100%; height: auto; }
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border: 2px solid var(--ink);
+  border-radius: 7px;
   transition: background 0.15s, color 0.15s;
 }
 .hero__cta:hover { background: var(--paper); color: var(--ink); }
@@ -155,14 +156,15 @@ img { max-width: 100%; height: auto; }
   gap: 1.5rem;
 }
 .feature-card {
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 7px;
   padding: 1.6rem;
   text-decoration: none;
   color: inherit;
   display: block;
-  transition: background 0.15s;
+  transition: background 0.15s, border-width 0.1s;
 }
-.feature-card:hover { background: var(--wash); }
+.feature-card:hover { background: var(--wash); border-width: 2px; }
 .feature-card__icon {
   font-size: 1.8rem;
   margin-bottom: 0.6rem;
@@ -187,6 +189,7 @@ img { max-width: 100%; height: auto; }
 }
 .gallery__item {
   border: 1px solid var(--hairline);
+  border-radius: 7px;
   overflow: hidden;
   text-align: center;
 }
@@ -202,11 +205,12 @@ img { max-width: 100%; height: auto; }
 .device-img {
   display: block;
   width: 300px;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 7px;
   margin: 1.5rem 0;
   cursor: pointer;
 }
-.device-img:hover { opacity: 0.85; }
+.device-img:hover { opacity: 0.85; border-width: 2px; }
 
 /* --- Page Content --- */
 .page-content { padding: 3rem 0 4rem; }
@@ -253,7 +257,11 @@ img { max-width: 100%; height: auto; }
 /* --- Tables --- */
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--faint);
+  border-radius: 7px;
+  overflow: hidden;
   margin-bottom: 1.5rem;
   font-size: 0.88rem;
 }
@@ -304,6 +312,7 @@ tr:hover { background: var(--wash); }
 .action-item {
   background: var(--wash);
   border: 1px solid var(--hairline);
+  border-radius: 7px;
   padding: 0.35rem 0.7rem;
   font-size: 0.82rem;
   white-space: nowrap;
@@ -317,8 +326,10 @@ tr:hover { background: var(--wash); }
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 0.5rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--faint);
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--faint);
+  border-radius: 7px;
+  margin-bottom: 0.5rem;
   font-size: 0.9rem;
 }
 .setting-item__name { font-weight: 700; }
@@ -336,8 +347,13 @@ tr:hover { background: var(--wash); }
 }
 
 /* --- Changelog --- */
-.changelog-version { margin-bottom: 2.5rem; }
-.changelog-version h3 { font-size: 1.3rem; }
+.changelog-version {
+  margin-bottom: 2rem;
+  border: 1px solid var(--hairline);
+  border-radius: 7px;
+  padding: 1.4rem 1.6rem;
+}
+.changelog-version h3 { font-size: 1.3rem; margin-top: 0; border-bottom: none; padding-bottom: 0; }
 .changelog-version h4 { font-size: 0.95rem; color: var(--mid); margin-top: 1rem; }
 
 /* --- Cards (download, bugs) --- */
@@ -348,21 +364,23 @@ tr:hover { background: var(--wash); }
   margin-bottom: 2rem;
 }
 .card {
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 7px;
   padding: 1.8rem;
   text-decoration: none;
   color: inherit;
   display: block;
-  transition: background 0.15s;
+  transition: background 0.15s, border-width 0.1s;
 }
-.card:hover { background: var(--wash); }
+.card:hover { background: var(--wash); border-width: 2px; }
 .card h3 { margin-top: 0; font-size: 1.1rem; }
 .card p { font-size: 0.9rem; margin-bottom: 0; }
 
 /* --- Architecture diagram (text) --- */
 .arch-diagram {
   background: var(--wash);
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 7px;
   padding: 1.5rem 2rem;
   font-family: var(--font-mono);
   font-size: 0.82rem;
@@ -376,6 +394,7 @@ tr:hover { background: var(--wash); }
 .report-template {
   background: var(--wash);
   border: 1px solid var(--hairline);
+  border-radius: 7px;
   padding: 1.5rem;
   margin: 1rem 0 1.5rem;
   font-size: 0.9rem;

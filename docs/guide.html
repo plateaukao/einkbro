@@ -539,8 +539,8 @@
 <h2>Settings: Backup</h2>
 <a href="images/settings_backup.png" target="_blank"><img src="images/settings_backup.png" alt="Backup Settings" class="device-img"></a>
 
-<div class="setting-item"><div class="setting-item__name">Export App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Export history, bookmarks, and settings as a zip file.</div></div>
-<div class="setting-item"><div class="setting-item__name">Import App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Import from a previously exported zip file.</div></div>
+<div class="setting-item"><div class="setting-item__name">Export App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Export history, bookmarks, settings, and WebView login data (cookies &amp; storage) as a zip file.</div></div>
+<div class="setting-item"><div class="setting-item__name">Import App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Import from a previously exported zip file, including WebView login data.</div></div>
 <div class="setting-item"><div class="setting-item__name">Share App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Share app data to another device over local network.</div></div>
 <div class="setting-item"><div class="setting-item__name">Receive App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Receive app data from another device over local network.</div></div>
 <div class="setting-item"><div class="setting-item__name">Export Bookmarks</div><div class="setting-item__desc"><span class="tag">Action</span> Export bookmarks to a file.</div></div>
@@ -685,6 +685,9 @@
 <h4>Paragraph-by-Paragraph Translation</h4>
 <p>Translates each paragraph inline, showing the translation alongside the original text. Activate via the <strong>Translate by Paragraph</strong> toolbar action or long-press the Translate button for mode selection. Providers: Google Translate, DeepL, OpenAI, Gemini.</p>
 
+<h4>In-Place Translation</h4>
+<p>Translates content inline using OpenAI or Google Gemini, replacing the original text in place. Activate via long-press on the Translate button and selecting in-place mode.</p>
+
 <h4>Full Page Translation</h4>
 <p>Translates the entire page via Google Translate. Activate via <strong>Action Menu &rarr; Translate</strong> or the <strong>Translation</strong> toolbar button.</p>
 
@@ -714,6 +717,7 @@
 <p>EinkBro's signature feature for E-Ink devices. Tap the left or right (or top/bottom) edges of the screen to page up/down, just like turning pages in an e-book.</p>
 <ul>
   <li>Enable via the <strong>Touch Turn Page</strong> toolbar button</li>
+  <li><strong>Ebook touch mode</strong> &mdash; tap to turn pages directly in WebView with native touch interception (no JS injection)</li>
   <li>Configure touch areas and actions in <a href="#settings-gestures">Settings &rarr; Gestures</a></li>
   <li>Choose between left/right or up/down touch area layout</li>
   <li>Long-press volume key temporarily disables page turning for 5 seconds</li>
