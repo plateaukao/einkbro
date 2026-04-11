@@ -62,6 +62,7 @@ import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.Headset
 import androidx.compose.material.icons.outlined.HeadsetOff
 import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.ViewColumn
 import androidx.compose.material.icons.outlined.ViewStream
 import androidx.compose.material.icons.twotone.Copyright
@@ -156,7 +157,8 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, Epub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, SaveMht, Highlights, InvertColor, ChatWithWeb, Instapaper, AudioOnly
+    SaveArchive, SaveMht, Highlights, InvertColor, ChatWithWeb, Instapaper, AudioOnly,
+    SiteSettings
 }
 
 @Composable
@@ -429,6 +431,10 @@ private fun MenuItems(
                 R.string.menu_quickToggle,
                 Icons.Outlined.SettingsSuggest,
             ) { onClicked(MenuItemType.QuickToggle) }
+            MenuItem(
+                R.string.site_settings,
+                Icons.Outlined.Tune,
+            ) { onClicked(MenuItemType.SiteSettings) }
             MenuItem(
                 R.string.settings,
                 Icons.Outlined.Settings,

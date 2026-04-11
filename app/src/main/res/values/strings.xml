@@ -258,6 +258,7 @@
     <string name="touch_left_side">Left</string>
     <string name="touch_right_side">Right</string>
     <string name="bold_font">Bold font</string>
+    <string name="font_boldness">Font boldness</string>
     <string name="white_background">White background</string>
     <string name="setting_summary_bold_font">Apply bold font style (need to reload current page)</string>
     <string name="desktop_mode">Desktop mode</string>
@@ -327,6 +328,10 @@
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
     <string name="menu_quickToggle">Quick toggle</string>
+    <string name="site_settings">Site Settings</string>
+    <string name="reset_to_global">Reset All to Global</string>
+    <string name="per_site">Per-site</string>
+    <string name="use_global">Using global</string>
     <string name="setting_title_toolbar_top">Toolbar on top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen</string>
     <string name="setting_title_toolbar_position">Toolbar position</string>

@@ -59,7 +59,7 @@ class WebContentPostProcessor : KoinComponent {
         if (ebWebView.shouldUseReaderFont()) {
             ebWebView.settings.textZoom = configManager.display.readerFontSize
         } else {
-            ebWebView.settings.textZoom = configManager.display.fontSize
+            ebWebView.settings.textZoom = configManager.getFontSize(url)
         }
 
         // inject page scroll helper for JS-based pagination (works with inner scroll containers)

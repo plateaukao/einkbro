@@ -118,6 +118,7 @@ class MenuActionHandler(
             MenuItemType.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb())
             MenuItemType.Instapaper -> dispatch(BrowserAction.AddToInstapaper)
             MenuItemType.AudioOnly -> ebWebView.toggleAudioOnlyMode()
+            MenuItemType.SiteSettings -> dispatch(BrowserAction.ShowSiteSettingsDialog)
         }
     }
 
