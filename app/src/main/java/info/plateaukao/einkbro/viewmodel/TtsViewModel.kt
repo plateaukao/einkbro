@@ -46,17 +46,17 @@ class TtsViewModel(
     private val _readingState = MutableStateFlow(TtsReadingState.IDLE)
     val readingState: StateFlow<TtsReadingState> get() = _readingState
 
-    private val _showCurrentText = MutableStateFlow(config.ttsShowCurrentText)
+    private val _showCurrentText = MutableStateFlow(config.tts.ttsShowCurrentText)
     val showCurrentText: StateFlow<Boolean> get() = _showCurrentText
 
     private val openaiRepository: OpenAiRepository by lazy { OpenAiRepository() }
 
     private val translateRepository: TranslateRepository by lazy { TranslateRepository() }
 
-    private fun useOpenAiTts(): Boolean = config.useOpenAiTts && config.gptApiKey.isNotBlank()
+    private fun useOpenAiTts(): Boolean = config.tts.useOpenAiTts && config.ai.gptApiKey.isNotBlank()
 
     private val type: TtsType
-        get() = if (useOpenAiTts()) TtsType.GPT else config.ttsType
+        get() = if (useOpenAiTts()) TtsType.GPT else config.tts.ttsType
 
     private val articlesToBeRead: MutableList<String> = mutableListOf()
 
@@ -147,9 +147,9 @@ class TtsViewModel(
 
     private val translationSeparator = "\n---\n"
     private fun maybeInsertTranslationText(text: String) {
-        if (config.ttsShowTextTranslation) {
+        if (config.tts.ttsShowTextTranslation) {
             viewModelScope.launch {
-                val translatedText = translateRepository.gTranslateWithApi(text, config.translationLanguage.value)
+                val translatedText = translateRepository.gTranslateWithApi(text, config.translation.translationLanguage.value)
                 _currentReadingContent.value = "$text$translationSeparator$translatedText"
             }
         } else {
@@ -174,7 +174,7 @@ class TtsViewModel(
                 fetchSemaphore.withPermit {
                     Log.d("TtsViewModel", "tts sentence fetch: $chunk")
                     val byteArray = if (ttsType == TtsType.ETTS) {
-                        eTts.tts(config.ettsVoice, config.ttsSpeedValue, chunk)
+                        eTts.tts(config.tts.ettsVoice, config.tts.ttsSpeedValue, chunk)
                     } else {
                         openaiRepository.tts(chunk)
                     }
@@ -281,12 +281,12 @@ class TtsViewModel(
     }
 
     fun toggleShowCurrentText() {
-        config::ttsShowCurrentText.toggle()
-        _showCurrentText.value = config.ttsShowCurrentText
+        config.tts::ttsShowCurrentText.toggle()
+        _showCurrentText.value = config.tts.ttsShowCurrentText
     }
 
     fun toggleShowTranslation() {
-        config::ttsShowTextTranslation.toggle()
+        config.tts::ttsShowTextTranslation.toggle()
 
         maybeInsertTranslationText(_currentReadingContent.value)
     }

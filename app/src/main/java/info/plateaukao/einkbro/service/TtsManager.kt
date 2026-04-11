@@ -53,8 +53,8 @@ class TtsManager(
         isPreparing = true
         isStopped = false
 
-        tts.language = config.ttsLocale
-        tts.setSpeechRate(config.ttsSpeedValue / 100f)
+        tts.language = config.tts.ttsLocale
+        tts.setSpeechRate(config.tts.ttsSpeedValue / 100f)
 
         val chunks = processedTextToChunks(text)
 

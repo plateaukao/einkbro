@@ -77,10 +77,10 @@ class GptActionsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val actionIndex = intent?.getIntExtra("actionIndex", -1) ?: -1
-        val defaultActionType = config.getDefaultActionType()
+        val defaultActionType = config.ai.getDefaultActionType()
 
         setContent {
-            val actionList = remember { mutableStateOf(config.gptActionList) }
+            val actionList = remember { mutableStateOf(config.ai.gptActionList) }
             var showDialog by remember { mutableStateOf(false) }
             var editActionIndex by remember { mutableIntStateOf(actionIndex) }
 
@@ -106,7 +106,7 @@ class GptActionsActivity : ComponentActivity() {
                             actions = {
                                 IconButton(onClick = {
                                     actionList.value = emptyList()
-                                    config.deleteAllGptActions()
+                                    config.ai.deleteAllGptActions()
                                 }) {
                                     Icon(
                                         tint = MaterialTheme.colors.onPrimary,
@@ -138,14 +138,14 @@ class GptActionsActivity : ComponentActivity() {
                         },
                         deleteAction = { action ->
                             actionList.value = actionList.value.toMutableList().apply { remove(action) }
-                            config.deleteGptAction(action)
+                            config.ai.deleteGptAction(action)
                         },
                         reorderAction = { from, to ->
                             val newList = actionList.value.toMutableList().apply {
                                 add(to, removeAt(from))
                             }
                             actionList.value = newList
-                            config.gptActionList = newList
+                            config.ai.gptActionList = newList
                         }
                     )
                 }
@@ -156,13 +156,13 @@ class GptActionsActivity : ComponentActivity() {
                     if (editActionIndex >= 0)
                         actionList.value[editActionIndex] else createDefaultGptAction(),
 
-                    config.getGptTypeModelMap(),
+                    config.ai.getGptTypeModelMap(),
                     okAction = { modifiedAction ->
                         actionList.value = actionList.value.toMutableList().apply {
                             if (editActionIndex >= 0) set(editActionIndex, modifiedAction)
                             else add(modifiedAction)
                         }
-                        config.gptActionList = actionList.value
+                        config.ai.gptActionList = actionList.value
                         showDialog = false
                     },
                     dismissAction = { showDialog = false }
@@ -178,7 +178,7 @@ class GptActionsActivity : ComponentActivity() {
             "",
             "",
             GptActionType.Default,
-            config.getDefaultActionModel()
+            config.ai.getDefaultActionModel()
         )
     }
 

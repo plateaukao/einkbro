@@ -282,7 +282,7 @@ class SettingActivity : FragmentActivity() {
                 val categories = pendingBackupCategories
                 pendingBackupCategories = emptySet()
                 if (categories.isNotEmpty()) {
-                    backupUnit.backupData(this, uri, categories)
+                    lifecycleScope.launch { backupUnit.backupData(this@SettingActivity, uri, categories) }
                 }
             }
 
@@ -295,8 +295,10 @@ class SettingActivity : FragmentActivity() {
                     }
                 } else {
                     dialogManager.showRestoreCategoryDialog(available) { selected ->
-                        if (backupUnit.restoreBackupData(this, uri, selected)) {
-                            dialogManager.showRestartConfirmDialog()
+                        lifecycleScope.launch {
+                            if (backupUnit.restoreBackupData(this@SettingActivity, uri, selected)) {
+                                dialogManager.showRestartConfirmDialog()
+                            }
                         }
                     }
                 }
@@ -343,10 +345,12 @@ class SettingActivity : FragmentActivity() {
             val available = backupUnit.getAvailableCategories(file)
             if (available != null) {
                 dialogManager.showRestoreCategoryDialog(available) { selected ->
-                    if (backupUnit.restoreBackupData(file, selected)) {
-                        dialogManager.showRestartConfirmDialog()
+                    lifecycleScope.launch {
+                        if (backupUnit.restoreBackupData(file, selected)) {
+                            dialogManager.showRestartConfirmDialog()
+                        }
+                        file.delete()
                     }
-                    file.delete()
                 }
             } else {
                 file.delete()
@@ -450,7 +454,7 @@ class SettingActivity : FragmentActivity() {
             R.string.always_enable_zoom,
             0,
             R.string.setting_summary_enable_zoom,
-            config::enableZoom,
+            config.display::enableZoom,
         ),
         BooleanSettingItem(
             R.string.show_default_text_menu,
@@ -469,19 +473,19 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_page_left_value,
             0,
             R.string.setting_summary_page_left_value,
-            config::pageReservedOffsetInString
+            config.touch::pageReservedOffsetInString
         ),
         ValueSettingItem(
             R.string.setting_title_reader_mode_padding,
             0,
             R.string.setting_summary_reader_mode_padding,
-            config::paddingForReaderMode
+            config.display::paddingForReaderMode
         ),
         ListSettingWithEnumItem(
             R.string.dark_mode,
             0,
             R.string.setting_summary_dark_mode,
-            config::darkMode,
+            config.display::darkMode,
             listOf(
                 R.string.dark_mode_follow_system,
                 R.string.dark_mode_force_on,
@@ -492,7 +496,7 @@ class SettingActivity : FragmentActivity() {
             R.string.eink_image_adjustment,
             0,
             R.string.eink_image_adjustment_summary,
-            config::einkImageAdjustment,
+            config.display::einkImageAdjustment,
             listOf(
                 R.string.eink_image_off,
                 R.string.eink_image_10,
@@ -585,7 +589,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_enable_url_drag_to_action,
             0,
             R.string.setting_summary_enable_url_drag_to_action,
-            config::enableDragUrlToAction,
+            config.touch::enableDragUrlToAction,
         ),
         BooleanSettingItem(
             R.string.setting_title_show_bookmarks_input_bar,
@@ -625,13 +629,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_disable_long_press_toucharea,
             0,
             R.string.setting_summary_disable_long_press_toucharea,
-            config::disableLongPressTouchArea,
+            config.touch::disableLongPressTouchArea,
         ),
         BooleanSettingItem(
             R.string.setting_title_useUpDown,
             0,
             R.string.setting_summary_useUpDownKey,
-            config::useUpDownPageTurn,
+            config.touch::useUpDownPageTurn,
         ),
         DividerSettingItem(),
         // Display & rendering
@@ -645,13 +649,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_text_wrap_reflow,
             0,
             R.string.setting_summary_text_wrap_reflow,
-            config::enableZoomTextWrapReflow,
+            config.display::enableZoomTextWrapReflow,
         ),
         BooleanSettingItem(
             R.string.setting_title_zoom_in_custom_view,
             0,
             R.string.setting_summary_zoom_in_custom_view,
-            config::zoomInCustomView,
+            config.display::zoomInCustomView,
         ),
         DividerSettingItem(),
         // Security & network
@@ -716,25 +720,25 @@ class SettingActivity : FragmentActivity() {
         ListSettingWithEnumItem(
             R.string.setting_touch_up_click,
             0,
-            config = config::upClickGesture,
+            config = config.touch::upClickGesture,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_touch_up_long_click,
             0,
-            config = config::upLongClickGesture,
+            config = config.touch::upLongClickGesture,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_touch_down_click,
             0,
-            config = config::downClickGesture,
+            config = config.touch::downClickGesture,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_touch_down_long_click,
             0,
-            config = config::downLongClickGesture,
+            config = config.touch::downLongClickGesture,
             options = GestureType.entries.map { it.resId },
         ),
         DividerSettingItem(R.string.setting_multitouch_use_title),
@@ -742,31 +746,31 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_multitouch_use_title,
             0,
             R.string.setting_multitouch_use_summary,
-            config::isMultitouchEnabled,
+            config.touch::isMultitouchEnabled,
             span = 2,
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_up,
             0,
-            config = config::multitouchUp,
+            config = config.touch::multitouchUp,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_down,
             0,
-            config = config::multitouchDown,
+            config = config.touch::multitouchDown,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_left,
             0,
-            config = config::multitouchLeft,
+            config = config.touch::multitouchLeft,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_right,
             0,
-            config = config::multitouchRight,
+            config = config.touch::multitouchRight,
             options = GestureType.entries.map { it.resId },
         ),
         DividerSettingItem(R.string.gesture_on_floating_button),
@@ -774,37 +778,37 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_gestures_use_title,
             0,
             R.string.setting_gestures_use_summary,
-            config::enableNavButtonGesture,
+            config.touch::enableNavButtonGesture,
             span = 2,
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_up,
             0,
-            config = config::navGestureUp,
+            config = config.touch::navGestureUp,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_down,
             0,
-            config = config::navGestureDown,
+            config = config.touch::navGestureDown,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_left,
             0,
-            config = config::navGestureLeft,
+            config = config.touch::navGestureLeft,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_gesture_right,
             0,
-            config = config::navGestureRight,
+            config = config.touch::navGestureRight,
             options = GestureType.entries.map { it.resId },
         ),
         ListSettingWithEnumItem(
             R.string.setting_floating_button_long_click,
             0,
-            config = config::navButtonLongClickGesture,
+            config = config.touch::navButtonLongClickGesture,
             options = GestureType.entries.map { it.resId },
         ),
     )
@@ -851,7 +855,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_external_search_pop,
             0,
             R.string.setting_summary_external_search_pop,
-            config::externalSearchWithPopUp,
+            config.ai::externalSearchWithPopUp,
         ),
         DividerSettingItem(),
         ActionSettingItem(
@@ -865,14 +869,14 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_search_in_same_tab,
             0,
             R.string.setting_summary_search_in_same_tab,
-            config::isExternalSearchInSameTab,
+            config.ai::isExternalSearchInSameTab,
         ),
         DividerSettingItem(),
         ListSettingWithClassItem<ChatGPTActionInfo>(
             R.string.setting_title_remote_query,
             0,
-            config = config::remoteQueryActionName,
-            options = listOf("Search") + config.gptActionList.map { it.name }
+            config = config.ai::remoteQueryActionName,
+            options = listOf("Search") + config.ai.gptActionList.map { it.name }
         ),
     )
 
@@ -962,7 +966,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_highlight_style,
             0,
             R.string.setting_summary_highlight_style,
-            config = config::highlightStyle,
+            config = config.display::highlightStyle,
             options = HighlightStyle.entries
                 .map { it.stringResId },
         ),
@@ -970,7 +974,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_translation_style,
             0,
             R.string.setting_summary_translation_style,
-            config = config::translationTextStyle,
+            config = config.translation::translationTextStyle,
             options = TranslationTextStyle.entries.map { it.stringResId },
         ),
         NavigateSettingItem(
@@ -1000,13 +1004,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_translated_langs,
             0,
             R.string.setting_summary_translated_langs,
-            config::preferredTranslateLanguageString
+            config.translation::preferredTranslateLanguageString
         ),
         ValueSettingItem(
             R.string.translate_image_key,
             0,
             R.string.translate_image_key_summary,
-            config = config::imageApiKey,
+            config = config.ai::imageApiKey,
             showValue = false
         ),
         ActionSettingItem(
@@ -1022,7 +1026,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_reader_keep_extra_content,
             0,
             R.string.setting_summary_reader_keep_extra_content,
-            config::readerKeepExtraContent,
+            config.display::readerKeepExtraContent,
         ),
     )
     private val userAgentSettingItems = listOf(
@@ -1057,20 +1061,20 @@ class SettingActivity : FragmentActivity() {
             R.string.use_it_on_dict_search,
             0,
             R.string.setting_summary_search_in_dict,
-            config::externalSearchWithGpt
+            config.ai::externalSearchWithGpt
         ),
         BooleanSettingItem(
             R.string.setting_title_chat_stream,
             0,
             R.string.setting_summary_chat_stream,
-            config::enableOpenAiStream
+            config.ai::enableOpenAiStream
         ),
         DividerSettingItem(R.string.web_content_processing),
         ListSettingWithEnumItem(
             R.string.summary_gpt_type,
             0,
             R.string.setting_summary_summary_gpt_type,
-            config::gptForSummary,
+            config.ai::gptForSummary,
             listOf(
                 R.string.system_default,
                 R.string.openai,
@@ -1082,13 +1086,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_gpt_prompt_for_web_page,
             0,
             R.string.setting_summary_gpt_prompt_for_web_page,
-            config::gptUserPromptForWebPage
+            config.ai::gptUserPromptForWebPage
         ),
         ListSettingWithEnumItem(
             R.string.web_processing_gpt_type,
             0,
             R.string.setting_summary_web_processing_gpt_type,
-            config::gptForChatWeb,
+            config.ai::gptForChatWeb,
             listOf(
                 R.string.system_default,
                 R.string.openai,
@@ -1101,69 +1105,69 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_edit_gpt_api_key,
             0,
             R.string.setting_summary_edit_gpt_api_key,
-            config::gptApiKey
+            config.ai::gptApiKey
         ),
         ValueSettingItem(
             R.string.setting_title_gpt_model_name,
             0,
             R.string.setting_summary_gpt_model_name,
-            config::gptModel
+            config.ai::gptModel
         ),
         BooleanSettingItem(
             R.string.use_it_on_tts,
             0,
             R.string.setting_summary_use_gpt_for_tts,
-            config::useOpenAiTts
+            config.tts::useOpenAiTts
         ),
         ValueSettingItem(
             R.string.setting_title_gpt_audio_model_name,
             0,
             R.string.setting_summary_gpt_audio_model_name,
-            config::gptVoiceModel
+            config.ai::gptVoiceModel
         ),
         ValueSettingItem(
             R.string.setting_title_gpt_prompt_for_tts,
             0,
             R.string.setting_summary_gpt_prompt_for_tts,
-            config::gptVoicePrompt
+            config.ai::gptVoicePrompt
         ),
         DividerSettingItem(R.string.openai_compatible_server),
         BooleanSettingItem(
             R.string.setting_title_use_custom_gpt_url,
             0,
             R.string.setting_summary_use_custom_gpt_url,
-            config::useCustomGptUrl
+            config.ai::useCustomGptUrl
         ),
         ValueSettingItem(
             R.string.setting_title_other_model_name,
             0,
             R.string.setting_summary_other_model_name,
-            config::alternativeModel
+            config.ai::alternativeModel
         ),
         ValueSettingItem(
             R.string.setting_title_custom_gpt_url,
             0,
             R.string.setting_summary_custom_gpt_url,
-            config::gptUrl
+            config.ai::gptUrl
         ),
         DividerSettingItem(R.string.google_gemini),
         BooleanSettingItem(
             R.string.setting_title_use_gemini,
             0,
             R.string.setting_summary_use_gemini,
-            config::useGeminiApi
+            config.ai::useGeminiApi
         ),
         ValueSettingItem(
             R.string.setting_title_gemini_key,
             0,
             R.string.setting_summary_gemini_key,
-            config::geminiApiKey
+            config.ai::geminiApiKey
         ),
         ValueSettingItem(
             R.string.setting_title_gemini_model_name,
             0,
             R.string.setting_summary_gemini_model_name,
-            config::geminiModel
+            config.ai::geminiModel
         ),
     )
 

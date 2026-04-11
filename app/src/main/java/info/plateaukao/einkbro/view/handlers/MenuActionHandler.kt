@@ -107,8 +107,8 @@ class MenuActionHandler(
                 if (isOn) ebWebView.updateCssStyle() else ebWebView.reload()
             }
 
-            MenuItemType.BoldFont -> config::boldFontStyle.toggle()
-            MenuItemType.BlackFont -> config::blackFontStyle.toggle()
+            MenuItemType.BoldFont -> config.display::boldFontStyle.toggle()
+            MenuItemType.BlackFont -> config.display::blackFontStyle.toggle()
             MenuItemType.Search -> dispatch(BrowserAction.ShowSearchPanel)
             MenuItemType.Download -> BrowserUnit.openDownloadFolder(activity)
             MenuItemType.SaveArchive -> dispatch(BrowserAction.SavePageForLater)

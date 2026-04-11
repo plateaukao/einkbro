@@ -22,6 +22,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +54,8 @@ class DataListActivity : ComponentActivity(), KoinComponent {
 
         whitelistType = getWhitelistType()
         setContent {
-            val whitelist = remember { mutableStateOf(whitelistType.getDomains()) }
+            val whitelist = remember { mutableStateOf(emptyList<String>()) }
+            LaunchedEffect(Unit) { whitelist.value = whitelistType.getDomains() }
             MyTheme {
                 Scaffold(
                     topBar = {
@@ -75,8 +77,10 @@ class DataListActivity : ComponentActivity(), KoinComponent {
                             },
                             actions = {
                                 IconButton(onClick = {
-                                    whitelistType.deleteAllDomains()
-                                    whitelist.value = emptyList()
+                                    lifecycleScope.launch {
+                                        whitelistType.deleteAllDomains()
+                                        whitelist.value = emptyList()
+                                    }
                                 }) {
                                     Icon(
                                         tint = MaterialTheme.colors.onPrimary,
@@ -103,8 +107,7 @@ class DataListActivity : ComponentActivity(), KoinComponent {
                     WhiteListContent(
                         modifier = Modifier.padding(innerPadding),
                         whitelist,
-                        whitelistType::deleteDomain
-                    )
+                    ) { domain -> lifecycleScope.launch { whitelistType.deleteDomain(domain) } }
                 }
             }
         }
@@ -189,7 +192,7 @@ fun WhiteListContent(
 abstract class BaseWhiteListType {
     abstract val titleId: Int
     abstract val domainHandler: DomainInterface
-    fun getDomains(): List<String> = domainHandler.getDomains()
+    suspend fun getDomains(): List<String> = domainHandler.getDomains()
     open fun addDomain(
         lifecycleScope: LifecycleCoroutineScope,
         dialogManager: DialogManager,
@@ -200,14 +203,14 @@ abstract class BaseWhiteListType {
                 R.string.whitelist_add, titleId, ""
             ) ?: return@launch
             if (value.isNotBlank()) {
-                domainHandler.addDomain(value.trim());
+                domainHandler.addDomain(value.trim())
                 postAction(value.trim())
             }
         }
     }
 
-    fun deleteDomain(domain: String) = domainHandler.deleteDomain(domain)
-    fun deleteAllDomains() = domainHandler.deleteAllDomains()
+    suspend fun deleteDomain(domain: String) = domainHandler.deleteDomain(domain)
+    suspend fun deleteAllDomains() = domainHandler.deleteAllDomains()
 }
 
 class WhiteListTypeAdblock : BaseWhiteListType(), KoinComponent {

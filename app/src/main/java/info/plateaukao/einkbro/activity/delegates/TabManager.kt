@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -25,18 +26,11 @@ import kotlin.math.min
 class TabManager(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
+    private val state: BrowserState,
     private val browserContainer: BrowserContainer,
     private val albumViewModel: AlbumViewModel,
     private val bookmarkManager: BookmarkManager,
     private val externalSearchViewModel: ExternalSearchViewModel,
-    private val webViewProvider: () -> EBWebView,
-    private val currentAlbumControllerProvider: () -> AlbumController?,
-    private val setCurrentAlbumController: (AlbumController?) -> Unit,
-    private val setEbWebView: (EBWebView) -> Unit,
-    private val mainContentLayoutProvider: () -> FrameLayout,
-    private val progressBarProvider: () -> View,
-    private val composeToolbarViewControllerProvider: () -> ComposeToolbarViewController,
-    private val fabImageViewControllerProvider: () -> FabImageViewController,
     private val createWebView: () -> EBWebView,
     private val createTouchListener: (EBWebView) -> View.OnTouchListener,
     private val keyHandlerSetWebView: (EBWebView) -> Unit,
@@ -70,13 +64,13 @@ class TabManager(
             info.plateaukao.einkbro.preference.NewTabBehavior.SHOW_HOME -> addAlbum("", config.favoriteUrl)
             info.plateaukao.einkbro.preference.NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
                 addAlbum("", "")
-                BrowserUnit.loadRecentlyUsedBookmarks(webViewProvider())
+                BrowserUnit.loadRecentlyUsedBookmarks(state.ebWebView)
             }
         }
     }
 
     fun duplicateTab() {
-        val webView = currentAlbumControllerProvider() as EBWebView
+        val webView = state.currentAlbumController as EBWebView
         val title = webView.title.orEmpty()
         val url = webView.url ?: return
         addAlbum(title, url)
@@ -85,7 +79,7 @@ class TabManager(
     fun addNewTab(url: String) = addAlbum(url = url)
 
     fun isCurrentAlbum(albumController: AlbumController): Boolean =
-        currentAlbumControllerProvider() == albumController
+        state.currentAlbumController == albumController
 
     @SuppressLint("ClickableViewAccessibility")
     fun addAlbum(
@@ -135,7 +129,7 @@ class TabManager(
         }
 
         val album = newWebView.album
-        val currentAlbumController = currentAlbumControllerProvider()
+        val currentAlbumController = state.currentAlbumController
         if (currentAlbumController != null) {
             val index = browserContainer.indexOf(currentAlbumController) + 1
             browserContainer.add(newWebView, index)
@@ -164,10 +158,10 @@ class TabManager(
     }
 
     fun showAlbum(controller: AlbumController) {
-        val currentAlbumController = currentAlbumControllerProvider()
+        val currentAlbumController = state.currentAlbumController
         if (currentAlbumController != null) {
             if (currentAlbumController == controller) {
-                val ebWebView = webViewProvider()
+                val ebWebView = state.ebWebView
                 if (ebWebView.isAtTop()) {
                     ebWebView.reload()
                 } else {
@@ -178,7 +172,7 @@ class TabManager(
             currentAlbumController.deactivate()
         }
 
-        val mainContentLayout = mainContentLayoutProvider()
+        val mainContentLayout = state.mainContentLayout
         val controllerView = controller as View
         if (mainContentLayout.childCount > 0) {
             for (i in 0 until mainContentLayout.childCount) {
@@ -197,15 +191,15 @@ class TabManager(
             )
         )
 
-        setCurrentAlbumController(controller)
+        state.currentAlbumController = (controller)
         controller.activate()
 
         updateSavedAlbumInfo()
         updateWebViewCount()
 
-        progressBarProvider().visibility = View.GONE
+        state.progressBar.visibility = View.GONE
         val newEbWebView = controller as EBWebView
-        setEbWebView(newEbWebView)
+        state.ebWebView = (newEbWebView)
         keyHandlerSetWebView(newEbWebView)
 
         updateTitle()
@@ -214,7 +208,7 @@ class TabManager(
         externalSearchViewModel.setButtonVisibility(false)
         activity.runOnUiThread {
             val index = albumViewModel.albums.value.indexOfFirst { it.isActivated }
-            composeToolbarViewControllerProvider().updateFocusIndex(index)
+            state.composeToolbarViewController.updateFocusIndex(index)
             albumViewModel.focusIndex.intValue = index
         }
         updateLanguageLabel()
@@ -228,7 +222,7 @@ class TabManager(
 
             albumViewModel.removeAlbum(albumController.album)
             val removeIndex = browserContainer.indexOf(albumController)
-            val currentIndex = browserContainer.indexOf(currentAlbumControllerProvider())
+            val currentIndex = browserContainer.indexOf(state.currentAlbumController)
             browserContainer.remove(albumController)
 
             updateSavedAlbumInfo()
@@ -238,7 +232,7 @@ class TabManager(
                 if (!showHome) {
                     activity.finish()
                 } else {
-                    webViewProvider().loadUrl(config.favoriteUrl)
+                    state.ebWebView.loadUrl(config.favoriteUrl)
                 }
             } else {
                 if (removeIndex == currentIndex) {
@@ -249,7 +243,7 @@ class TabManager(
     }
 
     fun removeCurrentAlbum() {
-        currentAlbumControllerProvider()?.let { removeAlbum(it, showHome = false) }
+        state.currentAlbumController?.let { removeAlbum(it, showHome = false) }
     }
 
     fun updateSavedAlbumInfo() {
@@ -269,7 +263,7 @@ class TabManager(
                 )
             }
         config.savedAlbumInfoList = albumInfoList
-        config.currentAlbumIndex = browserContainer.indexOf(currentAlbumControllerProvider())
+        config.currentAlbumIndex = browserContainer.indexOf(state.currentAlbumController)
         if (albumInfoList.isNotEmpty() && config.currentAlbumIndex >= albumInfoList.size) {
             config.currentAlbumIndex = albumInfoList.size - 1
         }
@@ -277,28 +271,28 @@ class TabManager(
 
     fun updateWebViewCount() {
         val subScript = browserContainer.size()
-        val superScript = browserContainer.indexOf(currentAlbumControllerProvider()) + 1
+        val superScript = browserContainer.indexOf(state.currentAlbumController) + 1
         val countString = ViewUnit.createCountString(superScript, subScript)
-        composeToolbarViewControllerProvider().updateTabCount(countString)
-        fabImageViewControllerProvider().updateTabCount(countString)
+        state.composeToolbarViewController.updateTabCount(countString)
+        state.fabImageViewController.updateTabCount(countString)
     }
 
     fun updateAlbum(url: String?) {
         if (url == null) return
-        (currentAlbumControllerProvider() as EBWebView).loadUrl(url)
+        (state.currentAlbumController as EBWebView).loadUrl(url)
         updateTitle()
         updateSavedAlbumInfo()
     }
 
     fun updateTitle() {
-        val ebWebView = webViewProvider()
-        if (ebWebView === currentAlbumControllerProvider()) {
-            composeToolbarViewControllerProvider().updateTitle(ebWebView.title.orEmpty())
+        val ebWebView = state.ebWebView
+        if (ebWebView === state.currentAlbumController) {
+            state.composeToolbarViewController.updateTitle(ebWebView.title.orEmpty())
         }
     }
 
     fun updateTitle(title: String?) {
-        composeToolbarViewControllerProvider().updateTitle(title.orEmpty())
+        state.composeToolbarViewController.updateTitle(title.orEmpty())
     }
 
     fun gotoLeftTab() {
@@ -319,11 +313,11 @@ class TabManager(
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
         if (browserContainer.size() <= 1) {
-            return currentAlbumControllerProvider()
+            return state.currentAlbumController
         }
 
         val list = browserContainer.list()
-        var index = list.indexOf(currentAlbumControllerProvider())
+        var index = list.indexOf(state.currentAlbumController)
         if (next) {
             index++
             if (index >= list.size) {

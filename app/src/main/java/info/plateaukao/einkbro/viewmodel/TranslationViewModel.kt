@@ -37,7 +37,7 @@ class TranslationViewModel(
     private val translateRepository = TranslateRepository()
 
     private lateinit var openAiRepository: OpenAiRepository
-    var gptActionInfo = config.gptActionForExternalSearch ?: config.gptActionList.firstOrNull()
+    var gptActionInfo = config.ai.gptActionForExternalSearch ?: config.ai.gptActionList.firstOrNull()
     ?: ChatGPTActionInfo()
 
     private val _responseMessage = MutableStateFlow(AnnotatedString(""))
@@ -49,16 +49,16 @@ class TranslationViewModel(
     private val _messageWithContext = MutableStateFlow("")
     val messageWithContext: StateFlow<String> = _messageWithContext.asStateFlow()
 
-    private val _translationLanguage = MutableStateFlow(config.translationLanguage)
+    private val _translationLanguage = MutableStateFlow(config.translation.translationLanguage)
     val translationLanguage: StateFlow<TranslationLanguage> = _translationLanguage.asStateFlow()
 
-    private val _sourceLanguage = MutableStateFlow(config.sourceLanguage)
+    private val _sourceLanguage = MutableStateFlow(config.translation.sourceLanguage)
     val sourceLanguage: StateFlow<TranslationLanguage> = _sourceLanguage.asStateFlow()
 
     private val _rotateResultScreen = MutableStateFlow(false)
     val rotateResultScreen: StateFlow<Boolean> = _rotateResultScreen.asStateFlow()
 
-    private val _translateMethod = MutableStateFlow(config.externalSearchMethod)
+    private val _translateMethod = MutableStateFlow(config.ai.externalSearchMethod)
     val translateMethod: StateFlow<TRANSLATE_API> = _translateMethod.asStateFlow()
 
     private val _showEditDialogWithIndex = MutableStateFlow(-1)
@@ -78,10 +78,10 @@ class TranslationViewModel(
 
     fun updateTranslateMethod(translateApi: TRANSLATE_API) {
         _translateMethod.value = translateApi
-        config.externalSearchMethod = translateApi
+        config.ai.externalSearchMethod = translateApi
     }
 
-    fun hasOpenAiApiKey(): Boolean = config.gptApiKey.isNotBlank()
+    fun hasOpenAiApiKey(): Boolean = config.ai.gptApiKey.isNotBlank()
 
     fun updateMessageWithContext(userMessage: String) {
         _messageWithContext.value = HelperUnit.unescapeJava(userMessage)
@@ -131,7 +131,7 @@ class TranslationViewModel(
         userMessage: String? = null,
     ) {
         _translateMethod.value = translateApi
-        config.externalSearchMethod = translateApi
+        config.ai.externalSearchMethod = translateApi
         _responseMessage.value = AnnotatedString("...")
 
         if (userMessage != null) {
@@ -150,7 +150,7 @@ class TranslationViewModel(
     }
 
     fun getGptActionList(): List<ChatGPTActionInfo> {
-        return config.gptActionList
+        return config.ai.gptActionList
     }
 
     fun cancel() {
@@ -170,9 +170,9 @@ class TranslationViewModel(
         updateInputMessage(text)
         setupGptAction(
             ChatGPTActionInfo(
-                systemMessage = config.gptUserPromptForWebPage,
-                actionType = config.gptForSummary,
-                model = config.getGptTypeModelMap()[config.gptForSummary] ?: config.gptModel,
+                systemMessage = config.ai.gptUserPromptForWebPage,
+                actionType = config.ai.gptForSummary,
+                model = config.ai.getGptTypeModelMap()[config.ai.gptForSummary] ?: config.ai.gptModel,
             )
         )
 
@@ -200,7 +200,7 @@ class TranslationViewModel(
                 AnnotatedString(
                     translateRepository.gTranslateWithApi(
                         message,
-                        targetLanguage = config.translationLanguage.value,
+                        targetLanguage = config.translation.translationLanguage.value,
                     )
                         ?: "Something went wrong."
                 )
@@ -212,7 +212,7 @@ class TranslationViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
                 AnnotatedString(
-                    translateRepository.deepLTranslate(message, targetLanguage = config.translationLanguage)
+                    translateRepository.deepLTranslate(message, targetLanguage = config.translation.translationLanguage)
                         ?: "Something went wrong."
                 )
         }
@@ -223,7 +223,7 @@ class TranslationViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _responseMessage.value =
                 AnnotatedString(
-                    translateRepository.pTranslate(message, targetLanguage = config.translationLanguage.value)
+                    translateRepository.pTranslate(message, targetLanguage = config.translation.translationLanguage.value)
                         ?: "Something went wrong."
                 )
         }
@@ -283,10 +283,10 @@ class TranslationViewModel(
             val (_, selectedText) = getSelectedTextAndPromptPrefix()
             val model = gptActionInfo.model.ifEmpty {
                 when (gptActionInfo.actionType) {
-                    GptActionType.OpenAi -> config.gptModel
-                    GptActionType.Gemini -> config.geminiModel
-                    GptActionType.SelfHosted -> config.alternativeModel
-                    GptActionType.Default -> config.getDefaultActionModel()
+                    GptActionType.OpenAi -> config.ai.gptModel
+                    GptActionType.Gemini -> config.ai.geminiModel
+                    GptActionType.SelfHosted -> config.ai.alternativeModel
+                    GptActionType.Default -> config.ai.getDefaultActionModel()
                 }
             }
             bookmarkManager.addChatGptQuery(
@@ -309,7 +309,7 @@ class TranslationViewModel(
         }
 
         _translateMethod.value = TRANSLATE_API.LLM
-        config.gptActionForExternalSearch = gptActionInfo
+        config.ai.gptActionForExternalSearch = gptActionInfo
 
         val messages = mutableListOf<ChatMessage>()
         if (gptActionInfo.systemMessage.isNotBlank()) {
@@ -328,8 +328,8 @@ class TranslationViewModel(
     private fun getExactActionInfo(gptActionInfo: ChatGPTActionInfo): ChatGPTActionInfo =
         if (gptActionInfo.actionType == GptActionType.Default) {
             ChatGPTActionInfo(
-                actionType = config.getDefaultActionType(),
-                model = config.getDefaultActionModel(),
+                actionType = config.ai.getDefaultActionType(),
+                model = config.ai.getDefaultActionModel(),
                 name = gptActionInfo.name,
                 userMessage = gptActionInfo.userMessage,
                 systemMessage = gptActionInfo.systemMessage
@@ -337,7 +337,7 @@ class TranslationViewModel(
         } else gptActionInfo
 
     suspend fun queryLlm(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
-        if (config.enableOpenAiStream) {
+        if (config.ai.enableOpenAiStream) {
             queryWithStream(messages, gptActionInfo)
             return
         }

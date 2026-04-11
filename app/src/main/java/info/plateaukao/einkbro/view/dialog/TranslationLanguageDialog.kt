@@ -18,11 +18,11 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
             context,
             R.string.translation_language,
             languages,
-            config.translationLanguage.ordinal
+            config.translation.translationLanguage.ordinal
         ).show() ?: return null
 
-        config.translationLanguage = TranslationLanguage.entries.toTypedArray()[selectedIndex]
-        return config.translationLanguage
+        config.translation.translationLanguage = TranslationLanguage.entries.toTypedArray()[selectedIndex]
+        return config.translation.translationLanguage
     }
 
     suspend fun showDualCaptionLocale() {
@@ -34,13 +34,13 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
             context,
             R.string.setting_dual_caption,
             languages,
-            getDualCaptionIndex(config.dualCaptionLocale)
+            getDualCaptionIndex(config.tts.dualCaptionLocale)
         ).show() ?: return
 
         if (selectedIndex == 0) {
-            config.dualCaptionLocale = ""
+            config.tts.dualCaptionLocale = ""
         } else {
-            config.dualCaptionLocale = TranslationLanguage.entries[selectedIndex - 1].value
+            config.tts.dualCaptionLocale = TranslationLanguage.entries[selectedIndex - 1].value
         }
     }
 
@@ -88,10 +88,10 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
             context,
             R.string.source_language,
             languages,
-            languages.indexOf(config.sourceLanguage.language)
+            languages.indexOf(config.translation.sourceLanguage.language)
         ).show() ?: return null
 
-        config.sourceLanguage = TranslationLanguage.findByLanguage(languages[selectedIndex])
-        return config.sourceLanguage
+        config.translation.sourceLanguage = TranslationLanguage.findByLanguage(languages[selectedIndex])
+        return config.translation.sourceLanguage
     }
 }

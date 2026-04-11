@@ -15,6 +15,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -34,11 +35,9 @@ import kotlinx.coroutines.withContext
 class InputBarDelegate(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
+    private val state: BrowserState,
     private val bookmarkManager: BookmarkManager,
     private val searchSuggestionViewModel: SearchSuggestionViewModel,
-    private val bindingProvider: () -> MainActivityLayout,
-    private val webViewProvider: () -> EBWebView,
-    private val composeToolbarViewControllerProvider: () -> ComposeToolbarViewController,
     private val updateAlbum: (url: String) -> Unit,
     private val showToolbar: () -> Unit,
     private val toggleFullscreen: () -> Unit,
@@ -54,7 +53,7 @@ class InputBarDelegate(
     var inputHasCopiedText by mutableStateOf(false)
 
     fun initInputBar() {
-        bindingProvider().inputUrl.apply {
+        state.binding.inputUrl.apply {
             visibility = INVISIBLE
             setContent {
                 MyTheme {
@@ -107,7 +106,7 @@ class InputBarDelegate(
     }
 
     fun focusOnInput() {
-        val binding = bindingProvider()
+        val binding = state.binding
         if (binding.appBar.visibility != VISIBLE) {
             shouldRestoreFullscreen = true
 
@@ -119,7 +118,7 @@ class InputBarDelegate(
             }
         }
 
-        val ebWebView = webViewProvider()
+        val ebWebView = state.ebWebView
         val textOrUrl = if (ebWebView.url?.startsWith("data:") != true) {
             val url = ebWebView.url.orEmpty()
             TextFieldValue(url, selection = TextRange(0, url.length))
@@ -141,7 +140,7 @@ class InputBarDelegate(
         if (config.isVerticalToolbar) {
             adjustInputUrlForVerticalToolbar()
         } else {
-            composeToolbarViewControllerProvider().hide()
+            state.composeToolbarViewController.hide()
             binding.appBar.visibility = INVISIBLE
         }
         binding.contentSeparator.visibility = INVISIBLE
@@ -159,7 +158,7 @@ class InputBarDelegate(
     }
 
     private fun adjustInputUrlForVerticalToolbar() {
-        val binding = bindingProvider()
+        val binding = state.binding
         val constraintSet = androidx.constraintlayout.widget.ConstraintSet().apply {
             clone(binding.root)
             connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
@@ -180,7 +179,7 @@ class InputBarDelegate(
             .primaryClip?.getItemAt(0)?.text?.toString().orEmpty()
 
     fun isKeyboardDisplaying(): Boolean {
-        val binding = bindingProvider()
+        val binding = state.binding
         val rect = Rect()
         binding.root.getWindowVisibleDisplayFrame(rect)
         val heightDiff: Int = binding.root.rootView.height - rect.bottom

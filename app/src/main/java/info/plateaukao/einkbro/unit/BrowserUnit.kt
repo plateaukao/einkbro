@@ -219,7 +219,7 @@ object BrowserUnit : KoinComponent {
     }
 
     @JvmStatic
-    fun clearHistory(context: Context) {
+    suspend fun clearHistory(context: Context) {
         val recordRepository: RecordRepository by inject()
         recordRepository.clearHistory()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
@@ -333,9 +333,9 @@ object BrowserUnit : KoinComponent {
 
         val file = File(uri.path ?: return)
         if (isReaderMode) {
-            config.readerCustomFontInfo = CustomFontInfo(file.name, uri.toString())
+            config.display.readerCustomFontInfo = CustomFontInfo(file.name, uri.toString())
         } else {
-            config.customFontInfo = CustomFontInfo(file.name, uri.toString())
+            config.display.customFontInfo = CustomFontInfo(file.name, uri.toString())
         }
     }
 

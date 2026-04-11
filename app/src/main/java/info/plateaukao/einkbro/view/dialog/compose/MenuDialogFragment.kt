@@ -123,8 +123,8 @@ class MenuDialogFragment(
         MyTheme {
             MenuItems(
                 config.whiteBackground(url),
-                config.boldFontStyle,
-                config.blackFontStyle,
+                config.display.boldFontStyle,
+                config.display.blackFontStyle,
                 isSpeaking,
                 isAudioOnly,
                 hasVideo,

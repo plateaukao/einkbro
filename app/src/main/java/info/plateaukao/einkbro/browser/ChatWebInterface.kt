@@ -111,9 +111,9 @@ class ChatWebInterface(
 
     private fun createChatGptActionInfo(message: String): ChatGPTActionInfo =
         ChatGPTActionInfo(
-            actionType = configManager.gptForChatWeb,
+            actionType = configManager.ai.gptForChatWeb,
             userMessage = message,
-            model = configManager.getGptTypeModelMap()[configManager.gptForChatWeb] ?: configManager.gptModel,
+            model = configManager.ai.getGptTypeModelMap()[configManager.ai.gptForChatWeb] ?: configManager.ai.gptModel,
         )
 }
 

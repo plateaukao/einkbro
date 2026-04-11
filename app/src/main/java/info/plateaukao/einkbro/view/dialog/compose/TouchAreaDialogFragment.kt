@@ -47,32 +47,32 @@ class TouchAreaDialogFragment(
     private val url: String,
 ) : ComposeDialogFragment(), KoinComponent {
     override fun setupComposeView() = composeView.setContent {
-        val touchAreaType = remember { mutableStateOf(config.touchAreaType) }
-        val enableTurn = remember { mutableStateOf(config.enableTouchTurn) }
+        val touchAreaType = remember { mutableStateOf(config.touch.touchAreaType) }
+        val enableTurn = remember { mutableStateOf(config.touch.enableTouchTurn) }
         val shouldSendPageKey = remember { mutableStateOf(config.shouldSendPageNavKey(url)) }
 
         MyTheme {
             TouchAreaContent(
                 touchAreaType = touchAreaType.value,
                 onTouchTypeClick = { type ->
-                    config.touchAreaType = type
+                    config.touch.touchAreaType = type
                     touchAreaType.value = type
                 },
                 enableTurn = enableTurn.value,
                 onToggle = {
-                    config::enableTouchTurn.toggle()
-                    enableTurn.value = config.enableTouchTurn
+                    config.touch::enableTouchTurn.toggle()
+                    enableTurn.value = config.touch.enableTouchTurn
                 },
-                showHint = config.touchAreaHint,
-                hideTouchWhenType = config.hideTouchAreaWhenInput,
-                switchTouchArea = config.switchTouchAreaAction,
-                enableTouchAreaAsArrowKey = config.longClickAsArrowKey,
+                showHint = config.touch.touchAreaHint,
+                hideTouchWhenType = config.touch.hideTouchAreaWhenInput,
+                switchTouchArea = config.touch.switchTouchAreaAction,
+                enableTouchAreaAsArrowKey = config.touch.longClickAsArrowKey,
                 shouldSendPageKey = shouldSendPageKey.value,
-                onShowHintClick = { config::touchAreaHint.toggle() },
-                onHideWhenTypeClick = { config::hideTouchAreaWhenInput.toggle() },
-                onSwitchAreaClick = { config::switchTouchAreaAction.toggle() },
+                onShowHintClick = { config.touch::touchAreaHint.toggle() },
+                onHideWhenTypeClick = { config.touch::hideTouchAreaWhenInput.toggle() },
+                onSwitchAreaClick = { config.touch::switchTouchAreaAction.toggle() },
                 onCloseClick = { dismiss() },
-                onAsArrowKeyClick = { config::longClickAsArrowKey.toggle() },
+                onAsArrowKeyClick = { config.touch::longClickAsArrowKey.toggle() },
                 onAsPageKeyClick = { shouldSendPageKey.value = config.toggleSendPageNavKey(url) },
                 onConfigActionsClick = {
                     IntentUnit.gotoSettings(requireActivity(), SettingRoute.Gesture)

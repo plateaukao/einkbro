@@ -133,18 +133,18 @@ class ComposeToolbarViewController(
     private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo> {
         return this.map { toolbarAction ->
             when (toolbarAction) {
-                BoldFont -> ToolbarActionInfo(toolbarAction, config.boldFontStyle)
+                BoldFont -> ToolbarActionInfo(toolbarAction, config.display.boldFontStyle)
                 Refresh -> ToolbarActionInfo(toolbarAction, isLoading)
                 Desktop -> ToolbarActionInfo(toolbarAction, config.desktop)
-                Touch -> ToolbarActionInfo(toolbarAction, config.enableTouchTurn)
+                Touch -> ToolbarActionInfo(toolbarAction, config.touch.enableTouchTurn)
                 TouchDirectionUpDown -> ToolbarActionInfo(
                     toolbarAction,
-                    config.switchTouchAreaAction
+                    config.touch.switchTouchAreaAction
                 )
 
                 TouchDirectionLeftRight -> ToolbarActionInfo(
                     toolbarAction,
-                    config.switchTouchAreaAction
+                    config.touch.switchTouchAreaAction
                 )
 
                 Tts -> ToolbarActionInfo(toolbarAction, ttsViewModel.isReading())

@@ -16,8 +16,8 @@ class PrinterDocumentPaperSizeDialog(val context: Context) : KoinComponent {
 
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setTitle("Choose the default paper size")
-            setSingleChoiceItems(paperSizes, config.pdfPaperSize.ordinal) { dialog, selectedIndex ->
-                config.pdfPaperSize = PaperSize.values()[selectedIndex]
+            setSingleChoiceItems(paperSizes, config.display.pdfPaperSize.ordinal) { dialog, selectedIndex ->
+                config.display.pdfPaperSize = PaperSize.values()[selectedIndex]
                 dialog.dismiss()
             }
         }.create().show()

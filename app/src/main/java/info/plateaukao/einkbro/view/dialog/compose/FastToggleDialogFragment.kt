@@ -134,10 +134,10 @@ fun FastToggleItemList(context: Context, config: ConfigManager, onClicked: ((Boo
             onClicked(false)
         }
         ToggleItem(
-            state = config.volumePageTurn,
+            state = config.touch.volumePageTurn,
             titleResId = R.string.volume_page_turn, imageVector = Icons.AutoMirrored.Outlined.VolumeUp
         ) {
-            config::volumePageTurn.toggle()
+            config.touch::volumePageTurn.toggle()
             onClicked(false)
         }
         ToggleItem(

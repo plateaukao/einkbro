@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.DisplayConfig
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
@@ -39,36 +40,36 @@ class FontDialogFragment(
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
-                val customFontName = remember { mutableStateOf(config.customFontInfo?.name.orEmpty()) }
-                val fontSizeState = remember { mutableIntStateOf(config.fontSize) }
+                val customFontName = remember { mutableStateOf(config.display.customFontInfo?.name.orEmpty()) }
+                val fontSizeState = remember { mutableIntStateOf(config.display.fontSize) }
                 config.registerOnSharedPreferenceChangeListener { _, key ->
-                    if (key == ConfigManager.K_CUSTOM_FONT) {
-                        customFontName.value = config.customFontInfo?.name.orEmpty()
+                    if (key == DisplayConfig.K_CUSTOM_FONT) {
+                        customFontName.value = config.display.customFontInfo?.name.orEmpty()
                     }
                 }
                 MainFontDialog(
                     selectedFontSizeValue = fontSizeState.value,
-                    customFontSizeValue = config.customFontSize,
-                    selectedFontType = config.fontType,
+                    customFontSizeValue = config.display.customFontSize,
+                    selectedFontType = config.display.fontType,
                     customFontName = customFontName.value,
                     onFontSizeClick = {
-                        config.fontSize = it
+                        config.display.fontSize = it
                         fontSizeState.value = it
                         dismiss()
                     },
                     onFontTypeClick = {
-                        if (it == FontType.CUSTOM && config.customFontInfo == null) {
+                        if (it == FontType.CUSTOM && config.display.customFontInfo == null) {
                             onFontTypeChanged()
                         } else {
-                            config.fontType = it
+                            config.display.fontType = it
                             dismiss()
                         }
                     },
                     onFontTypeChanged = {
                         onFontTypeChanged()
                         config.registerOnSharedPreferenceChangeListener { _, key ->
-                            if (key == ConfigManager.K_CUSTOM_FONT) {
-                                customFontName.value = config.customFontInfo?.name.orEmpty()
+                            if (key == DisplayConfig.K_CUSTOM_FONT) {
+                                customFontName.value = config.display.customFontInfo?.name.orEmpty()
                             }
                         }
                     },
@@ -78,10 +79,10 @@ class FontDialogFragment(
                                 requireContext(),
                                 getString(R.string.custom_scale),
                                 getString(R.string.custom_scale_desc),
-                                config.customFontSize.toString()
+                                config.display.customFontSize.toString()
                             ).show()?.toIntOrNull()?.let {
-                                config.fontSize = it
-                                config.customFontSize = it
+                                config.display.fontSize = it
+                                config.display.customFontSize = it
                                 fontSizeState.value = it
                             }
                         }

@@ -41,7 +41,7 @@ class DictActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         when (intent.action) {
             in listOf("colordict.intent.action.PICK_RESULT", "colordict.intent.action.SEARCH") -> {
-                if (!config.externalSearchWithGpt) {
+                if (!config.ai.externalSearchWithGpt) {
                     forwardDictIntentAndFinish()
                 } else {
                     val text = intent.getStringExtra("EXTRA_QUERY") ?: return
@@ -50,7 +50,7 @@ class DictActivity : AppCompatActivity() {
             }
 
             Intent.ACTION_PROCESS_TEXT -> {
-                if (!config.externalSearchWithGpt && !config.externalSearchWithPopUp) {
+                if (!config.ai.externalSearchWithGpt && !config.ai.externalSearchWithPopUp) {
                     forwardProcessTextIntentAndFinish()
                 } else {
                     val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return

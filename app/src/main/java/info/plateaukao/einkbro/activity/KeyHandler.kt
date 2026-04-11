@@ -26,12 +26,12 @@ class KeyHandler(
     fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_DPAD_DOWN -> {
-                if (config.useUpDownPageTurn) ebWebView.pageDownWithNoAnimation()
+                if (config.touch.useUpDownPageTurn) ebWebView.pageDownWithNoAnimation()
                 return true
             }
 
             KeyEvent.KEYCODE_DPAD_UP -> {
-                if (config.useUpDownPageTurn) ebWebView.pageUpWithNoAnimation()
+                if (config.touch.useUpDownPageTurn) ebWebView.pageUpWithNoAnimation()
                 return true
             }
 
@@ -55,7 +55,7 @@ class KeyHandler(
         if (ebWebView.hitTestResult.type == WebView.HitTestResult.EDIT_TEXT_TYPE) return false
 
         // process dpad navigation
-        if (config.useUpDownPageTurn) {
+        if (config.touch.useUpDownPageTurn) {
             when (event.keyCode) {
                 KeyEvent.KEYCODE_DPAD_DOWN -> {
                     ebWebView.pageDownWithNoAnimation()
@@ -187,7 +187,7 @@ class KeyHandler(
 
     fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            if (config.volumePageTurn) {
+            if (config.touch.volumePageTurn) {
                 isVolumeLongPress = true
                 isVolumeTemporarilyDisabled = true
                 handler.removeCallbacks(reenableVolumePageTurnRunnable)
@@ -203,7 +203,7 @@ class KeyHandler(
 
     fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            if (config.volumePageTurn) {
+            if (config.touch.volumePageTurn) {
                 isVolumeLongPress = false
                 return !isVolumeTemporarilyDisabled
             }
@@ -224,7 +224,7 @@ class KeyHandler(
     }
 
     private fun handleVolumeDownKey(event: KeyEvent): Boolean {
-        if (config.volumePageTurn) {
+        if (config.touch.volumePageTurn) {
             if (isVolumeTemporarilyDisabled) {
                 if (event.repeatCount == 0) extendVolumeDisablePeriod()
                 return false
@@ -250,7 +250,7 @@ class KeyHandler(
     }
 
     private fun handleVolumeUpKey(event: KeyEvent): Boolean {
-        if (config.volumePageTurn) {
+        if (config.touch.volumePageTurn) {
             if (isVolumeTemporarilyDisabled) {
                 if (event.repeatCount == 0) extendVolumeDisablePeriod()
                 return false

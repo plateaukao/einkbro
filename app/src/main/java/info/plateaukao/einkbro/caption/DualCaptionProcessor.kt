@@ -22,10 +22,10 @@ class DualCaptionProcessor : KoinComponent {
     fun processUrl(url: String): String? {
         if (!url.contains(urlWithCaption)) return null
 
-        if (config.dualCaptionLocale.isEmpty()) return runBlocking { String(fetchWithCookies(url)) }
+        if (config.tts.dualCaptionLocale.isEmpty()) return runBlocking { String(fetchWithCookies(url)) }
 
         try {
-            val newUrl = "$url&tlang=${config.dualCaptionLocale}"
+            val newUrl = "$url&tlang=${config.tts.dualCaptionLocale}"
             val oldCaption = runBlocking { fetchWithCookies(url) }
             val newCaption = runBlocking { fetchWithCookies(newUrl) }
             val oldCaptionJson = json.decodeFromString(serializer, String(oldCaption))

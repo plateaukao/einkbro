@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -28,11 +29,10 @@ import kotlinx.serialization.json.Json
 class IntentDispatchDelegate(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
+    private val state: BrowserState,
     private val externalSearchViewModel: ExternalSearchViewModel,
     private val remoteConnViewModel: RemoteConnViewModel,
     private val translationViewModel: TranslationViewModel,
-    private val webViewProvider: () -> EBWebView,
-    private val currentAlbumControllerProvider: () -> info.plateaukao.einkbro.browser.AlbumController?,
     private val overviewDialogControllerProvider: () -> OverviewDialogController,
     private val addAlbum: (title: String, url: String, foreground: Boolean) -> Unit,
     private val updateAlbum: (url: String) -> Unit,
@@ -84,7 +84,7 @@ class IntentDispatchDelegate(
                                     HelperUnit.readContentAsStringList(activity.contentResolver, viewUri)
                                 HelperUnit.srtToHtml(stringList)
                             }
-                            val ebWebView = webViewProvider()
+                            val ebWebView = state.ebWebView
                             ebWebView.isPlainText = true
                             ebWebView.rawHtmlCache = htmlContent
                             ebWebView.loadData(htmlContent, "text/html", "utf-8")
@@ -118,8 +118,8 @@ class IntentDispatchDelegate(
             Intent.ACTION_WEB_SEARCH -> {
                 initSavedTabs()
                 val searchedKeyword = intent.getStringExtra(SearchManager.QUERY).orEmpty()
-                if (currentAlbumControllerProvider() != null && config.isExternalSearchInSameTab) {
-                    webViewProvider().loadUrl(searchedKeyword)
+                if (state.currentAlbumController != null && config.ai.isExternalSearchInSameTab) {
+                    state.ebWebView.loadUrl(searchedKeyword)
                 } else {
                     addAlbum("", searchedKeyword, true)
                 }
@@ -149,8 +149,8 @@ class IntentDispatchDelegate(
                     if (BrowserUnit.isURL(sentKeyword)) sentKeyword else externalSearchViewModel.generateSearchUrl(
                         sentKeyword
                     )
-                if (currentAlbumControllerProvider() != null && config.isExternalSearchInSameTab) {
-                    webViewProvider().loadUrl(url)
+                if (state.currentAlbumController != null && config.ai.isExternalSearchInSameTab) {
+                    state.ebWebView.loadUrl(url)
                 } else {
                     addAlbum("", url, true)
                 }
@@ -170,8 +170,8 @@ class IntentDispatchDelegate(
 
                 val url =
                     if (BrowserUnit.isURL(text)) text else externalSearchViewModel.generateSearchUrl(text)
-                if (currentAlbumControllerProvider() != null && config.isExternalSearchInSameTab) {
-                    webViewProvider().loadUrl(url)
+                if (state.currentAlbumController != null && config.ai.isExternalSearchInSameTab) {
+                    state.ebWebView.loadUrl(url)
                 } else {
                     addAlbum("", url, true)
                 }
@@ -191,8 +191,8 @@ class IntentDispatchDelegate(
 
                 initSavedTabs()
                 val url = externalSearchViewModel.generateSearchUrl(text)
-                if (currentAlbumControllerProvider() != null && config.isExternalSearchInSameTab) {
-                    webViewProvider().loadUrl(url)
+                if (state.currentAlbumController != null && config.ai.isExternalSearchInSameTab) {
+                    state.ebWebView.loadUrl(url)
                 } else {
                     addAlbum("", url, true)
                 }
@@ -202,7 +202,7 @@ class IntentDispatchDelegate(
             info.plateaukao.einkbro.activity.BrowserActivity.ACTION_READ_ALOUD -> readArticle()
 
             null -> {
-                if (currentAlbumControllerProvider() == null) {
+                if (state.currentAlbumController == null) {
                     initSavedTabs { addAlbum("", config.favoriteUrl, true) }
                 }
             }
@@ -213,7 +213,7 @@ class IntentDispatchDelegate(
     }
 
     fun initSavedTabs(whenNoSavedTabs: (() -> Unit)? = null) {
-        if (currentAlbumControllerProvider() == null) {
+        if (state.currentAlbumController == null) {
             if (config.savedAlbumInfoList.isNotEmpty() &&
                 (config.shouldSaveTabs || shouldLoadTabState)
             ) {

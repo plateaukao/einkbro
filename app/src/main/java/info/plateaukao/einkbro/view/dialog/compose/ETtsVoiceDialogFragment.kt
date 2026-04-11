@@ -30,10 +30,10 @@ class ETtsVoiceDialogFragment(
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             LanguageListScreen(
-                selectedVoiceItem = config.ettsVoice,
+                selectedVoiceItem = config.tts.ettsVoice,
                 voices,
             ) {
-                config.ettsVoice = it
+                config.tts.ettsVoice = it
                 selectedAction(it)
                 dismiss()
             }

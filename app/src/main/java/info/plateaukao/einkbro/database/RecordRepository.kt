@@ -2,7 +2,6 @@ package info.plateaukao.einkbro.database
 
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -43,15 +42,15 @@ class RecordRepository : KoinComponent {
         historyDao.deleteOlderThan(tsBefore)
     }
 
-    fun deleteHistoryItem(record: Record?) {
+    suspend fun deleteHistoryItem(record: Record?) {
         if (record == null || record.time <= 0) return
-        runBlocking(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             historyDao.deleteByTime(record.time)
         }
     }
 
-    fun clearHistory() {
-        runBlocking(Dispatchers.IO) {
+    suspend fun clearHistory() {
+        withContext(Dispatchers.IO) {
             historyDao.deleteAll()
         }
     }
@@ -73,14 +72,14 @@ class RecordRepository : KoinComponent {
         return if (amount == 0) list else list.take(amount)
     }
 
-    fun listAllHistory(): List<Record> {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun listAllHistory(): List<Record> {
+        return withContext(Dispatchers.IO) {
             historyDao.getAllHistory().map { it.toRecord() }
         }
     }
 
-    fun replaceAllHistory(records: List<Record>) {
-        runBlocking(Dispatchers.IO) {
+    suspend fun replaceAllHistory(records: List<Record>) {
+        withContext(Dispatchers.IO) {
             val entities = records
                 .filter { !it.title.isNullOrBlank() && it.url.isNotBlank() && it.time >= 0L }
                 .map {
@@ -96,10 +95,10 @@ class RecordRepository : KoinComponent {
 
     // -- Domain lists --
 
-    fun addDomain(domain: String?, table: String?) {
+    suspend fun addDomain(domain: String?, table: String?) {
         if (domain.isNullOrBlank() || table == null) return
         val trimmed = domain.trim()
-        runBlocking(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             when (table) {
                 TABLE_WHITELIST -> domainListDao.insertWhitelist(WhitelistDomain(trimmed))
                 TABLE_JAVASCRIPT -> domainListDao.insertJavascript(JavascriptDomain(trimmed))
@@ -108,10 +107,10 @@ class RecordRepository : KoinComponent {
         }
     }
 
-    fun checkDomain(domain: String?, table: String?): Boolean {
+    suspend fun checkDomain(domain: String?, table: String?): Boolean {
         if (domain.isNullOrBlank() || table == null) return false
         val trimmed = domain.trim()
-        return runBlocking(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             when (table) {
                 TABLE_WHITELIST -> domainListDao.whitelistContains(trimmed) > 0
                 TABLE_JAVASCRIPT -> domainListDao.javascriptContains(trimmed) > 0
@@ -121,10 +120,10 @@ class RecordRepository : KoinComponent {
         }
     }
 
-    fun deleteDomain(domain: String?, table: String) {
+    suspend fun deleteDomain(domain: String?, table: String) {
         if (domain.isNullOrBlank()) return
         val trimmed = domain.trim()
-        runBlocking(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             when (table) {
                 TABLE_WHITELIST -> domainListDao.deleteWhitelist(trimmed)
                 TABLE_JAVASCRIPT -> domainListDao.deleteJavascript(trimmed)
@@ -133,8 +132,8 @@ class RecordRepository : KoinComponent {
         }
     }
 
-    fun deleteAllDomains(dbTable: String) {
-        runBlocking(Dispatchers.IO) {
+    suspend fun deleteAllDomains(dbTable: String) {
+        withContext(Dispatchers.IO) {
             when (dbTable) {
                 TABLE_WHITELIST -> domainListDao.deleteAllWhitelist()
                 TABLE_JAVASCRIPT -> domainListDao.deleteAllJavascript()
@@ -143,9 +142,9 @@ class RecordRepository : KoinComponent {
         }
     }
 
-    fun listDomains(table: String?): List<String> {
+    suspend fun listDomains(table: String?): List<String> {
         if (table == null) return emptyList()
-        return runBlocking(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             when (table) {
                 TABLE_WHITELIST -> domainListDao.getAllWhitelistDomains()
                 TABLE_JAVASCRIPT -> domainListDao.getAllJavascriptDomains()

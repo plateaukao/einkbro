@@ -53,7 +53,7 @@ class BackupUnit(
     private val sp: SharedPreferences by inject()
     private val coroutineScope: CoroutineScope by inject()
 
-    fun backupData(context: Context, uri: Uri, categories: Set<BackupCategory>): Boolean {
+    suspend fun backupData(context: Context, uri: Uri, categories: Set<BackupCategory>): Boolean {
         try {
             val fos = context.contentResolver.openOutputStream(uri) ?: return false
             writeBackupZip(fos, categories)
@@ -65,7 +65,7 @@ class BackupUnit(
         }
     }
 
-    fun backupToTempFile(categories: Set<BackupCategory>): File? {
+    suspend fun backupToTempFile(categories: Set<BackupCategory>): File? {
         return try {
             val tempFile = File(context.cacheDir, "backup_share.zip")
             writeBackupZip(FileOutputStream(tempFile), categories)
@@ -76,7 +76,7 @@ class BackupUnit(
         }
     }
 
-    private fun writeBackupZip(
+    private suspend fun writeBackupZip(
         outputStream: java.io.OutputStream,
         categories: Set<BackupCategory>,
     ) {
@@ -179,7 +179,7 @@ class BackupUnit(
         }
     }
 
-    fun restoreBackupData(
+    suspend fun restoreBackupData(
         context: Context,
         uri: Uri,
         categories: Set<BackupCategory>,
@@ -283,7 +283,7 @@ class BackupUnit(
         }
     }
 
-    fun restoreBackupData(
+    suspend fun restoreBackupData(
         file: File,
         categories: Set<BackupCategory>,
     ): Boolean {

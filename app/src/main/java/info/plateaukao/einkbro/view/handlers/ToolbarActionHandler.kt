@@ -46,7 +46,7 @@ class ToolbarActionHandler(
 
     fun handleClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
         ToolbarAction.Back -> dispatch(BrowserAction.HandleBackKey)
-        ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
+        ToolbarAction.BoldFont -> config.display::boldFontStyle.toggle()
         ToolbarAction.Bookmark -> dispatch(BrowserAction.OpenBookmarkPage)
         ToolbarAction.CloseTab -> dispatch(BrowserAction.RemoveAlbum)
         ToolbarAction.DecreaseFont -> dispatch(BrowserAction.DecreaseFontSize)

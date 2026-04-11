@@ -12,6 +12,7 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.widget.FrameLayout
 import android.widget.VideoView
 import androidx.fragment.app.FragmentActivity
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.FabPosition
@@ -25,12 +26,7 @@ import info.plateaukao.einkbro.view.viewControllers.FabImageViewController
 class FullscreenDelegate(
     private val activity: FragmentActivity,
     private val config: ConfigManager,
-    private val bindingProvider: () -> MainActivityLayout,
-    private val webViewProvider: () -> EBWebView,
-    private val currentAlbumControllerProvider: () -> AlbumController?,
-    private val composeToolbarViewControllerProvider: () -> ComposeToolbarViewController,
-    private val fabImageViewControllerProvider: () -> FabImageViewController,
-    private val searchOnSiteProvider: () -> Boolean,
+    private val state: BrowserState,
     private val searchPanelHideAction: () -> Unit,
 ) {
     private var videoView: VideoView? = null
@@ -58,7 +54,7 @@ class FullscreenDelegate(
         customView = view
         originalOrientation = activity.requestedOrientation
         fullscreenHolder = ZoomableFrameLayout(activity).apply {
-            enableZoom = config.zoomInCustomView
+            enableZoom = config.display.zoomInCustomView
             addView(
                 customView,
                 FrameLayout.LayoutParams(
@@ -67,7 +63,7 @@ class FullscreenDelegate(
                 )
             )
         }
-        ViewUnit.invertColor(view, config.hasInvertedColor(webViewProvider().url.orEmpty()))
+        ViewUnit.invertColor(view, config.hasInvertedColor(state.ebWebView.url.orEmpty()))
 
         val decorView = activity.window.decorView as FrameLayout
         decorView.addView(
@@ -78,7 +74,7 @@ class FullscreenDelegate(
             )
         )
         customView?.keepScreenOn = true
-        (currentAlbumControllerProvider() as View?)?.visibility = View.INVISIBLE
+        (state.currentAlbumController as View?)?.visibility = View.INVISIBLE
         ViewUnit.setCustomFullscreen(
             activity.window,
             true,
@@ -97,7 +93,7 @@ class FullscreenDelegate(
     }
 
     fun onHideCustomView(): Boolean {
-        if (customView == null || customViewCallback == null || currentAlbumControllerProvider() == null) {
+        if (customView == null || customViewCallback == null || state.currentAlbumController == null) {
             return false
         }
 
@@ -108,7 +104,7 @@ class FullscreenDelegate(
         customView?.visibility = GONE
         (activity.window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
-        (currentAlbumControllerProvider() as View).visibility = VISIBLE
+        (state.currentAlbumController as View).visibility = VISIBLE
         ViewUnit.setCustomFullscreen(
             activity.window,
             false,
@@ -129,12 +125,12 @@ class FullscreenDelegate(
     }
 
     fun toggleFullscreen() {
-        if (searchOnSiteProvider()) return
+        if (state.searchOnSite) return
 
-        val binding = bindingProvider()
+        val binding = state.binding
         if (binding.appBar.visibility == VISIBLE) {
             if (config.fabPosition != FabPosition.NotShow) {
-                fabImageViewControllerProvider().show()
+                state.fabImageViewController.show()
             }
             binding.mainSearchPanel.visibility = View.INVISIBLE
             binding.appBar.visibility = GONE
@@ -146,16 +142,16 @@ class FullscreenDelegate(
     }
 
     fun showToolbar() {
-        if (searchOnSiteProvider()) return
+        if (state.searchOnSite) return
 
         showStatusBar()
-        fabImageViewControllerProvider().hide()
-        val binding = bindingProvider()
+        state.fabImageViewController.hide()
+        val binding = state.binding
         binding.mainSearchPanel.visibility = View.INVISIBLE
         binding.appBar.visibility = VISIBLE
         binding.contentSeparator.visibility = VISIBLE
         binding.inputUrl.visibility = View.INVISIBLE
-        composeToolbarViewControllerProvider().show()
+        state.composeToolbarViewController.show()
         ViewUnit.hideKeyboard(activity)
 
         if (config.isVerticalToolbar) {
@@ -170,7 +166,7 @@ class FullscreenDelegate(
             activity.window.insetsController?.hide(WindowInsets.Type.statusBars())
             if (ViewUnit.isEdgeToEdgeEnabled(activity.resources))
                 activity.window.insetsController?.hide(WindowInsets.Type.navigationBars())
-            bindingProvider().root.setPadding(0, 0, 0, 0)
+            state.binding.root.setPadding(0, 0, 0, 0)
         } else {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
@@ -189,13 +185,13 @@ class FullscreenDelegate(
     }
 
     fun hideSearchPanel() {
-        webViewProvider().clearMatches()
+        state.ebWebView.clearMatches()
         searchPanelHideAction()
         showToolbar()
     }
 
     private fun resetInputUrlConstraints() {
-        val binding = bindingProvider()
+        val binding = state.binding
         val constraintSet = androidx.constraintlayout.widget.ConstraintSet().apply {
             clone(binding.root)
             connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)

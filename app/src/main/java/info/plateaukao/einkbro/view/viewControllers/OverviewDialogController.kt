@@ -156,7 +156,9 @@ class OverviewDialogController(
         dialogManager.showOkCancelDialog(
             messageResId = R.string.clear_title_history,
             okAction = {
-                BrowserUnit.clearHistory(context)
+                (context as LifecycleOwner).lifecycleScope.launch {
+                    BrowserUnit.clearHistory(context)
+                }
                 hide()
             })
     }
@@ -192,7 +194,9 @@ class OverviewDialogController(
     }
 
     private fun deleteHistory(record: Record) {
-        recordDb.deleteHistoryItem(record)
-        refreshHistoryList()
+        (context as LifecycleOwner).lifecycleScope.launch {
+            recordDb.deleteHistoryItem(record)
+            refreshHistoryList()
+        }
     }
 }

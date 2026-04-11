@@ -102,7 +102,7 @@ class TranslateRepository : KoinComponent {
             TranslationLanguage.ZH_CN,
                 -> "zh"
 
-            else -> config.translationLanguage.value
+            else -> config.translation.translationLanguage.value
         }
 
         val headers = Headers.Builder()
@@ -292,7 +292,7 @@ class TranslateRepository : KoinComponent {
         } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException("Failed to get HmacSHA1 Mac instance", e)
         }
-        val keySpec = SecretKeySpec(config.imageApiKey.toByteArray(), "HmacSHA1")
+        val keySpec = SecretKeySpec(config.ai.imageApiKey.toByteArray(), "HmacSHA1")
         try {
             hmac.init(keySpec)
         } catch (e: InvalidKeyException) {

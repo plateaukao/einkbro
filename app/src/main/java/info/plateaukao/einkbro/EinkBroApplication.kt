@@ -104,8 +104,6 @@ class EinkBroApplication : Application() {
             LocaleManager.setLocale(this, config.uiLocaleLanguage)
         }
 
-        instance = this
-
         setupAdBlock()
     }
 
@@ -222,8 +220,4 @@ class EinkBroApplication : Application() {
         return super.getPackageName()
     }
 
-    companion object {
-        lateinit var instance: EinkBroApplication
-            private set
-    }
 }

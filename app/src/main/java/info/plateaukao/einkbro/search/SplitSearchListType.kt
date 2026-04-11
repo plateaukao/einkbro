@@ -40,19 +40,19 @@ class SplitSearchListType : BaseWhiteListType() {
 
 private class SplitSearchHandler : DomainInterface, KoinComponent {
     private val configManager: ConfigManager by inject()
-    override fun getDomains(): List<String> =
+    override suspend fun getDomains(): List<String> =
         configManager.splitSearchItemInfoList.map { it.title }
 
-    override fun addDomain(domain: String) { /* use addSplitSearchItem instead */
+    override suspend fun addDomain(domain: String) { /* use addSplitSearchItem instead */
     }
 
     fun addSplitSearchItem(splitSearchItemInfo: SplitSearchItemInfo) {
         configManager.addSplitSearchItem(splitSearchItemInfo)
     }
 
-    override fun deleteDomain(domain: String) {
+    override suspend fun deleteDomain(domain: String) {
         configManager.deleteSplitSearchItem(SplitSearchItemInfo(domain, domain, true))
     }
 
-    override fun deleteAllDomains() = configManager.deleteAllSplitSearchItems()
+    override suspend fun deleteAllDomains() = configManager.deleteAllSplitSearchItems()
 }
