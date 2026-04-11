@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.preference.TranslationMode
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "domain_configuration")
@@ -28,4 +29,5 @@ data class DomainConfigurationData(
     var fontBoldness: Int? = null,
     var desktopMode: Boolean? = null,
     var enableJavascript: Boolean? = null,
+    var translationMode: TranslationMode? = null,
 )

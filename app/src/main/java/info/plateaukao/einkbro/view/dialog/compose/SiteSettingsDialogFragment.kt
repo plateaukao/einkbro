@@ -31,6 +31,7 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.CodeOff
 import androidx.compose.material.icons.outlined.InvertColors
 import androidx.compose.material.icons.outlined.InvertColorsOff
+import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.twotone.Copyright
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.view.compose.MyTheme
 
 class SiteSettingsDialogFragment(
@@ -75,6 +77,7 @@ class SiteSettingsDialogFragment(
                 globalFontBoldness = config.display.fontBoldness,
                 globalDesktopMode = config.browser.desktop,
                 globalJavascript = config.browser.enableJavascript,
+                globalTranslationMode = config.translation.translationMode,
                 onSave = { updatedConfig ->
                     config.updateDomainConfig(updatedConfig)
                     onDismissAction()
@@ -97,6 +100,7 @@ private fun SiteSettingsContent(
     globalFontBoldness: Int,
     globalDesktopMode: Boolean,
     globalJavascript: Boolean,
+    globalTranslationMode: TranslationMode,
     onSave: (DomainConfigurationData) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -109,6 +113,8 @@ private fun SiteSettingsContent(
     var invertColor by remember { mutableStateOf(domainConfig.shouldInvertColor) }
     var desktopMode by remember { mutableStateOf(domainConfig.desktopMode) }
     var javascript by remember { mutableStateOf(domainConfig.enableJavascript) }
+    var translateSite by remember { mutableStateOf(domainConfig.shouldTranslateSite) }
+    var translationMode by remember { mutableStateOf(domainConfig.translationMode) }
 
     Column(
         modifier = Modifier
@@ -231,6 +237,15 @@ private fun SiteSettingsContent(
             onValueChange = { javascript = it },
         )
 
+        // Translation: checkbox (always translate) + icon + mode dropdown
+        TranslationRow(
+            translateSite = translateSite,
+            translationMode = translationMode,
+            globalTranslationMode = globalTranslationMode,
+            onTranslateSiteChange = { translateSite = it },
+            onTranslationModeChange = { translationMode = it },
+        )
+
         Spacer(Modifier.height(12.dp))
         HorizontalSeparator()
         Spacer(Modifier.height(8.dp))
@@ -244,6 +259,7 @@ private fun SiteSettingsContent(
                     fontSize = null; fontType = null; boldFont = null; blackFont = null
                     fontBoldness = null; desktopMode = null; javascript = null
                     whiteBackground = false; invertColor = false
+                    translateSite = false; translationMode = null
                 },
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = MaterialTheme.colors.onBackground,
@@ -263,6 +279,8 @@ private fun SiteSettingsContent(
                         shouldInvertColor = invertColor,
                         desktopMode = desktopMode,
                         enableJavascript = javascript,
+                        shouldTranslateSite = translateSite,
+                        translationMode = translationMode,
                     )
                     onSave(updated)
                 },
@@ -398,6 +416,69 @@ private fun StateIcon(
             modifier = iconModifier,
             tint = tint,
         )
+    }
+}
+
+/**
+ * Single row: checkbox (always translate) + translate icon + translation mode dropdown.
+ */
+@Composable
+private fun TranslationRow(
+    translateSite: Boolean,
+    translationMode: TranslationMode?,
+    globalTranslationMode: TranslationMode,
+    onTranslateSiteChange: (Boolean) -> Unit,
+    onTranslationModeChange: (TranslationMode?) -> Unit,
+) {
+    val effectiveMode = translationMode ?: globalTranslationMode
+    var expanded by remember { mutableStateOf(false) }
+    val color = if (translateSite) MaterialTheme.colors.onBackground
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.4f)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Checkbox(
+            checked = translateSite,
+            onCheckedChange = { onTranslateSiteChange(it) },
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colors.onBackground,
+                uncheckedColor = MaterialTheme.colors.onBackground,
+                checkmarkColor = MaterialTheme.colors.background,
+            ),
+        )
+        Icon(
+            imageVector = Icons.Outlined.Translate,
+            contentDescription = null,
+            modifier = Modifier.size(28.dp),
+            tint = color,
+        )
+        Spacer(Modifier.width(8.dp))
+        OutlinedButton(
+            onClick = { if (translateSite) expanded = true },
+            enabled = translateSite,
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = color,
+            ),
+        ) {
+            Text(stringResource(effectiveMode.labelResId), fontSize = 12.sp)
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                TranslationMode.entries.forEach { mode ->
+                    DropdownMenuItem(onClick = {
+                        onTranslationModeChange(mode)
+                        expanded = false
+                    }) {
+                        Text(stringResource(mode.labelResId))
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -338,7 +338,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             isTwoPaneControllerInitialized = { isTwoPaneControllerInitialized() },
             maybeInitTwoPaneController = { maybeInitTwoPaneController() },
             addAlbum = { tabManager.addAlbum() },
-        )
+        ).also {
+            it.showSiteSettingsAction = { showSiteSettingsDialog() }
+        }
     }
 
     val tabManager: TabManager by lazy {

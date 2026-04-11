@@ -189,6 +189,11 @@ class ConfigManager(
         return domainConfigurationMap[host]?.enableJavascript ?: browser.enableJavascript
     }
 
+    fun getTranslationMode(url: String): TranslationMode {
+        val host = Uri.parse(url)?.host ?: return translation.translationMode
+        return domainConfigurationMap[host]?.translationMode ?: translation.translationMode
+    }
+
     fun getDomainConfig(url: String): DomainConfigurationData {
         val host = Uri.parse(url)?.host ?: return DomainConfigurationData("")
         return domainConfigurationMap[host] ?: DomainConfigurationData(host)

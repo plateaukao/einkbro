@@ -192,7 +192,8 @@ class TwoPaneController(
     fun isSecondPaneDisplayed(): Boolean = twoPaneLayout.shouldShowSecondPane
 
     fun showTranslation(webView: EBWebView) {
-        when (config.translation.translationMode) {
+        val mode = config.getTranslationMode(webView.url.orEmpty())
+        when (mode) {
             TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
             TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
 
