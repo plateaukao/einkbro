@@ -25,6 +25,7 @@ import info.plateaukao.einkbro.view.EBWebView
 class EBWebChromeClient(
     private val ebWebView: EBWebView,
     private val onReceiveFavicon: (Bitmap) -> Unit,
+    private val chromeCallback: WebChromeCallback? = null,
 ) : WebChromeClient() {
     private val TAG: String = "EBWebChromeClient"
 
@@ -108,7 +109,7 @@ class EBWebChromeClient(
         (ebWebView.parent as ViewGroup).removeView(window)
     }
 
-    private fun handleWebViewLinks(url: String) = ebWebView.browserController?.addNewTab(url)
+    private fun handleWebViewLinks(url: String) = chromeCallback?.addNewTab(url)
 
     override fun onProgressChanged(view: WebView, progress: Int) {
         super.onProgressChanged(view, progress)
@@ -124,12 +125,12 @@ class EBWebChromeClient(
     }
 
     override fun onShowCustomView(view: View, callback: CustomViewCallback) {
-        ebWebView.browserController?.onShowCustomView(view, callback)
+        chromeCallback?.onShowCustomView(view, callback)
         super.onShowCustomView(view, callback)
     }
 
     override fun onHideCustomView() {
-        ebWebView.browserController?.onHideCustomView()
+        chromeCallback?.onHideCustomView()
         super.onHideCustomView()
     }
 
@@ -138,7 +139,7 @@ class EBWebChromeClient(
         filePathCallback: ValueCallback<Array<Uri>>,
         fileChooserParams: FileChooserParams,
     ): Boolean {
-        ebWebView.browserController?.showFileChooser(filePathCallback)
+        chromeCallback?.showFileChooser(filePathCallback)
         return true
     }
 

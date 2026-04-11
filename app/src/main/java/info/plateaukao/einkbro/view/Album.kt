@@ -4,12 +4,12 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import info.plateaukao.einkbro.browser.AlbumCallback
 import info.plateaukao.einkbro.browser.AlbumController
-import info.plateaukao.einkbro.browser.BrowserController
 
 data class Album(
     private val albumController: AlbumController,
-    private var browserController: BrowserController?
+    private var albumCallback: AlbumCallback?
 ) {
     var isLoaded = false
 
@@ -22,20 +22,20 @@ data class Album(
     var isActivated = false
 
     fun showOrJumpToTop() {
-        val controller = browserController ?: return
-        if (controller.isCurrentAlbum(albumController)) {
-            if (controller.isAtTop()) {
-                controller.refreshAction()
+        val callback = albumCallback ?: return
+        if (callback.isCurrentAlbum(albumController)) {
+            if (callback.isAtTop()) {
+                callback.refreshAction()
             } else {
-                controller.jumpToTop()
+                callback.jumpToTop()
             }
         } else {
-            controller.showAlbum(albumController)
+            callback.showAlbum(albumController)
         }
     }
 
     fun remove(showHomePage: Boolean = false) {
-        browserController?.removeAlbum(albumController, showHomePage)
+        albumCallback?.removeAlbum(albumController, showHomePage)
     }
 
     fun getUrl(): String = albumController.albumUrl

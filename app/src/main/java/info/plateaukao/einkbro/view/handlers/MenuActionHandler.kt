@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.activity.ToolbarConfigActivity
-import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.browser.BrowserAction
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.BrowserUnit
@@ -29,54 +29,56 @@ import org.koin.core.component.inject
 
 class MenuActionHandler(
     private val activity: FragmentActivity,
+    private val dispatch: (BrowserAction) -> Unit,
+    private val currentWebView: () -> EBWebView,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val browserController = activity as BrowserController
     private val dialogManager by lazy { DialogManager(activity) }
 
     fun handleLongClick(menuItemType: MenuItemType) =
         when (menuItemType) {
-            MenuItemType.Translate -> browserController.showTranslationConfigDialog(true)
-            MenuItemType.ReceiveData -> browserController.toggleReceiveTextSearch()
-            MenuItemType.SendLink -> browserController.toggleTextSearch()
-            MenuItemType.TouchSetting -> browserController.toggleTouchPagination()
-            MenuItemType.BoldFont -> browserController.showFontBoldnessDialog()
+            MenuItemType.Translate -> dispatch(BrowserAction.ShowTranslationConfigDialog(true))
+            MenuItemType.ReceiveData -> dispatch(BrowserAction.ToggleReceiveTextSearch)
+            MenuItemType.SendLink -> dispatch(BrowserAction.ToggleTextSearch)
+            MenuItemType.TouchSetting -> dispatch(BrowserAction.ToggleTouchPagination)
+            MenuItemType.BoldFont -> dispatch(BrowserAction.ShowFontBoldnessDialog)
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
             MenuItemType.Tts -> TtsSettingDialogFragment()
                 .show(activity.supportFragmentManager, "TtsSettingDialog")
 
-            MenuItemType.ChatWithWeb -> browserController.chatWithWeb(true)
+            MenuItemType.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb(useSplitScreen = true))
 
-            MenuItemType.Instapaper -> browserController.configureInstapaper()
+            MenuItemType.Instapaper -> dispatch(BrowserAction.ConfigureInstapaper)
 
-            MenuItemType.SaveArchive -> browserController.showSavedPages()
+            MenuItemType.SaveArchive -> dispatch(BrowserAction.ShowSavedPages)
 
             else -> Unit
         }
 
-    fun handle(menuItemType: MenuItemType, ebWebView: EBWebView): Any? {
+    fun handle(menuItemType: MenuItemType): Any? {
+        val ebWebView = currentWebView()
         return when (menuItemType) {
-            MenuItemType.Tts -> browserController.handleTtsButton()
-            MenuItemType.QuickToggle -> browserController.showFastToggleDialog()
-            MenuItemType.OpenHome -> browserController.updateAlbum(config.favoriteUrl)
-            MenuItemType.CloseTab -> browserController.removeAlbum()
+            MenuItemType.Tts -> dispatch(BrowserAction.HandleTtsButton)
+            MenuItemType.QuickToggle -> dispatch(BrowserAction.ShowFastToggleDialog)
+            MenuItemType.OpenHome -> dispatch(BrowserAction.UpdateAlbum(config.favoriteUrl))
+            MenuItemType.CloseTab -> dispatch(BrowserAction.RemoveAlbum)
             MenuItemType.Quit -> activity.finishAndRemoveTask()
 
-            MenuItemType.SplitScreen -> browserController.toggleSplitScreen()
-            MenuItemType.Translate -> browserController.showTranslation()
-            MenuItemType.VerticalRead -> browserController.toggleVerticalRead()
-            MenuItemType.ReaderMode -> browserController.toggleReaderMode()
-            MenuItemType.TouchSetting -> browserController.showTouchAreaDialog()
+            MenuItemType.SplitScreen -> dispatch(BrowserAction.ToggleSplitScreen())
+            MenuItemType.Translate -> dispatch(BrowserAction.ShowTranslation)
+            MenuItemType.VerticalRead -> dispatch(BrowserAction.ToggleVerticalRead)
+            MenuItemType.ReaderMode -> dispatch(BrowserAction.ToggleReaderMode)
+            MenuItemType.TouchSetting -> dispatch(BrowserAction.ShowTouchAreaDialog)
             MenuItemType.ToolbarSetting -> {
                 activity.startActivity(Intent(activity, ToolbarConfigActivity::class.java).apply {
                     putExtra(ToolbarConfigActivity.EXTRA_IS_READER_MODE, activity is EpubReaderActivity)
                 })
             }
 
-            MenuItemType.ReceiveData -> browserController.toggleReceiveLink()
-            MenuItemType.SendLink -> browserController.sendToRemote(ebWebView.url.orEmpty())
+            MenuItemType.ReceiveData -> dispatch(BrowserAction.ToggleReceiveLink)
+            MenuItemType.SendLink -> dispatch(BrowserAction.SendToRemote(ebWebView.url.orEmpty()))
 
-            MenuItemType.ShareLink -> browserController.shareLink()
+            MenuItemType.ShareLink -> dispatch(BrowserAction.ShareLink)
 
             MenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
                 activity,
@@ -89,16 +91,16 @@ class MenuActionHandler(
                 BrowserUnit.stripUrlQuery(ebWebView.url.orEmpty())
             )
 
-            MenuItemType.Shortcut -> browserController.createShortcut()
+            MenuItemType.Shortcut -> dispatch(BrowserAction.CreateShortcut)
 
             MenuItemType.Highlights -> IntentUnit.gotoHighlights(activity)
             MenuItemType.SetHome -> config.favoriteUrl = ebWebView.url.orEmpty()
-            MenuItemType.SaveBookmark -> browserController.saveBookmark()
-            MenuItemType.Epub -> browserController.showEpubDialog()
+            MenuItemType.SaveBookmark -> dispatch(BrowserAction.SaveBookmark())
+            MenuItemType.Epub -> dispatch(BrowserAction.ShowEpubDialog)
             MenuItemType.SavePdf -> printPDF(ebWebView)
 
-            MenuItemType.FontSize -> browserController.showFontSizeChangeDialog()
-            MenuItemType.InvertColor -> browserController.invertColors()
+            MenuItemType.FontSize -> dispatch(BrowserAction.ShowFontSizeChangeDialog)
+            MenuItemType.InvertColor -> dispatch(BrowserAction.InvertColors)
 
             MenuItemType.WhiteBknd -> {
                 val isOn = config.toggleWhiteBackground(ebWebView.url.orEmpty())
@@ -107,13 +109,13 @@ class MenuActionHandler(
 
             MenuItemType.BoldFont -> config::boldFontStyle.toggle()
             MenuItemType.BlackFont -> config::blackFontStyle.toggle()
-            MenuItemType.Search -> browserController.showSearchPanel()
+            MenuItemType.Search -> dispatch(BrowserAction.ShowSearchPanel)
             MenuItemType.Download -> BrowserUnit.openDownloadFolder(activity)
-            MenuItemType.SaveArchive -> browserController.savePageForLater()
+            MenuItemType.SaveArchive -> dispatch(BrowserAction.SavePageForLater)
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
-            MenuItemType.ChatWithWeb -> browserController.chatWithWeb()
-            MenuItemType.Instapaper -> browserController.addToInstapaper()
+            MenuItemType.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb())
+            MenuItemType.Instapaper -> dispatch(BrowserAction.AddToInstapaper)
             MenuItemType.AudioOnly -> ebWebView.toggleAudioOnlyMode()
         }
     }

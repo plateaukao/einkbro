@@ -55,6 +55,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
+import info.plateaukao.einkbro.browser.BrowserAction
 import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -186,9 +187,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val keyHandler: KeyHandler by lazy { KeyHandler(this, ebWebView, config) }
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
-    private val gestureHandler: GestureHandler by lazy { GestureHandler(this) }
-    private val toolbarActionHandler: ToolbarActionHandler by lazy { ToolbarActionHandler(this) }
-    private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this) }
+    private val gestureHandler: GestureHandler by lazy { GestureHandler { dispatch(it) } }
+    private val toolbarActionHandler: ToolbarActionHandler by lazy { ToolbarActionHandler(this) { dispatch(it) } }
+    private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this, { dispatch(it) }) { ebWebView } }
     private val externalSearchWebView: WebView by lazy { BrowserUnit.createNaverDictWebView(this) }
 
     private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
@@ -364,6 +365,72 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             onTabLongClick = { it.remove() },
             isAudioOnlyMode = { if (::ebWebView.isInitialized) ebWebView.isAudioOnlyMode else false },
         )
+    }
+
+    // ── BrowserAction dispatch ─────────────────────────────────────────────
+
+    fun dispatch(action: BrowserAction) = when (action) {
+        is BrowserAction.NewATab -> newATab()
+        is BrowserAction.DuplicateTab -> duplicateTab()
+        is BrowserAction.RemoveAlbum -> removeAlbum()
+        is BrowserAction.GotoLeftTab -> gotoLeftTab()
+        is BrowserAction.GotoRightTab -> gotoRightTab()
+        is BrowserAction.AddNewTab -> addNewTab(action.url)
+        is BrowserAction.UpdateAlbum -> updateAlbum(action.url)
+        is BrowserAction.GoForward -> goForward()
+        is BrowserAction.HandleBackKey -> handleBackKey()
+        is BrowserAction.RefreshAction -> refreshAction()
+        is BrowserAction.JumpToTop -> jumpToTop()
+        is BrowserAction.JumpToBottom -> jumpToBottom()
+        is BrowserAction.PageUp -> pageUp()
+        is BrowserAction.PageDown -> pageDown()
+        is BrowserAction.SendPageUpKey -> sendPageUpKey()
+        is BrowserAction.SendPageDownKey -> sendPageDownKey()
+        is BrowserAction.SendLeftKey -> sendLeftKey()
+        is BrowserAction.SendRightKey -> sendRightKey()
+        is BrowserAction.ToggleReaderMode -> toggleReaderMode()
+        is BrowserAction.ToggleVerticalRead -> toggleVerticalRead()
+        is BrowserAction.IncreaseFontSize -> increaseFontSize()
+        is BrowserAction.DecreaseFontSize -> decreaseFontSize()
+        is BrowserAction.ShowFontSizeChangeDialog -> showFontSizeChangeDialog()
+        is BrowserAction.ShowFontBoldnessDialog -> showFontBoldnessDialog()
+        is BrowserAction.InvertColors -> invertColors()
+        is BrowserAction.ShowOverview -> showOverview()
+        is BrowserAction.ToggleFullscreen -> toggleFullscreen()
+        is BrowserAction.ToggleSplitScreen -> toggleSplitScreen(action.url)
+        is BrowserAction.ShowTranslation -> showTranslation()
+        is BrowserAction.ShowTranslationConfigDialog -> showTranslationConfigDialog(action.translateDirectly)
+        is BrowserAction.Translate -> translate(action.mode)
+        is BrowserAction.ConfigureTranslationLanguage -> configureTranslationLanguage(action.api)
+        is BrowserAction.HandleTtsButton -> handleTtsButton()
+        is BrowserAction.OpenBookmarkPage -> openBookmarkPage()
+        is BrowserAction.OpenHistoryPage -> openHistoryPage(action.amount)
+        is BrowserAction.SaveBookmark -> saveBookmark(action.url, action.title)
+        is BrowserAction.ShowSearchPanel -> showSearchPanel()
+        is BrowserAction.ToggleTextSearch -> toggleTextSearch()
+        is BrowserAction.ToggleReceiveTextSearch -> toggleReceiveTextSearch()
+        is BrowserAction.CreateShortcut -> createShortcut()
+        is BrowserAction.ShareLink -> shareLink()
+        is BrowserAction.SendToRemote -> sendToRemote(action.text)
+        is BrowserAction.AddToInstapaper -> addToInstapaper()
+        is BrowserAction.ConfigureInstapaper -> configureInstapaper()
+        is BrowserAction.ToggleReceiveLink -> toggleReceiveLink()
+        is BrowserAction.ToggleTouchTurnPage -> toggleTouchTurnPageFeature()
+        is BrowserAction.ToggleSwitchTouchAreaAction -> toggleSwitchTouchAreaAction()
+        is BrowserAction.ShowTouchAreaDialog -> showTouchAreaDialog()
+        is BrowserAction.ToggleTouchPagination -> toggleTouchPagination()
+        is BrowserAction.SummarizeContent -> summarizeContent()
+        is BrowserAction.ChatWithWeb -> chatWithWeb(action.useSplitScreen, action.content, action.runWithAction)
+        is BrowserAction.ShowPageAiActionMenu -> showPageAiActionMenu()
+        is BrowserAction.ShowEpubDialog -> showEpubDialog()
+        is BrowserAction.SavePageForLater -> savePageForLater()
+        is BrowserAction.ShowSavedPages -> showSavedPages()
+        is BrowserAction.FocusOnInput -> focusOnInput()
+        is BrowserAction.ShowMenuDialog -> showMenuDialog()
+        is BrowserAction.ShowFastToggleDialog -> showFastToggleDialog()
+        is BrowserAction.ShowTocDialog -> showTocDialog()
+        is BrowserAction.RotateScreen -> rotateScreen()
+        is BrowserAction.ToggleAudioOnlyMode -> toggleAudioOnlyMode()
     }
 
     // ── BrowserController implementation ──────────────────────────────────
@@ -609,7 +676,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showMenuDialog() = MenuDialogFragment(
         ebWebView.url.orEmpty(), ttsViewModel.isReading(), ebWebView.isAudioOnlyMode,
         ebWebView.hasVideo, config.enableTouchTurn,
-        { menuActionHandler.handle(it, ebWebView) }, { menuActionHandler.handleLongClick(it) }
+        { menuActionHandler.handle(it) }, { menuActionHandler.handleLongClick(it) }
     ).show(supportFragmentManager, "menu_dialog")
 
     override fun showTouchAreaDialog() = TouchAreaDialogFragment(ebWebView.url.orEmpty()).show(supportFragmentManager, "TouchAreaDialog")
@@ -859,7 +926,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initLaunchers() = fileHandlingDelegate.initLaunchers()
     private fun initTouchArea() = composeToolbarViewController.updateIcons()
-    private fun initTouchAreaViewController() { touchController = TouchAreaViewController(binding.activityMainContent, this) }
+    private fun initTouchAreaViewController() { touchController = TouchAreaViewController(binding.activityMainContent) { dispatch(it) } }
 
     protected fun readArticle() {
         lifecycleScope.launch { ttsViewModel.readArticle(ebWebView.getRawText(), ebWebView.title.orEmpty()) }

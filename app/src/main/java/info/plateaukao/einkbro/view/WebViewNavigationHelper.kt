@@ -11,6 +11,7 @@ import kotlin.math.min
 class WebViewNavigationHelper(
     private val webView: EBWebView,
     private val config: ConfigManager,
+    private val onUpdatePageInfo: (String) -> Unit = {},
 ) {
 
     fun isAtTop(): Boolean = if (webView.isVerticalRead) {
@@ -79,20 +80,20 @@ class WebViewNavigationHelper(
                 val totalPageCount = webView.horizontalScrollRange() / pageHeight
                 val currentPage = totalPageCount - (floor(webView.scrollX.toDouble() / pageHeight).toInt())
                 val info = "$currentPage/$totalPageCount"
-                webView.browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
+                onUpdatePageInfo(if (info != "0/0") info else "-/-")
             } else if (webView.innerClientHeight > 0 && webView.verticalScrollRange() <= webView.height + pageHeight / 2) {
                 val totalPageCount = webView.innerScrollHeight / webView.innerClientHeight
                 val currentPage = ceil((webView.innerScrollTop + 1).toDouble() / webView.innerClientHeight).toInt()
                 val info = "$currentPage/$totalPageCount"
-                webView.browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
+                onUpdatePageInfo(if (info != "0/0") info else "-/-")
             } else {
                 val totalPageCount = webView.verticalScrollRange() / pageHeight
                 val currentPage = ceil((webView.scrollY + 1).toDouble() / pageHeight).toInt()
                 val info = "$currentPage/$totalPageCount"
-                webView.browserController?.updatePageInfo(if (info != "0/0") info else "-/-")
+                onUpdatePageInfo(if (info != "0/0") info else "-/-")
             }
         } catch (e: ArithmeticException) {
-            webView.browserController?.updatePageInfo("-/-")
+            onUpdatePageInfo("-/-")
         }
     }
 

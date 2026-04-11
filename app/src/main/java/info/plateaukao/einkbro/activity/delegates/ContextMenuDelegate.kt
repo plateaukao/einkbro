@@ -169,7 +169,7 @@ class ContextMenuDelegate(
     }
 
     private val toBeReadWebView: EBWebView by lazy {
-        EBWebView(activity, activity as info.plateaukao.einkbro.browser.BrowserController).apply {
+        EBWebView(activity, activity as info.plateaukao.einkbro.browser.WebViewCallback).apply {
             setOnPageFinishedAction {
                 activity.lifecycleScope.launch {
                     val content = toBeReadWebView.getRawText()

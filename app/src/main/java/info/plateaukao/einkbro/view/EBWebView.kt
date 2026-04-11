@@ -22,9 +22,14 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.browser.AlbumCallback
 import info.plateaukao.einkbro.browser.AlbumController
-import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.browser.ChatWebInterface
+import info.plateaukao.einkbro.browser.InputController
+import info.plateaukao.einkbro.browser.JsBrowserCallback
+import info.plateaukao.einkbro.browser.TabController
+import info.plateaukao.einkbro.browser.WebChromeCallback
+import info.plateaukao.einkbro.browser.WebViewCallback
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.EBClickHandler
 import info.plateaukao.einkbro.browser.EBDownloadListener
@@ -56,10 +61,10 @@ import kotlin.coroutines.suspendCoroutine
 
 open class EBWebView(
     context: Context,
-    var browserController: BrowserController?,
+    var webViewCallback: WebViewCallback?,
 ) : WebView(context), AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
-    override val album: Album = Album(this, browserController)
+    override val album: Album = Album(this, webViewCallback as? AlbumCallback)
     protected val webViewClient: EBWebViewClient
     private val webChromeClient: EBWebChromeClient
     private val downloadListener: EBDownloadListener = EBDownloadListener(context)
@@ -83,7 +88,9 @@ open class EBWebView(
     // Helpers for delegated concerns
     val readerHelper = WebViewReaderHelper(this, config)
     val translationHelper = WebViewTranslationHelper(this, config)
-    val navigationHelper = WebViewNavigationHelper(this, config)
+    val navigationHelper = WebViewNavigationHelper(this, config) { info ->
+        (webViewCallback as? InputController)?.updatePageInfo(info)
+    }
 
     // Delegated reader state
     var isReaderModeOn: Boolean
@@ -202,10 +209,10 @@ open class EBWebView(
                 }
 
                 // Check if action mode (text selection) is active — dismiss instead of paginating
-                val controller = browserController
-                if (controller != null && controller.isActionModeActive()) {
+                val callback = webViewCallback
+                if (callback != null && callback.isActionModeActive()) {
                     sendCancelEvent(event)
-                    post { controller.dismissActionMode() }
+                    post { callback.dismissActionMode() }
                     return true
                 }
 
@@ -257,7 +264,7 @@ open class EBWebView(
         dualCaption = null
         isTranslatePage = false
         isTranslateByParagraph = false
-        browserController?.resetTranslateUI()
+        webViewCallback?.resetTranslateUI()
 
         if (!partial) {
             isVerticalRead = false
@@ -290,9 +297,11 @@ open class EBWebView(
         isAIPage = false
         isForeground = false
         webViewClient =
-            EBWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
-        webChromeClient = EBWebChromeClient(this) { setAlbumCoverAndSyncDb(it) }
-        clickHandler = EBClickHandler(this)
+            EBWebViewClient(this) { title, url -> webViewCallback?.addHistory(title, url) }
+        webChromeClient = EBWebChromeClient(this, { setAlbumCoverAndSyncDb(it) }, webViewCallback as? WebChromeCallback)
+        clickHandler = EBClickHandler { msg, event ->
+            (webViewCallback as? InputController)?.onLongPress(msg, event)
+        }
         initWebView()
         initWebSettings()
         initPreferences()
@@ -313,7 +322,7 @@ open class EBWebView(
     }
 
     private fun setupJsWebInterface() {
-        addJavascriptInterface(JsWebInterface(this), "androidApp")
+        addJavascriptInterface(JsWebInterface(this, webViewCallback as? JsBrowserCallback), "androidApp")
     }
 
     @Suppress("DEPRECATION")
@@ -452,7 +461,7 @@ open class EBWebView(
     }
 
     override fun loadUrl(url: String, additionalHttpHeaders: MutableMap<String, String>) {
-        if (browserController?.loadInSecondPane(url) == true) {
+        if (webViewCallback?.loadInSecondPane(url) == true) {
             return
         }
 
@@ -492,7 +501,7 @@ open class EBWebView(
             postDelayed({ if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
         }
 
-        if (browserController?.loadInSecondPane(processedUrl) == true) {
+        if (webViewCallback?.loadInSecondPane(processedUrl) == true) {
             return
         }
 
@@ -515,7 +524,10 @@ open class EBWebView(
         isAIPage = true
 
         if (chatWebInterface == null) {
-            chatWebInterface = ChatWebInterface(lifecycleScope, this, webContent, webTitle, webUrl)
+            chatWebInterface = ChatWebInterface(
+                lifecycleScope, this, webContent, webTitle, webUrl,
+                onOpenNewTab = { url -> (webViewCallback as? TabController)?.addNewTab(url) }
+            )
         } else {
             chatWebInterface?.updateWebContent(webContent, webTitle, webUrl)
         }
@@ -595,14 +607,14 @@ open class EBWebView(
 
     fun update(progress: Int) {
         if (isForeground) {
-            browserController?.updateProgress(progress)
+            webViewCallback?.updateProgress(progress)
         }
     }
 
     fun update(title: String?) {
         album.albumTitle = title.orEmpty()
         // so that title on bottom bar can be updated
-        browserController?.updateTitle(album.albumTitle)
+        webViewCallback?.updateTitle(album.albumTitle)
     }
 
     override fun destroy() {
@@ -796,7 +808,7 @@ open class EBWebView(
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean =
-        if (browserController?.handleKeyEvent(event) == true) {
+        if (webViewCallback?.handleKeyEvent(event) == true) {
             true
         } else {
             super.dispatchKeyEvent(event)
@@ -837,7 +849,7 @@ open class EBWebView(
 
     //endregion
 
-    fun showTranslation() = browserController?.showTranslation(this)
+    fun showTranslation() = webViewCallback?.showTranslation(this)
 
     fun addSelectionChangeListener() = jsBridge.addSelectionChangeListener()
 
