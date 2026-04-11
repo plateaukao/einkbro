@@ -529,7 +529,7 @@
     <string name="setting_title_gpt_query_list">سجل نتائج GPT</string>
     <string name="setting_summary_gpt_query_list">نتائج استعلام GPT المحفوظة</string>
     <string name="enable_touch_area_as_page_key">كمفتاح صفحة أعلى/أسفل</string>
-    <string name="translate_this_site">ترجمة هذا الموقع</string>
+    <string name="translate_this_site">ترجمة دائمًا</string>
     <string name="select_sentence">تحديد جملة</string>
     <string name="select_paragraph">تحديد فقرة</string>
     <string name="toast_saved">تم الحفظ!</string>

@@ -504,7 +504,7 @@
     <string name="setting_title_gpt_query_list">Cronologia risultati GPT</string>
     <string name="setting_summary_gpt_query_list">Risultati GPT salvati</string>
     <string name="enable_touch_area_as_page_key">Come tasto Pagina Su/Giù</string>
-    <string name="translate_this_site">Traduci questo sito</string>
+    <string name="translate_this_site">Traduci sempre</string>
     <string name="select_sentence">Seleziona frase</string>
     <string name="select_paragraph">Seleziona paragrafo</string>
     <string name="toast_saved">Salvato!</string>

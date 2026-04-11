@@ -513,7 +513,7 @@
     <string name="setting_title_gpt_query_list">Istoric rezultate GPT</string>
     <string name="setting_summary_gpt_query_list">Rezultate GPT salvate</string>
     <string name="enable_touch_area_as_page_key">Ca tastă Pagină Sus/Jos</string>
-    <string name="translate_this_site">Traduce acest site</string>
+    <string name="translate_this_site">Traduce întotdeauna</string>
     <string name="select_sentence">Selectare propoziție</string>
     <string name="select_paragraph">Selectare paragraf</string>
     <string name="toast_saved">Salvat!</string>

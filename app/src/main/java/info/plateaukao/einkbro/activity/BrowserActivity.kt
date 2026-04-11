@@ -425,6 +425,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         is BrowserAction.ShowEpubDialog -> showEpubDialog()
         is BrowserAction.SavePageForLater -> savePageForLater()
         is BrowserAction.ShowSavedPages -> showSavedPages()
+        is BrowserAction.SaveWebArchive -> showWebArchiveFilePicker()
         is BrowserAction.FocusOnInput -> focusOnInput()
         is BrowserAction.ShowMenuDialog -> showMenuDialog()
         is BrowserAction.ShowFastToggleDialog -> showFastToggleDialog()

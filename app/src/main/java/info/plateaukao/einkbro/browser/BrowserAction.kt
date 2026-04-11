@@ -87,6 +87,7 @@ sealed class BrowserAction {
     object ShowEpubDialog : BrowserAction()
     object SavePageForLater : BrowserAction()
     object ShowSavedPages : BrowserAction()
+    object SaveWebArchive : BrowserAction()
 
     // Dialog / UI
     object FocusOnInput : BrowserAction()

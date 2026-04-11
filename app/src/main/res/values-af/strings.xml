@@ -605,7 +605,7 @@
     <string name="translate_papago">Naver Papago API Secret</string>
     <string name="translate_papago_summary">As jy Naver Papago-vertaaldiens wil gebruik, voer asb. jou API-geheim in</string>
     <string name="translate_processing">Verwerk…</string>
-    <string name="translate_this_site">Vertaal hierdie werf</string>
+    <string name="translate_this_site">Vertaal altyd</string>
     <string name="translation_language">Vertaaltaal</string>
     <string name="translation_mode">Vertaalmodus</string>
     <string name="tts_type_etts">ReadAloud</string>

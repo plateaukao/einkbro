@@ -697,7 +697,7 @@
     <string name="setting_title_gpt_query_list">GPT eredmény előzmények</string>
     <string name="setting_summary_gpt_query_list">Mentett GPT lekérdezési eredmények</string>
     <string name="enable_touch_area_as_page_key">Page Up/Down gombként</string>
-    <string name="translate_this_site">Oldal fordítása</string>
+    <string name="translate_this_site">Mindig fordítsd le</string>
     <string name="select_sentence">Mondat kijelölése</string>
     <string name="select_paragraph">Bekezdés kijelölése</string>
     <string name="toast_saved">Mentve!</string>

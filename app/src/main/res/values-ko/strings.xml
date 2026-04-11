@@ -549,7 +549,7 @@
     <string name="setting_title_gpt_query_list">GPT 결과 기록</string>
     <string name="setting_summary_gpt_query_list">저장된 GPT 쿼리 결과</string>
     <string name="enable_touch_area_as_page_key">Page Up/Down 키로 사용</string>
-    <string name="translate_this_site">이 사이트 번역</string>
+    <string name="translate_this_site">항상 번역</string>
     <string name="select_sentence">문장 선택</string>
     <string name="select_paragraph">단락 선택</string>
     <string name="toast_saved">저장되었습니다!</string>

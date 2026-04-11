@@ -521,7 +521,7 @@
     <string name="setting_title_gpt_query_list">Historia wyników GPT</string>
     <string name="setting_summary_gpt_query_list">Zapisane wyniki zapytań GPT</string>
     <string name="enable_touch_area_as_page_key">Jako klawisz Page Up/Down</string>
-    <string name="translate_this_site">Przetłumacz tę stronę</string>
+    <string name="translate_this_site">Zawsze tłumacz</string>
     <string name="select_sentence">Zaznacz zdanie</string>
     <string name="select_paragraph">Zaznacz akapit</string>
     <string name="toast_saved">Zapisano!</string>
