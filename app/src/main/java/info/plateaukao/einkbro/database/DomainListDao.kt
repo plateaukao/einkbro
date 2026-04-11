@@ -63,4 +63,13 @@ interface DomainListDao {
 
     @Query("DELETE FROM COOKIE")
     suspend fun deleteAllCookie()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllWhitelist(entries: List<WhitelistDomain>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllJavascript(entries: List<JavascriptDomain>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllCookie(entries: List<CookieDomain>)
 }

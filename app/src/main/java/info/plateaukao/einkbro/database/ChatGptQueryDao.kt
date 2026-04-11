@@ -23,4 +23,10 @@ interface ChatGptQueryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addChatGptQuery(chatGptQuery: ChatGptQuery)
+
+    @Query("DELETE FROM chat_gpt_query")
+    suspend fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(queries: List<ChatGptQuery>)
 }

@@ -170,6 +170,7 @@ object ShareUtil : KoinComponent {
     fun startReceivingFile(
         scope: CoroutineScope,
         outputFile: File,
+        onConnected: (() -> Unit)? = null,
         receivedAction: (File) -> Unit,
     ) {
         var receivedString = ""
@@ -208,6 +209,7 @@ object ShareUtil : KoinComponent {
 
                 try {
                     val client = Socket(ip, port)
+                    withContext(Dispatchers.Main) { onConnected?.invoke() }
                     client.getInputStream().use { input ->
                         outputFile.outputStream().use { fos ->
                             input.copyTo(fos)

@@ -90,6 +90,9 @@ interface ArticleDao {
 
     @Query("DELETE FROM articles")
     suspend fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(articles: List<Article>)
 }
 
 @Dao
@@ -115,8 +118,14 @@ interface HighlightDao {
     @Delete
     suspend fun delete(highlight: Highlight)
 
+    @Query("SELECT * FROM highlights")
+    suspend fun getAllHighlightsAsync(): List<Highlight>
+
     @Query("DELETE FROM highlights")
     suspend fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(highlights: List<Highlight>)
 }
 
 @Dao
@@ -132,6 +141,12 @@ interface FaviconDao {
 
     @Query("SELECT * FROM favicons WHERE domain = :host")
     suspend fun findBy(host: String): List<FaviconInfo>
+
+    @Query("DELETE FROM favicons")
+    suspend fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(favicons: List<FaviconInfo>)
 }
 
 @Dao

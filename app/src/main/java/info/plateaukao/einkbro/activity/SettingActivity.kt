@@ -373,7 +373,10 @@ class SettingActivity : FragmentActivity() {
             showNegativeButton = false,
         )
 
-        ShareUtil.startReceivingFile(lifecycleScope, tempFile) { file ->
+        ShareUtil.startReceivingFile(lifecycleScope, tempFile, onConnected = {
+            dialog.findViewById<android.widget.TextView>(android.R.id.message)?.text =
+                getString(R.string.share_receiving)
+        }) { file ->
             dialog.dismiss()
             val available = backupUnit.getAvailableCategories(file)
             if (available != null) {

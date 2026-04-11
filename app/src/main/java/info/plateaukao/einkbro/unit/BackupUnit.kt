@@ -5,17 +5,26 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import android.webkit.CookieManager
+import android.util.Base64
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.ChatGptQuery
+import info.plateaukao.einkbro.database.CookieDomain
+import info.plateaukao.einkbro.database.DomainConfiguration
+import info.plateaukao.einkbro.database.FaviconInfo
+import info.plateaukao.einkbro.database.Highlight
+import info.plateaukao.einkbro.database.JavascriptDomain
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordRepository
+import info.plateaukao.einkbro.database.SavedPage
+import info.plateaukao.einkbro.database.WhitelistDomain
 import info.plateaukao.einkbro.view.EBToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +50,7 @@ enum class BackupCategory(val displayNameResId: Int) {
     GPT_SETTINGS(R.string.backup_category_gpt_settings),
     BOOKMARKS(R.string.backup_category_bookmarks),
     HISTORY(R.string.backup_category_history),
-    WEBVIEW_DATA(R.string.backup_category_webview_data),
+    DATABASE_DATA(R.string.backup_category_database_data),
 }
 
 
@@ -132,13 +141,102 @@ class BackupUnit(
             zos.closeEntry()
         }
 
-        if (BackupCategory.WEBVIEW_DATA in categories) {
-            // Flush cookies to disk before backup
-            CookieManager.getInstance().flush()
-            val webviewDir = File(WEBVIEW_DATA_PATH)
-            if (webviewDir.exists() && webviewDir.isDirectory) {
-                writeDirectoryToZip(zos, webviewDir, WEBVIEW_ZIP_PREFIX)
+        if (BackupCategory.DATABASE_DATA in categories) {
+            val db = bookmarkManager.database
+            val json = JSONObject()
+
+            // Favicons
+            val favicons = JSONArray()
+            for (f in db.faviconDao().getAllFavicons()) {
+                favicons.put(JSONObject().apply {
+                    put("domain", f.domain)
+                    put("icon", f.icon?.let { Base64.encodeToString(it, Base64.NO_WRAP) })
+                })
             }
+            json.put("favicons", favicons)
+
+            // Articles & Highlights (articles first since highlights reference them)
+            val articles = JSONArray()
+            for (a in db.articleDao().getAllArticlesAsync()) {
+                articles.put(JSONObject().apply {
+                    put("id", a.id)
+                    put("title", a.title)
+                    put("url", a.url)
+                    put("date", a.date)
+                    put("tags", a.tags)
+                })
+            }
+            json.put("articles", articles)
+
+            val highlights = JSONArray()
+            for (h in db.highlightDao().getAllHighlightsAsync()) {
+                highlights.put(JSONObject().apply {
+                    put("id", h.id)
+                    put("articleId", h.articleId)
+                    put("content", h.content)
+                })
+            }
+            json.put("highlights", highlights)
+
+            // ChatGptQuery
+            val queries = JSONArray()
+            for (q in db.chatGptQueryDao().getAllChatGptQueriesAsync()) {
+                queries.put(JSONObject().apply {
+                    put("id", q.id)
+                    put("date", q.date)
+                    put("url", q.url)
+                    put("model", q.model)
+                    put("selectedText", q.selectedText)
+                    put("result", q.result)
+                })
+            }
+            json.put("chat_gpt_queries", queries)
+
+            // DomainConfiguration
+            val domainConfigs = JSONArray()
+            for (dc in db.domainConfigurationDao().getAllDomainConfigurations()) {
+                domainConfigs.put(JSONObject().apply {
+                    put("domain", dc.domain)
+                    put("configuration", dc.configuration)
+                })
+            }
+            json.put("domain_configurations", domainConfigs)
+
+            // SavedPage
+            val savedPages = JSONArray()
+            for (sp in db.savedPageDao().getAllSavedPagesAsync()) {
+                savedPages.put(JSONObject().apply {
+                    put("id", sp.id)
+                    put("title", sp.title)
+                    put("url", sp.url)
+                    put("filePath", sp.filePath)
+                    put("savedAt", sp.savedAt)
+                })
+            }
+            json.put("saved_pages", savedPages)
+
+            // Domain lists
+            val whitelistDomains = JSONArray()
+            for (d in db.domainListDao().getAllWhitelistDomains()) {
+                whitelistDomains.put(d)
+            }
+            json.put("whitelist_domains", whitelistDomains)
+
+            val javascriptDomains = JSONArray()
+            for (d in db.domainListDao().getAllJavascriptDomains()) {
+                javascriptDomains.put(d)
+            }
+            json.put("javascript_domains", javascriptDomains)
+
+            val cookieDomains = JSONArray()
+            for (d in db.domainListDao().getAllCookieDomains()) {
+                cookieDomains.put(d)
+            }
+            json.put("cookie_domains", cookieDomains)
+
+            zos.putNextEntry(ZipEntry(DATABASE_DATA_FILE))
+            zos.write(json.toString().toByteArray())
+            zos.closeEntry()
         }
 
         zos.close()
@@ -232,16 +330,10 @@ class BackupUnit(
                         recordDb.replaceAllHistory(records)
                     }
 
-                    zipEntry.name.startsWith(WEBVIEW_ZIP_PREFIX)
-                            && BackupCategory.WEBVIEW_DATA in categories -> {
-                        val relativePath = zipEntry.name.removePrefix(WEBVIEW_ZIP_PREFIX)
-                        val target = File(WEBVIEW_DATA_PATH + relativePath)
-                        if (zipEntry.isDirectory) {
-                            target.mkdirs()
-                        } else {
-                            target.parentFile?.mkdirs()
-                            writeStreamToFile(zis, target)
-                        }
+                    zipEntry.name == DATABASE_DATA_FILE
+                            && BackupCategory.DATABASE_DATA in categories -> {
+                        val content = zis.readBytes()
+                        restoreDatabaseData(JSONObject(String(content)))
                     }
                 }
                 zipEntry = zis.nextEntry
@@ -333,16 +425,10 @@ class BackupUnit(
                         recordDb.replaceAllHistory(records)
                     }
 
-                    zipEntry.name.startsWith(WEBVIEW_ZIP_PREFIX)
-                            && BackupCategory.WEBVIEW_DATA in categories -> {
-                        val relativePath = zipEntry.name.removePrefix(WEBVIEW_ZIP_PREFIX)
-                        val target = File(WEBVIEW_DATA_PATH + relativePath)
-                        if (zipEntry.isDirectory) {
-                            target.mkdirs()
-                        } else {
-                            target.parentFile?.mkdirs()
-                            writeStreamToFile(zis, target)
-                        }
+                    zipEntry.name == DATABASE_DATA_FILE
+                            && BackupCategory.DATABASE_DATA in categories -> {
+                        val content = zis.readBytes()
+                        restoreDatabaseData(JSONObject(String(content)))
                     }
                 }
                 zipEntry = zis.nextEntry
@@ -380,6 +466,124 @@ class BackupUnit(
         } catch (e: IOException) {
             e.printStackTrace()
             return false
+        }
+    }
+
+    private suspend fun restoreDatabaseData(json: JSONObject) {
+        val db = bookmarkManager.database
+
+        // Favicons
+        if (json.has("favicons")) {
+            val arr = json.getJSONArray("favicons")
+            val favicons = (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                FaviconInfo(
+                    domain = obj.getString("domain"),
+                    icon = if (obj.isNull("icon")) null
+                        else Base64.decode(obj.getString("icon"), Base64.NO_WRAP)
+                )
+            }
+            db.faviconDao().deleteAll()
+            db.faviconDao().insertAll(favicons)
+        }
+
+        // Articles (restore before highlights due to foreign key)
+        if (json.has("articles")) {
+            val arr = json.getJSONArray("articles")
+            val articles = (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                Article(
+                    title = obj.getString("title"),
+                    url = obj.getString("url"),
+                    date = obj.getLong("date"),
+                    tags = obj.optString("tags", ""),
+                ).apply { id = obj.getInt("id") }
+            }
+            db.highlightDao().deleteAll()
+            db.articleDao().deleteAll()
+            db.articleDao().insertAll(articles)
+        }
+
+        // Highlights
+        if (json.has("highlights")) {
+            val arr = json.getJSONArray("highlights")
+            val highlights = (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                Highlight(
+                    articleId = obj.getInt("articleId"),
+                    content = obj.getString("content"),
+                ).apply { id = obj.getInt("id") }
+            }
+            db.highlightDao().insertAll(highlights)
+        }
+
+        // ChatGptQuery
+        if (json.has("chat_gpt_queries")) {
+            val arr = json.getJSONArray("chat_gpt_queries")
+            val queries = (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                ChatGptQuery(
+                    date = obj.getLong("date"),
+                    url = obj.getString("url"),
+                    model = obj.getString("model"),
+                    selectedText = obj.getString("selectedText"),
+                    result = obj.getString("result"),
+                ).apply { id = obj.getInt("id") }
+            }
+            db.chatGptQueryDao().deleteAll()
+            db.chatGptQueryDao().insertAll(queries)
+        }
+
+        // DomainConfiguration
+        if (json.has("domain_configurations")) {
+            val arr = json.getJSONArray("domain_configurations")
+            val configs = (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                DomainConfiguration(
+                    domain = obj.getString("domain"),
+                    configuration = obj.getString("configuration"),
+                )
+            }
+            db.domainConfigurationDao().deleteAll()
+            db.domainConfigurationDao().insertAll(configs)
+        }
+
+        // SavedPage
+        if (json.has("saved_pages")) {
+            val arr = json.getJSONArray("saved_pages")
+            val pages = (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                SavedPage(
+                    title = obj.getString("title"),
+                    url = obj.getString("url"),
+                    filePath = obj.getString("filePath"),
+                    savedAt = obj.getLong("savedAt"),
+                ).apply { id = obj.getInt("id") }
+            }
+            db.savedPageDao().deleteAll()
+            db.savedPageDao().insertAll(pages)
+        }
+
+        // Domain lists
+        if (json.has("whitelist_domains")) {
+            val arr = json.getJSONArray("whitelist_domains")
+            val domains = (0 until arr.length()).map { WhitelistDomain(arr.getString(it)) }
+            db.domainListDao().deleteAllWhitelist()
+            db.domainListDao().insertAllWhitelist(domains)
+        }
+
+        if (json.has("javascript_domains")) {
+            val arr = json.getJSONArray("javascript_domains")
+            val domains = (0 until arr.length()).map { JavascriptDomain(arr.getString(it)) }
+            db.domainListDao().deleteAllJavascript()
+            db.domainListDao().insertAllJavascript(domains)
+        }
+
+        if (json.has("cookie_domains")) {
+            val arr = json.getJSONArray("cookie_domains")
+            val domains = (0 until arr.length()).map { CookieDomain(arr.getString(it)) }
+            db.domainListDao().deleteAllCookie()
+            db.domainListDao().insertAllCookie(domains)
         }
     }
 
@@ -607,12 +811,11 @@ class BackupUnit(
     companion object {
         private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
         private const val SHARED_PREFS_PATH = "/data/data/info.plateaukao.einkbro/shared_prefs/"
-        private const val WEBVIEW_DATA_PATH = "/data/data/info.plateaukao.einkbro/app_webview/"
-        private const val WEBVIEW_ZIP_PREFIX = "app_webview/"
         private const val MANIFEST_FILE = "_manifest.json"
         private const val GPT_SETTINGS_FILE = "gpt_settings.json"
         private const val BOOKMARKS_FILE = "bookmarks.json"
         private const val HISTORY_FILE = "history.json"
+        private const val DATABASE_DATA_FILE = "database_data.json"
 
         private val GPT_PREF_KEYS = listOf(
             "sp_gpt_api_key",
