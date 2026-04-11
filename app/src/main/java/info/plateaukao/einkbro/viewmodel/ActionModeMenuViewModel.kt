@@ -48,7 +48,7 @@ class ActionModeMenuViewModel(
     private val _shouldShow = MutableStateFlow(false)
     val shouldShow: StateFlow<Boolean> = _shouldShow.asStateFlow()
 
-    fun isInActionMode(): Boolean = actionMode != null
+    fun isInActionMode(): Boolean = actionMode != null || _shouldShow.value
 
     fun updateActionMode(actionMode: ActionMode?) {
         this.actionMode = actionMode

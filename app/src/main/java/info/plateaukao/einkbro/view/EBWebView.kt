@@ -679,13 +679,13 @@ open class EBWebView(
         evaluateJavascript(
             """
             javascript:(function() {
-                 var tt = w._touchTarget;
+                 var tt = window._touchTarget;
                  if(tt){
                      var hrefAttr = tt.getAttribute("href");
                      tt.removeAttribute("href");
-                     w._hrefAttr = hrefAttr;
+                     window._hrefAttr = hrefAttr;
 
-                     var sel = w.getSelection();
+                     var sel = window.getSelection();
                      sel.removeAllRanges();
                  }
             })()
@@ -744,9 +744,9 @@ open class EBWebView(
             {
                 evaluateJavascript(
                     """
-                        var tt = w._touchTarget;
+                        var tt = window._touchTarget;
                         if(tt){
-                            tt.setAttribute("href", w._hrefAttr);
+                            tt.setAttribute("href", window._hrefAttr);
                         }
                 """.trimIndent(), null
                 )
