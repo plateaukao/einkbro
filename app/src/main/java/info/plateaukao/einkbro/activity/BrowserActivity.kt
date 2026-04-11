@@ -14,6 +14,7 @@ import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.os.LocaleList
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.Rect
@@ -216,6 +217,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
     private var orientation: Int = 0
+    private var currentLocale: String = ""
     private var isRunning = false
     private var fabImagePositionChanged = false
 
@@ -725,6 +727,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         config.restartChanged = false
+        currentLocale = config.uiLocaleLanguage
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
 
@@ -793,6 +796,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onResume() {
         super.onResume()
+        if (currentLocale != config.uiLocaleLanguage) { currentLocale = config.uiLocaleLanguage; applyLocaleInPlace() }
         if (config.restartChanged) { config.restartChanged = false; dialogManager.showRestartConfirmDialog() }
         updateTitle()
         @Suppress("DEPRECATION") overridePendingTransition(0, 0)
@@ -872,6 +876,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     // ── Private helpers ───────────────────────────────────────────────────
+
+    @Suppress("DEPRECATION")
+    private fun applyLocaleInPlace() {
+        val languageCode = config.uiLocaleLanguage
+        val locale = if (languageCode.isNotEmpty()) Locale.forLanguageTag(languageCode) else Locale.getDefault()
+        Locale.setDefault(locale)
+        val newConfig = Configuration(resources.configuration)
+        newConfig.setLocale(locale)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            newConfig.setLocales(LocaleList(locale))
+        }
+        resources.updateConfiguration(newConfig, resources.displayMetrics)
+        composeToolbarViewController.updateIcons()
+    }
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as EBWebView

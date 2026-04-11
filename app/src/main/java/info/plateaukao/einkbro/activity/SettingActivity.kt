@@ -486,8 +486,9 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_app_locale,
         ) {
             lifecycleScope.launch {
+                val oldLocale = config.uiLocaleLanguage
                 TranslationLanguageDialog(this@SettingActivity).showAppLocale()
-                config.restartChanged = true
+                if (config.uiLocaleLanguage != oldLocale) recreate()
             }
         },
         BooleanSettingItem(
