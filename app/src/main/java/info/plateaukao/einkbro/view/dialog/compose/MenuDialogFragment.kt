@@ -156,7 +156,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, Epub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, Highlights, InvertColor, ChatWithWeb, Instapaper, AudioOnly
+    SaveArchive, SaveMht, Highlights, InvertColor, ChatWithWeb, Instapaper, AudioOnly
 }
 
 @Composable
@@ -257,6 +257,11 @@ private fun MenuItems(
                     Icons.Outlined.Save,
                     onLongClicked = { onLongClicked(MenuItemType.SaveArchive) },
                 ) { onClicked(MenuItemType.SaveArchive) }
+                MenuItem(
+                    R.string.menu_save_mht,
+                    0,
+                    Icons.Outlined.Save,
+                ) { onClicked(MenuItemType.SaveMht) }
                 MenuItem(R.string.menu_epub, Icons.AutoMirrored.Outlined.Article) { onClicked(Epub) }
                 MenuItem(R.string.menu_save_pdf, Icons.Outlined.PictureAsPdf) { onClicked(SavePdf) }
             }

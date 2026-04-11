@@ -504,7 +504,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_title_gpt_query_list">GPT-Ergebnisverlauf</string>
     <string name="setting_summary_gpt_query_list">Gespeicherte GPT-Abfrageergebnisse</string>
     <string name="enable_touch_area_as_page_key">Als Bild-auf/Bild-ab-Taste</string>
-    <string name="translate_this_site">Diese Seite übersetzen</string>
+    <string name="translate_this_site">Immer übersetzen</string>
     <string name="select_sentence">Satz auswählen</string>
     <string name="select_paragraph">Absatz auswählen</string>
     <string name="toast_saved">Gespeichert!</string>

@@ -112,6 +112,7 @@ class MenuActionHandler(
             MenuItemType.Search -> dispatch(BrowserAction.ShowSearchPanel)
             MenuItemType.Download -> BrowserUnit.openDownloadFolder(activity)
             MenuItemType.SaveArchive -> dispatch(BrowserAction.SavePageForLater)
+            MenuItemType.SaveMht -> dispatch(BrowserAction.SaveWebArchive)
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
             MenuItemType.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb())

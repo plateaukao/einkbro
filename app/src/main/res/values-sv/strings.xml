@@ -604,7 +604,7 @@
     <string name="translate_papago">Naver Papago API-hemlighet</string>
     <string name="translate_papago_summary">Ange din API-hemlighet för att använda Naver Papago-översättning</string>
     <string name="translate_processing">Bearbetar…</string>
-    <string name="translate_this_site">Översätt denna sida</string>
+    <string name="translate_this_site">Översätt alltid</string>
     <string name="translation_language">Översättningsspråk</string>
     <string name="translation_mode">Översättningsläge</string>
     <string name="tts_type_etts">ReadAloud</string>

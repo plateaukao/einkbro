@@ -604,7 +604,7 @@
     <string name="translate_papago">Naver Papago API -salaisuus</string>
     <string name="translate_papago_summary">Syötä API-salaisuutesi käyttääksesi Naver Papago -käännöstä</string>
     <string name="translate_processing">Käsitellään…</string>
-    <string name="translate_this_site">Käännä tämä sivu</string>
+    <string name="translate_this_site">Käännä aina</string>
     <string name="translation_language">Käännöskieli</string>
     <string name="translation_mode">Käännöstila</string>
     <string name="tts_type_etts">ReadAloud</string>

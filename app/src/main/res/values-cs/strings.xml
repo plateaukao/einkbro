@@ -525,7 +525,7 @@
     <string name="setting_title_gpt_query_list">Historie výsledků GPT</string>
     <string name="setting_summary_gpt_query_list">Uložené výsledky dotazů GPT</string>
     <string name="enable_touch_area_as_page_key">Jako klávesa Page Up/Down</string>
-    <string name="translate_this_site">Přeložit tento web</string>
+    <string name="translate_this_site">Vždy překládat</string>
     <string name="select_sentence">Vybrat větu</string>
     <string name="select_paragraph">Vybrat odstavec</string>
     <string name="toast_saved">Uloženo!</string>

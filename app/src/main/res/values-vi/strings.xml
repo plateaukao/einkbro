@@ -605,7 +605,7 @@
     <string name="translate_papago">Naver Papago API Secret</string>
     <string name="translate_papago_summary">Nếu bạn muốn dùng dịch vụ Naver Papago, vui lòng nhập API secret</string>
     <string name="translate_processing">Đang xử lý…</string>
-    <string name="translate_this_site">Dịch trang này</string>
+    <string name="translate_this_site">Luôn dịch</string>
     <string name="translation_language">Ngôn ngữ dịch</string>
     <string name="translation_mode">Chế độ dịch</string>
     <string name="tts_type_etts">ReadAloud</string>

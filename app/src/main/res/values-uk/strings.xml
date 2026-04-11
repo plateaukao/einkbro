@@ -595,7 +595,7 @@
     <string name="translate_papago">Секретний API-ключ Naver Papago</string>
     <string name="translate_papago_summary">Щоб використовувати Naver Papago, введіть ваш секретний API-ключ</string>
     <string name="translate_processing">Обробка…</string>
-    <string name="translate_this_site">Перекласти цей сайт</string>
+    <string name="translate_this_site">Завжди перекладати</string>
     <string name="translation_language">Мова перекладу</string>
     <string name="translation_mode">Режим перекладу</string>
     <string name="tts_type_etts">ReadAloud</string>
