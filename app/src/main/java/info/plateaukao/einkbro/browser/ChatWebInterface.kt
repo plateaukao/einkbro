@@ -7,7 +7,6 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
-import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -20,11 +19,12 @@ class ChatWebInterface(
     private var webContent: String,
     private var webTitle: String,
     private var webUrl: String,
+    onOpenNewTab: ((String) -> Unit)? = null,
 ) : KoinComponent {
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
     private val chatHistory: MutableList<ChatMessage> = mutableListOf()
-    private val jsHelper = JsHelper(webView, lifecycleScope)
+    private val jsHelper = JsHelper(webView, lifecycleScope, onOpenNewTab)
 
     companion object {
         private const val WEB_CONTENT_MESSAGE_SUFFIX = "\n this is the web content;"
@@ -124,6 +124,7 @@ class ChatWebInterface(
 class JsHelper(
     private val webView: WebView,
     private val lifecycleScope: LifecycleCoroutineScope,
+    private val onOpenNewTab: ((String) -> Unit)? = null,
 ) {
     fun startMessageStream(postAction: () -> Unit = {}) {
         // Tell JS to prepare for a new incoming message stream
@@ -163,8 +164,7 @@ class JsHelper(
 
     fun openUrlInNewTab(url: String) {
         lifecycleScope.launch(Dispatchers.Main) {
-            // Use WebView to open URL in the same browser (new tab functionality would be handled by BrowserController)
-            (webView as? EBWebView)?.browserController?.addNewTab(url)
+            onOpenNewTab?.invoke(url)
         }
     }
 

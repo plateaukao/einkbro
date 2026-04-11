@@ -6,11 +6,11 @@ import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.view.MainContentLayout
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.browser.BrowserAction
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import org.koin.core.component.KoinComponent
@@ -20,10 +20,10 @@ import java.util.TimerTask
 
 class TouchAreaViewController(
     private val binding: MainContentLayout,
-    private val browserController: BrowserController,
+    private val dispatch: (BrowserAction) -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val gestureHandler: GestureHandler = GestureHandler(browserController)
+    private val gestureHandler: GestureHandler = GestureHandler(dispatch)
 
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View

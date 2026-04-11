@@ -29,7 +29,7 @@ class AiChatDelegate(
     private val showTranslationDialog: (isWholePageMode: Boolean) -> Unit,
 ) {
     private val linkContentWebView: EBWebView by lazy {
-        EBWebView(activity, activity as info.plateaukao.einkbro.browser.BrowserController).apply {
+        EBWebView(activity, activity as info.plateaukao.einkbro.browser.WebViewCallback).apply {
             setOnPageFinishedAction {
                 activity.lifecycleScope.launch {
                     val content = linkContentWebView.getRawText()

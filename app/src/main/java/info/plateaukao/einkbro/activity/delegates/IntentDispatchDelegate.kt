@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import info.plateaukao.einkbro.browser.BrowserController
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager

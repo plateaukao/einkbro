@@ -7,13 +7,13 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.webkit.WebView
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.browser.KeyHandlerCallback
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 
 class KeyHandler(
-    private val browserController: BrowserController,
+    private val keyCallback: KeyHandlerCallback,
     private var ebWebView: EBWebView,
     private val config: ConfigManager
 ) {
@@ -38,12 +38,12 @@ class KeyHandler(
             KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey(event)
             KeyEvent.KEYCODE_VOLUME_UP -> return handleVolumeUpKey(event)
             KeyEvent.KEYCODE_MENU -> {
-                browserController.showMenuDialog()
+                keyCallback.showMenuDialog()
                 return true
             }
 
             KeyEvent.KEYCODE_BACK -> {
-                browserController.handleBackKey()
+                keyCallback.handleBackKey()
                 return true
             }
         }
@@ -74,12 +74,12 @@ class KeyHandler(
         if (event.isShiftPressed) {
             when (event.keyCode) {
                 KeyEvent.KEYCODE_J -> {
-                    browserController.gotoRightTab()
+                    keyCallback.gotoRightTab()
                     return true
                 }
 
                 KeyEvent.KEYCODE_K -> {
-                    browserController.gotoLeftTab()
+                    keyCallback.gotoLeftTab()
                     return true
                 }
 
@@ -92,15 +92,15 @@ class KeyHandler(
         } else { // non-capital
             when (event.keyCode) {
                 KeyEvent.KEYCODE_B -> {
-                    browserController.openBookmarkPage()
+                    keyCallback.openBookmarkPage()
                     return true
                 }
                 KeyEvent.KEYCODE_O -> {
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
-                        browserController.decreaseFontSize()
+                        keyCallback.decreaseFontSize()
                         previousKeyEvent = null
                     } else {
-                        browserController.focusOnInput()
+                        keyCallback.focusOnInput()
                     }
                     return true
                 }
@@ -122,21 +122,21 @@ class KeyHandler(
                     return true
                 }
                 KeyEvent.KEYCODE_R -> {
-                    browserController.showTranslation()
+                    keyCallback.showTranslation()
                     return true
                 }
                 KeyEvent.KEYCODE_D -> {
-                    browserController.removeAlbum()
+                    keyCallback.removeAlbum()
                     return true
                 }
                 KeyEvent.KEYCODE_T -> {
-                    browserController.newATab()
-                    browserController.focusOnInput()
+                    keyCallback.newATab()
+                    keyCallback.focusOnInput()
                     return true
                 }
 
                 KeyEvent.KEYCODE_SLASH -> {
-                    browserController.showSearchPanel()
+                    keyCallback.showSearchPanel()
                     return true
                 }
                 KeyEvent.KEYCODE_G -> {
@@ -144,7 +144,7 @@ class KeyHandler(
                         previousKeyEvent == null -> event
                         previousKeyEvent?.keyCode == KeyEvent.KEYCODE_G -> {
                             // gg
-                            browserController.jumpToTop()
+                            keyCallback.jumpToTop()
                             null
                         }
 
@@ -160,14 +160,14 @@ class KeyHandler(
 
                 KeyEvent.KEYCODE_I -> {
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
-                        browserController.increaseFontSize()
+                        keyCallback.increaseFontSize()
                         previousKeyEvent = null
                     }
                     return true
                 }
 
                 KeyEvent.KEYCODE_F -> {
-                    browserController.toggleFullscreen()
+                    keyCallback.toggleFullscreen()
                     return true
                 }
 
@@ -181,7 +181,7 @@ class KeyHandler(
     private val handler = Handler(Looper.getMainLooper())
     private val reenableVolumePageTurnRunnable = Runnable {
         isVolumeTemporarilyDisabled = false
-        val context = browserController as? Context ?: return@Runnable
+        val context = keyCallback as? Context ?: return@Runnable
         EBToast.show(context, R.string.volume_page_turn_resumed)
     }
 
@@ -192,7 +192,7 @@ class KeyHandler(
                 isVolumeTemporarilyDisabled = true
                 handler.removeCallbacks(reenableVolumePageTurnRunnable)
                 handler.postDelayed(reenableVolumePageTurnRunnable, 5000)
-                val context = browserController as? Context ?: return true
+                val context = keyCallback as? Context ?: return true
                 EBToast.show(context, R.string.volume_page_turn_paused)
                 adjustVolume(keyCode)
                 return true
@@ -217,7 +217,7 @@ class KeyHandler(
     }
 
     private fun adjustVolume(keyCode: Int) {
-        val context = browserController as? Context ?: return
+        val context = keyCallback as? Context ?: return
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return
         val direction = if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) AudioManager.ADJUST_RAISE else AudioManager.ADJUST_LOWER
         audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, direction, AudioManager.FLAG_SHOW_UI)

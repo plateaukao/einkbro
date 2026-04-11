@@ -8,7 +8,7 @@ import android.util.Log
 import android.util.TypedValue
 import androidx.appcompat.app.AlertDialog
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.browser.BrowserController
+import info.plateaukao.einkbro.browser.WebViewCallback
 import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +24,8 @@ import kotlin.math.roundToInt
  */
 class EpubReaderView(
     context: Context,
-    browserController: BrowserController?,
-) : EBWebView(context, browserController) {
+    webViewCallback: WebViewCallback?,
+) : EBWebView(context, webViewCallback) {
     private lateinit var epub: EpubBook
     private var fileUri: Uri? = null
     private val chapterList: ArrayList<Chapter> = ArrayList()

@@ -87,39 +87,68 @@ interface TtsController {
 }
 //endregion
 
-//region Sub-interface: InputController
-interface InputController {
-    // Input Handling
-    fun onLongPress(message: Message, event: MotionEvent?)
+//region Phase 2: Split InputController into focused sub-interfaces
+
+interface KeyInputController {
     fun handleKeyEvent(event: KeyEvent): Boolean
     fun handleBackKey()
-    fun focusOnInput()
+    fun sendPageUpKey()
+    fun sendPageDownKey()
+    fun sendLeftKey()
+    fun sendRightKey()
+}
 
-    // File Handling
+interface FileController {
     fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
     fun showEpubDialog()
     fun showWebArchiveFilePicker()
     fun showOpenEpubFilePicker()
     fun savePageForLater()
     fun showSavedPages()
+}
 
-    // Search
+interface SearchController {
     fun showSearchPanel()
     fun toggleTextSearch()
     fun toggleReceiveTextSearch()
+}
 
-    // Sharing and External Services
+interface ShareController {
     fun createShortcut()
     fun sendToRemote(text: String)
     fun shareLink()
     fun addToInstapaper()
     fun configureInstapaper()
+}
 
-    // Gestures and Touch Controls
+interface TouchConfigController {
     fun toggleTouchTurnPageFeature()
     fun toggleSwitchTouchAreaAction()
     fun showTouchAreaDialog()
     fun toggleTouchPagination()
+}
+
+interface AiFeatureController {
+    fun summarizeContent()
+    fun chatWithWeb(useSplitScreen: Boolean = false, content: String? = null, runWithAction: ChatGPTActionInfo? = null)
+    fun showPageAiActionMenu()
+}
+
+interface DialogController {
+    fun showFastToggleDialog()
+    fun showMenuDialog()
+    fun rotateScreen()
+    fun toggleReceiveLink()
+}
+
+//endregion
+
+//region Sub-interface: InputController (remaining core methods)
+interface InputController :
+    KeyInputController, FileController, SearchController,
+    ShareController, TouchConfigController, AiFeatureController, DialogController {
+    fun onLongPress(message: Message, event: MotionEvent?)
+    fun focusOnInput()
 
     // E-Reader Specific
     fun showTocDialog() = Unit
@@ -131,26 +160,74 @@ interface InputController {
     fun isActionModeActive(): Boolean = false
     fun dismissActionMode() {}
 
-    // Key Sending
-    fun sendPageUpKey()
-    fun sendPageDownKey()
-    fun sendLeftKey()
-    fun sendRightKey()
-
     // Audio/Video
     fun toggleAudioOnlyMode()
-
-    // AI Features
-    fun summarizeContent()
-    fun chatWithWeb(useSplitScreen: Boolean = false, content: String? = null, runWithAction: ChatGPTActionInfo? = null)
-    fun showPageAiActionMenu()
-
-    // UI Toggles and Dialogs
-    fun showFastToggleDialog()
-    fun showMenuDialog()
-    fun rotateScreen()
-    fun toggleReceiveLink()
 }
 //endregion
 
-interface BrowserController : TabController, NavigationController, ViewStateController, TranslationController, TtsController, InputController
+//region Phase 1: Narrow callback interfaces for specific consumers
+
+/** Narrow interface for EBWebView — only the callbacks it actually uses */
+interface WebViewCallback {
+    fun updateProgress(progress: Int)
+    fun updateTitle(title: String?)
+    fun addHistory(title: String, url: String)
+    fun loadInSecondPane(url: String): Boolean
+    fun resetTranslateUI()
+    fun showTranslation(webView: EBWebView?)
+    fun handleKeyEvent(event: KeyEvent): Boolean
+    fun isActionModeActive(): Boolean
+    fun dismissActionMode()
+}
+
+/** Narrow interface for Album — only the callbacks it actually uses */
+interface AlbumCallback {
+    fun isCurrentAlbum(albumController: AlbumController): Boolean
+    fun isAtTop(): Boolean
+    fun refreshAction()
+    fun jumpToTop()
+    fun showAlbum(albumController: AlbumController)
+    fun removeAlbum(albumController: AlbumController, showHomePage: Boolean)
+}
+
+/** Composite of sub-interfaces GestureHandler actually uses */
+interface GestureCallback :
+    TabController, NavigationController, ViewStateController,
+    KeyInputController, TouchConfigController, DialogController {
+    fun focusOnInput()
+}
+
+/** Composite of sub-interfaces KeyHandler actually uses */
+interface KeyHandlerCallback :
+    TabController, NavigationController, ViewStateController,
+    TranslationController, KeyInputController, SearchController, DialogController {
+    fun focusOnInput()
+}
+
+/** Narrow interface for EBWebChromeClient — only the browser callbacks it needs */
+interface WebChromeCallback {
+    fun addNewTab(url: String)
+    fun onShowCustomView(view: View?, callback: CustomViewCallback?)
+    fun onHideCustomView(): Boolean
+    fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
+}
+
+/** Narrow interface for JsWebInterface — only the browser callbacks it needs */
+interface JsBrowserCallback {
+    fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float)
+    fun isActionModeActive(): Boolean
+    fun dismissActionMode()
+}
+
+//endregion
+
+interface BrowserController :
+    TabController, NavigationController, ViewStateController,
+    TranslationController, TtsController, InputController,
+    WebViewCallback, AlbumCallback,
+    GestureCallback, KeyHandlerCallback,
+    WebChromeCallback, JsBrowserCallback {
+    // Resolve diamond conflicts for methods with default values in multiple parent interfaces
+    override fun isActionModeActive(): Boolean = false
+    override fun dismissActionMode() {}
+}

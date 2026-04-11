@@ -26,8 +26,10 @@ import java.util.concurrent.TimeUnit
 private const val CACHE_EXPIRATION_DAYS = 5
 private const val CACHE_TEXT_LENGTH_LIMIT = 15
 
-class JsWebInterface(private val webView: EBWebView) :
-    KoinComponent {
+class JsWebInterface(
+    private val webView: EBWebView,
+    private val jsBrowserCallback: JsBrowserCallback? = null,
+) : KoinComponent {
     private val translateRepository: TranslateRepository = TranslateRepository()
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
@@ -168,14 +170,14 @@ class JsWebInterface(private val webView: EBWebView) :
     @JavascriptInterface
     fun getAnchorPosition(left: Float, top: Float, right: Float, bottom: Float) {
         Log.d("touch", "rect: $left, $top, $right, $bottom")
-        webView.browserController?.updateSelectionRect(left, top, right, bottom)
+        jsBrowserCallback?.updateSelectionRect(left, top, right, bottom)
     }
 
     @JavascriptInterface
     fun dismissActionMode(): Boolean {
-        val controller = webView.browserController ?: return false
-        return if (controller.isActionModeActive()) {
-            webView.post { controller.dismissActionMode() }
+        val callback = jsBrowserCallback ?: return false
+        return if (callback.isActionModeActive()) {
+            webView.post { callback.dismissActionMode() }
             true
         } else false
     }
