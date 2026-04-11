@@ -101,6 +101,7 @@ import info.plateaukao.einkbro.view.compose.ComposedSearchBar
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.SiteSettingsDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
@@ -444,6 +445,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         is BrowserAction.ShowTocDialog -> showTocDialog()
         is BrowserAction.RotateScreen -> rotateScreen()
         is BrowserAction.ToggleAudioOnlyMode -> toggleAudioOnlyMode()
+        is BrowserAction.ShowSiteSettingsDialog -> showSiteSettingsDialog()
     }
 
     // ── BrowserController implementation ──────────────────────────────────
@@ -691,6 +693,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ebWebView.hasVideo, config.touch.enableTouchTurn,
         { menuActionHandler.handle(it) }, { menuActionHandler.handleLongClick(it) }
     ).show(supportFragmentManager, "menu_dialog")
+
+    private fun showSiteSettingsDialog() {
+        if (!browserState.isWebViewInitialized) return
+        SiteSettingsDialogFragment(
+            url = ebWebView.url.orEmpty(),
+            onDismissAction = { ebWebView.initPreferences(); ebWebView.reload() },
+        ).show(supportFragmentManager, "site_settings_dialog")
+    }
 
     override fun showTouchAreaDialog() = TouchAreaDialogFragment(ebWebView.url.orEmpty()).show(supportFragmentManager, "TouchAreaDialog")
 

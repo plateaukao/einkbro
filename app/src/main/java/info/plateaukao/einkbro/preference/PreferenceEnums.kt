@@ -27,6 +27,7 @@ enum class TranslationMode(val labelResId: Int) {
     GEMINI_IN_PLACE(R.string.gemini_in_place),
 }
 
+@kotlinx.serialization.Serializable
 enum class FontType(val resId: Int) {
     SYSTEM_DEFAULT(R.string.system_default),
     SERIF(R.string.serif),

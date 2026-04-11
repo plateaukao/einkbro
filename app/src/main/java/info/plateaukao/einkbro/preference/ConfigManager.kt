@@ -152,6 +152,54 @@ class ConfigManager(
         return hasInvertedColor(url)
     }
 
+    // Per-site display overrides (null = use global setting)
+
+    fun getFontSize(url: String): Int {
+        val host = Uri.parse(url)?.host ?: return display.fontSize
+        return domainConfigurationMap[host]?.fontSize ?: display.fontSize
+    }
+
+    fun getFontType(url: String): FontType {
+        val host = Uri.parse(url)?.host ?: return display.fontType
+        return domainConfigurationMap[host]?.fontType ?: display.fontType
+    }
+
+    fun getBoldFontStyle(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return display.boldFontStyle
+        return domainConfigurationMap[host]?.boldFontStyle ?: display.boldFontStyle
+    }
+
+    fun getBlackFontStyle(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return display.blackFontStyle
+        return domainConfigurationMap[host]?.blackFontStyle ?: display.blackFontStyle
+    }
+
+    fun getFontBoldness(url: String): Int {
+        val host = Uri.parse(url)?.host ?: return display.fontBoldness
+        return domainConfigurationMap[host]?.fontBoldness ?: display.fontBoldness
+    }
+
+    fun getDesktopMode(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return browser.desktop
+        return domainConfigurationMap[host]?.desktopMode ?: browser.desktop
+    }
+
+    fun getEnableJavascript(url: String): Boolean {
+        val host = Uri.parse(url)?.host ?: return browser.enableJavascript
+        return domainConfigurationMap[host]?.enableJavascript ?: browser.enableJavascript
+    }
+
+    fun getDomainConfig(url: String): DomainConfigurationData {
+        val host = Uri.parse(url)?.host ?: return DomainConfigurationData("")
+        return domainConfigurationMap[host] ?: DomainConfigurationData(host)
+    }
+
+    fun updateDomainConfig(config: DomainConfigurationData) {
+        if (config.domain.isBlank()) return
+        domainConfigurationMap[config.domain] = config
+        bookmarkManager.addDomainConfiguration(config)
+    }
+
     var recentBookmarks: List<RecentBookmark>
         get() {
             val string = sp.getString(K_RECENT_BOOKMARKS, "").orEmpty()

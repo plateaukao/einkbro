@@ -51,19 +51,23 @@ class WebViewReaderHelper(
     fun applyFontBoldness() = webView.jsBridge.applyFontBoldness(config.display.fontBoldness)
 
     fun updateCssStyle() {
-        val fontType = if (shouldUseReaderFont()) config.display.readerFontType else config.display.fontType
+        val url = webView.url.orEmpty()
+        val fontType = if (shouldUseReaderFont()) config.display.readerFontType else config.getFontType(url)
+        val isBlackFont = config.getBlackFontStyle(url)
+        val isBoldFont = config.getBoldFontStyle(url)
+        val boldness = config.getFontBoldness(url)
 
         val cssStyle =
-            (if (config.display.blackFontStyle) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
+            (if (isBlackFont) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
                     (if (fontType == FontType.GOOGLE_SERIF) WebViewJsBridge.NOTO_SANS_SERIF_FONT_CSS else "") +
                     (if (fontType == FontType.TC_IANSUI) WebViewJsBridge.IANSUI_FONT_CSS else "") +
                     (if (fontType == FontType.JA_MINCHO) WebViewJsBridge.JA_MINCHO_FONT_CSS else "") +
                     (if (fontType == FontType.KO_GAMJA) WebViewJsBridge.KO_GAMJA_FONT_CSS else "") +
                     (if (fontType == FontType.SERIF) WebViewJsBridge.SERIF_FONT_CSS else "") +
-                    (if (config.whiteBackground(webView.url.orEmpty())) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
+                    (if (config.whiteBackground(url)) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
                     (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
-                    (if (config.display.boldFontStyle)
-                        WebViewJsBridge.BOLD_FONT_CSS.replace("value", "${config.display.fontBoldness}") else "") +
+                    (if (isBoldFont)
+                        WebViewJsBridge.BOLD_FONT_CSS.replace("value", "$boldness") else "") +
                     if (isEpubReaderMode) loadAssetFile("readerview.css") else ""
         if (cssStyle.isNotBlank()) {
             webView.jsBridge.injectCss(cssStyle.toByteArray())
