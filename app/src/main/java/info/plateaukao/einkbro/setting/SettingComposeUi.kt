@@ -447,12 +447,16 @@ fun SearchSettingScreen(
         columns = GridCells.Fixed(columnCount),
     ) {
         var lastCategoryResId = 0
+        var isFirstCategory = true
         filteredSettings.forEach { (categoryResId, setting) ->
             if (categoryResId != lastCategoryResId) {
-                lastCategoryResId = categoryResId
-                item(span = { GridItemSpan(if (supportTwoSpan) 2 else 1) }) {
-                    DividerSettingItemUi(categoryResId, supportTwoSpan)
+                if (!isFirstCategory) {
+                    item(span = { GridItemSpan(if (supportTwoSpan) 2 else 1) }) {
+                        DividerSettingItemUi(categoryResId, supportTwoSpan)
+                    }
                 }
+                lastCategoryResId = categoryResId
+                isFirstCategory = false
             }
             item(span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) }) {
                 when (setting) {
