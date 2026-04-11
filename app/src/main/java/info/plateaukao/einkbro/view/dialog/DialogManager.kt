@@ -401,10 +401,7 @@ class DialogManager(
         onSelected: (Set<BackupCategory>) -> Unit,
     ) {
         val labels = categories.map { activity.getString(it.displayNameResId) }.toTypedArray()
-        val checked = BooleanArray(categories.size) { i ->
-            // WebView data can be large; default to unchecked so users opt in explicitly
-            categories[i] != BackupCategory.WEBVIEW_DATA
-        }
+        val checked = BooleanArray(categories.size) { true }
         val allPrefsIndex = categories.indexOf(BackupCategory.ALL_PREFERENCES)
         val gptIndex = categories.indexOf(BackupCategory.GPT_SETTINGS)
 

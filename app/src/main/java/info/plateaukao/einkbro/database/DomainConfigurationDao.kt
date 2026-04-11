@@ -18,4 +18,10 @@ interface DomainConfigurationDao {
 
     @Update
     suspend fun updateDomainConfiguration(domainConfiguration: DomainConfiguration)
+
+    @Query("DELETE FROM domain_configuration")
+    suspend fun deleteAll()
+
+    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    suspend fun insertAll(configurations: List<DomainConfiguration>)
 }

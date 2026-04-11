@@ -347,7 +347,6 @@
     <string name="backup_category_gpt_settings">GPT 設定</string>
     <string name="backup_category_bookmarks">書籤</string>
     <string name="backup_category_history">歷史紀錄</string>
-    <string name="backup_category_webview_data">網站登入資料 (Cookies 及儲存空間)</string>
     <string name="dialog_title_backup_categories">選擇要備份的資料</string>
     <string name="dialog_title_restore_categories">選擇要還原的資料</string>
     <string name="setting_title_share_appData">分享應用程式資料</string>
@@ -356,6 +355,7 @@
     <string name="setting_summary_receive_appData">透過區域網路從另一台裝置接收應用程式資料</string>
     <string name="share_broadcasting">正在區域網路上廣播…</string>
     <string name="share_waiting">正在等待來自另一台裝置的資料…</string>
+    <string name="share_receiving">正在接收資料…</string>
     <string name="dialog_message_sync_bookmark_file">"To sync bookmarks, you need to use system file picker to create or open a bookmark file from Google Drive or a file that is synced with other remote service. "</string>
     <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
     <string name="settings_title_back_key_behavior">返回鍵行為</string>
