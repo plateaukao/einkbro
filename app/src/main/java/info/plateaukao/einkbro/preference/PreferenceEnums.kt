@@ -15,6 +15,7 @@ enum class FabPosition {
     Right, Left, Center, NotShow, Custom
 }
 
+@kotlinx.serialization.Serializable
 enum class TranslationMode(val labelResId: Int) {
     GOOGLE_URL(R.string.google_full_page),
     GOOGLE_IN_PLACE(R.string.google_in_place),

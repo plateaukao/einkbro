@@ -44,6 +44,7 @@ class TranslationDelegate(
     private val maybeInitTwoPaneController: () -> Unit,
     private val addAlbum: () -> Unit,
 ) {
+    var showSiteSettingsAction: (() -> Unit)? = null
     private var languageLabelView: TextView? = null
 
     fun initTranslationViewModel() {
@@ -142,17 +143,21 @@ class TranslationDelegate(
 
     fun showTranslationConfigDialog(translateDirectly: Boolean) {
         maybeInitTwoPaneController()
+        val url = state.ebWebView.url.orEmpty()
         TranslationConfigDlgFragment(
-            state.ebWebView.url.orEmpty(),
-            translateDirectly
-        ) { shouldTranslate ->
-            if (shouldTranslate) {
-                translate(config.translation.translationMode)
-            } else {
-                state.ebWebView.reload()
-            }
-        }
-            .show(activity.supportFragmentManager, "TranslationConfigDialog")
+            url,
+            translateDirectly,
+            onToggledAction = { shouldTranslate ->
+                if (shouldTranslate) {
+                    translate(config.getTranslationMode(url))
+                } else {
+                    state.ebWebView.reload()
+                }
+            },
+            onShowSiteSettings = {
+                showSiteSettingsAction?.invoke()
+            },
+        ).show(activity.supportFragmentManager, "TranslationConfigDialog")
     }
 
     fun translateByParagraph(
