@@ -424,13 +424,22 @@ fun SearchSettingScreen(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val englishContext = remember {
+        val config = android.content.res.Configuration(context.resources.configuration)
+        config.setLocale(java.util.Locale.ENGLISH)
+        context.createConfigurationContext(config)
+    }
     val filteredSettings = remember(query) {
         if (query.isBlank()) emptyList()
         else allSettings.filter { (_, setting) ->
             val title = context.getString(setting.titleResId)
             val summary =
                 if (setting.summaryResId != 0) context.getString(setting.summaryResId) else ""
-            title.contains(query, ignoreCase = true) || summary.contains(query, ignoreCase = true)
+            val enTitle = englishContext.getString(setting.titleResId)
+            val enSummary =
+                if (setting.summaryResId != 0) englishContext.getString(setting.summaryResId) else ""
+            title.contains(query, ignoreCase = true) || summary.contains(query, ignoreCase = true) ||
+                enTitle.contains(query, ignoreCase = true) || enSummary.contains(query, ignoreCase = true)
         }
     }
 
