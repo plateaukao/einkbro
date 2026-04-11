@@ -50,17 +50,17 @@ class ComposeToolbarViewController(
     var tabCount by mutableStateOf("")
     var pageInfo by mutableStateOf("")
     var isIncognito by mutableStateOf(false)
-    var isVertical by mutableStateOf(config.isVerticalToolbar)
-    var isToolbarOnRight by mutableStateOf(config.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right)
+    var isVertical by mutableStateOf(config.ui.isVerticalToolbar)
+    var isToolbarOnRight by mutableStateOf(config.ui.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right)
     var albumFocusIndex = mutableStateOf(0)
 
     private val onTabClick: (Album) -> Unit = onTabClick
     private val onTabLongClick: (Album) -> Unit = onTabLongClick
 
     init {
-        val iconEnums = if (isReader) config.readerToolbarActions else config.toolbarActions
+        val iconEnums = if (isReader) config.ui.readerToolbarActions else config.ui.toolbarActions
         toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
-        shouldShowTabs = config.shouldShowTabBar
+        shouldShowTabs = config.tab.shouldShowTabBar
 
         composeView.setContent {
             MyTheme {
@@ -118,7 +118,7 @@ class ComposeToolbarViewController(
     }
 
     fun updateIcons(actionToUpdate: ToolbarAction? = null) {
-        val iconEnums = if (isReader) config.readerToolbarActions else config.toolbarActions
+        val iconEnums = if (isReader) config.ui.readerToolbarActions else config.ui.toolbarActions
         // only update specific icon is specified.
         if (actionToUpdate != null && !iconEnums.contains(actionToUpdate)) {
             return
@@ -126,8 +126,8 @@ class ComposeToolbarViewController(
 
         toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
         isIncognito = config.isIncognitoMode
-        isVertical = config.isVerticalToolbar
-        isToolbarOnRight = config.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right
+        isVertical = config.ui.isVerticalToolbar
+        isToolbarOnRight = config.ui.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right
     }
 
     private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo> {
@@ -135,7 +135,7 @@ class ComposeToolbarViewController(
             when (toolbarAction) {
                 BoldFont -> ToolbarActionInfo(toolbarAction, config.display.boldFontStyle)
                 Refresh -> ToolbarActionInfo(toolbarAction, isLoading)
-                Desktop -> ToolbarActionInfo(toolbarAction, config.desktop)
+                Desktop -> ToolbarActionInfo(toolbarAction, config.browser.desktop)
                 Touch -> ToolbarActionInfo(toolbarAction, config.touch.enableTouchTurn)
                 TouchDirectionUpDown -> ToolbarActionInfo(
                     toolbarAction,

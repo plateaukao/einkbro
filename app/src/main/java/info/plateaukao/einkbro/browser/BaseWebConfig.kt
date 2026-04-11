@@ -72,7 +72,7 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
     }
 
     private fun isAdExtraSites(domain: String): Boolean {
-        return config.adSites.any { it.contains(domain, true) }
+        return config.browser.adSites.any { it.contains(domain, true) }
     }
 
     override suspend fun getDomains() = recordDb.listDomains(dbTable)

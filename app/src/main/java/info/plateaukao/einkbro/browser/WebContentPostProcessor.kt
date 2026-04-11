@@ -25,19 +25,19 @@ class WebContentPostProcessor : KoinComponent {
             }
         }
 
-        if (!ebWebView.shouldUseReaderFont() && (configManager.desktop || configManager.display.enableZoom)) {
+        if (!ebWebView.shouldUseReaderFont() && (configManager.browser.desktop || configManager.display.enableZoom)) {
             val context = application.applicationContext
             val width = if (ViewUnit.getWindowWidth(context) < 800) "800" else "device-width"
             ebWebView.evaluateJavascript(
                 zoomAndDesktopTemplateJs.format(
                     if (configManager.display.enableZoom) enableZoomJs else "",
-                    if (configManager.desktop) "width=$width" else ""
+                    if (configManager.browser.desktop) "width=$width" else ""
                 ),
                 null
             )
         }
 
-        if (configManager.enableVideoAutoFullscreen) {
+        if (configManager.browser.enableVideoAutoFullscreen) {
             ebWebView.evaluateJsFile("video_auto_fullscreen.js")
         }
 

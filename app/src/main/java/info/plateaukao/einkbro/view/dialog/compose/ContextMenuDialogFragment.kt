@@ -155,7 +155,7 @@ class ContextMenuDialogFragment(
                 url,
                 shouldShowAdBlock,
                 shouldShowTranslateImage,
-                showIcons = config.showActionMenuIcons,
+                showIcons = config.ui.showActionMenuIcons,
                 isEbookMode = isEbookMode,
                 hoveredItem = hoveredItemState.value,
                 onClicked = { item ->
@@ -200,7 +200,7 @@ class ContextMenuDialogFragment(
         // Calculate precise dimensions based on MenuItem logic
         val screenWidthDp = resources.configuration.screenWidthDp
         val isLargeType = true // ContextMenuItem uses isLargeType = true
-        val showIcon = config.showActionMenuIcons
+        val showIcon = config.ui.showActionMenuIcons
 
         // Calculate item width (same logic as MenuItem)
         val itemWidthDp = when {

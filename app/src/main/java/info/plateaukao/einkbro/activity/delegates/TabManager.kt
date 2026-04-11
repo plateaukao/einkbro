@@ -55,7 +55,7 @@ class TabManager(
             hideSearchPanel()
         }
 
-        when (config.newTabBehavior) {
+        when (config.tab.newTabBehavior) {
             info.plateaukao.einkbro.preference.NewTabBehavior.START_INPUT -> {
                 addAlbum(activity.getString(R.string.app_name), "")
                 focusOnInput()
@@ -104,7 +104,7 @@ class TabManager(
 
         updateSavedAlbumInfo()
 
-        if (config.adBlock) {
+        if (config.browser.adBlock) {
             adFilterProvider().setupWebView(newWebView)
         }
     }
@@ -143,7 +143,7 @@ class TabManager(
     private fun loadUrlInWebView(foreground: Boolean, webView: EBWebView, url: String) {
         if (!foreground) {
             webView.deactivate()
-            if (config.enableWebBkgndLoad) {
+            if (config.tab.enableWebBkgndLoad) {
                 webView.loadUrl(url)
             } else {
                 webView.initAlbumUrl = url
@@ -216,7 +216,7 @@ class TabManager(
 
     fun removeAlbum(albumController: AlbumController, showHome: Boolean) {
         closeTabConfirmation {
-            if (config.isSaveHistoryWhenClose()) {
+            if (config.tab.isSaveHistoryWhenClose()) {
                 addHistoryAction(albumController.albumTitle, albumController.albumUrl)
             }
 
@@ -262,10 +262,10 @@ class TabManager(
                     controller.albumUrl.ifBlank { controller.initAlbumUrl },
                 )
             }
-        config.savedAlbumInfoList = albumInfoList
-        config.currentAlbumIndex = browserContainer.indexOf(state.currentAlbumController)
-        if (albumInfoList.isNotEmpty() && config.currentAlbumIndex >= albumInfoList.size) {
-            config.currentAlbumIndex = albumInfoList.size - 1
+        config.tab.savedAlbumInfoList = albumInfoList
+        config.tab.currentAlbumIndex = browserContainer.indexOf(state.currentAlbumController)
+        if (albumInfoList.isNotEmpty() && config.tab.currentAlbumIndex >= albumInfoList.size) {
+            config.tab.currentAlbumIndex = albumInfoList.size - 1
         }
     }
 
@@ -308,7 +308,7 @@ class TabManager(
     }
 
     private fun getNextAlbumIndexAfterRemoval(removeIndex: Int): Int =
-        if (config.shouldShowNextAfterRemoveTab) min(browserContainer.size() - 1, removeIndex)
+        if (config.tab.shouldShowNextAfterRemoveTab) min(browserContainer.size() - 1, removeIndex)
         else max(0, removeIndex - 1)
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
@@ -333,7 +333,7 @@ class TabManager(
     }
 
     private fun closeTabConfirmation(okAction: () -> Unit) {
-        if (!config.confirmTabClose) {
+        if (!config.tab.confirmTabClose) {
             okAction()
         } else {
             dialogManager.showOkCancelDialog(

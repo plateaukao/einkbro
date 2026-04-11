@@ -36,7 +36,7 @@ class FabImageViewController(
         textView.alpha = 0.5f
 
         // Reset absolute positioning when not in custom mode
-        if (config.fabPosition != FabPosition.Custom) {
+        if (config.ui.fabPosition != FabPosition.Custom) {
             textView.x = 0f
             textView.y = 0f
         }
@@ -46,7 +46,7 @@ class FabImageViewController(
             textView.layoutParams.height
         )
 
-        when (config.fabPosition) {
+        when (config.ui.fabPosition) {
             FabPosition.Custom -> {
                 textView.layoutParams = params.apply {
                     startToStart = ConstraintLayout.LayoutParams.PARENT_ID
@@ -87,7 +87,7 @@ class FabImageViewController(
     }
 
     fun show() {
-        if (config.fabPosition == FabPosition.Custom) {
+        if (config.ui.fabPosition == FabPosition.Custom) {
             positionValidation()
             updateImagePosition(orientation)
         }
@@ -104,13 +104,13 @@ class FabImageViewController(
 
     fun updateImagePosition(orientation: Int) {
         this.orientation = orientation
-        if (config.fabPosition != FabPosition.Custom) {
+        if (config.ui.fabPosition != FabPosition.Custom) {
             return
         }
 
         textView.postDelayed({
             val currentFabCustomPosition =
-                if (orientation == ORIENTATION_PORTRAIT) config.fabCustomPosition else config.fabCustomPositionLandscape
+                if (orientation == ORIENTATION_PORTRAIT) config.ui.fabCustomPosition else config.ui.fabCustomPositionLandscape
 
             if (currentFabCustomPosition.x != 0 && currentFabCustomPosition.y != 0) {
                 textView.post {
@@ -140,7 +140,7 @@ class FabImageViewController(
     private fun setClickActions() {
         textView.setOnClickListener { clickAction() }
         textView.setOnLongClickListener {
-            if (config.fabPosition == FabPosition.Custom) {
+            if (config.ui.fabPosition == FabPosition.Custom) {
                 textView.scaleX = 2.0f
                 textView.scaleY = 2.0f
                 textView.setOnTouchListener { view, event -> customOnTouch(view, event) }
@@ -175,9 +175,9 @@ class FabImageViewController(
         textView.x = x.toFloat()
         textView.y = y.toFloat()
         if (orientation == ORIENTATION_PORTRAIT) {
-            config.fabCustomPosition = Point(x, y)
+            config.ui.fabCustomPosition = Point(x, y)
         } else {
-            config.fabCustomPositionLandscape = Point(x, y)
+            config.ui.fabCustomPositionLandscape = Point(x, y)
         }
 
         positionValidation()
@@ -188,11 +188,11 @@ class FabImageViewController(
         val maxHeight = (textView.parent as View).height
 
             if (orientation == ORIENTATION_PORTRAIT &&
-                (config.fabCustomPosition.x > maxWidth || config.fabCustomPosition.y > maxHeight)){
-                config.fabCustomPosition = Point(0, 0)
+                (config.ui.fabCustomPosition.x > maxWidth || config.ui.fabCustomPosition.y > maxHeight)){
+                config.ui.fabCustomPosition = Point(0, 0)
             } else if (orientation != ORIENTATION_LANDSCAPE &&
-                (config.fabCustomPositionLandscape.x > maxWidth || config.fabCustomPositionLandscape.y > maxHeight)){
-                config.fabCustomPositionLandscape = Point(0, 0)
+                (config.ui.fabCustomPositionLandscape.x > maxWidth || config.ui.fabCustomPositionLandscape.y > maxHeight)){
+                config.ui.fabCustomPositionLandscape = Point(0, 0)
             }
     }
 }

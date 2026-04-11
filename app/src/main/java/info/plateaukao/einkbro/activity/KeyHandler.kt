@@ -69,7 +69,7 @@ class KeyHandler(
             }
         }
 
-        if (!config.enableViBinding) return false
+        if (!config.browser.enableViBinding) return false
         // vim bindings
         if (event.isShiftPressed) {
             when (event.keyCode) {

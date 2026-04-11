@@ -113,8 +113,8 @@ class EinkBroApplication : Application() {
         }
 
         val filter = AdFilter.create(this)
-        filter.setEnabled(config.adBlock)
-        if (config.adBlock) {
+        filter.setEnabled(config.browser.adBlock)
+        if (config.browser.adBlock) {
             appScope.launch {
                 filter.viewModel.workToFilterMap.collect { notifyDownloading(it.isEmpty()) }
             }

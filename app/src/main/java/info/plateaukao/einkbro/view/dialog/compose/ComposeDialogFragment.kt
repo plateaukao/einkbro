@@ -55,11 +55,11 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
             val w = window ?: return
             w.attributes = w.attributes.apply { windowAnimations = 0 }
             if (!shouldShowInCenter) {
-                if (config.isVerticalToolbar) {
-                    val horizontalGravity = if (config.toolbarPosition == ToolbarPosition.Left) Gravity.START else Gravity.END
+                if (config.ui.isVerticalToolbar) {
+                    val horizontalGravity = if (config.ui.toolbarPosition == ToolbarPosition.Left) Gravity.START else Gravity.END
                     w.setGravity(Gravity.TOP or horizontalGravity)
                 } else {
-                    val verticalGravity = if (config.isToolbarOnTop) Gravity.TOP else Gravity.BOTTOM
+                    val verticalGravity = if (config.ui.isToolbarOnTop) Gravity.TOP else Gravity.BOTTOM
                     if (dialogAnchorX >= 0) {
                         w.setGravity(verticalGravity or Gravity.START)
                     } else {
@@ -87,7 +87,7 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
 
     override fun onStart() {
         super.onStart()
-        if (config.isVerticalToolbar) {
+        if (config.ui.isVerticalToolbar) {
             adjustVerticalPosition()
         } else {
             adjustHorizontalPosition()

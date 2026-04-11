@@ -292,7 +292,7 @@ class SettingActivity : FragmentActivity() {
             }
         }
 
-        if (config.hideStatusbar) {
+        if (config.ui.hideStatusbar) {
             hideStatusBar()
         }
     }
@@ -495,13 +495,13 @@ class SettingActivity : FragmentActivity() {
             R.string.hide_statusbar,
             0,
             R.string.setting_summary_hide_statusbar,
-            config::hideStatusbar,
+            config.ui::hideStatusbar,
         ),
         BooleanSettingItem(
             R.string.desktop_mode,
             0,
             R.string.setting_summary_desktop,
-            config::desktop,
+            config.browser::desktop,
         ),
         BooleanSettingItem(
             R.string.always_enable_zoom,
@@ -513,13 +513,13 @@ class SettingActivity : FragmentActivity() {
             R.string.show_default_text_menu,
             0,
             R.string.setting_summary_show_default_text_menu,
-            config::showDefaultActionMenu,
+            config.ui::showDefaultActionMenu,
         ),
         BooleanSettingItem(
             R.string.show_context_menu_icons,
             0,
             R.string.setting_summary_show_context_menu_icons,
-            config::showActionMenuIcons,
+            config.ui::showActionMenuIcons,
         ),
         DividerSettingItem(),
         ValueSettingItem(
@@ -563,7 +563,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_nav_pos,
             0,
             R.string.setting_summary_nav_pos,
-            config::fabPosition,
+            config.ui::fabPosition,
             listOf(
                 R.string.setting_summary_nav_pos_right,
                 R.string.setting_summary_nav_pos_left,
@@ -576,7 +576,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_plus_behavior,
             0,
             R.string.setting_summary_plus_behavior,
-            config::newTabBehavior,
+            config.tab::newTabBehavior,
             listOf(
                 R.string.plus_start_input_url,
                 R.string.plus_show_homepage,
@@ -598,31 +598,31 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_saveTabs,
             0,
             R.string.setting_summary_saveTabs,
-            config::shouldSaveTabs,
+            config.tab::shouldSaveTabs,
         ),
         BooleanSettingItem(
             R.string.setting_title_background_loading,
             0,
             R.string.setting_summary_background_loading,
-            config::enableWebBkgndLoad,
+            config.tab::enableWebBkgndLoad,
         ),
         BooleanSettingItem(
             R.string.setting_title_next_tab,
             0,
             R.string.setting_summary_next_tab,
-            config::shouldShowNextAfterRemoveTab,
+            config.tab::shouldShowNextAfterRemoveTab,
         ),
         BooleanSettingItem(
             R.string.settings_title_back_key_behavior,
             0,
             R.string.settings_summary_back_key_behavior,
-            config::closeTabWhenNoMoreBackHistory,
+            config.tab::closeTabWhenNoMoreBackHistory,
         ),
         BooleanSettingItem(
             R.string.setting_title_confirm_tab_close,
             0,
             R.string.setting_summary_confirm_tab_close,
-            config::confirmTabClose,
+            config.tab::confirmTabClose,
         ),
         DividerSettingItem(),
         // URL & navigation
@@ -630,13 +630,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_trim_input_url,
             0,
             R.string.setting_summary_trim_input_url,
-            config::shouldTrimInputUrl,
+            config.browser::shouldTrimInputUrl,
         ),
         BooleanSettingItem(
             R.string.setting_title_prune_query_parameter,
             0,
             R.string.setting_summary_prune_query_parameter,
-            config::shouldPruneQueryParameters,
+            config.browser::shouldPruneQueryParameters,
         ),
         BooleanSettingItem(
             R.string.setting_title_enable_url_drag_to_action,
@@ -648,7 +648,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_show_bookmarks_input_bar,
             0,
             R.string.setting_summary_show_bookmarks_input_bar,
-            config::showBookmarksInInputBar,
+            config.browser::showBookmarksInInputBar,
         ),
         DividerSettingItem(),
         // Video
@@ -656,19 +656,19 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_video_autoplay,
             0,
             R.string.setting_summary_video_autoplay,
-            config::enableVideoAutoplay,
+            config.browser::enableVideoAutoplay,
         ),
         BooleanSettingItem(
             R.string.setting_title_video_auto_fullscreen,
             0,
             R.string.setting_summary_video_auto_fullscreen,
-            config::enableVideoAutoFullscreen,
+            config.browser::enableVideoAutoFullscreen,
         ),
         BooleanSettingItem(
             R.string.setting_title_video_pip,
             0,
             R.string.setting_summary_video_pip,
-            config::enableVideoPip,
+            config.browser::enableVideoPip,
         ),
         DividerSettingItem(),
         // Input & controls
@@ -676,7 +676,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_vi_binding,
             0,
             R.string.setting_summary_vi_binding,
-            config::enableViBinding,
+            config.browser::enableViBinding,
         ),
         BooleanSettingItem(
             R.string.setting_title_disable_long_press_toucharea,
@@ -696,7 +696,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_screen_awake,
             0,
             R.string.setting_summary_screen_awake,
-            config::keepAwake,
+            config.ui::keepAwake,
         ),
         BooleanSettingItem(
             R.string.setting_title_text_wrap_reflow,
@@ -716,13 +716,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_enable_ssl_error_dialog,
             0,
             R.string.setting_summary_enable_ssl_error_dialog,
-            config::enableCertificateErrorDialog,
+            config.browser::enableCertificateErrorDialog,
         ),
         BooleanSettingItem(
             R.string.setting_title_enable_web_cache,
             0,
             R.string.setting_summary_enabling_web_cache,
-            config::webLoadCacheFirst,
+            config.browser::webLoadCacheFirst,
         ),
     )
 
@@ -738,7 +738,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_toolbar_position,
             0,
             0,
-            config::toolbarPosition,
+            config.ui::toolbarPosition,
             listOf(
                 R.string.toolbar_position_bottom,
                 R.string.toolbar_position_top,
@@ -750,19 +750,19 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_hideToolbar,
             0,
             R.string.setting_summary_hide,
-            config::shouldHideToolbar,
+            config.ui::shouldHideToolbar,
         ),
         BooleanSettingItem(
             R.string.setting_title_toolbarShow,
             0,
             R.string.setting_summary_toolbarShow,
-            config::showToolbarFirst,
+            config.ui::showToolbarFirst,
         ),
         BooleanSettingItem(
             R.string.setting_title_show_tab_bar,
             0,
             R.string.setting_summary_show_tab_bar,
-            config::shouldShowTabBar,
+            config.tab::shouldShowTabBar,
         ),
     )
 
@@ -870,7 +870,7 @@ class SettingActivity : FragmentActivity() {
         ListSettingWithStrResIdItem(
             R.string.setting_title_search_engine,
             0,
-            config = config::searchEngine,
+            config = config.browser::searchEngine,
             options = listOf(
                 R.string.setting_summary_search_engine_startpage,
                 R.string.setting_summary_search_engine_startpage_de,
@@ -889,20 +889,20 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_searchEngine,
             0,
             R.string.setting_summary_search_engine,
-            config = config::searchEngineUrl,
+            config = config.browser::searchEngineUrl,
         ),
         BooleanSettingItem(
             R.string.setting_title_search_suggestion,
             0,
             R.string.setting_summary_search_suggestion,
-            config::enableSearchSuggestion,
+            config.browser::enableSearchSuggestion,
         ),
         DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_process_text,
             0,
             R.string.setting_summary_custom_process_text_url,
-            config = config::processTextUrl,
+            config = config.browser::processTextUrl,
         ),
         BooleanSettingItem(
             R.string.setting_title_external_search_pop,
@@ -1087,13 +1087,13 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_userAgent_toggle,
             0,
             R.string.setting_summary_userAgent_toggle,
-            config::enableCustomUserAgent
+            config.browser::enableCustomUserAgent
         ),
         ValueSettingItem(
             R.string.setting_title_userAgent,
             0,
             R.string.setting_summary_userAgent,
-            config::customUserAgent
+            config.browser::customUserAgent
         ),
     )
 
@@ -1229,19 +1229,19 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_images,
             0,
             R.string.setting_summary_images,
-            config::enableImages
+            config.browser::enableImages
         ),
         BooleanSettingItem(
             R.string.setting_title_auto_fill_form,
             0,
             R.string.setting_summary_auto_fill_form,
-            config::autoFillForm
+            config.browser::autoFillForm
         ),
         ListSettingWithEnumItem(
             R.string.setting_title_history,
             0,
             R.string.setting_summary_history,
-            config::saveHistoryMode,
+            config.tab::saveHistoryMode,
             listOf(
                 R.string.save_history_mode_save_when_open,
                 R.string.save_history_mode_save_when_close,
@@ -1252,26 +1252,26 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_debug,
             0,
             R.string.setting_summary_debug,
-            config::debugWebView
+            config.browser::debugWebView
         ),
         BooleanSettingItem(
             R.string.setting_title_remote,
             0,
             R.string.setting_summary_remote,
-            config::enableRemoteAccess
+            config.browser::enableRemoteAccess
         ),
         BooleanSettingItem(
             R.string.setting_title_location,
             0,
             R.string.setting_summary_location,
-            config::shareLocation
+            config.browser::shareLocation
         ),
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_adblock,
             0,
             R.string.setting_summary_adblock,
-            config::adBlock
+            config.browser::adBlock
         ),
         ActionSettingItem(
             R.string.setting_title_update_adblock,
@@ -1291,7 +1291,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_javascript,
             0,
             R.string.setting_summary_javascript,
-            config::enableJavascript
+            config.browser::enableJavascript
         ),
         ActionSettingItem(
             R.string.setting_title_whitelistJS,
@@ -1303,7 +1303,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_cookie,
             0,
             R.string.setting_summary_cookie,
-            config::cookies
+            config.browser::cookies
         ),
         ActionSettingItem(
             R.string.setting_title_whitelistCookie,
@@ -1315,7 +1315,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_title_save_data,
             0,
             R.string.setting_summary_save_data,
-            config::enableSaveData
+            config.browser::enableSaveData
         ),
     )
 

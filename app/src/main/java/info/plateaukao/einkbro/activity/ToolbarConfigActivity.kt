@@ -72,7 +72,7 @@ class ToolbarConfigActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val isReaderMode = intent.getBooleanExtra(EXTRA_IS_READER_MODE, false)
-        val iconEnums = if (isReaderMode) config.readerToolbarActions else config.toolbarActions
+        val iconEnums = if (isReaderMode) config.ui.readerToolbarActions else config.ui.toolbarActions
         val toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
 
         setContent {
@@ -96,9 +96,9 @@ class ToolbarConfigActivity : ComponentActivity() {
                                 IconButton(onClick = {
                                     // save the toolbarActionInfoList
                                     if (isReaderMode) {
-                                        config.readerToolbarActions = list.value.map { it.toolbarAction }
+                                        config.ui.readerToolbarActions = list.value.map { it.toolbarAction }
                                     } else {
-                                        config.toolbarActions = list.value.map { it.toolbarAction }
+                                        config.ui.toolbarActions = list.value.map { it.toolbarAction }
                                     }
                                     finish()
                                 }) {
@@ -110,7 +110,7 @@ class ToolbarConfigActivity : ComponentActivity() {
                     content = { padding ->
                         ToolbarConfigPanel(
                             list = list,
-                            isVerticalPreview = config.isVerticalToolbar,
+                            isVerticalPreview = config.ui.isVerticalToolbar,
                         )
                     }
                 )

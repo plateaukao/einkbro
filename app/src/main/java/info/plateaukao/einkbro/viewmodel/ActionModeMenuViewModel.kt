@@ -41,7 +41,7 @@ class ActionModeMenuViewModel(
     val actionModeMenuState: StateFlow<ActionModeMenuState> = _actionModeMenuState.asStateFlow()
 
     val showIcons: Boolean
-        get() = configManager.showActionMenuIcons
+        get() = configManager.ui.showActionMenuIcons
 
     var menuInfos: MutableState<List<MenuInfo>> = mutableStateOf(emptyList())
 

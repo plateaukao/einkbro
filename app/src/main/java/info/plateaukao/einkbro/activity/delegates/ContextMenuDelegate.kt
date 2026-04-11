@@ -140,7 +140,7 @@ class ContextMenuDelegate(
 
     private fun confirmAdSiteAddition(url: String) {
         val host = Uri.parse(url).host.orEmpty()
-        if (config.adSites.contains(host)) {
+        if (config.browser.adSites.contains(host)) {
             confirmRemoveAdSite(host)
         } else {
             activity.lifecycleScope.launch {
@@ -152,7 +152,7 @@ class ContextMenuDelegate(
                 ).show().orEmpty()
 
                 if (domain.isNotBlank()) {
-                    config.adSites = config.adSites.apply { add(domain) }
+                    config.browser.adSites = config.browser.adSites.apply { add(domain) }
                     state.ebWebView.reload()
                 }
             }
@@ -163,7 +163,7 @@ class ContextMenuDelegate(
         dialogManager.showOkCancelDialog(
             title = "remove this url from blacklist?",
             okAction = {
-                config.adSites = config.adSites.apply { remove(url) }
+                config.browser.adSites = config.browser.adSites.apply { remove(url) }
                 state.ebWebView.reload()
             }
         )

@@ -128,7 +128,7 @@ class InputBarDelegate(
 
         inputTextOrUrl.value = textOrUrl
         inputIsWideLayout = ViewUnit.isWideLayout(activity)
-        inputShouldReverse = !config.isToolbarOnTop
+        inputShouldReverse = !config.ui.isToolbarOnTop
         inputHasCopiedText = getClipboardText().isNotEmpty()
         activity.lifecycleScope.launch {
             withContext(Dispatchers.IO) {
@@ -137,7 +137,7 @@ class InputBarDelegate(
             }
         }
 
-        if (config.isVerticalToolbar) {
+        if (config.ui.isVerticalToolbar) {
             adjustInputUrlForVerticalToolbar()
         } else {
             state.composeToolbarViewController.hide()
@@ -163,7 +163,7 @@ class InputBarDelegate(
             clone(binding.root)
             connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
             connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
-            if (config.toolbarPosition == ToolbarPosition.Left) {
+            if (config.ui.toolbarPosition == ToolbarPosition.Left) {
                 connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, binding.appBar.id, androidx.constraintlayout.widget.ConstraintSet.END)
                 connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.END)
             } else {
