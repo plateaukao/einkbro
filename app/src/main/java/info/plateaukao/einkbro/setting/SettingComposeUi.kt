@@ -415,6 +415,108 @@ fun ProgressActionSettingItemUi(
 }
 
 @Composable
+fun SearchSettingScreen(
+    query: String,
+    allSettings: List<Pair<Int, SettingItemInterface>>,
+    navController: NavHostController,
+    dialogManager: DialogManager,
+    linkAction: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val filteredSettings = remember(query) {
+        if (query.isBlank()) emptyList()
+        else allSettings.filter { (_, setting) ->
+            val title = context.getString(setting.titleResId)
+            val summary =
+                if (setting.summaryResId != 0) context.getString(setting.summaryResId) else ""
+            title.contains(query, ignoreCase = true) || summary.contains(query, ignoreCase = true)
+        }
+    }
+
+    val columnCount = if (ViewUnit.isWideLayout(context)) 2 else 1
+    val showBorder = columnCount == 2
+    val supportTwoSpan = columnCount == 2
+
+    LazyVerticalGrid(
+        modifier = modifier
+            .wrapContentHeight()
+            .padding(10.dp),
+        verticalArrangement = Arrangement.spacedBy(7.dp),
+        horizontalArrangement = Arrangement.spacedBy(7.dp),
+        columns = GridCells.Fixed(columnCount),
+    ) {
+        var lastCategoryResId = 0
+        filteredSettings.forEach { (categoryResId, setting) ->
+            if (categoryResId != lastCategoryResId) {
+                lastCategoryResId = categoryResId
+                item(span = { GridItemSpan(if (supportTwoSpan) 2 else 1) }) {
+                    DividerSettingItemUi(categoryResId, supportTwoSpan)
+                }
+            }
+            item(span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) }) {
+                when (setting) {
+                    is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder) {
+                        navController.navigate(setting.destination.name)
+                    }
+
+                    is ActionSettingItem -> SettingItemUi(
+                        setting,
+                        showBorder = showBorder
+                    ) { setting.action() }
+
+                    is ProgressActionSettingItem -> ProgressActionSettingItemUi(
+                        setting,
+                        showBorder = showBorder
+                    )
+
+                    is BooleanSettingItem -> BooleanSettingItemUi(setting, showBorder)
+                    is ValueSettingItem<*> -> ValueSettingItemUi(
+                        setting,
+                        dialogManager,
+                        showBorder,
+                        setting.showValue
+                    )
+
+                    is ListSettingWithEnumItem<*> -> ListSettingItemUi(
+                        setting,
+                        dialogManager,
+                        showBorder
+                    )
+
+                    is ListSettingWithStrResIdItem -> ListSettingWithStringItemUi(
+                        setting,
+                        dialogManager,
+                        showBorder
+                    )
+
+                    is ListSettingWithClassItem<*> -> ListSettingWithClassItemUi(
+                        setting,
+                        dialogManager,
+                        showBorder
+                    )
+
+                    is LinkSettingItem -> SettingItemUi(
+                        setting,
+                        showBorder = showBorder
+                    ) { linkAction(setting.url) }
+
+                    is VersionSettingItem -> {
+                        val version =
+                            " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
+                        SettingItemUi(setting, false, version, showBorder) {
+                            navController.navigate(setting.destination.name)
+                        }
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun SettingScreen(
     navController: NavHostController,
     settings: List<SettingItemInterface>,

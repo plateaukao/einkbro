@@ -12,17 +12,29 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -65,6 +77,7 @@ import info.plateaukao.einkbro.setting.ListSettingWithStrResIdItem
 import info.plateaukao.einkbro.setting.NavigateSettingItem
 import info.plateaukao.einkbro.setting.ProgressActionSettingItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
+import info.plateaukao.einkbro.setting.SearchSettingScreen
 import info.plateaukao.einkbro.setting.SettingScreen
 import info.plateaukao.einkbro.setting.ValueSettingItem
 import info.plateaukao.einkbro.setting.VersionSettingItem
@@ -103,23 +116,43 @@ class SettingActivity : FragmentActivity() {
 
                 val backStackEntry = navController.currentBackStackEntryAsState()
                 val currentScreen = valueOf(backStackEntry.value?.destination?.route ?: Main.name)
+                var isSearching by remember { mutableStateOf(false) }
+                var searchQuery by remember { mutableStateOf("") }
 
                 Scaffold(
                     modifier = Modifier.semantics {
                         testTagsAsResourceId = true
                     },
                     topBar = {
-                        SettingBar(
-                            currentScreen = currentScreen,
-                            navigateUp = {
-                                if (navController.previousBackStackEntry != null) navController.navigateUp()
-                                else finish()
-                            },
-                            close = { finish() }
-                        )
+                        if (isSearching) {
+                            SearchSettingBar(
+                                query = searchQuery,
+                                onQueryChange = { searchQuery = it },
+                                onClose = { isSearching = false; searchQuery = "" }
+                            )
+                        } else {
+                            SettingBar(
+                                currentScreen = currentScreen,
+                                navigateUp = {
+                                    if (navController.previousBackStackEntry != null) navController.navigateUp()
+                                    else finish()
+                                },
+                                close = { finish() },
+                                onSearch = { isSearching = true }
+                            )
+                        }
                     }
                 ) { innerPadding ->
-                    NavHost(
+                    if (isSearching) {
+                        SearchSettingScreen(
+                            query = searchQuery,
+                            allSettings = allSearchableSettings,
+                            navController = navController,
+                            dialogManager = dialogManager,
+                            linkAction = this@SettingActivity::handleLink,
+                            modifier = Modifier.padding(innerPadding),
+                        )
+                    } else NavHost(
                         navController = navController,
                         startDestination = routeName,
                         modifier = Modifier.padding(innerPadding),
@@ -368,6 +401,25 @@ class SettingActivity : FragmentActivity() {
         finish()
         @Suppress("DEPRECATION")
         overridePendingTransition(0, 0)
+    }
+
+    private val allSearchableSettings: List<Pair<Int, SettingItemInterface>> by lazy {
+        listOf(
+            Ui.titleId to uiSettingItems,
+            Toolbar.titleId to toolbarSettingItems,
+            Behavior.titleId to behaviorSettingItems,
+            Gesture.titleId to gestureSettingItems,
+            Search.titleId to searchSettingItems,
+            Backup.titleId to dataSettingItems,
+            DataControl.titleId to clearDataSettingItems,
+            StartControl.titleId to startSettingItems,
+            Misc.titleId to miscSettingItems,
+            ChatGPT.titleId to chatGptSettingItems,
+            UserAgent.titleId to userAgentSettingItems,
+        ).flatMap { (categoryResId, items) ->
+            items.filter { it !is DividerSettingItem }
+                .map { categoryResId to it }
+        }
     }
 
     private val mainSettings = listOf(
@@ -1310,6 +1362,7 @@ fun SettingBar(
     currentScreen: SettingRoute,
     navigateUp: () -> Unit,
     close: () -> Unit,
+    onSearch: () -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -1328,13 +1381,68 @@ fun SettingBar(
             }
         },
         actions = {
-            IconButton(onClick = close) {
+            IconButton(onClick = onSearch) {
                 Icon(
                     tint = MaterialTheme.colors.onPrimary,
-                    imageVector = Icons.Filled.Close,
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = stringResource(R.string.search_hint)
+                )
+            }
+            if (currentScreen != SettingRoute.Main) {
+                IconButton(onClick = close) {
+                    Icon(
+                        tint = MaterialTheme.colors.onPrimary,
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = stringResource(R.string.back)
+                    )
+                }
+            }
+        }
+    )
+}
+
+@Composable
+fun SearchSettingBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onClose: () -> Unit,
+) {
+    val focusRequester = remember { FocusRequester() }
+    TopAppBar(
+        title = {
+            TextField(
+                value = query,
+                onValueChange = onQueryChange,
+                placeholder = {
+                    Text(
+                        stringResource(R.string.search_settings_hint),
+                        color = MaterialTheme.colors.onPrimary.copy(alpha = 0.6f)
+                    )
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = MaterialTheme.colors.onPrimary,
+                    cursorColor = MaterialTheme.colors.onPrimary,
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+            )
+            LaunchedEffect(Unit) {
+                focusRequester.requestFocus()
+            }
+        },
+        navigationIcon = {
+            IconButton(onClick = onClose) {
+                Icon(
+                    tint = MaterialTheme.colors.onPrimary,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
             }
-        }
+        },
     )
 }
