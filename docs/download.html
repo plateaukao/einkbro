@@ -59,6 +59,43 @@
 <h2>Changelog</h2>
 
 <div class="changelog-version">
+<h3>15.11.1</h3>
+
+<h4>Features</h4>
+<ul>
+  <li>Ebook touch mode — tap to turn pages directly in WebView with native touch interception</li>
+  <li>WebView login data (cookies & storage) included in backup/restore</li>
+  <li>OpenAI/Gemini in-place translation support</li>
+  <li>Auto-hiding top header with history/menu buttons in chat UI</li>
+  <li>Improved web content loading speed with caching optimizations</li>
+  <li>Faster app startup and WebView creation performance</li>
+</ul>
+
+<h4>Improvements</h4>
+<ul>
+  <li>Major architecture overhaul — extract delegates from BrowserActivity, fix DI, migrate DB, split interfaces</li>
+  <li>Break up BrowserUnit and HelperUnit into focused helpers</li>
+  <li>Extract 5 sub-configs from ConfigManager (1135 → 811 lines)</li>
+  <li>Extract WebViewJsBridge from EBWebView</li>
+  <li>Move ebook touch pagination from JS injection to native view interception</li>
+  <li>Simplify update progress UI to show only percentage</li>
+</ul>
+
+<h4>Fixes</h4>
+<ul>
+  <li>Chat with web uses correct webview reference after creating new tab</li>
+  <li>Migrate data from old Ninja4.db to Room on upgrade</li>
+  <li>Crash on launch due to uninitialized ebWebView in TabManager</li>
+  <li>Crash on startup due to Kotlin init order in BaseWebConfig</li>
+  <li>Restore long-press text selection when ebook touch pagination is disabled</li>
+  <li>Remove animations from menu/bookmark dialogs to reduce flicker</li>
+  <li>Harden video autoplay blocking with multi-layer approach</li>
+  <li>Prevent screen power cycling when starting TTS on E-ink devices</li>
+  <li>Snapshot update stuck state, install screen not showing, and extraction progress</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>15.10.0</h3>
 
 <h4>Features</h4>

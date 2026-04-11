@@ -1,3 +1,37 @@
+### 15.11.1
+#### Features
+* Ebook touch mode — tap to turn pages directly in WebView with native touch interception
+* WebView login data (cookies & storage) included in backup/restore
+* OpenAI/Gemini in-place translation support
+* Auto-hiding top header with history/menu buttons in chat UI
+* Improved web content loading speed with caching optimizations
+* Faster app startup and WebView creation performance
+
+#### Improvements
+* Major architecture overhaul — extract delegates from BrowserActivity, fix DI, migrate DB, split interfaces
+* Break up BrowserUnit and HelperUnit into focused helpers
+* Extract 5 sub-configs from ConfigManager (1135 → 811 lines)
+* Extract WebViewJsBridge from EBWebView
+* Move ebook touch pagination from JS injection to native view interception
+* Simplify update progress UI to show only percentage
+* Move repositories from service/ to data/remote/
+
+#### Fixes
+* Chat with web uses correct webview reference after creating new tab
+* Migrate data from old Ninja4.db to Room on upgrade
+* Crash on launch due to uninitialized ebWebView in TabManager
+* Crash on startup due to Kotlin init order in BaseWebConfig
+* Restore long-press text selection when ebook touch pagination is disabled
+* Show touch pagination state icon in menu dialog
+* Remove animations from menu dialog resize and bookmark dialog navigation
+* Hide bookmark dialog window during folder navigation to reduce flicker
+* Harden video autoplay blocking with multi-layer approach
+* Prevent screen power cycling when starting TTS on E-ink devices
+* Snapshot update stuck state, install screen not showing, and extraction progress
+* Simulate click on non-link elements in Ebook long-press
+
+---
+
 ### 15.10.0
 #### Features
 * Share/receive app data over local network

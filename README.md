@@ -30,6 +30,7 @@ EinkBro is designed to fit E-Ink devices' needs; no unnecessary UI transitions a
 EinkBro is built from the ground up for E-Ink displays, with features that make web browsing comfortable on e-readers.
 
 - **Tap screen edges to turn pages** — configurable left/right or top/bottom touch areas for page up/down
+- **Ebook touch mode** — tap to turn pages directly in WebView with native touch interception
 - **Volume key navigation** — use physical volume keys to scroll pages
 - **Reader mode** — strips away clutter for a clean, distraction-free reading experience
 - **Vertical reading mode** — vertical text layout for Chinese/Japanese content
@@ -54,6 +55,7 @@ Translate web content without leaving the browser, with multiple translation met
 
 - **Paragraph-by-paragraph translation** — inline translated text alongside the original for easy comparison
 - **Multiple providers** — Google Translate, DeepL, Papago, OpenAI, and Google Gemini
+- **In-place translation** — translate content inline using OpenAI or Gemini
 - **Full page translation** — translate the entire page via Google Translate
 - **Image translation** — translate text within images with cached results
 - **Dual captions** — display subtitles in two languages on YouTube videos
