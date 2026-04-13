@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Offline</title>
+<style>
+  :root {
+    --fg: #111;
+    --bg: #fff;
+    --muted: #666;
+    --line: #111;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#eee; --bg:#000; --muted:#aaa; --line:#eee; }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, Roboto, "Helvetica Neue", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10vh 24px 24px;
+  }
+  .logo {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 24px;
+    filter: grayscale(100%);
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    text-align: center;
+  }
+  p.msg {
+    font-size: 15px;
+    color: var(--muted);
+    margin: 0 0 28px;
+    text-align: center;
+    max-width: 420px;
+    line-height: 1.5;
+  }
+  .url {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin: -16px 0 28px;
+    word-break: break-all;
+    max-width: 420px;
+    text-align: center;
+  }
+  button.retry {
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--bg);
+    color: var(--fg);
+    border: 2px solid var(--line);
+    border-radius: 28px;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 160px;
+  }
+  button.retry:active { background: var(--fg); color: var(--bg); }
+
+  .game-wrap {
+    margin-top: 48px;
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  canvas {
+    width: 100%;
+    max-width: 560px;
+    height: 160px;
+    border-top: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    background: var(--bg);
+    touch-action: manipulation;
+    display: block;
+  }
+  .score {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    align-self: flex-end;
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+  <img class="logo" src="einkbro_logo.webp" alt="EinkBro">
+  <h1 id="title">You're offline</h1>
+  <p class="msg" id="message">Check your connection and try again.</p>
+  <p class="url" id="failedUrl"></p>
+  <button class="retry" id="retryBtn">Retry</button>
+
+  <div class="game-wrap">
+    <div class="score" id="score">0</div>
+    <canvas id="game" width="1120" height="320"></canvas>
+    <div class="hint">Tap or press Space to make the dragon jump</div>
+  </div>
+
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var failed = params.get('url') || '';
+  var reason = params.get('reason') || '';
+  if (failed) {
+    document.getElementById('failedUrl').textContent = failed;
+  }
+  if (reason) {
+    document.getElementById('message').textContent = reason;
+  }
+  document.getElementById('retryBtn').addEventListener('click', function () {
+    location.href = 'einkbro://retry';
+  });
+
+  // --- Dragon jump game ---
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var groundY = H - 40;
+
+  var dragon = {
+    x: 80, y: groundY, w: 64, h: 44,
+    vy: 0, onGround: true, flap: 0
+  };
+  var gravity = 0.7;
+  var jumpV = -13;
+  var obstacles = [];
+  var speed = 6;
+  var score = 0;
+  var best = parseInt(localStorage.getItem('einkbroDragonBest') || '0', 10);
+  var running = true;
+  var spawnTimer = 0;
+  var scoreEl = document.getElementById('score');
+
+  function jump() {
+    if (!running) { reset(); return; }
+    if (dragon.onGround) {
+      dragon.vy = jumpV;
+      dragon.onGround = false;
+    }
+  }
+  function reset() {
+    obstacles = [];
+    speed = 6;
+    score = 0;
+    spawnTimer = 0;
+    dragon.y = groundY;
+    dragon.vy = 0;
+    dragon.onGround = true;
+    running = true;
+  }
+
+  window.addEventListener('keydown', function (e) {
+    if (e.code === 'Space' || e.code === 'ArrowUp') {
+      e.preventDefault();
+      jump();
+    }
+  });
+  canvas.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    jump();
+  }, { passive: false });
+  canvas.addEventListener('mousedown', jump);
+
+  function drawDragon(x, y) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.fillStyle = getComputedStyle(document.body).color;
+    // body
+    ctx.beginPath();
+    ctx.ellipse(28, -14, 26, 14, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // head
+    ctx.beginPath();
+    ctx.ellipse(56, -22, 14, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // snout
+    ctx.fillRect(62, -24, 10, 6);
+    // eye
+    ctx.fillStyle = getComputedStyle(document.body).backgroundColor;
+    ctx.beginPath();
+    ctx.arc(60, -24, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = getComputedStyle(document.body).color;
+    // wing (flaps)
+    var wingUp = Math.sin(dragon.flap) > 0;
+    ctx.beginPath();
+    if (wingUp) {
+      ctx.moveTo(20, -20);
+      ctx.lineTo(8, -46);
+      ctx.lineTo(36, -30);
+    } else {
+      ctx.moveTo(20, -16);
+      ctx.lineTo(10, 4);
+      ctx.lineTo(38, -12);
+    }
+    ctx.closePath();
+    ctx.fill();
+    // tail
+    ctx.beginPath();
+    ctx.moveTo(2, -14);
+    ctx.lineTo(-20, -6);
+    ctx.lineTo(-20, -18);
+    ctx.closePath();
+    ctx.fill();
+    // legs
+    if (dragon.onGround) {
+      var step = Math.floor(score / 4) % 2 === 0 ? 0 : 4;
+      ctx.fillRect(18, -4, 6, 8 - step);
+      ctx.fillRect(36, -4, 6, 4 + step);
+    } else {
+      ctx.fillRect(18, -6, 6, 6);
+      ctx.fillRect(36, -6, 6, 6);
+    }
+    ctx.restore();
+  }
+
+  function drawGround() {
+    ctx.strokeStyle = getComputedStyle(document.body).color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, groundY + 1);
+    ctx.lineTo(W, groundY + 1);
+    ctx.stroke();
+    // dashes
+    ctx.lineWidth = 1;
+    for (var i = 0; i < W; i += 28) {
+      var o = (score * 2) % 28;
+      ctx.beginPath();
+      ctx.moveTo(i - o, groundY + 10);
+      ctx.lineTo(i - o + 14, groundY + 10);
+      ctx.stroke();
+    }
+  }
+
+  function drawObstacle(o) {
+    ctx.fillStyle = getComputedStyle(document.body).color;
+    if (o.type === 'rock') {
+      ctx.beginPath();
+      ctx.moveTo(o.x, groundY);
+      ctx.lineTo(o.x + o.w / 2, groundY - o.h);
+      ctx.lineTo(o.x + o.w, groundY);
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      // cactus-like pillar with arms
+      ctx.fillRect(o.x + o.w / 2 - 4, groundY - o.h, 8, o.h);
+      ctx.fillRect(o.x, groundY - o.h + 8, 6, 12);
+      ctx.fillRect(o.x + o.w - 6, groundY - o.h + 14, 6, 12);
+    }
+  }
+
+  function rectsHit(ax, ay, aw, ah, bx, by, bw, bh) {
+    return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    drawGround();
+
+    if (running) {
+      // physics
+      dragon.vy += gravity;
+      dragon.y += dragon.vy;
+      if (dragon.y >= groundY) {
+        dragon.y = groundY;
+        dragon.vy = 0;
+        dragon.onGround = true;
+      }
+      dragon.flap += 0.3;
+
+      // spawn
+      spawnTimer--;
+      if (spawnTimer <= 0) {
+        var isRock = Math.random() < 0.5;
+        obstacles.push({
+          x: W + 20,
+          w: isRock ? 34 : 22,
+          h: isRock ? (22 + Math.random() * 22) : (34 + Math.random() * 20),
+          type: isRock ? 'rock' : 'cactus'
+        });
+        spawnTimer = 60 + Math.floor(Math.random() * 60);
+      }
+
+      // move obstacles
+      for (var i = obstacles.length - 1; i >= 0; i--) {
+        var o = obstacles[i];
+        o.x -= speed;
+        if (o.x + o.w < 0) {
+          obstacles.splice(i, 1);
+          score++;
+          if (score % 10 === 0) speed += 0.4;
+        }
+        // collision box for dragon
+        var dx = dragon.x - 22, dy = dragon.y - 34, dw = 58, dh = 34;
+        if (rectsHit(dx, dy, dw, dh, o.x, groundY - o.h, o.w, o.h)) {
+          running = false;
+          if (score > best) {
+            best = score;
+            localStorage.setItem('einkbroDragonBest', String(best));
+          }
+        }
+      }
+    }
+
+    // draw obstacles
+    for (var j = 0; j < obstacles.length; j++) drawObstacle(obstacles[j]);
+    drawDragon(dragon.x, dragon.y);
+
+    // game over label
+    if (!running) {
+      ctx.fillStyle = getComputedStyle(document.body).color;
+      ctx.font = 'bold 18px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Game Over — tap to restart', W / 2, 40);
+    }
+
+    scoreEl.textContent = 'SCORE ' + String(score).padStart(4, '0') + '   BEST ' + String(best).padStart(4, '0');
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+})();
+</script>
+</body>
+</html>
