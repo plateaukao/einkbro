@@ -349,7 +349,7 @@ object ViewUnit: KoinComponent {
 
     private fun moveAppbarToTop(binding: MainActivityLayout) {
         setAppbarHorizontalLayoutParams(binding)
-        setProgressBarHorizontal(binding)
+        setProgressBarHorizontal(binding, atTop = true)
         binding.contentSeparator.visibility = android.view.View.VISIBLE
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
@@ -445,72 +445,58 @@ object ViewUnit: KoinComponent {
     }
 
     private fun setProgressBarVertical(binding: MainActivityLayout, isLeft: Boolean) {
-        val progressBar = binding.activityMainContent.mainProgressBar
+        val horizontalBar = binding.activityMainContent.mainProgressBar
+        val verticalBar = binding.activityMainContent.mainProgressBarVertical
         val root = binding.activityMainContent.root
         val density = root.context.resources.displayMetrics.density
         val barThickness = (2 * density).toInt()
 
-        // Use post to get actual dimensions after layout
-        root.post {
-            val parentWidth = root.width
-            val parentHeight = root.height
-            if (parentWidth <= 0 || parentHeight <= 0) return@post
+        // Hide the horizontal bar — the vertical center-expand bar takes over.
+        horizontalBar.visibility = View.GONE
 
-            // Set width = parentHeight so after rotation, visual height = parentHeight
-            val params = progressBar.layoutParams as ConstraintLayout.LayoutParams
-            params.width = parentHeight
-            params.height = barThickness
-            progressBar.layoutParams = params
-
-            // Clear all constraints and position at top-left origin
-            val cs = ConstraintSet()
-            cs.clone(root)
-            cs.clear(progressBar.id)
-            cs.constrainWidth(progressBar.id, parentHeight)
-            cs.constrainHeight(progressBar.id, barThickness)
-            cs.connect(progressBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            cs.connect(progressBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-            // ConstraintSet.clear() resets visibility to the default VISIBLE; restore the current value.
-            cs.setVisibility(progressBar.id, progressBar.visibility)
-            cs.applyTo(root)
-
-            if (isLeft) {
-                // Rotate CCW: progress fills top-to-bottom, bar on left edge
-                progressBar.rotation = -90f
-                // Unrotated center at (parentHeight/2, barThickness/2)
-                // Desired visual center at (barThickness/2, parentHeight/2)
-                progressBar.translationX = barThickness / 2f - parentHeight / 2f
-                progressBar.translationY = parentHeight / 2f - barThickness / 2f
-            } else {
-                // Rotate CW: progress fills top-to-bottom, bar on right edge
-                progressBar.rotation = 90f
-                // Desired visual center at (parentWidth - barThickness/2, parentHeight/2)
-                progressBar.translationX = parentWidth - barThickness / 2f - parentHeight / 2f
-                progressBar.translationY = parentHeight / 2f - barThickness / 2f
-            }
+        val cs = ConstraintSet()
+        cs.clone(root)
+        cs.clear(verticalBar.id)
+        cs.constrainWidth(verticalBar.id, barThickness)
+        cs.constrainHeight(verticalBar.id, 0) // MATCH_CONSTRAINT
+        cs.connect(verticalBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        cs.connect(verticalBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        if (isLeft) {
+            cs.connect(verticalBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        } else {
+            cs.connect(verticalBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
         }
+        cs.setVisibility(horizontalBar.id, View.GONE)
+        // ConstraintSet.clear() resets visibility to the default VISIBLE; restore the current value.
+        cs.setVisibility(verticalBar.id, verticalBar.visibility)
+        cs.applyTo(root)
     }
 
-    private fun setProgressBarHorizontal(binding: MainActivityLayout) {
-        val progressBar = binding.activityMainContent.mainProgressBar
+    private fun setProgressBarHorizontal(binding: MainActivityLayout, atTop: Boolean = false) {
+        val horizontalBar = binding.activityMainContent.mainProgressBar
+        val verticalBar = binding.activityMainContent.mainProgressBarVertical
         val root = binding.activityMainContent.root
         val density = root.context.resources.displayMetrics.density
         val barThickness = (4 * density).toInt()
 
-        progressBar.rotation = 0f
-        progressBar.translationX = 0f
-        progressBar.translationY = 0f
+        // Hide the vertical bar — the horizontal ProgressBar takes over.
+        verticalBar.visibility = View.GONE
 
         val cs = ConstraintSet()
         cs.clone(root)
-        cs.clear(progressBar.id)
-        cs.constrainWidth(progressBar.id, 0) // MATCH_CONSTRAINT
-        cs.constrainHeight(progressBar.id, barThickness)
-        cs.connect(progressBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-        cs.connect(progressBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-        cs.connect(progressBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        cs.clear(horizontalBar.id)
+        cs.constrainWidth(horizontalBar.id, 0) // MATCH_CONSTRAINT
+        cs.constrainHeight(horizontalBar.id, barThickness)
+        cs.connect(horizontalBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        cs.connect(horizontalBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        if (atTop) {
+            cs.connect(horizontalBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        } else {
+            cs.connect(horizontalBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        }
+        cs.setVisibility(verticalBar.id, View.GONE)
         // ConstraintSet.clear() resets visibility to the default VISIBLE; restore the current value.
-        cs.setVisibility(progressBar.id, progressBar.visibility)
+        cs.setVisibility(horizontalBar.id, horizontalBar.visibility)
         cs.applyTo(root)
     }
 

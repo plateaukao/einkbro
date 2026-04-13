@@ -87,6 +87,7 @@ import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.unit.pruneWebTitle
+import info.plateaukao.einkbro.view.CenterExpandProgressBar
 import info.plateaukao.einkbro.view.TranslationPanelView
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
@@ -208,6 +209,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var progressBar: ProgressBar
         get() = browserState.progressBar
         set(value) { browserState.progressBar = value }
+    private var progressBarVertical: CenterExpandProgressBar
+        get() = browserState.progressBarVertical
+        set(value) { browserState.progressBarVertical = value }
     private var fabImageViewController: FabImageViewController
         get() = browserState.fabImageViewController
         set(value) { browserState.fabImageViewController = value }
@@ -398,9 +402,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val top = androidx.constraintlayout.widget.ConstraintSet.TOP
         val bottom = androidx.constraintlayout.widget.ConstraintSet.BOTTOM
         val parent = androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
-        // When toolbar is vertical, appBar spans the full height (TOP & BOTTOM → parent),
-        // so anchoring twoPanel.bottom to appBar.top collapses the webview to zero height.
+        // Vertical toolbar: appBar spans full height (TOP & BOTTOM → parent).
+        // Top toolbar: appBar.top pinned to parent.top.
+        // In both cases, anchoring twoPanel.bottom to appBar.top collapses the webview.
         val isVertical = config.ui.isVerticalToolbar
+        val isToolbarTop =
+            config.ui.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Top
 
         cs.clear(statusBarId, top)
         cs.clear(statusBarId, bottom)
@@ -408,17 +415,41 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         cs.clear(twoPanelId, bottom)
 
         when (position) {
-            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Top -> {
-                cs.connect(statusBarId, top, parent, top)
-                cs.connect(twoPanelId, top, statusBarId, bottom)
-                if (isVertical) cs.connect(twoPanelId, bottom, parent, bottom)
-                else cs.connect(twoPanelId, bottom, appBarId, top)
+            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Top -> when {
+                isToolbarTop -> {
+                    // Stack: appBar (top) → statusBar → twoPanel → parent.bottom
+                    cs.connect(statusBarId, top, appBarId, bottom)
+                    cs.connect(twoPanelId, top, statusBarId, bottom)
+                    cs.connect(twoPanelId, bottom, parent, bottom)
+                }
+                isVertical -> {
+                    cs.connect(statusBarId, top, parent, top)
+                    cs.connect(twoPanelId, top, statusBarId, bottom)
+                    cs.connect(twoPanelId, bottom, parent, bottom)
+                }
+                else -> { // horizontal toolbar at Bottom
+                    cs.connect(statusBarId, top, parent, top)
+                    cs.connect(twoPanelId, top, statusBarId, bottom)
+                    cs.connect(twoPanelId, bottom, appBarId, top)
+                }
             }
-            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Bottom -> {
-                if (isVertical) cs.connect(statusBarId, bottom, parent, bottom)
-                else cs.connect(statusBarId, bottom, appBarId, top)
-                cs.connect(twoPanelId, top, parent, top)
-                cs.connect(twoPanelId, bottom, statusBarId, top)
+            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Bottom -> when {
+                isToolbarTop -> {
+                    // Stack: appBar (top) → twoPanel → statusBar (bottom)
+                    cs.connect(statusBarId, bottom, parent, bottom)
+                    cs.connect(twoPanelId, top, appBarId, bottom)
+                    cs.connect(twoPanelId, bottom, statusBarId, top)
+                }
+                isVertical -> {
+                    cs.connect(statusBarId, bottom, parent, bottom)
+                    cs.connect(twoPanelId, top, parent, top)
+                    cs.connect(twoPanelId, bottom, statusBarId, top)
+                }
+                else -> { // horizontal toolbar at Bottom
+                    cs.connect(statusBarId, bottom, appBarId, top)
+                    cs.connect(twoPanelId, top, parent, top)
+                    cs.connect(twoPanelId, bottom, statusBarId, top)
+                }
             }
         }
         cs.applyTo(root)
@@ -763,12 +794,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun updateTitle(title: String?) = updateTitle()
     override fun updateProgress(progress: Int) {
         progressBar.progress = progress
+        progressBarVertical.progress = progress
+        val isVertical = config.ui.isVerticalToolbar
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
-            progressBar.visibility = VISIBLE
+            progressBar.visibility = if (isVertical) GONE else VISIBLE
+            progressBarVertical.visibility = if (isVertical) VISIBLE else GONE
         } else {
             updateRefresh(false)
             progressBar.visibility = GONE
+            progressBarVertical.visibility = GONE
             swipeRefreshLayout.isRefreshing = false
             scrollChange()
             tabManager.updateSavedAlbumInfo()
@@ -1114,9 +1149,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     @SuppressLint("ClickableViewAccessibility")
     private fun initToolbar() {
         progressBar = findViewById(R.id.main_progress_bar)
+        progressBarVertical = findViewById(R.id.main_progress_bar_vertical)
         if (config.display.darkMode == DarkMode.FORCE_ON) {
             val nightModeFlags: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) progressBar.progressTintMode = PorterDuff.Mode.LIGHTEN
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
+                progressBar.progressTintMode = PorterDuff.Mode.LIGHTEN
+                progressBarVertical.setFillColor(android.graphics.Color.WHITE)
+            }
         }
         initFAB()
         if (config.touch.enableNavButtonGesture) {

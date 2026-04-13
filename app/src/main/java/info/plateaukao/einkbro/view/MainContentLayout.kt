@@ -34,6 +34,7 @@ class MainContentLayout(
     val touchAreaLeft2: View,
     val touchAreaLeftDrag: View,
     val mainProgressBar: ProgressBar,
+    val mainProgressBarVertical: CenterExpandProgressBar,
     val fabImageButtonNav: TextView,
     val translationLanguage: TextView,
     val remoteTextSearch: ImageButton,
@@ -264,7 +265,7 @@ class MainContentLayout(
                 marginEnd = dpToPx(context, -20)
             })
 
-            // ProgressBar
+            // Horizontal ProgressBar (used when toolbar is at top/bottom)
             val mainProgressBar = ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal).apply {
                 id = R.id.main_progress_bar
                 max = 100
@@ -276,6 +277,18 @@ class MainContentLayout(
             ).apply {
                 // maxHeight is handled by the height constraint
             })
+
+            // Vertical progress bar (used when toolbar is on left/right); fills from center outward
+            val mainProgressBarVertical = CenterExpandProgressBar(context).apply {
+                id = R.id.main_progress_bar_vertical
+                max = 100
+                orientation = CenterExpandProgressBar.Orientation.VERTICAL
+                visibility = View.GONE
+                setFillColor(resolveColorControlNormal(context))
+            }
+            root.addView(mainProgressBarVertical, ConstraintLayout.LayoutParams(
+                dpToPx(context, 2), 0
+            ))
 
             // fab_imageButtonNav
             val fabImageButtonNav = TextView(context).apply {
@@ -421,6 +434,11 @@ class MainContentLayout(
             constraintSet.connect(mainProgressBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
             constraintSet.connect(mainProgressBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
 
+            // main_progress_bar_vertical: top/bottom to parent, end to parent (default right edge)
+            constraintSet.connect(mainProgressBarVertical.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            constraintSet.connect(mainProgressBarVertical.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            constraintSet.connect(mainProgressBarVertical.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+
             // fab_imageButtonNav: end to parent, bottom to swipe_refresh_layout.bottom
             constraintSet.connect(fabImageButtonNav.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
             constraintSet.connect(fabImageButtonNav.id, ConstraintSet.BOTTOM, swipeRefreshLayout.id, ConstraintSet.BOTTOM)
@@ -458,6 +476,7 @@ class MainContentLayout(
                 touchAreaLeft2 = touchAreaLeft2,
                 touchAreaLeftDrag = touchAreaLeftDrag,
                 mainProgressBar = mainProgressBar,
+                mainProgressBarVertical = mainProgressBarVertical,
                 fabImageButtonNav = fabImageButtonNav,
                 translationLanguage = translationLanguage,
                 remoteTextSearch = remoteTextSearch,

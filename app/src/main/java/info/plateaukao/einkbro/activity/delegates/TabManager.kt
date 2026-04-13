@@ -198,6 +198,7 @@ class TabManager(
         updateWebViewCount()
 
         state.progressBar.visibility = View.GONE
+        state.progressBarVertical.visibility = View.GONE
         val newEbWebView = controller as EBWebView
         state.ebWebView = (newEbWebView)
         keyHandlerSetWebView(newEbWebView)
