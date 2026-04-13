@@ -18,6 +18,7 @@ class MainActivityLayout(
     val inputUrl: ComposeView,
     val contentSeparator: View,
     val layoutOverview: ComposeView,
+    val statusBar: ComposeView,
 ) {
     companion object {
         fun create(context: Context): MainActivityLayout {
@@ -102,6 +103,17 @@ class MainActivityLayout(
             }
             root.addView(layoutOverview)
 
+            // statusBar ComposeView (shown when toolbar is hidden)
+            val statusBar = ComposeView(context).apply {
+                id = R.id.status_bar
+                layoutParams = ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                )
+                visibility = View.GONE
+            }
+            root.addView(statusBar)
+
             // Apply constraints
             val constraintSet = ConstraintSet()
             constraintSet.clone(root)
@@ -130,6 +142,11 @@ class MainActivityLayout(
             constraintSet.connect(layoutOverview.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
             constraintSet.connect(layoutOverview.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
 
+            // statusBar: full-width; anchored to top by default (position is applied at runtime)
+            constraintSet.connect(statusBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            constraintSet.connect(statusBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            constraintSet.connect(statusBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+
             constraintSet.applyTo(root)
 
             return MainActivityLayout(
@@ -142,6 +159,7 @@ class MainActivityLayout(
                 inputUrl = inputUrl,
                 contentSeparator = contentSeparator,
                 layoutOverview = layoutOverview,
+                statusBar = statusBar,
             )
         }
     }

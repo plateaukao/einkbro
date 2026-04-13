@@ -382,6 +382,44 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ).also { browserState.composeToolbarViewController = it }
     }
 
+    protected val statusbarViewController: info.plateaukao.einkbro.view.viewControllers.StatusbarViewController by lazy {
+        info.plateaukao.einkbro.view.viewControllers.StatusbarViewController(
+            composeView = binding.statusBar,
+            applyConstraints = { position -> applyStatusbarConstraints(position) },
+        ).also { browserState.statusbarViewController = it }
+    }
+
+    private fun applyStatusbarConstraints(position: info.plateaukao.einkbro.view.statusbar.StatusbarPosition) {
+        val root = binding.root
+        val cs = androidx.constraintlayout.widget.ConstraintSet().apply { clone(root) }
+        val statusBarId = binding.statusBar.id
+        val twoPanelId = binding.twoPanelLayout.id
+        val appBarId = binding.appBar.id
+        val cSet = androidx.constraintlayout.widget.ConstraintSet::class.java
+        val top = androidx.constraintlayout.widget.ConstraintSet.TOP
+        val bottom = androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+        val parent = androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
+
+        cs.clear(statusBarId, top)
+        cs.clear(statusBarId, bottom)
+        cs.clear(twoPanelId, top)
+        cs.clear(twoPanelId, bottom)
+
+        when (position) {
+            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Top -> {
+                cs.connect(statusBarId, top, parent, top)
+                cs.connect(twoPanelId, top, statusBarId, bottom)
+                cs.connect(twoPanelId, bottom, appBarId, top)
+            }
+            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Bottom -> {
+                cs.connect(statusBarId, bottom, appBarId, top)
+                cs.connect(twoPanelId, top, parent, top)
+                cs.connect(twoPanelId, bottom, statusBarId, top)
+            }
+        }
+        cs.applyTo(root)
+    }
+
     // ── BrowserAction dispatch ─────────────────────────────────────────────
 
     fun dispatch(action: BrowserAction) = when (action) {
@@ -467,7 +505,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun toggleReaderMode() = ebWebView.toggleReaderMode()
     override fun toggleVerticalRead() = ebWebView.toggleVerticalRead()
     override fun toggleAudioOnlyMode() = ebWebView.toggleAudioOnlyMode()
-    override fun updatePageInfo(info: String) = composeToolbarViewController.updatePageInfo(info)
+    override fun updatePageInfo(info: String) {
+        composeToolbarViewController.updatePageInfo(info)
+        statusbarViewController.updatePageInfo(info)
+    }
     override fun sendPageUpKey() = ebWebView.sendPageUpKey()
     override fun sendPageDownKey() = ebWebView.sendPageDownKey()
     override fun sendLeftKey() { ebWebView.dispatchKeyEvent(KeyEvent(ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT)) }
@@ -794,6 +835,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         if (config.ui.hideStatusbar) fullscreenDelegate.hideStatusBar()
 
+        // Initialize statusbar controller; show it when toolbar is configured hidden at launch
+        statusbarViewController
+        if (config.ui.shouldHideToolbar) statusbarViewController.show()
+
         handleWindowInsets()
         listenKeyboardShowHide()
 
@@ -813,6 +858,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onResume()
         if (currentLocale != config.uiLocaleLanguage) { currentLocale = config.uiLocaleLanguage; applyLocaleInPlace() }
         if (config.restartChanged) { config.restartChanged = false; dialogManager.showRestartConfirmDialog() }
+        statusbarViewController.refresh()
+        if (!binding.appBar.isVisible) statusbarViewController.show() else statusbarViewController.hide()
         updateTitle()
         @Suppress("DEPRECATION") overridePendingTransition(0, 0)
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -1243,6 +1290,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             UiConfig.K_HIDE_STATUSBAR -> { if (config.ui.hideStatusbar) fullscreenDelegate.hideStatusBar() else fullscreenDelegate.showStatusBar() }
+            UiConfig.K_STATUSBAR_ENABLED,
+            UiConfig.K_STATUSBAR_POSITION,
+            UiConfig.K_STATUSBAR_ITEMS -> {
+                statusbarViewController.refresh()
+                if (!binding.appBar.isVisible && config.ui.statusbarEnabled) statusbarViewController.show()
+                else statusbarViewController.hide()
+            }
             UiConfig.K_TOOLBAR_ICONS_FOR_LARGE, UiConfig.K_TOOLBAR_ICONS -> composeToolbarViewController.updateIcons()
             TabConfig.K_SHOW_TAB_BAR -> composeToolbarViewController.showTabbar(config.tab.shouldShowTabBar)
             DisplayConfig.K_FONT_TYPE -> { if (config.display.fontType == FontType.SYSTEM_DEFAULT) ebWebView.reload() else ebWebView.updateCssStyle() }

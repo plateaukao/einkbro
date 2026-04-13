@@ -225,6 +225,9 @@
             android:name=".activity.ToolbarConfigActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.StatusbarConfigActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.AdBlockSettingActivity"
             android:exported="false" />
         <activity

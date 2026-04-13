@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.graphics.Point
 import androidx.core.content.edit
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.statusbar.StatusbarItem
+import info.plateaukao.einkbro.view.statusbar.StatusbarPosition
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 
 class UiConfig(private val context: Context, private val sp: SharedPreferences) {
@@ -24,6 +26,24 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
 
     val isVerticalToolbar: Boolean
         get() = toolbarPosition == ToolbarPosition.Left || toolbarPosition == ToolbarPosition.Right
+
+    var statusbarEnabled by BooleanPreference(sp, K_STATUSBAR_ENABLED, false)
+
+    var statusbarPosition: StatusbarPosition
+        get() = StatusbarPosition.entries.getOrElse(sp.getInt(K_STATUSBAR_POSITION, 0)) { StatusbarPosition.Top }
+        set(value) = sp.edit { putInt(K_STATUSBAR_POSITION, value.ordinal) }
+
+    var statusbarItems: List<StatusbarItem>
+        get() {
+            val raw = sp.getString(K_STATUSBAR_ITEMS, null)
+            if (raw.isNullOrBlank()) return StatusbarItem.defaultItems
+            return raw.split(",").mapNotNull { token ->
+                token.toIntOrNull()?.let { StatusbarItem.fromOrdinal(it) }
+            }
+        }
+        set(value) = sp.edit {
+            putString(K_STATUSBAR_ITEMS, value.joinToString(",") { it.ordinal.toString() })
+        }
 
     var shouldHideToolbar by BooleanPreference(sp, K_HIDE_TOOLBAR, false)
     var showToolbarFirst by BooleanPreference(sp, K_SHOW_TOOLBAR_FIRST, true)
@@ -127,5 +147,8 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_READER_TOOLBAR_ICONS = "sp_reader_toolbar_icons"
+        const val K_STATUSBAR_ENABLED = "sp_statusbar_enabled"
+        const val K_STATUSBAR_POSITION = "sp_statusbar_position"
+        const val K_STATUSBAR_ITEMS = "sp_statusbar_items"
     }
 }
