@@ -470,6 +470,8 @@ object ViewUnit: KoinComponent {
             cs.constrainHeight(progressBar.id, barThickness)
             cs.connect(progressBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
             cs.connect(progressBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            // ConstraintSet.clear() resets visibility to the default VISIBLE; restore the current value.
+            cs.setVisibility(progressBar.id, progressBar.visibility)
             cs.applyTo(root)
 
             if (isLeft) {
@@ -507,6 +509,8 @@ object ViewUnit: KoinComponent {
         cs.connect(progressBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
         cs.connect(progressBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
         cs.connect(progressBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        // ConstraintSet.clear() resets visibility to the default VISIBLE; restore the current value.
+        cs.setVisibility(progressBar.id, progressBar.visibility)
         cs.applyTo(root)
     }
 

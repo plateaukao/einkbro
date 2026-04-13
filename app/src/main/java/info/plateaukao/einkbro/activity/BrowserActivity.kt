@@ -395,10 +395,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val statusBarId = binding.statusBar.id
         val twoPanelId = binding.twoPanelLayout.id
         val appBarId = binding.appBar.id
-        val cSet = androidx.constraintlayout.widget.ConstraintSet::class.java
         val top = androidx.constraintlayout.widget.ConstraintSet.TOP
         val bottom = androidx.constraintlayout.widget.ConstraintSet.BOTTOM
         val parent = androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
+        // When toolbar is vertical, appBar spans the full height (TOP & BOTTOM → parent),
+        // so anchoring twoPanel.bottom to appBar.top collapses the webview to zero height.
+        val isVertical = config.ui.isVerticalToolbar
 
         cs.clear(statusBarId, top)
         cs.clear(statusBarId, bottom)
@@ -409,10 +411,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Top -> {
                 cs.connect(statusBarId, top, parent, top)
                 cs.connect(twoPanelId, top, statusBarId, bottom)
-                cs.connect(twoPanelId, bottom, appBarId, top)
+                if (isVertical) cs.connect(twoPanelId, bottom, parent, bottom)
+                else cs.connect(twoPanelId, bottom, appBarId, top)
             }
             info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Bottom -> {
-                cs.connect(statusBarId, bottom, appBarId, top)
+                if (isVertical) cs.connect(statusBarId, bottom, parent, bottom)
+                else cs.connect(statusBarId, bottom, appBarId, top)
                 cs.connect(twoPanelId, top, parent, top)
                 cs.connect(twoPanelId, bottom, statusBarId, top)
             }
