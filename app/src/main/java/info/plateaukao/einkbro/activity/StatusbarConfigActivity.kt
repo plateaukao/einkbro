@@ -182,7 +182,7 @@ private fun ReorderableStatusbarRow(
             list.value = list.value.toMutableList().apply { add(to, removeAt(from)) }
         },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End,
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
     ) { _, item, isDragging ->
         key(item) {
             Box(

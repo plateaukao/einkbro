@@ -730,13 +730,7 @@ class SettingActivity : FragmentActivity() {
     )
 
     private val toolbarSettingItems = listOf(
-        ActionSettingItem(
-            R.string.toolbar_icons,
-            0,
-            R.string.toolbar_icons_description,
-        ) {
-            startActivity(Intent(this, ToolbarConfigActivity::class.java))
-        },
+        DividerSettingItem(R.string.setting_section_toolbar),
         ListSettingWithEnumItem(
             R.string.setting_title_toolbar_position,
             0,
@@ -750,6 +744,19 @@ class SettingActivity : FragmentActivity() {
             )
         ),
         BooleanSettingItem(
+            R.string.setting_title_show_tab_bar,
+            0,
+            R.string.setting_summary_show_tab_bar,
+            config.tab::shouldShowTabBar,
+        ),
+        ActionSettingItem(
+            R.string.toolbar_icons,
+            0,
+            R.string.toolbar_icons_description,
+        ) {
+            startActivity(Intent(this, ToolbarConfigActivity::class.java))
+        },
+        BooleanSettingItem(
             R.string.setting_title_hideToolbar,
             0,
             R.string.setting_summary_hide,
@@ -761,6 +768,7 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_toolbarShow,
             config.ui::showToolbarFirst,
         ),
+        DividerSettingItem(R.string.setting_section_statusbar),
         BooleanSettingItem(
             R.string.setting_title_statusbar_enabled,
             0,
@@ -784,12 +792,6 @@ class SettingActivity : FragmentActivity() {
         ) {
             startActivity(Intent(this, StatusbarConfigActivity::class.java))
         },
-        BooleanSettingItem(
-            R.string.setting_title_show_tab_bar,
-            0,
-            R.string.setting_summary_show_tab_bar,
-            config.tab::shouldShowTabBar,
-        ),
     )
 
     private val gestureSettingItems = listOf(
