@@ -762,6 +762,29 @@ class SettingActivity : FragmentActivity() {
             config.ui::showToolbarFirst,
         ),
         BooleanSettingItem(
+            R.string.setting_title_statusbar_enabled,
+            0,
+            R.string.setting_summary_statusbar_enabled,
+            config.ui::statusbarEnabled,
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_title_statusbar_position,
+            0,
+            0,
+            config.ui::statusbarPosition,
+            listOf(
+                R.string.statusbar_position_top,
+                R.string.statusbar_position_bottom,
+            )
+        ),
+        ActionSettingItem(
+            R.string.setting_title_statusbar_items,
+            0,
+            R.string.setting_summary_statusbar_items,
+        ) {
+            startActivity(Intent(this, StatusbarConfigActivity::class.java))
+        },
+        BooleanSettingItem(
             R.string.setting_title_show_tab_bar,
             0,
             R.string.setting_summary_show_tab_bar,

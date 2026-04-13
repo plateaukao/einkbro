@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.MainActivityLayout
 import info.plateaukao.einkbro.view.viewControllers.ComposeToolbarViewController
 import info.plateaukao.einkbro.view.viewControllers.FabImageViewController
+import info.plateaukao.einkbro.view.viewControllers.StatusbarViewController
 
 /**
  * Shared mutable state for BrowserActivity and its delegates.
@@ -26,4 +27,5 @@ class BrowserState {
     lateinit var progressBar: ProgressBar
     lateinit var composeToolbarViewController: ComposeToolbarViewController
     lateinit var fabImageViewController: FabImageViewController
+    lateinit var statusbarViewController: StatusbarViewController
 }

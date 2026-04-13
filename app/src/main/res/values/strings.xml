@@ -146,6 +146,21 @@
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. To leave fullscreen mode press Back button</string>
 
+    <string name="setting_title_statusbar_enabled">Show statusbar when toolbar is hidden</string>
+    <string name="setting_summary_statusbar_enabled">A slim bar with time, page info, battery, wifi, and pagination status</string>
+    <string name="setting_title_statusbar_position">Statusbar position</string>
+    <string name="setting_title_statusbar_items">Statusbar items</string>
+    <string name="setting_summary_statusbar_items">Choose which items appear and reorder them</string>
+    <string name="statusbar_position_top">Top</string>
+    <string name="statusbar_position_bottom">Bottom</string>
+    <string name="statusbar_item_battery">Battery</string>
+    <string name="statusbar_item_wifi">Wifi</string>
+    <string name="statusbar_item_volume_pagination">Volume page turn</string>
+    <string name="statusbar_config_available">Available items</string>
+    <string name="statusbar_config_available_hint">click icon to add it to the statusbar</string>
+    <string name="statusbar_config_preview">Preview</string>
+    <string name="statusbar_config_preview_hint">click icon to remove; long click to drag and reorder</string>
+
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Behavior</string>
 

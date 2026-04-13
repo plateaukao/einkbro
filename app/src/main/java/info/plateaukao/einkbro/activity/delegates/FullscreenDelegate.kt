@@ -136,6 +136,7 @@ class FullscreenDelegate(
             binding.appBar.visibility = GONE
             binding.contentSeparator.visibility = GONE
             hideStatusBar()
+            state.statusbarViewController.show()
         } else {
             showToolbar()
         }
@@ -152,6 +153,7 @@ class FullscreenDelegate(
         binding.contentSeparator.visibility = VISIBLE
         binding.inputUrl.visibility = View.INVISIBLE
         state.composeToolbarViewController.show()
+        state.statusbarViewController.hide()
         ViewUnit.hideKeyboard(activity)
 
         if (config.ui.isVerticalToolbar) {
