@@ -104,6 +104,21 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隱藏工具列</string>
     <string name="setting_summary_hide">向下捲動畫面時，會隱藏工具列。按返回鍵復原</string>
+
+    <string name="setting_title_statusbar_enabled">隱藏工具列時顯示狀態列</string>
+    <string name="setting_summary_statusbar_enabled">細長狀態列，可顯示時間、頁數、電量、Wi-Fi 與翻頁狀態</string>
+    <string name="setting_title_statusbar_position">狀態列位置</string>
+    <string name="setting_title_statusbar_items">狀態列項目</string>
+    <string name="setting_summary_statusbar_items">選擇要顯示的項目並調整順序</string>
+    <string name="statusbar_position_top">上方</string>
+    <string name="statusbar_position_bottom">下方</string>
+    <string name="statusbar_item_battery">電量</string>
+    <string name="statusbar_item_wifi">Wi-Fi</string>
+    <string name="statusbar_item_volume_pagination">音量鍵翻頁</string>
+    <string name="statusbar_config_available">可用項目</string>
+    <string name="statusbar_config_available_hint">點擊圖示加入狀態列</string>
+    <string name="statusbar_config_preview">預覽</string>
+    <string name="statusbar_config_preview_hint">點擊圖示移除；長按拖曳可調整順序</string>
     <string name="setting_title_theme">介面調整</string>
     <string name="setting_title_behavior">操作行為</string>
     <string name="setting_summary_toolbarShow">全螢幕下，按下返回鍵會先顯示工具列</string>
