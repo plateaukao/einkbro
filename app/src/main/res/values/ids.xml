@@ -3,6 +3,7 @@
     <item name="swipe_refresh_layout" type="id" />
     <item name="main_content" type="id" />
     <item name="main_progress_bar" type="id" />
+    <item name="main_progress_bar_vertical" type="id" />
     <item name="fab_imageButtonNav" type="id" />
     <item name="translation_language" type="id" />
     <item name="remote_text_search" type="id" />
