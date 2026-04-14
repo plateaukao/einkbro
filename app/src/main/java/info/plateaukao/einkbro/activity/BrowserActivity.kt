@@ -458,6 +458,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     // ── BrowserAction dispatch ─────────────────────────────────────────────
 
     fun dispatch(action: BrowserAction) = when (action) {
+        is BrowserAction.Noop -> Unit
         is BrowserAction.NewATab -> newATab()
         is BrowserAction.DuplicateTab -> duplicateTab()
         is BrowserAction.RemoveAlbum -> removeAlbum()

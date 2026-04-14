@@ -233,6 +233,25 @@ fun <T> ValueSettingItemUi(
 }
 
 @Composable
+fun GestureActionSettingItemUi(
+    setting: GestureActionSettingItem,
+    navController: NavHostController,
+    showBorder: Boolean = false,
+) {
+    val context = LocalContext.current
+    val entry = info.plateaukao.einkbro.browser.BrowserActionCatalog.entryOf(setting.config.get())
+    val label = context.getString(entry.labelResId)
+    SettingItemUi(
+        setting = setting,
+        extraTitlePostfix = ": $label",
+        showBorder = showBorder,
+    ) {
+        GesturePickerState.editingSlot = setting
+        navController.navigate(info.plateaukao.einkbro.activity.SettingRoute.GesturePicker.name)
+    }
+}
+
+@Composable
 fun <T : Enum<T>> ListSettingItemUi(
     setting: ListSettingWithEnumItem<T>,
     dialogManager: DialogManager,
@@ -478,6 +497,10 @@ fun SearchSettingScreen(
                         showBorder = showBorder
                     ) { setting.action() }
 
+                    is GestureActionSettingItem -> GestureActionSettingItemUi(
+                        setting, navController, showBorder
+                    )
+
                     is ProgressActionSettingItem -> ProgressActionSettingItemUi(
                         setting,
                         showBorder = showBorder
@@ -560,6 +583,10 @@ fun SettingScreen(
                         setting,
                         showBorder = showBorder
                     ) { setting.action() }
+
+                    is GestureActionSettingItem -> GestureActionSettingItemUi(
+                        setting, navController, showBorder
+                    )
 
                     is ProgressActionSettingItem -> ProgressActionSettingItemUi(
                         setting,

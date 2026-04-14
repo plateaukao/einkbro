@@ -5,6 +5,9 @@ import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 
 sealed class BrowserAction {
+    // No-op (used as the "Nothing" gesture binding)
+    object Noop : BrowserAction()
+
     // Tab management
     object NewATab : BrowserAction()
     object DuplicateTab : BrowserAction()

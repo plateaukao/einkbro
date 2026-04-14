@@ -712,4 +712,29 @@
     <string name="setting_summary_zoom_in_custom_view">Enable 2-finger zoom in fullscreen mode (default: false)</string>
     <string name="setting_title_reader_keep_extra_content">Reader Mode: Keep Extra Content</string>
     <string name="setting_summary_reader_keep_extra_content">Preserve styles, classes, and math (MathJax/KaTeX) in reader mode</string>
+
+    <!-- Gesture action catalog -->
+    <string name="action_category_tab">Tabs</string>
+    <string name="action_category_navigation">Navigation</string>
+    <string name="action_category_content">Content</string>
+    <string name="action_category_view">View</string>
+    <string name="action_category_translation">Translation</string>
+    <string name="action_category_tts">Text-to-speech</string>
+    <string name="action_category_bookmarks">Bookmarks &amp; History</string>
+    <string name="action_category_search">Search</string>
+    <string name="action_category_share">Share</string>
+    <string name="action_category_touch">Touch</string>
+    <string name="action_category_ai">AI</string>
+    <string name="action_category_file">Files</string>
+    <string name="action_category_dialog">Dialogs &amp; UI</string>
+
+    <string name="action_text_search">Text search</string>
+    <string name="action_receive_text_search">Receive text for search</string>
+    <string name="action_toggle_receive_link">Toggle receive link</string>
+    <string name="action_touch_area_dialog">Touch area settings</string>
+    <string name="action_fast_toggle">Fast toggle</string>
+    <string name="action_summarize_content">Summarize page</string>
+    <string name="action_save_web_archive">Save web archive</string>
+    <string name="action_configure_instapaper">Configure Instapaper</string>
+    <string name="action_selected_label">Selected action</string>
 </resources>

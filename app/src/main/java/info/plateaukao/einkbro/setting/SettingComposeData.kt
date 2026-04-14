@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.setting
 
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute
+import info.plateaukao.einkbro.browser.BrowserAction
 import kotlin.reflect.KMutableProperty0
 
 interface SettingItemInterface {
@@ -51,6 +52,14 @@ class ListSettingWithClassItem<T>(
     override val summaryResId: Int = 0,
     var config: KMutableProperty0<String>,
     val options: List<String>,
+    override val span: Int = 1,
+) : SettingItemInterface
+
+class GestureActionSettingItem(
+    override val titleResId: Int,
+    override val iconId: Int = 0,
+    override val summaryResId: Int = 0,
+    val config: KMutableProperty0<BrowserAction>,
     override val span: Int = 1,
 ) : SettingItemInterface
 

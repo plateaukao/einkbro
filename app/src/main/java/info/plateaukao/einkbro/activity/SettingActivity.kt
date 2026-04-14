@@ -70,6 +70,8 @@ import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
+import info.plateaukao.einkbro.setting.GestureActionSettingItem
+import info.plateaukao.einkbro.setting.GesturePickerScreen
 import info.plateaukao.einkbro.setting.LinkSettingItem
 import info.plateaukao.einkbro.setting.ListSettingWithClassItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
@@ -86,7 +88,6 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
-import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
@@ -192,6 +193,9 @@ class SettingActivity : FragmentActivity() {
                                 action,
                                 2
                             )
+                        }
+                        composable(SettingRoute.GesturePicker.name) {
+                            GesturePickerScreen(navController)
                         }
                         composable(Backup.name) {
                             SettingScreen(navController, dataSettingItems, dialogManager, action, 1)
@@ -798,29 +802,21 @@ class SettingActivity : FragmentActivity() {
         DividerSettingItem(
             R.string.setting_title_touch_area_actions,
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_touch_up_click,
-            0,
             config = config.touch::upClickGesture,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_touch_up_long_click,
-            0,
             config = config.touch::upLongClickGesture,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_touch_down_click,
-            0,
             config = config.touch::downClickGesture,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_touch_down_long_click,
-            0,
             config = config.touch::downLongClickGesture,
-            options = GestureType.entries.map { it.resId },
         ),
         DividerSettingItem(R.string.setting_multitouch_use_title),
         BooleanSettingItem(
@@ -830,29 +826,21 @@ class SettingActivity : FragmentActivity() {
             config.touch::isMultitouchEnabled,
             span = 2,
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_up,
-            0,
             config = config.touch::multitouchUp,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_down,
-            0,
             config = config.touch::multitouchDown,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_left,
-            0,
             config = config.touch::multitouchLeft,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_right,
-            0,
             config = config.touch::multitouchRight,
-            options = GestureType.entries.map { it.resId },
         ),
         DividerSettingItem(R.string.gesture_on_floating_button),
         BooleanSettingItem(
@@ -862,35 +850,25 @@ class SettingActivity : FragmentActivity() {
             config.touch::enableNavButtonGesture,
             span = 2,
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_up,
-            0,
             config = config.touch::navGestureUp,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_down,
-            0,
             config = config.touch::navGestureDown,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_left,
-            0,
             config = config.touch::navGestureLeft,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_gesture_right,
-            0,
             config = config.touch::navGestureRight,
-            options = GestureType.entries.map { it.resId },
         ),
-        ListSettingWithEnumItem(
+        GestureActionSettingItem(
             R.string.setting_floating_button_long_click,
-            0,
             config = config.touch::navButtonLongClickGesture,
-            options = GestureType.entries.map { it.resId },
         ),
     )
 
@@ -1383,7 +1361,8 @@ enum class SettingRoute(@StringRes val titleId: Int) {
     Search(R.string.setting_title_search),
     About(R.string.title_about),
     ChatGPT(R.string.setting_title_chat_gpt),
-    Misc(R.string.misc);
+    Misc(R.string.misc),
+    GesturePicker(R.string.setting_gestures);
 }
 
 @Composable

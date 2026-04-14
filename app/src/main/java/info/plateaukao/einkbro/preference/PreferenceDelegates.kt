@@ -2,7 +2,8 @@ package info.plateaukao.einkbro.preference
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import info.plateaukao.einkbro.view.GestureType
+import info.plateaukao.einkbro.browser.BrowserAction
+import info.plateaukao.einkbro.browser.BrowserActionCatalog
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -46,17 +47,26 @@ class StringPreference(
         sharedPreferences.edit { putString(key, value) }
 }
 
-class GestureTypePreference(
+class BrowserActionPreference(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val defaultValue: GestureType = GestureType.NothingHappen,
-) : ReadWriteProperty<Any, GestureType> {
+    private val defaultValue: BrowserAction = BrowserAction.Noop,
+) : ReadWriteProperty<Any, BrowserAction> {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): GestureType =
-        GestureType.from(sharedPreferences.getString(key, defaultValue.value) ?: defaultValue.value)
+    override fun getValue(thisRef: Any, property: KProperty<*>): BrowserAction {
+        val stored = sharedPreferences.getString(key, null)
+        val id = BrowserActionCatalog.migrateLegacyId(stored)
+        if (stored != null && stored != id) {
+            // rewrite legacy value to the new format
+            sharedPreferences.edit { putString(key, id) }
+        }
+        return BrowserActionCatalog.entryOf(
+            id.ifEmpty { BrowserActionCatalog.idOf(defaultValue) }
+        ).action
+    }
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: GestureType) =
-        sharedPreferences.edit { putString(key, value.value) }
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: BrowserAction) =
+        sharedPreferences.edit { putString(key, BrowserActionCatalog.idOf(value)) }
 }
 
 fun kotlin.reflect.KMutableProperty0<Boolean>.toggle() = set(!get())
