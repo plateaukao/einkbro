@@ -259,6 +259,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             maybeInitTwoPaneController = { maybeInitTwoPaneController() },
             addAlbum = { title, _ -> addAlbum(title) },
             showTranslationDialog = { isWholePageMode -> translationDelegate.showTranslationDialog(isWholePageMode) },
+            showTaskMenu = { dispatch(BrowserAction.ShowTaskMenu) },
         )
     }
 

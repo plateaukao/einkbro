@@ -18,6 +18,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ class PageAiActionDialogFragment(
     private val actions: List<ChatGPTActionInfo>,
     private val onActionClicked: (ChatGPTActionInfo) -> Unit,
     private val onActionLongClicked: ((ChatGPTActionInfo) -> Unit)? = null,
+    private val onTaskRunnerClicked: (() -> Unit)? = null,
 ) : ComposeDialogFragment() {
 
     init {
@@ -71,6 +73,30 @@ class PageAiActionDialogFragment(
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
+                    onTaskRunnerClicked?.let { handler ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    handler()
+                                    composeView.post { dismiss() }
+                                }
+                                .padding(vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.PlayArrow,
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.onBackground
+                            )
+                            Text(
+                                text = stringResource(R.string.task_menu_title),
+                                style = MaterialTheme.typography.subtitle1,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                    }
                     actions.forEach { action ->
                         Row(
                             modifier = Modifier
