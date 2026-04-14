@@ -729,12 +729,8 @@
     <string name="action_category_dialog">Dialogs &amp; UI</string>
 
     <string name="action_text_search">Text search</string>
-    <string name="action_receive_text_search">Receive text for search</string>
-    <string name="action_toggle_receive_link">Toggle receive link</string>
-    <string name="action_touch_area_dialog">Touch area settings</string>
     <string name="action_fast_toggle">Fast toggle</string>
     <string name="action_summarize_content">Summarize page</string>
     <string name="action_save_web_archive">Save web archive</string>
-    <string name="action_configure_instapaper">Configure Instapaper</string>
     <string name="action_selected_label">Selected action</string>
 </resources>
