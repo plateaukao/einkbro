@@ -10,6 +10,7 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,8 +29,10 @@ class BrowserToolsImpl(
     private val browserState: BrowserState,
     private val config: ConfigManager,
     private val openAiRepository: OpenAiRepository,
+    private val ttsViewModel: TtsViewModel,
     private val progressSink: (TaskProgress.StepLine) -> Unit,
     private val finishSink: (String) -> Unit,
+    private val initialSnapshot: InitialPageSnapshot? = null,
 ) : BrowserTools {
 
     private var bgWebView: EBWebView? = null
@@ -74,6 +77,13 @@ class BrowserToolsImpl(
     override fun activeTabUrl(): String = browserState.ebWebView.url.orEmpty()
 
     override fun activeTabTitle(): String = browserState.ebWebView.title.orEmpty()
+
+    // ── Originating page snapshot ──────────────────────────────────────
+
+    override fun initialPageUrl(): String = initialSnapshot?.url.orEmpty()
+    override fun initialPageTitle(): String = initialSnapshot?.title.orEmpty()
+    override fun initialPageText(): String = initialSnapshot?.text.orEmpty()
+    override fun initialPageLinks(): List<BrowserTools.Link> = initialSnapshot?.links.orEmpty()
 
     private fun parseLinks(raw: String): List<BrowserTools.Link> {
         if (raw.isBlank() || raw == "null") return emptyList()
@@ -123,6 +133,11 @@ class BrowserToolsImpl(
         else java.util.Locale.getDefault()
         val name = locale.getDisplayName(java.util.Locale.ENGLISH)
         return if (name.isBlank()) "the user's language" else name
+    }
+
+    override fun speak(text: String, title: String) {
+        if (text.isBlank()) return
+        ttsViewModel.readArticle(text, title)
     }
 
     // ── Progress reporting ──────────────────────────────────────────────

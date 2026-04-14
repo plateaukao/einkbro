@@ -12,7 +12,28 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
  * active tab is never disturbed. Cookies are shared process-wide via Android's
  * CookieManager, so auth-walled sites work automatically.
  */
+/** Immutable snapshot of the page the user was viewing when they triggered an agent task.
+ *  Captured once at entry and exposed through [BrowserTools] so the agent can inspect the
+ *  originating tab even after the chat tab has replaced it as the active tab. */
+data class InitialPageSnapshot(
+    val url: String,
+    val title: String,
+    val text: String,
+    val links: List<BrowserTools.Link>,
+)
+
 interface BrowserTools {
+
+    // ── Originating page snapshot ──────────────────────────────────────
+    //
+    // In agent-chat mode the chat tab itself becomes the active tab, so the methods
+    // below replace `activeTab*` for reading "what the user was looking at". All
+    // snapshot lookups are zero-cost — no WebView access.
+
+    fun initialPageUrl(): String
+    fun initialPageTitle(): String
+    fun initialPageText(): String
+    fun initialPageLinks(): List<Link>
 
     // ── Navigation / content ────────────────────────────────────────────
 
@@ -54,6 +75,14 @@ interface BrowserTools {
      * unless the caller specifies otherwise.
      */
     fun defaultLanguageName(): String
+
+    /**
+     * Speak [text] via the shared TTS manager. Fire-and-forget — if no article is
+     * currently being read, TTS starts immediately; otherwise [text] is appended to
+     * the TTS queue and played after the current utterance finishes. [title] drives
+     * the TTS notification and has no effect on spoken output.
+     */
+    fun speak(text: String, title: String = "")
 
     // ── Progress reporting ──────────────────────────────────────────────
 

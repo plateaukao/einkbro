@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.browser.WebViewCallback
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,7 @@ class TaskRunner(
     private val webViewCallback: WebViewCallback,
     private val browserState: BrowserState,
     private val config: ConfigManager,
+    private val ttsViewModel: TtsViewModel,
 ) {
     private val _progress = MutableStateFlow<TaskProgress?>(null)
     val progress: StateFlow<TaskProgress?> = _progress.asStateFlow()
@@ -46,6 +48,7 @@ class TaskRunner(
             browserState = browserState,
             config = config,
             openAiRepository = openAi,
+            ttsViewModel = ttsViewModel,
             progressSink = { line -> appendStep(line) },
             finishSink = { markdown -> markFinished(markdown) },
         )

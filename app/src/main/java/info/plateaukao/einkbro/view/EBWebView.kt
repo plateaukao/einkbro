@@ -520,13 +520,34 @@ open class EBWebView(
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
 
     private var chatWebInterface: ChatWebInterface? = null
-    fun setupAiPage(lifecycleScope: LifecycleCoroutineScope, webContent: String, webTitle: String, webUrl: String) {
+    fun setupAiPage(
+        lifecycleScope: LifecycleCoroutineScope,
+        webContent: String,
+        webTitle: String,
+        webUrl: String,
+        // Agent-mode extensions — all null in regular chat-with-web usage.
+        agentMode: Boolean = false,
+        initialSnapshot: info.plateaukao.einkbro.task.InitialPageSnapshot? = null,
+        agentContext: android.content.Context? = null,
+        agentBrowserState: info.plateaukao.einkbro.activity.BrowserState? = null,
+        agentTtsViewModel: info.plateaukao.einkbro.viewmodel.TtsViewModel? = null,
+    ) {
         isAIPage = true
 
         if (chatWebInterface == null) {
             chatWebInterface = ChatWebInterface(
-                lifecycleScope, this, webContent, webTitle, webUrl,
-                onOpenNewTab = { url -> (webViewCallback as? TabController)?.addNewTab(url) }
+                lifecycleScope = lifecycleScope,
+                webView = this,
+                webContent = webContent,
+                webTitle = webTitle,
+                webUrl = webUrl,
+                onOpenNewTab = { url -> (webViewCallback as? TabController)?.addNewTab(url) },
+                agentMode = agentMode,
+                initialSnapshot = initialSnapshot,
+                agentContext = agentContext,
+                agentWebViewCallback = webViewCallback,
+                agentBrowserState = agentBrowserState,
+                agentTtsViewModel = agentTtsViewModel,
             )
         } else {
             chatWebInterface?.updateWebContent(webContent, webTitle, webUrl)
@@ -538,6 +559,11 @@ open class EBWebView(
 
     fun runGptAction(gptActionInfo: ChatGPTActionInfo) {
         chatWebInterface?.sendMessageWithGptActionInfo(gptActionInfo)
+    }
+
+    /** Fire an initial user prompt into an already-configured agent chat session. */
+    fun runAgentPrompt(prompt: String) {
+        chatWebInterface?.runAgentTurn(prompt)
     }
 
     private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
@@ -618,6 +644,7 @@ open class EBWebView(
     }
 
     override fun destroy() {
+        chatWebInterface?.disposeAgent()
         stopLoading()
         onPause()
         clearHistory()

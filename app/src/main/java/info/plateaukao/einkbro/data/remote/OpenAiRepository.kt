@@ -12,6 +12,7 @@ import info.plateaukao.einkbro.data.remote.model.SafetySetting
 import info.plateaukao.einkbro.viewmodel.unescape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -48,6 +49,20 @@ class OpenAiRepository : KoinComponent {
     private val factory by lazy { EventSources.createFactory(client) }
 
     private val json = Json { ignoreUnknownKeys = true }
+
+    /**
+     * Separate Json instance for tool-calling requests. `explicitNulls = false` omits
+     * null properties (e.g. `tool_call_id` / `tool_calls` on user/system messages) —
+     * OpenAI's API is strict about those fields only being present on the correct
+     * roles, and emitting them as explicit null can cause the server to ignore tools
+     * silently.
+     */
+    @OptIn(ExperimentalSerializationApi::class)
+    private val toolJson = Json {
+        ignoreUnknownKeys = true
+        explicitNulls = false
+        encodeDefaults = true
+    }
 
     private var eventSource: EventSource? = null
     fun cancel() {
@@ -224,22 +239,22 @@ class OpenAiRepository : KoinComponent {
             tools = tools,
             toolChoice = "auto",
         )
+        val body = toolJson.encodeToString(payload)
+        Log.d("OpenAiRepository", "chatWithTools request: $body")
         val request = Request.Builder()
             .url("${getServerUrl(gptActionInfo.actionType)}$completionPath")
-            .post(json.encodeToString(payload).toRequestBody(mediaType))
+            .post(body.toRequestBody(mediaType))
             .header("Authorization", "Bearer $apiKey")
             .build()
         try {
             client.newCall(request).execute().use { response ->
-                if (response.code != 200 || response.body == null) {
-                    Log.e(
-                        "OpenAiRepository",
-                        "chatWithTools failed: ${response.code} ${response.body?.string()}"
-                    )
+                val responseBody = response.body?.string().orEmpty()
+                if (response.code != 200) {
+                    Log.e("OpenAiRepository", "chatWithTools ${response.code}: $responseBody")
                     return@use continuation.resume(null)
                 }
-                val body = response.body?.string().orEmpty()
-                val parsed = json.decodeFromString(ToolChatCompletion.serializer(), body)
+                Log.d("OpenAiRepository", "chatWithTools response: $responseBody")
+                val parsed = toolJson.decodeFromString(ToolChatCompletion.serializer(), responseBody)
                 continuation.resume(parsed)
             }
         } catch (e: Exception) {
