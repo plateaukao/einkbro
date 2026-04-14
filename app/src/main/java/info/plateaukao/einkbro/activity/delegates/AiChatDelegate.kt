@@ -8,12 +8,14 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionDisplay
 import info.plateaukao.einkbro.preference.GptActionScope
+import info.plateaukao.einkbro.task.InitialPageSnapshot
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.compose.PageAiActionDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ShowEditGptActionDialogFragment
 import info.plateaukao.einkbro.view.viewControllers.TwoPaneController
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
+import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,6 +25,7 @@ class AiChatDelegate(
     private val config: ConfigManager,
     private val state: BrowserState,
     private val translationViewModel: TranslationViewModel,
+    private val ttsViewModel: TtsViewModel,
     private val twoPaneControllerProvider: () -> TwoPaneController,
     private val isTwoPaneControllerInitialized: () -> Boolean,
     private val maybeInitTwoPaneController: () -> Unit,
@@ -97,6 +100,40 @@ class AiChatDelegate(
                     }
                     newWebView.setupAiPage(scope, rawText, webTitle, webUrl)
                 }
+            }
+        }
+    }
+
+    /**
+     * Open a new chat tab that runs the free-form LLM agent with tool access. The chat
+     * tab's [ChatWebInterface] is configured in agent mode and the user's [prompt] is
+     * fired as the first message once `chat.html` finishes loading.
+     *
+     * The [snapshot] captures the page the user was viewing at the moment they triggered
+     * the task — it's exposed to the agent as the "originating page" so the user can say
+     * things like "summarize this" or "open the top 3 stories" without extra fetches.
+     */
+    fun chatWithWebAgent(prompt: String, snapshot: InitialPageSnapshot) {
+        activity.lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                val scope = activity.lifecycleScope
+                addAlbum("Agent Chat", "")
+                val newWebView = state.ebWebView
+                newWebView.setOnPageFinishedAction {
+                    newWebView.setOnPageFinishedAction {}
+                    newWebView.runAgentPrompt(prompt)
+                }
+                newWebView.setupAiPage(
+                    lifecycleScope = scope,
+                    webContent = snapshot.text,
+                    webTitle = snapshot.title.ifBlank { "Agent Chat" },
+                    webUrl = snapshot.url,
+                    agentMode = true,
+                    initialSnapshot = snapshot,
+                    agentContext = activity,
+                    agentBrowserState = state,
+                    agentTtsViewModel = ttsViewModel,
+                )
             }
         }
     }

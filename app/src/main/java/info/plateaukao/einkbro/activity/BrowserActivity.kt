@@ -113,12 +113,9 @@ import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.activity.delegates.ActionModeDelegate
 import info.plateaukao.einkbro.activity.delegates.AiChatDelegate
 import info.plateaukao.einkbro.task.TaskCatalog
-import info.plateaukao.einkbro.task.TaskProgress
 import info.plateaukao.einkbro.task.TaskRunner
-import info.plateaukao.einkbro.task.tasks.FreeFormAgentTask
 import info.plateaukao.einkbro.view.dialog.compose.TaskMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.CustomTaskInputDialogFragment
-import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.activity.delegates.ContextMenuDelegate
 import info.plateaukao.einkbro.activity.delegates.FileHandlingDelegate
 import info.plateaukao.einkbro.activity.delegates.FullscreenDelegate
@@ -148,8 +145,6 @@ import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -258,6 +253,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             config = config,
             state = browserState,
             translationViewModel = translationViewModel,
+            ttsViewModel = ttsViewModel,
             twoPaneControllerProvider = { twoPaneController },
             isTwoPaneControllerInitialized = { isTwoPaneControllerInitialized() },
             maybeInitTwoPaneController = { maybeInitTwoPaneController() },
@@ -273,6 +269,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             webViewCallback = this,
             browserState = browserState,
             config = config,
+            ttsViewModel = ttsViewModel,
         )
     }
 
@@ -640,46 +637,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             EBToast.show(this, R.string.gpt_api_key_not_set)
             return
         }
+        // Start the task FIRST so the progress StateFlow holds the fresh Running state
+        // before we attach the collector — otherwise the collector's first emission is
+        // the previous task's leftover Done value and the dialog briefly shows that
+        // stale content before being overwritten.
+        taskRunner.run(descriptor.factory())
         translationViewModel.setupTaskStream(taskRunner.progress)
         translationDelegate.showTranslationDialog(true)
-        observeTaskForTts(descriptor.displayNameResId)
-        taskRunner.run(descriptor.factory())
     }
 
-    /**
-     * Collects the [TaskRunner] progress flow and, the first time a running task
-     * transitions to a terminal state with a final markdown result, reads that result
-     * aloud via [ttsViewModel]. Built-in templates only — users invoke free-form tasks
-     * with explicit instructions so they drive TTS themselves if wanted.
-     */
-    private fun observeTaskForTts(@androidx.annotation.StringRes taskTitleResId: Int) {
-        lifecycleScope.launch {
-            val terminal = taskRunner.progress
-                .filterNotNull()
-                .first { it.status != TaskProgress.Status.Running }
-            if (terminal.status == TaskProgress.Status.Done) {
-                val spoken = markdownToSpeech(terminal.finalMarkdown.orEmpty())
-                if (spoken.isNotEmpty()) {
-                    ttsViewModel.readArticle(spoken, getString(taskTitleResId))
-                }
-            }
-        }
-    }
-
-    /** Very light markdown-to-speech conversion: drops headers, bold markers, and
-     *  standalone URL lines so the TTS engine doesn't read syntax noise aloud. */
-    private fun markdownToSpeech(markdown: String): String = markdown.lineSequence()
-        .map { it.trim() }
-        .filter { it.isNotEmpty() && !it.matches(Regex("^https?://\\S+$")) && it != "---" }
-        .map { line ->
-            line
-                .replace(Regex("^#+\\s*"), "")
-                .replace(Regex("\\*\\*(.+?)\\*\\*"), "$1")
-                .replace(Regex("\\*(.+?)\\*"), "$1")
-                .replace(Regex("`(.+?)`"), "$1")
-        }
-        .joinToString(". ")
-        .trim()
 
     private fun runCustomTask(prompt: String) {
         if (prompt.isBlank()) return
@@ -691,9 +657,42 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             EBToast.show(this, R.string.gpt_api_key_not_set)
             return
         }
-        translationViewModel.setupTaskStream(taskRunner.progress)
-        translationDelegate.showTranslationDialog(true)
-        taskRunner.run(FreeFormAgentTask(prompt, config, OpenAiRepository()))
+        // Snapshot the page the user is currently viewing, then hand off to a new
+        // agent chat tab. The agent will see this snapshot via initialPage* tools so
+        // it can act on the originating page without extra fetches.
+        lifecycleScope.launch {
+            val current = browserState.ebWebView
+            val rawText = current.getRawText()
+            val rawLinks = try {
+                current.jsBridge.getPageLinks()
+            } catch (e: Exception) {
+                "[]"
+            }
+            val links = parseSnapshotLinks(rawLinks)
+            val snapshot = info.plateaukao.einkbro.task.InitialPageSnapshot(
+                url = current.url.orEmpty(),
+                title = current.title.orEmpty(),
+                text = rawText,
+                links = links,
+            )
+            aiChatDelegate.chatWithWebAgent(prompt, snapshot)
+        }
+    }
+
+    private fun parseSnapshotLinks(raw: String): List<info.plateaukao.einkbro.task.BrowserTools.Link> {
+        if (raw.isBlank() || raw == "null") return emptyList()
+        return try {
+            val array = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+                .parseToJsonElement(raw) as? kotlinx.serialization.json.JsonArray ?: return emptyList()
+            array.mapNotNull { el ->
+                val obj = el as? kotlinx.serialization.json.JsonObject ?: return@mapNotNull null
+                val text = (obj["text"] as? kotlinx.serialization.json.JsonPrimitive)?.content ?: return@mapNotNull null
+                val href = (obj["href"] as? kotlinx.serialization.json.JsonPrimitive)?.content ?: return@mapNotNull null
+                info.plateaukao.einkbro.task.BrowserTools.Link(text, href)
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) = actionModeDelegate.updateSelectionRect(left, top, right, bottom)

@@ -73,6 +73,15 @@ class TranslationViewModel(
 
     private var toBeSavedResponseString = ""
 
+    /**
+     * While a task stream is driving [_responseMessage], any default GPT / translate
+     * action should be suppressed. [TranslateDialogFragment.onCreateView] unconditionally
+     * calls [translate] when the popup opens, which would otherwise fire an LLM request
+     * with empty input and overwrite the task progress with the LLM's "please provide
+     * text" fallback response.
+     */
+    private var isTaskMode: Boolean = false
+
     fun updateRotateResultScreen(rotate: Boolean) {
         _rotateResultScreen.value = rotate
     }
@@ -131,6 +140,10 @@ class TranslationViewModel(
         translateApi: TRANSLATE_API = _translateMethod.value,
         userMessage: String? = null,
     ) {
+        // The translate popup is reused for task progress; in that mode a task stream
+        // already owns _responseMessage and we must not wipe it or fire a default LLM
+        // query with empty input.
+        if (isTaskMode) return
         _translateMethod.value = translateApi
         config.ai.externalSearchMethod = translateApi
         _responseMessage.value = AnnotatedString("...")
@@ -161,6 +174,11 @@ class TranslationViewModel(
     }
 
     fun setupGptAction(gptAction: ChatGPTActionInfo) {
+        // A task-stream collector may still be feeding progress into _responseMessage
+        // from a prior task run; cancel it before this GPT action takes over the popup.
+        taskStreamJob?.cancel()
+        taskStreamJob = null
+        isTaskMode = false
         updateTranslateMethod(TRANSLATE_API.LLM)
         gptActionInfo = gptAction
     }
@@ -172,6 +190,7 @@ class TranslationViewModel(
      */
     private var taskStreamJob: kotlinx.coroutines.Job? = null
     fun setupTaskStream(progressFlow: StateFlow<TaskProgress?>) {
+        isTaskMode = true
         updateTranslateMethod(TRANSLATE_API.LLM)
         _inputMessage.value = ""
         _responseMessage.value = AnnotatedString("…")

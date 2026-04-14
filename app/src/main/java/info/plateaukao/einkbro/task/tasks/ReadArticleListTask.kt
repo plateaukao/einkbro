@@ -2,6 +2,9 @@ package info.plateaukao.einkbro.task.tasks
 
 import info.plateaukao.einkbro.task.BrowserTask
 import info.plateaukao.einkbro.task.BrowserTools
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
@@ -23,7 +26,9 @@ class ReadArticleListTask : BrowserTask {
 
     override suspend fun run(tools: BrowserTools) {
         val language = tools.defaultLanguageName()
-        tools.info("Reading links from: ${tools.activeTabTitle().ifBlank { tools.activeTabUrl() }}")
+        val pageTitle = tools.activeTabTitle().ifBlank { tools.activeTabUrl() }
+        tools.info("Reading links from: $pageTitle")
+
         val links = tools.activeTabLinks()
         if (links.isEmpty()) {
             tools.error("No links found on this page.")
@@ -40,41 +45,73 @@ class ReadArticleListTask : BrowserTask {
         }
         tools.info("Selected ${articleLinks.size} article links to summarize.")
 
-        val results = StringBuilder()
-        results.append("# Summaries from ").append(tools.activeTabTitle().ifBlank { tools.activeTabUrl() })
-            .append("\n\n")
+        // Pipelined execution:
+        //   • Page loads are serial (single off-screen WebView).
+        //   • As soon as each page's text is extracted, its LLM summary is launched
+        //     in parallel — so the summary for article N runs concurrently with the
+        //     page load for article N+1 (and the LLM call for article N-1, etc).
+        //   • A per-index CompletableDeferred lets parallel summary jobs fill the
+        //     slot out of order; the consumer awaits strictly in input order so the
+        //     TTS queue receives summaries in the order the user expects.
+        val slots: List<CompletableDeferred<ArticleResult>> =
+            List(articleLinks.size) { CompletableDeferred() }
 
-        articleLinks.forEachIndexed { index, link ->
-            val idx = index + 1
-            tools.info("Fetching $idx/${articleLinks.size}: ${link.text.take(80)}")
-            val opened = tools.openUrlInBg(link.href)
-            if (!opened) {
-                tools.error("Failed to load: ${link.href}")
-                results.append("## ${idx}. ${link.text}\n").append(link.href).append("\n\n")
-                    .append("_(failed to load)_\n\n")
-                return@forEachIndexed
+        coroutineScope {
+            // Producer: serial fetch + fan-out summarization.
+            launch {
+                articleLinks.forEachIndexed { index, link ->
+                    tools.info("Fetching ${index + 1}/${articleLinks.size}: ${link.text.take(80)}")
+                    val opened = tools.openUrlInBg(link.href)
+                    val text = if (opened) tools.currentBgPageText().trim() else ""
+                    launch {
+                        val summary = summarize(tools, text, language)
+                        slots[index].complete(ArticleResult(index, link, summary))
+                    }
+                }
             }
-            val text = tools.currentBgPageText().trim()
-            if (text.isBlank()) {
-                results.append("## ${idx}. ${link.text}\n").append(link.href).append("\n\n")
-                    .append("_(empty article body)_\n\n")
-                return@forEachIndexed
+
+            // Consumer: await in input order; stream each result into markdown and
+            // hand it to the TTS queue as soon as it's ready.
+            val running = StringBuilder()
+            running.append("# ").append(pageTitle).append("\n\n")
+            slots.forEachIndexed { i, deferred ->
+                val result = deferred.await()
+                val idx = i + 1
+                running.append("## ").append(idx).append(". ").append(result.link.text).append("\n")
+                running.append(result.link.href).append("\n\n")
+                running.append(result.summary).append("\n\n")
+                tools.info("Ready $idx/${articleLinks.size}: ${result.link.text.take(80)}")
+                tools.speak(
+                    text = "${result.link.text}. ${result.summary}",
+                    title = "$idx. ${result.link.text}",
+                )
             }
-            val capped = if (text.length > MAX_CHARS_PER_ARTICLE) {
-                text.substring(0, MAX_CHARS_PER_ARTICLE)
-            } else text
-            val summary = tools.askLlm(
-                system = "You are a concise summarizer for a busy reader. Reply with 2 sentences at most. " +
-                    "Reply in $language unless the article content requires otherwise. No preamble.",
-                user = "Summarize this article:\n\n$capped",
-            )?.trim().orEmpty()
-            results.append("## ${idx}. ${link.text}\n")
-                .append(link.href).append("\n\n")
-                .append(if (summary.isNotBlank()) summary else "_(no summary)_")
-                .append("\n\n")
+            tools.finish(running.toString())
         }
-        tools.finish(results.toString())
     }
+
+    private suspend fun summarize(
+        tools: BrowserTools,
+        text: String,
+        language: String,
+    ): String {
+        if (text.isBlank()) return "_(failed to load or empty)_"
+        val capped = if (text.length > MAX_CHARS_PER_ARTICLE) {
+            text.substring(0, MAX_CHARS_PER_ARTICLE)
+        } else text
+        val summary = tools.askLlm(
+            system = "You are a concise summarizer for a busy reader. Reply with 2 sentences at most. " +
+                "Reply in $language unless the article content requires otherwise. No preamble.",
+            user = "Summarize this article:\n\n$capped",
+        )?.trim().orEmpty()
+        return summary.ifBlank { "_(no summary)_" }
+    }
+
+    private data class ArticleResult(
+        val index: Int,
+        val link: BrowserTools.Link,
+        val summary: String,
+    )
 
     private suspend fun filterArticleLinks(
         tools: BrowserTools,
