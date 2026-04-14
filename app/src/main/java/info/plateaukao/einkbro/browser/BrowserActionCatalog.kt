@@ -108,6 +108,7 @@ object BrowserActionCatalog {
                 BrowserActionEntry(BrowserAction.SummarizeContent, R.string.action_summarize_content),
                 BrowserActionEntry(BrowserAction.ChatWithWeb(), R.string.chat_with_web),
                 BrowserActionEntry(BrowserAction.ShowPageAiActionMenu, R.string.page_ai),
+                BrowserActionEntry(BrowserAction.ShowTaskMenu, R.string.task_menu_title),
             ),
         ),
         BrowserActionCategory(

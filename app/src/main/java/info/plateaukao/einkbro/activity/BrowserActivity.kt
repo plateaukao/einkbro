@@ -112,6 +112,13 @@ import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.activity.delegates.ActionModeDelegate
 import info.plateaukao.einkbro.activity.delegates.AiChatDelegate
+import info.plateaukao.einkbro.task.TaskCatalog
+import info.plateaukao.einkbro.task.TaskProgress
+import info.plateaukao.einkbro.task.TaskRunner
+import info.plateaukao.einkbro.task.tasks.FreeFormAgentTask
+import info.plateaukao.einkbro.view.dialog.compose.TaskMenuDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.CustomTaskInputDialogFragment
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.activity.delegates.ContextMenuDelegate
 import info.plateaukao.einkbro.activity.delegates.FileHandlingDelegate
 import info.plateaukao.einkbro.activity.delegates.FullscreenDelegate
@@ -141,6 +148,8 @@ import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -254,6 +263,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             maybeInitTwoPaneController = { maybeInitTwoPaneController() },
             addAlbum = { title, _ -> addAlbum(title) },
             showTranslationDialog = { isWholePageMode -> translationDelegate.showTranslationDialog(isWholePageMode) },
+        )
+    }
+
+    private val taskRunner: TaskRunner by lazy {
+        TaskRunner(
+            activity = this,
+            context = this,
+            webViewCallback = this,
+            browserState = browserState,
+            config = config,
         )
     }
 
@@ -511,6 +530,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         is BrowserAction.SummarizeContent -> summarizeContent()
         is BrowserAction.ChatWithWeb -> chatWithWeb(action.useSplitScreen, action.content, action.runWithAction)
         is BrowserAction.ShowPageAiActionMenu -> showPageAiActionMenu()
+        is BrowserAction.ShowTaskMenu -> showTaskMenu()
+        is BrowserAction.RunTask -> runTaskById(action.taskId)
+        is BrowserAction.RunCustomTask -> runCustomTask(action.prompt)
         is BrowserAction.ShowEpubDialog -> showEpubDialog()
         is BrowserAction.SavePageForLater -> savePageForLater()
         is BrowserAction.ShowSavedPages -> showSavedPages()
@@ -595,6 +617,84 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun summarizeContent() = aiChatDelegate.summarizeContent()
     override fun chatWithWeb(useSplitScreen: Boolean, content: String?, runWithAction: ChatGPTActionInfo?) = aiChatDelegate.chatWithWeb(useSplitScreen, content, runWithAction)
     override fun showPageAiActionMenu() = aiChatDelegate.showPageAiActionMenu()
+
+    private fun showTaskMenu() {
+        TaskMenuDialogFragment(
+            descriptors = TaskCatalog.builtIns,
+            onTemplateClicked = { descriptor -> dispatch(BrowserAction.RunTask(descriptor.id)) },
+            onCustomClicked = {
+                CustomTaskInputDialogFragment(
+                    onSubmit = { prompt -> dispatch(BrowserAction.RunCustomTask(prompt)) },
+                ).showNow(supportFragmentManager, "customTaskInput")
+            },
+        ).showNow(supportFragmentManager, "taskMenu")
+    }
+
+    private fun runTaskById(taskId: String) {
+        val descriptor = TaskCatalog.byId(taskId)
+        if (descriptor == null) {
+            EBToast.show(this, R.string.task_unknown)
+            return
+        }
+        if (!translationViewModel.hasOpenAiApiKey() && !config.ai.useGeminiApi) {
+            EBToast.show(this, R.string.gpt_api_key_not_set)
+            return
+        }
+        translationViewModel.setupTaskStream(taskRunner.progress)
+        translationDelegate.showTranslationDialog(true)
+        observeTaskForTts(descriptor.displayNameResId)
+        taskRunner.run(descriptor.factory())
+    }
+
+    /**
+     * Collects the [TaskRunner] progress flow and, the first time a running task
+     * transitions to a terminal state with a final markdown result, reads that result
+     * aloud via [ttsViewModel]. Built-in templates only — users invoke free-form tasks
+     * with explicit instructions so they drive TTS themselves if wanted.
+     */
+    private fun observeTaskForTts(@androidx.annotation.StringRes taskTitleResId: Int) {
+        lifecycleScope.launch {
+            val terminal = taskRunner.progress
+                .filterNotNull()
+                .first { it.status != TaskProgress.Status.Running }
+            if (terminal.status == TaskProgress.Status.Done) {
+                val spoken = markdownToSpeech(terminal.finalMarkdown.orEmpty())
+                if (spoken.isNotEmpty()) {
+                    ttsViewModel.readArticle(spoken, getString(taskTitleResId))
+                }
+            }
+        }
+    }
+
+    /** Very light markdown-to-speech conversion: drops headers, bold markers, and
+     *  standalone URL lines so the TTS engine doesn't read syntax noise aloud. */
+    private fun markdownToSpeech(markdown: String): String = markdown.lineSequence()
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && !it.matches(Regex("^https?://\\S+$")) && it != "---" }
+        .map { line ->
+            line
+                .replace(Regex("^#+\\s*"), "")
+                .replace(Regex("\\*\\*(.+?)\\*\\*"), "$1")
+                .replace(Regex("\\*(.+?)\\*"), "$1")
+                .replace(Regex("`(.+?)`"), "$1")
+        }
+        .joinToString(". ")
+        .trim()
+
+    private fun runCustomTask(prompt: String) {
+        if (prompt.isBlank()) return
+        if (config.ai.useGeminiApi) {
+            EBToast.show(this, R.string.task_requires_openai)
+            return
+        }
+        if (!translationViewModel.hasOpenAiApiKey()) {
+            EBToast.show(this, R.string.gpt_api_key_not_set)
+            return
+        }
+        translationViewModel.setupTaskStream(taskRunner.progress)
+        translationDelegate.showTranslationDialog(true)
+        taskRunner.run(FreeFormAgentTask(prompt, config, OpenAiRepository()))
+    }
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) = actionModeDelegate.updateSelectionRect(left, top, right, bottom)
     override fun isActionModeActive(): Boolean = actionModeDelegate.isActionModeActive()

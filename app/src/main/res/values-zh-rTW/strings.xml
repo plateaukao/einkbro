@@ -663,4 +663,17 @@
     <string name="action_summarize_content">摘要此頁</string>
     <string name="action_save_web_archive">儲存網頁封存</string>
     <string name="action_selected_label">已選動作</string>
+
+    <!-- Task runner -->
+    <string name="task_menu_title">任務</string>
+    <string name="task_read_article_list">讀取文章列表並摘要</string>
+    <string name="task_read_article_list_desc">從目前頁面擷取文章連結，依序打開並產生每篇摘要。</string>
+    <string name="task_summarize_tabs">摘要開啟的分頁</string>
+    <string name="task_summarize_tabs_desc">為目前開啟的每個分頁產生簡短摘要。</string>
+    <string name="task_custom">自訂任務…</string>
+    <string name="task_custom_desc">用自然語言描述多步驟任務，由 LLM 執行。</string>
+    <string name="task_custom_hint">例如：打開前三則新聞連結並給我每則一句話的摘要</string>
+    <string name="task_run">執行</string>
+    <string name="task_requires_openai">自訂任務需要 OpenAI（不支援 Gemini）。</string>
+    <string name="task_unknown">未知的任務。</string>
 </resources>

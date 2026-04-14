@@ -86,6 +86,11 @@ sealed class BrowserAction {
     ) : BrowserAction()
     object ShowPageAiActionMenu : BrowserAction()
 
+    // Task runner (automated multi-step workflows)
+    object ShowTaskMenu : BrowserAction()
+    data class RunTask(val taskId: String) : BrowserAction()
+    data class RunCustomTask(val prompt: String) : BrowserAction()
+
     // File
     object ShowEpubDialog : BrowserAction()
     object SavePageForLater : BrowserAction()

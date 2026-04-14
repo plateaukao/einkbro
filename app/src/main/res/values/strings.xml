@@ -733,4 +733,17 @@
     <string name="action_summarize_content">Summarize page</string>
     <string name="action_save_web_archive">Save web archive</string>
     <string name="action_selected_label">Selected action</string>
+
+    <!-- Task runner -->
+    <string name="task_menu_title">Tasks</string>
+    <string name="task_read_article_list">Read article list &amp; summarize</string>
+    <string name="task_read_article_list_desc">Extract article links from this page, then open and summarize each one.</string>
+    <string name="task_summarize_tabs">Summarize open tabs</string>
+    <string name="task_summarize_tabs_desc">Produce a short summary of each currently open tab.</string>
+    <string name="task_custom">Custom task…</string>
+    <string name="task_custom_desc">Describe a multi-step task in natural language; an LLM will run it.</string>
+    <string name="task_custom_hint">e.g. open the top 3 story links and give me one-sentence summaries</string>
+    <string name="task_run">Run</string>
+    <string name="task_requires_openai">Custom tasks require OpenAI (not Gemini).</string>
+    <string name="task_unknown">Unknown task.</string>
 </resources>

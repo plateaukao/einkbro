@@ -96,6 +96,16 @@ class WebViewJsBridge(private val webView: WebView) {
 
     //endregion
 
+    //region Link Extraction
+
+    suspend fun getPageLinks(): String = suspendCoroutine { continuation ->
+        evaluateJsFile("extract_links.js", withPrefix = false) { value ->
+            continuation.resume(value ?: "[]")
+        }
+    }
+
+    //endregion
+
     //region Highlights
 
     private var isHighlightCssInjected = false
