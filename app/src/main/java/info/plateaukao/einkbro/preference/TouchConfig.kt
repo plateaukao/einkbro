@@ -2,7 +2,7 @@ package info.plateaukao.einkbro.preference
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import info.plateaukao.einkbro.view.GestureType
+import info.plateaukao.einkbro.browser.BrowserAction
 
 class TouchConfig(private val sp: SharedPreferences) {
 
@@ -42,31 +42,31 @@ class TouchConfig(private val sp: SharedPreferences) {
         pageReservedOffset.toString()
     )
 
-    var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
-    var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
-    var multitouchLeft by GestureTypePreference(sp, K_MULTITOUCH_LEFT)
-    var multitouchRight by GestureTypePreference(sp, K_MULTITOUCH_RIGHT)
-    var navGestureUp by GestureTypePreference(sp, K_GESTURE_NAV_UP)
-    var navGestureDown by GestureTypePreference(sp, K_GESTURE_NAV_DOWN)
-    var navGestureLeft by GestureTypePreference(sp, K_GESTURE_NAV_LEFT)
-    var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
-    var navButtonLongClickGesture by GestureTypePreference(
+    var multitouchUp by BrowserActionPreference(sp, K_MULTITOUCH_UP)
+    var multitouchDown by BrowserActionPreference(sp, K_MULTITOUCH_DOWN)
+    var multitouchLeft by BrowserActionPreference(sp, K_MULTITOUCH_LEFT)
+    var multitouchRight by BrowserActionPreference(sp, K_MULTITOUCH_RIGHT)
+    var navGestureUp by BrowserActionPreference(sp, K_GESTURE_NAV_UP)
+    var navGestureDown by BrowserActionPreference(sp, K_GESTURE_NAV_DOWN)
+    var navGestureLeft by BrowserActionPreference(sp, K_GESTURE_NAV_LEFT)
+    var navGestureRight by BrowserActionPreference(sp, K_GESTURE_NAV_RIGHT)
+    var navButtonLongClickGesture by BrowserActionPreference(
         sp,
         K_GESTURE_NAV_LONG_CLICK,
-        defaultValue = GestureType.Overview
+        defaultValue = BrowserAction.ShowOverview
     )
 
-    var upClickGesture by GestureTypePreference(
-        sp, "K_UP_CLICK_GESTURE", GestureType.PageUp
+    var upClickGesture by BrowserActionPreference(
+        sp, "K_UP_CLICK_GESTURE", BrowserAction.PageUp
     )
-    var downClickGesture by GestureTypePreference(
-        sp, "K_DOWN_CLICK_GESTURE", GestureType.PageDown
+    var downClickGesture by BrowserActionPreference(
+        sp, "K_DOWN_CLICK_GESTURE", BrowserAction.PageDown
     )
-    var upLongClickGesture by GestureTypePreference(
-        sp, "K_UP_LONG_CLICK_GESTURE", GestureType.ScrollToTop
+    var upLongClickGesture by BrowserActionPreference(
+        sp, "K_UP_LONG_CLICK_GESTURE", BrowserAction.JumpToTop
     )
-    var downLongClickGesture by GestureTypePreference(
-        sp, "K_DOWN_LONG_CLICK_GESTURE", GestureType.ScrollToBottom
+    var downLongClickGesture by BrowserActionPreference(
+        sp, "K_DOWN_LONG_CLICK_GESTURE", BrowserAction.JumpToBottom
     )
 
     companion object {

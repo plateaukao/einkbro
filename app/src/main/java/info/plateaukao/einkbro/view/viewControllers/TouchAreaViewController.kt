@@ -12,7 +12,6 @@ import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.browser.BrowserAction
-import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -34,8 +33,8 @@ class TouchAreaViewController(
     private val pageTopAction = { gestureHandler.handle(config.touch.upLongClickGesture) }
     private val pageDownAction = { gestureHandler.handle(config.touch.downClickGesture) }
     private val pageBottomAction = { gestureHandler.handle(config.touch.downLongClickGesture) }
-    private val keyLeftAction = { gestureHandler.handle(GestureType.KeyLeft) }
-    private val keyRightAction = { gestureHandler.handle(GestureType.KeyRight) }
+    private val keyLeftAction = { gestureHandler.handle(BrowserAction.SendLeftKey) }
+    private val keyRightAction = { gestureHandler.handle(BrowserAction.SendRightKey) }
 
     private val touchAreaChangeListener: OnSharedPreferenceChangeListener by lazy {
         OnSharedPreferenceChangeListener { _, key ->
