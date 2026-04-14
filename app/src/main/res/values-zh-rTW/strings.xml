@@ -642,4 +642,25 @@
     <string name="twitter">Twitter</string>
     <string name="volume_page_turn_paused">音量鍵翻頁已暫停 5 秒</string>
     <string name="volume_page_turn_resumed">音量鍵翻頁已恢復</string>
+
+    <!-- Gesture action catalog -->
+    <string name="action_category_tab">分頁</string>
+    <string name="action_category_navigation">導航</string>
+    <string name="action_category_content">內容</string>
+    <string name="action_category_view">檢視</string>
+    <string name="action_category_translation">翻譯</string>
+    <string name="action_category_tts">文字轉語音</string>
+    <string name="action_category_bookmarks">書籤與歷史</string>
+    <string name="action_category_search">搜尋</string>
+    <string name="action_category_share">分享</string>
+    <string name="action_category_touch">觸控</string>
+    <string name="action_category_ai">AI</string>
+    <string name="action_category_file">檔案</string>
+    <string name="action_category_dialog">對話框與介面</string>
+
+    <string name="action_text_search">文字搜尋</string>
+    <string name="action_fast_toggle">快速切換</string>
+    <string name="action_summarize_content">摘要此頁</string>
+    <string name="action_save_web_archive">儲存網頁封存</string>
+    <string name="action_selected_label">已選動作</string>
 </resources>
