@@ -31,6 +31,7 @@ class AiChatDelegate(
     private val maybeInitTwoPaneController: () -> Unit,
     private val addAlbum: (title: String, url: String) -> Unit,
     private val showTranslationDialog: (isWholePageMode: Boolean) -> Unit,
+    private val showTaskMenu: () -> Unit,
 ) {
     private val linkContentWebView: EBWebView by lazy {
         EBWebView(activity, activity as info.plateaukao.einkbro.browser.WebViewCallback).apply {
@@ -141,10 +142,6 @@ class AiChatDelegate(
     fun showPageAiActionMenu() {
         val pageActions =
             config.ai.gptActionList.filter { it.scope == GptActionScope.WholePage }
-        if (pageActions.isEmpty()) {
-            EBToast.show(activity, R.string.page_ai_action_empty)
-            return
-        }
 
         PageAiActionDialogFragment(
             actions = pageActions,
@@ -155,7 +152,8 @@ class AiChatDelegate(
                     ShowEditGptActionDialogFragment(index)
                         .showNow(activity.supportFragmentManager, "editGptAction")
                 }
-            }
+            },
+            onTaskRunnerClicked = { showTaskMenu() },
         ).showNow(activity.supportFragmentManager, "pageAiAction")
     }
 
