@@ -961,7 +961,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
         }
 
-        intentDispatchDelegate.dispatchIntent(intent)
+        dispatchIntent(intent)
         intentDispatchDelegate.shouldLoadTabState = false
 
         if (config.ui.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -991,7 +991,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intentDispatchDelegate.dispatchIntent(intent)
+        dispatchIntent(intent)
     }
 
     override fun onResume() {
