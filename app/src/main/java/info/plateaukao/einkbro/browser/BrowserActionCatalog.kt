@@ -62,7 +62,6 @@ object BrowserActionCatalog {
             listOf(
                 BrowserActionEntry(BrowserAction.ToggleFullscreen, R.string.fullscreen),
                 BrowserActionEntry(BrowserAction.RotateScreen, R.string.rotate),
-                BrowserActionEntry(BrowserAction.ToggleAudioOnlyMode, R.string.audio_only_mode),
             ),
         ),
         BrowserActionCategory(
@@ -88,26 +87,19 @@ object BrowserActionCatalog {
             listOf(
                 BrowserActionEntry(BrowserAction.ShowSearchPanel, R.string.setting_title_search),
                 BrowserActionEntry(BrowserAction.ToggleTextSearch, R.string.action_text_search),
-                BrowserActionEntry(BrowserAction.ToggleReceiveTextSearch, R.string.action_receive_text_search),
             ),
         ),
         BrowserActionCategory(
             R.string.action_category_share,
             listOf(
-                BrowserActionEntry(BrowserAction.CreateShortcut, R.string.menu_sc),
                 BrowserActionEntry(BrowserAction.ShareLink, R.string.menu_share_link),
                 BrowserActionEntry(BrowserAction.AddToInstapaper, R.string.menu_instapaper),
-                BrowserActionEntry(BrowserAction.ConfigureInstapaper, R.string.action_configure_instapaper),
-                BrowserActionEntry(BrowserAction.ToggleReceiveLink, R.string.action_toggle_receive_link),
             ),
         ),
         BrowserActionCategory(
             R.string.action_category_touch,
             listOf(
                 BrowserActionEntry(BrowserAction.ToggleTouchTurnPage, R.string.toggle_touch_turn_page),
-                BrowserActionEntry(BrowserAction.ToggleSwitchTouchAreaAction, R.string.switch_touch_area_action_short),
-                BrowserActionEntry(BrowserAction.ShowTouchAreaDialog, R.string.action_touch_area_dialog),
-                BrowserActionEntry(BrowserAction.ToggleTouchPagination, R.string.toggle_touch_turn_page),
             ),
         ),
         BrowserActionCategory(
@@ -123,7 +115,6 @@ object BrowserActionCatalog {
             listOf(
                 BrowserActionEntry(BrowserAction.ShowEpubDialog, R.string.menu_save_epub),
                 BrowserActionEntry(BrowserAction.SavePageForLater, R.string.menu_save_archive),
-                BrowserActionEntry(BrowserAction.ShowSavedPages, R.string.saved_pages),
                 BrowserActionEntry(BrowserAction.SaveWebArchive, R.string.action_save_web_archive),
             ),
         ),
@@ -133,7 +124,6 @@ object BrowserActionCatalog {
                 BrowserActionEntry(BrowserAction.FocusOnInput, R.string.input_url),
                 BrowserActionEntry(BrowserAction.ShowMenuDialog, R.string.menu),
                 BrowserActionEntry(BrowserAction.ShowFastToggleDialog, R.string.action_fast_toggle),
-                BrowserActionEntry(BrowserAction.ShowTocDialog, R.string.title_in_toc),
                 BrowserActionEntry(BrowserAction.ShowSiteSettingsDialog, R.string.site_settings),
             ),
         ),

@@ -84,16 +84,9 @@ fun GesturePickerScreen(navController: NavHostController) {
         }
 
         BrowserActionCatalog.categories.forEach { category ->
-            val isOpen = expanded[category.titleResId] ?: false
-            item {
-                CategoryHeader(
-                    titleResId = category.titleResId,
-                    expanded = isOpen,
-                    onClick = { expanded[category.titleResId] = !isOpen },
-                )
-            }
-            if (isOpen) {
-                items(category.entries, key = { it.id }) { entry ->
+            if (category.entries.size == 1) {
+                val entry = category.entries.single()
+                item(key = entry.id) {
                     ActionRow(
                         entry = entry,
                         isSelected = entry.id == selectedId,
@@ -103,6 +96,28 @@ fun GesturePickerScreen(navController: NavHostController) {
                             navController.popBackStack()
                         },
                     )
+                }
+            } else {
+                val isOpen = expanded[category.titleResId] ?: false
+                item {
+                    CategoryHeader(
+                        titleResId = category.titleResId,
+                        expanded = isOpen,
+                        onClick = { expanded[category.titleResId] = !isOpen },
+                    )
+                }
+                if (isOpen) {
+                    items(category.entries, key = { it.id }) { entry ->
+                        ActionRow(
+                            entry = entry,
+                            isSelected = entry.id == selectedId,
+                            onClick = {
+                                property.set(entry.action)
+                                selected = entry.action
+                                navController.popBackStack()
+                            },
+                        )
+                    }
                 }
             }
         }
