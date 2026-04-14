@@ -16,6 +16,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -204,6 +205,45 @@ class OpenAiRepository : KoinComponent {
             }
         } catch (e: Exception) {
             Log.e("OpenAiRepository", "Error fetching chat completion", e)
+            continuation.resume(null)
+        }
+    }
+
+    /**
+     * Non-streaming chat completion with tool-calling support. Used by the free-form task
+     * agent loop. OpenAI-compatible backends only (the Gemini path has a different schema).
+     */
+    suspend fun chatWithTools(
+        messages: List<ToolChatMessage>,
+        tools: List<ToolDefinition>,
+        gptActionInfo: ChatGPTActionInfo,
+    ): ToolChatCompletion? = suspendCoroutine { continuation ->
+        val payload = ToolChatRequest(
+            model = gptActionInfo.model,
+            messages = messages,
+            tools = tools,
+            toolChoice = "auto",
+        )
+        val request = Request.Builder()
+            .url("${getServerUrl(gptActionInfo.actionType)}$completionPath")
+            .post(json.encodeToString(payload).toRequestBody(mediaType))
+            .header("Authorization", "Bearer $apiKey")
+            .build()
+        try {
+            client.newCall(request).execute().use { response ->
+                if (response.code != 200 || response.body == null) {
+                    Log.e(
+                        "OpenAiRepository",
+                        "chatWithTools failed: ${response.code} ${response.body?.string()}"
+                    )
+                    return@use continuation.resume(null)
+                }
+                val body = response.body?.string().orEmpty()
+                val parsed = json.decodeFromString(ToolChatCompletion.serializer(), body)
+                continuation.resume(parsed)
+            }
+        } catch (e: Exception) {
+            Log.e("OpenAiRepository", "Error in chatWithTools", e)
             continuation.resume(null)
         }
     }
@@ -426,3 +466,63 @@ data class TTSRequest(
 enum class GptVoiceOption {
     Alloy, Echo, Fable, Onyx, Nova, Shimmer
 }
+
+// ── Tool-calling types (parallel to ChatRequest/ChatMessage) ──────────────
+// OpenAI function-calling uses nullable `content` and an extra `tool_calls` array
+// on assistant messages, plus a `tool` role for results. We keep these separate
+// from ChatMessage so the existing streaming/Gemini code remains untouched.
+
+@Serializable
+data class ToolChatRequest(
+    val model: String,
+    val messages: List<ToolChatMessage>,
+    val tools: List<ToolDefinition>? = null,
+    @SerialName("tool_choice") val toolChoice: String? = null,
+    val stream: Boolean = false,
+)
+
+@Serializable
+data class ToolChatMessage(
+    val role: String,
+    val content: String? = null,
+    @SerialName("tool_call_id") val toolCallId: String? = null,
+    @SerialName("tool_calls") val toolCalls: List<ToolCall>? = null,
+)
+
+@Serializable
+data class ToolCall(
+    val id: String,
+    val type: String = "function",
+    val function: FunctionCall,
+)
+
+@Serializable
+data class FunctionCall(
+    val name: String,
+    val arguments: String,
+)
+
+@Serializable
+data class ToolDefinition(
+    val type: String = "function",
+    val function: FunctionDef,
+)
+
+@Serializable
+data class FunctionDef(
+    val name: String,
+    val description: String,
+    val parameters: JsonElement,
+)
+
+@Serializable
+data class ToolChatCompletion(
+    val choices: List<ToolChatChoice>,
+)
+
+@Serializable
+data class ToolChatChoice(
+    val index: Int = 0,
+    val message: ToolChatMessage,
+    @SerialName("finish_reason") val finishReason: String? = null,
+)

@@ -13,6 +13,7 @@ import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.task.TaskProgress
 import info.plateaukao.einkbro.data.remote.ImageTranslateResult
 import info.plateaukao.einkbro.data.remote.TranslateRepository
 import info.plateaukao.einkbro.unit.BrowserUnit
@@ -162,6 +163,50 @@ class TranslationViewModel(
     fun setupGptAction(gptAction: ChatGPTActionInfo) {
         updateTranslateMethod(TRANSLATE_API.LLM)
         gptActionInfo = gptAction
+    }
+
+    /**
+     * Bridges a TaskRunner progress stream into the translation popup. Each progress
+     * update is rendered as markdown in [responseMessage] so the existing popup UI can
+     * display it without new components.
+     */
+    private var taskStreamJob: kotlinx.coroutines.Job? = null
+    fun setupTaskStream(progressFlow: StateFlow<TaskProgress?>) {
+        updateTranslateMethod(TRANSLATE_API.LLM)
+        _inputMessage.value = ""
+        _responseMessage.value = AnnotatedString("…")
+        taskStreamJob?.cancel()
+        taskStreamJob = viewModelScope.launch {
+            progressFlow.collect { progress ->
+                if (progress == null) return@collect
+                _responseMessage.value = HelperUnit.parseMarkdown(renderProgress(progress))
+            }
+        }
+    }
+
+    private fun renderProgress(progress: TaskProgress): String {
+        val sb = StringBuilder()
+        sb.append("**").append(progress.taskName).append("** — ")
+        sb.append(
+            when (progress.status) {
+                TaskProgress.Status.Running -> "running…"
+                TaskProgress.Status.Done -> "done"
+                TaskProgress.Status.Cancelled -> "cancelled"
+                TaskProgress.Status.Failed -> "failed"
+            }
+        ).append("\n\n")
+        progress.steps.forEach { step ->
+            val marker = when (step.kind) {
+                TaskProgress.StepLine.Kind.Info -> "- "
+                TaskProgress.StepLine.Kind.Tool -> "- [tool] "
+                TaskProgress.StepLine.Kind.Error -> "- [error] "
+            }
+            sb.append(marker).append(step.text).append("\n")
+        }
+        progress.finalMarkdown?.let {
+            sb.append("\n---\n\n").append(it)
+        }
+        return sb.toString()
     }
 
     fun setupTextSummary(text: String): Boolean {
