@@ -284,7 +284,10 @@ class EBWebViewClient(
         Log.e("ebWebViewClient", "onReceivedError:${request?.url} / ${error?.description}")
 
         if (request?.isForMainFrame == true) {
-            showErrorPage(request.url.toString(), error?.description?.toString())
+            val scheme = request.url.scheme
+            if (scheme == "http" || scheme == "https") {
+                showErrorPage(request.url.toString(), error?.description?.toString())
+            }
         }
     }
 
