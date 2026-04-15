@@ -8,6 +8,19 @@ EinkBro is an Android web browser specifically designed for E-ink devices like e
 
 ## Build Commands
 
+### Prerequisites
+
+The `adblock-rust-client` module cross-compiles Brave's `adblock-rust` crate for every Android ABI before each build. Contributors need:
+
+- Rust + `cargo-ndk`:
+  ```bash
+  rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android i686-linux-android
+  cargo install cargo-ndk
+  ```
+- Android NDK (auto-detected from `~/Library/Android/sdk/ndk/<version>/` on macOS, or set `ANDROID_NDK_HOME`)
+
+Gradle will fail fast with an actionable message if any of these are missing.
+
 ### Development
 ```bash
 # Build debug APK
@@ -51,8 +64,8 @@ EinkBro is an Android web browser specifically designed for E-ink devices like e
 
 ### Multi-Module Structure
 - **app/**: Main browser application module
-- **ad-filter/**: Custom ad-blocking library with ViewModel architecture  
-- **adblock-client/**: Native C++ ad-blocking implementation using CMake
+- **ad-filter/**: Custom ad-blocking library with ViewModel architecture
+- **adblock-rust-client/**: Kotlin + Rust JNI wrapper around Brave's `adblock-rust` engine (cross-compiled via `cargo-ndk`)
 
 ### Core Architecture Patterns
 - **MVVM**: ViewModels with LiveData/StateFlow for UI state management
@@ -79,7 +92,7 @@ EinkBro is an Android web browser specifically designed for E-ink devices like e
 The main app module depends on the ad-filter module, which contains:
 - JavaScript scriptlets for ad filtering
 - FilterViewModel for managing filter state
-- Custom ad-blocking logic integrated with the native adblock-client
+- Custom ad-blocking logic backed by the adblock-rust-client JNI wrapper
 
 ### Build Configuration
 - **Min SDK**: 24 (Android 7.0)
