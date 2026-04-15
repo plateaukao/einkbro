@@ -44,6 +44,13 @@ class AdBlockRustClient(override val id: String) : Client {
     override fun getScriptlets(url: String): Array<String>? =
         nativeGetScriptlets(enginePtr, url)
 
+    override fun getHiddenClassIdSelectors(
+        classes: Array<String>,
+        ids: Array<String>,
+        exceptions: Array<String>
+    ): Array<String>? =
+        nativeGetHiddenClassIdSelectors(enginePtr, classes, ids, exceptions)
+
     @Suppress("unused", "protectedInFinal")
     protected fun finalize() {
         val ptr = enginePtr
@@ -69,6 +76,12 @@ class AdBlockRustClient(override val id: String) : Client {
     private external fun nativeGetExtendedCssSelectors(ptr: Long, url: String): Array<String>?
     private external fun nativeGetCssRules(ptr: Long, url: String): Array<String>?
     private external fun nativeGetScriptlets(ptr: Long, url: String): Array<String>?
+    private external fun nativeGetHiddenClassIdSelectors(
+        ptr: Long,
+        classes: Array<String>,
+        ids: Array<String>,
+        exceptions: Array<String>
+    ): Array<String>?
     private external fun nativeSetGenericHideEnabled(ptr: Long, enabled: Boolean)
     private external fun nativeIsGenericHideEnabled(ptr: Long): Boolean
 

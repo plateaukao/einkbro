@@ -1,9 +1,10 @@
 use adblock::lists::{FilterSet, ParseOptions};
 use adblock::request::Request;
 use adblock::Engine;
-use jni::objects::{JByteArray, JClass, JObject, JString, JValue};
+use jni::objects::{JByteArray, JClass, JObject, JObjectArray, JString, JValue};
 use jni::sys::{jboolean, jbyteArray, jint, jlong, jobject, jobjectArray, jstring, JNI_FALSE, JNI_TRUE};
 use jni::JNIEnv;
+use std::collections::HashSet;
 
 struct EngineHandle {
     engine: Engine,
@@ -330,6 +331,53 @@ pub extern "system" fn Java_io_github_edsuns_adblockrust_AdBlockRustClient_nativ
     _url: JString,
 ) -> jobjectArray {
     std::ptr::null_mut()
+}
+
+fn java_string_array_to_vec(env: &mut JNIEnv, array: &JObjectArray) -> Vec<String> {
+    let len = match env.get_array_length(array) {
+        Ok(l) => l,
+        Err(_) => return Vec::new(),
+    };
+    let mut out = Vec::with_capacity(len as usize);
+    for i in 0..len {
+        let obj = match env.get_object_array_element(array, i) {
+            Ok(o) => o,
+            Err(_) => continue,
+        };
+        let jstr = JString::from(obj);
+        let s: String = match env.get_string(&jstr) {
+            Ok(js) => js.into(),
+            Err(_) => continue,
+        };
+        out.push(s);
+    }
+    out
+}
+
+#[no_mangle]
+pub extern "system" fn Java_io_github_edsuns_adblockrust_AdBlockRustClient_nativeGetHiddenClassIdSelectors(
+    mut env: JNIEnv,
+    _class: JClass,
+    ptr: jlong,
+    classes: JObjectArray,
+    ids: JObjectArray,
+    exceptions: JObjectArray,
+) -> jobjectArray {
+    let handle = match unsafe { as_ref(ptr) } {
+        Some(h) => h,
+        None => return std::ptr::null_mut(),
+    };
+    let classes_vec = java_string_array_to_vec(&mut env, &classes);
+    let ids_vec = java_string_array_to_vec(&mut env, &ids);
+    let exceptions_set: HashSet<String> =
+        java_string_array_to_vec(&mut env, &exceptions).into_iter().collect();
+    let selectors = handle
+        .engine
+        .hidden_class_id_selectors(&classes_vec, &ids_vec, &exceptions_set);
+    if selectors.is_empty() {
+        return std::ptr::null_mut();
+    }
+    strings_to_java_array(&mut env, &selectors)
 }
 
 #[no_mangle]
