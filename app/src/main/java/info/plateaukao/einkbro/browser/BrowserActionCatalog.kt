@@ -145,7 +145,7 @@ object BrowserActionCatalog {
     fun idOf(action: BrowserAction): String = action::class.simpleName.orEmpty()
 
     fun migrateLegacyId(stored: String?): String {
-        if (stored.isNullOrEmpty()) return nothingEntry.id
+        if (stored.isNullOrEmpty()) return ""
         // New format: BrowserAction subclass simple name (non-numeric).
         if (stored.firstOrNull()?.isDigit() != true) return stored
         // Legacy format: 2-char GestureType code like "01".
