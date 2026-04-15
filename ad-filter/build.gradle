@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.github.Edsuns:SmoothProgressAnimator:1.0'
 
     implementation project(':adblock-client')
+    implementation project(':adblock-rust-client')
 
     implementation "com.jakewharton.timber:timber:$timber"
 
