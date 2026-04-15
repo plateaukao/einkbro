@@ -2,9 +2,6 @@ package info.plateaukao.einkbro.task.tasks
 
 import info.plateaukao.einkbro.task.BrowserTask
 import info.plateaukao.einkbro.task.BrowserTools
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
@@ -14,18 +11,14 @@ import kotlinx.serialization.json.jsonArray
 /**
  * Built-in template: from the user's *current tab* (assumed to be an article index
  * page like a news front page), extract all links, ask the LLM which ones look like
- * article links, then open each surviving link in the background and summarize it.
- *
- * The LLM is used at two points:
- *   1. to filter the raw link list into "article links" (arbitrary layouts supported)
- *   2. to produce a 2-sentence summary of each article's reader-mode text
+ * article links, then open each surviving link in the background and hand its full
+ * reader-mode text to the TTS queue — playing each article one after another.
  */
 class ReadArticleListTask : BrowserTask {
     override val id = "read_article_list"
-    override val displayName = "Read article list & summarize"
+    override val displayName = "News anchor"
 
     override suspend fun run(tools: BrowserTools) {
-        val language = tools.defaultLanguageName()
         val pageTitle = tools.activeTabTitle().ifBlank { tools.activeTabUrl() }
         tools.info("Reading links from: $pageTitle")
 
@@ -43,81 +36,48 @@ class ReadArticleListTask : BrowserTask {
             tools.finish("No article links identified on the current page.")
             return
         }
-        tools.info("Selected ${articleLinks.size} article links to summarize.")
+        tools.info("Selected ${articleLinks.size} article links to read.")
 
-        // Pipelined execution:
-        //   • Page loads are serial (single off-screen WebView).
-        //   • As soon as each page's text is extracted, its LLM summary is launched
-        //     in parallel — so the summary for article N runs concurrently with the
-        //     page load for article N+1 (and the LLM call for article N-1, etc).
-        //   • A per-index CompletableDeferred lets parallel summary jobs fill the
-        //     slot out of order; the consumer awaits strictly in input order so the
-        //     TTS queue receives summaries in the order the user expects.
-        val slots: List<CompletableDeferred<ArticleResult>> =
-            List(articleLinks.size) { CompletableDeferred() }
+        // Serial flow: page loads share a single off-screen WebView, and the TTS
+        // engine queues articles internally — so fetching article N+1 while N is
+        // still being spoken is fine and keeps the speaker always supplied.
+        //
+        // Full article text is held locally and streamed into the TTS queue; only
+        // a compact index (title + URL + status) lands in the finish markdown, so
+        // if the result is ever fed back to an LLM the body text doesn't become
+        // tokens.
+        val articleBodies = ArrayList<String>(articleLinks.size)
+        val indexMd = StringBuilder()
+        indexMd.append("# ").append(pageTitle).append("\n\n")
 
-        coroutineScope {
-            // Producer: serial fetch + fan-out summarization.
-            launch {
-                articleLinks.forEachIndexed { index, link ->
-                    tools.info("Fetching ${index + 1}/${articleLinks.size}: ${link.text.take(80)}")
-                    val opened = tools.openUrlInBg(link.href)
-                    val text = if (opened) tools.currentBgPageText().trim() else ""
-                    launch {
-                        val summary = summarize(tools, text, language)
-                        slots[index].complete(ArticleResult(index, link, summary))
-                    }
-                }
+        articleLinks.forEachIndexed { index, link ->
+            val idx = index + 1
+            tools.info("Fetching $idx/${articleLinks.size}: ${link.text.take(80)}")
+            val opened = tools.openUrlInBg(link.href)
+            val text = if (opened) tools.currentBgPageText().trim() else ""
+            indexMd.append("## ").append(idx).append(". ").append(link.text).append("\n")
+            indexMd.append(link.href).append("\n")
+            if (text.isBlank()) {
+                tools.error("Failed to load or empty: ${link.href}")
+                indexMd.append("_(failed to load or empty)_\n\n")
+                articleBodies.add("")
+                return@forEachIndexed
             }
-
-            // Consumer: await in input order; stream each result into markdown and
-            // hand it to the TTS queue as soon as it's ready.
-            val running = StringBuilder()
-            running.append("# ").append(pageTitle).append("\n\n")
-            slots.forEachIndexed { i, deferred ->
-                val result = deferred.await()
-                val idx = i + 1
-                running.append("## ").append(idx).append(". ").append(result.link.text).append("\n")
-                running.append(result.link.href).append("\n\n")
-                running.append(result.summary).append("\n\n")
-                tools.info("Ready $idx/${articleLinks.size}: ${result.link.text.take(80)}")
-                tools.speak(
-                    text = "${result.link.text}. ${result.summary}",
-                    title = "$idx. ${result.link.text}",
-                )
-            }
-            tools.finish(running.toString())
+            articleBodies.add(text)
+            indexMd.append("_(${text.length} chars queued for TTS)_\n\n")
+            tools.info("Queued $idx/${articleLinks.size} for TTS")
+            tools.speak(
+                text = "${link.text}. $text",
+                title = "$idx. ${link.text}",
+            )
         }
+        tools.finish(indexMd.toString())
     }
-
-    private suspend fun summarize(
-        tools: BrowserTools,
-        text: String,
-        language: String,
-    ): String {
-        if (text.isBlank()) return "_(failed to load or empty)_"
-        val capped = if (text.length > MAX_CHARS_PER_ARTICLE) {
-            text.substring(0, MAX_CHARS_PER_ARTICLE)
-        } else text
-        val summary = tools.askLlm(
-            system = "You are a concise summarizer for a busy reader. Reply with 2 sentences at most. " +
-                "Reply in $language unless the article content requires otherwise. No preamble.",
-            user = "Summarize this article:\n\n$capped",
-        )?.trim().orEmpty()
-        return summary.ifBlank { "_(no summary)_" }
-    }
-
-    private data class ArticleResult(
-        val index: Int,
-        val link: BrowserTools.Link,
-        val summary: String,
-    )
 
     private suspend fun filterArticleLinks(
         tools: BrowserTools,
         links: List<BrowserTools.Link>,
     ): List<BrowserTools.Link> {
-        // Feed the LLM a numbered list and ask for a JSON array of indices.
         val numbered = links.mapIndexed { i, l -> "$i\t${l.text.take(120)}\t${l.href}" }
             .joinToString("\n")
         val prompt = """
@@ -162,7 +122,6 @@ class ReadArticleListTask : BrowserTask {
     }
 
     companion object {
-        private const val MAX_ARTICLES = 10
-        private const val MAX_CHARS_PER_ARTICLE = 12_000
+        private const val MAX_ARTICLES = 25
     }
 }

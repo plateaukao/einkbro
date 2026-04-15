@@ -736,8 +736,8 @@
 
     <!-- Task runner -->
     <string name="task_menu_title">Tasks</string>
-    <string name="task_read_article_list">Read article list &amp; summarize</string>
-    <string name="task_read_article_list_desc">Extract article links from this page, then open and summarize each one.</string>
+    <string name="task_read_article_list">News anchor</string>
+    <string name="task_read_article_list_desc">Extract article links from this page, then open each one and read it aloud in sequence.</string>
     <string name="task_summarize_tabs">Summarize open tabs</string>
     <string name="task_summarize_tabs_desc">Produce a short summary of each currently open tab.</string>
     <string name="task_custom">Custom task…</string>

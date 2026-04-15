@@ -666,8 +666,8 @@
 
     <!-- Task runner -->
     <string name="task_menu_title">任務</string>
-    <string name="task_read_article_list">讀取文章列表並摘要</string>
-    <string name="task_read_article_list_desc">從目前頁面擷取文章連結，依序打開並產生每篇摘要。</string>
+    <string name="task_read_article_list">新聞主播</string>
+    <string name="task_read_article_list_desc">從目前頁面擷取文章連結，依序打開每一篇並朗讀內容。</string>
     <string name="task_summarize_tabs">摘要開啟的分頁</string>
     <string name="task_summarize_tabs_desc">為目前開啟的每個分頁產生簡短摘要。</string>
     <string name="task_custom">自訂任務…</string>
