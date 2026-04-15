@@ -22,6 +22,7 @@ internal interface Detector {
     fun getExtendedCssSelectors(documentUrl: String): List<String>
     fun getCssRules(documentUrl: String): List<String>
     fun getScriptlets(documentUrl: String): List<String>
+    fun getHiddenClassIdSelectors(classes: Array<String>, ids: Array<String>): List<String>
 }
 
 internal class DetectorImpl : Detector {
@@ -135,5 +136,22 @@ internal class DetectorImpl : Detector {
 
     override fun getScriptlets(documentUrl: String): List<String> =
         getRulesIntoList { it.getScriptlets(documentUrl) }
+
+    override fun getHiddenClassIdSelectors(
+        classes: Array<String>,
+        ids: Array<String>
+    ): List<String> {
+        val empty = emptyArray<String>()
+        val result = ArrayList<String>()
+        for (client in clients) {
+            val selectors = client.getHiddenClassIdSelectors(classes, ids, empty) ?: continue
+            result.addAll(selectors)
+        }
+        customFilterClient?.let {
+            val selectors = it.getHiddenClassIdSelectors(classes, ids, empty) ?: return@let
+            result.addAll(selectors)
+        }
+        return result
+    }
 
 }

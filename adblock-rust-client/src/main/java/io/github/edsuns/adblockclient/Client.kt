@@ -39,4 +39,18 @@ interface Client {
 
     fun getScriptlets(url: String): Array<String>?
 
+    /**
+     * Returns CSS selectors that should be hidden on the current page, given the classes and
+     * ids present in the page's DOM. Used by backends (e.g. adblock-rust) that store generic
+     * class/id hide rules in an inverted index and need DOM state to materialize them.
+     *
+     * Default implementation returns null — backends that already include generic selectors
+     * directly in [getElementHidingSelectors] can leave this alone.
+     */
+    fun getHiddenClassIdSelectors(
+        classes: Array<String>,
+        ids: Array<String>,
+        exceptions: Array<String>
+    ): Array<String>? = null
+
 }
