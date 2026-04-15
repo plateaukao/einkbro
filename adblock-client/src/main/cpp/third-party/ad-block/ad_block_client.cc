@@ -142,7 +142,7 @@ void putElementHidingFilterToHashMap(Filter *filter, CosmeticFilterHashMap *hash
 template<class T>
 bool getFrom(HashMap<NoFingerprintDomain, T> *hashMap, const char *host, int hostLen,
              std::function<void(T *)> onFind) {
-  if (hostLen <= 0)
+  if (!hashMap || hostLen <= 0)
     return false;
   bool find = false;
   // start from the penultimate
