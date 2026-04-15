@@ -1,6 +1,6 @@
 package io.github.edsuns.adfilter.impl
 
-import io.github.edsuns.adblockclient.AdBlockClient
+import io.github.edsuns.adblockrust.AdBlockRustClient
 import io.github.edsuns.adfilter.CustomFilter
 import timber.log.Timber
 
@@ -15,7 +15,7 @@ internal class FilterDataLoader(
     fun load(id: String) {
         if (binaryDataStore.hasData(id)) {
             try {
-                val client = AdBlockClient(id)
+                val client = AdBlockRustClient(id)
                 client.loadProcessedData(binaryDataStore.loadData(id))
                 if (id == ID_CUSTOM) {
                     detector.customFilterClient = client
@@ -55,7 +55,7 @@ internal class FilterDataLoader(
 
     fun loadCustomFilter(rawData: ByteArray) {
         binaryDataStore.saveData(RAW_CUSTOM, rawData)
-        val client = AdBlockClient(ID_CUSTOM)
+        val client = AdBlockRustClient(ID_CUSTOM)
         client.loadBasicData(rawData, true)
         binaryDataStore.saveData(ID_CUSTOM, client.getProcessedData())
         load(ID_CUSTOM)
