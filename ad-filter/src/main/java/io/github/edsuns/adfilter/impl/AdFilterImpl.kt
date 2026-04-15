@@ -79,7 +79,15 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
         workInfoList.forEach { workInfo ->
             val filterId = viewModel.workToFilterMap.value[workInfo.id.toString()] ?: return@forEach
             val filter = viewModel.filters.value[filterId] ?: return@forEach
-            viewModel.updateFilterByFilterId(filterId, updateFilter(filter, workInfo))
+            val updated = updateFilter(filter, workInfo)
+            viewModel.updateFilterByFilterId(filterId, updated)
+            val installationSucceeded = workInfo.tags.contains(TAG_INSTALLATION) &&
+                workInfo.state == WorkInfo.State.SUCCEEDED &&
+                updated.isEnabled
+            if (installationSucceeded) {
+                filterDataLoader.load(filterId)
+                viewModel.updateEnabledFilterCount()
+            }
         }
     }
 

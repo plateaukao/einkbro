@@ -5,7 +5,7 @@ package io.github.edsuns.adfilter.impl
  */
 internal object Constants {
     const val FILE_STORE_DIR = "filter_data"
-    const val FILTER_DATA_FORMAT_VERSION = 2
+    const val FILTER_DATA_FORMAT_VERSION = 3
     const val KEY_FILTER_ID = "KEY_FILTER_ID"
     const val KEY_DOWNLOAD_URL = "KEY_DOWNLOAD_URL"
     const val KEY_DOWNLOADED_DATA = "KEY_DOWNLOADED_DATA"

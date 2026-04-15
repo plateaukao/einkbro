@@ -77,6 +77,19 @@ internal class InstallationWorker(context: Context, params: WorkerParameters) : 
         val client = AdBlockRustClient(id)
         client.loadBasicData(rawBytes, true)
         binaryDataStore.saveData(id, client.getProcessedData())
-        return 0
+        return countRules(rawBytes)
+    }
+
+    private fun countRules(rawBytes: ByteArray): Int {
+        var count = 0
+        String(rawBytes).lineSequence().forEach { line ->
+            val trimmed = line.trim()
+            if (trimmed.isEmpty()) return@forEach
+            val first = trimmed[0]
+            if (first == '!' || first == '#' && !trimmed.startsWith("##") && !trimmed.startsWith("#@#")) return@forEach
+            if (trimmed.startsWith("[Adblock")) return@forEach
+            count++
+        }
+        return count
     }
 }
