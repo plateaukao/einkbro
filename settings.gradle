@@ -1,4 +1,3 @@
-include ':adblock-client'
 include ':adblock-rust-client'
 include ':ad-filter'
 include ':app'
