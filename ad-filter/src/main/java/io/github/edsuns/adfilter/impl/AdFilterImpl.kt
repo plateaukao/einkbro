@@ -51,6 +51,13 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
             viewModel.workInfo.collect { list -> processWorkInfo(list) }
         }
 
+        if (binaryDataStore.wasPurged) {
+            viewModel.filters.value.forEach { (id, filter) ->
+                if (filter.url.isNotBlank()) {
+                    viewModel.download(id)
+                }
+            }
+        }
     }
 
     override fun setEnabled(enable: Boolean) {

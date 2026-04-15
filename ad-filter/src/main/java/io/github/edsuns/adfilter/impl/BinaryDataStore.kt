@@ -1,5 +1,6 @@
 package io.github.edsuns.adfilter.impl
 
+import io.github.edsuns.adfilter.impl.Constants.FILTER_DATA_FORMAT_VERSION
 import timber.log.Timber
 import java.io.File
 
@@ -8,13 +9,42 @@ import java.io.File
  */
 internal class BinaryDataStore(private val dir: File) {
 
+    /**
+     * True if the on-disk filter cache was purged during this init because its
+     * recorded format version did not match [FILTER_DATA_FORMAT_VERSION]. Callers
+     * can inspect this flag to trigger a re-download of previously-installed filters.
+     */
+    val wasPurged: Boolean
+
     init {
         if (!dir.exists() && !dir.mkdirs()) {
             Timber.v("BinaryDataStore: failed to create store dirs")
         }
+        wasPurged = checkAndPurgeIfOutdated()
     }
 
-    fun hasData(name: String): Boolean = File(dir, name).exists()
+    private fun checkAndPurgeIfOutdated(): Boolean {
+        val versionFile = File(dir, VERSION_MARKER)
+        val storedVersion = runCatching { versionFile.readText().trim().toIntOrNull() ?: 0 }
+            .getOrDefault(0)
+
+        if (storedVersion == FILTER_DATA_FORMAT_VERSION) {
+            return false
+        }
+
+        Timber.i("BinaryDataStore: filter cache format changed ($storedVersion -> $FILTER_DATA_FORMAT_VERSION), purging")
+        dir.listFiles()?.forEach {
+            if (it.isFile) {
+                it.delete()
+            }
+        }
+        runCatching { versionFile.writeText(FILTER_DATA_FORMAT_VERSION.toString()) }
+            .onFailure { Timber.w(it, "BinaryDataStore: failed to write version marker") }
+        return true
+    }
+
+    fun hasData(name: String): Boolean =
+        name != VERSION_MARKER && File(dir, name).exists()
 
     fun loadData(name: String): ByteArray =
         File(dir, name).readBytes()
@@ -25,5 +55,9 @@ internal class BinaryDataStore(private val dir: File) {
 
     fun clearData(name: String) {
         File(dir, name).delete()
+    }
+
+    private companion object {
+        const val VERSION_MARKER = ".format_version"
     }
 }

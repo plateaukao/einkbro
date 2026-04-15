@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import io.github.edsuns.adblockclient.AdBlockClient
+import io.github.edsuns.adblockrust.AdBlockRustClient
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.impl.AdFilterImpl
 import io.github.edsuns.adfilter.impl.Constants.KEY_CHECK_LICENSE
@@ -71,12 +71,12 @@ internal class InstallationWorker(context: Context, params: WorkerParameters) : 
     private fun extractTitle(data: String): String? = titleRegexp.find(data)?.groupValues?.get(1)
 
     private fun persistFilterData(id: String, rawBytes: ByteArray): Int {
-        val client = AdBlockClient(id)
         if (rawBytes.isEmpty()) {
             return 0
         }
+        val client = AdBlockRustClient(id)
         client.loadBasicData(rawBytes, true)
         binaryDataStore.saveData(id, client.getProcessedData())
-        return client.getFiltersCount()
+        return 0
     }
 }
