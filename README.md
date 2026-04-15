@@ -97,6 +97,20 @@ Standard browser features with privacy controls and E-Ink-friendly optimizations
 - **VI key bindings** — keyboard shortcuts for power users
 - **Highlight text** — mark and manage text highlights on web pages
 
+## Building from source
+
+The ad-blocking engine is [Brave's adblock-rust](https://github.com/brave/adblock-rust), compiled from source on each build. To build EinkBro locally you need:
+
+- Android SDK + NDK (installed via Android Studio; any NDK under `~/Library/Android/sdk/ndk/` is auto-detected, or set `ANDROID_NDK_HOME` explicitly)
+- Rust toolchain with Android targets:
+  ```sh
+  rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android i686-linux-android
+  cargo install cargo-ndk
+  ```
+- JDK 17
+
+Then `./gradlew assembleDebug` will cross-compile the Rust JNI library before bundling the APK.
+
 ## Development environment supported by JetBrains
 [<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/IntelliJ_IDEA_icon.png"
      alt="IDE supported by JetBrains"

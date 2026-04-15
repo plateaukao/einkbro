@@ -110,6 +110,18 @@ internal class ElementHiding constructor(private val detector: Detector) {
     }
 
     @JavascriptInterface
+    fun getHiddenClassIdStyleSheet(classesCsv: String, idsCsv: String): String {
+        val classes =
+            if (classesCsv.isEmpty()) emptyArray() else classesCsv.split('\u0001').toTypedArray()
+        val ids =
+            if (idsCsv.isEmpty()) emptyArray() else idsCsv.split('\u0001').toTypedArray()
+        val selectors = detector.getHiddenClassIdSelectors(classes, ids)
+        if (selectors.isEmpty()) return ""
+        val joined = selectors.joinToString(",")
+        return (joined + HIDING_CSS).replace(",", HIDING_CSS, 200)
+    }
+
+    @JavascriptInterface
     fun getExtendedCssStyleSheet(documentUrl: String): String {
         val extendedCss = detector.getExtendedCssSelectors(documentUrl)
         if (extendedCss.isNotEmpty()) {

@@ -1,0 +1,103 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdk 34
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdk 23
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        releaseDebuggable {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+
+    namespace = "io.github.edsuns.adblockrust"
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.0"
+}
+
+def rustCrateDir = file("$projectDir/rust")
+def jniLibsDir = file("$projectDir/src/main/jniLibs")
+
+def requestedAbis = (project.findProperty("buildAbis") as String)?.split(",")?.toList()
+        ?: ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"]
+
+def cargoProfile = "release"
+
+task buildRustLibrary(type: Exec) {
+    group = "build"
+    description = "Cross-compile the adblock-rust JNI library for the requested Android ABIs via cargo-ndk."
+    workingDir rustCrateDir
+    inputs.files(fileTree(rustCrateDir) {
+        include "Cargo.toml", "src/**"
+        exclude "target/**"
+    })
+    outputs.dir jniLibsDir
+
+    doFirst {
+        jniLibsDir.mkdirs()
+        def ndkHome = System.env["ANDROID_NDK_HOME"]
+        if (ndkHome == null) {
+            def ndkRoot = new File(System.getProperty("user.home"), "Library/Android/sdk/ndk")
+            if (ndkRoot.isDirectory()) {
+                def versions = ndkRoot.listFiles({ f -> f.isDirectory() } as FileFilter)
+                if (versions != null && versions.length > 0) {
+                    def sorted = versions.toList().sort { it.name }
+                    ndkHome = sorted.last().absolutePath
+                }
+            }
+        }
+        if (ndkHome == null) {
+            throw new GradleException("ANDROID_NDK_HOME is not set and no NDK found at ~/Library/Android/sdk/ndk/. Install an NDK or set ANDROID_NDK_HOME.")
+        }
+        environment "ANDROID_NDK_HOME", ndkHome
+    }
+
+    def args = ["cargo", "ndk"]
+    requestedAbis.each { abi -> args << "-t" << abi }
+    args << "-o" << jniLibsDir.absolutePath
+    args << "build"
+    if (cargoProfile == "release") {
+        args << "--release"
+    }
+    commandLine args
+}
+
+tasks.withType(com.android.build.gradle.tasks.MergeSourceSetFolders).configureEach {
+    dependsOn buildRustLibrary
+}
+tasks.matching { it.name.startsWith("merge") && it.name.endsWith("JniLibFolders") }.configureEach {
+    dependsOn buildRustLibrary
+}
