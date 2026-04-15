@@ -110,6 +110,10 @@ class EBWebViewClient(
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
         }
 
+        // Safety net for sites whose hydration chain is broken by our filters
+        // (see fix_dsd_pending.js).
+        ebWebView.evaluateJsFile("fix_dsd_pending.js", withPrefix = false)
+
         Log.d("ebWebViewClient", "onPageFinished: ${ebWebView.url}\n$url")
         webContentPostProcessor.postProcess(ebWebView, url)
 
