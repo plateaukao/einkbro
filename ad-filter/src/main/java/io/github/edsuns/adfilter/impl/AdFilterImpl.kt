@@ -18,12 +18,11 @@ import io.github.edsuns.adfilter.script.ElementHiding
 import io.github.edsuns.adfilter.script.ScriptInjection
 import io.github.edsuns.adfilter.script.Scriptlet
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Collections
+import java.util.WeakHashMap
 
 /**
  * Created by Edsuns@qq.com on 2021/7/29.
@@ -42,6 +41,14 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
     override val customFilter = filterDataLoader.getCustomFilter()
 
     override val viewModel = FilterViewModelImpl(appContext, filterDataLoader)
+
+    // Cached current main-frame URL per WebView. Written on the main-frame
+    // shouldInterceptRequest and in performScript (onPageStarted); read on
+    // WebView IO threads when filtering subresources. Avoids hopping to the
+    // main thread for every subresource, which used to serialize requests
+    // behind UI work.
+    private val mainFrameUrls: MutableMap<WebView, String> =
+        Collections.synchronizedMap(WeakHashMap())
 
     override val hasInstallation: Boolean
         get() = viewModel.sharedPreferences.hasInstallation
@@ -193,14 +200,15 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
     override fun shouldIntercept(
         webView: WebView,
         request: WebResourceRequest,
-    ): FilterResult = runBlocking {
+    ): FilterResult {
         val url = request.url.toString()
         if (request.isForMainFrame) {
-            return@runBlocking FilterResult(null, url, null)
+            mainFrameUrls[webView] = url
+            return FilterResult(null, url, null)
         }
 
-        val documentUrl = withContext(Dispatchers.Main) { webView.url }
-            ?: return@runBlocking FilterResult(null, url, null)
+        val documentUrl = mainFrameUrls[webView]
+            ?: return FilterResult(null, url, null)
 
         val resourceType = ResourceType.from(request)
 
@@ -209,7 +217,7 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
             elementHiding.elemhideBlockedResource(webView, url)
         }
 
-        return@runBlocking result
+        return result
     }
 
     override fun shouldIntercept(
@@ -236,6 +244,9 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
     }
 
     override fun performScript(webView: WebView?, url: String?) {
+        if (webView != null && !url.isNullOrEmpty()) {
+            mainFrameUrls[webView] = url
+        }
         elementHiding.perform(webView, url)
         scriptlet.perform(webView, url)
     }
