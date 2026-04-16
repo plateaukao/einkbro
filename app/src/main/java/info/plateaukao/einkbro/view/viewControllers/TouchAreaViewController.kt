@@ -267,5 +267,9 @@ class TouchAreaViewController(
         }
     }
 
+    fun dispose() {
+        config.unregisterOnSharedPreferenceChangeListener(touchAreaChangeListener)
+    }
+
     private fun allowMoveTouchArea(): Boolean = config.touch.touchAreaType != TouchAreaType.Long
 }

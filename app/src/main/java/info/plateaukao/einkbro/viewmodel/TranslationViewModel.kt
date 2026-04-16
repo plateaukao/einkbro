@@ -10,6 +10,7 @@ import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.preference.GptActionType
+import info.plateaukao.einkbro.data.remote.ApiResult
 import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
@@ -260,37 +261,52 @@ class TranslationViewModel(
     private fun callGoogleTranslate() {
         val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
-            _responseMessage.value =
-                AnnotatedString(
-                    translateRepository.gTranslateWithApi(
-                        message,
-                        targetLanguage = config.translation.translationLanguage.value,
-                    )
-                        ?: "Something went wrong."
-                )
+            val result = translateRepository.gTranslateWithApi(
+                message,
+                targetLanguage = config.translation.translationLanguage.value,
+            )
+            if (result.isNullOrEmpty()) {
+                emitTranslationError("Google")
+            } else {
+                _responseMessage.value = AnnotatedString(result)
+            }
         }
     }
 
     private fun callDeepLTranslate() {
         val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
-            _responseMessage.value =
-                AnnotatedString(
-                    translateRepository.deepLTranslate(message, targetLanguage = config.translation.translationLanguage)
-                        ?: "Something went wrong."
-                )
+            val result = translateRepository.deepLTranslate(
+                message,
+                targetLanguage = config.translation.translationLanguage,
+            )
+            if (result.isNullOrEmpty()) {
+                emitTranslationError("DeepL")
+            } else {
+                _responseMessage.value = AnnotatedString(result)
+            }
         }
     }
 
     private fun callPapagoTranslate() {
         val message = _inputMessage.value
         viewModelScope.launch(Dispatchers.IO) {
-            _responseMessage.value =
-                AnnotatedString(
-                    translateRepository.pTranslate(message, targetLanguage = config.translation.translationLanguage.value)
-                        ?: "Something went wrong."
-                )
+            val result = translateRepository.pTranslate(
+                message,
+                targetLanguage = config.translation.translationLanguage.value,
+            )
+            if (result.isNullOrEmpty()) {
+                emitTranslationError("Papago")
+            } else {
+                _responseMessage.value = AnnotatedString(result)
+            }
         }
+    }
+
+    private fun emitTranslationError(provider: String) {
+        val text = "$provider translation failed — check connection or switch provider"
+        _responseMessage.value = AnnotatedString(text)
+        viewModelScope.launch { _errorFlow.emit(text) }
     }
 
     suspend fun translateWebView(
@@ -426,9 +442,13 @@ class TranslationViewModel(
     }
 
     private suspend fun queryGemini(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
-        val result = openAiRepository.queryGemini(messages, gptActionInfo)
-        toBeSavedResponseString = result
-        _responseMessage.value = AnnotatedString(result)
+        when (val result = openAiRepository.queryGemini(messages, gptActionInfo)) {
+            is ApiResult.Success -> {
+                toBeSavedResponseString = result.value
+                _responseMessage.value = AnnotatedString(result.value)
+            }
+            is ApiResult.Failure -> emitFailure(result)
+        }
     }
 
     private fun queryWithStream(messages: MutableList<ChatMessage>, gptActionInfo: ChatGPTActionInfo) {
@@ -446,11 +466,27 @@ class TranslationViewModel(
                 _responseMessage.value = HelperUnit.parseMarkdown(toBeSavedResponseString)
             },
             doneAction = { },
-            failureAction = {
-                _responseMessage.value = AnnotatedString("## Something went wrong.")
-            }
+            failureAction = { failure -> emitFailure(failure) }
         )
     }
+
+    private fun emitFailure(failure: ApiResult.Failure) {
+        val text = when (failure.kind) {
+            ApiResult.Kind.MissingKey -> failure.message
+            ApiResult.Kind.RateLimited -> failure.retryAfterSeconds
+                ?.let { "Rate limited — retry after ${it}s" }
+                ?: "Rate limited — try again in a moment"
+            ApiResult.Kind.Network -> "Network error — check connection"
+            ApiResult.Kind.ServerError, ApiResult.Kind.Parse, ApiResult.Kind.Unknown ->
+                "AI request failed: ${failure.message}"
+        }
+        toBeSavedResponseString = text
+        _responseMessage.value = AnnotatedString(text)
+        viewModelScope.launch { _errorFlow.emit(text) }
+    }
+
+    private val _errorFlow = MutableSharedFlow<String>(extraBufferCapacity = 4)
+    val errorFlow: SharedFlow<String> = _errorFlow.asSharedFlow()
 
     private fun getSelectedTextAndPromptPrefix(): Pair<String, String> {
         val promptPrefix = gptActionInfo.userMessage

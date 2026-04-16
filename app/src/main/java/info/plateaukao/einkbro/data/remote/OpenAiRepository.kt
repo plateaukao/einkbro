@@ -75,7 +75,7 @@ class OpenAiRepository : KoinComponent {
         gptActionInfo: ChatGPTActionInfo,
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
-        failureAction: () -> Unit,
+        failureAction: (ApiResult.Failure) -> Unit,
     ) {
         if (gptActionInfo.actionType == GptActionType.Gemini) {
             geminiStream(messages, appendResponseAction, gptActionInfo, doneAction, failureAction)
@@ -89,8 +89,12 @@ class OpenAiRepository : KoinComponent {
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
         gptActionInfo: ChatGPTActionInfo,
-        failureAction: () -> Unit,
+        failureAction: (ApiResult.Failure) -> Unit,
     ) {
+        if (apiKey.isEmpty() && gptActionInfo.actionType == GptActionType.OpenAi) {
+            failureAction(ApiResult.Failure(ApiResult.Kind.MissingKey, "OpenAI API key not set"))
+            return
+        }
         val request = createCompletionRequest(messages, gptActionInfo, true)
 
         eventSource?.cancel()
@@ -111,7 +115,7 @@ class OpenAiRepository : KoinComponent {
                     appendResponseAction(chatCompletion.choices.first().delta.content.orEmpty())
                 } catch (e: Exception) {
                     Log.e("OpenAiRepository", "Error parsing chat completion: $data", e)
-                    failureAction()
+                    failureAction(ApiResult.Failure(ApiResult.Kind.Parse, "Could not parse AI response", cause = e))
                     eventSource.cancel()
                     this@OpenAiRepository.eventSource = null
                 }
@@ -119,11 +123,35 @@ class OpenAiRepository : KoinComponent {
 
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
                 super.onFailure(eventSource, t, response)
-                if (response?.code == 200) {
-                    doneAction()
-                    this@OpenAiRepository.eventSource = null
-                } else {
-                    failureAction()
+                val code = response?.code
+                when {
+                    code == 200 -> {
+                        doneAction()
+                        this@OpenAiRepository.eventSource = null
+                    }
+                    code == 429 -> {
+                        val retryAfter = response.header("Retry-After")?.toLongOrNull()
+                        failureAction(
+                            ApiResult.Failure(
+                                ApiResult.Kind.RateLimited,
+                                "AI provider rate limit reached",
+                                retryAfterSeconds = retryAfter,
+                                cause = t,
+                            )
+                        )
+                    }
+                    code == 401 || code == 403 -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.MissingKey, "AI provider rejected the API key", cause = t)
+                    )
+                    code != null && code in 500..599 -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.ServerError, "AI provider error ($code)", cause = t)
+                    )
+                    t != null -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.Network, t.message ?: "Network error", cause = t)
+                    )
+                    else -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.Unknown, "AI request failed")
+                    )
                 }
             }
         })
@@ -134,17 +162,23 @@ class OpenAiRepository : KoinComponent {
         appendResponseAction: (String) -> Unit,
         gptActionInfo: ChatGPTActionInfo,
         doneAction: () -> Unit = {},
-        failureAction: () -> Unit,
+        failureAction: (ApiResult.Failure) -> Unit,
     ) {
         if (config.ai.geminiApiKey.isEmpty()) {
-            appendResponseAction("no gemini api key")
+            failureAction(ApiResult.Failure(ApiResult.Kind.MissingKey, "Gemini API key not set"))
             return
         }
         val request = createGeminiRequest(messages, gptActionInfo, true)
         try {
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) {
-                    failureAction()
+                    val kind = when (response.code) {
+                        401, 403 -> ApiResult.Kind.MissingKey
+                        429 -> ApiResult.Kind.RateLimited
+                        in 500..599 -> ApiResult.Kind.ServerError
+                        else -> ApiResult.Kind.Unknown
+                    }
+                    failureAction(ApiResult.Failure(kind, "Gemini request failed (${response.code})"))
                     return
                 }
                 val inputStream = response.body?.byteStream() ?: return
@@ -154,7 +188,9 @@ class OpenAiRepository : KoinComponent {
                     while (!source.exhausted()) {
                         val chunk = source.readUtf8Line()
                         if (chunk == null) {
-                            failureAction()
+                            failureAction(
+                                ApiResult.Failure(ApiResult.Kind.Network, "Gemini stream ended unexpectedly")
+                            )
                             return
                         }
                         Log.d("OpenAiRepository", "chunk: $chunk")
@@ -176,7 +212,9 @@ class OpenAiRepository : KoinComponent {
             }
         } catch (e: Exception) {
             Log.e("OpenAiRepository", "Error fetching Gemini stream", e)
-            failureAction()
+            failureAction(
+                ApiResult.Failure(ApiResult.Kind.Network, e.message ?: "Network error", cause = e)
+            )
             return
         }
     }
@@ -263,27 +301,50 @@ class OpenAiRepository : KoinComponent {
         }
     }
 
-    suspend fun queryGemini(messages: List<ChatMessage>, gptActionInfo: ChatGPTActionInfo): String {
+    suspend fun queryGemini(
+        messages: List<ChatMessage>,
+        gptActionInfo: ChatGPTActionInfo,
+    ): ApiResult<String> {
         return withContext(Dispatchers.IO) {
+            if (config.ai.geminiApiKey.isEmpty()) {
+                return@withContext ApiResult.Failure(ApiResult.Kind.MissingKey, "Gemini API key not set")
+            }
             try {
-                if (config.ai.geminiApiKey.isEmpty()) {
-                    return@withContext "no gemini api key"
-                }
-
                 val request = createGeminiRequest(messages, gptActionInfo, false)
                 val response: Response = client.newCall(request).execute()
                 if (!response.isSuccessful) {
-                    return@withContext "Error querying Gemini API: ${response.code}"
+                    val kind = when (response.code) {
+                        401, 403 -> ApiResult.Kind.MissingKey
+                        429 -> ApiResult.Kind.RateLimited
+                        in 500..599 -> ApiResult.Kind.ServerError
+                        else -> ApiResult.Kind.Unknown
+                    }
+                    val retryAfter = response.header("Retry-After")?.toLongOrNull()
+                    return@withContext ApiResult.Failure(
+                        kind,
+                        "Gemini request failed (${response.code})",
+                        retryAfterSeconds = retryAfter,
+                    )
                 }
 
-                val responseBody =
-                    response.body?.string() ?: return@withContext "Empty response from Gemini API"
+                val responseBody = response.body?.string()
+                    ?: return@withContext ApiResult.Failure(
+                        ApiResult.Kind.Parse, "Empty response from Gemini"
+                    )
                 val responseData = json.decodeFromString(ResponseData.serializer(), responseBody)
-                responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
-                    ?: "No content available"
+                val text = responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
+                if (text.isNullOrEmpty()) {
+                    ApiResult.Failure(ApiResult.Kind.Parse, "Gemini returned no content")
+                } else {
+                    ApiResult.Success(text)
+                }
             } catch (exception: Exception) {
                 Log.e("OpenAiRepository", "Error querying Gemini API", exception)
-                "something wrong"
+                ApiResult.Failure(
+                    ApiResult.Kind.Network,
+                    exception.message ?: "Network error",
+                    cause = exception,
+                )
             }
         }
     }
@@ -296,14 +357,17 @@ class OpenAiRepository : KoinComponent {
         val apiPrefix = "https://generativelanguage.googleapis.com/v1beta/models/"
         val model = gptActionInfo.model
         val apiUrl = if (isStream)
-            "$apiPrefix$model:streamGenerateContent?key=${config.ai.geminiApiKey}"
+            "$apiPrefix$model:streamGenerateContent"
         else
-            "$apiPrefix$model:generateContent?key=${config.ai.geminiApiKey}"
+            "$apiPrefix$model:generateContent"
 
         val json = Json { ignoreUnknownKeys = true }
 
+        // Pass the key in the x-goog-api-key header rather than the URL query string so it
+        // doesn't leak to proxy logs, referrer headers, or crash-report URL captures.
         val headers = mapOf(
-            "Content-Type" to "application/json"
+            "Content-Type" to "application/json",
+            "x-goog-api-key" to config.ai.geminiApiKey,
         )
 
         val data = RequestData(

@@ -82,6 +82,7 @@ import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.disablePendingTransitions
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
@@ -1001,7 +1002,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         statusbarViewController.refresh()
         if (!binding.appBar.isVisible) statusbarViewController.show() else statusbarViewController.hide()
         updateTitle()
-        @Suppress("DEPRECATION") overridePendingTransition(0, 0)
+        disablePendingTransitions()
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (config.display.customFontChanged && (config.display.fontType == FontType.CUSTOM || config.display.readerFontType == FontType.CUSTOM)) {
             if (!ebWebView.shouldUseReaderFont()) ebWebView.reload() else ebWebView.updateCssStyle()
@@ -1022,6 +1023,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (config.clearWhenQuit && shouldRunClearService) startService(Intent(this, ClearService::class.java))
         browserContainer.clear()
         unregisterReceiver(downloadReceiver)
+        config.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
+        if (::touchController.isInitialized) touchController.dispose()
+        keyHandler.dispose()
         super.onDestroy()
     }
 

@@ -109,7 +109,7 @@ class BrowserToolsImpl(
 
         return withContext(Dispatchers.IO) {
             if (action.actionType == GptActionType.Gemini) {
-                openAiRepository.queryGemini(messages, action).takeIf { it.isNotBlank() }
+                openAiRepository.queryGemini(messages, action).valueOrNull()?.takeIf { it.isNotBlank() }
             } else {
                 val completion = openAiRepository.chatCompletion(messages, action)
                 completion?.choices

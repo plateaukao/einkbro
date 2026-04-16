@@ -3,8 +3,11 @@ package info.plateaukao.einkbro.activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.compose.setContent
@@ -86,6 +89,7 @@ import info.plateaukao.einkbro.setting.VersionSettingItem
 import info.plateaukao.einkbro.unit.BackupCategory
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.disablePendingTransitions
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -103,6 +107,47 @@ class SettingActivity : FragmentActivity() {
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
     private var pendingBackupCategories: Set<BackupCategory> = emptySet()
+
+    private val exportBookmarksLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uri: Uri = result.data?.data ?: return@registerForActivityResult
+            backupUnit.exportBookmarks(uri)
+        }
+
+    private val importBookmarksLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uri: Uri = result.data?.data ?: return@registerForActivityResult
+            backupUnit.importBookmarks(uri)
+        }
+
+    private val exportBackupLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uri: Uri = result.data?.data ?: return@registerForActivityResult
+            val categories = pendingBackupCategories
+            pendingBackupCategories = emptySet()
+            if (categories.isNotEmpty()) {
+                lifecycleScope.launch { backupUnit.backupData(this@SettingActivity, uri, categories) }
+            }
+        }
+
+    private val importBackupLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uri: Uri = result.data?.data ?: return@registerForActivityResult
+            val available = backupUnit.getAvailableCategories(this, uri)
+            if (available == null) {
+                if (backupUnit.restoreLegacyBackupData(this, uri)) {
+                    dialogManager.showRestartConfirmDialog()
+                }
+            } else {
+                dialogManager.showRestoreCategoryDialog(available) { selected ->
+                    lifecycleScope.launch {
+                        if (backupUnit.restoreBackupData(this@SettingActivity, uri, selected)) {
+                            dialogManager.showRestartConfirmDialog()
+                        }
+                    }
+                }
+            }
+        }
 
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -303,44 +348,7 @@ class SettingActivity : FragmentActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        @Suppress("DEPRECATION")
-        overridePendingTransition(0, 0)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val uri = data?.data ?: return
-        when (requestCode) {
-            DialogManager.EXPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.exportBookmarks(uri)
-            DialogManager.IMPORT_BOOKMARKS_REQUEST_CODE -> backupUnit.importBookmarks(uri)
-            DialogManager.EXPORT_BACKUP_REQUEST_CODE -> {
-                val categories = pendingBackupCategories
-                pendingBackupCategories = emptySet()
-                if (categories.isNotEmpty()) {
-                    lifecycleScope.launch { backupUnit.backupData(this@SettingActivity, uri, categories) }
-                }
-            }
-
-            DialogManager.IMPORT_BACKUP_REQUEST_CODE -> {
-                val available = backupUnit.getAvailableCategories(this, uri)
-                if (available == null) {
-                    // Legacy format: restore everything as before
-                    if (backupUnit.restoreLegacyBackupData(this, uri)) {
-                        dialogManager.showRestartConfirmDialog()
-                    }
-                } else {
-                    dialogManager.showRestoreCategoryDialog(available) { selected ->
-                        lifecycleScope.launch {
-                            if (backupUnit.restoreBackupData(this@SettingActivity, uri, selected)) {
-                                dialogManager.showRestartConfirmDialog()
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        disablePendingTransitions()
     }
 
     override fun attachBaseContext(newBase: Context) {
@@ -406,8 +414,7 @@ class SettingActivity : FragmentActivity() {
             }
         )
         finish()
-        @Suppress("DEPRECATION")
-        overridePendingTransition(0, 0)
+        disablePendingTransitions()
     }
 
     private val allSearchableSettings: List<Pair<Int, SettingItemInterface>> by lazy {
@@ -947,14 +954,14 @@ class SettingActivity : FragmentActivity() {
         ) {
             dialogManager.showBackupCategoryDialog { categories ->
                 pendingBackupCategories = categories
-                dialogManager.showBackupFilePicker()
+                dialogManager.showBackupFilePicker(exportBackupLauncher)
             }
         },
         ActionSettingItem(
             R.string.setting_title_import_appData,
             0,
             R.string.setting_summary_import_appData
-        ) { dialogManager.showImportBackupFilePicker() },
+        ) { dialogManager.showImportBackupFilePicker(importBackupLauncher) },
         ActionSettingItem(
             R.string.setting_title_share_appData,
             0,
@@ -973,11 +980,11 @@ class SettingActivity : FragmentActivity() {
         ActionSettingItem(
             R.string.setting_title_export_bookmarks,
             0,
-        ) { dialogManager.showBookmarkFilePicker() },
+        ) { dialogManager.showBookmarkFilePicker(exportBookmarksLauncher) },
         ActionSettingItem(
             R.string.setting_title_import_bookmarks,
             0,
-        ) { dialogManager.showImportBookmarkFilePicker() },
+        ) { dialogManager.showImportBookmarkFilePicker(importBookmarksLauncher) },
     )
 
     private val clearDataSettingItems = listOf(

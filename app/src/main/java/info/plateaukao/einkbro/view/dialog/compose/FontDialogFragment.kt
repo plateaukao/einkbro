@@ -1,5 +1,10 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -15,6 +20,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,16 +43,36 @@ import kotlinx.coroutines.launch
 class FontDialogFragment(
     private val onFontTypeChanged: () -> Unit
 ) : ComposeDialogFragment() {
+    private val customFontNameState: MutableState<String> =
+        mutableStateOf(config.display.customFontInfo?.name.orEmpty())
+
+    private val fontChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == DisplayConfig.K_CUSTOM_FONT) {
+                customFontNameState.value = config.display.customFontInfo?.name.orEmpty()
+            }
+        }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        config.registerOnSharedPreferenceChangeListener(fontChangeListener)
+        return view
+    }
+
+    override fun onDestroyView() {
+        config.unregisterOnSharedPreferenceChangeListener(fontChangeListener)
+        super.onDestroyView()
+    }
+
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
-                val customFontName = remember { mutableStateOf(config.display.customFontInfo?.name.orEmpty()) }
+                val customFontName = remember { customFontNameState }
                 val fontSizeState = remember { mutableIntStateOf(config.display.fontSize) }
-                config.registerOnSharedPreferenceChangeListener { _, key ->
-                    if (key == DisplayConfig.K_CUSTOM_FONT) {
-                        customFontName.value = config.display.customFontInfo?.name.orEmpty()
-                    }
-                }
                 MainFontDialog(
                     selectedFontSizeValue = fontSizeState.value,
                     customFontSizeValue = config.display.customFontSize,
@@ -65,14 +91,7 @@ class FontDialogFragment(
                             dismiss()
                         }
                     },
-                    onFontTypeChanged = {
-                        onFontTypeChanged()
-                        config.registerOnSharedPreferenceChangeListener { _, key ->
-                            if (key == DisplayConfig.K_CUSTOM_FONT) {
-                                customFontName.value = config.display.customFontInfo?.name.orEmpty()
-                            }
-                        }
-                    },
+                    onFontTypeChanged = { onFontTypeChanged() },
                     onCustomFontSizeClick = {
                         lifecycleScope.launch {
                             TextInputDialog(
