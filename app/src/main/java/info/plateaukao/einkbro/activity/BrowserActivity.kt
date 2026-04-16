@@ -14,7 +14,6 @@ import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.os.LocaleList
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.Rect
@@ -118,6 +117,7 @@ import info.plateaukao.einkbro.task.TaskRunner
 import info.plateaukao.einkbro.view.dialog.compose.TaskMenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.CustomTaskInputDialogFragment
 import info.plateaukao.einkbro.activity.delegates.ContextMenuDelegate
+import info.plateaukao.einkbro.activity.delegates.DisplayConfigDelegate
 import info.plateaukao.einkbro.activity.delegates.FileHandlingDelegate
 import info.plateaukao.einkbro.activity.delegates.FullscreenDelegate
 import info.plateaukao.einkbro.activity.delegates.InputBarDelegate
@@ -228,11 +228,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this, { dispatch(it) }) { ebWebView } }
     private val externalSearchWebView: WebView by lazy { BrowserUnit.createNaverDictWebView(this) }
 
-    private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
-    private var orientation: Int = 0
-    private var currentLocale: String = ""
+    private val displayConfigDelegate: DisplayConfigDelegate by lazy {
+        DisplayConfigDelegate(
+            activity = this,
+            config = config,
+            onOrientationChanged = { newOrientation ->
+                composeToolbarViewController.updateIcons()
+                if (config.ui.fabPosition == FabPosition.Custom) {
+                    fabImageViewController.updateImagePosition(newOrientation)
+                }
+            },
+            onLocaleApplied = { composeToolbarViewController.updateIcons() },
+        )
+    }
+
     private var isRunning = false
-    private var fabImagePositionChanged = false
 
     // ── Shared State ─────────────────────────────────────────────────────
     val browserState = BrowserState()
@@ -924,27 +934,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         config.restartChanged = false
-        currentLocale = config.uiLocaleLanguage
+        displayConfigDelegate.onCreate()
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
 
-        orientation = resources.configuration.orientation
-
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
-        mainContentLayout = findViewById(R.id.main_content)
-        translationPanelView = TranslationPanelView(this).apply {
-            layoutParams = FrameLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT)
-        }
-        binding.twoPanelLayout.addView(translationPanelView)
-
-        swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
-            !ebWebView.wasAtTopOnTouchStart || ebWebView.scrollY > 0 || !ebWebView.isInnerScrollAtTop
-        }
-        swipeRefreshLayout.setOnRefreshListener {
-            if (currentAlbumController != null) ebWebView.reload()
-            else swipeRefreshLayout.isRefreshing = false
-        }
-        ViewUnit.updateAppbarPosition(binding)
+        initContentViews()
         initLaunchers()
         initToolbar()
         initSearchPanel()
@@ -955,12 +949,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         actionModeDelegate.setTwoPaneChecker { isTwoPaneControllerInitialized() && twoPaneController.isSecondPaneDisplayed() }
         initInstapaperViewModel()
 
-        downloadReceiver = createDownloadReceiver(this)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_NOT_EXPORTED)
-        } else {
-            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
-        }
+        initDownloadReceiver()
 
         dispatchIntent(intent)
         intentDispatchDelegate.shouldLoadTabState = false
@@ -990,6 +979,33 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    private fun initContentViews() {
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
+        mainContentLayout = findViewById(R.id.main_content)
+        translationPanelView = TranslationPanelView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT)
+        }
+        binding.twoPanelLayout.addView(translationPanelView)
+
+        swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
+            !ebWebView.wasAtTopOnTouchStart || ebWebView.scrollY > 0 || !ebWebView.isInnerScrollAtTop
+        }
+        swipeRefreshLayout.setOnRefreshListener {
+            if (currentAlbumController != null) ebWebView.reload()
+            else swipeRefreshLayout.isRefreshing = false
+        }
+        ViewUnit.updateAppbarPosition(binding)
+    }
+
+    private fun initDownloadReceiver() {
+        downloadReceiver = createDownloadReceiver(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
+        }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         dispatchIntent(intent)
@@ -997,13 +1013,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onResume() {
         super.onResume()
-        if (currentLocale != config.uiLocaleLanguage) { currentLocale = config.uiLocaleLanguage; applyLocaleInPlace() }
+        displayConfigDelegate.onResume()
         if (config.restartChanged) { config.restartChanged = false; dialogManager.showRestartConfirmDialog() }
         statusbarViewController.refresh()
         if (!binding.appBar.isVisible) statusbarViewController.show() else statusbarViewController.hide()
         updateTitle()
         disablePendingTransitions()
-        uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (config.display.customFontChanged && (config.display.fontType == FontType.CUSTOM || config.display.readerFontType == FontType.CUSTOM)) {
             if (!ebWebView.shouldUseReaderFont()) ebWebView.reload() else ebWebView.updateCssStyle()
             config.display.customFontChanged = false
@@ -1046,15 +1061,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags != uiMode && config.display.darkMode == DarkMode.SYSTEM) recreate()
-        }
-        if (newConfig.orientation != orientation) {
-            composeToolbarViewController.updateIcons()
-            orientation = newConfig.orientation
-            if (config.ui.fabPosition == FabPosition.Custom) fabImageViewController.updateImagePosition(orientation)
-        }
+        displayConfigDelegate.onConfigurationChanged(newConfig)
     }
 
     override fun onUserLeaveHint() {
@@ -1082,20 +1089,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     // ── Private helpers ───────────────────────────────────────────────────
-
-    @Suppress("DEPRECATION")
-    private fun applyLocaleInPlace() {
-        val languageCode = config.uiLocaleLanguage
-        val locale = if (languageCode.isNotEmpty()) Locale.forLanguageTag(languageCode) else Locale.getDefault()
-        Locale.setDefault(locale)
-        val newConfig = Configuration(resources.configuration)
-        newConfig.setLocale(locale)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            newConfig.setLocales(LocaleList(locale))
-        }
-        resources.updateConfiguration(newConfig, resources.displayMetrics)
-        composeToolbarViewController.updateIcons()
-    }
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as EBWebView
@@ -1146,8 +1139,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun updateRefresh(running: Boolean) {
-        if (!isRunning && running) isRunning = true
-        else if (isRunning && !running) isRunning = false
+        isRunning = running
         composeToolbarViewController.updateRefresh(isRunning)
     }
 
@@ -1278,7 +1270,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initFAB() {
         fabImageViewController = FabImageViewController(
-            orientation, findViewById(R.id.fab_imageButtonNav),
+            displayConfigDelegate.orientation, findViewById(R.id.fab_imageButtonNav),
             { fullscreenDelegate.showToolbar() },
             longClickAction = {
                 if (config.touch.enableNavButtonGesture) gestureHandler.handle(config.touch.navButtonLongClickGesture)
