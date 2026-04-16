@@ -37,6 +37,11 @@ class AiChatDelegate(
         EBWebView(activity, activity as info.plateaukao.einkbro.browser.WebViewCallback).apply {
             setOnPageFinishedAction {
                 activity.lifecycleScope.launch {
+                    if (!translationViewModel.hasOpenAiApiKey()) {
+                        loadUrl("about:blank")
+                        EBToast.show(activity, R.string.gpt_api_key_not_set)
+                        return@launch
+                    }
                     val content = linkContentWebView.getRawText()
                     loadUrl("about:blank")
                     if (content.isNotEmpty()) {
@@ -53,26 +58,30 @@ class AiChatDelegate(
     }
 
     fun summarizeLinkContent(url: String) {
-        if (translationViewModel.hasOpenAiApiKey()) {
-            translationViewModel.url = url
-            linkContentWebView.loadUrl(url)
+        if (!translationViewModel.hasOpenAiApiKey()) {
+            EBToast.show(activity, R.string.gpt_api_key_not_set)
+            return
         }
+        translationViewModel.url = url
+        linkContentWebView.loadUrl(url)
     }
 
     fun summarizeContent() {
-        if (translationViewModel.hasOpenAiApiKey()) {
-            activity.lifecycleScope.launch {
-                val ebWebView = state.ebWebView
-                translationViewModel.url = ebWebView.url.orEmpty()
-                val isSuccess = translationViewModel.setupTextSummary(ebWebView.getRawText())
+        if (!translationViewModel.hasOpenAiApiKey()) {
+            EBToast.show(activity, R.string.gpt_api_key_not_set)
+            return
+        }
+        activity.lifecycleScope.launch {
+            val ebWebView = state.ebWebView
+            translationViewModel.url = ebWebView.url.orEmpty()
+            val isSuccess = translationViewModel.setupTextSummary(ebWebView.getRawText())
 
-                if (!isSuccess) {
-                    EBToast.show(activity, R.string.gpt_api_key_not_set)
-                    return@launch
-                }
-
-                showTranslationDialog(false)
+            if (!isSuccess) {
+                EBToast.show(activity, R.string.gpt_api_key_not_set)
+                return@launch
             }
+
+            showTranslationDialog(false)
         }
     }
 

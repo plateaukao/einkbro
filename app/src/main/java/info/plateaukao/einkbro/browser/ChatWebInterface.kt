@@ -6,6 +6,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.activity.BrowserState
+import info.plateaukao.einkbro.data.remote.ApiResult
 import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.data.remote.ToolCall
@@ -168,9 +169,17 @@ class ChatWebInterface(
                         chatHistory.add(currentUserMessage)
                         chatHistory.add(assistantResponseAggregator.toString().toAssistantMessage())
                     },
-                    failureAction = {
-                        Timber.e("Error in OpenAI stream")
-                        jsHelper.sendErrorUpdate("Sorry, there was an error processing your request.")
+                    failureAction = { failure ->
+                        Timber.e("AI stream failure: ${failure.kind} ${failure.message}")
+                        val userMessage = when (failure.kind) {
+                            ApiResult.Kind.MissingKey -> failure.message
+                            ApiResult.Kind.RateLimited -> failure.retryAfterSeconds
+                                ?.let { "Rate limited — retry after ${it}s" }
+                                ?: "Rate limited — try again shortly"
+                            ApiResult.Kind.Network -> "Network error — check connection"
+                            else -> "AI request failed: ${failure.message}"
+                        }
+                        jsHelper.sendErrorUpdate(userMessage)
                     }
                 )
             }

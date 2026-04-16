@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.URLUtil
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -344,34 +345,34 @@ class DialogManager(
             defaultValue
         ).show()
 
-    fun showBookmarkFilePicker() {
+    fun showBookmarkFilePicker(launcher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_TEXT
         intent.putExtra(Intent.EXTRA_TITLE, "bookmarks.json")
-        activity.startActivityForResult(intent, EXPORT_BOOKMARKS_REQUEST_CODE)
+        launcher.launch(intent)
     }
 
-    fun showImportBookmarkFilePicker() {
+    fun showImportBookmarkFilePicker(launcher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_ANY
-        activity.startActivityForResult(intent, IMPORT_BOOKMARKS_REQUEST_CODE)
+        launcher.launch(intent)
     }
 
-    fun showBackupFilePicker() {
+    fun showBackupFilePicker(launcher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_ANY
         intent.putExtra(Intent.EXTRA_TITLE, "backup.zip")
-        activity.startActivityForResult(intent, EXPORT_BACKUP_REQUEST_CODE)
+        launcher.launch(intent)
     }
 
-    fun showImportBackupFilePicker() {
+    fun showImportBackupFilePicker(launcher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_ANY
-        activity.startActivityForResult(intent, IMPORT_BACKUP_REQUEST_CODE)
+        launcher.launch(intent)
     }
 
     fun showBackupCategoryDialog(
@@ -538,12 +539,6 @@ class DialogManager(
     }
 
 
-    companion object {
-        const val EXPORT_BOOKMARKS_REQUEST_CODE = 2345
-        const val IMPORT_BOOKMARKS_REQUEST_CODE = 2346
-        const val EXPORT_BACKUP_REQUEST_CODE = 2347
-        const val IMPORT_BACKUP_REQUEST_CODE = 2348
-    }
 }
 
 fun Dialog.dismissWithAction(action: () -> Unit) {

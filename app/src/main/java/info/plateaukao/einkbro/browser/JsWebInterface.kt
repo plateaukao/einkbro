@@ -159,7 +159,7 @@ class JsWebInterface(
             model = configManager.ai.geminiModel,
         )
         val messages = listOf((chatGptActionInfo.userMessage + originalText).toUserMessage())
-        return openAiRepository.queryGemini(messages, chatGptActionInfo)
+        return openAiRepository.queryGemini(messages, chatGptActionInfo).valueOrNull().orEmpty()
     }
 
     private suspend fun delayIfNeeded(api: TRANSLATE_API) {

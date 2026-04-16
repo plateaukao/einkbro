@@ -325,34 +325,31 @@ open class EBWebView(
         addJavascriptInterface(JsWebInterface(this, webViewCallback as? JsBrowserCallback), "androidApp")
     }
 
-    @Suppress("DEPRECATION")
     private fun updateDarkMode() {
         if (config.display.darkMode == DarkMode.DISABLED) {
             return
         }
 
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-            WebSettingsCompat.setForceDarkStrategy(
-                settings,
-                WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
-            )
-        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
-                config.display.darkMode == DarkMode.FORCE_ON
-            ) {
-                settings.forceDark = WebSettings.FORCE_DARK_ON
-                // when in dark mode, the default background color will be the activity background
-                setBackgroundColor(Color.parseColor("#000000"))
-            }
+        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        val wantDark = nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
+            config.display.darkMode == DarkMode.FORCE_ON
 
-        }
         if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, true)
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, wantDark)
+            if (wantDark) setBackgroundColor(Color.parseColor("#000000"))
+        } else if (wantDark) {
+            @Suppress("DEPRECATION")
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+                WebSettingsCompat.setForceDarkStrategy(
+                    settings,
+                    WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
+                )
             }
+            @Suppress("DEPRECATION")
+            settings.forceDark = WebSettings.FORCE_DARK_ON
+            setBackgroundColor(Color.parseColor("#000000"))
         }
     }
 

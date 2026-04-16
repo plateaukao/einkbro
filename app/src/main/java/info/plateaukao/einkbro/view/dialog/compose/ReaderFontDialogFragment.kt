@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,18 +19,26 @@ class ReaderFontDialogFragment(
     private val customFontNameState: MutableState<String> =
         mutableStateOf(config.display.readerCustomFontInfo?.name.orEmpty())
 
+    private val fontChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == DisplayConfig.K_READER_CUSTOM_FONT) {
+                customFontNameState.value = config.display.readerCustomFontInfo?.name.orEmpty()
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        config.registerOnSharedPreferenceChangeListener { _, key ->
-            if (key == DisplayConfig.K_READER_CUSTOM_FONT) {
-                customFontNameState.value = config.display.readerCustomFontInfo?.name.orEmpty()
-            }
-        }
+        config.registerOnSharedPreferenceChangeListener(fontChangeListener)
         return view
+    }
+
+    override fun onDestroyView() {
+        config.unregisterOnSharedPreferenceChangeListener(fontChangeListener)
+        super.onDestroyView()
     }
 
     override fun setupComposeView() {

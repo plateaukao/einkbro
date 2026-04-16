@@ -2,8 +2,6 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Context
 import android.media.AudioManager
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import android.webkit.WebView
 import info.plateaukao.einkbro.R
@@ -11,6 +9,13 @@ import info.plateaukao.einkbro.browser.KeyHandlerCallback
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class KeyHandler(
     private val keyCallback: KeyHandlerCallback,
@@ -178,11 +183,21 @@ class KeyHandler(
 
     private var isVolumeLongPress = false
     private var isVolumeTemporarilyDisabled = false
-    private val handler = Handler(Looper.getMainLooper())
-    private val reenableVolumePageTurnRunnable = Runnable {
-        isVolumeTemporarilyDisabled = false
-        val context = keyCallback as? Context ?: return@Runnable
-        EBToast.show(context, R.string.volume_page_turn_resumed)
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var reenableJob: Job? = null
+
+    private fun scheduleReenableVolumePageTurn() {
+        reenableJob?.cancel()
+        reenableJob = scope.launch {
+            delay(5000)
+            isVolumeTemporarilyDisabled = false
+            val context = keyCallback as? Context ?: return@launch
+            EBToast.show(context, R.string.volume_page_turn_resumed)
+        }
+    }
+
+    fun dispose() {
+        scope.cancel()
     }
 
     fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
@@ -190,8 +205,7 @@ class KeyHandler(
             if (config.touch.volumePageTurn) {
                 isVolumeLongPress = true
                 isVolumeTemporarilyDisabled = true
-                handler.removeCallbacks(reenableVolumePageTurnRunnable)
-                handler.postDelayed(reenableVolumePageTurnRunnable, 5000)
+                scheduleReenableVolumePageTurn()
                 val context = keyCallback as? Context ?: return true
                 EBToast.show(context, R.string.volume_page_turn_paused)
                 adjustVolume(keyCode)
@@ -212,8 +226,7 @@ class KeyHandler(
     }
 
     private fun extendVolumeDisablePeriod() {
-        handler.removeCallbacks(reenableVolumePageTurnRunnable)
-        handler.postDelayed(reenableVolumePageTurnRunnable, 5000)
+        scheduleReenableVolumePageTurn()
     }
 
     private fun adjustVolume(keyCode: Int) {

@@ -370,8 +370,7 @@ object BrowserUnit : KoinComponent {
     fun restartApp(activity: Activity) {
         finishAffinity(activity) // Finishes all activities.
         activity.startActivity(activity.packageManager.getLaunchIntentForPackage(activity.packageName))    // Start the launch activity
-        @Suppress("DEPRECATION")
-        activity.overridePendingTransition(0, 0)
+        activity.disablePendingTransitions()
         exitProcess(0)
     }
 }
