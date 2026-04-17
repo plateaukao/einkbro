@@ -1,0 +1,133 @@
+<!-- translated-from: ../bugs.html @ 71a4a558 -->
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>問題回報 — EinkBro</title>
+  <link rel="icon" href="../favicon.webp" type="image/webp">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../lang-banner.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="開關導覽選單">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">使用指南</a></li>
+      <li><a href="download.html">下載</a></li>
+      <li><a href="develop.html">開發</a></li>
+      <li><a href="bugs.html" class="active">問題回報</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>問題回報</h1>
+<p>遇到錯誤或想提出新功能嗎？我們在 GitHub 上追蹤所有問題。</p>
+
+<div class="card-grid">
+  <a href="https://github.com/plateaukao/einkbro/issues/new" class="card">
+    <h3>回報錯誤</h3>
+    <p>在 GitHub 上開啟新 issue，說明您遇到的問題細節。</p>
+  </a>
+  <a href="https://github.com/plateaukao/einkbro/issues" class="card">
+    <h3>瀏覽現有 Issues</h3>
+    <p>看看您的問題是否已經被回報過，或尋找已知問題的解決方法。</p>
+  </a>
+</div>
+
+<h2>需要提供的資訊</h2>
+<p>一份完整的錯誤回報能幫助我們更快修正問題。請提供：</p>
+
+<dl class="report-template">
+  <dt>裝置型號</dt>
+  <dd>例如：Boox Note Air 3、Kobo Elipsa 2E、Kindle Scribe，或一般 Android 手機／平板。</dd>
+
+  <dt>Android 版本</dt>
+  <dd>例如：Android 12。可在裝置的「設定 &rarr; 關於」中查看。</dd>
+
+  <dt>WebView 版本</dt>
+  <dd>可在 EinkBro 的「設定 &rarr; 關於」中找到，或於系統設定中的 WebView 項目查看。</dd>
+
+  <dt>EinkBro 版本</dt>
+  <dd>例如：15.10.0。顯示於 EinkBro 的「設定 &rarr; 關於」。</dd>
+
+  <dt>重現步驟</dt>
+  <dd>以編號列出觸發錯誤的確切步驟。越具體越好。</dd>
+
+  <dt>預期行為</dt>
+  <dd>您原本預期會發生什麼事。</dd>
+
+  <dt>實際行為</dt>
+  <dd>實際上發生的事。如果有任何錯誤訊息，請一併附上。</dd>
+
+  <dt>截圖／螢幕錄影</dt>
+  <dd>若是畫面相關的錯誤，截圖會非常有幫助。若適用，也可以使用整頁截圖功能。</dd>
+</dl>
+
+<h2>常見疑難排解</h2>
+<p>在回報前，可以先試試這些常見的解決方法：</p>
+
+<h3>網頁無法載入或顯示異常</h3>
+<ul>
+  <li><strong>清除快取</strong> &mdash; 設定 &rarr; 資料控制 &rarr; 清除快取</li>
+  <li><strong>確認 JavaScript 狀態</strong> &mdash; 確保 JavaScript 已啟用（設定 &rarr; 啟動控制 &rarr; JavaScript），或該網站已加入白名單</li>
+  <li><strong>確認 Cookie 狀態</strong> &mdash; 部分網站需要 Cookie。請在「設定 &rarr; 啟動控制 &rarr; Cookies」中啟用</li>
+  <li><strong>停用廣告封鎖</strong> &mdash; 部分網站會因廣告封鎖而異常。請將該網站加入廣告封鎖白名單</li>
+  <li><strong>更新 WebView</strong> &mdash; 過舊的 Android System WebView 可能導致渲染問題。請透過 Google Play 商店或您裝置的應用程式商店更新</li>
+</ul>
+
+<h3>效能問題</h3>
+<ul>
+  <li><strong>啟用網頁快取</strong> &mdash; 設定 &rarr; 行為 &rarr; 啟用網頁快取</li>
+  <li><strong>停用圖片</strong> &mdash; 設定 &rarr; 啟動控制 &rarr; 圖片（在慢速網路下可加快載入）</li>
+  <li><strong>使用閱讀模式</strong> &mdash; 移除沉重的頁面元素以加快渲染</li>
+  <li><strong>要求節省流量</strong> &mdash; 設定 &rarr; 啟動控制 &rarr; 要求「節省流量」（告訴網站提供較輕量的內容）</li>
+</ul>
+
+<h3>翻譯功能失效</h3>
+<ul>
+  <li>確認您已連線到網際網路</li>
+  <li>若是圖片翻譯，請確認已於「設定 &rarr; 其他 &rarr; 翻譯圖片 API 金鑰」設定金鑰</li>
+  <li>若是 AI 翻譯，請在「設定 &rarr; GPT」確認您的 API 金鑰</li>
+</ul>
+
+<h3>AI 功能失效</h3>
+<ul>
+  <li>在「設定 &rarr; GPT」確認您的 OpenAI 或 Gemini API 金鑰</li>
+  <li>確認模型名稱正確（OpenAI 預設為 <code>gpt-4.1</code>，Gemini 預設為 <code>gemini-2.5-flash</code>）</li>
+  <li>若使用自架伺服器，請確認自訂主機 URL 可從您的裝置存取</li>
+</ul>
+
+<h2>功能請求</h2>
+<p>有新功能的點子嗎？請在 GitHub 開啟 issue，並在標題前加上 <strong>[Feature Request]</strong>。請描述：</p>
+<ul>
+  <li>您希望看到什麼功能</li>
+  <li>為何這個功能有用（特別是對 E-Ink 裝置使用者而言）</li>
+  <li>您期望它如何運作</li>
+</ul>
+
+<h2>貢獻修正</h2>
+<p>若您能自行修正錯誤，我們歡迎 pull request：</p>
+<ol>
+  <li><strong>Fork</strong> <a href="https://github.com/plateaukao/einkbro">此儲存庫</a></li>
+  <li>從 <code>main</code> 建立一個分支</li>
+  <li>進行修正並測試（最好在 E-Ink 裝置上實測）</li>
+  <li>送出 <strong>Pull Request</strong> 並引用對應的 issue 編號</li>
+</ol>
+<p>請參考<a href="develop.html">開發者指南</a>了解建置說明與架構細節。</p>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> 是開源軟體。<a href="https://github.com/plateaukao/einkbro">前往 GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

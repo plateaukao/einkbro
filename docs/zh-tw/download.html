@@ -1,0 +1,209 @@
+<!-- translated-from: ../download.html @ 16e9101d -->
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>下載 — EinkBro</title>
+  <link rel="icon" href="../favicon.webp" type="image/webp">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../lang-banner.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="開關導覽選單">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">使用指南</a></li>
+      <li><a href="download.html" class="active">下載</a></li>
+      <li><a href="develop.html">開發</a></li>
+      <li><a href="bugs.html">問題回報</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>下載 EinkBro</h1>
+
+<div class="card-grid">
+
+  <a href="https://github.com/plateaukao/einkbro/releases" class="card">
+    <h3>GitHub Releases</h3>
+    <p>直接從 GitHub 下載最新的穩定版 APK。提供多種架構（arm64-v8a、armeabi-v7a、x86、x86_64）。</p>
+  </a>
+
+  <a href="https://f-droid.org/packages/info.plateaukao.einkbro/" class="card">
+    <h3>F-Droid</h3>
+    <p>透過 F-Droid 自由軟體儲存庫安裝。更新時間可能較 GitHub releases 稍有延遲。</p>
+  </a>
+
+  <a href="https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-arm64-v8a-release.apk.zip" class="card">
+    <h3>快照／Nightly 版</h3>
+    <p>取得 CI 管線最新的開發版本。包含最新功能，但穩定度可能較低。</p>
+  </a>
+
+</div>
+
+<h2>安裝方式</h2>
+<ol>
+  <li>下載符合您裝置架構的 APK（大多數 E-Ink 裝置使用 <strong>arm64-v8a</strong>）</li>
+  <li>在裝置上前往「<strong>設定 &rarr; 安全性</strong>」並啟用「<strong>未知來源</strong>」（或允許從檔案管理員／瀏覽器安裝）</li>
+  <li>開啟下載的 APK 檔案並點擊「<strong>安裝</strong>」</li>
+  <li>安裝完成後，開啟 EinkBro 即可開始瀏覽</li>
+</ol>
+<p><strong>提示：</strong>若不確定您的裝置是哪種架構，先下載 <code>arm64-v8a</code> 版本即可 &mdash; 此版本適用於大多數現代 E-Ink 裝置，包括 Boox、Kobo（已安裝 Play 商店）以及 Kindle（透過側載安裝）。</p>
+
+<hr>
+
+<h2>更新日誌</h2>
+
+<div class="changelog-version">
+<h3>15.11.1</h3>
+
+<h4>新功能</h4>
+<ul>
+  <li>電子書觸控模式 &mdash; 透過原生觸控攔截，在 WebView 中直接點擊翻頁</li>
+  <li>備份／還原時包含 WebView 登入資料（Cookie 與儲存空間）</li>
+  <li>OpenAI／Gemini 支援原地翻譯</li>
+  <li>聊天介面新增可自動隱藏的上方標題列，包含歷史／選單按鈕</li>
+  <li>透過快取最佳化加快網頁內容載入速度</li>
+  <li>提升應用程式啟動與 WebView 建立的效能</li>
+</ul>
+
+<h4>改善</h4>
+<ul>
+  <li>架構大幅重構 &mdash; 從 BrowserActivity 抽離委派物件、修正 DI、遷移資料庫、拆分介面</li>
+  <li>將 BrowserUnit 與 HelperUnit 拆解為專注的輔助類別</li>
+  <li>從 ConfigManager 抽離 5 個子設定（1135 行 → 811 行）</li>
+  <li>從 EBWebView 抽離 WebViewJsBridge</li>
+  <li>電子書觸控翻頁從 JS 注入改為原生 View 攔截</li>
+  <li>簡化更新進度介面，僅顯示百分比</li>
+</ul>
+
+<h4>修正</h4>
+<ul>
+  <li>建立新分頁後，「與網頁對話」使用正確的 WebView 參照</li>
+  <li>升級時將舊的 Ninja4.db 資料遷移至 Room</li>
+  <li>修正因 TabManager 中 ebWebView 未初始化造成的啟動崩潰</li>
+  <li>修正因 BaseWebConfig 的 Kotlin 初始化順序造成的啟動崩潰</li>
+  <li>停用電子書觸控翻頁時，恢復長按選取文字的功能</li>
+  <li>移除選單／書籤對話框的動畫，減少閃爍</li>
+  <li>以多層機制強化影片自動播放封鎖</li>
+  <li>防止在 E-Ink 裝置上啟動 TTS 時螢幕重新整理</li>
+  <li>修正快照更新卡住、安裝畫面未顯示、以及解壓縮進度的問題</li>
+</ul>
+</div>
+
+<div class="changelog-version">
+<h3>15.10.0</h3>
+
+<h4>新功能</h4>
+<ul>
+  <li>透過區域網路分享／接收應用程式資料</li>
+  <li>支援選擇性備份／還原，並可挑選類別</li>
+  <li>於行為設定中加入影片自動播放開關</li>
+  <li>針對網頁資源（JPEG／PNG／WebP）的 E-Ink 圖片最佳化</li>
+  <li>直向工具列模式（可放在左側或右側）</li>
+  <li>字型資料夾瀏覽器，支援預覽與搜尋</li>
+  <li>工具列對話框改為錨定於點擊圖示附近</li>
+  <li>當「保留額外內容」啟用時，於閱讀模式保留程式碼片段樣式</li>
+  <li>選項：於閱讀模式保留 MathJax／KaTeX 數學公式</li>
+  <li>電子書閱讀器工具列動作可獨立設定，與瀏覽器工具列分開</li>
+  <li>於 GPT 動作的內容選單中顯示 GPT 類型圖示</li>
+  <li>加入廣告封鎖 scriptlet 注入，含崩潰保護</li>
+</ul>
+
+<h4>改善</h4>
+<ul>
+  <li>以卡片式版型重新設計 GPT 結果歷史介面</li>
+  <li>行為設定以分隔線分組為邏輯區塊</li>
+  <li>直向工具列模式下，工具列設定顯示直向預覽</li>
+  <li>直向工具列模式下使用橫向工具列設定</li>
+  <li>改善分頁計數圖示的 Canvas 斜線，支援 10 個以上分頁</li>
+  <li>將 BookmarkEditDialog 轉換為 ComposeDialogFragment</li>
+  <li>移除已淘汰的翻譯模式（Onyx、Google Text、Papago Text／URL／Dual）</li>
+  <li>移除書籤同步 URL 功能</li>
+</ul>
+
+<h4>修正</h4>
+<ul>
+  <li>YouTube SPA 導覽時顯示純音訊按鈕</li>
+  <li>E-Ink 圖片處理保留暗部細節</li>
+  <li>修正 Instagram 與 CDN 圖片上 E-Ink 圖片處理失效的問題</li>
+  <li>直向工具列模式下進度條改為較細（2dp）</li>
+  <li>直向模式下重新擺放進度條位置以對應工具列位置</li>
+  <li>防止直向工具列模式下 ConstraintSet 崩潰</li>
+  <li>工具列位置變更時重新載入工具列圖示</li>
+  <li>以 User-Agent、Cookie 驗證與 data URL 支援提升下載可靠度</li>
+  <li>將注入的觸控追蹤 JS 包裝於 IIFE，修正 libbyapp.com 相容性</li>
+</ul>
+</div>
+
+<div class="changelog-version">
+<h3>15.9.0</h3>
+
+<h4>新功能</h4>
+<ul>
+  <li>純音訊模式：隱藏影片，保留聲音與字幕</li>
+  <li>新增「稍後閱讀」功能，取代「儲存為封存檔」</li>
+  <li>TTS 支援 MediaStyle 通知，含播放／暫停／停止／關閉</li>
+  <li>儲存的 EPUB 加入 EinkBro 識別資訊，支援可編輯的 TOC 與拖曳排序</li>
+  <li>將翻譯過的圖片快取至磁碟，已快取結果不再等待延遲</li>
+  <li>長按翻譯圖示可批次翻譯剩餘所有圖片</li>
+  <li>翻譯後的圖片以覆蓋方式疊加於原圖之上</li>
+</ul>
+
+<h4>改善</h4>
+<ul>
+  <li>將 EPUB 的開啟／儲存選單合併為單一分頁式對話框</li>
+  <li>「頁面 AI」工具列動作改用 GPT 圖示，避免與 EPUB 混淆</li>
+  <li>BookmarkEditDialog 的標題欄位更精簡，並內嵌資料夾列</li>
+  <li>強化 TwoPaneLayout 分隔線，新增優雅的膠囊狀拖曳把手</li>
+  <li>移除所有剩餘的 layout XML，改為 Compose／程式化建立</li>
+  <li>移除所有 AbstractComposeView 包裝類別</li>
+  <li>更新 README，功能重新分類並附上新截圖</li>
+</ul>
+
+<h4>修正</h4>
+<ul>
+  <li>以 URL 判斷影片網站，使純音訊圖示於首次載入時即顯示</li>
+  <li>分頁清單邊框僅正確標示目前分頁</li>
+  <li>雙字幕透過正確的 Cookie 與 User-Agent 提升可靠度</li>
+  <li>防止下拉重新整理攔截雙指滑動手勢</li>
+  <li>修正工具列切換到上方時的崩潰問題</li>
+  <li>改善文字翻譯觀察者的強韌性與 JS 跳脫處理</li>
+</ul>
+</div>
+
+<div class="changelog-version">
+<h3>15.8.0</h3>
+
+<h4>修正</h4>
+<ul>
+  <li>內部滾動容器支援頁面資訊與跳至頂部</li>
+  <li>以 JS 實作的通用分頁機制支援內部滾動容器</li>
+  <li>修正從檔案總管開啟 EPUB3 檔案時崩潰</li>
+  <li>下拉重新整理僅在頁面頂端觸發</li>
+  <li>防止下拉重新整理攔截雙指手勢</li>
+  <li>為舊版 WebView 加入 GitHub include-fragment 的 polyfill</li>
+  <li>下載檔名解析改為正確支援 RFC 5987／6266</li>
+  <li>當 content-disposition 提供確切檔名時，略過檔名對話框</li>
+  <li>網址列建議依歷史紀錄由新到舊排序</li>
+  <li>對 EPUB 檔案 URI 要求持久寫入權限</li>
+  <li>更新 Edge TTS 以使用 Chromium 143 標頭與 MUID Cookie</li>
+</ul>
+</div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> 是開源軟體。<a href="https://github.com/plateaukao/einkbro">前往 GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
