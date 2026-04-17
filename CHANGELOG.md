@@ -1,3 +1,47 @@
+### 15.12.0
+#### Features
+* News anchor TTS template that reads full articles aloud
+* Task runner for multi-step browser workflows
+* Free-form agent integrated into chat-with-web for follow-up conversations
+* Task runner surfaced as the first item in the Page AI action menu
+* Expose all BrowserActions as gesture bindings
+* Configurable statusbar for fullscreen / no-toolbar mode
+* Per-site translation mode with streamlined translation config dialog
+* Per-site configuration for display settings
+* Apply locale change without restarting the app (preserves WebView tabs)
+* Search functionality in Settings — supports English search terms regardless of app locale
+* "Save as MHT" menu item to save web content as a single .mht file
+* Elegant offline error page with retry button and a horse jump game
+* Center-expanded progress bar for vertical toolbar mode
+
+#### Improvements
+* Avoid main-thread hop on every subresource in ad-filter (perf)
+* Security, error visibility, listener leak fixes, and API modernization pass
+* Decompose BrowserController god interface and introduce typed action dispatch
+* Architecture cleanup — remove runBlocking, coroutinize BaseWebConfig, eliminate static singleton, introduce BrowserState
+* Extract BrowserConfig, TabConfig, UiConfig from ConfigManager
+* Extract DisplayConfigDelegate and split BrowserActivity.onCreate
+* Replace WebView data backup with database backup; show receive progress hint
+* Group toolbar/statusbar settings into sections
+* Trim gesture action catalog and flatten single-item categories
+
+#### Fixes
+* Keep hero images in reader mode when wrapped in figure/picture or marked aria-hidden
+* Null pointer crash in adblock cosmetic filter lookup
+* Prevent gesture settings from resetting on release upgrades
+* Force-clear dsd-pending attribute so filter-broken hydration doesn't leave pages blank
+* Restore EPUB opening broken by delegate refactor
+* WebView collapse and stuck progress bar on vertical toolbar
+* Remove divider above the first category in settings search results
+* Restore "Select Text" context menu and dismiss action mode before ebook pagination
+* Error-page game requires explicit start and pauses when the tab/app is hidden
+
+#### Translations
+* zh-rTW translations for the gesture action catalog
+* zh-rTW translations for statusbar strings
+
+---
+
 ### 15.11.1
 #### Features
 * Ebook touch mode — tap to turn pages directly in WebView with native touch interception
