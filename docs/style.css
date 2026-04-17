@@ -131,21 +131,24 @@ img { max-width: 100%; height: auto; }
   color: var(--mid);
   margin-bottom: 2rem;
 }
+.hero__ctas { display: inline-flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
 .hero__cta {
   display: inline-block;
   background: var(--ink);
   color: var(--paper);
-  padding: 0.7rem 2rem;
+  padding: 0.45rem 1.2rem;
   text-decoration: none;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border: 2px solid var(--ink);
-  border-radius: 7px;
+  border-radius: 6px;
   transition: background 0.15s, color 0.15s;
 }
 .hero__cta:hover { background: var(--paper); color: var(--ink); }
+.hero__cta--ghost { background: var(--paper); color: var(--ink); }
+.hero__cta--ghost:hover { background: var(--ink); color: var(--paper); }
 
 /* --- Feature Grid --- */
 .features { padding: 4rem 0; border-bottom: 1px solid var(--hairline); }
