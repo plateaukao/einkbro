@@ -104,6 +104,28 @@
     align-self: flex-end;
     margin-bottom: 4px;
   }
+  .canvas-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+  }
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 14px;
+    font-weight: 600;
+    border-top: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .overlay.hidden { display: none; }
 </style>
 </head>
 <body>
@@ -115,7 +137,10 @@
 
   <div class="game-wrap">
     <div class="score" id="score">0</div>
-    <canvas id="game" width="1120" height="320"></canvas>
+    <div class="canvas-wrap">
+      <canvas id="game" width="1120" height="320"></canvas>
+      <div class="overlay" id="startOverlay">Tap to play</div>
+    </div>
     <div class="hint">Tap or press Space to make the dragon jump</div>
   </div>
 
@@ -137,6 +162,7 @@
   // --- Dragon jump game ---
   var canvas = document.getElementById('game');
   var ctx = canvas.getContext('2d');
+  var overlay = document.getElementById('startOverlay');
   var W = canvas.width, H = canvas.height;
   var groundY = H - 40;
 
@@ -150,11 +176,21 @@
   var speed = 6;
   var score = 0;
   var best = parseInt(localStorage.getItem('einkbroDragonBest') || '0', 10);
-  var running = true;
+  var running = false;       // game-over state inside an active session
+  var started = false;       // user has explicitly started the game
+  var rafId = 0;
   var spawnTimer = 0;
   var scoreEl = document.getElementById('score');
 
+  function startGame() {
+    if (started) return;
+    started = true;
+    overlay.classList.add('hidden');
+    reset();
+    if (!document.hidden) scheduleFrame();
+  }
   function jump() {
+    if (!started) { startGame(); return; }
     if (!running) { reset(); return; }
     if (dragon.onGround) {
       dragon.vy = jumpV;
@@ -171,6 +207,15 @@
     dragon.onGround = true;
     running = true;
   }
+
+  overlay.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    startGame();
+  }, { passive: false });
+  overlay.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    startGame();
+  });
 
   window.addEventListener('keydown', function (e) {
     if (e.code === 'Space' || e.code === 'ArrowUp') {
@@ -338,10 +383,30 @@
     }
 
     scoreEl.textContent = 'SCORE ' + String(score).padStart(4, '0') + '   BEST ' + String(best).padStart(4, '0');
-    requestAnimationFrame(loop);
+    rafId = 0;
+    if (started && !document.hidden) scheduleFrame();
   }
 
-  loop();
+  function scheduleFrame() {
+    if (rafId) return;
+    rafId = requestAnimationFrame(loop);
+  }
+  function stopFrame() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      stopFrame();
+    } else if (started) {
+      scheduleFrame();
+    }
+  });
+  window.addEventListener('pagehide', stopFrame);
+  window.addEventListener('beforeunload', stopFrame);
 })();
 </script>
 </body>
