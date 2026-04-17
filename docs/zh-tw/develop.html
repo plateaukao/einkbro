@@ -1,0 +1,197 @@
+<!-- translated-from: ../develop.html @ 71a4a558 -->
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>開發者指南 — EinkBro</title>
+  <link rel="icon" href="../favicon.webp" type="image/webp">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../lang-banner.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="開關導覽選單">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">使用指南</a></li>
+      <li><a href="download.html">下載</a></li>
+      <li><a href="develop.html" class="active">開發</a></li>
+      <li><a href="bugs.html">問題回報</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>開發者指南</h1>
+<p>EinkBro 以 Kotlin 與現代 Android 開發實踐建構。本指南涵蓋架構、建置流程與貢獻者的主要開發領域。</p>
+
+<h2>架構概觀</h2>
+
+<div class="arch-diagram">┌─────────────────────────────────────────────────┐
+│                    app module                    │
+│                                                  │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
+│  │ Activity  │  │ ViewModel │  │  Repository  │  │
+│  │ (Compose) │──│ (StateFlow│──│  (Room, API) │  │
+│  └──────────┘  │  LiveData)│  └──────────────┘  │
+│                └───────────┘                     │
+│                                                  │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
+│  │ EBWebView│  │   Koin    │  │   Services   │  │
+│  │ (Custom  │  │   (DI)    │  │ (Translation │  │
+│  │ WebView) │  │           │  │  TTS, AI)    │  │
+│  └──────────┘  └───────────┘  └──────────────┘  │
+├─────────────────────────────────────────────────┤
+│              ad-filter module                    │
+│  JS scriptlets · FilterViewModel · filter logic  │
+├─────────────────────────────────────────────────┤
+│             adblock-client module                │
+│          Native C++ via CMake (JNI)              │
+└─────────────────────────────────────────────────┘</div>
+
+<h3>核心模式</h3>
+<ul>
+  <li><strong>MVVM</strong> &mdash; ViewModel 搭配 LiveData/StateFlow 管理 UI 狀態</li>
+  <li><strong>Repository Pattern</strong> &mdash; 資料層抽象化（例如 <code>OpenAiRepository.kt</code>）</li>
+  <li><strong>Dependency Injection</strong> &mdash; 以 Koin 為 DI 容器，於 <code>EinkBroApplication.kt</code> 設定</li>
+  <li><strong>Room Database</strong> &mdash; 本地資料持久化，搭配 KSP 註解處理器</li>
+  <li><strong>Jetpack Compose</strong> &mdash; UI 元件（對話框、設定、工具列、選單）</li>
+</ul>
+
+<h3>模組結構</h3>
+<table>
+<thead><tr><th>模組</th><th>用途</th><th>關鍵技術</th></tr></thead>
+<tbody>
+<tr><td><strong>app</strong></td><td>主瀏覽器應用程式</td><td>Kotlin、Compose、Room、Koin、WebView</td></tr>
+<tr><td><strong>ad-filter</strong></td><td>廣告封鎖邏輯與 JS scriptlets</td><td>JavaScript、FilterViewModel</td></tr>
+<tr><td><strong>adblock-client</strong></td><td>原生廣告封鎖實作</td><td>C++、CMake、JNI</td></tr>
+</tbody>
+</table>
+
+<h3>主要元件</h3>
+<table>
+<thead><tr><th>元件</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td><code>EinkBroApplication.kt</code></td><td>Application 類別；初始化 Koin DI 容器</td></tr>
+<tr><td><code>BrowserActivity.kt</code></td><td>主 Activity（<code>singleInstance</code> 啟動模式）；處理所有瀏覽器 UI</td></tr>
+<tr><td><code>EBWebView.kt</code></td><td>為 E-Ink 最佳化的自訂 WebView（滾動行為、閱讀模式 CSS 注入、JS 介面）</td></tr>
+<tr><td><code>GptActionsActivity.kt</code></td><td>AI／ChatGPT 互動的 UI</td></tr>
+<tr><td><code>OpenAiRepository.kt</code></td><td>OpenAI、Gemini 與相容伺服器的 API 通訊層</td></tr>
+<tr><td><code>ChatGptQuery.kt</code></td><td>儲存 GPT 查詢結果的 Room 實體</td></tr>
+<tr><td><code>ConfigManager.kt</code></td><td>以 Kotlin property delegate 包裝的 SharedPreferences，統一處理所有設定</td></tr>
+<tr><td><code>ToolbarAction.kt</code></td><td>定義所有 43 個工具列動作（含圖示、標籤與狀態）的 Enum</td></tr>
+<tr><td><code>MenuDialogFragment.kt</code></td><td>以 Compose 實作、可收合分區的動作選單</td></tr>
+</tbody>
+</table>
+
+<h2>建置設定</h2>
+
+<table>
+<thead><tr><th>屬性</th><th>值</th></tr></thead>
+<tbody>
+<tr><td>Min SDK</td><td>24（Android 7.0）</td></tr>
+<tr><td>Target SDK</td><td>34（Android 14）</td></tr>
+<tr><td>JVM Target</td><td>Java 17</td></tr>
+<tr><td>Kotlin</td><td>2.0.0 搭配 KSP</td></tr>
+<tr><td>ABI Splits</td><td>arm64-v8a、armeabi-v7a、x86、x86_64</td></tr>
+</tbody>
+</table>
+
+<h2>建置指令</h2>
+
+<h3>開發</h3>
+<pre><code># 建置 debug APK
+./gradlew assembleDebug
+
+# 建置 release APK
+./gradlew assembleRelease
+
+# 建置 releaseDebuggable 變體
+./gradlew assembleReleaseDebuggable
+
+# 安裝 debug 版本至已連接裝置
+./gradlew installDebug
+
+# 清除建置輸出
+./gradlew clean</code></pre>
+
+<h3>測試</h3>
+<pre><code># 執行單元測試
+./gradlew test
+
+# 執行儀表化測試
+./gradlew connectedAndroidTest
+
+# 執行 Lint 檢查
+./gradlew lint
+
+# 僅 debug 版的 Lint
+./gradlew lintDebug</code></pre>
+
+<h2>主要開發領域</h2>
+
+<h3>WebView 客製化</h3>
+<p>E-Ink 專屬的 WebView 最佳化實作於 <code>EBWebView.kt</code>：</p>
+<ul>
+  <li>依 E-Ink 重新整理特性調整的自訂滾動行為</li>
+  <li>注入閱讀模式 CSS，呈現乾淨的內容</li>
+  <li>為原生功能整合提供 JavaScript 介面（觸控追蹤、頁面資訊等）</li>
+  <li>JS 檔案放在 <code>assets/</code>，於執行期載入</li>
+</ul>
+
+<h3>AI 整合</h3>
+<p>ChatGPT／AI 功能橫跨多個元件：</p>
+<ul>
+  <li><code>GptActionsActivity.kt</code> &mdash; AI 聊天互動的 UI</li>
+  <li><code>OpenAiRepository.kt</code> &mdash; OpenAI、Gemini 與自架伺服器的 API 通訊</li>
+  <li><code>ChatGptQuery.kt</code> &mdash; 儲存查詢歷史的 Room 實體</li>
+  <li>使用者可透過系統提示定義自訂 GPT 動作</li>
+</ul>
+
+<h3>EPUB 處理</h3>
+<p>使用 EPubLib 實作完整的 EPUB 讀取與寫入：</p>
+<ul>
+  <li>於瀏覽器內解析並呈現 EPUB 內容</li>
+  <li>將網頁匯出為包含圖片與多章節的 EPUB</li>
+  <li>目錄可編輯，支援拖曳排序</li>
+</ul>
+
+<h3>翻譯服務</h3>
+<p>多家提供者的翻譯整合，支援段落級、整頁與圖片翻譯。提供者包括 Google Translate、DeepL，以及透過 OpenAI／Gemini 的 AI 翻譯。</p>
+
+<h2>資料庫與 Schema</h2>
+<p>Room 資料庫 schema 存放於 <code>app/schemas/</code>。修改實體時請務必定義好遷移路徑。主要實體包括書籤、歷史紀錄、GPT 查詢與白名單。</p>
+
+<h2>國際化</h2>
+<p>本專案支援 25 種以上語言，透過 <strong>Crowdin</strong> 管理。翻譯檔使用標準 Android 格式，位於 <code>res/values-*/strings.xml</code>。請勿直接編輯翻譯檔 &mdash; 所有變更都應透過 Crowdin 進行。</p>
+
+<h2>ProGuard</h2>
+<p>Release 版本會透過 ProGuard 進行程式碼混淆與最佳化：</p>
+<ul>
+  <li><code>app/proguard-rules.txt</code> &mdash; Release 版本</li>
+  <li><code>app/proguard-rules.pro</code> &mdash; ReleaseDebuggable 版本</li>
+</ul>
+
+<h2>如何貢獻</h2>
+<ol>
+  <li>於 GitHub 上 <strong>Fork</strong> 此儲存庫</li>
+  <li>從 <code>main</code> 建立 <strong>feature branch</strong></li>
+  <li>進行變更，並盡可能在 E-Ink 裝置上測試</li>
+  <li>送出 <strong>Pull Request</strong> 並清楚描述變更內容</li>
+</ol>
+<p>本專案使用 Fastlane 進行部署自動化，並支援 F-Droid 發佈。</p>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> 是開源軟體。<a href="https://github.com/plateaukao/einkbro">前往 GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

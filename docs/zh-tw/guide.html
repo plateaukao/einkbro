@@ -1,0 +1,763 @@
+<!-- translated-from: ../guide.html @ 16e9101d -->
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使用指南 — EinkBro</title>
+  <link rel="icon" href="../favicon.webp" type="image/webp">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../lang-banner.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="開關導覽選單">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html" class="active">使用指南</a></li>
+      <li><a href="download.html">下載</a></li>
+      <li><a href="develop.html">開發</a></li>
+      <li><a href="bugs.html">問題回報</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container guide-layout">
+
+<!-- Sidebar TOC -->
+<aside class="guide-sidebar">
+  <div class="toc-section">開始使用</div>
+  <ul>
+    <li><a href="#overview">概觀</a></li>
+    <li><a href="#first-launch">首次啟動</a></li>
+  </ul>
+  <div class="toc-section">工具列</div>
+  <ul>
+    <li><a href="#toolbar-actions">所有工具列動作</a></li>
+    <li><a href="#toolbar-config">自訂設定</a></li>
+  </ul>
+  <div class="toc-section">動作選單</div>
+  <ul>
+    <li><a href="#action-menu">選單概觀</a></li>
+    <li><a href="#menu-row1">第一列：快速動作</a></li>
+    <li><a href="#menu-share">分享與儲存</a></li>
+    <li><a href="#menu-content">內容調整</a></li>
+    <li><a href="#menu-bottom">最後一列</a></li>
+  </ul>
+  <div class="toc-section">設定</div>
+  <ul>
+    <li><a href="#settings-ui">介面</a></li>
+    <li><a href="#settings-toolbar">工具列</a></li>
+    <li><a href="#settings-behavior">行為</a></li>
+    <li><a href="#settings-gestures">手勢</a></li>
+    <li><a href="#settings-backup">備份</a></li>
+    <li><a href="#settings-startcontrol">啟動控制</a></li>
+    <li><a href="#settings-datacontrol">資料控制</a></li>
+    <li><a href="#settings-search">搜尋</a></li>
+    <li><a href="#settings-misc">其他</a></li>
+    <li><a href="#settings-gpt">GPT 設定</a></li>
+  </ul>
+  <div class="toc-section">功能</div>
+  <ul>
+    <li><a href="#feature-reader">閱讀模式</a></li>
+    <li><a href="#feature-split">分割畫面</a></li>
+    <li><a href="#feature-translate">翻譯</a></li>
+    <li><a href="#feature-epub">EPUB 匯出</a></li>
+    <li><a href="#feature-touch">觸控翻頁</a></li>
+    <li><a href="#feature-ai">AI／ChatGPT</a></li>
+  </ul>
+</aside>
+
+<!-- Main Content -->
+<main>
+
+<!-- ==================== GETTING STARTED ==================== -->
+<h1>使用指南</h1>
+
+<section id="overview">
+<h2>概觀</h2>
+<p>EinkBro 是專為 E-Ink 裝置設計的瀏覽器。隨著 E-Ink 螢幕越來越快、越來越強大，越來越多人在電子閱讀器上瀏覽網頁。但主流瀏覽器充斥著動畫、淡入淡出與各種 UI 特效，在 E-Ink 螢幕上的表現糟糕。</p>
+<p>EinkBro 遵循兩大核心設計原則：</p>
+<ul>
+  <li><strong>減少重繪次數</strong> &mdash; 更少的螢幕重新整理，帶來更順暢的使用體驗</li>
+  <li><strong>縮小重繪區域</strong> &mdash; 更小的更新範圍，減少殘影</li>
+</ul>
+<p>最終成果是一款具備高對比圖示、零動畫，並支援觸控區翻頁、音量鍵、閱讀模式、直書版型與 AI 內容互動的瀏覽器。</p>
+</section>
+
+<section id="first-launch">
+<h2>首次啟動</h2>
+<p>第一次開啟 EinkBro 時，您會看到下方的工具列，上面是可自訂的動作圖示。預設配置如下：</p>
+<ul>
+  <li><strong>手機</strong>：新分頁、觸控、閱讀模式、重新整理、上一頁、書籤、分頁計數、輸入網址、設定</li>
+  <li><strong>平板</strong>：標題、新分頁、觸控、閱讀模式、重新整理、上一頁、書籤、分頁計數、設定</li>
+</ul>
+<p>點擊「<strong>設定</strong>」圖示（漢堡選單）即可開啟動作選單，存取所有瀏覽器功能。</p>
+<a href="../images/toolbar_bottom.png" target="_blank"><img src="../images/toolbar_bottom.png" alt="下方工具列" class="device-img"></a>
+</section>
+
+<!-- ==================== TOOLBAR ACTIONS ==================== -->
+<section id="toolbar-actions">
+<h2>工具列動作</h2>
+<p>EinkBro 有超過 40 種工具列動作。您可以任意選擇並拖曳排序。下方是完整的對照表。</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th style="width:24px"></th><th style="white-space:nowrap">動作</th><th>點擊</th><th>長按</th></tr>
+</thead>
+<tbody>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">info</span></td>
+  <td><strong>標題</strong></td>
+  <td>編輯目前網址；輸入關鍵字可搜尋</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">arrow_back</span></td>
+  <td><strong>上一頁</strong></td>
+  <td>回到前一頁</td>
+  <td>顯示最近 5 筆瀏覽紀錄</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/></svg></td>
+  <td><strong>重新整理</strong></td>
+  <td>重新載入目前頁面（載入時顯示停止圖示）</td>
+  <td>進入全螢幕</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M9,11.24V7.5C9,6.12 10.12,5 11.5,5S14,6.12 14,7.5v3.74c1.21,-0.81 2,-2.18 2,-3.74C16,5.01 13.99,3 11.5,3S7,5.01 7,7.5C7,9.06 7.79,10.43 9,11.24zM18.84,15.87l-4.54,-2.26c-0.17,-0.07 -0.35,-0.11 -0.54,-0.11H13v-6C13,6.67 12.33,6 11.5,6S10,6.67 10,7.5v10.74c-3.6,-0.76 -3.54,-0.75 -3.67,-0.75c-0.31,0 -0.59,0.13 -0.79,0.33l-0.79,0.8l4.94,4.94C9.96,23.83 10.34,24 10.75,24h6.79c0.75,0 1.33,-0.55 1.44,-1.28l0.75,-5.27c0.01,-0.07 0.02,-0.14 0.02,-0.2C19.75,16.63 19.37,16.09 18.84,15.87z"/></svg></td>
+  <td><strong>觸控翻頁</strong></td>
+  <td>切換觸控翻頁</td>
+  <td>顯示觸控設定對話框</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">upload</span></td>
+  <td><strong>上一畫面</strong></td>
+  <td>向上捲動一個畫面</td>
+  <td>捲至頂端</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">download</span></td>
+  <td><strong>下一畫面</strong></td>
+  <td>向下捲動一個畫面</td>
+  <td>捲至底端</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">looks_one</span></td>
+  <td><strong>分頁計數</strong></td>
+  <td>顯示分頁清單</td>
+  <td>啟用無痕模式</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">format_size</span></td>
+  <td><strong>字級大小</strong></td>
+  <td>顯示字級對話框</td>
+  <td>進入閱讀模式</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">menu</span></td>
+  <td><strong>設定（選單）</strong></td>
+  <td>顯示動作選單</td>
+  <td>顯示快速存取對話框</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">bookmarks</span></td>
+  <td><strong>書籤</strong></td>
+  <td>顯示書籤</td>
+  <td>將目前網址加入書籤</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">straighten</span></td>
+  <td><strong>工具列設定</strong></td>
+  <td>開啟工具列設定</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">view_column</span></td>
+  <td><strong>直書版型</strong></td>
+  <td>切換直書閱讀模式</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">chrome_reader_mode</span></td>
+  <td><strong>閱讀模式</strong></td>
+  <td>切換閱讀模式</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M15,10.5C15,11.3 14.3,12 13.5,12C14.3,12 15,12.7 15,13.5V15A2,2 0 0,1 13,17H9V7H13A2,2 0 0,1 15,9V10.5M13,15V13H11V15H13M13,11V9H11V11H13M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></td>
+  <td><strong>粗體字</strong></td>
+  <td>切換粗體字樣式</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">text_increase</span></td>
+  <td><strong>放大字級</strong></td>
+  <td>將字級放大 10%</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">text_decrease</span></td>
+  <td><strong>縮小字級</strong></td>
+  <td>將字級縮小 10%</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">fullscreen</span></td>
+  <td><strong>全螢幕</strong></td>
+  <td>進入全螢幕模式</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">arrow_forward</span></td>
+  <td><strong>下一頁</strong></td>
+  <td>前往下一頁</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">rotate_right</span></td>
+  <td><strong>旋轉畫面</strong></td>
+  <td>切換螢幕方向</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">translate</span></td>
+  <td><strong>翻譯</strong></td>
+  <td>翻譯目前頁面</td>
+  <td>顯示不同翻譯模式</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">cancel_presentation</span></td>
+  <td><strong>關閉分頁</strong></td>
+  <td>關閉目前分頁</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">edit</span></td>
+  <td><strong>輸入網址</strong></td>
+  <td>顯示筆形圖示以編輯網址（不顯示網頁標題）</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">library_add</span></td>
+  <td><strong>新分頁</strong></td>
+  <td>建立新分頁</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z"/></svg></td>
+  <td><strong>桌面模式</strong></td>
+  <td>切換桌面版 User Agent</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">toc</span></td>
+  <td><strong>目錄</strong></td>
+  <td>顯示目錄（EPUB／閱讀器）</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">search</span></td>
+  <td><strong>搜尋</strong></td>
+  <td>在目前頁面搜尋文字</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">folder_copy</span></td>
+  <td><strong>複製分頁</strong></td>
+  <td>複製目前分頁</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">record_voice_over</span></td>
+  <td><strong>TTS（朗讀）</strong></td>
+  <td>朗讀網頁內容</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M7,15H5.5v-4.5H4V9h3V15zM13.5,13.5h-3v-1h2c0.55,0 1,-0.45 1,-1V10c0,-0.55 -0.45,-1 -1,-1H9v1.5h3v1h-2c-0.55,0 -1,0.45 -1,1V15h4.5V13.5zM19.5,14v-4c0,-0.55 -0.45,-1 -1,-1H15v1.5h3v1h-2v1h2v1h-3V15h3.5C19.05,15 19.5,14.55 19.5,14z"/></svg></td>
+  <td><strong>頁面資訊</strong></td>
+  <td>顯示頁面位置／頁數</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">g_translate</span></td>
+  <td><strong>Google 原地翻譯</strong></td>
+  <td>以 Google 翻譯原地顯示</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">segment</span></td>
+  <td><strong>逐段翻譯</strong></td>
+  <td>以內嵌方式逐段翻譯</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">minimize</span></td>
+  <td><strong>移至背景</strong></td>
+  <td>將瀏覽器移至背景</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">swipe_vertical</span></td>
+  <td><strong>觸控方向上下</strong></td>
+  <td>切換觸控區域方向（上下）</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">swipe</span></td>
+  <td><strong>觸控方向左右</strong></td>
+  <td>切換觸控區域方向（左右）</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">schedule</span></td>
+  <td><strong>時間</strong></td>
+  <td>於工具列顯示目前時間</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">space_bar</span></td>
+  <td><strong>間隔</strong></td>
+  <td>圖示之間的彈性空間</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">share</span></td>
+  <td><strong>分享連結</strong></td>
+  <td>分享目前頁面連結</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">article</span></td>
+  <td><strong>儲存 EPUB</strong></td>
+  <td>開啟／儲存 EPUB 對話框</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">invert_colors</span></td>
+  <td><strong>反轉顏色</strong></td>
+  <td>反轉頁面顏色</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">chat</span></td>
+  <td><strong>與網頁對話</strong></td>
+  <td>針對目前頁面開啟 AI 對話</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M20,9V7c0,-1.1 -0.9,-2 -2,-2h-3c0,-1.66 -1.34,-3 -3,-3S9,3.34 9,5H6C4.9,5 4,5.9 4,7v2c-1.66,0 -3,1.34 -3,3s1.34,3 3,3v4c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2v-4c1.66,0 3,-1.34 3,-3S21.66,9 20,9zM18,19H6V7h12V19zM9,10c-0.83,0 -1.5,0.67 -1.5,1.5S8.17,13 9,13s1.5,-0.67 1.5,-1.5S9.83,10 9,10zM15,10c-0.83,0 -1.5,0.67 -1.5,1.5S14.17,13 15,13s1.5,-0.67 1.5,-1.5S15.83,10 15,10zM8,15h8v2H8V15z"/></svg></td>
+  <td><strong>頁面 AI</strong></td>
+  <td>對整頁內容執行 AI 動作</td>
+  <td>&mdash;</td>
+</tr>
+<tr>
+  <td class="tb-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12,3c-4.97,0 -9,4.03 -9,9v7c0,1.1 0.9,2 2,2h4v-8H5v-1c0,-3.87 3.13,-7 7,-7s7,3.13 7,7v1h-4v8h4c1.1,0 2,-0.9 2,-2v-7c0,-4.97 -4.03,-9 -9,-9zM7,14v4H5v-4h2zM19,18h-2v-4h2v4z"/></svg></td>
+  <td><strong>純音訊</strong></td>
+  <td>隱藏影片，保留聲音與字幕</td>
+  <td>&mdash;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="toolbar-config">
+<h2>工具列自訂</h2>
+<p>開啟「<strong>動作選單 &rarr; 工具列圖示</strong>」（或將「工具列設定」按鈕加入工具列）。勾選任一項目即可加入工具列。拖曳右側把手可重新排序。</p>
+<a href="../images/06_toolbar_config.png" target="_blank"><img src="../images/06_toolbar_config.png" alt="工具列設定" class="device-img"></a>
+<p>工具列位置可於<a href="#settings-toolbar">「設定 &rarr; 工具列」</a>設為<strong>下方</strong>、<strong>上方</strong>、<strong>左側</strong>或<strong>右側</strong>。</p>
+</section>
+
+<!-- ==================== ACTION MENU ==================== -->
+<section id="action-menu">
+<h2>動作選單</h2>
+<p>點擊工具列上的「<strong>設定</strong>」（漢堡）圖示即可開啟動作選單，裡頭以可捲動的列排列了所有瀏覽器功能。</p>
+<a href="../images/action_menu.png" target="_blank"><img src="../images/action_menu.png" alt="動作選單" class="device-img"></a>
+</section>
+
+<section id="menu-row1">
+<h3>第一列：快速動作</h3>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>重點</strong> &mdash; 檢視與管理文字重點</span>
+    <span class="action-item"><strong>設為首頁</strong> &mdash; 將目前網址設為首頁</span>
+    <span class="action-item"><strong>開啟首頁</strong> &mdash; 前往首頁</span>
+    <span class="action-item"><strong>關閉分頁</strong> &mdash; 關閉目前分頁（若為最後一個則關閉應用程式）</span>
+    <span class="action-item"><strong>結束</strong> &mdash; 離開 EinkBro</span>
+  </div>
+</div>
+</section>
+
+<section id="menu-share">
+<h3>分享與儲存</h3>
+<p>可收合區塊，包含兩列分享與儲存動作：</p>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>接收連結</strong> &mdash; 透過區域網路從另一裝置接收網址</span>
+    <span class="action-item"><strong>加入書籤</strong> &mdash; 將目前頁面加入書籤</span>
+    <span class="action-item"><strong>加到主畫面</strong> &mdash; 將捷徑加到 Android 主畫面</span>
+    <span class="action-item"><strong>以其他應用程式開啟連結…</strong> &mdash; 以其他應用程式（YouTube、地圖等）開啟網址</span>
+    <span class="action-item"><strong>複製連結</strong> &mdash; 將網址複製到剪貼簿</span>
+    <span class="action-item"><strong>分享連結</strong> &mdash; 將網址分享到其他應用程式</span>
+    <span class="action-item"><strong>傳送連結</strong> &mdash; 傳送網址至另一台執行 EinkBro 或 Shakira 的裝置</span>
+    <span class="action-item"><strong>Instapaper</strong> &mdash; 儲存至 Instapaper</span>
+    <span class="action-item"><strong>稍後閱讀</strong> &mdash; 本機的「稍後閱讀」</span>
+    <span class="action-item"><strong>EPUB</strong> &mdash; 開啟或儲存為 EPUB</span>
+    <span class="action-item"><strong>儲存為 PDF</strong> &mdash; 匯出為 PDF，紙張大小可設定</span>
+  </div>
+</div>
+</section>
+
+<section id="menu-content">
+<h3>內容調整</h3>
+<p>可收合區塊，包含內容顯示與轉換工具：</p>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>與網頁對話</strong> &mdash; 針對目前頁面進行 AI 對話</span>
+    <span class="action-item"><strong>分割畫面</strong> &mdash; 在目前頁面旁開啟第二個面板</span>
+    <span class="action-item"><strong>翻譯</strong> &mdash; 翻譯目前頁面</span>
+    <span class="action-item"><strong>直書模式</strong> &mdash; CJK 內容的直書版型</span>
+    <span class="action-item"><strong>閱讀模式</strong> &mdash; 去除雜訊，乾淨閱讀</span>
+    <span class="action-item"><strong>觸控設定</strong> &mdash; 設定觸控區域</span>
+    <span class="action-item"><strong>朗讀內容</strong> &mdash; TTS：朗讀頁面</span>
+    <span class="action-item"><strong>反轉顏色</strong> &mdash; 反轉頁面顏色</span>
+    <span class="action-item"><strong>白色背景</strong> &mdash; 強制白色背景（適用於深色網站）</span>
+    <span class="action-item"><strong>黑色字型</strong> &mdash; 強制黑色字型</span>
+    <span class="action-item"><strong>粗體字型</strong> &mdash; 將所有文字加粗，提升 E-Ink 可讀性</span>
+    <span class="action-item"><strong>字級大小</strong> &mdash; 調整字級與字型樣式</span>
+  </div>
+</div>
+</section>
+
+<section id="menu-bottom">
+<h3>最後一列</h3>
+<div class="action-row">
+  <div class="action-row__items">
+    <span class="action-item"><strong>站內搜尋</strong> &mdash; 在目前頁面搜尋文字</span>
+    <span class="action-item"><strong>下載項目</strong> &mdash; 開啟系統下載資料夾</span>
+    <span class="action-item"><strong>工具列圖示</strong> &mdash; 設定工具列</span>
+    <span class="action-item"><strong>快速切換</strong> &mdash; 快速切換無痕模式、廣告封鎖、JS、Cookie、歷史、位置、音量鍵、背景媒體、桌面模式</span>
+    <span class="action-item"><strong>設定</strong> &mdash; 開啟設定畫面</span>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SETTINGS ==================== -->
+
+<section id="settings-ui" class="settings-section">
+<h2>設定：介面</h2>
+<a href="../images/settings_ui.png" target="_blank"><img src="../images/settings_ui.png" alt="介面設定" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">應用程式語言</div><div class="setting-item__desc">變更介面語言。預設：系統語言。</div></div>
+<div class="setting-item"><div class="setting-item__name">隱藏狀態列</div><div class="setting-item__desc"><span class="tag">切換</span> 永遠隱藏系統狀態列。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">桌面模式</div><div class="setting-item__desc"><span class="tag">切換</span> 要求網站提供桌面版。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">永遠啟用內容縮放</div><div class="setting-item__desc"><span class="tag">切換</span> 即使網站停用縮放，仍強制允許。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">顯示預設選取文字選單</div><div class="setting-item__desc"><span class="tag">切換</span> 選取文字後顯示系統預設的選單。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">動作選單顯示圖示</div><div class="setting-item__desc"><span class="tag">切換</span> 顯示或隱藏動作選單中的圖示。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">換頁保留高度</div><div class="setting-item__desc"><span class="tag">輸入</span> 翻至下一頁時保留的像素或百分比（作為上下文重疊）。預設：<code>80</code>。</div></div>
+<div class="setting-item"><div class="setting-item__name">閱讀模式留白</div><div class="setting-item__desc"><span class="tag">輸入</span> 閱讀模式內容的留白像素值。預設：<code>10</code>。</div></div>
+<div class="setting-item"><div class="setting-item__name">深色模式</div><div class="setting-item__desc"><span class="tag">選項</span> 可選：<code>跟隨系統</code>、<code>強制開啟</code>、<code>停用</code>。預設：跟隨系統。</div></div>
+<div class="setting-item"><div class="setting-item__name">E-Ink 圖片最佳化</div><div class="setting-item__desc"><span class="tag">選項</span> 調整網頁圖片以適合 E-Ink 顯示。可選：<code>關閉</code>、<code>10%</code>、<code>30%</code>、<code>50%</code>、<code>70%</code>、<code>100%</code>。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">浮動按鈕位置</div><div class="setting-item__desc"><span class="tag">選項</span> 導航浮動按鈕的位置。可選：<code>右側</code>、<code>左側</code>、<code>置中</code>、<code>不顯示</code>、<code>自訂</code>。預設：右側。</div></div>
+<div class="setting-item"><div class="setting-item__name">新分頁行為</div><div class="setting-item__desc"><span class="tag">選項</span> 新分頁開啟時顯示什麼。可選：<code>從輸入網址開始</code>、<code>顯示首頁</code>、<code>顯示書籤</code>。預設：從輸入網址開始。</div></div>
+<div class="setting-item"><div class="setting-item__name">清除最近書籤清單</div><div class="setting-item__desc"><span class="tag">動作</span> 清除最近使用的書籤清單。</div></div>
+</section>
+
+<section id="settings-toolbar" class="settings-section">
+<h2>設定：工具列</h2>
+<a href="../images/settings_toolbar.png" target="_blank"><img src="../images/settings_toolbar.png" alt="工具列設定" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">設定工具列圖示</div><div class="setting-item__desc"><span class="tag">動作</span> 開啟工具列圖示挑選與排序介面。</div></div>
+<div class="setting-item"><div class="setting-item__name">工具列位置</div><div class="setting-item__desc"><span class="tag">選項</span> 可選：<code>下方</code>、<code>上方</code>、<code>左側</code>、<code>右側</code>。預設：下方。</div></div>
+<div class="setting-item"><div class="setting-item__name">隱藏工具列</div><div class="setting-item__desc"><span class="tag">切換</span> 捲動時隱藏工具列以便全螢幕閱讀。按返回鍵可還原。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">工具列優先</div><div class="setting-item__desc"><span class="tag">切換</span> 按返回鍵時先顯示工具列，再回上一頁。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">顯示分頁列</div><div class="setting-item__desc"><span class="tag">切換</span> 永遠在工具列上方／旁邊顯示分頁列。預設：關閉。</div></div>
+</section>
+
+<section id="settings-behavior" class="settings-section">
+<h2>設定：行為</h2>
+<a href="../images/settings_behavior.png" target="_blank"><img src="../images/settings_behavior.png" alt="行為設定" class="device-img"></a>
+
+<h4>分頁管理</h4>
+<div class="setting-item"><div class="setting-item__name">儲存分頁</div><div class="setting-item__desc"><span class="tag">切換</span> 從上次工作階段還原分頁。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">載入非作用中分頁</div><div class="setting-item__desc"><span class="tag">切換</span> 於背景載入非作用中分頁。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">顯示下一個分頁</div><div class="setting-item__desc"><span class="tag">切換</span> 關閉分頁時顯示下一個（而非上一個）。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">返回鍵行為</div><div class="setting-item__desc"><span class="tag">切換</span> 當已位於歷史第一頁時關閉分頁。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">關閉分頁確認</div><div class="setting-item__desc"><span class="tag">切換</span> 關閉分頁時顯示確認對話框。預設：關閉。</div></div>
+
+<h4>網址與導航</h4>
+<div class="setting-item"><div class="setting-item__name">修剪輸入文字內容</div><div class="setting-item__desc"><span class="tag">切換</span> 從貼上內容中移除非 http 前綴。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">移除追蹤查詢參數</div><div class="setting-item__desc"><span class="tag">切換</span> 從網址中移除 <code>utm_*</code> 等追蹤參數。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">單次觸控網址動作</div><div class="setting-item__desc"><span class="tag">切換</span> 長按網址並拖曳至項目即可觸發動作。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">編輯網址時顯示書籤</div><div class="setting-item__desc"><span class="tag">切換</span> 在網址列輸入時顯示符合的書籤。預設：關閉。</div></div>
+
+<h4>影片</h4>
+<div class="setting-item"><div class="setting-item__name">允許影片自動播放</div><div class="setting-item__desc"><span class="tag">切換</span> 允許影片自動播放。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">啟用影片全螢幕播放</div><div class="setting-item__desc"><span class="tag">切換</span> 播放時自動將影片切換為全螢幕。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">在小視窗顯示影片</div><div class="setting-item__desc"><span class="tag">切換</span> 離開全螢幕影片時啟用子母畫面。預設：關閉。</div></div>
+
+<h4>輸入與控制</h4>
+<div class="setting-item"><div class="setting-item__name">Vi 快捷鍵</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用 Vi 風格的鍵盤快捷鍵。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">停用觸控區長按</div><div class="setting-item__desc"><span class="tag">切換</span> 防止觸控區的長按動作。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">使用上／下方向鍵</div><div class="setting-item__desc"><span class="tag">切換</span> 使用方向鍵上／下翻頁（適用藍牙鍵盤）。預設：關閉。</div></div>
+
+<h4>顯示與渲染</h4>
+<div class="setting-item"><div class="setting-item__name">保持螢幕常亮</div><div class="setting-item__desc"><span class="tag">切換</span> 防止螢幕自動關閉。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">文字換行重排</div><div class="setting-item__desc"><span class="tag">切換</span> 縮放時重新排版文字以便閱讀。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">自訂檢視縮放</div><div class="setting-item__desc"><span class="tag">切換</span> 全螢幕模式下啟用雙指縮放。預設：關閉。</div></div>
+
+<h4>安全與網路</h4>
+<div class="setting-item"><div class="setting-item__name">顯示 SSL 錯誤對話框</div><div class="setting-item__desc"><span class="tag">切換</span> 發生 SSL 憑證錯誤時顯示對話框。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">啟用網頁快取</div><div class="setting-item__desc"><span class="tag">切換</span> 快取網頁內容以加快載入。預設：關閉。</div></div>
+</section>
+
+<section id="settings-gestures" class="settings-section">
+<h2>設定：手勢</h2>
+<a href="../images/settings_gestures.png" target="_blank"><img src="../images/settings_gestures.png" alt="手勢設定" class="device-img"></a>
+
+<h4>觸控區域點擊動作</h4>
+<p>設定點擊或長按觸控翻頁區域時的行為。每項都可設為：上一畫面、下一畫面、向上捲動、向下捲動、捲至頂端、捲至底端、總覽等。</p>
+<div class="setting-item"><div class="setting-item__name">上方點擊動作</div><div class="setting-item__desc"><span class="tag">選項</span> 預設：上一畫面。</div></div>
+<div class="setting-item"><div class="setting-item__name">上方長按動作</div><div class="setting-item__desc"><span class="tag">選項</span> 預設：捲至頂端。</div></div>
+<div class="setting-item"><div class="setting-item__name">下方點擊動作</div><div class="setting-item__desc"><span class="tag">選項</span> 預設：下一畫面。</div></div>
+<div class="setting-item"><div class="setting-item__name">下方長按動作</div><div class="setting-item__desc"><span class="tag">選項</span> 預設：捲至底端。</div></div>
+
+<h4>雙指滑動手勢</h4>
+<div class="setting-item"><div class="setting-item__name">雙指滑動手勢</div><div class="setting-item__desc"><span class="tag">切換</span> 於網頁內容啟用雙指滑動。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">滑動上／下／左／右</div><div class="setting-item__desc"><span class="tag">選項</span> 各方向滑動可設定對應動作。</div></div>
+
+<h4>浮動按鈕手勢</h4>
+<div class="setting-item"><div class="setting-item__name">浮動按鈕使用手勢</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用浮動導航按鈕的滑動手勢。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">滑動上／下／左／右</div><div class="setting-item__desc"><span class="tag">選項</span> 浮動按鈕各方向滑動可設定對應動作。</div></div>
+<div class="setting-item"><div class="setting-item__name">長按</div><div class="setting-item__desc"><span class="tag">選項</span> 長按浮動按鈕的動作。預設：總覽。</div></div>
+</section>
+
+<section id="settings-backup" class="settings-section">
+<h2>設定：備份</h2>
+<a href="../images/settings_backup.png" target="_blank"><img src="../images/settings_backup.png" alt="備份設定" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">匯出應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 將歷史、書籤、設定與 WebView 登入資料（Cookie 與儲存空間）匯出為壓縮檔。</div></div>
+<div class="setting-item"><div class="setting-item__name">匯入應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 從先前匯出的壓縮檔匯入，包含 WebView 登入資料。</div></div>
+<div class="setting-item"><div class="setting-item__name">分享應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 透過區域網路將應用程式資料分享至另一裝置。</div></div>
+<div class="setting-item"><div class="setting-item__name">接收應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 透過區域網路從另一裝置接收應用程式資料。</div></div>
+<div class="setting-item"><div class="setting-item__name">匯出書籤</div><div class="setting-item__desc"><span class="tag">動作</span> 將書籤匯出為檔案。</div></div>
+<div class="setting-item"><div class="setting-item__name">匯入書籤</div><div class="setting-item__desc"><span class="tag">動作</span> 從檔案匯入書籤。</div></div>
+</section>
+
+<section id="settings-startcontrol" class="settings-section">
+<h2>設定：啟動控制</h2>
+<a href="../images/settings_startcontrol.png" target="_blank"><img src="../images/settings_startcontrol.png" alt="啟動控制設定" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">圖片</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用網路圖片。停用可節省流量。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">自動填入表單</div><div class="setting-item__desc"><span class="tag">切換</span> 自動填入表單欄位。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">歷史</div><div class="setting-item__desc"><span class="tag">選項</span> 可選：<code>開啟時儲存</code>、<code>關閉時儲存</code>、<code>停用</code>。預設：開啟時儲存。</div></div>
+<div class="setting-item"><div class="setting-item__name">WebView 除錯</div><div class="setting-item__desc"><span class="tag">切換</span> 透過 Chrome DevTools 啟用遠端 WebView 除錯。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">遠端內容</div><div class="setting-item__desc"><span class="tag">切換</span> 允許第三方內容（廣告、分析等）。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">位置</div><div class="setting-item__desc"><span class="tag">切換</span> 允許網站存取您的位置。預設：關閉。</div></div>
+
+<h4>廣告封鎖</h4>
+<div class="setting-item"><div class="setting-item__name">廣告封鎖</div><div class="setting-item__desc"><span class="tag">切換</span> 封鎖廣告以加快頁面載入。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">更新廣告封鎖內容</div><div class="setting-item__desc"><span class="tag">動作</span> 手動觸發廣告封鎖過濾清單更新。</div></div>
+<div class="setting-item"><div class="setting-item__name">廣告封鎖白名單</div><div class="setting-item__desc"><span class="tag">動作</span> 允許顯示廣告的站台清單。</div></div>
+
+<h4>JavaScript</h4>
+<div class="setting-item"><div class="setting-item__name">JavaScript</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用 JavaScript。許多網站需要。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">JavaScript 白名單</div><div class="setting-item__desc"><span class="tag">動作</span> 當全域停用 JS 時，僅允許信任的站台執行。</div></div>
+
+<h4>Cookies</h4>
+<div class="setting-item"><div class="setting-item__name">Cookies</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用 Cookie。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">Cookie 白名單</div><div class="setting-item__desc"><span class="tag">動作</span> 當全域停用 Cookie 時，僅允許信任的站台使用。</div></div>
+
+<div class="setting-item"><div class="setting-item__name">要求「節省流量」</div><div class="setting-item__desc"><span class="tag">切換</span> 告訴網站您偏好較少的流量用量。預設：開啟。</div></div>
+</section>
+
+<section id="settings-datacontrol" class="settings-section">
+<h2>設定：資料控制</h2>
+<a href="../images/settings_datacontrol.png" target="_blank"><img src="../images/settings_datacontrol.png" alt="資料控制設定" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">清除快取</div><div class="setting-item__desc"><span class="tag">切換</span> 清除已快取的網頁資料。</div></div>
+<div class="setting-item"><div class="setting-item__name">清除歷史</div><div class="setting-item__desc"><span class="tag">切換</span> 清除瀏覽歷史。</div></div>
+<div class="setting-item"><div class="setting-item__name">清除 IndexedDB 與 Local Storage</div><div class="setting-item__desc"><span class="tag">切換</span> 清除 IndexedDB 與 WebView Local Storage。</div></div>
+<div class="setting-item"><div class="setting-item__name">清除 Cookies</div><div class="setting-item__desc"><span class="tag">切換</span> 刪除所有 Cookie，包括白名單站台。</div></div>
+<div class="setting-item"><div class="setting-item__name">退出時清除</div><div class="setting-item__desc"><span class="tag">切換</span> 關閉應用程式時自動清除所有勾選的資料類型。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">刪除資料庫</div><div class="setting-item__desc"><span class="tag">動作</span> <strong>危險：</strong>刪除整個資料庫（書籤、歷史、白名單）。</div></div>
+</section>
+
+<section id="settings-search" class="settings-section">
+<h2>設定：搜尋</h2>
+<a href="../images/settings_search.png" target="_blank"><img src="../images/settings_search.png" alt="搜尋設定" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">搜尋引擎</div><div class="setting-item__desc"><span class="tag">選項</span> 可選：<code>Google</code>、<code>Bing</code>、<code>DuckDuckGo</code>、<code>Startpage</code>、<code>Startpage (de)</code>、<code>Baidu</code>、<code>Searx</code>、<code>Qwant</code>、<code>Ecosia</code>、<code>Yandex</code>。</div></div>
+<div class="setting-item"><div class="setting-item__name">自訂搜尋引擎網址</div><div class="setting-item__desc"><span class="tag">輸入</span> 自訂搜尋網址，以 <code>%s</code> 作為佔位符。預設：<code>https://www.google.com/search?q=%s</code>。</div></div>
+<div class="setting-item"><div class="setting-item__name">搜尋建議</div><div class="setting-item__desc"><span class="tag">切換</span> 輸入時顯示搜尋建議。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">自訂外部搜尋網址</div><div class="setting-item__desc"><span class="tag">輸入</span> 來自其他應用程式的反白文字，搜尋網址前綴。</div></div>
+<div class="setting-item"><div class="setting-item__name">以彈出式視窗顯示 PROCESS_TEXT</div><div class="setting-item__desc"><span class="tag">切換</span> 以彈出式字典視窗顯示搜尋（對閱讀器應用程式很實用）。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">分割搜尋設定</div><div class="setting-item__desc"><span class="tag">動作</span> 設定搜尋結果如何在分割畫面開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">外部搜尋使用分頁</div><div class="setting-item__desc"><span class="tag">切換</span> 外部搜尋查詢重用同一分頁。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">遠端查詢動作</div><div class="setting-item__desc"><span class="tag">選項</span> 遠端查詢的動作。預設：搜尋。也可使用自訂 ChatGPT 動作。</div></div>
+</section>
+
+<section id="settings-misc" class="settings-section">
+<h2>設定：其他</h2>
+<a href="../images/settings_misc.png" target="_blank"><img src="../images/settings_misc.png" alt="其他設定" class="device-img"></a>
+
+<div class="setting-item"><div class="setting-item__name">重點樣式</div><div class="setting-item__desc"><span class="tag">選項</span> 選擇文字重點的視覺樣式。</div></div>
+<div class="setting-item"><div class="setting-item__name">翻譯文字區塊樣式</div><div class="setting-item__desc"><span class="tag">選項</span> 選擇段落翻譯的顯示樣式。</div></div>
+<div class="setting-item"><div class="setting-item__name">自訂 User Agent</div><div class="setting-item__desc"><span class="tag">動作</span> 啟用並設定自訂 User-Agent 字串。</div></div>
+<div class="setting-item"><div class="setting-item__name">編輯首頁網址</div><div class="setting-item__desc"><span class="tag">輸入</span> 設定您偏好的首頁網址。</div></div>
+<div class="setting-item"><div class="setting-item__name">列印 PDF 紙張大小</div><div class="setting-item__desc"><span class="tag">動作</span> 選擇 PDF 列印的紙張大小。</div></div>
+<div class="setting-item"><div class="setting-item__name">翻譯語言</div><div class="setting-item__desc"><span class="tag">輸入</span> 自訂 Google 翻譯語言（例如：<code>en, fr, de, zh-TW, zh-CN</code>）。</div></div>
+<div class="setting-item"><div class="setting-item__name">翻譯圖片 API 金鑰</div><div class="setting-item__desc"><span class="tag">輸入</span> 圖片翻譯服務的 API 金鑰。</div></div>
+<div class="setting-item"><div class="setting-item__name">YouTube 雙字幕</div><div class="setting-item__desc"><span class="tag">動作</span> 選擇 YouTube 第二字幕的語言。</div></div>
+<div class="setting-item"><div class="setting-item__name">閱讀模式：保留額外內容</div><div class="setting-item__desc"><span class="tag">切換</span> 在閱讀模式保留樣式、class 與數學公式（MathJax／KaTeX）。預設：關閉。</div></div>
+</section>
+
+<section id="settings-gpt" class="settings-section">
+<h2>設定：GPT</h2>
+<a href="../images/settings_gpt.png" target="_blank"><img src="../images/settings_gpt.png" alt="GPT 設定" class="device-img"></a>
+
+<h4>一般</h4>
+<div class="setting-item"><div class="setting-item__name">GPT 結果歷史</div><div class="setting-item__desc"><span class="tag">動作</span> 檢視已儲存的 GPT 查詢結果。</div></div>
+<div class="setting-item"><div class="setting-item__name">ChatGPT 動作定義</div><div class="setting-item__desc"><span class="tag">動作</span> 為不同 AI 動作定義自訂 Prompt。</div></div>
+<div class="setting-item"><div class="setting-item__name">字典搜尋使用 ChatGPT</div><div class="setting-item__desc"><span class="tag">切換</span> 在閱讀器應用程式中以 AI 進行字典查詢。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">串流回覆</div><div class="setting-item__desc"><span class="tag">切換</span> 逐字串流回應。預設：開啟。</div></div>
+
+<h4>網頁內容處理</h4>
+<div class="setting-item"><div class="setting-item__name">摘要 GPT 類型</div><div class="setting-item__desc"><span class="tag">選項</span> 摘要所用的引擎。可選：<code>預設</code>、<code>OpenAI</code>、<code>自架</code>、<code>Google Gemini</code>。</div></div>
+<div class="setting-item"><div class="setting-item__name">整頁內容 Prompt</div><div class="setting-item__desc"><span class="tag">輸入</span> 隨整頁內容送出的 Prompt。預設：<code>以 50 字摘要：</code>。</div></div>
+<div class="setting-item"><div class="setting-item__name">網頁處理 GPT 類型</div><div class="setting-item__desc"><span class="tag">選項</span> 網頁內容處理所用的引擎。選項與「摘要 GPT 類型」相同。</div></div>
+
+<h4>OpenAI</h4>
+<div class="setting-item"><div class="setting-item__name">OpenAI API 金鑰</div><div class="setting-item__desc"><span class="tag">輸入</span> 您的 OpenAI API 金鑰。</div></div>
+<div class="setting-item"><div class="setting-item__name">OpenAI 模型名稱</div><div class="setting-item__desc"><span class="tag">輸入</span> 預設：<code>gpt-4.1</code>。可使用其他 OpenAI 模型。</div></div>
+<div class="setting-item"><div class="setting-item__name">使用 OpenAI API 朗讀網頁內容</div><div class="setting-item__desc"><span class="tag">切換</span> 使用 OpenAI TTS 進行語音合成。預設：開啟。</div></div>
+<div class="setting-item"><div class="setting-item__name">OpenAI TTS 模型名稱</div><div class="setting-item__desc"><span class="tag">輸入</span> 可選：<code>tts-1</code>（預設）、<code>tts-1-hd</code>、<code>gpt-4o-mini-tts</code>。</div></div>
+<div class="setting-item"><div class="setting-item__name">語音輸出指示</div><div class="setting-item__desc"><span class="tag">輸入</span> 使用 <code>gpt-4o-mini-tts</code> 模型時的語音指示。</div></div>
+
+<h4>OpenAI 相容伺服器</h4>
+<div class="setting-item"><div class="setting-item__name">使用替代伺服器</div><div class="setting-item__desc"><span class="tag">切換</span> 連接到自訂的 OpenAI 相容 API。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">替代模型名稱</div><div class="setting-item__desc"><span class="tag">輸入</span> 替代伺服器的模型名稱。</div></div>
+<div class="setting-item"><div class="setting-item__name">自訂主機網址</div><div class="setting-item__desc"><span class="tag">輸入</span> 伺服器網址。預設：<code>https://api.openai.com</code>。</div></div>
+
+<h4>Google Gemini</h4>
+<div class="setting-item"><div class="setting-item__name">使用 Google Gemini 模型</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用 Gemini 作為 AI 提供者。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">Gemini API 金鑰</div><div class="setting-item__desc"><span class="tag">輸入</span> 您的 Google Gemini API 金鑰。</div></div>
+<div class="setting-item"><div class="setting-item__name">Gemini 模型名稱</div><div class="setting-item__desc"><span class="tag">輸入</span> 預設：<code>gemini-2.5-flash</code>。</div></div>
+</section>
+
+<!-- ==================== FEATURE GUIDES ==================== -->
+
+<section id="feature-reader">
+<h2>閱讀模式</h2>
+<p>閱讀模式會移除頁首、側欄、頁尾與廣告，只留下主要文章內容。非常適合在 E-Ink 螢幕上長時間閱讀。</p>
+<ul>
+  <li>透過工具列的「<strong>閱讀模式</strong>」按鈕或「<strong>動作選單 &rarr; 閱讀模式</strong>」啟用</li>
+  <li>長按工具列上的「<strong>字級大小</strong>」按鈕也會進入閱讀模式</li>
+  <li>可在<a href="#settings-ui">「設定 &rarr; 介面 &rarr; 閱讀模式留白」</a>中自訂留白</li>
+  <li>在<a href="#settings-misc">「設定 &rarr; 其他」</a>啟用「<strong>保留額外內容</strong>」可保留數學公式（MathJax／KaTeX）與樣式</li>
+  <li>閱讀模式擁有獨立的工具列設定，包含：旋轉、全螢幕、粗體字、字級大小、觸控、目錄、頁面資訊、設定、關閉分頁</li>
+</ul>
+</section>
+
+<section id="feature-split">
+<h2>分割畫面</h2>
+<p>分割畫面會在目前頁面旁開啟第二個網頁面板。適合邊看新聞清單邊讀文章，或在閱讀內容的同時使用 AI 對話。</p>
+<ul>
+  <li>透過「<strong>動作選單 &rarr; 分割畫面</strong>」或長按任一連結即可啟用</li>
+  <li>分割面板擁有自己的迷你工具列（由上而下）：
+    <ul>
+      <li><strong>方向</strong> &mdash; 切換直向／橫向分割。長按可交換兩個面板。</li>
+      <li><strong>雙畫面連結</strong> &mdash; 啟用後，主面板的連結會在第二面板開啟</li>
+      <li><strong>同步捲動</strong> &mdash; 同步兩面板的捲動（適合比對翻譯）</li>
+      <li><strong>字級 +/−</strong> &mdash; 調整分割面板的字級</li>
+      <li><strong>關閉</strong> &mdash; 關閉分割畫面</li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<section id="feature-translate">
+<h2>翻譯</h2>
+<p>EinkBro 提供多種翻譯方式：</p>
+<h4>逐段翻譯</h4>
+<p>以內嵌方式逐段翻譯，將翻譯顯示於原文旁。可透過工具列的「<strong>逐段翻譯</strong>」動作啟用，或長按「翻譯」按鈕以選擇模式。提供者：Google Translate、DeepL、OpenAI、Gemini。</p>
+
+<h4>原地翻譯</h4>
+<p>使用 OpenAI 或 Google Gemini 進行原地翻譯，直接替換原文內容。可長按「翻譯」按鈕並選擇原地模式。</p>
+
+<h4>整頁翻譯</h4>
+<p>透過 Google Translate 翻譯整個頁面。可透過「<strong>動作選單 &rarr; 翻譯</strong>」或工具列的「<strong>翻譯</strong>」按鈕啟用。</p>
+
+<h4>圖片翻譯</h4>
+<p>翻譯圖片中的文字。結果會快取到磁碟，加速後續存取。長按翻譯圖示可批次翻譯剩餘所有圖片。需於<a href="#settings-misc">「設定 &rarr; 其他 &rarr; 翻譯圖片 API 金鑰」</a>設定 API 金鑰。</p>
+
+<h4>雙字幕</h4>
+<p>於 YouTube 影片顯示兩種語言的字幕。可在<a href="#settings-misc">「設定 &rarr; 其他 &rarr; YouTube 雙字幕」</a>中設定。</p>
+<a href="../images/03_translate.png" target="_blank"><img src="../images/03_translate.png" alt="翻譯" class="device-img"></a>
+</section>
+
+<section id="feature-epub">
+<h2>EPUB 匯出</h2>
+<p>將網頁文章儲存為 EPUB 電子書檔案，包含圖片與目錄。</p>
+<ul>
+  <li>透過「<strong>動作選單 &rarr; EPUB</strong>」啟用</li>
+  <li>對話框包含「開啟現有 EPUB」與「儲存新 EPUB」分頁</li>
+  <li>可將多個網頁儲存到同一份 EPUB，每頁成為一個章節</li>
+  <li>可在目錄編輯器中拖曳重新排序章節</li>
+  <li>儲存的 EPUB 包含 EinkBro 識別資訊，便於辨識</li>
+  <li>為求最佳效果，建議內容能相容於閱讀模式</li>
+</ul>
+</section>
+
+<section id="feature-touch">
+<h2>觸控翻頁</h2>
+<p>EinkBro 為 E-Ink 裝置打造的招牌功能。點擊螢幕左／右（或上／下）邊緣即可向前／向後翻頁，就像翻動電子書一樣。</p>
+<ul>
+  <li>透過工具列「<strong>觸控翻頁</strong>」按鈕啟用</li>
+  <li><strong>電子書觸控模式</strong> &mdash; 以原生觸控攔截實現直接點擊翻頁（不再使用 JS 注入）</li>
+  <li>於<a href="#settings-gestures">「設定 &rarr; 手勢」</a>設定觸控區域與動作</li>
+  <li>可選擇左右或上下的觸控區配置</li>
+  <li>長按音量鍵可暫時停用翻頁 5 秒</li>
+  <li>音量鍵也可用於翻頁（於「快速切換」中啟用）</li>
+  <li>在<a href="#settings-ui">「設定 &rarr; 介面」</a>中調整「<strong>換頁保留高度</strong>」以控制頁面重疊量</li>
+</ul>
+<a href="../images/07_touch_setting.png" target="_blank"><img src="../images/07_touch_setting.png" alt="觸控設定" class="device-img"></a>
+</section>
+
+<section id="feature-ai">
+<h2>AI／ChatGPT 整合</h2>
+<p>直接在瀏覽器中透過 AI 與網頁內容互動。</p>
+<h4>與網頁對話</h4>
+<p>開啟分割畫面的 AI 聊天面板，詢問目前頁面的問題。可透過工具列「<strong>與網頁對話</strong>」按鈕或「<strong>動作選單 &rarr; 與網頁對話</strong>」啟用。</p>
+
+<h4>頁面 AI</h4>
+<p>對整頁內容執行 AI 動作（例如摘要、擷取重點）。使用於<a href="#settings-gpt">「設定 &rarr; GPT &rarr; 整頁內容 Prompt」</a>中設定的 Prompt。</p>
+
+<h4>自訂 GPT 動作</h4>
+<p>於<a href="#settings-gpt">「設定 &rarr; GPT &rarr; ChatGPT 動作定義」</a>以自訂系統 Prompt 定義可重複使用的 AI 動作。這些動作會出現在文字選取的快顯選單，並可對所選文字或整頁內容觸發。</p>
+
+<h4>支援的提供者</h4>
+<ul>
+  <li><strong>OpenAI</strong> &mdash; 透過 API 金鑰使用 GPT-4.1 等模型</li>
+  <li><strong>Google Gemini</strong> &mdash; 支援 Gemini 2.5 Flash 等</li>
+  <li><strong>自架／Ollama</strong> &mdash; 透過自訂主機網址，使用任何 OpenAI 相容伺服器</li>
+</ul>
+<a href="../images/04_chat_with_web.png" target="_blank"><img src="../images/04_chat_with_web.png" alt="與網頁對話" class="device-img"></a>
+</section>
+
+</main>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> 是開源軟體。<a href="https://github.com/plateaukao/einkbro">前往 GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
