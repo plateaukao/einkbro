@@ -25,13 +25,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import nl.siegmann.epublib.domain.Author
-import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.Identifier
-import nl.siegmann.epublib.domain.Resource
-import nl.siegmann.epublib.epub.EpubReader
-import nl.siegmann.epublib.epub.EpubWriter
-import nl.siegmann.epublib.service.MediatypeService
+import io.documentnode.epub4j.domain.Author
+import io.documentnode.epub4j.domain.Book
+import io.documentnode.epub4j.domain.Identifier
+import io.documentnode.epub4j.domain.MediaTypes
+import io.documentnode.epub4j.domain.Resource
+import io.documentnode.epub4j.epub.EpubReader
+import io.documentnode.epub4j.epub.EpubWriter
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -291,7 +291,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                         timeout = 5_000
                     )
                     val mediaType =
-                        MediatypeService.getMediaTypeByName(mimeType) ?: MediatypeService.JPG
+                        MediaTypes.getMediaTypeByName(mimeType) ?: MediaTypes.JPG
                     Log.d(TAG, "Got content type: $mimeType mediaType: $mediaType")
                     mutex.withLock { // Synchronize access to ebook and counter
                         book.addResource(

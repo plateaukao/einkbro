@@ -1,9 +1,10 @@
 -dontwarn org.xmlpull.v1.**
 -keep class org.xmlpull.v1.** {*;}
 
--dontwarn org.kxml2.io.**
 -dontwarn android.content.res.**
--dontwarn org.slf4j.impl.StaticLoggerBinder
+# kxml2's META-INF/services/org.xmlpull.v1.XmlPullParserFactory lists parser and
+# serializer as a comma-separated entry that R8 parses literally as a missing class.
+-dontwarn org.kxml2.io.**
 
 -keep class org.xmlpull.** { *; }
 -keepclassmembers class org.xmlpull.** { *; }

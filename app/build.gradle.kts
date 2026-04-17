@@ -83,6 +83,9 @@ android {
 
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+        // kxml2's service file uses a non-standard comma-separated entry that R8 cannot
+        // parse; Android registers KXmlParser/KXmlSerializer via its platform XmlPullParserFactory.
+        resources.excludes.add("META-INF/services/org.xmlpull.v1.XmlPullParserFactory")
     }
 
     lint {
@@ -111,13 +114,11 @@ dependencies {
 
     implementation(libs.material)
 
-    // epublib
-    implementation("com.positiondev.epublib:epublib-core:3.1") {
-        exclude(group = "org.slf4j")
+    // epub4j (maintained fork of epublib). Android ships xmlpull in the platform, so
+    // the transitive xmlpull jar is excluded to avoid duplicate XmlPullParser classes.
+    implementation("io.documentnode:epub4j-core:4.2.3") {
         exclude(group = "xmlpull")
     }
-    implementation(libs.slf4j.api)
-    implementation(libs.kxml2)
 
     // for epub saving: html processing
     implementation(libs.jsoup)
