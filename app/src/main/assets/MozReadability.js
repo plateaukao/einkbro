@@ -1134,7 +1134,12 @@ Readability.prototype = {
             !this._hasAncestorTag(node, "table") &&
             !this._hasAncestorTag(node, "code") &&
             node.tagName !== "BODY" &&
-            node.tagName !== "A"
+            node.tagName !== "A" &&
+            // Preserve figure/picture wrappers even when their class matches
+            // the unlikely-candidates regex (e.g. "image-header-block").
+            // Hero images are often wrapped this way and shouldn't be dropped.
+            node.tagName !== "FIGURE" &&
+            node.tagName !== "PICTURE"
           ) {
             this.log("Removing unlikely candidate - " + matchString);
             node = this._removeAndGetNext(node);
@@ -2792,6 +2797,16 @@ Readability.prototype = {
           "Aborting parsing document; " + numTags + " elements found"
         );
       }
+    }
+
+    // Clear aria-hidden="true" on images/pictures. Many sites set it on hero
+    // images with a text overlay (the overlay is the "semantic" content), but
+    // readers still want to see the image itself.
+    var hiddenMedia = this._doc.querySelectorAll(
+      'img[aria-hidden="true"], picture[aria-hidden="true"]'
+    );
+    for (var hmi = 0; hmi < hiddenMedia.length; hmi++) {
+      hiddenMedia[hmi].removeAttribute("aria-hidden");
     }
 
     // Unwrap image from noscript
