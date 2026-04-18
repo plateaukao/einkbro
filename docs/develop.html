@@ -30,27 +30,7 @@
 
 <h2>Architecture Overview</h2>
 
-<div class="arch-diagram">┌─────────────────────────────────────────────────┐
-│                    app module                    │
-│                                                  │
-│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
-│  │ Activity  │  │ ViewModel │  │  Repository  │  │
-│  │ (Compose) │──│ (StateFlow│──│  (Room, API) │  │
-│  └──────────┘  │  LiveData)│  └──────────────┘  │
-│                └───────────┘                     │
-│                                                  │
-│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
-│  │ EBWebView│  │   Koin    │  │   Services   │  │
-│  │ (Custom  │  │   (DI)    │  │ (Translation │  │
-│  │ WebView) │  │           │  │  TTS, AI)    │  │
-│  └──────────┘  └───────────┘  └──────────────┘  │
-├─────────────────────────────────────────────────┤
-│              ad-filter module                    │
-│  JS scriptlets · FilterViewModel · filter logic  │
-├─────────────────────────────────────────────────┤
-│             adblock-client module                │
-│          Native C++ via CMake (JNI)              │
-└─────────────────────────────────────────────────┘</div>
+<img class="arch-svg" src="images/architecture.svg" alt="EinkBro architecture: app module (Activity, ViewModel, Repository, EBWebView, Koin, Services) atop ad-filter and adblock-client modules">
 
 <h3>Core Patterns</h3>
 <ul>

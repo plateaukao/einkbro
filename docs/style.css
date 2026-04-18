@@ -380,18 +380,13 @@ tr:hover { background: var(--wash); }
 .card h3 { margin-top: 0; font-size: 1.1rem; }
 .card p { font-size: 0.9rem; margin-bottom: 0; }
 
-/* --- Architecture diagram (text) --- */
-.arch-diagram {
-  background: var(--wash);
-  border: 1px solid var(--ink);
-  border-radius: 7px;
-  padding: 1.5rem 2rem;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  line-height: 1.5;
-  overflow-x: auto;
-  margin: 1.5rem 0;
-  white-space: pre;
+/* --- Architecture diagram --- */
+.arch-svg {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  margin: 1.5rem auto;
 }
 
 /* --- Bug report template --- */
@@ -459,7 +454,6 @@ tr:hover { background: var(--wash); }
   .device-img { width: 240px; }
   th, td { padding: 0.4rem 0.5rem; }
   table { font-size: 0.84rem; }
-  .arch-diagram { font-size: 0.72rem; padding: 1rem; }
   .container { padding: 0 1rem; }
   .card-grid { grid-template-columns: 1fr; }
 }

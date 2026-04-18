@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-labelledby="archTitle archDesc">
+  <title id="archTitle">EinkBro Architecture Overview</title>
+  <desc id="archDesc">Three-module structure. The app module contains Activity (Compose), ViewModel (StateFlow/LiveData), Repository (Room, API), EBWebView, Koin (DI), and Services (Translation, TTS, AI). Below sit the ad-filter module and the adblock-client module.</desc>
+
+  <style>
+    .mod-bg { fill: #f5f5f5; stroke: #111; stroke-width: 2; }
+    .box-bg { fill: #fdfdfd; stroke: #111; stroke-width: 1.5; }
+    .conn   { stroke: #111; stroke-width: 1.5; }
+    .mod-label { font-family: 'Newsreader', Georgia, serif; font-size: 16px; font-weight: 700; fill: #111; }
+    .box-label { font-family: 'Atkinson Hyperlegible Next', Verdana, sans-serif; font-size: 14px; font-weight: 700; fill: #111; text-anchor: middle; }
+    .box-sub   { font-family: 'Atkinson Hyperlegible Next', Verdana, sans-serif; font-size: 11px; fill: #666; text-anchor: middle; }
+    .mod-sub   { font-family: 'Atkinson Hyperlegible Next', Verdana, sans-serif; font-size: 12px; fill: #666; }
+  </style>
+
+  <!-- app module container -->
+  <rect class="mod-bg" x="10" y="10" width="700" height="290" rx="7"/>
+  <text class="mod-label" x="30" y="36">app module</text>
+
+  <!-- Row 1 -->
+  <rect class="box-bg" x="30" y="60" width="200" height="90" rx="5"/>
+  <text class="box-label" x="130" y="100">Activity</text>
+  <text class="box-sub"   x="130" y="120">(Compose)</text>
+
+  <rect class="box-bg" x="260" y="60" width="200" height="90" rx="5"/>
+  <text class="box-label" x="360" y="100">ViewModel</text>
+  <text class="box-sub"   x="360" y="120">StateFlow / LiveData</text>
+
+  <rect class="box-bg" x="490" y="60" width="200" height="90" rx="5"/>
+  <text class="box-label" x="590" y="100">Repository</text>
+  <text class="box-sub"   x="590" y="120">Room · API</text>
+
+  <line class="conn" x1="230" y1="105" x2="260" y2="105"/>
+  <line class="conn" x1="460" y1="105" x2="490" y2="105"/>
+
+  <!-- Row 2 -->
+  <rect class="box-bg" x="30" y="180" width="200" height="100" rx="5"/>
+  <text class="box-label" x="130" y="220">EBWebView</text>
+  <text class="box-sub"   x="130" y="240">Custom WebView</text>
+
+  <rect class="box-bg" x="260" y="180" width="200" height="100" rx="5"/>
+  <text class="box-label" x="360" y="220">Koin</text>
+  <text class="box-sub"   x="360" y="240">Dependency Injection</text>
+
+  <rect class="box-bg" x="490" y="180" width="200" height="100" rx="5"/>
+  <text class="box-label" x="590" y="220">Services</text>
+  <text class="box-sub"   x="590" y="240">Translation · TTS · AI</text>
+
+  <!-- ad-filter module -->
+  <rect class="mod-bg" x="10" y="320" width="700" height="65" rx="7"/>
+  <text class="mod-label" x="30" y="346">ad-filter module</text>
+  <text class="mod-sub"   x="30" y="368">JS scriptlets · FilterViewModel · filter logic</text>
+
+  <!-- adblock-client module -->
+  <rect class="mod-bg" x="10" y="400" width="700" height="65" rx="7"/>
+  <text class="mod-label" x="30" y="426">adblock-client module</text>
+  <text class="mod-sub"   x="30" y="448">Native C++ via CMake (JNI)</text>
+</svg>
