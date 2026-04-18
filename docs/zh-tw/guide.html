@@ -96,6 +96,8 @@
 </ul>
 <p>點擊「<strong>設定</strong>」圖示（漢堡選單）即可開啟動作選單，存取所有瀏覽器功能。</p>
 <a href="../images/toolbar_bottom.png" target="_blank"><img src="../images/toolbar_bottom.png" alt="下方工具列" class="device-img"></a>
+<p><strong>提示：</strong>「設定」畫面頂端有搜尋列，輸入任何設定名稱即可直接跳到該項目。搜尋同時支援當地語系與英文關鍵字，無論應用程式使用何種語言皆可使用。</p>
+<p><strong>提示：</strong>變更<em>應用程式語言</em>可立即套用，無需重新啟動應用程式，且開啟的分頁會被保留。</p>
 </section>
 
 <!-- ==================== TOOLBAR ACTIONS ==================== -->
@@ -409,6 +411,7 @@
     <span class="action-item"><strong>稍後閱讀</strong> &mdash; 本機的「稍後閱讀」</span>
     <span class="action-item"><strong>EPUB</strong> &mdash; 開啟或儲存為 EPUB</span>
     <span class="action-item"><strong>儲存為 PDF</strong> &mdash; 匯出為 PDF，紙張大小可設定</span>
+    <span class="action-item"><strong>儲存為 MHT</strong> &mdash; 將目前頁面封存為單一 <code>.mht</code> 檔</span>
   </div>
 </div>
 </section>
@@ -477,6 +480,7 @@
 <div class="setting-item"><div class="setting-item__name">隱藏工具列</div><div class="setting-item__desc"><span class="tag">切換</span> 捲動時隱藏工具列以便全螢幕閱讀。按返回鍵可還原。預設：關閉。</div></div>
 <div class="setting-item"><div class="setting-item__name">工具列優先</div><div class="setting-item__desc"><span class="tag">切換</span> 按返回鍵時先顯示工具列，再回上一頁。預設：開啟。</div></div>
 <div class="setting-item"><div class="setting-item__name">顯示分頁列</div><div class="setting-item__desc"><span class="tag">切換</span> 永遠在工具列上方／旁邊顯示分頁列。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">狀態列（全螢幕／無工具列）</div><div class="setting-item__desc"><span class="tag">動作</span> 設定當工具列隱藏時顯示的精簡狀態列 — 可挑選要顯示的項目（網址、時間、電量、頁面進度等）。適合全螢幕閱讀。</div></div>
 </section>
 
 <section id="settings-behavior" class="settings-section">
@@ -522,6 +526,7 @@
 
 <h4>觸控區域點擊動作</h4>
 <p>設定點擊或長按觸控翻頁區域時的行為。每項都可設為：上一畫面、下一畫面、向上捲動、向下捲動、捲至頂端、捲至底端、總覽等。</p>
+<p><strong>所有瀏覽器動作皆可指派為手勢。</strong>完整的工具列動作清單（閱讀模式、翻譯、與網頁對話、觸控方向等）會出現在每個手勢選擇器中 — 無論是觸控區、雙指滑動，還是浮動按鈕手勢都可使用。</p>
 <div class="setting-item"><div class="setting-item__name">上方點擊動作</div><div class="setting-item__desc"><span class="tag">選項</span> 預設：上一畫面。</div></div>
 <div class="setting-item"><div class="setting-item__name">上方長按動作</div><div class="setting-item__desc"><span class="tag">選項</span> 預設：捲至頂端。</div></div>
 <div class="setting-item"><div class="setting-item__name">下方點擊動作</div><div class="setting-item__desc"><span class="tag">選項</span> 預設：下一畫面。</div></div>
@@ -687,6 +692,9 @@
 <h4>逐段翻譯</h4>
 <p>以內嵌方式逐段翻譯，將翻譯顯示於原文旁。可透過工具列的「<strong>逐段翻譯</strong>」動作啟用，或長按「翻譯」按鈕以選擇模式。提供者：Google Translate、DeepL、OpenAI、Gemini。</p>
 
+<h4>個別站台翻譯模式</h4>
+<p>翻譯設定對話框（長按<strong>翻譯</strong>）可為每個站台分別記住偏好的翻譯模式 — 當某個站台適合 DeepL 逐段對照、另一個站台適合 Gemini 原地翻譯時非常實用。下次造訪時會自動恢復先前選擇的模式。</p>
+
 <h4>原地翻譯</h4>
 <p>使用 OpenAI 或 Google Gemini 進行原地翻譯，直接替換原文內容。可長按「翻譯」按鈕並選擇原地模式。</p>
 
@@ -737,6 +745,15 @@
 
 <h4>頁面 AI</h4>
 <p>對整頁內容執行 AI 動作（例如摘要、擷取重點）。使用於<a href="#settings-gpt">「設定 &rarr; GPT &rarr; 整頁內容 Prompt」</a>中設定的 Prompt。</p>
+
+<h4>任務流程（Task Runner）</h4>
+<p>在目前頁面串聯多步驟 AI 工作流程 — 顯示為「頁面 AI」動作選單的第一項。可定義一連串 Prompt，針對頁面內容、選取文字或前一步的輸出進行處理。適合經常重複執行的「擷取 → 翻譯 → 摘要」等流程。</p>
+
+<h4>自由形式 Agent</h4>
+<p>整合於「<strong>與網頁對話</strong>」中，Agent 可處理開放式的後續對話，並持續存取頁面內容與先前輪次的紀錄。無需重複貼上上下文即可反覆分析，也可回呼頁面工具。</p>
+
+<h4>新聞主播 TTS</h4>
+<p>朗讀動作範本，以新聞主播風格的語音朗讀完整文章，使用 OpenAI 的 <code>gpt-4o-mini-tts</code> 模型與預先設定的語音指示。可於<a href="#settings-gpt">「設定 &rarr; GPT &rarr; 語音輸出指示」</a>中調整。</p>
 
 <h4>自訂 GPT 動作</h4>
 <p>於<a href="#settings-gpt">「設定 &rarr; GPT &rarr; ChatGPT 動作定義」</a>以自訂系統 Prompt 定義可重複使用的 AI 動作。這些動作會出現在文字選取的快顯選單，並可對所選文字或整頁內容觸發。</p>

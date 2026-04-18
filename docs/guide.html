@@ -95,6 +95,8 @@
 </ul>
 <p>Tap the <strong>Settings</strong> icon (hamburger menu) to open the Action Menu, which gives access to all browser functions.</p>
 <a href="images/toolbar_bottom.png" target="_blank"><img src="images/toolbar_bottom.png" alt="Bottom toolbar" class="device-img"></a>
+<p><strong>Tip:</strong> the Settings screen has a search bar at the top — type any setting name to jump straight to it. Search is language-aware: both localized and English terms work regardless of your app language.</p>
+<p><strong>Tip:</strong> changing <em>App Language</em> now applies immediately without restarting the app, and your open tabs are preserved.</p>
 </section>
 
 <!-- ==================== TOOLBAR ACTIONS ==================== -->
@@ -408,6 +410,7 @@
     <span class="action-item"><strong>Save for later</strong> &mdash; Read-it-later (local)</span>
     <span class="action-item"><strong>EPUB</strong> &mdash; Open or save as EPUB</span>
     <span class="action-item"><strong>Save as PDF</strong> &mdash; Export to PDF with configurable paper sizes</span>
+    <span class="action-item"><strong>Save as MHT</strong> &mdash; Archive the current page as a single <code>.mht</code> file</span>
   </div>
 </div>
 </section>
@@ -476,6 +479,7 @@
 <div class="setting-item"><div class="setting-item__name">Hide Toolbar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Hide toolbar while scrolling for full-screen browsing. Press Back to restore. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Toolbar First</div><div class="setting-item__desc"><span class="tag">Toggle</span> Back button shows toolbar first before navigating back. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">Show Tab Bar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Always show the tab bar above/beside the toolbar. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Statusbar (Fullscreen / No Toolbar)</div><div class="setting-item__desc"><span class="tag">Action</span> Configure a compact statusbar that appears when the toolbar is hidden — pick which items (URL, time, battery, page progress, etc.) to show. Useful in fullscreen reading.</div></div>
 </section>
 
 <section id="settings-behavior" class="settings-section">
@@ -521,6 +525,7 @@
 
 <h4>Touch Area Click Actions</h4>
 <p>Configure what happens when you tap or long-press the touch page-turning areas. Each can be set to: Page Up, Page Down, Scroll Up, Scroll Down, Scroll to Top, Scroll to Bottom, Overview, and more.</p>
+<p><strong>Any browser action is bindable as a gesture.</strong> The full toolbar action catalog (Reader Mode, Translation, Chat With Web, Touch Direction, etc.) shows up in every gesture picker — touch areas, two-finger swipes, and floating-button gestures alike.</p>
 <div class="setting-item"><div class="setting-item__name">Up Click Action</div><div class="setting-item__desc"><span class="tag">Select</span> Default: Page Up.</div></div>
 <div class="setting-item"><div class="setting-item__name">Up Long Click Action</div><div class="setting-item__desc"><span class="tag">Select</span> Default: Scroll to Top.</div></div>
 <div class="setting-item"><div class="setting-item__name">Down Click Action</div><div class="setting-item__desc"><span class="tag">Select</span> Default: Page Down.</div></div>
@@ -686,6 +691,9 @@
 <h4>Paragraph-by-Paragraph Translation</h4>
 <p>Translates each paragraph inline, showing the translation alongside the original text. Activate via the <strong>Translate by Paragraph</strong> toolbar action or long-press the Translate button for mode selection. Providers: Google Translate, DeepL, OpenAI, Gemini.</p>
 
+<h4>Per-Site Translation Mode</h4>
+<p>The translation config dialog (long-press <strong>Translate</strong>) lets you save a different translation mode for each site — useful when one site reads better with DeepL paragraph mode while another needs Gemini in-place. The chosen mode is restored automatically on subsequent visits.</p>
+
 <h4>In-Place Translation</h4>
 <p>Translates content inline using OpenAI or Google Gemini, replacing the original text in place. Activate via long-press on the Translate button and selecting in-place mode.</p>
 
@@ -736,6 +744,15 @@
 
 <h4>Page AI</h4>
 <p>Run AI actions on the full page content (e.g., summarize, extract key points). Uses the prompt configured in <a href="#settings-gpt">Settings &rarr; GPT &rarr; Prompt for Full Webpage Content</a>.</p>
+
+<h4>Task Runner</h4>
+<p>Chain multi-step AI workflows on the current page — the first item in the Page AI action menu. Define a sequence of prompts that operate on page content, selection, or the previous step's output. Useful for "extract → translate → summarize" pipelines you re-run frequently.</p>
+
+<h4>Free-form Agent</h4>
+<p>Built into <strong>Chat With Web</strong>, the agent handles open-ended follow-up conversations with persistent access to the page content and previous turns. Iterate on analysis without re-pasting context, and let it call back into page tools.</p>
+
+<h4>News-Anchor TTS</h4>
+<p>A read-aloud action template that delivers full articles in a news-anchor voice, using OpenAI's <code>gpt-4o-mini-tts</code> model with preconfigured voice instructions. Configure under <a href="#settings-gpt">Settings &rarr; GPT &rarr; Audio Output Instructions</a>.</p>
 
 <h4>Custom GPT Actions</h4>
 <p>Define reusable AI actions with custom system prompts in <a href="#settings-gpt">Settings &rarr; GPT &rarr; ChatGPT Action Definition</a>. These appear in the text selection context menu and can be triggered on selected text or full page content.</p>
