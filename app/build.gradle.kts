@@ -51,6 +51,9 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            // Must stay on `proguard-android-optimize.txt`: dropping it to the plain
+            // `proguard-android.txt` saved ~35s on R8 but grew the APK by ~1MB, which is
+            // not acceptable for a ~7MB release. Don't re-try this without a new plan.
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.txt"
@@ -101,7 +104,10 @@ android {
             val abis = (project.findProperty("buildAbis") as String?)?.split(",")
                 ?: listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
             include(*abis.toTypedArray())
-            isUniversalApk = project.findProperty("buildAbis") == null
+            // Only emit the universal APK when explicitly requested (`-PuniversalApk`).
+            // Skipping it saves a full packaging pass for local iteration; the release
+            // skill should pass -PuniversalApk when cutting a real release.
+            isUniversalApk = project.hasProperty("universalApk")
         }
     }
     namespace = "info.plateaukao.einkbro"
