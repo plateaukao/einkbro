@@ -195,13 +195,15 @@ img { max-width: 100%; height: auto; }
   border-radius: 7px;
   overflow: hidden;
   text-align: center;
+  display: flex;
+  flex-direction: column-reverse;
 }
 .gallery__item img { width: 100%; display: block; }
 .gallery__item figcaption {
   font-size: 0.78rem;
   padding: 0.4rem;
   color: var(--mid);
-  border-top: 1px solid var(--faint);
+  border-bottom: 1px solid var(--faint);
 }
 
 /* --- Device Screenshots (click to enlarge) --- */
