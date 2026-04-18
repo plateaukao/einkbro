@@ -116,7 +116,6 @@ img { max-width: 100%; height: auto; }
 .hero {
   text-align: center;
   padding: 5rem 1.5rem 4rem;
-  border-bottom: 3px solid var(--ink);
 }
 .hero h1 {
   font-size: 3.4rem;
@@ -151,7 +150,7 @@ img { max-width: 100%; height: auto; }
 .hero__cta--ghost:hover { background: var(--ink); color: var(--paper); }
 
 /* --- Feature Grid --- */
-.features { padding: 4rem 0; border-bottom: 1px solid var(--hairline); }
+.features { padding: 1rem 0 4rem; border-bottom: 1px solid var(--hairline); }
 .features__heading { text-align: center; margin-bottom: 2.5rem; border-bottom: none; padding-bottom: 0; }
 .features__grid {
   display: grid;
