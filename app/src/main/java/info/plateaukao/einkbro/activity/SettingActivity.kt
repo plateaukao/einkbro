@@ -303,7 +303,7 @@ class SettingActivity : FragmentActivity() {
                             SettingScreen(
                                 navController,
                                 mutableListOf<SettingItemInterface>().apply {
-                                    addAll(LinkSettingItem.entries.toList())
+                                    addAll(LinkSettingItem.entries.filter { it != LinkSettingItem.Manual })
                                     add(DividerSettingItem())
                                     if (BuildConfig.showUpdateButton) {
                                         add(
@@ -485,11 +485,11 @@ class SettingActivity : FragmentActivity() {
             R.drawable.ic_chat_gpt,
             destination = ChatGPT
         ),
+        LinkSettingItem.Manual,
         VersionSettingItem(
             R.string.menu_other_info,
             R.drawable.icon_info,
             destination = About,
-            span = 2
         ),
     )
 
