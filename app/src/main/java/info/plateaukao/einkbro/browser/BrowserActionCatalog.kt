@@ -171,7 +171,9 @@ object BrowserActionCatalog {
         GestureType.Fullscreen to idOf(BrowserAction.ToggleFullscreen),
         GestureType.Refresh to idOf(BrowserAction.RefreshAction),
         GestureType.Menu to idOf(BrowserAction.ShowMenuDialog),
-        GestureType.TouchPagination to idOf(BrowserAction.ToggleTouchPagination),
+        // ToggleTouchPagination was a duplicate of ToggleTouchTurnPage and has
+        // been removed from the catalog — remap legacy bindings to the survivor.
+        GestureType.TouchPagination to idOf(BrowserAction.ToggleTouchTurnPage),
         GestureType.KeyPageUp to idOf(BrowserAction.SendPageUpKey),
         GestureType.KeyPageDown to idOf(BrowserAction.SendPageDownKey),
         GestureType.KeyLeft to idOf(BrowserAction.SendLeftKey),
