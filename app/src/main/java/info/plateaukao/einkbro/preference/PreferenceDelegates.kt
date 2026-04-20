@@ -55,14 +55,22 @@ class BrowserActionPreference(
 
     override fun getValue(thisRef: Any, property: KProperty<*>): BrowserAction {
         val stored = sharedPreferences.getString(key, null)
-        val id = BrowserActionCatalog.migrateLegacyId(stored)
-        if (stored != null && stored != id) {
-            // rewrite legacy value to the new format
-            sharedPreferences.edit { putString(key, id) }
+        val migrated = BrowserActionCatalog.migrateLegacyId(stored)
+        val effectiveId = migrated.ifEmpty { BrowserActionCatalog.idOf(defaultValue) }
+        val entry = BrowserActionCatalog.entryOf(effectiveId)
+        // If the stored id is non-empty and resolved to nothingEntry without
+        // being the explicit Noop id, it's corrupted (e.g. a prior build's
+        // obfuscated name, or an action removed from the catalog). Restore
+        // the declared default instead of silently showing "Nothing".
+        val resolved = if (
+            entry === BrowserActionCatalog.nothingEntry &&
+            effectiveId != BrowserActionCatalog.nothingEntry.id
+        ) defaultValue else entry.action
+        val resolvedId = BrowserActionCatalog.idOf(resolved)
+        if (stored != resolvedId) {
+            sharedPreferences.edit { putString(key, resolvedId) }
         }
-        return BrowserActionCatalog.entryOf(
-            id.ifEmpty { BrowserActionCatalog.idOf(defaultValue) }
-        ).action
+        return resolved
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: BrowserAction) =

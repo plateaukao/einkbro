@@ -34,4 +34,22 @@ class BrowserActionCatalogTest {
     fun `migrateLegacyId maps NothingHappen code 01 to Noop`() {
         assertEquals("Noop", BrowserActionCatalog.migrateLegacyId("01"))
     }
+
+    @Test
+    fun `migrateLegacyId remaps legacy TouchPagination to ToggleTouchTurnPage`() {
+        // The old ToggleTouchPagination action was a duplicate and has been
+        // removed from the catalog; legacy "18" bindings must survive the trim.
+        assertEquals("ToggleTouchTurnPage", BrowserActionCatalog.migrateLegacyId("18"))
+    }
+
+    @Test
+    fun `entryOf returns nothingEntry for ids removed from catalog`() {
+        // ToggleTouchPagination still exists as a BrowserAction subclass but is
+        // no longer in the catalog. Callers must treat this as unresolved so
+        // the preference delegate can fall back to its declared default.
+        assertEquals(
+            BrowserActionCatalog.nothingEntry,
+            BrowserActionCatalog.entryOf("ToggleTouchPagination"),
+        )
+    }
 }
