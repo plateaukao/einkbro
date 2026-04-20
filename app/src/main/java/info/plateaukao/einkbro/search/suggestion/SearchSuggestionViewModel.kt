@@ -14,12 +14,30 @@ class SearchSuggestionViewModel : KoinComponent {
     private val config: ConfigManager by inject()
     private val recordDb: RecordRepository by inject()
 
-    private val repository: SearchSuggestionsRepository by lazy {
-        when (config.browser.searchEngine) {
-            SearchEngine.DUCKDUCKGO.ordinal.toString() -> DuckDuckGoSuggestionsRepository()
+    private var cachedEngine: String? = null
+    private var cachedRepository: SearchSuggestionsRepository? = null
+
+    private val repository: SearchSuggestionsRepository
+        get() {
+            val engine = config.browser.searchEngine
+            val cached = cachedRepository
+            if (cached != null && engine == cachedEngine) return cached
+            return buildRepository(engine).also {
+                cachedEngine = engine
+                cachedRepository = it
+            }
+        }
+
+    private fun buildRepository(engine: String): SearchSuggestionsRepository =
+        when (engine) {
+            SearchEngine.DUCKDUCKGO.ordinal.toString() -> OpenSearchSuggestionsRepository.duckDuckGo()
+            SearchEngine.BING.ordinal.toString() -> OpenSearchSuggestionsRepository.bing()
+            SearchEngine.ECOSIA.ordinal.toString() -> OpenSearchSuggestionsRepository.ecosia()
+            SearchEngine.STARTPAGE.ordinal.toString(),
+            SearchEngine.STARTPAGE_DE.ordinal.toString() -> OpenSearchSuggestionsRepository.startpage()
+            SearchEngine.YANDEX.ordinal.toString() -> OpenSearchSuggestionsRepository.yandex()
             else -> GoogleSuggestionsRepository()
         }
-    }
 
     // create mutable state flow variable for suggestions
     private val _suggestions = MutableStateFlow<List<Record>>(emptyList())
@@ -59,7 +77,7 @@ class SearchSuggestionViewModel : KoinComponent {
         }
 
         try {
-            val results = repository.searchSuggestionResults(query).take(6)
+            val results = repository.searchSuggestionResults(query).take(4)
             _suggestions.value =
                 results.map { Record(title = it.title, url = it.url, time = -1, type = RecordType.Suggestion) } +
                         filteredRecords
