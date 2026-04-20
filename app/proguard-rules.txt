@@ -19,5 +19,10 @@
 -keepnames class <1>$$serializer {static <1>$$serializer INSTANCE;}
 
 # BrowserAction subclass simple-names are used as stable IDs persisted in
-# SharedPreferences (gesture bindings).  R8 must not rename them.
+# SharedPreferences (gesture bindings). R8 must keep both the parent sealed
+# class and every nested subclass — if the parent is renamed while the
+# subclasses keep their original FQN, getSimpleName() on the nested class
+# falls back to parsing a now-inconsistent binary name and returns a string
+# that no longer matches BrowserActionCatalog ids.
+-keepnames class info.plateaukao.einkbro.browser.BrowserAction
 -keepnames class info.plateaukao.einkbro.browser.BrowserAction$* { }
