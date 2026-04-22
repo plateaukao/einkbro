@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -232,7 +231,6 @@
     <string name="book_name_description">Ange boknamnet</string>
     <string name="bookmark_new_file">Skapa ny fil</string>
     <string name="bookmark_open_file">Länka befintlig fil</string>
-    <string name="bottom">Nedre</string>
     <string name="cannot_open_file">Filen kan inte öppnas. Öppna den igen från filväljaren</string>
     <string name="changelogs">Nyheter</string>
     <string name="chat_with_web">Chatta med webb</string>
@@ -333,7 +331,6 @@
     <string name="menu_send_link">Skicka länk</string>
     <string name="menu_summarize">Sammanfatta</string>
     <string name="menu_tts">Läs innehåll</string>
-    <string name="middle">Mitten</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">Diverse</string>
     <string name="move_to_background">Minimera</string>
@@ -594,8 +591,6 @@
     <string name="touch_aciton_settings">Åtgärdsinställningar</string>
     <string name="touch_area_setting">Pekinställning</string>
     <string name="touch_custom">Anpassad</string>
-    <string name="touch_left_side">Vänster</string>
-    <string name="touch_right_side">Höger</string>
     <string name="touch_turn_page">Pekvändning</string>
     <string name="translate">Översätt</string>
     <string name="translate_by_paragraph">Översätt per stycke</string>

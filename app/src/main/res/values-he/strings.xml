@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -254,8 +253,6 @@
     <string name="location">מיקום</string>
     <string name="media_continue">ניגון ברקע</string>
     <string name="show_touch_area_hint">הצגת גבול אזור מגע</string>
-    <string name="touch_left_side">שמאל</string>
-    <string name="touch_right_side">ימין</string>
     <string name="bold_font">גופן מודגש</string>
     <string name="white_background">רקע לבן</string>
     <string name="setting_summary_bold_font">החלת סגנון גופן מודגש (צריך לטעון מחדש את הדף הנוכחי)</string>
@@ -301,8 +298,6 @@
     <string name="toolbar_title">כותרת</string>
     <string name="setting_title_screen_awake">שמירת מסך דלוק</string>
     <string name="setting_summary_screen_awake">שמירת המסך דלוק תמיד</string>
-    <string name="middle">אמצע</string>
-    <string name="bottom">תחתית</string>
     <string name="input_url">הזן URL</string>
     <string name="setting_title_useUpDown">שימוש במקש למעלה/למטה</string>
     <string name="setting_summary_useUpDownKey">שימוש במקש למעלה/למטה להפיכת עמודים. שימושי עבור מכשירי Bluetooth</string>

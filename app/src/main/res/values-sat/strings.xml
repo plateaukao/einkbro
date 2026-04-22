@@ -249,8 +249,6 @@
     <string name="location">ᱡᱟᱭᱜᱟ</string>
     <string name="media_continue">ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ ᱯᱞᱮ</string>
     <string name="show_touch_area_hint">ᱴᱟᱪ ᱮᱨᱤᱭᱟ ᱵᱚᱰᱚᱨ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
-    <string name="touch_left_side">ᱞᱮᱝᱜᱟ</string>
-    <string name="touch_right_side">ᱡᱚᱡᱚᱢ ᱥᱮᱫ</string>
     <string name="bold_font">ᱵᱚᱞᱰ ᱪᱤᱠᱤ</string>
     <string name="white_background">ᱯᱩᱸᱰ ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ</string>
     <string name="setting_summary_bold_font">ᱵᱚᱞᱰ ᱪᱤᱠᱤ ᱥᱴᱟᱭᱤᱞ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ (ᱱᱤᱛᱚᱜᱟᱜ ᱥᱟᱦᱴᱟ ᱫᱩᱦᱲᱟᱹ ᱞᱟᱫᱮ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ)</string>
@@ -292,8 +290,6 @@
     <string name="toolbar_title">ᱧᱩᱛᱩᱢ</string>
     <string name="setting_title_screen_awake">ᱥᱠᱨᱤᱱ ᱮᱠᱴᱤᱵᱽ ᱫᱚᱦᱚᱭ ᱢᱮ</string>
     <string name="setting_summary_screen_awake">ᱡᱟᱹᱣᱜᱮ ᱥᱠᱨᱤᱱ ᱮᱠᱴᱤᱵᱽ ᱫᱚᱦᱚᱭ ᱢᱮ ᱾</string>
-    <string name="middle">ᱛᱟᱞᱟᱨᱮ</string>
-    <string name="bottom">ᱞᱟᱛᱟᱨ</string>
     <string name="input_url">URL ᱟᱫᱮᱨ</string>
     <string name="setting_title_useUpDown">ᱪᱮᱛᱟᱱ/ᱞᱟᱛᱟᱨ ᱪᱟᱹᱵᱤ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
     <string name="setting_summary_useUpDownKey">ᱪᱮᱛᱟᱱ/ᱞᱟᱛᱟᱨ ᱪᱟᱹᱵᱤ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱥᱟᱦᱴᱟ ᱯᱚᱞᱴᱟᱣ ᱢᱮ ᱾ bluetooth ᱥᱟᱫᱷᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱵᱷᱟᱹᱜᱤ ᱜᱮᱭᱟ ᱾</string>
@@ -486,7 +482,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">ᱣᱮᱵᱽ ᱥᱟᱦᱴᱟ ᱨᱮᱱᱟᱜ ᱥᱟᱛᱟᱢ ᱯᱨᱚᱥᱮᱥ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱴᱟᱴᱠᱟ ᱫᱷᱟᱶᱨᱟ (ᱡᱮᱞᱮᱠᱟ: \"300 ᱟᱹᱲᱟᱹ ᱨᱮ ᱱᱚᱶᱟ ᱯᱷᱚᱴᱮᱞ ᱢᱮ:\")</string>
     <string name="setting_title_next_tab">ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱩᱫᱩᱜ ᱢᱮ</string>
     <string name="setting_summary_next_tab">ᱡᱚᱠᱷᱚᱱ ᱱᱤᱛᱚᱜᱟᱜ ᱴᱮᱵᱽ ᱫᱚ ᱵᱚᱸᱫ ᱟᱠᱟᱱᱟ ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣᱟ ᱢᱮ (ᱟᱨ ᱵᱟᱝ ᱠᱷᱟᱱ ᱢᱟᱲᱟᱝ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣ ᱢᱮ) ᱾</string>
-    <string name="touch_area_long">ᱵᱟᱨ ᱯᱟᱦᱴᱟ</string>
     <string name="setting_title_gpt_action_list">ChatGPT ᱠᱟᱹᱢᱤ ᱵᱩᱴᱟᱹᱱ</string>
     <string name="setting_summary_gpt_action_list">ᱵᱷᱮᱜᱟᱨ ᱵᱷᱮᱜᱟᱨ ChatGPT ᱠᱟᱹᱢᱤ ᱞᱟᱹᱜᱤᱫ ᱵᱷᱮᱜᱟᱨ ᱵᱷᱮᱜᱟᱨ ᱴᱟᱴᱠᱴᱠᱟ ᱵᱟᱨᱚᱥ ᱚᱰᱚᱠ ᱢᱮ ᱾</string>
     <string name="gpt_actions_title">ChatGPT ᱠᱟᱹᱢᱤ ᱠᱚ</string>

@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -229,7 +228,6 @@
     <string name="book_name_description">Унесите назив књиге</string>
     <string name="bookmark_new_file">Креирај нову датотеку</string>
     <string name="bookmark_open_file">Повежи постојећу датотеку</string>
-    <string name="bottom">Доле</string>
     <string name="cannot_open_file">Датотека се не може отворити. Покушајте поново из избора датотека</string>
     <string name="changelogs">Шта је ново</string>
     <string name="chat_with_web">Ћаскање са веб страницом</string>
@@ -330,7 +328,6 @@
     <string name="menu_send_link">Пошаљи линк</string>
     <string name="menu_summarize">Резимирај</string>
     <string name="menu_tts">Читај садржај</string>
-    <string name="middle">Средина</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">Разно</string>
     <string name="move_to_background">Минимизуј</string>
@@ -594,8 +591,6 @@
     <string name="touch_aciton_settings">Подешавања акција</string>
     <string name="touch_area_setting">Подешавање додирне области</string>
     <string name="touch_custom">Прилагођено</string>
-    <string name="touch_left_side">Лево</string>
-    <string name="touch_right_side">Десно</string>
     <string name="touch_turn_page">Окретање страница додиром</string>
     <string name="translate">Преведи</string>
     <string name="translate_by_paragraph">Превод по параграфима</string>

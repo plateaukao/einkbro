@@ -212,8 +212,6 @@
     <string name="location">Ubicación</string>
     <string name="media_continue">Reproducción en segundo plano</string>
     <string name="show_touch_area_hint">Mostrar borde del área de toque</string>
-    <string name="touch_left_side">Izquierda</string>
-    <string name="touch_right_side">Derecha</string>
     <string name="bold_font">Fuente en negrita</string>
     <string name="white_background">Fondo blanco</string>
     <string name="setting_summary_bold_font">Aplicar estilo de fuente en negrita (necesita recargar la página actual)</string>
@@ -255,8 +253,6 @@
     <string name="toolbar_title">Título</string>
     <string name="setting_title_screen_awake">Mantener la pantalla encendida</string>
     <string name="setting_summary_screen_awake">Mantener la pantalla siempre encendida</string>
-    <string name="middle">Medio</string>
-    <string name="bottom">Inferior</string>
     <string name="input_url">Introducir URL</string>
     <string name="setting_title_useUpDown">Usar teclas Arriba/Abajo</string>
     <string name="setting_summary_useUpDownKey">Usar las teclas Arriba/Abajo para pasar páginas. Útil para dispositivos Bluetooth</string>
@@ -445,7 +441,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Introduce la indicación para procesar el contenido completo de la página web (por ejemplo: \"Resumir en 300 palabras:\")</string>
     <string name="setting_title_next_tab">Mostrar la siguiente pestaña</string>
     <string name="setting_summary_next_tab">Mostrar la siguiente pestaña cuando se cierre la actual (de lo contrario, mostrar la anterior)</string>
-    <string name="touch_area_long">Dos lados</string>
     <string name="setting_title_gpt_action_list">Definición de acción de ChatGPT</string>
     <string name="setting_summary_gpt_action_list">Definir diferentes indicaciones para diferentes acciones de ChatGPT</string>
     <string name="gpt_actions_title">Acciones de ChatGPT</string>

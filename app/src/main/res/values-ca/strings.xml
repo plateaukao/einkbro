@@ -220,8 +220,6 @@
     <string name="location">Ubicació</string>
     <string name="media_continue">Reproducció en segon pla</string>
     <string name="show_touch_area_hint">Mostrar vora de l\'àrea tàctil</string>
-    <string name="touch_left_side">Esquerra</string>
-    <string name="touch_right_side">Dreta</string>
     <string name="bold_font">Font en negreta</string>
     <string name="white_background">Fons blanc</string>
     <string name="setting_summary_bold_font">Aplicar estil de font en negreta (cal recarregar la pàgina actual)</string>
@@ -267,8 +265,6 @@
     <string name="toolbar_title">Títol</string>
     <string name="setting_title_screen_awake">Mantenir pantalla encesa</string>
     <string name="setting_summary_screen_awake">Mantenir la pantalla sempre encesa</string>
-    <string name="middle">Mig</string>
-    <string name="bottom">A baix</string>
     <string name="input_url">Introduir URL</string>
     <string name="setting_title_useUpDown">Tecles Amunt/Avall</string>
     <string name="setting_summary_useUpDownKey">Utilitzar tecles Amunt/Avall per passar pàgines. Útil per a dispositius Bluetooth</string>
@@ -467,7 +463,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Introduïu el prompt per processar el contingut complet de la pàgina (p. ex.: \"Resumeix-ho en 300 paraules:\")</string>
     <string name="setting_title_next_tab">Mostrar pestanya següent</string>
     <string name="setting_summary_next_tab">Mostrar la pestanya següent quan l\'actual es tanca (si no, mostrar l\'anterior)</string>
-    <string name="touch_area_long">Dos costats</string>
     <string name="setting_title_gpt_action_list">Definició d\'acció de ChatGPT</string>
     <string name="setting_summary_gpt_action_list">Definir diferents prompts per a diferents accions de ChatGPT</string>
     <string name="gpt_actions_title">Accions de ChatGPT</string>

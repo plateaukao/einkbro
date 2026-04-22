@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -233,7 +232,6 @@
     <string name="book_name_description">Voer die boeknaam in</string>
     <string name="bookmark_new_file">Skep nuwe lêer</string>
     <string name="bookmark_open_file">Koppel bestaande lêer</string>
-    <string name="bottom">Onder</string>
     <string name="cannot_open_file">Lêer kan nie oopgemaak word nie. Maak dit asb. weer oop vanaf die lêerkieser.</string>
     <string name="changelogs">Wat is nuut</string>
     <string name="chat_with_web">Gesels met Web</string>
@@ -334,7 +332,6 @@
     <string name="menu_send_link">Stuur skakel</string>
     <string name="menu_summarize">Opsomming</string>
     <string name="menu_tts">Lees inhoud</string>
-    <string name="middle">Middel</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">Diverse</string>
     <string name="move_to_background">Minimaliseer</string>
@@ -595,8 +592,6 @@
     <string name="touch_aciton_settings">Aksie-instellings</string>
     <string name="touch_area_setting">Raakinstelling</string>
     <string name="touch_custom">Aangepas</string>
-    <string name="touch_left_side">Links</string>
-    <string name="touch_right_side">Regs</string>
     <string name="touch_turn_page">Raak-bladsyomdraai</string>
     <string name="translate">Vertaal</string>
     <string name="translate_by_paragraph">Vertaal per paragraaf</string>

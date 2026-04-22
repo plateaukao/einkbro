@@ -207,7 +207,6 @@
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
     <string name="page_count">Page count</string>
     <string name="setting_title_userAgent_toggle">Enable Custom UserAgent</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -261,7 +260,6 @@
     <string name="book_name_description">書名を入力</string>
     <string name="bookmark_new_file">新規ファイル作成</string>
     <string name="bookmark_open_file">既存ファイルをリンク</string>
-    <string name="bottom">下部</string>
     <string name="cannot_open_file">ファイルを開けません。ファイルピッカーから再度開いてください</string>
     <string name="changelogs">新着情報</string>
     <string name="chat_with_web">Webとチャット</string>
@@ -354,7 +352,6 @@
     <string name="menu_instapaper">Instapaper</string>
     <string name="menu_save_archive">後で読む</string>
     <string name="menu_summarize">要約</string>
-    <string name="middle">中央</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">その他</string>
     <string name="move_to_background">最小化</string>
@@ -597,8 +594,6 @@
     <string name="toolbar_title">タイトル</string>
     <string name="touch_aciton_settings">アクション設定</string>
     <string name="touch_custom">カスタム</string>
-    <string name="touch_left_side">左</string>
-    <string name="touch_right_side">右</string>
     <string name="touch_turn_page">タッチページめくり</string>
     <string name="translate_by_paragraph">段落ごとに翻訳</string>
     <string name="translate_image_key">画像翻訳キー</string>

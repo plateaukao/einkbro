@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -233,7 +232,6 @@
     <string name="book_name_description">Nhập tên sách</string>
     <string name="bookmark_new_file">Tạo tệp mới</string>
     <string name="bookmark_open_file">Liên kết tệp hiện có</string>
-    <string name="bottom">Dưới cùng</string>
     <string name="cannot_open_file">Không thể mở tệp. Vui lòng mở lại từ trình chọn tệp.</string>
     <string name="changelogs">Có gì mới</string>
     <string name="chat_with_web">Trò chuyện với Web</string>
@@ -334,7 +332,6 @@
     <string name="menu_send_link">Gửi liên kết</string>
     <string name="menu_summarize">Tóm tắt</string>
     <string name="menu_tts">Đọc nội dung</string>
-    <string name="middle">Giữa</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">Khác</string>
     <string name="move_to_background">Thu nhỏ</string>
@@ -595,8 +592,6 @@
     <string name="touch_aciton_settings">Cài đặt hành động</string>
     <string name="touch_area_setting">Cài đặt cảm ứng</string>
     <string name="touch_custom">Tùy chỉnh</string>
-    <string name="touch_left_side">Trái</string>
-    <string name="touch_right_side">Phải</string>
     <string name="touch_turn_page">Lật trang cảm ứng</string>
     <string name="translate">Dịch</string>
     <string name="translate_by_paragraph">Dịch theo đoạn</string>

@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Temzile</string>
     <string name="whitelist_edit_hint">Etki alanı</string>
     <string name="whitelist_add">Ekle</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -254,8 +253,6 @@
     <string name="location">Konum</string>
     <string name="media_continue">Arka planda oynat</string>
     <string name="show_touch_area_hint">Dokunma alanı kenarlığını göster</string>
-    <string name="touch_left_side">Sol</string>
-    <string name="touch_right_side">Sağ</string>
     <string name="bold_font">Kalın yazı tipi</string>
     <string name="white_background">Beyaz arka plan</string>
     <string name="setting_summary_bold_font">Kalın yazı tipi stilini uygula (geçerli sayfayı yeniden yüklemeniz gerekir)</string>
@@ -301,8 +298,6 @@
     <string name="toolbar_title">Başlık</string>
     <string name="setting_title_screen_awake">Ekranı açık tut</string>
     <string name="setting_summary_screen_awake">Ekranı her zaman açık tut</string>
-    <string name="middle">Orta</string>
-    <string name="bottom">Alt</string>
     <string name="input_url">URL girin</string>
     <string name="setting_title_useUpDown">Yukarı/Aşağı tuşu kullan</string>
     <string name="setting_summary_useUpDownKey">Sayfa çevirmek için Yukarı/Aşağı tuşunu kullanın. Bluetooth cihazlar için kullanışlıdır</string>

@@ -244,8 +244,6 @@
     <string name="location">位置</string>
     <string name="media_continue">后台播放</string>
     <string name="show_touch_area_hint">显示触控感应区边界</string>
-    <string name="touch_left_side">左</string>
-    <string name="touch_right_side">右</string>
     <string name="bold_font">粗体</string>
     <string name="white_background">白色背景</string>
     <string name="setting_summary_bold_font">应用加粗字体样式 (需要重新加载当前页面)</string>
@@ -286,8 +284,6 @@
     <string name="toolbar_title">标题</string>
     <string name="setting_title_screen_awake">保持屏幕唤醒状态</string>
     <string name="setting_summary_screen_awake">屏幕始终处于唤醒状态</string>
-    <string name="middle">中间</string>
-    <string name="bottom">底部</string>
     <string name="input_url">输入网址</string>
     <string name="setting_title_useUpDown">使用向上/向下方向键</string>
     <string name="setting_summary_useUpDownKey">使用向上/向下方向键翻页，适用于蓝牙设备。</string>
@@ -490,7 +486,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">输入提示以处理网页完整内容，例如 (用300字概括:)</string>
     <string name="setting_title_next_tab">转到下一标签页</string>
     <string name="setting_summary_next_tab">关闭当前标签页时显示下一个，否则为上一标签页。</string>
-    <string name="touch_area_long">两边</string>
     <string name="setting_title_gpt_action_list">ChatGPT动作定义</string>
     <string name="setting_summary_gpt_action_list">为不同的ChatGPT动作定义不同的提示。</string>
     <string name="gpt_actions_title">ChatGPT动作</string>

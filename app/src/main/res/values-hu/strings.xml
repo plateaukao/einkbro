@@ -399,8 +399,6 @@
     <string name="location">Hely</string>
     <string name="media_continue">Háttérben lejátszás</string>
     <string name="show_touch_area_hint">Érintési terület keretének megjelenítése</string>
-    <string name="touch_left_side">Bal</string>
-    <string name="touch_right_side">Jobb</string>
     <string name="bold_font">Félkövér betű</string>
     <string name="white_background">Fehér háttér</string>
     <string name="setting_summary_bold_font">Félkövér betűstílus alkalmazása (az aktuális oldal újratöltése szükséges)</string>
@@ -446,8 +444,6 @@
     <string name="toolbar_title">Cím</string>
     <string name="setting_title_screen_awake">Képernyő ébren tartása</string>
     <string name="setting_summary_screen_awake">A képernyő mindig ébren marad</string>
-    <string name="middle">Középen</string>
-    <string name="bottom">Alul</string>
     <string name="input_url">URL megadása</string>
     <string name="setting_title_useUpDown">Fel/Le gomb használata</string>
     <string name="setting_summary_useUpDownKey">Fel/Le gomb használata lapozáshoz. Hasznos Bluetooth eszközökhöz</string>
@@ -646,7 +642,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Adja meg a promptot a weboldal teljes tartalmának feldolgozásához (pl. \"Foglalja össze 300 szóban:\")</string>
     <string name="setting_title_next_tab">Következő lap megjelenítése</string>
     <string name="setting_summary_next_tab">Következő lap megjelenítése az aktuális bezárásakor (különben az előzőt mutatja)</string>
-    <string name="touch_area_long">Két oldal</string>
     <string name="setting_title_gpt_action_list">ChatGPT művelet meghatározása</string>
     <string name="setting_summary_gpt_action_list">Különböző promptok meghatározása különböző ChatGPT műveletekhez</string>
     <string name="gpt_actions_title">ChatGPT műveletek</string>

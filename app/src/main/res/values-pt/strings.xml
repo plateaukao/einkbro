@@ -166,7 +166,6 @@
     <string name="whitelist_menu_clear">Limpar</string>
     <string name="whitelist_edit_hint">Domínio</string>
     <string name="whitelist_add">Adicionar</string>
-    <string name="touch_area_long">Dois lados</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
@@ -221,8 +220,6 @@
     <string name="location">Localização</string>
     <string name="media_continue">Reprodução em segundo plano</string>
     <string name="show_touch_area_hint">Mostrar borda da área de toque</string>
-    <string name="touch_left_side">Esquerda</string>
-    <string name="touch_right_side">Direita</string>
     <string name="bold_font">Fonte a negrito</string>
     <string name="white_background">Fundo branco</string>
     <string name="setting_summary_bold_font">Aplicar estilo de fonte a negrito (necessário recarregar a página atual)</string>
@@ -268,8 +265,6 @@
     <string name="toolbar_title">Título</string>
     <string name="setting_title_screen_awake">Manter ecrã ligado</string>
     <string name="setting_summary_screen_awake">Manter ecrã sempre ligado</string>
-    <string name="middle">Meio</string>
-    <string name="bottom">Inferior</string>
     <string name="input_url">Introduzir URL</string>
     <string name="setting_title_useUpDown">Usar teclas Cima/Baixo</string>
     <string name="setting_summary_useUpDownKey">Usar teclas Cima/Baixo para virar páginas. Útil para dispositivos Bluetooth</string>

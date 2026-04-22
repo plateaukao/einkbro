@@ -264,8 +264,6 @@
     <string name="location">Местоположение</string>
     <string name="media_continue">Фоновое воспроизведение</string>
     <string name="show_touch_area_hint">Показать границу области нажатия</string>
-    <string name="touch_left_side">Слева</string>
-    <string name="touch_right_side">Справа</string>
     <string name="bold_font">Жирный шрифт</string>
     <string name="white_background">Белый фон</string>
     <string name="setting_summary_bold_font">Применить жирный шрифт (потребуется перезагрузить текущую страницу)</string>
@@ -307,8 +305,6 @@
     <string name="toolbar_title">Заголовок</string>
     <string name="setting_title_screen_awake">Держать экран включенным</string>
     <string name="setting_summary_screen_awake">Держать экран постоянно включенным</string>
-    <string name="middle">По центру</string>
-    <string name="bottom">Внизу</string>
     <string name="input_url">Введите URL</string>
     <string name="setting_title_useUpDown">Использовать клавиши Вверх/Вниз</string>
     <string name="setting_summary_useUpDownKey">Использовать клавиши Вверх/Вниз для прокрутки страниц. Полезно для Bluetooth-устройств</string>
@@ -498,7 +494,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Введите запрос, при котором будет обработано полное содержание страницы (например: \"Изложи содежание страницы в 300 слов:\")</string>
     <string name="setting_title_next_tab">Показывать Следующую Вкладку</string>
     <string name="setting_summary_next_tab">Показывать следующую вкладку при закрытии предыдущей (в противном случае показывать предыдущую)</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">Определение команд ChatGPT</string>
     <string name="setting_summary_gpt_action_list">Вы можете определить запросы для разный команд ChatGPT</string>
     <string name="gpt_actions_title">Команды ChatGPT</string>

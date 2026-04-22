@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -232,7 +231,6 @@
     <string name="book_name_description">Syötä kirjan nimi</string>
     <string name="bookmark_new_file">Luo uusi tiedosto</string>
     <string name="bookmark_open_file">Linkitä olemassa oleva tiedosto</string>
-    <string name="bottom">Alareuna</string>
     <string name="cannot_open_file">Tiedostoa ei voi avata. Avaa se uudelleen tiedostovalitsimesta</string>
     <string name="changelogs">Muutosloki</string>
     <string name="chat_with_web">Keskustele webin kanssa</string>
@@ -333,7 +331,6 @@
     <string name="menu_send_link">Lähetä linkki</string>
     <string name="menu_summarize">Tiivistä</string>
     <string name="menu_tts">Lue sisältö</string>
-    <string name="middle">Keskellä</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">Muut</string>
     <string name="move_to_background">Pienennä</string>
@@ -594,8 +591,6 @@
     <string name="touch_aciton_settings">Toimintoasetukset</string>
     <string name="touch_area_setting">Kosketusasetus</string>
     <string name="touch_custom">Mukautettu</string>
-    <string name="touch_left_side">Vasen</string>
-    <string name="touch_right_side">Oikea</string>
     <string name="touch_turn_page">Kosketussivutus</string>
     <string name="translate">Käännä</string>
     <string name="translate_by_paragraph">Käännä kappaleittain</string>

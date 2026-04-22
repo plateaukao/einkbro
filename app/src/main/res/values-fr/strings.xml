@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Effacer</string>
     <string name="whitelist_edit_hint">Domaine</string>
     <string name="whitelist_add">Ajouté</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -239,8 +238,6 @@
     <string name="location">Localisation</string>
     <string name="media_continue">Lecture en arrière-plan</string>
     <string name="show_touch_area_hint">Afficher la bordure de la zone tactile</string>
-    <string name="touch_left_side">Gauche</string>
-    <string name="touch_right_side">Droite</string>
     <string name="bold_font">Police en gras</string>
     <string name="white_background">Fond blanc</string>
     <string name="setting_summary_bold_font">Appliquer le style gras (rechargement de la page nécessaire)</string>
@@ -286,8 +283,6 @@
     <string name="toolbar_title">Titre</string>
     <string name="setting_title_screen_awake">Garder l\'écran allumé</string>
     <string name="setting_summary_screen_awake">Garder l\'écran toujours allumé</string>
-    <string name="middle">Milieu</string>
-    <string name="bottom">Bas</string>
     <string name="input_url">Saisir l\'URL</string>
     <string name="setting_title_useUpDown">Touches Haut/Bas</string>
     <string name="setting_summary_useUpDownKey">Utiliser les touches Haut/Bas pour tourner les pages. Utile pour les appareils Bluetooth</string>
