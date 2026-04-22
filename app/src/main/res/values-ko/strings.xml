@@ -260,8 +260,6 @@
     <string name="location">위치</string>
     <string name="media_continue">백그라운드 재생</string>
     <string name="show_touch_area_hint">터치 영역 테두리 표시</string>
-    <string name="touch_left_side">왼쪽</string>
-    <string name="touch_right_side">오른쪽</string>
     <string name="bold_font">굵은 글꼴</string>
     <string name="white_background">흰색 배경</string>
     <string name="setting_summary_bold_font">굵은 글꼴 스타일 적용(현재 페이지를 다시 로드해야 함)</string>
@@ -303,8 +301,6 @@
     <string name="toolbar_title">제목</string>
     <string name="setting_title_screen_awake">화면 켜짐 유지</string>
     <string name="setting_summary_screen_awake">화면을 항상 켜져 있게 유지합니다.</string>
-    <string name="middle">가운데</string>
-    <string name="bottom">아래</string>
     <string name="input_url">URL 입력</string>
     <string name="setting_title_useUpDown">위/아래 키 사용</string>
     <string name="setting_summary_useUpDownKey">위/아래 키를 사용하여 페이지를 넘깁니다. 블루투스 장치에 유용합니다.</string>
@@ -498,7 +494,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">웹 페이지 전체 콘텐츠를 처리하기 위한 프롬프트를 입력하십시오(예: "300 단어로 요약하십시오:").</string>
     <string name="setting_title_next_tab">다음 탭 표시</string>
     <string name="setting_summary_next_tab">현재 탭이 닫히면 다음 탭을 표시합니다(그렇지 않으면 이전 탭을 표시합니다).</string>
-    <string name="touch_area_long">양쪽</string>
     <string name="setting_title_gpt_action_list">ChatGPT 동작 정의</string>
     <string name="setting_summary_gpt_action_list">다른 ChatGPT 동작에 대한 다른 프롬프트를 정의합니다.</string>
     <string name="gpt_actions_title">ChatGPT 동작</string>

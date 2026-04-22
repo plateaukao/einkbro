@@ -173,7 +173,6 @@
     <string name="whitelist_menu_clear">Vymazat</string>
     <string name="whitelist_edit_hint">Doména</string>
     <string name="whitelist_add">Přidat</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -250,8 +249,6 @@
     <string name="location">Poloha</string>
     <string name="media_continue">Přehrávání na pozadí</string>
     <string name="show_touch_area_hint">Zobrazit rámeček dotykové oblasti</string>
-    <string name="touch_left_side">Vlevo</string>
-    <string name="touch_right_side">Vpravo</string>
     <string name="bold_font">Tučné písmo</string>
     <string name="white_background">Bílé pozadí</string>
     <string name="setting_summary_bold_font">Použít tučný styl písma (vyžaduje opětovné načtení stránky)</string>
@@ -297,8 +294,6 @@
     <string name="toolbar_title">Název</string>
     <string name="setting_title_screen_awake">Ponechat obrazovku zapnutou</string>
     <string name="setting_summary_screen_awake">Ponechat obrazovku stále zapnutou</string>
-    <string name="middle">Střed</string>
-    <string name="bottom">Dole</string>
     <string name="input_url">Zadejte URL</string>
     <string name="setting_title_useUpDown">Klávesy nahoru/dolů</string>
     <string name="setting_summary_useUpDownKey">Používejte klávesy nahoru/dolů k otáčení stránek. Užitečné pro Bluetooth zařízení</string>

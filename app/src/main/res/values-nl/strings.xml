@@ -176,7 +176,6 @@
     <string name="whitelist_menu_clear">Wissen</string>
     <string name="whitelist_edit_hint">Domein</string>
     <string name="whitelist_add">Toevoegen</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -238,8 +237,6 @@
     <string name="location">Locatie</string>
     <string name="media_continue">Afspelen op achtergrond</string>
     <string name="show_touch_area_hint">Rand van aanraakgebied tonen</string>
-    <string name="touch_left_side">Links</string>
-    <string name="touch_right_side">Rechts</string>
     <string name="bold_font">Vetgedrukt lettertype</string>
     <string name="white_background">Witte achtergrond</string>
     <string name="setting_summary_bold_font">Vetgedrukt lettertype toepassen (huidige pagina moet herladen worden)</string>
@@ -285,8 +282,6 @@
     <string name="toolbar_title">Titel</string>
     <string name="setting_title_screen_awake">Scherm wakker houden</string>
     <string name="setting_summary_screen_awake">Scherm altijd wakker houden</string>
-    <string name="middle">Midden</string>
-    <string name="bottom">Onder</string>
     <string name="input_url">URL invoeren</string>
     <string name="setting_title_useUpDown">Omhoog/omlaag-toets gebruiken</string>
     <string name="setting_summary_useUpDownKey">Omhoog/omlaag-toets gebruiken om pagina\'s om te slaan. Handig voor Bluetooth-apparaten</string>

@@ -168,7 +168,6 @@
     <string name="whitelist_menu_clear">Очистити</string>
     <string name="whitelist_edit_hint">Домен</string>
     <string name="whitelist_add">Додати</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -220,7 +219,6 @@
     <string name="book_name_description">Введіть назву книги</string>
     <string name="bookmark_new_file">Створити новий файл</string>
     <string name="bookmark_open_file">Прив\'язати існуючий файл</string>
-    <string name="bottom">Внизу</string>
     <string name="cannot_open_file">Не вдається відкрити файл. Спробуйте відкрити через вибір файлів</string>
     <string name="changelogs">Що нового</string>
     <string name="chat_with_web">Чат з веб-сторінкою</string>
@@ -321,7 +319,6 @@
     <string name="menu_send_link">Надіслати посилання</string>
     <string name="menu_summarize">Підсумувати</string>
     <string name="menu_tts">Читати вміст</string>
-    <string name="middle">Посередині</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">Різне</string>
     <string name="move_to_background">Згорнути</string>
@@ -585,8 +582,6 @@
     <string name="touch_aciton_settings">Налаштування дій</string>
     <string name="touch_area_setting">Налаштування області дотику</string>
     <string name="touch_custom">Настроюваний</string>
-    <string name="touch_left_side">Зліва</string>
-    <string name="touch_right_side">Справа</string>
     <string name="touch_turn_page">Перегортання сторінок дотиком</string>
     <string name="translate">Перекласти</string>
     <string name="translate_by_paragraph">Переклад по параграфах</string>

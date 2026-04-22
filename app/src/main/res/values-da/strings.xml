@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -232,7 +231,6 @@
     <string name="book_name_description">Indtast bognavnet</string>
     <string name="bookmark_new_file">Opret ny fil</string>
     <string name="bookmark_open_file">Link eksisterende fil</string>
-    <string name="bottom">Bund</string>
     <string name="cannot_open_file">Filen kan ikke åbnes. Åbn den igen fra filvælgeren</string>
     <string name="changelogs">Nyheder</string>
     <string name="chat_with_web">Chat med web</string>
@@ -333,7 +331,6 @@
     <string name="menu_send_link">Send link</string>
     <string name="menu_summarize">Resumér</string>
     <string name="menu_tts">Læs indhold</string>
-    <string name="middle">Midte</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="misc">Diverse</string>
     <string name="move_to_background">Minimér</string>
@@ -594,8 +591,6 @@
     <string name="touch_aciton_settings">Handlingsindstillinger</string>
     <string name="touch_area_setting">Berøringsindstilling</string>
     <string name="touch_custom">Brugerdefineret</string>
-    <string name="touch_left_side">Venstre</string>
-    <string name="touch_right_side">Højre</string>
     <string name="touch_turn_page">Berøringssideskift</string>
     <string name="translate">Oversæt</string>
     <string name="translate_by_paragraph">Oversæt pr. afsnit</string>

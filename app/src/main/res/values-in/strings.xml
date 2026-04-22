@@ -240,8 +240,6 @@
     <string name="location">Lokasi</string>
     <string name="media_continue">Putar dibelakang</string>
     <string name="show_touch_area_hint">batas area sentuh</string>
-    <string name="touch_left_side">kiri</string>
-    <string name="touch_right_side">kanan</string>
     <string name="bold_font">Font tebal</string>
     <string name="white_background">Latar putih</string>
     <string name="setting_summary_bold_font">Terapkan gaya font tebal (perlu memuat ulang halaman saat ini)</string>
@@ -282,8 +280,6 @@
     <string name="toolbar_title">Judul</string>
     <string name="setting_title_screen_awake">Tetap nyalakan layar</string>
     <string name="setting_summary_screen_awake">Biarkan layar selalu terjaga</string>
-    <string name="middle">tengah</string>
-    <string name="bottom">bawah</string>
     <string name="input_url">masukan url</string>
     <string name="setting_title_useUpDown">Gunakan tombol Atas/Bawah</string>
     <string name="setting_summary_useUpDownKey">Gunakan tombol Atas/Bawah untuk membalik halaman. Berguna untuk perangkat bluetooth.</string>
@@ -429,7 +425,6 @@
     <string name="setting_summary_userAgent_toggle">Aktifkan useragent khusus</string>
     <string name="content_adjustment">Penyesuaian konten</string>
     <string name="share_save"><![CDATA[Bagi & Simpan]]></string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>

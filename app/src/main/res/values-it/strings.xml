@@ -168,7 +168,6 @@
     <string name="whitelist_menu_clear">Elimina</string>
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Aggiungi</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -230,8 +229,6 @@
     <string name="location">Posizione</string>
     <string name="media_continue">Riproduzione in background</string>
     <string name="show_touch_area_hint">Mostra bordo area touch</string>
-    <string name="touch_left_side">Sinistra</string>
-    <string name="touch_right_side">Destra</string>
     <string name="bold_font">Grassetto</string>
     <string name="white_background">Sfondo bianco</string>
     <string name="setting_summary_bold_font">Applica stile grassetto (richiede ricaricamento pagina)</string>
@@ -277,8 +274,6 @@
     <string name="toolbar_title">Titolo</string>
     <string name="setting_title_screen_awake">Mantieni schermo acceso</string>
     <string name="setting_summary_screen_awake">Mantieni lo schermo sempre acceso</string>
-    <string name="middle">Centro</string>
-    <string name="bottom">In basso</string>
     <string name="input_url">Inserisci URL</string>
     <string name="setting_title_useUpDown">Tasti Su/Giù</string>
     <string name="setting_summary_useUpDownKey">Usa i tasti Su/Giù per cambiare pagina. Utile per dispositivi Bluetooth</string>

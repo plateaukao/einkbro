@@ -169,7 +169,6 @@
     <string name="whitelist_menu_clear">Wymaż</string>
     <string name="whitelist_edit_hint">Adres</string>
     <string name="whitelist_add">Dodaj</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -246,8 +245,6 @@
     <string name="location">Lokalizacja</string>
     <string name="media_continue">Odtwarzanie w tle</string>
     <string name="show_touch_area_hint">Pokaż ramkę obszaru dotykowego</string>
-    <string name="touch_left_side">Lewy</string>
-    <string name="touch_right_side">Prawy</string>
     <string name="bold_font">Pogrubiona czcionka</string>
     <string name="white_background">Białe tło</string>
     <string name="setting_summary_bold_font">Zastosuj pogrubiony styl czcionki (wymaga ponownego załadowania strony)</string>
@@ -293,8 +290,6 @@
     <string name="toolbar_title">Tytuł</string>
     <string name="setting_title_screen_awake">Ekran zawsze włączony</string>
     <string name="setting_summary_screen_awake">Utrzymuj ekran stale włączony</string>
-    <string name="middle">Środek</string>
-    <string name="bottom">Dół</string>
     <string name="input_url">Wprowadź URL</string>
     <string name="setting_title_useUpDown">Klawisze góra/dół</string>
     <string name="setting_summary_useUpDownKey">Używaj klawiszy góra/dół do przewracania stron. Przydatne dla urządzeń Bluetooth</string>

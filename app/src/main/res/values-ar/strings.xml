@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -254,8 +253,6 @@
     <string name="location">الموقع</string>
     <string name="media_continue">تشغيل في الخلفية</string>
     <string name="show_touch_area_hint">إظهار حدود منطقة اللمس</string>
-    <string name="touch_left_side">يسار</string>
-    <string name="touch_right_side">يمين</string>
     <string name="bold_font">خط عريض</string>
     <string name="white_background">خلفية بيضاء</string>
     <string name="setting_summary_bold_font">تطبيق نمط الخط العريض (يجب إعادة تحميل الصفحة الحالية)</string>
@@ -301,8 +298,6 @@
     <string name="toolbar_title">العنوان</string>
     <string name="setting_title_screen_awake">إبقاء الشاشة مستيقظة</string>
     <string name="setting_summary_screen_awake">إبقاء الشاشة مستيقظة دائماً</string>
-    <string name="middle">الوسط</string>
-    <string name="bottom">الأسفل</string>
     <string name="input_url">أدخل URL</string>
     <string name="setting_title_useUpDown">استخدام مفتاح أعلى/أسفل</string>
     <string name="setting_summary_useUpDownKey">استخدام مفتاح أعلى/أسفل لتقليب الصفحات. مفيد لأجهزة البلوتوث</string>

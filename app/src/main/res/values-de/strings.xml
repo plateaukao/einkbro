@@ -167,7 +167,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="whitelist_menu_clear">Löschen</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Hinzufügen</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -229,8 +228,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="location">Standort</string>
     <string name="media_continue">Hintergrundwiedergabe</string>
     <string name="show_touch_area_hint">Touch-Bereich-Rahmen anzeigen</string>
-    <string name="touch_left_side">Links</string>
-    <string name="touch_right_side">Rechts</string>
     <string name="bold_font">Fettschrift</string>
     <string name="white_background">Weißer Hintergrund</string>
     <string name="setting_summary_bold_font">Fettschrift anwenden (aktuelle Seite muss neu geladen werden)</string>
@@ -276,8 +273,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="toolbar_title">Titel</string>
     <string name="setting_title_screen_awake">Bildschirm wach halten</string>
     <string name="setting_summary_screen_awake">Bildschirm immer wach halten</string>
-    <string name="middle">Mitte</string>
-    <string name="bottom">Unten</string>
     <string name="input_url">URL eingeben</string>
     <string name="setting_title_useUpDown">Auf/Ab-Taste verwenden</string>
     <string name="setting_summary_useUpDownKey">Auf/Ab-Taste zum Seitenumblättern verwenden. Nützlich für Bluetooth-Geräte</string>

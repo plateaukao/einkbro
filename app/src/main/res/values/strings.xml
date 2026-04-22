@@ -131,7 +131,7 @@
 
 
     <!-- App setting -->
-    <string name="setting_title_ui">UI</string>
+    <string name="setting_title_ui">Appearance</string>
 
     <string name="setting_title_data">Backup</string>
 
@@ -272,8 +272,6 @@
     <string name="location">Location</string>
     <string name="media_continue">Background play</string>
     <string name="show_touch_area_hint">Show Touch Area border</string>
-    <string name="touch_left_side">Left</string>
-    <string name="touch_right_side">Right</string>
     <string name="bold_font">Bold font</string>
     <string name="font_boldness">Font boldness</string>
     <string name="white_background">White background</string>
@@ -320,8 +318,6 @@
     <string name="toolbar_title">Title</string>
     <string name="setting_title_screen_awake">Keep screen awake</string>
     <string name="setting_summary_screen_awake">Keep screen always awake</string>
-    <string name="middle">Middle</string>
-    <string name="bottom">Bottom</string>
     <string name="input_url">Input URL</string>
     <string name="setting_title_useUpDown">Use Up/Down key</string>
     <string name="setting_summary_useUpDownKey">Use Up/Down key to turn pages. Useful for bluetooth devices</string>
@@ -560,8 +556,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Input prompt to process web page full content (for instance: \"Summarize it in 300 words:\")</string>
     <string name="setting_title_next_tab">Show next tab</string>
     <string name="setting_summary_next_tab">Show next tab when current one is closed (otherwise show previous one)</string>
-    <string name="touch_area_long">Two sides</string>
-    <string name="touch_area_ebook">Ebook</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>

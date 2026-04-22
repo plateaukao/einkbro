@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -110,17 +109,14 @@ fun TouchAreaContent(
         ) {
             TouchAreaItem(
                 state = touchAreaType == Left,
-                titleResId = R.string.touch_left_side,
                 iconResId = R.drawable.ic_touch_left
             ) { onTouchTypeClick(Left) }
             TouchAreaItem(
                 state = touchAreaType == MiddleLeftRight,
-                titleResId = R.string.middle,
                 iconResId = R.drawable.ic_touch_middle_left_right
             ) { onTouchTypeClick(MiddleLeftRight) }
             TouchAreaItem(
                 state = touchAreaType == Right,
-                titleResId = R.string.touch_right_side,
                 iconResId = R.drawable.ic_touch_right
             ) { onTouchTypeClick(Right) }
         }
@@ -132,17 +128,14 @@ fun TouchAreaContent(
         ) {
             TouchAreaItem(
                 state = touchAreaType == BottomLeftRight,
-                titleResId = R.string.bottom,
                 iconResId = R.drawable.ic_touch_left_right
             ) { onTouchTypeClick(BottomLeftRight) }
             TouchAreaItem(
                 state = touchAreaType == TouchAreaType.Long,
-                titleResId = R.string.touch_area_long,
                 iconResId = R.drawable.ic_touch_long
             ) { onTouchTypeClick(TouchAreaType.Long) }
             TouchAreaItem(
                 state = touchAreaType == Ebook,
-                titleResId = R.string.touch_area_ebook,
                 iconResId = R.drawable.ic_touch_ebook
             ) { onTouchTypeClick(Ebook) }
         }
@@ -221,7 +214,6 @@ fun TouchAreaContent(
 @Composable
 fun TouchAreaItem(
     state: Boolean,
-    titleResId: Int,
     iconResId: Int,
     onClicked: () -> Unit,
 ) {
@@ -246,13 +238,6 @@ fun TouchAreaItem(
                 .height(80.dp)
                 .border(borderWidth, MaterialTheme.colors.onBackground),
             tint = MaterialTheme.colors.onBackground
-        )
-        Text(
-            modifier = Modifier.padding(top = 6.dp),
-            text = stringResource(id = titleResId),
-            fontSize = 13.sp,
-            color = MaterialTheme.colors.onBackground,
-            fontWeight = if (state) FontWeight.Bold else FontWeight.Normal,
         )
     }
 }

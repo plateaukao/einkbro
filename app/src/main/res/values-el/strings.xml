@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -254,8 +253,6 @@
     <string name="location">Τοποθεσία</string>
     <string name="media_continue">Αναπαραγωγή στο παρασκήνιο</string>
     <string name="show_touch_area_hint">Εμφάνιση περιγράμματος περιοχής αφής</string>
-    <string name="touch_left_side">Αριστερά</string>
-    <string name="touch_right_side">Δεξιά</string>
     <string name="bold_font">Έντονη γραμματοσειρά</string>
     <string name="white_background">Λευκό φόντο</string>
     <string name="setting_summary_bold_font">Εφαρμογή έντονου στυλ γραμματοσειράς (απαιτείται επαναφόρτωση σελίδας)</string>
@@ -301,8 +298,6 @@
     <string name="toolbar_title">Τίτλος</string>
     <string name="setting_title_screen_awake">Διατήρηση οθόνης ενεργής</string>
     <string name="setting_summary_screen_awake">Διατήρηση οθόνης πάντα ενεργής</string>
-    <string name="middle">Μέση</string>
-    <string name="bottom">Κάτω</string>
     <string name="input_url">Εισάγετε URL</string>
     <string name="setting_title_useUpDown">Χρήση πλήκτρων Πάνω/Κάτω</string>
     <string name="setting_summary_useUpDownKey">Χρήση πλήκτρων Πάνω/Κάτω για αλλαγή σελίδας. Χρήσιμο για συσκευές Bluetooth</string>

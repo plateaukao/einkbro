@@ -177,7 +177,6 @@
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
-    <string name="touch_area_long">Two sides</string>
     <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
     <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
     <string name="gpt_actions_title">ChatGPT Actions</string>
@@ -239,8 +238,6 @@
     <string name="location">Locație</string>
     <string name="media_continue">Redare în fundal</string>
     <string name="show_touch_area_hint">Afișare bordură zonă tactilă</string>
-    <string name="touch_left_side">Stânga</string>
-    <string name="touch_right_side">Dreapta</string>
     <string name="bold_font">Font îngroșat</string>
     <string name="white_background">Fundal alb</string>
     <string name="setting_summary_bold_font">Aplică stil îngroșat (necesită reîncărcarea paginii)</string>
@@ -286,8 +283,6 @@
     <string name="toolbar_title">Titlu</string>
     <string name="setting_title_screen_awake">Menținere ecran aprins</string>
     <string name="setting_summary_screen_awake">Menține ecranul mereu aprins</string>
-    <string name="middle">Mijloc</string>
-    <string name="bottom">Jos</string>
     <string name="input_url">Introduceți URL</string>
     <string name="setting_title_useUpDown">Taste Sus/Jos</string>
     <string name="setting_summary_useUpDownKey">Folosiți tastele Sus/Jos pentru a schimba pagina. Util pentru dispozitive Bluetooth</string>

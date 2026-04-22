@@ -196,8 +196,6 @@
     <!-- Dialog help -->
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="touch_left_side">左側</string>
-    <string name="touch_right_side">右側</string>
     <string name="show_touch_area_hint">顯示可點擊區域</string>
     <string name="bold_font">粗體字型</string>
     <string name="white_background">白底黑字</string>
@@ -243,8 +241,6 @@
     <string name="page_down">下一頁</string>
     <string name="setting_title_screen_awake">保持不關閉螢幕</string>
     <string name="setting_summary_screen_awake">保持螢幕總是開啟</string>
-    <string name="middle">中間</string>
-    <string name="bottom">下面</string>
     <string name="input_url">輸入網址</string>
     <string name="setting_title_useUpDown">使用方向鍵翻頁</string>
     <string name="setting_summary_useUpDownKey">使用方向鍵翻頁，有些藍牙設備是利用上下鍵翻頁</string>
@@ -440,7 +436,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">輸入提示處理網頁全文。例：請將下面內容摘要成300字</string>
     <string name="setting_title_next_tab">顯示下個分頁</string>
     <string name="setting_summary_next_tab">當分頁被關閉時，顯示下個分頁(未勾選則顯示前分頁)</string>
-    <string name="touch_area_long">兩側</string>
     <string name="setting_title_gpt_action_list">GPT功能列表</string>
     <string name="setting_summary_gpt_action_list">建立不同提示詞，使其提供各種結果</string>
     <string name="gpt_actions_title">ChatGPT操作設定</string>
