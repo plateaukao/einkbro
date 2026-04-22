@@ -977,6 +977,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         } else {
             binding.root.postDelayed({ checkAdBlockerList() }, 1000)
         }
+
+        binding.root.postDelayed({ MenuDialogFragment.prewarm(this) }, 1500)
     }
 
     private fun initContentViews() {
