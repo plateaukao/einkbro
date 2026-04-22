@@ -39,15 +39,10 @@ class WebViewNavigationHelper(
         webView.scrollBy(shiftOffset(), 0)
         webView.scrollX = min(webView.horizontalScrollRange() - webView.width, webView.scrollX)
     } else {
-        val nonNullUrl = webView.url.orEmpty()
-        if (config.shouldSendPageNavKey(nonNullUrl)) {
-            sendPageDownKey()
-        } else {
-            jsPageScroll(1) { handled ->
-                if (!handled) {
-                    webView.scrollBy(0, shiftOffset())
-                    webView.scrollY = min(webView.verticalScrollRange() - shiftOffset(), webView.scrollY)
-                }
+        jsPageScroll(1) { handled ->
+            if (!handled) {
+                webView.scrollBy(0, shiftOffset())
+                webView.scrollY = min(webView.verticalScrollRange() - shiftOffset(), webView.scrollY)
             }
         }
     }
@@ -56,15 +51,10 @@ class WebViewNavigationHelper(
         webView.scrollBy(-shiftOffset(), 0)
         webView.scrollX = max(0, webView.scrollX)
     } else {
-        val nonNullUrl = webView.url.orEmpty()
-        if (config.shouldSendPageNavKey(nonNullUrl)) {
-            sendPageUpKey()
-        } else {
-            jsPageScroll(-1) { handled ->
-                if (!handled) {
-                    webView.scrollBy(0, -shiftOffset())
-                    webView.scrollY = max(0, webView.scrollY)
-                }
+        jsPageScroll(-1) { handled ->
+            if (!handled) {
+                webView.scrollBy(0, -shiftOffset())
+                webView.scrollY = max(0, webView.scrollY)
             }
         }
     }

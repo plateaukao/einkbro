@@ -268,7 +268,6 @@
     <string name="empty_whitelist_hint">Притисните дугме горе десно да додате домен</string>
     <string name="enable_fix_scroll">Покушај поправке скроловања</string>
     <string name="enable_touch_area_as_arrow_key">Дуги притисак као ← →</string>
-    <string name="enable_touch_area_as_page_key">Као Page Up/Down</string>
     <string name="error_download_link_invalid">Линк за преузимање није исправан</string>
     <string name="expand_space">Прошири простор</string>
     <string name="facebook_groups">Facebook групе</string>
