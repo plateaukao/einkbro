@@ -42,13 +42,10 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 
-class TouchAreaDialogFragment(
-    private val url: String,
-) : ComposeDialogFragment(), KoinComponent {
+class TouchAreaDialogFragment : ComposeDialogFragment(), KoinComponent {
     override fun setupComposeView() = composeView.setContent {
         val touchAreaType = remember { mutableStateOf(config.touch.touchAreaType) }
         val enableTurn = remember { mutableStateOf(config.touch.enableTouchTurn) }
-        val shouldSendPageKey = remember { mutableStateOf(config.shouldSendPageNavKey(url)) }
 
         MyTheme {
             TouchAreaContent(
@@ -62,17 +59,7 @@ class TouchAreaDialogFragment(
                     config.touch::enableTouchTurn.toggle()
                     enableTurn.value = config.touch.enableTouchTurn
                 },
-                showHint = config.touch.touchAreaHint,
-                hideTouchWhenType = config.touch.hideTouchAreaWhenInput,
-                switchTouchArea = config.touch.switchTouchAreaAction,
-                enableTouchAreaAsArrowKey = config.touch.longClickAsArrowKey,
-                shouldSendPageKey = shouldSendPageKey.value,
-                onShowHintClick = { config.touch::touchAreaHint.toggle() },
-                onHideWhenTypeClick = { config.touch::hideTouchAreaWhenInput.toggle() },
-                onSwitchAreaClick = { config.touch::switchTouchAreaAction.toggle() },
                 onCloseClick = { dismiss() },
-                onAsArrowKeyClick = { config.touch::longClickAsArrowKey.toggle() },
-                onAsPageKeyClick = { shouldSendPageKey.value = config.toggleSendPageNavKey(url) },
                 onConfigActionsClick = {
                     IntentUnit.gotoSettings(requireActivity(), SettingRoute.Gesture)
                 }
@@ -87,17 +74,7 @@ fun TouchAreaContent(
     onTouchTypeClick: (TouchAreaType) -> Unit,
     enableTurn: Boolean = true,
     onToggle: () -> Unit = {},
-    showHint: Boolean = true,
-    hideTouchWhenType: Boolean = true,
-    switchTouchArea: Boolean = false,
-    enableTouchAreaAsArrowKey: Boolean = false,
-    shouldSendPageKey: Boolean = false,
-    onShowHintClick: () -> Unit = {},
-    onHideWhenTypeClick: () -> Unit = {},
-    onSwitchAreaClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
-    onAsArrowKeyClick: () -> Unit = {},
-    onAsPageKeyClick: () -> Unit = {},
     onConfigActionsClick: () -> Unit = {},
 ) {
     Column(Modifier.width(300.dp)) {
@@ -146,26 +123,6 @@ fun TouchAreaContent(
             R.string.touch_aciton_settings,
             onConfigActionsClick,
         )
-        ToggleItem(
-            state = showHint,
-            titleResId = R.string.show_touch_area_hint,
-            onClicked = { onShowHintClick() })
-        ToggleItem(
-            state = hideTouchWhenType,
-            titleResId = R.string.hie_touch_area_when_input,
-            onClicked = { onHideWhenTypeClick() })
-        ToggleItem(
-            state = switchTouchArea,
-            titleResId = R.string.switch_touch_area_action,
-            onClicked = { onSwitchAreaClick() })
-        ToggleItem(
-            state = enableTouchAreaAsArrowKey,
-            titleResId = R.string.enable_touch_area_as_arrow_key,
-            onClicked = { onAsArrowKeyClick() })
-        ToggleItem(
-            state = shouldSendPageKey,
-            titleResId = R.string.enable_touch_area_as_page_key,
-            onClicked = { onAsPageKeyClick() })
 
         Spacer(modifier = Modifier.height(10.dp))
 
