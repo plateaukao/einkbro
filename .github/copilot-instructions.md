@@ -79,7 +79,7 @@ Two persistence layers exist:
 ## Key Conventions
 
 - **Lint baseline**: `app/lint-baseline.xml` suppresses pre-existing lint issues. Only add to the baseline for pre-existing issues, not new ones.
-- **`MissingTranslation` lint disabled** — translations are managed via Crowdin; never add string keys directly to non-default locale files.
+- **`MissingTranslation` lint disabled** — the project accepts partial locale coverage. When you change or add a default string, update the per-locale `values-*/strings.xml` files directly.
 - **ABI splits**: Release builds produce per-ABI APKs (arm64-v8a, armeabi-v7a, x86, x86_64) plus a universal APK.
 - **ProGuard**: `proguard-rules.txt` for release; `proguard-rules.pro` for releaseDebuggable. If adding new reflective classes, update the appropriate rules file.
 - **LeakCanary** is present but commented out in `build.gradle.kts` — do not enable in committed code.
