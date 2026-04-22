@@ -78,9 +78,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -105,48 +109,69 @@ class MenuDialogFragment(
     private val itemLongClicked: (MenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
 
-    private val showRunnable = Runnable {
-        dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 1f } }
-    }
-
     override fun setupComposeView() {
-        composeView.addOnLayoutChangeListener { view, _, _, right, bottom, _, _, oldRight, oldBottom ->
-            val oldW = oldRight; val newW = right
-            val oldH = oldBottom; val newH = bottom
-            if (oldH > 0 && newH > 0 && (oldH != newH || oldW != newW)) {
-                dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 0f } }
-                view.removeCallbacks(showRunnable)
-                view.postDelayed(showRunnable, 300)
+        composeView.setContent {
+            MyTheme {
+                MenuItems(
+                    config.whiteBackground(url),
+                    config.display.boldFontStyle,
+                    config.display.blackFontStyle,
+                    isSpeaking,
+                    isAudioOnly,
+                    hasVideo,
+                    config.ui.showShareSaveMenu,
+                    config.ui.showContentMenu,
+                    config.hasInvertedColor(url),
+                    isTouchPaginationEnabled,
+                    { config.ui::showShareSaveMenu.toggle() },
+                    { config.ui::showContentMenu.toggle() },
+                    { dialog?.dismiss(); itemClicked(it) },
+                    this::runItemLongClickAndDismiss
+                )
             }
         }
-
-        composeView.setContent {
-        MyTheme {
-            MenuItems(
-                config.whiteBackground(url),
-                config.display.boldFontStyle,
-                config.display.blackFontStyle,
-                isSpeaking,
-                isAudioOnly,
-                hasVideo,
-                config.ui.showShareSaveMenu,
-                config.ui.showContentMenu,
-                config.hasInvertedColor(url),
-                isTouchPaginationEnabled,
-                { config.ui::showShareSaveMenu.toggle() },
-                { config.ui::showContentMenu.toggle() },
-                { dialog?.dismiss(); itemClicked(it) },
-                this::runItemLongClickAndDismiss
-            )
-        }
-    }
     }
 
     private fun runItemLongClickAndDismiss(menuItemType: MenuItemType) {
         itemLongClicked(menuItemType)
-        // need to use post to prevent the dialog from being dismissed before the long click action
-        // without this workaround, it will cause crash.
+        // Dismiss via post so the long-click action fires before the dialog tears down — avoids a crash.
         activity?.window?.decorView?.post { dialog?.dismiss() }
+    }
+
+    companion object {
+        /**
+         * Pre-inflate the menu's Compose content into an off-screen, 0x0 ComposeView so that the
+         * first real open skips Compose runtime boot, Material icon vector parsing, and theme setup.
+         */
+        fun prewarm(activity: FragmentActivity) {
+            val root = activity.findViewById<ViewGroup>(android.R.id.content) ?: return
+            val warmView = ComposeView(activity).apply {
+                visibility = View.INVISIBLE
+                layoutParams = ViewGroup.LayoutParams(0, 0)
+                setContent {
+                    MyTheme {
+                        MenuItems(
+                            hasWhiteBkd = false,
+                            boldFont = false,
+                            blackFont = false,
+                            isSpeaking = false,
+                            isAudioOnly = false,
+                            hasVideo = true,
+                            showShareSaveMenu = true,
+                            showContentMenu = true,
+                            hasInvertedColor = false,
+                            isTouchPaginationEnabled = false,
+                            toggleShareSaveMenu = {},
+                            toggleContentMenu = {},
+                            onClicked = {},
+                            onLongClicked = {},
+                        )
+                    }
+                }
+            }
+            root.addView(warmView)
+            root.postDelayed({ root.removeView(warmView) }, 3000)
+        }
     }
 }
 
