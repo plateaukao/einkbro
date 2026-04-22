@@ -259,7 +259,7 @@
     <string name="dialog_message_sync_bookmark_file">Om boekmerke te sinkroniseer, moet jy \'n boekmerklêer van Google Drive of ander afgeleë diens skep of oopmaak met die stelsellêerkieser.</string>
     <string name="dialog_title_bookmark_sync">Boekmerklêer-instelling</string>
     <string name="dialog_toc_title">Inhoudsopgawe</string>
-    <string name="dialog_touch_area_enable">Aktiveer raakbladsyopmaak</string>
+    <string name="dialog_touch_area_enable">Aktiveer paginering</string>
     <string name="done">Sluit wanneer oordrag klaar is</string>
     <string name="drag_to_reorder">Sleep om boekmerke te herrangskik</string>
     <string name="duplicate_tab">Dupliseer oortjie</string>
@@ -588,7 +588,7 @@
     <string name="toolbar_time">Huidige tyd</string>
     <string name="toolbar_title">Titel</string>
     <string name="toolbars">Nutsbalkinstelling</string>
-    <string name="touch_aciton_settings">Aksie-instellings</string>
+    <string name="touch_aciton_settings">Meer Instellings</string>
     <string name="touch_area_setting">Raakinstelling</string>
     <string name="touch_custom">Aangepas</string>
     <string name="touch_turn_page">Raak-bladsyomdraai</string>

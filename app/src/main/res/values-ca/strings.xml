@@ -412,7 +412,7 @@
     <string name="gpt_scope">Àmbit</string>
     <string name="gpt_scope_text_selection">Selecció de text</string>
     <string name="gpt_scope_whole_page">Pàgina completa</string>
-    <string name="dialog_touch_area_enable">Activar paginació tàctil</string>
+    <string name="dialog_touch_area_enable">Activar paginació</string>
     <string name="show_default_text_menu">Mostrar menú de text seleccionat per defecte</string>
     <string name="setting_summary_show_default_text_menu">Després de seleccionar text, mostrar el menú d\'acció per defecte del sistema</string>
     <string name="google_translate">Google Translate</string>
@@ -535,7 +535,7 @@
     <string name="key_page_down">Enviar tecla Page Down</string>
     <string name="key_left">Enviar tecla Left</string>
     <string name="key_right">Enviar tecla Right</string>
-    <string name="touch_aciton_settings">Configuració d\'accions</string>
+    <string name="touch_aciton_settings">Més configuració</string>
     <string name="summary_touch_aciton_settings">Configurar accions per a l\'àrea tàctil</string>
     <string name="setting_title_touch_area_actions">Accions de clic de l\'àrea tàctil</string>
     <string name="setting_touch_up_click">Acció de clic amunt</string>

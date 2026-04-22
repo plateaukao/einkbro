@@ -258,7 +258,7 @@
     <string name="dialog_message_sync_bookmark_file">Kirjanmerkkien synkronoimiseksi sinun täytyy luoda tai avata kirjanmerkkitiedosto Google Drivesta tai muusta palvelusta järjestelmän tiedostovalitsimella</string>
     <string name="dialog_title_bookmark_sync">Kirjanmerkkitiedoston asetus</string>
     <string name="dialog_toc_title">Sisällysluettelo</string>
-    <string name="dialog_touch_area_enable">Ota kosketussivutus käyttöön</string>
+    <string name="dialog_touch_area_enable">Ota sivutus käyttöön</string>
     <string name="done">Sulje kun siirto on valmis</string>
     <string name="drag_to_reorder">Vedä järjestääksesi kirjanmerkkejä</string>
     <string name="duplicate_tab">Kahdenna välilehti</string>
@@ -587,7 +587,7 @@
     <string name="toolbar_time">Nykyinen aika</string>
     <string name="toolbar_title">Otsikko</string>
     <string name="toolbars">Työkalurivin asetus</string>
-    <string name="touch_aciton_settings">Toimintoasetukset</string>
+    <string name="touch_aciton_settings">Lisäasetukset</string>
     <string name="touch_area_setting">Kosketusasetus</string>
     <string name="touch_custom">Mukautettu</string>
     <string name="touch_turn_page">Kosketussivutus</string>

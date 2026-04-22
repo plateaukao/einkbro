@@ -445,7 +445,7 @@
     <string name="gpt_scope">טווח</string>
     <string name="gpt_scope_text_selection">בחירת טקסט</string>
     <string name="gpt_scope_whole_page">עמוד שלם</string>
-    <string name="dialog_touch_area_enable">הפעלת ניווט עמודים במגע</string>
+    <string name="dialog_touch_area_enable">הפעלת ניווט עמודים</string>
     <string name="show_default_text_menu">הצגת תפריט טקסט נבחר ברירת מחדל</string>
     <string name="setting_summary_show_default_text_menu">לאחר בחירת טקסט, הצגת תפריט פעולות ברירת מחדל של המערכת</string>
     <string name="google_translate">Google Translate</string>
@@ -546,7 +546,7 @@
     <string name="key_page_down">שליחת מקש עמוד למטה</string>
     <string name="key_left">שליחת מקש שמאלה</string>
     <string name="key_right">שליחת מקש ימינה</string>
-    <string name="touch_aciton_settings">הגדרות פעולות</string>
+    <string name="touch_aciton_settings">הגדרות נוספות</string>
     <string name="summary_touch_aciton_settings">הגדרת פעולות לאזור מגע</string>
     <string name="setting_title_touch_area_actions">פעולות לחיצה באזור מגע</string>
     <string name="setting_touch_up_click">פעולת לחיצה למעלה</string>

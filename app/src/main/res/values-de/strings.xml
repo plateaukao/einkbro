@@ -420,7 +420,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="gpt_scope">Bereich</string>
     <string name="gpt_scope_text_selection">Textauswahl</string>
     <string name="gpt_scope_whole_page">Ganze Seite</string>
-    <string name="dialog_touch_area_enable">Touch-Seitennavigation aktivieren</string>
+    <string name="dialog_touch_area_enable">Seitennavigation aktivieren</string>
     <string name="show_default_text_menu">Standard-Textauswahlmenü anzeigen</string>
     <string name="setting_summary_show_default_text_menu">Nach Textauswahl das Standard-Aktionsmenü des Systems anzeigen</string>
     <string name="google_translate">Google Translate</string>
@@ -521,7 +521,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="key_page_down">Bild-ab-Taste senden</string>
     <string name="key_left">Links-Taste senden</string>
     <string name="key_right">Rechts-Taste senden</string>
-    <string name="touch_aciton_settings">Aktionseinstellungen</string>
+    <string name="touch_aciton_settings">Weitere Einstellungen</string>
     <string name="summary_touch_aciton_settings">Aktionen für den Touch-Bereich einrichten</string>
     <string name="setting_title_touch_area_actions">Touch-Bereich Klick-Aktionen</string>
     <string name="setting_touch_up_click">Klick-Aktion oben</string>

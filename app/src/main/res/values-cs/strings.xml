@@ -441,7 +441,7 @@
     <string name="gpt_scope">Rozsah</string>
     <string name="gpt_scope_text_selection">Výběr textu</string>
     <string name="gpt_scope_whole_page">Celá stránka</string>
-    <string name="dialog_touch_area_enable">Zapnout dotykové stránkování</string>
+    <string name="dialog_touch_area_enable">Zapnout stránkování</string>
     <string name="show_default_text_menu">Zobrazit výchozí menu vybraného textu</string>
     <string name="setting_summary_show_default_text_menu">Po výběru textu zobrazit výchozí systémovou nabídku akcí</string>
     <string name="google_translate">Google Translate</string>
@@ -542,7 +542,7 @@
     <string name="key_page_down">Odeslat klávesu Page Down</string>
     <string name="key_left">Odeslat klávesu vlevo</string>
     <string name="key_right">Odeslat klávesu vpravo</string>
-    <string name="touch_aciton_settings">Nastavení akcí</string>
+    <string name="touch_aciton_settings">Další nastavení</string>
     <string name="summary_touch_aciton_settings">Nastavit akce pro dotykovou oblast</string>
     <string name="setting_title_touch_area_actions">Akce kliknutí v dotykové oblasti</string>
     <string name="setting_touch_up_click">Akce kliknutí nahoru</string>

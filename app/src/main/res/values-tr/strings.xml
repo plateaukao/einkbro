@@ -445,7 +445,7 @@
     <string name="gpt_scope">Kapsam</string>
     <string name="gpt_scope_text_selection">Metin seçimi</string>
     <string name="gpt_scope_whole_page">Tüm sayfa</string>
-    <string name="dialog_touch_area_enable">Dokunmatik Sayfalamayı Etkinleştir</string>
+    <string name="dialog_touch_area_enable">Sayfalamayı Etkinleştir</string>
     <string name="show_default_text_menu">Varsayılan seçili metin menüsünü göster</string>
     <string name="setting_summary_show_default_text_menu">Metin seçildikten sonra sistem varsayılan eylem menüsünü göster</string>
     <string name="google_translate">Google Translate</string>
@@ -546,7 +546,7 @@
     <string name="key_page_down">Sayfa Aşağı tuşu gönder</string>
     <string name="key_left">Sol tuş gönder</string>
     <string name="key_right">Sağ tuş gönder</string>
-    <string name="touch_aciton_settings">Eylem Ayarları</string>
+    <string name="touch_aciton_settings">Diğer Ayarlar</string>
     <string name="summary_touch_aciton_settings">Dokunma alanı için eylemleri ayarla</string>
     <string name="setting_title_touch_area_actions">Dokunma Alanı tıklama eylemleri</string>
     <string name="setting_touch_up_click">Yukarı tıklama eylemi</string>

@@ -479,7 +479,7 @@
     <string name="description_split_screen_string_pattern">URL pencarian kustom dengan posisi kata kunci sebagai %s</string>
     <string name="description_split_screen_title">Masukkan nama yang akan ditampilkan sebagai judul menu konteks</string>
     <string name="dialog_message_remove_highlight">Hapus sorotan?</string>
-    <string name="dialog_touch_area_enable">Aktifkan Paginasi Sentuh</string>
+    <string name="dialog_touch_area_enable">Aktifkan Paginasi</string>
     <string name="drag_to_reorder">Seret untuk mengurutkan ulang bookmark</string>
     <string name="eink_image_10">10%</string>
     <string name="eink_image_100">100%</string>
@@ -651,7 +651,7 @@
     <string name="toolbar_icons">Ikon toolbar</string>
     <string name="toolbar_icons_description">Atur ikon toolbar</string>
     <string name="toolbar_time">Waktu saat ini</string>
-    <string name="touch_aciton_settings">Pengaturan Aksi</string>
+    <string name="touch_aciton_settings">Pengaturan Lainnya</string>
     <string name="touch_custom">Kustom</string>
     <string name="translate_by_paragraph">Terjemahkan per Paragraf</string>
     <string name="translate_image_key">Kunci untuk terjemahan gambar</string>

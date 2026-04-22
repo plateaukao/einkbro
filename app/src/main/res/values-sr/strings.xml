@@ -255,7 +255,7 @@
     <string name="dialog_message_sync_bookmark_file">За синхронизацију обележивача потребно је креирати или отворити датотеку са Google Drive или другог сервиса</string>
     <string name="dialog_title_bookmark_sync">Подешавање датотеке обележивача</string>
     <string name="dialog_toc_title">Садржај</string>
-    <string name="dialog_touch_area_enable">Укључи листање додиром</string>
+    <string name="dialog_touch_area_enable">Укључи листање</string>
     <string name="done">Затвори по завршетку</string>
     <string name="drag_to_reorder">Превуците за промену редоследа обележивача</string>
     <string name="duplicate_tab">Дуплирај картицу</string>
@@ -587,7 +587,7 @@
     <string name="toolbar_time">Тренутно време</string>
     <string name="toolbar_title">Наслов</string>
     <string name="toolbars">Подешавање траке са алатима</string>
-    <string name="touch_aciton_settings">Подешавања акција</string>
+    <string name="touch_aciton_settings">Више подешавања</string>
     <string name="touch_area_setting">Подешавање додирне области</string>
     <string name="touch_custom">Прилагођено</string>
     <string name="touch_turn_page">Окретање страница додиром</string>

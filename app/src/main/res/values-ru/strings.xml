@@ -443,7 +443,7 @@
     <string name="setting_title_edit_gpt_user_prompt_prefix">Префикс Пользовательского Запроса</string>
     <string name="setting_summary_edit_gpt_user_prompt">Вы можете отредактировать префикс пользовательского запроса, например: \"Переведи следующий текст на английский:\"</string>
     <string name="gpt_api_key_not_set">Добавьте Ключ OpenAI в Настройках</string>
-    <string name="dialog_touch_area_enable">Включить Прокрутку Касанием</string>
+    <string name="dialog_touch_area_enable">Включить листание</string>
     <string name="show_default_text_menu">Показывать Системное Меню Для Выделенного Текста</string>
     <string name="setting_summary_show_default_text_menu">При выделении текста показывать системное меню действий</string>
     <string name="google_translate">Google Переводчик</string>
@@ -561,7 +561,7 @@
     <string name="key_page_down">Send PageDown Key</string>
     <string name="key_left">Send Left Key</string>
     <string name="key_right">Send Right Key</string>
-    <string name="touch_aciton_settings">Настройки действий</string>
+    <string name="touch_aciton_settings">Дополнительные настройки</string>
     <string name="summary_touch_aciton_settings">Настройте действия для области касаний</string>
     <string name="setting_title_touch_area_actions">Действия по нажатию на область касаний</string>
     <string name="setting_touch_up_click">Действие по нажатию кнопки Вверх</string>

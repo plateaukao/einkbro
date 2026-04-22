@@ -388,7 +388,7 @@
     <string name="setting_summary_edit_gpt_user_prompt">使用者提示詞</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">使用者提示詞的前綴</string>
     <string name="gpt_api_key_not_set">請在設定中加入OpenAI Key</string>
-    <string name="dialog_touch_area_enable">啟動點擊翻頁</string>
+    <string name="dialog_touch_area_enable">啟動翻頁</string>
     <string name="show_default_text_menu">顯示預設文字選取功能清單</string>
     <string name="setting_summary_show_default_text_menu">選取文字後，將顯示預設的功能清單</string>
     <string name="google_translate">Google\n翻譯</string>
@@ -500,7 +500,7 @@
     <string name="key_page_down">送出 PageDown 按鍵</string>
     <string name="key_left">送出 Left 按鍵</string>
     <string name="key_right">送出 Right 按鍵</string>
-    <string name="touch_aciton_settings">點擊功能設定</string>
+    <string name="touch_aciton_settings">更多設定</string>
     <string name="summary_touch_aciton_settings">設定觸控區域的點擊功能</string>
     <string name="setting_touch_up_click">Up 區域點擊功能</string>
     <string name="setting_title_touch_area_actions">點擊區域的功能設定</string>
