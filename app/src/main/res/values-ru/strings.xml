@@ -542,7 +542,6 @@
     <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">История результатов GPT</string>
     <string name="setting_summary_gpt_query_list">Сохранённая история результатов GPT</string>
-    <string name="enable_touch_area_as_page_key">Исп. как кл. Page Up/Down</string>
     <string name="translate_this_site">Всегда переводить</string>
     <string name="select_sentence">Выбрать предложение</string>
     <string name="select_paragraph">Выбрать параграф</string>

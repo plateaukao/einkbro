@@ -271,7 +271,6 @@
     <string name="empty_whitelist_hint">Klik på knappen øverst til højre for at tilføje et nyt domæne</string>
     <string name="enable_fix_scroll">Forsøg at rette rulning</string>
     <string name="enable_touch_area_as_arrow_key">Langt tryk som ← → tast</string>
-    <string name="enable_touch_area_as_page_key">Som Page Up/Down tast</string>
     <string name="error_download_link_invalid">Downloadlinket er ugyldigt</string>
     <string name="expand_space">Udvid mellemrum</string>
     <string name="facebook_groups">Facebook-grupper</string>

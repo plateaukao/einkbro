@@ -86,26 +86,6 @@ class ConfigManager(
         return shouldFixScroll(url)
     }
 
-    // use string set to store the list of sending page navigation key
-    var sendPageNavKeyList: List<String>
-        get() = sp.getStringSet(K_SEND_PAGE_NAV_KEY_LIST, mutableSetOf())?.toList() ?: emptyList()
-        set(value) = sp.edit { putStringSet(K_SEND_PAGE_NAV_KEY_LIST, value.toSet()) }
-
-    fun shouldSendPageNavKey(url: String): Boolean {
-        return Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldSendPageNavKey }
-            ?: false
-    }
-
-    fun toggleSendPageNavKey(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
-
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldSendPageNavKey = !config.shouldSendPageNavKey
-        bookmarkManager.addDomainConfiguration(config)
-
-        return shouldSendPageNavKey(url)
-    }
-
     var translateSiteList: List<String>
         get() = sp.getStringSet(K_TRANSLATE_SITE_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_TRANSLATE_SITE_LIST, value.toSet()) }
@@ -306,7 +286,6 @@ class ConfigManager(
 
     companion object {
         const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
-        const val K_SEND_PAGE_NAV_KEY_LIST = "sp_send_page_nav_key_list"
         const val K_TRANSLATE_SITE_LIST = "sp_translate_site_list"
         const val K_WHITE_BACKGROUND_LIST = "sp_white_background_list"
         const val K_FAVORITE_URL = "favoriteURL"

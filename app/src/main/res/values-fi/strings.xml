@@ -271,7 +271,6 @@
     <string name="empty_whitelist_hint">Napsauta oikeaa yläkulman painiketta lisätäksesi uuden verkkotunnuksen</string>
     <string name="enable_fix_scroll">Yritä korjata vieritys</string>
     <string name="enable_touch_area_as_arrow_key">Pitkä painallus ← → näppäimenä</string>
-    <string name="enable_touch_area_as_page_key">Page Up/Down -näppäimenä</string>
     <string name="error_download_link_invalid">Latauslinkki on virheellinen</string>
     <string name="expand_space">Laajenna tila</string>
     <string name="facebook_groups">Facebook-ryhmät</string>

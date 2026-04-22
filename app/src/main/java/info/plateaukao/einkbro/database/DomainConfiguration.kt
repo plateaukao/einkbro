@@ -17,7 +17,6 @@ data class DomainConfiguration(
 data class DomainConfigurationData(
     val domain: String,
     var shouldFixScroll: Boolean = false,
-    var shouldSendPageNavKey: Boolean = false,
     var shouldTranslateSite: Boolean = false,
     var shouldUseWhiteBackground: Boolean = false,
     var shouldInvertColor: Boolean = false,

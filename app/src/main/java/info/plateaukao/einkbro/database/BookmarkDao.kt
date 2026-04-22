@@ -347,13 +347,6 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         }
         config.scrollFixList = emptyList()
 
-        config.sendPageNavKeyList.forEach { domain ->
-            val domainConfiguration = getDomainConfiguration(domain)
-            domainConfiguration.shouldSendPageNavKey = true
-            addDomainConfiguration(domainConfiguration)
-        }
-        config.sendPageNavKeyList = emptyList()
-
         config.translateSiteList.forEach { domain ->
             val domainConfiguration = getDomainConfiguration(domain)
             domainConfiguration.shouldTranslateSite = true
@@ -466,10 +459,13 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     private suspend fun getDomainConfiguration(domain: String): DomainConfigurationData =
         domainConfigurationDao.getDomainConfiguration(domain)?.let {
-            Json.decodeFromString<DomainConfigurationData>(it.configuration)
+            json.decodeFromString<DomainConfigurationData>(it.configuration)
         } ?: DomainConfigurationData(domain)
 
-    val json = Json { encodeDefaults = true }
+    val json = Json {
+        encodeDefaults = true
+        ignoreUnknownKeys = true
+    }
     private suspend fun getAllDomainConfigurations(): Map<String, DomainConfigurationData> =
         mutableMapOf<String, DomainConfigurationData>().apply {
             domainConfigurationDao.getAllDomainConfigurations().forEach {

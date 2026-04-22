@@ -523,7 +523,6 @@
     <string name="setting_summary_gemini_model_name">הזן שם מודל Gemini (ברירת מחדל: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">היסטוריית תוצאות GPT</string>
     <string name="setting_summary_gpt_query_list">תוצאות שאילתות GPT שנשמרו</string>
-    <string name="enable_touch_area_as_page_key">כמקש עמוד למעלה/למטה</string>
     <string name="translate_this_site">תרגם תמיד</string>
     <string name="select_sentence">בחירת משפט</string>
     <string name="select_paragraph">בחירת פסקה</string>
