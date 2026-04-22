@@ -193,7 +193,8 @@ class WebViewJsBridge(private val webView: WebView) {
         injectCss(cssByteArray)
         if (isVertical) injectCss(VERTICAL_LAYOUT_CSS.toByteArray())
 
-        val jsString = HelperUnit.getStringFromAsset("MozReadability.js")
+        val jsString = HelperUnit.getStringFromAsset("MozReadability.js") +
+                "\n" + HelperUnit.getStringFromAsset("jsonld_article.js")
         webView.evaluateJavascript(jsString) {
             postAction?.invoke()
         }
@@ -201,7 +202,8 @@ class WebViewJsBridge(private val webView: WebView) {
 
     fun injectMozReaderModeJs(isVertical: Boolean = false) {
         try {
-            val buffer = loadAssetFile("MozReadability.js").toByteArray()
+            val buffer = (loadAssetFile("MozReadability.js") +
+                    "\n" + loadAssetFile("jsonld_article.js")).toByteArray()
             val cssBuffer =
                 loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
 
@@ -313,22 +315,28 @@ class WebViewJsBridge(private val webView: WebView) {
 
         private fun replaceWithReaderModeBodyJs(keepExtraContent: Boolean) = """
             ${if (keepExtraContent) "inlineCodeStyles();" else ""}
-            var documentClone = document.cloneNode(true);
+            var scopedDoc = (typeof getReadabilityScopedDocument === 'function') ? getReadabilityScopedDocument() : null;
+            var documentClone = scopedDoc || document.cloneNode(true);
             var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
             document.innerHTMLCache = document.body.innerHTML;
 
-            article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
+            if (article) {
+                article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
 
-            document.body.outerHTML = createHtmlBody(article)
+                document.body.outerHTML = createHtmlBody(article)
 
-            document.getElementsByName('viewport')[0].setAttribute('content', 'width=device-width');
+                var viewport = document.getElementsByName('viewport')[0];
+                if (viewport) viewport.setAttribute('content', 'width=device-width');
+            }
         """
 
         private fun getReaderModeBodyHtmlJs(keepExtraContent: Boolean) = """
             javascript:(function() {
                 ${if (keepExtraContent) "inlineCodeStyles();" else ""}
-                var documentClone = document.cloneNode(true);
+                var scopedDoc = (typeof getReadabilityScopedDocument === 'function') ? getReadabilityScopedDocument() : null;
+                var documentClone = scopedDoc || document.cloneNode(true);
                 var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
+                if (!article) return '';
                 article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
                 var bodyOuterHTML = createHtmlBodyWithUrl(article, "%s")
                 var headOuterHTML = document.head.outerHTML;
@@ -338,8 +346,10 @@ class WebViewJsBridge(private val webView: WebView) {
 
         private fun getReaderModeBodyTextJs(keepExtraContent: Boolean) = """
             javascript:(function() {
-                var documentClone = document.cloneNode(true);
+                var scopedDoc = (typeof getReadabilityScopedDocument === 'function') ? getReadabilityScopedDocument() : null;
+                var documentClone = scopedDoc || document.cloneNode(true);
                 var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
+                if (!article) return '';
                 return article.title + ', ' + article.textContent;
             })()
         """
