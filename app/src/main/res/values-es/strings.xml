@@ -390,7 +390,7 @@
     <string name="setting_title_edit_gpt_user_prompt_prefix">Prefijo de indicación del usuario</string>
     <string name="setting_summary_edit_gpt_user_prompt">Edita el prefijo de indicación del usuario, por ejemplo: \"Traduce el siguiente contenido al inglés:\"</string>
     <string name="gpt_api_key_not_set">Añade la clave de OpenAI en Ajustes</string>
-    <string name="dialog_touch_area_enable">Habilitar paginación por toque</string>
+    <string name="dialog_touch_area_enable">Habilitar paginación</string>
     <string name="show_default_text_menu">Mostrar menú de acción predeterminado de texto seleccionado</string>
     <string name="setting_summary_show_default_text_menu">Después de seleccionar texto, mostrar el menú de acción predeterminado del sistema</string>
     <string name="google_translate">Google Translate</string>
@@ -509,7 +509,7 @@
     <string name="key_page_down">Enviar tecla Page Down</string>
     <string name="key_left">Enviar tecla Left</string>
     <string name="key_right">Enviar tecla Right</string>
-    <string name="touch_aciton_settings">Configuración de acciones</string>
+    <string name="touch_aciton_settings">Más ajustes</string>
     <string name="summary_touch_aciton_settings">Configurar acciones para el área de toque</string>
     <string name="setting_title_touch_area_actions">Acciones de clic en el área de toque</string>
     <string name="setting_touch_up_click">Acción de clic hacia arriba</string>

@@ -430,7 +430,7 @@
     <string name="gpt_scope">Domeniu</string>
     <string name="gpt_scope_text_selection">Selecție text</string>
     <string name="gpt_scope_whole_page">Pagină completă</string>
-    <string name="dialog_touch_area_enable">Activare paginare tactilă</string>
+    <string name="dialog_touch_area_enable">Activare paginare</string>
     <string name="show_default_text_menu">Afișare meniu text implicit</string>
     <string name="setting_summary_show_default_text_menu">După selectarea textului, afișare meniu de acțiuni implicit al sistemului</string>
     <string name="google_translate">Google Translate</string>
@@ -530,7 +530,7 @@
     <string name="key_page_down">Trimite tasta Pagină Jos</string>
     <string name="key_left">Trimite tasta Stânga</string>
     <string name="key_right">Trimite tasta Dreapta</string>
-    <string name="touch_aciton_settings">Setări acțiuni</string>
+    <string name="touch_aciton_settings">Mai multe setări</string>
     <string name="summary_touch_aciton_settings">Configurare acțiuni pentru zona tactilă</string>
     <string name="setting_title_touch_area_actions">Acțiuni clic zonă tactilă</string>
     <string name="setting_touch_up_click">Acțiune clic sus</string>

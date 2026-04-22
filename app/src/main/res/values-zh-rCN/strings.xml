@@ -437,7 +437,7 @@
     <string name="setting_summary_edit_gpt_user_prompt">编辑用户提示前缀</string>
     <string name="setting_title_edit_gpt_user_prompt_prefix">用户提示前缀</string>
     <string name="gpt_api_key_not_set">在设置中添加OpenAI密钥。</string>
-    <string name="dialog_touch_area_enable">启用触摸分页</string>
+    <string name="dialog_touch_area_enable">启用分页</string>
     <string name="show_default_text_menu">显示默认选中文本菜单</string>
     <string name="setting_summary_show_default_text_menu">选择文本后，显示系统默认操作菜单。</string>
     <string name="google_translate">谷歌翻译</string>
@@ -549,7 +549,7 @@
     <string name="key_page_down">Send PageDown Key</string>
     <string name="key_left">Send Left Key</string>
     <string name="key_right">Send Right Key</string>
-    <string name="touch_aciton_settings">Action Settings</string>
+    <string name="touch_aciton_settings">更多设置</string>
     <string name="summary_touch_aciton_settings">Setup actions for touch area</string>
     <string name="setting_touch_up_click">Up click action</string>
     <string name="setting_title_touch_area_actions">Touch Area Click Actions</string>

@@ -445,7 +445,7 @@
     <string name="gpt_scope">النطاق</string>
     <string name="gpt_scope_text_selection">تحديد النص</string>
     <string name="gpt_scope_whole_page">الصفحة كاملة</string>
-    <string name="dialog_touch_area_enable">تفعيل التنقل باللمس</string>
+    <string name="dialog_touch_area_enable">تفعيل ترقيم الصفحات</string>
     <string name="show_default_text_menu">إظهار قائمة النص المحدد الافتراضية</string>
     <string name="setting_summary_show_default_text_menu">بعد تحديد النص، إظهار قائمة الإجراءات الافتراضية للنظام</string>
     <string name="google_translate">Google Translate</string>
@@ -546,7 +546,7 @@
     <string name="key_page_down">إرسال مفتاح صفحة لأسفل</string>
     <string name="key_left">إرسال مفتاح يسار</string>
     <string name="key_right">إرسال مفتاح يمين</string>
-    <string name="touch_aciton_settings">إعدادات الإجراءات</string>
+    <string name="touch_aciton_settings">المزيد من الإعدادات</string>
     <string name="summary_touch_aciton_settings">إعداد إجراءات منطقة اللمس</string>
     <string name="setting_title_touch_area_actions">إجراءات النقر على منطقة اللمس</string>
     <string name="setting_touch_up_click">إجراء النقر للأعلى</string>

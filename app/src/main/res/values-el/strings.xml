@@ -445,7 +445,7 @@
     <string name="gpt_scope">Εύρος</string>
     <string name="gpt_scope_text_selection">Επιλογή κειμένου</string>
     <string name="gpt_scope_whole_page">Ολόκληρη σελίδα</string>
-    <string name="dialog_touch_area_enable">Ενεργοποίηση Σελιδοποίησης Αφής</string>
+    <string name="dialog_touch_area_enable">Ενεργοποίηση Σελιδοποίησης</string>
     <string name="show_default_text_menu">Εμφάνιση προεπιλεγμένου μενού επιλογής κειμένου</string>
     <string name="setting_summary_show_default_text_menu">Μετά την επιλογή κειμένου, εμφάνιση προεπιλεγμένου μενού ενεργειών συστήματος</string>
     <string name="google_translate">Google Translate</string>
@@ -546,7 +546,7 @@
     <string name="key_page_down">Αποστολή πλήκτρου Σελίδα Κάτω</string>
     <string name="key_left">Αποστολή πλήκτρου Αριστερά</string>
     <string name="key_right">Αποστολή πλήκτρου Δεξιά</string>
-    <string name="touch_aciton_settings">Ρυθμίσεις Ενεργειών</string>
+    <string name="touch_aciton_settings">Περισσότερες ρυθμίσεις</string>
     <string name="summary_touch_aciton_settings">Ρύθμιση ενεργειών για περιοχή αφής</string>
     <string name="setting_title_touch_area_actions">Ενέργειες κλικ Περιοχής Αφής</string>
     <string name="setting_touch_up_click">Ενέργεια κλικ πάνω</string>

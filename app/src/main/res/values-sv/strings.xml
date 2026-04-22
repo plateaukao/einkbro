@@ -258,7 +258,7 @@
     <string name="dialog_message_sync_bookmark_file">För att synkronisera bokmärken behöver du skapa eller öppna en bokmärkesfil från Google Drive eller en annan tjänst via systemets filväljare</string>
     <string name="dialog_title_bookmark_sync">Bokmärkesinställning</string>
     <string name="dialog_toc_title">Innehållsförteckning</string>
-    <string name="dialog_touch_area_enable">Aktivera pekvändning</string>
+    <string name="dialog_touch_area_enable">Aktivera sidnavigering</string>
     <string name="done">Stäng när överföringen är klar</string>
     <string name="drag_to_reorder">Dra för att ordna om bokmärken</string>
     <string name="duplicate_tab">Duplicera flik</string>
@@ -587,7 +587,7 @@
     <string name="toolbar_time">Aktuell tid</string>
     <string name="toolbar_title">Titel</string>
     <string name="toolbars">Verktygsfältsinställning</string>
-    <string name="touch_aciton_settings">Åtgärdsinställningar</string>
+    <string name="touch_aciton_settings">Fler inställningar</string>
     <string name="touch_area_setting">Pekinställning</string>
     <string name="touch_custom">Anpassad</string>
     <string name="touch_turn_page">Pekvändning</string>

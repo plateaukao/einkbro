@@ -443,7 +443,7 @@
     <string name="setting_title_edit_gpt_user_prompt_prefix">사용자 프롬프트 접두사</string>
     <string name="setting_summary_edit_gpt_user_prompt">사용자 프롬프트 접두사를 편집하십시오. 예: "다음 콘텐츠를 영어로 번역하십시오:"</string>
     <string name="gpt_api_key_not_set">설정에서 OpenAI 키를 추가하십시오.</string>
-    <string name="dialog_touch_area_enable">터치 페이지 넘기기 활성화</string>
+    <string name="dialog_touch_area_enable">페이지 넘기기 활성화</string>
     <string name="show_default_text_menu">기본 선택 텍스트 메뉴 표시</string>
     <string name="setting_summary_show_default_text_menu">텍스트를 선택한 후 시스템 기본 동작 메뉴를 표시합니다.</string>
     <string name="google_translate">Google 번역</string>
@@ -662,7 +662,7 @@
     <string name="toolbar_icons">툴바 아이콘</string>
     <string name="toolbar_icons_description">툴바 아이콘 배열</string>
     <string name="toolbar_time">현재 시각</string>
-    <string name="touch_aciton_settings">동작 설정</string>
+    <string name="touch_aciton_settings">추가 설정</string>
     <string name="touch_custom">사용자 지정</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>

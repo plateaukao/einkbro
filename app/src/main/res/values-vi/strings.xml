@@ -259,7 +259,7 @@
     <string name="dialog_message_sync_bookmark_file">Để đồng bộ dấu trang, bạn cần tạo hoặc mở tệp dấu trang từ Google Drive hoặc dịch vụ từ xa khác bằng trình chọn tệp hệ thống.</string>
     <string name="dialog_title_bookmark_sync">Cài đặt tệp dấu trang</string>
     <string name="dialog_toc_title">Mục lục</string>
-    <string name="dialog_touch_area_enable">Bật phân trang cảm ứng</string>
+    <string name="dialog_touch_area_enable">Bật phân trang</string>
     <string name="done">Đóng khi chuyển xong</string>
     <string name="drag_to_reorder">Kéo để sắp xếp lại dấu trang</string>
     <string name="duplicate_tab">Nhân đôi tab</string>
@@ -588,7 +588,7 @@
     <string name="toolbar_time">Thời gian hiện tại</string>
     <string name="toolbar_title">Tiêu đề</string>
     <string name="toolbars">Cài đặt thanh công cụ</string>
-    <string name="touch_aciton_settings">Cài đặt hành động</string>
+    <string name="touch_aciton_settings">Thêm cài đặt</string>
     <string name="touch_area_setting">Cài đặt cảm ứng</string>
     <string name="touch_custom">Tùy chỉnh</string>
     <string name="touch_turn_page">Lật trang cảm ứng</string>

@@ -286,7 +286,7 @@
     <string name="dialog_message_sync_bookmark_file">ブックマークを同期するには、Google Driveまたは他のリモートサービスからブックマークファイルを作成または開く必要があります</string>
     <string name="dialog_title_bookmark_sync">ブックマークファイル設定</string>
     <string name="dialog_toc_title">目次</string>
-    <string name="dialog_touch_area_enable">タッチページめくりを有効化</string>
+    <string name="dialog_touch_area_enable">ページめくりを有効化</string>
     <string name="done">転送完了時に閉じる</string>
     <string name="drag_to_reorder">ドラッグして並べ替え</string>
     <string name="duplicate_tab">タブを複製</string>
@@ -591,7 +591,7 @@
     <string name="toolbar_icons_description">ツールバーアイコンを並べ替え</string>
     <string name="toolbar_time">現在時刻</string>
     <string name="toolbar_title">タイトル</string>
-    <string name="touch_aciton_settings">アクション設定</string>
+    <string name="touch_aciton_settings">その他の設定</string>
     <string name="touch_custom">カスタム</string>
     <string name="touch_turn_page">タッチページめくり</string>
     <string name="translate_by_paragraph">段落ごとに翻訳</string>

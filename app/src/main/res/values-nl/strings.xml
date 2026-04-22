@@ -429,7 +429,7 @@
     <string name="gpt_scope">Bereik</string>
     <string name="gpt_scope_text_selection">Tekstselectie</string>
     <string name="gpt_scope_whole_page">Hele pagina</string>
-    <string name="dialog_touch_area_enable">Aanraakpaginanavigatie inschakelen</string>
+    <string name="dialog_touch_area_enable">Paginanavigatie inschakelen</string>
     <string name="show_default_text_menu">Standaard tekstselectiemenu tonen</string>
     <string name="setting_summary_show_default_text_menu">Na tekstselectie het standaard actiemenu van het systeem tonen</string>
     <string name="google_translate">Google Translate</string>
@@ -530,7 +530,7 @@
     <string name="key_page_down">Page Down-toets verzenden</string>
     <string name="key_left">Links-toets verzenden</string>
     <string name="key_right">Rechts-toets verzenden</string>
-    <string name="touch_aciton_settings">Actie-instellingen</string>
+    <string name="touch_aciton_settings">Meer instellingen</string>
     <string name="summary_touch_aciton_settings">Acties voor aanraakgebied instellen</string>
     <string name="setting_title_touch_area_actions">Aanraakgebied klikacties</string>
     <string name="setting_touch_up_click">Klikactie omhoog</string>

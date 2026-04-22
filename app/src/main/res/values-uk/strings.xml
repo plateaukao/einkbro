@@ -246,7 +246,7 @@
     <string name="dialog_message_sync_bookmark_file">Для синхронізації закладок потрібно створити або відкрити файл з Google Drive чи іншого хмарного сховища</string>
     <string name="dialog_title_bookmark_sync">Налаштування файлу закладок</string>
     <string name="dialog_toc_title">Зміст</string>
-    <string name="dialog_touch_area_enable">Увімкнути перегортання дотиком</string>
+    <string name="dialog_touch_area_enable">Увімкнути перегортання</string>
     <string name="done">Закрити після завершення</string>
     <string name="drag_to_reorder">Перетягніть для зміни порядку закладок</string>
     <string name="duplicate_tab">Дублювати вкладку</string>
@@ -578,7 +578,7 @@
     <string name="toolbar_time">Поточний час</string>
     <string name="toolbar_title">Заголовок</string>
     <string name="toolbars">Налаштування панелі інструментів</string>
-    <string name="touch_aciton_settings">Налаштування дій</string>
+    <string name="touch_aciton_settings">Більше налаштувань</string>
     <string name="touch_area_setting">Налаштування області дотику</string>
     <string name="touch_custom">Настроюваний</string>
     <string name="touch_turn_page">Перегортання сторінок дотиком</string>

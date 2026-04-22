@@ -430,7 +430,7 @@
     <string name="gpt_scope">Portée</string>
     <string name="gpt_scope_text_selection">Sélection de texte</string>
     <string name="gpt_scope_whole_page">Page entière</string>
-    <string name="dialog_touch_area_enable">Activer la pagination tactile</string>
+    <string name="dialog_touch_area_enable">Activer la pagination</string>
     <string name="show_default_text_menu">Afficher le menu de texte par défaut</string>
     <string name="setting_summary_show_default_text_menu">Après la sélection de texte, afficher le menu d\'action par défaut du système</string>
     <string name="google_translate">Google Translate</string>
@@ -530,7 +530,7 @@
     <string name="key_page_down">Envoyer la touche Page Bas</string>
     <string name="key_left">Envoyer la touche Gauche</string>
     <string name="key_right">Envoyer la touche Droite</string>
-    <string name="touch_aciton_settings">Paramètres d\'action</string>
+    <string name="touch_aciton_settings">Plus de paramètres</string>
     <string name="summary_touch_aciton_settings">Configurer les actions de la zone tactile</string>
     <string name="setting_title_touch_area_actions">Actions de clic sur la zone tactile</string>
     <string name="setting_touch_up_click">Action clic haut</string>

@@ -431,7 +431,7 @@
     <string name="setting_title_edit_gpt_user_prompt_prefix">ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱯᱨᱚᱢᱯᱷᱤᱥ ᱯᱨᱤᱯᱷᱤᱠᱥ</string>
     <string name="setting_summary_edit_gpt_user_prompt">ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱯᱨᱚᱢᱯᱴᱥ ᱯᱨᱤᱯᱤᱠᱥ ᱥᱟᱯᱲᱟᱣ ᱢᱮ, ᱡᱮᱞᱮᱠᱟ: \"ᱱᱚᱣᱟ ᱡᱤᱱᱤᱥ ᱤᱝᱞᱤᱥ ᱛᱮ ᱛᱚᱨᱡᱚᱢᱟ ᱢᱮ :\"</string>
     <string name="gpt_api_key_not_set">ᱥᱟᱡᱟᱣ ᱨᱮ OpenAI ᱪᱟᱹᱵᱤ ᱥᱮᱞᱮᱫ ᱢᱮ ᱾</string>
-    <string name="dialog_touch_area_enable">ᱡᱚᱴᱮᱫ ᱯᱮᱡᱤᱱᱮᱥᱚᱱ ᱮᱢᱪᱷᱚᱭ ᱢᱮ</string>
+    <string name="dialog_touch_area_enable">ᱯᱮᱡᱤᱱᱮᱥᱚᱱ ᱮᱢᱪᱷᱚᱭ ᱢᱮ</string>
     <string name="show_default_text_menu">ᱢᱩᱞ ᱵᱟᱪᱷᱟᱣ ᱟᱠᱟᱱ ᱚᱞ ᱢᱮᱱᱩ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_show_default_text_menu">ᱚᱞ ᱵᱟᱪᱷᱟᱣ ᱛᱟᱭᱚᱢ, ᱥᱤᱥᱴᱚᱢ ᱢᱩᱞ ᱢᱮᱱᱩ ᱫᱮᱠᱷᱟᱣ ᱢᱮ ᱾</string>
     <string name="google_translate">ᱜᱩᱜᱚᱞ ᱛᱚᱨᱡᱚᱢᱟ</string>
@@ -653,7 +653,7 @@
     <string name="toolbar_icons">ᱴᱩᱞᱵᱟᱨ ᱟᱭᱠᱚᱱ</string>
     <string name="toolbar_icons_description">ᱴᱩᱞᱵᱟᱨ ᱟᱭᱠᱚᱱ ᱥᱟᱡᱟᱣ ᱢᱮ</string>
     <string name="toolbar_time">ᱱᱤᱛᱚᱜᱟᱜ ᱚᱠᱛᱚ</string>
-    <string name="touch_aciton_settings">ᱠᱟᱹᱢᱤ ᱥᱟᱡᱟᱣ</string>
+    <string name="touch_aciton_settings">ᱰᱷᱮᱨ ᱥᱟᱡᱟᱣ</string>
     <string name="touch_custom">ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ</string>
     <string name="translate_this_site">ᱥᱟᱱᱟᱢ ᱛᱚᱨᱡᱚᱢᱟ ᱢᱮ</string>
     <string name="tts_type_etts">ReadAloud</string>

@@ -591,7 +591,7 @@
     <string name="gpt_scope">Hatókör</string>
     <string name="gpt_scope_text_selection">Szöveg kijelölés</string>
     <string name="gpt_scope_whole_page">Teljes oldal</string>
-    <string name="dialog_touch_area_enable">Érintéses lapozás engedélyezése</string>
+    <string name="dialog_touch_area_enable">Lapozás engedélyezése</string>
     <string name="show_default_text_menu">Alapértelmezett szövegmenü megjelenítése</string>
     <string name="setting_summary_show_default_text_menu">Szöveg kijelölése után a rendszer alapértelmezett művelet menüjének megjelenítése</string>
     <string name="google_translate">Google Translate</string>
@@ -714,7 +714,7 @@
     <string name="key_page_down">Page Down billentyű küldése</string>
     <string name="key_left">Bal billentyű küldése</string>
     <string name="key_right">Jobb billentyű küldése</string>
-    <string name="touch_aciton_settings">Művelet beállítások</string>
+    <string name="touch_aciton_settings">További beállítások</string>
     <string name="summary_touch_aciton_settings">Műveletek beállítása az érintési területhez</string>
     <string name="setting_title_touch_area_actions">Érintési terület kattintási műveletek</string>
     <string name="setting_touch_up_click">Felfelé kattintás művelet</string>

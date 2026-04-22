@@ -437,7 +437,7 @@
     <string name="gpt_scope">Zakres</string>
     <string name="gpt_scope_text_selection">Zaznaczenie tekstu</string>
     <string name="gpt_scope_whole_page">Cała strona</string>
-    <string name="dialog_touch_area_enable">Włącz paginację dotykową</string>
+    <string name="dialog_touch_area_enable">Włącz paginację</string>
     <string name="show_default_text_menu">Pokaż domyślne menu zaznaczonego tekstu</string>
     <string name="setting_summary_show_default_text_menu">Po zaznaczeniu tekstu pokaż domyślne systemowe menu akcji</string>
     <string name="google_translate">Google Translate</string>
@@ -538,7 +538,7 @@
     <string name="key_page_down">Wyślij klawisz Page Down</string>
     <string name="key_left">Wyślij klawisz w lewo</string>
     <string name="key_right">Wyślij klawisz w prawo</string>
-    <string name="touch_aciton_settings">Ustawienia akcji</string>
+    <string name="touch_aciton_settings">Więcej ustawień</string>
     <string name="summary_touch_aciton_settings">Skonfiguruj akcje dla obszaru dotykowego</string>
     <string name="setting_title_touch_area_actions">Akcje kliknięcia obszaru dotykowego</string>
     <string name="setting_touch_up_click">Akcja kliknięcia w górę</string>

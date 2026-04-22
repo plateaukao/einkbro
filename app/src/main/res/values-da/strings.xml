@@ -258,7 +258,7 @@
     <string name="dialog_message_sync_bookmark_file">For at synkronisere bogmærker skal du oprette eller åbne en bogmærkefil fra Google Drive eller en anden tjeneste via systemets filvælger</string>
     <string name="dialog_title_bookmark_sync">Bogmærkefilindstilling</string>
     <string name="dialog_toc_title">Indholdsfortegnelse</string>
-    <string name="dialog_touch_area_enable">Aktivér berøringssideskift</string>
+    <string name="dialog_touch_area_enable">Aktivér sideskift</string>
     <string name="done">Luk når overførsel er fuldført</string>
     <string name="drag_to_reorder">Træk for at omarrangere bogmærker</string>
     <string name="duplicate_tab">Dupliker fane</string>
@@ -587,7 +587,7 @@
     <string name="toolbar_time">Aktuel tid</string>
     <string name="toolbar_title">Titel</string>
     <string name="toolbars">Værktøjslinjeindstilling</string>
-    <string name="touch_aciton_settings">Handlingsindstillinger</string>
+    <string name="touch_aciton_settings">Flere indstillinger</string>
     <string name="touch_area_setting">Berøringsindstilling</string>
     <string name="touch_custom">Brugerdefineret</string>
     <string name="touch_turn_page">Berøringssideskift</string>

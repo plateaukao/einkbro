@@ -505,7 +505,7 @@
     <string name="gpt_scope">Scope</string>
     <string name="gpt_scope_text_selection">Text selection</string>
     <string name="gpt_scope_whole_page">Whole page</string>
-    <string name="dialog_touch_area_enable">Enable Touch Pagination</string>
+    <string name="dialog_touch_area_enable">Enable Pagination</string>
     <string name="show_default_text_menu">Show default selected text menu</string>
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu</string>
     <string name="google_translate">Google Translate</string>
@@ -628,7 +628,7 @@
     <string name="key_page_down">Send Page Down key</string>
     <string name="key_left">Send Left key</string>
     <string name="key_right">Send Right key</string>
-    <string name="touch_aciton_settings">Action Settings</string>
+    <string name="touch_aciton_settings">More Settings</string>
     <string name="summary_touch_aciton_settings">Setup actions for touch area</string>
     <string name="setting_title_touch_area_actions">Touch Area click actions</string>
     <string name="setting_touch_up_click">Up click action</string>
