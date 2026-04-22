@@ -64,7 +64,7 @@ window._translateObserver = new IntersectionObserver((entries) => {
       }
     }
   });
-}, { rootMargin: "150px" });
+}, { rootMargin: "400px" });
 
 var targetNodes = document.querySelectorAll('.to-translate');
 targetNodes.forEach(function(targetNode) {
