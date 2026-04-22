@@ -892,7 +892,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ).show(supportFragmentManager, "site_settings_dialog")
     }
 
-    override fun showTouchAreaDialog() = TouchAreaDialogFragment(ebWebView.url.orEmpty()).show(supportFragmentManager, "TouchAreaDialog")
+    override fun showTouchAreaDialog() = TouchAreaDialogFragment().show(supportFragmentManager, "TouchAreaDialog")
 
     override fun openHistoryPage(amount: Int) = overviewDialogController.openHistoryPage(amount)
 

@@ -825,6 +825,26 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_touch_down_long_click,
             config = config.touch::downLongClickGesture,
         ),
+        BooleanSettingItem(
+            R.string.show_touch_area_hint,
+            config = config.touch::touchAreaHint,
+            span = 2,
+        ),
+        BooleanSettingItem(
+            R.string.hie_touch_area_when_input,
+            config = config.touch::hideTouchAreaWhenInput,
+            span = 2,
+        ),
+        BooleanSettingItem(
+            R.string.switch_touch_area_action,
+            config = config.touch::switchTouchAreaAction,
+            span = 2,
+        ),
+        BooleanSettingItem(
+            R.string.enable_touch_area_as_arrow_key,
+            config = config.touch::longClickAsArrowKey,
+            span = 2,
+        ),
         DividerSettingItem(R.string.setting_multitouch_use_title),
         BooleanSettingItem(
             R.string.setting_multitouch_use_title,
