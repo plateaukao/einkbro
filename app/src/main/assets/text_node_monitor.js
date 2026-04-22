@@ -4,10 +4,15 @@ function myCallback(elementId, responseString) {
 
     if (window._translateInPlace) {
         el.setAttribute('data-original-html', el.innerHTML);
-        // Replace only text nodes to preserve links, styles, and other elements
+        // Replace only text nodes to preserve links, styles, and other elements.
+        // Skip whitespace-only text nodes — they're source-formatting whitespace sitting
+        // between block/flex children; filling them with characters turns them into
+        // visible anonymous flex items and breaks the parent's layout.
         var textNodes = [];
         var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-        while (walker.nextNode()) textNodes.push(walker.currentNode);
+        while (walker.nextNode()) {
+            if (walker.currentNode.textContent.trim() !== "") textNodes.push(walker.currentNode);
+        }
         if (textNodes.length === 0) return;
         if (textNodes.length === 1) {
             textNodes[0].textContent = responseString;

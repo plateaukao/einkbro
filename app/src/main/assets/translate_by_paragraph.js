@@ -147,14 +147,14 @@ function injectTranslateTag(node) {
   node.className += " to-translate";
   // for locating element's position
   node.id = generateUUID().toString();
+  // In-place mode rewrites text nodes within `node` itself,
+  // so the sibling placeholder is unused and only adds margin-based layout gaps.
+  if (window._translateInPlace) return;
   // for later inserting translated text
   var pElement = document.createElement("p");
   try {
-    //node.after(pElement);
     node.parentNode.insertBefore(pElement, node.nextSibling);
   } catch (error) {
-    //console.log(node.textContent);
-    //console.log(error);
   }
 }
 
