@@ -21,7 +21,7 @@ There's a good chance that whatever reason you might be opening an issue for mig
 
 ## Missing language support?
 
-Your language isn't supported yet? You want to translate FOSS Browser? Or make improvements to existing translations? Feel free to use [crowdin](https://crowdin.com/project/foss-browser).
+Your language isn't supported yet? You want to translate EinkBro? Or make improvements to existing translations? Open a pull request adding or editing `app/src/main/res/values-<locale>/strings.xml`.
 
 ## New ideas, enhancements and feature requests
 

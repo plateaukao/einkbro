@@ -92,7 +92,7 @@ The main app module depends on the ad-filter module, which contains:
 Room database schemas are stored in `app/schemas/` directory. When modifying database entities, ensure schema migration paths are properly defined.
 
 ### Internationalization
-The project supports 25+ languages managed through Crowdin. Translation files are in standard Android `res/values-*/strings.xml` format.
+The project supports 25+ languages. Translations live directly in `app/src/main/res/values-*/strings.xml`; when changing a default string, update every locale file too (the project does not use an external translation service).
 
 ### ProGuard Configuration
 Release builds use ProGuard for code obfuscation and optimization. Rules are defined in:
