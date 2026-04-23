@@ -29,4 +29,6 @@ data class DomainConfigurationData(
     var desktopMode: Boolean? = null,
     var enableJavascript: Boolean? = null,
     var translationMode: TranslationMode? = null,
+    var customCss: String? = null,
+    var postLoadJavascript: String? = null,
 )

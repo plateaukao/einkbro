@@ -174,6 +174,16 @@ class ConfigManager(
         return domainConfigurationMap[host]?.translationMode ?: translation.translationMode
     }
 
+    fun getCustomCss(url: String): String? {
+        val host = Uri.parse(url)?.host ?: return null
+        return domainConfigurationMap[host]?.customCss?.takeIf { it.isNotBlank() }
+    }
+
+    fun getPostLoadJavascript(url: String): String? {
+        val host = Uri.parse(url)?.host ?: return null
+        return domainConfigurationMap[host]?.postLoadJavascript?.takeIf { it.isNotBlank() }
+    }
+
     fun getDomainConfig(url: String): DomainConfigurationData {
         val host = Uri.parse(url)?.host ?: return DomainConfigurationData("")
         return domainConfigurationMap[host] ?: DomainConfigurationData(host)

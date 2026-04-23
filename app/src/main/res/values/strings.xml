@@ -345,6 +345,8 @@
     <string name="reset_to_global">Reset All to Global</string>
     <string name="per_site">Per-site</string>
     <string name="use_global">Using global</string>
+    <string name="site_custom_css">Custom CSS</string>
+    <string name="site_post_load_js">Post-Load JavaScript</string>
     <string name="setting_title_toolbar_top">Toolbar on top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen</string>
     <string name="setting_title_toolbar_position">Toolbar position</string>

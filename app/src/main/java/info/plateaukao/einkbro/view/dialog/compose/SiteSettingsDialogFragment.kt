@@ -78,6 +78,10 @@ class SiteSettingsDialogFragment(
                 globalDesktopMode = config.browser.desktop,
                 globalJavascript = config.browser.enableJavascript,
                 globalTranslationMode = config.translation.translationMode,
+                onEditText = { title, initial, onResult ->
+                    TextEditorDialogFragment(title, initial, onResult)
+                        .show(parentFragmentManager, "text_editor")
+                },
                 onSave = { updatedConfig ->
                     config.updateDomainConfig(updatedConfig)
                     onDismissAction()
@@ -101,6 +105,7 @@ private fun SiteSettingsContent(
     globalDesktopMode: Boolean,
     globalJavascript: Boolean,
     globalTranslationMode: TranslationMode,
+    onEditText: (title: String, initial: String, onResult: (String) -> Unit) -> Unit,
     onSave: (DomainConfigurationData) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -115,6 +120,8 @@ private fun SiteSettingsContent(
     var javascript by remember { mutableStateOf(domainConfig.enableJavascript) }
     var translateSite by remember { mutableStateOf(domainConfig.shouldTranslateSite) }
     var translationMode by remember { mutableStateOf(domainConfig.translationMode) }
+    var customCss by remember { mutableStateOf(domainConfig.customCss.orEmpty()) }
+    var postLoadJs by remember { mutableStateOf(domainConfig.postLoadJavascript.orEmpty()) }
 
     Column(
         modifier = Modifier
@@ -246,6 +253,22 @@ private fun SiteSettingsContent(
             onTranslationModeChange = { translationMode = it },
         )
 
+        Spacer(Modifier.height(4.dp))
+
+        val cssLabel = stringResource(R.string.site_custom_css)
+        EditTextButtonRow(
+            label = cssLabel,
+            hasContent = customCss.isNotBlank(),
+            onClick = { onEditText(cssLabel, customCss) { customCss = it } },
+        )
+
+        val jsLabel = stringResource(R.string.site_post_load_js)
+        EditTextButtonRow(
+            label = jsLabel,
+            hasContent = postLoadJs.isNotBlank(),
+            onClick = { onEditText(jsLabel, postLoadJs) { postLoadJs = it } },
+        )
+
         Spacer(Modifier.height(12.dp))
         HorizontalSeparator()
         Spacer(Modifier.height(8.dp))
@@ -260,6 +283,7 @@ private fun SiteSettingsContent(
                     fontBoldness = null; desktopMode = null; javascript = null
                     whiteBackground = false; invertColor = false
                     translateSite = false; translationMode = null
+                    customCss = ""; postLoadJs = ""
                 },
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = MaterialTheme.colors.onBackground,
@@ -281,6 +305,8 @@ private fun SiteSettingsContent(
                         enableJavascript = javascript,
                         shouldTranslateSite = translateSite,
                         translationMode = translationMode,
+                        customCss = customCss.ifBlank { null },
+                        postLoadJavascript = postLoadJs.ifBlank { null },
                     )
                     onSave(updated)
                 },
@@ -613,6 +639,40 @@ private fun <T> NullableDropdownRow(
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * A row that opens a full-screen editor for a per-site CSS / JS override.
+ * The button label reflects whether content is already set.
+ */
+@Composable
+private fun EditTextButtonRow(
+    label: String,
+    hasContent: Boolean,
+    onClick: () -> Unit,
+) {
+    val color = if (hasContent) MaterialTheme.colors.onBackground
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.5f)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Spacer(Modifier.width(48.dp))
+        Text(
+            text = label,
+            modifier = Modifier.weight(1f),
+            fontSize = 14.sp,
+            color = color,
+        )
+        OutlinedButton(
+            onClick = onClick,
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
+        ) {
+            Text(if (hasContent) "Edit" else "Add", fontSize = 12.sp)
         }
     }
 }

@@ -163,6 +163,12 @@ class EBWebViewClient(
 
         if (url != "about:blank") {
             onPageFinishedAction()
+            config.getPostLoadJavascript(url)?.let { userJs ->
+                ebWebView.evaluateJavascript(
+                    "(function(){try{$userJs}catch(e){console.error('einkbro user js',e);}})();",
+                    null,
+                )
+            }
         }
     }
 
