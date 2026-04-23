@@ -68,7 +68,8 @@ class WebViewReaderHelper(
                     (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
                     (if (isBoldFont)
                         WebViewJsBridge.BOLD_FONT_CSS.replace("value", "$boldness") else "") +
-                    if (isEpubReaderMode) loadAssetFile("readerview.css") else ""
+                    (if (isEpubReaderMode) loadAssetFile("readerview.css") else "") +
+                    config.getCustomCss(url).orEmpty()
         if (cssStyle.isNotBlank()) {
             webView.jsBridge.injectCss(cssStyle.toByteArray())
         }

@@ -56,6 +56,14 @@
         <item name="android:windowExitAnimation">@null</item>
     </style>
 
+    <style name="Theme.Einkbro.FullScreenDialog" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
     <style name="CustomSnackbar" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:elevation">0dp</item>
         <!-- Set the custom background color -->
