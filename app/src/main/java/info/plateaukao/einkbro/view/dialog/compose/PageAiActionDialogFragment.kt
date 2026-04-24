@@ -18,6 +18,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.Alignment
@@ -35,6 +36,8 @@ class PageAiActionDialogFragment(
     private val actions: List<ChatGPTActionInfo>,
     private val onActionClicked: (ChatGPTActionInfo) -> Unit,
     private val onActionLongClicked: ((ChatGPTActionInfo) -> Unit)? = null,
+    private val onChatWithWebClicked: (() -> Unit)? = null,
+    private val onChatWithWebLongClicked: (() -> Unit)? = null,
     private val onTaskRunnerClicked: (() -> Unit)? = null,
 ) : ComposeDialogFragment() {
 
@@ -73,6 +76,36 @@ class PageAiActionDialogFragment(
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
+                    onChatWithWebClicked?.let { handler ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .combinedClickable(
+                                    onClick = {
+                                        handler()
+                                        composeView.post { dismiss() }
+                                    },
+                                    onLongClick = {
+                                        onChatWithWebLongClicked?.invoke()
+                                        composeView.post { dismiss() }
+                                    }
+                                )
+                                .padding(vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Outlined.Chat,
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.onBackground
+                            )
+                            Text(
+                                text = stringResource(R.string.chat_with_web),
+                                style = MaterialTheme.typography.subtitle1,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                    }
                     onTaskRunnerClicked?.let { handler ->
                         Row(
                             modifier = Modifier

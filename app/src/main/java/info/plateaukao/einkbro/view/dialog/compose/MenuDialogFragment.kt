@@ -28,7 +28,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
-import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
 import androidx.compose.material.icons.automirrored.outlined.Feed
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
@@ -180,7 +179,7 @@ enum class MenuItemType {
     ReceiveData, SendLink, ShareLink, OpenWith, Shortcut,
     SetHome, SaveBookmark, Epub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
-    SaveArchive, SaveMht, Highlights, InvertColor, ChatWithWeb, Instapaper, AudioOnly,
+    SaveArchive, SaveMht, Highlights, InvertColor, PageAiActions, Instapaper, AudioOnly,
     SiteSettings
 }
 
@@ -335,10 +334,9 @@ private fun MenuItems(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MenuItem(
-                    R.string.chat_with_web,
-                    Icons.AutoMirrored.Outlined.Chat,
-                    onLongClicked = { onLongClicked(MenuItemType.ChatWithWeb) },
-                ) { onClicked(MenuItemType.ChatWithWeb) }
+                    R.string.page_ai,
+                    R.drawable.ic_robot,
+                ) { onClicked(MenuItemType.PageAiActions) }
                 MenuItem(
                     R.string.split_screen,
                     Icons.Outlined.ViewStream,

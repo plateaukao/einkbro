@@ -50,8 +50,6 @@ class MenuActionHandler(
             MenuItemType.Tts -> TtsSettingDialogFragment()
                 .show(activity.supportFragmentManager, "TtsSettingDialog")
 
-            MenuItemType.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb(useSplitScreen = true))
-
             MenuItemType.Instapaper -> dispatch(BrowserAction.ConfigureInstapaper)
 
             MenuItemType.SaveArchive -> dispatch(BrowserAction.ShowSavedPages)
@@ -114,7 +112,7 @@ class MenuActionHandler(
             MenuItemType.SaveMht -> dispatch(BrowserAction.SaveWebArchive)
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
 
-            MenuItemType.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb())
+            MenuItemType.PageAiActions -> dispatch(BrowserAction.ShowPageAiActionMenu)
             MenuItemType.Instapaper -> dispatch(BrowserAction.AddToInstapaper)
             MenuItemType.AudioOnly -> ebWebView.toggleAudioOnlyMode()
             MenuItemType.SiteSettings -> dispatch(BrowserAction.ShowSiteSettingsDialog)
