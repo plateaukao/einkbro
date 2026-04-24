@@ -401,6 +401,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Vee onlangs gebruikte boekmerklys uit</string>
     <string name="setting_title_hide_menu_items">Versteek selde gebruikte kieslys-items</string>
     <string name="setting_summary_hide_menu_items">Tik op items om hulle in die hoofkieslys te versteek</string>
+    <string name="menu_reorder">Herrangskik</string>
+    <string name="menu_hide_hint_tap">Tik op \'n item om dit te versteek. Gebruik die ruil-ikoon om te herrangskik.</string>
+    <string name="menu_hide_hint_reorder">Hou lank en sleep binne \'n ry om te herrangskik. Tik die regmerkie om te voltooi.</string>
     <string name="setting_summary_custom_gpt_url">Voer alternatiewe OpenAI-bediener-URL in</string>
     <string name="setting_summary_custom_process_text_url">Stel URL-voorvoegsel in wat gebruik word om gemerkte teks van \'n ander program te soek</string>
     <string name="setting_summary_dark_mode">Stel donker modus in</string>

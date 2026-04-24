@@ -314,6 +314,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Lijst met recent gebruikte bladwijzers wissen</string>
     <string name="setting_title_hide_menu_items">Zelden gebruikte menu-items verbergen</string>
     <string name="setting_summary_hide_menu_items">Tik op items om ze te verbergen in het hoofdmenu</string>
+    <string name="menu_reorder">Opnieuw ordenen</string>
+    <string name="menu_hide_hint_tap">Tik op een item om het te verbergen. Gebruik het wisselpictogram om opnieuw te ordenen.</string>
+    <string name="menu_hide_hint_reorder">Houd lang ingedrukt en sleep binnen een rij om opnieuw te ordenen. Tik op het vinkje om te voltooien.</string>
     <string name="recently_used_bookmarks">Recent gebruikte bladwijzers</string>
     <string name="menu_send_link">Link verzenden</string>
     <string name="done">Sluiten wanneer overdracht voltooid is</string>

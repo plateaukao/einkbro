@@ -321,6 +321,9 @@
     <string name="setting_summary_clear_recent_bookmarks">清除最近使用的书签列表</string>
     <string name="setting_title_hide_menu_items">隐藏不常用的菜单项</string>
     <string name="setting_summary_hide_menu_items">点击项目可从主菜单中隐藏</string>
+    <string name="menu_reorder">重新排序</string>
+    <string name="menu_hide_hint_tap">点击项目可将其隐藏。点击切换图标可重新排序。</string>
+    <string name="menu_hide_hint_reorder">长按并在同一行内拖动可重新排序。点击勾选图标完成。</string>
     <string name="recently_used_bookmarks">最近使用的书签</string>
     <string name="menu_send_link">发送链接</string>
     <string name="done">传输完成后关闭</string>

@@ -330,6 +330,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Son kullanılan yer imi listesini temizle</string>
     <string name="setting_title_hide_menu_items">Nadiren kullanılan menü öğelerini gizle</string>
     <string name="setting_summary_hide_menu_items">Ana menüden gizlemek için öğelere dokunun</string>
+    <string name="menu_reorder">Yeniden sırala</string>
+    <string name="menu_hide_hint_tap">Bir öğeyi gizlemek için dokunun. Yeniden sıralamak için değiştir simgesini kullanın.</string>
+    <string name="menu_hide_hint_reorder">Yeniden sıralamak için bir satır içinde uzun basıp sürükleyin. Bitirmek için onay simgesine dokunun.</string>
     <string name="recently_used_bookmarks">Son Kullanılan Yer İmleri</string>
     <string name="menu_send_link">Bağlantı gönder</string>
     <string name="done">Aktarım bitince kapat</string>

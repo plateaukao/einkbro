@@ -305,6 +305,9 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_clear_recent_bookmarks">Liste der zuletzt verwendeten Lesezeichen löschen</string>
     <string name="setting_title_hide_menu_items">Selten verwendete Menüpunkte ausblenden</string>
     <string name="setting_summary_hide_menu_items">Tippen Sie auf Einträge, um sie im Hauptmenü auszublenden</string>
+    <string name="menu_reorder">Neu anordnen</string>
+    <string name="menu_hide_hint_tap">Auf einen Eintrag tippen, um ihn auszublenden. Mit dem Wechseln-Symbol neu anordnen.</string>
+    <string name="menu_hide_hint_reorder">Innerhalb einer Zeile lange drücken und ziehen, um neu anzuordnen. Zum Abschließen auf das Häkchen tippen.</string>
     <string name="recently_used_bookmarks">Zuletzt verwendete Lesezeichen</string>
     <string name="menu_send_link">Link senden</string>
     <string name="done">Schließen wenn Übertragung abgeschlossen</string>

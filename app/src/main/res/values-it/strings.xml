@@ -306,6 +306,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Cancella la lista dei segnalibri usati di recente</string>
     <string name="setting_title_hide_menu_items">Nascondi voci di menu raramente utilizzate</string>
     <string name="setting_summary_hide_menu_items">Tocca le voci per nasconderle dal menu principale</string>
+    <string name="menu_reorder">Riordina</string>
+    <string name="menu_hide_hint_tap">Tocca una voce per nasconderla. Usa l\'icona di scambio per riordinare.</string>
+    <string name="menu_hide_hint_reorder">Tieni premuto e trascina all\'interno di una riga per riordinare. Tocca l\'icona di spunta per terminare.</string>
     <string name="recently_used_bookmarks">Segnalibri usati di recente</string>
     <string name="menu_send_link">Invia link</string>
     <string name="done">Chiudi al termine del trasferimento</string>

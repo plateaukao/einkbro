@@ -315,6 +315,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Effacer la liste des signets récemment utilisés</string>
     <string name="setting_title_hide_menu_items">Masquer les éléments de menu rarement utilisés</string>
     <string name="setting_summary_hide_menu_items">Appuyez sur les éléments pour les masquer du menu principal</string>
+    <string name="menu_reorder">Réorganiser</string>
+    <string name="menu_hide_hint_tap">Appuyez sur un élément pour le masquer. Utilisez l\'icône d\'échange pour réorganiser.</string>
+    <string name="menu_hide_hint_reorder">Appuyez longuement et faites glisser dans une ligne pour réorganiser. Appuyez sur l\'icône de coche pour terminer.</string>
     <string name="recently_used_bookmarks">Signets récemment utilisés</string>
     <string name="menu_send_link">Envoyer le lien</string>
     <string name="done">Fermer lorsque le transfert est terminé</string>

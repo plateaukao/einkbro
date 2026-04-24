@@ -397,6 +397,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Очисти листу недавно коришћених обележивача</string>
     <string name="setting_title_hide_menu_items">Сакриј ретко коришћене ставке менија</string>
     <string name="setting_summary_hide_menu_items">Додирните ставке да бисте их сакрили из главног менија</string>
+    <string name="menu_reorder">Преуреди</string>
+    <string name="menu_hide_hint_tap">Додирните ставку да бисте је сакрили. Користите икону размене да преуредите.</string>
+    <string name="menu_hide_hint_reorder">Дуго притисните и превуците унутар реда да преуредите. Додирните икону потврде да завршите.</string>
     <string name="setting_summary_custom_gpt_url">Унесите алтернативну URL адресу OpenAI сервера</string>
     <string name="setting_summary_custom_process_text_url">Подесите URL префикс за претрагу означеног текста из друге апликације</string>
     <string name="setting_summary_dark_mode">Подеси тамни режим</string>

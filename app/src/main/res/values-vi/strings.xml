@@ -401,6 +401,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Xóa danh sách dấu trang dùng gần đây</string>
     <string name="setting_title_hide_menu_items">Ẩn các mục menu ít sử dụng</string>
     <string name="setting_summary_hide_menu_items">Chạm vào các mục để ẩn chúng khỏi menu chính</string>
+    <string name="menu_reorder">Sắp xếp lại</string>
+    <string name="menu_hide_hint_tap">Chạm vào một mục để ẩn nó. Sử dụng biểu tượng hoán đổi để sắp xếp lại.</string>
+    <string name="menu_hide_hint_reorder">Nhấn giữ và kéo trong một hàng để sắp xếp lại. Chạm vào biểu tượng dấu kiểm để hoàn tất.</string>
     <string name="setting_summary_custom_gpt_url">Nhập URL máy chủ OpenAI thay thế</string>
     <string name="setting_summary_custom_process_text_url">Cấu hình tiền tố URL để tìm kiếm văn bản đánh dấu từ ứng dụng khác</string>
     <string name="setting_summary_dark_mode">Cấu hình chế độ tối</string>

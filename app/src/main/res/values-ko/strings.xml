@@ -340,6 +340,9 @@
     <string name="setting_summary_clear_recent_bookmarks">최근 사용한 북마크 목록을 지웁니다.</string>
     <string name="setting_title_hide_menu_items">거의 사용하지 않는 메뉴 항목 숨기기</string>
     <string name="setting_summary_hide_menu_items">항목을 탭하여 메인 메뉴에서 숨깁니다</string>
+    <string name="menu_reorder">재정렬</string>
+    <string name="menu_hide_hint_tap">항목을 탭하여 숨깁니다. 교체 아이콘으로 재정렬합니다.</string>
+    <string name="menu_hide_hint_reorder">행 내에서 길게 누른 후 드래그하여 재정렬합니다. 체크 아이콘을 탭하여 완료합니다.</string>
     <string name="recently_used_bookmarks">최근 사용한 북마크</string>
     <string name="menu_send_link">링크 보내기</string>
     <string name="done">전송 완료 시 닫기</string>

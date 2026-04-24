@@ -317,6 +317,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Hapus daftar bookmark yang baru saja digunakan</string>
     <string name="setting_title_hide_menu_items">Sembunyikan item menu yang jarang digunakan</string>
     <string name="setting_summary_hide_menu_items">Ketuk item untuk menyembunyikannya dari menu utama</string>
+    <string name="menu_reorder">Atur Ulang</string>
+    <string name="menu_hide_hint_tap">Ketuk item untuk menyembunyikannya. Gunakan ikon tukar untuk mengatur ulang.</string>
+    <string name="menu_hide_hint_reorder">Tekan lama dan seret dalam baris untuk mengatur ulang. Ketuk ikon centang untuk selesai.</string>
     <string name="recently_used_bookmarks">Bookmark yang Baru Digunakan</string>
     <string name="menu_send_link">Kirim tautan</string>
     <string name="done">Tutup saat transfer selesai</string>

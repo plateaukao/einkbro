@@ -274,6 +274,9 @@
     <string name="setting_summary_clear_recent_bookmarks">清除最近使用過的書籤記錄</string>
     <string name="setting_title_hide_menu_items">隱藏不常用的選單項目</string>
     <string name="setting_summary_hide_menu_items">點擊項目可從主選單中隱藏</string>
+    <string name="menu_reorder">重新排序</string>
+    <string name="menu_hide_hint_tap">點擊項目可將其隱藏。點擊切換圖示可重新排序。</string>
+    <string name="menu_hide_hint_reorder">長按並在同一列內拖曳可重新排序。點擊打勾圖示完成。</string>
     <string name="recently_used_bookmarks">最近使用過的書籤</string>
     <string name="menu_send_link">傳送網址</string>
     <string name="done">傳送完成時按此關閉</string>

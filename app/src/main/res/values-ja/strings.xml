@@ -417,6 +417,9 @@
     <string name="setting_summary_clear_recent_bookmarks">最近使用したブックマークリストを消去</string>
     <string name="setting_title_hide_menu_items">あまり使わないメニュー項目を非表示にする</string>
     <string name="setting_summary_hide_menu_items">項目をタップしてメインメニューから非表示にします</string>
+    <string name="menu_reorder">並べ替え</string>
+    <string name="menu_hide_hint_tap">項目をタップして非表示にします。入れ替えアイコンで並べ替えできます。</string>
+    <string name="menu_hide_hint_reorder">行内で長押しドラッグして並べ替えます。チェックアイコンをタップして完了。</string>
     <string name="setting_summary_custom_gpt_url">代替OpenAIサーバーURLを入力</string>
     <string name="setting_summary_custom_process_text_url">他のアプリから選択したテキストを検索するためのURLプレフィックスを設定</string>
     <string name="setting_summary_dark_mode">ダークモードを設定</string>

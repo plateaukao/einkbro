@@ -476,6 +476,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Legutóbb használt könyvjelzők listájának törlése</string>
     <string name="setting_title_hide_menu_items">Ritkán használt menüpontok elrejtése</string>
     <string name="setting_summary_hide_menu_items">Koppintson a menüpontokra, hogy elrejtse őket a főmenüből</string>
+    <string name="menu_reorder">Átrendezés</string>
+    <string name="menu_hide_hint_tap">Koppintson egy elemre az elrejtéséhez. Az átrendezéshez használja a csere ikont.</string>
+    <string name="menu_hide_hint_reorder">Tartsa lenyomva és húzza egy soron belül az átrendezéshez. A befejezéshez koppintson a pipa ikonra.</string>
     <string name="recently_used_bookmarks">Legutóbb használt könyvjelzők</string>
     <string name="menu_send_link">Hivatkozás küldése</string>
     <string name="done">Bezárás az átvitel befejezésekor</string>

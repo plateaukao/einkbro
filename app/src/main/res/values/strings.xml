@@ -370,6 +370,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Clear recently used bookmark list</string>
     <string name="setting_title_hide_menu_items">Hide seldom used menu items</string>
     <string name="setting_summary_hide_menu_items">Tap items to hide them from the main menu</string>
+    <string name="menu_reorder">Reorder</string>
+    <string name="menu_hide_hint_tap">Tap an item to hide it. Use the swap icon to reorder.</string>
+    <string name="menu_hide_hint_reorder">Long-press and drag within a row to reorder. Tap the check icon to finish.</string>
     <string name="recently_used_bookmarks">Recently Used Bookmarks</string>
     <string name="menu_send_link">Send link</string>
     <string name="done">Close when transfer is done</string>

@@ -400,6 +400,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Tøm listen over nylig brukte bokmerker</string>
     <string name="setting_title_hide_menu_items">Skjul sjelden brukte menyoppføringer</string>
     <string name="setting_summary_hide_menu_items">Trykk på oppføringer for å skjule dem i hovedmenyen</string>
+    <string name="menu_reorder">Omorganiser</string>
+    <string name="menu_hide_hint_tap">Trykk på et element for å skjule det. Bruk bytteikonet for å omorganisere.</string>
+    <string name="menu_hide_hint_reorder">Hold og dra innenfor en rad for å omorganisere. Trykk på hakeikonet for å fullføre.</string>
     <string name="setting_summary_custom_gpt_url">Skriv inn alternativ OpenAI server-URL</string>
     <string name="setting_summary_custom_process_text_url">Konfigurer URL-prefiks som brukes til å søke etter uthevet tekst fra en annen app</string>
     <string name="setting_summary_dark_mode">Konfigurer mørk modus</string>

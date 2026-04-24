@@ -117,24 +117,22 @@ class MenuDialogFragment(
                         runCatching { MenuItemType.valueOf(name) }.getOrNull()
                     }.toSet()
                 }
+                val menuItemOrder = remember { config.ui.menuItemOrder }
                 CompositionLocalProvider(
                     LocalMenuHideConfig provides MenuHideConfig(hideMode = false, hiddenItems = hiddenItems)
                 ) {
                     MenuItems(
-                        config.whiteBackground(url),
-                        config.display.boldFontStyle,
-                        config.display.blackFontStyle,
-                        isSpeaking,
-                        isAudioOnly,
-                        hasVideo,
-                        config.ui.showShareSaveMenu,
-                        config.ui.showContentMenu,
-                        config.hasInvertedColor(url),
-                        isTouchPaginationEnabled,
-                        { config.ui::showShareSaveMenu.toggle() },
-                        { config.ui::showContentMenu.toggle() },
-                        { dialog?.dismiss(); itemClicked(it) },
-                        this::runItemLongClickAndDismiss
+                        hasWhiteBkd = config.whiteBackground(url),
+                        boldFont = config.display.boldFontStyle,
+                        blackFont = config.display.blackFontStyle,
+                        isSpeaking = isSpeaking,
+                        isAudioOnly = isAudioOnly,
+                        hasVideo = hasVideo,
+                        hasInvertedColor = config.hasInvertedColor(url),
+                        isTouchPaginationEnabled = isTouchPaginationEnabled,
+                        onClicked = { dialog?.dismiss(); itemClicked(it) },
+                        onLongClicked = this::runItemLongClickAndDismiss,
+                        menuItemOrder = menuItemOrder,
                     )
                 }
             }
@@ -166,12 +164,8 @@ class MenuDialogFragment(
                             isSpeaking = false,
                             isAudioOnly = false,
                             hasVideo = true,
-                            showShareSaveMenu = true,
-                            showContentMenu = true,
                             hasInvertedColor = false,
                             isTouchPaginationEnabled = false,
-                            toggleShareSaveMenu = {},
-                            toggleContentMenu = {},
                             onClicked = {},
                             onLongClicked = {},
                         )
@@ -195,8 +189,175 @@ enum class MenuItemType {
     SiteSettings
 }
 
+enum class MenuSection(val headerRes: Int?) {
+    Top(null),
+    Share(R.string.share_save),
+    Content(R.string.content_adjustment),
+    Bottom(null),
+}
+
+// Flat sequence of items with Boundary markers dividing sections. Boundaries stay fixed
+// in relative order; dragging an Item past a Boundary moves it into the other section.
+// Spacer is display-only (empty grid cell used to pad the overflow row in bottom-first layouts).
+sealed class MenuEntry {
+    data class Item(val type: MenuItemType) : MenuEntry()
+    data class Boundary(val sectionStart: MenuSection) : MenuEntry()
+    object Spacer : MenuEntry()
+}
+
+private val defaultSectionItems: Map<MenuSection, List<MenuItemType>> = mapOf(
+    MenuSection.Top to listOf(
+        MenuItemType.Highlights, MenuItemType.SetHome, MenuItemType.OpenHome,
+        MenuItemType.CloseTab, MenuItemType.Quit,
+    ),
+    MenuSection.Share to listOf(
+        MenuItemType.ReceiveData, MenuItemType.SaveBookmark, MenuItemType.Shortcut,
+        MenuItemType.OpenWith, MenuItemType.ShareLink,
+        MenuItemType.SendLink, MenuItemType.Instapaper, MenuItemType.SaveArchive,
+        MenuItemType.SaveMht, MenuItemType.Epub, MenuItemType.SavePdf,
+    ),
+    MenuSection.Content to listOf(
+        MenuItemType.PageAiActions, MenuItemType.SplitScreen, MenuItemType.Translate,
+        MenuItemType.VerticalRead, MenuItemType.ReaderMode, MenuItemType.TouchSetting,
+        MenuItemType.Tts, MenuItemType.InvertColor, MenuItemType.WhiteBknd,
+        MenuItemType.BlackFont, MenuItemType.BoldFont, MenuItemType.FontSize,
+    ),
+    MenuSection.Bottom to listOf(
+        MenuItemType.AudioOnly, MenuItemType.Search, MenuItemType.Download,
+        MenuItemType.ToolbarSetting, MenuItemType.QuickToggle, MenuItemType.SiteSettings,
+        MenuItemType.Settings,
+    ),
+)
+
+val defaultMenuEntries: List<MenuEntry> = buildList {
+    addAll(defaultSectionItems[MenuSection.Top]!!.map { MenuEntry.Item(it) })
+    add(MenuEntry.Boundary(MenuSection.Share))
+    addAll(defaultSectionItems[MenuSection.Share]!!.map { MenuEntry.Item(it) })
+    add(MenuEntry.Boundary(MenuSection.Content))
+    addAll(defaultSectionItems[MenuSection.Content]!!.map { MenuEntry.Item(it) })
+    add(MenuEntry.Boundary(MenuSection.Bottom))
+    addAll(defaultSectionItems[MenuSection.Bottom]!!.map { MenuEntry.Item(it) })
+}
+
+private const val BOUNDARY_PREFIX = "#"
+
+// Spacers are display-only; never persisted.
+fun encodeMenuEntries(entries: List<MenuEntry>): List<String> = entries.mapNotNull { e ->
+    when (e) {
+        is MenuEntry.Item -> e.type.name
+        is MenuEntry.Boundary -> BOUNDARY_PREFIX + e.sectionStart.name
+        is MenuEntry.Spacer -> null
+    }
+}
+
+private fun decodeMenuEntries(tokens: List<String>): List<MenuEntry> = tokens.mapNotNull { token ->
+    if (token.startsWith(BOUNDARY_PREFIX)) {
+        val name = token.removePrefix(BOUNDARY_PREFIX)
+        runCatching { MenuSection.valueOf(name) }.getOrNull()?.let { MenuEntry.Boundary(it) }
+    } else {
+        runCatching { MenuItemType.valueOf(token) }.getOrNull()?.let { MenuEntry.Item(it) }
+    }
+}
+
+/**
+ * Transforms underlying entries into display entries with bottom-first layout:
+ * within each section, the last chunk (partial overflow) is moved to the top, preceded
+ * by Spacer entries so the top row's leftmost cells are empty.
+ */
+fun menuDisplayEntries(underlying: List<MenuEntry>, cols: Int = MENU_GRID_COLUMNS): List<MenuEntry> {
+    val out = mutableListOf<MenuEntry>()
+    val buf = mutableListOf<MenuEntry.Item>()
+
+    fun flush() {
+        if (buf.isEmpty()) return
+        val chunks = buf.chunked(cols)
+        val reversed = chunks.asReversed()
+        val topChunk = reversed.first()
+        val padding = cols - topChunk.size
+        if (padding > 0) repeat(padding) { out.add(MenuEntry.Spacer) }
+        out.addAll(topChunk)
+        reversed.drop(1).forEach { chunk -> out.addAll(chunk) }
+        buf.clear()
+    }
+
+    underlying.forEach { e ->
+        when (e) {
+            is MenuEntry.Item -> buf.add(e)
+            is MenuEntry.Boundary -> { flush(); out.add(e) }
+            is MenuEntry.Spacer -> Unit
+        }
+    }
+    flush()
+    return out
+}
+
+/**
+ * Inverse of [menuDisplayEntries]: turns a display list (possibly edited by the user's drag)
+ * back into underlying Item + Boundary entries. Spacers are dropped; per-section chunks are
+ * reversed so the section is stored in natural top-down order.
+ */
+fun menuDisplayToUnderlying(display: List<MenuEntry>, cols: Int = MENU_GRID_COLUMNS): List<MenuEntry> {
+    val out = mutableListOf<MenuEntry>()
+    val buf = mutableListOf<MenuEntry>()
+
+    fun flush() {
+        if (buf.isEmpty()) return
+        val chunks = buf.chunked(cols)
+        chunks.asReversed().forEach { chunk ->
+            chunk.forEach { e -> if (e is MenuEntry.Item) out.add(e) }
+        }
+        buf.clear()
+    }
+
+    display.forEach { e ->
+        when (e) {
+            is MenuEntry.Boundary -> { flush(); out.add(e) }
+            else -> buf.add(e)
+        }
+    }
+    flush()
+    return out
+}
+
+// Resolve effective entries: stored order first, then append any items & missing boundaries
+// from defaults so newly-added items show up (appended to their default section).
+fun effectiveMenuEntries(stored: List<String>): List<MenuEntry> {
+    val storedEntries = decodeMenuEntries(stored)
+    // Fall back to defaults if nothing is stored, or if the stored data predates Boundary tokens.
+    if (storedEntries.isEmpty() || storedEntries.none { it is MenuEntry.Boundary }) return defaultMenuEntries
+    val presentItems = storedEntries.filterIsInstance<MenuEntry.Item>().map { it.type }.toSet()
+    val presentBoundaries = storedEntries.filterIsInstance<MenuEntry.Boundary>().map { it.sectionStart }.toSet()
+
+    // Ensure every boundary exists; if a boundary is missing, add it at the corresponding
+    // default position relative to existing items.
+    val result = storedEntries.toMutableList()
+    MenuSection.entries.drop(1).forEach { section ->
+        if (section !in presentBoundaries) result.add(MenuEntry.Boundary(section))
+    }
+    // Append missing items at the end of their default section if possible, else at end.
+    val missing = defaultMenuEntries.filterIsInstance<MenuEntry.Item>()
+        .map { it.type }.filter { it !in presentItems }
+    missing.forEach { type ->
+        val defaultSection = defaultSectionItems.entries.first { type in it.value }.key
+        val insertIdx = findSectionEnd(result, defaultSection)
+        result.add(insertIdx, MenuEntry.Item(type))
+    }
+    return result
+}
+
+private fun findSectionEnd(entries: List<MenuEntry>, section: MenuSection): Int {
+    // Section starts at the Boundary for it (or index 0 for Top) and ends just before the next Boundary.
+    val start = if (section == MenuSection.Top) 0
+    else entries.indexOfFirst { it is MenuEntry.Boundary && it.sectionStart == section }.let { if (it < 0) return entries.size else it + 1 }
+    val end = entries.drop(start).indexOfFirst { it is MenuEntry.Boundary }
+    return if (end < 0) entries.size else start + end
+}
+
+const val MENU_GRID_COLUMNS = 6
+
 data class MenuHideConfig(
     val hideMode: Boolean = false,
+    val reorderMode: Boolean = false,
     val hiddenItems: Set<MenuItemType> = emptySet(),
     val onToggleHide: (MenuItemType) -> Unit = {},
 )
@@ -216,6 +377,8 @@ private fun HideableSlot(type: MenuItemType, content: @Composable () -> Unit) {
     val cfg = LocalMenuHideConfig.current
     val isHidden = type in cfg.hiddenItems
     when {
+        // Reorder mode: render grayed but don't intercept clicks (drag handle on the item handles input).
+        cfg.reorderMode -> Box(modifier = Modifier.alpha(if (isHidden) 0.3f else 1f)) { content() }
         cfg.hideMode -> {
             Box(modifier = Modifier.alpha(if (isHidden) 0.3f else 1f)) {
                 content()
@@ -257,6 +420,81 @@ private fun HideableMenuItem(
     }
 }
 
+/**
+ * Renders a HideableMenuItem for a given MenuItemType, applying any state-dependent icon.
+ * Centralizing this lets row rendering be data-driven (iterate over an ordered List<MenuItemType>).
+ */
+@Composable
+fun MenuItemForType(
+    type: MenuItemType,
+    hasWhiteBkd: Boolean = false,
+    boldFont: Boolean = false,
+    blackFont: Boolean = false,
+    isSpeaking: Boolean = false,
+    isAudioOnly: Boolean = false,
+    hasInvertedColor: Boolean = false,
+    isTouchPaginationEnabled: Boolean = false,
+) {
+    when (type) {
+        MenuItemType.Highlights -> HideableMenuItem(type, R.string.menu_highlights, Icons.Outlined.EditNote)
+        MenuItemType.SetHome -> HideableMenuItem(type, R.string.menu_fav, Icons.Outlined.AddHome)
+        MenuItemType.OpenHome -> HideableMenuItem(type, R.string.menu_openFav, Icons.Outlined.Home)
+        MenuItemType.CloseTab -> HideableMenuItem(type, R.string.menu_closeTab, Icons.Outlined.CancelPresentation)
+        MenuItemType.Quit -> HideableMenuItem(type, R.string.menu_quit, Icons.AutoMirrored.Outlined.Logout)
+        MenuItemType.ReceiveData -> HideableMenuItem(type, R.string.menu_receive, Icons.Outlined.InstallMobile, supportsLongClick = true)
+        MenuItemType.SaveBookmark -> HideableMenuItem(type, R.string.menu_save_bookmark, Icons.Outlined.BookmarkAdd)
+        MenuItemType.Shortcut -> HideableMenuItem(type, R.string.menu_sc, Icons.Outlined.AddLink)
+        MenuItemType.OpenWith -> HideableMenuItem(type, R.string.menu_open_with, Icons.Outlined.Apps)
+        MenuItemType.ShareLink -> HideableMenuItem(type, R.string.menu_share_link, Icons.Outlined.Share, supportsLongClick = true)
+        MenuItemType.SendLink -> HideableMenuItem(type, R.string.menu_send_link, Icons.AutoMirrored.Outlined.SendToMobile, supportsLongClick = true)
+        MenuItemType.Instapaper -> HideableMenuItem(type, R.string.menu_instapaper, Icons.Outlined.CloudUpload, supportsLongClick = true)
+        MenuItemType.SaveArchive -> HideableMenuItem(type, R.string.menu_save_archive, Icons.Outlined.Save, supportsLongClick = true)
+        MenuItemType.SaveMht -> HideableMenuItem(type, R.string.menu_save_mht, Icons.Outlined.Save)
+        MenuItemType.Epub -> HideableMenuItem(type, R.string.menu_epub, Icons.AutoMirrored.Outlined.Article)
+        MenuItemType.SavePdf -> HideableMenuItem(type, R.string.menu_save_pdf, Icons.Outlined.PictureAsPdf)
+        MenuItemType.PageAiActions -> HideableMenuItem(type, R.string.page_ai, iconResId = R.drawable.ic_robot)
+        MenuItemType.SplitScreen -> HideableMenuItem(type, R.string.split_screen, Icons.Outlined.ViewStream)
+        MenuItemType.Translate -> HideableMenuItem(type, R.string.translate, Icons.Outlined.Translate, supportsLongClick = true)
+        MenuItemType.VerticalRead -> HideableMenuItem(type, R.string.vertical_read, Icons.Outlined.ViewColumn)
+        MenuItemType.ReaderMode -> HideableMenuItem(type, R.string.reader_mode, Icons.AutoMirrored.Outlined.ChromeReaderMode)
+        MenuItemType.TouchSetting -> {
+            val touchRes = if (isTouchPaginationEnabled) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
+            HideableMenuItem(type, R.string.touch_area_setting, iconResId = touchRes, supportsLongClick = true)
+        }
+        MenuItemType.Tts -> {
+            val ttsRes = if (isSpeaking) Icons.Filled.RecordVoiceOver else Icons.Outlined.RecordVoiceOver
+            HideableMenuItem(type, R.string.menu_tts, ttsRes, supportsLongClick = true)
+        }
+        MenuItemType.InvertColor -> {
+            val invertRes = if (hasInvertedColor) Icons.Outlined.InvertColorsOff else Icons.Outlined.InvertColors
+            HideableMenuItem(type, R.string.menu_invert_color, invertRes)
+        }
+        MenuItemType.WhiteBknd -> {
+            val whiteRes = if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
+            HideableMenuItem(type, R.string.white_background, iconResId = whiteRes)
+        }
+        MenuItemType.BlackFont -> {
+            val blackRes = if (blackFont) Icons.TwoTone.Copyright else Icons.Outlined.Copyright
+            HideableMenuItem(type, R.string.black_font, blackRes)
+        }
+        MenuItemType.BoldFont -> {
+            val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
+            HideableMenuItem(type, R.string.bold_font, iconResId = boldRes, supportsLongClick = true)
+        }
+        MenuItemType.FontSize -> HideableMenuItem(type, R.string.font_size, Icons.Outlined.FormatSize)
+        MenuItemType.AudioOnly -> {
+            val audioOnlyIcon = if (isAudioOnly) Icons.Outlined.Headset else Icons.Outlined.HeadsetOff
+            HideableMenuItem(type, R.string.audio_only_mode, audioOnlyIcon)
+        }
+        MenuItemType.Search -> HideableMenuItem(type, R.string.menu_other_searchSite, Icons.Outlined.Search)
+        MenuItemType.Download -> HideableMenuItem(type, R.string.menu_download, Icons.Outlined.Download)
+        MenuItemType.ToolbarSetting -> HideableMenuItem(type, R.string.toolbar_icons, Icons.Outlined.Straighten)
+        MenuItemType.QuickToggle -> HideableMenuItem(type, R.string.menu_quickToggle, Icons.Outlined.SettingsSuggest)
+        MenuItemType.SiteSettings -> HideableMenuItem(type, R.string.site_settings, Icons.Outlined.Tune)
+        MenuItemType.Settings -> HideableMenuItem(type, R.string.settings, Icons.Outlined.Settings, supportsLongClick = true)
+    }
+}
+
 @Composable
 fun MenuItems(
     hasWhiteBkd: Boolean,
@@ -265,189 +503,92 @@ fun MenuItems(
     isSpeaking: Boolean,
     isAudioOnly: Boolean,
     hasVideo: Boolean,
-    showShareSaveMenu: Boolean,
-    showContentMenu: Boolean,
     hasInvertedColor: Boolean,
     isTouchPaginationEnabled: Boolean,
-    toggleShareSaveMenu: () -> Unit,
-    toggleContentMenu: () -> Unit,
     onClicked: (MenuItemType) -> Unit,
     onLongClicked: (MenuItemType) -> Unit,
+    menuItemOrder: List<String> = emptyList(),
 ) {
+    val hiddenItems = LocalMenuHideConfig.current.hiddenItems
+    val hideMode = LocalMenuHideConfig.current.hideMode
+    val entries = effectiveMenuEntries(menuItemOrder)
+
+    // Partition into sections by scanning for Boundary markers.
+    data class Section(val section: MenuSection, val items: List<MenuItemType>)
+    val sections = buildList {
+        var current = MenuSection.Top
+        val buf = mutableListOf<MenuItemType>()
+        fun flush() { add(Section(current, buf.toList())); buf.clear() }
+        entries.forEach { e ->
+            when (e) {
+                is MenuEntry.Item -> buf.add(e.type)
+                is MenuEntry.Boundary -> { flush(); current = e.sectionStart }
+                is MenuEntry.Spacer -> Unit
+            }
+        }
+        flush()
+    }
+
+    // Apply hide + hasVideo filtering per section.
+    val sectionsFiltered = sections.map { sec ->
+        val filtered = sec.items
+            .let { if (hasVideo) it else it.filter { t -> t != MenuItemType.AudioOnly } }
+            .let { if (hideMode) it else it.filter { t -> t !in hiddenItems } }
+        sec.copy(items = filtered)
+    }
+
     CompositionLocalProvider(
         LocalMenuActions provides MenuActions(onClicked, onLongClicked)
     ) {
-    Column(
-        modifier = Modifier
-            .wrapContentHeight()
-            .verticalScroll(rememberScrollState())
-            .width(IntrinsicSize.Max),
-        horizontalAlignment = Alignment.End
-    ) {
-        val hideMode = LocalMenuHideConfig.current.hideMode
-        var currentShowShare by remember { mutableStateOf(showShareSaveMenu) }
-        var currentShowContent by remember { mutableStateOf(showContentMenu) }
-        val effectiveShowShare = hideMode || currentShowShare
-        val effectiveShowContent = hideMode || currentShowContent
-
-        Row(
+        Column(
             modifier = Modifier
-                .width(IntrinsicSize.Max)
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .wrapContentHeight()
+                .verticalScroll(rememberScrollState())
+                .width(IntrinsicSize.Max),
+            horizontalAlignment = Alignment.End,
         ) {
-            HideableMenuItem(MenuItemType.Highlights, R.string.menu_highlights, Icons.Outlined.EditNote)
-            HideableMenuItem(MenuItemType.SetHome, R.string.menu_fav, Icons.Outlined.AddHome)
-            HideableMenuItem(MenuItemType.OpenHome, R.string.menu_openFav, Icons.Outlined.Home)
-            HideableMenuItem(MenuItemType.CloseTab, R.string.menu_closeTab, Icons.Outlined.CancelPresentation)
-            HideableMenuItem(MenuItemType.Quit, R.string.menu_quit, Icons.AutoMirrored.Outlined.Logout)
-        }
-        HorizontalSeparator()
-        Text(
-            stringResource(R.string.share_save),
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .then(
-                    if (hideMode) Modifier
-                    else Modifier.clickable {
-                        currentShowShare = !currentShowShare
-                        toggleShareSaveMenu()
+            val renderItem: @Composable (MenuItemType) -> Unit = { type ->
+                MenuItemForType(
+                    type = type,
+                    hasWhiteBkd = hasWhiteBkd,
+                    boldFont = boldFont,
+                    blackFont = blackFont,
+                    isSpeaking = isSpeaking,
+                    isAudioOnly = isAudioOnly,
+                    hasInvertedColor = hasInvertedColor,
+                    isTouchPaginationEnabled = isTouchPaginationEnabled,
+                )
+            }
+            var renderedAnySection = false
+            sectionsFiltered.forEach { sec ->
+                if (sec.items.isEmpty()) return@forEach
+                if (renderedAnySection) HorizontalSeparator()
+                sec.section.headerRes?.let { res ->
+                    Text(
+                        stringResource(res),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        textAlign = TextAlign.Center,
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colors.onBackground,
+                    )
+                }
+                // Reverse the chunk order so the last chunk (full row) ends up visually at
+                // the bottom and any partial chunk (overflow) ends up at the top. For 11 items
+                // with 6 columns, this renders as 5 items on top and 6 on bottom instead of
+                // the default 6 on top and 5 on bottom.
+                sec.items.chunked(MENU_GRID_COLUMNS).asReversed().forEach { rowItems ->
+                    Row(
+                        modifier = Modifier.wrapContentWidth(),
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        rowItems.forEach { renderItem(it) }
                     }
-                ),
-            textAlign = TextAlign.Center,
-            fontSize = 13.sp,
-            color = MaterialTheme.colors.onBackground
-        )
-        if (effectiveShowShare) {
-            Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                HideableMenuItem(MenuItemType.ReceiveData, R.string.menu_receive, Icons.Outlined.InstallMobile, supportsLongClick = true)
-                HideableMenuItem(MenuItemType.SaveBookmark, R.string.menu_save_bookmark, Icons.Outlined.BookmarkAdd)
-                HideableMenuItem(MenuItemType.Shortcut, R.string.menu_sc, Icons.Outlined.AddLink)
-                HideableMenuItem(MenuItemType.OpenWith, R.string.menu_open_with, Icons.Outlined.Apps)
-                HideableMenuItem(MenuItemType.ShareLink, R.string.menu_share_link, Icons.Outlined.Share, supportsLongClick = true)
-            }
-            Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                HideableMenuItem(MenuItemType.SendLink, R.string.menu_send_link, Icons.AutoMirrored.Outlined.SendToMobile, supportsLongClick = true)
-                HideableMenuItem(MenuItemType.Instapaper, R.string.menu_instapaper, Icons.Outlined.CloudUpload, supportsLongClick = true)
-                HideableMenuItem(MenuItemType.SaveArchive, R.string.menu_save_archive, Icons.Outlined.Save, supportsLongClick = true)
-                HideableMenuItem(MenuItemType.SaveMht, R.string.menu_save_mht, Icons.Outlined.Save)
-                HideableMenuItem(MenuItemType.Epub, R.string.menu_epub, Icons.AutoMirrored.Outlined.Article)
-                HideableMenuItem(MenuItemType.SavePdf, R.string.menu_save_pdf, Icons.Outlined.PictureAsPdf)
-            }
-        } else {
-            Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                HideableMenuItem(MenuItemType.Epub, R.string.menu_epub, Icons.AutoMirrored.Outlined.Feed)
-                HideableMenuItem(MenuItemType.ShareLink, R.string.menu_share_link, Icons.Outlined.Share, supportsLongClick = true)
-                MenuItem(
-                    R.string.menu_expand_menu,
-                    Icons.AutoMirrored.Outlined.KeyboardArrowRight
-                ) { currentShowShare = true; toggleShareSaveMenu() }
+                }
+                renderedAnySection = true
             }
         }
-        HorizontalSeparator()
-        Text(
-            stringResource(R.string.content_adjustment),
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .then(
-                    if (hideMode) Modifier
-                    else Modifier.clickable {
-                        currentShowContent = !currentShowContent
-                        toggleContentMenu()
-                    }
-                ),
-            textAlign = TextAlign.Center,
-            fontSize = 13.sp,
-            color = MaterialTheme.colors.onBackground
-        )
-        if (effectiveShowContent) {
-            Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                HideableMenuItem(MenuItemType.PageAiActions, R.string.page_ai, iconResId = R.drawable.ic_robot)
-                HideableMenuItem(MenuItemType.SplitScreen, R.string.split_screen, Icons.Outlined.ViewStream)
-                HideableMenuItem(MenuItemType.Translate, R.string.translate, Icons.Outlined.Translate, supportsLongClick = true)
-                HideableMenuItem(MenuItemType.VerticalRead, R.string.vertical_read, Icons.Outlined.ViewColumn)
-                HideableMenuItem(MenuItemType.ReaderMode, R.string.reader_mode, Icons.AutoMirrored.Outlined.ChromeReaderMode)
-                val touchRes = if (isTouchPaginationEnabled) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
-                HideableMenuItem(MenuItemType.TouchSetting, R.string.touch_area_setting, iconResId = touchRes, supportsLongClick = true)
-            }
-            Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                val ttsRes = if (isSpeaking) Icons.Filled.RecordVoiceOver else Icons.Outlined.RecordVoiceOver
-                HideableMenuItem(MenuItemType.Tts, R.string.menu_tts, ttsRes, supportsLongClick = true)
-                val invertRes = if (hasInvertedColor) Icons.Outlined.InvertColorsOff else Icons.Outlined.InvertColors
-                HideableMenuItem(MenuItemType.InvertColor, R.string.menu_invert_color, invertRes)
-                val whiteRes = if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
-                HideableMenuItem(MenuItemType.WhiteBknd, R.string.white_background, iconResId = whiteRes)
-                val blackRes = if (blackFont) Icons.TwoTone.Copyright else Icons.Outlined.Copyright
-                HideableMenuItem(MenuItemType.BlackFont, R.string.black_font, blackRes)
-                val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
-                HideableMenuItem(MenuItemType.BoldFont, R.string.bold_font, iconResId = boldRes, supportsLongClick = true)
-                HideableMenuItem(MenuItemType.FontSize, R.string.font_size, Icons.Outlined.FormatSize)
-            }
-        } else {
-            Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                HideableMenuItem(MenuItemType.Translate, R.string.translate, Icons.Outlined.Translate, supportsLongClick = true)
-                HideableMenuItem(MenuItemType.ReaderMode, R.string.reader_mode, Icons.AutoMirrored.Outlined.ChromeReaderMode)
-                val whiteRes = if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
-                HideableMenuItem(MenuItemType.WhiteBknd, R.string.white_background, iconResId = whiteRes)
-                val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
-                HideableMenuItem(MenuItemType.BoldFont, R.string.bold_font, iconResId = boldRes)
-                MenuItem(
-                    R.string.menu_expand_menu,
-                    Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                ) { currentShowContent = true; toggleContentMenu() }
-            }
-        }
-        HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            if (hasVideo) {
-                val audioOnlyIcon = if (isAudioOnly) Icons.Outlined.Headset else Icons.Outlined.HeadsetOff
-                HideableMenuItem(MenuItemType.AudioOnly, R.string.audio_only_mode, audioOnlyIcon)
-            }
-            HideableMenuItem(MenuItemType.Search, R.string.menu_other_searchSite, Icons.Outlined.Search)
-            HideableMenuItem(MenuItemType.Download, R.string.menu_download, Icons.Outlined.Download)
-            HideableMenuItem(MenuItemType.ToolbarSetting, R.string.toolbar_icons, Icons.Outlined.Straighten)
-            HideableMenuItem(MenuItemType.QuickToggle, R.string.menu_quickToggle, Icons.Outlined.SettingsSuggest)
-            HideableMenuItem(MenuItemType.SiteSettings, R.string.site_settings, Icons.Outlined.Tune)
-            HideableMenuItem(MenuItemType.Settings, R.string.settings, Icons.Outlined.Settings, supportsLongClick = true)
-        }
-    }
     }
 }
 
@@ -494,6 +635,10 @@ fun MenuItem(
 
     val fontSize = if (!showIcon) 16.sp else if (configuration.screenWidthDp > 500) 10.sp else 8.sp
 
+    // In reorder mode we hand gesture control to the outer ReorderableItem's
+    // longPressDraggableHandle — combinedClickable here would consume long-press first.
+    val reorderMode = LocalMenuHideConfig.current.reorderMode
+
     Box {
         if (pressed) {
             Box(
@@ -507,11 +652,14 @@ fun MenuItem(
             modifier = Modifier
                 .width(width)
                 .height(if (!showIcon) 50.dp else if (isLargeType) 80.dp else 70.dp)
-                .combinedClickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onLongClick = { onLongClicked() },
-                    onClick = { onClicked() },
+                .then(
+                    if (reorderMode) Modifier
+                    else Modifier.combinedClickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onLongClick = { onLongClicked() },
+                        onClick = { onClicked() },
+                    )
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = if (!showIcon) Arrangement.Center else Arrangement.Top
@@ -579,13 +727,10 @@ private fun PreviewMenuItems() {
             isSpeaking = false,
             isAudioOnly = false,
             hasVideo = false,
-            showShareSaveMenu = false,
-            showContentMenu = false,
             hasInvertedColor = false,
             isTouchPaginationEnabled = false,
-            {},
-            {},
-            {},
-        ) {}
+            onClicked = {},
+            onLongClicked = {},
+        )
     }
 }
