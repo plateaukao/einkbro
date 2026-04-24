@@ -40,6 +40,10 @@ class MenuActionHandler(
             MenuItemType.Translate -> dispatch(BrowserAction.ShowTranslationConfigDialog(true))
             MenuItemType.ReceiveData -> dispatch(BrowserAction.ToggleReceiveTextSearch)
             MenuItemType.SendLink -> dispatch(BrowserAction.ToggleTextSearch)
+            MenuItemType.ShareLink -> ShareUtil.copyToClipboard(
+                activity,
+                BrowserUnit.stripUrlQuery(currentWebView().url.orEmpty())
+            )
             MenuItemType.TouchSetting -> dispatch(BrowserAction.ToggleTouchPagination)
             MenuItemType.BoldFont -> dispatch(BrowserAction.ShowFontBoldnessDialog)
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
@@ -84,11 +88,6 @@ class MenuActionHandler(
                 activity,
                 ebWebView.url,
                 activity.getString(R.string.menu_open_with)
-            )
-
-            MenuItemType.CopyLink -> ShareUtil.copyToClipboard(
-                activity,
-                BrowserUnit.stripUrlQuery(ebWebView.url.orEmpty())
             )
 
             MenuItemType.Shortcut -> dispatch(BrowserAction.CreateShortcut)
