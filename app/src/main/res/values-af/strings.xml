@@ -399,6 +399,8 @@
     <string name="setting_summary_bold_font">Pas vet lettertipestyl toe (moet huidige bladsy herlaai)</string>
     <string name="setting_summary_chat_stream">Respons word karakter vir karakter vertoon, sodat dit vinniger is</string>
     <string name="setting_summary_clear_recent_bookmarks">Vee onlangs gebruikte boekmerklys uit</string>
+    <string name="setting_title_hide_menu_items">Versteek selde gebruikte kieslys-items</string>
+    <string name="setting_summary_hide_menu_items">Tik op items om hulle in die hoofkieslys te versteek</string>
     <string name="setting_summary_custom_gpt_url">Voer alternatiewe OpenAI-bediener-URL in</string>
     <string name="setting_summary_custom_process_text_url">Stel URL-voorvoegsel in wat gebruik word om gemerkte teks van \'n ander program te soek</string>
     <string name="setting_summary_dark_mode">Stel donker modus in</string>

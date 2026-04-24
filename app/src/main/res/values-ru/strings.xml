@@ -338,6 +338,8 @@
     <string name="setting_summary_recent_bookmarks">Показывать недавно использовавшиеся закладки на новой вкладке</string>
     <string name="setting_clear_recent_bookmarks">Очистить список недавних закладок</string>
     <string name="setting_summary_clear_recent_bookmarks">Очистить список недавно использовавшихся закладок</string>
+    <string name="setting_title_hide_menu_items">Скрыть редко используемые пункты меню</string>
+    <string name="setting_summary_hide_menu_items">Нажмите на пункты, чтобы скрыть их из главного меню</string>
     <string name="recently_used_bookmarks">Недавно Использовавшиеся Закладки</string>
     <string name="menu_send_link">Отправить ссылку</string>
     <string name="done">Закройте это окно, когда завершится передача данных</string> <!-- Check -->

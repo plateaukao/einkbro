@@ -313,6 +313,8 @@
     <string name="setting_summary_recent_bookmarks">Afficher les signets récemment utilisés lors de l\'ouverture d\'un nouvel onglet</string>
     <string name="setting_clear_recent_bookmarks">Effacer la liste des signets récents</string>
     <string name="setting_summary_clear_recent_bookmarks">Effacer la liste des signets récemment utilisés</string>
+    <string name="setting_title_hide_menu_items">Masquer les éléments de menu rarement utilisés</string>
+    <string name="setting_summary_hide_menu_items">Appuyez sur les éléments pour les masquer du menu principal</string>
     <string name="recently_used_bookmarks">Signets récemment utilisés</string>
     <string name="menu_send_link">Envoyer le lien</string>
     <string name="done">Fermer lorsque le transfert est terminé</string>

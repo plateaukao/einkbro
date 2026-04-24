@@ -398,6 +398,8 @@
     <string name="setting_summary_bold_font">Käytä lihavoitua fonttia (sivu täytyy ladata uudelleen)</string>
     <string name="setting_summary_chat_stream">Vastaus näytetään merkki kerrallaan, joten se on nopeampaa</string>
     <string name="setting_summary_clear_recent_bookmarks">Tyhjennä viimeksi käytettyjen kirjanmerkkien lista</string>
+    <string name="setting_title_hide_menu_items">Piilota harvoin käytetyt valikkokohteet</string>
+    <string name="setting_summary_hide_menu_items">Napauta kohteita piilottaaksesi ne päävalikosta</string>
     <string name="setting_summary_custom_gpt_url">Syötä vaihtoehtoinen OpenAI-palvelimen URL</string>
     <string name="setting_summary_custom_process_text_url">Määritä URL-etuliite, jota käytetään korostetun tekstin hakuun toisesta sovelluksesta</string>
     <string name="setting_summary_dark_mode">Määritä tumma tila</string>

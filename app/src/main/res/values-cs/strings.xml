@@ -324,6 +324,8 @@
     <string name="setting_summary_recent_bookmarks">Zobrazit nedávno použité záložky při otevírání nové karty</string>
     <string name="setting_clear_recent_bookmarks">Vymazat seznam nedávných záložek</string>
     <string name="setting_summary_clear_recent_bookmarks">Vymazat seznam nedávno použitých záložek</string>
+    <string name="setting_title_hide_menu_items">Skrýt zřídka používané položky nabídky</string>
+    <string name="setting_summary_hide_menu_items">Klepněte na položky pro jejich skrytí z hlavní nabídky</string>
     <string name="recently_used_bookmarks">Nedávno použité záložky</string>
     <string name="menu_send_link">Odeslat odkaz</string>
     <string name="done">Zavřít po dokončení přenosu</string>

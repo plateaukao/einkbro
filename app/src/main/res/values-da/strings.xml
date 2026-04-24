@@ -398,6 +398,8 @@
     <string name="setting_summary_bold_font">Anvend fed skrift (siden skal genindlæses)</string>
     <string name="setting_summary_chat_stream">Svaret vises tegn for tegn, så det er hurtigere</string>
     <string name="setting_summary_clear_recent_bookmarks">Ryd listen over senest brugte bogmærker</string>
+    <string name="setting_title_hide_menu_items">Skjul sjældent brugte menupunkter</string>
+    <string name="setting_summary_hide_menu_items">Tryk på punkter for at skjule dem i hovedmenuen</string>
     <string name="setting_summary_custom_gpt_url">Indtast alternativ OpenAI server-URL</string>
     <string name="setting_summary_custom_process_text_url">Konfigurer URL-præfiks, der bruges til søgning af fremhævet tekst fra en anden app</string>
     <string name="setting_summary_dark_mode">Konfigurer mørk tilstand</string>

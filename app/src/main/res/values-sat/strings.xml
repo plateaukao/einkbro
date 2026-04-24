@@ -326,6 +326,8 @@
     <string name="setting_summary_recent_bookmarks">ᱢᱤᱫᱴᱮᱱ ᱱᱟᱣᱟ ᱛᱟᱵᱽ ᱚᱰᱚᱠ ᱡᱷᱚᱜ ᱱᱤᱛᱚᱜᱟᱜ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱱ ᱵᱩᱠᱢᱟᱨᱠᱠᱚ ᱫᱮᱠᱷᱟᱣᱢᱮ ᱾</string>
     <string name="setting_clear_recent_bookmarks">ᱱᱤᱛᱚᱜᱟᱜ ᱵᱩᱠᱢᱟᱨᱠ ᱞᱤᱥᱴᱤ ᱢᱮᱴᱟᱣᱢᱮ</string>
     <string name="setting_summary_clear_recent_bookmarks">ᱱᱤᱛᱚᱜᱟᱜ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱱ ᱵᱩᱠᱢᱟᱨᱠ ᱞᱤᱥᱴᱤ ᱢᱮᱴᱟᱣᱢᱮ</string>
+    <string name="setting_title_hide_menu_items">ᱠᱚᱢ ᱵᱮᱵᱷᱟᱨ ᱮᱱ ᱢᱮᱱᱩ ᱴᱷᱮᱢ ᱪᱷᱩᱴᱟᱹᱣᱢᱮ</string>
+    <string name="setting_summary_hide_menu_items">ᱢᱩᱠᱷᱭᱚ ᱢᱮᱱᱩ ᱠᱷᱚᱱ ᱪᱷᱩᱴᱟᱹᱣ ᱞᱟᱹᱜᱤᱫ ᱴᱷᱮᱢ ᱛᱟᱱᱟᱜ ᱫᱚᱦᱚᱭᱢᱮ</string>
     <string name="recently_used_bookmarks">ᱱᱮᱛᱟᱨ ᱵᱮᱵᱷᱟᱨ ᱟᱠᱟᱱ ᱵᱷᱩᱠᱢᱟᱨᱠᱠᱚ</string>
     <string name="menu_send_link">ᱞᱤᱝᱠ ᱠᱩᱞ ᱢᱮ</string>
     <string name="done">ᱩᱪᱟᱹᱲ ᱦᱩᱭ ᱞᱮᱱᱠᱷᱟᱱ ᱵᱚᱸᱫᱚᱭ ᱢᱮ</string>
