@@ -330,6 +330,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Εκκαθάριση λίστας πρόσφατα χρησιμοποιημένων σελιδοδεικτών</string>
     <string name="setting_title_hide_menu_items">Απόκρυψη σπάνια χρησιμοποιούμενων στοιχείων μενού</string>
     <string name="setting_summary_hide_menu_items">Πατήστε στα στοιχεία για να τα αποκρύψετε από το κύριο μενού</string>
+    <string name="menu_reorder">Αναδιάταξη</string>
+    <string name="menu_hide_hint_tap">Πατήστε ένα στοιχείο για να το αποκρύψετε. Χρησιμοποιήστε το εικονίδιο εναλλαγής για αναδιάταξη.</string>
+    <string name="menu_hide_hint_reorder">Παρατεταμένο πάτημα και σύρσιμο εντός μιας σειράς για αναδιάταξη. Πατήστε το εικονίδιο του τσεκ για ολοκλήρωση.</string>
     <string name="recently_used_bookmarks">Πρόσφατα Χρησιμοποιημένοι Σελιδοδείκτες</string>
     <string name="menu_send_link">Αποστολή συνδέσμου</string>
     <string name="done">Κλείσιμο όταν ολοκληρωθεί η μεταφορά</string>

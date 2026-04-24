@@ -315,6 +315,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Ștergere listă marcaje utilizate recent</string>
     <string name="setting_title_hide_menu_items">Ascunde elementele de meniu rar folosite</string>
     <string name="setting_summary_hide_menu_items">Atinge elementele pentru a le ascunde din meniul principal</string>
+    <string name="menu_reorder">Reordonare</string>
+    <string name="menu_hide_hint_tap">Atinge un element pentru a-l ascunde. Folosește pictograma de schimb pentru a reordona.</string>
+    <string name="menu_hide_hint_reorder">Apasă lung și trage în interiorul unui rând pentru a reordona. Atinge pictograma de bifare pentru a termina.</string>
     <string name="recently_used_bookmarks">Marcaje utilizate recent</string>
     <string name="menu_send_link">Trimite link</string>
     <string name="done">Închide la finalizarea transferului</string>

@@ -326,6 +326,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Vymazat seznam nedávno použitých záložek</string>
     <string name="setting_title_hide_menu_items">Skrýt zřídka používané položky nabídky</string>
     <string name="setting_summary_hide_menu_items">Klepněte na položky pro jejich skrytí z hlavní nabídky</string>
+    <string name="menu_reorder">Přeuspořádat</string>
+    <string name="menu_hide_hint_tap">Klepnutím na položku ji skryjete. Pomocí ikony přepnutí změníte pořadí.</string>
+    <string name="menu_hide_hint_reorder">Dlouze stiskněte a přetáhněte v rámci řádku pro změnu pořadí. Klepnutím na ikonu zaškrtnutí dokončíte.</string>
     <string name="recently_used_bookmarks">Nedávno použité záložky</string>
     <string name="menu_send_link">Odeslat odkaz</string>
     <string name="done">Zavřít po dokončení přenosu</string>

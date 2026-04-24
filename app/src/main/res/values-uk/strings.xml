@@ -388,6 +388,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Очистити список нещодавно використаних закладок</string>
     <string name="setting_title_hide_menu_items">Сховати пункти меню, що використовуються рідко</string>
     <string name="setting_summary_hide_menu_items">Торкніться пунктів, щоб сховати їх з головного меню</string>
+    <string name="menu_reorder">Змінити порядок</string>
+    <string name="menu_hide_hint_tap">Торкніться пункту, щоб сховати. Використовуйте значок обміну для зміни порядку.</string>
+    <string name="menu_hide_hint_reorder">Утримуйте і перетягуйте в межах рядка, щоб змінити порядок. Торкніться значка галочки для завершення.</string>
     <string name="setting_summary_custom_gpt_url">Введіть альтернативну URL сервера OpenAI</string>
     <string name="setting_summary_custom_process_text_url">Налаштувати URL-префікс для пошуку виділеного тексту з іншого додатку</string>
     <string name="setting_summary_dark_mode">Налаштувати темний режим</string>

@@ -330,6 +330,9 @@
     <string name="setting_summary_clear_recent_bookmarks">ניקוי רשימת סימניות שנעשה בהן שימוש לאחרונה</string>
     <string name="setting_title_hide_menu_items">הסתר פריטי תפריט שבשימוש נדיר</string>
     <string name="setting_summary_hide_menu_items">הקש על פריטים כדי להסתיר אותם מהתפריט הראשי</string>
+    <string name="menu_reorder">סידור מחדש</string>
+    <string name="menu_hide_hint_tap">הקש על פריט כדי להסתיר אותו. השתמש בסמל ההחלפה כדי לסדר מחדש.</string>
+    <string name="menu_hide_hint_reorder">לחץ ארוכות וגרור בתוך שורה כדי לסדר מחדש. הקש על סמל הסימון כדי לסיים.</string>
     <string name="recently_used_bookmarks">סימניות שנעשה בהן שימוש לאחרונה</string>
     <string name="menu_send_link">שליחת קישור</string>
     <string name="done">סגירה בסיום ההעברה</string>

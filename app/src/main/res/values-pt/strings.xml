@@ -297,6 +297,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Limpar lista de marcadores usados recentemente</string>
     <string name="setting_title_hide_menu_items">Ocultar itens de menu pouco usados</string>
     <string name="setting_summary_hide_menu_items">Toque nos itens para ocultá-los do menu principal</string>
+    <string name="menu_reorder">Reordenar</string>
+    <string name="menu_hide_hint_tap">Toque num item para ocultá-lo. Use o ícone de troca para reordenar.</string>
+    <string name="menu_hide_hint_reorder">Mantenha pressionado e arraste dentro de uma linha para reordenar. Toque no ícone de verificação para concluir.</string>
     <string name="recently_used_bookmarks">Marcadores usados recentemente</string>
     <string name="menu_send_link">Enviar ligação</string>
     <string name="done">Fechar quando a transferência terminar</string>

@@ -322,6 +322,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Wyczyść listę ostatnio używanych zakładek</string>
     <string name="setting_title_hide_menu_items">Ukryj rzadko używane elementy menu</string>
     <string name="setting_summary_hide_menu_items">Dotknij elementów, aby ukryć je z menu głównego</string>
+    <string name="menu_reorder">Zmień kolejność</string>
+    <string name="menu_hide_hint_tap">Dotknij elementu, aby go ukryć. Użyj ikony wymiany, aby zmienić kolejność.</string>
+    <string name="menu_hide_hint_reorder">Naciśnij i przytrzymaj, następnie przeciągnij w obrębie wiersza, aby zmienić kolejność. Dotknij ikony znacznika, aby zakończyć.</string>
     <string name="recently_used_bookmarks">Ostatnio używane zakładki</string>
     <string name="menu_send_link">Wyślij link</string>
     <string name="done">Zamknij po zakończeniu transferu</string>

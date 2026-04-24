@@ -297,6 +297,9 @@
     <string name="setting_summary_clear_recent_bookmarks">Esborrar la llista d\'adreces d\'interès recents</string>
     <string name="setting_title_hide_menu_items">Amaga elements de menú poc usats</string>
     <string name="setting_summary_hide_menu_items">Toca els elements per amagar-los del menú principal</string>
+    <string name="menu_reorder">Reordenar</string>
+    <string name="menu_hide_hint_tap">Toca un element per amagar-lo. Usa la icona d\'intercanvi per reordenar.</string>
+    <string name="menu_hide_hint_reorder">Mantén premut i arrossega dins d\'una fila per reordenar. Toca la icona de verificació per acabar.</string>
     <string name="recently_used_bookmarks">Adreces d\'interès recents</string>
     <string name="menu_send_link">Enviar enllaç</string>
     <string name="done">Tancar quan la transferència acabi</string>

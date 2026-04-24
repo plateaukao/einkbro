@@ -61,6 +61,12 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
         // putStringSet and the caller must not mutate it afterward.
         set(value) = sp.edit { putStringSet(K_HIDDEN_MENU_ITEMS, value.toSet()) }
 
+    // Flat ordering of menu item names. Empty → use defaults.
+    var menuItemOrder: List<String>
+        get() = sp.getString(K_MENU_ITEM_ORDER, "").orEmpty()
+            .split(",").filter { it.isNotBlank() }
+        set(value) = sp.edit { putString(K_MENU_ITEM_ORDER, value.joinToString(",")) }
+
     var fabPosition: FabPosition
         get() = FabPosition.entries[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
@@ -157,5 +163,6 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
         const val K_STATUSBAR_POSITION = "sp_statusbar_position"
         const val K_STATUSBAR_ITEMS = "sp_statusbar_items"
         const val K_HIDDEN_MENU_ITEMS = "sp_hidden_menu_items"
+        const val K_MENU_ITEM_ORDER = "sp_menu_item_order"
     }
 }

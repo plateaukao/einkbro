@@ -330,6 +330,9 @@
     <string name="setting_summary_clear_recent_bookmarks">مسح قائمة الإشارات المرجعية المستخدمة مؤخراً</string>
     <string name="setting_title_hide_menu_items">إخفاء عناصر القائمة نادرة الاستخدام</string>
     <string name="setting_summary_hide_menu_items">انقر على العناصر لإخفائها من القائمة الرئيسية</string>
+    <string name="menu_reorder">إعادة ترتيب</string>
+    <string name="menu_hide_hint_tap">انقر على عنصر لإخفائه. استخدم أيقونة التبديل لإعادة الترتيب.</string>
+    <string name="menu_hide_hint_reorder">اضغط مطولاً واسحب داخل الصف لإعادة الترتيب. انقر على أيقونة الاختيار لإنهاء.</string>
     <string name="recently_used_bookmarks">الإشارات المرجعية المستخدمة مؤخراً</string>
     <string name="menu_send_link">إرسال رابط</string>
     <string name="done">إغلاق عند انتهاء النقل</string>
