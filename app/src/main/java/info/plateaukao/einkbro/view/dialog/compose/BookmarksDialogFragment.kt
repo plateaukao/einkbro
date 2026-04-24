@@ -49,6 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.res.vectorResource
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -463,11 +464,25 @@ fun BookmarkItem(
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = null,
             )
-        } else {
+        } else if (bookmark.isDirectory) {
             ActionIcon(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                iconResId = if (bookmark.isDirectory) R.drawable.ic_folder else R.drawable.icon_plus,
+                iconResId = R.drawable.ic_folder,
                 action = iconClick
+            )
+        } else {
+            val context = LocalContext.current
+            val launcherDrawable = remember(context) {
+                context.packageManager.getApplicationIcon(context.packageName)
+            }
+            Image(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(36.dp)
+                    .padding(end = 5.dp)
+                    .clickable { iconClick() },
+                painter = rememberDrawablePainter(drawable = launcherDrawable),
+                contentDescription = null,
             )
         }
         Text(
@@ -511,17 +526,28 @@ fun BookmarkGridItem(
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = null,
             )
-        } else {
+        } else if (bookmark.isDirectory) {
             Icon(
                 modifier = Modifier
                     .then(iconDragModifier)
                     .size(48.dp)
                     .padding(4.dp),
-                imageVector = ImageVector.vectorResource(
-                    id = if (bookmark.isDirectory) R.drawable.ic_folder else R.drawable.icon_plus
-                ),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_folder),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground,
+            )
+        } else {
+            val context = LocalContext.current
+            val launcherDrawable = remember(context) {
+                context.packageManager.getApplicationIcon(context.packageName)
+            }
+            Image(
+                modifier = Modifier
+                    .then(iconDragModifier)
+                    .size(48.dp)
+                    .padding(4.dp),
+                painter = rememberDrawablePainter(drawable = launcherDrawable),
+                contentDescription = null,
             )
         }
         Text(
