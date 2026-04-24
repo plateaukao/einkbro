@@ -67,8 +67,13 @@ class ContextMenuDelegate(
                         isInLongPressMode = false
                     },
                     itemLongClicked = {
-                        if (it == ContextMenuItemType.TranslateImage) {
-                            translateAllImages(linkImageUrl)
+                        when (it) {
+                            ContextMenuItemType.TranslateImage -> translateAllImages(linkImageUrl)
+                            ContextMenuItemType.ShareLink -> ShareUtil.copyToClipboard(
+                                activity,
+                                BrowserUnit.stripUrlQuery(url)
+                            )
+                            else -> Unit
                         }
                         activeContextMenuDialog = null
                         isInLongPressMode = false
@@ -97,11 +102,6 @@ class ContextMenuDelegate(
                 if (prepareRecord()) EBToast.show(activity, activity.getString(R.string.toast_share_failed))
                 else IntentUnit.share(activity, title, url)
             }
-
-            ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(
-                activity,
-                BrowserUnit.stripUrlQuery(url)
-            )
 
             ContextMenuItemType.GotoLink -> ebWebView.clickLinkElement(longPressPoint)
 

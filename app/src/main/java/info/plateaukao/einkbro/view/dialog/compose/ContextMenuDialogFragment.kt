@@ -26,7 +26,6 @@ import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.Segment
 import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Share
@@ -87,16 +86,12 @@ private fun createMenuLayout(isEbookMode: Boolean = false): MenuLayout {
         )
     )
 
-    val secondRowItems = listOf(
+    val secondRowItems = listOfNotNull(
         if (isEbookMode) MenuItemConfig(
             ContextMenuItemType.GotoLink,
             R.string.go_to,
             Icons.Outlined.Fingerprint
-        ) else MenuItemConfig(
-            ContextMenuItemType.CopyLink,
-            R.string.copy_link,
-            Icons.Outlined.CopyAll
-        ),
+        ) else null,
         MenuItemConfig(
             ContextMenuItemType.SelectText,
             R.string.text_select,
@@ -307,7 +302,8 @@ private fun ContextMenuItems(
                     showIcon = showIcons,
                     imageVector = item.imageVector,
                     iconResId = item.iconResId,
-                    isHovered = hoveredItem == item.type
+                    isHovered = hoveredItem == item.type,
+                    onLongClicked = { onLongClicked(item.type) }
                 ) {
                     onClicked(item.type)
                 }
@@ -379,7 +375,7 @@ fun ContextMenuItem(
 
 enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
-    ShareLink, CopyLink, SelectText, OpenWith,
+    ShareLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
     SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete, Summarize, GotoLink
 }

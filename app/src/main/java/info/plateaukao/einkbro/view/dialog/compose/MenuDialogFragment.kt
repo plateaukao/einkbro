@@ -42,7 +42,6 @@ import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.CancelPresentation
 import androidx.compose.material.icons.outlined.CloudUpload
-import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.Copyright
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.EditNote
@@ -89,7 +88,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CloseTab
-import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.CopyLink
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.Epub
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenHome
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.OpenWith
@@ -179,7 +177,7 @@ class MenuDialogFragment(
 enum class MenuItemType {
     Tts, QuickToggle, OpenHome, CloseTab, Quit,
     SplitScreen, Translate, VerticalRead, ReaderMode, TouchSetting, ToolbarSetting,
-    ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
+    ReceiveData, SendLink, ShareLink, OpenWith, Shortcut,
     SetHome, SaveBookmark, Epub, SavePdf,
     FontSize, WhiteBknd, BoldFont, Search, Download, Settings, BlackFont,
     SaveArchive, SaveMht, Highlights, InvertColor, ChatWithWeb, Instapaper, AudioOnly,
@@ -259,8 +257,12 @@ private fun MenuItems(
                 ) { onClicked(MenuItemType.SaveBookmark) }
                 MenuItem(R.string.menu_sc, 0, Icons.Outlined.AddLink) { onClicked(Shortcut) }
                 MenuItem(R.string.menu_open_with, 0, Icons.Outlined.Apps) { onClicked(OpenWith) }
-                MenuItem(R.string.copy_link, 0, Icons.Outlined.CopyAll) { onClicked(CopyLink) }
-                MenuItem(R.string.menu_share_link, 0, Icons.Outlined.Share) { onClicked(ShareLink) }
+                MenuItem(
+                    R.string.menu_share_link,
+                    0,
+                    Icons.Outlined.Share,
+                    onLongClicked = { onLongClicked(ShareLink) },
+                ) { onClicked(ShareLink) }
             }
             Row(
                 modifier = Modifier
@@ -300,10 +302,10 @@ private fun MenuItems(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MenuItem(R.string.menu_epub, Icons.AutoMirrored.Outlined.Feed) { onClicked(Epub) }
-                MenuItem(R.string.copy_link, Icons.Outlined.CopyAll) { onClicked(CopyLink) }
                 MenuItem(
                     R.string.menu_share_link,
-                    Icons.Outlined.Share
+                    Icons.Outlined.Share,
+                    onLongClicked = { onLongClicked(ShareLink) },
                 ) { onClicked(ShareLink) }
                 MenuItem(
                     R.string.menu_expand_menu,
