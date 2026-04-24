@@ -162,6 +162,8 @@ class AiChatDelegate(
                         .showNow(activity.supportFragmentManager, "editGptAction")
                 }
             },
+            onChatWithWebClicked = { chatWithWeb(useSplitScreen = false, content = null, runWithAction = null) },
+            onChatWithWebLongClicked = { chatWithWeb(useSplitScreen = true, content = null, runWithAction = null) },
             onTaskRunnerClicked = { showTaskMenu() },
         ).showNow(activity.supportFragmentManager, "pageAiAction")
     }
