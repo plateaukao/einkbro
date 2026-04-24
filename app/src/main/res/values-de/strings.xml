@@ -303,6 +303,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_recent_bookmarks">Zuletzt verwendete Lesezeichen beim Öffnen eines neuen Tabs anzeigen</string>
     <string name="setting_clear_recent_bookmarks">Zuletzt verwendete Lesezeichen löschen</string>
     <string name="setting_summary_clear_recent_bookmarks">Liste der zuletzt verwendeten Lesezeichen löschen</string>
+    <string name="setting_title_hide_menu_items">Selten verwendete Menüpunkte ausblenden</string>
+    <string name="setting_summary_hide_menu_items">Tippen Sie auf Einträge, um sie im Hauptmenü auszublenden</string>
     <string name="recently_used_bookmarks">Zuletzt verwendete Lesezeichen</string>
     <string name="menu_send_link">Link senden</string>
     <string name="done">Schließen wenn Übertragung abgeschlossen</string>

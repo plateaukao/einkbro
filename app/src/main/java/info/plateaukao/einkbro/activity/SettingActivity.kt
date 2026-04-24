@@ -604,6 +604,13 @@ class SettingActivity : FragmentActivity() {
         ) {
             config.clearRecentBookmarks()
         },
+        ActionSettingItem(
+            R.string.setting_title_hide_menu_items,
+            0,
+            R.string.setting_summary_hide_menu_items,
+        ) {
+            startActivity(Intent(this, MenuItemHideActivity::class.java))
+        },
     )
 
     private val behaviorSettingItems = listOf(

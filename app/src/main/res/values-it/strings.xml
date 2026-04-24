@@ -304,6 +304,8 @@
     <string name="setting_summary_recent_bookmarks">Mostra i segnalibri usati di recente all\'apertura di una nuova scheda</string>
     <string name="setting_clear_recent_bookmarks">Cancella lista segnalibri recenti</string>
     <string name="setting_summary_clear_recent_bookmarks">Cancella la lista dei segnalibri usati di recente</string>
+    <string name="setting_title_hide_menu_items">Nascondi voci di menu raramente utilizzate</string>
+    <string name="setting_summary_hide_menu_items">Tocca le voci per nasconderle dal menu principale</string>
     <string name="recently_used_bookmarks">Segnalibri usati di recente</string>
     <string name="menu_send_link">Invia link</string>
     <string name="done">Chiudi al termine del trasferimento</string>

@@ -295,6 +295,8 @@
     <string name="setting_summary_recent_bookmarks">Mostrar marcadores usados recentemente ao abrir novo separador</string>
     <string name="setting_clear_recent_bookmarks">Limpar lista de marcadores recentes</string>
     <string name="setting_summary_clear_recent_bookmarks">Limpar lista de marcadores usados recentemente</string>
+    <string name="setting_title_hide_menu_items">Ocultar itens de menu pouco usados</string>
+    <string name="setting_summary_hide_menu_items">Toque nos itens para ocultá-los do menu principal</string>
     <string name="recently_used_bookmarks">Marcadores usados recentemente</string>
     <string name="menu_send_link">Enviar ligação</string>
     <string name="done">Fechar quando a transferência terminar</string>

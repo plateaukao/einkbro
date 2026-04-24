@@ -295,6 +295,8 @@
     <string name="setting_summary_recent_bookmarks">Mostrar adreces d\'interès recents en obrir una pestanya nova</string>
     <string name="setting_clear_recent_bookmarks">Esborrar llista d\'adreces d\'interès recents</string>
     <string name="setting_summary_clear_recent_bookmarks">Esborrar la llista d\'adreces d\'interès recents</string>
+    <string name="setting_title_hide_menu_items">Amaga elements de menú poc usats</string>
+    <string name="setting_summary_hide_menu_items">Toca els elements per amagar-los del menú principal</string>
     <string name="recently_used_bookmarks">Adreces d\'interès recents</string>
     <string name="menu_send_link">Enviar enllaç</string>
     <string name="done">Tancar quan la transferència acabi</string>

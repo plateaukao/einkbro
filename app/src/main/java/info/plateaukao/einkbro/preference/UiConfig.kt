@@ -55,6 +55,12 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
     var showDefaultActionMenu by BooleanPreference(sp, K_SHOW_DEFAULT_ACTION_MENU, false)
     var showActionMenuIcons by BooleanPreference(sp, K_SHOW_ACTION_MENU_ICONS, true)
 
+    var hiddenMenuItems: Set<String>
+        get() = sp.getStringSet(K_HIDDEN_MENU_ITEMS, emptySet())?.toSet() ?: emptySet()
+        // Defensive copy: SharedPreferences takes ownership of the Set passed to
+        // putStringSet and the caller must not mutate it afterward.
+        set(value) = sp.edit { putStringSet(K_HIDDEN_MENU_ITEMS, value.toSet()) }
+
     var fabPosition: FabPosition
         get() = FabPosition.entries[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
@@ -150,5 +156,6 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
         const val K_STATUSBAR_ENABLED = "sp_statusbar_enabled"
         const val K_STATUSBAR_POSITION = "sp_statusbar_position"
         const val K_STATUSBAR_ITEMS = "sp_statusbar_items"
+        const val K_HIDDEN_MENU_ITEMS = "sp_hidden_menu_items"
     }
 }

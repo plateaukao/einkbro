@@ -328,6 +328,8 @@
     <string name="setting_summary_recent_bookmarks">Εμφάνιση πρόσφατων σελιδοδεικτών κατά το άνοιγμα νέας καρτέλας</string>
     <string name="setting_clear_recent_bookmarks">Εκκαθάριση λίστας πρόσφατων σελιδοδεικτών</string>
     <string name="setting_summary_clear_recent_bookmarks">Εκκαθάριση λίστας πρόσφατα χρησιμοποιημένων σελιδοδεικτών</string>
+    <string name="setting_title_hide_menu_items">Απόκρυψη σπάνια χρησιμοποιούμενων στοιχείων μενού</string>
+    <string name="setting_summary_hide_menu_items">Πατήστε στα στοιχεία για να τα αποκρύψετε από το κύριο μενού</string>
     <string name="recently_used_bookmarks">Πρόσφατα Χρησιμοποιημένοι Σελιδοδείκτες</string>
     <string name="menu_send_link">Αποστολή συνδέσμου</string>
     <string name="done">Κλείσιμο όταν ολοκληρωθεί η μεταφορά</string>

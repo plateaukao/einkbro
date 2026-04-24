@@ -320,6 +320,8 @@
     <string name="setting_summary_recent_bookmarks">Pokaż ostatnio używane zakładki przy otwieraniu nowej karty</string>
     <string name="setting_clear_recent_bookmarks">Wyczyść listę ostatnich zakładek</string>
     <string name="setting_summary_clear_recent_bookmarks">Wyczyść listę ostatnio używanych zakładek</string>
+    <string name="setting_title_hide_menu_items">Ukryj rzadko używane elementy menu</string>
+    <string name="setting_summary_hide_menu_items">Dotknij elementów, aby ukryć je z menu głównego</string>
     <string name="recently_used_bookmarks">Ostatnio używane zakładki</string>
     <string name="menu_send_link">Wyślij link</string>
     <string name="done">Zamknij po zakończeniu transferu</string>

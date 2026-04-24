@@ -398,6 +398,8 @@
     <string name="setting_summary_bold_font">Använd fet stil (sidan måste laddas om)</string>
     <string name="setting_summary_chat_stream">Svaret visas tecken för tecken, så det är snabbare</string>
     <string name="setting_summary_clear_recent_bookmarks">Rensa listan över senast använda bokmärken</string>
+    <string name="setting_title_hide_menu_items">Dölj sällan använda menyalternativ</string>
+    <string name="setting_summary_hide_menu_items">Tryck på alternativ för att dölja dem från huvudmenyn</string>
     <string name="setting_summary_custom_gpt_url">Ange alternativ OpenAI server-URL</string>
     <string name="setting_summary_custom_process_text_url">Konfigurera URL-prefix som används för att söka markerad text från en annan app</string>
     <string name="setting_summary_dark_mode">Konfigurera mörkt läge</string>

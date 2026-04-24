@@ -328,6 +328,8 @@
     <string name="setting_summary_recent_bookmarks">Yeni sekme açarken son kullanılan yer imlerini göster</string>
     <string name="setting_clear_recent_bookmarks">Son yer imi listesini temizle</string>
     <string name="setting_summary_clear_recent_bookmarks">Son kullanılan yer imi listesini temizle</string>
+    <string name="setting_title_hide_menu_items">Nadiren kullanılan menü öğelerini gizle</string>
+    <string name="setting_summary_hide_menu_items">Ana menüden gizlemek için öğelere dokunun</string>
     <string name="recently_used_bookmarks">Son Kullanılan Yer İmleri</string>
     <string name="menu_send_link">Bağlantı gönder</string>
     <string name="done">Aktarım bitince kapat</string>

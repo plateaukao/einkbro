@@ -313,6 +313,8 @@
     <string name="setting_summary_recent_bookmarks">Afișare marcaje utilizate recent la deschiderea unei file noi</string>
     <string name="setting_clear_recent_bookmarks">Ștergere listă marcaje recente</string>
     <string name="setting_summary_clear_recent_bookmarks">Ștergere listă marcaje utilizate recent</string>
+    <string name="setting_title_hide_menu_items">Ascunde elementele de meniu rar folosite</string>
+    <string name="setting_summary_hide_menu_items">Atinge elementele pentru a le ascunde din meniul principal</string>
     <string name="recently_used_bookmarks">Marcaje utilizate recent</string>
     <string name="menu_send_link">Trimite link</string>
     <string name="done">Închide la finalizarea transferului</string>

@@ -312,6 +312,8 @@
     <string name="setting_summary_recent_bookmarks">Recent gebruikte bladwijzers tonen bij het openen van een nieuw tabblad</string>
     <string name="setting_clear_recent_bookmarks">Recente bladwijzers wissen</string>
     <string name="setting_summary_clear_recent_bookmarks">Lijst met recent gebruikte bladwijzers wissen</string>
+    <string name="setting_title_hide_menu_items">Zelden gebruikte menu-items verbergen</string>
+    <string name="setting_summary_hide_menu_items">Tik op items om ze te verbergen in het hoofdmenu</string>
     <string name="recently_used_bookmarks">Recent gebruikte bladwijzers</string>
     <string name="menu_send_link">Link verzenden</string>
     <string name="done">Sluiten wanneer overdracht voltooid is</string>

@@ -315,6 +315,8 @@
     <string name="setting_summary_recent_bookmarks">Tampilkan bookmark yang baru saja digunakan saat membuka tab baru</string>
     <string name="setting_clear_recent_bookmarks">Hapus daftar bookmark terbaru</string>
     <string name="setting_summary_clear_recent_bookmarks">Hapus daftar bookmark yang baru saja digunakan</string>
+    <string name="setting_title_hide_menu_items">Sembunyikan item menu yang jarang digunakan</string>
+    <string name="setting_summary_hide_menu_items">Ketuk item untuk menyembunyikannya dari menu utama</string>
     <string name="recently_used_bookmarks">Bookmark yang Baru Digunakan</string>
     <string name="menu_send_link">Kirim tautan</string>
     <string name="done">Tutup saat transfer selesai</string>
