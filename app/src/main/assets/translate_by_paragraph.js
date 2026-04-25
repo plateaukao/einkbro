@@ -1,7 +1,12 @@
-function getTextExcludingImages(element) {
+// Shared with text_node_monitor.js (which loads after this file). Kept as a window
+// property so both scripts use one canonical definition.
+window._translateGetTextExcludingImages = window._translateGetTextExcludingImages || function(element) {
   var clone = element.cloneNode(true);
   clone.querySelectorAll('img').forEach(function(img) { img.remove(); });
   return clone.textContent;
+};
+function getTextExcludingImages(element) {
+  return window._translateGetTextExcludingImages(element);
 }
 
 function isInline(node) {
@@ -47,7 +52,6 @@ function fetchNodesWithText(element) {
     // If block already has marked descendants, fall through to per-child handling.
     if (!(element.querySelector && element.querySelector('.to-translate'))) {
       injectTranslateTag(element);
-      console.log("Block: " + element.textContent + "\n\n");
       result.push(element);
       return result;
     }
@@ -92,7 +96,6 @@ function fetchNodesWithText(element) {
       currentGroup.forEach(node => span.appendChild(node));
 
       injectTranslateTag(span);
-      console.log("Group: " + span.textContent + "\n\n");
       result.push(span);
     }
     currentGroup = [];
