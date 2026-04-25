@@ -67,10 +67,15 @@ function myCallback(elementId, originalText, responseString) {
     _applyTranslationToElement(el, responseString);
 }
 
-function getTranslatableText(element) {
+// Shared with translate_by_paragraph.js (which loads first and defines the implementation).
+// Defined defensively here too in case this file is loaded standalone.
+window._translateGetTextExcludingImages = window._translateGetTextExcludingImages || function(element) {
     var clone = element.cloneNode(true);
     clone.querySelectorAll('img').forEach(function(img) { img.remove(); });
     return clone.textContent;
+};
+function getTranslatableText(element) {
+    return window._translateGetTextExcludingImages(element);
 }
 
 // Disconnect previous observer if re-injected
