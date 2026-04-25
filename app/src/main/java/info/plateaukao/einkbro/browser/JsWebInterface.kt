@@ -64,7 +64,7 @@ class JsWebInterface(
                         withContext(Dispatchers.Main) {
                             if (webView.isAttachedToWindow) {
                                 webView.evaluateJavascript(
-                                    "$callback('$elementId', '${escapeForJs(cachedEntry.translatedText)}')",
+                                    "$callback('$elementId', '${escapeForJs(originalText)}', '${escapeForJs(cachedEntry.translatedText)}')",
                                     null
                                 )
                             }
@@ -96,7 +96,7 @@ class JsWebInterface(
             withContext(Dispatchers.Main) {
                 if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
                     webView.evaluateJavascript(
-                        "$callback('$elementId', '${escapeForJs(translatedString)}')",
+                        "$callback('$elementId', '${escapeForJs(originalText)}', '${escapeForJs(translatedString)}')",
                         null
                     )
                 }
