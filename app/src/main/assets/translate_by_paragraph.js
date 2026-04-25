@@ -37,20 +37,20 @@ function shouldTranslateAsBlock(element) {
 function fetchNodesWithText(element) {
   var result = [];
 
-  // 1. Check if this element should be treated as a single block
-  // (e.g. <p>text <a>link</a> text</p> without <br>)
-  // We skip this check for the root body or very large containers usually, 
-  // but here we rely on the caller or the recursion to narrow it down.
-  // However, we must be careful not to translate the whole body if it's just one big container.
-  // The original logic had a specific list of tags. Let's keep some of that heuristic.
+  // Skip subtrees that are already marked, so re-runs of this script are incremental
+  // (only mark new content that has appeared since last run, e.g. via SPA hydration).
+  if (element.classList && element.classList.contains('to-translate')) return result;
 
   const isBlockTag = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "li"].includes(element.tagName.toLowerCase());
 
   if (isBlockTag && shouldTranslateAsBlock(element) && getTextExcludingImages(element).trim() !== "") {
-    injectTranslateTag(element);
-    console.log("Block: " + element.textContent + "\n\n");
-    result.push(element);
-    return result;
+    // If block already has marked descendants, fall through to per-child handling.
+    if (!(element.querySelector && element.querySelector('.to-translate'))) {
+      injectTranslateTag(element);
+      console.log("Block: " + element.textContent + "\n\n");
+      result.push(element);
+      return result;
+    }
   }
 
   // 2. If not a simple block, iterate children and group inlines
@@ -63,8 +63,17 @@ function fetchNodesWithText(element) {
     // Check if group has any meaningful text
     const hasText = currentGroup.some(node => node.textContent.trim().length > 0);
 
-    if (hasText) {
-      // If group is just one element and it's already an element (not text), 
+    // Skip groups that already contain a marked element or descendant — those were
+    // marked on a previous run of this script.
+    const hasMarked = currentGroup.some(n =>
+      n.nodeType === Node.ELEMENT_NODE && (
+        (n.classList && n.classList.contains('to-translate')) ||
+        (n.querySelector && n.querySelector('.to-translate'))
+      )
+    );
+
+    if (hasText && !hasMarked) {
+      // If group is just one element and it's already an element (not text),
       // we might want to just tag it? No, usually we want to wrap mixed content.
       // But if it's a single <span>, maybe just tag it?
       // Let's consistently wrap to be safe and uniform.
@@ -105,6 +114,13 @@ function fetchNodesWithText(element) {
         || child.classList.contains("blind")
         || child.classList.contains("ico_view")
       ) {
+        continue;
+      }
+      // In by-paragraph mode, myCallback writes translated text into a sibling <p> and
+      // tags it with class "translated". Don't re-mark those — that would translate the
+      // translation, recursively. (Body's own "translated" class is irrelevant here since
+      // we're iterating children, not the body element itself.)
+      if (child.classList.contains("translated")) {
         continue;
       }
     }
@@ -158,17 +174,50 @@ function injectTranslateTag(node) {
   }
 }
 
-if (!document.body.classList.contains("translated")) {
-  document.body.classList.add("translated");
-  document.originalInnerHTML = document.body.innerHTML;
-  fetchNodesWithText(document.body);
-} else {
-  if (!document.body.classList.contains("translated_but_hide")) {
-    document.translatedInnerHTML = document.body.innerHTML;
-    document.body.innerHTML = document.originalInnerHTML;
-    document.body.classList.add("translated_but_hide");
-  } else {
-    document.body.innerHTML = document.translatedInnerHTML;
+// Idempotent translation setup. Sites like news.daum.net trigger multiple onPageFinished
+// callbacks per load (hash navigation + JS-driven reload), and lazy-rendered content keeps
+// arriving for seconds after the WebView reports progress=100. This script must therefore
+// be safe to call repeatedly:
+//   * fetchNodesWithText skips already-marked subtrees, so re-runs only mark NEW content;
+//   * no toggle/innerHTML-swap behaviour — those wiped pending async translations;
+//   * a MutationObserver keeps marking content as the page renders it after first fire.
+(function () {
+  var hasTranslatedClass = document.body.classList.contains("translated");
+  var stillMarked = document.querySelectorAll('.to-translate').length > 0;
+
+  // Stale state: body still says "translated" but the page replaced its own innerHTML
+  // (e.g. SPA hydration). Reset and re-translate from scratch.
+  if (hasTranslatedClass && !stillMarked) {
     document.body.classList.remove("translated_but_hide");
+    document.body.classList.remove("translated");
+    delete document.originalInnerHTML;
+    delete document.translatedInnerHTML;
+    hasTranslatedClass = false;
   }
-}
+
+  if (!hasTranslatedClass) {
+    document.body.classList.add("translated");
+    document.originalInnerHTML = document.body.innerHTML;
+  }
+  fetchNodesWithText(document.body);
+
+  // Observe future DOM mutations and mark new text-bearing content as it appears.
+  // Coalesce rapid bursts so we don't churn the tree on every keystroke-like mutation.
+  if (window._translateMutationObserver) {
+    window._translateMutationObserver.disconnect();
+  }
+  var pendingScan = false;
+  window._translateMutationObserver = new MutationObserver(function () {
+    if (pendingScan) return;
+    pendingScan = true;
+    setTimeout(function () {
+      pendingScan = false;
+      fetchNodesWithText(document.body);
+      // Re-run text_node_monitor's IntersectionObserver bind for any new markers.
+      if (typeof window._translateRebindObserver === "function") {
+        window._translateRebindObserver();
+      }
+    }, 300);
+  });
+  window._translateMutationObserver.observe(document.body, { childList: true, subtree: true });
+})();

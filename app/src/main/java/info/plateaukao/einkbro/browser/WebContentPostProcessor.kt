@@ -65,7 +65,14 @@ class WebContentPostProcessor : KoinComponent {
         // inject page scroll helper for JS-based pagination (works with inner scroll containers)
         ebWebView.evaluateJsFile("fix_scrolling.js", withPrefix = false)
 
-        if (configManager.shouldTranslateSite(url)) {
+        // Some sites fire onPageFinished multiple times per page lifecycle — news.daum.net
+        // chains a hash navigation + JS-driven reload that produces 4-5 callbacks at varying
+        // progress values, and content keeps lazy-rendering after the first "done".
+        // We rely on translate_by_paragraph.js being incremental (it skips already-marked
+        // subtrees), so each re-fire just picks up new content. Progress == 100 filters out
+        // intermediate "page finished but barely loaded" callbacks (progress=10/80) that
+        // would otherwise mark almost nothing.
+        if (configManager.shouldTranslateSite(url) && ebWebView.progress >= 100) {
             ebWebView.showTranslation()
         }
 
