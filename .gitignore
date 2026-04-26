@@ -19,6 +19,7 @@ app/release
 .DS_Store
 .idea/gradle.xml
 tools/*.png
+tools/reports/
 
 .externalNativeBuild
 .cxx/
