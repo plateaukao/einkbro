@@ -140,6 +140,12 @@ open class EBWebView(
     @Volatile
     var innerClientHeight: Int = 0
 
+    // Set on touchstart when the finger lands inside a CSS-scrollable container,
+    // cleared on touchend/touchcancel. Used by SwipeRefreshLayout to skip pull-
+    // to-refresh even when the inner element is already at scrollTop = 0.
+    @Volatile
+    var isTouchOnInnerScrollable: Boolean = false
+
     // True only if the content was already at top when the touch gesture started.
     // Prevents pull-to-refresh from triggering when scrolling up from the middle.
     var wasAtTopOnTouchStart: Boolean = true

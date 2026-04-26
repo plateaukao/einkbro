@@ -990,7 +990,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         binding.twoPanelLayout.addView(translationPanelView)
 
         swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
-            !ebWebView.wasAtTopOnTouchStart || ebWebView.scrollY > 0 || !ebWebView.isInnerScrollAtTop
+            ebWebView.isTouchOnInnerScrollable
+                || !ebWebView.wasAtTopOnTouchStart
+                || ebWebView.scrollY > 0
+                || !ebWebView.isInnerScrollAtTop
         }
         swipeRefreshLayout.setOnRefreshListener {
             if (currentAlbumController != null) ebWebView.reload()
