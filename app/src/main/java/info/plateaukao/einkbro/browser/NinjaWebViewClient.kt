@@ -91,6 +91,7 @@ class EBWebViewClient(
         ebWebView.innerScrollTop = 0
         ebWebView.innerScrollHeight = 0
         ebWebView.innerClientHeight = 0
+        ebWebView.isTouchOnInnerScrollable = false
 
         if (config.browser.adBlock) {
             adFilter.performScript(view, url)

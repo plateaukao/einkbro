@@ -42,6 +42,26 @@
         }
     }, true);
 
+    // Hit-test on touchstart: if the finger landed inside a CSS-scrollable
+    // container, suppress pull-to-refresh for the whole gesture even if no
+    // scroll event fires (e.g. inner element already at scrollTop=0).
+    document.addEventListener('touchstart', function(e) {
+        if (typeof androidApp === 'undefined') return;
+        try {
+            androidApp.setTouchOnInnerScrollable(findScrollableParent(e.target) !== null);
+        } catch (ex) {}
+    }, true);
+
+    document.addEventListener('touchend', function() {
+        if (typeof androidApp === 'undefined') return;
+        try { androidApp.setTouchOnInnerScrollable(false); } catch (ex) {}
+    }, true);
+
+    document.addEventListener('touchcancel', function() {
+        if (typeof androidApp === 'undefined') return;
+        try { androidApp.setTouchOnInnerScrollable(false); } catch (ex) {}
+    }, true);
+
     window.__einkbroPageScroll = function(direction, offsetPercent, offsetPx) {
         var scrollable = findInnerScrollable();
         if (!scrollable) return "false";

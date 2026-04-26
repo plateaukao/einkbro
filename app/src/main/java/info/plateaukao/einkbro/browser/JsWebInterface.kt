@@ -206,6 +206,11 @@ class JsWebInterface(
         webView.innerClientHeight = clientHeight
         webView.post { webView.updatePageInfo() }
     }
+
+    @JavascriptInterface
+    fun setTouchOnInnerScrollable(value: Boolean) {
+        webView.isTouchOnInnerScrollable = value
+    }
 }
 
 fun String.toUserMessage() = ChatMessage(
