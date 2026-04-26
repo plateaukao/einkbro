@@ -1,0 +1,10 @@
+# OSS WebView-based Android browsers worth tracking for feature ideas.
+# Format: owner/repo (one per line). Lines starting with # are ignored.
+duckduckgo/Android
+Slion/Fulguris
+anthonycr/Lightning-Browser
+CookieJarApps/SmartCookieWeb
+scoute-dich/browser
+tommynok/Styx
+T8RIN/browser
+mthli/Ninja
