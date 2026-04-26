@@ -325,6 +325,40 @@ class ChatWebInterface(
                         "ok: queued ${text.length} chars for TTS"
                     }
                 }
+                "read_initial_html" -> {
+                    agentToolsInitialized = true
+                    val html = agentTools.initialPageRawHtml()
+                    if (html.isBlank()) "error: no initial page HTML captured"
+                    else html.take(MAX_TOOL_RESULT_CHARS)
+                }
+                "get_domain_javascript" -> {
+                    agentToolsInitialized = true
+                    val js = agentTools.getInitialDomainJavascript()
+                    if (js.isBlank()) "(no postLoadJavascript saved for this host)" else js
+                }
+                "get_domain_css" -> {
+                    agentToolsInitialized = true
+                    val css = agentTools.getInitialDomainCss()
+                    if (css.isBlank()) "(no customCss saved for this host)" else css
+                }
+                "set_domain_javascript" -> {
+                    val code = args["code"]?.jsonPrimitive?.contentOrNull
+                        ?: return "error: missing code"
+                    agentToolsInitialized = true
+                    agentTools.setInitialDomainJavascript(code)
+                    val host = android.net.Uri.parse(agentTools.initialPageUrl()).host.orEmpty()
+                    if (code.isBlank()) "ok: cleared postLoadJavascript for $host"
+                    else "ok: saved ${code.length} chars of postLoadJavascript for $host"
+                }
+                "set_domain_css" -> {
+                    val code = args["code"]?.jsonPrimitive?.contentOrNull
+                        ?: return "error: missing code"
+                    agentToolsInitialized = true
+                    agentTools.setInitialDomainCss(code)
+                    val host = android.net.Uri.parse(agentTools.initialPageUrl()).host.orEmpty()
+                    if (code.isBlank()) "ok: cleared customCss for $host"
+                    else "ok: saved ${code.length} chars of customCss for $host"
+                }
                 "finish" -> {
                     val summary = args["summary"]?.jsonPrimitive?.contentOrNull.orEmpty()
                     if (summary.isNotBlank()) appendBubble("\n\n---\n\n$summary")
