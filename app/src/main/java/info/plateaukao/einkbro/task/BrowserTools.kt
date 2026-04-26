@@ -20,6 +20,10 @@ data class InitialPageSnapshot(
     val title: String,
     val text: String,
     val links: List<BrowserTools.Link>,
+    /** Raw `document.body.innerHTML` of the originating page. Required for agent tools
+     *  that need to identify DOM elements the user described — `text` is reader-mode
+     *  cleaned and strips out exactly the banners/popups callers want to target. */
+    val rawHtml: String = "",
 )
 
 interface BrowserTools {
@@ -34,6 +38,30 @@ interface BrowserTools {
     fun initialPageTitle(): String
     fun initialPageText(): String
     fun initialPageLinks(): List<Link>
+
+    /** Raw `document.body.innerHTML` of the originating page. Captured at task entry —
+     *  zero-cost lookup. Empty string if the snapshot did not include HTML. */
+    fun initialPageRawHtml(): String
+
+    // ── Domain config (per-host CSS/JS that auto-injects on page load) ─────
+    //
+    // Operates on the host parsed from [initialPageUrl]. Empty host (e.g.
+    // about:blank) makes setters no-ops and getters return "". Used by agent
+    // workflows that persist DOM patches — e.g. "remove the cookie banner that
+    // says 'we use cookies'" → write a removal script to the host's
+    // postLoadJavascript so the patch survives reloads.
+
+    /** Returns the postLoadJavascript currently saved for the originating page's host. */
+    fun getInitialDomainJavascript(): String
+
+    /** Returns the customCss currently saved for the originating page's host. */
+    fun getInitialDomainCss(): String
+
+    /** Replaces the postLoadJavascript for the originating page's host. Pass "" to clear. */
+    fun setInitialDomainJavascript(code: String)
+
+    /** Replaces the customCss for the originating page's host. Pass "" to clear. */
+    fun setInitialDomainCss(code: String)
 
     // ── Navigation / content ────────────────────────────────────────────
 

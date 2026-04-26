@@ -145,6 +145,7 @@ import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
+import kotlin.coroutines.resume
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -681,14 +682,36 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 "[]"
             }
             val links = parseSnapshotLinks(rawLinks)
+            val rawHtml = captureRawBodyHtml(current)
             val snapshot = info.plateaukao.einkbro.task.InitialPageSnapshot(
                 url = current.url.orEmpty(),
                 title = current.title.orEmpty(),
                 text = rawText,
                 links = links,
+                rawHtml = rawHtml,
             )
             aiChatDelegate.chatWithWebAgent(prompt, snapshot)
         }
+    }
+
+    /** Snapshot the user's current page as raw HTML. Used by agent tasks that need to
+     *  identify a DOM element the user described (banners, popups, ads). Returns "" on
+     *  failure — the agent will fall back to reader-mode text. */
+    private suspend fun captureRawBodyHtml(webView: info.plateaukao.einkbro.view.EBWebView): String =
+        kotlin.coroutines.suspendCoroutine { cont ->
+            try {
+                webView.evaluateJavascript(
+                    "(function(){try{return document.body.innerHTML;}catch(e){return '';}})();"
+                ) { raw ->
+                    val unquoted = if (raw.startsWith("\"") && raw.endsWith("\""))
+                        info.plateaukao.einkbro.unit.HelperUnit.unescapeJava(raw)
+                            .let { it.substring(1, it.length - 1) }
+                    else raw
+                    cont.resume(unquoted)
+                }
+            } catch (e: Exception) {
+                cont.resume("")
+            }
     }
 
     private fun parseSnapshotLinks(raw: String): List<info.plateaukao.einkbro.task.BrowserTools.Link> {

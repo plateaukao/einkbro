@@ -6,6 +6,7 @@ import info.plateaukao.einkbro.browser.WebViewCallback
 import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
@@ -84,6 +85,36 @@ class BrowserToolsImpl(
     override fun initialPageTitle(): String = initialSnapshot?.title.orEmpty()
     override fun initialPageText(): String = initialSnapshot?.text.orEmpty()
     override fun initialPageLinks(): List<BrowserTools.Link> = initialSnapshot?.links.orEmpty()
+    override fun initialPageRawHtml(): String = initialSnapshot?.rawHtml.orEmpty()
+
+    // ── Domain config ───────────────────────────────────────────────────
+
+    private fun initialHost(): String? {
+        val url = initialSnapshot?.url ?: return null
+        return android.net.Uri.parse(url)?.host?.takeIf { it.isNotBlank() }
+    }
+
+    override fun getInitialDomainJavascript(): String {
+        val host = initialHost() ?: return ""
+        return config.domainConfigurationMap[host]?.postLoadJavascript.orEmpty()
+    }
+
+    override fun getInitialDomainCss(): String {
+        val host = initialHost() ?: return ""
+        return config.domainConfigurationMap[host]?.customCss.orEmpty()
+    }
+
+    override fun setInitialDomainJavascript(code: String) {
+        val host = initialHost() ?: return
+        val current = config.domainConfigurationMap[host] ?: DomainConfigurationData(host)
+        config.updateDomainConfig(current.copy(postLoadJavascript = code.ifBlank { null }))
+    }
+
+    override fun setInitialDomainCss(code: String) {
+        val host = initialHost() ?: return
+        val current = config.domainConfigurationMap[host] ?: DomainConfigurationData(host)
+        config.updateDomainConfig(current.copy(customCss = code.ifBlank { null }))
+    }
 
     private fun parseLinks(raw: String): List<BrowserTools.Link> {
         if (raw.isBlank() || raw == "null") return emptyList()
