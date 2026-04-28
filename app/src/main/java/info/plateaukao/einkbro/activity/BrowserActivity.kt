@@ -974,6 +974,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         initDownloadReceiver()
 
+        // ViewModel survives activity recreation (e.g. keyboard config change + recreate()).
+        // Clear stale album entries so initSavedTabs() doesn't append duplicates
+        albumViewModel.clearAlbums();
+
         dispatchIntent(intent)
         intentDispatchDelegate.shouldLoadTabState = false
 

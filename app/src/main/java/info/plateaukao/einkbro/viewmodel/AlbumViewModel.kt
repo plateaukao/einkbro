@@ -18,4 +18,8 @@ class AlbumViewModel: ViewModel() {
             remove(album)
         }
     }
+
+    fun clearAlbums() {
+        albums.value = emptyList()
+    }
 }
