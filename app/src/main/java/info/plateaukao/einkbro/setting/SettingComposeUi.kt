@@ -426,7 +426,7 @@ fun ProgressActionSettingItemUi(
             Text(
                 text = "${(progressState.value.progress * 100).toInt()}%",
                 fontSize = 10.sp,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.onBackground,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
