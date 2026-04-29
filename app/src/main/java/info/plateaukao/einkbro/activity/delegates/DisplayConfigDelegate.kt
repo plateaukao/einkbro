@@ -41,7 +41,7 @@ class DisplayConfigDelegate(
     fun onConfigurationChanged(newConfig: Configuration) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val nightModeFlags =
-                activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (nightModeFlags != uiMode && config.display.darkMode == DarkMode.SYSTEM) {
                 activity.recreate()
                 return
