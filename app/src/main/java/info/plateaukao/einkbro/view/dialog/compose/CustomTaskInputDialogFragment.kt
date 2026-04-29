@@ -13,6 +13,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,6 +61,12 @@ class CustomTaskInputDialogFragment(
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         maxLines = 4,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            textColor = MaterialTheme.colors.onBackground,
+                            cursorColor = MaterialTheme.colors.onBackground,
+                            focusedBorderColor = MaterialTheme.colors.onBackground,
+                            unfocusedBorderColor = MaterialTheme.colors.onBackground,
+                        ),
                     )
                     Spacer(Modifier.height(12.dp))
                     Row(
@@ -68,7 +75,10 @@ class CustomTaskInputDialogFragment(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         TextButton(onClick = { dismiss() }) {
-                            Text(stringResource(android.R.string.cancel))
+                            Text(
+                                text = stringResource(android.R.string.cancel),
+                                color = MaterialTheme.colors.onBackground,
+                            )
                         }
                         Spacer(Modifier.width(8.dp))
                         TextButton(onClick = {
@@ -77,7 +87,10 @@ class CustomTaskInputDialogFragment(
                                 dismiss()
                             }
                         }) {
-                            Text(stringResource(R.string.task_run))
+                            Text(
+                                text = stringResource(R.string.task_run),
+                                color = MaterialTheme.colors.onBackground,
+                            )
                         }
                     }
                 }
