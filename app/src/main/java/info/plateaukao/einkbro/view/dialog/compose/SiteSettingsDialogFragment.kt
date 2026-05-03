@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -123,10 +125,12 @@ private fun SiteSettingsContent(
     var customCss by remember { mutableStateOf(domainConfig.customCss.orEmpty()) }
     var postLoadJs by remember { mutableStateOf(domainConfig.postLoadJavascript.orEmpty()) }
 
+    val maxDialogHeight = (LocalConfiguration.current.screenHeightDp * 0.85f).dp
+
     Column(
         modifier = Modifier
             .width(300.dp)
-            .verticalScroll(rememberScrollState())
+            .heightIn(max = maxDialogHeight)
             .padding(16.dp),
     ) {
         Text(
@@ -137,6 +141,11 @@ private fun SiteSettingsContent(
         )
         Spacer(Modifier.height(12.dp))
 
+        Column(
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .verticalScroll(rememberScrollState()),
+        ) {
         // Font Size
         NullableIntSliderRow(
             label = stringResource(R.string.font_size),
@@ -268,6 +277,7 @@ private fun SiteSettingsContent(
             hasContent = postLoadJs.isNotBlank(),
             onClick = { onEditText(jsLabel, postLoadJs) { postLoadJs = it } },
         )
+        }
 
         Spacer(Modifier.height(12.dp))
         HorizontalSeparator()
