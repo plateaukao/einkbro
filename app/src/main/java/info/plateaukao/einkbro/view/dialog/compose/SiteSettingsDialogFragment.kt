@@ -1,9 +1,12 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +16,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -24,19 +29,19 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Slider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Copyright
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.CodeOff
+import androidx.compose.material.icons.outlined.Copyright
 import androidx.compose.material.icons.outlined.InvertColors
 import androidx.compose.material.icons.outlined.InvertColorsOff
+import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.twotone.Copyright
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,7 +53,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
@@ -127,159 +131,167 @@ private fun SiteSettingsContent(
 
     val maxDialogHeight = (LocalConfiguration.current.screenHeightDp * 0.85f).dp
 
+    val overrideCount = listOf(
+        fontSize != null,
+        fontType != null,
+        boldFont != null,
+        blackFont != null,
+        fontBoldness != null,
+        whiteBackground,
+        invertColor,
+        desktopMode != null,
+        javascript != null,
+        translateSite,
+        customCss.isNotBlank(),
+        postLoadJs.isNotBlank(),
+    ).count { it }
+
     Column(
         modifier = Modifier
-            .width(300.dp)
+            .fillMaxWidth(0.9f)
+            .widthIn(min = 300.dp, max = 420.dp)
             .heightIn(max = maxDialogHeight)
             .padding(16.dp),
     ) {
-        Text(
-            text = "${stringResource(R.string.site_settings)}: $host",
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            color = MaterialTheme.colors.onBackground,
-        )
-        Spacer(Modifier.height(12.dp))
+        // Title block: caption + prominent host + override count
+        DialogTitle(host = host, overrideCount = overrideCount)
+
+        Spacer(Modifier.height(8.dp))
+        HorizontalSeparator()
 
         Column(
             modifier = Modifier
                 .weight(1f, fill = false)
                 .verticalScroll(rememberScrollState()),
         ) {
-        // Font Size
-        NullableIntSliderRow(
-            label = stringResource(R.string.font_size),
-            value = fontSize,
-            globalValue = globalFontSize,
-            valueRange = 50f..250f,
-            steps = 19,
-            displayValue = { "${it}%" },
-            onValueChange = { fontSize = it },
-        )
+            SectionHeader(stringResource(R.string.setting_section_typography))
 
-        // Font Type
-        NullableDropdownRow(
-            label = stringResource(R.string.font_type),
-            value = fontType,
-            globalValue = globalFontType,
-            options = FontType.entries,
-            optionLabel = { stringResource(it.resId) },
-            onValueChange = { fontType = it },
-        )
-
-        // Bold Font
-        NullableBooleanRow(
-            label = stringResource(R.string.bold_font),
-            value = boldFont,
-            globalValue = globalBoldFont,
-            defaultOnActivate = true,
-            onIconRes = R.drawable.ic_bold_font_active,
-            offIconRes = R.drawable.ic_bold_font,
-            onValueChange = { boldFont = it },
-        )
-
-        // Font Boldness (under bold font, enabled only when bold is on)
-        run {
-            val boldEnabled = boldFont == true
-            val effectiveBoldness = fontBoldness ?: globalFontBoldness
-            var sliderValue by remember(effectiveBoldness) { mutableFloatStateOf(effectiveBoldness.toFloat()) }
-            val color = if (boldEnabled) MaterialTheme.colors.onBackground
-                else MaterialTheme.colors.onBackground.copy(alpha = 0.4f)
-            Text(
-                text = "${stringResource(R.string.font_boldness)}: ${effectiveBoldness}",
-                modifier = Modifier.padding(start = 48.dp),
-                fontSize = 13.sp,
-                color = color,
+            // Font Size — stepper
+            NullableIntStepperRow(
+                label = stringResource(R.string.font_size),
+                value = fontSize,
+                globalValue = globalFontSize,
+                min = 50,
+                max = 250,
+                step = 10,
+                displayValue = { "${it}%" },
+                onValueChange = { fontSize = it },
             )
-            Slider(
-                value = sliderValue,
-                onValueChange = {
-                    sliderValue = it
-                    fontBoldness = it.toInt()
-                },
-                valueRange = 500f..900f,
-                steps = 3,
-                enabled = boldEnabled,
-                modifier = Modifier.padding(start = 48.dp, end = 16.dp),
+
+            // Font Type
+            NullableDropdownRow(
+                label = stringResource(R.string.font_type),
+                value = fontType,
+                globalValue = globalFontType,
+                options = FontType.entries,
+                optionLabel = { stringResource(it.resId) },
+                onValueChange = { fontType = it },
+            )
+
+            // Bold Font
+            NullableBooleanRow(
+                label = stringResource(R.string.bold_font),
+                value = boldFont,
+                globalValue = globalBoldFont,
+                defaultOnActivate = true,
+                onIconRes = R.drawable.ic_bold_font_active,
+                offIconRes = R.drawable.ic_bold_font,
+                onValueChange = { boldFont = it },
+            )
+
+            // Font Boldness — nested under Bold Font with a left rail
+            NestedNullableIntStepper(
+                value = fontBoldness,
+                globalValue = globalFontBoldness,
+                min = 500,
+                max = 900,
+                step = 100,
+                enabled = (boldFont ?: globalBoldFont),
+                onValueChange = { fontBoldness = it },
+            )
+
+            // Black Font
+            NullableBooleanRow(
+                label = stringResource(R.string.black_font),
+                value = blackFont,
+                globalValue = globalBlackFont,
+                defaultOnActivate = true,
+                onIcon = Icons.TwoTone.Copyright,
+                offIcon = Icons.Outlined.Copyright,
+                onValueChange = { blackFont = it },
+            )
+
+            SectionHeader(stringResource(R.string.setting_title_ui))
+
+            // White Background (always per-site, non-nullable boolean)
+            BooleanRow(
+                label = stringResource(R.string.white_background),
+                value = whiteBackground,
+                onIconRes = R.drawable.ic_white_background_active,
+                offIconRes = R.drawable.ic_white_background,
+                onValueChange = { whiteBackground = it },
+            )
+
+            // Invert Color (always per-site, non-nullable boolean)
+            BooleanRow(
+                label = stringResource(R.string.menu_invert_color),
+                value = invertColor,
+                onIcon = Icons.Outlined.InvertColorsOff,
+                offIcon = Icons.Outlined.InvertColors,
+                onValueChange = { invertColor = it },
+            )
+
+            SectionHeader(stringResource(R.string.setting_title_behavior))
+
+            // Desktop Mode
+            NullableBooleanRow(
+                label = stringResource(R.string.desktop_mode),
+                value = desktopMode,
+                globalValue = globalDesktopMode,
+                onIconRes = R.drawable.icon_desktop_activate,
+                offIconRes = R.drawable.icon_desktop,
+                onValueChange = { desktopMode = it },
+            )
+
+            // JavaScript
+            NullableBooleanRow(
+                label = stringResource(R.string.setting_title_javascript),
+                value = javascript,
+                globalValue = globalJavascript,
+                onIcon = Icons.Outlined.Code,
+                offIcon = Icons.Outlined.CodeOff,
+                onValueChange = { javascript = it },
+            )
+
+            SectionHeader(stringResource(R.string.action_category_translation))
+
+            // Translation: checkbox (always translate) on its own row, mode dropdown nested below
+            TranslationRow(
+                translateSite = translateSite,
+                translationMode = translationMode,
+                globalTranslationMode = globalTranslationMode,
+                onTranslateSiteChange = { translateSite = it },
+                onTranslationModeChange = { translationMode = it },
+            )
+
+            SectionHeader(stringResource(R.string.setting_section_advanced))
+
+            val cssLabel = stringResource(R.string.site_custom_css)
+            EditTextButtonRow(
+                label = cssLabel,
+                hasContent = customCss.isNotBlank(),
+                onClick = { onEditText(cssLabel, customCss) { customCss = it } },
+            )
+
+            val jsLabel = stringResource(R.string.site_post_load_js)
+            EditTextButtonRow(
+                label = jsLabel,
+                hasContent = postLoadJs.isNotBlank(),
+                onClick = { onEditText(jsLabel, postLoadJs) { postLoadJs = it } },
             )
         }
 
-        // Black Font
-        NullableBooleanRow(
-            label = stringResource(R.string.black_font),
-            value = blackFont,
-            globalValue = globalBlackFont,
-            defaultOnActivate = true,
-            onIcon = Icons.TwoTone.Copyright,
-            offIcon = Icons.Outlined.Copyright,
-            onValueChange = { blackFont = it },
-        )
-
-        // White Background (always per-site, non-nullable boolean)
-        BooleanRow(
-            label = stringResource(R.string.white_background),
-            value = whiteBackground,
-            onIconRes = R.drawable.ic_white_background_active,
-            offIconRes = R.drawable.ic_white_background,
-            onValueChange = { whiteBackground = it },
-        )
-
-        // Invert Color (always per-site, non-nullable boolean)
-        BooleanRow(
-            label = stringResource(R.string.menu_invert_color),
-            value = invertColor,
-            onIcon = Icons.Outlined.InvertColorsOff,
-            offIcon = Icons.Outlined.InvertColors,
-            onValueChange = { invertColor = it },
-        )
-
-        // Desktop Mode
-        NullableBooleanRow(
-            label = stringResource(R.string.desktop_mode),
-            value = desktopMode,
-            globalValue = globalDesktopMode,
-            onIconRes = R.drawable.icon_desktop_activate,
-            offIconRes = R.drawable.icon_desktop,
-            onValueChange = { desktopMode = it },
-        )
-
-        // JavaScript
-        NullableBooleanRow(
-            label = stringResource(R.string.setting_title_javascript),
-            value = javascript,
-            globalValue = globalJavascript,
-            onIcon = Icons.Outlined.Code,
-            offIcon = Icons.Outlined.CodeOff,
-            onValueChange = { javascript = it },
-        )
-
-        // Translation: checkbox (always translate) + icon + mode dropdown
-        TranslationRow(
-            translateSite = translateSite,
-            translationMode = translationMode,
-            globalTranslationMode = globalTranslationMode,
-            onTranslateSiteChange = { translateSite = it },
-            onTranslationModeChange = { translationMode = it },
-        )
-
-        Spacer(Modifier.height(4.dp))
-
-        val cssLabel = stringResource(R.string.site_custom_css)
-        EditTextButtonRow(
-            label = cssLabel,
-            hasContent = customCss.isNotBlank(),
-            onClick = { onEditText(cssLabel, customCss) { customCss = it } },
-        )
-
-        val jsLabel = stringResource(R.string.site_post_load_js)
-        EditTextButtonRow(
-            label = jsLabel,
-            hasContent = postLoadJs.isNotBlank(),
-            onClick = { onEditText(jsLabel, postLoadJs) { postLoadJs = it } },
-        )
-        }
-
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(8.dp))
         HorizontalSeparator()
         Spacer(Modifier.height(8.dp))
 
@@ -325,16 +337,70 @@ private fun SiteSettingsContent(
                     contentColor = MaterialTheme.colors.background,
                 ),
             ) {
-                Text("OK", fontSize = 13.sp)
+                Text(stringResource(android.R.string.ok), fontSize = 13.sp)
             }
         }
     }
 }
 
+@Composable
+private fun DialogTitle(host: String, overrideCount: Int) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = host.ifBlank { "—" },
+            modifier = Modifier.weight(1f),
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = MaterialTheme.colors.onBackground,
+        )
+        if (overrideCount > 0) {
+            OverrideBadge(overrideCount)
+        }
+    }
+}
+
+@Composable
+private fun OverrideBadge(count: Int) {
+    val text = if (count == 1) {
+        stringResource(R.string.site_settings_overrides_count, count)
+    } else {
+        stringResource(R.string.site_settings_overrides_count_plural, count)
+    }
+    Box(
+        modifier = Modifier
+            .background(
+                color = MaterialTheme.colors.onBackground.copy(alpha = 0.12f),
+                shape = CircleShape,
+            )
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+    ) {
+        Text(
+            text = text,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colors.onBackground,
+        )
+    }
+}
+
+@Composable
+private fun SectionHeader(title: String) {
+    Text(
+        text = title,
+        fontSize = 11.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
+        modifier = Modifier.padding(top = 12.dp, bottom = 2.dp),
+    )
+}
+
 /**
  * A row with a nullable boolean override. Left checkbox toggles per-site override.
- * State icon before the label shows current value; clicking the icon toggles it.
- * Accepts either ImageVector pair or drawable resource ID pair for on/off icons.
+ * State icon before the label shows current value. Tapping the icon enables override
+ * (if not yet) and flips the value.
  */
 @Composable
 private fun NullableBooleanRow(
@@ -351,7 +417,8 @@ private fun NullableBooleanRow(
     val hasOverride = value != null
     val effectiveValue = value ?: globalValue
     val color = if (hasOverride) MaterialTheme.colors.onBackground
-        else MaterialTheme.colors.onBackground.copy(alpha = 0.4f)
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
+    val defaultHint = stringResource(R.string.default_value_hint)
 
     Row(
         modifier = Modifier
@@ -375,21 +442,31 @@ private fun NullableBooleanRow(
             onIcon = onIcon, offIcon = offIcon,
             onIconRes = onIconRes, offIconRes = offIconRes,
             tint = color,
-            modifier = Modifier.noRippleClickable(enabled = hasOverride) { onValueChange(!effectiveValue) },
+            modifier = Modifier.noRippleClickable {
+                if (hasOverride) {
+                    onValueChange(!effectiveValue)
+                } else {
+                    onValueChange(!effectiveValue)
+                }
+            },
         )
         Spacer(Modifier.width(8.dp))
-        Text(
-            text = label,
-            modifier = Modifier.weight(1f),
-            fontSize = 14.sp,
-            color = color,
-        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = label, fontSize = 14.sp, color = color)
+            if (!hasOverride) {
+                Text(
+                    text = defaultHint,
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.45f),
+                )
+            }
+        }
     }
 }
 
 /**
  * A row for non-nullable per-site booleans (white background, invert color).
- * State icon before the label; clicking the icon toggles it.
+ * Aligns to the left edge (no leading checkbox space) — these aren't overrides.
  */
 @Composable
 private fun BooleanRow(
@@ -406,16 +483,15 @@ private fun BooleanRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .noRippleClickable { onValueChange(!value) },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Spacer(Modifier.width(48.dp))
         StateIcon(
             isOn = value,
             onIcon = onIcon, offIcon = offIcon,
             onIconRes = onIconRes, offIconRes = offIconRes,
             tint = color,
-            modifier = Modifier.noRippleClickable { onValueChange(!value) },
         )
         Spacer(Modifier.width(8.dp))
         Text(
@@ -456,7 +532,8 @@ private fun StateIcon(
 }
 
 /**
- * Single row: checkbox (always translate) + translate icon + translation mode dropdown.
+ * Translation: checkbox + translate icon + label on one row,
+ * mode dropdown nested below with a left rail (only enabled when translateSite is true).
  */
 @Composable
 private fun TranslationRow(
@@ -469,7 +546,7 @@ private fun TranslationRow(
     val effectiveMode = translationMode ?: globalTranslationMode
     var expanded by remember { mutableStateOf(false) }
     val color = if (translateSite) MaterialTheme.colors.onBackground
-        else MaterialTheme.colors.onBackground.copy(alpha = 0.4f)
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
 
     Row(
         modifier = Modifier
@@ -493,24 +570,37 @@ private fun TranslationRow(
             tint = color,
         )
         Spacer(Modifier.width(8.dp))
-        OutlinedButton(
-            onClick = { if (translateSite) expanded = true },
-            enabled = translateSite,
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = color,
-            ),
+        Text(
+            text = stringResource(R.string.action_category_translation),
+            modifier = Modifier.weight(1f),
+            fontSize = 14.sp,
+            color = color,
+        )
+    }
+
+    NestedRail(enabled = translateSite) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(effectiveMode.labelResId), fontSize = 12.sp)
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
+            Spacer(Modifier.weight(1f))
+            OutlinedButton(
+                onClick = { if (translateSite) expanded = true },
+                enabled = translateSite,
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
             ) {
-                TranslationMode.entries.forEach { mode ->
-                    DropdownMenuItem(onClick = {
-                        onTranslationModeChange(mode)
-                        expanded = false
-                    }) {
-                        Text(stringResource(mode.labelResId))
+                Text(stringResource(effectiveMode.labelResId), fontSize = 12.sp)
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                ) {
+                    TranslationMode.entries.forEach { mode ->
+                        DropdownMenuItem(onClick = {
+                            onTranslationModeChange(mode)
+                            expanded = false
+                        }) {
+                            Text(stringResource(mode.labelResId))
+                        }
                     }
                 }
             }
@@ -528,62 +618,170 @@ private fun Modifier.noRippleClickable(enabled: Boolean = true, onClick: () -> U
     )
 
 /**
- * A row with a nullable int slider override (font size, boldness).
+ * A row with a nullable int stepper override (font size, boldness).
+ * E-ink-friendly: discrete [−] value [+] controls instead of a continuous slider.
  */
 @Composable
-private fun NullableIntSliderRow(
+private fun NullableIntStepperRow(
     label: String,
     value: Int?,
     globalValue: Int,
-    valueRange: ClosedFloatingPointRange<Float>,
-    steps: Int,
+    min: Int,
+    max: Int,
+    step: Int,
     displayValue: (Int) -> String,
     onValueChange: (Int?) -> Unit,
 ) {
     val hasOverride = value != null
     val effectiveValue = value ?: globalValue
-    var sliderValue by remember(effectiveValue) { mutableFloatStateOf(effectiveValue.toFloat()) }
+    val color = if (hasOverride) MaterialTheme.colors.onBackground
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
+    val defaultHint = stringResource(R.string.default_value_hint)
 
-    Column(modifier = Modifier.padding(vertical = 4.dp)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Checkbox(
+            checked = hasOverride,
+            onCheckedChange = { checked ->
+                onValueChange(if (checked) effectiveValue else null)
+            },
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colors.onBackground,
+                uncheckedColor = MaterialTheme.colors.onBackground,
+                checkmarkColor = MaterialTheme.colors.background,
+            ),
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = label, fontSize = 14.sp, color = color)
+            if (!hasOverride) {
+                Text(
+                    text = defaultHint,
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.45f),
+                )
+            }
+        }
+        Stepper(
+            value = effectiveValue,
+            min = min,
+            max = max,
+            step = step,
+            enabled = hasOverride,
+            displayValue = displayValue,
+            onValueChange = { onValueChange(it) },
+        )
+    }
+}
+
+/**
+ * Stepper used standalone, nested under a parent row (e.g. font boldness under bold font).
+ * Renders inside a NestedRail so the dependency is visible.
+ */
+@Composable
+private fun NestedNullableIntStepper(
+    value: Int?,
+    globalValue: Int,
+    min: Int,
+    max: Int,
+    step: Int,
+    enabled: Boolean,
+    onValueChange: (Int?) -> Unit,
+) {
+    val hasOverride = value != null
+    val effectiveValue = value ?: globalValue
+
+    NestedRail(enabled = enabled) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Checkbox(
                 checked = hasOverride,
                 onCheckedChange = { checked ->
-                    onValueChange(if (checked) effectiveValue else null)
+                    if (enabled) onValueChange(if (checked) effectiveValue else null)
                 },
+                enabled = enabled,
                 colors = CheckboxDefaults.colors(
                     checkedColor = MaterialTheme.colors.onBackground,
                     uncheckedColor = MaterialTheme.colors.onBackground,
                     checkmarkColor = MaterialTheme.colors.background,
                 ),
             )
-            Text(
-                text = label,
-                modifier = Modifier.weight(1f),
-                fontSize = 14.sp,
-                color = if (hasOverride) MaterialTheme.colors.onBackground
-                else MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-            )
-            Text(
-                text = displayValue(effectiveValue),
-                fontSize = 14.sp,
-                color = if (hasOverride) MaterialTheme.colors.onBackground
-                else MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+            Spacer(Modifier.weight(1f))
+            Stepper(
+                value = effectiveValue,
+                min = min,
+                max = max,
+                step = step,
+                enabled = enabled && hasOverride,
+                displayValue = { it.toString() },
+                onValueChange = { onValueChange(it) },
             )
         }
-        Slider(
-            value = sliderValue,
-            onValueChange = {
-                sliderValue = it
-                onValueChange(it.toInt())
-            },
-            valueRange = valueRange,
-            steps = steps,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            enabled = hasOverride,
+    }
+}
+
+@Composable
+private fun Stepper(
+    value: Int,
+    min: Int,
+    max: Int,
+    step: Int,
+    enabled: Boolean,
+    displayValue: (Int) -> String,
+    onValueChange: (Int) -> Unit,
+) {
+    val tint = if (enabled) MaterialTheme.colors.onBackground
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.3f)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        StepperButton(
+            icon = Icons.Outlined.Remove,
+            contentDescription = "−",
+            tint = tint,
+            enabled = enabled && value > min,
+            onClick = { onValueChange((value - step).coerceAtLeast(min)) },
+        )
+        Text(
+            text = displayValue(value),
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Medium,
+            color = tint,
+            modifier = Modifier.width(48.dp),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        )
+        StepperButton(
+            icon = Icons.Outlined.Add,
+            contentDescription = "+",
+            tint = tint,
+            enabled = enabled && value < max,
+            onClick = { onValueChange((value + step).coerceAtMost(max)) },
+        )
+    }
+}
+
+@Composable
+private fun StepperButton(
+    icon: ImageVector,
+    contentDescription: String,
+    tint: Color,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .clickable(enabled = enabled, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = contentDescription,
+            tint = tint,
+            modifier = Modifier.size(20.dp),
         )
     }
 }
@@ -603,6 +801,9 @@ private fun <T> NullableDropdownRow(
     val hasOverride = value != null
     val effectiveValue = value ?: globalValue
     var expanded by remember { mutableStateOf(false) }
+    val color = if (hasOverride) MaterialTheme.colors.onBackground
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
+    val defaultHint = stringResource(R.string.default_value_hint)
 
     Row(
         modifier = Modifier
@@ -621,13 +822,16 @@ private fun <T> NullableDropdownRow(
                 checkmarkColor = MaterialTheme.colors.background,
             ),
         )
-        Text(
-            text = label,
-            modifier = Modifier.weight(1f),
-            fontSize = 14.sp,
-            color = if (hasOverride) MaterialTheme.colors.onBackground
-            else MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = label, fontSize = 14.sp, color = color)
+            if (!hasOverride) {
+                Text(
+                    text = defaultHint,
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.45f),
+                )
+            }
+        }
         OutlinedButton(
             onClick = { if (hasOverride) expanded = true },
             enabled = hasOverride,
@@ -655,7 +859,6 @@ private fun <T> NullableDropdownRow(
 
 /**
  * A row that opens a full-screen editor for a per-site CSS / JS override.
- * The button label reflects whether content is already set.
  */
 @Composable
 private fun EditTextButtonRow(
@@ -664,14 +867,13 @@ private fun EditTextButtonRow(
     onClick: () -> Unit,
 ) {
     val color = if (hasContent) MaterialTheme.colors.onBackground
-        else MaterialTheme.colors.onBackground.copy(alpha = 0.5f)
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Spacer(Modifier.width(48.dp))
         Text(
             text = label,
             modifier = Modifier.weight(1f),
@@ -682,7 +884,39 @@ private fun EditTextButtonRow(
             onClick = onClick,
             colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
         ) {
-            Text(if (hasContent) "Edit" else "Add", fontSize = 12.sp)
+            Text(
+                stringResource(if (hasContent) R.string.menu_edit else R.string.whitelist_add),
+                fontSize = 12.sp,
+            )
+        }
+    }
+}
+
+/**
+ * Wraps nested content with a left vertical rail to indicate dependence on the row above.
+ * Uses drawBehind so we don't introduce IntrinsicSize.Min, which collapses weight(1f)
+ * children to their min intrinsic width inside verticalScroll.
+ */
+@Composable
+private fun NestedRail(enabled: Boolean, content: @Composable () -> Unit) {
+    val railColor = if (enabled) MaterialTheme.colors.onBackground.copy(alpha = 0.35f)
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.15f)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .drawBehind {
+                val railX = 20.dp.toPx()
+                val railW = 2.dp.toPx()
+                drawRect(
+                    color = railColor,
+                    topLeft = androidx.compose.ui.geometry.Offset(railX, 0f),
+                    size = androidx.compose.ui.geometry.Size(railW, size.height),
+                )
+            }
+            .padding(start = 38.dp, end = 4.dp),
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            content()
         }
     }
 }

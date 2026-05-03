@@ -145,6 +145,11 @@
     <string name="setting_title_toolbar">Toolbar / Statusbar</string>
     <string name="setting_section_toolbar">Toolbar</string>
     <string name="setting_section_statusbar">Statusbar</string>
+    <string name="setting_section_typography">Typography</string>
+    <string name="setting_section_advanced">Advanced</string>
+    <string name="site_settings_overrides_count">%1$d override</string>
+    <string name="site_settings_overrides_count_plural">%1$d overrides</string>
+    <string name="default_value_hint">default</string>
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. To leave fullscreen mode press Back button</string>
 
