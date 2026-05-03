@@ -61,6 +61,92 @@
 <h2>更新日誌</h2>
 
 <div class="changelog-version">
+<h3>15.13.0</h3>
+
+<h4>新功能</h4>
+<ul>
+  <li>每個網域可自訂 CSS，並在頁面載入後注入 JavaScript</li>
+  <li>代理工具可依網域記住套用過的 JS／CSS DOM 修補</li>
+  <li>可從主選單隱藏不常用的項目</li>
+  <li>選單支援跨列拖曳，並改為由下往上的排版</li>
+  <li>純音訊模式下將 YouTube 字幕置中顯示</li>
+  <li>網址建議延伸至 Bing／Ecosia／Startpage／Yandex（最多顯示 4 筆）</li>
+</ul>
+
+<h4>改善</h4>
+<ul>
+  <li>透過 Compose 預熱加快選單對話框開啟（移除 300ms 的淡入遮罩）</li>
+  <li>長按分享按鈕即可複製連結（取代原本的複製連結磚）</li>
+  <li>選單中的「與網頁對話」磚改為「頁面 AI 動作」入口</li>
+  <li>觸控區開關移至「手勢」設定，並移除底下的文字說明</li>
+  <li>「使用手冊」獨立成單一設定列</li>
+  <li>翻譯觀察器提早載入視窗外的內容（rootMargin 150px → 400px）</li>
+  <li>EPUB 引擎自不再維護的 epublib 遷移至 epub4j</li>
+  <li>對話框文字調整：「更多設定」與「啟用分頁」</li>
+  <li>移除每站「作為上一頁／下一頁鍵」功能</li>
+</ul>
+
+<h4>修正</h4>
+<ul>
+  <li>修正深色模式下 AI 任務對話框與「關於」更新進度的可讀性</li>
+  <li>連接／斷開藍牙鍵盤時會建立重複分頁的問題</li>
+  <li>當手指落在內部 CSS 捲動區時抑制下拉重新整理</li>
+  <li>原地翻譯能在 SPA 重新渲染與延遲載入時保持有效</li>
+  <li>書籤無 favicon 時改用 App 啟動圖示</li>
+  <li>閱讀模式透過 JSON-LD 鎖定正確的文章容器</li>
+  <li>原地翻譯不再破壞頁面排版</li>
+  <li>還原因混淆或精簡而遺失的手勢綁定</li>
+  <li>於 R8 下保留 BrowserAction 密封類別階層</li>
+</ul>
+</div>
+
+<div class="changelog-version">
+<h3>15.12.0</h3>
+
+<h4>新功能</h4>
+<ul>
+  <li>新聞主播 TTS 範本，可朗讀整篇文章</li>
+  <li>多步驟瀏覽流程的任務執行器；置於 Page AI 動作的第一順位</li>
+  <li>自由對話代理整合進「與網頁對話」，可繼續延伸提問</li>
+  <li>所有 BrowserAction 皆可指派為手勢綁定</li>
+  <li>全螢幕／無工具列模式下狀態列可自訂</li>
+  <li>各網站可獨立設定翻譯模式，翻譯設定對話框更精簡</li>
+  <li>各網站可獨立設定顯示偏好</li>
+  <li>切換語系不再需要重啟 App（保留 WebView 分頁）</li>
+  <li>設定頁支援搜尋 — 不論 App 語系皆接受英文關鍵字</li>
+  <li>新增「另存為 MHT」選單項目，可將網頁存成單一 .mht 檔</li>
+  <li>離線錯誤頁面附重試按鈕與一個跳馬小遊戲</li>
+  <li>垂直工具列模式下進度列改為由中央向兩側展開</li>
+</ul>
+
+<h4>改善</h4>
+<ul>
+  <li>廣告過濾不再為每個子資源切回主執行緒（效能）</li>
+  <li>安全性、錯誤可見度、Listener 洩漏修正與 API 現代化整理</li>
+  <li>拆解 BrowserController 巨型介面並改為型別化的動作分派</li>
+  <li>BaseWebConfig 改為協程化，移除 runBlocking，導入 BrowserState</li>
+  <li>從 ConfigManager 抽離 BrowserConfig、TabConfig、UiConfig</li>
+  <li>抽離 DisplayConfigDelegate 並拆分 BrowserActivity.onCreate</li>
+  <li>以資料庫備份取代 WebView 資料備份；接收時顯示進度提示</li>
+  <li>工具列／狀態列設定依分區重新分組</li>
+  <li>精簡手勢動作目錄並攤平單項分類</li>
+</ul>
+
+<h4>修正</h4>
+<ul>
+  <li>閱讀模式下保留以 figure／picture 包裹或標記 aria-hidden 的主視覺圖片</li>
+  <li>廣告封鎖外觀過濾查找時的空指標崩潰</li>
+  <li>升級版本時手勢設定不會被重置</li>
+  <li>強制清除 dsd-pending 屬性，避免被過濾打斷的 hydration 留下空白頁</li>
+  <li>修復委派重構後 EPUB 無法開啟的問題</li>
+  <li>垂直工具列下 WebView 縮陷與進度列卡住的問題</li>
+  <li>設定搜尋結果第一個分類上方多餘的分隔線</li>
+  <li>還原「選取文字」右鍵選單，並在電子書翻頁前關閉動作模式</li>
+  <li>錯誤頁小遊戲需明確開始，且分頁／App 隱藏時暫停</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>15.11.1</h3>
 
 <h4>新功能</h4>
