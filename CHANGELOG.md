@@ -1,3 +1,36 @@
+### 15.13.0
+#### Features
+* Per-domain custom CSS and post-load JavaScript overrides
+* Agent tools that persist JS/CSS DOM patches per domain
+* Hide seldom-used items from the main menu
+* Cross-row drag with bottom-first menu layout
+* Center YouTube captions in audio-only mode
+* URL suggestions extended to Bing/Ecosia/Startpage/Yandex (capped at 4)
+
+#### Improvements
+* Faster menu dialog open via Compose prewarm (drops 300ms alpha-hide)
+* Long-press Share icon to copy link (replaces dedicated copy-link tiles)
+* Page AI Actions replaces "Chat With Web" tile in the menu
+* Touch-area toggles moved into Gestures settings; text labels removed
+* Manual promoted to its own settings row
+* Translation observer pulls viewport content earlier (rootMargin 150px → 400px)
+* Migrated EPUB engine from unmaintained epublib to epub4j
+* Renamed dialog labels: "More Settings" and "Enable Pagination"
+* Dropped per-site "As Page Up/Down key" feature
+
+#### Fixes
+* Dark mode visibility for AI Task dialog and About update progress
+* Duplicate tab when connecting/disconnecting a Bluetooth keyboard
+* Pull-to-refresh suppressed when finger lands on inner CSS-scrollable areas
+* In-place translation survives SPA re-renders and lazy hydration
+* App launcher icon used as bookmark favicon fallback
+* Reader mode scopes to the correct article container via JSON-LD
+* In-place translation no longer mangles page layout
+* Restore gesture bindings lost to obfuscated or trimmed action ids
+* Preserve BrowserAction sealed-class hierarchy under R8
+
+---
+
 ### 15.12.0
 #### Features
 * News anchor TTS template that reads full articles aloud

@@ -60,6 +60,92 @@
 <h2>Changelog</h2>
 
 <div class="changelog-version">
+<h3>15.13.0</h3>
+
+<h4>Features</h4>
+<ul>
+  <li>Per-domain custom CSS and post-load JavaScript overrides</li>
+  <li>Agent tools that persist JS/CSS DOM patches per domain</li>
+  <li>Hide seldom-used items from the main menu</li>
+  <li>Cross-row drag with bottom-first menu layout</li>
+  <li>Center YouTube captions in audio-only mode</li>
+  <li>URL suggestions extended to Bing/Ecosia/Startpage/Yandex (capped at 4)</li>
+</ul>
+
+<h4>Improvements</h4>
+<ul>
+  <li>Faster menu dialog open via Compose prewarm (drops 300ms alpha-hide)</li>
+  <li>Long-press Share icon to copy link (replaces dedicated copy-link tiles)</li>
+  <li>Page AI Actions replaces "Chat With Web" tile in the menu</li>
+  <li>Touch-area toggles moved into Gestures settings; text labels removed</li>
+  <li>Manual promoted to its own settings row</li>
+  <li>Translation observer pulls viewport content earlier (rootMargin 150px → 400px)</li>
+  <li>Migrated EPUB engine from unmaintained epublib to epub4j</li>
+  <li>Renamed dialog labels: "More Settings" and "Enable Pagination"</li>
+  <li>Dropped per-site "As Page Up/Down key" feature</li>
+</ul>
+
+<h4>Fixes</h4>
+<ul>
+  <li>Dark mode visibility for AI Task dialog and About update progress</li>
+  <li>Duplicate tab when connecting/disconnecting a Bluetooth keyboard</li>
+  <li>Pull-to-refresh suppressed when finger lands on inner CSS-scrollable areas</li>
+  <li>In-place translation survives SPA re-renders and lazy hydration</li>
+  <li>App launcher icon used as bookmark favicon fallback</li>
+  <li>Reader mode scopes to the correct article container via JSON-LD</li>
+  <li>In-place translation no longer mangles page layout</li>
+  <li>Restore gesture bindings lost to obfuscated or trimmed action ids</li>
+  <li>Preserve BrowserAction sealed-class hierarchy under R8</li>
+</ul>
+</div>
+
+<div class="changelog-version">
+<h3>15.12.0</h3>
+
+<h4>Features</h4>
+<ul>
+  <li>News-anchor TTS template that reads full articles aloud</li>
+  <li>Task runner for multi-step browser workflows; surfaced as the first Page AI action</li>
+  <li>Free-form agent integrated into Chat With Web for follow-up conversations</li>
+  <li>Expose all BrowserActions as gesture bindings</li>
+  <li>Configurable status bar for fullscreen / no-toolbar mode</li>
+  <li>Per-site translation mode with streamlined translation config dialog</li>
+  <li>Per-site configuration for display settings</li>
+  <li>Apply locale change without restarting the app (preserves WebView tabs)</li>
+  <li>Search functionality in Settings — accepts English search terms regardless of app locale</li>
+  <li>"Save as MHT" menu item to save web content as a single .mht file</li>
+  <li>Offline error page with retry button and a horse-jump game</li>
+  <li>Center-expanded progress bar for vertical toolbar mode</li>
+</ul>
+
+<h4>Improvements</h4>
+<ul>
+  <li>Avoid main-thread hop on every subresource in ad-filter (perf)</li>
+  <li>Security, error visibility, listener leak fixes, and API modernization pass</li>
+  <li>Decompose BrowserController god interface and introduce typed action dispatch</li>
+  <li>Coroutinize BaseWebConfig, eliminate runBlocking, introduce BrowserState</li>
+  <li>Extract BrowserConfig, TabConfig, UiConfig from ConfigManager</li>
+  <li>Extract DisplayConfigDelegate and split BrowserActivity.onCreate</li>
+  <li>Replace WebView data backup with database backup; show receive progress hint</li>
+  <li>Group toolbar/status bar settings into sections</li>
+  <li>Trim gesture action catalog and flatten single-item categories</li>
+</ul>
+
+<h4>Fixes</h4>
+<ul>
+  <li>Keep hero images in reader mode when wrapped in figure/picture or marked aria-hidden</li>
+  <li>Null pointer crash in adblock cosmetic filter lookup</li>
+  <li>Prevent gesture settings from resetting on release upgrades</li>
+  <li>Force-clear dsd-pending attribute so filter-broken hydration doesn't leave pages blank</li>
+  <li>Restore EPUB opening broken by delegate refactor</li>
+  <li>WebView collapse and stuck progress bar on vertical toolbar</li>
+  <li>Remove divider above the first category in settings search results</li>
+  <li>Restore "Select Text" context menu and dismiss action mode before ebook pagination</li>
+  <li>Error-page game requires explicit start and pauses when the tab/app is hidden</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>15.11.1</h3>
 
 <h4>Features</h4>
