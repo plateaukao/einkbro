@@ -37,13 +37,11 @@ import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView
 import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.Insets
@@ -57,7 +55,6 @@ import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
 import info.plateaukao.einkbro.browser.BrowserAction
 import info.plateaukao.einkbro.browser.BrowserController
-import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordRepository
@@ -86,44 +83,35 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.unit.pruneWebTitle
 import info.plateaukao.einkbro.view.CenterExpandProgressBar
 import info.plateaukao.einkbro.view.TranslationPanelView
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.SwipeTouchListener
-import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.SendLinkDialog
-import info.plateaukao.einkbro.view.dialog.TtsLanguageDialog
-import info.plateaukao.einkbro.view.compose.ComposedSearchBar
-import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.SiteSettingsDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
 import info.plateaukao.einkbro.activity.delegates.ActionModeDelegate
 import info.plateaukao.einkbro.activity.delegates.AiChatDelegate
-import info.plateaukao.einkbro.task.TaskCatalog
+import info.plateaukao.einkbro.activity.delegates.BookmarkActionsDelegate
 import info.plateaukao.einkbro.task.TaskRunner
-import info.plateaukao.einkbro.view.dialog.compose.TaskMenuDialogFragment
-import info.plateaukao.einkbro.view.dialog.compose.CustomTaskInputDialogFragment
 import info.plateaukao.einkbro.activity.delegates.ContextMenuDelegate
 import info.plateaukao.einkbro.activity.delegates.DisplayConfigDelegate
 import info.plateaukao.einkbro.activity.delegates.FileHandlingDelegate
 import info.plateaukao.einkbro.activity.delegates.FullscreenDelegate
 import info.plateaukao.einkbro.activity.delegates.InputBarDelegate
+import info.plateaukao.einkbro.activity.delegates.InstapaperDelegate
 import info.plateaukao.einkbro.activity.delegates.IntentDispatchDelegate
+import info.plateaukao.einkbro.activity.delegates.SearchPanelDelegate
 import info.plateaukao.einkbro.activity.delegates.TabManager
+import info.plateaukao.einkbro.activity.delegates.TaskMenuDelegate
 import info.plateaukao.einkbro.activity.delegates.TranslationDelegate
+import info.plateaukao.einkbro.activity.delegates.TtsButtonDelegate
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
@@ -145,11 +133,9 @@ import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import io.github.edsuns.adfilter.AdFilter
 import io.github.edsuns.adfilter.FilterViewModel
-import kotlin.coroutines.resume
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 import java.io.File
@@ -232,6 +218,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val displayConfigDelegate: DisplayConfigDelegate by lazy {
         DisplayConfigDelegate(
             activity = this,
+            state = browserState,
             config = config,
             onOrientationChanged = { newOrientation ->
                 composeToolbarViewController.updateIcons()
@@ -399,6 +386,63 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             activity = this,
             state = browserState,
             bookmarkManager = bookmarkManager,
+        )
+    }
+
+    private val bookmarkActionsDelegate: BookmarkActionsDelegate by lazy {
+        BookmarkActionsDelegate(
+            activity = this,
+            state = browserState,
+            bookmarkViewModel = bookmarkViewModel,
+            overviewDialogControllerProvider = { overviewDialogController },
+            updateAlbum = { url -> updateAlbum(url) },
+            addAlbum = { title, url, foreground -> addAlbum(title, url, foreground) },
+            toggleSplitScreen = { url -> toggleSplitScreen(url) },
+        )
+    }
+
+    private val taskMenuDelegate: TaskMenuDelegate by lazy {
+        TaskMenuDelegate(
+            activity = this,
+            state = browserState,
+            config = config,
+            taskRunner = taskRunner,
+            translationViewModel = translationViewModel,
+            dispatch = { dispatch(it) },
+            showTranslationDialog = { isWholePage -> translationDelegate.showTranslationDialog(isWholePage) },
+            chatWithWebAgent = { prompt, snapshot -> aiChatDelegate.chatWithWebAgent(prompt, snapshot) },
+        )
+    }
+
+    private val ttsButtonDelegate: TtsButtonDelegate by lazy {
+        TtsButtonDelegate(
+            activity = this,
+            state = browserState,
+            ttsViewModel = ttsViewModel,
+            composeToolbarViewControllerProvider = { composeToolbarViewController },
+        )
+    }
+
+    private val instapaperDelegate: InstapaperDelegate by lazy {
+        InstapaperDelegate(
+            activity = this,
+            state = browserState,
+            config = config,
+            instapaperViewModel = instapaperViewModel,
+            dialogManager = dialogManager,
+        )
+    }
+
+    private val searchPanelDelegate: SearchPanelDelegate by lazy {
+        SearchPanelDelegate(
+            activity = this,
+            state = browserState,
+            remoteConnViewModel = remoteConnViewModel,
+            translationViewModel = translationViewModel,
+            fabImageViewControllerProvider = { fabImageViewController },
+            showTranslationDialog = { isWholePageMode -> translationDelegate.showTranslationDialog(isWholePageMode) },
+            chatWithWeb = { useSplitScreen, content, action -> chatWithWeb(useSplitScreen, content, action) },
+            hideSearchPanel = { hideSearchPanel() },
         )
     }
 
@@ -628,107 +672,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun chatWithWeb(useSplitScreen: Boolean, content: String?, runWithAction: ChatGPTActionInfo?) = aiChatDelegate.chatWithWeb(useSplitScreen, content, runWithAction)
     override fun showPageAiActionMenu() = aiChatDelegate.showPageAiActionMenu()
 
-    private fun showTaskMenu() {
-        TaskMenuDialogFragment(
-            descriptors = TaskCatalog.builtIns,
-            onTemplateClicked = { descriptor -> dispatch(BrowserAction.RunTask(descriptor.id)) },
-            onCustomClicked = {
-                CustomTaskInputDialogFragment(
-                    onSubmit = { prompt -> dispatch(BrowserAction.RunCustomTask(prompt)) },
-                ).showNow(supportFragmentManager, "customTaskInput")
-            },
-        ).showNow(supportFragmentManager, "taskMenu")
-    }
+    private fun showTaskMenu() = taskMenuDelegate.showTaskMenu()
 
-    private fun runTaskById(taskId: String) {
-        val descriptor = TaskCatalog.byId(taskId)
-        if (descriptor == null) {
-            EBToast.show(this, R.string.task_unknown)
-            return
-        }
-        if (!translationViewModel.hasOpenAiApiKey() && !config.ai.useGeminiApi) {
-            EBToast.show(this, R.string.gpt_api_key_not_set)
-            return
-        }
-        // Start the task FIRST so the progress StateFlow holds the fresh Running state
-        // before we attach the collector — otherwise the collector's first emission is
-        // the previous task's leftover Done value and the dialog briefly shows that
-        // stale content before being overwritten.
-        taskRunner.run(descriptor.factory())
-        translationViewModel.setupTaskStream(taskRunner.progress)
-        translationDelegate.showTranslationDialog(true)
-    }
+    private fun runTaskById(taskId: String) = taskMenuDelegate.runTaskById(taskId)
 
-
-    private fun runCustomTask(prompt: String) {
-        if (prompt.isBlank()) return
-        if (config.ai.useGeminiApi) {
-            EBToast.show(this, R.string.task_requires_openai)
-            return
-        }
-        if (!translationViewModel.hasOpenAiApiKey()) {
-            EBToast.show(this, R.string.gpt_api_key_not_set)
-            return
-        }
-        // Snapshot the page the user is currently viewing, then hand off to a new
-        // agent chat tab. The agent will see this snapshot via initialPage* tools so
-        // it can act on the originating page without extra fetches.
-        lifecycleScope.launch {
-            val current = browserState.ebWebView
-            val rawText = current.getRawText()
-            val rawLinks = try {
-                current.jsBridge.getPageLinks()
-            } catch (e: Exception) {
-                "[]"
-            }
-            val links = parseSnapshotLinks(rawLinks)
-            val rawHtml = captureRawBodyHtml(current)
-            val snapshot = info.plateaukao.einkbro.task.InitialPageSnapshot(
-                url = current.url.orEmpty(),
-                title = current.title.orEmpty(),
-                text = rawText,
-                links = links,
-                rawHtml = rawHtml,
-            )
-            aiChatDelegate.chatWithWebAgent(prompt, snapshot)
-        }
-    }
-
-    /** Snapshot the user's current page as raw HTML. Used by agent tasks that need to
-     *  identify a DOM element the user described (banners, popups, ads). Returns "" on
-     *  failure — the agent will fall back to reader-mode text. */
-    private suspend fun captureRawBodyHtml(webView: info.plateaukao.einkbro.view.EBWebView): String =
-        kotlin.coroutines.suspendCoroutine { cont ->
-            try {
-                webView.evaluateJavascript(
-                    "(function(){try{return document.body.innerHTML;}catch(e){return '';}})();"
-                ) { raw ->
-                    val unquoted = if (raw.startsWith("\"") && raw.endsWith("\""))
-                        info.plateaukao.einkbro.unit.HelperUnit.unescapeJava(raw)
-                            .let { it.substring(1, it.length - 1) }
-                    else raw
-                    cont.resume(unquoted)
-                }
-            } catch (e: Exception) {
-                cont.resume("")
-            }
-    }
-
-    private fun parseSnapshotLinks(raw: String): List<info.plateaukao.einkbro.task.BrowserTools.Link> {
-        if (raw.isBlank() || raw == "null") return emptyList()
-        return try {
-            val array = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
-                .parseToJsonElement(raw) as? kotlinx.serialization.json.JsonArray ?: return emptyList()
-            array.mapNotNull { el ->
-                val obj = el as? kotlinx.serialization.json.JsonObject ?: return@mapNotNull null
-                val text = (obj["text"] as? kotlinx.serialization.json.JsonPrimitive)?.content ?: return@mapNotNull null
-                val href = (obj["href"] as? kotlinx.serialization.json.JsonPrimitive)?.content ?: return@mapNotNull null
-                info.plateaukao.einkbro.task.BrowserTools.Link(text, href)
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
+    private fun runCustomTask(prompt: String) = taskMenuDelegate.runCustomTask(prompt)
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) = actionModeDelegate.updateSelectionRect(left, top, right, bottom)
     override fun isActionModeActive(): Boolean = actionModeDelegate.isActionModeActive()
@@ -758,68 +706,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         else EBToast.show(this, R.string.toast_webview_forward)
     }
 
-    override fun saveBookmark(url: String?, title: String?) {
-        val currentUrl = url ?: ebWebView.url ?: return
-        val nonNullTitle = title ?: HelperUnit.secString(ebWebView.title)
-        try {
-            BookmarkEditDialog(
-                bookmarkViewModel,
-                Bookmark(nonNullTitle.pruneWebTitle(), currentUrl, order = if (ViewUnit.isWideLayout(this)) 999 else 0),
-                { ViewUnit.hideKeyboard(this); EBToast.show(this, R.string.toast_edit_successful) },
-                { ViewUnit.hideKeyboard(this) }
-            ).show(supportFragmentManager, "bookmark_edit")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            EBToast.show(this, R.string.toast_error)
-        }
-    }
+    override fun saveBookmark(url: String?, title: String?) = bookmarkActionsDelegate.saveBookmark(url, title)
 
-    override fun createShortcut() = BrowserUnit.createShortcut(this, ebWebView)
+    override fun createShortcut() = bookmarkActionsDelegate.createShortcut()
 
-    override fun showSearchPanel() {
-        searchOnSite = true
-        fabImageViewController.hide()
-        binding.mainSearchPanel.visibility = VISIBLE
-        binding.mainSearchPanel.post { searchPanelFocusRequester.requestFocus(); ViewUnit.showKeyboard(this) }
-        binding.appBar.visibility = VISIBLE
-        binding.contentSeparator.visibility = VISIBLE
-        ViewUnit.showKeyboard(this)
-    }
+    override fun showSearchPanel() = searchPanelDelegate.showSearchPanel()
 
-    override fun showFontSizeChangeDialog() {
-        if (ebWebView.shouldUseReaderFont()) {
-            ReaderFontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
-        } else {
-            FontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
-        }
-    }
+    override fun showFontSizeChangeDialog() = displayConfigDelegate.showFontSizeChangeDialog()
 
-    override fun showFontBoldnessDialog() {
-        FontBoldnessDialogFragment(
-            config.display.fontBoldness,
-            okAction = { changedBoldness ->
-                config.display.fontBoldness = changedBoldness
-                ebWebView.applyFontBoldness()
-            }
-        ).show(supportFragmentManager, "FontBoldnessDialog")
-    }
+    override fun showFontBoldnessDialog() = displayConfigDelegate.showFontBoldnessDialog()
 
-    override fun increaseFontSize() {
-        val fontSize = if (ebWebView.shouldUseReaderFont()) config.display.readerFontSize else config.display.fontSize
-        changeFontSize(fontSize + 20)
-    }
+    override fun increaseFontSize() = displayConfigDelegate.increaseFontSize()
 
-    override fun decreaseFontSize() {
-        val fontSize = if (ebWebView.shouldUseReaderFont()) config.display.readerFontSize else config.display.fontSize
-        if (fontSize > 50) changeFontSize(fontSize - 20)
-    }
+    override fun decreaseFontSize() = displayConfigDelegate.decreaseFontSize()
 
-    override fun invertColors() {
-        val hasInvertedColor = config.toggleInvertedColor(ebWebView.url.orEmpty())
-        ViewUnit.invertColor(ebWebView, hasInvertedColor)
-    }
+    override fun invertColors() = displayConfigDelegate.invertColors()
 
-    override fun shareLink() = IntentUnit.share(this, ebWebView.title, ebWebView.url)
+    override fun shareLink() = bookmarkActionsDelegate.shareLink()
 
     override fun sendToRemote(text: String) {
         if (remoteConnViewModel.isSendingTextSearch) {
@@ -830,28 +733,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         SendLinkDialog(this, lifecycleScope).show(text)
     }
 
-    override fun toggleReceiveTextSearch() {
-        if (remoteConnViewModel.isReceivingLink) {
-            remoteConnViewModel.toggleReceiveLink {}
-        } else {
-            remoteConnViewModel.toggleReceiveLink {
-                if (it.startsWith("action")) {
-                    val (_, content, actionString) = it.split("|||")
-                    val action = Json.decodeFromString<ChatGPTActionInfo>(actionString)
-                    if (action.display == info.plateaukao.einkbro.preference.GptActionDisplay.Popup) {
-                        translationViewModel.setupGptAction(action)
-                        translationViewModel.updateMessageWithContext(content)
-                        translationViewModel.updateInputMessage(content)
-                        translationDelegate.showTranslationDialog(action.scope == info.plateaukao.einkbro.preference.GptActionScope.WholePage)
-                    } else {
-                        chatWithWeb(false, content, action)
-                    }
-                } else {
-                    ebWebView.loadUrl(it)
-                }
-            }
-        }
-    }
+    override fun toggleReceiveTextSearch() = searchPanelDelegate.toggleReceiveTextSearch()
 
     override fun toggleReceiveLink() {
         if (remoteConnViewModel.isReceivingLink) {
@@ -866,20 +748,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    override fun addToInstapaper() {
-        val url = ebWebView.url.orEmpty()
-        if (url.isEmpty()) { EBToast.show(this, R.string.url_empty); return }
-        instapaperViewModel.addUrl(url = url, username = config.instapaperUsername, password = config.instapaperPassword, title = ebWebView.title)
-    }
+    override fun addToInstapaper() = instapaperDelegate.addToInstapaper()
 
-    override fun configureInstapaper() { dialogManager.showInstapaperCredentialsDialog { _, _ -> Unit } }
+    override fun configureInstapaper() = instapaperDelegate.configureInstapaper()
 
-    override fun handleTtsButton() {
-        if (ttsViewModel.isReading()) TtsSettingDialogFragment().show(supportFragmentManager, "TtsSettingDialog")
-        else readArticle()
-    }
+    override fun handleTtsButton() = ttsButtonDelegate.handleTtsButton()
 
-    override fun showTtsLanguageDialog() { TtsLanguageDialog(this).show(ttsViewModel.getAvailableLanguages()) }
+    override fun showTtsLanguageDialog() = ttsButtonDelegate.showTtsLanguageDialog()
 
     override fun toggleSplitScreen(url: String?) {
         maybeInitTwoPaneController()
@@ -917,14 +792,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun showTouchAreaDialog() = TouchAreaDialogFragment().show(supportFragmentManager, "TouchAreaDialog")
 
-    override fun openHistoryPage(amount: Int) = overviewDialogController.openHistoryPage(amount)
+    override fun openHistoryPage(amount: Int) = bookmarkActionsDelegate.openHistoryPage(amount)
 
-    override fun openBookmarkPage() = BookmarksDialogFragment(
-        lifecycleScope, bookmarkViewModel,
-        gotoUrlAction = { url -> updateAlbum(url) },
-        bookmarkIconClickAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-        splitScreenAction = { url -> toggleSplitScreen(url) },
-    ).show(supportFragmentManager, "bookmarks dialog")
+    override fun openBookmarkPage() = bookmarkActionsDelegate.openBookmarkPage()
 
     override fun updateTitle(title: String?) = updateTitle()
     override fun updateProgress(progress: Int) {
@@ -964,13 +834,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         initContentViews()
         initLaunchers()
         initToolbar()
-        initSearchPanel()
+        searchPanelDelegate.initSearchPanel()
         inputBarDelegate.initInputBar()
         initOverview()
         initTouchArea()
         actionModeDelegate.initActionModeViewModel()
         actionModeDelegate.setTwoPaneChecker { isTwoPaneControllerInitialized() && twoPaneController.isSecondPaneDisplayed() }
-        initInstapaperViewModel()
+        instapaperDelegate.init()
 
         initDownloadReceiver()
 
@@ -985,10 +855,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         translationDelegate.initLanguageLabel()
         initTouchAreaViewController()
-        initTextSearchButton()
+        searchPanelDelegate.initTextSearchButton()
         initExternalSearchCloseButton()
         translationDelegate.initTranslationViewModel()
-        initTtsViewModel()
+        ttsButtonDelegate.init()
 
         if (config.ui.hideStatusbar) fullscreenDelegate.hideStatusBar()
 
@@ -1122,15 +992,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // ── Private helpers ───────────────────────────────────────────────────
 
-    private fun prepareRecord(): Boolean {
-        val webView = currentAlbumController as EBWebView
-        val title = webView.title
-        val url = webView.url
-        return (title.isNullOrEmpty() || url.isNullOrEmpty()
-                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
-    }
+    private fun prepareRecord(): Boolean = bookmarkActionsDelegate.prepareRecord()
 
     private fun getFocusedWebView(): EBWebView = when {
         ebWebView.hasFocus() -> ebWebView
@@ -1157,13 +1019,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun hideSearchPanel() = fullscreenDelegate.hideSearchPanel()
 
-    private fun changeFontSize(size: Int) {
-        if (ebWebView.shouldUseReaderFont()) config.display.readerFontSize = size else config.display.fontSize = size
-    }
-
-    private fun openCustomFontPicker() {
-        FontBrowserDialogFragment(isReaderMode = ebWebView.shouldUseReaderFont()).show(supportFragmentManager, "font_browser_dialog")
-    }
 
     private fun updateTitle() {
         if (!browserState.isWebViewInitialized) return
@@ -1184,9 +1039,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun initTouchArea() = composeToolbarViewController.updateIcons()
     private fun initTouchAreaViewController() { touchController = TouchAreaViewController(binding.activityMainContent) { dispatch(it) } }
 
-    protected fun readArticle() {
-        lifecycleScope.launch { ttsViewModel.readArticle(ebWebView.getRawText(), ebWebView.title.orEmpty()) }
-    }
+    protected fun readArticle() = ttsButtonDelegate.readArticle()
 
     @SuppressLint("ClickableViewAccessibility")
     protected fun addAlbum(
@@ -1322,34 +1175,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    private val searchPanelFocusRequester = FocusRequester()
-    private fun initSearchPanel() {
-        binding.mainSearchPanel.apply {
-            visibility = INVISIBLE
-            setContent {
-                MyTheme {
-                    ComposedSearchBar(
-                        focusRequester = searchPanelFocusRequester,
-                        onTextChanged = { (currentAlbumController as EBWebView?)?.findAllAsync(it) },
-                        onCloseClick = { hideSearchPanel() },
-                        onUpClick = { searchUp(it) },
-                        onDownClick = { searchDown(it) },
-                    )
-                }
-            }
-        }
-    }
-
-    private fun searchUp(text: String) {
-        if (text.isEmpty()) { EBToast.show(this, getString(R.string.toast_input_empty)); return }
-        ViewUnit.hideKeyboard(this); (currentAlbumController as EBWebView).findNext(false)
-    }
-
-    private fun searchDown(text: String) {
-        if (text.isEmpty()) { EBToast.show(this, getString(R.string.toast_input_empty)); return }
-        ViewUnit.hideKeyboard(this); (currentAlbumController as EBWebView).findNext(true)
-    }
-
     private fun checkAdBlockerList() {
         if (!adFilter.hasInstallation) {
             val map = mapOf("AdGuard Base" to "https://filters.adtidy.org/extension/chromium/filters/2.txt")
@@ -1364,10 +1189,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (isGranted) checkAdBlockerList()
         }
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-    }
-
-    private fun initTtsViewModel() {
-        lifecycleScope.launch { ttsViewModel.readingState.collect { composeToolbarViewController.updateIcons() } }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -1392,30 +1213,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         lifecycleScope.launch {
             externalSearchViewModel.showButton.collect { show ->
                 externalSearchContainer.visibility = if (show) VISIBLE else INVISIBLE
-            }
-        }
-    }
-
-    private fun initTextSearchButton() {
-        val remoteTextSearch = findViewById<ImageButton>(R.id.remote_text_search)
-        remoteTextSearch.setOnClickListener { remoteConnViewModel.reset() }
-        lifecycleScope.launch {
-            remoteConnViewModel.remoteConnected.collect { connected ->
-                remoteTextSearch.setImageResource(
-                    if (remoteConnViewModel.isSendingTextSearch) R.drawable.ic_send else R.drawable.ic_receive
-                )
-                remoteTextSearch.isVisible = connected
-            }
-        }
-    }
-
-    private fun initInstapaperViewModel() {
-        lifecycleScope.launch {
-            instapaperViewModel.uiState.collect { state ->
-                if (state.showConfigureDialog) configureInstapaper()
-                else if (state.successMessage != null) EBToast.show(this@BrowserActivity, state.successMessage)
-                else if (state.errorMessage != null) EBToast.show(this@BrowserActivity, state.errorMessage)
-                instapaperViewModel.resetState()
             }
         }
     }
