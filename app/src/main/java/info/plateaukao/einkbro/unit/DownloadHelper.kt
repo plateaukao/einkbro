@@ -14,6 +14,7 @@ import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.URLUtil
 import android.webkit.WebSettings
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
@@ -283,6 +284,41 @@ object DownloadHelper {
                 )
             }
         }
+    }
+
+    /**
+     * Download [url] under [fileName] without prompting. For data:image URLs (Android O+),
+     * defer to the SAF picker via [imagePickerLauncher]. For regular URLs, enqueue a
+     * DownloadManager request straight to the public Downloads directory.
+     */
+    fun saveFileWithName(
+        activity: Activity,
+        url: String,
+        fileName: String,
+        imagePickerLauncher: ActivityResultLauncher<Intent>,
+    ) {
+        if (url.startsWith("data:image")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                BrowserUnit.saveImageFromUrl(url, imagePickerLauncher)
+            } else {
+                EBToast.show(activity, "Not supported dataUrl")
+            }
+            return
+        }
+        if (needGrantStoragePermission(activity)) return
+        val request = DownloadManager.Request(Uri.parse(url)).apply {
+            addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
+            addRequestHeader("User-Agent", WebSettings.getDefaultUserAgent(activity))
+            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            try {
+                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+            } catch (e: Exception) {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                setDestinationUri(Uri.fromFile(File(downloadsDir, fileName)))
+            }
+        }
+        (activity.getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+        ViewUnit.hideKeyboard(activity)
     }
 
     fun openDownloadFolder(activity: Activity) {
