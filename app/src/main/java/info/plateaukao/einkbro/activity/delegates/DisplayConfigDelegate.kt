@@ -1,11 +1,17 @@
 package info.plateaukao.einkbro.activity.delegates
 
-import android.app.Activity
 import android.content.res.Configuration
 import android.os.Build
 import android.os.LocaleList
+import androidx.fragment.app.FragmentActivity
+import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
+import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
 import java.util.Locale
 
 /**
@@ -14,7 +20,8 @@ import java.util.Locale
  * [info.plateaukao.einkbro.activity.BrowserActivity].
  */
 class DisplayConfigDelegate(
-    private val activity: Activity,
+    private val activity: FragmentActivity,
+    private val state: BrowserState,
     private val config: ConfigManager,
     private val onOrientationChanged: (Int) -> Unit,
     private val onLocaleApplied: () -> Unit,
@@ -51,6 +58,50 @@ class DisplayConfigDelegate(
             orientation = newConfig.orientation
             onOrientationChanged(orientation)
         }
+    }
+
+    fun showFontSizeChangeDialog() {
+        val fm = activity.supportFragmentManager
+        if (state.ebWebView.shouldUseReaderFont()) {
+            ReaderFontDialogFragment { openCustomFontPicker() }.show(fm, "font_dialog")
+        } else {
+            FontDialogFragment { openCustomFontPicker() }.show(fm, "font_dialog")
+        }
+    }
+
+    fun showFontBoldnessDialog() {
+        FontBoldnessDialogFragment(
+            config.display.fontBoldness,
+            okAction = { changedBoldness ->
+                config.display.fontBoldness = changedBoldness
+                state.ebWebView.applyFontBoldness()
+            },
+        ).show(activity.supportFragmentManager, "FontBoldnessDialog")
+    }
+
+    fun increaseFontSize() {
+        val fontSize = if (state.ebWebView.shouldUseReaderFont()) config.display.readerFontSize else config.display.fontSize
+        changeFontSize(fontSize + 20)
+    }
+
+    fun decreaseFontSize() {
+        val fontSize = if (state.ebWebView.shouldUseReaderFont()) config.display.readerFontSize else config.display.fontSize
+        if (fontSize > 50) changeFontSize(fontSize - 20)
+    }
+
+    fun invertColors() {
+        val hasInvertedColor = config.toggleInvertedColor(state.ebWebView.url.orEmpty())
+        ViewUnit.invertColor(state.ebWebView, hasInvertedColor)
+    }
+
+    fun openCustomFontPicker() {
+        FontBrowserDialogFragment(isReaderMode = state.ebWebView.shouldUseReaderFont())
+            .show(activity.supportFragmentManager, "font_browser_dialog")
+    }
+
+    private fun changeFontSize(size: Int) {
+        if (state.ebWebView.shouldUseReaderFont()) config.display.readerFontSize = size
+        else config.display.fontSize = size
     }
 
     private fun applyLocaleInPlace() {
