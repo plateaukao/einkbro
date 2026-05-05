@@ -2,9 +2,7 @@ package info.plateaukao.einkbro.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.DownloadManager
 import android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE
-import android.app.DownloadManager.Request
 import android.app.PictureInPictureParams
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -18,30 +16,22 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.os.Message
 import android.view.ActionMode
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.GONE
-import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.webkit.CookieManager
-import android.webkit.WebSettings
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -91,6 +81,7 @@ import info.plateaukao.einkbro.activity.delegates.ActionModeDelegate
 import info.plateaukao.einkbro.activity.delegates.AiChatDelegate
 import info.plateaukao.einkbro.activity.delegates.BookmarkActionsDelegate
 import info.plateaukao.einkbro.activity.delegates.ChromeSetupDelegate
+import info.plateaukao.einkbro.activity.delegates.ExternalSearchDelegate
 import info.plateaukao.einkbro.task.TaskRunner
 import info.plateaukao.einkbro.activity.delegates.ContextMenuDelegate
 import info.plateaukao.einkbro.activity.delegates.DisplayConfigDelegate
@@ -128,8 +119,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
-import java.io.File
-import java.util.Locale
 
 
 open class BrowserActivity : FragmentActivity(), BrowserController {
@@ -267,7 +256,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             summarizeLinkContent = { url -> aiChatDelegate.summarizeLinkContent(url) },
             translateImage = { url -> translationDelegate.translateImage(url) },
             translateAllImages = { url -> translationDelegate.translateAllImages(url) },
-            saveFile = { url, fileName -> saveFile(url, fileName) },
+            saveFile = { url, fileName ->
+                info.plateaukao.einkbro.unit.DownloadHelper.saveFileWithName(
+                    this, url, fileName, fileHandlingDelegate.saveImageFilePickerLauncher,
+                )
+            },
         )
     }
 
@@ -401,6 +394,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             state = browserState,
             ttsViewModel = ttsViewModel,
             composeToolbarViewControllerProvider = { composeToolbarViewController },
+        )
+    }
+
+    private val externalSearchDelegate: ExternalSearchDelegate by lazy {
+        ExternalSearchDelegate(
+            activity = this,
+            state = browserState,
+            externalSearchViewModel = externalSearchViewModel,
         )
     }
 
@@ -806,7 +807,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         translationDelegate.initLanguageLabel()
         chromeSetupDelegate.initTouchAreaViewController()
         searchPanelDelegate.initTextSearchButton()
-        initExternalSearchCloseButton()
+        externalSearchDelegate.init()
         translationDelegate.initTranslationViewModel()
         ttsButtonDelegate.init()
 
@@ -982,31 +983,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     @SuppressLint("InlinedApi")
     open fun dispatchIntent(intent: Intent) = intentDispatchDelegate.dispatchIntent(intent)
 
-    private fun saveFile(url: String, fileName: String = "") {
-        if (url.startsWith("data:image")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                BrowserUnit.saveImageFromUrl(url, fileHandlingDelegate.saveImageFilePickerLauncher)
-            } else {
-                EBToast.show(this, "Not supported dataUrl")
-            }
-            return
-        }
-        if (HelperUnit.needGrantStoragePermission(this)) return
-        val source = Uri.parse(url)
-        val request = DownloadManager.Request(source).apply {
-            addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-            addRequestHeader("User-Agent", WebSettings.getDefaultUserAgent(this@BrowserActivity))
-            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            try { setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName) }
-            catch (e: Exception) {
-                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                setDestinationUri(Uri.fromFile(File(downloadsDir, fileName)))
-            }
-        }
-        (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
-        ViewUnit.hideKeyboard(this)
-    }
-
     private fun checkAdBlockerList() {
         if (!adFilter.hasInstallation) {
             val map = mapOf("AdGuard Base" to "https://filters.adtidy.org/extension/chromium/filters/2.txt")
@@ -1021,32 +997,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (isGranted) checkAdBlockerList()
         }
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun initExternalSearchCloseButton() {
-        binding.activityMainContent.externalSearchClose.setOnClickListener {
-            moveTaskToBack(true); externalSearchViewModel.setButtonVisibility(false)
-        }
-        val externalSearchContainer = binding.activityMainContent.externalSearchActionContainer
-        externalSearchViewModel.searchActions.forEach { action ->
-            val button = TextView(this).apply {
-                height = 40.dp.value.toInt(); textSize = 10.sp.value
-                gravity = Gravity.CENTER
-                background = getDrawable(R.drawable.background_with_border)
-                text = action.title.take(2).uppercase(Locale.getDefault())
-                setOnClickListener {
-                    externalSearchViewModel.currentSearchAction = action
-                    ebWebView.loadUrl(externalSearchViewModel.generateSearchUrl(splitSearchItemInfo = action))
-                }
-            }
-            externalSearchContainer.addView(button, 0)
-        }
-        lifecycleScope.launch {
-            externalSearchViewModel.showButton.collect { show ->
-                externalSearchContainer.visibility = if (show) VISIBLE else INVISIBLE
-            }
-        }
     }
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
