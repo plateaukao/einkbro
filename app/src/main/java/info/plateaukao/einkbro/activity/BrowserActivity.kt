@@ -15,8 +15,6 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Point
-import android.graphics.PorterDuff
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -44,9 +42,6 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.Insets
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -65,7 +60,6 @@ import info.plateaukao.einkbro.preference.BrowserConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TabConfig
 import info.plateaukao.einkbro.preference.UiConfig
-import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.DisplayConfig
 import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TtsConfig
@@ -84,11 +78,8 @@ import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.CenterExpandProgressBar
-import info.plateaukao.einkbro.view.TranslationPanelView
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
-import info.plateaukao.einkbro.view.MultitouchListener
-import info.plateaukao.einkbro.view.SwipeTouchListener
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.SendLinkDialog
@@ -99,6 +90,7 @@ import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
 import info.plateaukao.einkbro.activity.delegates.ActionModeDelegate
 import info.plateaukao.einkbro.activity.delegates.AiChatDelegate
 import info.plateaukao.einkbro.activity.delegates.BookmarkActionsDelegate
+import info.plateaukao.einkbro.activity.delegates.ChromeSetupDelegate
 import info.plateaukao.einkbro.task.TaskRunner
 import info.plateaukao.einkbro.activity.delegates.ContextMenuDelegate
 import info.plateaukao.einkbro.activity.delegates.DisplayConfigDelegate
@@ -117,8 +109,6 @@ import info.plateaukao.einkbro.view.handlers.MenuActionHandler
 import info.plateaukao.einkbro.view.handlers.ToolbarActionHandler
 import info.plateaukao.einkbro.view.viewControllers.ComposeToolbarViewController
 import info.plateaukao.einkbro.view.viewControllers.FabImageViewController
-import info.plateaukao.einkbro.view.viewControllers.OverviewDialogController
-import info.plateaukao.einkbro.view.viewControllers.TouchAreaViewController
 import info.plateaukao.einkbro.view.viewControllers.TwoPaneController
 import info.plateaukao.einkbro.viewmodel.ActionModeMenuViewModel
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
@@ -140,17 +130,10 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 import java.io.File
 import java.util.Locale
-import kotlin.math.abs
-import kotlin.math.floor
-import kotlin.math.roundToInt
 
 
 open class BrowserActivity : FragmentActivity(), BrowserController {
     protected open var shouldRunClearService: Boolean = true
-
-    // Layouts
-    private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    private lateinit var translationPanelView: TranslationPanelView
 
     // DI
     private val config: ConfigManager by inject()
@@ -170,9 +153,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val actionModeMenuViewModel: ActionModeMenuViewModel by koinViewModel()
 
     // Controllers
-    private lateinit var touchController: TouchAreaViewController
     private lateinit var twoPaneController: TwoPaneController
-    private lateinit var overviewDialogController: OverviewDialogController
     private var downloadReceiver: BroadcastReceiver? = null
 
     private val adFilter: AdFilter = AdFilter.get()
@@ -311,7 +292,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             externalSearchViewModel = externalSearchViewModel,
             remoteConnViewModel = remoteConnViewModel,
             translationViewModel = translationViewModel,
-            overviewDialogControllerProvider = { overviewDialogController },
+            overviewDialogControllerProvider = { chromeSetupDelegate.overviewDialogController },
             addAlbum = { title, url, foreground -> addAlbum(title, url, foreground) },
             updateAlbum = { url -> updateAlbum(url) },
             showAlbum = { controller -> showAlbum(controller) },
@@ -373,7 +354,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             bookmarkManager = bookmarkManager,
             externalSearchViewModel = externalSearchViewModel,
             createWebView = { createebWebView() },
-            createTouchListener = { createMultiTouchTouchListener(it) },
+            createTouchListener = { chromeSetupDelegate.createMultiTouchTouchListener(it) },
             keyHandlerSetWebView = { keyHandler.setWebView(it) },
             addHistoryAction = { title, url -> addHistory(title, url) },
             adFilterProvider = { adFilter },
@@ -394,7 +375,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             activity = this,
             state = browserState,
             bookmarkViewModel = bookmarkViewModel,
-            overviewDialogControllerProvider = { overviewDialogController },
+            overviewDialogControllerProvider = { chromeSetupDelegate.overviewDialogController },
             updateAlbum = { url -> updateAlbum(url) },
             addAlbum = { title, url, foreground -> addAlbum(title, url, foreground) },
             toggleSplitScreen = { url -> toggleSplitScreen(url) },
@@ -446,6 +427,36 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
+    private val chromeSetupDelegate: ChromeSetupDelegate by lazy {
+        ChromeSetupDelegate(
+            activity = this,
+            state = browserState,
+            config = config,
+            displayConfigDelegate = displayConfigDelegate,
+            fullscreenDelegate = fullscreenDelegate,
+            gestureHandler = gestureHandler,
+            contextMenuDelegate = contextMenuDelegate,
+            actionModeDelegate = actionModeDelegate,
+            inputBarDelegate = inputBarDelegate,
+            albumViewModel = albumViewModel,
+            composeToolbarViewControllerProvider = { composeToolbarViewController },
+            twoPaneControllerProvider = { if (isTwoPaneControllerInitialized()) twoPaneController else null },
+            dispatch = { dispatch(it) },
+            updateAlbum = { url -> updateAlbum(url) },
+            addAlbum = { title, url, foreground -> addAlbum(title, url, foreground) },
+            addIncognitoAlbum = {
+                hideOverview()
+                addAlbum(getString(R.string.app_name), "", incognito = true)
+                focusOnInput()
+            },
+            newATab = { newATab() },
+            toggleSplitScreen = { url -> toggleSplitScreen(url) },
+            focusOnInput = { focusOnInput() },
+            showFastToggleDialog = { showFastToggleDialog() },
+            toggleFullscreen = { toggleFullscreen() },
+        )
+    }
+
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
             binding.composeIconBar,
@@ -462,70 +473,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     protected val statusbarViewController: info.plateaukao.einkbro.view.viewControllers.StatusbarViewController by lazy {
         info.plateaukao.einkbro.view.viewControllers.StatusbarViewController(
             composeView = binding.statusBar,
-            applyConstraints = { position -> applyStatusbarConstraints(position) },
+            applyConstraints = { position -> chromeSetupDelegate.applyStatusbarConstraints(position) },
         ).also { browserState.statusbarViewController = it }
-    }
-
-    private fun applyStatusbarConstraints(position: info.plateaukao.einkbro.view.statusbar.StatusbarPosition) {
-        val root = binding.root
-        val cs = androidx.constraintlayout.widget.ConstraintSet().apply { clone(root) }
-        val statusBarId = binding.statusBar.id
-        val twoPanelId = binding.twoPanelLayout.id
-        val appBarId = binding.appBar.id
-        val top = androidx.constraintlayout.widget.ConstraintSet.TOP
-        val bottom = androidx.constraintlayout.widget.ConstraintSet.BOTTOM
-        val parent = androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
-        // Vertical toolbar: appBar spans full height (TOP & BOTTOM → parent).
-        // Top toolbar: appBar.top pinned to parent.top.
-        // In both cases, anchoring twoPanel.bottom to appBar.top collapses the webview.
-        val isVertical = config.ui.isVerticalToolbar
-        val isToolbarTop =
-            config.ui.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Top
-
-        cs.clear(statusBarId, top)
-        cs.clear(statusBarId, bottom)
-        cs.clear(twoPanelId, top)
-        cs.clear(twoPanelId, bottom)
-
-        when (position) {
-            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Top -> when {
-                isToolbarTop -> {
-                    // Stack: appBar (top) → statusBar → twoPanel → parent.bottom
-                    cs.connect(statusBarId, top, appBarId, bottom)
-                    cs.connect(twoPanelId, top, statusBarId, bottom)
-                    cs.connect(twoPanelId, bottom, parent, bottom)
-                }
-                isVertical -> {
-                    cs.connect(statusBarId, top, parent, top)
-                    cs.connect(twoPanelId, top, statusBarId, bottom)
-                    cs.connect(twoPanelId, bottom, parent, bottom)
-                }
-                else -> { // horizontal toolbar at Bottom
-                    cs.connect(statusBarId, top, parent, top)
-                    cs.connect(twoPanelId, top, statusBarId, bottom)
-                    cs.connect(twoPanelId, bottom, appBarId, top)
-                }
-            }
-            info.plateaukao.einkbro.view.statusbar.StatusbarPosition.Bottom -> when {
-                isToolbarTop -> {
-                    // Stack: appBar (top) → twoPanel → statusBar (bottom)
-                    cs.connect(statusBarId, bottom, parent, bottom)
-                    cs.connect(twoPanelId, top, appBarId, bottom)
-                    cs.connect(twoPanelId, bottom, statusBarId, top)
-                }
-                isVertical -> {
-                    cs.connect(statusBarId, bottom, parent, bottom)
-                    cs.connect(twoPanelId, top, parent, top)
-                    cs.connect(twoPanelId, bottom, statusBarId, top)
-                }
-                else -> { // horizontal toolbar at Bottom
-                    cs.connect(statusBarId, bottom, appBarId, top)
-                    cs.connect(twoPanelId, top, parent, top)
-                    cs.connect(twoPanelId, bottom, statusBarId, top)
-                }
-            }
-        }
-        cs.applyTo(root)
     }
 
     // ── BrowserAction dispatch ─────────────────────────────────────────────
@@ -640,8 +589,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun onShowCustomView(view: View?, callback: CustomViewCallback?) = fullscreenDelegate.onShowCustomView(view, callback)
     override fun onHideCustomView(): Boolean = fullscreenDelegate.onHideCustomView()
     override fun toggleFullscreen() = fullscreenDelegate.toggleFullscreen()
-    override fun showOverview() = overviewDialogController.show()
-    override fun hideOverview() = overviewDialogController.hide()
+    override fun showOverview() = chromeSetupDelegate.overviewDialogController.show()
+    override fun hideOverview() = chromeSetupDelegate.overviewDialogController.hide()
     override fun rotateScreen() = IntentUnit.rotateScreen(this)
 
     override fun addHistory(title: String, url: String) {
@@ -684,7 +633,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun handleBackKey() {
         ViewUnit.hideKeyboard(this)
-        if (overviewDialogController.isVisible()) hideOverview()
+        if (chromeSetupDelegate.overviewDialogController.isVisible()) hideOverview()
         if (fullscreenDelegate.fullscreenHolder != null) {
             onHideCustomView()
         } else if (!binding.appBar.isVisible && config.ui.showToolbarFirst) {
@@ -809,8 +758,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             updateRefresh(false)
             progressBar.visibility = GONE
             progressBarVertical.visibility = GONE
-            swipeRefreshLayout.isRefreshing = false
-            scrollChange()
+            browserState.swipeRefreshLayout.isRefreshing = false
+            chromeSetupDelegate.scrollChange()
             tabManager.updateSavedAlbumInfo()
         }
     }
@@ -831,13 +780,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
 
-        initContentViews()
+        chromeSetupDelegate.initContentViews()
         initLaunchers()
-        initToolbar()
+        chromeSetupDelegate.initToolbar()
+        runOnUiThread { config.registerOnSharedPreferenceChangeListener(preferenceChangeListener) }
         searchPanelDelegate.initSearchPanel()
         inputBarDelegate.initInputBar()
-        initOverview()
-        initTouchArea()
+        chromeSetupDelegate.initOverview()
+        chromeSetupDelegate.initTouchArea()
         actionModeDelegate.initActionModeViewModel()
         actionModeDelegate.setTwoPaneChecker { isTwoPaneControllerInitialized() && twoPaneController.isSecondPaneDisplayed() }
         instapaperDelegate.init()
@@ -854,7 +804,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (config.ui.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         translationDelegate.initLanguageLabel()
-        initTouchAreaViewController()
+        chromeSetupDelegate.initTouchAreaViewController()
         searchPanelDelegate.initTextSearchButton()
         initExternalSearchCloseButton()
         translationDelegate.initTranslationViewModel()
@@ -866,8 +816,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         statusbarViewController
         if (config.ui.shouldHideToolbar) statusbarViewController.show()
 
-        handleWindowInsets()
-        listenKeyboardShowHide()
+        chromeSetupDelegate.handleWindowInsets()
+        chromeSetupDelegate.listenKeyboardShowHide()
 
         if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             requestNotificationPermission()
@@ -876,27 +826,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         binding.root.postDelayed({ MenuDialogFragment.prewarm(this) }, 1500)
-    }
-
-    private fun initContentViews() {
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
-        mainContentLayout = findViewById(R.id.main_content)
-        translationPanelView = TranslationPanelView(this).apply {
-            layoutParams = FrameLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT)
-        }
-        binding.twoPanelLayout.addView(translationPanelView)
-
-        swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
-            ebWebView.isTouchOnInnerScrollable
-                || !ebWebView.wasAtTopOnTouchStart
-                || ebWebView.scrollY > 0
-                || !ebWebView.isInnerScrollAtTop
-        }
-        swipeRefreshLayout.setOnRefreshListener {
-            if (currentAlbumController != null) ebWebView.reload()
-            else swipeRefreshLayout.isRefreshing = false
-        }
-        ViewUnit.updateAppbarPosition(binding)
     }
 
     private fun initDownloadReceiver() {
@@ -941,7 +870,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         browserContainer.clear()
         unregisterReceiver(downloadReceiver)
         config.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
-        if (::touchController.isInitialized) touchController.dispose()
+        chromeSetupDelegate.dispose()
         keyHandler.dispose()
         super.onDestroy()
     }
@@ -1005,7 +934,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun maybeInitTwoPaneController() {
         if (!isTwoPaneControllerInitialized()) {
             twoPaneController = TwoPaneController(
-                this, lifecycleScope, translationPanelView, binding.twoPanelLayout,
+                this, lifecycleScope, browserState.translationPanelView, binding.twoPanelLayout,
                 { showTranslation() },
                 { if (ebWebView.isReaderModeOn) ebWebView.toggleReaderMode() },
                 { url -> ebWebView.loadUrl(url) },
@@ -1036,8 +965,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun enterPipMode() { enterPictureInPictureMode(PictureInPictureParams.Builder().build()) }
 
     private fun initLaunchers() = fileHandlingDelegate.initLaunchers()
-    private fun initTouchArea() = composeToolbarViewController.updateIcons()
-    private fun initTouchAreaViewController() { touchController = TouchAreaViewController(binding.activityMainContent) { dispatch(it) } }
 
     protected fun readArticle() = ttsButtonDelegate.readArticle()
 
@@ -1078,101 +1005,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
         (getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
         ViewUnit.hideKeyboard(this)
-    }
-
-    private fun scrollChange() {
-        ebWebView.setScrollChangeListener(object : EBWebView.OnScrollChangeListener {
-            override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                ebWebView.updatePageInfo()
-                if (::twoPaneController.isInitialized) twoPaneController.scrollChange(scrollY - oldScrollY)
-                if (!config.ui.shouldHideToolbar) return
-                val height = floor(ebWebView.contentHeight * ebWebView.resources.displayMetrics.density.toDouble()).toInt()
-                val webViewHeight = ebWebView.height
-                val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
-                if (scrollY in (oldScrollY + 1)..cutoff) {
-                    if (binding.appBar.visibility == VISIBLE) toggleFullscreen()
-                }
-            }
-        })
-    }
-
-    private fun createMultiTouchTouchListener(ebWebView: EBWebView): MultitouchListener =
-        object : MultitouchListener(this@BrowserActivity, ebWebView) {
-            private var longPressStartPoint: Point? = null
-            override fun onSwipeTop() = gestureHandler.handle(config.touch.multitouchUp)
-            override fun onSwipeBottom() = gestureHandler.handle(config.touch.multitouchDown)
-            override fun onSwipeRight() = gestureHandler.handle(config.touch.multitouchRight)
-            override fun onSwipeLeft() = gestureHandler.handle(config.touch.multitouchLeft)
-            override fun onLongPressMove(motionEvent: MotionEvent) {
-                super.onLongPressMove(motionEvent)
-                if (config.touch.enableDragUrlToAction && contextMenuDelegate.isInLongPressMode && contextMenuDelegate.activeContextMenuDialog != null) {
-                    contextMenuDelegate.activeContextMenuDialog?.updateHoveredItem(motionEvent.rawX, motionEvent.rawY)
-                    return
-                }
-                if (longPressStartPoint == null) { longPressStartPoint = Point(motionEvent.x.toInt(), motionEvent.y.toInt()); return }
-                if (abs(motionEvent.x - (longPressStartPoint?.x ?: 0)) > ViewUnit.dpToPixel(15) ||
-                    abs(motionEvent.y - (longPressStartPoint?.y ?: 0)) > ViewUnit.dpToPixel(15)) {
-                    actionModeDelegate.actionModeViewRef?.visibility = INVISIBLE
-                    longPressStartPoint = null
-                }
-            }
-            override fun onMoveDone(motionEvent: MotionEvent) {
-                if (contextMenuDelegate.isInLongPressMode && contextMenuDelegate.activeContextMenuDialog != null) {
-                    contextMenuDelegate.activeContextMenuDialog?.onFingerLifted()
-                    contextMenuDelegate.activeContextMenuDialog = null
-                    contextMenuDelegate.isInLongPressMode = false
-                    return
-                }
-            }
-        }.apply { lifecycle.addObserver(this) }
-
-    // ── Init methods ──────────────────────────────────────────────────────
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun initToolbar() {
-        progressBar = findViewById(R.id.main_progress_bar)
-        progressBarVertical = findViewById(R.id.main_progress_bar_vertical)
-        if (config.display.darkMode == DarkMode.FORCE_ON) {
-            val nightModeFlags: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
-                progressBar.progressTintMode = PorterDuff.Mode.LIGHTEN
-                progressBarVertical.setFillColor(android.graphics.Color.WHITE)
-            }
-        }
-        initFAB()
-        if (config.touch.enableNavButtonGesture) {
-            val onNavButtonTouchListener = object : SwipeTouchListener(this@BrowserActivity) {
-                override fun onSwipeTop() = gestureHandler.handle(config.touch.navGestureUp)
-                override fun onSwipeBottom() = gestureHandler.handle(config.touch.navGestureDown)
-                override fun onSwipeRight() = gestureHandler.handle(config.touch.navGestureRight)
-                override fun onSwipeLeft() = gestureHandler.handle(config.touch.navGestureLeft)
-            }
-            fabImageViewController.defaultTouchListener = onNavButtonTouchListener
-        }
-        composeToolbarViewController.updateIcons()
-        runOnUiThread { config.registerOnSharedPreferenceChangeListener(preferenceChangeListener) }
-    }
-
-    private fun initFAB() {
-        fabImageViewController = FabImageViewController(
-            displayConfigDelegate.orientation, findViewById(R.id.fab_imageButtonNav),
-            { fullscreenDelegate.showToolbar() },
-            longClickAction = {
-                if (config.touch.enableNavButtonGesture) gestureHandler.handle(config.touch.navButtonLongClickGesture)
-                else showFastToggleDialog()
-            }
-        )
-    }
-
-    private fun initOverview() {
-        overviewDialogController = OverviewDialogController(
-            this, albumViewModel.albums, albumViewModel.focusIndex, binding.layoutOverview,
-            gotoUrlAction = { url -> updateAlbum(url) },
-            addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-            addIncognitoTabAction = { hideOverview(); addAlbum(getString(R.string.app_name), "", incognito = true); focusOnInput() },
-            splitScreenAction = { url -> toggleSplitScreen(url) },
-            addEmptyTabAction = { newATab() }
-        )
     }
 
     private fun checkAdBlockerList() {
@@ -1217,45 +1049,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun handleWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val insetsNavigationBar: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
-            val params = view.layoutParams as FrameLayout.LayoutParams
-            if (config.ui.hideStatusbar) {
-                params.bottomMargin = when {
-                    insetsKeyboard.bottom > 0 -> insetsKeyboard.bottom
-                    insetsNavigationBar.bottom > 0 -> insetsNavigationBar.bottom
-                    else -> 0
-                }
-                view.layoutParams = params
-            }
-            windowInsets
-        }
-    }
-
-    private fun listenKeyboardShowHide() {
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            if (inputBarDelegate.isKeyboardDisplaying()) touchController.maybeDisableTemporarily()
-            else touchController.maybeEnableAgain()
-
-            @Suppress("DEPRECATION")
-            val isFullscreen = (window.attributes.flags and android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && isFullscreen) {
-                val rect = Rect()
-                binding.root.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = binding.root.rootView.height
-                val keypadHeight = screenHeight - rect.bottom
-                val params = binding.root.layoutParams as FrameLayout.LayoutParams
-                if (keypadHeight > screenHeight * 0.15) {
-                    if (params.bottomMargin != keypadHeight) { params.bottomMargin = keypadHeight; binding.root.layoutParams = params }
-                } else {
-                    if (params.bottomMargin != 0) { params.bottomMargin = 0; binding.root.layoutParams = params }
-                }
-            }
-        }
-    }
-
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             UiConfig.K_HIDE_STATUSBAR -> { if (config.ui.hideStatusbar) fullscreenDelegate.hideStatusBar() else fullscreenDelegate.showStatusBar() }
@@ -1290,7 +1083,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             UiConfig.K_NAV_POSITION -> config.restartChanged = true
             TtsConfig.K_TTS_SPEED_VALUE -> ttsViewModel.setSpeechRate(config.tts.ttsSpeedValue / 100f)
             BrowserConfig.K_CUSTOM_USER_AGENT, BrowserConfig.K_ENABLE_CUSTOM_USER_AGENT -> { ebWebView.updateUserAgentString(); ebWebView.reload() }
-            TouchConfig.K_ENABLE_TOUCH -> { composeToolbarViewController.updateIcons(); touchController.toggleTouchPageTurn(config.touch.enableTouchTurn) }
+            TouchConfig.K_ENABLE_TOUCH -> { composeToolbarViewController.updateIcons(); chromeSetupDelegate.touchController?.toggleTouchPageTurn(config.touch.enableTouchTurn) }
             TouchConfig.K_TOUCH_AREA_ACTION_SWITCH -> composeToolbarViewController.updateIcons()
             AiConfig.K_GPT_ACTION_ITEMS -> actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)
         }
