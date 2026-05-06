@@ -497,6 +497,8 @@
     <string name="text_select">选择文本</string>
     <string name="show_context_menu_icons">在活动菜单显示图标</string>
     <string name="setting_summary_show_context_menu_icons">显示/隐藏活动菜单的图标，使其更具个性化。</string>
+    <string name="show_history_thumbnail_grid">在地址栏中显示历史缩略图</string>
+    <string name="setting_summary_show_history_thumbnail_grid">打开地址栏时，按域名以网格显示单个图标；输入时会切换为搜索建议</string>
     <string name="use_it_on_tts">使用 OpenAI TTS Api</string>
     <string name="setting_summary_use_gpt_for_tts">使用 OpenAI API 读取Web内容</string>
     <string name="highlight">突出显示</string>

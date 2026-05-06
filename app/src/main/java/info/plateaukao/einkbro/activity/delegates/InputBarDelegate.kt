@@ -51,6 +51,8 @@ class InputBarDelegate(
     var inputIsWideLayout by mutableStateOf(false)
     var inputShouldReverse by mutableStateOf(true)
     var inputHasCopiedText by mutableStateOf(false)
+    var inputShowHistoryThumbnailGrid by mutableStateOf(false)
+    var inputHasTyped by mutableStateOf(false)
 
     fun initInputBar() {
         state.binding.inputUrl.apply {
@@ -65,6 +67,7 @@ class InputBarDelegate(
                         isWideLayout = inputIsWideLayout,
                         shouldReverse = inputShouldReverse,
                         hasCopiedText = inputHasCopiedText,
+                        showHistoryThumbnailGrid = inputShowHistoryThumbnailGrid && !inputHasTyped,
                         onTextSubmit = { text ->
                             updateAlbum(text.trim())
                             showToolbar()
@@ -74,6 +77,7 @@ class InputBarDelegate(
                             }
                         },
                         onTextChange = { query ->
+                            inputHasTyped = true
                             searchJob?.cancel()
                             searchJob = activity.lifecycleScope.launch {
                                 kotlinx.coroutines.delay(300)
@@ -130,6 +134,8 @@ class InputBarDelegate(
         inputIsWideLayout = ViewUnit.isWideLayout(activity)
         inputShouldReverse = !config.ui.isToolbarOnTop
         inputHasCopiedText = getClipboardText().isNotEmpty()
+        inputShowHistoryThumbnailGrid = config.ui.showHistoryThumbnailGrid
+        inputHasTyped = false
         activity.lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 searchSuggestionViewModel.initSuggestions()

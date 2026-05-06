@@ -59,10 +59,23 @@ fun BrowseHistoryList(
     shouldReverse: Boolean,
     shouldShowTwoColumns: Boolean,
     bookmarkManager: BookmarkManager? = null,
+    showThumbnailGrid: Boolean = false,
     onClick: (Record) -> Unit,
     onLongClick: (Record, Point) -> Unit,
     onAppendClick: (String) -> Unit = {},
 ) {
+    if (showThumbnailGrid) {
+        ThumbnailHistoryGrid(
+            modifier = modifier,
+            records = records,
+            shouldReverse = shouldReverse,
+            bookmarkManager = bookmarkManager,
+            onClick = onClick,
+            onLongClick = onLongClick,
+        )
+        return
+    }
+
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
@@ -88,6 +101,68 @@ fun BrowseHistoryList(
                 onAppendClick = onAppendClick,
 
                 )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ThumbnailHistoryGrid(
+    modifier: Modifier,
+    records: List<Record>,
+    shouldReverse: Boolean,
+    bookmarkManager: BookmarkManager? = null,
+    onClick: (Record) -> Unit,
+    onLongClick: (Record, Point) -> Unit,
+) {
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Adaptive(minSize = 56.dp),
+        reverseLayout = shouldReverse,
+    ) {
+        itemsIndexed(records) { _, record ->
+            val boxPosition = remember { mutableStateOf(Offset.Zero) }
+            ThumbnailHistoryItem(
+                record = record,
+                bitmap = bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
+                modifier = Modifier
+                    .pointerInput(record) {
+                        detectTapGestures(
+                            onTap = { onClick(record) },
+                            onLongPress = { offset ->
+                                onLongClick(record, offset.toScreenPoint(boxPosition.value))
+                            }
+                        )
+                    }
+                    .onGloballyPositioned { boxPosition.value = it.positionOnScreen() },
+            )
+        }
+    }
+}
+
+@Composable
+private fun ThumbnailHistoryItem(
+    modifier: Modifier,
+    record: Record,
+    bitmap: Bitmap?,
+) {
+    androidx.compose.foundation.layout.Box(
+        modifier = modifier.padding(8.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (bitmap != null) {
+            Image(
+                modifier = Modifier.size(32.dp),
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = null,
+            )
+        } else {
+            Icon(
+                modifier = Modifier.size(32.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_history),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground,
+            )
         }
     }
 }

@@ -505,6 +505,8 @@
     <string name="text_select">Выделить текст</string>
     <string name="show_context_menu_icons">Показывать иконки в меню Команд</string>
     <string name="setting_summary_show_context_menu_icons">Вы можете включить / выключить показ иконок в меню Команд для упрощения восприятия</string>
+    <string name="show_history_thumbnail_grid">Показывать миниатюры истории в адресной строке</string>
+    <string name="setting_summary_show_history_thumbnail_grid">При открытии адресной строки отображается один значок на домен в сетке; подсказки появляются во время ввода</string>
     <string name="use_it_on_tts">Использовать OpenAI TTS Api</string>
     <string name="setting_summary_use_gpt_for_tts">Использовать OpenAI API, чтобы считывать информацию со страницы</string>
     <string name="highlight">Выделить</string>

@@ -474,6 +474,8 @@
     <string name="text_select">Seleccionar text</string>
     <string name="show_context_menu_icons">Mostrar icones als menús d\'acció</string>
     <string name="setting_summary_show_context_menu_icons">Mostrar/amagar icones als menús d\'acció per simplificar</string>
+    <string name="show_history_thumbnail_grid">Mostra miniatures de l\'historial a la barra d\'adreces</string>
+    <string name="setting_summary_show_history_thumbnail_grid">En obrir la barra d\'adreces, mostra una icona per domini en una graella; els suggeriments tornen quan escriviu</string>
     <string name="use_it_on_tts">Utilitzar API TTS d\'OpenAI</string>
     <string name="setting_summary_use_gpt_for_tts">Utilitzar API d\'OpenAI per llegir contingut web</string>
     <string name="highlight">Destacat</string>

@@ -493,6 +493,8 @@
     <string name="text_select">ᱚᱱᱚᱞ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
     <string name="show_context_menu_icons">ᱠᱟᱹᱢᱤ ᱢᱮᱱᱩ ᱨᱮ ᱟᱭᱠᱚᱱ ᱠᱚ ᱩᱫᱩᱜᱽ ᱢᱮ</string>
     <string name="setting_summary_show_context_menu_icons">ᱠᱟᱹᱢᱤ ᱢᱮᱱᱩ ᱨᱮ ᱪᱤᱱᱦᱟᱹ ᱠᱚ ᱩᱫᱩᱜ/ᱩᱠᱩ ᱢᱮ ᱡᱮ ᱱᱚᱶᱟ ᱫᱚ ᱟᱞᱜᱟ ᱛᱮᱭᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱾</string>
+    <string name="show_history_thumbnail_grid">Show history thumbnails in address bar</string>
+    <string name="setting_summary_show_history_thumbnail_grid">When opening the address bar, show one favicon per domain in a grid; suggestions resume as you type</string>
     <string name="use_it_on_tts">OpenAI TTS Api ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
     <string name="setting_summary_use_gpt_for_tts">ᱣᱮᱵᱽ ᱠᱚᱱᱴᱮᱱᱴ ᱯᱟᱲᱦᱟᱣ ᱞᱟᱹᱜᱤᱫ OpenAI API ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
     <string name="highlight">ᱪᱤᱱᱦᱟᱹ ᱪᱷᱚ</string>
