@@ -299,7 +299,8 @@ class BackupUnit(
                     }
 
                     zipEntry.name == GPT_SETTINGS_FILE
-                            && BackupCategory.GPT_SETTINGS in categories -> {
+                            && BackupCategory.GPT_SETTINGS in categories
+                            && BackupCategory.ALL_PREFERENCES !in categories -> {
                         val content = zis.readBytes()
                         importGptSettings(JSONObject(String(content)))
                     }
@@ -394,7 +395,8 @@ class BackupUnit(
                     }
 
                     zipEntry.name == GPT_SETTINGS_FILE
-                            && BackupCategory.GPT_SETTINGS in categories -> {
+                            && BackupCategory.GPT_SETTINGS in categories
+                            && BackupCategory.ALL_PREFERENCES !in categories -> {
                         val content = zis.readBytes()
                         importGptSettings(JSONObject(String(content)))
                     }
