@@ -2,6 +2,8 @@
 
 package info.plateaukao.einkbro.view.compose
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -47,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
@@ -319,6 +322,7 @@ fun ReorderableComposedIconBar(
     tabCount: String,
     pageInfo: String,
     onClick: (ToolbarAction) -> Unit,
+    highlightedAction: ToolbarAction? = null,
 ) {
     ReorderableRow(
         modifier = Modifier
@@ -340,8 +344,10 @@ fun ReorderableComposedIconBar(
     ) { _, toolbarActionInfo, isDragging ->
         key(toolbarActionInfo) {
             val toolbarAction = toolbarActionInfo.toolbarAction
+            val blinkAlpha = rememberBlinkAlpha(toolbarAction == highlightedAction)
             Box(
                 modifier = Modifier
+                    .alpha(blinkAlpha)
                     .longPressDraggableHandle()
                     .border(
                         if (isDragging) 1.5.dp else (-1).dp,
@@ -384,6 +390,7 @@ fun ReorderableComposedIconColumn(
     tabCount: String,
     pageInfo: String,
     onClick: (ToolbarAction) -> Unit,
+    highlightedAction: ToolbarAction? = null,
 ) {
     ReorderableColumn(
         modifier = Modifier
@@ -403,8 +410,10 @@ fun ReorderableComposedIconColumn(
         key(toolbarActionInfo) {
             val toolbarAction = toolbarActionInfo.toolbarAction
             val isSpacer = toolbarAction in listOf(Spacer1, Spacer2)
+            val blinkAlpha = rememberBlinkAlpha(toolbarAction == highlightedAction)
             Box(
                 modifier = Modifier
+                    .alpha(blinkAlpha)
                     .longPressDraggableHandle()
                     .border(
                         if (isDragging) 1.5.dp else (-1).dp,
@@ -439,6 +448,20 @@ fun ReorderableComposedIconColumn(
             }
         }
     }
+}
+
+@Composable
+private fun rememberBlinkAlpha(isActive: Boolean): Float {
+    val alpha = remember { Animatable(1f) }
+    LaunchedEffect(isActive) {
+        if (isActive) {
+            repeat(3) {
+                alpha.animateTo(0.2f, tween(150))
+                alpha.animateTo(1f, tween(150))
+            }
+        }
+    }
+    return alpha.value
 }
 
 @Composable
@@ -899,6 +922,6 @@ fun PreviewToolbarLongTitle() {
 fun PreviewReorderableComposedIconBar() {
     MyTheme {
         val list = remember { mutableStateOf(ToolbarAction.values().map { ToolbarActionInfo(it, false) }) }
-        ReorderableComposedIconBar(list, "hihi", "1", "1/1") {}
+        ReorderableComposedIconBar(list, "hihi", "1", "1/1", onClick = {})
     }
 }

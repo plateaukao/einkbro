@@ -63,6 +63,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.background
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import kotlinx.coroutines.delay
 
 class ToolbarConfigActivity : ComponentActivity() {
     private val config: ConfigManager by inject()
@@ -147,6 +151,21 @@ fun ToolbarConfigPanel(
 ) {
     val isLandscape = ViewUnit.isLandscape(LocalContext.current)
 
+    var highlightedAction by remember { mutableStateOf<ToolbarAction?>(null) }
+    LaunchedEffect(highlightedAction) {
+        if (highlightedAction != null) {
+            delay(1000)
+            highlightedAction = null
+        }
+    }
+
+    val onAddAction: (ToolbarActionInfo) -> Unit = { info ->
+        list.value = list.value.toMutableList().apply {
+            add(size / 2, info)
+        }
+        highlightedAction = info.toolbarAction
+    }
+
     val onRemoveAction: (ToolbarAction) -> Unit = { action ->
         if (action != ToolbarAction.Settings) {
             list.value = list.value.toMutableList().apply {
@@ -170,6 +189,7 @@ fun ToolbarConfigPanel(
                     tabCount = "7",
                     pageInfo = "4/21",
                     onClick = onRemoveAction,
+                    highlightedAction = highlightedAction,
                 )
             }
         }
@@ -203,9 +223,7 @@ fun ToolbarConfigPanel(
                         .filter { it !in selectedActions }
                         .toToolbarActionInfoList()
                     itemsIndexed(otherActionInfos) { index, info ->
-                        AvailableActionItem(info) {
-                            list.value = list.value.toMutableList().apply { add(info) }
-                        }
+                        AvailableActionItem(info) { onAddAction(info) }
                     }
                 }
             }
@@ -222,7 +240,7 @@ fun ToolbarConfigPanel(
     } else {
         Column(modifier = Modifier.fillMaxSize()) {
             topBar()
-            HorizontalConfigContent(list, isLandscape, onRemoveAction)
+            HorizontalConfigContent(list, isLandscape, onAddAction, onRemoveAction, highlightedAction)
         }
     }
 }
@@ -232,7 +250,9 @@ fun ToolbarConfigPanel(
 private fun HorizontalConfigContent(
     list: MutableState<List<ToolbarActionInfo>>,
     isLandscape: Boolean,
+    onAddAction: (ToolbarActionInfo) -> Unit,
     onRemoveAction: (ToolbarAction) -> Unit,
+    highlightedAction: ToolbarAction?,
 ) {
     Column(
         modifier = Modifier
@@ -277,9 +297,7 @@ private fun HorizontalConfigContent(
                         .filter { it !in selectedActions }
                         .toToolbarActionInfoList()
                     itemsIndexed(otherActionInfos) { index, info ->
-                        AvailableActionItem(info) {
-                            list.value = list.value.toMutableList().apply { add(info) }
-                        }
+                        AvailableActionItem(info) { onAddAction(info) }
                     }
                 }
             }
@@ -320,6 +338,7 @@ private fun HorizontalConfigContent(
                     tabCount = "7",
                     pageInfo = "4/21",
                     onClick = onRemoveAction,
+                    highlightedAction = highlightedAction,
                 )
             }
         }
