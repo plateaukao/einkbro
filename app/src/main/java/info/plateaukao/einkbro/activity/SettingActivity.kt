@@ -535,6 +535,12 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_show_context_menu_icons,
             config.ui::showActionMenuIcons,
         ),
+        BooleanSettingItem(
+            R.string.show_history_thumbnail_grid,
+            0,
+            R.string.setting_summary_show_history_thumbnail_grid,
+            config.ui::showHistoryThumbnailGrid,
+        ),
         DividerSettingItem(),
         ValueSettingItem(
             R.string.setting_title_page_left_value,

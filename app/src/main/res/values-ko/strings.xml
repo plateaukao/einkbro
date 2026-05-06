@@ -505,6 +505,8 @@
     <string name="text_select">텍스트 선택</string>
     <string name="show_context_menu_icons">동작 메뉴에 아이콘 표시</string>
     <string name="setting_summary_show_context_menu_icons">동작 메뉴에서 아이콘을 표시/숨겨서 더 간단하게 만듭니다.</string>
+    <string name="show_history_thumbnail_grid">주소창에 기록 썸네일 표시</string>
+    <string name="setting_summary_show_history_thumbnail_grid">주소창을 열면 도메인별로 하나의 파비콘을 그리드로 표시합니다. 입력을 시작하면 제안으로 바뀝니다</string>
     <string name="use_it_on_tts">OpenAI TTS API 사용</string>
     <string name="setting_summary_use_gpt_for_tts">OpenAI API를 사용하여 웹 콘텐츠를 읽습니다.</string>
     <string name="highlight">강조 표시</string>

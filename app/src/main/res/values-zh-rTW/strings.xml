@@ -447,6 +447,8 @@
     <string name="text_select">選擇文字</string>
     <string name="show_context_menu_icons">顯示功能選單上的圖案</string>
     <string name="setting_summary_show_context_menu_icons">顯示或隱藏功能選單上的圖案</string>
+    <string name="show_history_thumbnail_grid">在網址列顯示歷史記錄縮圖</string>
+    <string name="setting_summary_show_history_thumbnail_grid">開啟網址列時，依網域以方格顯示單一圖示；開始輸入時會切換為搜尋建議</string>
     <string name="use_it_on_tts">使用OpenAI TTS API</string>
     <string name="setting_summary_use_gpt_for_tts">使用OpenAI服務朗讀內容</string>
     <string name="highlight">劃重點</string>

@@ -63,6 +63,7 @@ fun AutoCompleteTextField(
     text: MutableState<TextFieldValue>,
     recordList: MutableState<List<Record>>,
     hasCopiedText: Boolean = false,
+    showHistoryThumbnailGrid: Boolean = false,
     onTextSubmit: (String) -> Unit,
     onTextChange: (String) -> Unit,
     onPasteClick: () -> Unit,
@@ -90,6 +91,7 @@ fun AutoCompleteTextField(
             bookmarkManager = bookmarkManager,
             shouldReverse = shouldReverse,
             shouldShowTwoColumns = isWideLayout,
+            showThumbnailGrid = showHistoryThumbnailGrid,
             onClick = onRecordClick,
             onLongClick = { _, _ -> },
             onAppendClick = { suggestion ->

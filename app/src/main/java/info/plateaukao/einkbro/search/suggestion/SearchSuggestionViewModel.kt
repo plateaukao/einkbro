@@ -47,13 +47,22 @@ class SearchSuggestionViewModel : KoinComponent {
     private var queryString = ""
     suspend fun initSuggestions() {
         historyAndBookmarkRecords = recordDb.listEntries(config.browser.showBookmarksInInputBar)
-        _suggestions.value = historyAndBookmarkRecords
+        _suggestions.value = if (config.ui.showHistoryThumbnailGrid) {
+            recordDb.listLatestHistoryPerDomain()
+        } else {
+            historyAndBookmarkRecords
+        }
         queryString = ""
     }
 
     suspend fun updateSuggestions(query: String) {
         if (query.isEmpty()) {
-            _suggestions.value = historyAndBookmarkRecords
+            _suggestions.value = if (config.ui.showHistoryThumbnailGrid) {
+                recordDb.listLatestHistoryPerDomain()
+            } else {
+                historyAndBookmarkRecords
+            }
+            queryString = ""
             return
         }
 

@@ -653,6 +653,8 @@
     <string name="text_select">Szöveg kijelölése</string>
     <string name="show_context_menu_icons">Ikonok megjelenítése a művelet menükben</string>
     <string name="setting_summary_show_context_menu_icons">Ikonok megjelenítése/elrejtése a művelet menükben az egyszerűsítés érdekében</string>
+    <string name="show_history_thumbnail_grid">Előzmény-miniatűrök megjelenítése a címsávban</string>
+    <string name="setting_summary_show_history_thumbnail_grid">A címsáv megnyitásakor doménenként egy ikont jelenít meg rácsban; a javaslatok gépeléskor folytatódnak</string>
     <string name="use_it_on_tts">OpenAI TTS API használata</string>
     <string name="setting_summary_use_gpt_for_tts">OpenAI API használata webtartalom felolvasásához</string>
     <string name="highlight">Kiemelés</string>

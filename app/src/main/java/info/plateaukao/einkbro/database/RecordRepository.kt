@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.database
 
+import android.net.Uri
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -70,6 +71,17 @@ class RecordRepository : KoinComponent {
         }
 
         return if (amount == 0) list else list.take(amount)
+    }
+
+    suspend fun listLatestHistoryPerDomain(): List<Record> {
+        val history = withContext(Dispatchers.IO) { historyDao.getAllHistory() }
+        val seen = LinkedHashMap<String, Record>()
+        for (hr in history) {
+            val host = Uri.parse(hr.URL).host ?: continue
+            if (seen.containsKey(host)) continue
+            seen[host] = hr.toRecord()
+        }
+        return seen.values.toList()
     }
 
     suspend fun listAllHistory(): List<Record> {

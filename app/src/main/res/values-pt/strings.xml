@@ -474,6 +474,8 @@
     <string name="text_select">Selecionar texto</string>
     <string name="show_context_menu_icons">Mostrar ícones nos menus de ação</string>
     <string name="setting_summary_show_context_menu_icons">Mostrar/ocultar ícones nos menus de ação para simplificar</string>
+    <string name="show_history_thumbnail_grid">Mostrar miniaturas do histórico na barra de endereço</string>
+    <string name="setting_summary_show_history_thumbnail_grid">Ao abrir a barra de endereço, mostra um favicon por domínio em uma grade; as sugestões voltam ao digitar</string>
     <string name="use_it_on_tts">Usar API TTS do OpenAI</string>
     <string name="setting_summary_use_gpt_for_tts">Usar API do OpenAI para ler conteúdo web</string>
     <string name="highlight">Destaque</string>

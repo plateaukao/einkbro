@@ -50,6 +50,7 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
     var hideStatusbar by BooleanPreference(sp, K_HIDE_STATUSBAR, false)
     var keepAwake by BooleanPreference(sp, K_KEEP_AWAKE, false)
     var isBookmarkGridView by BooleanPreference(sp, K_BOOKMARK_GRID_VIEW, false)
+    var showHistoryThumbnailGrid by BooleanPreference(sp, K_HISTORY_THUMBNAIL_GRID, false)
     var showShareSaveMenu by BooleanPreference(sp, K_SHOW_SHARE_SAVE_MENU, false)
     var showContentMenu by BooleanPreference(sp, K_SHOW_CONTENT_MENU, false)
     var showDefaultActionMenu by BooleanPreference(sp, K_SHOW_DEFAULT_ACTION_MENU, false)
@@ -149,6 +150,7 @@ class UiConfig(private val context: Context, private val sp: SharedPreferences) 
         const val K_HIDE_STATUSBAR = "sp_hide_statusbar"
         const val K_KEEP_AWAKE = "sp_screen_awake"
         const val K_BOOKMARK_GRID_VIEW = "sp_bookmark_grid_view"
+        const val K_HISTORY_THUMBNAIL_GRID = "sp_history_thumbnail_grid"
         const val K_SHOW_SHARE_SAVE_MENU = "sp_show_share_save_menu"
         const val K_SHOW_CONTENT_MENU = "sp_show_content_menu"
         const val K_SHOW_DEFAULT_ACTION_MENU = "sp_show_default_action_menu"
