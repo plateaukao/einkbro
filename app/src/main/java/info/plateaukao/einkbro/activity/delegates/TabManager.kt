@@ -217,7 +217,7 @@ class TabManager(
 
     fun removeAlbum(albumController: AlbumController, showHome: Boolean) {
         closeTabConfirmation {
-            if (config.tab.isSaveHistoryWhenClose()) {
+            if (config.tab.isSaveHistoryWhenClose() && !albumController.isAIPage) {
                 addHistoryAction(albumController.albumTitle, albumController.albumUrl)
             }
 

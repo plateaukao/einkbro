@@ -128,9 +128,10 @@ class EBWebViewClient(
             ebWebView.updatePageInfo()
         }, 1000)
 
-        // skip translation pages
+        // skip translation pages and AI chat pages (chat.html has no standalone meaning)
         if (config.tab.isSaveHistoryWhenLoad() &&
             !ebWebView.incognito &&
+            !ebWebView.isAIPage &&
             !isTranslationDomain(url) &&
             url != BrowserUnit.URL_ABOUT_BLANK
         ) {
