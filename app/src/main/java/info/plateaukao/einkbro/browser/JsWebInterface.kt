@@ -78,32 +78,34 @@ class JsWebInterface(
 
             val semaphore = getSemaphoreForApi(webView.translateApi)
             semaphore.acquire()
+            try {
+                Log.d("JsWebInterface", "getTranslation: $originalText")
+                val translatedString = performTranslation(originalText, webView.translateApi)
 
-            Log.d("JsWebInterface", "getTranslation: $originalText")
-            val translatedString = performTranslation(originalText, webView.translateApi)
-
-            if (translatedString.isNotEmpty() && originalText.length < CACHE_TEXT_LENGTH_LIMIT) {
-                bookmarkManager.insertTranslationCache(
-                    TranslationCache(
-                        originalText = originalText,
-                        targetLanguage = currentLanguage,
-                        translatedText = translatedString,
-                        timestamp = currentTime
-                    )
-                )
-            }
-
-            withContext(Dispatchers.Main) {
-                if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
-                    webView.evaluateJavascript(
-                        "$callback('$elementId', '${escapeForJs(originalText)}', '${escapeForJs(translatedString)}')",
-                        null
+                if (translatedString.isNotEmpty() && originalText.length < CACHE_TEXT_LENGTH_LIMIT) {
+                    bookmarkManager.insertTranslationCache(
+                        TranslationCache(
+                            originalText = originalText,
+                            targetLanguage = currentLanguage,
+                            translatedText = translatedString,
+                            timestamp = currentTime
+                        )
                     )
                 }
-            }
 
-            delayIfNeeded(webView.translateApi)
-            semaphore.release()
+                withContext(Dispatchers.Main) {
+                    if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
+                        webView.evaluateJavascript(
+                            "$callback('$elementId', '${escapeForJs(originalText)}', '${escapeForJs(translatedString)}')",
+                            null
+                        )
+                    }
+                }
+
+                delayIfNeeded(webView.translateApi)
+            } finally {
+                semaphore.release()
+            }
         }
     }
 
