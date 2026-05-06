@@ -402,6 +402,7 @@ fun ReorderableComposedIconColumn(
     ) { _, toolbarActionInfo, isDragging ->
         key(toolbarActionInfo) {
             val toolbarAction = toolbarActionInfo.toolbarAction
+            val isSpacer = toolbarAction in listOf(Spacer1, Spacer2)
             Box(
                 modifier = Modifier
                     .longPressDraggableHandle()
@@ -414,11 +415,12 @@ fun ReorderableComposedIconColumn(
                         clickable(onClick = { onClick(toolbarAction) })
                     }
             ) {
-                if (toolbarAction in listOf(Spacer1, Spacer2)) {
+                if (isSpacer) {
+                    val spacerHeight = calculateSpacerHeight(list.value)
                     Spacer(
                         modifier = Modifier
                             .width(40.dp)
-                            .height(toolbarIconWidth)
+                            .height(spacerHeight)
                             .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.onBackground)
                     )
                 } else {
@@ -437,6 +439,18 @@ fun ReorderableComposedIconColumn(
             }
         }
     }
+}
+
+@Composable
+private fun calculateSpacerHeight(list: List<ToolbarActionInfo>): Dp {
+    val spacerCount = list.count { it.toolbarAction in listOf(Spacer1, Spacer2) }
+    if (spacerCount == 0) return toolbarIconWidth
+
+    val totalIconHeight = list.filterNot { it.toolbarAction in listOf(Spacer1, Spacer2) }
+        .map { toolbarIconWidth }.sumDp()
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val leftHeight = screenHeight - totalIconHeight
+    return (if (leftHeight > 5.dp) leftHeight else 5.dp) / spacerCount
 }
 
 @Composable
