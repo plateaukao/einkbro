@@ -12,14 +12,12 @@
         '.ytp-caption-window-container { opacity: 1 !important; z-index: 999 !important; }',
         '.caption-window { opacity: 1 !important; }',
         '.captions-text { opacity: 1 !important; }',
-        // Center captions within the player (overrides YouTube's inline top/left)
+        // Only move caption vertically to the center; leave x-axis and width
+        // alone so YouTube's natural horizontal positioning and width remain.
         '.ytp-caption-window-container .caption-window {',
         '    top: 50% !important;',
-        '    left: 50% !important;',
         '    bottom: auto !important;',
-        '    right: auto !important;',
-        '    transform: translate(-50%, -50%) !important;',
-        '    margin: 0 !important;',
+        '    transform: translateY(-50%) !important;',
         '}',
         // Keep the player controls visible
         '.ytp-chrome-bottom { opacity: 1 !important; }',
