@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -78,41 +77,38 @@ class ToolbarConfigActivity : ComponentActivity() {
         setContent {
             MyTheme {
                 var list = remember { mutableStateOf(toolbarActionInfoList) }
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(text = stringResource(id = if (isReaderMode) R.string.reader_toolbar else R.string.toolbars))
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                val topBar: @Composable () -> Unit = {
+                    TopAppBar(
+                        title = {
+                            Text(text = stringResource(id = if (isReaderMode) R.string.reader_toolbar else R.string.toolbars))
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = { finish() }) {
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = { finish() }) {
+                                Icon(Icons.Filled.Close, contentDescription = null)
+                            }
+                            IconButton(onClick = {
+                                if (isReaderMode) {
+                                    config.ui.readerToolbarActions = list.value.map { it.toolbarAction }
+                                } else {
+                                    config.ui.toolbarActions = list.value.map { it.toolbarAction }
                                 }
-                            },
-                            actions = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(Icons.Filled.Close, contentDescription = null)
-                                }
-                                IconButton(onClick = {
-                                    // save the toolbarActionInfoList
-                                    if (isReaderMode) {
-                                        config.ui.readerToolbarActions = list.value.map { it.toolbarAction }
-                                    } else {
-                                        config.ui.toolbarActions = list.value.map { it.toolbarAction }
-                                    }
-                                    finish()
-                                }) {
-                                    Icon(Icons.Filled.Done, contentDescription = null)
-                                }
-                            },
-                        )
-                    },
-                    content = { padding ->
-                        ToolbarConfigPanel(
-                            list = list,
-                            isVerticalPreview = config.ui.isVerticalToolbar,
-                        )
-                    }
+                                finish()
+                            }) {
+                                Icon(Icons.Filled.Done, contentDescription = null)
+                            }
+                        },
+                    )
+                }
+                ToolbarConfigPanel(
+                    list = list,
+                    isVerticalPreview = config.ui.isVerticalToolbar,
+                    isPreviewOnRight = config.ui.toolbarPosition == ToolbarPosition.Right,
+                    topBar = topBar,
                 )
             }
         }
@@ -146,6 +142,8 @@ class ToolbarConfigActivity : ComponentActivity() {
 fun ToolbarConfigPanel(
     list: MutableState<List<ToolbarActionInfo>>,
     isVerticalPreview: Boolean = false,
+    isPreviewOnRight: Boolean = false,
+    topBar: @Composable () -> Unit = {},
 ) {
     val isLandscape = ViewUnit.isLandscape(LocalContext.current)
 
@@ -159,12 +157,7 @@ fun ToolbarConfigPanel(
     }
 
     if (isVerticalPreview) {
-        // Side preview layout: preview column on left/right, available actions in center
-        Row(
-            modifier = Modifier
-                .fillMaxSize(),
-        ) {
-            // Vertical preview bar on the left side
+        val previewBar: @Composable () -> Unit = {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -179,27 +172,30 @@ fun ToolbarConfigPanel(
                     onClick = onRemoveAction,
                 )
             }
-            // Available actions
+        }
+        val availableActions: @Composable () -> Unit = {
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp, end = 1.dp),
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.Top,
             ) {
+                topBar()
                 Text(
-                    modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(start = 18.dp, top = 5.dp, bottom = 5.dp),
                     text = "Available Actions",
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.h6
                 )
                 Text(
-                    modifier = Modifier.padding(start = 10.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(start = 18.dp, bottom = 5.dp),
                     text = "click icon to add; click preview to remove; long click to reorder",
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.caption
                 )
                 LazyVerticalGrid(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                     columns = GridCells.Adaptive(84.dp),
                 ) {
                     val selectedActions = list.value.map { it.toolbarAction }
@@ -214,14 +210,36 @@ fun ToolbarConfigPanel(
                 }
             }
         }
+        Row(modifier = Modifier.fillMaxSize()) {
+            if (isPreviewOnRight) {
+                Box(modifier = Modifier.weight(1f)) { availableActions() }
+                previewBar()
+            } else {
+                previewBar()
+                Box(modifier = Modifier.weight(1f)) { availableActions() }
+            }
+        }
     } else {
-        // Original horizontal preview layout
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 8.dp, start = 1.dp, end = 1.dp, bottom = 50.dp),
-            verticalArrangement = Arrangement.Bottom
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            topBar()
+            HorizontalConfigContent(list, isLandscape, onRemoveAction)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun HorizontalConfigContent(
+    list: MutableState<List<ToolbarActionInfo>>,
+    isLandscape: Boolean,
+    onRemoveAction: (ToolbarAction) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 8.dp, start = 1.dp, end = 1.dp, bottom = 50.dp),
+        verticalArrangement = Arrangement.Bottom
+    ) {
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Bottom
@@ -305,7 +323,6 @@ fun ToolbarConfigPanel(
                 )
             }
         }
-    }
 }
 
 @Composable
