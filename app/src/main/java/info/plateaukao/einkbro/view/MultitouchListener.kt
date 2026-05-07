@@ -92,7 +92,7 @@ open class MultitouchListener(
             }
 
             MotionEvent.ACTION_MOVE -> {
-                if (inSwipe) {
+                if (inSwipe && event.pointerCount >= 2) {
                     endPoint0 = event.getPoint(0)
                     endPoint1 = event.getPoint(1)
 
@@ -104,6 +104,9 @@ open class MultitouchListener(
                     }
                 }
             }
+
+            MotionEvent.ACTION_UP,
+            MotionEvent.ACTION_CANCEL -> inSwipe = false
         }
         return gestureDetector.onTouchEvent(event)
     }
