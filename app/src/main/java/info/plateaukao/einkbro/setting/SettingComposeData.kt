@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.setting
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.browser.BrowserAction
+import info.plateaukao.einkbro.preference.ToolbarPosition
 import kotlin.reflect.KMutableProperty0
 
 interface SettingItemInterface {
@@ -34,6 +35,14 @@ class ListSettingWithEnumItem<T : Enum<T>>(
     override val summaryResId: Int = 0,
     var config: KMutableProperty0<T>,
     val options: List<Int>,
+    override val span: Int = 1,
+) : SettingItemInterface
+
+class ToolbarPositionSettingItem(
+    override val titleResId: Int,
+    override val iconId: Int = 0,
+    override val summaryResId: Int = 0,
+    val config: KMutableProperty0<ToolbarPosition>,
     override val span: Int = 1,
 ) : SettingItemInterface
 

@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.setting
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -9,7 +10,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,28 +23,38 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogWindowProvider
 import androidx.navigation.NavHostController
 import info.plateaukao.einkbro.BuildConfig
+import info.plateaukao.einkbro.preference.ToolbarPosition
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -277,6 +290,196 @@ fun <T : Enum<T>> ListSettingItemUi(
             }
             currentValueString.value = context.getString(setting.options[selectedIndex])
         }
+    }
+}
+
+@Composable
+fun ToolbarPositionSettingItemUi(
+    setting: ToolbarPositionSettingItem,
+    showBorder: Boolean = false,
+) {
+    val current = remember { mutableStateOf(setting.config.get()) }
+    var showDialog by remember { mutableStateOf(false) }
+    val label = stringResource(toolbarPositionLabelResId(current.value))
+
+    SettingItemUi(
+        setting = setting,
+        extraTitlePostfix = ": $label",
+        showBorder = showBorder,
+    ) {
+        showDialog = true
+    }
+
+    if (showDialog) {
+        ToolbarPositionDialog(
+            titleResId = setting.titleResId,
+            initial = current.value,
+            onDismiss = { showDialog = false },
+            onConfirm = { pos ->
+                setting.config.set(pos)
+                current.value = pos
+                showDialog = false
+            },
+        )
+    }
+}
+
+private fun toolbarPositionLabelResId(position: ToolbarPosition): Int = when (position) {
+    ToolbarPosition.Top -> info.plateaukao.einkbro.R.string.toolbar_position_top
+    ToolbarPosition.Bottom -> info.plateaukao.einkbro.R.string.toolbar_position_bottom
+    ToolbarPosition.Left -> info.plateaukao.einkbro.R.string.toolbar_position_left
+    ToolbarPosition.Right -> info.plateaukao.einkbro.R.string.toolbar_position_right
+}
+
+@Composable
+private fun ToolbarPositionDialog(
+    titleResId: Int,
+    initial: ToolbarPosition,
+    onDismiss: () -> Unit,
+    onConfirm: (ToolbarPosition) -> Unit,
+) {
+    var pending by remember { mutableStateOf(initial) }
+    AlertDialog(
+        modifier = Modifier
+            .padding(2.dp)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colors.onBackground,
+                shape = RoundedCornerShape(8.dp),
+            )
+            .padding(2.dp),
+        onDismissRequest = onDismiss,
+        backgroundColor = MaterialTheme.colors.background,
+        title = {
+            Text(
+                text = stringResource(titleResId) + ": " +
+                    stringResource(toolbarPositionLabelResId(pending)),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground,
+            )
+        },
+        text = {
+            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(280.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                ToolbarPositionDiagram(
+                    selected = pending,
+                    onSelect = { pending = it },
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .aspectRatio(0.75f),
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onConfirm(pending) }) {
+                Text(
+                    text = stringResource(android.R.string.ok),
+                    color = MaterialTheme.colors.onBackground,
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    text = stringResource(android.R.string.cancel),
+                    color = MaterialTheme.colors.onBackground,
+                )
+            }
+        },
+    )
+}
+
+@Composable
+private fun ToolbarPositionDiagram(
+    selected: ToolbarPosition,
+    onSelect: (ToolbarPosition) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val color = MaterialTheme.colors.onBackground
+    val toolbarFill = MaterialTheme.colors.onBackground.copy(alpha = 0.25f)
+    val edgeFraction = 0.18f
+    Box(modifier = modifier) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val w = size.width
+            val h = size.height
+            val edgeX = w * edgeFraction
+            val edgeY = h * edgeFraction
+            val thin = 1.dp.toPx()
+            val bold = 3.dp.toPx()
+            val dash = PathEffect.dashPathEffect(floatArrayOf(8f, 8f), 0f)
+
+            // Gray fill the toolbar strip on the selected edge.
+            when (selected) {
+                ToolbarPosition.Top ->
+                    drawRect(toolbarFill, Offset.Zero, Size(w, edgeY))
+                ToolbarPosition.Bottom ->
+                    drawRect(toolbarFill, Offset(0f, h - edgeY), Size(w, edgeY))
+                ToolbarPosition.Left ->
+                    drawRect(toolbarFill, Offset.Zero, Size(edgeX, h))
+                ToolbarPosition.Right ->
+                    drawRect(toolbarFill, Offset(w - edgeX, 0f), Size(edgeX, h))
+            }
+
+            // Outer rectangle.
+            drawRect(
+                color = color,
+                topLeft = Offset.Zero,
+                size = Size(w, h),
+                style = Stroke(width = thin),
+            )
+
+            // Inner gridlines: dashed thin by default, solid bold when selected.
+            fun line(start: Offset, end: Offset, isSelected: Boolean) {
+                if (isSelected) drawLine(color, start, end, bold)
+                else drawLine(color, start, end, thin, pathEffect = dash)
+            }
+            line(Offset(0f, edgeY), Offset(w, edgeY), selected == ToolbarPosition.Top)
+            line(
+                Offset(0f, h - edgeY),
+                Offset(w, h - edgeY),
+                selected == ToolbarPosition.Bottom,
+            )
+            line(Offset(edgeX, 0f), Offset(edgeX, h), selected == ToolbarPosition.Left)
+            line(
+                Offset(w - edgeX, 0f),
+                Offset(w - edgeX, h),
+                selected == ToolbarPosition.Right,
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .fillMaxHeight(edgeFraction)
+                .clickable { onSelect(ToolbarPosition.Top) },
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .fillMaxHeight(edgeFraction)
+                .clickable { onSelect(ToolbarPosition.Bottom) },
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .fillMaxHeight(1f - 2 * edgeFraction)
+                .fillMaxWidth(edgeFraction)
+                .clickable { onSelect(ToolbarPosition.Left) },
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .fillMaxHeight(1f - 2 * edgeFraction)
+                .fillMaxWidth(edgeFraction)
+                .clickable { onSelect(ToolbarPosition.Right) },
+        )
     }
 }
 
@@ -520,6 +723,11 @@ fun SearchSettingScreen(
                         showBorder
                     )
 
+                    is ToolbarPositionSettingItem -> ToolbarPositionSettingItemUi(
+                        setting,
+                        showBorder
+                    )
+
                     is ListSettingWithStrResIdItem -> ListSettingWithStringItemUi(
                         setting,
                         dialogManager,
@@ -607,6 +815,11 @@ fun SettingScreen(
                     is ListSettingWithEnumItem<*> -> ListSettingItemUi(
                         setting,
                         dialogManager,
+                        showBorder
+                    )
+
+                    is ToolbarPositionSettingItem -> ToolbarPositionSettingItemUi(
+                        setting,
                         showBorder
                     )
 
