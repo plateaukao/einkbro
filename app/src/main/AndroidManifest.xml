@@ -19,6 +19,11 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+
+            <data android:mimeType="text/plain" />
+        </intent>
     </queries> <!-- Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -239,6 +244,9 @@
 
         <receiver
             android:name=".service.TtsNotificationReceiver"
+            android:exported="false" />
+        <receiver
+            android:name=".service.ShareChosenReceiver"
             android:exported="false" />
 
         <service

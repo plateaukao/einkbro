@@ -40,10 +40,7 @@ class MenuActionHandler(
             MenuItemType.Translate -> dispatch(BrowserAction.ShowTranslationConfigDialog(true))
             MenuItemType.ReceiveData -> dispatch(BrowserAction.ToggleReceiveTextSearch)
             MenuItemType.SendLink -> dispatch(BrowserAction.ToggleTextSearch)
-            MenuItemType.ShareLink -> ShareUtil.copyToClipboard(
-                activity,
-                BrowserUnit.stripUrlQuery(currentWebView().url.orEmpty())
-            )
+            MenuItemType.ShareLink -> dispatch(BrowserAction.ShareLinkLongPress)
             MenuItemType.TouchSetting -> dispatch(BrowserAction.ToggleTouchPagination)
             MenuItemType.BoldFont -> dispatch(BrowserAction.ShowFontBoldnessDialog)
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)

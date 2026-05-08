@@ -41,6 +41,7 @@ class ToolbarActionHandler(
         ToolbarAction.Tts -> TtsSettingDialogFragment().show(activity.supportFragmentManager, "TtsSettingDialog")
         ToolbarAction.Touch -> dispatch(BrowserAction.ShowTouchAreaDialog)
         ToolbarAction.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb(useSplitScreen = true))
+        ToolbarAction.ShareLink -> dispatch(BrowserAction.ShareLinkLongPress)
         else -> {}
     }
 

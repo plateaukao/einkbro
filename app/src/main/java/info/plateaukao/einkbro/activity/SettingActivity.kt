@@ -69,6 +69,7 @@ import info.plateaukao.einkbro.activity.SettingRoute.valueOf
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
+import info.plateaukao.einkbro.preference.ShareLongPressAction
 import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
@@ -676,6 +677,13 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_show_bookmarks_input_bar,
             config.browser::showBookmarksInInputBar,
+        ),
+        ListSettingWithEnumItem(
+            R.string.setting_title_share_long_press,
+            0,
+            R.string.setting_summary_share_long_press,
+            config.browser::shareLongPressAction,
+            ShareLongPressAction.entries.map { it.labelResId },
         ),
         DividerSettingItem(),
         // Video

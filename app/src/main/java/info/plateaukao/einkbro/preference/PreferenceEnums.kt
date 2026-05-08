@@ -47,6 +47,11 @@ enum class NewTabBehavior {
     START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS
 }
 
+enum class ShareLongPressAction(val labelResId: Int) {
+    COPY_LINK(R.string.share_long_press_copy_link),
+    LAST_SHARE_TARGET(R.string.share_long_press_last_target),
+}
+
 enum class HighlightStyle(
     val color: Color?,
     val stringResId: Int,

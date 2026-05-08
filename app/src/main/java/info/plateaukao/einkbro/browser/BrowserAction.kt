@@ -66,6 +66,8 @@ sealed class BrowserAction {
     // Share
     object CreateShortcut : BrowserAction()
     object ShareLink : BrowserAction()
+    object ShareLinkToLastTarget : BrowserAction()
+    object ShareLinkLongPress : BrowserAction()
     data class SendToRemote(val text: String) : BrowserAction()
     object AddToInstapaper : BrowserAction()
     object ConfigureInstapaper : BrowserAction()
