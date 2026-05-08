@@ -4,8 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.print.PrintAttributes
-import android.print.PrintManager
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
@@ -20,7 +18,6 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
-import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.ReceiveDataDialog
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType
 import info.plateaukao.einkbro.view.dialog.compose.TtsSettingDialogFragment
@@ -33,7 +30,6 @@ class MenuActionHandler(
     private val currentWebView: () -> EBWebView,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val dialogManager by lazy { DialogManager(activity) }
 
     fun handleLongClick(menuItemType: MenuItemType) =
         when (menuItemType) {
@@ -91,7 +87,7 @@ class MenuActionHandler(
             MenuItemType.SetHome -> config.favoriteUrl = ebWebView.url.orEmpty()
             MenuItemType.SaveBookmark -> dispatch(BrowserAction.SaveBookmark())
             MenuItemType.Epub -> dispatch(BrowserAction.ShowEpubDialog)
-            MenuItemType.SavePdf -> printPDF(ebWebView)
+            MenuItemType.SavePdf -> dispatch(BrowserAction.SavePdf)
 
             MenuItemType.FontSize -> dispatch(BrowserAction.ShowFontSizeChangeDialog)
             MenuItemType.InvertColor -> dispatch(BrowserAction.InvertColors)
@@ -129,24 +125,4 @@ class MenuActionHandler(
         }
     }
 
-    private fun printPDF(ebWebView: EBWebView) {
-        try {
-            val title = HelperUnit.fileName(ebWebView.url)
-            val printManager =
-                activity.getSystemService(FragmentActivity.PRINT_SERVICE) as PrintManager
-            val printAdapter = ebWebView.createPrintDocumentAdapter(title) {
-                showFileListConfirmDialog()
-            }
-            printManager.print(title, printAdapter, PrintAttributes.Builder().build())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun showFileListConfirmDialog() {
-        dialogManager.showOkCancelDialog(
-            messageResId = R.string.toast_downloadComplete,
-            okAction = { BrowserUnit.openDownloadFolder(activity) }
-        )
-    }
 }
