@@ -32,6 +32,15 @@ class BrowserConfig(private val sp: SharedPreferences) {
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
     var webLoadCacheFirst by BooleanPreference(sp, "sp_web_load_cache_first", false)
 
+    var lastShareComponentPackage by StringPreference(sp, K_LAST_SHARE_COMPONENT_PACKAGE, "")
+    var lastShareComponentClass by StringPreference(sp, K_LAST_SHARE_COMPONENT_CLASS, "")
+
+    var shareLongPressAction: ShareLongPressAction
+        get() = ShareLongPressAction.entries[
+            sp.getString(K_SHARE_LONG_PRESS_ACTION, "0")?.toIntOrNull() ?: 0
+        ]
+        set(value) = sp.edit { putString(K_SHARE_LONG_PRESS_ACTION, value.ordinal.toString()) }
+
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     var processTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL, "")
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
@@ -84,6 +93,9 @@ class BrowserConfig(private val sp: SharedPreferences) {
         const val K_SEARCH_ENGINE_URL = "sp_search_engine_custom"
         const val K_ADBLOCK_HOSTS_URL = "ab_hosts"
         const val K_ADBLOCK_SITES = "sp_adblock_sites"
+        const val K_LAST_SHARE_COMPONENT_PACKAGE = "sp_last_share_component_package"
+        const val K_LAST_SHARE_COMPONENT_CLASS = "sp_last_share_component_class"
+        const val K_SHARE_LONG_PRESS_ACTION = "sp_share_long_press_action"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"

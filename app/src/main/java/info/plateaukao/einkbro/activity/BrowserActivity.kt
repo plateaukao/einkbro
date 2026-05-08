@@ -65,6 +65,7 @@ import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.disablePendingTransitions
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.LocaleManager
+import info.plateaukao.einkbro.preference.ShareLongPressAction
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.CenterExpandProgressBar
@@ -523,6 +524,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         is BrowserAction.ToggleReceiveTextSearch -> toggleReceiveTextSearch()
         is BrowserAction.CreateShortcut -> createShortcut()
         is BrowserAction.ShareLink -> shareLink()
+        is BrowserAction.ShareLinkToLastTarget -> shareLinkToLastTarget()
+        is BrowserAction.ShareLinkLongPress -> handleShareLongPress()
         is BrowserAction.SendToRemote -> sendToRemote(action.text)
         is BrowserAction.AddToInstapaper -> addToInstapaper()
         is BrowserAction.ConfigureInstapaper -> configureInstapaper()
@@ -673,6 +676,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun invertColors() = displayConfigDelegate.invertColors()
 
     override fun shareLink() = bookmarkActionsDelegate.shareLink()
+
+    private fun shareLinkToLastTarget() {
+        val webView = ebWebView
+        IntentUnit.shareToLastTarget(this, webView.title, webView.url)
+    }
+
+    private fun handleShareLongPress() {
+        when (config.browser.shareLongPressAction) {
+            ShareLongPressAction.COPY_LINK -> ShareUtil.copyToClipboard(
+                this,
+                BrowserUnit.stripUrlQuery(ebWebView.url.orEmpty())
+            )
+            ShareLongPressAction.LAST_SHARE_TARGET -> shareLinkToLastTarget()
+        }
+    }
 
     override fun sendToRemote(text: String) {
         if (remoteConnViewModel.isSendingTextSearch) {

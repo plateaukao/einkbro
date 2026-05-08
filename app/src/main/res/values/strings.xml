@@ -422,6 +422,10 @@
     <string name="setting_title_edit_homepage">Edit homepage URL</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
     <string name="setting_summary_plus_behavior">What should be displayed when adding a new tab</string>
+    <string name="setting_title_share_long_press">Share long press action</string>
+    <string name="setting_summary_share_long_press">Action when long pressing the share icon</string>
+    <string name="share_long_press_copy_link">Copy link</string>
+    <string name="share_long_press_last_target">Share to last app</string>
     <string name="setting_title_translated_langs">Translation languages for Google Translate</string>
     <string name="setting_summary_translated_langs">Customize languages for translation (e.g. en, fr, de, zh-TW, zh-CN)</string>
     <string name="menu">Menu</string>

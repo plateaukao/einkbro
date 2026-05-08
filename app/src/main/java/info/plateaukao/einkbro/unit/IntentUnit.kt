@@ -1,6 +1,8 @@
 package info.plateaukao.einkbro.unit
 
 import android.app.Activity
+import android.app.PendingIntent
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -19,19 +21,104 @@ import info.plateaukao.einkbro.activity.ExtraBrowserActivity
 import info.plateaukao.einkbro.activity.HighlightsActivity
 import info.plateaukao.einkbro.activity.SettingActivity
 import info.plateaukao.einkbro.activity.SettingRoute
+import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.service.ShareChosenReceiver
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-object IntentUnit {
+object IntentUnit : KoinComponent {
+    private val config: ConfigManager by inject()
+
     fun share(context: Context, title: String?, url: String?) {
         val nonNullUrl = url ?: return
         val strippedUrl = BrowserUnit.stripUrlQuery(nonNullUrl)
 
-        val sharingIntent = Intent(Intent.ACTION_SEND)
-        sharingIntent.type = "text/plain"
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title)
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, strippedUrl)
-        context.startActivity(Intent.createChooser(sharingIntent, context.getString(R.string.menu_share_link)))
+        val sharingIntent = buildShareIntent(title, strippedUrl)
+        val chooser = Intent.createChooser(
+            sharingIntent,
+            context.getString(R.string.menu_share_link),
+            buildChosenComponentSender(context),
+        )
+        context.startActivity(chooser)
+    }
+
+    /**
+     * Re-share to the previously chosen target without showing the chooser.
+     * Falls back to the standard chooser if no target is stored or the target
+     * is no longer installed.
+     */
+    fun shareToLastTarget(context: Context, title: String?, url: String?) {
+        val nonNullUrl = url ?: return
+        val strippedUrl = BrowserUnit.stripUrlQuery(nonNullUrl)
+
+        val pkg = config.browser.lastShareComponentPackage
+        val cls = config.browser.lastShareComponentClass
+        if (pkg.isEmpty() || cls.isEmpty()) {
+            share(context, title, url)
+            return
+        }
+
+        val targetCls = resolveBestActivityClass(context, pkg, cls)
+        val intent = buildShareIntent(title, strippedUrl).apply {
+            component = ComponentName(pkg, targetCls)
+        }
+        try {
+            context.startActivity(intent)
+        } catch (_: ActivityNotFoundException) {
+            config.browser.lastShareComponentPackage = ""
+            config.browser.lastShareComponentClass = ""
+            share(context, title, url)
+        } catch (_: SecurityException) {
+            config.browser.lastShareComponentPackage = ""
+            config.browser.lastShareComponentClass = ""
+            share(context, title, url)
+        }
+    }
+
+    /**
+     * When a package exposes Sharing Shortcuts (Direct Share), the chooser
+     * surfaces multiple labelled targets but the broadcast callback only
+     * returns the host activity's ComponentName — so re-firing to that
+     * captured class lands on the host's default UI, not the shortcut variant
+     * the user picked. Heuristic: if the package has another ACTION_SEND
+     * activity, prefer it over the captured (shortcut-host) one.
+     */
+    private fun resolveBestActivityClass(
+        context: Context,
+        pkg: String,
+        capturedCls: String,
+    ): String {
+        val probe = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            setPackage(pkg)
+        }
+        val activities = try {
+            context.packageManager.queryIntentActivities(probe, 0)
+        } catch (_: Exception) {
+            return capturedCls
+        }
+        if (activities.size <= 1) return capturedCls
+        val alternative = activities.firstOrNull { it.activityInfo.name != capturedCls }
+        return alternative?.activityInfo?.name ?: capturedCls
+    }
+
+    private fun buildShareIntent(title: String?, url: String): Intent =
+        Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, title)
+            putExtra(Intent.EXTRA_TEXT, url)
+        }
+
+    private fun buildChosenComponentSender(context: Context): android.content.IntentSender {
+        val callback = Intent(context, ShareChosenReceiver::class.java)
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+        return PendingIntent.getBroadcast(context, 0, callback, flags).intentSender
     }
 
     fun gotoSystemTtsSettings(activity: Activity) {
