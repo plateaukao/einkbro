@@ -3,6 +3,12 @@ package info.plateaukao.einkbro.activity.delegates
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
+import android.os.CancellationSignal
+import android.print.PageRange
+import android.print.PrintAttributes
+import android.print.PrintCallbacks
+import android.print.PrintDocumentAdapter
+import android.print.PrintDocumentInfo
 import android.webkit.ValueCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -14,6 +20,7 @@ import info.plateaukao.einkbro.activity.SavedPagesActivity
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.SavedPage
 import info.plateaukao.einkbro.epub.EpubManager
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -24,19 +31,23 @@ import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 
 class FileHandlingDelegate(
     private val activity: FragmentActivity,
     private val state: BrowserState,
     private val bookmarkManager: BookmarkManager,
-) {
+) : KoinComponent {
+    private val config: ConfigManager by inject()
     private val backupUnit: BackupUnit by lazy { BackupUnit(activity) }
     private val epubManager: EpubManager by lazy { EpubManager(activity) }
     private val dialogManager: DialogManager by lazy { DialogManager(activity) }
 
     lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
     lateinit var createWebArchivePickerLauncher: ActivityResultLauncher<Intent>
+    lateinit var savePdfFilePickerLauncher: ActivityResultLauncher<Intent>
     lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
     lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
     lateinit var openEpubFilePickerLauncher: ActivityResultLauncher<Intent>
@@ -47,6 +58,8 @@ class FileHandlingDelegate(
         saveImageFilePickerLauncher = IntentUnit.createSaveImageFilePickerLauncher(activity)
         createWebArchivePickerLauncher =
             IntentUnit.createResultLauncher(activity) { saveWebArchive(it) }
+        savePdfFilePickerLauncher =
+            IntentUnit.createResultLauncher(activity) { savePdfFromPickerResult(it) }
         writeEpubFilePickerLauncher =
             IntentUnit.createResultLauncher(activity) {
                 val uri = backupUnit.preprocessActivityResult(it) ?: return@createResultLauncher
@@ -155,6 +168,93 @@ class FileHandlingDelegate(
     fun showWebArchiveFilePicker() {
         val fileName = "${state.ebWebView.title}.mht"
         BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
+    }
+
+    fun showPdfFilePicker() {
+        val fileName = "${HelperUnit.fileName(state.ebWebView.url)}.pdf"
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_TITLE, fileName)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        savePdfFilePickerLauncher.launch(intent)
+    }
+
+    private fun savePdfFromPickerResult(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) return
+        val uri = result.data?.data ?: return
+        savePdfToUri(uri)
+    }
+
+    private fun savePdfToUri(uri: Uri) {
+        val pfd = runCatching { activity.contentResolver.openFileDescriptor(uri, "rw") }
+            .getOrNull()
+        if (pfd == null) {
+            EBToast.show(activity, R.string.toast_error)
+            return
+        }
+
+        val ebWebView = state.ebWebView
+        val title = ebWebView.title.orEmpty().ifBlank { "page" }
+        val adapter = ebWebView.createPrintDocumentAdapter(title) { /* unused */ }
+        val attrs = PrintAttributes.Builder()
+            .setMediaSize(config.display.pdfPaperSize.mediaSize)
+            .setResolution(PrintAttributes.Resolution("pdf", "pdf", 300, 300))
+            .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
+            .build()
+
+        adapter.onStart()
+        adapter.onLayout(null, attrs, CancellationSignal(),
+            object : PrintCallbacks.LayoutCallback() {
+                override fun onLayoutFinished(info: PrintDocumentInfo?, changed: Boolean) {
+                    adapter.onWrite(
+                        arrayOf(PageRange.ALL_PAGES),
+                        pfd,
+                        CancellationSignal(),
+                        object : PrintCallbacks.WriteCallback() {
+                            override fun onWriteFinished(pages: Array<out PageRange>?) {
+                                finalizePdf(adapter, pfd, uri, success = true)
+                            }
+                            override fun onWriteFailed(error: CharSequence?) {
+                                finalizePdf(adapter, pfd, uri, success = false)
+                            }
+                            override fun onWriteCancelled() {
+                                finalizePdf(adapter, pfd, uri, success = false)
+                            }
+                        }
+                    )
+                }
+                override fun onLayoutFailed(error: CharSequence?) {
+                    finalizePdf(adapter, pfd, uri, success = false)
+                }
+                override fun onLayoutCancelled() {
+                    finalizePdf(adapter, pfd, uri, success = false)
+                }
+            },
+            null
+        )
+    }
+
+    private fun finalizePdf(
+        adapter: PrintDocumentAdapter,
+        pfd: android.os.ParcelFileDescriptor,
+        uri: Uri,
+        success: Boolean,
+    ) {
+        runCatching { pfd.close() }
+        runCatching { adapter.onFinish() }
+        activity.runOnUiThread {
+            if (success) {
+                dialogManager.showOkCancelDialog(
+                    messageResId = R.string.toast_downloadComplete,
+                    okAction = { HelperUnit.openFile(activity, uri) },
+                )
+            } else {
+                runCatching { activity.contentResolver.delete(uri, null, null) }
+                EBToast.show(activity, R.string.toast_error)
+            }
+        }
     }
 
     fun savePageForLater() {

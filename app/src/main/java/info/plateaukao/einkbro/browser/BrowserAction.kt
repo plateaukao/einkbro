@@ -98,6 +98,7 @@ sealed class BrowserAction {
     object SavePageForLater : BrowserAction()
     object ShowSavedPages : BrowserAction()
     object SaveWebArchive : BrowserAction()
+    object SavePdf : BrowserAction()
 
     // Dialog / UI
     object FocusOnInput : BrowserAction()
