@@ -80,6 +80,7 @@ import info.plateaukao.einkbro.setting.LinkSettingItem
 import info.plateaukao.einkbro.setting.ListSettingWithClassItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.ListSettingWithStrResIdItem
+import info.plateaukao.einkbro.setting.ToolbarPositionSettingItem
 import info.plateaukao.einkbro.setting.NavigateSettingItem
 import info.plateaukao.einkbro.setting.ProgressActionSettingItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
@@ -763,17 +764,11 @@ class SettingActivity : FragmentActivity() {
 
     private val toolbarSettingItems = listOf(
         DividerSettingItem(R.string.setting_section_toolbar),
-        ListSettingWithEnumItem(
+        ToolbarPositionSettingItem(
             R.string.setting_title_toolbar_position,
             0,
             0,
             config.ui::toolbarPosition,
-            listOf(
-                R.string.toolbar_position_bottom,
-                R.string.toolbar_position_top,
-                R.string.toolbar_position_left,
-                R.string.toolbar_position_right,
-            )
         ),
         BooleanSettingItem(
             R.string.setting_title_show_tab_bar,
