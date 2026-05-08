@@ -196,6 +196,28 @@ class FileHandlingDelegate(
         }
 
         val ebWebView = state.ebWebView
+        val mediaSize = config.display.pdfPaperSize.mediaSize
+        // WebView's print pipeline lays out the page at mediaWidthInches * 96 CSS px,
+        // regardless of Resolution dpi. Match that against the live page's layout width
+        // so the PDF preserves the proportions the user already sees on screen.
+        val printViewportCssPx = mediaSize.widthMils / 1000.0 * 96.0
+
+        ebWebView.evaluateJavascript(HelperUnit.loadAssetFile("pdf_measure_layout.js")) { result ->
+            val pageWidth = result?.toDoubleOrNull()?.takeIf { it > 0 } ?: printViewportCssPx
+            val zoom = (printViewportCssPx / pageWidth).coerceIn(0.4, 1.5)
+            val styleJs = HelperUnit.loadAssetFile("pdf_print_style.js")
+                .replace("__ZOOM__", "%.3f".format(java.util.Locale.US, zoom))
+            ebWebView.evaluateJavascript(styleJs) {
+                startPdfRender(ebWebView, uri, pfd)
+            }
+        }
+    }
+
+    private fun startPdfRender(
+        ebWebView: EBWebView,
+        uri: Uri,
+        pfd: android.os.ParcelFileDescriptor,
+    ) {
         val title = ebWebView.title.orEmpty().ifBlank { "page" }
         val adapter = ebWebView.createPrintDocumentAdapter(title) { /* unused */ }
         val attrs = PrintAttributes.Builder()
@@ -245,6 +267,10 @@ class FileHandlingDelegate(
         runCatching { pfd.close() }
         runCatching { adapter.onFinish() }
         activity.runOnUiThread {
+            state.ebWebView.evaluateJavascript(
+                HelperUnit.loadAssetFile("pdf_print_cleanup.js"),
+                null,
+            )
             if (success) {
                 dialogManager.showOkCancelDialog(
                     messageResId = R.string.toast_downloadComplete,
