@@ -9,6 +9,8 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.transition.TransitionManager
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.FabPosition
@@ -34,56 +36,56 @@ class FabImageViewController(
 
     fun initialize() {
         textView.alpha = 0.5f
-
-        // Reset absolute positioning when not in custom mode
-        if (config.ui.fabPosition != FabPosition.Custom) {
-            textView.x = 0f
-            textView.y = 0f
-        }
-
-        val params = ConstraintLayout.LayoutParams(
-            textView.layoutParams.width,
-            textView.layoutParams.height
-        )
-
-        when (config.ui.fabPosition) {
-            FabPosition.Custom -> {
-                textView.layoutParams = params.apply {
-                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                    endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.swipe_refresh_layout
-                }
-            }
-
-            FabPosition.Left -> {
-                textView.layoutParams = params.apply {
-                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.swipe_refresh_layout
-                }
-            }
-
-            FabPosition.Right -> {
-                textView.layoutParams = params.apply {
-                    endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.swipe_refresh_layout
-                }
-            }
-
-            FabPosition.Center -> {
-                textView.layoutParams = params.apply {
-                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                    endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = R.id.swipe_refresh_layout
-                }
-            }
-
-            FabPosition.NotShow -> {}
-        }
-
+        applyFabPosition(animate = false)
         ViewUnit.expandViewTouchArea(textView, 20.dp(textView.context))
         setClickActions()
         textView.setOnTouchListener(defaultTouchListener)
         updateImagePosition(orientation)
+    }
+
+    fun applyFabPosition(animate: Boolean = true) {
+        val position = config.ui.fabPosition
+        val parent = textView.parent as? ConstraintLayout ?: return
+
+        if (position != FabPosition.Custom) {
+            textView.translationX = 0f
+            textView.translationY = 0f
+        }
+
+        if (position == FabPosition.NotShow) {
+            hide()
+            return
+        }
+
+        val constraintSet = ConstraintSet().apply { clone(parent) }
+        constraintSet.clear(textView.id, ConstraintSet.START)
+        constraintSet.clear(textView.id, ConstraintSet.END)
+        constraintSet.clear(textView.id, ConstraintSet.TOP)
+        constraintSet.clear(textView.id, ConstraintSet.BOTTOM)
+
+        when (position) {
+            FabPosition.Left -> {
+                constraintSet.connect(textView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+                constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
+            }
+            FabPosition.Right -> {
+                constraintSet.connect(textView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+                constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
+            }
+            FabPosition.Center, FabPosition.Custom -> {
+                constraintSet.connect(textView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+                constraintSet.connect(textView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+                constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
+            }
+            FabPosition.NotShow -> {}
+        }
+
+        if (animate) TransitionManager.beginDelayedTransition(parent)
+        constraintSet.applyTo(parent)
+
+        if (position == FabPosition.Custom) {
+            updateImagePosition(orientation)
+        }
     }
 
     fun show() {
