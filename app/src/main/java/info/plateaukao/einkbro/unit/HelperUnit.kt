@@ -20,9 +20,11 @@ package info.plateaukao.einkbro.unit
 
 import android.Manifest
 import android.app.Activity
+import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.LabeledIntent
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -30,9 +32,14 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
+import android.os.Parcelable
+import android.provider.DocumentsContract
+import android.provider.OpenableColumns
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
+import java.io.File
 import androidx.compose.ui.text.AnnotatedString
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -249,9 +256,15 @@ object HelperUnit {
         resultLauncher: ActivityResultLauncher<Intent>? = null,
         shouldGoToEnd: Boolean = false,
     ) {
+        // SAF returns a content:// URI whose path is a numeric document ID,
+        // so readers that sniff the file extension from the path don't appear
+        // in the chooser. Re-expose via FileProvider with the original filename
+        // so the path ends in .epub/.pdf and matches their intent filters.
+        val effectiveUri = reExposeWithFilename(activity, uri) ?: uri
+        val mimeType = resolveMimeType(activity, effectiveUri)
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
-            data = uri
+            if (mimeType != null) setDataAndType(effectiveUri, mimeType) else data = effectiveUri
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
 
@@ -260,7 +273,11 @@ object HelperUnit {
         }
 
         try {
-            activity.startActivity(Intent.createChooser(intent, "Open file with"))
+            val chooser = Intent.createChooser(intent, "Open file with")
+            buildSupernoteOpenIntent(activity, uri)?.let { extra ->
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf<Parcelable>(extra))
+            }
+            activity.startActivity(chooser)
         } catch (exception: SecurityException) {
             EBToast.show(activity, "open file failed, re-select the file again.")
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
@@ -269,6 +286,121 @@ object HelperUnit {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.putExtra("android.provider.extra.INITIAL_URI", uri);
             resultLauncher?.launch(intent)
+        }
+    }
+
+    private fun resolveMimeType(activity: Activity, uri: Uri): String? {
+        val path = (uri.lastPathSegment ?: uri.toString()).lowercase()
+        return when {
+            path.endsWith(".epub") -> "application/epub+zip"
+            path.endsWith(".pdf") -> "application/pdf"
+            else -> activity.contentResolver.getType(uri)
+        }
+    }
+
+    private fun reExposeWithFilename(activity: Activity, uri: Uri): Uri? {
+        if (uri.scheme != ContentResolver.SCHEME_CONTENT) return null
+        val displayName = queryDisplayName(activity, uri) ?: return null
+        val lower = displayName.lowercase()
+        if (!lower.endsWith(".epub") && !lower.endsWith(".pdf")) return null
+        return try {
+            val sharedDir = File(activity.cacheDir, "shared").apply { mkdirs() }
+            val target = File(sharedDir, displayName)
+            activity.contentResolver.openInputStream(uri)?.use { input ->
+                target.outputStream().use { output -> input.copyTo(output) }
+            } ?: return null
+            FileProvider.getUriForFile(
+                activity,
+                "${activity.packageName}.fileprovider",
+                target,
+            )
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private const val SUPERNOTE_DOCUMENT_PACKAGE = "com.supernote.document"
+    private const val SUPERNOTE_INBOX_PACKAGE = "com.ratta.supernote.inbox"
+    private const val SUPERNOTE_INBOX_ACTIVITY =
+        "com.ratta.supernote.inbox.InBoxMainActivity"
+
+    fun isSupernoteDocumentInstalled(context: Context): Boolean = try {
+        context.packageManager.getPackageInfo(SUPERNOTE_DOCUMENT_PACKAGE, 0)
+        true
+    } catch (_: PackageManager.NameNotFoundException) {
+        false
+    }
+
+    private fun isSupernoteInboxInstalled(context: Context): Boolean = try {
+        context.packageManager.getPackageInfo(SUPERNOTE_INBOX_PACKAGE, 0)
+        true
+    } catch (_: PackageManager.NameNotFoundException) {
+        false
+    }
+
+    fun supernoteDocumentInitialUri(): Uri =
+        Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADocument")
+
+    /**
+     * Supernote's reader registers no VIEW intent filter, so we can't reach
+     * it through the normal chooser. Inject a labelled entry that targets
+     * MainActivity (exported, singleTask) with `file_path` set — its
+     * onCreate forwards to the non-exported DocumentActivity for that file.
+     * Falls back to the Inbox library list when the SAF URI can't be mapped
+     * to an absolute path.
+     */
+    private fun buildSupernoteOpenIntent(activity: Activity, uri: Uri): Intent? {
+        if (!isSupernoteDocumentInstalled(activity)) return null
+        val absolutePath = resolveExternalStoragePath(uri)
+        return if (absolutePath != null) {
+            val open = Intent(Intent.ACTION_MAIN).apply {
+                component = ComponentName(
+                    SUPERNOTE_DOCUMENT_PACKAGE,
+                    "$SUPERNOTE_DOCUMENT_PACKAGE.MainActivity",
+                )
+                putExtra("file_path", absolutePath)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            LabeledIntent(open, SUPERNOTE_DOCUMENT_PACKAGE, "Supernote", 0)
+        } else if (isSupernoteInboxInstalled(activity)) {
+            val launch = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_LAUNCHER)
+                component = ComponentName(SUPERNOTE_INBOX_PACKAGE, SUPERNOTE_INBOX_ACTIVITY)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            LabeledIntent(launch, SUPERNOTE_INBOX_PACKAGE, "Supernote", 0)
+        } else {
+            null
+        }
+    }
+
+    private fun resolveExternalStoragePath(uri: Uri): String? {
+        if (uri.authority != "com.android.externalstorage.documents") return null
+        val docId = try {
+            DocumentsContract.getDocumentId(uri)
+        } catch (_: IllegalArgumentException) {
+            return null
+        } ?: return null
+        val (volume, relative) = docId.split(":", limit = 2)
+            .takeIf { it.size == 2 } ?: return null
+        return if (volume.equals("primary", ignoreCase = true)) {
+            "/storage/emulated/0/$relative"
+        } else {
+            "/storage/$volume/$relative"
+        }
+    }
+
+    private fun queryDisplayName(activity: Activity, uri: Uri): String? {
+        return try {
+            activity.contentResolver.query(
+                uri,
+                arrayOf(OpenableColumns.DISPLAY_NAME),
+                null, null, null,
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) cursor.getString(0).takeIf { !it.isNullOrBlank() } else null
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 

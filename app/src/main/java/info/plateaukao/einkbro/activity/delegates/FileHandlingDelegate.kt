@@ -9,6 +9,7 @@ import android.print.PrintAttributes
 import android.print.PrintCallbacks
 import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
+import android.provider.DocumentsContract
 import android.webkit.ValueCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -177,6 +178,9 @@ class FileHandlingDelegate(
             type = "application/pdf"
             putExtra(Intent.EXTRA_TITLE, fileName)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            if (HelperUnit.isSupernoteDocumentInstalled(activity)) {
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, HelperUnit.supernoteDocumentInitialUri())
+            }
         }
         savePdfFilePickerLauncher.launch(intent)
     }

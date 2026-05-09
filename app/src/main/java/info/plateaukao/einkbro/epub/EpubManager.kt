@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.epub
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.DocumentsContract
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
@@ -119,6 +120,12 @@ class EpubManager(private val context: Context) : KoinComponent {
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        if (HelperUnit.isSupernoteDocumentInstalled(context)) {
+            intent.putExtra(
+                DocumentsContract.EXTRA_INITIAL_URI,
+                HelperUnit.supernoteDocumentInitialUri(),
+            )
+        }
         activityResultLauncher.launch(intent)
     }
 
@@ -128,6 +135,12 @@ class EpubManager(private val context: Context) : KoinComponent {
             type = Constants.MIME_TYPE_EPUB
             addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            if (HelperUnit.isSupernoteDocumentInstalled(context)) {
+                putExtra(
+                    DocumentsContract.EXTRA_INITIAL_URI,
+                    HelperUnit.supernoteDocumentInitialUri(),
+                )
+            }
         }
         activityResultLauncher.launch(intent)
     }
