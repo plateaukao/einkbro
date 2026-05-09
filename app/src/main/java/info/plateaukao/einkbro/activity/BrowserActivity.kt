@@ -1050,7 +1050,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             DisplayConfig.K_DARK_MODE -> config.restartChanged = true
             UiConfig.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
             UiConfig.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
-            UiConfig.K_NAV_POSITION -> config.restartChanged = true
+            UiConfig.K_NAV_POSITION -> fabImageViewController.applyFabPosition()
             TtsConfig.K_TTS_SPEED_VALUE -> ttsViewModel.setSpeechRate(config.tts.ttsSpeedValue / 100f)
             BrowserConfig.K_CUSTOM_USER_AGENT, BrowserConfig.K_ENABLE_CUSTOM_USER_AGENT -> { ebWebView.updateUserAgentString(); ebWebView.reload() }
             TouchConfig.K_ENABLE_TOUCH -> { composeToolbarViewController.updateIcons(); chromeSetupDelegate.touchController?.toggleTouchPageTurn(config.touch.enableTouchTurn) }
