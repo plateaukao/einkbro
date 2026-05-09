@@ -78,7 +78,7 @@ class EBWebViewClient(
         onPageFinishedAction = action
     }
 
-    private var lastVisitedHistoryUrl: String? = null
+    private var lastVisitedHistoryKey: String? = null
 
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
@@ -86,13 +86,33 @@ class EBWebViewClient(
         // where onPageFinished doesn't fire
         ebWebView.hasVideo = WebContentPostProcessor.isVideoSiteUrl(url)
 
-        // Drop the captured caption when the user navigates away (including YouTube
-        // SPA route changes that bypass loadUrl/resetState).
-        val previous = lastVisitedHistoryUrl
-        if (previous != null && previous != url) {
+        // Drop the captured caption when the user navigates to a different page
+        // (including YouTube SPA route changes that bypass loadUrl/resetState).
+        // YouTube rewrites the URL with timestamp/playback params (t, pp, ...)
+        // while the user watches, which would otherwise wipe the caption mid-play.
+        val key = navigationKey(url)
+        val previous = lastVisitedHistoryKey
+        if (previous != null && previous != key) {
             ebWebView.dualCaption = null
         }
-        lastVisitedHistoryUrl = url
+        lastVisitedHistoryKey = key
+    }
+
+    private fun navigationKey(url: String): String {
+        return try {
+            val uri = url.toUri()
+            val host = uri.host.orEmpty()
+            if (host.contains("youtube.com") || host.contains("youtu.be")) {
+                val videoId = uri.getQueryParameter("v")
+                    ?: uri.lastPathSegment // youtu.be/<id>, /shorts/<id>
+                    ?: ""
+                "${uri.scheme}://${host}${uri.path.orEmpty()}?v=$videoId"
+            } else {
+                "${uri.scheme}://${host}${uri.path.orEmpty()}?${uri.query.orEmpty()}"
+            }
+        } catch (e: Exception) {
+            url
+        }
     }
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -100,7 +120,7 @@ class EBWebViewClient(
         // resetState() in EBWebView already cleared dualCaption; let the next
         // doUpdateVisitedHistory treat this as a fresh start so it doesn't wipe the
         // caption captured during this page's load.
-        lastVisitedHistoryUrl = null
+        lastVisitedHistoryKey = null
         ebWebView.isInnerScrollAtTop = true
         ebWebView.innerScrollTop = 0
         ebWebView.innerScrollHeight = 0
@@ -352,7 +372,7 @@ class EBWebViewClient(
     @Deprecated("Deprecated in Java")
     @Suppress("DEPRECATION")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? =
-        handleWebRequest(view, Uri.parse(url)) ?: super.shouldInterceptRequest(view, url)
+        handleWebRequest(view, Uri.parse(url), null) ?: super.shouldInterceptRequest(view, url)
 
     override fun shouldInterceptRequest(
         view: WebView,
@@ -373,7 +393,8 @@ class EBWebViewClient(
 
         processEinkImageRequest(request)?.let { return it }
 
-        return handleWebRequest(view, request.url) ?: super.shouldInterceptRequest(view, request)
+        return handleWebRequest(view, request.url, request.requestHeaders)
+            ?: super.shouldInterceptRequest(view, request)
     }
 
     private fun processEinkImageRequest(request: WebResourceRequest): WebResourceResponse? {
@@ -487,7 +508,11 @@ class EBWebViewClient(
     private fun isAnalyticsUrl(url: String): Boolean =
         ANALYTICS_DOMAINS.any { url.contains(it) }
 
-    private fun handleWebRequest(webView: WebView, uri: Uri): WebResourceResponse? {
+    private fun handleWebRequest(
+        webView: WebView,
+        uri: Uri,
+        requestHeaders: Map<String, String>?,
+    ): WebResourceResponse? {
         val url = uri.toString()
 
         if (!config.browser.cookies) {
@@ -502,7 +527,7 @@ class EBWebViewClient(
         }
 
         processCustomFontRequest(uri)?.let { return it }
-        dualCaptionProcessor.processUrl(url)?.let {
+        dualCaptionProcessor.processUrl(url, requestHeaders)?.let {
             ebWebView.dualCaption = it
             return WebResourceResponse(
                 "application/json",
