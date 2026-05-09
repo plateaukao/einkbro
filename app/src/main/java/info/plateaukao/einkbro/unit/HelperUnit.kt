@@ -24,7 +24,6 @@ import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.LabeledIntent
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -32,13 +31,13 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
-import android.os.Parcelable
 import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import info.plateaukao.einkbro.view.dialog.OpenWithDialog
 import java.io.File
 import androidx.compose.ui.text.AnnotatedString
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -273,11 +272,13 @@ object HelperUnit {
         }
 
         try {
-            val chooser = Intent.createChooser(intent, "Open file with")
-            buildSupernoteOpenIntent(activity, uri)?.let { extra ->
-                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf<Parcelable>(extra))
-            }
-            activity.startActivity(chooser)
+            val extras = listOfNotNull(buildSupernoteOpenTarget(activity, uri))
+            OpenWithDialog(
+                activity = activity,
+                viewIntent = intent,
+                title = "Open file with",
+                extraTargets = extras,
+            ).show()
         } catch (exception: SecurityException) {
             EBToast.show(activity, "open file failed, re-select the file again.")
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
@@ -342,18 +343,22 @@ object HelperUnit {
         Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADocument")
 
     /**
-     * Supernote's reader registers no VIEW intent filter, so we can't reach
-     * it through the normal chooser. Inject a labelled entry that targets
-     * MainActivity (exported, singleTask) with `file_path` set — its
-     * onCreate forwards to the non-exported DocumentActivity for that file.
-     * Falls back to the Inbox library list when the SAF URI can't be mapped
-     * to an absolute path.
+     * Supernote's reader registers no VIEW intent filter, so it never resolves
+     * via PackageManager. Surface it as a synthetic dialog entry that targets
+     * MainActivity (exported, singleTask) with `file_path` set — MainActivity
+     * forwards to the non-exported DocumentActivity for that file. Falls back
+     * to the Inbox library list when the URI can't be mapped to a path.
      */
-    private fun buildSupernoteOpenIntent(activity: Activity, uri: Uri): Intent? {
+    private fun buildSupernoteOpenTarget(
+        activity: Activity,
+        uri: Uri,
+    ): OpenWithDialog.Target? {
         if (!isSupernoteDocumentInstalled(activity)) return null
         val absolutePath = resolveExternalStoragePath(uri)
-        return if (absolutePath != null) {
-            val open = Intent(Intent.ACTION_MAIN).apply {
+        val targetIntent: Intent
+        val iconPackage: String
+        if (absolutePath != null) {
+            targetIntent = Intent(Intent.ACTION_MAIN).apply {
                 component = ComponentName(
                     SUPERNOTE_DOCUMENT_PACKAGE,
                     "$SUPERNOTE_DOCUMENT_PACKAGE.MainActivity",
@@ -361,17 +366,25 @@ object HelperUnit {
                 putExtra("file_path", absolutePath)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            LabeledIntent(open, SUPERNOTE_DOCUMENT_PACKAGE, "Supernote", 0)
+            iconPackage = SUPERNOTE_DOCUMENT_PACKAGE
         } else if (isSupernoteInboxInstalled(activity)) {
-            val launch = Intent(Intent.ACTION_MAIN).apply {
+            targetIntent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_LAUNCHER)
                 component = ComponentName(SUPERNOTE_INBOX_PACKAGE, SUPERNOTE_INBOX_ACTIVITY)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
-            LabeledIntent(launch, SUPERNOTE_INBOX_PACKAGE, "Supernote", 0)
+            iconPackage = SUPERNOTE_INBOX_PACKAGE
         } else {
-            null
+            return null
         }
+        val icon = runCatching {
+            activity.packageManager.getApplicationIcon(iconPackage)
+        }.getOrNull()
+        return OpenWithDialog.Target(
+            label = "Supernote",
+            icon = icon,
+            intent = targetIntent,
+        )
     }
 
     private fun resolveExternalStoragePath(uri: Uri): String? {
