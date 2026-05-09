@@ -70,7 +70,10 @@ object BookmarkRenderer : KoinComponent {
             try {
                 val connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection
                 connection.addRequestProperty("User-Agent", "Mozilla/4.76")
-                if (timeout > 0) connection.connectTimeout = timeout
+                if (timeout > 0) {
+                    connection.connectTimeout = timeout
+                    connection.readTimeout = timeout
+                }
                 connection.connect()
                 if (connection.responseCode != HttpURLConnection.HTTP_OK) {
                     if (isRedirect(connection.responseCode)) {
