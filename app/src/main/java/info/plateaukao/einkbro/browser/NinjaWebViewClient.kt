@@ -78,15 +78,29 @@ class EBWebViewClient(
         onPageFinishedAction = action
     }
 
+    private var lastVisitedHistoryUrl: String? = null
+
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
         // Update hasVideo for SPA navigations (e.g., YouTube client-side routing)
         // where onPageFinished doesn't fire
         ebWebView.hasVideo = WebContentPostProcessor.isVideoSiteUrl(url)
+
+        // Drop the captured caption when the user navigates away (including YouTube
+        // SPA route changes that bypass loadUrl/resetState).
+        val previous = lastVisitedHistoryUrl
+        if (previous != null && previous != url) {
+            ebWebView.dualCaption = null
+        }
+        lastVisitedHistoryUrl = url
     }
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
+        // resetState() in EBWebView already cleared dualCaption; let the next
+        // doUpdateVisitedHistory treat this as a fresh start so it doesn't wipe the
+        // caption captured during this page's load.
+        lastVisitedHistoryUrl = null
         ebWebView.isInnerScrollAtTop = true
         ebWebView.innerScrollTop = 0
         ebWebView.innerScrollHeight = 0
