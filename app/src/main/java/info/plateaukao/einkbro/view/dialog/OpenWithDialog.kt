@@ -58,7 +58,14 @@ class OpenWithDialog(
     fun show() {
         val targets = buildTargets()
         if (targets.isEmpty()) return
+        if (android.os.Looper.myLooper() != android.os.Looper.getMainLooper()) {
+            activity.runOnUiThread { showOnMain(targets) }
+        } else {
+            showOnMain(targets)
+        }
+    }
 
+    private fun showOnMain(targets: List<Target>) {
         val composeView = ComposeView(activity)
 
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
