@@ -11,6 +11,7 @@ import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.data.remote.TranslateRepository
+import info.plateaukao.einkbro.unit.DownloadHelper
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit
 
 private const val CACHE_EXPIRATION_DAYS = 5
 private const val CACHE_TEXT_LENGTH_LIMIT = 15
+private const val MAX_DOWNLOAD_ID_LENGTH = 64
 
 class JsWebInterface(
     private val webView: EBWebView,
@@ -216,6 +218,40 @@ class JsWebInterface(
     @JavascriptInterface
     fun setTouchOnInnerScrollable(value: Boolean) {
         webView.isTouchOnInnerScrollable = value
+    }
+
+    @JavascriptInterface
+    fun onBlobDownloadChunk(downloadId: String, base64Chunk: String) {
+        if (downloadId.length > MAX_DOWNLOAD_ID_LENGTH) {
+            Log.w("JsWebInterface", "Ignoring blob download chunk with invalid id")
+            return
+        }
+        DownloadHelper.appendBlobDownloadChunk(downloadId, base64Chunk)
+    }
+
+    @JavascriptInterface
+    fun onBlobDownloadComplete(downloadId: String, mimeType: String) {
+        if (downloadId.length > MAX_DOWNLOAD_ID_LENGTH) {
+            Log.w("JsWebInterface", "Ignoring blob download completion with invalid id")
+            return
+        }
+        DownloadHelper.completeBlobDownload(downloadId, mimeType)
+    }
+
+    @JavascriptInterface
+    fun onBlobDownloadError(downloadId: String, message: String?) {
+        if (downloadId.length > MAX_DOWNLOAD_ID_LENGTH) {
+            Log.w("JsWebInterface", "Ignoring blob download error with invalid id")
+            return
+        }
+        DownloadHelper.failBlobDownload(downloadId, message)
+    }
+
+    @JavascriptInterface
+    fun beginBlobDownload(fileName: String?, mimeType: String?): String {
+        val activity = webView.context as? android.app.Activity ?: return ""
+        val safeFileName = fileName?.takeIf { it.isNotBlank() } ?: "download"
+        return DownloadHelper.beginBlobDownload(activity, safeFileName, mimeType.orEmpty())
     }
 }
 

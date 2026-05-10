@@ -67,7 +67,7 @@ open class EBWebView(
     override val album: Album = Album(this, webViewCallback as? AlbumCallback)
     protected val webViewClient: EBWebViewClient
     private val webChromeClient: EBWebChromeClient
-    private val downloadListener: EBDownloadListener = EBDownloadListener(context)
+    private val downloadListener by lazy { EBDownloadListener(this) }
     private val clickHandler: EBClickHandler
     val jsBridge: WebViewJsBridge = WebViewJsBridge(this).apply {
         simulateClickAction = { point -> simulateClick(point) }

@@ -1,11 +1,11 @@
 package info.plateaukao.einkbro.browser
 
 import android.app.Activity
-import android.content.Context
 import android.webkit.DownloadListener
 import info.plateaukao.einkbro.unit.BrowserUnit.download
+import info.plateaukao.einkbro.view.EBWebView
 
-class EBDownloadListener(private val context: Context) : DownloadListener {
+class EBDownloadListener(private val webView: EBWebView) : DownloadListener {
     override fun onDownloadStart(
         url: String,
         userAgent: String,
@@ -13,8 +13,9 @@ class EBDownloadListener(private val context: Context) : DownloadListener {
         mimeType: String,
         contentLength: Long
     ) {
+        val context = webView.context
         if (context is Activity) {
-            download(context, url, contentDisposition, mimeType)
+            download(context, url, contentDisposition, mimeType, webView)
         }
     }
 }
