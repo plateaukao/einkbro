@@ -420,6 +420,11 @@ tr:hover { background: var(--wash); }
 }
 .table-wrap table { margin-bottom: 0; }
 
+/* --- Tablet --- */
+@media (min-width: 769px) and (max-width: 1180px) {
+  .container { padding: 0 2.5rem; }
+}
+
 /* --- Mobile --- */
 @media (max-width: 768px) {
   .nav-toggle { display: block; }
