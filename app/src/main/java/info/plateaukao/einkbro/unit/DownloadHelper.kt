@@ -36,6 +36,18 @@ object DownloadHelper {
 
     var downloadFileId = -1L
 
+    private const val SUPERNOTE_DOCUMENT_DIR = "Document"
+
+    private fun publicDownloadDirName(context: Context): String =
+        if (HelperUnit.isSupernoteDocumentInstalled(context)) {
+            SUPERNOTE_DOCUMENT_DIR
+        } else {
+            Environment.DIRECTORY_DOWNLOADS
+        }
+
+    private fun publicDownloadDir(context: Context): File =
+        Environment.getExternalStoragePublicDirectory(publicDownloadDirName(context))
+
     @JvmStatic
     fun download(context: Context, url: String, contentDisposition: String, mimeType: String) {
         val activity = context as Activity
@@ -83,8 +95,7 @@ object DownloadHelper {
                 .getExtensionFromMimeType(effectiveMimeType) ?: "bin"
             val filename = "download_${System.currentTimeMillis()}.$ext"
 
-            val downloadsDir =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val downloadsDir = publicDownloadDir(activity)
             val destFile = File(downloadsDir, filename)
 
             val bytes = if (isBase64) {
@@ -128,11 +139,9 @@ object DownloadHelper {
                 setTitle(filename)
                 setMimeType(mimeType)
                 try {
-                    setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+                    setDestinationInExternalPublicDir(publicDownloadDirName(activity), filename)
                 } catch (e: Exception) {
-                    val downloadsDir =
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    setDestinationUri(Uri.fromFile(java.io.File(downloadsDir, filename)))
+                    setDestinationUri(Uri.fromFile(File(publicDownloadDir(activity), filename)))
                 }
             }
             val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -170,8 +179,7 @@ object DownloadHelper {
                     return@launch
                 }
 
-                val downloadsDir =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                val downloadsDir = publicDownloadDir(activity)
                 val destFile = File(downloadsDir, filename)
                 connection.inputStream.use { input ->
                     destFile.outputStream().use { output ->
@@ -311,10 +319,9 @@ object DownloadHelper {
             addRequestHeader("User-Agent", WebSettings.getDefaultUserAgent(activity))
             setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             try {
-                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+                setDestinationInExternalPublicDir(publicDownloadDirName(activity), fileName)
             } catch (e: Exception) {
-                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                setDestinationUri(Uri.fromFile(File(downloadsDir, fileName)))
+                setDestinationUri(Uri.fromFile(File(publicDownloadDir(activity), fileName)))
             }
         }
         (activity.getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
@@ -322,10 +329,7 @@ object DownloadHelper {
     }
 
     fun openDownloadFolder(activity: Activity) {
-        val uri = Uri.parse(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                .toString()
-        )
+        val uri = Uri.parse(publicDownloadDir(activity).toString())
         val intent =
             Intent(Intent.ACTION_GET_CONTENT).apply { setDataAndType(uri, "resource/folder") }
         activity.startActivity(
