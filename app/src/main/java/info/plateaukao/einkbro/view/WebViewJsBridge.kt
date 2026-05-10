@@ -14,8 +14,6 @@ import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-private const val BLOB_DOWNLOAD_CHUNK_SIZE = 50_000
-
 /**
  * Handles all JavaScript injection, CSS injection, and JS-based interactions for EBWebView.
  * Separates JS bridge concerns from core WebView configuration.
@@ -114,38 +112,10 @@ class WebViewJsBridge(private val webView: WebView) {
         mimeType: String,
         downloadId: String,
     ) {
-        val script = """
-            (async function() {
-                const blobUrl = ${JSONObject.quote(blobUrl)};
-                const fallbackMimeType = ${JSONObject.quote(mimeType)};
-                const downloadId = ${JSONObject.quote(downloadId)};
-                const chunkSize = $BLOB_DOWNLOAD_CHUNK_SIZE;
-                try {
-                    const response = await fetch(blobUrl);
-                    const blob = await response.blob();
-                    const reader = new FileReader();
-                    reader.onerror = function() {
-                        androidApp.onBlobDownloadError(downloadId, 'read_failed');
-                    };
-                    reader.onloadend = function() {
-                        try {
-                            const result = typeof reader.result === 'string' ? reader.result : '';
-                            const base64 = result.substring(result.indexOf(',') + 1);
-                            for (let i = 0; i < base64.length; i += chunkSize) {
-                                androidApp.onBlobDownloadChunk(downloadId, base64.substring(i, i + chunkSize));
-                            }
-                            androidApp.onBlobDownloadComplete(downloadId, blob.type || fallbackMimeType || 'application/octet-stream');
-                        } catch (error) {
-                            androidApp.onBlobDownloadError(downloadId, String(error));
-                        }
-                    };
-                    reader.readAsDataURL(blob);
-                } catch (error) {
-                    androidApp.onBlobDownloadError(downloadId, String(error));
-                }
-            })();
-        """.trimIndent()
-
+        val script = loadAssetFile("blob_url_fetch.js")
+            .replace("__BLOB_URL__", JSONObject.quote(blobUrl))
+            .replace("__MIME_TYPE__", JSONObject.quote(mimeType))
+            .replace("__DOWNLOAD_ID__", JSONObject.quote(downloadId))
         webView.evaluateJavascript(script, null)
     }
 

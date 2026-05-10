@@ -20,6 +20,7 @@ import android.webkit.WebView
 import android.webkit.WebView.WebViewTransport
 import android.webkit.WebViewClient
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.GithubUtil
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.view.EBWebView
 
@@ -50,24 +51,24 @@ class EBWebChromeClient(
 
                 if (urlString.startsWith("blob:")) {
                     val activity = ebWebView.context as? Activity ?: return true
-                    val githubRawUrl = githubRawUrl(ebWebView.url)
+                    val githubRawUrl = GithubUtil.rawUrlForBlobPage(ebWebView.url)
                     if (githubRawUrl != null) {
                         val fileName = githubRawUrl.substringAfterLast('/').substringBefore('?')
                         BrowserUnit.download(
                             context = activity,
                             url = githubRawUrl,
                             contentDisposition = "attachment; filename=\"$fileName\"",
-                            mimeType = request.requestHeaders["Content-Type"].orEmpty(),
+                            mimeType = "",
                             webView = ebWebView,
                         )
                     } else {
-                    BrowserUnit.download(
-                        context = activity,
-                        url = urlString,
-                        contentDisposition = "",
-                        mimeType = request.requestHeaders["Content-Type"].orEmpty(),
-                        webView = ebWebView,
-                    )
+                        BrowserUnit.download(
+                            context = activity,
+                            url = urlString,
+                            contentDisposition = "",
+                            mimeType = "",
+                            webView = ebWebView,
+                        )
                     }
                     view?.post { webviewParent.removeView(view) }
                     return true
@@ -136,26 +137,6 @@ class EBWebChromeClient(
     }
 
     private fun handleWebViewLinks(url: String) = chromeCallback?.addNewTab(url)
-
-    private fun githubRawUrl(currentUrl: String?): String? {
-        val uri = currentUrl?.let(Uri::parse) ?: return null
-        if (uri.host != "github.com") return null
-        val segments = uri.pathSegments
-        if (segments.size < 5 || segments[2] != "blob") return null
-
-        val owner = segments[0]
-        val repo = segments[1]
-        val branch = segments[3]
-        val path = segments.drop(4).joinToString("/")
-        if (path.isBlank()) return null
-
-        return uri.buildUpon()
-            .path("/$owner/$repo/raw/refs/heads/$branch/$path")
-            .clearQuery()
-            .fragment(null)
-            .build()
-            .toString()
-    }
 
     override fun onProgressChanged(view: WebView, progress: Int) {
         super.onProgressChanged(view, progress)
