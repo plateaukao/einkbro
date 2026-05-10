@@ -86,24 +86,10 @@ class BookmarksDialogFragment(
 
     private val isGridView = mutableStateOf(false)
 
-    private val showRunnable = Runnable {
-        dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 1f } }
-    }
-
     override fun setupComposeView() {
         isGridView.value = config.ui.isBookmarkGridView
         bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
-        }
-
-        composeView.addOnLayoutChangeListener { view, _, _, right, bottom, _, _, oldRight, oldBottom ->
-            val oldW = oldRight; val newW = right
-            val oldH = oldBottom; val newH = bottom
-            if (oldH > 0 && newH > 0 && (oldH != newH || oldW != newW)) {
-                dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 0f } }
-                view.removeCallbacks(showRunnable)
-                view.postDelayed(showRunnable, 300)
-            }
         }
 
         composeView.setContent {
@@ -156,10 +142,7 @@ class BookmarksDialogFragment(
                                     config.addRecentBookmark(it)
                                     dialog?.dismiss()
                                 } else {
-                                    dialog?.window?.let { w -> w.attributes = w.attributes.apply { alpha = 0f } }
                                     bookmarkViewModel.intoFolder(it)
-                                    composeView.removeCallbacks(showRunnable)
-                                    composeView.postDelayed(showRunnable, 300)
                                 }
                             },
                             onBookmarkIconClick = {
