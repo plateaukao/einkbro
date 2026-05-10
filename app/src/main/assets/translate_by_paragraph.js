@@ -77,24 +77,45 @@ function fetchNodesWithText(element) {
     );
 
     if (hasText && !hasMarked) {
-      // If group is just one element and it's already an element (not text),
-      // we might want to just tag it? No, usually we want to wrap mixed content.
-      // But if it's a single <span>, maybe just tag it?
-      // Let's consistently wrap to be safe and uniform.
-
-      var span = document.createElement("span");
-      // We need to insert the span before the first item of the group
-      // But since we are replacing items, we have to be careful.
-
       const firstNode = currentGroup[0];
       const parent = firstNode.parentNode;
 
-      // Insert span before first node
+      // Tag elements directly when wrapping would visibly disturb layout.
+      // Wrapping replaces N parent children with 1 <span>, which:
+      //   - reparents flex/grid items into a non-item span (breaks the layout)
+      //   - shifts whitespace/decorative siblings into the span
+      //   - changes :nth-child / > * matches on the parent
+      // The cheap wins: (i) a lone inline element can just be tagged in place;
+      // (ii) flex/grid parents can have each text-bearing inline element tagged
+      // individually instead of wrapped together.
+      const elementMembers = currentGroup.filter(n => n.nodeType === Node.ELEMENT_NODE);
+      const significantTextMembers = currentGroup.filter(
+        n => n.nodeType === Node.TEXT_NODE && n.textContent.trim() !== ""
+      );
+
+      if (elementMembers.length === 1 && significantTextMembers.length === 0) {
+        injectTranslateTag(elementMembers[0]);
+        result.push(elementMembers[0]);
+        currentGroup = [];
+        return;
+      }
+
+      var parentDisplay = "";
+      try { parentDisplay = window.getComputedStyle(parent).display; } catch (e) {}
+      if (/^(inline-)?(flex|grid)$/.test(parentDisplay)) {
+        elementMembers.forEach(function (el) {
+          if (el.textContent.trim().length > 0) {
+            injectTranslateTag(el);
+            result.push(el);
+          }
+        });
+        currentGroup = [];
+        return;
+      }
+
+      var span = document.createElement("span");
       parent.insertBefore(span, firstNode);
-
-      // Move all nodes into span
       currentGroup.forEach(node => span.appendChild(node));
-
       injectTranslateTag(span);
       result.push(span);
     }

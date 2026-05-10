@@ -150,8 +150,12 @@ class JsWebInterface(
         )
         val messages = listOf((chatGptActionInfo.userMessage + originalText).toUserMessage())
         val completion = openAiRepository.chatCompletion(messages, chatGptActionInfo)
+        // Return empty on failure (matches Gemini path). The caller treats empty as
+        // "no translation" — leaves the placeholder blank and skips caching, so a
+        // transient API error doesn't get persisted as the canonical translation
+        // for this string.
         return completion?.choices?.firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
-            ?: "Something went wrong."
+            .orEmpty()
     }
 
     private suspend fun translateWithGemini(originalText: String): String {
