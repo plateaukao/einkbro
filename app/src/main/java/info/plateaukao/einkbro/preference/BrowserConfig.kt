@@ -42,6 +42,11 @@ class BrowserConfig(private val sp: SharedPreferences) {
         set(value) = sp.edit { putString(K_SHARE_LONG_PRESS_ACTION, value.ordinal.toString()) }
 
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
+    var supernoteFolderUri: String?
+        get() = sp.getString(K_SUPERNOTE_FOLDER_URI, null)?.takeIf { it.isNotBlank() }
+        set(value) {
+            sp.edit { putString(K_SUPERNOTE_FOLDER_URI, value.orEmpty()) }
+        }
     var processTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL, "")
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
     var searchEngine by StringPreference(
@@ -96,6 +101,7 @@ class BrowserConfig(private val sp: SharedPreferences) {
         const val K_LAST_SHARE_COMPONENT_PACKAGE = "sp_last_share_component_package"
         const val K_LAST_SHARE_COMPONENT_CLASS = "sp_last_share_component_class"
         const val K_SHARE_LONG_PRESS_ACTION = "sp_share_long_press_action"
+        const val K_SUPERNOTE_FOLDER_URI = "sp_supernote_folder_uri"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"

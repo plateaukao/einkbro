@@ -13,6 +13,7 @@ import android.provider.DocumentsContract
 import android.webkit.ValueCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
@@ -26,6 +27,7 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.unit.SupernoteStorage
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -52,6 +54,7 @@ class FileHandlingDelegate(
     lateinit var writeEpubFilePickerLauncher: ActivityResultLauncher<Intent>
     lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
     lateinit var openEpubFilePickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var supernoteFolderPickerLauncher: ActivityResultLauncher<Uri?>
 
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
@@ -70,6 +73,11 @@ class FileHandlingDelegate(
             IntentUnit.createResultLauncher(activity) { handleWebViewFileChooser(it) }
         openEpubFilePickerLauncher =
             IntentUnit.createResultLauncher(activity) { handleEpubUri(it) }
+        supernoteFolderPickerLauncher =
+            activity.registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+                SupernoteStorage.onPickerResult(activity, uri)
+            }
+        SupernoteStorage.registerPicker(supernoteFolderPickerLauncher)
     }
 
     private fun handleEpubUri(result: ActivityResult) {
