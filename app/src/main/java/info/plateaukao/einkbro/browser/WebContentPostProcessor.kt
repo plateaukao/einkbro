@@ -86,6 +86,8 @@ class WebContentPostProcessor : KoinComponent {
             ebWebView.evaluateJavascript(preventLinkDraggingJs, null)
         }
 
+        ebWebView.evaluateJavascript(blobDownloadHookJs, null)
+
         // https://github.com/plateaukao/einkbro/issues/537
         // https://github.com/emvaized/text-reflow-on-zoom-mobile/blob/main/src/text_reflow_on_pinch_zoom.js
         if (configManager.display.enableZoomTextWrapReflow) {
@@ -102,6 +104,74 @@ class WebContentPostProcessor : KoinComponent {
         return false;
     }
 });
+        """
+        private const val blobDownloadHookJs = """
+            (function() {
+                if (window.__einkbroBlobHookInstalled) return;
+                window.__einkbroBlobHookInstalled = true;
+                window.__einkbroBlobRegistry = window.__einkbroBlobRegistry || new Map();
+
+                const originalCreateObjectURL = URL.createObjectURL.bind(URL);
+                URL.createObjectURL = function(blob) {
+                    const url = originalCreateObjectURL(blob);
+                    try {
+                        window.__einkbroBlobRegistry.set(url, blob);
+                    } catch (e) {
+                        console.log('einkbro blob registry failed', e);
+                    }
+                    return url;
+                };
+
+                const originalRevokeObjectURL = URL.revokeObjectURL.bind(URL);
+                URL.revokeObjectURL = function(url) {
+                    try {
+                        window.__einkbroBlobRegistry.delete(url);
+                    } catch (e) {
+                        console.log('einkbro blob registry revoke failed', e);
+                    }
+                    return originalRevokeObjectURL(url);
+                };
+
+                async function streamBlobToAndroid(blob, fileName) {
+                    const chunkSize = 50000;
+                    const reader = new FileReader();
+                    const mimeType = blob.type || 'application/octet-stream';
+                    const downloadId = androidApp.beginBlobDownload(fileName || 'download', mimeType);
+                    if (!downloadId) return false;
+                    return new Promise((resolve) => {
+                        reader.onerror = function() {
+                            androidApp.onBlobDownloadError(downloadId, 'read_failed');
+                            resolve(false);
+                        };
+                        reader.onloadend = function() {
+                            try {
+                                const result = typeof reader.result === 'string' ? reader.result : '';
+                                const base64 = result.substring(result.indexOf(',') + 1);
+                                for (let i = 0; i < base64.length; i += chunkSize) {
+                                    androidApp.onBlobDownloadChunk(downloadId, base64.substring(i, i + chunkSize));
+                                }
+                                androidApp.onBlobDownloadComplete(downloadId, mimeType);
+                                resolve(true);
+                            } catch (error) {
+                                androidApp.onBlobDownloadError(downloadId, String(error));
+                                resolve(false);
+                            }
+                        };
+                        reader.readAsDataURL(blob);
+                    });
+                }
+
+                document.addEventListener('click', async function(event) {
+                    const anchor = event.target && event.target.closest ? event.target.closest('a[href^="blob:"]') : null;
+                    if (!anchor) return;
+                    const blob = window.__einkbroBlobRegistry.get(anchor.href);
+                    if (!blob) return;
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    await streamBlobToAndroid(blob, anchor.download || '');
+                }, true);
+            })();
         """
         private const val zoomAndDesktopTemplateJs =
             "javascript:document.getElementsByName('viewport')[0].setAttribute('content', '%s%s');"

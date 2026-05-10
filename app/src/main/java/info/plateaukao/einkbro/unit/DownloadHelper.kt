@@ -19,6 +19,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
+import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBToast.showShort
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -31,12 +32,23 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLDecoder
 import java.util.Base64
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 object DownloadHelper {
 
     var downloadFileId = -1L
 
     private const val SUPERNOTE_DOCUMENT_DIR = "Document"
+    private const val MAX_BLOB_BASE64_LENGTH = 64 * 1024 * 1024
+    private data class PendingBlobDownload(
+        val activity: Activity,
+        val fileName: String,
+        val fallbackMimeType: String,
+        val base64Data: StringBuffer = StringBuffer(),
+    )
+
+    private val pendingBlobDownloads = ConcurrentHashMap<String, PendingBlobDownload>()
 
     private fun publicDownloadDirName(context: Context): String =
         if (HelperUnit.isSupernoteDocumentInstalled(context)) {
@@ -90,7 +102,13 @@ object DownloadHelper {
     }
 
     @JvmStatic
-    fun download(context: Context, url: String, contentDisposition: String, mimeType: String) {
+    fun download(
+        context: Context,
+        url: String,
+        contentDisposition: String,
+        mimeType: String,
+        webView: EBWebView? = null,
+    ) {
         val activity = context as Activity
         if (needGrantStoragePermission(activity)) {
             return
@@ -101,7 +119,35 @@ object DownloadHelper {
             return
         }
 
-        val filename = Uri.decode(guessFilename(url, contentDisposition, mimeType))
+        val filename = Uri.decode(guessFilename(url, contentDisposition, mimeType, webView?.url))
+
+        if (url.startsWith("blob:")) {
+            if (webView == null) {
+                showShort(activity, R.string.error_download_link_invalid)
+                return
+            }
+            val githubRawUrl = githubRawUrl(webView.url)
+            if (githubRawUrl != null) {
+                internalDownload(activity, githubRawUrl, mimeType, filename)
+                return
+            }
+            if (hasExactFilename(contentDisposition) || filename != "download") {
+                downloadBlobUrl(activity, webView, url, filename, mimeType)
+            } else {
+                val title = context.getString(R.string.dialog_title_download)
+                (activity as LifecycleOwner).lifecycleScope.launch {
+                    val modifiedFilename = TextInputDialog(
+                        context,
+                        "",
+                        title,
+                        filename
+                    ).show()
+
+                    modifiedFilename?.let { downloadBlobUrl(activity, webView, url, it, mimeType) }
+                }
+            }
+            return
+        }
 
         if (hasExactFilename(contentDisposition)) {
             internalDownload(activity, url, mimeType, filename)
@@ -118,6 +164,34 @@ object DownloadHelper {
                 modifiedFilename?.let { internalDownload(activity, url, mimeType, it) }
             }
         }
+    }
+
+    private fun downloadBlobUrl(
+        activity: Activity,
+        webView: EBWebView,
+        blobUrl: String,
+        filename: String,
+        mimeType: String,
+    ) {
+        val downloadId = UUID.randomUUID().toString()
+        pendingBlobDownloads[downloadId] = PendingBlobDownload(
+            activity = activity,
+            fileName = sanitizeFilename(filename),
+            fallbackMimeType = mimeType,
+        )
+        showShort(activity, R.string.toast_start_download)
+        webView.jsBridge.downloadBlobUrl(blobUrl, mimeType, downloadId)
+    }
+
+    fun beginBlobDownload(activity: Activity, fileName: String, mimeType: String): String {
+        val downloadId = UUID.randomUUID().toString()
+        pendingBlobDownloads[downloadId] = PendingBlobDownload(
+            activity = activity,
+            fileName = sanitizeFilename(fileName),
+            fallbackMimeType = mimeType,
+        )
+        showShort(activity, R.string.toast_start_download)
+        return downloadId
     }
 
     private fun saveDataUrl(activity: Activity, dataUrl: String, fallbackMimeType: String) {
@@ -157,6 +231,68 @@ object DownloadHelper {
             Log.w("browser", "Failed to save data URL: $e")
             showShort(activity, R.string.error_download_link_invalid)
         }
+    }
+
+    fun appendBlobDownloadChunk(downloadId: String, base64Chunk: String) {
+        val pending = pendingBlobDownloads[downloadId]
+        if (pending == null) {
+            Log.w("browser", "Missing blob download session for chunk: $downloadId")
+            return
+        }
+        if (pending.base64Data.length + base64Chunk.length > MAX_BLOB_BASE64_LENGTH) {
+            pendingBlobDownloads.remove(downloadId)
+            Log.w("browser", "Blob download exceeded supported size: $downloadId")
+            showShort(pending.activity, R.string.error_download_link_invalid)
+            return
+        }
+        pending.base64Data.append(base64Chunk)
+    }
+
+    fun completeBlobDownload(downloadId: String, mimeType: String) {
+        val pending = pendingBlobDownloads.remove(downloadId)
+        if (pending == null) {
+            Log.w("browser", "Missing blob download session on completion: $downloadId")
+            return
+        }
+
+        val effectiveMimeType = mimeType.ifBlank { pending.fallbackMimeType }
+        val encodedData = pending.base64Data.toString()
+        (pending.activity as LifecycleOwner).lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val bytes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Base64.getDecoder().decode(encodedData)
+                } else {
+                    android.util.Base64.decode(encodedData, android.util.Base64.DEFAULT)
+                }
+                if (useSupernoteStorage(pending.activity)) {
+                    withContext(Dispatchers.Main) {
+                        writeBytesViaSupernote(
+                            pending.activity,
+                            pending.fileName,
+                            effectiveMimeType,
+                            bytes,
+                        )
+                    }
+                } else {
+                    val destFile = File(publicDownloadDir(pending.activity), pending.fileName)
+                    destFile.writeBytes(bytes)
+                    withContext(Dispatchers.Main) {
+                        showShort(pending.activity, R.string.toast_downloadComplete)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w("browser", "Failed to complete blob download: $e")
+                withContext(Dispatchers.Main) {
+                    showShort(pending.activity, R.string.error_download_link_invalid)
+                }
+            }
+        }
+    }
+
+    fun failBlobDownload(downloadId: String, message: String?) {
+        val pending = pendingBlobDownloads.remove(downloadId) ?: return
+        Log.w("browser", "Blob download failed: $message")
+        showShort(pending.activity, R.string.error_download_link_invalid)
     }
 
     private fun hasExactFilename(contentDisposition: String): Boolean =
@@ -247,14 +383,47 @@ object DownloadHelper {
         }
     }
 
-    fun guessFilename(url: String, contentDisposition: String, mimeType: String): String {
+    fun guessFilename(
+        url: String,
+        contentDisposition: String,
+        mimeType: String,
+        fallbackUrl: String? = null,
+    ): String {
         val cdFilename = parseContentDispositionFilename(contentDisposition)
         if (cdFilename != null) return sanitizeFilename(cdFilename)
+
+        if (url.startsWith("blob:")) {
+            val fallbackFilename = fallbackUrl?.let { extractFilenameFromUrl(it, mimeType) }
+            if (fallbackFilename != null) return sanitizeFilename(fallbackFilename)
+        }
 
         val urlFilename = extractFilenameFromUrl(url, mimeType)
         if (urlFilename != null) return sanitizeFilename(urlFilename)
 
+        val fallbackFilename = fallbackUrl?.let { extractFilenameFromUrl(it, mimeType) }
+        if (fallbackFilename != null) return sanitizeFilename(fallbackFilename)
+
         return sanitizeFilename(URLUtil.guessFileName(url, contentDisposition, mimeType))
+    }
+
+    private fun githubRawUrl(currentUrl: String?): String? {
+        val uri = currentUrl?.let(Uri::parse) ?: return null
+        if (uri.host != "github.com") return null
+        val segments = uri.pathSegments
+        if (segments.size < 5 || segments[2] != "blob") return null
+
+        val owner = segments[0]
+        val repo = segments[1]
+        val branch = segments[3]
+        val path = segments.drop(4).joinToString("/")
+        if (path.isBlank()) return null
+
+        return uri.buildUpon()
+            .path("/$owner/$repo/raw/refs/heads/$branch/$path")
+            .clearQuery()
+            .fragment(null)
+            .build()
+            .toString()
     }
 
     private fun parseContentDispositionFilename(contentDisposition: String): String? {
@@ -287,7 +456,7 @@ object DownloadHelper {
     }
 
     private fun extractFilenameFromUrl(url: String, mimeType: String): String? {
-        val decodedUrl = try { Uri.decode(url) } catch (e: Exception) { return null } ?: return null
+        val decodedUrl = try { URLDecoder.decode(url, "UTF-8") } catch (e: Exception) { return null }
 
         // Strip query string and fragment
         val cleanUrl = decodedUrl.substringBefore('?').substringBefore('#')

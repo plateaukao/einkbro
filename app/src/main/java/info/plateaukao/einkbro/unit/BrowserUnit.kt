@@ -70,8 +70,13 @@ object BrowserUnit : KoinComponent {
     // --- Forwarding stubs for DownloadHelper (preserves existing call sites) ---
 
     @JvmStatic
-    fun download(context: Context, url: String, contentDisposition: String, mimeType: String) =
-        DownloadHelper.download(context, url, contentDisposition, mimeType)
+    fun download(
+        context: Context,
+        url: String,
+        contentDisposition: String,
+        mimeType: String,
+        webView: EBWebView? = null,
+    ) = DownloadHelper.download(context, url, contentDisposition, mimeType, webView)
 
     var downloadFileId: Long
         get() = DownloadHelper.downloadFileId
