@@ -679,4 +679,6 @@
     <string name="web_content_processing">Pemrosesan Konten Web</string>
     <string name="web_processing_gpt_type">Engine GPT</string>
     <string name="wenkai_tc">WenKai(TC)</string>
+    <string name="site_force_viewport_width">Paksa lebar viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Gunakan hanya jika UA desktop saja tidak cukup</string>
 </resources>

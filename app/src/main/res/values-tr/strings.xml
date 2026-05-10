@@ -626,4 +626,6 @@
     <string name="setting_summary_text_wrap_reflow">Yakınlaştırırken metni yeniden düzenle</string>
     <string name="setting_title_zoom_in_custom_view">Özel Görünümde Yakınlaştır</string>
     <string name="setting_summary_zoom_in_custom_view">Tam ekran modunda 2 parmakla yakınlaştırmayı etkinleştir (varsayılan: kapalı)</string>
+    <string name="site_force_viewport_width">Viewport genişliğini zorla (px)</string>
+    <string name="site_force_viewport_width_hint">Yalnızca masaüstü UA yetmediğinde kullanın</string>
 </resources>

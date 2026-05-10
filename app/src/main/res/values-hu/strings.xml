@@ -794,4 +794,6 @@
     <string name="setting_summary_text_wrap_reflow">Szöveg újratördelése nagyításkor</string>
     <string name="setting_title_zoom_in_custom_view">Nagyítás egyéni nézetben</string>
     <string name="setting_summary_zoom_in_custom_view">Két ujjas nagyítás engedélyezése teljes képernyős módban (alapértelmezett: ki)</string>
+    <string name="site_force_viewport_width">Nézetablak szélesség kényszerítése (px)</string>
+    <string name="site_force_viewport_width_hint">Csak akkor, ha az asztali UA önmagában nem elég</string>
 </resources>

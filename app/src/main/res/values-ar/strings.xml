@@ -626,4 +626,6 @@
     <string name="setting_summary_text_wrap_reflow">إعادة تنسيق النص عند التكبير</string>
     <string name="setting_title_zoom_in_custom_view">التكبير في العرض المخصص</string>
     <string name="setting_summary_zoom_in_custom_view">تفعيل التكبير بإصبعين في وضع ملء الشاشة (الافتراضي: معطل)</string>
+    <string name="site_force_viewport_width">فرض عرض النافذة (بكسل)</string>
+    <string name="site_force_viewport_width_hint">استخدم فقط إذا كان وكيل المستخدم لسطح المكتب غير كافٍ</string>
 </resources>

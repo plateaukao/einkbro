@@ -626,4 +626,6 @@
     <string name="setting_summary_text_wrap_reflow">עיצוב מחדש של טקסט בעת זום</string>
     <string name="setting_title_zoom_in_custom_view">זום בתצוגה מותאמת</string>
     <string name="setting_summary_zoom_in_custom_view">הפעלת זום בשתי אצבעות במצב מסך מלא (ברירת מחדל: כבוי)</string>
+    <string name="site_force_viewport_width">אכיפת רוחב חלון תצוגה (פיקסלים)</string>
+    <string name="site_force_viewport_width_hint">יש להשתמש רק אם UA שולחני אינו מספיק</string>
 </resources>

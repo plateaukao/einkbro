@@ -617,4 +617,6 @@
     <string name="web_processing_gpt_type">Движок GPT</string>
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="white_background">Білий фон</string>
+    <string name="site_force_viewport_width">Примусова ширина viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Використовуйте, лише якщо desktop UA недостатньо</string>
 </resources>

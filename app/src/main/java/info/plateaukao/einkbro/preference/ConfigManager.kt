@@ -164,6 +164,11 @@ class ConfigManager(
         return domainConfigurationMap[host]?.desktopMode ?: browser.desktop
     }
 
+    fun getDesktopViewportWidth(url: String): Int? {
+        val host = Uri.parse(url)?.host ?: return null
+        return domainConfigurationMap[host]?.desktopViewportWidth
+    }
+
     fun getEnableJavascript(url: String): Boolean {
         val host = Uri.parse(url)?.host ?: return browser.enableJavascript
         return domainConfigurationMap[host]?.enableJavascript ?: browser.enableJavascript

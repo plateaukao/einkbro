@@ -680,4 +680,6 @@
     <string name="volume_page_turn_resumed">Перелистывание кнопками громкости возобновлено</string>
     <string name="web_content_processing">Обработка веб-контента</string>
     <string name="web_processing_gpt_type">Движок GPT</string>
+    <string name="site_force_viewport_width">Принудительная ширина viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Используйте, только если desktop UA недостаточно</string>
 </resources>

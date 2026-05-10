@@ -61,6 +61,8 @@ import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.view.compose.MyTheme
 
+private const val DEFAULT_DESKTOP_VIEWPORT_WIDTH = 1280
+
 class SiteSettingsDialogFragment(
     private val url: String,
     private val onDismissAction: () -> Unit = {},
@@ -82,6 +84,7 @@ class SiteSettingsDialogFragment(
                 globalBlackFont = config.display.blackFontStyle,
                 globalFontBoldness = config.display.fontBoldness,
                 globalDesktopMode = config.browser.desktop,
+                defaultViewportWidth = DEFAULT_DESKTOP_VIEWPORT_WIDTH,
                 globalJavascript = config.browser.enableJavascript,
                 globalTranslationMode = config.translation.translationMode,
                 onEditText = { title, initial, onResult ->
@@ -109,6 +112,7 @@ private fun SiteSettingsContent(
     globalBlackFont: Boolean,
     globalFontBoldness: Int,
     globalDesktopMode: Boolean,
+    defaultViewportWidth: Int,
     globalJavascript: Boolean,
     globalTranslationMode: TranslationMode,
     onEditText: (title: String, initial: String, onResult: (String) -> Unit) -> Unit,
@@ -123,6 +127,7 @@ private fun SiteSettingsContent(
     var whiteBackground by remember { mutableStateOf(domainConfig.shouldUseWhiteBackground) }
     var invertColor by remember { mutableStateOf(domainConfig.shouldInvertColor) }
     var desktopMode by remember { mutableStateOf(domainConfig.desktopMode) }
+    var viewportWidth by remember { mutableStateOf(domainConfig.desktopViewportWidth) }
     var javascript by remember { mutableStateOf(domainConfig.enableJavascript) }
     var translateSite by remember { mutableStateOf(domainConfig.shouldTranslateSite) }
     var translationMode by remember { mutableStateOf(domainConfig.translationMode) }
@@ -140,6 +145,7 @@ private fun SiteSettingsContent(
         whiteBackground,
         invertColor,
         desktopMode != null,
+        viewportWidth != null,
         javascript != null,
         translateSite,
         customCss.isNotBlank(),
@@ -253,6 +259,19 @@ private fun SiteSettingsContent(
                 onValueChange = { desktopMode = it },
             )
 
+            // Force Desktop Viewport Width — nested under Desktop Mode
+            NestedNullableIntStepper(
+                value = viewportWidth,
+                globalValue = defaultViewportWidth,
+                min = 800,
+                max = 2400,
+                step = 80,
+                enabled = (desktopMode ?: globalDesktopMode),
+                onValueChange = { viewportWidth = it },
+                label = stringResource(R.string.site_force_viewport_width),
+                hint = stringResource(R.string.site_force_viewport_width_hint),
+            )
+
             // JavaScript
             NullableBooleanRow(
                 label = stringResource(R.string.setting_title_javascript),
@@ -302,7 +321,7 @@ private fun SiteSettingsContent(
             OutlinedButton(
                 onClick = {
                     fontSize = null; fontType = null; boldFont = null; blackFont = null
-                    fontBoldness = null; desktopMode = null; javascript = null
+                    fontBoldness = null; desktopMode = null; viewportWidth = null; javascript = null
                     whiteBackground = false; invertColor = false
                     translateSite = false; translationMode = null
                     customCss = ""; postLoadJs = ""
@@ -324,6 +343,7 @@ private fun SiteSettingsContent(
                         shouldUseWhiteBackground = whiteBackground,
                         shouldInvertColor = invertColor,
                         desktopMode = desktopMode,
+                        desktopViewportWidth = viewportWidth,
                         enableJavascript = javascript,
                         shouldTranslateSite = translateSite,
                         translationMode = translationMode,
@@ -690,9 +710,13 @@ private fun NestedNullableIntStepper(
     step: Int,
     enabled: Boolean,
     onValueChange: (Int?) -> Unit,
+    label: String? = null,
+    hint: String? = null,
 ) {
     val hasOverride = value != null
     val effectiveValue = value ?: globalValue
+    val color = if (enabled && hasOverride) MaterialTheme.colors.onBackground
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
 
     NestedRail(enabled = enabled) {
         Row(
@@ -711,7 +735,20 @@ private fun NestedNullableIntStepper(
                     checkmarkColor = MaterialTheme.colors.background,
                 ),
             )
-            Spacer(Modifier.weight(1f))
+            if (label != null) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = label, fontSize = 13.sp, color = color)
+                    if (!hasOverride && hint != null) {
+                        Text(
+                            text = hint,
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colors.onBackground.copy(alpha = 0.45f),
+                        )
+                    }
+                }
+            } else {
+                Spacer(Modifier.weight(1f))
+            }
             Stepper(
                 value = effectiveValue,
                 min = min,

@@ -677,4 +677,6 @@
     <string name="task_run">執行</string>
     <string name="task_requires_openai">自訂任務需要 OpenAI（不支援 Gemini）。</string>
     <string name="task_unknown">未知的任務。</string>
+    <string name="site_force_viewport_width">強制視窗寬度 (px)</string>
+    <string name="site_force_viewport_width_hint">僅在桌面版 UA 不足時使用</string>
 </resources>

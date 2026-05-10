@@ -680,4 +680,6 @@
     <string name="volume_page_turn_resumed">볼륨 키 페이지 넘기기가 재개됨</string>
     <string name="web_content_processing">웹 콘텐츠 처리</string>
     <string name="web_processing_gpt_type">GPT 엔진</string>
+    <string name="site_force_viewport_width">뷰포트 너비 강제 (px)</string>
+    <string name="site_force_viewport_width_hint">데스크톱 UA만으로 부족할 때만 사용</string>
 </resources>

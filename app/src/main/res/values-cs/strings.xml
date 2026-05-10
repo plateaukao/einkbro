@@ -622,4 +622,6 @@
     <string name="setting_summary_text_wrap_reflow">Přeformátovat text při přibližování</string>
     <string name="setting_title_zoom_in_custom_view">Přiblížení ve vlastním zobrazení</string>
     <string name="setting_summary_zoom_in_custom_view">Zapnout přiblížení dvěma prsty v režimu celé obrazovky (výchozí: vypnuto)</string>
+    <string name="site_force_viewport_width">Vynutit šířku viewportu (px)</string>
+    <string name="site_force_viewport_width_hint">Použijte, jen když desktopový UA nestačí</string>
 </resources>

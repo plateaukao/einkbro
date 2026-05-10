@@ -27,6 +27,7 @@ data class DomainConfigurationData(
     var blackFontStyle: Boolean? = null,
     var fontBoldness: Int? = null,
     var desktopMode: Boolean? = null,
+    var desktopViewportWidth: Int? = null,
     var enableJavascript: Boolean? = null,
     var translationMode: TranslationMode? = null,
     var customCss: String? = null,

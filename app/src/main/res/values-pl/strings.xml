@@ -618,4 +618,6 @@
     <string name="setting_summary_text_wrap_reflow">Przeformatuj tekst podczas powiększania</string>
     <string name="setting_title_zoom_in_custom_view">Powiększanie w widoku niestandardowym</string>
     <string name="setting_summary_zoom_in_custom_view">Włącz powiększanie dwoma palcami w trybie pełnoekranowym (domyślnie: wył.)</string>
+    <string name="site_force_viewport_width">Wymuś szerokość viewportu (px)</string>
+    <string name="site_force_viewport_width_hint">Użyj tylko gdy desktopowy UA nie wystarcza</string>
 </resources>
