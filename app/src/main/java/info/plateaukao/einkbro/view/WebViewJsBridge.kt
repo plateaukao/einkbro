@@ -485,7 +485,7 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
         private const val TRANSLATED_P_CSS_NONE = """
             .to-translate + p:not(.translated) {
-                margin: 0; padding: 0; height: 0; overflow: hidden;
+                display: none;
             }
             .translated {
                 padding: 5px; display: inline-block; line-height: 1.5; max-width: 100vw;
@@ -494,7 +494,7 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
         private const val TRANSLATED_P_CSS_GRAY = """
             .to-translate + p:not(.translated) {
-                margin: 0; padding: 0; height: 0; overflow: hidden;
+                display: none;
             }
             .translated {
                 color: gray; padding: 5px; display: inline-block; max-width: 100vw; line-height: 1.5;
@@ -503,7 +503,7 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
         private const val TRANSLATED_P_CSS_BOLD = """
             .to-translate + p:not(.translated) {
-                margin: 0; padding: 0; height: 0; overflow: hidden;
+                display: none;
             }
             .translated {
                 font-weight: bold; padding: 5px; display: inline-block; max-width: 100vw; line-height: 1.5;
@@ -512,7 +512,7 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
         private const val TRANSLATED_P_CSS_DASHED_BORDER = """
             .to-translate + p:not(.translated) {
-                margin: 0; padding: 0; height: 0; overflow: hidden;
+                display: none;
             }
             .translated {
                 border: 1px dashed lightgray; padding: 5px; display: inline-block; position: relative; max-width: 100vw; line-height: 1.5;
@@ -521,7 +521,7 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
         private const val TRANSLATED_P_CSS_VERTICAL_LINE = """
             .to-translate + p:not(.translated) {
-                margin: 0; padding: 0; height: 0; overflow: hidden;
+                display: none;
             }
             .translated {
                 padding: 2px; margin-left: 7px; display: inline-block; position: relative; max-width: 100vw; line-height: 1.5;
