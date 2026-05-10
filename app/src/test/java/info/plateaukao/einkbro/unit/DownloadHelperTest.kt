@@ -28,4 +28,15 @@ class DownloadHelperTest {
 
         assertEquals("README.md", fileName)
     }
+
+    @Test
+    fun `guessFilename preserves plus sign in path filenames`() {
+        val fileName = DownloadHelper.guessFilename(
+            url = "https://example.com/files/app-1.0+rc1.apk",
+            contentDisposition = "",
+            mimeType = "application/vnd.android.package-archive",
+        )
+
+        assertEquals("app-1.0+rc1.apk", fileName)
+    }
 }
