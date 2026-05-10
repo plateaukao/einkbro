@@ -48,6 +48,47 @@ object DownloadHelper {
     private fun publicDownloadDir(context: Context): File =
         Environment.getExternalStoragePublicDirectory(publicDownloadDirName(context))
 
+    private fun useSupernoteStorage(context: Context): Boolean =
+        HelperUnit.isSupernoteDocumentInstalled(context)
+
+    private fun guessMime(fileName: String, fallback: String): String {
+        if (fallback.isNotBlank()) return fallback
+        val ext = fileName.substringAfterLast('.', "").lowercase()
+        return android.webkit.MimeTypeMap.getSingleton()
+            .getMimeTypeFromExtension(ext) ?: "application/octet-stream"
+    }
+
+    /**
+     * Write [bytes] into the granted Supernote `Document/` tree. Prompts for SAF
+     * permission on first use. Reports completion / failure via toast.
+     */
+    private fun writeBytesViaSupernote(
+        activity: Activity,
+        fileName: String,
+        mimeType: String,
+        bytes: ByteArray,
+    ) {
+        SupernoteStorage.ensureTreeUri { treeUri ->
+            if (treeUri == null) {
+                showShort(activity, R.string.error_download_link_invalid)
+                return@ensureTreeUri
+            }
+            try {
+                val opened = SupernoteStorage.openOutputStream(
+                    activity, treeUri, fileName, guessMime(fileName, mimeType),
+                ) ?: run {
+                    showShort(activity, R.string.error_download_link_invalid)
+                    return@ensureTreeUri
+                }
+                opened.first.use { it.write(bytes) }
+                showShort(activity, R.string.toast_downloadComplete)
+            } catch (e: Exception) {
+                Log.w("browser", "Supernote write failed: $e")
+                showShort(activity, R.string.error_download_link_invalid)
+            }
+        }
+    }
+
     @JvmStatic
     fun download(context: Context, url: String, contentDisposition: String, mimeType: String) {
         val activity = context as Activity
@@ -95,9 +136,6 @@ object DownloadHelper {
                 .getExtensionFromMimeType(effectiveMimeType) ?: "bin"
             val filename = "download_${System.currentTimeMillis()}.$ext"
 
-            val downloadsDir = publicDownloadDir(activity)
-            val destFile = File(downloadsDir, filename)
-
             val bytes = if (isBase64) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     Base64.getDecoder().decode(rawData)
@@ -108,8 +146,13 @@ object DownloadHelper {
                 java.net.URLDecoder.decode(rawData, "UTF-8").toByteArray()
             }
 
-            destFile.writeBytes(bytes)
-            showShort(activity, R.string.toast_downloadComplete)
+            if (useSupernoteStorage(activity)) {
+                writeBytesViaSupernote(activity, filename, effectiveMimeType, bytes)
+            } else {
+                val destFile = File(publicDownloadDir(activity), filename)
+                destFile.writeBytes(bytes)
+                showShort(activity, R.string.toast_downloadComplete)
+            }
         } catch (e: Exception) {
             Log.w("browser", "Failed to save data URL: $e")
             showShort(activity, R.string.error_download_link_invalid)
@@ -179,16 +222,21 @@ object DownloadHelper {
                     return@launch
                 }
 
-                val downloadsDir = publicDownloadDir(activity)
-                val destFile = File(downloadsDir, filename)
-                connection.inputStream.use { input ->
-                    destFile.outputStream().use { output ->
-                        input.copyTo(output)
+                if (useSupernoteStorage(activity)) {
+                    val bytes = connection.inputStream.use { it.readBytes() }
+                    withContext(Dispatchers.Main) {
+                        writeBytesViaSupernote(activity, filename, mimeType, bytes)
                     }
-                }
-
-                withContext(Dispatchers.Main) {
-                    showShort(activity, R.string.toast_downloadComplete)
+                } else {
+                    val destFile = File(publicDownloadDir(activity), filename)
+                    connection.inputStream.use { input ->
+                        destFile.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    withContext(Dispatchers.Main) {
+                        showShort(activity, R.string.toast_downloadComplete)
+                    }
                 }
             } catch (e: Exception) {
                 Log.w("browser", "Direct download also failed: $e")
@@ -314,17 +362,26 @@ object DownloadHelper {
             return
         }
         if (needGrantStoragePermission(activity)) return
-        val request = DownloadManager.Request(Uri.parse(url)).apply {
-            addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-            addRequestHeader("User-Agent", WebSettings.getDefaultUserAgent(activity))
-            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            try {
-                setDestinationInExternalPublicDir(publicDownloadDirName(activity), fileName)
-            } catch (e: Exception) {
-                setDestinationUri(Uri.fromFile(File(publicDownloadDir(activity), fileName)))
+        val cookie = CookieManager.getInstance().getCookie(url)
+        val userAgent = WebSettings.getDefaultUserAgent(activity)
+        try {
+            val request = DownloadManager.Request(Uri.parse(url)).apply {
+                if (cookie != null) addRequestHeader("Cookie", cookie)
+                addRequestHeader("User-Agent", userAgent)
+                setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                try {
+                    setDestinationInExternalPublicDir(publicDownloadDirName(activity), fileName)
+                } catch (e: Exception) {
+                    setDestinationUri(Uri.fromFile(File(publicDownloadDir(activity), fileName)))
+                }
             }
+            (activity.getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+        } catch (e: Exception) {
+            // DownloadManager rejects custom public dirs (e.g. Supernote's "Document"),
+            // fall back to a direct HTTP download into the resolved folder.
+            Log.w("browser", "DownloadManager rejected destination, falling back: $e")
+            directDownload(activity, url, cookie, userAgent, fileName, "")
         }
-        (activity.getSystemService(DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
         ViewUnit.hideKeyboard(activity)
     }
 

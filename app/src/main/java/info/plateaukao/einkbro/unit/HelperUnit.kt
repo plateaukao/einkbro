@@ -343,6 +343,15 @@ object HelperUnit {
         Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADocument")
 
     /**
+     * One level above [supernoteDocumentInitialUri] — the root of primary
+     * external storage. Use this for SAF *tree* pickers so the Document folder
+     * appears as a tappable item instead of starting inside it (which forces
+     * the user to navigate up then back down to reveal the grant button).
+     */
+    fun supernoteStorageRootInitialUri(): Uri =
+        Uri.parse("content://com.android.externalstorage.documents/document/primary%3A")
+
+    /**
      * Supernote's reader registers no VIEW intent filter, so it never resolves
      * via PackageManager. Surface it as a synthetic dialog entry that targets
      * MainActivity (exported, singleTask) with `file_path` set — MainActivity
