@@ -627,4 +627,6 @@
     <string name="share_waiting">Se așteaptă date de pe alt dispozitiv…</string>
     <string name="setting_title_github_snapshot">Actualizare cu instantaneu</string>
     <string name="audio_only_mode">Doar audio</string>
+    <string name="site_force_viewport_width">Forțează lățimea viewportului (px)</string>
+    <string name="site_force_viewport_width_hint">Folosiți doar dacă UA desktop nu este suficient</string>
 </resources>

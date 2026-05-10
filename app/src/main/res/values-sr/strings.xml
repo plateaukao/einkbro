@@ -626,4 +626,6 @@
     <string name="web_processing_gpt_type">GPT мотор</string>
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="white_background">Бела позадина</string>
+    <string name="site_force_viewport_width">Принуди ширину viewporta (px)</string>
+    <string name="site_force_viewport_width_hint">Користите само ако desktop UA није довољан</string>
 </resources>

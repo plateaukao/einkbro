@@ -627,4 +627,6 @@
     <string name="web_processing_gpt_type">Engine GPT</string>
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="white_background">Nền trắng</string>
+    <string name="site_force_viewport_width">Buộc chiều rộng viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Chỉ dùng khi UA máy tính chưa đủ</string>
 </resources>

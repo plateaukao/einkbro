@@ -627,4 +627,6 @@
     <string name="web_processing_gpt_type">GPT-enjin</string>
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="white_background">Wit agtergrond</string>
+    <string name="site_force_viewport_width">Forseer kykvenster-wydte (px)</string>
+    <string name="site_force_viewport_width_hint">Gebruik slegs as Desktop-UA alleen nie genoeg is nie</string>
 </resources>

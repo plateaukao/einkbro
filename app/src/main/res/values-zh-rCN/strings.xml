@@ -683,4 +683,6 @@
     <string name="url_empty">网址为空</string>
     <string name="volume_page_turn_paused">音量键翻页已暂停 5 秒</string>
     <string name="volume_page_turn_resumed">音量键翻页已恢复</string>
+    <string name="site_force_viewport_width">强制视口宽度 (px)</string>
+    <string name="site_force_viewport_width_hint">仅当桌面 UA 不足时使用</string>
 </resources>

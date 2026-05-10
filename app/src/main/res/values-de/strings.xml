@@ -617,4 +617,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_receive_appData">App-Daten von einem anderen Gerät über lokales Netzwerk empfangen</string>
     <string name="share_broadcasting">Sende im lokalen Netzwerk…</string>
     <string name="share_waiting">Warte auf Daten von einem anderen Gerät…</string>
+    <string name="site_force_viewport_width">Viewport-Breite erzwingen (px)</string>
+    <string name="site_force_viewport_width_hint">Nur verwenden, wenn Desktop-UA allein nicht reicht</string>
 </resources>

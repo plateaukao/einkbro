@@ -626,4 +626,6 @@
     <string name="setting_summary_receive_appData">App-gegevens ontvangen van een ander apparaat via het lokale netwerk</string>
     <string name="share_broadcasting">Uitzenden op lokaal netwerk…</string>
     <string name="share_waiting">Wachten op gegevens van een ander apparaat…</string>
+    <string name="site_force_viewport_width">Viewport-breedte forceren (px)</string>
+    <string name="site_force_viewport_width_hint">Alleen gebruiken als desktop-UA niet voldoet</string>
 </resources>

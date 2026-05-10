@@ -618,4 +618,6 @@
     <string name="share_waiting">In attesa di dati da un altro dispositivo…</string>
     <string name="setting_title_github_snapshot">Aggiorna con snapshot</string>
     <string name="audio_only_mode">Solo audio</string>
+    <string name="site_force_viewport_width">Forza la larghezza del viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Usa solo se l\'UA desktop da solo non basta</string>
 </resources>

@@ -626,4 +626,6 @@
     <string name="setting_summary_text_wrap_reflow">Αναδιάταξη κειμένου κατά τη μεγέθυνση</string>
     <string name="setting_title_zoom_in_custom_view">Μεγέθυνση σε Προσαρμοσμένη Προβολή</string>
     <string name="setting_summary_zoom_in_custom_view">Ενεργοποίηση μεγέθυνσης με 2 δάχτυλα σε πλήρη οθόνη (προεπιλογή: ανενεργό)</string>
+    <string name="site_force_viewport_width">Επιβολή πλάτους viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Χρησιμοποιήστε μόνο αν το desktop UA δεν αρκεί</string>
 </resources>

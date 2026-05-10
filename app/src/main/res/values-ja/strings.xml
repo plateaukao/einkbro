@@ -625,4 +625,6 @@
     <string name="web_content_processing">ウェブコンテンツ処理</string>
     <string name="web_processing_gpt_type">GPTエンジン</string>
     <string name="wenkai_tc">WenKai(TC)</string>
+    <string name="site_force_viewport_width">ビューポート幅を強制 (px)</string>
+    <string name="site_force_viewport_width_hint">デスクトップUAだけで足りない場合にのみ使用</string>
 </resources>

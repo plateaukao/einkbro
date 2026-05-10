@@ -626,4 +626,6 @@
     <string name="web_processing_gpt_type">GPT-moottori</string>
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="white_background">Valkoinen tausta</string>
+    <string name="site_force_viewport_width">Pakota näkymän leveys (px)</string>
+    <string name="site_force_viewport_width_hint">Käytä vain jos pelkkä työpöytä-UA ei riitä</string>
 </resources>

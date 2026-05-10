@@ -615,4 +615,6 @@
     <string name="setting_summary_text_wrap_reflow">Refluxar el text en ampliar</string>
     <string name="setting_title_zoom_in_custom_view">Zoom en vista personalitzada</string>
     <string name="setting_summary_zoom_in_custom_view">Activar zoom amb 2 dits en mode pantalla completa (per defecte: fals)</string>
+    <string name="site_force_viewport_width">Força l\'amplada del viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Usa-ho només si l\'UA d\'escriptori no és suficient</string>
 </resources>

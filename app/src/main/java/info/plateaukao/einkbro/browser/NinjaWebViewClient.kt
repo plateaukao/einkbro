@@ -35,6 +35,7 @@ import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.unit.EinkImageProcessor
 import info.plateaukao.einkbro.view.EBToast
@@ -134,6 +135,16 @@ class EBWebViewClient(
         if (!config.browser.enableVideoAutoplay) {
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
         }
+
+        url?.let { injectForcedViewportWidth(it) }
+    }
+
+    private fun injectForcedViewportWidth(url: String) {
+        val width = config.getDesktopViewportWidth(url) ?: return
+        if (width <= 0) return
+        val script = HelperUnit.loadAssetFile("force_viewport_width.js")
+            .replace("__WIDTH__", width.toString())
+        ebWebView.evaluateJavascript(script, null)
     }
 
     override fun onPageFinished(view: WebView, url: String) {

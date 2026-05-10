@@ -615,4 +615,6 @@
     <string name="setting_summary_text_wrap_reflow">Refluxo de texto ao ampliar</string>
     <string name="setting_title_zoom_in_custom_view">Zoom em vista personalizada</string>
     <string name="setting_summary_zoom_in_custom_view">Ativar zoom com 2 dedos em modo ecrã completo (predefinição: falso)</string>
+    <string name="site_force_viewport_width">Forçar largura da viewport (px)</string>
+    <string name="site_force_viewport_width_hint">Use apenas se o UA de desktop não for suficiente</string>
 </resources>

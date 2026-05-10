@@ -673,4 +673,6 @@
     <string name="web_content_processing">ᱣᱮᱵᱽ ᱡᱤᱱᱤᱥ ᱯᱨᱚᱥᱮᱥ</string>
     <string name="web_processing_gpt_type">GPT ᱤᱧᱡᱤᱱ</string>
     <string name="wenkai_tc">WenKai(TC)</string>
+    <string name="site_force_viewport_width">Force viewport width (px)</string>
+    <string name="site_force_viewport_width_hint">Use only if desktop UA alone is not enough</string>
 </resources>
