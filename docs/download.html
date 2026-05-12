@@ -60,6 +60,42 @@
 <h2>Changelog</h2>
 
 <div class="changelog-version">
+<h3>15.14.0</h3>
+
+<h4>Features</h4>
+<ul>
+  <li>Redesigned Site Settings dialog with pinned Reset/OK buttons</li>
+  <li>Per-site override to force desktop viewport width</li>
+  <li>Supernote: dedicated reader for saved EPUB/PDF files; downloads routed to Document/</li>
+  <li>In-process open-file chooser replaces the system picker</li>
+  <li>Live FAB position switching without activity restart</li>
+  <li>Pick toolbar position from a tablet diagram dialog</li>
+  <li>Mirrored toolbar side and full-height preview in toolbar config</li>
+  <li>Newly inserted toolbar icons appear in the middle and blink</li>
+  <li>PDF print zoom scales from page layout width</li>
+  <li>Long-press Share icon replays the last-used share target</li>
+  <li>Favicon-grid mode for address bar history</li>
+</ul>
+
+<h4>Fixes</h4>
+<ul>
+  <li>Blob-based downloads now work</li>
+  <li>Paragraph translation no longer breaks page layout or hits caching errors</li>
+  <li>Bookmarks dialog stays open across layout changes</li>
+  <li>Supernote saves routed through SAF to avoid scoped-storage crash</li>
+  <li>Open-with dialog shown on the main thread</li>
+  <li>YouTube caption capture hardened; cleared on SPA route changes</li>
+  <li>EPUB image fetch hardened</li>
+  <li>PDF saved via SAF picker without going through the system print spooler</li>
+  <li>Multitouch swipe handler no longer crashes on pointerIndex</li>
+  <li>Captions only move vertically in audio-only mode</li>
+  <li>AI chat pages excluded from history</li>
+  <li>Translation semaphore always released on error</li>
+  <li>GPT_SETTINGS not overwritten when ALL_PREFERENCES is selected for restore</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>15.13.0</h3>
 
 <h4>Features</h4>

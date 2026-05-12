@@ -380,6 +380,8 @@
 <h2>動作選單</h2>
 <p>點擊工具列上的「<strong>設定</strong>」（漢堡）圖示即可開啟動作選單，裡頭以可捲動的列排列了所有瀏覽器功能。</p>
 <a href="../images/action_menu.png" target="_blank"><img src="../images/action_menu.png" alt="動作選單" class="device-img"></a>
+<p><strong>自訂選單內容：</strong>長按選單進入編輯模式，磚塊可跨列拖曳，也可以隱藏不需要的項目。版面採由下往上排列，最常用的一列會落在拇指附近。</p>
+<p><strong>小撇步：</strong>長按「<strong>分享</strong>」圖示可直接重新呼叫上次使用的分享對象（略過系統選擇器）。</p>
 </section>
 
 <section id="menu-row1">
@@ -474,6 +476,8 @@
 <section id="settings-toolbar" class="settings-section">
 <h2>設定：工具列</h2>
 <a href="../images/settings_toolbar.png" target="_blank"><img src="../images/settings_toolbar.png" alt="工具列設定" class="device-img"></a>
+<p>工具列位置挑選器以平板示意圖呈現，可直觀比較下／上／左／右四種擺法，並提供鏡像側與整高的預覽。新加入的工具列圖示會出現在工具列正中央並短暫閃爍，方便辨識。</p>
+<p><strong>浮動按鈕（FAB）：</strong>切換位置即時生效，不需要重新啟動 Activity。</p>
 
 <div class="setting-item"><div class="setting-item__name">設定工具列圖示</div><div class="setting-item__desc"><span class="tag">動作</span> 開啟工具列圖示挑選與排序介面。</div></div>
 <div class="setting-item"><div class="setting-item__name">工具列位置</div><div class="setting-item__desc"><span class="tag">選項</span> 可選：<code>下方</code>、<code>上方</code>、<code>左側</code>、<code>右側</code>。預設：下方。</div></div>
@@ -499,6 +503,7 @@
 <div class="setting-item"><div class="setting-item__name">移除追蹤查詢參數</div><div class="setting-item__desc"><span class="tag">切換</span> 從網址中移除 <code>utm_*</code> 等追蹤參數。預設：關閉。</div></div>
 <div class="setting-item"><div class="setting-item__name">單次觸控網址動作</div><div class="setting-item__desc"><span class="tag">切換</span> 長按網址並拖曳至項目即可觸發動作。預設：開啟。</div></div>
 <div class="setting-item"><div class="setting-item__name">編輯網址時顯示書籤</div><div class="setting-item__desc"><span class="tag">切換</span> 在網址列輸入時顯示符合的書籤。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">網址列歷史改為 favicon 格狀</div><div class="setting-item__desc"><span class="tag">切換</span> 將最近瀏覽紀錄改用 favicon 格狀方式顯示在網址列建議區。預設：關閉。</div></div>
 
 <h4>影片</h4>
 <div class="setting-item"><div class="setting-item__name">允許影片自動播放</div><div class="setting-item__desc"><span class="tag">切換</span> 允許影片自動播放。預設：關閉。</div></div>
@@ -686,6 +691,25 @@
 </ul>
 </section>
 
+<section id="feature-site-overrides">
+<h2>個別站台設定</h2>
+<p>許多顯示與行為選項可以依站台儲存，下次造訪自動套用。從工具列（或手勢綁定）開啟「<strong>網站設定</strong>」對話框即可設定。</p>
+<h4>顯示與視窗</h4>
+<ul>
+  <li><strong>桌面版視窗寬度</strong> &mdash; 強制站台以桌面版排版顯示，不受全域行動／桌面切換影響</li>
+  <li><strong>顯示設定</strong> &mdash; 為每個站台分別記住閱讀模式、直書、粗體／黑色字體、白底、字級等</li>
+  <li><strong>翻譯模式</strong> &mdash; 每個站台可選擇不同的翻譯模式（逐段／原地）與提供者（見下方翻譯章節）</li>
+</ul>
+
+<h4>自訂 CSS 與 JavaScript</h4>
+<p>若站台需要微調樣式或腳本修補，網站設定對話框提供：</p>
+<ul>
+  <li><strong>自訂 CSS</strong> &mdash; 每次載入時自動套用（例如隱藏黏性 header、加寬文章欄寬）</li>
+  <li><strong>頁面載入後的 JavaScript</strong> &mdash; DOM 就緒後執行，可用來修正「點擊展開」按鈕，或移除繞過 adblock 的彈窗</li>
+</ul>
+<p>AI 代理（位於 <a href="#feature-ai">與網頁對話</a>）可以協助撰寫並儲存這些修補 &mdash; 只要對它說「把這個站的黏性橫幅關掉」，它就會寫好 CSS、限縮到當前網域並保存下來。</p>
+</section>
+
 <section id="feature-translate">
 <h2>翻譯</h2>
 <p>EinkBro 提供多種翻譯方式：</p>
@@ -720,6 +744,7 @@
   <li>儲存的 EPUB 包含 EinkBro 識別資訊，便於辨識</li>
   <li>為求最佳效果，建議內容能相容於閱讀模式</li>
 </ul>
+<p><strong>Supernote 裝置：</strong>EinkBro 會偵測 Supernote 硬體，並將下載檔案（EPUB／PDF 與其他檔案）改存到 <code>Document/</code>，直接在裝置的檔案瀏覽器中即可看到。儲存的 EPUB／PDF 也能直接從動作選單以 Supernote 閱讀器開啟。</p>
 </section>
 
 <section id="feature-touch">

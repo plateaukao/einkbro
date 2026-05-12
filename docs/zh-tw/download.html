@@ -61,6 +61,42 @@
 <h2>更新日誌</h2>
 
 <div class="changelog-version">
+<h3>15.14.0</h3>
+
+<h4>新功能</h4>
+<ul>
+  <li>網站設定對話框全面改版，並將「重設／確定」按鈕固定在底部</li>
+  <li>可針對單一站台強制使用桌面版視窗寬度</li>
+  <li>Supernote：為已儲存的 EPUB／PDF 提供專屬閱讀器，下載自動存入 Document/</li>
+  <li>內建的開啟檔案對話框取代系統檔案選擇器</li>
+  <li>切換 FAB 位置不需重新啟動 Activity</li>
+  <li>透過平板示意圖對話框挑選工具列位置</li>
+  <li>工具列設定中提供鏡像側邊與整高預覽</li>
+  <li>新加入的工具列圖示會出現在中央並閃爍</li>
+  <li>PDF 列印的縮放會依頁面排版寬度自動調整</li>
+  <li>長按分享按鈕會重新呼叫上次使用的分享對象</li>
+  <li>網址列歷史紀錄新增 favicon 格狀模式</li>
+</ul>
+
+<h4>修正</h4>
+<ul>
+  <li>修正 Blob 下載無法運作</li>
+  <li>逐段翻譯不再破壞頁面排版或觸發快取錯誤</li>
+  <li>書籤對話框在版面變動時不再消失</li>
+  <li>Supernote 儲存改走 SAF，避免 scoped-storage 崩潰</li>
+  <li>「以其他應用程式開啟」對話框改於主執行緒顯示</li>
+  <li>YouTube 字幕擷取更穩定，並會在 SPA 路由切換時清除</li>
+  <li>強化 EPUB 圖片抓取</li>
+  <li>PDF 透過 SAF 選擇器儲存，不再經由系統列印佇列</li>
+  <li>多點觸控滑動處理不再因 pointerIndex 而崩潰</li>
+  <li>只有在純音訊模式才會垂直移動字幕</li>
+  <li>AI 聊天頁面不再寫入瀏覽紀錄</li>
+  <li>翻譯 semaphore 在發生錯誤時也會釋放</li>
+  <li>當選擇還原 ALL_PREFERENCES 時不再覆蓋 GPT_SETTINGS</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>15.13.0</h3>
 
 <h4>新功能</h4>
