@@ -1,3 +1,34 @@
+### 15.14.0
+#### Features
+* Redesigned Site Settings dialog with pinned Reset/OK buttons
+* Per-site override to force desktop viewport width
+* Supernote: dedicated reader for saved EPUB/PDF files and downloads routed to Document/
+* In-process open-file chooser replaces system picker
+* Live FAB position switching without activity restart
+* Pick toolbar position from a tablet diagram dialog
+* Mirrored toolbar side and full-height preview in toolbar config
+* Newly inserted toolbar icons appear in the middle and blink
+* PDF print zoom scales from page layout width
+* Long-press Share icon replays the last-used share target
+* Favicon-grid mode for address bar history
+
+#### Fixes
+* Blob-based downloads now work
+* Paragraph translation no longer breaks page layout or hits caching errors
+* Bookmarks dialog stays open across layout changes
+* Supernote saves routed through SAF to avoid scoped-storage crash
+* Open-with dialog shown on the main thread
+* YouTube caption capture hardened; cleared on SPA route changes
+* EPUB image fetch hardened
+* PDF saved via SAF picker without going through the system print spooler
+* Multitouch swipe handler no longer crashes on pointerIndex
+* Captions only move vertically in audio-only mode
+* AI chat pages excluded from history
+* Translation semaphore always released on error
+* GPT_SETTINGS not overwritten when ALL_PREFERENCES is selected for restore
+
+---
+
 ### 15.13.0
 #### Features
 * Per-domain custom CSS and post-load JavaScript overrides

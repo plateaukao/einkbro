@@ -379,6 +379,8 @@
 <h2>Action Menu</h2>
 <p>Tap the <strong>Settings</strong> (hamburger) icon on the toolbar to open the action menu. It contains all browser functions organized in scrollable rows.</p>
 <a href="images/action_menu.png" target="_blank"><img src="images/action_menu.png" alt="Action Menu" class="device-img"></a>
+<p><strong>Customize what shows:</strong> long-press the menu to enter edit mode — drag tiles between rows (cross-row drag is supported) and hide tiles you never use. The layout fills bottom-row-first so the most frequently used row stays under your thumb.</p>
+<p><strong>Tip:</strong> long-press the <strong>Share</strong> icon to replay the last share target you used (skips the system chooser).</p>
 </section>
 
 <section id="menu-row1">
@@ -472,6 +474,8 @@
 
 <section id="settings-toolbar" class="settings-section">
 <h2>Settings: Toolbar</h2>
+<p>The toolbar-position picker shows a tablet diagram so you can see exactly where Bottom / Top / Left / Right will place the bar. The same screen offers mirrored-side and full-height previews. Newly added toolbar icons appear in the middle of the bar and briefly blink so they're easy to spot.</p>
+<p><strong>Floating button (FAB):</strong> changing its position applies live without restarting the activity.</p>
 <a href="images/settings_toolbar.png" target="_blank"><img src="images/settings_toolbar.png" alt="Toolbar Settings" class="device-img"></a>
 
 <div class="setting-item"><div class="setting-item__name">Configure Toolbar Icons</div><div class="setting-item__desc"><span class="tag">Action</span> Open the toolbar icon picker and reorder interface.</div></div>
@@ -498,6 +502,7 @@
 <div class="setting-item"><div class="setting-item__name">Prune Tracking Query Parameters</div><div class="setting-item__desc"><span class="tag">Toggle</span> Strip <code>utm_*</code> and other tracking params from URLs. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">1 Touch to URL Action</div><div class="setting-item__desc"><span class="tag">Toggle</span> Long-click on URL and drag to item to trigger action. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">Show Bookmarks When Editing URL</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show matching bookmarks while typing in URL bar. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Favicon-grid Address Bar History</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show recent history as a compact favicon grid in the URL bar suggestion area. Default: off.</div></div>
 
 <h4>Video</h4>
 <div class="setting-item"><div class="setting-item__name">Allow Video Autoplay</div><div class="setting-item__desc"><span class="tag">Toggle</span> Allow videos to play automatically. Default: off.</div></div>
@@ -685,6 +690,25 @@
 </ul>
 </section>
 
+<section id="feature-site-overrides">
+<h2>Per-Site Overrides</h2>
+<p>Many display and behavior options can be saved per site so they apply automatically on subsequent visits. Open the <strong>Site Settings</strong> dialog from the toolbar (or via gesture binding) to configure them.</p>
+<h4>Display &amp; Viewport</h4>
+<ul>
+  <li><strong>Desktop viewport width</strong> &mdash; force a site to render at desktop layout regardless of the global mobile/desktop toggle</li>
+  <li><strong>Display settings</strong> &mdash; remember Reader Mode, vertical text, bold/black font, white background, font size, etc. per site</li>
+  <li><strong>Translation mode</strong> &mdash; pick paragraph vs. in-place, and the provider, on a per-site basis (see Translation section below)</li>
+</ul>
+
+<h4>Custom CSS &amp; JavaScript</h4>
+<p>For sites that need style tweaks or scripted fixes, the Site Settings dialog accepts:</p>
+<ul>
+  <li><strong>Custom CSS</strong> &mdash; appended to the page on every load (e.g. hide a sticky header, widen the article column)</li>
+  <li><strong>Post-load JavaScript</strong> &mdash; runs after the DOM is ready, useful for click-to-expand fixes or removing pop-ups that bypass adblock</li>
+</ul>
+<p>The AI agent (under <a href="#feature-ai">Chat With Web</a>) can author and save these patches for you &mdash; ask it to "hide the sticky banner on this site" and it will write CSS, scope it to the current domain, and persist it.</p>
+</section>
+
 <section id="feature-translate">
 <h2>Translation</h2>
 <p>EinkBro offers multiple translation methods:</p>
@@ -719,6 +743,7 @@
   <li>EPUB files include an EinkBro identifier for easy identification</li>
   <li>Content must be reader-mode compatible for best results</li>
 </ul>
+<p><strong>Supernote devices:</strong> EinkBro detects Supernote hardware and routes downloads (EPUB / PDF / other files) to <code>Document/</code> so they appear directly in the device's file browser. Saved EPUBs and PDFs can be opened in the Supernote reader straight from the action menu.</p>
 </section>
 
 <section id="feature-touch">
