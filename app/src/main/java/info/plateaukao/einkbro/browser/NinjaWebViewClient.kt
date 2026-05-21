@@ -37,7 +37,6 @@ import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.EinkImageCache
-import info.plateaukao.einkbro.unit.EinkImageProcessor
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -415,72 +414,18 @@ class EBWebViewClient(
         val url = request.url.toString()
         if (!looksLikeImageUrl(url) && !hasImageAcceptHeader(request)) return null
 
-        // Check cache first
+        // Cache hit — serve processed image immediately (no blocking)
         einkImageCache.get(url, adjustment.strength)?.let { cachedStream ->
             val mimeType = getImageMimeFromUrl(url) ?: "image/jpeg"
             return WebResourceResponse(mimeType, null, cachedStream)
         }
 
-        return try {
-            val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
-            request.requestHeaders?.forEach { (key, value) ->
-                connection.setRequestProperty(key, value)
-            }
-            // Add cookies from WebView's CookieManager (CDNs like Instagram require auth cookies)
-            val cookies = CookieManager.getInstance().getCookie(url)
-            if (!cookies.isNullOrEmpty()) {
-                connection.setRequestProperty("Cookie", cookies)
-            }
-            connection.connectTimeout = 10_000
-            connection.readTimeout = 10_000
-
-            val statusCode = connection.responseCode
-            if (statusCode !in 200..299) {
-                connection.disconnect()
-                return null
-            }
-
-            // Use response Content-Type for actual MIME; fall back to URL extension
-            val responseContentType = connection.contentType
-            val mimeType = getImageMimeFromContentType(responseContentType)
-                ?: getImageMimeFromUrl(url)
-                ?: run { connection.disconnect(); return null }
-
-            val inputStream = connection.inputStream
-            val processedStream = EinkImageProcessor.processStream(
-                inputStream, mimeType, adjustment.strength
-            )
-            inputStream.close()
-
-            if (processedStream != null) {
-                // Cache the processed image bytes
-                val processedBytes = processedStream.readBytes()
-                einkImageCache.put(url, adjustment.strength, processedBytes)
-
-                // Forward response headers so CORS / caching / JS fetch still work
-                val responseHeaders = mutableMapOf<String, String>()
-                var i = 0
-                while (true) {
-                    val key = connection.getHeaderFieldKey(i) ?: if (i == 0) { i++; continue } else break
-                    val value = connection.getHeaderField(i) ?: break
-                    val lowerKey = key.lowercase()
-                    // Skip headers we override or that no longer apply after re-encoding
-                    if (lowerKey !in setOf("content-length", "content-encoding", "transfer-encoding", "content-type")) {
-                        responseHeaders[key] = value
-                    }
-                    i++
-                }
-                WebResourceResponse(
-                    mimeType, null, statusCode, connection.responseMessage ?: "OK",
-                    responseHeaders, ByteArrayInputStream(processedBytes)
-                )
-            } else {
-                connection.disconnect()
-                null
-            }
-        } catch (e: Exception) {
-            null
-        }
+        // No cache — don't make a synchronous network request on WebView's shared IO thread.
+        // Doing so would block ALL tabs' resource loading (images, CSS, JS) until the
+        // connection completes or times out, causing perceived "other tabs stuck" behavior.
+        // Let WebView load the image normally; eink processing kicks in on subsequent loads
+        // when the image is cached.
+        return null
     }
 
     private fun looksLikeImageUrl(url: String): Boolean {
