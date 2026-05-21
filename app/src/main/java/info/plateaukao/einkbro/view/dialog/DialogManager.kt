@@ -47,7 +47,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.documentfile.provider.DocumentFile
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BackupCategory
@@ -190,7 +189,13 @@ class DialogManager(
     }
 
     private fun getFileSizeString(uri: String): String {
-        val sizeInBytes = DocumentFile.fromSingleUri(activity, Uri.parse(uri))?.length() ?: 0
+        val sizeInBytes = try {
+            activity.contentResolver.openFileDescriptor(Uri.parse(uri), "r")?.use { pfd ->
+                pfd.statSize
+            } ?: 0L
+        } catch (e: Exception) {
+            0L
+        }
         val sizeInKB = sizeInBytes / 1024
         val sizeInMB = sizeInKB / 1024F
         return if (sizeInMB > 1) "%.1fMB".format(sizeInMB) else "${sizeInKB}KB"
@@ -257,23 +262,27 @@ class DialogManager(
 
     fun showOkCancelDialog(
         title: String? = null,
+        titleResId: Int? = null,
         messageResId: Int? = null,
         message: String? = null,
         view: View? = null,
         okAction: () -> Unit,
         cancelAction: (() -> Unit)? = null,
+        okLabelResId: Int? = null,
+        cancelLabelResId: Int? = null,
         showInCenter: Boolean = false,
         showNegativeButton: Boolean = true,
     ): Dialog {
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
-            .setPositiveButton(android.R.string.ok) { _, _ -> okAction() }
+            .setPositiveButton(okLabelResId ?: android.R.string.ok) { _, _ -> okAction() }
             .apply {
+                titleResId?.let { setTitle(it) }
                 title?.let { title -> setTitle(title) }
                 view?.let { setView(it) }
                 messageResId?.let { setMessage(messageResId) }
                 message?.let { setMessage(message) }
                 if (showNegativeButton) {
-                    setNegativeButton(android.R.string.cancel) { _, _ -> cancelAction?.invoke() }
+                    setNegativeButton(cancelLabelResId ?: android.R.string.cancel) { _, _ -> cancelAction?.invoke() }
                 }
             }
             .create().apply {

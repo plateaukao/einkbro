@@ -102,27 +102,49 @@ class FileHandlingDelegate(
 
     @Suppress("DEPRECATION")
     fun saveEpub(uri: Uri) {
-        val progressDialog =
-            dialogManager.createProgressDialog(R.string.saving_epub).apply { show() }
-        epubManager.saveEpub(
-            activity,
-            uri,
-            state.ebWebView,
-            {
-                progressDialog.progress = it
-                if (it == 100) {
+        val ebWebView = state.ebWebView
+
+        val startSaving: (Boolean) -> Unit = { useReaderMode ->
+            val progressDialog =
+                dialogManager.createProgressDialog(R.string.saving_epub).apply { show() }
+            epubManager.saveEpub(
+                activity,
+                uri,
+                ebWebView,
+                {
+                    progressDialog.progress = it
+                    if (it == 100) {
+                        progressDialog.dismiss()
+                    }
+                },
+                {
                     progressDialog.dismiss()
-                }
-            },
-            {
-                progressDialog.dismiss()
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.cannot_save_epub,
-                    okAction = {},
-                    showInCenter = true,
-                    showNegativeButton = false,
-                )
-            }
+                    dialogManager.showOkCancelDialog(
+                        messageResId = R.string.cannot_save_epub,
+                        okAction = {},
+                        showInCenter = true,
+                        showNegativeButton = false,
+                    )
+                },
+                useReaderMode = useReaderMode,
+            )
+        }
+
+        // If reader mode is on, no need to ask
+        if (ebWebView.isReaderModeOn || ebWebView.dualCaption != null) {
+            startSaving(true)
+            return
+        }
+
+        // Otherwise ask: reader mode (clean article) or full page?
+        dialogManager.showOkCancelDialog(
+            titleResId = R.string.menu_save_epub,
+            messageResId = R.string.save_epub_reader_or_full,
+            okLabelResId = R.string.save_epub_reader_mode,
+            okAction = { startSaving(true) },
+            cancelLabelResId = R.string.save_epub_full_page,
+            cancelAction = { startSaving(false) },
+            showInCenter = true,
         )
     }
 

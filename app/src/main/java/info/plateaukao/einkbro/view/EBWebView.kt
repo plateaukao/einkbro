@@ -786,6 +786,21 @@ open class EBWebView(
     }
 
     var rawHtmlCache: String? = null
+
+    /**
+     * Get the full original page HTML — no reader-mode extraction.
+     * Works regardless of reader mode state.
+     */
+    suspend fun getRawFullHtml() = suspendCoroutine<String> { continuation ->
+        evaluateJavascript(
+            "document.documentElement.outerHTML"
+        ) { html ->
+            val processed = HelperUnit.unescapeJava(html)
+            val raw = processed.removeSurrounding("\"")
+            continuation.resume(raw)
+        }
+    }
+
     suspend fun getRawReaderHtml() = suspendCoroutine { continuation ->
         if (isPlainText && rawHtmlCache != null) {
             continuation.resume(rawHtmlCache!!)

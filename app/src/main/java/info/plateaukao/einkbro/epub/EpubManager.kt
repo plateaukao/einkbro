@@ -57,6 +57,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         ebWebView: EBWebView,
         onProgressChanged: (Int) -> Unit,
         onErrorAction: () -> Unit,
+        useReaderMode: Boolean = true,
     ) {
         activity.lifecycleScope.launch(Dispatchers.Main) {
             val isNewFile =
@@ -68,7 +69,7 @@ class EpubManager(private val context: Context) : KoinComponent {
             if (bookName != null && chapterName != null) {
                 val rawHtml = ebWebView.dualCaption?.let {
                     DualCaptionProcessor().convertToHtml(it)
-                } ?: ebWebView.getRawReaderHtml()
+                } ?: if (useReaderMode) ebWebView.getRawReaderHtml() else ebWebView.getRawFullHtml()
                 onProgressChanged(5)
 
                 internalSaveEpub(
