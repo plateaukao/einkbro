@@ -7,7 +7,6 @@ import android.provider.DocumentsContract
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
-import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
@@ -60,8 +59,13 @@ class EpubManager(private val context: Context) : KoinComponent {
         useReaderMode: Boolean = true,
     ) {
         activity.lifecycleScope.launch(Dispatchers.Main) {
-            val isNewFile =
-                (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
+            val isNewFile = try {
+                activity.contentResolver.openFileDescriptor(fileUri, "r")?.use { pfd ->
+                    pfd.statSize == 0L
+                } ?: true
+            } catch (e: Exception) {
+                true
+            }
 
             val bookName = if (isNewFile) getBookName(ebWebView.title?.pruneWebTitle()) else ""
             val chapterName = getChapterName(ebWebView.title?.pruneWebTitle())
