@@ -339,6 +339,8 @@ open class EBWebView(
             config.display.darkMode == DarkMode.FORCE_ON
         val disabled = config.display.darkMode == DarkMode.DISABLED
 
+        if (disabled) return        
+
         if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, wantDark && !disabled)
             if (wantDark && !disabled) setBackgroundColor(Color.parseColor("#000000"))
