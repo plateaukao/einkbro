@@ -30,6 +30,7 @@ import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -50,6 +51,7 @@ import info.plateaukao.einkbro.preference.BrowserConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TabConfig
 import info.plateaukao.einkbro.preference.UiConfig
+import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.DisplayConfig
 import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TtsConfig
@@ -1047,7 +1049,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
             UiConfig.K_KEEP_AWAKE -> { if (config.ui.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) else window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
             BrowserConfig.K_DESKTOP -> { ebWebView.updateUserAgentString(); ebWebView.reload(); composeToolbarViewController.updateIcons() }
-            DisplayConfig.K_DARK_MODE -> config.restartChanged = true
+            DisplayConfig.K_DARK_MODE -> {
+                AppCompatDelegate.setDefaultNightMode(
+                    when (config.display.darkMode) {
+                        DarkMode.FORCE_ON -> AppCompatDelegate.MODE_NIGHT_YES
+                        DarkMode.DISABLED -> AppCompatDelegate.MODE_NIGHT_NO
+                        DarkMode.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    }
+                )
+                browserContainer.list().forEach { (it as? EBWebView)?.updateDarkMode() }
+                config.restartChanged = true
+            }
             UiConfig.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
             UiConfig.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
             UiConfig.K_NAV_POSITION -> fabImageViewController.applyFabPosition()

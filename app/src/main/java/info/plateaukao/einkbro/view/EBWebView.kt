@@ -331,21 +331,18 @@ open class EBWebView(
         addJavascriptInterface(JsWebInterface(this, webViewCallback as? JsBrowserCallback), "androidApp")
     }
 
-    private fun updateDarkMode() {
-        if (config.display.darkMode == DarkMode.DISABLED) {
-            return
-        }
-
+    fun updateDarkMode() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
 
         val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val wantDark = nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
             config.display.darkMode == DarkMode.FORCE_ON
+        val disabled = config.display.darkMode == DarkMode.DISABLED
 
         if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
-            WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, wantDark)
-            if (wantDark) setBackgroundColor(Color.parseColor("#000000"))
-        } else if (wantDark) {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, wantDark && !disabled)
+            if (wantDark && !disabled) setBackgroundColor(Color.parseColor("#000000"))
+        } else if (wantDark && !disabled) {
             @Suppress("DEPRECATION")
             if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
                 WebSettingsCompat.setForceDarkStrategy(
