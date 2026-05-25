@@ -2972,12 +2972,20 @@ const minuteTranslations = {
   sv: 'minuter',
   tr: 'dakika',
   zh: '分鐘',
+  'zh-cn': '分钟',   // 简体中文
+  'zh-tw': '分鐘',   // 繁体中文
+  'zh-hk': '分鐘',   // 繁体中文
+  'zh-sg': '分钟',   // 简体中文
+  'zh-hans': '分钟',   // 简体中文
+  'zh-hant': '分鐘',   // 繁体中文
   ja: '分',
   ko: '분',
 };
 
 
 function getReadingTime(length, lang = "en") {
+  lang = lang.toLowerCase();
+  lang = lang.startsWith("zh") ? lang : lang.slice(0, 2);
   const readingSpeed = this.getReadingSpeedForLanguage(lang);
   const charactersPerMinuteLow = readingSpeed.cpm - readingSpeed.variance;
   const charactersPerMinuteHigh = readingSpeed.cpm + readingSpeed.variance;
