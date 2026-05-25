@@ -256,7 +256,7 @@
     <string name="touch_area_setting">触控设置</string>
     <string name="toolbar_setting">工具栏设置</string>
     <string name="menu_save_epub">保存Epub</string>
-    <string name="new_epub_or_from_picker">新建Epub或来自选择器</string>
+    <string name="new_epub_or_from_picker">新建Epub</string>
     <string name="title">章节名称</string>
     <string name="title_in_toc">目录中的章节名称</string>
     <string name="book_name">图书名称</string>
