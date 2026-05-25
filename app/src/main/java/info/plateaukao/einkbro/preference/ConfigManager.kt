@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import android.net.Uri
 import androidx.core.content.edit
 import info.plateaukao.einkbro.database.Bookmark
@@ -340,6 +341,47 @@ class ConfigManager(
 
     fun addSavedEpubFile(epubFileInfo: EpubFileInfo) {
         savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { add(epubFileInfo) }
+    }
+    
+    fun addSavedEpubFile(uri: Uri) {
+        val uriString = uri.toString()
+        if (savedEpubFileInfos.none { it.uri == uriString }) {
+            // Extract filename from URI
+            val fileName = extractFileNameFromUri(uri, context)
+            addSavedEpubFile(EpubFileInfo(fileName, uriString))
+        }
+    }
+
+    /**
+     * Extract filename from URI.
+     * For file:// URIs, extract from path.
+     * For content:// URIs, try to get the display name.
+     */
+    private fun extractFileNameFromUri(uri: Uri, context: Context): String {
+        return try {
+            when (uri.scheme) {
+                "file" -> {
+                    val path = uri.path ?: ""
+                    val fileName = path.substringAfterLast("/")
+                    fileName.ifBlank { "untitled.epub" }
+                }
+                "content" -> {
+                    context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                        val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                        if (nameIndex != -1 && cursor.moveToFirst()) {
+                            val name = cursor.getString(nameIndex)
+                            name.ifBlank { "untitled.epub" }
+                        } else {
+                            "untitled.epub"
+                        }
+                    } ?: "untitled.epub"
+                }
+                else -> "untitled.epub"
+            }
+        } catch (e: Exception) {
+            Log.e("EpubManager", "Failed to extract filename from URI: $uri", e)
+            "untitled.epub"
+        }
     }
 
     fun removeSavedEpubFile(epubFileInfo: EpubFileInfo) {

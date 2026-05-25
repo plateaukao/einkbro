@@ -83,7 +83,7 @@ class FileHandlingDelegate(
     private fun handleEpubUri(result: ActivityResult) {
         if (result.resultCode != RESULT_OK) return
         val uri = result.data?.data ?: return
-        HelperUnit.openFile(activity, uri)
+        HelperUnit.openFile(activity, uri,config = config)
     }
 
     private fun handleWebViewFileChooser(result: ActivityResult) {
@@ -189,7 +189,7 @@ class FileHandlingDelegate(
         },
         onOpenEpub = { uri ->
             if (uri != null) {
-                HelperUnit.openFile(activity, uri)
+                HelperUnit.openFile(activity, uri, config = config)
             } else {
                 epubManager.showOpenEpubFilePicker(openEpubFilePickerLauncher)
             }

@@ -75,10 +75,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                     DualCaptionProcessor().convertToHtml(it)
                 } ?: if (useReaderMode) ebWebView.getRawReaderHtml() else ebWebView.getRawFullHtml()
                 onProgressChanged(5)
-
-                // Extract filename from URI
-                val fileName = extractFileNameFromUri(fileUri, context)
-
+                
                 internalSaveEpub(
                     isNewFile,
                     fileUri,
@@ -88,49 +85,11 @@ class EpubManager(private val context: Context) : KoinComponent {
                     ebWebView.url.orEmpty(),
                     onProgressChanged,
                     { savedBookName ->
-                        HelperUnit.openEpubToLastChapter(activity, fileUri)
-
-                        // save epub file info to preference with filename instead of title
-                        val bookUri = fileUri.toString()
-                        if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
-                            config.addSavedEpubFile(EpubFileInfo(fileName, bookUri))
-                        }
+                        HelperUnit.openEpubToLastChapter(activity, fileUri, config)
                     },
                     onErrorAction,
                 )
             }
-        }
-    }
-
-    /**
-     * Extract filename from URI.
-     * For file:// URIs, extract from path.
-     * For content:// URIs, try to get the display name.
-     */
-    private fun extractFileNameFromUri(uri: Uri, context: Context): String {
-        return try {
-            when (uri.scheme) {
-                "file" -> {
-                    val path = uri.path ?: ""
-                    val fileName = path.substringAfterLast("/")
-                    fileName.ifBlank { "untitled.epub" }
-                }
-                "content" -> {
-                    context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                        val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
-                        if (nameIndex != -1 && cursor.moveToFirst()) {
-                            val name = cursor.getString(nameIndex)
-                            name.ifBlank { "untitled.epub" }
-                        } else {
-                            "untitled.epub"
-                        }
-                    } ?: "untitled.epub"
-                }
-                else -> "untitled.epub"
-            }
-        } catch (e: Exception) {
-            Log.e("EpubManager", "Failed to extract filename from URI: $uri", e)
-            "untitled.epub"
         }
     }
 
