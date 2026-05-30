@@ -1,5 +1,7 @@
 package info.plateaukao.einkbro.userscript
 
+import android.content.Context
+import android.database.sqlite.SQLiteBlobTooBigException
 import android.util.Log
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.UserScript
@@ -15,6 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.File
 
 /** A userscript paired with its parsed metadata and resolved @require contents. */
 data class ParsedUserScript(
@@ -23,13 +26,25 @@ data class ParsedUserScript(
     var requiresContent: String = "",
 )
 
-class UserScriptManager : KoinComponent {
+class UserScriptManager(private val context: Context) : KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
     private val coroutineScope: CoroutineScope by inject()
     private val httpClient = OkHttpClient()
 
     private val userScriptDao get() = bookmarkManager.userScriptDao
     private val valueDao get() = bookmarkManager.userScriptValueDao
+
+    /**
+     * Script bodies are stored as files rather than inline in the DB row: a single
+     * userscript (e.g. Immersive Translate) can exceed several MB, which overflows
+     * Android's 2MB CursorWindow and makes the row unreadable (SQLiteBlobTooBigException).
+     * The DB row keeps only metadata; [UserScript.code] is persisted here, keyed by id.
+     */
+    private val scriptDir: File by lazy { File(context.filesDir, "userscripts").apply { mkdirs() } }
+    private fun codeFile(id: Long) = File(scriptDir, "$id.user.js")
+    private fun readCodeFile(id: Long): String? = codeFile(id).takeIf { it.exists() }?.readText()
+    private fun writeCodeFile(id: Long, code: String) = codeFile(id).writeText(code)
+    private fun deleteCodeFile(id: Long) { codeFile(id).delete() }
 
     @Volatile
     var scripts: List<ParsedUserScript> = emptyList()
@@ -40,11 +55,22 @@ class UserScriptManager : KoinComponent {
     }
 
     suspend fun reload() {
-        val loaded = userScriptDao.getAll().mapNotNull { script ->
+        val rows = try {
+            userScriptDao.getAll()
+        } catch (e: SQLiteBlobTooBigException) {
+            // Legacy rows stored the (multi-MB) script body inline and overflow the 2MB
+            // CursorWindow, so they can't be read back. Drop them — bodies now live in files.
+            Log.w(TAG, "Dropping oversized inline userscript rows: ${e.message}")
+            userScriptDao.deleteAll()
+            emptyList()
+        }
+        val loaded = rows.mapNotNull { row ->
+            // Body lives in a file; fall back to row.code for any pre-existing inline (small) rows.
+            val code = readCodeFile(row.id) ?: row.code
             try {
-                ParsedUserScript(script, UserScriptMetadata.parse(script.code))
+                ParsedUserScript(row.copy(code = code), UserScriptMetadata.parse(code))
             } catch (e: Exception) {
-                Log.w(TAG, "Failed to parse userscript ${script.name}: ${e.message}")
+                Log.w(TAG, "Failed to parse userscript ${row.name}: ${e.message}")
                 null
             }
         }
@@ -132,9 +158,11 @@ class UserScriptManager : KoinComponent {
     suspend fun add(code: String, sourceUrl: String? = null): Long {
         val metadata = UserScriptMetadata.parse(code)
         val maxOrder = scripts.maxOfOrNull { it.script.order } ?: 0
+        // Persist only metadata in the DB row; the body goes to a file keyed by the new id.
         val id = userScriptDao.insert(
-            UserScript(name = metadata.name, code = code, sourceUrl = sourceUrl, order = maxOrder + 1)
+            UserScript(name = metadata.name, code = "", sourceUrl = sourceUrl, order = maxOrder + 1)
         )
+        writeCodeFile(id, code)
         reload()
         return id
     }
@@ -146,7 +174,8 @@ class UserScriptManager : KoinComponent {
         } catch (e: Exception) {
             script.name
         }
-        userScriptDao.update(script.copy(name = name))
+        userScriptDao.update(script.copy(name = name, code = ""))
+        writeCodeFile(script.id, script.code)
         reload()
     }
 
@@ -159,6 +188,7 @@ class UserScriptManager : KoinComponent {
     suspend fun delete(id: Long) {
         withContext(Dispatchers.IO) { valueDao.deleteAllForScript(id) }
         userScriptDao.deleteById(id)
+        deleteCodeFile(id)
         reload()
     }
 

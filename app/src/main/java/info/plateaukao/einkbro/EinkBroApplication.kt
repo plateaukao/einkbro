@@ -71,7 +71,7 @@ class EinkBroApplication : Application() {
         single { config }
         single { sp }
         single { BookmarkManager(androidContext()) }
-        single { info.plateaukao.einkbro.userscript.UserScriptManager() }
+        single { info.plateaukao.einkbro.userscript.UserScriptManager(androidContext()) }
         single { RecordRepository() }
         single { AdBlock(androidContext()) }
         single { Javascript(androidContext()) }
