@@ -334,7 +334,7 @@ class WebViewJsBridge(private val webView: WebView) {
             document.innerHTMLCache = document.body.innerHTML;
 
             if (article) {
-                article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
+                article.readingTime = getReadingTime(article.length, document.documentElement.lang);
 
                 document.body.outerHTML = createHtmlBody(article)
 
@@ -350,7 +350,7 @@ class WebViewJsBridge(private val webView: WebView) {
                 var documentClone = scopedDoc || document.cloneNode(true);
                 var article = new Readability(documentClone, ${readabilityOptions(keepExtraContent)}).parse();
                 if (!article) return '';
-                article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
+                article.readingTime = getReadingTime(article.length, document.documentElement.lang);
                 var bodyOuterHTML = createHtmlBodyWithUrl(article, "%s")
                 var headOuterHTML = document.head.outerHTML;
                 return ('<html>'+ headOuterHTML + bodyOuterHTML +'</html>');

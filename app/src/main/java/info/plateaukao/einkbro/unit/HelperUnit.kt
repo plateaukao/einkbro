@@ -48,6 +48,7 @@ import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
+import info.plateaukao.einkbro.preference.ConfigManager
 
 
 object HelperUnit {
@@ -245,8 +246,11 @@ object HelperUnit {
         }
     }
 
-    fun openEpubToLastChapter(activity: Activity, uri: Uri) {
-        openFile(activity, uri, shouldGoToEnd = true)
+    fun openEpubToLastChapter(activity: Activity, 
+        uri: Uri, 
+        config: ConfigManager? = null
+    ) {
+        openFile(activity, uri, shouldGoToEnd = true,config = null)
     }
 
     fun openFile(
@@ -254,6 +258,7 @@ object HelperUnit {
         uri: Uri,
         resultLauncher: ActivityResultLauncher<Intent>? = null,
         shouldGoToEnd: Boolean = false,
+        config: ConfigManager? = null
     ) {
         // SAF returns a content:// URI whose path is a numeric document ID,
         // so readers that sniff the file extension from the path don't appear
@@ -279,6 +284,9 @@ object HelperUnit {
                 title = "Open file with",
                 extraTargets = extras,
             ).show()
+            if (config != null) {
+                config.addSavedEpubFile(uri)
+            }
         } catch (exception: SecurityException) {
             EBToast.show(activity, "open file failed, re-select the file again.")
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)

@@ -26,6 +26,7 @@ import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
 import info.plateaukao.einkbro.data.remote.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
@@ -98,7 +99,13 @@ class EinkBroApplication : Application() {
             modules(myModule)
         }
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(
+            when (config.display.darkMode) {
+                DarkMode.FORCE_ON -> AppCompatDelegate.MODE_NIGHT_YES
+                DarkMode.DISABLED -> AppCompatDelegate.MODE_NIGHT_NO
+                DarkMode.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+        )
 
         if (config.uiLocaleLanguage.isNotEmpty()) {
             LocaleManager.setLocale(this, config.uiLocaleLanguage)

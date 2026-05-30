@@ -293,7 +293,7 @@
     <string name="menu_save_epub">Save EPUB</string>
     <string name="saving_epub">Saving EPUB</string>
     <string name="menu_open_epub">Open EPUB</string>
-    <string name="new_epub_or_from_picker">New EPUB or from picker</string>
+    <string name="new_epub_or_from_picker">New EPUB</string>
     <string name="title">Chapter name</string>
     <string name="title_in_toc">Table of Contents</string>
     <string name="book_name">Book Name</string>
@@ -612,6 +612,9 @@
     <string name="setting_title_external_search_pop">Use popup for PROCESS_TEXT event</string>
     <string name="setting_summary_external_search_pop">Search as a popup dictionary (suitable for reader apps dictionary integration)</string>
     <string name="cannot_save_epub">Something went wrong while saving EPUB. Please try again later</string>
+    <string name="save_epub_reader_or_full">Save as reader mode (clean article) or full page?</string>
+    <string name="save_epub_reader_mode">Reader mode</string>
+    <string name="save_epub_full_page">Full page</string>
     <string name="deepl_translate">DeepL</string>
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>

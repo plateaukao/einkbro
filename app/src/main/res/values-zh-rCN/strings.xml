@@ -256,7 +256,7 @@
     <string name="touch_area_setting">触控设置</string>
     <string name="toolbar_setting">工具栏设置</string>
     <string name="menu_save_epub">保存Epub</string>
-    <string name="new_epub_or_from_picker">新建Epub或来自选择器</string>
+    <string name="new_epub_or_from_picker">新建Epub</string>
     <string name="title">章节名称</string>
     <string name="title_in_toc">目录中的章节名称</string>
     <string name="book_name">图书名称</string>
@@ -528,6 +528,9 @@
     <string name="setting_title_external_search_pop">对PROCESS_TEXT事件使用弹出式窗口</string>
     <string name="setting_summary_external_search_pop">作为弹出式窗口词典搜索 (适用于阅读器应用程序词典集成)</string>
     <string name="cannot_save_epub">保存Epub时出错，请稍后重试。</string>
+    <string name="save_epub_reader_or_full">保存为阅读模式（纯净文章）还是完整页面？</string>
+    <string name="save_epub_reader_mode">阅读模式</string>
+    <string name="save_epub_full_page">完整页面</string>
     <string name="wenkai_tc">WenKai(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
