@@ -474,6 +474,8 @@
     <string name="setting_summary_trim_input_url">Ta bort icke-http-prefixtext i inmatningsinnehåll</string>
     <string name="setting_summary_update_adblock">Uppdatera AdBlock-webbplatser nu</string>
     <string name="setting_summary_useUpDownKey">Använd upp/ned-tangent för att bläddra sidor. Användbart för bluetooth-enheter</string>
+    <string name="setting_title_enable_pull_to_refresh">Dra för att uppdatera</string>
+    <string name="setting_summary_enable_pull_to_refresh">Svep nedåt högst upp på sidan för att ladda om</string>
     <string name="setting_summary_use_custom_gpt_url">Använd annan API-server-URL</string>
     <string name="setting_summary_use_gemini">Använd Google Gemini-modell</string>
     <string name="setting_summary_userAgent">Ange anpassade User Agent-strängar här</string>

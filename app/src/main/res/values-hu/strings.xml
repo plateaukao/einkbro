@@ -447,6 +447,8 @@
     <string name="input_url">URL megadása</string>
     <string name="setting_title_useUpDown">Fel/Le gomb használata</string>
     <string name="setting_summary_useUpDownKey">Fel/Le gomb használata lapozáshoz. Hasznos Bluetooth eszközökhöz</string>
+    <string name="setting_title_enable_pull_to_refresh">Húzás a frissítéshez</string>
+    <string name="setting_summary_enable_pull_to_refresh">Húzza lefelé az oldal tetején az újratöltéshez</string>
     <string name="setting_title_process_text">Egyéni külső keresési URL</string>
     <string name="split_screen">Osztott képernyő</string>
     <string name="dark_mode">Sötét mód</string>

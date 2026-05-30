@@ -489,6 +489,8 @@
     <string name="setting_summary_translation_style">段落翻訳のスタイルを選択</string>
     <string name="setting_summary_trim_input_url">入力内容からhttp以外のプレフィックスを削除</string>
     <string name="setting_summary_useUpDownKey">上下キーでページめくり。Bluetoothデバイスに便利</string>
+    <string name="setting_title_enable_pull_to_refresh">引っ張って更新</string>
+    <string name="setting_summary_enable_pull_to_refresh">ページ上部で下にスワイプして再読み込み</string>
     <string name="setting_summary_use_custom_gpt_url">他のAPIサーバーURLを使用</string>
     <string name="setting_summary_use_gemini">Google Geminiモデルを使用</string>
     <string name="setting_summary_userAgent">カスタムUser Agent文字列をここに入力</string>

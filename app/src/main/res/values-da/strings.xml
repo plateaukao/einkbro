@@ -474,6 +474,8 @@
     <string name="setting_summary_trim_input_url">Fjern ikke-http-præfikstekst i indtastet indhold</string>
     <string name="setting_summary_update_adblock">Opdater AdBlock-hjemmesider nu</string>
     <string name="setting_summary_useUpDownKey">Brug op/ned-tast til sideskift. Nyttigt til bluetooth-enheder</string>
+    <string name="setting_title_enable_pull_to_refresh">Træk for at opdatere</string>
+    <string name="setting_summary_enable_pull_to_refresh">Stryg nedad øverst på siden for at genindlæse</string>
     <string name="setting_summary_use_custom_gpt_url">Brug anden API-server-URL</string>
     <string name="setting_summary_use_gemini">Brug Google Gemini-model</string>
     <string name="setting_summary_userAgent">Indtast brugerdefinerede User Agent-strenge her</string>

@@ -91,6 +91,7 @@ class ChromeSetupDelegate(
             if (state.currentAlbumController != null) state.ebWebView.reload()
             else swipeRefreshLayout.isRefreshing = false
         }
+        swipeRefreshLayout.isEnabled = config.browser.enablePullToRefresh
         ViewUnit.updateAppbarPosition(binding)
     }
 

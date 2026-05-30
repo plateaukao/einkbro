@@ -308,6 +308,8 @@
     <string name="input_url">Введите URL</string>
     <string name="setting_title_useUpDown">Использовать клавиши Вверх/Вниз</string>
     <string name="setting_summary_useUpDownKey">Использовать клавиши Вверх/Вниз для прокрутки страниц. Полезно для Bluetooth-устройств</string>
+    <string name="setting_title_enable_pull_to_refresh">Потянуть для обновления</string>
+    <string name="setting_summary_enable_pull_to_refresh">Проведите вниз в верхней части страницы, чтобы перезагрузить</string>
     <string name="setting_title_process_text">Пользовательский URL для поиска из других приложений</string>
     <string name="split_screen">Разделение экрана</string>
     <string name="dark_mode">Тёмный режим</string>

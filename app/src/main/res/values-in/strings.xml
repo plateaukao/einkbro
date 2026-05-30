@@ -283,6 +283,8 @@
     <string name="input_url">masukan url</string>
     <string name="setting_title_useUpDown">Gunakan tombol Atas/Bawah</string>
     <string name="setting_summary_useUpDownKey">Gunakan tombol Atas/Bawah untuk membalik halaman. Berguna untuk perangkat bluetooth.</string>
+    <string name="setting_title_enable_pull_to_refresh">Tarik untuk menyegarkan</string>
+    <string name="setting_summary_enable_pull_to_refresh">Geser ke bawah di bagian atas halaman untuk memuat ulang</string>
     <string name="setting_title_process_text">Url Penelusuran Eksternal Khusus</string>
     <string name="split_screen">Layar terpisah</string>
     <string name="dark_mode">Mode Gelap</string>

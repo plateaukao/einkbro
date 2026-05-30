@@ -475,6 +475,8 @@
     <string name="setting_summary_trim_input_url">Verwyder nie-http voorvoegselteks in invoerinhoud</string>
     <string name="setting_summary_update_adblock">Begin nou AdBlock-webwerwe opdateer</string>
     <string name="setting_summary_useUpDownKey">Gebruik Op/Af-sleutel om bladsye om te blaai. Nuttig vir bluetooth-toestelle</string>
+    <string name="setting_title_enable_pull_to_refresh">Trek om te verfris</string>
+    <string name="setting_summary_enable_pull_to_refresh">Vee af aan die bokant van die bladsy om te herlaai</string>
     <string name="setting_summary_use_custom_gpt_url">Gebruik ander API-bediener-URL</string>
     <string name="setting_summary_use_gemini">Gebruik Google Gemini-model</string>
     <string name="setting_summary_userAgent">Voer pasgemaakte User Agent-string hier in</string>

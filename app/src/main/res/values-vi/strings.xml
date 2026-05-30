@@ -475,6 +475,8 @@
     <string name="setting_summary_trim_input_url">Xóa tiền tố không phải http trong nội dung nhập</string>
     <string name="setting_summary_update_adblock">Kích hoạt cập nhật trang web AdBlock ngay</string>
     <string name="setting_summary_useUpDownKey">Dùng phím Lên/Xuống để lật trang. Hữu ích cho thiết bị bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Kéo để làm mới</string>
+    <string name="setting_summary_enable_pull_to_refresh">Vuốt xuống ở đầu trang để tải lại</string>
     <string name="setting_summary_use_custom_gpt_url">Sử dụng URL máy chủ API khác</string>
     <string name="setting_summary_use_gemini">Sử dụng mô hình Google Gemini</string>
     <string name="setting_summary_userAgent">Nhập chuỗi User Agent tùy chỉnh tại đây</string>

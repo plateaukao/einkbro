@@ -474,6 +474,8 @@
     <string name="setting_summary_trim_input_url">Poista muu kuin http-etuliiteteksti syötetystä sisällöstä</string>
     <string name="setting_summary_update_adblock">Päivitä AdBlock-verkkosivustot nyt</string>
     <string name="setting_summary_useUpDownKey">Käytä ylös/alas-näppäintä sivujen kääntämiseen. Hyödyllinen bluetooth-laitteille</string>
+    <string name="setting_title_enable_pull_to_refresh">Päivitä vetämällä</string>
+    <string name="setting_summary_enable_pull_to_refresh">Pyyhkäise alas sivun yläosassa ladataksesi uudelleen</string>
     <string name="setting_summary_use_custom_gpt_url">Käytä muuta API-palvelimen URL:ää</string>
     <string name="setting_summary_use_gemini">Käytä Google Gemini -mallia</string>
     <string name="setting_summary_userAgent">Syötä mukautetut User Agent -merkkijonot tähän</string>

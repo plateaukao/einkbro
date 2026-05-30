@@ -293,6 +293,8 @@
     <string name="input_url">URL ᱟᱫᱮᱨ</string>
     <string name="setting_title_useUpDown">ᱪᱮᱛᱟᱱ/ᱞᱟᱛᱟᱨ ᱪᱟᱹᱵᱤ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
     <string name="setting_summary_useUpDownKey">ᱪᱮᱛᱟᱱ/ᱞᱟᱛᱟᱨ ᱪᱟᱹᱵᱤ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱥᱟᱦᱴᱟ ᱯᱚᱞᱴᱟᱣ ᱢᱮ ᱾ bluetooth ᱥᱟᱫᱷᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱵᱷᱟᱹᱜᱤ ᱜᱮᱭᱟ ᱾</string>
+    <string name="setting_title_enable_pull_to_refresh">Pull to refresh</string>
+    <string name="setting_summary_enable_pull_to_refresh">Swipe down at the top of the page to reload</string>
     <string name="setting_title_process_text">ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ ᱵᱚᱦᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ URL</string>
     <string name="split_screen">ᱥᱠᱨᱤᱱ ᱵᱷᱟᱜᱽ ᱢᱮ</string>
     <string name="dark_mode">ᱧᱩᱛ ᱢᱳᱰ</string>

@@ -287,6 +287,8 @@
     <string name="input_url">URL invoeren</string>
     <string name="setting_title_useUpDown">Omhoog/omlaag-toets gebruiken</string>
     <string name="setting_summary_useUpDownKey">Omhoog/omlaag-toets gebruiken om pagina\'s om te slaan. Handig voor Bluetooth-apparaten</string>
+    <string name="setting_title_enable_pull_to_refresh">Trek omlaag om te vernieuwen</string>
+    <string name="setting_summary_enable_pull_to_refresh">Veeg omlaag bovenaan de pagina om opnieuw te laden</string>
     <string name="setting_title_process_text">Aangepaste externe zoek-URL</string>
     <string name="split_screen">Gesplitst scherm</string>
     <string name="dark_mode">Donkere modus</string>

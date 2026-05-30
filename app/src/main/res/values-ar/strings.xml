@@ -303,6 +303,8 @@
     <string name="input_url">أدخل URL</string>
     <string name="setting_title_useUpDown">استخدام مفتاح أعلى/أسفل</string>
     <string name="setting_summary_useUpDownKey">استخدام مفتاح أعلى/أسفل لتقليب الصفحات. مفيد لأجهزة البلوتوث</string>
+    <string name="setting_title_enable_pull_to_refresh">اسحب للتحديث</string>
+    <string name="setting_summary_enable_pull_to_refresh">اسحب لأسفل في أعلى الصفحة لإعادة التحميل</string>
     <string name="setting_title_process_text">URL بحث خارجي مخصص</string>
     <string name="split_screen">تقسيم الشاشة</string>
     <string name="dark_mode">الوضع الداكن</string>

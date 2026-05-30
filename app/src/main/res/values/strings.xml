@@ -326,6 +326,8 @@
     <string name="input_url">Input URL</string>
     <string name="setting_title_useUpDown">Use Up/Down key</string>
     <string name="setting_summary_useUpDownKey">Use Up/Down key to turn pages. Useful for bluetooth devices</string>
+    <string name="setting_title_enable_pull_to_refresh">Pull to refresh</string>
+    <string name="setting_summary_enable_pull_to_refresh">Swipe down at the top of the page to reload</string>
     <string name="setting_title_process_text">Custom external search URL</string>
     <string name="split_screen">Split screen</string>
     <string name="dark_mode">Dark mode</string>

@@ -303,6 +303,8 @@
     <string name="input_url">URL girin</string>
     <string name="setting_title_useUpDown">Yukarı/Aşağı tuşu kullan</string>
     <string name="setting_summary_useUpDownKey">Sayfa çevirmek için Yukarı/Aşağı tuşunu kullanın. Bluetooth cihazlar için kullanışlıdır</string>
+    <string name="setting_title_enable_pull_to_refresh">Yenilemek için çek</string>
+    <string name="setting_summary_enable_pull_to_refresh">Yeniden yüklemek için sayfanın üstünde aşağı kaydırın</string>
     <string name="setting_title_process_text">Özel harici arama URL\'si</string>
     <string name="split_screen">Bölünmüş ekran</string>
     <string name="dark_mode">Karanlık mod</string>

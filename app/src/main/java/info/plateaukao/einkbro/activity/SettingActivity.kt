@@ -726,6 +726,12 @@ class SettingActivity : FragmentActivity() {
             R.string.setting_summary_useUpDownKey,
             config.touch::useUpDownPageTurn,
         ),
+        BooleanSettingItem(
+            R.string.setting_title_enable_pull_to_refresh,
+            0,
+            R.string.setting_summary_enable_pull_to_refresh,
+            config.browser::enablePullToRefresh,
+        ),
         DividerSettingItem(),
         // Display & rendering
         BooleanSettingItem(

@@ -288,6 +288,8 @@
     <string name="input_url">Introduceți URL</string>
     <string name="setting_title_useUpDown">Taste Sus/Jos</string>
     <string name="setting_summary_useUpDownKey">Folosiți tastele Sus/Jos pentru a schimba pagina. Util pentru dispozitive Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Trageți pentru a reîmprospăta</string>
+    <string name="setting_summary_enable_pull_to_refresh">Glisați în jos în partea de sus a paginii pentru a reîncărca</string>
     <string name="setting_title_process_text">URL de căutare externă personalizat</string>
     <string name="split_screen">Ecran împărțit</string>
     <string name="dark_mode">Mod întunecat</string>

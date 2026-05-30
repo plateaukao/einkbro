@@ -303,6 +303,8 @@
     <string name="input_url">הזן URL</string>
     <string name="setting_title_useUpDown">שימוש במקש למעלה/למטה</string>
     <string name="setting_summary_useUpDownKey">שימוש במקש למעלה/למטה להפיכת עמודים. שימושי עבור מכשירי Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">משיכה לרענון</string>
+    <string name="setting_summary_enable_pull_to_refresh">החלק כלפי מטה בראש העמוד כדי לטעון מחדש</string>
     <string name="setting_title_process_text">URL חיפוש חיצוני מותאם</string>
     <string name="split_screen">מסך מפוצל</string>
     <string name="dark_mode">מצב כהה</string>

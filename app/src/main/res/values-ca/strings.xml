@@ -268,6 +268,8 @@
     <string name="input_url">Introduir URL</string>
     <string name="setting_title_useUpDown">Tecles Amunt/Avall</string>
     <string name="setting_summary_useUpDownKey">Utilitzar tecles Amunt/Avall per passar pàgines. Útil per a dispositius Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Llisca per actualitzar</string>
+    <string name="setting_summary_enable_pull_to_refresh">Llisca cap avall a la part superior de la pàgina per recarregar-la</string>
     <string name="setting_title_process_text">URL personalitzada per a cerca externa</string>
     <string name="split_screen">Pantalla dividida</string>
     <string name="dark_mode">Mode fosc</string>
