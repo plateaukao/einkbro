@@ -241,6 +241,9 @@
         <activity
             android:name=".activity.SavedPagesActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.UserScriptListActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".service.TtsNotificationReceiver"

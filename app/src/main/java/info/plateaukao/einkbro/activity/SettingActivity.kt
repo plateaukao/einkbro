@@ -1353,6 +1353,11 @@ class SettingActivity : FragmentActivity() {
             0,
             R.string.setting_summary_whitelistJS,
         ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Javascript)) },
+        ActionSettingItem(
+            R.string.setting_title_userscripts,
+            0,
+            R.string.setting_summary_userscripts,
+        ) { startActivity(UserScriptListActivity.createIntent(this)) },
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_cookie,

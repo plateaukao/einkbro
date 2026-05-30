@@ -329,7 +329,42 @@ open class EBWebView(
 
     private fun setupJsWebInterface() {
         addJavascriptInterface(JsWebInterface(this, webViewCallback as? JsBrowserCallback), "androidApp")
+        addJavascriptInterface(
+            info.plateaukao.einkbro.browser.UserScriptBridge(this),
+            "einkbroGM",
+        )
     }
+
+    // region userscript support
+
+    /**
+     * The current page URL, captured on the main thread by the WebViewClient so the
+     * userscript bridge can read it from its background thread without touching
+     * WebView.getUrl() (which must only be called on the UI thread).
+     */
+    @Volatile
+    var currentPageUrl: String? = null
+
+    /** Menu commands registered via GM_registerMenuCommand on the current page (caption to fnId). */
+    val userScriptMenuCommands = LinkedHashMap<String, String>()
+
+    fun registerUserScriptMenuCommand(caption: String, fnId: String) {
+        userScriptMenuCommands[caption] = fnId
+    }
+
+    fun unregisterUserScriptMenuCommand(fnId: String) {
+        userScriptMenuCommands.values.remove(fnId)
+    }
+
+    fun invokeUserScriptMenuCommand(fnId: String) {
+        evaluateJavascript("window.__einkbroGM && window.__einkbroGM.invokeMenu('$fnId');", null)
+    }
+
+    fun openInNewTab(url: String) {
+        (webViewCallback as? info.plateaukao.einkbro.browser.TabController)?.addNewTab(url)
+    }
+
+    // endregion
 
     private fun updateDarkMode() {
         if (config.display.darkMode == DarkMode.DISABLED) {

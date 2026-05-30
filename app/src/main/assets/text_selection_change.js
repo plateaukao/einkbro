@@ -2,7 +2,7 @@
             function getSelectionPositionInWebView() {
     let selection = window.getSelection();
 
-    if (selection) {
+    if (selection && selection.rangeCount > 0) {
         let range = selection.getRangeAt(0);
         let startNode = range.startContainer;
         let startOffset = range.startOffset;

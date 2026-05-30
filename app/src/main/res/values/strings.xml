@@ -307,6 +307,14 @@
     <string name="setting_title_import_bookmarks">Import bookmarks</string>
     <string name="setting_title_incognito">Incognito mode</string>
     <string name="back">Back</string>
+    <string name="setting_title_userscripts">Userscripts</string>
+    <string name="setting_summary_userscripts">Manage Tampermonkey-style userscripts</string>
+    <string name="userscript_add">Add userscript</string>
+    <string name="userscript_empty">No userscripts installed yet. Tap + to add one, or open a .user.js link.</string>
+    <string name="userscript_install_from_url">Install from URL</string>
+    <string name="userscript_fetch">Fetch</string>
+    <string name="userscript_code">Userscript code</string>
+    <string name="userscript_install_prompt">Install this userscript?</string>
     <string name="refresh">Refresh</string>
     <string name="touch_turn_page">Touch turn page</string>
     <string name="tab_preview">Tab preview</string>
