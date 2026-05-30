@@ -43,6 +43,10 @@ import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
 import io.github.edsuns.adfilter.AdFilter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
@@ -68,6 +72,9 @@ class EBWebViewClient(
     private val dualCaptionProcessor = DualCaptionProcessor()
 
     private val einkImageCache = EinkImageCache(context)
+
+    private val userScriptManager: info.plateaukao.einkbro.userscript.UserScriptManager by inject()
+    private val coroutineScope: CoroutineScope by inject()
 
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
@@ -118,6 +125,7 @@ class EBWebViewClient(
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
+        ebWebView.currentPageUrl = url
         // resetState() in EBWebView already cleared dualCaption; let the next
         // doUpdateVisitedHistory treat this as a fresh start so it doesn't wipe the
         // caption captured during this page's load.
@@ -137,6 +145,38 @@ class EBWebViewClient(
         }
 
         url?.let { injectForcedViewportWidth(it) }
+
+        // userscripts are page-scoped; reset the per-page menu registry, then run
+        // any document-start scripts for this URL.
+        ebWebView.userScriptMenuCommands.clear()
+        url?.let { injectUserScripts(it, info.plateaukao.einkbro.userscript.RunAt.DOCUMENT_START) }
+    }
+
+    private fun injectUserScripts(url: String, runAt: info.plateaukao.einkbro.userscript.RunAt) {
+        val matching = userScriptManager.getMatchingScripts(url, runAt)
+        if (matching.isEmpty()) return
+        matching.forEach { parsed ->
+            // Inject as a same-origin <script> element rather than evaluateJavascript():
+            // eval'd code has no script origin, so Chromium sanitizes its async exceptions
+            // to opaque "Script error." and some scripts misbehave. A script tag runs the
+            // userscript exactly like a real userscript manager does. The body is passed as
+            // base64 to avoid escaping issues with large UTF-8 payloads.
+            val js = userScriptManager.buildInjectionJs(parsed)
+            val b64 = android.util.Base64.encodeToString(
+                js.toByteArray(Charsets.UTF_8), android.util.Base64.NO_WRAP,
+            )
+            val injector = """
+                (function(){
+                    try {
+                        var s = document.createElement('script');
+                        s.textContent = decodeURIComponent(escape(atob('$b64')));
+                        (document.head || document.documentElement).appendChild(s);
+                        s.parentNode && s.parentNode.removeChild(s);
+                    } catch(e) { console.error('einkbro userscript inject', e); }
+                })();
+            """.trimIndent()
+            ebWebView.evaluateJavascript(injector, null)
+        }
     }
 
     private fun injectForcedViewportWidth(url: String) {
@@ -148,6 +188,7 @@ class EBWebViewClient(
     }
 
     override fun onPageFinished(view: WebView, url: String) {
+        ebWebView.currentPageUrl = url
         ebWebView.updateCssStyle()
 
         // Re-inject autoplay blocker in onPageFinished to ensure it's in the correct page context
@@ -214,6 +255,34 @@ class EBWebViewClient(
                 ebWebView.evaluateJavascript(
                     "(function(){try{$userJs}catch(e){console.error('einkbro user js',e);}})();",
                     null,
+                )
+            }
+            injectUserScripts(url, info.plateaukao.einkbro.userscript.RunAt.DOCUMENT_END)
+        }
+    }
+
+    private fun isUserScriptUrl(url: String): Boolean {
+        val path = try {
+            Uri.parse(url).path?.lowercase().orEmpty()
+        } catch (e: Exception) {
+            ""
+        }
+        return path.endsWith(".user.js")
+    }
+
+    private fun offerUserScriptInstall(url: String) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val code = try {
+                java.net.URL(url).openStream().bufferedReader().use { it.readText() }
+            } catch (e: Exception) {
+                Log.w("EBWebViewClient", "Failed to fetch userscript $url: ${e.message}")
+                null
+            } ?: return@launch
+            withContext(Dispatchers.Main) {
+                context.startActivity(
+                    info.plateaukao.einkbro.activity.UserScriptListActivity.createIntent(
+                        context, code, url,
+                    )
                 )
             }
         }

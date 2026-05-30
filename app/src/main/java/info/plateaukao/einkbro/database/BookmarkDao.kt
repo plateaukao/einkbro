@@ -41,8 +41,10 @@ import org.koin.core.component.inject
         WhitelistDomain::class,
         JavascriptDomain::class,
         CookieDomain::class,
+        UserScript::class,
+        UserScriptValue::class,
     ],
-    version = 9,
+    version = 10,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -56,6 +58,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun savedPageDao(): SavedPageDao
     abstract fun historyDao(): HistoryDao
     abstract fun domainListDao(): DomainListDao
+    abstract fun userScriptDao(): UserScriptDao
+    abstract fun userScriptValueDao(): UserScriptValueDao
 }
 
 @Dao
@@ -248,6 +252,13 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         }
     }
 
+    private val migration9To10: Migration = object : Migration(9, 10) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `user_scripts` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `enabled` INTEGER NOT NULL, `code` TEXT NOT NULL, `sourceUrl` TEXT, `order` INTEGER NOT NULL)")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `user_script_values` (`scriptId` INTEGER NOT NULL, `key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`scriptId`, `key`))")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
@@ -257,9 +268,12 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         .addMigrations(migration6To7)
         .addMigrations(migration7To8)
         .addMigrations(migration8To9)
+        .addMigrations(migration9To10)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
+    val userScriptDao = database.userScriptDao()
+    val userScriptValueDao = database.userScriptValueDao()
 
     private val faviconDao = database.faviconDao()
     private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
