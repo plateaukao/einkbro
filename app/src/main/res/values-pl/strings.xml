@@ -295,6 +295,8 @@
     <string name="input_url">Wprowadź URL</string>
     <string name="setting_title_useUpDown">Klawisze góra/dół</string>
     <string name="setting_summary_useUpDownKey">Używaj klawiszy góra/dół do przewracania stron. Przydatne dla urządzeń Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Pociągnij, aby odświeżyć</string>
+    <string name="setting_summary_enable_pull_to_refresh">Przesuń w dół u góry strony, aby ją przeładować</string>
     <string name="setting_title_process_text">Własny URL wyszukiwania zewnętrznego</string>
     <string name="split_screen">Podzielony ekran</string>
     <string name="dark_mode">Tryb ciemny</string>

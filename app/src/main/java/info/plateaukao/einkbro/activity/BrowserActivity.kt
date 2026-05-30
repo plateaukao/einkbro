@@ -1053,6 +1053,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             UiConfig.K_NAV_POSITION -> fabImageViewController.applyFabPosition()
             TtsConfig.K_TTS_SPEED_VALUE -> ttsViewModel.setSpeechRate(config.tts.ttsSpeedValue / 100f)
             BrowserConfig.K_CUSTOM_USER_AGENT, BrowserConfig.K_ENABLE_CUSTOM_USER_AGENT -> { ebWebView.updateUserAgentString(); ebWebView.reload() }
+            BrowserConfig.K_ENABLE_PULL_TO_REFRESH -> { browserState.swipeRefreshLayout.isEnabled = config.browser.enablePullToRefresh }
             TouchConfig.K_ENABLE_TOUCH -> { composeToolbarViewController.updateIcons(); chromeSetupDelegate.touchController?.toggleTouchPageTurn(config.touch.enableTouchTurn) }
             TouchConfig.K_TOUCH_AREA_ACTION_SWITCH -> composeToolbarViewController.updateIcons()
             AiConfig.K_GPT_ACTION_ITEMS -> actionModeMenuViewModel.updateMenuInfos(this, translationViewModel)

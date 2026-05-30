@@ -462,6 +462,8 @@
     <string name="setting_summary_trim_input_url">Видаляти текст без префіксу http з введеного вмісту</string>
     <string name="setting_summary_update_adblock">Запустити оновлення списків AdBlock</string>
     <string name="setting_summary_useUpDownKey">Використовувати клавіші Вгору/Вниз для перегортання. Корисно для Bluetooth-пристроїв</string>
+    <string name="setting_title_enable_pull_to_refresh">Потягніть для оновлення</string>
+    <string name="setting_summary_enable_pull_to_refresh">Проведіть вниз у верхній частині сторінки, щоб перезавантажити</string>
     <string name="setting_summary_use_custom_gpt_url">Використовувати іншу URL API-сервера</string>
     <string name="setting_summary_use_gemini">Використовувати модель Google Gemini</string>
     <string name="setting_summary_userAgent">Введіть бажаний User Agent</string>

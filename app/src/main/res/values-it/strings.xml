@@ -279,6 +279,8 @@
     <string name="input_url">Inserisci URL</string>
     <string name="setting_title_useUpDown">Tasti Su/Giù</string>
     <string name="setting_summary_useUpDownKey">Usa i tasti Su/Giù per cambiare pagina. Utile per dispositivi Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Trascina per aggiornare</string>
+    <string name="setting_summary_enable_pull_to_refresh">Scorri verso il basso in cima alla pagina per ricaricare</string>
     <string name="setting_title_process_text">URL di ricerca esterna personalizzata</string>
     <string name="split_screen">Schermo diviso</string>
     <string name="dark_mode">Modalità scura</string>

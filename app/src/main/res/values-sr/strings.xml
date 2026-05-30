@@ -471,6 +471,8 @@
     <string name="setting_summary_trim_input_url">Уклони текст без http префикса из уписаног садржаја</string>
     <string name="setting_summary_update_adblock">Покрени ажурирање AdBlock листи</string>
     <string name="setting_summary_useUpDownKey">Користи тастере Горе/Доле за окретање страница. Корисно за Bluetooth уређаје</string>
+    <string name="setting_title_enable_pull_to_refresh">Повуците за освежавање</string>
+    <string name="setting_summary_enable_pull_to_refresh">Превуците надоле на врху странице да поново учитате</string>
     <string name="setting_summary_use_custom_gpt_url">Користи другу URL адресу API сервера</string>
     <string name="setting_summary_use_gemini">Користите Google Gemini модел</string>
     <string name="setting_summary_userAgent">Унесите жељени User Agent</string>

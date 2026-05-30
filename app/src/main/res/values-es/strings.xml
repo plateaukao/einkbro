@@ -256,6 +256,8 @@
     <string name="input_url">Introducir URL</string>
     <string name="setting_title_useUpDown">Usar teclas Arriba/Abajo</string>
     <string name="setting_summary_useUpDownKey">Usar las teclas Arriba/Abajo para pasar páginas. Útil para dispositivos Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Desliza para actualizar</string>
+    <string name="setting_summary_enable_pull_to_refresh">Desliza hacia abajo en la parte superior de la página para recargarla</string>
     <string name="setting_title_process_text">URL personalizada para búsqueda externa</string>
     <string name="split_screen">Pantalla dividida</string>
     <string name="dark_mode">Modo oscuro</string>

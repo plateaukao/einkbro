@@ -288,6 +288,8 @@
     <string name="input_url">Saisir l\'URL</string>
     <string name="setting_title_useUpDown">Touches Haut/Bas</string>
     <string name="setting_summary_useUpDownKey">Utiliser les touches Haut/Bas pour tourner les pages. Utile pour les appareils Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Tirer pour actualiser</string>
+    <string name="setting_summary_enable_pull_to_refresh">Faites glisser vers le bas en haut de la page pour la recharger</string>
     <string name="setting_title_process_text">URL de recherche externe personnalisée</string>
     <string name="split_screen">Écran partagé</string>
     <string name="dark_mode">Mode sombre</string>

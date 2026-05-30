@@ -299,6 +299,8 @@
     <string name="input_url">Zadejte URL</string>
     <string name="setting_title_useUpDown">Klávesy nahoru/dolů</string>
     <string name="setting_summary_useUpDownKey">Používejte klávesy nahoru/dolů k otáčení stránek. Užitečné pro Bluetooth zařízení</string>
+    <string name="setting_title_enable_pull_to_refresh">Přetažením obnovit</string>
+    <string name="setting_summary_enable_pull_to_refresh">Přejetím dolů v horní části stránky ji znovu načtete</string>
     <string name="setting_title_process_text">Vlastní URL pro externí vyhledávání</string>
     <string name="split_screen">Rozdělená obrazovka</string>
     <string name="dark_mode">Tmavý režim</string>

@@ -244,6 +244,8 @@
     <string name="input_url">輸入網址</string>
     <string name="setting_title_useUpDown">使用方向鍵翻頁</string>
     <string name="setting_summary_useUpDownKey">使用方向鍵翻頁，有些藍牙設備是利用上下鍵翻頁</string>
+    <string name="setting_title_enable_pull_to_refresh">下拉重新整理</string>
+    <string name="setting_summary_enable_pull_to_refresh">在頁面頂部向下滑動以重新載入</string>
     <string name="setting_title_process_text">自訂來自外部搜尋時的網址</string>
     <string name="split_screen">分割畫面</string>
     <string name="dark_mode">黑暗模式</string>

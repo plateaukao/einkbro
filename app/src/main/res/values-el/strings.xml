@@ -303,6 +303,8 @@
     <string name="input_url">Εισάγετε URL</string>
     <string name="setting_title_useUpDown">Χρήση πλήκτρων Πάνω/Κάτω</string>
     <string name="setting_summary_useUpDownKey">Χρήση πλήκτρων Πάνω/Κάτω για αλλαγή σελίδας. Χρήσιμο για συσκευές Bluetooth</string>
+    <string name="setting_title_enable_pull_to_refresh">Σύρετε για ανανέωση</string>
+    <string name="setting_summary_enable_pull_to_refresh">Σύρετε προς τα κάτω στο πάνω μέρος της σελίδας για επαναφόρτωση</string>
     <string name="setting_title_process_text">Προσαρμοσμένο URL εξωτερικής αναζήτησης</string>
     <string name="split_screen">Διαίρεση οθόνης</string>
     <string name="dark_mode">Σκοτεινή λειτουργία</string>

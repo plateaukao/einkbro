@@ -31,6 +31,7 @@ class BrowserConfig(private val sp: SharedPreferences) {
     var enableSearchSuggestion by BooleanPreference(sp, "sp_enable_search_suggestion", true)
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
     var webLoadCacheFirst by BooleanPreference(sp, "sp_web_load_cache_first", false)
+    var enablePullToRefresh by BooleanPreference(sp, K_ENABLE_PULL_TO_REFRESH, true)
 
     var lastShareComponentPackage by StringPreference(sp, K_LAST_SHARE_COMPONENT_PACKAGE, "")
     var lastShareComponentClass by StringPreference(sp, K_LAST_SHARE_COMPONENT_CLASS, "")
@@ -102,6 +103,7 @@ class BrowserConfig(private val sp: SharedPreferences) {
         const val K_LAST_SHARE_COMPONENT_CLASS = "sp_last_share_component_class"
         const val K_SHARE_LONG_PRESS_ACTION = "sp_share_long_press_action"
         const val K_SUPERNOTE_FOLDER_URI = "sp_supernote_folder_uri"
+        const val K_ENABLE_PULL_TO_REFRESH = "sp_enable_pull_to_refresh"
 
         const val ADBLOCK_URL_DEFAULT =
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"

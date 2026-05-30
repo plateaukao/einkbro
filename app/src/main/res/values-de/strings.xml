@@ -278,6 +278,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="input_url">URL eingeben</string>
     <string name="setting_title_useUpDown">Auf/Ab-Taste verwenden</string>
     <string name="setting_summary_useUpDownKey">Auf/Ab-Taste zum Seitenumblättern verwenden. Nützlich für Bluetooth-Geräte</string>
+    <string name="setting_title_enable_pull_to_refresh">Zum Aktualisieren ziehen</string>
+    <string name="setting_summary_enable_pull_to_refresh">Am oberen Seitenrand nach unten wischen, um neu zu laden</string>
     <string name="setting_title_process_text">Benutzerdefinierte externe Such-URL</string>
     <string name="split_screen">Geteilter Bildschirm</string>
     <string name="dark_mode">Dunkler Modus</string>
