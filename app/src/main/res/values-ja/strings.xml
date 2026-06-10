@@ -15,18 +15,15 @@
     <string name="menu_quit">終了</string>
     <string name="menu_openFav">お気に入り開く</string>
     <string name="menu_delete">削除</string>
-    <string name="menu_delete_list">リスト削除</string>
     <string name="menu_edit">編集</string>
     <string name="menu_closeTab">タブ閉じる</string>
     <string name="menu_download">ダウンロード開く</string>
     <string name="menu_fav">お気に入りに保存</string>
     <string name="menu_sc">ショートカット</string>
     <string name="menu_share_link">共有</string>
-    <string name="menu_save_screenshot">スクリーンショット</string>
     <string name="menu_save_bookmark">ブックマーク保存</string>
     <string name="menu_save_as">名前付けて保存</string>
     <string name="menu_save_pdf">PDF保存</string>
-    <string name="menu_shareClipboard">コピー</string>
     <string name="menu_other_searchSite">サイト上の検索</string>
     <string name="menu_other_info">EinkBro</string>
     <!-- Dialog -->
@@ -36,7 +33,6 @@
     <string name="dialog_title_download">ファイルをダウンロードしますか?</string>
     <string name="dialog_content_resubmission">データを再送信しますか?</string>
     <!-- Settings -->
-    <string name="setting_label">設定</string>
     <!-- browser setting -->
     <string name="setting_title_clear_control">データ管理</string>
     <string name="setting_title_start_control">起動管理</string>
@@ -50,8 +46,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font_size">フォントサイズ</string>
-    <string name="setting_summary_font_size">Change the font size for displaying websites.</string>
     <string name="setting_title_remote">Remote content</string>
     <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
         Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
@@ -84,9 +78,6 @@
     <string name="setting_title_history">履歴</string>
     <string name="setting_summary_history">閲覧したウェブサイトの履歴を保存</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
-        place.</string>
     <string name="clear_title_quit">アプリ終了時に消去</string>
     <string name="clear_summary_quit">Every time you quit EinkBro all above checked data will be deleted.</string>
     <string name="clear_title_cache">キャッシュを削除</string>
@@ -98,27 +89,22 @@
     <!-- App setting -->
     <string name="setting_title_ui">画面調整</string>
     <string name="setting_title_data">バックアップ</string>
-    <string name="setting_title_fav">お気に入り</string>
     <string name="setting_title_searchEngine">カスタム検索エンジン</string>
     <string name="setting_title_userAgent">カスタムユーザーエージェント</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">ツールバーを非表示</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
-    <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">動作</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
     <string name="setting_title_toolbarShow">第一ツールバー</string>
-    <string name="setting_title_nav">ナビゲーションボタン</string>
     <string name="setting_title_nav_pos">位置</string>
     <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
     <string name="setting_summary_nav_pos_right">右</string>
     <string name="setting_summary_nav_pos_left">左</string>
     <string name="setting_summary_nav_pos_center">中央</string>
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
     <string name="setting_title_confirm_tab_close">タブ削除の確認</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
-    <string name="setting_overView">メーニュ</string>
     <string name="setting_gestures">ジェスチャー</string>
     <string name="setting_gestures_use_title">ジェスチャー</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
@@ -139,48 +125,30 @@
     <string name="open_new_tab">新規タブ開く</string>
     <string name="close_tab">タブ閉じる</string>
     <!-- Data -->
-    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">アプリデータのエクスポート</string>
     <string name="setting_title_import_appData">アプリデータのインポート</string>
     <string name="setting_summary_export_appData">アプリデータ（履歴、ブックマーク）と個人設定をエクスポート</string>
     <string name="title_appData">アプリデータ</string>
-    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
-    <string name="setting_title_license">ライセンス</string>
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
     <string name="toast_copy_successful">Successfully copied</string>
-    <string name="toast_delete_successful">Successfully deleted</string>
-    <string name="toast_domain_already_exists">Domain already exists</string>
-    <string name="toast_export_successful">Exported as:&#160;</string>
-    <string name="toast_export_failed">Failed to export</string>
-    <string name="toast_import_successful">Imported count:&#160;</string>
-    <string name="toast_import_failed">Failed to import</string>
     <string name="toast_input_empty">You haven\'t input anything</string>
-    <string name="toast_invalid_domain">無効なドメイン</string>
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">ダウンロード開始中…</string>
-    <string name="toast_wait_a_minute">少々お待ちください</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
     <string name="toast_edit_successful">正常に保存されました</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">Download complete. Open file?</string>
-    <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">消去</string>
-    <string name="whitelist_edit_hint">ドメイン</string>
     <string name="whitelist_add">追加</string>
     <string name="bold_font">太字フォント</string>
     <string name="white_background">白ベースカラー</string>
     <string name="vertical_read">縦書き</string>
     <string name="reader_mode">リーダーモード</string>
     <string name="touch_area_setting">タッチ設定</string>
-    <string name="toolbar_setting">ツールバー設定</string>
     <string name="menu_save_epub">epub保存</string>
     <string name="font_size">フォントサイズ</string>
     <string name="settings">設定</string>
@@ -192,16 +160,10 @@
     <string name="menu_quickToggle">快速起動</string>
     <string name="menu_send_link">リンク送る</string>
     <string name="menu_receive">データ受け取り</string>
-    <string name="copy_link">コピー</string>
     <string name="title_about">EinkBro について</string>
     <string name="menu_tts">読み上げ</string>
     <string name="setting_title_update_adblock">Update Adblock content</string>
     <string name="setting_summary_update_adblock">Update list of adblock websites</string>
-    <string name="setting_title_adblock_url">Adblock list url</string>
-    <string name="setting_summary_adblock_url">If you want to use other adblock content, please edit this url.</string>
-    <string name="setting_title_adblock_auto_update">Auto update Adblock</string>
-    <string name="setting_summary_adblock_auto_update">Auto update adblock content weekly</string>
-    <string name="toast_adblock_updated">Adblock is updated!</string>
     <string name="toast_backup_successful">Backup succeeds</string>
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
     <string name="page_count">Page count</string>
@@ -238,7 +200,6 @@
     <string name="toolbar_position_top">上部</string>
     <string name="toolbar_position_left">左側</string>
     <string name="toolbar_position_right">右側</string>
-    <string name="font_folder">フォントフォルダ</string>
     <string name="select_font_folder">フォントフォルダを選択</string>
     <string name="change_folder">フォルダを変更</string>
     <string name="search_fonts">フォントを検索…</string>
@@ -249,7 +210,6 @@
     <string name="eink_image_off">オフ</string>
     <string name="setting_title_reader_keep_extra_content">リーダーモード：追加コンテンツを保持</string>
     <string name="setting_summary_reader_keep_extra_content">リーダーモードでスタイル、クラス、数式（MathJax/KaTeX）を保持</string>
-    <string name="added_to_instapaper">Instapaperに追加しました</string>
     <string name="added_to_read_list">リーディングリストに追加しました</string>
     <string name="always_enable_zoom">常にコンテンツのズームを有効化</string>
     <string name="audio_only_mode">音声のみ</string>
@@ -259,16 +219,10 @@
     <string name="bold">太字</string>
     <string name="book_name">書名</string>
     <string name="book_name_description">書名を入力</string>
-    <string name="bookmark_new_file">新規ファイル作成</string>
-    <string name="bookmark_open_file">既存ファイルをリンク</string>
-    <string name="cannot_open_file">ファイルを開けません。ファイルピッカーから再度開いてください</string>
     <string name="changelogs">新着情報</string>
     <string name="chat_with_web">Webとチャット</string>
-    <string name="close">閉じる</string>
     <string name="content_adjustment">コンテンツ調整</string>
     <string name="contributors">貢献者</string>
-    <string name="copy_text">テキストをコピー</string>
-    <string name="current_url">現在のURL</string>
     <string name="custom_font">カスタム</string>
     <string name="custom_scale">カスタムフォント倍率</string>
     <string name="custom_scale_desc">フォント倍率を入力 (%)</string>
@@ -282,31 +236,23 @@
     <string name="description_split_screen_string_pattern">キーワード位置を%sとしたカスタム検索URL</string>
     <string name="description_split_screen_title">コンテキストメニューのタイトルとして表示する名前を入力</string>
     <string name="desktop_mode">デスクトップモード</string>
-    <string name="dialog_content_ssl_error">サイトの証明書が信頼されていません。続行しますか？</string>
     <string name="dialog_message_remove_highlight">ハイライトを削除しますか？</string>
-    <string name="dialog_message_sync_bookmark_file">ブックマークを同期するには、Google Driveまたは他のリモートサービスからブックマークファイルを作成または開く必要があります</string>
-    <string name="dialog_title_bookmark_sync">ブックマークファイル設定</string>
     <string name="dialog_toc_title">目次</string>
     <string name="dialog_touch_area_enable">ページめくりを有効化</string>
     <string name="done">転送完了時に閉じる</string>
     <string name="drag_to_reorder">ドラッグして並べ替え</string>
     <string name="duplicate_tab">タブを複製</string>
-    <string name="edit_custom_font">カスタムフォントを編集</string>
     <string name="eink_image_10">10%</string>
     <string name="eink_image_100">100%</string>
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="empty_whitelist_hint">右上のボタンをクリックして新しいドメインを追加してください</string>
-    <string name="enable_fix_scroll">スクロール修正を試す</string>
     <string name="enable_touch_area_as_arrow_key">長押しで← →キー</string>
     <string name="error_download_link_invalid">ダウンロードリンクが無効です</string>
     <string name="expand_space">スペースを拡張</string>
-    <string name="facebook_groups">Facebookグループ</string>
-    <string name="failed_to_add_to_instapaper">失敗しました</string>
     <string name="folder_name">ブックマークフォルダ名</string>
     <string name="folder_name_description">ブックマークフォルダ名を入力</string>
-    <string name="font_custom">カスタムフォントファイルを選択</string>
     <string name="font_size_decrease">フォント縮小</string>
     <string name="font_size_increase">フォント拡大</string>
     <string name="font_type">フォントタイプ</string>
@@ -330,7 +276,6 @@
     <string name="hie_touch_area_when_input">入力時に非表示</string>
     <string name="history">履歴</string>
     <string name="iansui_tc">iansui(TC)</string>
-    <string name="image_adjust">画像調整</string>
     <string name="input_url">URL入力</string>
     <string name="instapaper_create_account">アカウント作成</string>
     <string name="instapaper_password_hint">パスワード</string>
@@ -347,8 +292,6 @@
     <string name="medium_articles">Medium記事</string>
     <string name="menu">メニュー</string>
     <string name="menu_epub">EPUB</string>
-    <string name="menu_expand_menu">もっと表示</string>
-    <string name="menu_gpt">ChatGPT</string>
     <string name="menu_instapaper">Instapaper</string>
     <string name="menu_save_archive">後で読む</string>
     <string name="menu_summarize">要約</string>
@@ -361,14 +304,12 @@
     <string name="no_previous_page">前のページがありません！</string>
     <string name="no_saved_pages">保存済みページはありません</string>
     <string name="none">なし</string>
-    <string name="not_supported">非対応</string>
     <string name="open_epub">EPUBファイルを開く</string>
     <string name="openai">OpenAI</string>
     <string name="openai_compatible_server">OpenAI互換サーバー</string>
     <string name="openai_translate_by_paragraph">OpenAI段落翻訳</string>
     <string name="other_voices">他のボイス…</string>
     <string name="page_ai">Page AI</string>
-    <string name="page_ai_action_empty">Page AIアクションがありません。GPTアクション（ページ全体スコープ）で追加してください。</string>
     <string name="page_ai_action_title">Page AIアクション</string>
     <string name="page_down">ページダウン</string>
     <string name="page_up">ページアップ</string>
@@ -380,12 +321,10 @@
     <string name="plus_show_homepage">ホームページを表示</string>
     <string name="plus_start_input_url">URL入力を開始</string>
     <string name="project_site">プロジェクトサイト</string>
-    <string name="re_select">テキストを再選択</string>
     <string name="read_from_here">ここから読む</string>
     <string name="read_speed">読み上げ速度</string>
     <string name="reader_toolbar">リーダーツールバー設定</string>
     <string name="receive_link_terminate">リンク受信を終了</string>
-    <string name="receive_once">一度だけ受信</string>
     <string name="recently_used_bookmarks">最近使用したブックマーク</string>
     <string name="refresh">更新</string>
     <string name="rotate">回転</string>
@@ -401,7 +340,6 @@
     <string name="select_sentence">文を選択</string>
     <string name="self_hosted">セルフホスト</string>
     <string name="send_to_remote_terminate">リモートテキスト検索を終了</string>
-    <string name="send_type">送信タイプ</string>
     <string name="serif">Serif</string>
     <string name="setting_app_locale">アプリの言語</string>
     <string name="setting_clear_recent_bookmarks">最近のブックマークリストを消去</string>
@@ -409,11 +347,9 @@
     <string name="setting_floating_button_long_click">長押し</string>
     <string name="setting_multitouch_use_summary">ウェブコンテンツで二本指スワイプを使ってアクションを実行</string>
     <string name="setting_multitouch_use_title">二本指スワイプジェスチャー</string>
-    <string name="setting_recent_bookmarks">最近使用したブックマークを表示</string>
     <string name="setting_summary_app_locale">インターフェースの言語を変更</string>
     <string name="setting_summary_auto_fill_form">有効時にフォームデータを自動入力</string>
     <string name="setting_summary_background_loading">タブが非アクティブでもバックグラウンドでコンテンツを読み込む</string>
-    <string name="setting_summary_bold_font">太字フォントスタイルを適用（現在のページの再読み込みが必要）</string>
     <string name="setting_summary_chat_stream">レスポンスが文字ごとに表示されるため、より速く表示されます</string>
     <string name="setting_summary_clear_recent_bookmarks">最近使用したブックマークリストを消去</string>
     <string name="setting_title_hide_menu_items">あまり使わないメニュー項目を非表示にする</string>
@@ -429,8 +365,6 @@
     <string name="setting_summary_disable_long_press_toucharea">タッチエリアの長押しでアクションを実行しない</string>
     <string name="setting_summary_dual_caption">二番目の字幕言語を選択</string>
     <string name="setting_summary_edit_gpt_api_key">この機能を使用するにはキーを入力してください</string>
-    <string name="setting_summary_edit_gpt_prompt">ChatGPTの役割を設定。例：「あなたは通訳者です」</string>
-    <string name="setting_summary_edit_gpt_user_prompt">ユーザープロンプトのプレフィックスを編集。例：「以下の内容を英語に翻訳：」</string>
     <string name="setting_summary_enable_inplace_translate">現在のタブまたは新しいタブに段落翻訳を表示</string>
     <string name="setting_summary_enable_url_drag_to_action">URLを長押しして項目にドラッグしてアクションを実行</string>
     <string name="setting_summary_enable_zoom">一部のウェブサイトのコンテンツをズーム可能にする</string>
@@ -459,31 +393,25 @@
     <string name="share_waiting">他のデバイスからのデータを待機中…</string>
     <string name="setting_summary_nav_pos_custom">カスタム</string>
     <string name="setting_summary_nav_pos_not_show">表示しない</string>
-    <string name="setting_summary_nav_pos_reset_custom">カスタム位置をリセット</string>
     <string name="setting_summary_next_tab">現在のタブを閉じた時に次のタブを表示（それ以外は前のタブ）</string>
     <string name="setting_summary_other_model_name">代替GPTサーバーのモデル名を入力</string>
     <string name="setting_summary_page_left_value">次のページに移動する際の予約高さ（例：50、または10%）</string>
     <string name="setting_summary_plus_behavior">新しいタブを追加した時に表示する内容</string>
     <string name="setting_summary_prune_query_parameter">utm_medium、utm_sourceなどのクエリパラメータをURLから削除</string>
     <string name="setting_summary_reader_mode_padding">リーダーモードのパディング値（px単位）、デフォルトは10</string>
-    <string name="setting_summary_recent_bookmarks">新しいタブを開いた時に最近使用したブックマークを表示</string>
     <string name="setting_summary_saveTabs">タブを保存して次回開けるようにする</string>
     <string name="setting_summary_screen_awake">画面を常にオンに保つ</string>
     <string name="setting_summary_search_engine">検索エンジンを選択</string>
-    <string name="setting_summary_search_engine_rambler">Rambler</string>
-    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="setting_summary_search_in_dict">リーダーで検索する際にChatGPTで結果を検索</string>
     <string name="setting_summary_search_in_same_tab">外部検索に同じタブを使用</string>
     <string name="setting_summary_search_suggestion">入力中に検索候補を表示</string>
-    <string name="setting_summary_setup_bookmarks_location">Google Driveまたはリモート同期をサポートする場所でファイルを選択または作成</string>
     <string name="setting_summary_show_bookmarks_input_bar">入力バーでテキスト入力時にブックマーク候補を表示</string>
     <string name="setting_summary_show_default_text_menu">テキスト選択後にシステムデフォルトのアクションメニューを表示</string>
     <string name="setting_summary_show_tab_bar">ツールバーの上にタブバーを常に表示</string>
     <string name="setting_summary_split_search_setting">分割画面でのカスタム検索と結果表示</string>
     <string name="setting_summary_summary_gpt_type">コンテンツ要約用のGPTエンジンを選択</string>
     <string name="setting_summary_text_wrap_reflow">ズーム時にテキストを再配置</string>
-    <string name="setting_summary_toolbar_top">画面上部にツールバーを表示</string>
     <string name="setting_summary_translated_langs">翻訳言語をカスタマイズ（例：en, fr, de, zh-TW, zh-CN）</string>
     <string name="setting_summary_translation_style">段落翻訳のスタイルを選択</string>
     <string name="setting_summary_trim_input_url">入力内容からhttp以外のプレフィックスを削除</string>
@@ -507,8 +435,6 @@
     <string name="setting_title_debug">WebViewデバッグ</string>
     <string name="setting_title_disable_long_press_toucharea">タッチエリアの長押しを無効化</string>
     <string name="setting_title_edit_gpt_api_key">OpenAIキー</string>
-    <string name="setting_title_edit_gpt_system_prompt">ChatGPTシステムプロンプト</string>
-    <string name="setting_title_edit_gpt_user_prompt_prefix">ユーザープロンプトプレフィックス</string>
     <string name="setting_title_edit_homepage">ホームページURLを編集</string>
     <string name="setting_title_enable_inplace_translate">現在のタブで段落を翻訳</string>
     <string name="setting_title_enable_ssl_error_dialog">SSLエラーダイアログを表示</string>
@@ -516,7 +442,6 @@
     <string name="setting_title_enable_web_cache">ウェブキャッシュを有効化</string>
     <string name="setting_title_export_bookmarks">ブックマークをエクスポート</string>
     <string name="setting_title_external_search_pop">PROCESS_TEXTイベントでポップアップを使用</string>
-    <string name="setting_title_font">フォント</string>
     <string name="setting_title_gemini_key">Gemini APIキー</string>
     <string name="setting_title_gemini_model_name">Geminiモデル名</string>
     <string name="setting_title_github_snapshot">スナップショットで更新</string>
@@ -541,18 +466,14 @@
     <string name="setting_title_search">検索</string>
     <string name="setting_title_search_in_same_tab">外部検索用タブ</string>
     <string name="setting_title_search_suggestion">検索候補</string>
-    <string name="setting_title_setup_bookmarks_location">リモートブックマークの場所を設定</string>
     <string name="setting_title_show_bookmarks_input_bar">URL編集時にブックマークを表示</string>
     <string name="setting_title_show_tab_bar">タブバーを表示</string>
     <string name="setting_title_split_search_setting">分割検索設定</string>
-    <string name="setting_title_sync_bookmarks">ブックマークを同期</string>
     <string name="setting_title_text_wrap_reflow">テキスト折り返しリフロー</string>
-    <string name="setting_title_toolbar_top">ツールバーを上部に表示</string>
     <string name="setting_title_touch_area_actions">タッチエリアのクリックアクション</string>
     <string name="setting_title_translated_langs">Google翻訳の翻訳言語</string>
     <string name="setting_title_translation_style">翻訳テキストブロックのスタイル</string>
     <string name="setting_title_trim_input_url">入力テキストのトリミング</string>
-    <string name="setting_title_two_finger_swipe">二本指スワイプ</string>
     <string name="setting_title_useUpDown">上下キーを使用</string>
     <string name="setting_title_use_custom_gpt_url">代替サーバーを使用</string>
     <string name="setting_title_use_gemini">Google Geminiモデルを使用</string>
@@ -573,26 +494,18 @@
     <string name="show_default_text_menu">デフォルトのテキスト選択メニューを表示</string>
     <string name="show_touch_area_hint">タッチエリアの境界線を表示</string>
     <string name="source_language">ソース言語</string>
-    <string name="split_search">分割検索</string>
     <string name="split_search_settings">分割検索設定</string>
-    <string name="suggestion">"検索: "</string>
     <string name="summary_gpt_type">コンテンツ要約用GPTタイプ</string>
-    <string name="summary_touch_aciton_settings">タッチエリアのアクションを設定</string>
     <string name="switch_touch_area_action">上下方向を切り替え</string>
     <string name="switch_touch_area_action_short">方向切り替え</string>
     <string name="system_default">デフォルト</string>
     <string name="system_settings">システム設定</string>
     <string name="tab_preview">タブプレビュー</string>
-    <string name="text_selection_search">テキスト選択検索</string>
     <string name="title">章名</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="title_in_toc">目次</string>
-    <string name="title_touch_area">タッチエリア</string>
-    <string name="toast_receive_link_failed">リンク受信に失敗</string>
     <string name="toast_save_page_failed">ページの保存に失敗</string>
-    <string name="toast_saved">保存しました！</string>
     <string name="toast_saved_page">ページを保存しました。このアイコンを長押しして保存リストを表示。</string>
-    <string name="toast_send_link_failed">リンク送信に失敗</string>
     <string name="toc_delete">削除</string>
     <string name="toggle_touch_turn_page">タッチページめくりを切り替え</string>
     <string name="toolbar_icons">ツールバーアイコン</string>
@@ -600,21 +513,14 @@
     <string name="toolbar_time">現在時刻</string>
     <string name="toolbar_title">タイトル</string>
     <string name="touch_aciton_settings">その他の設定</string>
-    <string name="touch_custom">カスタム</string>
     <string name="touch_turn_page">タッチページめくり</string>
     <string name="translate_by_paragraph">段落ごとに翻訳</string>
     <string name="translate_image_key">画像翻訳キー</string>
     <string name="translate_image_key_summary">画像翻訳機能を使用するためのキーを入力</string>
-    <string name="translate_papago">Naver Papago APIシークレット</string>
-    <string name="translate_papago_summary">Naver Papago翻訳サービスを使用するにはAPIシークレットを入力</string>
-    <string name="translate_processing">処理中…</string>
-    <string name="translate_this_site">常に翻訳</string>
     <string name="translation_language">翻訳言語</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_system">内蔵</string>
-    <string name="turn_off">オフ</string>
-    <string name="turn_on">オン</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URLが空です</string>
     <string name="use_it_on_dict_search">辞書検索でChatGPTを使用</string>
@@ -625,7 +531,6 @@
     <string name="volume_page_turn_resumed">音量キーページめくりを再開</string>
     <string name="web_content_processing">ウェブコンテンツ処理</string>
     <string name="web_processing_gpt_type">GPTエンジン</string>
-    <string name="wenkai_tc">WenKai(TC)</string>
     <string name="site_force_viewport_width">ビューポート幅を強制 (px)</string>
     <string name="site_force_viewport_width_hint">デスクトップUAだけで足りない場合にのみ使用</string>
 </resources>

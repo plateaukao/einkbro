@@ -19,7 +19,6 @@
     <string name="menu_quit">Quit</string>
     <string name="menu_openFav">Open homepage</string>
     <string name="menu_delete">Delete</string>
-    <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Downloads</string>
@@ -28,11 +27,9 @@
 
     <string name="menu_share_link">Share link</string>
 
-    <string name="menu_save_screenshot">Save screenshot</string>
     <string name="menu_save_bookmark">Save as bookmark</string>
     <string name="menu_save_as">Save as…</string>
     <string name="menu_save_pdf">Save as PDF</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
 
     <string name="menu_other_searchSite">Search on site</string>
     <string name="audio_only_mode">Audio only</string>
@@ -46,7 +43,6 @@
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
 
     <!-- Settings -->
-    <string name="setting_label">Settings</string>
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">Data Control</string>
@@ -59,16 +55,12 @@
     <string name="setting_summary_search_engine_startpage">Startpage</string>
     <string name="setting_summary_search_engine_startpage_de">Startpage (de)</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
-    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_engine_rambler">Rambler</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
-    <string name="setting_title_font_size">Font size</string>
-    <string name="setting_summary_font_size">Change font size for displaying websites</string>
 
 
     <string name="setting_title_remote">Remote content</string>
@@ -117,8 +109,6 @@
 
 
     <!-- Browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED if you uninstall EinkBro so make backups regularly in safe place</string>
     <string name="clear_title_quit">Clear on app exit</string>
     <string name="clear_summary_quit">Every time you quit EinkBro all checked above data will be deleted</string>
     <string name="clear_title_cache">Clear Cache</string>
@@ -135,7 +125,6 @@
 
     <string name="setting_title_data">Backup</string>
 
-    <string name="setting_title_fav">Favorite</string>
 
     <string name="setting_title_searchEngine">Custom search engine</string>
 
@@ -168,13 +157,11 @@
     <string name="statusbar_config_preview">Preview</string>
     <string name="statusbar_config_preview_hint">click icon to remove; long click to drag and reorder</string>
 
-    <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Behavior</string>
 
     <string name="setting_title_toolbarShow">Toolbar first</string>
     <string name="setting_summary_toolbarShow">Pressing Back button will make toolbar visible before going back in history</string>
 
-    <string name="setting_title_nav">Navigation button</string>
     <string name="setting_title_nav_pos">Floating Button position</string>
     <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed</string>
     <string name="setting_summary_nav_pos_right">Right</string>
@@ -183,12 +170,10 @@
     <string name="setting_summary_nav_pos_not_show">Don\'t show</string>
     <string name="setting_summary_nav_pos_custom">Custom</string>
 
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? (start page, your bookmarks…)</string>
 
     <string name="setting_title_confirm_tab_close">Confirm tab close</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab</string>
 
-    <string name="setting_overView">Overview</string>
 
     <string name="setting_title_saveTabs">Save tabs</string>
     <string name="setting_summary_saveTabs">Save tabs so they can be opened next time</string>
@@ -201,7 +186,6 @@
 
     <string name="setting_multitouch_use_title">Two finger swipe gestures</string>
     <string name="setting_multitouch_use_summary">Use two finger swipe on web content to trigger actions</string>
-    <string name="setting_title_two_finger_swipe">Two finger swipe</string>
 
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
@@ -222,11 +206,8 @@
     <string name="page_down">Page Down</string>
 
     <!-- Data -->
-    <string name="export_whitelistAdBlock">Export AdBlock whitelist</string>
 
-    <string name="export_whitelistJS">Export JavaScript whitelist</string>
 
-    <string name="export_whitelistCookie">Export Cookie whitelist</string>
 
     <string name="setting_title_export_appData">Export app data</string>
     <string name="setting_summary_export_appData">Export app data (History, Bookmarks)
@@ -235,41 +216,27 @@
     <string name="setting_summary_import_appData">Import app data by choosing a zip file with previously exported data</string>
 
     <string name="title_appData">App data</string>
-    <string name="hint_database">This will delete all items here. Will you proceed?</string>
 
     <!-- Others setting -->
-    <string name="setting_title_license">License</string>
 
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
     <string name="toast_copy_successful">Successfully copied</string>
-    <string name="toast_delete_successful">Successfully deleted</string>
-    <string name="toast_domain_already_exists">Domain already exists</string>
 
-    <string name="toast_export_successful">Exported as:&#160;</string>
-    <string name="toast_export_failed">Failed to export</string>
-    <string name="toast_import_successful">Imported count:&#160;</string>
-    <string name="toast_import_failed">Failed to import</string>
 
     <string name="toast_input_empty">You haven\'t input anything</string>
-    <string name="toast_invalid_domain">Invalid domain</string>
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_share_failed">Can\'t share this page</string>
 
     <string name="toast_start_download">Starting download</string>
-    <string name="toast_wait_a_minute">Please wait for a moment</string>
     <string name="toast_error">Oops, something went wrong…</string>
     <string name="toast_edit_successful">Successfully saved!</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">Download complete. Open file?</string>
-    <string name="toast_backup">Create data backup? This will overwrite the old backup.</string>
 
 
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Clear</string>
-    <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
 
     <string name="setting_summary_desktop">Support desktop mode of website</string>
@@ -278,9 +245,7 @@
     <string name="media_continue">Background play</string>
     <string name="show_touch_area_hint">Show Touch Area border</string>
     <string name="bold_font">Bold font</string>
-    <string name="font_boldness">Font boldness</string>
     <string name="white_background">White background</string>
-    <string name="setting_summary_bold_font">Apply bold font style (need to reload current page)</string>
     <string name="desktop_mode">Desktop mode</string>
     <string name="setting_title_page_left_value">Page reserved height</string>
     <string name="setting_summary_page_left_value">How much height should be reserved when turning to next page(e.g., 50, or 10%)</string>
@@ -288,7 +253,6 @@
     <string name="vertical_read">Vertical mode</string>
     <string name="reader_mode">Reader mode</string>
     <string name="touch_area_setting">Touch setting</string>
-    <string name="toolbar_setting">Toolbar setting</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Save EPUB</string>
     <string name="saving_epub">Saving EPUB</string>
@@ -314,7 +278,6 @@
     <string name="userscript_install_from_url">Install from URL</string>
     <string name="userscript_fetch">Fetch</string>
     <string name="userscript_code">Userscript code</string>
-    <string name="userscript_install_prompt">Install this userscript?</string>
     <string name="refresh">Refresh</string>
     <string name="touch_turn_page">Touch turn page</string>
     <string name="tab_preview">Tab preview</string>
@@ -344,7 +307,6 @@
     <string name="switch_touch_area_action">Switch up/down direction</string>
     <string name="switch_touch_area_action_short">Switch direction</string>
     <string name="no_previous_page">No previous page!</string>
-    <string name="font_custom">Select custom font file</string>
     <string name="translation_mode">Translation mode</string>
 
 
@@ -353,19 +315,14 @@
     <string name="serif">Serif</string>
     <string name="googleserif">Google Serif</string>
     <string name="custom_font">Custom</string>
-    <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
     <string name="menu_quickToggle">Quick toggle</string>
     <string name="site_settings">Site Settings</string>
     <string name="reset_to_global">Reset All to Global</string>
-    <string name="per_site">Per-site</string>
-    <string name="use_global">Using global</string>
     <string name="site_custom_css">Custom CSS</string>
     <string name="site_post_load_js">Post-Load JavaScript</string>
     <string name="site_force_viewport_width">Force viewport width (px)</string>
     <string name="site_force_viewport_width_hint">Use only if desktop UA alone is not enough</string>
-    <string name="setting_title_toolbar_top">Toolbar on top</string>
-    <string name="setting_summary_toolbar_top">Show toolbar on top of screen</string>
     <string name="setting_title_toolbar_position">Toolbar position</string>
     <string name="toolbar_position_bottom">Bottom</string>
     <string name="toolbar_position_top">Top</string>
@@ -373,16 +330,11 @@
     <string name="toolbar_position_right">Right</string>
     <string name="setting_title_vi_binding">Vi key binding</string>
     <string name="setting_summary_vi_binding">Enable Vi key bindings for faster keyboard navigation</string>
-    <string name="edit_custom_font">Edit Custom Font</string>
-    <string name="font_folder">Font Folder</string>
     <string name="select_font_folder">Select Font Folder</string>
     <string name="change_folder">Change Folder</string>
     <string name="search_fonts">Search fonts…</string>
     <string name="no_fonts_found">No fonts found in this folder</string>
     <string name="font_preview_text">AaBbCc 123</string>
-    <string name="cannot_open_file">File can\'t be opened. Please re-open it from file picker</string>
-    <string name="setting_recent_bookmarks">Show recently used bookmarks</string>
-    <string name="setting_summary_recent_bookmarks">Show recently used bookmarks when opening a new tab</string>
     <string name="setting_clear_recent_bookmarks">Clear recent bookmark list</string>
     <string name="setting_summary_clear_recent_bookmarks">Clear recently used bookmark list</string>
     <string name="setting_title_hide_menu_items">Hide seldom used menu items</string>
@@ -394,23 +346,17 @@
     <string name="menu_send_link">Send link</string>
     <string name="done">Close when transfer is done</string>
     <string name="menu_receive">Receive link</string> <!-- Can other types of data be recieved with this option except link? Is they can, change this back; if not - it's better to leave this variant for overall language consistency -->
-    <string name="copy_link">Copy link</string>
     <string name="go_to">Click</string>
     <string name="setting_title_background_loading">Load non-active tabs</string>
     <string name="setting_summary_background_loading">If tab is not activated, still load its content in background</string>
-    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
     <string name="setting_title_search">Search</string>
     <string name="dialog_toc_title">Table of Contents</string>
     <string name="toc_delete">Delete</string>
     <string name="latest_release">Latest Release</string>
     <string name="project_site">Project Site</string>
-    <string name="facebook_groups">Facebook Groups</string>
     <string name="changelogs">What\'s New</string>
     <string name="medium_articles">Medium Articles</string>
     <string name="contributors">Contributors</string>
-    <string name="turn_on">On</string>
-    <string name="turn_off">Off</string>
-    <string name="title_touch_area">Touch Area</string>
     <string name="title_about">About</string>
     <string name="setting_title_auto_fill_form">Auto fill form data</string>
     <string name="setting_summary_auto_fill_form">Auto fill form data if enabled</string>
@@ -441,13 +387,9 @@
     <string name="setting_title_translated_langs">Translation languages for Google Translate</string>
     <string name="setting_summary_translated_langs">Customize languages for translation (e.g. en, fr, de, zh-TW, zh-CN)</string>
     <string name="menu">Menu</string>
-    <string name="copy_text">Copy text</string>
     <string name="menu_tts">Read content</string>
     <string name="read_speed">Read Speed</string>
-    <string name="toast_send_link_failed">Sending link failed</string>
-    <string name="toast_receive_link_failed">Receiving link failed</string>
     <string name="setting_summary_custom_process_text_url">Configure URL prefix that will be used for searching highlighted text from another app</string>
-    <string name="not_supported">Not supported</string>
 
     <string name="plus_start_input_url">Start input URL</string>
     <string name="plus_show_homepage">Show homepage</string>
@@ -467,11 +409,6 @@
     <string name="google_in_place">Google in-place</string>
     <string name="setting_title_update_adblock">Update AdBlock content</string>
     <string name="setting_summary_update_adblock">Trigger update AdBlock websites now</string>
-    <string name="setting_title_adblock_url">AdBlock list URL</string>
-    <string name="setting_summary_adblock_url">Edit this URL If you want to use other AdBlock content</string>
-    <string name="setting_title_adblock_auto_update">Auto update AdBlock</string>
-    <string name="setting_summary_adblock_auto_update">Auto update AdBlock content weekly</string>
-    <string name="toast_adblock_updated">AdBlock is updated!</string>
     <string name="toast_backup_successful">Backup successful!</string>
     <string name="backup_category_all_preferences">All Preferences</string>
     <string name="backup_category_gpt_settings">GPT Settings</string>
@@ -491,7 +428,6 @@
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog</string>
     <string name="manual">Manual</string>
     <string name="black_font">Black font</string>
-    <string name="image_adjust">Image Adjust</string>
     <string name="eink_image_adjustment">E-ink Image Optimization</string>
     <string name="eink_image_adjustment_summary">Adjust web images (JPEG/PNG/WebP) for better e-ink display</string>
     <string name="eink_image_off">Off</string>
@@ -500,19 +436,12 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
-    <string name="bookmark_new_file">Create new file</string>
-    <string name="bookmark_open_file">Link existing file</string>
     <string name="menu_save_archive">Save for later</string>
     <string name="menu_save_mht">Save as MHT</string>
     <string name="toast_saved_page">Page saved. Long press this icon to view saved list.</string>
     <string name="toast_save_page_failed">Failed to save page</string>
     <string name="saved_pages">Saved Pages</string>
     <string name="no_saved_pages">No saved pages yet</string>
-    <string name="setting_title_sync_bookmarks">Sync bookmarks</string>
-    <string name="setting_title_setup_bookmarks_location">Configure remote bookmark file location</string>
-    <string name="setting_summary_setup_bookmarks_location">Select or create a file in Google Drive or other location that supports remote sync</string>
-    <string name="dialog_message_sync_bookmark_file">To sync bookmarks you need to create or open a bookmark file from Google Drive or other remote service using system file picker</string>
-    <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
     <string name="settings_title_back_key_behavior">Back key behavior</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history</string>
     <string name="page_count">Page count</string>
@@ -521,14 +450,9 @@
     <string name="setting_summary_userAgent_toggle">Enable custom useragent</string>
     <string name="content_adjustment">Content Adjustment</string>
     <string name="share_save"><![CDATA[Share & Save]]></string>
-    <string name="menu_gpt">ChatGPT</string>
     <string name="setting_title_chat_gpt">GPT Settings</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI key</string>
     <string name="setting_summary_edit_gpt_api_key">Input key in order to use this feature</string>
-    <string name="setting_title_edit_gpt_system_prompt">ChatGPT System Prompt</string>
-    <string name="setting_summary_edit_gpt_prompt">Set a role for ChatGPT, e.g. \"You are an interpreter\"</string>
-    <string name="setting_title_edit_gpt_user_prompt_prefix">User Prompt Prefix</string>
-    <string name="setting_summary_edit_gpt_user_prompt">Edit user prompt prefix, e.g. \"Translate following content to English:\"</string>
     <string name="gpt_api_key_not_set">Add OpenAI key in Settings</string>
     <string name="gpt_scope">Scope</string>
     <string name="gpt_scope_text_selection">Text selection</string>
@@ -538,11 +462,8 @@
     <string name="setting_summary_show_default_text_menu">After selecting text, show system default action menu</string>
     <string name="google_translate">Google Translate</string>
     <string name="translate_by_paragraph">Translate by Paragraph</string>
-    <string name="translate_processing">Processing…</string>
     <string name="translation_language">Translation Language</string>
     <string name="misc">Misc</string>
-    <string name="translate_papago">Naver Papago API Secret</string>
-    <string name="translate_papago_summary">If you want to use Naver Papago translate service, please enter your API secret</string>
     <string name="papago">Papago</string>
     <string name="source_language">Source Language</string>
     <string name="inter_translate">Inter Translate</string>
@@ -552,31 +473,24 @@
     <string name="toggle_touch_turn_page">Toggle Touch turn page</string>
     <string name="use_it_on_dict_search">Use ChatGPT in dictionary search</string>
     <string name="setting_summary_search_in_dict">When searching in readers, use ChatGPT to search results</string>
-    <string name="menu_expand_menu">Show more</string>
     <string name="hide_statusbar">Hide statusbar</string>
     <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
     <string name="enable_touch_area_as_arrow_key">Long click as ← → key</string>
     <string name="setting_title_chat_stream">Reply In-Stream</string> <!-- Not sure about this one -->
     <string name="setting_summary_chat_stream">Response will be displayed character by character, so that it\'s faster</string>
-    <string name="re_select">Reselect text</string>
     <string name="setting_dual_caption">Dual captions for YouTube</string>
     <string name="setting_summary_dual_caption">Select language for second caption</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="setting_title_gpt_model_name">OpenAI model name</string>
     <string name="setting_summary_gpt_model_name">Default is gpt-4.1. Insert other model name if necessary</string>
-    <string name="split_search">Split Search</string>
     <string name="papago_translate_by_screen">Papago by Screen</string>
     <string name="split_search_settings">Split Search settings</string>
     <string name="setting_title_split_search_setting">Split Search settings</string>
     <string name="setting_summary_split_search_setting">Custom search and result opening in split screen</string>
     <string name="description_split_screen_string_pattern">Custom search URL with keyword position as %s</string>
     <string name="description_split_screen_title">Input the name to be shown as context menu title</string>
-    <string name="send_type">Send Type</string>
-    <string name="current_url">Current URL</string>
-    <string name="text_selection_search">Text Selection Search</string>
     <string name="send_to_remote_terminate">Terminate remote text search</string>
     <string name="receive_link_terminate">Terminate receiving link</string>
-    <string name="receive_once">Receive once</string>
     <string name="setting_title_search_in_same_tab">Tab for external search</string>
     <string name="setting_summary_search_in_same_tab">Use same tab for external search</string>
     <string name="move_to_background">Minimize</string>
@@ -621,31 +535,26 @@
     <string name="setting_summary_external_search_pop">Search as a popup dictionary (suitable for reader apps dictionary integration)</string>
     <string name="cannot_save_epub">Something went wrong while saving EPUB. Please try again later</string>
     <string name="deepl_translate">DeepL</string>
-    <string name="wenkai_tc">WenKai(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
     <string name="setting_title_use_gemini">Use Google Gemini model</string>
     <string name="setting_summary_use_gemini">Use Google Gemini model</string>
     <string name="setting_title_gemini_key">Gemini API key</string>
     <string name="setting_summary_gemini_key">Input Gemini API key</string>
-    <string name="enable_fix_scroll">Try fix scrolling</string>
     <string name="setting_title_other_model_name">Alternative model name</string>
     <string name="setting_summary_other_model_name">Input model name for alternaltive GPT server</string>
     <string name="setting_title_gemini_model_name">Gemini model name</string>
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">GPT result history</string>
     <string name="setting_summary_gpt_query_list">Saved GPT query results</string>
-    <string name="translate_this_site">Always translate</string>
     <string name="select_sentence">Select Sentence</string>
     <string name="select_paragraph">Select Paragraph</string>
-    <string name="toast_saved">Saved!</string>
     <string name="setting_app_locale">App language</string>
     <string name="setting_summary_app_locale">Change interface language</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
     <string name="gpt_action_drag_handle">Drag to reorder ChatGPT actions</string>
     <string name="page_ai">Page AI</string>
     <string name="page_ai_action_title">Page AI Actions</string>
-    <string name="page_ai_action_empty">No page AI actions available; add one under GPT Actions (whole page scope).</string>
     <string name="toolbar_time">Current time</string>
     <string name="setting_title_disable_long_press_toucharea">Disable long press on Touch Area</string>
     <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area</string>
@@ -653,13 +562,11 @@
     <string name="open_epub">Open EPUB file</string>
     <string name="setting_title_enable_web_cache">Enable web cache</string>
     <string name="setting_summary_enabling_web_cache">Load web content faster by enabling web cache</string>
-    <string name="touch_custom">Custom</string>
     <string name="key_page_up">Send Page Up key</string>
     <string name="key_page_down">Send Page Down key</string>
     <string name="key_left">Send Left key</string>
     <string name="key_right">Send Right key</string>
     <string name="touch_aciton_settings">More Settings</string>
-    <string name="summary_touch_aciton_settings">Setup actions for touch area</string>
     <string name="setting_title_touch_area_actions">Touch Area click actions</string>
     <string name="setting_touch_up_click">Up click action</string>
     <string name="setting_touch_up_long_click">Up long click action</string>
@@ -670,7 +577,6 @@
     <string name="setting_tts_voice">Voice</string>
     <string name="system_settings">System Settings</string>
     <string name="other_voices">Other Voices…</string>
-    <string name="close">Close</string>
     <string name="added_to_read_list">Added to read list</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_etts">ReadAloud</string>
@@ -715,16 +621,12 @@
     <string name="sc_disable_adblock_long">No AdBlock</string>
     <string name="sc_disable_adblock_disabled">No AdBlock</string>
     <string name="menu_instapaper">Instapaper</string>
-    <string name="added_to_instapaper">Added to Instapaper</string>
-    <string name="failed_to_add_to_instapaper">failed</string>
     <string name="instapaper_username_hint">Username or Email</string>
     <string name="instapaper_password_hint">Password</string>
     <string name="instapaper_create_account">Create account</string>
     <string name="url_empty">url is empty</string>
-    <string name="setting_summary_nav_pos_reset_custom">Reset custom position</string>
     <string name="setting_title_enable_url_drag_to_action">1 touch to url action</string>
     <string name="setting_summary_enable_url_drag_to_action">Long click on url and move to item to trigger it</string>
-    <string name="suggestion">"Search: "</string>
     <string name="setting_title_search_suggestion">Search suggestions</string>
     <string name="setting_summary_search_suggestion">"while inputting content, show search suggestions "</string>
     <string name="custom_scale">Custom Font Scale</string>
@@ -761,8 +663,6 @@
     <string name="task_menu_title">Tasks</string>
     <string name="task_read_article_list">News anchor</string>
     <string name="task_read_article_list_desc">Extract article links from this page, then open each one and read it aloud in sequence.</string>
-    <string name="task_summarize_tabs">Summarize open tabs</string>
-    <string name="task_summarize_tabs_desc">Produce a short summary of each currently open tab.</string>
     <string name="task_custom">Custom task…</string>
     <string name="task_custom_desc">Describe a multi-step task in natural language; an LLM will run it.</string>
     <string name="task_custom_hint">e.g. open the top 3 story links and give me one-sentence summaries</string>

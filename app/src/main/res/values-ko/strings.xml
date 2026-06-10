@@ -18,7 +18,6 @@
     <string name="menu_quit">종료</string>
     <string name="menu_openFav">즐겨찾기 열기</string>
     <string name="menu_delete">삭제</string>
-    <string name="menu_delete_list">목록 삭제</string>
     <string name="menu_edit">편집</string>
     <string name="menu_closeTab">탭 닫기</string>
     <string name="menu_download">다운로드 열기</string>
@@ -27,11 +26,9 @@
 
     <string name="menu_share_link">링크 공유</string>
 
-    <string name="menu_save_screenshot">스크린샷 저장</string>
     <string name="menu_save_bookmark">북마크로 저장</string>
     <string name="menu_save_as">다른 이름으로 저장…</string>
     <string name="menu_save_pdf">PDF로 저장</string>
-    <string name="menu_shareClipboard">클립보드에 복사</string>
 
     <string name="menu_other_searchSite">사이트 내 검색</string>
     <string name="menu_other_info">EinkBro 정보</string>
@@ -44,7 +41,6 @@
     <string name="dialog_content_resubmission">데이터를 다시 제출하시겠습니까?</string>
 
     <!-- Settings -->
-    <string name="setting_label">설정</string>
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">데이터 제어</string>
@@ -56,17 +52,13 @@
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">Startpage</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
-    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_engine_rambler">Rambler</string>
     <string name="setting_summary_search_engine_startpage_de">Startpage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
-    <string name="setting_title_font_size">글꼴 크기</string>
-    <string name="setting_summary_font_size">웹 사이트 표시 글꼴 크기 변경.</string>
 
 
     <string name="setting_title_remote">원격 콘텐츠</string>
@@ -115,8 +107,6 @@
 
 
     <!-- Browser clear -->
-    <string name="data_summary">모든 파일은 sd 카드의 “Android/data/info.plateaukao.einkbro/files/browser_backup/” 디렉토리에 내보내집니다.
-        이 디렉토리는 EinkBro를 제거하면 삭제됩니다. 따라서 안전한 위치에 정기적으로 백업을 만드십시오.</string>
     <string name="clear_title_quit">앱 종료 시 지우기</string>
     <string name="clear_summary_quit">EinkBro를 종료할 때마다 선택한 모든 데이터가 삭제됩니다.</string>
     <string name="clear_title_cache">캐시 지우기</string>
@@ -133,7 +123,6 @@
 
     <string name="setting_title_data">백업</string>
 
-    <string name="setting_title_fav">즐겨찾기</string>
 
     <string name="setting_title_searchEngine">사용자 지정 검색 엔진</string>
 
@@ -145,13 +134,11 @@
     <string name="setting_summary_hide">웹 사이트를 스크롤할 때 전체 화면을 사용합니다. 뒤로 버튼을 누르면 전체 화면 모드를 종료합니다.
     </string>
 
-    <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">동작</string>
 
     <string name="setting_title_toolbarShow">첫 번째 툴바</string>
     <string name="setting_summary_toolbarShow">뒤로 버튼을 누르면 히스토리로 돌아가기 전에 툴바가 표시됩니다.</string>
 
-    <string name="setting_title_nav">내비게이션 버튼</string>
     <string name="setting_title_nav_pos">플로팅 버튼 위치</string>
     <string name="setting_summary_nav_pos">‘내비게이션 버튼’을 배치할 위치를 결정합니다.</string>
     <string name="setting_summary_nav_pos_right">오른쪽</string>
@@ -160,12 +147,10 @@
     <string name="setting_summary_nav_pos_not_show">표시하지 않음</string>
     <string name="setting_summary_nav_pos_custom">사용자 지정</string>
 
-    <string name="setting_summary_tab">“개요” 시작 시 표시할 항목(시작 페이지, 북마크 등)을 선택합니다.</string>
 
     <string name="setting_title_confirm_tab_close">탭 닫기 확인</string>
     <string name="setting_summary_confirm_tab_close">탭을 닫을 때 확인 대화 상자를 표시합니다.</string>
 
-    <string name="setting_overView">개요</string>
 
     <string name="setting_title_saveTabs">탭 저장</string>
     <string name="setting_summary_saveTabs">탭을 저장하여 다음에 열 수 있도록 합니다.</string>
@@ -194,11 +179,8 @@
     <string name="page_down">페이지 아래로</string>
 
     <!-- Data -->
-    <string name="export_whitelistAdBlock">AdBlock 허용 목록 내보내기</string>
 
-    <string name="export_whitelistJS">JavaScript 허용 목록 내보내기</string>
 
-    <string name="export_whitelistCookie">쿠키 허용 목록 내보내기</string>
 
     <string name="setting_title_export_appData">앱 데이터 내보내기</string>
     <string name="setting_summary_export_appData">앱 데이터(히스토리, 북마크) 및 개인 설정을 내보냅니다</string>
@@ -218,41 +200,27 @@
     <string name="share_waiting">다른 기기에서 데이터를 기다리는 중…</string>
 
     <string name="title_appData">앱 데이터</string>
-    <string name="hint_database">여기에 있는 모든 항목이 삭제됩니다. 계속하시겠습니까?</string>
 
     <!-- Others setting -->
-    <string name="setting_title_license">라이선스</string>
 
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">도메인이 성공적으로 추가되었습니다.</string>
     <string name="toast_copy_successful">복사가 성공적으로 완료되었습니다.</string>
-    <string name="toast_delete_successful">삭제가 성공적으로 완료되었습니다.</string>
-    <string name="toast_domain_already_exists">도메인이 이미 존재합니다.</string>
 
-    <string name="toast_export_successful">내보내기 완료: </string>
-    <string name="toast_export_failed">내보내기 실패</string>
-    <string name="toast_import_successful">가져오기 개수: </string>
-    <string name="toast_import_failed">가져오기 실패</string>
 
     <string name="toast_input_empty">입력된 내용이 없습니다.</string>
-    <string name="toast_invalid_domain">잘못된 도메인입니다.</string>
     <string name="toast_load_error">이 URL을 로드할 수 없습니다.</string>
     <string name="toast_share_failed">이 페이지를 공유할 수 없습니다.</string>
 
     <string name="toast_start_download">다운로드 시작</string>
-    <string name="toast_wait_a_minute">잠시만 기다려 주세요.</string>
     <string name="toast_error">죄송합니다. 오류가 발생했습니다…</string>
     <string name="toast_edit_successful">저장되었습니다!</string>
     <string name="toast_webview_forward">다음 사이트를 로드할 수 없습니다.</string>
     <string name="toast_restart">변경 사항을 적용하려면 EinkBro를 다시 시작해야 합니다. 지금 닫겠습니까?</string>
     <string name="toast_close_tab">현재 탭을 닫겠습니까?</string>
     <string name="toast_downloadComplete">다운로드가 완료되었습니다. 파일을 열겠습니까?</string>
-    <string name="toast_backup">데이터 백업을 생성하시겠습니까? 이렇게 하면 이전 백업이 덮어쓰여집니다.</string>
 
 
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">지우기</string>
-    <string name="whitelist_edit_hint">도메인</string>
     <string name="whitelist_add">추가</string>
 
     <string name="setting_summary_desktop">웹 사이트의 데스크톱 모드 지원</string>
@@ -262,7 +230,6 @@
     <string name="show_touch_area_hint">터치 영역 테두리 표시</string>
     <string name="bold_font">굵은 글꼴</string>
     <string name="white_background">흰색 배경</string>
-    <string name="setting_summary_bold_font">굵은 글꼴 스타일 적용(현재 페이지를 다시 로드해야 함)</string>
     <string name="desktop_mode">데스크톱 모드</string>
     <string name="setting_title_page_left_value">페이지 예약 높이</string>
     <string name="setting_summary_page_left_value">다음 페이지로 넘길 때 예약할 높이(예: 50 또는 10%)</string>
@@ -270,7 +237,6 @@
     <string name="vertical_read">세로</string>
     <string name="reader_mode">리더 모드</string>
     <string name="touch_area_setting">터치 설정</string>
-    <string name="toolbar_setting">툴바 설정</string>
     <string name="menu_save_epub">EPUB 저장</string>
     <string name="saving_epub">EPUB 저장 중</string>
     <string name="menu_open_epub">EPUB 열기</string>
@@ -316,8 +282,6 @@
     <string name="no_previous_page">이전 페이지가 없습니다!</string>
     <string name="setting_multitouch_use_title">두 손가락 스와이프 사용</string>
     <string name="setting_multitouch_use_summary">웹 콘텐츠에서 두 손가락 스와이프를 사용하여 동작을 트리거합니다.</string>
-    <string name="setting_title_two_finger_swipe">두 손가락 스와이프</string>
-    <string name="font_custom">사용자 지정 글꼴 파일 선택</string>
     <string name="translation_mode">번역 모드</string>
 
 
@@ -327,17 +291,10 @@
     <string name="serif">세리프</string>
     <string name="googleserif">Google Serif</string>
     <string name="custom_font">사용자 지정</string>
-    <string name="setting_title_font">글꼴</string>
     <string name="font_type">글꼴 종류</string>
     <string name="menu_quickToggle">빠른 전환</string>
-    <string name="setting_title_toolbar_top">상단에 툴바 표시</string>
-    <string name="setting_summary_toolbar_top">화면 상단에 툴바를 표시합니다.</string>
     <string name="setting_title_vi_binding">Vi 키 바인딩</string>
     <string name="setting_summary_vi_binding">빠른 키보드 탐색을 위해 Vi 키 바인딩을 활성화합니다.</string>
-    <string name="edit_custom_font">사용자 지정 글꼴 편집</string>
-    <string name="cannot_open_file">파일을 열 수 없습니다. 파일 선택기에서 다시 열어보세요.</string>
-    <string name="setting_recent_bookmarks">최근 사용한 북마크 표시</string>
-    <string name="setting_summary_recent_bookmarks">새 탭을 열 때 최근 사용한 북마크를 표시합니다.</string>
     <string name="setting_clear_recent_bookmarks">최근 북마크 목록 지우기</string>
     <string name="setting_summary_clear_recent_bookmarks">최근 사용한 북마크 목록을 지웁니다.</string>
     <string name="setting_title_hide_menu_items">거의 사용하지 않는 메뉴 항목 숨기기</string>
@@ -349,21 +306,15 @@
     <string name="menu_send_link">링크 보내기</string>
     <string name="done">전송 완료 시 닫기</string>
     <string name="menu_receive">데이터 받기</string>
-    <string name="copy_link">링크 복사</string>
     <string name="setting_title_background_loading">비활성 탭 로딩</string>
     <string name="setting_summary_background_loading">탭이 활성화되지 않은 경우에도 백그라운드에서 콘텐츠를 로드합니다.</string>
-    <string name="dialog_content_ssl_error">사이트 인증서가 신뢰할 수 없습니다. 계속하시겠습니까?</string>
     <string name="setting_title_search">검색</string>
     <string name="dialog_toc_title">목차</string>
     <string name="latest_release">최신 릴리스</string>
     <string name="project_site">프로젝트 사이트</string>
-    <string name="facebook_groups">페이스북 그룹</string>
     <string name="changelogs">새로운 기능</string>
     <string name="medium_articles">미디엄 기사</string>
     <string name="contributors">기여자</string>
-    <string name="turn_on">켜기</string>
-    <string name="turn_off">끄기</string>
-    <string name="title_touch_area">터치 영역</string>
     <string name="title_about">정보</string>
     <string name="setting_title_auto_fill_form">자동 양식 데이터 채우기</string>
     <string name="setting_summary_auto_fill_form">활성화된 경우 자동으로 양식 데이터를 채웁니다.</string>
@@ -390,13 +341,9 @@
     <string name="setting_title_translated_langs">Google 번역 번역 언어</string>
     <string name="setting_summary_translated_langs">번역할 언어를 사용자 지정합니다(예: en, fr, de, zh-TW, zh-CN).</string>
     <string name="menu">메뉴</string>
-    <string name="copy_text">텍스트 복사</string>
     <string name="menu_tts">콘텐츠 읽기</string>
     <string name="read_speed">읽기 속도</string>
-    <string name="toast_send_link_failed">링크 보내기 실패</string>
-    <string name="toast_receive_link_failed">링크 받기 실패</string>
     <string name="setting_summary_custom_process_text_url">다른 앱에서 텍스트를 선택하면 이 URL 접두사를 사용하여 브라우저에서 검색할 수 있습니다.</string>
-    <string name="not_supported">지원되지 않음</string>
 
     <string name="plus_start_input_url">URL 입력 시작</string>
     <string name="plus_show_homepage">홈 표시</string>
@@ -414,25 +361,12 @@
     <string name="google_in_place">Google 제자리</string>
     <string name="setting_title_update_adblock">AdBlock 콘텐츠 업데이트</string>
     <string name="setting_summary_update_adblock">지금 AdBlock 웹 사이트 업데이트를 트리거합니다.</string>
-    <string name="setting_title_adblock_url">AdBlock 목록 URL</string>
-    <string name="setting_summary_adblock_url">다른 AdBlock 콘텐츠를 사용하려면 이 URL을 편집하세요.</string>
-    <string name="setting_title_adblock_auto_update">AdBlock 자동 업데이트</string>
-    <string name="setting_summary_adblock_auto_update">AdBlock 콘텐츠를 매주 자동으로 업데이트합니다.</string>
-    <string name="toast_adblock_updated">AdBlock이 업데이트되었습니다!</string>
     <string name="toast_backup_successful">백업 성공!</string>
     <string name="setting_title_enable_ssl_error_dialog">SSL 오류 대화 상자 표시</string>
     <string name="setting_summary_enable_ssl_error_dialog">SSL에 문제가 발생하면 오류 대화 상자를 표시합니다.</string>
     <string name="manual">수동</string>
     <string name="black_font">검은색 글꼴</string>
-    <string name="image_adjust">이미지 조정</string>
-    <string name="bookmark_new_file">새 파일 만들기</string>
-    <string name="bookmark_open_file">기존 파일 연결</string>
     <string name="menu_save_archive">아카이브 저장</string>
-    <string name="setting_title_sync_bookmarks">북마크 동기화</string>
-    <string name="setting_title_setup_bookmarks_location">북마크 위치 구성</string>
-    <string name="setting_summary_setup_bookmarks_location">원격 동기화를 지원하는 Google Drive 또는 다른 파일 위치에서 파일을 선택합니다.</string>
-    <string name="dialog_message_sync_bookmark_file">"북마크를 동기화하려면 시스템 파일 선택기를 사용하여 Google Drive에서 북마크 파일을 만들거나 열거나 다른 원격 서비스와 동기화된 파일을 열어야 합니다."</string>
-    <string name="dialog_title_bookmark_sync">북마크 파일 설정</string>
     <string name="settings_title_back_key_behavior">뒤로 가기 키 동작</string>
     <string name="settings_summary_back_key_behavior">이전 페이지가 첫 페이지인 경우 탭 닫기</string>
     <string name="page_count">페이지 수</string>
@@ -441,25 +375,17 @@
     <string name="setting_summary_userAgent_toggle">사용자 지정 useragent 활성화</string>
     <string name="content_adjustment">콘텐츠 조정</string>
     <string name="share_save"><![CDATA[공유 및 저장]]></string>
-    <string name="menu_gpt">ChatGPT</string>
     <string name="setting_title_chat_gpt">GPT 설정</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI 키</string>
     <string name="setting_summary_edit_gpt_api_key">이 기능을 사용하려면 키를 입력하십시오.</string>
-    <string name="setting_title_edit_gpt_system_prompt">ChatGPT 시스템 프롬프트</string>
-    <string name="setting_summary_edit_gpt_prompt">ChatGPT에 대한 역할을 설정하십시오. 예: "당신은 통역사입니다."</string>
-    <string name="setting_title_edit_gpt_user_prompt_prefix">사용자 프롬프트 접두사</string>
-    <string name="setting_summary_edit_gpt_user_prompt">사용자 프롬프트 접두사를 편집하십시오. 예: "다음 콘텐츠를 영어로 번역하십시오:"</string>
     <string name="gpt_api_key_not_set">설정에서 OpenAI 키를 추가하십시오.</string>
     <string name="dialog_touch_area_enable">페이지 넘기기 활성화</string>
     <string name="show_default_text_menu">기본 선택 텍스트 메뉴 표시</string>
     <string name="setting_summary_show_default_text_menu">텍스트를 선택한 후 시스템 기본 동작 메뉴를 표시합니다.</string>
     <string name="google_translate">Google 번역</string>
     <string name="translate_by_paragraph">단락별 번역</string>
-    <string name="translate_processing">처리 중...</string>
     <string name="translation_language">번역 언어</string>
     <string name="misc">기타</string>
-    <string name="translate_papago">네이버 파파고 API 시크릿</string>
-    <string name="translate_papago_summary">네이버 파파고 번역 서비스를 사용하려면 API 시크릿을 입력하십시오.</string>
     <string name="papago">파파고</string>
     <string name="source_language">원본 언어</string>
     <string name="inter_translate">Inter 번역</string>
@@ -469,31 +395,24 @@
     <string name="toggle_touch_turn_page">터치 페이지 넘기기 토글</string>
     <string name="use_it_on_dict_search">사전 검색에서 GPT 사용</string>
     <string name="setting_summary_search_in_dict">리더에서 검색할 때 GPT를 사용하여 결과를 검색합니다.</string>
-    <string name="menu_expand_menu">더보기</string>
     <string name="hide_statusbar">상태 표시줄 숨기기</string>
     <string name="setting_summary_hide_statusbar">항상 상태 표시줄 숨기기</string>
     <string name="enable_touch_area_as_arrow_key">길게 누르면 ← → 키</string>
     <string name="setting_title_chat_stream">스트림으로 답변</string>
     <string name="setting_summary_chat_stream">응답이 문자별로 표시되므로 더 빠릅니다.</string>
-    <string name="re_select">텍스트 다시 선택</string>
     <string name="setting_dual_caption">YouTube 이중 자막</string>
     <string name="setting_summary_dual_caption">두 번째 자막 언어를 선택합니다.</string>
     <string name="naver_translate">네이버 번역</string>
     <string name="setting_title_gpt_model_name">OpenAI 모델 이름</string>
     <string name="setting_summary_gpt_model_name">기본값은 gpt-4.1 입니다. 필요하면 다른 모델 이름을 입력하십시오.</string>
-    <string name="split_search">분할 검색</string>
     <string name="papago_translate_by_screen">파파고 화면별 번역</string>
     <string name="split_search_settings">분할 검색 설정</string>
     <string name="setting_title_split_search_setting">분할 검색 설정</string>
     <string name="setting_summary_split_search_setting">분할 화면에서 사용자 지정 검색 및 결과 열기.</string>
     <string name="description_split_screen_string_pattern">키워드 위치가 %s인 사용자 지정 검색 URL</string>
     <string name="description_split_screen_title">컨텍스트 메뉴 제목으로 표시될 이름을 입력하십시오.</string>
-    <string name="send_type">전송 유형</string>
-    <string name="current_url">현재 URL</string>
-    <string name="text_selection_search">텍스트 선택 검색</string>
     <string name="send_to_remote_terminate">원격 텍스트 검색 종료</string>
     <string name="receive_link_terminate">링크 수신 종료</string>
-    <string name="receive_once">한 번 수신</string>
     <string name="setting_title_search_in_same_tab">외부 검색 탭</string>
     <string name="setting_summary_search_in_same_tab">외부 검색에 동일한 탭을 사용합니다.</string>
     <string name="move_to_background">최소화</string>
@@ -538,24 +457,20 @@
     <string name="setting_summary_external_search_pop">팝업 사전으로 검색(리더 앱 사전 통합에 적합)</string>
     <string name="cannot_save_epub">EPUB 저장 중 오류가 발생했습니다. 나중에 다시 시도하십시오.</string>
     <string name="deepl_translate">DeepL</string>
-    <string name="wenkai_tc">WenKai(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">감자 꽃(KO)</string>
     <string name="setting_title_use_gemini">Google Gemini 모델 사용</string>
     <string name="setting_summary_use_gemini">Google Gemini 모델 사용</string>
     <string name="setting_title_gemini_key">Gemini API 키</string>
     <string name="setting_summary_gemini_key">Gemini API 키 입력</string>
-    <string name="enable_fix_scroll">스크롤 수정 시도</string>
     <string name="setting_title_other_model_name">대체 모델 이름</string>
     <string name="setting_summary_other_model_name">대체 GPT 서버에 대한 모델 이름 입력</string>
     <string name="setting_title_gemini_model_name">Gemini 모델 이름</string>
     <string name="setting_summary_gemini_model_name">Gemini 모델 이름 입력(기본값: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">GPT 결과 기록</string>
     <string name="setting_summary_gpt_query_list">저장된 GPT 쿼리 결과</string>
-    <string name="translate_this_site">항상 번역</string>
     <string name="select_sentence">문장 선택</string>
     <string name="select_paragraph">단락 선택</string>
-    <string name="toast_saved">저장되었습니다!</string>
     <string name="setting_app_locale">UI 언어</string>
     <string name="setting_summary_app_locale">인터페이스 언어를 구성합니다.</string>
     <string name="drag_to_reorder">Drag to re-order bookmarks</string>
@@ -564,7 +479,6 @@
     <string name="toolbar_position_top">상단</string>
     <string name="toolbar_position_left">왼쪽</string>
     <string name="toolbar_position_right">오른쪽</string>
-    <string name="font_folder">글꼴 폴더</string>
     <string name="select_font_folder">글꼴 폴더 선택</string>
     <string name="change_folder">폴더 변경</string>
     <string name="search_fonts">글꼴 검색…</string>
@@ -575,12 +489,10 @@
     <string name="eink_image_off">끄기</string>
     <string name="setting_title_reader_keep_extra_content">리더 모드: 추가 콘텐츠 유지</string>
     <string name="setting_summary_reader_keep_extra_content">리더 모드에서 스타일, 클래스 및 수식(MathJax/KaTeX) 보존</string>
-    <string name="added_to_instapaper">Instapaper에 추가됨</string>
     <string name="added_to_read_list">읽기 목록에 추가됨</string>
     <string name="audio_only_mode">오디오만</string>
     <string name="bold">굵게</string>
     <string name="chat_with_web">웹과 채팅</string>
-    <string name="close">닫기</string>
     <string name="custom_scale">사용자 지정 글꼴 배율</string>
     <string name="custom_scale_desc">원하는 글꼴 배율을 입력하세요 (%)</string>
     <string name="dashed_border">점선 테두리</string>
@@ -592,7 +504,6 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="expand_space">공간 확장</string>
-    <string name="failed_to_add_to_instapaper">실패</string>
     <string name="gemini_translate_by_paragraph">Gemini 단락별 번역</string>
     <string name="gesture_on_floating_button">플로팅 버튼 제스처</string>
     <string name="google_gemini">Google Gemini</string>
@@ -620,7 +531,6 @@
     <string name="openai_translate_by_paragraph">OpenAI 단락별 번역</string>
     <string name="other_voices">다른 음성…</string>
     <string name="page_ai">Page AI</string>
-    <string name="page_ai_action_empty">Page AI 동작이 없습니다. GPT 동작(전체 페이지 범위)에서 추가하세요.</string>
     <string name="page_ai_action_title">Page AI 동작</string>
     <string name="read_from_here">여기서부터 읽기</string>
     <string name="reader_toolbar">리더 툴바 설정</string>
@@ -635,7 +545,6 @@
     <string name="setting_summary_enabling_web_cache">웹 캐시를 활성화하여 웹 콘텐츠를 더 빠르게 로드</string>
     <string name="setting_summary_gpt_audio_model_name">사용 가능: tts-1(기본값), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-tts 모델 사용 시 지시사항</string>
-    <string name="setting_summary_nav_pos_reset_custom">사용자 지정 위치 초기화</string>
     <string name="setting_summary_reader_mode_padding">리더 모드의 패딩 값(px), 기본값은 10</string>
     <string name="setting_summary_search_suggestion">입력 중 검색 추천 표시</string>
     <string name="setting_summary_summary_gpt_type">콘텐츠 요약용 GPT 엔진 선택</string>
@@ -661,9 +570,7 @@
     <string name="setting_touch_up_long_click">위쪽 길게 누르기 동작</string>
     <string name="setting_tts_type">음성 합성 엔진</string>
     <string name="setting_tts_voice">음성</string>
-    <string name="suggestion">"검색: "</string>
     <string name="summary_gpt_type">콘텐츠 요약용 GPT 유형</string>
-    <string name="summary_touch_aciton_settings">터치 영역 동작 설정</string>
     <string name="system_settings">시스템 설정</string>
     <string name="toast_save_page_failed">페이지 저장에 실패했습니다</string>
     <string name="toast_saved_page">페이지가 저장되었습니다. 이 아이콘을 길게 눌러 저장 목록을 확인하세요.</string>
@@ -672,7 +579,6 @@
     <string name="toolbar_icons_description">툴바 아이콘 배열</string>
     <string name="toolbar_time">현재 시각</string>
     <string name="touch_aciton_settings">추가 설정</string>
-    <string name="touch_custom">사용자 지정</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_system">내장</string>

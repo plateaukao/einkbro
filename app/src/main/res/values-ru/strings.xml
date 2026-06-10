@@ -18,7 +18,6 @@
     <string name="menu_quit">Выход</string>
     <string name="menu_openFav">Открыть Избранное</string>
     <string name="menu_delete">Удалить</string>
-    <string name="menu_delete_list">Удалить список</string>
     <string name="menu_edit">Изменить</string>
     <string name="menu_closeTab">Закрыть вкладку</string>
     <string name="menu_download">Загрузки</string>
@@ -27,11 +26,9 @@
 
     <string name="menu_share_link">Поделиться ссылкой</string>
 
-    <string name="menu_save_screenshot">Сохранить скриншот</string>
     <string name="menu_save_bookmark">Добавить в закладки</string>
     <string name="menu_save_as">Сохранить как…</string>
     <string name="menu_save_pdf">Сохранить в PDF</string>
-    <string name="menu_shareClipboard">Копировать в буфер</string>
 
     <string name="menu_other_searchSite">Найти на странице</string>
     <string name="menu_other_info">О программе EinkBro</string>
@@ -44,7 +41,6 @@
     <string name="dialog_content_resubmission">Хотели бы вы повторно отправить свои данные?</string>
 
     <!-- Settings -->
-    <string name="setting_label">Настройки</string>
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">Управление данными</string>
@@ -57,16 +53,12 @@
     <string name="setting_summary_search_engine_startpage">Startpage</string>
     <string name="setting_summary_search_engine_startpage_de">Startpage (de)</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
-    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_yandex">Яндекс</string>
-    <string name="setting_summary_search_engine_rambler">Рамблер</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
-    <string name="setting_title_font_size">Размер шрифта</string>
-    <string name="setting_summary_font_size">Изменение размера шрифта для отображения веб-сайтов</string>
 
 
     <string name="setting_title_remote">Данные с посторонних сайтов</string>
@@ -115,8 +107,6 @@
 
 
     <!-- Browser clear -->
-    <string name="data_summary">Все файлы будут экспортированы в каталог \"Android/data/info.plateaukao.einkbro/files/browser_backup/\".
-        Этот каталог будет УДАЛЕН, если Вы удалите EinkBro, поэтому регулярно делайте резервные копии</string>
     <string name="clear_title_quit">Очищать данные при выходе из приложения</string>
     <string name="clear_summary_quit">Каждый раз при выходе из EinkBro все вышеперечисленные выбранные данные будут удаляться</string>
     <string name="clear_title_cache">Очистить кэш</string>
@@ -133,7 +123,6 @@
 
     <string name="setting_title_data">Резервное копирование</string>
 
-    <string name="setting_title_fav">Избранное</string>
 
     <string name="setting_title_searchEngine">Пользовательская поисковая система</string>
 
@@ -144,13 +133,11 @@
     <string name="setting_title_hideToolbar">Скрывать панель инструментов</string>
     <string name="setting_summary_hide">Использовать весь экран при прокрутке сайтов. Чтобы покинуть полноэкранный режим нажмите кнопку Назад</string>
 
-    <string name="setting_title_theme">Интерфейс</string>
     <string name="setting_title_behavior">Поведение</string>
 
     <string name="setting_title_toolbarShow">Показывать сначала панель инструментов</string>
     <string name="setting_summary_toolbarShow">Нажатие кнопки Назад сначала покажет панель инструментов, затем сделает переход на предыдущую страницу</string>
 
-    <string name="setting_title_nav">Кнопка навигации</string>
     <string name="setting_title_nav_pos">Положение</string>
     <string name="setting_summary_nav_pos">Определите, где будет размещена \"Кнопка навигации\"</string>
     <string name="setting_summary_nav_pos_right">Справа</string>
@@ -159,12 +146,10 @@
     <string name="setting_summary_nav_pos_not_show">Не показывать</string>
     <string name="setting_summary_nav_pos_custom">Настроить</string>
 
-    <string name="setting_summary_tab">Что должно отображаться при запуске \"Обзора\"? (стартовая страница, закладки…)</string>
 
     <string name="setting_title_confirm_tab_close">Подтверждать закрытие вкладки</string>
     <string name="setting_summary_confirm_tab_close">Показывать ли диалоговое окно при закрытии вкладки</string>
 
-    <string name="setting_overView">Обзор</string>
 
     <string name="setting_title_saveTabs">Сохранять вкладки</string>
     <string name="setting_summary_saveTabs">Сохранять вкладки, чтобы их потом можно было открыть</string> <!-- This string needs improvement -->
@@ -177,7 +162,6 @@
 
     <string name="setting_multitouch_use_title">Включить свайпы двумя пальцами</string>
     <string name="setting_multitouch_use_summary">Использовать свайпы двумя пальцами</string>
-    <string name="setting_title_two_finger_swipe">Свайпы двумя пальцами</string>
 
     <string name="setting_gesture_up">Свайп вверх</string>
     <string name="setting_gesture_down">Свайп вниз</string>
@@ -198,11 +182,8 @@
     <string name="page_down">Page Down</string>
 
     <!-- Data -->
-    <string name="export_whitelistAdBlock">Эксп-ровать белый список AdBlock</string>
 
-    <string name="export_whitelistJS">Эксп-ровать белый список Javascript</string>
 
-    <string name="export_whitelistCookie">Эксп-ровать белый список куки</string>
 
     <string name="setting_title_export_appData">Экспортировать данные</string>
     <string name="setting_summary_export_appData">Экспортировать данные браузера (История, Закладки) и ваши настройки</string>
@@ -222,41 +203,27 @@
     <string name="share_waiting">Ожидание данных с другого устройства…</string>
 
     <string name="title_appData">Данные приложения</string>
-    <string name="hint_database">Это приведет к удалению всех данных элементов. Продолжить?</string>
 
     <!-- Others setting -->
-    <string name="setting_title_license">Лицензия</string>
 
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Успешно добавлен домен</string>
     <string name="toast_copy_successful">Успешно скопировано</string>
-    <string name="toast_delete_successful">Успешно удалено</string>
-    <string name="toast_domain_already_exists">Домен уже существует</string>
 
-    <string name="toast_export_successful">Экспортировано как:&#160;</string>
-    <string name="toast_export_failed">Не удалось экспортировать</string>
-    <string name="toast_import_successful">Количество импортированных:&#160;</string>
-    <string name="toast_import_failed">Не удалось импортировать</string>
 
     <string name="toast_input_empty">Вы ничего не ввели</string>
-    <string name="toast_invalid_domain">Неверный домен</string>
     <string name="toast_load_error">Не удается загрузить этот сайт</string>
     <string name="toast_share_failed">Не удаётся поделиться этой страницей</string>
 
     <string name="toast_start_download">Начало загрузки</string>
-    <string name="toast_wait_a_minute">Подождите немного, пожалуйста</string>
     <string name="toast_error">Упс, что-то пошло не так…</string>
     <string name="toast_edit_successful">Успешно сохранено!</string>
     <string name="toast_webview_forward">Не удается загрузить следующий сайт</string>
     <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить EinkBro. Закрыть сейчас?</string>
     <string name="toast_close_tab">Хотите закрыть текущую вкладку?</string>
     <string name="toast_downloadComplete">Загрузка завершена. Открыть файл?</string>
-    <string name="toast_backup">Сохранить данные? Это перезапишет старую резервную копию</string>
 
 
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Очистить</string>
-    <string name="whitelist_edit_hint">Домен</string>
     <string name="whitelist_add">Добавить</string>
 
     <string name="setting_summary_desktop">Поддерживать режим ПК для данного вебсайта</string> <!-- Check -->
@@ -266,7 +233,6 @@
     <string name="show_touch_area_hint">Показать границу области нажатия</string>
     <string name="bold_font">Жирный шрифт</string>
     <string name="white_background">Белый фон</string>
-    <string name="setting_summary_bold_font">Применить жирный шрифт (потребуется перезагрузить текущую страницу)</string>
     <string name="desktop_mode">Версия для ПК</string>
     <string name="setting_title_page_left_value">Зарезервированная высота страницы</string>
     <string name="setting_summary_page_left_value">Высота, которая должна быть зарезервирована при переходе на следующую страницу</string>
@@ -274,7 +240,6 @@
     <string name="vertical_read">Вертикальный режим</string>
     <string name="reader_mode">Режим чтения</string>
     <string name="touch_area_setting">Настройка области нажатия</string>
-    <string name="toolbar_setting">Настройка панели инструментов</string>
     <string name="menu_save_epub">Сохранить в EPUB</string>
     <string name="saving_epub">Идёт сохранение файла EPUB</string>
     <string name="menu_open_epub">Открыть\nEPUB</string>
@@ -318,7 +283,6 @@
     <string name="switch_touch_area_action">Изменить направление прокрутки</string>
     <string name="switch_touch_area_action_short">Изм. напр. прокрутки</string>
     <string name="no_previous_page">Предыдущая страница отсутствует!</string>
-    <string name="font_custom">Выберите файл шрифта</string>
     <string name="translation_mode">Режим перевода</string>
 
 
@@ -327,17 +291,10 @@
     <string name="serif">Serif</string>
     <string name="googleserif">Google Serif</string>
     <string name="custom_font">Свой</string>
-    <string name="setting_title_font">Шрифт</string>
     <string name="font_type">Тип Шрифта</string>
     <string name="menu_quickToggle">Быстрые опции</string>
-    <string name="setting_title_toolbar_top">Переместить панель инструментов наверх</string>
-    <string name="setting_summary_toolbar_top">Перемещает панель инструментов в верхнюю часть экрана</string>
     <string name="setting_title_vi_binding">Включить сочетания клавиш Vi</string>
     <string name="setting_summary_vi_binding">Включить сочетания клавиш Vi для более быстрой навигации с помощью клавиатуры</string>
-    <string name="edit_custom_font">Редактировать пользовательский шрифт</string>
-    <string name="cannot_open_file">Не удаётся открыть файл. Пожалуйста, попробуйте открыть его ещё раз через файлпикер</string>
-    <string name="setting_recent_bookmarks">Показывать недавно использовавшиеся закладки</string>
-    <string name="setting_summary_recent_bookmarks">Показывать недавно использовавшиеся закладки на новой вкладке</string>
     <string name="setting_clear_recent_bookmarks">Очистить список недавних закладок</string>
     <string name="setting_summary_clear_recent_bookmarks">Очистить список недавно использовавшихся закладок</string>
     <string name="setting_title_hide_menu_items">Скрыть редко используемые пункты меню</string>
@@ -349,21 +306,15 @@
     <string name="menu_send_link">Отправить ссылку</string>
     <string name="done">Закройте это окно, когда завершится передача данных</string> <!-- Check -->
     <string name="menu_receive">Принять данные</string>
-    <string name="copy_link">Копировать ссылку</string>
     <string name="setting_title_background_loading">Загружать неактивные вкладки</string>
     <string name="setting_summary_background_loading">Если вкладка неактивна, всё равно загружать данные в фоне</string>
-    <string name="dialog_content_ssl_error">Сертификат этого сайта ненадёжен. Всё равно продолжить?</string>
     <string name="setting_title_search">Поиск</string>
     <string name="dialog_toc_title">Оглавление</string>
     <string name="latest_release">Последний Релиз</string>
     <string name="project_site">Сайт Проекта</string>
-    <string name="facebook_groups">Группа Facebook</string>
     <string name="changelogs">Что Нового</string>
     <string name="medium_articles">Статьи На Medium</string>
     <string name="contributors">Вкладчики</string>
-    <string name="turn_on">Вкл.</string>
-    <string name="turn_off">Выкл.</string>
-    <string name="title_touch_area">Область Нажатия</string>
     <string name="title_about">О программе</string>
     <string name="setting_title_auto_fill_form">Автоматически заполнять формы</string>
     <string name="setting_summary_auto_fill_form">Если включено, формы будут автоматически заполняться</string>
@@ -390,13 +341,9 @@
     <string name="setting_title_translated_langs">Языки перевода для Google Переводчика</string>
     <string name="setting_summary_translated_langs">Настройте языки для перевода (en, fr, de, zh-TW, zh-CN)</string>
     <string name="menu">Меню</string>
-    <string name="copy_text">Копировать текст</string>
     <string name="menu_tts">Прочесть страницу вслух</string>
     <string name="read_speed">Скорость чтения</string>
-    <string name="toast_send_link_failed">Ошибка отправки ссылки</string>
-    <string name="toast_receive_link_failed">Ошибка получения ссылки</string>
     <string name="setting_summary_custom_process_text_url">Настроить URL-префикс, который будет использоваться для поиска выделенного в другом приложении текста</string>
-    <string name="not_supported">Не поддерживается</string>
 
     <string name="plus_start_input_url">Начать ввод адреса</string>
     <string name="plus_show_homepage">Показать статую страницу</string>
@@ -414,25 +361,11 @@
     <string name="google_in_place">Google: На Месте</string>
     <string name="setting_title_update_adblock">Обновить конфигурацию AdBlock</string>
     <string name="setting_summary_update_adblock">Запустить обновление сайтов AdBlock</string>
-    <string name="setting_title_adblock_url">URL списка AdBlock</string>
-    <string name="setting_summary_adblock_url">Если вы хотите использовать другую конфигурацию AdBlock, отредактируйте данный URL</string>
-    <string name="setting_title_adblock_auto_update">Автообновление AdBlock</string>
-    <string name="setting_summary_adblock_auto_update">Автоматически обновлять конфигурацию AdBlock каждую неделю</string>
-    <string name="toast_adblock_updated">AdBlock обновлён!</string>
     <string name="toast_backup_successful">Резервная копия успешно создана!</string>
     <string name="setting_title_enable_ssl_error_dialog">Показывать окно ошибок SSL</string>
     <string name="setting_summary_enable_ssl_error_dialog">Показывать окно ошибки, когда что-то идёт не так с SSL</string>
     <string name="manual">Руководство</string>
     <string name="black_font">Чёрный шрифт</string>
-    <string name="image_adjust">Регулировка Изображений</string>
-    <string name="bookmark_new_file">Создать новый файл</string>
-    <string name="bookmark_open_file">Привязать существующий файл</string> <!-- Check -->
-    <string name="menu_save_archive">Сохранить в архив</string>
-    <string name="setting_title_sync_bookmarks">Синхронизировать вкладки</string>
-    <string name="setting_title_setup_bookmarks_location">Настроить расположение закладок</string>
-    <string name="setting_summary_setup_bookmarks_location">Выберите расположение в Google Диске или в другом облачном хранилище, которое поддерживает синхронизацию</string>
-    <string name="dialog_message_sync_bookmark_file">Чтобы синхронизировать вкладки вам нужно через системный файлпикер создать или открыть существующий файл из облачного хранилища</string> <!-- Not sure if comma is needed, needs checking -->
-    <string name="dialog_title_bookmark_sync">Настройка Файла Закладок</string>
     <string name="settings_title_back_key_behavior">Поведение кнопки Назад</string>
     <string name="settings_summary_back_key_behavior">Закрывать вкладку, если она находится на первой странице в истории</string>
     <string name="page_count">Кол-во страниц</string>
@@ -441,25 +374,17 @@
     <string name="setting_summary_userAgent">Введите здесь предпочитаемый юзер-агент</string>
     <string name="content_adjustment">Регулировка Страницы</string>
     <string name="share_save"><![CDATA[Поделиться и Сохранить]]></string>
-    <string name="menu_gpt">ChatGPT</string>
     <string name="setting_title_chat_gpt">Интеграция с ChatGPT</string>
     <string name="setting_title_edit_gpt_api_key">Введите ключ OpenAI, чтобы использовать эту функцию</string>
     <string name="setting_summary_edit_gpt_api_key">Введите ключ для того, чтобы использовать эту функцию</string>
-    <string name="setting_title_edit_gpt_system_prompt">Системный Запрос ChatGPT</string>
-    <string name="setting_summary_edit_gpt_prompt">Вы можете задать роль для ChatGPT, например: \"Ты переводчик\"</string>
-    <string name="setting_title_edit_gpt_user_prompt_prefix">Префикс Пользовательского Запроса</string>
-    <string name="setting_summary_edit_gpt_user_prompt">Вы можете отредактировать префикс пользовательского запроса, например: \"Переведи следующий текст на английский:\"</string>
     <string name="gpt_api_key_not_set">Добавьте Ключ OpenAI в Настройках</string>
     <string name="dialog_touch_area_enable">Включить листание</string>
     <string name="show_default_text_menu">Показывать Системное Меню Для Выделенного Текста</string>
     <string name="setting_summary_show_default_text_menu">При выделении текста показывать системное меню действий</string>
     <string name="google_translate">Google Переводчик</string>
     <string name="translate_by_paragraph">Translate by Paragraph</string>
-    <string name="translate_processing">Обработка…</string>
     <string name="translation_language">Язык перевода</string>
     <string name="misc">Разное</string>
-    <string name="translate_papago">Секретный API-Ключ Naver Papago</string>
-    <string name="translate_papago_summary">Если вы хотите использовать переводчик Naver Papago, пожалуйста, введите ваш секретный API-ключ</string>
     <string name="papago">Papago</string>
     <string name="source_language">Исходный Язык</string>
     <string name="inter_translate">Inter Translate</string>
@@ -469,31 +394,24 @@
     <string name="toggle_touch_turn_page">Включить прокрутку страниц нажатием</string>
     <string name="use_it_on_dict_search">Использовать ChatGPT для словарного поиска</string>
     <string name="setting_summary_search_in_dict">Использвать ChatGPT для поиска в ридерах</string> <!-- Meaning unclear, need context -->
-    <string name="menu_expand_menu">Расширить меню</string>
     <string name="hide_statusbar">Спрятать строку состояния</string>
     <string name="setting_summary_hide_statusbar">Всегда прятать строку состояния</string>
     <string name="enable_touch_area_as_arrow_key">Использовать как клавиши ← →</string>
     <string name="setting_title_chat_stream">Посимвольный Вывод</string>
     <string name="setting_summary_chat_stream">Ответ будет отображаться символ за символом</string>
-    <string name="re_select">Выбрать текст повторно</string>
     <string name="setting_dual_caption">Двойные Субтитры для Youtube</string>
     <string name="setting_summary_dual_caption">Выберите язык для вторых субтитров</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="setting_title_gpt_model_name">Название Модели ChatGPT</string>
     <string name="setting_summary_gpt_model_name">Модель по умолчанию — gpt-3.5-turbo. Встаьте другое название модели, если необходимо</string>
-    <string name="split_search">Разделённый Поиск</string>
     <string name="papago_translate_by_screen">Papago by Screen</string>
     <string name="split_search_settings">Настройки Разделённого Поиска</string>
     <string name="setting_title_split_search_setting">Настройка Разделённого Поиска</string>
     <string name="setting_summary_split_search_setting">Настроить поиск и открытие результатов в режиме разделённого экрана</string>
     <string name="description_split_screen_string_pattern">Пользовательский URL для поиска с %s в качестве позиции ключевого слова</string>
     <string name="description_split_screen_title">Введите название, которое будет отображаться как заголовок контекстного меню</string>
-    <string name="send_type">Тип Отправки</string>
-    <string name="current_url">Текущий URL</string>
-    <string name="text_selection_search">Поиск по выделенному фрагменту</string>
     <string name="send_to_remote_terminate">Остановить удалённый поиск текста</string> <!-- Need context -->
     <string name="receive_link_terminate">Остановить получение ссылки</string>
-    <string name="receive_once">Получить один раз</string>
     <string name="setting_title_search_in_same_tab">Вкладка для поиска из приложений</string>
     <string name="setting_summary_search_in_same_tab">Использовать ту же вкладку для поиска из приложений</string>
     <string name="move_to_background">Свернуть</string>
@@ -538,23 +456,19 @@
     <string name="setting_summary_external_search_pop">Выполнять поиск в виде всплывающего словаря (хорошо подходит для интеграций в качестве словаря с приложениями для ридеров)</string>
     <string name="cannot_save_epub">Что-то пошло не так в процессе сохранения EPUB. Пожалуйста, повторите попытку позже</string>
     <string name="deepl_translate">DeepL</string>
-    <string name="wenkai_tc">WenKai(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
     <string name="setting_summary_use_gemini">Использовать модель Google Gemini</string>
     <string name="setting_title_gemini_key">API-ключ Gemini</string>
     <string name="setting_summary_gemini_key">Вставьте сюда API-ключ Gemini</string>
-    <string name="enable_fix_scroll">Попробовать исправить прокрутку</string>
     <string name="setting_title_other_model_name">Название альтернативной модели</string>
     <string name="setting_summary_other_model_name">Вставьте сюда имя модели для альтернативного GPT-сервера</string>
     <string name="setting_title_gemini_model_name">Название модели Gemini</string>
     <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">История результатов GPT</string>
     <string name="setting_summary_gpt_query_list">Сохранённая история результатов GPT</string>
-    <string name="translate_this_site">Всегда переводить</string>
     <string name="select_sentence">Выбрать предложение</string>
     <string name="select_paragraph">Выбрать параграф</string>
-    <string name="toast_saved">Сохранено!</string>
     <string name="setting_app_locale">Язык приложения</string>
     <string name="setting_summary_app_locale">Выберите язык интерфейса</string>
     <string name="drag_to_reorder">Перетащите, чтобы переупорядочить закладки</string>
@@ -565,13 +479,11 @@
     <string name="open_epub">Открыть EPUB файл</string>
     <string name="setting_title_enable_web_cache">Кэшировать сайты</string>
     <string name="setting_summary_enabling_web_cache">Кеширование позволяет загружать сайты быстрее</string>
-    <string name="touch_custom">Настроить</string>
     <string name="key_page_up">Send PageUp Key</string> <!-- Need Context -->
     <string name="key_page_down">Send PageDown Key</string>
     <string name="key_left">Send Left Key</string>
     <string name="key_right">Send Right Key</string>
     <string name="touch_aciton_settings">Дополнительные настройки</string>
-    <string name="summary_touch_aciton_settings">Настройте действия для области касаний</string>
     <string name="setting_title_touch_area_actions">Действия по нажатию на область касаний</string>
     <string name="setting_touch_up_click">Действие по нажатию кнопки Вверх</string>
     <string name="setting_touch_up_long_click">Up long click action</string>
@@ -581,7 +493,6 @@
     <string name="setting_tts_voice">Голос</string>
     <string name="system_settings">Системные настройки</string>
     <string name="other_voices">Другие голоса…</string>
-    <string name="close">Закрыть</string>
     <string name="added_to_read_list">Добавлено в список для чтения</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_etts">ReadAloud</string>
@@ -604,7 +515,6 @@
     <string name="toolbar_position_top">Вверху</string>
     <string name="toolbar_position_left">Слева</string>
     <string name="toolbar_position_right">Справа</string>
-    <string name="font_folder">Папка шрифтов</string>
     <string name="select_font_folder">Выбрать папку шрифтов</string>
     <string name="change_folder">Изменить папку</string>
     <string name="search_fonts">Поиск шрифтов…</string>
@@ -615,7 +525,6 @@
     <string name="eink_image_off">Выкл.</string>
     <string name="setting_title_reader_keep_extra_content">Режим чтения: сохранять дополнительное содержимое</string>
     <string name="setting_summary_reader_keep_extra_content">Сохранять стили, классы и формулы (MathJax/KaTeX) в режиме чтения</string>
-    <string name="added_to_instapaper">Добавлено в Instapaper</string>
     <string name="audio_only_mode">Только аудио</string>
     <string name="chat_with_web">Чат со страницей</string>
     <string name="custom_scale">Пользовательский масштаб шрифта</string>
@@ -626,7 +535,6 @@
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
-    <string name="failed_to_add_to_instapaper">Ошибка</string>
     <string name="gemini_translate_by_paragraph">Gemini по параграфам</string>
     <string name="gpt_action_drag_handle">Перетащите для изменения порядка команд ChatGPT</string>
     <string name="gpt_scope">Область действия</string>
@@ -643,7 +551,6 @@
     <string name="none">Нет</string>
     <string name="openai_translate_by_paragraph">OpenAI по параграфам</string>
     <string name="page_ai">ИИ для страницы</string>
-    <string name="page_ai_action_empty">Нет доступных ИИ-действий; добавьте одно в Команды GPT (вся страница).</string>
     <string name="page_ai_action_title">ИИ-действия для страницы</string>
     <string name="read_from_here">Читать отсюда</string>
     <string name="reader_toolbar">Настройка панели чтения</string>
@@ -656,7 +563,6 @@
     <string name="setting_summary_enable_url_drag_to_action">Удерживайте URL и перетащите к нужному действию</string>
     <string name="setting_summary_gpt_audio_model_name">Доступные варианты: tts-1 (по умолчанию), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">Инструкции для модели gpt-4o-mini-tts</string>
-    <string name="setting_summary_nav_pos_reset_custom">Сбросить пользовательскую позицию</string>
     <string name="setting_summary_reader_mode_padding">Величина отступов (px) в режиме чтения, по умолч. 10</string>
     <string name="setting_summary_search_suggestion">При вводе показывать поисковые подсказки</string>
     <string name="setting_summary_summary_gpt_type">Выберите движок GPT для суммаризации содержимого</string>
@@ -672,7 +578,6 @@
     <string name="setting_title_text_wrap_reflow">Перенос текста при масштабировании</string>
     <string name="setting_title_use_gemini">Использовать Google Gemini</string>
     <string name="setting_title_zoom_in_custom_view">Масштабирование в полноэкранном режиме</string>
-    <string name="suggestion">Поиск: </string>
     <string name="summary_gpt_type">Движок GPT для суммаризации</string>
     <string name="toast_save_page_failed">Не удалось сохранить страницу</string>
     <string name="toast_saved_page">Страница сохранена. Удерживайте эту иконку для просмотра списка.</string>
