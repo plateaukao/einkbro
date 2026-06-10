@@ -2,24 +2,17 @@ package info.plateaukao.einkbro.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.Point
 import android.net.Uri
-import android.os.Build
 import android.os.SystemClock
 import android.print.PrintDocumentAdapter
 import android.view.KeyEvent
 import android.view.MotionEvent
-import android.view.ViewGroup
-import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumCallback
@@ -42,7 +35,6 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -65,19 +57,18 @@ open class EBWebView(
 ) : WebView(context), AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
     override val album: Album = Album(this, webViewCallback as? AlbumCallback)
-    protected val webViewClient: EBWebViewClient
+    internal val webViewClient: EBWebViewClient
     private val webChromeClient: EBWebChromeClient
     private val downloadListener by lazy { EBDownloadListener(this) }
     private val clickHandler: EBClickHandler
     val jsBridge: WebViewJsBridge = WebViewJsBridge(this).apply {
-        simulateClickAction = { point -> simulateClick(point) }
+        simulateClickAction = { point -> touchSimulator.simulateClick(point) }
     }
 
     var dualCaption: String? = null
     var shouldHideTranslateContext: Boolean = false
 
     var baseUrl: String? = null
-    private val cookieManager: CookieManager = CookieManager.getInstance()
 
     private val config: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
@@ -91,6 +82,8 @@ open class EBWebView(
     val navigationHelper = WebViewNavigationHelper(this, config) { info ->
         (webViewCallback as? InputController)?.updatePageInfo(info)
     }
+    private val configApplier = WebViewConfigApplier(this, config)
+    private val touchSimulator = WebViewTouchSimulator(this)
 
     // Delegated reader state
     var isReaderModeOn: Boolean
@@ -159,7 +152,7 @@ open class EBWebView(
     private var ebookTouchTracking = false
     private var ebookTouchMoved = false
     private var ebookTouchMulti = false
-    private var ebookTouchTemporarilyDisabled = false
+    internal var ebookTouchTemporarilyDisabled = false
 
     @SuppressLint("ClickableViewAccessibility")
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -309,7 +302,7 @@ open class EBWebView(
             (webViewCallback as? InputController)?.onLongPress(msg, event)
         }
         initWebView()
-        initWebSettings()
+        configApplier.initWebSettings()
         initPreferences()
     }
 
@@ -323,7 +316,7 @@ open class EBWebView(
         setWebChromeClient(webChromeClient)
         setDownloadListener(downloadListener)
 
-        updateDarkMode()
+        configApplier.updateDarkMode()
         setupJsWebInterface()
     }
 
@@ -366,114 +359,12 @@ open class EBWebView(
 
     // endregion
 
-    private fun updateDarkMode() {
-        if (config.display.darkMode == DarkMode.DISABLED) {
-            return
-        }
+    // Delegated to configApplier (see WebViewConfigApplier)
+    fun initPreferences() = configApplier.initPreferences()
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
+    fun updateUserAgentString() = configApplier.updateUserAgentString()
 
-        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val wantDark = nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
-            config.display.darkMode == DarkMode.FORCE_ON
-
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
-            WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, wantDark)
-            if (wantDark) setBackgroundColor(Color.parseColor("#000000"))
-        } else if (wantDark) {
-            @Suppress("DEPRECATION")
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-                WebSettingsCompat.setForceDarkStrategy(
-                    settings,
-                    WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
-                )
-            }
-            @Suppress("DEPRECATION")
-            settings.forceDark = WebSettings.FORCE_DARK_ON
-            setBackgroundColor(Color.parseColor("#000000"))
-        }
-    }
-
-    private fun initWebSettings() {
-        with(settings) {
-            builtInZoomControls = true
-            displayZoomControls = false
-            setSupportZoom(true)
-            setSupportMultipleWindows(true)
-            loadWithOverviewMode = true
-            useWideViewPort = true
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    fun initPreferences() {
-
-        updateUserAgentString()
-        setLayerType(LAYER_TYPE_HARDWARE, null) // Enable hardware acceleration
-
-        with(settings) {
-            // don't load cache by default, so that it won't cause some issues
-            if (config.browser.webLoadCacheFirst)
-                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-
-            textZoom = config.display.fontSize
-            allowFileAccessFromFileURLs = config.browser.enableRemoteAccess
-            allowFileAccess = true
-            allowUniversalAccessFromFileURLs = config.browser.enableRemoteAccess
-            domStorageEnabled = true
-            databaseEnabled = true
-            blockNetworkImage = !config.browser.enableImages
-            javaScriptEnabled = config.browser.enableJavascript
-            javaScriptCanOpenWindowsAutomatically = config.browser.enableJavascript
-            setSupportMultipleWindows(config.browser.enableJavascript)
-            setGeolocationEnabled(config.browser.shareLocation)
-            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-            mediaPlaybackRequiresUserGesture = !config.browser.enableVideoAutoplay
-            setRenderPriority(WebSettings.RenderPriority.HIGH)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                importantForAutofill =
-                    if (config.browser.autoFillForm) IMPORTANT_FOR_AUTOFILL_YES else IMPORTANT_FOR_AUTOFILL_NO
-            } else {
-                saveFormData = config.browser.autoFillForm
-            }
-        }
-        webViewClient.enableAdBlock(config.browser.adBlock)
-        toggleCookieSupport(config.browser.cookies)
-    }
-
-    fun updateUserAgentString() {
-        val defaultUserAgentString = getDefaultUserAgent(context)
-        val prefix: String =
-            defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
-
-        val isDesktopMode = config.browser.desktop
-        try {
-            when {
-                isDesktopMode ->
-                    settings.userAgentString =
-                        defaultUserAgentString.replace(prefix, BrowserUnit.UA_DESKTOP_PREFIX)
-
-                config.browser.enableCustomUserAgent && config.browser.customUserAgent.isNotBlank() ->
-                    settings.userAgentString = config.browser.customUserAgent
-
-                else ->
-                    settings.userAgentString =
-                        defaultUserAgentString.replace(prefix, BrowserUnit.UA_MOBILE_PREFIX)
-            }
-        } catch (e: Exception) {
-        }
-
-        settings.useWideViewPort = isDesktopMode
-        settings.loadWithOverviewMode = isDesktopMode
-    }
-
-    private fun toggleCookieSupport(isEnabled: Boolean) {
-        with(cookieManager) {
-            setAcceptCookie(isEnabled)
-            setAcceptThirdPartyCookies(this@EBWebView, isEnabled)
-        }
-    }
+    private fun toggleCookieSupport(isEnabled: Boolean) = configApplier.toggleCookieSupport(isEnabled)
 
     private fun initAlbum() {
         album.albumTitle = context!!.getString(R.string.app_name)
@@ -733,92 +624,14 @@ open class EBWebView(
 
     fun removeTextSelection() = jsBridge.removeTextSelection()
 
-    fun clickLinkElement(point: Point) {
-        ebookTouchTemporarilyDisabled = true
-        simulateClick(point)
-        postDelayed({ ebookTouchTemporarilyDisabled = false }, 200)
-    }
+    // Delegated to touchSimulator (see WebViewTouchSimulator)
+    fun clickLinkElement(point: Point) = touchSimulator.clickLinkElement(point)
 
-    var isSelectingText = false
-    fun selectLinkText(point: Point) {
-        evaluateJavascript(
-            """
-            javascript:(function() {
-                 var tt = window._touchTarget;
-                 if(tt){
-                     var hrefAttr = tt.getAttribute("href");
-                     tt.removeAttribute("href");
-                     window._hrefAttr = hrefAttr;
+    var isSelectingText: Boolean
+        get() = touchSimulator.isSelectingText
+        set(value) { touchSimulator.isSelectingText = value }
 
-                     var sel = window.getSelection();
-                     sel.removeAllRanges();
-                 }
-            })()
-        """.trimIndent()
-        ) {
-            postDelayed({ simulateLongClick(point) }, 0)
-        }
-    }
-
-    private fun simulateClick(point: Point) {
-        val downTime = SystemClock.uptimeMillis()
-        val downEvent =
-            MotionEvent.obtain(
-                downTime, downTime, KeyEvent.ACTION_DOWN,
-                point.x.toFloat(), point.y.toFloat(), 0
-            )
-        (this.parent as ViewGroup).dispatchTouchEvent(downEvent)
-
-        val upEvent =
-            MotionEvent.obtain(
-                downTime, downTime + 700, KeyEvent.ACTION_UP,
-                point.x.toFloat(), point.y.toFloat(), 0
-            )
-        postDelayed(
-            {
-                (this.parent as ViewGroup).dispatchTouchEvent(upEvent)
-                downEvent.recycle()
-                upEvent.recycle()
-            }, 50
-        )
-    }
-
-    private fun simulateLongClick(point: Point) {
-        isSelectingText = true
-        val downTime = SystemClock.uptimeMillis()
-        val downEvent =
-            MotionEvent.obtain(
-                downTime, downTime, KeyEvent.ACTION_DOWN,
-                (point.x + 20).toFloat(), point.y.toFloat(), 0
-            )
-        (this.parent as ViewGroup).dispatchTouchEvent(downEvent)
-
-        val upEvent =
-            MotionEvent.obtain(
-                downTime, downTime + 700, KeyEvent.ACTION_UP,
-                point.x.toFloat(), point.y.toFloat(), 0
-            )
-        postDelayed(
-            {
-                (this.parent as ViewGroup).dispatchTouchEvent(upEvent)
-                downEvent.recycle()
-                upEvent.recycle()
-            }, 700
-        )
-        postDelayed(
-            {
-                evaluateJavascript(
-                    """
-                        var tt = window._touchTarget;
-                        if(tt){
-                            tt.setAttribute("href", window._hrefAttr);
-                        }
-                """.trimIndent(), null
-                )
-                isSelectingText = false
-            }, 1000
-        )
-    }
+    fun selectLinkText(point: Point) = touchSimulator.selectLinkText(point)
 
     var rawHtmlCache: String? = null
     suspend fun getRawReaderHtml() = suspendCoroutine { continuation ->
