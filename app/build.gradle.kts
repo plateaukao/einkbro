@@ -3,11 +3,11 @@ import java.util.Date
 import java.util.TimeZone
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.1.20" // this version matches your Kotlin version
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.compose)
 }
 
 fun getLastCommitTimeStamp(): String {
@@ -123,66 +123,62 @@ dependencies {
 
     // epub4j (maintained fork of epublib). Android ships xmlpull in the platform, so
     // the transitive xmlpull jar is excluded to avoid duplicate XmlPullParser classes.
-    implementation("io.documentnode:epub4j-core:4.2.3") {
+    implementation(libs.epub4j.core) {
         exclude(group = "xmlpull")
     }
 
     // for epub saving: html processing
     implementation(libs.jsoup)
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.swiperefreshlayout)
 
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.timber)
-    ksp("androidx.room:room-compiler:2.6.1")
+    ksp(libs.androidx.room.compiler)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
-    implementation("androidx.activity:activity-compose:1.9.1")
-    implementation("androidx.compose.ui:ui:1.7.8")
-    implementation("androidx.navigation:navigation-runtime-ktx:2.8.9")
-    implementation("androidx.navigation:navigation-compose:2.8.9")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.compose.ui)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
 
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.8")
+    debugImplementation(libs.compose.ui.test.manifest)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
-    implementation("androidx.fragment:fragment-ktx:1.8.9")
-
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
 
     // for dark mode
-    implementation("androidx.webkit:webkit:1.11.0")
+    implementation(libs.androidx.webkit)
 
-    val koinVersion = "3.5.6"
-    // Koin core features
-    implementation("io.insert-koin:koin-core:$koinVersion")
-    // Koin test features
-    testImplementation("io.insert-koin:koin-test:$koinVersion")
-    // Android
-    implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-android-compat:$koinVersion")
+    // Koin
+    implementation(libs.koin.core)
+    testImplementation(libs.koin.test)
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.compat)
 
     // Unit testing
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.13.12")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("app.cash.turbine:turbine:1.0.0")
-    testImplementation("androidx.room:room-testing:2.6.1")
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.turbine)
+    testImplementation(libs.androidx.room.testing)
 
     // memory leak detection
     //debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
 
     // compose
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.7.8")
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation(libs.compose.material)
+    implementation(libs.compose.material.icons.extended)
 
     // Tooling support (Previews, etc.)
-    debugImplementation("androidx.compose.ui:ui-tooling:1.7.8")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.7.8")
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
 
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.8")
+    androidTestImplementation(libs.compose.ui.test.junit4)
 
     implementation(libs.accompanist.drawablepainter)
 
@@ -195,10 +191,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // adfilter
-
-    implementation("androidx.work:work-runtime-ktx:2.10.5")
+    implementation(libs.androidx.work.runtime.ktx)
 
     // media session for TTS notification
-    implementation("androidx.media:media:1.7.0")
+    implementation(libs.androidx.media)
 }
-

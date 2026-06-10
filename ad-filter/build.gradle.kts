@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -50,26 +50,25 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("androidx.core:core-ktx:1.16.0")
-    implementation("com.github.Edsuns:SmoothProgressAnimator:1.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.smooth.progress.animator)
 
     implementation(project(":adblock-client"))
 
     implementation(libs.timber)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation("androidx.work:work-runtime-ktx:2.10.5")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    implementation("com.github.Edsuns:HttpRequest:0.2")
+    implementation(libs.http.request)
 
-    val mezzanineVersion = "1.2.1"
-    implementation("com.github.Edsuns.Mezzanine:mezzanine:$mezzanineVersion")
+    implementation(libs.mezzanine)
     // Mezzanine ships no KSP processor, so this module stays on kapt until
     // upstream adds one or the embedded-JS approach is replaced.
-    kapt("com.github.Edsuns.Mezzanine:mezzanine-compiler:$mezzanineVersion")
+    kapt(libs.mezzanine.compiler)
 }
 
 kapt {
