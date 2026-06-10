@@ -85,20 +85,25 @@ Sequencing rationale:
 
 ## Phase 2 — Test safety net + CI gate (before any structural refactoring)
 
-- [ ] **CI gate**: add `./gradlew test lintDebug` to
-      `.github/workflows/buid-app-workflow.yaml` (debug variant — fast, no signing
-      needed) so every PR runs unit tests and lint.
-- [ ] **Unit tests for already-pure logic** (no refactoring needed first):
-  - config/preference classes (`ConfigManager` and the `*Config` objects built on the
-    already-tested preference delegates)
-  - DAOs and `RecordRepository` via in-memory Room
-  - `EpubParser` / `MarkdownParser` / `EpubCoverParser`
-  - `OpenAiRepository` via OkHttp `MockWebServer`
-  - `BackupUnit` JSON export/import round-trips
-- [ ] **Locale completeness check**: a Gradle task (or CI script) that verifies every
-      key in `values/strings.xml` exists in all 32 locale files and flags extras —
-      replaces the currently disabled `MissingTranslation` lint check with something
-      actionable.
+- [x] **CI gate**: the workflow now has a `test` job running
+      `testDebugUnitTest lintDebug` plus the locale check on every push/PR; reports
+      upload on failure. Lint baseline regenerated for the AGP 8.13 lint engine after
+      fixing all newly surfaced errors (incl. a real Kotlin-2.x `removeLast()`
+      API-35 crash and API-26 `java.nio` usage in the EPUB parsers).
+- [x] **Unit tests for already-pure logic** — 193 tests now (was 36):
+  - all `*Config` preference classes incl. legacy-migration paths (in-memory
+    `SharedPreferences` fake); serializable data classes locked to their wire format
+  - `EpubParser` / `EpubCoverParser` / `EpubXMLFileParser` with in-memory zip
+    fixtures; `MarkdownParser`
+  - `OpenAiRepository` via MockWebServer (completions, tools, SSE streaming, error
+    kinds), injected through the self-hosted URL config
+  - `BackupUnit` JSON round-trips and zip-manifest parsing
+  - **Deferred:** DAO/Room tests need Robolectric (new test infra — own decision);
+    Gemini/TTS network paths have hardcoded URLs (needs a small testability refactor,
+    fold into Phase 3); BackupUnit zip restore is instrumentation territory.
+- [x] **Locale completeness check**: `scripts/check_locale_strings.py` — fails CI on
+      stale keys (locale keys missing from the default), reports lagging translations
+      per locale. Two stale `changelog_dialog` entries removed.
 - [ ] *(Optional)* ktlint or detekt with a baseline, so style/safety rules apply to new
       code without demanding a one-time whole-repo cleanup.
 
