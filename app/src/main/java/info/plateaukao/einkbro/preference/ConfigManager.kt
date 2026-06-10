@@ -2,7 +2,6 @@ package info.plateaukao.einkbro.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import androidx.core.content.edit
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -66,139 +65,74 @@ class ConfigManager(
 
     var version by StringPreference(sp, "sp_version", "11.14.0")
 
-    //use string set in sharedpreference
-    var domainConfigurationMap = mutableMapOf<String, DomainConfigurationData>()
+    // Per-domain configuration (extracted to DomainConfigManager); forwards kept so
+    // existing call sites are unchanged.
+    val domain = DomainConfigManager(display, browser, translation) {
+        bookmarkManager.addDomainConfiguration(it)
+    }
+
+    var domainConfigurationMap: MutableMap<String, DomainConfigurationData>
+        get() = domain.domainConfigurationMap
+        set(value) {
+            domain.domainConfigurationMap = value
+        }
 
     var scrollFixList: List<String>
         get() = sp.getStringSet(K_SCROLL_FIX_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_SCROLL_FIX_LIST, value.toSet()) }
 
-    fun shouldFixScroll(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldFixScroll } ?: false
+    fun shouldFixScroll(url: String): Boolean = domain.shouldFixScroll(url)
 
-    fun toggleFixScroll(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
-
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldFixScroll = !config.shouldFixScroll
-        bookmarkManager.addDomainConfiguration(config)
-
-        return shouldFixScroll(url)
-    }
+    fun toggleFixScroll(url: String): Boolean = domain.toggleFixScroll(url)
 
     var translateSiteList: List<String>
         get() = sp.getStringSet(K_TRANSLATE_SITE_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_TRANSLATE_SITE_LIST, value.toSet()) }
 
-    fun shouldTranslateSite(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldTranslateSite } ?: false
+    fun shouldTranslateSite(url: String): Boolean = domain.shouldTranslateSite(url)
 
-    fun toggleTranslateSite(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
-
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldTranslateSite = !config.shouldTranslateSite
-        bookmarkManager.addDomainConfiguration(config)
-
-        return shouldTranslateSite(url)
-    }
+    fun toggleTranslateSite(url: String): Boolean = domain.toggleTranslateSite(url)
 
     // use string set to store the url list of having white background
     var whiteBackgroundList: List<String>
         get() = sp.getStringSet(K_WHITE_BACKGROUND_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_WHITE_BACKGROUND_LIST, value.toSet()) }
 
-    fun whiteBackground(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldUseWhiteBackground } ?: false
+    fun whiteBackground(url: String): Boolean = domain.whiteBackground(url)
 
-    fun toggleWhiteBackground(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
+    fun toggleWhiteBackground(url: String): Boolean = domain.toggleWhiteBackground(url)
 
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldUseWhiteBackground = !config.shouldUseWhiteBackground
-        bookmarkManager.addDomainConfiguration(config)
-        return whiteBackground(url)
-    }
+    fun hasInvertedColor(url: String): Boolean = domain.hasInvertedColor(url)
 
-    fun hasInvertedColor(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldInvertColor } ?: false
-
-    fun toggleInvertedColor(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
-
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldInvertColor = !config.shouldInvertColor
-        bookmarkManager.addDomainConfiguration(config)
-        return hasInvertedColor(url)
-    }
+    fun toggleInvertedColor(url: String): Boolean = domain.toggleInvertedColor(url)
 
     // Per-site display overrides (null = use global setting)
 
-    fun getFontSize(url: String): Int {
-        val host = Uri.parse(url)?.host ?: return display.fontSize
-        return domainConfigurationMap[host]?.fontSize ?: display.fontSize
-    }
+    fun getFontSize(url: String): Int = domain.getFontSize(url)
 
-    fun getFontType(url: String): FontType {
-        val host = Uri.parse(url)?.host ?: return display.fontType
-        return domainConfigurationMap[host]?.fontType ?: display.fontType
-    }
+    fun getFontType(url: String): FontType = domain.getFontType(url)
 
-    fun getBoldFontStyle(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return display.boldFontStyle
-        return domainConfigurationMap[host]?.boldFontStyle ?: display.boldFontStyle
-    }
+    fun getBoldFontStyle(url: String): Boolean = domain.getBoldFontStyle(url)
 
-    fun getBlackFontStyle(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return display.blackFontStyle
-        return domainConfigurationMap[host]?.blackFontStyle ?: display.blackFontStyle
-    }
+    fun getBlackFontStyle(url: String): Boolean = domain.getBlackFontStyle(url)
 
-    fun getFontBoldness(url: String): Int {
-        val host = Uri.parse(url)?.host ?: return display.fontBoldness
-        return domainConfigurationMap[host]?.fontBoldness ?: display.fontBoldness
-    }
+    fun getFontBoldness(url: String): Int = domain.getFontBoldness(url)
 
-    fun getDesktopMode(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return browser.desktop
-        return domainConfigurationMap[host]?.desktopMode ?: browser.desktop
-    }
+    fun getDesktopMode(url: String): Boolean = domain.getDesktopMode(url)
 
-    fun getDesktopViewportWidth(url: String): Int? {
-        val host = Uri.parse(url)?.host ?: return null
-        return domainConfigurationMap[host]?.desktopViewportWidth
-    }
+    fun getDesktopViewportWidth(url: String): Int? = domain.getDesktopViewportWidth(url)
 
-    fun getEnableJavascript(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return browser.enableJavascript
-        return domainConfigurationMap[host]?.enableJavascript ?: browser.enableJavascript
-    }
+    fun getEnableJavascript(url: String): Boolean = domain.getEnableJavascript(url)
 
-    fun getTranslationMode(url: String): TranslationMode {
-        val host = Uri.parse(url)?.host ?: return translation.translationMode
-        return domainConfigurationMap[host]?.translationMode ?: translation.translationMode
-    }
+    fun getTranslationMode(url: String): TranslationMode = domain.getTranslationMode(url)
 
-    fun getCustomCss(url: String): String? {
-        val host = Uri.parse(url)?.host ?: return null
-        return domainConfigurationMap[host]?.customCss?.takeIf { it.isNotBlank() }
-    }
+    fun getCustomCss(url: String): String? = domain.getCustomCss(url)
 
-    fun getPostLoadJavascript(url: String): String? {
-        val host = Uri.parse(url)?.host ?: return null
-        return domainConfigurationMap[host]?.postLoadJavascript?.takeIf { it.isNotBlank() }
-    }
+    fun getPostLoadJavascript(url: String): String? = domain.getPostLoadJavascript(url)
 
-    fun getDomainConfig(url: String): DomainConfigurationData {
-        val host = Uri.parse(url)?.host ?: return DomainConfigurationData("")
-        return domainConfigurationMap[host] ?: DomainConfigurationData(host)
-    }
+    fun getDomainConfig(url: String): DomainConfigurationData = domain.getDomainConfig(url)
 
-    fun updateDomainConfig(config: DomainConfigurationData) {
-        if (config.domain.isBlank()) return
-        domainConfigurationMap[config.domain] = config
-        bookmarkManager.addDomainConfiguration(config)
-    }
+    fun updateDomainConfig(config: DomainConfigurationData) = domain.updateDomainConfig(config)
 
     var recentBookmarks: List<RecentBookmark>
         get() {
