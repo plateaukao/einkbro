@@ -1,3 +1,0 @@
-include ':adblock-client'
-include ':ad-filter'
-include ':app'
