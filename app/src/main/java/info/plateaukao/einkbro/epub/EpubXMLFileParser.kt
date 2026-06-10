@@ -54,8 +54,7 @@ internal class EpubXMLFileParser(
 
         val absolutePathImage = File(fileParentFolder, relPathEncoded.decodedURL)
             .canonicalFile
-            .toPath()
-            .invariantSeparatorsPathString
+            .invariantSeparatorsPath
             .removePrefix("/")
 
         return parseAsImage(absolutePathImage)

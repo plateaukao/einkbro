@@ -15,6 +15,7 @@ import android.content.res.Configuration
 import android.graphics.Point
 import android.net.Uri
 import android.os.Build
+import androidx.core.content.ContextCompat
 import android.os.Bundle
 import android.os.Message
 import android.view.ActionMode
@@ -851,11 +852,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initDownloadReceiver() {
         downloadReceiver = createDownloadReceiver(this)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_NOT_EXPORTED)
-        } else {
-            registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
-        }
+        ContextCompat.registerReceiver(
+            this,
+            downloadReceiver,
+            IntentFilter(ACTION_DOWNLOAD_COMPLETE),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onNewIntent(intent: Intent) {

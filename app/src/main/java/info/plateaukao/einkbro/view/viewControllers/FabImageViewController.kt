@@ -189,12 +189,12 @@ class FabImageViewController(
         val maxWidth = (textView.parent as View).width
         val maxHeight = (textView.parent as View).height
 
-            if (orientation == ORIENTATION_PORTRAIT &&
-                (config.ui.fabCustomPosition.x > maxWidth || config.ui.fabCustomPosition.y > maxHeight)){
-                config.ui.fabCustomPosition = Point(0, 0)
-            } else if (orientation != ORIENTATION_LANDSCAPE &&
-                (config.ui.fabCustomPositionLandscape.x > maxWidth || config.ui.fabCustomPositionLandscape.y > maxHeight)){
-                config.ui.fabCustomPositionLandscape = Point(0, 0)
-            }
+        if (orientation == ORIENTATION_PORTRAIT &&
+            (config.ui.fabCustomPosition.x > maxWidth || config.ui.fabCustomPosition.y > maxHeight)){
+            config.ui.fabCustomPosition = Point(0, 0)
+        } else if (orientation != ORIENTATION_LANDSCAPE &&
+            (config.ui.fabCustomPositionLandscape.x > maxWidth || config.ui.fabCustomPositionLandscape.y > maxHeight)){
+            config.ui.fabCustomPositionLandscape = Point(0, 0)
+        }
     }
 }

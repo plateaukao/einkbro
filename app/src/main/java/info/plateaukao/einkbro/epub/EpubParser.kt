@@ -116,14 +116,11 @@ suspend fun epubParser(
 
 
     val hrefRootPath = File(opfFilePath).parentFile ?: File("")
-    fun String.hrefAbsolutePath() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        File(hrefRootPath, this).canonicalFile
-            .toPath()
-            .invariantSeparatorsPathString
-            .removePrefix("/")
-    } else {
-        TODO("VERSION.SDK_INT < O")
-    }
+    // kotlin.io's invariantSeparatorsPath works on plain java.io.File, so this
+    // needs no java.nio (API 26) and runs on every supported device.
+    fun String.hrefAbsolutePath() = File(hrefRootPath, this).canonicalFile
+        .invariantSeparatorsPath
+        .removePrefix("/")
 
     val manifestItems = manifest.selectChildTags("item", "opf:item").map {
         ManifestItem(
