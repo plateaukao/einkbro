@@ -132,9 +132,11 @@ Ordered by value vs. risk. Each slice follows the same loop:
        collaborators; the `WebViewClient` overrides are one-line forwards.
        773 → 558 lines, pure code motion, verified on the emulator (page load,
        error page, retry flow).
-4. [ ] **EBWebView (957)**: keep extracting helpers — `WebViewReaderHelper`,
-       `WebViewTranslationHelper`, `WebViewNavigationHelper` already set the pattern —
-       until the class is wiring plus WebView overrides only.
+4. [x] **EBWebView**: `WebViewTouchSimulator` (click/long-click simulation, link
+       interaction) and `WebViewConfigApplier` (web settings, preferences, UA, dark
+       mode, cookies) extracted following the existing helper pattern. 957 → 770
+       lines. `dispatchTouchEvent`/scroll handling stays — core input path. Verified
+       on emulator (page load, selection menu, invert colors).
 5. [ ] **ConfigManager**: separate per-domain configuration (currently split between an
        in-memory map and BookmarkManager persistence) from global preferences.
 6. [ ] **DI cleanup, opportunistic**: every newly extracted class takes constructor
