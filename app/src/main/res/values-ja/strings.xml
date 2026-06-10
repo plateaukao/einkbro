@@ -195,7 +195,6 @@
     <string name="copy_link">コピー</string>
     <string name="title_about">EinkBro について</string>
     <string name="menu_tts">読み上げ</string>
-    <string name="changelog_dialog">新着情報</string>
     <string name="setting_title_update_adblock">Update Adblock content</string>
     <string name="setting_summary_update_adblock">Update list of adblock websites</string>
     <string name="setting_title_adblock_url">Adblock list url</string>
