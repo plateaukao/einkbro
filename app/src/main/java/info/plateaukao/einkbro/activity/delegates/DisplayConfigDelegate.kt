@@ -110,9 +110,7 @@ class DisplayConfigDelegate(
         Locale.setDefault(locale)
         val newConfig = Configuration(activity.resources.configuration)
         newConfig.setLocale(locale)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            newConfig.setLocales(LocaleList(locale))
-        }
+        newConfig.setLocales(LocaleList(locale))
         @Suppress("DEPRECATION")
         activity.resources.updateConfiguration(newConfig, activity.resources.displayMetrics)
         onLocaleApplied()

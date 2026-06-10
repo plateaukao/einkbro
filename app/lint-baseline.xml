@@ -125,7 +125,7 @@
         errorLine2="                                    ~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/view/EBWebView.kt"
-            line="530"
+            line="421"
             column="37"/>
     </issue>
 
@@ -180,7 +180,7 @@
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/view/EBWebView.kt"
-            line="619"
+            line="510"
             column="9"/>
     </issue>
 
@@ -378,7 +378,7 @@
         errorLine2="                                                                                                                                                 ~~~~~~~~">
         <location
             file="src/main/res/values-es/strings.xml"
-            line="77"
+            line="69"
             column="146"/>
     </issue>
 
@@ -389,7 +389,7 @@
         errorLine2="                                                                ~~~~~">
         <location
             file="src/main/res/values-tr/strings.xml"
-            line="264"
+            line="228"
             column="65"/>
     </issue>
 
@@ -400,7 +400,7 @@
         errorLine2="                                                     ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values-tr/strings.xml"
-            line="481"
+            line="404"
             column="54"/>
     </issue>
 
@@ -1071,7 +1071,7 @@
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="204"
+            line="197"
             column="9"/>
     </issue>
 
@@ -1082,7 +1082,7 @@
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="278"
+            line="271"
             column="17"/>
     </issue>
 
@@ -1093,7 +1093,7 @@
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="301"
+            line="294"
             column="9"/>
     </issue>
 
@@ -1104,41 +1104,8 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="319"
+            line="312"
             column="13"/>
-    </issue>
-
-    <issue
-        id="LogNotTimber"
-        message="Using &apos;Log&apos; instead of &apos;Timber&apos;"
-        errorLine1="        Log.e(&quot;ebWebViewClient&quot;, &quot;onReceivedError:${request?.url} / ${error?.description}&quot;)"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="410"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="LogNotTimber"
-        message="Using &apos;Log&apos; instead of &apos;Timber&apos;"
-        errorLine1="            Log.e("
-        errorLine2="            ^">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="707"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="LogNotTimber"
-        message="Using &apos;Log&apos; instead of &apos;Timber&apos;"
-        errorLine1="        Log.e(TAG, &quot;onReceivedSslError: $message&quot;)"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="742"
-            column="9"/>
     </issue>
 
     <issue
@@ -1637,13 +1604,46 @@
     </issue>
 
     <issue
+        id="LogNotTimber"
+        message="Using &apos;Log&apos; instead of &apos;Timber&apos;"
+        errorLine1="        Log.e(&quot;ebWebViewClient&quot;, &quot;onReceivedError:${request?.url} / ${error?.description}&quot;)"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/browser/WebErrorPagePresenter.kt"
+            line="26"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="LogNotTimber"
+        message="Using &apos;Log&apos; instead of &apos;Timber&apos;"
+        errorLine1="            Log.e("
+        errorLine2="            ^">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/browser/WebViewSslHandler.kt"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="LogNotTimber"
+        message="Using &apos;Log&apos; instead of &apos;Timber&apos;"
+        errorLine1="        Log.e(TAG, &quot;onReceivedSslError: $message&quot;)"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/browser/WebViewSslHandler.kt"
+            line="74"
+            column="9"/>
+    </issue>
+
+    <issue
         id="PluralsCandidate"
         message="Formatting %d followed by words (&quot;override&quot;): This should probably be a plural rather than a string"
         errorLine1="    &lt;string name=&quot;site_settings_overrides_count&quot;>%1$d override&lt;/string>"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="150"
+            line="139"
             column="5"/>
     </issue>
 
@@ -1654,7 +1654,7 @@
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="151"
+            line="140"
             column="5"/>
     </issue>
 
@@ -1692,28 +1692,6 @@
     </issue>
 
     <issue
-        id="WebViewClientOnReceivedSslError"
-        message="Permitting connections with SSL-related errors could allow eavesdroppers to intercept data sent by your app, which impacts the privacy of your users. Consider canceling the connections by invoking `SslErrorHandler#cancel()`."
-        errorLine1="                okAction = { handler.proceed() },"
-        errorLine2="                             ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="748"
-            column="30"/>
-    </issue>
-
-    <issue
-        id="WebViewClientOnReceivedSslError"
-        message="Permitting connections with SSL-related errors could allow eavesdroppers to intercept data sent by your app, which impacts the privacy of your users. Consider canceling the connections by invoking `SslErrorHandler#cancel()`."
-        errorLine1="            handler.proceed()"
-        errorLine2="            ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="752"
-            column="13"/>
-    </issue>
-
-    <issue
         id="DataExtractionRules"
         message="The attribute `android:fullBackupContent` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
         errorLine1="        android:fullBackupContent=&quot;@xml/backup_descriptor&quot;"
@@ -1733,61 +1711,6 @@
             file="src/main/java/info/plateaukao/einkbro/unit/SupernoteStorage.kt"
             line="98"
             column="50"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 24"
-        errorLine1="        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {"
-        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/unit/AppUpdater.kt"
-            line="93"
-            column="26"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 24"
-        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/activity/delegates/DisplayConfigDelegate.kt"
-            line="113"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 24"
-        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/unit/LocaleManager.kt"
-            line="20"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 24"
-        errorLine1="    @RequiresApi(Build.VERSION_CODES.N)"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/unit/LocaleManager.kt"
-            line="27"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `Build.VERSION.SDK_INT &lt; 24` is never true here"
-        errorLine1="                    if (Build.VERSION.SDK_INT &lt; 24) Uri.fromFile(image)"
-        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/task/SaveScreenshotTask.kt"
-            line="78"
-            column="25"/>
     </issue>
 
     <issue
@@ -1968,1200 +1891,12 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.drawable.background_transparent_with_border` appears to be unused"
-        errorLine1="&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/background_transparent_with_border.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.button_border_bg` appears to be unused"
-        errorLine1="&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/button_border_bg.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.button_border_bg_dash` appears to be unused"
-        errorLine1="&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/button_border_bg_dash.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.color.color_light` appears to be unused"
-        errorLine1="    &lt;color name=&quot;color_light&quot;>#fafafa&lt;/color>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/colors.xml"
-            line="8"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.color.color_hint` appears to be unused"
-        errorLine1="    &lt;color name=&quot;color_hint&quot;>#E0E0E0&lt;/color>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/colors.xml"
-            line="9"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.layout.dialog_edit_extension` appears to be unused"
-        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/layout-v26/dialog_edit_extension.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.layout_margin_56dp` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;layout_margin_56dp&quot;>56dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="5"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.layout_margin_16dp` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;layout_margin_16dp&quot;>16dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="6"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.layout_margin_12dp` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;layout_margin_12dp&quot;>12dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="7"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.layout_margin_8dp` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;layout_margin_8dp&quot;>8dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="8"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.menu_button_size` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;menu_button_size&quot;>50dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="9"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.appbar_height` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;appbar_height&quot;>50dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="10"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.ic_black_font_off` appears to be unused"
-        errorLine1="&lt;vector android:height=&quot;24dp&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/ic_black_font_off.xml"
-            line="1"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.ic_black_font_on` appears to be unused"
-        errorLine1="&lt;vector android:height=&quot;24dp&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/ic_black_font_on.xml"
-            line="1"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.ic_book` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/ic_book.xml"
-            line="1"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.ic_highlight` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/ic_highlight.xml"
-            line="1"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.ic_sync` appears to be unused"
-        errorLine1="&lt;vector android:height=&quot;24dp&quot; android:tint=&quot;?attr/colorControlNormal&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/ic_sync.xml"
-            line="1"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.icon_menu_save` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/icon_menu_save.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.icon_menu_share` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/icon_menu_share.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.icon_overflow` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/icon_overflow.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.icon_tab_unselected` appears to be unused"
-        errorLine1="&lt;vector android:height=&quot;24dp&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/icon_tab_unselected.xml"
-            line="1"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.menu.menu_clear` appears to be unused"
-        errorLine1="&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/menu/menu_clear.xml"
-            line="3"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.menu.menu_ereader` appears to be unused"
-        errorLine1="&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="3"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.menu_delete_list` appears to be unused"
-        errorLine1="    &lt;string name=&quot;menu_delete_list&quot;>Delete list&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="22"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.menu_save_screenshot` appears to be unused"
-        errorLine1="    &lt;string name=&quot;menu_save_screenshot&quot;>Save screenshot&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="31"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.menu_shareClipboard` appears to be unused"
-        errorLine1="    &lt;string name=&quot;menu_shareClipboard&quot;>Copy to clipboard&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="35"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_label` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_label&quot;>Settings&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="49"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_search_engine_yahoo` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_search_engine_yahoo&quot;>Yahoo!&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="62"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_search_engine_rambler` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_search_engine_rambler&quot;>Rambler&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="65"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_font_size` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_font_size&quot;>Font size&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="70"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_font_size` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_font_size&quot;>Change font size for displaying websites&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="71"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.data_summary` appears to be unused"
-        errorLine1="    &lt;string name=&quot;data_summary&quot;>All files will be exported to the \&quot;Android/data/info.plateaukao.einkbro/files/browser_backup/\&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="120"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_fav` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_fav&quot;>Favorite&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="138"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_theme` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_theme&quot;>UI&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="171"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_nav` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_nav&quot;>Navigation button&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="177"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_tab` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_tab&quot;>What should be shown at the start of the \&quot;Overview\&quot;? (start page, your bookmarks…)&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="186"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_overView` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_overView&quot;>Overview&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="191"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_two_finger_swipe` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_two_finger_swipe&quot;>Two finger swipe&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="204"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.export_whitelistAdBlock` appears to be unused"
-        errorLine1="    &lt;string name=&quot;export_whitelistAdBlock&quot;>Export AdBlock whitelist&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="225"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.export_whitelistJS` appears to be unused"
-        errorLine1="    &lt;string name=&quot;export_whitelistJS&quot;>Export JavaScript whitelist&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="227"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.export_whitelistCookie` appears to be unused"
-        errorLine1="    &lt;string name=&quot;export_whitelistCookie&quot;>Export Cookie whitelist&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="229"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.hint_database` appears to be unused"
-        errorLine1="    &lt;string name=&quot;hint_database&quot;>This will delete all items here. Will you proceed?&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="238"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_license` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_license&quot;>License&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="241"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_add_whitelist_successful` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_add_whitelist_successful&quot;>Successfully added Domain&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="244"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_delete_successful` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_delete_successful&quot;>Successfully deleted&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="246"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_domain_already_exists` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_domain_already_exists&quot;>Domain already exists&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="247"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_export_successful` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_export_successful&quot;>Exported as:&amp;#160;&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="249"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_export_failed` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_export_failed&quot;>Failed to export&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="250"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_import_successful` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_import_successful&quot;>Imported count:&amp;#160;&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="251"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_import_failed` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_import_failed&quot;>Failed to import&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="252"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_invalid_domain` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_invalid_domain&quot;>Invalid domain&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="255"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_wait_a_minute` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_wait_a_minute&quot;>Please wait for a moment&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="260"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_backup` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_backup&quot;>Create data backup? This will overwrite the old backup.&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="267"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.whitelist_menu_clear` appears to be unused"
-        errorLine1="    &lt;string name=&quot;whitelist_menu_clear&quot;>Clear&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="271"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.whitelist_edit_hint` appears to be unused"
-        errorLine1="    &lt;string name=&quot;whitelist_edit_hint&quot;>Domain&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="272"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.font_boldness` appears to be unused"
-        errorLine1="    &lt;string name=&quot;font_boldness&quot;>Font boldness&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="281"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_bold_font` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_bold_font&quot;>Apply bold font style (need to reload current page)&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="283"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toolbar_setting` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toolbar_setting&quot;>Toolbar setting&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="291"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.userscript_install_prompt` appears to be unused"
-        errorLine1="    &lt;string name=&quot;userscript_install_prompt&quot;>Install this userscript?&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="317"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.font_custom` appears to be unused"
-        errorLine1="    &lt;string name=&quot;font_custom&quot;>Select custom font file&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="347"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_font` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_font&quot;>Font&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="356"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.per_site` appears to be unused"
-        errorLine1="    &lt;string name=&quot;per_site&quot;>Per-site&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="361"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.use_global` appears to be unused"
-        errorLine1="    &lt;string name=&quot;use_global&quot;>Using global&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="362"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_toolbar_top` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_toolbar_top&quot;>Toolbar on top&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="367"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_toolbar_top` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_toolbar_top&quot;>Show toolbar on top of screen&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="368"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.edit_custom_font` appears to be unused"
-        errorLine1="    &lt;string name=&quot;edit_custom_font&quot;>Edit Custom Font&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="376"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.font_folder` appears to be unused"
-        errorLine1="    &lt;string name=&quot;font_folder&quot;>Font Folder&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="377"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.cannot_open_file` appears to be unused"
-        errorLine1="    &lt;string name=&quot;cannot_open_file&quot;>File can\&apos;t be opened. Please re-open it from file picker&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="383"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_recent_bookmarks` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_recent_bookmarks&quot;>Show recently used bookmarks&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="384"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_recent_bookmarks` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_recent_bookmarks&quot;>Show recently used bookmarks when opening a new tab&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="385"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.copy_link` appears to be unused"
-        errorLine1="    &lt;string name=&quot;copy_link&quot;>Copy link&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="397"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.dialog_content_ssl_error` appears to be unused"
-        errorLine1="    &lt;string name=&quot;dialog_content_ssl_error&quot;>The certificate of the site is not trusted. Proceed anyway?&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="401"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.facebook_groups` appears to be unused"
-        errorLine1="    &lt;string name=&quot;facebook_groups&quot;>Facebook Groups&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="407"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.turn_on` appears to be unused"
-        errorLine1="    &lt;string name=&quot;turn_on&quot;>On&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="411"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.turn_off` appears to be unused"
-        errorLine1="    &lt;string name=&quot;turn_off&quot;>Off&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="412"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.title_touch_area` appears to be unused"
-        errorLine1="    &lt;string name=&quot;title_touch_area&quot;>Touch Area&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="413"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.copy_text` appears to be unused"
-        errorLine1="    &lt;string name=&quot;copy_text&quot;>Copy text&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="444"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_send_link_failed` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_send_link_failed&quot;>Sending link failed&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="447"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_receive_link_failed` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_receive_link_failed&quot;>Receiving link failed&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="448"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.not_supported` appears to be unused"
-        errorLine1="    &lt;string name=&quot;not_supported&quot;>Not supported&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="450"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_adblock_url` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_adblock_url&quot;>AdBlock list URL&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="470"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_adblock_url` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_adblock_url&quot;>Edit this URL If you want to use other AdBlock content&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="471"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_adblock_auto_update` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_adblock_auto_update&quot;>Auto update AdBlock&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="472"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_adblock_auto_update` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_adblock_auto_update&quot;>Auto update AdBlock content weekly&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="473"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_adblock_updated` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_adblock_updated&quot;>AdBlock is updated!&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="474"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.image_adjust` appears to be unused"
-        errorLine1="    &lt;string name=&quot;image_adjust&quot;>Image Adjust&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="494"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.bookmark_new_file` appears to be unused"
-        errorLine1="    &lt;string name=&quot;bookmark_new_file&quot;>Create new file&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="503"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.bookmark_open_file` appears to be unused"
-        errorLine1="    &lt;string name=&quot;bookmark_open_file&quot;>Link existing file&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="504"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_sync_bookmarks` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_sync_bookmarks&quot;>Sync bookmarks&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="511"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_setup_bookmarks_location` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_setup_bookmarks_location&quot;>Configure remote bookmark file location&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="512"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_setup_bookmarks_location` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_setup_bookmarks_location&quot;>Select or create a file in Google Drive or other location that supports remote sync&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="513"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.dialog_message_sync_bookmark_file` appears to be unused"
-        errorLine1="    &lt;string name=&quot;dialog_message_sync_bookmark_file&quot;>To sync bookmarks you need to create or open a bookmark file from Google Drive or other remote service using system file picker&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="514"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.dialog_title_bookmark_sync` appears to be unused"
-        errorLine1="    &lt;string name=&quot;dialog_title_bookmark_sync&quot;>Bookmark File Setting&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="515"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.menu_gpt` appears to be unused"
-        errorLine1="    &lt;string name=&quot;menu_gpt&quot;>ChatGPT&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="524"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_edit_gpt_system_prompt` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_edit_gpt_system_prompt&quot;>ChatGPT System Prompt&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="528"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_edit_gpt_prompt` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_edit_gpt_prompt&quot;>Set a role for ChatGPT, e.g. \&quot;You are an interpreter\&quot;&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="529"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_title_edit_gpt_user_prompt_prefix` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_title_edit_gpt_user_prompt_prefix&quot;>User Prompt Prefix&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="530"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_edit_gpt_user_prompt` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_edit_gpt_user_prompt&quot;>Edit user prompt prefix, e.g. \&quot;Translate following content to English:\&quot;&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="531"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.translate_processing` appears to be unused"
-        errorLine1="    &lt;string name=&quot;translate_processing&quot;>Processing…&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="541"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.translate_papago` appears to be unused"
-        errorLine1="    &lt;string name=&quot;translate_papago&quot;>Naver Papago API Secret&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="544"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.translate_papago_summary` appears to be unused"
-        errorLine1="    &lt;string name=&quot;translate_papago_summary&quot;>If you want to use Naver Papago translate service, please enter your API secret&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="545"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.menu_expand_menu` appears to be unused"
-        errorLine1="    &lt;string name=&quot;menu_expand_menu&quot;>Show more&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="555"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.re_select` appears to be unused"
-        errorLine1="    &lt;string name=&quot;re_select&quot;>Reselect text&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="561"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.split_search` appears to be unused"
-        errorLine1="    &lt;string name=&quot;split_search&quot;>Split Search&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="567"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.send_type` appears to be unused"
-        errorLine1="    &lt;string name=&quot;send_type&quot;>Send Type&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="574"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.current_url` appears to be unused"
-        errorLine1="    &lt;string name=&quot;current_url&quot;>Current URL&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="575"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.text_selection_search` appears to be unused"
-        errorLine1="    &lt;string name=&quot;text_selection_search&quot;>Text Selection Search&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="576"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.receive_once` appears to be unused"
-        errorLine1="    &lt;string name=&quot;receive_once&quot;>Receive once&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="579"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.string.setting_title_enable_inplace_translate` appears to be unused"
         errorLine1="    &lt;string name=&quot;setting_title_enable_inplace_translate&quot;>Translate paragraphs in current tab&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="615"
+            line="529"
             column="13"/>
     </issue>
 
@@ -3172,95 +1907,7 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="616"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.wenkai_tc` appears to be unused"
-        errorLine1="    &lt;string name=&quot;wenkai_tc&quot;>WenKai(TC)&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="624"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.enable_fix_scroll` appears to be unused"
-        errorLine1="    &lt;string name=&quot;enable_fix_scroll&quot;>Try fix scrolling&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="631"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.translate_this_site` appears to be unused"
-        errorLine1="    &lt;string name=&quot;translate_this_site&quot;>Always translate&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="638"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.toast_saved` appears to be unused"
-        errorLine1="    &lt;string name=&quot;toast_saved&quot;>Saved!&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="641"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.page_ai_action_empty` appears to be unused"
-        errorLine1="    &lt;string name=&quot;page_ai_action_empty&quot;>No page AI actions available; add one under GPT Actions (whole page scope).&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="648"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.touch_custom` appears to be unused"
-        errorLine1="    &lt;string name=&quot;touch_custom&quot;>Custom&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="656"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.summary_touch_aciton_settings` appears to be unused"
-        errorLine1="    &lt;string name=&quot;summary_touch_aciton_settings&quot;>Setup actions for touch area&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="662"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.close` appears to be unused"
-        errorLine1="    &lt;string name=&quot;close&quot;>Close&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="673"
+            line="530"
             column="13"/>
     </issue>
 
@@ -3271,350 +1918,8 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="692"
+            line="598"
             column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.added_to_instapaper` appears to be unused"
-        errorLine1="    &lt;string name=&quot;added_to_instapaper&quot;>Added to Instapaper&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="718"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.failed_to_add_to_instapaper` appears to be unused"
-        errorLine1="    &lt;string name=&quot;failed_to_add_to_instapaper&quot;>failed&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="719"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.setting_summary_nav_pos_reset_custom` appears to be unused"
-        errorLine1="    &lt;string name=&quot;setting_summary_nav_pos_reset_custom&quot;>Reset custom position&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="724"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.suggestion` appears to be unused"
-        errorLine1="    &lt;string name=&quot;suggestion&quot;>&quot;Search: &quot;&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="727"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.task_summarize_tabs` appears to be unused"
-        errorLine1="    &lt;string name=&quot;task_summarize_tabs&quot;>Summarize open tabs&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="764"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.task_summarize_tabs_desc` appears to be unused"
-        errorLine1="    &lt;string name=&quot;task_summarize_tabs_desc&quot;>Produce a short summary of each currently open tab.&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="765"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.top_border_bg` appears to be unused"
-        errorLine1="&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; >"
-        errorLine2="^">
-        <location
-            file="src/main/res/drawable/top_border_bg.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="        &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/background_transparent_with_border.xml"
-            line="4"
-            column="16"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="        &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/background_with_border.xml"
-            line="4"
-            column="16"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="        &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/background_with_border_margin.xml"
-            line="6"
-            column="16"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="        &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/button_border_bg.xml"
-            line="9"
-            column="16"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="        &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/button_border_bg_dash.xml"
-            line="9"
-            column="16"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="        &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/selected_border_bg.xml"
-            line="4"
-            column="16"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="        &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/selected_border_bg.xml"
-            line="18"
-            column="16"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="            xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/touch_area_border.xml"
-            line="5"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="RedundantNamespace"
-        message="This namespace declaration is redundant"
-        errorLine1="            xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/touch_area_border.xml"
-            line="22"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;menu_open_with&quot;>ᱥᱟᱶ ᱞᱤᱝᱠ ᱡᱷᱤᱡᱽ ᱢᱮ...&lt;/string>"
-        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-sat/strings.xml"
-            line="19"
-            column="35"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;menu_save_as&quot;>儲存為...&lt;/string>"
-        errorLine2="                                ~~~~~~">
-        <location
-            file="src/main/res/values-zh-rTW/strings.xml"
-            line="27"
-            column="33"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;setting_summary_javascript&quot;>Activar JavaScript. Molts llocs web necessiten JavaScript per a la seva funcionalitat (menús, càrrega i visualització d\&apos;imatges...). Però també són un risc i es poden utilitzar per a atacs.&lt;/string>"
-        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-ca/strings.xml"
-            line="69"
-            column="47"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;setting_summary_javascript&quot;>Ativa a utilização de JavaScript. Alguns sites necessitam de executar JavaScript para as suas funcionalidades (menus, carregamento e exibição de imagens...). Mas são também um risco e podem ser utilizados para ataques.&lt;/string>"
-        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-pt/strings.xml"
-            line="69"
-            column="47"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;setting_summary_javascript&quot;>JavaScript ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ ᱾ ᱟᱭᱢᱟᱸ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚᱣᱟᱜ ᱠᱟᱹᱢᱤ ᱞᱟᱹᱜᱤᱫ JavaScript ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ (ᱢᱮᱱᱩ,ᱪᱤᱛᱟᱹᱨ ᱞᱚᱰ ᱟᱨ ᱪᱤᱛᱟᱹᱨ ᱠᱚ ᱩᱫᱩᱜ, ...) ᱾ ᱢᱮᱱᱠᱷᱟᱱ ᱱᱩᱠᱩ ᱦᱚᱸ ᱢᱤᱫ ᱚᱥᱵᱤᱫᱷᱟ ᱨᱮ ᱢᱮᱱᱟᱜ ᱠᱟᱫ ᱠᱚᱣᱟ ᱟᱨ ᱡᱟᱨᱯᱟ ᱞᱟᱹᱜᱤᱫ ᱠᱚ ᱵᱮᱵᱷᱟᱨ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾&lt;/string>"
-        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-sat/strings.xml"
-            line="92"
-            column="47"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;setting_summary_tab&quot;>\&quot;Overview\&quot; ᱨᱮᱭᱟᱜ ᱮᱛᱚᱦᱚᱵ ᱨᱮ ᱪᱮᱫ ᱫᱮᱠᱷᱟᱣ ᱦᱩᱭᱩᱜ-ᱟ? (ᱮᱛᱦᱚᱵ ᱥᱟᱦᱴᱟ, ᱟᱢᱟᱜ ᱵᱩᱠᱢᱟᱨᱠ...)&lt;/string>"
-        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-sat/strings.xml"
-            line="152"
-            column="40"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;toast_error&quot;>ᱮᱦᱮ, ᱪᱮᱫ ᱪᱷᱚᱸ ᱢᱤᱫᱴᱟᱹᱝ ᱵᱷᱩᱞ ᱦᱩᱭᱮᱱᱟ...&lt;/string>"
-        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-sat/strings.xml"
-            line="233"
-            column="32"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;translate_processing&quot;>網頁處理中...&lt;/string>"
-        errorLine2="                                        ~~~~~~~~">
-        <location
-            file="src/main/res/values-zh-rTW/strings.xml"
-            line="403"
-            column="41"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;translate_processing&quot;>正在处理...&lt;/string>"
-        errorLine2="                                        ~~~~~~~">
-        <location
-            file="src/main/res/values-zh-rCN/strings.xml"
-            line="440"
-            column="41"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;translate_processing&quot;>ᱯᱨᱚᱥᱮᱥᱤᱝ...&lt;/string>"
-        errorLine2="                                        ~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-sat/strings.xml"
-            line="446"
-            column="41"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;translate_processing&quot;>처리 중...&lt;/string>"
-        errorLine2="                                        ~~~~~~~">
-        <location
-            file="src/main/res/values-ko/strings.xml"
-            line="458"
-            column="41"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;other_voices&quot;>其他語音...&lt;/string>"
-        errorLine2="                                ~~~~~~~">
-        <location
-            file="src/main/res/values-zh-rTW/strings.xml"
-            line="523"
-            column="33"/>
-    </issue>
-
-    <issue
-        id="TypographyEllipsis"
-        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
-        errorLine1="    &lt;string name=&quot;other_voices&quot;>Other Voices...&lt;/string>"
-        errorLine2="                                ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values-zh-rCN/strings.xml"
-            line="559"
-            column="33"/>
-    </issue>
-
-    <issue
-        id="AlwaysShowAction"
-        message="Prefer &quot;`ifRoom`&quot; instead of &quot;`always`&quot;"
-        errorLine1="          app:showAsAction=&quot;always&quot;>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="9"
-            column="11"/>
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="14"
-            column="9"/>
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="19"
-            column="9"/>
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="24"
-            column="9"/>
     </issue>
 
     <issue
@@ -3624,7 +1929,7 @@
         errorLine2="           ~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/view/EBWebView.kt"
-            line="62"
+            line="54"
             column="12"/>
     </issue>
 
@@ -3719,226 +2024,6 @@
     <issue
         id="UseKtx"
         message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldFixScroll } ?: false"
-        errorLine2="        ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="77"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="80"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldTranslateSite } ?: false"
-        errorLine2="        ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="94"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="97"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldUseWhiteBackground } ?: false"
-        errorLine2="        ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="112"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="115"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldInvertColor } ?: false"
-        errorLine2="        ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="124"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="127"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return display.fontSize"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="138"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return display.fontType"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="143"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return display.boldFontStyle"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="148"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return display.blackFontStyle"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="153"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return display.fontBoldness"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="158"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return browser.desktop"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="163"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return null"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="168"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return browser.enableJavascript"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="173"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return translation.translationMode"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="178"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return null"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="183"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return null"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="188"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="        val host = Uri.parse(url)?.host ?: return DomainConfigurationData(&quot;&quot;)"
-        errorLine2="                   ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/preference/ConfigManager.kt"
-            line="193"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
         errorLine1="        val host = Uri.parse(url).host.orEmpty()"
         errorLine2="                   ~~~~~~~~~~~~~~">
         <location
@@ -3956,6 +2041,226 @@
             file="src/main/java/info/plateaukao/einkbro/view/dialog/DialogManager.kt"
             line="193"
             column="64"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldFixScroll } ?: false"
+        errorLine2="        ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="15"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="18"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldTranslateSite } ?: false"
+        errorLine2="        ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="28"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="31"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldUseWhiteBackground } ?: false"
+        errorLine2="        ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="41"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="44"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldInvertColor } ?: false"
+        errorLine2="        ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="53"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return false"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="56"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return display.fontSize"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="67"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return display.fontType"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="72"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return display.boldFontStyle"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="77"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return display.blackFontStyle"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="82"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return display.fontBoldness"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="87"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return browser.desktop"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="92"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return null"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="97"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return browser.enableJavascript"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="102"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return translation.translationMode"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="107"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return null"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="112"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return null"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="117"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        val host = Uri.parse(url)?.host ?: return DomainConfigurationData(&quot;&quot;)"
+        errorLine2="                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/preference/DomainConfigManager.kt"
+            line="122"
+            column="20"/>
     </issue>
 
     <issue
@@ -4026,34 +2331,12 @@
 
     <issue
         id="UseKtx"
-        message="Use the KTX extension function `String.toColorInt` instead?"
-        errorLine1="            if (wantDark) setBackgroundColor(Color.parseColor(&quot;#000000&quot;))"
-        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/view/EBWebView.kt"
-            line="382"
-            column="46"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toColorInt` instead?"
-        errorLine1="            setBackgroundColor(Color.parseColor(&quot;#000000&quot;))"
-        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/info/plateaukao/einkbro/view/EBWebView.kt"
-            line="393"
-            column="32"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
         message="Use the KTX extension function `String.toUri` instead?"
         errorLine1="        val host = Uri.parse(originalUrl).host ?: return"
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/view/EBWebView.kt"
-            line="611"
+            line="502"
             column="20"/>
     </issue>
 
@@ -4229,7 +2512,7 @@
         errorLine2="            ~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="266"
+            line="259"
             column="13"/>
     </issue>
 
@@ -4240,7 +2523,7 @@
         errorLine2="                               ~~~~~~~~~~~~~~">
         <location
             file="src/main/java/info/plateaukao/einkbro/browser/NinjaWebViewClient.kt"
-            line="455"
+            line="400"
             column="32"/>
     </issue>
 
@@ -4411,6 +2694,28 @@
 
     <issue
         id="UseKtx"
+        message="Use the KTX extension function `String.toColorInt` instead?"
+        errorLine1="            if (wantDark) webView.setBackgroundColor(Color.parseColor(&quot;#000000&quot;))"
+        errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/view/WebViewConfigApplier.kt"
+            line="35"
+            column="54"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toColorInt` instead?"
+        errorLine1="            webView.setBackgroundColor(Color.parseColor(&quot;#000000&quot;))"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/info/plateaukao/einkbro/view/WebViewConfigApplier.kt"
+            line="46"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
         message="Use the KTX extension function `ViewGroup.isEmpty` instead?"
         errorLine1="                if (!enableZoom || childCount == 0) return false"
         errorLine2="                                   ~~~~~~~~~~~~~~~">
@@ -4462,39 +2767,6 @@
             file="src/main/java/info/plateaukao/einkbro/view/ZoomableFrameLayout.kt"
             line="114"
             column="18"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;underline&quot;, should use `@string` resource"
-        errorLine1="        android:title=&quot;underline&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="12"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;highlight&quot;, should use `@string` resource"
-        errorLine1="        android:title=&quot;highlight&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="17"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;strike&quot;, should use `@string` resource"
-        errorLine1="        android:title=&quot;strike&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/menu/menu_ereader.xml"
-            line="22"
-            column="9"/>
     </issue>
 
     <issue

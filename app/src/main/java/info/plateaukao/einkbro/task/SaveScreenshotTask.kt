@@ -75,9 +75,8 @@ class SaveScreenshotTask(
 
                     val image = File(imagesDir, "$name.jpg")
                     fos = FileOutputStream(image)
-                    if (Build.VERSION.SDK_INT < 24) Uri.fromFile(image)
-                    // something wrong with file://xxxx
-                    else getUriForFile(context.applicationContext, context.packageName + ".fileprovider", image)
+                    // file:// URIs are rejected on N+; always go through the FileProvider
+                    getUriForFile(context.applicationContext, context.packageName + ".fileprovider", image)
                 }
 
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
