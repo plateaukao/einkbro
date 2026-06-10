@@ -37,8 +37,9 @@ android {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
         targetSdk = 34
-        versionCode = 15_14_00
-        versionName = "15.14.0"
+        // Beta sits between 15.14.0 (15_14_00) and the eventual 15.15.0 (15_15_00)
+        versionCode = 15_14_90
+        versionName = "15.15.0-beta1"
 
         buildConfigField("String", "lastCommitTime", "\"${getLastCommitTimeStamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
