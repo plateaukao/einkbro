@@ -137,8 +137,10 @@ Ordered by value vs. risk. Each slice follows the same loop:
        mode, cookies) extracted following the existing helper pattern. 957 → 770
        lines. `dispatchTouchEvent`/scroll handling stays — core input path. Verified
        on emulator (page load, selection menu, invert colors).
-5. [ ] **ConfigManager**: separate per-domain configuration (currently split between an
-       in-memory map and BookmarkManager persistence) from global preferences.
+5. [x] **ConfigManager**: per-domain configuration extracted to
+       `DomainConfigManager` (constructor-injected global configs + a persist
+       lambda; no Koin). ConfigManager keeps forwards, no call sites changed.
+       352 → 286 lines. Verified via the site-settings dialog round trip.
 6. [ ] **DI cleanup, opportunistic**: every newly extracted class takes constructor
        parameters; retire `by inject()` from the `*Unit` singletons
        (`BrowserUnit`, `ViewUnit`, `HelperUnit`, `BackupUnit`) as they get touched.
