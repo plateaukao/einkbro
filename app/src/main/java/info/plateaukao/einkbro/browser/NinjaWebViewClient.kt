@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Message
-import android.security.KeyChain
 import android.util.Log
 import android.view.ViewGroup
 import android.webkit.ClientCertRequest
@@ -26,22 +25,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.EinkImageCache
-import info.plateaukao.einkbro.unit.EinkImageProcessor
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
-import info.plateaukao.einkbro.view.dialog.DialogManager
-import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
 import io.github.edsuns.adfilter.AdFilter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,18 +54,17 @@ class EBWebViewClient(
     private val context: Context = ebWebView.context
     private val config: ConfigManager by inject()
     private val cookie: Cookie by inject()
-    private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
 
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
-
-    private var lastFailedUrl: String? = null
 
     private val adFilter: AdFilter = AdFilter.get()
 
     private val dualCaptionProcessor = DualCaptionProcessor()
 
-    private val einkImageCache = EinkImageCache(context)
+    private val einkImageInterceptor = EinkImageInterceptor(config, EinkImageCache(context))
+    private val errorPagePresenter = WebErrorPagePresenter(ebWebView)
+    private val sslHandler = WebViewSslHandler(context, config)
 
     private val userScriptManager: info.plateaukao.einkbro.userscript.UserScriptManager by inject()
     private val coroutineScope: CoroutineScope by inject()
@@ -301,7 +294,7 @@ class EBWebViewClient(
         Log.d("ebWebViewClient", "handleUri: $url")
 
         if (url.startsWith("einkbro://retry")) {
-            val target = lastFailedUrl
+            val target = errorPagePresenter.lastFailedUrl
             if (!target.isNullOrEmpty()) {
                 webView.post { webView.loadUrl(target) }
             } else {
@@ -392,62 +385,14 @@ class EBWebViewClient(
         host: String?,
         realm: String?,
     ) {
-        AuthenticationDialogFragment { username, password ->
-            handler?.proceed(username, password)
-        }.show((context as FragmentActivity).supportFragmentManager, "AuthenticationDialog")
+        sslHandler.onReceivedHttpAuthRequest(handler)
     }
 
     override fun onReceivedError(
         view: WebView?,
         request: WebResourceRequest?,
         error: WebResourceError?,
-    ) {
-        // if https is not available, try http
-        if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
-            ebWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
-            return
-        }
-        Log.e("ebWebViewClient", "onReceivedError:${request?.url} / ${error?.description}")
-
-        if (request?.isForMainFrame == true) {
-            val scheme = request.url.scheme
-            if (scheme == "http" || scheme == "https") {
-                showErrorPage(request.url.toString(), error?.description?.toString())
-            }
-        }
-    }
-
-    private fun showErrorPage(failedUrl: String, rawReason: String?) {
-        lastFailedUrl = failedUrl
-        val friendly = friendlyReason(rawReason)
-        val query = "?url=" +
-                Uri.encode(failedUrl) +
-                "&reason=" + Uri.encode(friendly)
-        ebWebView.loadUrl("file:///android_asset/error_page.html$query")
-    }
-
-    private fun friendlyReason(raw: String?): String {
-        if (raw.isNullOrBlank()) return "Check your connection and try again."
-        return when {
-            raw.contains("INTERNET_DISCONNECTED") ->
-                "You appear to be offline. Check your Wi-Fi or mobile data."
-            raw.contains("NAME_NOT_RESOLVED") ->
-                "Couldn't find this site. Check the address and try again."
-            raw.contains("CONNECTION_REFUSED") ->
-                "The server refused the connection."
-            raw.contains("CONNECTION_TIMED_OUT") || raw.contains("TIMED_OUT") ->
-                "The connection timed out."
-            raw.contains("CONNECTION_RESET") ->
-                "The connection was reset."
-            raw.contains("CONNECTION_CLOSED") ->
-                "The connection was closed unexpectedly."
-            raw.contains("ADDRESS_UNREACHABLE") ->
-                "The server is unreachable."
-            raw.contains("SSL") || raw.contains("CERT") ->
-                "There's a problem with the site's security certificate."
-            else -> "This page couldn't be loaded."
-        }
-    }
+    ) = errorPagePresenter.onReceivedError(view, request, error)
 
     @Deprecated("Deprecated in Java")
     @Suppress("DEPRECATION")
@@ -471,118 +416,10 @@ class EBWebViewClient(
             }
         }
 
-        processEinkImageRequest(request)?.let { return it }
+        einkImageInterceptor.processEinkImageRequest(request)?.let { return it }
 
         return handleWebRequest(view, request.url, request.requestHeaders)
             ?: super.shouldInterceptRequest(view, request)
-    }
-
-    private fun processEinkImageRequest(request: WebResourceRequest): WebResourceResponse? {
-        val adjustment = config.display.einkImageAdjustment
-        if (adjustment == EinkImageAdjustment.OFF) return null
-
-        val url = request.url.toString()
-        if (!looksLikeImageUrl(url) && !hasImageAcceptHeader(request)) return null
-
-        // Check cache first
-        einkImageCache.get(url, adjustment.strength)?.let { cachedStream ->
-            val mimeType = getImageMimeFromUrl(url) ?: "image/jpeg"
-            return WebResourceResponse(mimeType, null, cachedStream)
-        }
-
-        return try {
-            val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
-            request.requestHeaders?.forEach { (key, value) ->
-                connection.setRequestProperty(key, value)
-            }
-            // Add cookies from WebView's CookieManager (CDNs like Instagram require auth cookies)
-            val cookies = CookieManager.getInstance().getCookie(url)
-            if (!cookies.isNullOrEmpty()) {
-                connection.setRequestProperty("Cookie", cookies)
-            }
-            connection.connectTimeout = 10_000
-            connection.readTimeout = 10_000
-
-            val statusCode = connection.responseCode
-            if (statusCode !in 200..299) {
-                connection.disconnect()
-                return null
-            }
-
-            // Use response Content-Type for actual MIME; fall back to URL extension
-            val responseContentType = connection.contentType
-            val mimeType = getImageMimeFromContentType(responseContentType)
-                ?: getImageMimeFromUrl(url)
-                ?: run { connection.disconnect(); return null }
-
-            val inputStream = connection.inputStream
-            val processedStream = EinkImageProcessor.processStream(
-                inputStream, mimeType, adjustment.strength
-            )
-            inputStream.close()
-
-            if (processedStream != null) {
-                // Cache the processed image bytes
-                val processedBytes = processedStream.readBytes()
-                einkImageCache.put(url, adjustment.strength, processedBytes)
-
-                // Forward response headers so CORS / caching / JS fetch still work
-                val responseHeaders = mutableMapOf<String, String>()
-                var i = 0
-                while (true) {
-                    val key = connection.getHeaderFieldKey(i) ?: if (i == 0) { i++; continue } else break
-                    val value = connection.getHeaderField(i) ?: break
-                    val lowerKey = key.lowercase()
-                    // Skip headers we override or that no longer apply after re-encoding
-                    if (lowerKey !in setOf("content-length", "content-encoding", "transfer-encoding", "content-type")) {
-                        responseHeaders[key] = value
-                    }
-                    i++
-                }
-                WebResourceResponse(
-                    mimeType, null, statusCode, connection.responseMessage ?: "OK",
-                    responseHeaders, ByteArrayInputStream(processedBytes)
-                )
-            } else {
-                connection.disconnect()
-                null
-            }
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    private fun looksLikeImageUrl(url: String): Boolean {
-        val lower = url.substringBefore('?').substringBefore('#').lowercase()
-        return lower.endsWith(".jpg") || lower.endsWith(".jpeg") ||
-                lower.endsWith(".png") || lower.endsWith(".webp")
-    }
-
-    private fun hasImageAcceptHeader(request: WebResourceRequest): Boolean {
-        val accept = request.requestHeaders?.get("Accept") ?: return false
-        return accept.startsWith("image/")
-    }
-
-    private fun getImageMimeFromContentType(contentType: String?): String? {
-        if (contentType == null) return null
-        val lower = contentType.lowercase()
-        return when {
-            lower.contains("image/jpeg") -> "image/jpeg"
-            lower.contains("image/png") -> "image/png"
-            lower.contains("image/webp") -> "image/webp"
-            lower.contains("image/gif") -> "image/gif"
-            else -> null
-        }
-    }
-
-    private fun getImageMimeFromUrl(url: String): String? {
-        val lower = url.substringBefore('?').substringBefore('#').lowercase()
-        return when {
-            lower.endsWith(".jpg") || lower.endsWith(".jpeg") -> "image/jpeg"
-            lower.endsWith(".png") -> "image/png"
-            lower.endsWith(".webp") -> "image/webp"
-            else -> null
-        }
     }
 
     private fun isAnalyticsUrl(url: String): Boolean =
@@ -694,68 +531,16 @@ class EBWebViewClient(
         }
     }
 
-    // return true means it's processed
-    private fun handlePrivateKeyAlias(request: ClientCertRequest, alias: String?): Boolean {
-        val keyAlias = alias ?: return false
-        val holder = context as? Activity ?: return false
-        try {
-            val certChain = KeyChain.getCertificateChain(holder, keyAlias) ?: return false
-            val privateKey = KeyChain.getPrivateKey(holder, keyAlias) ?: return false
-            request.proceed(privateKey, certChain)
-            return true
-        } catch (e: Exception) {
-            Log.e(
-                "ebWebViewClient",
-                "Error when getting CertificateChain or PrivateKey for alias '${alias}'",
-                e
-            )
-        }
-        return false
-    }
-
     override fun onReceivedClientCertRequest(view: WebView, request: ClientCertRequest) {
-        val holder = view.context as? Activity ?: return
-        KeyChain.choosePrivateKeyAlias(
-            holder,
-            { alias ->
-                if (!handlePrivateKeyAlias(request, alias)) {
-                    super.onReceivedClientCertRequest(view, request)
-                }
-            },
-            request.keyTypes, request.principals, request.host, request.port, null
-        )
-    }
-
-    override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-        val title = "An Error Occurred!!!"
-        var message =
-            "The page you are trying to view cannot be shown because the connection isn't private or the authenticity of the received data could not be verified. \n\nIf you want to take the risk and continue viewing the page, please press OK.\n\n\nReason: "
-        when (error.primaryError) {
-            SslError.SSL_UNTRUSTED -> message += """"Certificate authority is not trusted.""""
-            SslError.SSL_EXPIRED -> message += """"Certificate has expired.""""
-            SslError.SSL_IDMISMATCH -> message += """"Certificate Hostname mismatch.""""
-            SslError.SSL_NOTYETVALID -> message += """"Certificate is not yet valid.""""
-            SslError.SSL_DATE_INVALID -> message += """"Certificate date is invalid.""""
-            SslError.SSL_INVALID -> message += """"Certificate is invalid.""""
-        }
-
-        Log.e(TAG, "onReceivedSslError: $message")
-        if (config.browser.enableCertificateErrorDialog) {
-            dialogManager.showOkCancelDialog(
-                title = title,
-                message = message,
-                showInCenter = true,
-                okAction = { handler.proceed() },
-                cancelAction = { handler.cancel() }
-            )
-        } else {
-            handler.proceed()
+        sslHandler.onReceivedClientCertRequest(view, request) {
+            super.onReceivedClientCertRequest(view, request)
         }
     }
+
+    override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) =
+        sslHandler.onReceivedSslError(view, handler, error)
 
     companion object {
-        private const val TAG = "ebWebViewClient"
-
         private val ANALYTICS_DOMAINS = listOf(
             "google-analytics.com",
             "googletagmanager.com",
