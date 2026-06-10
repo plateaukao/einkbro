@@ -3,7 +3,9 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdk 34
-    buildToolsVersion "29.0.3"
+    // Pin the NDK so SDK-manager updates can't silently change the native build.
+    // 27.0.12077973 is the AGP 8.7 default, i.e. what builds used before pinning.
+    ndkVersion "27.0.12077973"
 
     defaultConfig {
         minSdk 23
