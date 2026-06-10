@@ -165,6 +165,9 @@ dependencies {
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.turbine)
     testImplementation(libs.androidx.room.testing)
+    // Real org.json implementation for JVM unit tests (the android.jar on the
+    // unit-test classpath only contains non-functional stubs of JSONObject/JSONArray).
+    testImplementation(libs.org.json)
 
     // memory leak detection
     //debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
