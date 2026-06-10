@@ -16,20 +16,20 @@
     <string name="menu_openFav">お気に入り開く</string>
     <string name="menu_delete">削除</string>
     <string name="menu_edit">編集</string>
-    <string name="menu_closeTab">タブ閉じる</string>
+    <string name="menu_closeTab">タブを閉じる</string>
     <string name="menu_download">ダウンロード開く</string>
     <string name="menu_fav">お気に入りに保存</string>
     <string name="menu_sc">ショートカット</string>
     <string name="menu_share_link">共有</string>
     <string name="menu_save_bookmark">ブックマーク保存</string>
-    <string name="menu_save_as">名前付けて保存</string>
-    <string name="menu_save_pdf">PDF保存</string>
-    <string name="menu_other_searchSite">サイト上の検索</string>
+    <string name="menu_save_as">名前を付けて保存</string>
+    <string name="menu_save_pdf">PDFとして保存</string>
+    <string name="menu_other_searchSite">ページ内を検索</string>
     <string name="menu_other_info">EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">タイトル:</string>
     <string name="dialog_url_hint">URL:</string>
-    <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
+    <string name="dialog_extension_hint">拡張子 (例: \".jpg\"):</string>
     <string name="dialog_title_download">ファイルをダウンロードしますか?</string>
     <string name="dialog_content_resubmission">データを再送信しますか?</string>
     <!-- Settings -->
@@ -122,8 +122,8 @@
     <string name="switch_to_left_tab">Switch to left tab</string>
     <string name="switch_to_right_tab">Switch to right tab</string>
     <string name="show_overview">Show overview</string>
-    <string name="open_new_tab">新規タブ開く</string>
-    <string name="close_tab">タブ閉じる</string>
+    <string name="open_new_tab">新規タブを開く</string>
+    <string name="close_tab">タブを閉じる</string>
     <!-- Data -->
     <string name="setting_title_export_appData">アプリデータのエクスポート</string>
     <string name="setting_title_import_appData">アプリデータのインポート</string>
@@ -287,7 +287,7 @@
     <string name="key_right">→キーを送信</string>
     <string name="latest_release">最新リリース</string>
     <string name="location">位置情報</string>
-    <string name="manual">手動</string>
+    <string name="manual">マニュアル</string>
     <string name="media_continue">バックグラウンド再生</string>
     <string name="medium_articles">Medium記事</string>
     <string name="menu">メニュー</string>
