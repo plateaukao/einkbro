@@ -150,13 +150,21 @@ Ordered by value vs. risk. Each slice follows the same loop:
 
 Burn down `app/lint-baseline.xml` by category, regenerating the baseline after each pass:
 
-- [ ] **UnusedResources (78)** first — direct APK size win with resource shrinking.
-- [ ] **RtlHardcoded (26)** — switch left/right to start/end for RTL locales (ar, he).
-- [ ] **ContentDescription (11)** — accessibility.
-- [ ] **TypographyEllipsis (16)** and **ExtraTranslation (11)** — mechanical fixes.
-- [ ] Re-enable the `MissingTranslation` check (or rely on the Phase 2 locale task) once
-      locale completeness is enforced.
-- [ ] Goal: an empty `lint-baseline.xml`.
+- [x] **UnusedResources** — 122 of 126 removed (99 strings across all locales, 13
+      drawables, 6 dimens, 2 colors, 2 menus, the last XML layout). Every candidate
+      verified by repo-wide reference grep (incl. ViewBinding names and
+      `getIdentifier` patterns) before deletion; 3 strings referenced from
+      commented-out code kept deliberately.
+- [x] **TypographyEllipsis** and **ExtraTranslation** — fixed (ExtraTranslation died
+      with the Phase 2 locale checker + stale-key removal).
+- [x] **RedundantNamespace**, **ObsoleteSdkInt** — fixed.
+- [ ] **LogNotTimber (112)** — convert `android.util.Log` to Timber. Check first how
+      release builds treat Timber (ProGuard strips `Log` via assumenosideeffects;
+      Timber needs equivalent treatment or debug-only planting).
+- [ ] **UseKtx (73)** and the small buckets (Autoboxing, TrimLambda, VectorPath,
+      RtlHardcoded now 3, …) — mechanical passes.
+- [ ] The six baselined errors (AppLinkUrlError ×3, WrongThread, Scaffold padding ×2).
+- [ ] Goal: an empty `lint-baseline.xml` (currently 256 entries, was 367).
 
 ## Out of scope / explicitly rejected
 
