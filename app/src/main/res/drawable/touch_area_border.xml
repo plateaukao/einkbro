@@ -2,7 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle" >
             <solid android:color="@android:color/transparent" />
             <stroke
@@ -19,7 +18,6 @@
         android:bottom="1.5dp"
         >
         <shape
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle" >
             <solid android:color="@android:color/transparent" />
             <stroke

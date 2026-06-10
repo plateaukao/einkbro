@@ -15,18 +15,15 @@
     <string name="menu_quit">離開</string>
     <string name="menu_openFav">開啟首頁</string>
     <string name="menu_delete">刪除</string>
-    <string name="menu_delete_list">刪除列表</string>
     <string name="menu_edit">編輯</string>
     <string name="menu_closeTab">關閉分頁</string>
     <string name="menu_download">開啟下載</string>
     <string name="menu_fav">存為首頁</string>
     <string name="menu_sc">建立捷徑</string>
     <string name="menu_share_link">分享網址</string>
-    <string name="menu_save_screenshot">儲存截圖</string>
     <string name="menu_save_bookmark">加入書籤</string>
-    <string name="menu_save_as">儲存為...</string>
+    <string name="menu_save_as">儲存為…</string>
     <string name="menu_save_pdf">存成 PDF</string>
-    <string name="menu_shareClipboard">複製網址</string>
     <string name="menu_other_searchSite">網頁內\n搜尋</string>
     <string name="menu_other_info">關於 EinkBro</string>
     <!-- Dialog -->
@@ -36,7 +33,6 @@
     <string name="dialog_title_download">你想下載檔案嗎?</string>
     <string name="dialog_content_resubmission">想要重新送出資料嗎?</string>
     <!-- Settings -->
-    <string name="setting_label">設定</string>
     <!-- browser setting -->
     <string name="setting_title_clear_control">資料控制</string>
     <string name="setting_title_start_control">啟動設定</string>
@@ -50,8 +46,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font_size">字型大小</string>
-    <string name="setting_summary_font_size">改變網頁的字型大小</string>
     <string name="setting_title_remote">Remote content</string>
     <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
         Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
@@ -84,9 +78,6 @@
     <string name="setting_title_history">瀏覽記錄</string>
     <string name="setting_summary_history">儲存瀏覽過的網頁記錄</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
-        place.</string>
     <string name="clear_title_quit">Clear when application exits</string>
     <string name="clear_summary_quit">Every time you quit EinkBro all above checked data will be deleted.</string>
     <string name="clear_title_cache">清除快取</string>
@@ -98,7 +89,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">介面</string>
     <string name="setting_title_data">備份/還原</string>
-    <string name="setting_title_fav">我的首頁</string>
     <string name="setting_title_searchEngine">設定搜尋引擎</string>
     <string name="setting_title_userAgent">自訂 user agent</string>
     <!-- App behavior -->
@@ -119,11 +109,9 @@
     <string name="statusbar_config_available_hint">點擊圖示加入狀態列</string>
     <string name="statusbar_config_preview">預覽</string>
     <string name="statusbar_config_preview_hint">點擊圖示移除；長按拖曳可調整順序</string>
-    <string name="setting_title_theme">介面調整</string>
     <string name="setting_title_behavior">操作行為</string>
     <string name="setting_summary_toolbarShow">全螢幕下，按下返回鍵會先顯示工具列</string>
     <string name="setting_title_toolbarShow">先顯示工具列</string>
-    <string name="setting_title_nav">浮動按鈕</string>
     <string name="setting_title_nav_pos">浮動按鈕位置</string>
     <string name="setting_summary_nav_pos">設定浮動按鍵出現的位置</string>
     <string name="setting_summary_nav_pos_right">右</string>
@@ -131,10 +119,8 @@
     <string name="setting_summary_nav_pos_center">中間</string>
     <string name="setting_summary_nav_pos_not_show">不顯示</string>
     <string name="setting_summary_nav_pos_custom">自訂位置</string>
-    <string name="setting_summary_tab">點擊分頁數字時，預設開啟的畫面</string>
     <string name="setting_title_confirm_tab_close">確認關閉分頁</string>
     <string name="setting_summary_confirm_tab_close">關閉分頁前，顯示對話框</string>
-    <string name="setting_overView">畫面預覽</string>
     <string name="setting_gestures">手勢</string>
     <string name="setting_gestures_use_title">浮動按鈕使用手勢</string>
     <string name="setting_gestures_use_summary">在浮動按鈕上滑動手勢執行各項功能</string>
@@ -157,41 +143,24 @@
     <string name="open_new_tab">新增分頁</string>
     <string name="close_tab">關閉分頁</string>
     <!-- Data -->
-    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">匯出應用程式資料</string>
     <string name="setting_title_import_appData">匯入應用程式資料</string>
     <string name="setting_summary_export_appData">匯出應用程式資料（歷史紀錄、書籤）及您的個人設定</string>
     <string name="title_appData">App data</string>
-    <string name="hint_database">確定要刪除所有項目嗎？</string>
     <!-- Others setting -->
-    <string name="setting_title_license">License</string>
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
     <string name="toast_copy_successful">Successfully copied</string>
-    <string name="toast_delete_successful">Successfully deleted</string>
-    <string name="toast_domain_already_exists">Domain already exists</string>
-    <string name="toast_export_successful">Exported as:&#160;</string>
-    <string name="toast_export_failed">Failed to export</string>
-    <string name="toast_import_successful">Imported count:&#160;</string>
-    <string name="toast_import_failed">Failed to import</string>
     <string name="toast_input_empty">You haven\'t input anything</string>
-    <string name="toast_invalid_domain">Invalid domain</string>
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">開始下載</string>
-    <string name="toast_wait_a_minute">請等一下</string>
     <string name="toast_error">啊，出錯了！</string>
     <string name="toast_edit_successful">成功儲存</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">需重開 App 才能生效，是否重開？</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">下載完成，開啟檔案？</string>
-    <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Clear</string>
-    <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -199,7 +168,6 @@
     <string name="show_touch_area_hint">顯示可點擊區域</string>
     <string name="bold_font">粗體字型</string>
     <string name="white_background">白底黑字</string>
-    <string name="setting_summary_bold_font">加粗字體，提高可讀性(需要重新載入網頁)</string>
     <string name="desktop_mode">桌面版網站</string>
     <string name="setting_title_page_left_value">翻頁時保留的畫面長度</string>
     <string name="setting_summary_page_left_value">翻頁時，可保留部分畫面內容，請設定要保留的長度(或 10%)。如不需要可以設為 0</string>
@@ -207,7 +175,6 @@
     <string name="vertical_read">直排閱讀</string>
     <string name="reader_mode">閱讀模式</string>
     <string name="touch_area_setting">翻頁設定</string>
-    <string name="toolbar_setting">工具列\n設定</string>
     <string name="menu_save_epub">儲存epub</string>
     <string name="new_epub_or_from_picker">新建Epub或選取既有檔案</string>
     <string name="title">章節標題</string>
@@ -256,22 +223,13 @@
     <string name="menu_open_epub">開啟 epub</string>
     <string name="setting_multitouch_use_title">使用兩指手勢</string>
     <string name="setting_multitouch_use_summary">兩指在畫面上滑動啟用相關功能</string>
-    <string name="setting_title_two_finger_swipe">兩指滑動</string>
-    <string name="font_custom">選擇字型檔案(*.ttf)</string>
     <string name="translation_mode">翻譯方式</string>
     <string name="system_default">系統預設</string>
     <string name="custom_font">自訂</string>
-    <string name="setting_title_font">字型</string>
     <string name="font_type">字型</string>
     <string name="menu_quickToggle">快速切換</string>
-    <string name="setting_title_toolbar_top">工具列置頂</string>
-    <string name="setting_summary_toolbar_top">將工具列顯示於畫面上方</string>
     <string name="setting_title_vi_binding">VI 按鍵</string>
     <string name="setting_summary_vi_binding">開啟 VI 快捷鍵功能</string>
-    <string name="edit_custom_font">設定自訂定型</string>
-    <string name="cannot_open_file">無法開啟文件。請重新在文件管理器中選擇。</string>
-    <string name="setting_recent_bookmarks">顯示最近使用過的書籤</string>
-    <string name="setting_summary_recent_bookmarks">開啟新分頁時，顯示最近使用過的書籤</string>
     <string name="setting_clear_recent_bookmarks">清除最近使用過的書籤列表</string>
     <string name="setting_summary_clear_recent_bookmarks">清除最近使用過的書籤記錄</string>
     <string name="setting_title_hide_menu_items">隱藏不常用的選單項目</string>
@@ -285,15 +243,10 @@
     <string name="menu_receive">接收資料</string>
     <string name="setting_title_background_loading">載入其他分頁內容</string>
     <string name="setting_summary_background_loading">分頁未顯示時，依然在背景載入</string>
-    <string name="dialog_content_ssl_error">該網站的憑證不可靠。 還是要顯示嗎？</string>
     <string name="dialog_toc_title">目錄</string>
     <string name="latest_release">最新版本</string>
-    <string name="facebook_groups">Facebook 粉絲頁</string>
     <string name="medium_articles">相關文章</string>
     <string name="contributors">貢獻者們</string>
-    <string name="turn_on">開啟</string>
-    <string name="turn_off">關閉</string>
-    <string name="title_touch_area">點擊翻頁區域設定</string>
     <string name="title_about">關於 EinkBro</string>
     <string name="setting_title_auto_fill_form">自動填入表格</string>
     <string name="setting_summary_auto_fill_form">當開啟時，會自動填入表格資料</string>
@@ -317,13 +270,10 @@
     <string name="setting_summary_translated_langs">自訂 Google 翻譯時的語言(例如: en,fr,zh-TW,zh-CN)</string>
     <string name="setting_title_translated_langs">自訂翻譯的語言</string>
     <string name="menu">功能選單</string>
-    <string name="copy_text">複製字串</string>
     <string name="menu_tts">朗讀內容</string>
     <string name="read_speed">朗讀速度</string>
-    <string name="toast_receive_link_failed">接收連結失敗</string>
     <string name="setting_summary_search_engine">選擇搜尋引擎</string>
     <string name="setting_summary_custom_process_text_url">從外部 App 分享到 EinkBro 時，可以設定開啟的網頁，用來查詢用</string>
-    <string name="not_supported">不支援</string>
 
     <string name="plus_start_input_url">開始輸入網址</string>
     <string name="plus_show_homepage">顯示首頁</string>
@@ -342,26 +292,16 @@
     <string name="google_in_place">Google 即時翻譯</string>
     <string name="setting_title_update_adblock">更新廣告阻擋資料</string>
     <string name="setting_summary_update_adblock">更新廣告的網站資料列表</string>
-    <string name="setting_title_adblock_url">廣告阻擋資料網址</string>
-    <string name="setting_summary_adblock_url">如果你想自訂廣告阻擋來源，請編輯這個網址</string>
-    <string name="setting_title_adblock_auto_update">自動更新廣告阻擋</string>
-    <string name="setting_summary_adblock_auto_update">每週更新廣告阻擋資料庫</string>
-    <string name="toast_adblock_updated">廣告阻擋資料已更新</string>
     <string name="toast_backup_successful">備份完成</string>
     <string name="setting_title_enable_ssl_error_dialog">顯示 SSL 錯誤對話框</string>
     <string name="setting_summary_enable_ssl_error_dialog">When something goes wrong with SSL, show error dialog.</string>
     <string name="manual">使用說明</string>
     <string name="black_font">黑色字體</string>
-    <string name="image_adjust">加強圖片</string>
-    <string name="bookmark_new_file">建立新檔案</string>
-    <string name="bookmark_open_file">開啟既有檔案</string>
     <string name="menu_save_archive">稍後閱讀</string>
     <string name="toast_saved_page">已儲存網頁。長按此圖示可開啟稍後閱讀清單。</string>
     <string name="toast_save_page_failed">儲存網頁失敗</string>
     <string name="saved_pages">已儲存的網頁</string>
     <string name="no_saved_pages">尚無儲存的網頁</string>
-    <string name="setting_title_sync_bookmarks">同步書籤</string>
-    <string name="setting_summary_setup_bookmarks_location">Select a file in Google Drive or other file location that supports remote sync.</string>
     <string name="setting_summary_import_appData">選擇先前匯出的 zip 檔案來匯入應用程式資料</string>
     <string name="backup_category_all_preferences">所有偏好設定</string>
     <string name="backup_category_gpt_settings">GPT 設定</string>
@@ -376,8 +316,6 @@
     <string name="share_broadcasting">正在區域網路上廣播…</string>
     <string name="share_waiting">正在等待來自另一台裝置的資料…</string>
     <string name="share_receiving">正在接收資料…</string>
-    <string name="dialog_message_sync_bookmark_file">"To sync bookmarks, you need to use system file picker to create or open a bookmark file from Google Drive or a file that is synced with other remote service. "</string>
-    <string name="dialog_title_bookmark_sync">Bookmark File Setting</string>
     <string name="settings_title_back_key_behavior">返回鍵行為</string>
     <string name="settings_summary_back_key_behavior">Close tab when it\'s already in the first page in history.</string>
     <string name="page_count">頁數資訊</string>
@@ -386,25 +324,17 @@
     <string name="setting_summary_userAgent_toggle">啟用自訂的 Useragent</string>
     <string name="content_adjustment">網頁內容調整</string>
     <string name="share_save">分享或儲存</string>
-    <string name="menu_gpt">GPT</string>
     <string name="setting_title_chat_gpt">GPT功能</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI Key</string>
     <string name="setting_summary_edit_gpt_api_key">輸入OpenAI Key以使用相關的功能</string>
-    <string name="setting_title_edit_gpt_system_prompt">系統提示詞</string>
-    <string name="setting_summary_edit_gpt_prompt">輸入像是以下的提示詞: translate into English</string>
-    <string name="setting_summary_edit_gpt_user_prompt">使用者提示詞</string>
-    <string name="setting_title_edit_gpt_user_prompt_prefix">使用者提示詞的前綴</string>
     <string name="gpt_api_key_not_set">請在設定中加入OpenAI Key</string>
     <string name="dialog_touch_area_enable">啟動翻頁</string>
     <string name="show_default_text_menu">顯示預設文字選取功能清單</string>
     <string name="setting_summary_show_default_text_menu">選取文字後，將顯示預設的功能清單</string>
     <string name="google_translate">Google\n翻譯</string>
     <string name="translate_by_paragraph">依段落翻譯</string>
-    <string name="translate_processing">網頁處理中...</string>
     <string name="translation_language">翻譯的語言</string>
     <string name="misc">其他</string>
-    <string name="translate_papago">Naver Papago API secret</string>
-    <string name="translate_papago_summary">If you want to use Naver Papago translate service, please enter your API secret.</string>
     <string name="source_language">Source Language</string>
     <string name="inter_translate">Inter-translate</string>
     <string name="translate_image_key">Key for translate image</string>
@@ -412,30 +342,23 @@
     <string name="toggle_touch_turn_page">開關點擊翻頁</string>
     <string name="use_it_on_dict_search">字典查詢時，使用GPT</string>
     <string name="setting_summary_search_in_dict">在其他App中選取文字時，使用此功能</string>
-    <string name="menu_expand_menu">展開選單</string>
     <string name="hide_statusbar">隱藏狀態列</string>
     <string name="setting_summary_hide_statusbar">總是隱藏上方狀態列</string>
     <string name="enable_touch_area_as_arrow_key">長按送出左/右鍵</string>
     <string name="setting_title_chat_stream">逐步回傳結果</string>
     <string name="setting_summary_chat_stream">結果將會部分回傳，降低等待時間</string>
-    <string name="re_select">重新\n選取</string>
     <string name="setting_dual_caption">Youtube雙語字幕</string>
     <string name="setting_summary_dual_caption">選擇第二字幕的語言</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="setting_title_gpt_model_name">OpenAI Model名稱</string>
     <string name="setting_summary_gpt_model_name">預設是gpt-4.1。可填入其他支援的Model名稱</string>
-    <string name="split_search">分割視窗搜尋</string>
     <string name="split_search_settings">Split Search Settings</string>
     <string name="setting_title_split_search_setting">Split Search Setting</string>
     <string name="setting_summary_split_search_setting">Custom search and open results in split screen</string>
     <string name="description_split_screen_string_pattern">custom search url with keyword position as %s</string>
     <string name="description_split_screen_title">Input the name to be shown on context menu</string>
-    <string name="send_type">Send Type</string>
-    <string name="current_url">目前網址</string>
-    <string name="text_selection_search">Text Selection Search</string>
     <string name="send_to_remote_terminate">Terminate remote text search</string>
     <string name="receive_link_terminate">Terminate receiving link</string>
-    <string name="receive_once">僅接收一次</string>
     <string name="setting_title_search_in_same_tab">搜尋於同個分頁</string>
     <string name="setting_summary_search_in_same_tab">外部來的搜尋會顯示於同個分頁</string>
     <string name="move_to_background">回到前畫面</string>
@@ -478,7 +401,6 @@
     <string name="setting_title_external_search_pop">Use Popup for PROCESS_TEXT event</string>
     <string name="setting_summary_external_search_pop">Search as a popup dictionary (suitable for reader apps dictionary integration)</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
-    <string name="wenkai_tc">文楷(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
     <string name="setting_title_use_gemini">Use Google Gemini Model</string>
@@ -491,10 +413,8 @@
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">Gpt 查詢歷史記錄</string>
     <string name="setting_summary_gpt_query_list">已儲存的Gpt回傳結果</string>
-    <string name="translate_this_site">始終翻譯</string>
     <string name="select_sentence">選取句子</string>
     <string name="select_paragraph">選取段落</string>
-    <string name="toast_saved">已儲存！</string>
     <string name="setting_app_locale">介面語面</string>
     <string name="setting_summary_app_locale">設定APP使用介面語言</string>
     <string name="drag_to_reorder">可以開始拖動書籤調整位置</string>
@@ -510,18 +430,15 @@
     <string name="key_left">送出 Left 按鍵</string>
     <string name="key_right">送出 Right 按鍵</string>
     <string name="touch_aciton_settings">更多設定</string>
-    <string name="summary_touch_aciton_settings">設定觸控區域的點擊功能</string>
     <string name="setting_touch_up_click">Up 區域點擊功能</string>
     <string name="setting_title_touch_area_actions">點擊區域的功能設定</string>
     <string name="setting_touch_up_long_click">Up 區域長按功能</string>
     <string name="setting_touch_down_click">Down 區域點擊功能</string>
     <string name="setting_touch_down_long_click">Down 區域長按功能</string>
-    <string name="touch_custom">自訂</string>
     <string name="setting_tts_type">生成語音來源</string>
     <string name="setting_tts_voice">語音</string>
     <string name="system_settings">系統設定</string>
-    <string name="other_voices">其他語音...</string>
-    <string name="close">關閉</string>
+    <string name="other_voices">其他語音…</string>
     <string name="added_to_read_list">加入朗讀清單</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_system">系統內建</string>
@@ -560,13 +477,9 @@
     <string name="sc_disable_adblock_short">No AdBlock</string>
     <string name="sc_disable_adblock_long">No AdBlock</string>
     <string name="sc_disable_adblock_disabled">No AdBlock</string>
-    <string name="added_to_instapaper">Added to Instapaper</string>
-    <string name="failed_to_add_to_instapaper">failed</string>
     <string name="url_empty">url is empty</string>
-    <string name="setting_summary_nav_pos_reset_custom">Reset custom position</string>
     <string name="setting_title_enable_url_drag_to_action">1 touch to url action</string>
     <string name="setting_summary_enable_url_drag_to_action">Long click on url and move to action items</string>
-    <string name="suggestion">"Search: "</string>
     <string name="setting_title_search_suggestion">Search suggestions</string>
     <string name="setting_summary_search_suggestion">"while inputting content, show search suggestions "</string>
     <string name="setting_title_toolbar_position">工具列位置</string>
@@ -574,7 +487,6 @@
     <string name="toolbar_position_top">頂部</string>
     <string name="toolbar_position_left">左側</string>
     <string name="toolbar_position_right">右側</string>
-    <string name="font_folder">字型資料夾</string>
     <string name="select_font_folder">選擇字型資料夾</string>
     <string name="change_folder">變更資料夾</string>
     <string name="search_fonts">搜尋字型…</string>
@@ -586,7 +498,6 @@
     <string name="setting_title_reader_keep_extra_content">閱讀模式：保留額外內容</string>
     <string name="setting_summary_reader_keep_extra_content">在閱讀模式中保留樣式、類別和數學公式（MathJax/KaTeX）</string>
     <string name="audio_only_mode">僅播放音訊</string>
-    <string name="copy_link">複製連結</string>
     <string name="custom_scale">自訂字型縮放</string>
     <string name="custom_scale_desc">輸入想要的字型縮放比例（%）</string>
     <string name="deepl_translate">DeepL</string>
@@ -595,7 +506,6 @@
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
-    <string name="enable_fix_scroll">嘗試修復捲動</string>
     <string name="folder_name">書籤目錄名稱</string>
     <string name="google_gemini">Google Gemini</string>
     <string name="googleserif">Google Serif</string>
@@ -610,7 +520,6 @@
     <string name="menu_instapaper">Instapaper</string>
     <string name="none">無</string>
     <string name="page_ai">網頁 AI</string>
-    <string name="page_ai_action_empty">目前無網頁 AI 動作；請在 GPT 動作（整頁範圍）中新增。</string>
     <string name="page_ai_action_title">網頁 AI 動作</string>
     <string name="papago">Papago</string>
     <string name="papago_translate_by_screen">Papago 螢幕翻譯</string>
@@ -624,8 +533,6 @@
     <string name="setting_summary_desktop">支援桌面版網站</string>
     <string name="setting_summary_prune_query_parameter">將自動移除 utm_medium、utm_source 等追蹤碼</string>
     <string name="setting_summary_saveTabs">儲存分頁以供下次開啟時使用</string>
-    <string name="setting_summary_search_engine_rambler">Rambler</string>
-    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="setting_summary_text_wrap_reflow">縮放時重排文字</string>
     <string name="setting_summary_use_custom_gpt_url">使用其他 API 伺服器網址</string>
@@ -633,12 +540,10 @@
     <string name="setting_title_plus_behavior">新增分頁行為</string>
     <string name="setting_title_saveTabs">儲存分頁</string>
     <string name="setting_title_search">搜尋</string>
-    <string name="setting_title_setup_bookmarks_location">設定遠端書籤檔案位置</string>
     <string name="setting_title_text_wrap_reflow">文字重排</string>
     <string name="setting_title_zoom_in_custom_view">自訂檢視中縮放</string>
     <string name="switch_touch_area_action_short">切換方向</string>
     <string name="title_activity_setting">SettingActivity</string>
-    <string name="toast_send_link_failed">傳送連結失敗</string>
     <string name="toc_delete">刪除</string>
     <string name="translate_image_key_summary">輸入必要的金鑰以使用圖片翻譯功能</string>
     <string name="tts_type_gpt">OpenAI</string>
@@ -671,8 +576,6 @@
     <string name="task_menu_title">任務</string>
     <string name="task_read_article_list">新聞主播</string>
     <string name="task_read_article_list_desc">從目前頁面擷取文章連結，依序打開每一篇並朗讀內容。</string>
-    <string name="task_summarize_tabs">摘要開啟的分頁</string>
-    <string name="task_summarize_tabs_desc">為目前開啟的每個分頁產生簡短摘要。</string>
     <string name="task_custom">自訂任務…</string>
     <string name="task_custom_desc">用自然語言描述多步驟任務，由 LLM 執行。</string>
     <string name="task_custom_hint">例如：打開前三則新聞連結並給我每則一句話的摘要</string>

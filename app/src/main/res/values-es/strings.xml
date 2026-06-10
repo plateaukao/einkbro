@@ -16,18 +16,15 @@
     <string name="menu_quit">Salir</string>
     <string name="menu_openFav">Abrir página de inicio</string>
     <string name="menu_delete">Eliminar</string>
-    <string name="menu_delete_list">Eliminar lista</string>
     <string name="menu_edit">Editar</string>
     <string name="menu_closeTab">Cerrar pestaña</string>
     <string name="menu_download">Descargas</string>
     <string name="menu_fav">Guardar como página de inicio</string>
     <string name="menu_sc">Acceso directo en pantalla de inicio</string>
     <string name="menu_share_link">Compartir enlace</string>
-    <string name="menu_save_screenshot">Guardar captura de pantalla</string>
     <string name="menu_save_bookmark">Guardar como marcador</string>
     <string name="menu_save_as">Guardar como…</string>
     <string name="menu_save_pdf">Guardar como PDF</string>
-    <string name="menu_shareClipboard">Copiar al portapapeles</string>
     <string name="menu_other_searchSite">Buscar en el sitio</string>
     <string name="menu_other_info">Sobre EinkBro</string>
 
@@ -39,7 +36,6 @@
     <string name="dialog_content_resubmission">¿Desea volver a enviar tus datos?</string>
 
     <!-- Settings -->
-    <string name="setting_label">Configuración</string>
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">Control de datos</string>
@@ -51,15 +47,11 @@
     <string name="setting_summary_search_engine_startpage">Startpage</string>
     <string name="setting_summary_search_engine_startpage_de">Startpage (de)</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
-    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_engine_rambler">Rambler</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font_size">Tamaño de fuente</string>
-    <string name="setting_summary_font_size">Ajustar el tamaño del texto en sitios web</string>
     <string name="setting_title_remote">Contenido remoto</string>
     <string name="setting_summary_remote">Habilita el contenido remoto que no proviene directamente del sitio web que estás visitando. Deshabilitarlo aumentará el nivel de seguridad, la velocidad y ahorrará volumen de datos, pero algunos contenidos no se mostrarán.</string>
     <string name="setting_title_save_data">Solicitar \'Ahorrar datos\'</string>
@@ -90,7 +82,6 @@
     <string name="save_history_mode_disabled">No guardar</string>
 
     <!-- Browser clear -->
-    <string name="data_summary">Todos los archivos se exportarán al directorio \"Android/data/info.plateaukao.einkbro/files/browser_backup/\" de tu tarjeta SD. Este directorio se ELIMINARÁ si desinstalas EinkBro, así que haz copias de seguridad regularmente en un lugar seguro</string>
     <string name="clear_title_quit">Limpiar al salir de la app</string>
     <string name="clear_summary_quit">Cada vez que salgas de EinkBro, se eliminarán todos los datos marcados arriba</string>
     <string name="clear_title_cache">Limpiar caché</string>
@@ -103,7 +94,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Comportamiento/UI</string>
     <string name="setting_title_data">Copia de seguridad</string>
-    <string name="setting_title_fav">Favoritos</string>
     <string name="setting_title_searchEngine">Motor de búsqueda personalizado</string>
     <string name="setting_title_userAgent">Agente de usuario personalizado</string>
 
@@ -111,11 +101,9 @@
     <string name="setting_title_toolbar">Barra de herramientas</string>
     <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
     <string name="setting_summary_hide">Usa toda la pantalla al desplazarte por los sitios web. Para salir del modo de pantalla completa, presiona el botón Atrás</string>
-    <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Comportamiento</string>
     <string name="setting_title_toolbarShow">Mostrar barra de herramientas primero</string>
     <string name="setting_summary_toolbarShow">Presionar el botón Atrás hará visible la barra de herramientas antes de retroceder en el historial</string>
-    <string name="setting_title_nav">Botón de navegación</string>
     <string name="setting_title_nav_pos">Posición del botón flotante</string>
     <string name="setting_summary_nav_pos">Decide dónde colocar el \"Botón de navegación\"</string>
     <string name="setting_summary_nav_pos_right">Derecha</string>
@@ -123,10 +111,8 @@
     <string name="setting_summary_nav_pos_center">Centro</string>
     <string name="setting_summary_nav_pos_not_show">No mostrar</string>
     <string name="setting_summary_nav_pos_custom">Personalizado</string>
-    <string name="setting_summary_tab">¿Qué deberían mostrar al principio de \"Vista general\"? (página de inicio, tus marcadores…)</string>
     <string name="setting_title_confirm_tab_close">Confirmar cierre de pestaña</string>
     <string name="setting_summary_confirm_tab_close">Diálogo de confirmación al cerrar una pestaña</string>
-    <string name="setting_overView">Vista general</string>
     <string name="setting_title_saveTabs">Guardar pestañas</string>
     <string name="setting_summary_saveTabs">Guardar pestañas para que se puedan abrir la próxima vez</string>
 
@@ -136,7 +122,6 @@
     <string name="setting_gestures_use_summary">Deslizar en el \"botón flotante\" para ejecutar acciones</string>
     <string name="setting_multitouch_use_title">Gestos de deslizamiento de dos dedos</string>
     <string name="setting_multitouch_use_summary">Usar deslizamiento de dos dedos en el contenido web para desencadenar acciones</string>
-    <string name="setting_title_two_finger_swipe">Deslizamiento de dos dedos</string>
     <string name="setting_gesture_up">Deslizar hacia arriba</string>
     <string name="setting_gesture_down">Deslizar hacia abajo</string>
     <string name="setting_gesture_left">Deslizar hacia la izquierda</string>
@@ -155,9 +140,6 @@
     <string name="page_down">Página abajo</string>
 
     <!-- Data -->
-    <string name="export_whitelistAdBlock">Exportar lista blanca de Bloqueador de anuncios</string>
-    <string name="export_whitelistJS">Exportar lista blanca de JavaScript</string>
-    <string name="export_whitelistCookie">Exportar lista blanca de Cookies</string>
     <string name="setting_title_export_appData">Exportar datos de la app</string>
     <string name="setting_summary_export_appData">Exportar datos de la app (Historial, Marcadores) y tus ajustes personales</string>
     <string name="setting_title_import_appData">Importar datos de la app</string>
@@ -175,37 +157,23 @@
     <string name="share_broadcasting">Transmitiendo en la red local…</string>
     <string name="share_waiting">Esperando datos de otro dispositivo…</string>
     <string name="title_appData">Datos de la app</string>
-    <string name="hint_database">Esto eliminará todos los elementos de aquí. ¿Proceder?</string>
 
     <!-- Others setting -->
-    <string name="setting_title_license">Licencia</string>
 
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Dominio añadido con éxito</string>
     <string name="toast_copy_successful">Copiado con éxito</string>
-    <string name="toast_delete_successful">Eliminado con éxito</string>
-    <string name="toast_domain_already_exists">El dominio ya existe</string>
-    <string name="toast_export_successful">Exportado como:&#160;</string>
-    <string name="toast_export_failed">Fallo al exportar</string>
-    <string name="toast_import_successful">Cuenta importada:&#160;</string>
-    <string name="toast_import_failed">Fallo al importar</string>
     <string name="toast_input_empty">No has introducido nada</string>
-    <string name="toast_invalid_domain">Dominio no válido</string>
     <string name="toast_load_error">No se puede cargar esta URL</string>
     <string name="toast_share_failed">No se puede compartir esta página</string>
     <string name="toast_start_download">Inicio de descarga</string>
-    <string name="toast_wait_a_minute">Por favor, espera un momento</string>
     <string name="toast_error">Ups, algo ha salido mal…</string>
     <string name="toast_edit_successful">¡Guardado con éxito!</string>
     <string name="toast_webview_forward">No se puede cargar el siguiente sitio</string>
     <string name="toast_restart">Debes reiniciar EinkBro para aplicar los cambios. ¿Cerrar ahora?</string>
     <string name="toast_close_tab">¿Quieres cerrar la pestaña actual?</string>
     <string name="toast_downloadComplete">Descarga completa. ¿Abrir archivo?</string>
-    <string name="toast_backup">¿Crear copia de seguridad de datos? Esto sobrescribirá la copia de seguridad antigua.</string>
 
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Limpiar</string>
-    <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Añadir</string>
     <string name="setting_summary_desktop">Soporte para el modo de escritorio del sitio web</string>
     <string name="history">Historial</string>
@@ -214,7 +182,6 @@
     <string name="show_touch_area_hint">Mostrar borde del área de toque</string>
     <string name="bold_font">Fuente en negrita</string>
     <string name="white_background">Fondo blanco</string>
-    <string name="setting_summary_bold_font">Aplicar estilo de fuente en negrita (necesita recargar la página actual)</string>
     <string name="desktop_mode">Modo de escritorio</string>
     <string name="setting_title_page_left_value">Altura reservada de la página</string>
     <string name="setting_summary_page_left_value">¿Cuánta altura debería reservarse al pasar a la siguiente página (por ejemplo, 50, o 10%)?</string>
@@ -222,7 +189,6 @@
     <string name="vertical_read">Modo vertical</string>
     <string name="reader_mode">Modo de lectura</string>
     <string name="touch_area_setting">Ajuste de toque</string>
-    <string name="toolbar_setting">Ajuste de barra de herramientas</string>
         <string name="menu_save_epub">Guardar\nEPUB</string>
     <string name="saving_epub">Guardando EPUB</string>
     <string name="menu_open_epub">Abrir\nEPUB</string>
@@ -266,7 +232,6 @@
     <string name="switch_touch_area_action">Cambiar dirección arriba/abajo</string>
     <string name="switch_touch_area_action_short">Cambiar dirección</string>
     <string name="no_previous_page">¡No hay página anterior!</string>
-    <string name="font_custom">Seleccionar archivo de fuente personalizada</string>
     <string name="translation_mode">Modo de traducción</string>
 
     <!-- Strings used for fragments for navigation -->
@@ -274,17 +239,10 @@
     <string name="serif">Serif</string>
     <string name="googleserif">Google Serif</string>
     <string name="custom_font">Personalizado</string>
-    <string name="setting_title_font">Fuente</string>
     <string name="font_type">Tipo de fuente</string>
     <string name="menu_quickToggle">Cambio rápido</string>
-    <string name="setting_title_toolbar_top">Barra de herramientas en la parte superior</string>
-    <string name="setting_summary_toolbar_top">Mostrar barra de herramientas en la parte superior de la pantalla</string>
     <string name="setting_title_vi_binding">Atajos de teclado Vi</string>
     <string name="setting_summary_vi_binding">Habilitar atajos de teclado Vi para una navegación más rápida</string>
-    <string name="edit_custom_font">Editar fuente personalizada</string>
-    <string name="cannot_open_file">No se puede abrir el archivo. Vuelve a abrirlo desde el selector de archivos</string>
-    <string name="setting_recent_bookmarks">Mostrar marcadores utilizados recientemente</string>
-    <string name="setting_summary_recent_bookmarks">Mostrar marcadores utilizados recientemente al abrir una nueva pestaña</string>
     <string name="setting_clear_recent_bookmarks">Borrar lista de marcadores recientes</string>
     <string name="setting_summary_clear_recent_bookmarks">Borrar lista de marcadores utilizados recientemente</string>
     <string name="setting_title_hide_menu_items">Ocultar elementos de menú poco utilizados</string>
@@ -296,21 +254,15 @@
     <string name="menu_send_link">Enviar enlace</string>
     <string name="done">Cerrar cuando la transferencia esté completada</string>
     <string name="menu_receive">Recibir enlace</string>
-    <string name="copy_link">Copiar enlace</string>
     <string name="setting_title_background_loading">Cargar pestañas no activas</string>
     <string name="setting_summary_background_loading">Si una pestaña no está activada, seguir cargando su contenido en segundo plano</string>
-    <string name="dialog_content_ssl_error">El certificado del sitio no es de confianza. ¿Continuar de todos modos?</string>
     <string name="setting_title_search">Buscar</string>
     <string name="dialog_toc_title">Índice</string>
     <string name="latest_release">Último lanzamiento</string>
     <string name="project_site">Sitio del proyecto</string>
-    <string name="facebook_groups">Grupos de Facebook</string>
     <string name="changelogs">¿Qué hay nuevo?</string>
     <string name="medium_articles">Artículos de Medium</string>
     <string name="contributors">Colaboradores</string>
-    <string name="turn_on">Encendido</string>
-    <string name="turn_off">Apagado</string>
-    <string name="title_touch_area">Área de toque</string>
     <string name="title_about">Acerca de</string>
     <string name="setting_title_auto_fill_form">Rellenar datos del formulario automáticamente</string>
     <string name="setting_summary_auto_fill_form">Rellenar datos del formulario si está habilitado</string>
@@ -337,13 +289,9 @@
     <string name="setting_title_translated_langs">Idiomas de traducción para Google Translate</string>
     <string name="setting_summary_translated_langs">Personalizar idiomas para la traducción (por ejemplo, en, fr, de, zh-TW, zh-CN)</string>
     <string name="menu">Menú</string>
-    <string name="copy_text">Copiar texto</string>
     <string name="menu_tts">Leer contenido</string>
     <string name="read_speed">Velocidad de lectura</string>
-    <string name="toast_send_link_failed">Enviar enlace fallido</string>
-    <string name="toast_receive_link_failed">Recibir enlace fallido</string>
     <string name="setting_summary_custom_process_text_url">Configurar prefijo de URL que se utilizará para buscar texto resaltado desde otra aplicación</string>
-    <string name="not_supported">No soportado</string>
 
     <string name="plus_start_input_url">Comenzar a introducir URL</string>
     <string name="plus_show_homepage">Mostrar página de inicio</string>
@@ -361,25 +309,12 @@
     <string name="google_in_place">Google en el lugar</string>
     <string name="setting_title_update_adblock">Actualizar contenido de AdBlock</string>
     <string name="setting_summary_update_adblock">Desencadenar actualización de sitios web de AdBlock ahora</string>
-    <string name="setting_title_adblock_url">URL de la lista de AdBlock</string>
-    <string name="setting_summary_adblock_url">Edita esta URL si quieres usar otro contenido de AdBlock</string>
-    <string name="setting_title_adblock_auto_update">Actualización automática de AdBlock</string>
-    <string name="setting_summary_adblock_auto_update">Actualizar automáticamente el contenido de AdBlock semanalmente</string>
-    <string name="toast_adblock_updated">¡AdBlock ha sido actualizado!</string>
     <string name="toast_backup_successful">¡Copia de seguridad exitosa!</string>
     <string name="setting_title_enable_ssl_error_dialog">Mostrar diálogo de error SSL</string>
     <string name="setting_summary_enable_ssl_error_dialog">Cuando algo falla con SSL, mostrar diálogo de error</string>
     <string name="manual">Manual</string>
     <string name="black_font">Fuente negra</string>
-    <string name="image_adjust">Ajuste de imagen</string>
-    <string name="bookmark_new_file">Crear nuevo archivo</string>
-    <string name="bookmark_open_file">Vincular archivo existente</string>
     <string name="menu_save_archive">Guardar como archivo</string>
-    <string name="setting_title_sync_bookmarks">Sincronizar marcadores</string>
-    <string name="setting_title_setup_bookmarks_location">Configurar ubicación del archivo de marcadores remoto</string>
-    <string name="setting_summary_setup_bookmarks_location">Seleccionar o crear un archivo en Google Drive u otra ubicación que soporte la sincronización remota</string>
-    <string name="dialog_message_sync_bookmark_file">Para sincronizar marcadores, necesitas crear o abrir un archivo de marcadores desde Google Drive u otro servicio remoto usando el selector de archivos del sistema</string>
-    <string name="dialog_title_bookmark_sync">Configuración del archivo de marcadores</string>
     <string name="settings_title_back_key_behavior">Comportamiento de la tecla Atrás</string>
     <string name="settings_summary_back_key_behavior">Cerrar pestaña cuando ya esté en la primera página del historial</string>
     <string name="page_count">Recuento de páginas</string>
@@ -388,25 +323,17 @@
     <string name="setting_summary_userAgent_toggle">Habilitar agente de usuario personalizado</string>
     <string name="content_adjustment">Ajuste de contenido</string>
     <string name="share_save"><![CDATA[Compartir & Guardar]]></string>
-    <string name="menu_gpt">ChatGPT</string>
     <string name="setting_title_chat_gpt">Ajustes de GPT</string>
     <string name="setting_title_edit_gpt_api_key">Clave de OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">Introduce la clave para usar esta característica</string>
-    <string name="setting_title_edit_gpt_system_prompt">Indicación del sistema de ChatGPT</string>
-    <string name="setting_summary_edit_gpt_prompt">Establece un rol para ChatGPT, por ejemplo: \"Eres un intérprete\"</string>
-    <string name="setting_title_edit_gpt_user_prompt_prefix">Prefijo de indicación del usuario</string>
-    <string name="setting_summary_edit_gpt_user_prompt">Edita el prefijo de indicación del usuario, por ejemplo: \"Traduce el siguiente contenido al inglés:\"</string>
     <string name="gpt_api_key_not_set">Añade la clave de OpenAI en Ajustes</string>
     <string name="dialog_touch_area_enable">Habilitar paginación</string>
     <string name="show_default_text_menu">Mostrar menú de acción predeterminado de texto seleccionado</string>
     <string name="setting_summary_show_default_text_menu">Después de seleccionar texto, mostrar el menú de acción predeterminado del sistema</string>
     <string name="google_translate">Google Translate</string>
     <string name="translate_by_paragraph">Traducir por párrafo</string>
-    <string name="translate_processing">Procesando…</string>
     <string name="translation_language">Idioma de traducción</string>
     <string name="misc">Varios</string>
-    <string name="translate_papago">Secreto de la API de Papago</string>
-    <string name="translate_papago_summary">Si quieres usar el servicio de traducción de Papago, introduce tu secreto de la API</string>
     <string name="papago">Papago</string>
     <string name="source_language">Idioma de origen</string>
     <string name="inter_translate">Inter Traducir</string>
@@ -416,31 +343,24 @@
     <string name="toggle_touch_turn_page">Alternar giro de página por toque</string>
     <string name="use_it_on_dict_search">Usar ChatGPT en la búsqueda del diccionario</string>
     <string name="setting_summary_search_in_dict">Cuando busques en lectores, usa ChatGPT para buscar resultados</string>
-    <string name="menu_expand_menu">Mostrar más</string>
     <string name="hide_statusbar">Ocultar la barra de estado</string>
     <string name="setting_summary_hide_statusbar">Siempre ocultar la barra de estado</string>
     <string name="enable_touch_area_as_arrow_key">Clic largo como tecla ← →</string>
     <string name="setting_title_chat_stream">Responder en flujo</string>
     <string name="setting_summary_chat_stream">La respuesta se mostrará carácter a carácter, así que será más rápido</string>
-    <string name="re_select">Reseleccionar texto</string>
     <string name="setting_dual_caption">Subtítulos duales para YouTube</string>
     <string name="setting_summary_dual_caption">Seleccionar idioma para el segundo subtítulo</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="setting_title_gpt_model_name">Nombre del modelo de OpenAI</string>
     <string name="setting_summary_gpt_model_name">Por defecto es gpt-4.1. Inserta otro nombre de modelo si es necesario</string>
-    <string name="split_search">Búsqueda dividida</string>
     <string name="papago_translate_by_screen">Papago por pantalla</string>
     <string name="split_search_settings">Configuración de búsqueda dividida</string>
     <string name="setting_title_split_search_setting">Configuración de búsqueda dividida</string>
     <string name="setting_summary_split_search_setting">Búsqueda personalizada y apertura de resultados en pantalla dividida</string>
     <string name="description_split_screen_string_pattern">URL de búsqueda personalizada con la posición de la palabra clave como %s</string>
     <string name="description_split_screen_title">Introduce el nombre que se mostrará como título del menú contextual</string>
-    <string name="send_type">Tipo de envío</string>
-    <string name="current_url">URL actual</string>
-    <string name="text_selection_search">Búsqueda de selección de texto</string>
     <string name="send_to_remote_terminate">Terminar búsqueda de texto remota</string>
     <string name="receive_link_terminate">Terminar recepción de enlace</string>
-    <string name="receive_once">Recibir una vez</string>
     <string name="setting_title_search_in_same_tab">Pestaña para búsqueda externa</string>
     <string name="setting_summary_search_in_same_tab">Usar la misma pestaña para búsqueda externa</string>
     <string name="move_to_background">Minimizar</string>
@@ -485,24 +405,20 @@
     <string name="setting_summary_external_search_pop">Búsqueda como un diccionario emergente (adecuado para la integración de diccionarios de aplicaciones de lectura)</string>
     <string name="cannot_save_epub">Algo salió mal al guardar el EPUB. Por favor, inténtalo de nuevo más tarde</string>
     <string name="deepl_translate">DeepL</string>
-    <string name="wenkai_tc">WenKai(TC)</string>
     <string name="mincho_ja">Mincho(JA)</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
     <string name="setting_title_use_gemini">Usar modelo Gemini de Google</string>
     <string name="setting_summary_use_gemini">Usar modelo Gemini de Google</string>
     <string name="setting_title_gemini_key">Clave API de Gemini</string>
     <string name="setting_summary_gemini_key">Introduce la clave API de Gemini</string>
-    <string name="enable_fix_scroll">Intentar arreglar el desplazamiento</string>
     <string name="setting_title_other_model_name">Nombre de modelo alternativo</string>
     <string name="setting_summary_other_model_name">Introduce el nombre del modelo para el servidor GPT alternativo</string>
     <string name="setting_title_gemini_model_name">Nombre del modelo Gemini</string>
     <string name="setting_summary_gemini_model_name">Introduce el nombre del modelo Gemini (predeterminado: gemini-2.5-flash)</string>
     <string name="setting_title_gpt_query_list">Historial de resultados de GPT</string>
     <string name="setting_summary_gpt_query_list">Resultados de consultas de GPT guardados</string>
-    <string name="translate_this_site">Traducir siempre</string>
     <string name="select_sentence">Seleccionar oración</string>
     <string name="select_paragraph">Seleccionar párrafo</string>
-    <string name="toast_saved">¡Guardado!</string>
     <string name="setting_app_locale">Idioma de la aplicación</string>
     <string name="setting_summary_app_locale">Cambiar el idioma de la interfaz</string>
     <string name="drag_to_reorder">Arrastrar para reordenar marcadores</string>
@@ -513,13 +429,11 @@
     <string name="open_epub">Abrir archivo EPUB</string>
     <string name="setting_title_enable_web_cache">Habilitar caché web</string>
     <string name="setting_summary_enabling_web_cache">Cargar contenido web más rápido habilitando la caché web</string>
-    <string name="touch_custom">Personalizado</string>
     <string name="key_page_up">Enviar tecla Page Up</string>
     <string name="key_page_down">Enviar tecla Page Down</string>
     <string name="key_left">Enviar tecla Left</string>
     <string name="key_right">Enviar tecla Right</string>
     <string name="touch_aciton_settings">Más ajustes</string>
-    <string name="summary_touch_aciton_settings">Configurar acciones para el área de toque</string>
     <string name="setting_title_touch_area_actions">Acciones de clic en el área de toque</string>
     <string name="setting_touch_up_click">Acción de clic hacia arriba</string>
     <string name="setting_touch_up_long_click">Acción de clic largo hacia arriba</string>
@@ -529,7 +443,6 @@
     <string name="setting_tts_voice">Voz</string>
     <string name="system_settings">Configuración del sistema</string>
     <string name="other_voices">Otras voces…</string>
-    <string name="close">Cerrar</string>
     <string name="added_to_read_list">Añadido a la lista de lectura</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_etts">ReadAloud</string>
@@ -572,7 +485,6 @@
     <string name="toolbar_position_top">Arriba</string>
     <string name="toolbar_position_left">Izquierda</string>
     <string name="toolbar_position_right">Derecha</string>
-    <string name="font_folder">Carpeta de fuentes</string>
     <string name="select_font_folder">Seleccionar carpeta de fuentes</string>
     <string name="change_folder">Cambiar carpeta</string>
     <string name="search_fonts">Buscar fuentes…</string>
@@ -601,16 +513,12 @@
     <string name="sc_disable_adblock_long">Sin AdBlock</string>
     <string name="sc_disable_adblock_disabled">Sin AdBlock</string>
     <string name="menu_instapaper">Instapaper</string>
-    <string name="added_to_instapaper">Añadido a Instapaper</string>
-    <string name="failed_to_add_to_instapaper">fallo</string>
     <string name="instapaper_username_hint">Nombre de usuario o correo electrónico</string>
     <string name="instapaper_password_hint">Contraseña</string>
     <string name="instapaper_create_account">Crear cuenta</string>
     <string name="url_empty">La URL está vacía</string>
-    <string name="setting_summary_nav_pos_reset_custom">Restablecer posición personalizada</string>
     <string name="setting_title_enable_url_drag_to_action">1 toque a acción de URL</string>
     <string name="setting_summary_enable_url_drag_to_action">Mantén presionada la URL y mueve al elemento para activarlo</string>
-    <string name="suggestion">"Buscar: "</string>
     <string name="setting_title_search_suggestion">Sugerencias de búsqueda</string>
     <string name="setting_summary_search_suggestion">"Al escribir contenido, mostrar sugerencias de búsqueda "</string>
     <string name="custom_scale">Escala de fuente personalizada</string>
@@ -619,7 +527,6 @@
     <string name="gpt_action_drag_handle">Arrastrar para reordenar acciones de ChatGPT</string>
     <string name="page_ai">Page AI</string>
     <string name="page_ai_action_title">Acciones de Page AI</string>
-    <string name="page_ai_action_empty">No hay acciones de Page AI disponibles; añade una en Acciones de GPT (alcance de página completa).</string>
     <string name="eink_image_10">10%</string>
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>

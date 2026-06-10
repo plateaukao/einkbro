@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        <shape
             android:shape="rectangle" >
             <solid android:color="?attr/backgroundColor" />
             <corners android:radius="5dp" />
@@ -15,7 +15,7 @@
         android:right="3dp"
         android:bottom="3dp"
         android:top="3dp">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        <shape
             android:shape="rectangle" >
             <solid android:color="?attr/backgroundColor" />
             <corners android:radius="5dp" />

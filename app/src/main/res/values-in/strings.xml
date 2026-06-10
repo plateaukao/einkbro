@@ -21,7 +21,6 @@
     <string name="menu_quit">Keluar</string>
     <string name="menu_openFav">Buka Beranda</string>
     <string name="menu_delete">Hapus</string>
-    <string name="menu_delete_list">Hapus daftar</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Tutup tab</string>
     <string name="menu_download">Buka unduhan</string>
@@ -30,11 +29,9 @@
 
     <string name="menu_share_link">Bagi tautan</string>
 
-    <string name="menu_save_screenshot">Simpan tangkapan layar</string>
     <string name="menu_save_bookmark">Simpan sebagai bookmark</string>
     <string name="menu_save_as">Simpan sebagai …</string>
     <string name="menu_save_pdf">Simpan sebagai PDF</string>
-    <string name="menu_shareClipboard">Salin ke papan klip</string>
 
     <string name="menu_other_searchSite">Cari di situs</string>
     <string name="menu_other_info">Tentang EinkBro</string>
@@ -47,7 +44,6 @@
     <string name="dialog_content_resubmission">Apakah Anda ingin mengirimkan kembali data Anda?</string>
 
     <!-- Settings -->
-    <string name="setting_label">Pengaturan</string>
 
     <!-- browser setting -->
     <string name="setting_title_clear_control">Kontrol data</string>
@@ -64,8 +60,6 @@
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
-    <string name="setting_title_font_size">Ukuran font</string>
-    <string name="setting_summary_font_size">Ubah ukuran font untuk menampilkan situs web.</string>
 
     <string name="setting_title_remote">Konten jarak jauh</string>
     <string name="setting_summary_remote">Aktifkan konten jarak jauh, yang tidak langsung dari situs web yang Anda kunjungi.
@@ -109,9 +103,6 @@
 
 
     <!-- browser clear -->
-    <string name="data_summary">Semua file akan diekspor ke \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
-        direktori sd-card Anda. Direktori ini akan DIHAPUS, jika Anda menghapus EinkBro. Jadi lakukan backup secara rutin di tempat
-        aman.</string>
     <string name="clear_title_quit">Hapus saat keluar aplikasi</string>
     <string name="clear_summary_quit">Setiap kali Anda keluar dari EinkBro, semua data yang dicentang di atas akan dihapus.</string>
     <string name="clear_title_cache">Hapus Cache</string>
@@ -127,7 +118,6 @@
     <string name="setting_title_ui">UI</string>
     <string name="setting_title_data">Cadangan</string>
 
-    <string name="setting_title_fav">Favorit</string>
 
     <string name="setting_title_searchEngine">Mesin pencari khusus</string>
 
@@ -138,13 +128,11 @@
     <string name="setting_summary_hide">Gunakan layar penuh saat menelusuri situs web. Jika Anda menekan tombol kembali Anda akan
     keluar dari mode layar penuh.</string>
 
-    <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Perilaku</string>
 
     <string name="setting_summary_toolbarShow">Menekan kembali akan membuat toolbar terlihat, sebelum kembali ke riwayat.</string>
     <string name="setting_title_toolbarShow">Utamakan toolbar</string>
 
-    <string name="setting_title_nav">Tombol navigasi</string>
     <string name="setting_title_nav_pos">Posisi Tombol Mengambang</string>
     <string name="setting_summary_nav_pos">Tentukan di mana \"Tombol Navigasi\" akan ditempatkan.</string>
     <string name="setting_summary_nav_pos_right">Kanan</string>
@@ -153,12 +141,10 @@
     <string name="setting_summary_nav_pos_not_show">Tidak tampil</string>
     <string name="setting_summary_nav_pos_custom">Khusus</string>
 
-    <string name="setting_summary_tab">Apa yang harus ditampilkan di awal \"Ringkasan\"? Halaman Awal, bookmark Anda, …</string>
 
     <string name="setting_title_confirm_tab_close">Konfirmasi tutup tab</string>
     <string name="setting_summary_confirm_tab_close">Dialog konfirmasi saat menutup tab.</string>
 
-    <string name="setting_overView">Ringkasan</string>
 
     <string name="setting_gestures">Gestur</string>
     <string name="setting_gestures_use_title">Gunakan Gestur</string>
@@ -188,37 +174,23 @@
 
     <!-- Data -->
 
-    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
 
-    <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
-    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
 
     <string name="setting_title_export_appData">Ekspor data aplikasi</string>
     <string name="setting_title_import_appData">Impor data aplikasi</string>
     <string name="setting_summary_export_appData">Ekspor data aplikasi (Riwayat, Bookmark) dan pengaturan pribadi Anda</string>
     <string name="title_appData">Data aplikasi</string>
-    <string name="hint_database">Tindakan ini akan menghapus semua item di sini. Apakah Anda akan melanjutkan?</string>
 
 
     <!-- Others setting -->
-    <string name="setting_title_license">Lisensi</string>
 
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Berhasil menambah Domain</string>
     <string name="toast_copy_successful">Berhasil disalin</string>
-    <string name="toast_delete_successful">Berhasil dihapus</string>
-    <string name="toast_domain_already_exists">Domain sudah ada</string>
-    <string name="toast_export_successful">Expor sebagai:&#160;</string>
-    <string name="toast_export_failed">Gagal mengexpor</string>
-    <string name="toast_import_successful">Jumlah yang diimpor:&#160;</string>
-    <string name="toast_import_failed">Gagal mengimpor</string>
     <string name="toast_input_empty">Anda belum memasukkan apa pun</string>
-    <string name="toast_invalid_domain">Domain tidak valid</string>
     <string name="toast_load_error">Tidak dapat memuat URL ini</string>
     <string name="toast_share_failed">Tidak dapat membagikan halaman ini</string>
     <string name="toast_start_download">Mulai mengunduh</string>
-    <string name="toast_wait_a_minute">Harap tunggu sebentar</string>
     <string name="toast_error">Uuups. Ada yang salah.</string>
     <string name="toast_edit_successful">Berhasil disimpan</string>
     <string name="toast_webview_forward">Tidak dapat memuat situs berikutnya
@@ -226,12 +198,9 @@
     <string name="toast_restart">Anda harus memulai ulang EinkBro untuk menerapkan perubahan. Tutup sekarang?</string>
     <string name="toast_close_tab">Apakah Anda ingin menutup tab saat ini?</string>
     <string name="toast_downloadComplete">Selesai mengunduh. Ingin membuka file?</string>
-    <string name="toast_backup">Cadangankan data? Ini akan menimpa cadangan lama.</string>
 
 
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Bersih</string>
-    <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Tambah</string>
 
 
@@ -242,7 +211,6 @@
     <string name="show_touch_area_hint">batas area sentuh</string>
     <string name="bold_font">Font tebal</string>
     <string name="white_background">Latar putih</string>
-    <string name="setting_summary_bold_font">Terapkan gaya font tebal (perlu memuat ulang halaman saat ini)</string>
     <string name="desktop_mode">Mode desktop</string>
     <string name="setting_title_page_left_value">Tinggi Cadangan Laman</string>
     <string name="setting_summary_page_left_value">Berapa tinggi yang harus disediakan saat beralih ke halaman berikutnya</string>
@@ -250,7 +218,6 @@
     <string name="vertical_read">Vertikal</string>
     <string name="reader_mode">Mode pembaca</string>
     <string name="touch_area_setting">Pengaturan sentuh</string>
-    <string name="toolbar_setting">Pengaturan Toolbar</string>
     <string name="menu_save_epub">Simpan epub</string>
     <string name="new_epub_or_from_picker">Epub baru atau dari pemilih</string>
     <string name="title">Nama bab</string>
@@ -295,8 +262,6 @@
     <string name="menu_open_epub">Buka epub</string>
     <string name="setting_multitouch_use_title">Gunakan gesekan dua jari</string>
     <string name="setting_multitouch_use_summary">Gunakan gesekan dua jari pada konten web untuk memicu tindakan</string>
-    <string name="setting_title_two_finger_swipe">gesekan dua jari</string>
-    <string name="font_custom">Pilih file font khusus</string>
     <string name="translation_mode">Mode Terjemahan</string>
     <!-- Strings used for fragments for navigation -->
 
@@ -304,17 +269,10 @@
     <string name="serif">Serif</string>
     <string name="googleserif">Google Serif</string>
     <string name="custom_font">Khusus</string>
-    <string name="setting_title_font">Font</string>
     <string name="font_type">Tipe Font</string>
     <string name="menu_quickToggle">Beralih Cepat</string>
-    <string name="setting_title_toolbar_top">Toolbar diatas</string>
-    <string name="setting_summary_toolbar_top">Tampilkan toolbar di bagian atas layar.</string>
     <string name="setting_title_vi_binding">Pengikatan kunci VI</string>
     <string name="setting_summary_vi_binding">aktifkan binding kunci VI untuk navigasi keyboard yang lebih mudah.</string>
-    <string name="edit_custom_font">Edit Font Khusus</string>
-    <string name="cannot_open_file">File tidak bisa dibuka. Silakan buka kembali dari pemilih file.</string>
-    <string name="setting_recent_bookmarks">Tampilkan bookmark yang baru saja digunakan</string>
-    <string name="setting_summary_recent_bookmarks">Tampilkan bookmark yang baru saja digunakan saat membuka tab baru</string>
     <string name="setting_clear_recent_bookmarks">Hapus daftar bookmark terbaru</string>
     <string name="setting_summary_clear_recent_bookmarks">Hapus daftar bookmark yang baru saja digunakan</string>
     <string name="setting_title_hide_menu_items">Sembunyikan item menu yang jarang digunakan</string>
@@ -326,21 +284,15 @@
     <string name="menu_send_link">Kirim tautan</string>
     <string name="done">Tutup saat transfer selesai</string>
     <string name="menu_receive">Terima data</string>
-    <string name="copy_link">Salin tautan</string>
     <string name="setting_title_background_loading">Memuat tab yang tidak aktif</string>
     <string name="setting_summary_background_loading">Saat tab tidak aktif, tetap memuat konten di latar belakang</string>
-    <string name="dialog_content_ssl_error">Sertifikat situs tidak dipercaya. Tetap melanjutkan?</string>
     <string name="setting_title_search">Telusuri</string>
     <string name="dialog_toc_title">Daftar isi</string>
     <string name="latest_release">Rilis Terbaru</string>
     <string name="project_site">Situs Proyek</string>
-    <string name="facebook_groups">Grup Facebook</string>
     <string name="changelogs">Apa yang baru</string>
     <string name="medium_articles">Artikel Medium</string>
     <string name="contributors">Kontributor</string>
-    <string name="turn_on">Nyala</string>
-    <string name="turn_off">Mati</string>
-    <string name="title_touch_area">Area Sentuh</string>
     <string name="title_about">Tentang</string>
     <string name="setting_title_auto_fill_form">Isi formulir data secara otomatis</string>
     <string name="setting_summary_auto_fill_form">Isi otomatis data formulir jika diaktifkan.</string>
@@ -367,14 +319,10 @@
     <string name="setting_summary_translated_langs">Sesuaikan bahasa untuk terjemahan (misalnya: en,fr,zh-TW,zh-CN)</string>
     <string name="setting_title_translated_langs">Bahasa Terjemahan Pilihan</string>
     <string name="menu">Menu</string>
-    <string name="copy_text">Salin teks</string>
     <string name="menu_tts">Baca konten</string>
     <string name="read_speed">Kecepatan Baca</string>
-    <string name="toast_send_link_failed">Gagal mengirim tautan</string>
-    <string name="toast_receive_link_failed">Gagal menerima tautan.</string>
     <string name="setting_summary_search_engine">Masukan format url mesin pencari</string>
     <string name="setting_summary_custom_process_text_url">Ketika anda memilih teks di aplikasi lain, Anda dapat mencarinya di browser dengan awalan url ini.</string>
-    <string name="not_supported">Tidak didukung.</string>
 
     <string name="plus_start_input_url">Mulai Url Masukan</string>
     <string name="plus_show_homepage">Tampilkan Beranda</string>
@@ -392,23 +340,12 @@
     <string name="google_in_place">Google di tempat</string>
     <string name="setting_title_update_adblock">Perbarui konten Adblock</string>
     <string name="setting_summary_update_adblock">Mulai perbarui situs web adblock sekarang</string>
-    <string name="setting_title_adblock_url">Daftar Url Adblock</string>
-    <string name="setting_summary_adblock_url">Jika ingin menggunakan konten adblock lain, silahkan edit url ini.</string>
-    <string name="setting_title_adblock_auto_update">Perbarui Adblock otomatis</string>
-    <string name="setting_summary_adblock_auto_update">Perbarui otomatis konten adblock setiap minggu</string>
-    <string name="toast_adblock_updated">Adblock telah di perbarui!</string>
     <string name="toast_backup_successful">Pencadangan berhasil</string>
     <string name="setting_title_enable_ssl_error_dialog">Tampilkan dialog kesalahan SSL</string>
     <string name="setting_summary_enable_ssl_error_dialog">Ketika terjadi kesalahan dengan SSL, tampilkan dialog kesalahan.</string>
     <string name="manual">Manual</string>
     <string name="black_font">Font hitam</string>
-    <string name="image_adjust">Sesuaikan Gambar</string>
-    <string name="bookmark_new_file">Buat berkas baru</string>
-    <string name="bookmark_open_file">Tautkan file yang ada</string>
     <string name="menu_save_archive">Simpan arsip</string>
-    <string name="setting_title_sync_bookmarks">Sinkronisasi bookmark</string>
-    <string name="setting_title_setup_bookmarks_location">Konfigurasikan lokasi bookmark</string>
-    <string name="setting_summary_setup_bookmarks_location">Pilih file di Google Drive atau lokasi file lain yang mendukung sinkronisasi jarak jauh.</string>
     <string name="setting_summary_import_appData">Impor data aplikasi dengan memilih file zip yang sebelumnya diekspor.</string>
     <string name="backup_category_all_preferences">Semua Preferensi</string>
     <string name="backup_category_gpt_settings">Pengaturan GPT</string>
@@ -422,8 +359,6 @@
     <string name="setting_summary_receive_appData">Terima data aplikasi dari perangkat lain melalui jaringan lokal</string>
     <string name="share_broadcasting">Menyiarkan di jaringan lokal…</string>
     <string name="share_waiting">Menunggu data dari perangkat lain…</string>
-    <string name="dialog_message_sync_bookmark_file">"Untuk menyinkronkan bookmark, Anda perlu menggunakan pemilih file sistem untuk membuat atau membuka file bookmark dari Google Drive atau file yang disinkronkan dengan layanan jarak jauh lainnya. "</string>
-    <string name="dialog_title_bookmark_sync">Pengaturan File Bookmark</string>
     <string name="settings_title_back_key_behavior">Perilaku tombol kembali</string>
     <string name="settings_summary_back_key_behavior">Tutup tab saat sudah ada di halaman pertama dalam riwayat.</string>
     <string name="page_count">Jumlah halaman</string>
@@ -461,7 +396,6 @@
     <string name="toolbar_position_top">Atas</string>
     <string name="toolbar_position_left">Kiri</string>
     <string name="toolbar_position_right">Kanan</string>
-    <string name="font_folder">Folder font</string>
     <string name="select_font_folder">Pilih folder font</string>
     <string name="change_folder">Ubah folder</string>
     <string name="search_fonts">Cari font…</string>
@@ -473,13 +407,10 @@
     <string name="setting_title_reader_keep_extra_content">Mode Baca: Pertahankan Konten Tambahan</string>
     <string name="setting_summary_reader_keep_extra_content">Pertahankan gaya, kelas, dan rumus (MathJax/KaTeX) dalam mode baca</string>
     <!-- Added missing translations -->
-    <string name="added_to_instapaper">Ditambahkan ke Instapaper</string>
     <string name="added_to_read_list">Ditambahkan ke daftar baca</string>
     <string name="audio_only_mode">Hanya audio</string>
     <string name="bold">Tebal</string>
     <string name="chat_with_web">Obrolan dengan Web</string>
-    <string name="close">Tutup</string>
-    <string name="current_url">URL saat ini</string>
     <string name="custom_scale">Skala Font Kustom</string>
     <string name="custom_scale_desc">Masukkan skala font yang diinginkan (%)</string>
     <string name="dashed_border">Garis putus-putus</string>
@@ -495,10 +426,8 @@
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
-    <string name="enable_fix_scroll">Coba perbaiki gulir</string>
     <string name="enable_touch_area_as_arrow_key">Tekan lama sebagai tombol ← →</string>
     <string name="expand_space">Perluas ruang</string>
-    <string name="failed_to_add_to_instapaper">Gagal</string>
     <string name="gamja_flower_ko">Gamja Flower(KO)</string>
     <string name="gemini_translate_by_paragraph">Gemini per Paragraf</string>
     <string name="gesture_on_floating_button">Gestur tombol mengambang</string>
@@ -521,8 +450,6 @@
     <string name="key_page_up">Kirim tombol Page Up</string>
     <string name="key_right">Kirim tombol Kanan</string>
     <string name="menu_epub">EPUB</string>
-    <string name="menu_expand_menu">Tampilkan lebih</string>
-    <string name="menu_gpt">ChatGPT</string>
     <string name="menu_instapaper">Instapaper</string>
     <string name="menu_summarize">Ringkasan</string>
     <string name="mincho_ja">Mincho(JA)</string>
@@ -537,16 +464,13 @@
     <string name="openai_translate_by_paragraph">OpenAI per Paragraf</string>
     <string name="other_voices">Suara lain…</string>
     <string name="page_ai">Page AI</string>
-    <string name="page_ai_action_empty">Tidak ada aksi Page AI; tambahkan di ChatGPT Actions (lingkup seluruh halaman).</string>
     <string name="page_ai_action_title">Aksi Page AI</string>
     <string name="papago">Papago</string>
     <string name="papago_language_setting">Pengaturan Bahasa</string>
     <string name="papago_translate_by_screen">Papago via Layar</string>
-    <string name="re_select">Pilih ulang teks</string>
     <string name="read_from_here">Dari sini</string>
     <string name="reader_toolbar">Pengaturan toolbar pembaca</string>
     <string name="receive_link_terminate">Hentikan penerimaan tautan</string>
-    <string name="receive_once">Terima sekali</string>
     <string name="save_history_mode_disabled">Jangan simpan</string>
     <string name="save_history_mode_save_when_close">Simpan saat tab ditutup</string>
     <string name="save_history_mode_save_when_open">Simpan saat tab dibuka</string>
@@ -558,7 +482,6 @@
     <string name="select_sentence">Pilih Kalimat</string>
     <string name="self_hosted">Self Hosted</string>
     <string name="send_to_remote_terminate">Hentikan pencarian teks jarak jauh</string>
-    <string name="send_type">Jenis Pengiriman</string>
     <string name="setting_app_locale">Bahasa aplikasi</string>
     <string name="setting_dual_caption">Teks ganda untuk YouTube</string>
     <string name="setting_floating_button_long_click">Tekan lama</string>
@@ -568,8 +491,6 @@
     <string name="setting_summary_disable_long_press_toucharea">Jangan memicu aksi saat menekan lama area sentuh</string>
     <string name="setting_summary_dual_caption">Pilih bahasa untuk teks kedua</string>
     <string name="setting_summary_edit_gpt_api_key">Masukkan kunci untuk menggunakan fitur ini</string>
-    <string name="setting_summary_edit_gpt_prompt">Atur peran untuk ChatGPT, misal: \"Anda adalah penerjemah\"</string>
-    <string name="setting_summary_edit_gpt_user_prompt">Edit awalan prompt pengguna, misal: \"Terjemahkan konten berikut ke Bahasa Inggris:\"</string>
     <string name="setting_summary_enable_inplace_translate">Tampilkan terjemahan paragraf di tab saat ini atau tab baru</string>
     <string name="setting_summary_enable_url_drag_to_action">Tekan lama URL dan geser ke item untuk memicunya</string>
     <string name="setting_summary_enabling_web_cache">Muat konten web lebih cepat dengan mengaktifkan cache web</string>
@@ -582,12 +503,9 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Masukkan prompt untuk memproses konten halaman web penuh (misal: \"Ringkas dalam 300 kata:\")</string>
     <string name="setting_summary_gpt_query_list">Hasil kueri GPT yang tersimpan</string>
     <string name="setting_summary_hide_statusbar">Selalu sembunyikan bilah status</string>
-    <string name="setting_summary_nav_pos_reset_custom">Reset posisi kustom</string>
     <string name="setting_summary_next_tab">Tampilkan tab berikutnya saat tab saat ini ditutup (jika tidak, tampilkan tab sebelumnya)</string>
     <string name="setting_summary_other_model_name">Masukkan nama model untuk server GPT alternatif</string>
     <string name="setting_summary_reader_mode_padding">Nilai padding (px) untuk mode baca, default 10</string>
-    <string name="setting_summary_search_engine_rambler">Rambler</string>
-    <string name="setting_summary_search_engine_yahoo">Yahoo!</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="setting_summary_search_in_dict">Saat mencari di pembaca, gunakan ChatGPT untuk hasil pencarian</string>
     <string name="setting_summary_search_in_same_tab">Gunakan tab yang sama untuk pencarian eksternal</string>
@@ -607,8 +525,6 @@
     <string name="setting_title_custom_gpt_url">URL host kustom</string>
     <string name="setting_title_disable_long_press_toucharea">Nonaktifkan tekan lama pada Area Sentuh</string>
     <string name="setting_title_edit_gpt_api_key">Kunci OpenAI</string>
-    <string name="setting_title_edit_gpt_system_prompt">Prompt Sistem ChatGPT</string>
-    <string name="setting_title_edit_gpt_user_prompt_prefix">Awalan Prompt Pengguna</string>
     <string name="setting_title_enable_inplace_translate">Terjemahkan paragraf di tab saat ini</string>
     <string name="setting_title_enable_url_drag_to_action">1 sentuh ke aksi URL</string>
     <string name="setting_title_enable_web_cache">Aktifkan cache web</string>
@@ -644,16 +560,11 @@
     <string name="setting_tts_voice">Suara</string>
     <string name="show_default_text_menu">Tampilkan menu teks default</string>
     <string name="source_language">Bahasa Sumber</string>
-    <string name="split_search">Pencarian Terpisah</string>
     <string name="split_search_settings">Pengaturan Pencarian Terpisah</string>
-    <string name="suggestion">"Cari: "</string>
     <string name="summary_gpt_type">Tipe GPT untuk ringkasan konten web</string>
-    <string name="summary_touch_aciton_settings">Atur aksi untuk area sentuh</string>
     <string name="switch_touch_area_action_short">Ganti arah</string>
     <string name="system_settings">Pengaturan Sistem</string>
-    <string name="text_selection_search">Pencarian Pilihan Teks</string>
     <string name="toast_save_page_failed">Gagal menyimpan halaman</string>
-    <string name="toast_saved">Tersimpan!</string>
     <string name="toast_saved_page">Halaman tersimpan. Tekan lama ikon ini untuk melihat daftar tersimpan.</string>
     <string name="toc_delete">Hapus</string>
     <string name="toggle_touch_turn_page">Beralih Sentuh balik halaman</string>
@@ -661,14 +572,9 @@
     <string name="toolbar_icons_description">Atur ikon toolbar</string>
     <string name="toolbar_time">Waktu saat ini</string>
     <string name="touch_aciton_settings">Pengaturan Lainnya</string>
-    <string name="touch_custom">Kustom</string>
     <string name="translate_by_paragraph">Terjemahkan per Paragraf</string>
     <string name="translate_image_key">Kunci untuk terjemahan gambar</string>
     <string name="translate_image_key_summary">Masukkan kunci yang diperlukan untuk menggunakan fitur terjemahan gambar</string>
-    <string name="translate_papago">Naver Papago API Secret</string>
-    <string name="translate_papago_summary">Jika Anda ingin menggunakan layanan terjemahan Naver Papago, masukkan API secret Anda</string>
-    <string name="translate_processing">Memproses…</string>
-    <string name="translate_this_site">Selalu terjemahkan</string>
     <string name="translation_language">Bahasa Terjemahan</string>
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>
@@ -680,7 +586,6 @@
     <string name="volume_page_turn_resumed">Balik halaman dengan tombol volume dilanjutkan</string>
     <string name="web_content_processing">Pemrosesan Konten Web</string>
     <string name="web_processing_gpt_type">Engine GPT</string>
-    <string name="wenkai_tc">WenKai(TC)</string>
     <string name="site_force_viewport_width">Paksa lebar viewport (px)</string>
     <string name="site_force_viewport_width_hint">Gunakan hanya jika UA desktop saja tidak cukup</string>
 </resources>
