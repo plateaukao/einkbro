@@ -50,7 +50,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute.About
 import info.plateaukao.einkbro.activity.SettingRoute.Backup
@@ -66,44 +65,40 @@ import info.plateaukao.einkbro.activity.SettingRoute.Toolbar
 import info.plateaukao.einkbro.activity.SettingRoute.Ui
 import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
-import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.HighlightStyle
-import info.plateaukao.einkbro.preference.ShareLongPressAction
-import info.plateaukao.einkbro.preference.TranslationTextStyle
-import info.plateaukao.einkbro.setting.ActionSettingItem
-import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
-import info.plateaukao.einkbro.setting.GestureActionSettingItem
 import info.plateaukao.einkbro.setting.GesturePickerScreen
-import info.plateaukao.einkbro.setting.LinkSettingItem
-import info.plateaukao.einkbro.setting.ListSettingWithClassItem
-import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
-import info.plateaukao.einkbro.setting.ListSettingWithStrResIdItem
-import info.plateaukao.einkbro.setting.ToolbarPositionSettingItem
-import info.plateaukao.einkbro.setting.NavigateSettingItem
-import info.plateaukao.einkbro.setting.ProgressActionSettingItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.SearchSettingScreen
 import info.plateaukao.einkbro.setting.SettingScreen
-import info.plateaukao.einkbro.setting.ValueSettingItem
-import info.plateaukao.einkbro.setting.VersionSettingItem
+import info.plateaukao.einkbro.setting.screens.BackupOps
+import info.plateaukao.einkbro.setting.screens.SettingScreenDeps
+import info.plateaukao.einkbro.setting.screens.buildAboutSettingItems
+import info.plateaukao.einkbro.setting.screens.buildBackupSettingItems
+import info.plateaukao.einkbro.setting.screens.buildBehaviorSettingItems
+import info.plateaukao.einkbro.setting.screens.buildChatGptSettingItems
+import info.plateaukao.einkbro.setting.screens.buildClearDataSettingItems
+import info.plateaukao.einkbro.setting.screens.buildGestureSettingItems
+import info.plateaukao.einkbro.setting.screens.buildMainSettingItems
+import info.plateaukao.einkbro.setting.screens.buildMiscSettingItems
+import info.plateaukao.einkbro.setting.screens.buildSearchSettingItems
+import info.plateaukao.einkbro.setting.screens.buildStartSettingItems
+import info.plateaukao.einkbro.setting.screens.buildToolbarSettingItems
+import info.plateaukao.einkbro.setting.screens.buildUiSettingItems
+import info.plateaukao.einkbro.setting.screens.buildUserAgentSettingItems
 import info.plateaukao.einkbro.unit.BackupCategory
 import info.plateaukao.einkbro.unit.BackupUnit
-import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.disablePendingTransitions
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
-import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
-import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
-class SettingActivity : FragmentActivity() {
+class SettingActivity : FragmentActivity(), BackupOps {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
@@ -215,31 +210,13 @@ class SettingActivity : FragmentActivity() {
                             SettingScreen(navController, uiSettingItems, dialogManager, action, 1)
                         }
                         composable(Toolbar.name) {
-                            SettingScreen(
-                                navController,
-                                toolbarSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, toolbarSettingItems, dialogManager, action, 1)
                         }
                         composable(Behavior.name) {
-                            SettingScreen(
-                                navController,
-                                behaviorSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, behaviorSettingItems, dialogManager, action, 1)
                         }
                         composable(Gesture.name) {
-                            SettingScreen(
-                                navController,
-                                gestureSettingItems,
-                                dialogManager,
-                                action,
-                                2
-                            )
+                            SettingScreen(navController, gestureSettingItems, dialogManager, action, 2)
                         }
                         composable(SettingRoute.GesturePicker.name) {
                             GesturePickerScreen(navController)
@@ -248,95 +225,25 @@ class SettingActivity : FragmentActivity() {
                             SettingScreen(navController, dataSettingItems, dialogManager, action, 1)
                         }
                         composable(StartControl.name) {
-                            SettingScreen(
-                                navController,
-                                startSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, startSettingItems, dialogManager, action, 1)
                         }
                         composable(DataControl.name) {
-                            SettingScreen(
-                                navController,
-                                clearDataSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, clearDataSettingItems, dialogManager, action, 1)
                         }
                         composable(UserAgent.name) {
-                            SettingScreen(
-                                navController,
-                                userAgentSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, userAgentSettingItems, dialogManager, action, 1)
                         }
                         composable(Misc.name) {
-                            SettingScreen(
-                                navController,
-                                miscSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, miscSettingItems, dialogManager, action, 1)
                         }
                         composable(ChatGPT.name) {
-                            SettingScreen(
-                                navController,
-                                chatGptSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, chatGptSettingItems, dialogManager, action, 1)
                         }
                         composable(Search.name) {
-                            SettingScreen(
-                                navController,
-                                searchSettingItems,
-                                dialogManager,
-                                action,
-                                1
-                            )
+                            SettingScreen(navController, searchSettingItems, dialogManager, action, 1)
                         }
                         composable(About.name) {
-                            SettingScreen(
-                                navController,
-                                mutableListOf<SettingItemInterface>().apply {
-                                    addAll(LinkSettingItem.entries.filter { it != LinkSettingItem.Manual })
-                                    add(DividerSettingItem())
-                                    if (BuildConfig.showUpdateButton) {
-                                        add(
-                                            ProgressActionSettingItem(
-                                                R.string.setting_title_github_update,
-                                                0,
-                                            ) { progressCallback ->
-                                                withContext(Dispatchers.IO) {
-                                                    HelperUnit.upgradeToLatestRelease(this@SettingActivity) { progress ->
-                                                        progressCallback.updateProgress(progress)
-                                                    }
-                                                }
-                                            })
-                                        add(
-                                            ProgressActionSettingItem(
-                                                R.string.setting_title_github_snapshot,
-                                                0,
-                                            ) { progressCallback ->
-                                                withContext(Dispatchers.IO) {
-                                                    HelperUnit.upgradeFromSnapshot(this@SettingActivity) { progress ->
-                                                        progressCallback.updateProgress(progress)
-                                                    }
-                                                }
-                                            })
-                                    }
-                                    add(DividerSettingItem())
-                                },
-                                dialogManager,
-                                action,
-                                2
-                            )
+                            SettingScreen(navController, buildAboutSettingItems(deps), dialogManager, action, 2)
                         }
                     }
                 }
@@ -363,6 +270,31 @@ class SettingActivity : FragmentActivity() {
         }
     }
 
+    override fun exportAppData() {
+        dialogManager.showBackupCategoryDialog { categories ->
+            pendingBackupCategories = categories
+            dialogManager.showBackupFilePicker(exportBackupLauncher)
+        }
+    }
+
+    override fun importAppData() {
+        dialogManager.showImportBackupFilePicker(importBackupLauncher)
+    }
+
+    override fun shareAppData() {
+        dialogManager.showBackupCategoryDialog { categories ->
+            shareAppData(categories)
+        }
+    }
+
+    override fun exportBookmarks() {
+        dialogManager.showBookmarkFilePicker(exportBookmarksLauncher)
+    }
+
+    override fun importBookmarks() {
+        dialogManager.showImportBookmarkFilePicker(importBookmarksLauncher)
+    }
+
     private fun shareAppData(categories: Set<BackupCategory>) {
         lifecycleScope.launch(Dispatchers.IO) {
             val tempFile = backupUnit.backupToTempFile(categories) ?: return@launch
@@ -378,7 +310,7 @@ class SettingActivity : FragmentActivity() {
         }
     }
 
-    private fun receiveAppData() {
+    override fun receiveAppData() {
         val tempFile = java.io.File(cacheDir, "backup_receive.zip")
         val dialog = dialogManager.showOkCancelDialog(
             title = getString(R.string.setting_title_receive_appData),
@@ -438,947 +370,20 @@ class SettingActivity : FragmentActivity() {
         }
     }
 
-    private val mainSettings = listOf(
-        NavigateSettingItem(R.string.setting_title_ui, R.drawable.ic_phone, destination = Ui),
-        NavigateSettingItem(
-            R.string.setting_title_toolbar,
-            R.drawable.ic_toolbar,
-            destination = Toolbar
-        ),
-        NavigateSettingItem(
-            R.string.setting_title_behavior,
-            R.drawable.icon_ui,
-            destination = Behavior
-        ),
-        NavigateSettingItem(
-            R.string.setting_gestures,
-            R.drawable.gesture_tap,
-            destination = Gesture
-        ),
-        DividerSettingItem(),
-        NavigateSettingItem(
-            R.string.setting_title_data,
-            R.drawable.icon_backup,
-            destination = Backup
-        ),
-        NavigateSettingItem(
-            R.string.setting_title_start_control,
-            R.drawable.icon_earth,
-            destination = StartControl
-        ),
-        NavigateSettingItem(
-            R.string.setting_title_clear_control,
-            R.drawable.ic_data,
-            destination = DataControl
-        ),
-        NavigateSettingItem(
-            R.string.setting_title_search,
-            R.drawable.icon_search,
-            destination = Search
-        ),
-        DividerSettingItem(),
-        NavigateSettingItem(
-            R.string.misc,
-            R.drawable.icon_dots,
-            destination = Misc
-        ),
-        NavigateSettingItem(
-            R.string.setting_title_chat_gpt,
-            R.drawable.ic_chat_gpt,
-            destination = ChatGPT
-        ),
-        LinkSettingItem.Manual,
-        VersionSettingItem(
-            R.string.menu_other_info,
-            R.drawable.icon_info,
-            destination = About,
-        ),
-    )
+    private val deps = SettingScreenDeps(this, config, lifecycleScope, this)
 
-    private val uiSettingItems = listOf(
-        ActionSettingItem(
-            R.string.setting_app_locale,
-            0,
-            R.string.setting_summary_app_locale,
-        ) {
-            lifecycleScope.launch {
-                val oldLocale = config.uiLocaleLanguage
-                TranslationLanguageDialog(this@SettingActivity).showAppLocale()
-                if (config.uiLocaleLanguage != oldLocale) recreate()
-            }
-        },
-        BooleanSettingItem(
-            R.string.hide_statusbar,
-            0,
-            R.string.setting_summary_hide_statusbar,
-            config.ui::hideStatusbar,
-        ),
-        BooleanSettingItem(
-            R.string.desktop_mode,
-            0,
-            R.string.setting_summary_desktop,
-            config.browser::desktop,
-        ),
-        BooleanSettingItem(
-            R.string.always_enable_zoom,
-            0,
-            R.string.setting_summary_enable_zoom,
-            config.display::enableZoom,
-        ),
-        BooleanSettingItem(
-            R.string.show_default_text_menu,
-            0,
-            R.string.setting_summary_show_default_text_menu,
-            config.ui::showDefaultActionMenu,
-        ),
-        BooleanSettingItem(
-            R.string.show_context_menu_icons,
-            0,
-            R.string.setting_summary_show_context_menu_icons,
-            config.ui::showActionMenuIcons,
-        ),
-        BooleanSettingItem(
-            R.string.show_history_thumbnail_grid,
-            0,
-            R.string.setting_summary_show_history_thumbnail_grid,
-            config.ui::showHistoryThumbnailGrid,
-        ),
-        DividerSettingItem(),
-        ValueSettingItem(
-            R.string.setting_title_page_left_value,
-            0,
-            R.string.setting_summary_page_left_value,
-            config.touch::pageReservedOffsetInString
-        ),
-        ValueSettingItem(
-            R.string.setting_title_reader_mode_padding,
-            0,
-            R.string.setting_summary_reader_mode_padding,
-            config.display::paddingForReaderMode
-        ),
-        ListSettingWithEnumItem(
-            R.string.dark_mode,
-            0,
-            R.string.setting_summary_dark_mode,
-            config.display::darkMode,
-            listOf(
-                R.string.dark_mode_follow_system,
-                R.string.dark_mode_force_on,
-                R.string.dark_mode_disabled,
-            )
-        ),
-        ListSettingWithEnumItem(
-            R.string.eink_image_adjustment,
-            0,
-            R.string.eink_image_adjustment_summary,
-            config.display::einkImageAdjustment,
-            listOf(
-                R.string.eink_image_off,
-                R.string.eink_image_10,
-                R.string.eink_image_30,
-                R.string.eink_image_50,
-                R.string.eink_image_70,
-                R.string.eink_image_100,
-            )
-        ),
-        ListSettingWithEnumItem(
-            R.string.setting_title_nav_pos,
-            0,
-            R.string.setting_summary_nav_pos,
-            config.ui::fabPosition,
-            listOf(
-                R.string.setting_summary_nav_pos_right,
-                R.string.setting_summary_nav_pos_left,
-                R.string.setting_summary_nav_pos_center,
-                R.string.setting_summary_nav_pos_not_show,
-                R.string.setting_summary_nav_pos_custom,
-            )
-        ),
-        ListSettingWithEnumItem(
-            R.string.setting_title_plus_behavior,
-            0,
-            R.string.setting_summary_plus_behavior,
-            config.tab::newTabBehavior,
-            listOf(
-                R.string.plus_start_input_url,
-                R.string.plus_show_homepage,
-                R.string.plus_show_bookmarks,
-            )
-        ),
-        ActionSettingItem(
-            R.string.setting_clear_recent_bookmarks,
-            0,
-            R.string.setting_summary_clear_recent_bookmarks,
-        ) {
-            config.clearRecentBookmarks()
-        },
-        ActionSettingItem(
-            R.string.setting_title_hide_menu_items,
-            0,
-            R.string.setting_summary_hide_menu_items,
-        ) {
-            startActivity(Intent(this, MenuItemHideActivity::class.java))
-        },
-    )
-
-    private val behaviorSettingItems = listOf(
-        // Tab behavior
-        BooleanSettingItem(
-            R.string.setting_title_saveTabs,
-            0,
-            R.string.setting_summary_saveTabs,
-            config.tab::shouldSaveTabs,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_background_loading,
-            0,
-            R.string.setting_summary_background_loading,
-            config.tab::enableWebBkgndLoad,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_next_tab,
-            0,
-            R.string.setting_summary_next_tab,
-            config.tab::shouldShowNextAfterRemoveTab,
-        ),
-        BooleanSettingItem(
-            R.string.settings_title_back_key_behavior,
-            0,
-            R.string.settings_summary_back_key_behavior,
-            config.tab::closeTabWhenNoMoreBackHistory,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_confirm_tab_close,
-            0,
-            R.string.setting_summary_confirm_tab_close,
-            config.tab::confirmTabClose,
-        ),
-        DividerSettingItem(),
-        // URL & navigation
-        BooleanSettingItem(
-            R.string.setting_title_trim_input_url,
-            0,
-            R.string.setting_summary_trim_input_url,
-            config.browser::shouldTrimInputUrl,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_prune_query_parameter,
-            0,
-            R.string.setting_summary_prune_query_parameter,
-            config.browser::shouldPruneQueryParameters,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_enable_url_drag_to_action,
-            0,
-            R.string.setting_summary_enable_url_drag_to_action,
-            config.touch::enableDragUrlToAction,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_show_bookmarks_input_bar,
-            0,
-            R.string.setting_summary_show_bookmarks_input_bar,
-            config.browser::showBookmarksInInputBar,
-        ),
-        ListSettingWithEnumItem(
-            R.string.setting_title_share_long_press,
-            0,
-            R.string.setting_summary_share_long_press,
-            config.browser::shareLongPressAction,
-            ShareLongPressAction.entries.map { it.labelResId },
-        ),
-        DividerSettingItem(),
-        // Video
-        BooleanSettingItem(
-            R.string.setting_title_video_autoplay,
-            0,
-            R.string.setting_summary_video_autoplay,
-            config.browser::enableVideoAutoplay,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_video_auto_fullscreen,
-            0,
-            R.string.setting_summary_video_auto_fullscreen,
-            config.browser::enableVideoAutoFullscreen,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_video_pip,
-            0,
-            R.string.setting_summary_video_pip,
-            config.browser::enableVideoPip,
-        ),
-        DividerSettingItem(),
-        // Input & controls
-        BooleanSettingItem(
-            R.string.setting_title_vi_binding,
-            0,
-            R.string.setting_summary_vi_binding,
-            config.browser::enableViBinding,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_disable_long_press_toucharea,
-            0,
-            R.string.setting_summary_disable_long_press_toucharea,
-            config.touch::disableLongPressTouchArea,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_useUpDown,
-            0,
-            R.string.setting_summary_useUpDownKey,
-            config.touch::useUpDownPageTurn,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_enable_pull_to_refresh,
-            0,
-            R.string.setting_summary_enable_pull_to_refresh,
-            config.browser::enablePullToRefresh,
-        ),
-        DividerSettingItem(),
-        // Display & rendering
-        BooleanSettingItem(
-            R.string.setting_title_screen_awake,
-            0,
-            R.string.setting_summary_screen_awake,
-            config.ui::keepAwake,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_text_wrap_reflow,
-            0,
-            R.string.setting_summary_text_wrap_reflow,
-            config.display::enableZoomTextWrapReflow,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_zoom_in_custom_view,
-            0,
-            R.string.setting_summary_zoom_in_custom_view,
-            config.display::zoomInCustomView,
-        ),
-        DividerSettingItem(),
-        // Security & network
-        BooleanSettingItem(
-            R.string.setting_title_enable_ssl_error_dialog,
-            0,
-            R.string.setting_summary_enable_ssl_error_dialog,
-            config.browser::enableCertificateErrorDialog,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_enable_web_cache,
-            0,
-            R.string.setting_summary_enabling_web_cache,
-            config.browser::webLoadCacheFirst,
-        ),
-    )
-
-    private val toolbarSettingItems = listOf(
-        DividerSettingItem(R.string.setting_section_toolbar),
-        ToolbarPositionSettingItem(
-            R.string.setting_title_toolbar_position,
-            0,
-            0,
-            config.ui::toolbarPosition,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_show_tab_bar,
-            0,
-            R.string.setting_summary_show_tab_bar,
-            config.tab::shouldShowTabBar,
-        ),
-        ActionSettingItem(
-            R.string.toolbar_icons,
-            0,
-            R.string.toolbar_icons_description,
-        ) {
-            startActivity(Intent(this, ToolbarConfigActivity::class.java))
-        },
-        BooleanSettingItem(
-            R.string.setting_title_hideToolbar,
-            0,
-            R.string.setting_summary_hide,
-            config.ui::shouldHideToolbar,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_toolbarShow,
-            0,
-            R.string.setting_summary_toolbarShow,
-            config.ui::showToolbarFirst,
-        ),
-        DividerSettingItem(R.string.setting_section_statusbar),
-        BooleanSettingItem(
-            R.string.setting_title_statusbar_enabled,
-            0,
-            R.string.setting_summary_statusbar_enabled,
-            config.ui::statusbarEnabled,
-        ),
-        ListSettingWithEnumItem(
-            R.string.setting_title_statusbar_position,
-            0,
-            0,
-            config.ui::statusbarPosition,
-            listOf(
-                R.string.statusbar_position_top,
-                R.string.statusbar_position_bottom,
-            )
-        ),
-        ActionSettingItem(
-            R.string.setting_title_statusbar_items,
-            0,
-            R.string.setting_summary_statusbar_items,
-        ) {
-            startActivity(Intent(this, StatusbarConfigActivity::class.java))
-        },
-    )
-
-    private val gestureSettingItems = listOf(
-        DividerSettingItem(
-            R.string.setting_title_touch_area_actions,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_touch_up_click,
-            config = config.touch::upClickGesture,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_touch_up_long_click,
-            config = config.touch::upLongClickGesture,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_touch_down_click,
-            config = config.touch::downClickGesture,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_touch_down_long_click,
-            config = config.touch::downLongClickGesture,
-        ),
-        BooleanSettingItem(
-            R.string.show_touch_area_hint,
-            config = config.touch::touchAreaHint,
-            span = 2,
-        ),
-        BooleanSettingItem(
-            R.string.hie_touch_area_when_input,
-            config = config.touch::hideTouchAreaWhenInput,
-            span = 2,
-        ),
-        BooleanSettingItem(
-            R.string.switch_touch_area_action,
-            config = config.touch::switchTouchAreaAction,
-            span = 2,
-        ),
-        BooleanSettingItem(
-            R.string.enable_touch_area_as_arrow_key,
-            config = config.touch::longClickAsArrowKey,
-            span = 2,
-        ),
-        DividerSettingItem(R.string.setting_multitouch_use_title),
-        BooleanSettingItem(
-            R.string.setting_multitouch_use_title,
-            0,
-            R.string.setting_multitouch_use_summary,
-            config.touch::isMultitouchEnabled,
-            span = 2,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_up,
-            config = config.touch::multitouchUp,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_down,
-            config = config.touch::multitouchDown,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_left,
-            config = config.touch::multitouchLeft,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_right,
-            config = config.touch::multitouchRight,
-        ),
-        DividerSettingItem(R.string.gesture_on_floating_button),
-        BooleanSettingItem(
-            R.string.setting_gestures_use_title,
-            0,
-            R.string.setting_gestures_use_summary,
-            config.touch::enableNavButtonGesture,
-            span = 2,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_up,
-            config = config.touch::navGestureUp,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_down,
-            config = config.touch::navGestureDown,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_left,
-            config = config.touch::navGestureLeft,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_gesture_right,
-            config = config.touch::navGestureRight,
-        ),
-        GestureActionSettingItem(
-            R.string.setting_floating_button_long_click,
-            config = config.touch::navButtonLongClickGesture,
-        ),
-    )
-
-    private val searchSettingItems = listOf(
-        ListSettingWithStrResIdItem(
-            R.string.setting_title_search_engine,
-            0,
-            config = config.browser::searchEngine,
-            options = listOf(
-                R.string.setting_summary_search_engine_startpage,
-                R.string.setting_summary_search_engine_startpage_de,
-                R.string.setting_summary_search_engine_baidu,
-                R.string.setting_summary_search_engine_bing,
-                R.string.setting_summary_search_engine_duckduckgo,
-                R.string.setting_summary_search_engine_google,
-                R.string.setting_summary_search_engine_searx,
-                R.string.setting_summary_search_engine_qwant,
-                R.string.setting_summary_search_engine_ecosia,
-                R.string.setting_title_searchEngine,
-                R.string.setting_summary_search_engine_yandex,
-            )
-        ),
-        ValueSettingItem(
-            R.string.setting_title_searchEngine,
-            0,
-            R.string.setting_summary_search_engine,
-            config = config.browser::searchEngineUrl,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_search_suggestion,
-            0,
-            R.string.setting_summary_search_suggestion,
-            config.browser::enableSearchSuggestion,
-        ),
-        DividerSettingItem(),
-        ValueSettingItem(
-            R.string.setting_title_process_text,
-            0,
-            R.string.setting_summary_custom_process_text_url,
-            config = config.browser::processTextUrl,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_external_search_pop,
-            0,
-            R.string.setting_summary_external_search_pop,
-            config.ai::externalSearchWithPopUp,
-        ),
-        DividerSettingItem(),
-        ActionSettingItem(
-            R.string.setting_title_split_search_setting,
-            0,
-            R.string.setting_summary_split_search_setting
-        ) {
-            startActivity(DataListActivity.createIntent(this, WhiteListType.SplitSearch))
-        },
-        BooleanSettingItem(
-            R.string.setting_title_search_in_same_tab,
-            0,
-            R.string.setting_summary_search_in_same_tab,
-            config.ai::isExternalSearchInSameTab,
-        ),
-        DividerSettingItem(),
-        ListSettingWithClassItem<ChatGPTActionInfo>(
-            R.string.setting_title_remote_query,
-            0,
-            config = config.ai::remoteQueryActionName,
-            options = listOf("Search") + config.ai.gptActionList.map { it.name }
-        ),
-    )
-
-    private val dataSettingItems = listOf(
-        ActionSettingItem(
-            R.string.setting_title_export_appData,
-            0,
-            R.string.setting_summary_export_appData
-        ) {
-            dialogManager.showBackupCategoryDialog { categories ->
-                pendingBackupCategories = categories
-                dialogManager.showBackupFilePicker(exportBackupLauncher)
-            }
-        },
-        ActionSettingItem(
-            R.string.setting_title_import_appData,
-            0,
-            R.string.setting_summary_import_appData
-        ) { dialogManager.showImportBackupFilePicker(importBackupLauncher) },
-        ActionSettingItem(
-            R.string.setting_title_share_appData,
-            0,
-            R.string.setting_summary_share_appData
-        ) {
-            dialogManager.showBackupCategoryDialog { categories ->
-                shareAppData(categories)
-            }
-        },
-        ActionSettingItem(
-            R.string.setting_title_receive_appData,
-            0,
-            R.string.setting_summary_receive_appData
-        ) { receiveAppData() },
-        DividerSettingItem(),
-        ActionSettingItem(
-            R.string.setting_title_export_bookmarks,
-            0,
-        ) { dialogManager.showBookmarkFilePicker(exportBookmarksLauncher) },
-        ActionSettingItem(
-            R.string.setting_title_import_bookmarks,
-            0,
-        ) { dialogManager.showImportBookmarkFilePicker(importBookmarksLauncher) },
-    )
-
-    private val clearDataSettingItems = listOf(
-        BooleanSettingItem(
-            R.string.clear_title_cache,
-            0,
-            config = config::clearCache,
-        ),
-        BooleanSettingItem(
-            R.string.clear_title_history,
-            0,
-            config = config::clearHistory,
-        ),
-        BooleanSettingItem(
-            R.string.clear_title_indexedDB,
-            0,
-            config = config::clearIndexedDB,
-        ),
-        BooleanSettingItem(
-            R.string.clear_title_cookie,
-            0,
-            R.string.setting_summary_cookie_delete,
-            config::clearCookies
-        ),
-        BooleanSettingItem(
-            R.string.clear_title_quit,
-            0,
-            R.string.clear_summary_quit,
-            config::clearWhenQuit
-        ),
-        ActionSettingItem(
-            R.string.clear_title_deleteDatabase,
-            0,
-            R.string.clear_summary_deleteDatabase,
-        ) {
-            deleteDatabase("Ninja4.db")
-            deleteDatabase("pass_DB_v01.db")
-            config.restartChanged = true
-            finish()
-        }
-    )
-
-    private val miscSettingItems = listOf(
-        ListSettingWithEnumItem(
-            R.string.setting_title_highlight_style,
-            0,
-            R.string.setting_summary_highlight_style,
-            config = config.display::highlightStyle,
-            options = HighlightStyle.entries
-                .map { it.stringResId },
-        ),
-        ListSettingWithEnumItem(
-            R.string.setting_title_translation_style,
-            0,
-            R.string.setting_summary_translation_style,
-            config = config.translation::translationTextStyle,
-            options = TranslationTextStyle.entries.map { it.stringResId },
-        ),
-        NavigateSettingItem(
-            R.string.setting_title_userAgent,
-            0,
-            destination = UserAgent
-        ),
-        ValueSettingItem(
-            R.string.setting_title_edit_homepage,
-            0,
-            config = config::favoriteUrl,
-            showValue = false
-        ),
-        ActionSettingItem(R.string.setting_title_pdf_paper_size, 0) {
-            PrinterDocumentPaperSizeDialog(
-                this
-            ).show()
-        },
-        DividerSettingItem(),
-//        BooleanSettingItem(
-//            R.string.setting_title_enable_inplace_translate,
-//            0,
-//            R.string.setting_summary_enable_inplace_translate,
-//            config::enableInplaceParagraphTranslate
-//        ),
-        ValueSettingItem(
-            R.string.setting_title_translated_langs,
-            0,
-            R.string.setting_summary_translated_langs,
-            config.translation::preferredTranslateLanguageString
-        ),
-        ValueSettingItem(
-            R.string.translate_image_key,
-            0,
-            R.string.translate_image_key_summary,
-            config = config.ai::imageApiKey,
-            showValue = false
-        ),
-        ActionSettingItem(
-            R.string.setting_dual_caption,
-            0,
-            R.string.setting_summary_dual_caption,
-        ) {
-            lifecycleScope.launch {
-                TranslationLanguageDialog(this@SettingActivity).showDualCaptionLocale()
-            }
-        },
-        BooleanSettingItem(
-            R.string.setting_title_reader_keep_extra_content,
-            0,
-            R.string.setting_summary_reader_keep_extra_content,
-            config.display::readerKeepExtraContent,
-        ),
-    )
-    private val userAgentSettingItems = listOf(
-        BooleanSettingItem(
-            R.string.setting_title_userAgent_toggle,
-            0,
-            R.string.setting_summary_userAgent_toggle,
-            config.browser::enableCustomUserAgent
-        ),
-        ValueSettingItem(
-            R.string.setting_title_userAgent,
-            0,
-            R.string.setting_summary_userAgent,
-            config.browser::customUserAgent
-        ),
-    )
-
-    private val chatGptSettingItems = listOf(
-        ActionSettingItem(
-            R.string.setting_title_gpt_query_list,
-            0,
-            R.string.setting_summary_gpt_query_list,
-        ) {
-            startActivity(GptQueryListActivity.createIntent(this))
-        },
-        ActionSettingItem(
-            R.string.setting_title_gpt_action_list,
-            0,
-            R.string.setting_summary_gpt_action_list,
-        ) { GptActionsActivity.start(this) },
-        BooleanSettingItem(
-            R.string.use_it_on_dict_search,
-            0,
-            R.string.setting_summary_search_in_dict,
-            config.ai::externalSearchWithGpt
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_chat_stream,
-            0,
-            R.string.setting_summary_chat_stream,
-            config.ai::enableOpenAiStream
-        ),
-        DividerSettingItem(R.string.web_content_processing),
-        ListSettingWithEnumItem(
-            R.string.summary_gpt_type,
-            0,
-            R.string.setting_summary_summary_gpt_type,
-            config.ai::gptForSummary,
-            listOf(
-                R.string.system_default,
-                R.string.openai,
-                R.string.self_hosted,
-                R.string.google_gemini
-            )
-        ),
-        ValueSettingItem(
-            R.string.setting_title_gpt_prompt_for_web_page,
-            0,
-            R.string.setting_summary_gpt_prompt_for_web_page,
-            config.ai::gptUserPromptForWebPage
-        ),
-        ListSettingWithEnumItem(
-            R.string.web_processing_gpt_type,
-            0,
-            R.string.setting_summary_web_processing_gpt_type,
-            config.ai::gptForChatWeb,
-            listOf(
-                R.string.system_default,
-                R.string.openai,
-                R.string.self_hosted,
-                R.string.google_gemini
-            )
-        ),
-        DividerSettingItem(R.string.openai),
-        ValueSettingItem(
-            R.string.setting_title_edit_gpt_api_key,
-            0,
-            R.string.setting_summary_edit_gpt_api_key,
-            config.ai::gptApiKey
-        ),
-        ValueSettingItem(
-            R.string.setting_title_gpt_model_name,
-            0,
-            R.string.setting_summary_gpt_model_name,
-            config.ai::gptModel
-        ),
-        BooleanSettingItem(
-            R.string.use_it_on_tts,
-            0,
-            R.string.setting_summary_use_gpt_for_tts,
-            config.tts::useOpenAiTts
-        ),
-        ValueSettingItem(
-            R.string.setting_title_gpt_audio_model_name,
-            0,
-            R.string.setting_summary_gpt_audio_model_name,
-            config.ai::gptVoiceModel
-        ),
-        ValueSettingItem(
-            R.string.setting_title_gpt_prompt_for_tts,
-            0,
-            R.string.setting_summary_gpt_prompt_for_tts,
-            config.ai::gptVoicePrompt
-        ),
-        DividerSettingItem(R.string.openai_compatible_server),
-        BooleanSettingItem(
-            R.string.setting_title_use_custom_gpt_url,
-            0,
-            R.string.setting_summary_use_custom_gpt_url,
-            config.ai::useCustomGptUrl
-        ),
-        ValueSettingItem(
-            R.string.setting_title_other_model_name,
-            0,
-            R.string.setting_summary_other_model_name,
-            config.ai::alternativeModel
-        ),
-        ValueSettingItem(
-            R.string.setting_title_custom_gpt_url,
-            0,
-            R.string.setting_summary_custom_gpt_url,
-            config.ai::gptUrl
-        ),
-        DividerSettingItem(R.string.google_gemini),
-        BooleanSettingItem(
-            R.string.setting_title_use_gemini,
-            0,
-            R.string.setting_summary_use_gemini,
-            config.ai::useGeminiApi
-        ),
-        ValueSettingItem(
-            R.string.setting_title_gemini_key,
-            0,
-            R.string.setting_summary_gemini_key,
-            config.ai::geminiApiKey
-        ),
-        ValueSettingItem(
-            R.string.setting_title_gemini_model_name,
-            0,
-            R.string.setting_summary_gemini_model_name,
-            config.ai::geminiModel
-        ),
-    )
-
-    private val startSettingItems = listOf(
-        BooleanSettingItem(
-            R.string.setting_title_images,
-            0,
-            R.string.setting_summary_images,
-            config.browser::enableImages
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_auto_fill_form,
-            0,
-            R.string.setting_summary_auto_fill_form,
-            config.browser::autoFillForm
-        ),
-        ListSettingWithEnumItem(
-            R.string.setting_title_history,
-            0,
-            R.string.setting_summary_history,
-            config.tab::saveHistoryMode,
-            listOf(
-                R.string.save_history_mode_save_when_open,
-                R.string.save_history_mode_save_when_close,
-                R.string.save_history_mode_disabled,
-            )
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_debug,
-            0,
-            R.string.setting_summary_debug,
-            config.browser::debugWebView
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_remote,
-            0,
-            R.string.setting_summary_remote,
-            config.browser::enableRemoteAccess
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_location,
-            0,
-            R.string.setting_summary_location,
-            config.browser::shareLocation
-        ),
-        DividerSettingItem(),
-        BooleanSettingItem(
-            R.string.setting_title_adblock,
-            0,
-            R.string.setting_summary_adblock,
-            config.browser::adBlock
-        ),
-        ActionSettingItem(
-            R.string.setting_title_update_adblock,
-            0,
-            R.string.setting_summary_update_adblock,
-        ) {
-            startActivity(Intent(this, AdBlockSettingActivity::class.java))
-            finish()
-        },
-        ActionSettingItem(
-            R.string.setting_title_whitelist,
-            0,
-            R.string.setting_summary_whitelist,
-        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Adblock)) },
-        DividerSettingItem(),
-        BooleanSettingItem(
-            R.string.setting_title_javascript,
-            0,
-            R.string.setting_summary_javascript,
-            config.browser::enableJavascript
-        ),
-        ActionSettingItem(
-            R.string.setting_title_whitelistJS,
-            0,
-            R.string.setting_summary_whitelistJS,
-        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Javascript)) },
-        ActionSettingItem(
-            R.string.setting_title_userscripts,
-            0,
-            R.string.setting_summary_userscripts,
-        ) { startActivity(UserScriptListActivity.createIntent(this)) },
-        DividerSettingItem(),
-        BooleanSettingItem(
-            R.string.setting_title_cookie,
-            0,
-            R.string.setting_summary_cookie,
-            config.browser::cookies
-        ),
-        ActionSettingItem(
-            R.string.setting_title_whitelistCookie,
-            0,
-            R.string.setting_summary_whitelistCookie,
-        ) { startActivity(DataListActivity.createIntent(this, WhiteListType.Cookie)) },
-        DividerSettingItem(),
-        BooleanSettingItem(
-            R.string.setting_title_save_data,
-            0,
-            R.string.setting_summary_save_data,
-            config.browser::enableSaveData
-        ),
-    )
-
+    private val mainSettings = buildMainSettingItems()
+    private val uiSettingItems = buildUiSettingItems(deps)
+    private val behaviorSettingItems = buildBehaviorSettingItems(deps)
+    private val toolbarSettingItems = buildToolbarSettingItems(deps)
+    private val gestureSettingItems = buildGestureSettingItems(deps)
+    private val searchSettingItems = buildSearchSettingItems(deps)
+    private val dataSettingItems = buildBackupSettingItems(deps)
+    private val clearDataSettingItems = buildClearDataSettingItems(deps)
+    private val miscSettingItems = buildMiscSettingItems(deps)
+    private val userAgentSettingItems = buildUserAgentSettingItems(deps)
+    private val chatGptSettingItems = buildChatGptSettingItems(deps)
+    private val startSettingItems = buildStartSettingItems(deps)
 
     @Suppress("DEPRECATION")
     private fun hideStatusBar() {
