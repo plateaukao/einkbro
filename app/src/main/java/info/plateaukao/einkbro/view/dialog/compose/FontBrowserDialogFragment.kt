@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -115,6 +116,8 @@ private fun listFontsFromFolder(context: Context, folderUri: String): List<FontI
 }
 
 private fun loadTypeface(context: Context, uri: Uri): Typeface? {
+    // Typeface.Builder needs API 26; older devices fall back to the default font.
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return null
     return try {
         context.contentResolver.openFileDescriptor(uri, "r")?.use { pfd ->
             Typeface.Builder(pfd.fileDescriptor).build()

@@ -649,12 +649,14 @@ private fun <T> moveItemInTwoColumns(
     }
 
     // Ensure both lists are balanced (list2 can have up to 2 more items than list1)
+    // removeAt(lastIndex) instead of removeLast(): under Kotlin 2.x the latter
+    // resolves to java.util.List.removeLast, which only exists on API 35+.
     while (oddList.size > evenList.size + 1) {
-        evenList.add(oddList.removeLast())
+        evenList.add(oddList.removeAt(oddList.lastIndex))
     }
 
     while (evenList.size > oddList.size + 1) {
-        oddList.add(evenList.removeLast())
+        oddList.add(evenList.removeAt(evenList.lastIndex))
     }
 
     // Merge the lists into one

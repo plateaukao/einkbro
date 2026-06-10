@@ -36,8 +36,7 @@ suspend fun epubCoverParser(
 
     val hrefRootPath = File(opfFilePath).parentFile ?: File("")
     fun String.hrefAbsolutePath() = File(hrefRootPath, this).canonicalFile
-        .toPath()
-        .invariantSeparatorsPathString
+        .invariantSeparatorsPath
         .removePrefix("/")
 
     data class EpubManifestItem(
