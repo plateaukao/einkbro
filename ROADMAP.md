@@ -119,14 +119,19 @@ Ordered by value vs. risk. Each slice follows the same loop:
        motion, verified by walking every settings route on the emulator.
        `SettingComposeUi.kt` (852) was left as-is — it is shared rendering
        infrastructure (SettingScreen/item composables), not per-screen content.
-2. [ ] **BrowserActivity decomposition**: continue the proven delegate-extraction
-       pattern (`ChromeSetupDelegate`, `ExternalSearchDelegate` are the precedent).
-       Target: a thin activity that only wires delegates to ViewModels; `dispatch()`
-       branches migrate into the existing handler classes (`ToolbarActionHandler`,
-       `MenuActionHandler`, `KeyHandler`).
-3. [ ] **NinjaWebViewClient (773)**: extract content post-processing, SSL/error
-       handling, and ad-filter request interception into focused collaborators so the
-       `WebViewClient` is routing only.
+2. [~] **BrowserActivity decomposition** — re-scoped after inspection: the earlier
+       delegate-extraction wave already did this. The remaining ~1,070 lines are
+       mostly the ~80-method `BrowserController` interface surface implemented as
+       one-line forwards, plus `dispatch()` (a clean single action router — moving
+       its branches into the three handlers would duplicate routing, not improve it).
+       Further shrinking requires segregating the `BrowserController` interface — a
+       deep refactor, parked as future work below, not a slice.
+3. [x] **NinjaWebViewClient**: e-ink image interception (`EinkImageInterceptor`),
+       SSL/client-cert/HTTP-auth handling (`WebViewSslHandler`), and error-page
+       rendering (`WebErrorPagePresenter`) extracted as constructor-injected
+       collaborators; the `WebViewClient` overrides are one-line forwards.
+       773 → 558 lines, pure code motion, verified on the emulator (page load,
+       error page, retry flow).
 4. [ ] **EBWebView (957)**: keep extracting helpers — `WebViewReaderHelper`,
        `WebViewTranslationHelper`, `WebViewNavigationHelper` already set the pattern —
        until the class is wiring plus WebView overrides only.
