@@ -5,7 +5,6 @@ kotlin = "2.0.0"
 foundationAndroid = "1.6.8"
 kotlinxSerializationJson = "1.6.3"
 material = "1.12.0"
-mediationTestSuite = "3.0.0"
 okhttp = "4.12.0"
 okhttpSse = "4.11.0"
 reorderable = "2.3.3"
@@ -16,7 +15,6 @@ androidx-foundation-android = { group = "androidx.compose.foundation", name = "f
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-mediation-test-suite = { group = "com.google.android.ads", name = "mediation-test-suite", version.ref = "mediationTestSuite" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-sse = { group = "com.squareup.okhttp3", name = "okhttp-sse", version.ref = "okhttpSse" }
 reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
