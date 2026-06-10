@@ -64,22 +64,24 @@ Sequencing rationale:
 
 ## Phase 1 — Build & dependency modernization (independent items, 1–2 sessions each)
 
-- [ ] **Align Compose versions**: UI artifacts 1.6.8 → 1.7.x to match Material 1.7.2 —
-      or better, adopt the Compose BOM so the set can never skew again.
-- [ ] **Refresh aged androidx deps in app**: `fragment-ktx` 1.3.6 → 1.8.x; unify
-      `androidx.work` (app 2.7.0 vs ad-filter 2.4.0) on one current version.
-- [ ] **Koin 3.1.2 → 3.5.x** — prerequisite for the Phase 3 DI cleanup.
-- [ ] **ad-filter module modernization**: convert `build.gradle` Groovy → Kotlin DSL;
-      refresh coroutines 1.3.7 → 1.8.x, core-ktx 1.3.2 → current,
-      kotlinx-serialization-json 1.0.1 → 1.6.x. Migrate kapt → ksp *if* the Mezzanine
-      compiler supports KSP; if not, keep kapt and record it here as accepted debt.
-- [ ] **Version catalog consolidation**: move the dozens of inline versions in
-      `app/build.gradle.kts` into `gradle/libs.versions.toml`; migrate the root
-      `buildscript {}` classpath block to the `plugins {}` DSL with catalog references.
-- [ ] **Toolchain upgrade**: Gradle 8.9 → latest stable 8.x, AGP 8.7.1 → latest stable
-      8.x, then Kotlin 2.0.0 → 2.1.x with the matching KSP and Compose-compiler plugin.
-      AGP 9 and targetSdk 35/36 are tracked as "when forced or ready" follow-ups, not
-      part of this phase.
+- [x] **Align Compose versions**: all Compose artifacts on a single catalog version
+      (1.7.8); one `compose` version ref means the set can no longer skew.
+- [x] **Refresh aged androidx deps in app**: `fragment-ktx` 1.3.6 → 1.8.9; unified
+      `androidx.work` on 2.10.5 (was app 2.7.0 vs ad-filter 2.4.0).
+- [x] **Koin 3.1.2 → 3.5.6** — prerequisite for the Phase 3 DI cleanup.
+- [x] **ad-filter module modernization**: converted to Kotlin DSL; coroutines
+      1.3.7 → 1.10.2, core-ktx 1.3.2 → 1.16.0, kotlinx-serialization-json
+      1.0.1 → 1.6.3. **Accepted debt:** kapt stays — Mezzanine ships no KSP
+      processor (upstream repo has only `mezzanine-compiler`, kapt-based).
+- [x] **Version catalog consolidation**: all dependency and plugin versions live in
+      `gradle/libs.versions.toml`; root `buildscript {}` replaced with `plugins {}`
+      aliases; `settings.gradle.kts` now owns repositories via `pluginManagement` /
+      `dependencyResolutionManagement`.
+- [x] **Toolchain upgrade**: Gradle 8.9 → 8.14.5, AGP 8.7.1 → 8.13.2, Kotlin
+      2.0.0 → 2.1.20 with KSP 2.1.20-1.0.32 (KSP1 deliberately — Room 2.6.1 does not
+      support KSP2; revisit with a Room 2.7.x migration). compileSdk 34 → 36
+      (targetSdk stays 34). AGP 9 and targetSdk 35/36 remain "when forced or ready"
+      follow-ups.
 
 ## Phase 2 — Test safety net + CI gate (before any structural refactoring)
 
