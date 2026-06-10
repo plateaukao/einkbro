@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -49,6 +50,7 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.UserScript
 import info.plateaukao.einkbro.userscript.UserScriptManager
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,8 +65,10 @@ class UserScriptListActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val initialCode = intent?.getStringExtra(EXTRA_CODE)
-        val initialSourceUrl = intent?.getStringExtra(EXTRA_SOURCE_URL)
+        // Only the URL crosses the Intent boundary: multi-MB script bodies overflow the
+        // 1MB Binder transaction limit (TransactionTooLargeException), and fetching here
+        // lets the screen show a progress indicator instead of stalling in the browser.
+        val installUrl = intent?.getStringExtra(EXTRA_INSTALL_URL)
 
         setContent {
             val scripts = remember { mutableStateListOf<UserScript>() }
@@ -83,13 +87,24 @@ class UserScriptListActivity : ComponentActivity() {
                 }
             }
 
+            var fetchingUrl by remember { mutableStateOf(installUrl) }
+
             remember {
                 refresh()
-                // If launched with a script to install (from a .user.js URL), open the editor.
-                if (initialCode != null) {
-                    editing = UserScript(name = "", code = initialCode, sourceUrl = initialSourceUrl)
-                    editorSourceUrl = initialSourceUrl
-                    showEditor = true
+                // If launched with a script to install (from a .user.js URL), fetch it and
+                // open the editor; fetchingUrl drives the progress indicator meanwhile.
+                if (installUrl != null) {
+                    lifecycleScope.launch {
+                        val fetched = withContext(Dispatchers.IO) { fetchScript(installUrl) }
+                        fetchingUrl = null
+                        if (fetched != null) {
+                            editing = UserScript(name = "", code = fetched, sourceUrl = installUrl)
+                            editorSourceUrl = installUrl
+                            showEditor = true
+                        } else {
+                            EBToast.show(this@UserScriptListActivity, R.string.toast_load_error)
+                        }
+                    }
                 }
                 true
             }
@@ -117,7 +132,24 @@ class UserScriptListActivity : ComponentActivity() {
                     },
                 ) { padding ->
                     Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-                        if (scripts.isEmpty()) {
+                        fetchingUrl?.let { url ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(24.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.width(24.dp).height(24.dp),
+                                    strokeWidth = 2.dp,
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Text(
+                                    url,
+                                    maxLines = 2,
+                                    color = MaterialTheme.colors.onSurface,
+                                )
+                            }
+                        }
+                        if (scripts.isEmpty() && fetchingUrl == null) {
                             Text(
                                 stringResource(R.string.userscript_empty),
                                 modifier = Modifier.padding(24.dp),
@@ -198,13 +230,14 @@ class UserScriptListActivity : ComponentActivity() {
     }
 
     companion object {
-        private const val EXTRA_CODE = "code"
-        private const val EXTRA_SOURCE_URL = "sourceUrl"
+        private const val EXTRA_INSTALL_URL = "installUrl"
 
-        fun createIntent(context: Context, code: String? = null, sourceUrl: String? = null): Intent =
+        fun createIntent(context: Context): Intent =
+            Intent(context, UserScriptListActivity::class.java)
+
+        fun createInstallIntent(context: Context, installUrl: String): Intent =
             Intent(context, UserScriptListActivity::class.java).apply {
-                if (code != null) putExtra(EXTRA_CODE, code)
-                if (sourceUrl != null) putExtra(EXTRA_SOURCE_URL, sourceUrl)
+                putExtra(EXTRA_INSTALL_URL, installUrl)
             }
     }
 }
@@ -236,6 +269,8 @@ private fun ScriptRow(
     }
 }
 
+private const val EDITOR_DISPLAY_LIMIT = 10_000
+
 @Composable
 private fun ScriptEditorDialog(
     initial: UserScript?,
@@ -245,6 +280,10 @@ private fun ScriptEditorDialog(
 ) {
     var code by remember { mutableStateOf(initial?.code.orEmpty()) }
     var url by remember { mutableStateOf("") }
+    // TextField cannot handle multi-MB scripts (composition stalls the UI thread
+    // indefinitely), so beyond this size show a truncated read-only preview; `code`
+    // keeps the full body and is what gets saved.
+    val tooLargeToEdit = code.length > EDITOR_DISPLAY_LIMIT
 
     Dialog(onDismissRequest = onDismiss) {
         Column(
@@ -277,8 +316,9 @@ private fun ScriptEditorDialog(
             }
             Spacer(Modifier.height(8.dp))
             TextField(
-                value = code,
-                onValueChange = { code = it },
+                value = if (tooLargeToEdit) code.take(EDITOR_DISPLAY_LIMIT) + "\n..." else code,
+                onValueChange = { if (!tooLargeToEdit) code = it },
+                readOnly = tooLargeToEdit,
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 200.dp, max = 360.dp),

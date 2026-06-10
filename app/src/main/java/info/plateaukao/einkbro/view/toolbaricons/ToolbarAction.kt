@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.CancelPresentation
 import androidx.compose.material.icons.outlined.DesktopWindows
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.FolderCopy
 import androidx.compose.material.icons.outlined.FormatSize
 import androidx.compose.material.icons.outlined.Fullscreen
@@ -184,6 +185,11 @@ enum class ToolbarAction(
             R.drawable.ic_audio_only_on,
             R.drawable.ic_audio_only_off
         )
+    ),
+    // New entries must be appended: ordinals are persisted in toolbar configs.
+    Userscript(
+        imageVector = Icons.Outlined.Extension,
+        titleResId = R.string.setting_title_userscripts,
     );
 
 

@@ -108,4 +108,5 @@ sealed class BrowserAction {
     object RotateScreen : BrowserAction()
     object ToggleAudioOnlyMode : BrowserAction()
     object ShowSiteSettingsDialog : BrowserAction()
+    object ShowUserScriptCommands : BrowserAction()
 }

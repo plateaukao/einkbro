@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.activity.ToolbarConfigActivity
+import info.plateaukao.einkbro.activity.UserScriptListActivity
 import info.plateaukao.einkbro.browser.BrowserAction
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TranslationMode
@@ -42,6 +43,8 @@ class ToolbarActionHandler(
         ToolbarAction.Touch -> dispatch(BrowserAction.ShowTouchAreaDialog)
         ToolbarAction.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb(useSplitScreen = true))
         ToolbarAction.ShareLink -> dispatch(BrowserAction.ShareLinkLongPress)
+        ToolbarAction.Userscript ->
+            activity.startActivity(UserScriptListActivity.createIntent(activity))
         else -> {}
     }
 
@@ -93,5 +96,6 @@ class ToolbarActionHandler(
         ToolbarAction.ChatWithWeb -> dispatch(BrowserAction.ChatWithWeb())
         ToolbarAction.PageAi -> dispatch(BrowserAction.ShowPageAiActionMenu)
         ToolbarAction.AudioOnly -> dispatch(BrowserAction.ToggleAudioOnlyMode)
+        ToolbarAction.Userscript -> dispatch(BrowserAction.ShowUserScriptCommands)
     }
 }
