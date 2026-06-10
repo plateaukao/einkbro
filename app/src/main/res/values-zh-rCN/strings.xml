@@ -225,18 +225,6 @@
     <!-- Dialog help -->
 
 
-    <!-- Dialog changelog -->
-
-    <string name="changelog_dialog">
-
-        &lt;b>在以下网站您可以访问相关方面的所有重要信息 EinkBro.
-        &lt;br>&lt;br>
-
-        \u25AA &lt;i>最新版本:&lt;/i>&lt;br> https://github.com/plateaukao/browser/releases&lt;br>&lt;br>
-        \u25AA &lt;i>项目站点:&lt;/i>&lt;br> https://github.com/plateaukao/browser&lt;br>&lt;br>
-        \u25AA &lt;i>脸书页面:&lt;/i>&lt;br> https://www.facebook.com/einkbro&lt;br>&lt;br>
-        \u25AA &lt;i>更新日志:&lt;/i>&lt;br> https://github.com/plateaukao/browser/blob/main/CHANGELOG.md&lt;br>&lt;br>
-    </string>
 
 
     <string name="setting_summary_desktop">支持网站桌面模式</string>
