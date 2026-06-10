@@ -112,10 +112,13 @@ Sequencing rationale:
 Ordered by value vs. risk. Each slice follows the same loop:
 **extract → unit-test the extracted class → run the `regression` skill on the emulator → release.**
 
-1. [ ] **Settings split** (lowest risk, high payoff): break `SettingActivity.kt` (1,510)
-       and `SettingComposeUi.kt` (852) into one file per settings screen, with the pure
-       setting-item data lists separated from the composables so each screen is
-       previewable and testable in isolation.
+1. [x] **Settings split** (lowest risk, high payoff): all thirteen setting-item lists
+       now live in `setting/screens/` (one file per screen) built from a small
+       `SettingScreenDeps` holder; backup launchers stay in the activity behind a
+       `BackupOps` interface. `SettingActivity.kt` 1,510 → 515 lines, pure code
+       motion, verified by walking every settings route on the emulator.
+       `SettingComposeUi.kt` (852) was left as-is — it is shared rendering
+       infrastructure (SettingScreen/item composables), not per-screen content.
 2. [ ] **BrowserActivity decomposition**: continue the proven delegate-extraction
        pattern (`ChromeSetupDelegate`, `ExternalSearchDelegate` are the precedent).
        Target: a thin activity that only wires delegates to ViewModels; `dispatch()`
