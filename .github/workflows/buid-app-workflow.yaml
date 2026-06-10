@@ -36,7 +36,9 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Decode Keystore
-        run: echo "${{ secrets.KEYSTORE }}" | base64 -d > "$RUNNER_TEMP/android_keystore.keystore"
+        # tr + -i match the leniency of Node's Buffer.from(..., 'base64'),
+        # which the previous action used: ignore whitespace/non-alphabet bytes.
+        run: echo "${{ secrets.KEYSTORE }}" | tr -d '[:space:]' | base64 -di > "$RUNNER_TEMP/android_keystore.keystore"
       - name: Build the app
         run: ./gradlew assembleRelease -PshowUpdateButton=true -PuniversalApk -Pandroid.injected.signing.store.file=$RUNNER_TEMP/android_keystore.keystore -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
       - name: Upload arm64-v8a APK
