@@ -139,20 +139,20 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
     implementation("androidx.activity:activity-compose:1.9.1")
-    implementation("androidx.compose.ui:ui:1.6.8")
-    implementation("androidx.navigation:navigation-runtime-ktx:2.8.0")
-    implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation("androidx.compose.ui:ui:1.7.8")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.8.9")
+    implementation("androidx.navigation:navigation-compose:2.8.9")
 
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.8")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.8")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
-    implementation("androidx.fragment:fragment-ktx:1.3.6")
+    implementation("androidx.fragment:fragment-ktx:1.8.9")
 
 
     // for dark mode
     implementation("androidx.webkit:webkit:1.11.0")
 
-    val koinVersion = "3.1.2"
+    val koinVersion = "3.5.6"
     // Koin core features
     implementation("io.insert-koin:koin-core:$koinVersion")
     // Koin test features
@@ -164,7 +164,7 @@ dependencies {
     // Unit testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.13.12")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("androidx.room:room-testing:2.6.1")
@@ -174,15 +174,15 @@ dependencies {
 
     // compose
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.7.2")
-    implementation("androidx.compose.material:material-icons-extended:1.7.2")
+    implementation("androidx.compose.material:material:1.7.8")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     // Tooling support (Previews, etc.)
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.8")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.8")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.8")
 
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.8")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.8")
 
     implementation(libs.accompanist.drawablepainter)
 
@@ -196,7 +196,7 @@ dependencies {
 
     // adfilter
 
-    implementation("androidx.work:work-runtime-ktx:2.7.0")
+    implementation("androidx.work:work-runtime-ktx:2.10.5")
 
     // media session for TTS notification
     implementation("androidx.media:media:1.7.0")
