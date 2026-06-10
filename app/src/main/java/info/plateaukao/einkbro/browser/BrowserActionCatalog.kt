@@ -126,6 +126,7 @@ object BrowserActionCatalog {
                 BrowserActionEntry(BrowserAction.ShowMenuDialog, R.string.menu),
                 BrowserActionEntry(BrowserAction.ShowFastToggleDialog, R.string.action_fast_toggle),
                 BrowserActionEntry(BrowserAction.ShowSiteSettingsDialog, R.string.site_settings),
+                BrowserActionEntry(BrowserAction.ShowUserScriptCommands, R.string.setting_title_userscripts),
             ),
         ),
     )

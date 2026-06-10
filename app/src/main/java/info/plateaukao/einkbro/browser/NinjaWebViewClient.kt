@@ -264,21 +264,11 @@ class EBWebViewClient(
     }
 
     private fun offerUserScriptInstall(url: String) {
-        coroutineScope.launch(Dispatchers.IO) {
-            val code = try {
-                java.net.URL(url).openStream().bufferedReader().use { it.readText() }
-            } catch (e: Exception) {
-                Log.w("EBWebViewClient", "Failed to fetch userscript $url: ${e.message}")
-                null
-            } ?: return@launch
-            withContext(Dispatchers.Main) {
-                context.startActivity(
-                    info.plateaukao.einkbro.activity.UserScriptListActivity.createIntent(
-                        context, code, url,
-                    )
-                )
-            }
-        }
+        // The activity downloads the script itself (showing a progress indicator); only
+        // the URL is passed, since multi-MB bodies overflow the 1MB Binder limit.
+        context.startActivity(
+            info.plateaukao.einkbro.activity.UserScriptListActivity.createInstallIntent(context, url)
+        )
     }
 
     private fun isTranslationDomain(url: String): Boolean {
@@ -313,8 +303,10 @@ class EBWebViewClient(
         }
 
         if (url.startsWith("http")) {
-//            webView.loadUrl(url, ebWebView.requestHeaders)
-//            return true
+            if (isUserScriptUrl(url)) {
+                offerUserScriptInstall(url)
+                return true
+            }
             return false
         }
 

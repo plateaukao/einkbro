@@ -553,6 +553,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         is BrowserAction.RotateScreen -> rotateScreen()
         is BrowserAction.ToggleAudioOnlyMode -> toggleAudioOnlyMode()
         is BrowserAction.ShowSiteSettingsDialog -> showSiteSettingsDialog()
+        is BrowserAction.ShowUserScriptCommands -> showUserScriptCommands()
     }
 
     // ── BrowserController implementation ──────────────────────────────────
@@ -759,6 +760,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             url = ebWebView.url.orEmpty(),
             onDismissAction = { ebWebView.initPreferences(); ebWebView.reload() },
         ).show(supportFragmentManager, "site_settings_dialog")
+    }
+
+    private fun showUserScriptCommands() {
+        if (!browserState.isWebViewInitialized) return
+        // Commands registered by userscripts on the current page via GM_registerMenuCommand.
+        val commands = ebWebView.userScriptMenuCommands.toList()
+        if (commands.isEmpty()) {
+            // Nothing registered on this page — fall back to the userscript manager.
+            startActivity(UserScriptListActivity.createIntent(this))
+            return
+        }
+        lifecycleScope.launch {
+            val index = dialogManager.getSelectedOptionWithString(
+                R.string.setting_title_userscripts, commands.map { it.first }, -1
+            ) ?: return@launch
+            commands.getOrNull(index)?.let { ebWebView.invokeUserScriptMenuCommand(it.second) }
+        }
     }
 
     override fun showTouchAreaDialog() = TouchAreaDialogFragment().show(supportFragmentManager, "TouchAreaDialog")
