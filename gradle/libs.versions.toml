@@ -1,7 +1,7 @@
 [versions]
 accompanistDrawablepainter = "0.31.0-alpha"
 jsoup = "1.17.2"
-kotlin = "2.0.0"
+kotlin = "2.1.20"
 foundationAndroid = "1.6.8"
 kotlinxSerializationJson = "1.6.3"
 material = "1.12.0"

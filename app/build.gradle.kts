@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" // this version matches your Kotlin version
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.20" // this version matches your Kotlin version
 }
 
 fun getLastCommitTimeStamp(): String {
@@ -29,8 +29,9 @@ fun showUpdateButton(): String {
 }
 
 android {
-    compileSdk = 34
-    buildToolsVersion = "34.0.0"
+    // compileSdk 36 is required by current androidx artifacts; targetSdk stays 34,
+    // so runtime behavior is unchanged.
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "info.plateaukao.einkbro"
