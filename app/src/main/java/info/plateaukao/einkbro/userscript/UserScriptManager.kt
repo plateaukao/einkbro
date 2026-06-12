@@ -157,6 +157,18 @@ class UserScriptManager(private val context: Context) : KoinComponent {
 
     suspend fun add(code: String, sourceUrl: String? = null): Long {
         val metadata = UserScriptMetadata.parse(code)
+        // Re-installing a script with the same @name edits the existing one in place
+        // rather than creating a duplicate (e.g. fetching a newer version of a script).
+        // Skip the "Unnamed script" default so metadata-less scripts don't collapse together.
+        val existing = if (metadata.name != UserScriptMetadata.DEFAULT_NAME) {
+            scripts.firstOrNull { it.script.name == metadata.name }?.script
+        } else null
+        if (existing != null) {
+            userScriptDao.update(existing.copy(code = "", sourceUrl = sourceUrl ?: existing.sourceUrl))
+            writeCodeFile(existing.id, code)
+            reload()
+            return existing.id
+        }
         val maxOrder = scripts.maxOfOrNull { it.script.order } ?: 0
         // Persist only metadata in the DB row; the body goes to a file keyed by the new id.
         val id = userScriptDao.insert(
