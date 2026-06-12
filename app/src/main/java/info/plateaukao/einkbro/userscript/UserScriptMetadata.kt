@@ -18,6 +18,9 @@ data class UserScriptMetadata(
     val noFrames: Boolean,
 ) {
     companion object {
+        /** Fallback name used when a script has no `@name` metadata. */
+        const val DEFAULT_NAME = "Unnamed script"
+
         private val BLOCK_REGEX =
             Regex("""//\s*==UserScript==\s*\n(.*?)//\s*==/UserScript==""", RegexOption.DOT_MATCHES_ALL)
         private val LINE_REGEX = Regex("""//\s*@([\w-]+)\s+(.*)""")
@@ -46,7 +49,7 @@ data class UserScriptMetadata(
             }
 
             return UserScriptMetadata(
-                name = first("name").ifEmpty { "Unnamed script" },
+                name = first("name").ifEmpty { DEFAULT_NAME },
                 namespace = first("namespace"),
                 version = first("version"),
                 description = first("description"),
