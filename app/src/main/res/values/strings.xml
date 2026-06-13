@@ -278,6 +278,11 @@
     <string name="userscript_install_from_url">Install from URL</string>
     <string name="userscript_fetch">Fetch</string>
     <string name="userscript_code">Userscript code</string>
+    <string name="userscript_update">Check for update</string>
+    <string name="userscript_updated">Updated to v%1$s</string>
+    <string name="userscript_up_to_date">Already up to date</string>
+    <string name="userscript_no_update_source">No update URL for this script</string>
+    <string name="userscript_update_failed">Update check failed</string>
     <string name="refresh">Refresh</string>
     <string name="touch_turn_page">Touch turn page</string>
     <string name="tab_preview">Tab preview</string>

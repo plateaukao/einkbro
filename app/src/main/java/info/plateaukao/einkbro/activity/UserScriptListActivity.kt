@@ -35,6 +35,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -49,6 +50,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.UserScript
+import info.plateaukao.einkbro.userscript.UpdateResult
 import info.plateaukao.einkbro.userscript.UserScriptManager
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -72,6 +74,7 @@ class UserScriptListActivity : ComponentActivity() {
 
         setContent {
             val scripts = remember { mutableStateListOf<UserScript>() }
+            val updatingIds = remember { mutableStateListOf<Long>() }
             var editing by remember { mutableStateOf<UserScript?>(null) }
             var showEditor by remember { mutableStateOf(false) }
             var editorSourceUrl by remember { mutableStateOf<String?>(null) }
@@ -160,11 +163,24 @@ class UserScriptListActivity : ComponentActivity() {
                             items(scripts, key = { it.id }) { script ->
                                 ScriptRow(
                                     script = script,
+                                    updating = updatingIds.contains(script.id),
                                     onToggle = { enabled ->
                                         lifecycleScope.launch {
                                             withContext(Dispatchers.IO) {
                                                 userScriptManager.setEnabled(script.id, enabled)
                                             }
+                                            refresh()
+                                        }
+                                    },
+                                    onUpdate = {
+                                        if (updatingIds.contains(script.id)) return@ScriptRow
+                                        updatingIds.add(script.id)
+                                        lifecycleScope.launch {
+                                            val result = withContext(Dispatchers.IO) {
+                                                userScriptManager.checkAndUpdate(script.id)
+                                            }
+                                            updatingIds.remove(script.id)
+                                            showUpdateResult(result)
                                             refresh()
                                         }
                                     },
@@ -229,6 +245,16 @@ class UserScriptListActivity : ComponentActivity() {
         null
     }
 
+    private fun showUpdateResult(result: UpdateResult) {
+        val message = when (result) {
+            is UpdateResult.Updated -> getString(R.string.userscript_updated, result.to)
+            UpdateResult.UpToDate -> getString(R.string.userscript_up_to_date)
+            UpdateResult.NoSource -> getString(R.string.userscript_no_update_source)
+            is UpdateResult.Failed -> getString(R.string.userscript_update_failed)
+        }
+        EBToast.show(this, message)
+    }
+
     companion object {
         private const val EXTRA_INSTALL_URL = "installUrl"
 
@@ -245,7 +271,9 @@ class UserScriptListActivity : ComponentActivity() {
 @Composable
 private fun ScriptRow(
     script: UserScript,
+    updating: Boolean,
     onToggle: (Boolean) -> Unit,
+    onUpdate: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
 ) {
@@ -260,6 +288,16 @@ private fun ScriptRow(
             modifier = Modifier.weight(1f),
             color = MaterialTheme.colors.onSurface,
         )
+        IconButton(onClick = onUpdate, enabled = !updating) {
+            if (updating) {
+                CircularProgressIndicator(
+                    modifier = Modifier.width(20.dp).height(20.dp),
+                    strokeWidth = 2.dp,
+                )
+            } else {
+                Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.userscript_update))
+            }
+        }
         IconButton(onClick = onEdit) {
             Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.menu_edit))
         }
