@@ -26,6 +26,18 @@ data class ParsedUserScript(
     var requiresContent: String = "",
 )
 
+/** Outcome of [UserScriptManager.checkAndUpdate]. */
+sealed class UpdateResult {
+    /** A newer version was downloaded and installed. */
+    data class Updated(val from: String, val to: String) : UpdateResult()
+    /** The remote version was not newer than the installed one. */
+    object UpToDate : UpdateResult()
+    /** The script has no `@updateURL`/`@downloadURL` and no install URL to check. */
+    object NoSource : UpdateResult()
+    /** The check or download failed (network error, empty response, etc.). */
+    data class Failed(val message: String) : UpdateResult()
+}
+
 class UserScriptManager(private val context: Context) : KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
     private val coroutineScope: CoroutineScope by inject()
@@ -196,6 +208,49 @@ class UserScriptManager(private val context: Context) : KoinComponent {
         userScriptDao.update(script.copy(enabled = enabled))
         reload()
     }
+
+    /**
+     * Checks a script's remote source for a newer version and, if found, replaces it in place
+     * (preserving id/enabled/order via [update]). The check URL is `@updateURL`, then
+     * `@downloadURL`, then the original install URL; the body is fetched from `@downloadURL`,
+     * then the install URL, reusing the already-fetched check response when they coincide.
+     * Only updates when the remote `@version` is strictly newer than the installed one.
+     */
+    suspend fun checkAndUpdate(id: Long): UpdateResult = withContext(Dispatchers.IO) {
+        val parsed = getById(id) ?: return@withContext UpdateResult.Failed("script not found")
+        val meta = parsed.metadata
+        val sourceUrl = parsed.script.sourceUrl.orEmpty()
+        val checkUrl = meta.updateUrl.ifEmpty { meta.downloadUrl }.ifEmpty { sourceUrl }
+        if (checkUrl.isEmpty()) return@withContext UpdateResult.NoSource
+
+        val checkBody = try {
+            httpGet(checkUrl)
+        } catch (e: Exception) {
+            return@withContext UpdateResult.Failed(e.message ?: "fetch failed")
+        } ?: return@withContext UpdateResult.Failed("empty response")
+
+        val remoteVersion = UserScriptMetadata.parse(checkBody).version
+        if (!UserScriptMetadata.isNewer(remoteVersion, meta.version)) {
+            return@withContext UpdateResult.UpToDate
+        }
+
+        val downloadUrl = meta.downloadUrl.ifEmpty { sourceUrl }.ifEmpty { checkUrl }
+        val newCode = if (downloadUrl == checkUrl) {
+            checkBody
+        } else {
+            try {
+                httpGet(downloadUrl)
+            } catch (e: Exception) {
+                return@withContext UpdateResult.Failed(e.message ?: "download failed")
+            } ?: return@withContext UpdateResult.Failed("empty download")
+        }
+
+        update(parsed.script.copy(code = newCode))
+        UpdateResult.Updated(from = meta.version, to = remoteVersion)
+    }
+
+    private fun httpGet(url: String): String? =
+        httpClient.newCall(Request.Builder().url(url).build()).execute().use { it.body?.string() }
 
     suspend fun delete(id: Long) {
         withContext(Dispatchers.IO) { valueDao.deleteAllForScript(id) }
