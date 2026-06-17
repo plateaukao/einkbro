@@ -1,3 +1,12 @@
+### 15.15.0
+#### Features
+* Userscript support: a Tampermonkey-style engine to install and run userscripts, with GM_* APIs and per-script menu commands
+* Userscripts update themselves from their @updateURL / @downloadURL
+* Toggle for pull-to-refresh in Behavior settings
+
+#### Fixes
+* Fixed several crashes on specific Android API levels
+
 ### 15.14.0
 #### Features
 * Redesigned Site Settings dialog with pinned Reset/OK buttons
