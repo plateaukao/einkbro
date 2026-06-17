@@ -114,12 +114,20 @@ class UserScriptManager(private val context: Context) : KoinComponent {
 
     fun getMatchingScripts(url: String, runAt: RunAt): List<ParsedUserScript> {
         if (!url.startsWith("http")) return emptyList()
-        return scripts.filter { parsed ->
-            parsed.script.enabled &&
-                parsed.metadata.runAt == runAt &&
-                UrlMatcher.matches(url, parsed.metadata.matches, parsed.metadata.includes) &&
-                !UrlMatcher.isExcluded(url, parsed.metadata.excludes)
-        }
+        return scripts
+            .filter { parsed ->
+                parsed.script.enabled &&
+                    parsed.metadata.runAt == runAt &&
+                    UrlMatcher.matches(url, parsed.metadata.matches, parsed.metadata.includes) &&
+                    !UrlMatcher.isExcluded(url, parsed.metadata.excludes)
+            }
+            // Legacy duplicate rows (same @name, installed before reinstall-dedup landed)
+            // would each inject and stack duplicate UI; collapse them by @name. Metadata-less
+            // scripts all share DEFAULT_NAME, so keep those distinct by id.
+            .distinctBy { parsed ->
+                parsed.metadata.name.takeIf { it != UserScriptMetadata.DEFAULT_NAME }
+                    ?: "id:${parsed.script.id}"
+            }
     }
 
     fun getById(id: Long): ParsedUserScript? = scripts.firstOrNull { it.script.id == id }
