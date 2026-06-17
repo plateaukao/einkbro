@@ -81,6 +81,9 @@ class EBWebViewClient(
 
     private var lastVisitedHistoryKey: String? = null
 
+    /** URL the userscript menu registry was last cleared for; see [onPageStarted]. */
+    private var lastUserScriptUrl: String? = null
+
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
         // Update hasVideo for SPA navigations (e.g., YouTube client-side routing)
@@ -139,10 +142,18 @@ class EBWebViewClient(
 
         url?.let { injectForcedViewportWidth(it) }
 
-        // userscripts are page-scoped; reset the per-page menu registry, then run
-        // any document-start scripts for this URL.
-        ebWebView.userScriptMenuCommands.clear()
-        url?.let { injectUserScripts(it, info.plateaukao.einkbro.userscript.RunAt.DOCUMENT_START) }
+        // userscripts are page-scoped; reset the per-page menu registry only when the
+        // document actually changes. onPageStarted can re-fire on the same document
+        // (redirects, progressive commits), and the scripts inject exactly once per
+        // document now (see injectUserScripts) — clearing on every call would wipe the
+        // menu commands those scripts already registered without re-registering them.
+        url?.let { u ->
+            if (u != lastUserScriptUrl) {
+                ebWebView.userScriptMenuCommands.clear()
+                lastUserScriptUrl = u
+            }
+            injectUserScripts(u, info.plateaukao.einkbro.userscript.RunAt.DOCUMENT_START)
+        }
     }
 
     private fun injectUserScripts(url: String, runAt: info.plateaukao.einkbro.userscript.RunAt) {
@@ -158,9 +169,19 @@ class EBWebViewClient(
             val b64 = android.util.Base64.encodeToString(
                 js.toByteArray(Charsets.UTF_8), android.util.Base64.NO_WRAP,
             )
+            // Guard against running the same script twice in one document. WebView's page
+            // callbacks are not once-per-page (redirects, multiple onPageFinished, SPA
+            // re-commits all re-fire them), so without this a script that appends UI — e.g.
+            // a floating button — would stack a fresh copy on every callback. The flag lives
+            // on `window`, which is fresh on each real navigation, so genuine page loads still
+            // run the script exactly once. Keyed by script id so distinct scripts are independent.
+            val scriptId = parsed.script.id
             val injector = """
                 (function(){
                     try {
+                        var reg = window.__einkbroInjected || (window.__einkbroInjected = {});
+                        if (reg[$scriptId]) return;
+                        reg[$scriptId] = true;
                         var s = document.createElement('script');
                         s.textContent = decodeURIComponent(escape(atob('$b64')));
                         (document.head || document.documentElement).appendChild(s);
