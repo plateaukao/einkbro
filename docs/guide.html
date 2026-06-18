@@ -71,6 +71,8 @@
   <ul>
     <li><a href="#feature-reader">Reader Mode</a></li>
     <li><a href="#feature-split">Split Screen</a></li>
+    <li><a href="#feature-site-overrides">Per-Site Overrides</a></li>
+    <li><a href="#feature-userscripts">Userscripts</a></li>
     <li><a href="#feature-translate">Translation</a></li>
     <li><a href="#feature-epub">EPUB Export</a></li>
     <li><a href="#feature-touch">Touch Page Turning</a></li>
@@ -371,6 +373,12 @@
   <td>Hide video, keep audio and captions</td>
   <td>&mdash;</td>
 </tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">extension</span></td>
+  <td><strong>Userscripts</strong></td>
+  <td>Show menu commands registered by userscripts on this page; opens the userscript manager if none</td>
+  <td>&mdash;</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -522,6 +530,7 @@
 <div class="setting-item"><div class="setting-item__name">Vi Key Binding</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable Vi-style keyboard shortcuts. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Disable Long Press on Touch Area</div><div class="setting-item__desc"><span class="tag">Toggle</span> Prevent long-press actions in touch areas. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Use Up/Down Key</div><div class="setting-item__desc"><span class="tag">Toggle</span> Use D-pad up/down for page turning (Bluetooth keyboards). Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Pull to refresh</div><div class="setting-item__desc"><span class="tag">Toggle</span> Swipe down at the top of the page to reload. Applies live without restart. Default: on.</div></div>
 
 <h4>Display &amp; Rendering</h4>
 <div class="setting-item"><div class="setting-item__name">Keep Screen Awake</div><div class="setting-item__desc"><span class="tag">Toggle</span> Prevent screen from turning off. Default: off.</div></div>
@@ -716,6 +725,44 @@
   <li><strong>Post-load JavaScript</strong> &mdash; runs after the DOM is ready, useful for click-to-expand fixes or removing pop-ups that bypass adblock</li>
 </ul>
 <p>The AI agent (under <a href="#feature-ai">Chat With Web</a>) can author and save these patches for you &mdash; ask it to "hide the sticky banner on this site" and it will write CSS, scope it to the current domain, and persist it.</p>
+</section>
+
+<section id="feature-userscripts">
+<h2>Userscripts</h2>
+<p>EinkBro includes a Tampermonkey-style userscript engine, so the same community scripts you run on the desktop (from sites like Greasy Fork) work on your e-reader. Scripts run automatically on the pages they match.</p>
+
+<h4>Installing a Script</h4>
+<ul>
+  <li><strong>From a link</strong> &mdash; tap any <code>.user.js</code> link while browsing. EinkBro fetches it and opens an editor with the code pre-filled; tap <strong>OK</strong> to install.</li>
+  <li><strong>Manually</strong> &mdash; open <a href="#settings-startcontrol">Settings &rarr; Start Control &rarr; Userscripts</a> (labelled <em>"Manage Tampermonkey-style userscripts"</em>), then tap <strong>Add userscript</strong>. Paste code directly into the <strong>Userscript code</strong> field, or type a URL into <strong>Install from URL</strong> and tap <strong>Fetch</strong>.</li>
+</ul>
+<p>Re-installing a script that shares an existing script's <code>@name</code> updates it in place instead of creating a duplicate.</p>
+
+<h4>Managing Scripts</h4>
+<p>The Userscripts screen lists every installed script. Each row has:</p>
+<ul>
+  <li><strong>Enable / disable toggle</strong> &mdash; turn a script off without deleting it</li>
+  <li><strong>Check for update</strong> &mdash; re-fetch the latest version (see below)</li>
+  <li><strong>Edit</strong> &mdash; view or modify the script's code</li>
+  <li><strong>Delete</strong> &mdash; remove the script permanently</li>
+</ul>
+
+<h4>Menu Commands</h4>
+<p>Scripts that register entries with <code>GM_registerMenuCommand</code> surface them through the <strong>Userscripts</strong> toolbar action (the puzzle <span class="material-symbols-outlined" style="font-size:1em;vertical-align:-2px">extension</span> icon &mdash; add it in <a href="#toolbar-config">Toolbar Customization</a>). Tapping it lists the commands the current page's scripts registered; if none are registered, it opens the userscript manager. Menu commands are page-scoped and reset when you navigate away.</p>
+
+<h4>Updating Scripts</h4>
+<p>Updates are manual: tap <strong>Check for update</strong> on a script. EinkBro reads the script's <code>@updateURL</code> / <code>@downloadURL</code>, compares versions, and installs the newer one in place. You'll see a toast such as <em>"Updated to v2.1"</em>, <em>"Already up to date"</em>, or <em>"No update URL for this script"</em>.</p>
+
+<h4>Supported APIs</h4>
+<p>The engine grants the common Greasemonkey/Tampermonkey APIs, each with a promise-based <code>GM.*</code> equivalent:</p>
+<ul>
+  <li><strong>Storage</strong> &mdash; <code>GM_getValue</code>, <code>GM_setValue</code>, <code>GM_deleteValue</code>, <code>GM_listValues</code></li>
+  <li><strong>DOM</strong> &mdash; <code>GM_addStyle</code>, <code>GM_addElement</code></li>
+  <li><strong>Network</strong> &mdash; <code>GM_xmlhttpRequest</code> (cross-origin, gated by <code>@connect</code>)</li>
+  <li><strong>Menu</strong> &mdash; <code>GM_registerMenuCommand</code>, <code>GM_unregisterMenuCommand</code></li>
+  <li><strong>Misc</strong> &mdash; <code>GM_openInTab</code>, <code>GM_setClipboard</code>, <code>GM_notification</code>, <code>GM_log</code>, <code>GM_info</code></li>
+</ul>
+<p>Metadata directives parsed from the <code>// ==UserScript==</code> header include <code>@name</code>, <code>@namespace</code>, <code>@version</code>, <code>@description</code>, <code>@match</code>, <code>@include</code>, <code>@exclude</code>, <code>@require</code>, <code>@connect</code>, <code>@run-at</code> (<code>document-start</code> / <code>document-idle</code>), <code>@noframes</code>, <code>@updateURL</code>, and <code>@downloadURL</code>.</p>
 </section>
 
 <section id="feature-translate">

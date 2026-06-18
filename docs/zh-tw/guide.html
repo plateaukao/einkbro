@@ -72,6 +72,8 @@
   <ul>
     <li><a href="#feature-reader">閱讀模式</a></li>
     <li><a href="#feature-split">分割畫面</a></li>
+    <li><a href="#feature-site-overrides">個別站台設定</a></li>
+    <li><a href="#feature-userscripts">使用者指令碼</a></li>
     <li><a href="#feature-translate">翻譯</a></li>
     <li><a href="#feature-epub">EPUB 匯出</a></li>
     <li><a href="#feature-touch">觸控翻頁</a></li>
@@ -372,6 +374,12 @@
   <td>隱藏影片，保留聲音與字幕</td>
   <td>&mdash;</td>
 </tr>
+<tr>
+  <td class="tb-icon"><span class="material-symbols-outlined">extension</span></td>
+  <td><strong>使用者指令碼</strong></td>
+  <td>顯示本頁使用者指令碼註冊的選單指令；若無則開啟指令碼管理畫面</td>
+  <td>&mdash;</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -523,6 +531,7 @@
 <div class="setting-item"><div class="setting-item__name">Vi 快捷鍵</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用 Vi 風格的鍵盤快捷鍵。預設：關閉。</div></div>
 <div class="setting-item"><div class="setting-item__name">停用觸控區長按</div><div class="setting-item__desc"><span class="tag">切換</span> 防止觸控區的長按動作。預設：關閉。</div></div>
 <div class="setting-item"><div class="setting-item__name">使用上／下方向鍵</div><div class="setting-item__desc"><span class="tag">切換</span> 使用方向鍵上／下翻頁（適用藍牙鍵盤）。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">下拉重新整理</div><div class="setting-item__desc"><span class="tag">切換</span> 在頁面頂端向下滑動即可重新載入。即時套用，無需重新啟動。預設：開啟。</div></div>
 
 <h4>顯示與渲染</h4>
 <div class="setting-item"><div class="setting-item__name">保持螢幕常亮</div><div class="setting-item__desc"><span class="tag">切換</span> 防止螢幕自動關閉。預設：關閉。</div></div>
@@ -717,6 +726,44 @@
   <li><strong>頁面載入後的 JavaScript</strong> &mdash; DOM 就緒後執行，可用來修正「點擊展開」按鈕，或移除繞過 adblock 的彈窗</li>
 </ul>
 <p>AI 代理（位於 <a href="#feature-ai">與網頁對話</a>）可以協助撰寫並儲存這些修補 &mdash; 只要對它說「把這個站的黏性橫幅關掉」，它就會寫好 CSS、限縮到當前網域並保存下來。</p>
+</section>
+
+<section id="feature-userscripts">
+<h2>使用者指令碼</h2>
+<p>EinkBro 內建 Tampermonkey 風格的使用者指令碼引擎，因此您在桌機上使用的社群指令碼（例如來自 Greasy Fork 的腳本）同樣能在電子閱讀器上運作。指令碼會在符合條件的頁面自動執行。</p>
+
+<h4>安裝指令碼</h4>
+<ul>
+  <li><strong>透過連結</strong> &mdash; 瀏覽時點擊任何 <code>.user.js</code> 連結。EinkBro 會抓取內容並開啟已預先填入程式碼的編輯器，點擊 <strong>OK</strong> 即可安裝。</li>
+  <li><strong>手動安裝</strong> &mdash; 開啟 <a href="#settings-startcontrol">設定 &rarr; 啟動控制 &rarr; 使用者指令碼</a>（標示為「<em>管理 Tampermonkey 風格的使用者指令碼</em>」），點擊 <strong>新增使用者指令碼</strong>。可直接將程式碼貼到 <strong>使用者指令碼程式碼</strong> 欄位，或在 <strong>從網址安裝</strong> 輸入網址後點擊 <strong>抓取</strong>。</li>
+</ul>
+<p>重新安裝與既有指令碼 <code>@name</code> 相同的指令碼時，會就地更新而非建立重複項目。</p>
+
+<h4>管理指令碼</h4>
+<p>使用者指令碼畫面會列出所有已安裝的指令碼，每一列包含：</p>
+<ul>
+  <li><strong>啟用／停用切換</strong> &mdash; 不刪除即可關閉某個指令碼</li>
+  <li><strong>檢查更新</strong> &mdash; 重新抓取最新版本（詳見下方）</li>
+  <li><strong>編輯</strong> &mdash; 檢視或修改指令碼程式碼</li>
+  <li><strong>刪除</strong> &mdash; 永久移除指令碼</li>
+</ul>
+
+<h4>選單指令</h4>
+<p>使用 <code>GM_registerMenuCommand</code> 註冊項目的指令碼，會透過 <strong>使用者指令碼</strong> 工具列動作（拼圖 <span class="material-symbols-outlined" style="font-size:1em;vertical-align:-2px">extension</span> 圖示 &mdash; 可在 <a href="#toolbar-config">工具列自訂</a> 中加入）呈現。點擊它會列出當前頁面指令碼所註冊的指令；若沒有任何註冊指令，則會開啟指令碼管理畫面。選單指令僅限當前頁面，離開頁面後即重設。</p>
+
+<h4>更新指令碼</h4>
+<p>更新為手動進行：在指令碼上點擊 <strong>檢查更新</strong>。EinkBro 會讀取指令碼的 <code>@updateURL</code> / <code>@downloadURL</code>，比較版本後就地安裝較新的版本。畫面會顯示如「<em>已更新至 v2.1</em>」、「<em>已是最新版本</em>」或「<em>此指令碼沒有更新網址</em>」等提示。</p>
+
+<h4>支援的 API</h4>
+<p>引擎提供常見的 Greasemonkey／Tampermonkey API，每個都附帶以 Promise 為基礎的 <code>GM.*</code> 對應版本：</p>
+<ul>
+  <li><strong>儲存</strong> &mdash; <code>GM_getValue</code>、<code>GM_setValue</code>、<code>GM_deleteValue</code>、<code>GM_listValues</code></li>
+  <li><strong>DOM</strong> &mdash; <code>GM_addStyle</code>、<code>GM_addElement</code></li>
+  <li><strong>網路</strong> &mdash; <code>GM_xmlhttpRequest</code>（跨來源，受 <code>@connect</code> 限制）</li>
+  <li><strong>選單</strong> &mdash; <code>GM_registerMenuCommand</code>、<code>GM_unregisterMenuCommand</code></li>
+  <li><strong>其他</strong> &mdash; <code>GM_openInTab</code>、<code>GM_setClipboard</code>、<code>GM_notification</code>、<code>GM_log</code>、<code>GM_info</code></li>
+</ul>
+<p>從 <code>// ==UserScript==</code> 標頭解析的中繼資料指示詞包含 <code>@name</code>、<code>@namespace</code>、<code>@version</code>、<code>@description</code>、<code>@match</code>、<code>@include</code>、<code>@exclude</code>、<code>@require</code>、<code>@connect</code>、<code>@run-at</code>（<code>document-start</code> / <code>document-idle</code>）、<code>@noframes</code>、<code>@updateURL</code> 與 <code>@downloadURL</code>。</p>
 </section>
 
 <section id="feature-translate">
