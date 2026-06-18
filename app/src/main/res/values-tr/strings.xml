@@ -239,6 +239,7 @@
     <string name="book_name">Kitap Adı</string>
     <string name="book_name_description">Kitap adını girin</string>
     <string name="volume_page_turn">Ses tuşu</string>
+    <string name="volume_page_turn_summary">Sayfaları çevirmek için ses tuşlarını kullanın</string>
     <string name="volume_page_turn_paused">Ses tuşuyla sayfa çevirme 5 saniye duraklatıldı</string>
     <string name="volume_page_turn_resumed">Ses tuşuyla sayfa çevirme devam etti</string>
     <string name="folder_name">Yer imi klasörü adı</string>

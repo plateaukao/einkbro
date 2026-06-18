@@ -527,6 +527,7 @@
     <string name="user_name">ユーザー名</string>
     <string name="vertical_line">縦線</string>
     <string name="volume_page_turn">音量キー</string>
+    <string name="volume_page_turn_summary">音量キーでページをめくる</string>
     <string name="volume_page_turn_paused">音量キーページめくりを5秒間一時停止</string>
     <string name="volume_page_turn_resumed">音量キーページめくりを再開</string>
     <string name="web_content_processing">ウェブコンテンツ処理</string>

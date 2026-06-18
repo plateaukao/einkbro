@@ -239,6 +239,7 @@
     <string name="book_name">اسم الكتاب</string>
     <string name="book_name_description">أدخل اسم الكتاب</string>
     <string name="volume_page_turn">مفتاح الصوت</string>
+    <string name="volume_page_turn_summary">استخدم مفتاحَي رفع/خفض الصوت لتقليب الصفحات</string>
     <string name="volume_page_turn_paused">تقليب الصفحات بزر الصوت متوقف لمدة 5 ثوانٍ</string>
     <string name="volume_page_turn_resumed">تم استئناف تقليب الصفحات بزر الصوت</string>
     <string name="folder_name">اسم مجلد الإشارات المرجعية</string>

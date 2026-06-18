@@ -235,6 +235,7 @@
     <string name="book_name">Název knihy</string>
     <string name="book_name_description">Zadejte název knihy</string>
     <string name="volume_page_turn">Tlačítka hlasitosti</string>
+    <string name="volume_page_turn_summary">Otáčejte stránky tlačítky hlasitosti</string>
     <string name="volume_page_turn_paused">Otáčení stránek tlačítky hlasitosti pozastaveno na 5 sekund</string>
     <string name="volume_page_turn_resumed">Otáčení stránek tlačítky hlasitosti obnoveno</string>
     <string name="folder_name">Název složky záložek</string>

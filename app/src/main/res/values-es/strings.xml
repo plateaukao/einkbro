@@ -198,6 +198,7 @@
     <string name="book_name">Nombre del libro</string>
     <string name="book_name_description">Introduce el nombre del libro</string>
     <string name="volume_page_turn">Tecla de volumen</string>
+    <string name="volume_page_turn_summary">Usa las teclas de volumen para pasar páginas</string>
     <string name="folder_name">Nombre de la carpeta de marcadores</string>
     <string name="folder_name_description">Inserta el nombre de la carpeta de marcadores</string>
     <string name="setting_title_export_bookmarks">Exportar marcadores</string>

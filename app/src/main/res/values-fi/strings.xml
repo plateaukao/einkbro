@@ -528,6 +528,7 @@
     <string name="vertical_line">Pystyviiva</string>
     <string name="vertical_read">Pystytila</string>
     <string name="volume_page_turn">Äänenvoimakkuusnäppäin</string>
+    <string name="volume_page_turn_summary">Käännä sivuja äänenvoimakkuusnäppäimillä</string>
     <string name="volume_page_turn_paused">Sivunvaihto äänenvoimakkuusnäppäimellä pysäytetty 5 sekunniksi</string>
     <string name="volume_page_turn_resumed">Sivunvaihto äänenvoimakkuusnäppäimellä jatkettu</string>
     <string name="web_content_processing">Verkkosisällön käsittely</string>

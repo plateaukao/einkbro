@@ -48,6 +48,14 @@ fun buildGestureSettingItems(deps: SettingScreenDeps): List<SettingItemInterface
             config = config.touch::longClickAsArrowKey,
             span = 2,
         ),
+        DividerSettingItem(R.string.volume_page_turn),
+        BooleanSettingItem(
+            R.string.volume_page_turn,
+            0,
+            R.string.volume_page_turn_summary,
+            config.touch::volumePageTurn,
+            span = 2,
+        ),
         DividerSettingItem(R.string.setting_multitouch_use_title),
         BooleanSettingItem(
             R.string.setting_multitouch_use_title,

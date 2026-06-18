@@ -239,6 +239,7 @@
     <string name="book_name">Όνομα Βιβλίου</string>
     <string name="book_name_description">Εισάγετε το όνομα του βιβλίου</string>
     <string name="volume_page_turn">Πλήκτρο έντασης</string>
+    <string name="volume_page_turn_summary">Χρήση των πλήκτρων έντασης για αλλαγή σελίδας</string>
     <string name="volume_page_turn_paused">Η αλλαγή σελίδας με πλήκτρο έντασης παύει για 5 δευτερόλεπτα</string>
     <string name="volume_page_turn_resumed">Η αλλαγή σελίδας με πλήκτρο έντασης συνεχίστηκε</string>
     <string name="folder_name">Όνομα φακέλου σελιδοδεικτών</string>

@@ -236,6 +236,7 @@
     <string name="book_name">ᱯᱚᱛᱚᱵ ᱧᱩᱛᱩᱢ</string>
     <string name="book_name_description">ᱯᱚᱛᱚᱵ ᱧᱩᱛᱩᱢ ᱚᱞ ᱢᱮ</string>
     <string name="volume_page_turn">ᱵᱷᱚᱞᱭᱩᱢ ᱪᱟᱹᱵᱤ</string>
+    <string name="volume_page_turn_summary">Use volume up/down keys to turn pages</string>
     <string name="folder_name">ᱯᱚᱪᱚᱢ ᱧᱩᱛᱩᱢ ᱵᱩᱠᱢᱟᱨᱠ ᱢᱮ</string>
     <string name="folder_name_description">ᱯᱚᱪᱚᱢ ᱧᱩᱛᱩᱢ ᱵᱩᱠᱢᱟᱨᱠ ᱢᱮ ᱠᱷᱚᱧᱡᱟᱭ ᱢᱮ</string>
     <string name="setting_title_export_bookmarks">ᱵᱷᱩᱠᱢᱟᱨᱠ ᱵᱷᱮᱡᱟᱭ ᱢᱮ</string>

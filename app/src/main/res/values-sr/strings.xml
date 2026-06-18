@@ -528,6 +528,7 @@
     <string name="vertical_line">Вертикална линија</string>
     <string name="vertical_read">Вертикални режим</string>
     <string name="volume_page_turn">Тастери за јачину звука</string>
+    <string name="volume_page_turn_summary">Користите тастере за јачину звука за листање страница</string>
     <string name="volume_page_turn_paused">Окретање страница дугмадима за јачину звука паузирано на 5 секунди</string>
     <string name="volume_page_turn_resumed">Окретање страница дугмадима за јачину звука настављено</string>
     <string name="web_content_processing">Обрада веб садржаја</string>

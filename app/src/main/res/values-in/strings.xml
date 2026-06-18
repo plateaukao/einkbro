@@ -226,6 +226,7 @@
     <string name="book_name_description">Masukan nama buku</string>
     <string name="saving_epub">Menyimpan Epub</string>
     <string name="volume_page_turn">Tombol Volume</string>
+    <string name="volume_page_turn_summary">Gunakan tombol volume untuk membalik halaman</string>
     <string name="folder_name">Nama folder Bookmark</string>
     <string name="folder_name_description">Masukan nama folder Bookmark</string>
     <string name="setting_title_export_bookmarks">expor bookmark</string>

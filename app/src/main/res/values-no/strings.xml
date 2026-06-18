@@ -528,6 +528,7 @@
     <string name="vertical_line">Vertikal linje</string>
     <string name="vertical_read">Vertikal modus</string>
     <string name="volume_page_turn">Volumtast</string>
+    <string name="volume_page_turn_summary">Bruk volumtastene til å bla i sider</string>
     <string name="volume_page_turn_paused">Sidebytting med volumtast satt på pause i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sidebytting med volumtast gjenopptatt</string>
     <string name="web_content_processing">Nettinnholdsbehandling</string>

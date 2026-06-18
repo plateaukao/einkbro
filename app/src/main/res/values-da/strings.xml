@@ -528,6 +528,7 @@
     <string name="vertical_line">Lodret linje</string>
     <string name="vertical_read">Lodret tilstand</string>
     <string name="volume_page_turn">Lydstyrketast</string>
+    <string name="volume_page_turn_summary">Brug lydstyrketasterne til at skifte side</string>
     <string name="volume_page_turn_paused">Sideskift med lydstyrketast sat på pause i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sideskift med lydstyrketast genoptaget</string>
     <string name="web_content_processing">Webindholdsbehandling</string>

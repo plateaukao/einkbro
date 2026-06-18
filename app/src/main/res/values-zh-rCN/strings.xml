@@ -220,6 +220,7 @@
     <string name="book_name_description">输入图书名称</string>
     <string name="saving_epub">正在保存Epub</string>
     <string name="volume_page_turn">音量键切换</string>
+    <string name="volume_page_turn_summary">使用音量键翻页</string>
     <string name="folder_name">书签文件夹名称</string>
     <string name="folder_name_description">插入书签文件夹名称</string>
     <string name="setting_title_export_bookmarks">导出书签</string>

@@ -529,6 +529,7 @@
     <string name="vertical_line">Đường dọc</string>
     <string name="vertical_read">Chế độ dọc</string>
     <string name="volume_page_turn">Phím âm lượng</string>
+    <string name="volume_page_turn_summary">Dùng phím âm lượng để lật trang</string>
     <string name="volume_page_turn_paused">Lật trang bằng phím âm lượng đã tạm dừng 5 giây</string>
     <string name="volume_page_turn_resumed">Lật trang bằng phím âm lượng đã tiếp tục</string>
     <string name="web_content_processing">Xử lý nội dung web</string>

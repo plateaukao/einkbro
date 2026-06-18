@@ -246,6 +246,7 @@
     <string name="book_name">책 이름</string>
     <string name="book_name_description">책 이름 입력</string>
     <string name="volume_page_turn">볼륨 키</string>
+    <string name="volume_page_turn_summary">볼륨 키로 페이지를 넘깁니다</string>
     <string name="folder_name">북마크 폴더 이름</string>
     <string name="folder_name_description">북마크 폴더 이름 입력</string>
     <string name="setting_title_export_bookmarks">북마크 내보내기</string>

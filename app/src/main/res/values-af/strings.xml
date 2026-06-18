@@ -529,6 +529,7 @@
     <string name="vertical_line">Vertikale lyn</string>
     <string name="vertical_read">Vertikale modus</string>
     <string name="volume_page_turn">Volumesleutel</string>
+    <string name="volume_page_turn_summary">Gebruik volume op/af-sleutels om bladsye om te blaai</string>
     <string name="volume_page_turn_paused">Volume-bladsyomdraai gepauzeer vir 5 sekondes</string>
     <string name="volume_page_turn_resumed">Volume-bladsyomdraai hervat</string>
     <string name="web_content_processing">Webinhoudverwerking</string>

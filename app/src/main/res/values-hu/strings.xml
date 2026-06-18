@@ -384,6 +384,7 @@
     <string name="book_name">Könyv neve</string>
     <string name="book_name_description">Adja meg a könyv nevét</string>
     <string name="volume_page_turn">Hangerő gomb</string>
+    <string name="volume_page_turn_summary">Lapozás a hangerőgombokkal</string>
     <string name="volume_page_turn_paused">Hangerőgombos lapozás szüneteltetve 5 másodpercre</string>
     <string name="volume_page_turn_resumed">Hangerőgombos lapozás folytatva</string>
     <string name="folder_name">Könyvjelző mappa neve</string>

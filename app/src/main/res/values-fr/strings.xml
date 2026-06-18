@@ -224,6 +224,7 @@
     <string name="book_name">Nom du livre</string>
     <string name="book_name_description">Saisir le nom du livre</string>
     <string name="volume_page_turn">Touche de volume</string>
+    <string name="volume_page_turn_summary">Utiliser les touches de volume pour changer de page</string>
     <string name="volume_page_turn_paused">Pagination par volume en pause pendant 5 secondes</string>
     <string name="volume_page_turn_resumed">Pagination par volume reprise</string>
     <string name="folder_name">Nom du dossier de signets</string>
