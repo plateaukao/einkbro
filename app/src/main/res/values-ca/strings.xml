@@ -206,6 +206,7 @@
     <string name="book_name">Nom del llibre</string>
     <string name="book_name_description">Introduïu el nom del llibre</string>
     <string name="volume_page_turn">Tecla de volum</string>
+    <string name="volume_page_turn_summary">Useu les tecles de volum per passar pàgines</string>
     <string name="volume_page_turn_paused">Pas de pàgina per volum pausat durant 5 segons</string>
     <string name="volume_page_turn_resumed">Pas de pàgina per volum reprès</string>
     <string name="folder_name">Nom de la carpeta d\'adreces d\'interès</string>

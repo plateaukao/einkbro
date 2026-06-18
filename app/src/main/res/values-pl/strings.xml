@@ -231,6 +231,7 @@
     <string name="book_name">Nazwa książki</string>
     <string name="book_name_description">Wprowadź nazwę książki</string>
     <string name="volume_page_turn">Klawisze głośności</string>
+    <string name="volume_page_turn_summary">Przewijaj strony klawiszami głośności</string>
     <string name="volume_page_turn_paused">Przewracanie stron klawiszami głośności wstrzymane na 5 sekund</string>
     <string name="volume_page_turn_resumed">Przewracanie stron klawiszami głośności wznowione</string>
     <string name="folder_name">Nazwa folderu zakładek</string>

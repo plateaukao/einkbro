@@ -528,6 +528,7 @@
     <string name="vertical_line">Vertikal linje</string>
     <string name="vertical_read">Vertikalt läge</string>
     <string name="volume_page_turn">Volymknapp</string>
+    <string name="volume_page_turn_summary">Använd volymknapparna för att bläddra mellan sidor</string>
     <string name="volume_page_turn_paused">Sidbyte med volymknapp pausat i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sidbyte med volymknapp återupptaget</string>
     <string name="web_content_processing">Webbinnehållsbearbetning</string>

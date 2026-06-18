@@ -249,6 +249,7 @@
     <string name="book_name">Название книги</string>
     <string name="book_name_description">Введите название книги</string>
     <string name="volume_page_turn">Кнопки громкости</string>
+    <string name="volume_page_turn_summary">Перелистывание страниц клавишами громкости</string>
     <string name="folder_name">Название папки закладок</string>
     <string name="folder_name_description">Введите название папки закладок</string>
     <string name="setting_title_export_bookmarks">Экспорт закладок</string>

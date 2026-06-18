@@ -239,6 +239,7 @@
     <string name="book_name">שם הספר</string>
     <string name="book_name_description">הזן את שם הספר</string>
     <string name="volume_page_turn">מקש עוצמה</string>
+    <string name="volume_page_turn_summary">השתמשו במקשי עוצמת הקול כדי לדפדף בין הדפים</string>
     <string name="volume_page_turn_paused">הפיכת עמודים במקש עוצמה מושהית ל-5 שניות</string>
     <string name="volume_page_turn_resumed">הפיכת עמודים במקש עוצמה חודשה</string>
     <string name="folder_name">שם תיקיית סימניות</string>

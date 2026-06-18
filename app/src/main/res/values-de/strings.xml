@@ -216,6 +216,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="book_name">Buchname</string>
     <string name="book_name_description">Buchname eingeben</string>
     <string name="volume_page_turn">Lautstärketaste</string>
+    <string name="volume_page_turn_summary">Seiten mit den Lautstärketasten umblättern</string>
     <string name="volume_page_turn_paused">Seitenumblättern mit Lautstärketaste für 5 Sekunden pausiert</string>
     <string name="volume_page_turn_resumed">Seitenumblättern mit Lautstärketaste fortgesetzt</string>
     <string name="folder_name">Lesezeichen-Ordnername</string>

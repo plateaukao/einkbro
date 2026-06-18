@@ -519,6 +519,7 @@
     <string name="vertical_line">Вертикальна лінія</string>
     <string name="vertical_read">Вертикальний режим</string>
     <string name="volume_page_turn">Кнопки гучності</string>
+    <string name="volume_page_turn_summary">Гортання сторінок клавішами гучності</string>
     <string name="volume_page_turn_paused">Перегортання кнопками гучності призупинено на 5 секунд</string>
     <string name="volume_page_turn_resumed">Перегортання кнопками гучності відновлено</string>
     <string name="web_content_processing">Обробка веб-вмісту</string>

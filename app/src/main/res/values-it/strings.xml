@@ -215,6 +215,7 @@
     <string name="book_name">Nome del libro</string>
     <string name="book_name_description">Inserisci il nome del libro</string>
     <string name="volume_page_turn">Tasto volume</string>
+    <string name="volume_page_turn_summary">Usa i tasti del volume per cambiare pagina</string>
     <string name="volume_page_turn_paused">Cambio pagina con volume in pausa per 5 secondi</string>
     <string name="volume_page_turn_resumed">Cambio pagina con volume ripreso</string>
     <string name="folder_name">Nome cartella segnalibri</string>

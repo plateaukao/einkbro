@@ -183,6 +183,7 @@
     <string name="book_name_description">輸入想要的書籍名稱</string>
     <string name="saving_epub">儲存 Epub 文件中</string>
     <string name="volume_page_turn">音量鍵翻頁</string>
+    <string name="volume_page_turn_summary">使用音量鍵翻頁</string>
     <string name="history">瀏覽記錄</string>
     <string name="location">位置</string>
     <string name="media_continue">背景播放</string>

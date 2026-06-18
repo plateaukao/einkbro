@@ -206,6 +206,7 @@
     <string name="book_name">Nome do livro</string>
     <string name="book_name_description">Introduza o nome do livro</string>
     <string name="volume_page_turn">Tecla de volume</string>
+    <string name="volume_page_turn_summary">Usar as teclas de volume para mudar de página</string>
     <string name="volume_page_turn_paused">Mudança de página por volume pausada durante 5 segundos</string>
     <string name="volume_page_turn_resumed">Mudança de página por volume retomada</string>
     <string name="folder_name">Nome da pasta de marcadores</string>

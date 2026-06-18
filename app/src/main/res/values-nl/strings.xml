@@ -223,6 +223,7 @@
     <string name="book_name">Boeknaam</string>
     <string name="book_name_description">Voer de boeknaam in</string>
     <string name="volume_page_turn">Volumetoets</string>
+    <string name="volume_page_turn_summary">Gebruik de volumetoetsen om te bladeren</string>
     <string name="volume_page_turn_paused">Pagina omslaan met volumetoets 5 seconden gepauzeerd</string>
     <string name="volume_page_turn_resumed">Pagina omslaan met volumetoets hervat</string>
     <string name="folder_name">Bladwijzermap-naam</string>

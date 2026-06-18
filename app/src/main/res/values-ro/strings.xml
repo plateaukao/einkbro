@@ -224,6 +224,7 @@
     <string name="book_name">Numele cărții</string>
     <string name="book_name_description">Introduceți numele cărții</string>
     <string name="volume_page_turn">Tasta de volum</string>
+    <string name="volume_page_turn_summary">Folosește tastele de volum pentru a schimba pagina</string>
     <string name="volume_page_turn_paused">Schimbarea paginii cu volum în pauză 5 secunde</string>
     <string name="volume_page_turn_resumed">Schimbarea paginii cu volum reluată</string>
     <string name="folder_name">Numele dosarului de marcaje</string>

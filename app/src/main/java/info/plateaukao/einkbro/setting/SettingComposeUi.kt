@@ -71,7 +71,10 @@ fun SettingItemUi(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (isChecked || pressed) 3.dp else 1.dp
+    // Keep a thin border for the resting (incl. toggled-on) state; only show the
+    // bold border as transient press feedback. isChecked is retained for callers
+    // but no longer thickens the border (see discussion #605).
+    val borderWidth = if (pressed) 3.dp else 1.dp
     val height = 80.dp
     var modifier = Modifier
         .fillMaxWidth()
