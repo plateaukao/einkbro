@@ -233,7 +233,8 @@ class EBWebViewClient(
             !ebWebView.incognito &&
             !ebWebView.isAIPage &&
             !isTranslationDomain(url) &&
-            url != BrowserUnit.URL_ABOUT_BLANK
+            url != BrowserUnit.URL_ABOUT_BLANK &&
+            ebWebView.errorPageUrl == null
         ) {
             addHistoryAction(ebWebView.albumTitle, url)
         }
@@ -305,11 +306,10 @@ class EBWebViewClient(
         Log.d("ebWebViewClient", "handleUri: $url")
 
         if (url.startsWith("einkbro://retry")) {
-            val target = errorPagePresenter.lastFailedUrl
-            if (!target.isNullOrEmpty()) {
-                webView.post { webView.loadUrl(target) }
-            } else {
-                webView.post { webView.reload() }
+            // retryErrorPage() consumes the stored failed URL, so repeated taps that
+            // arrive before the reload commits collapse into a single network fetch.
+            webView.post {
+                if (!ebWebView.retryErrorPage()) ebWebView.reload()
             }
             return true
         }
