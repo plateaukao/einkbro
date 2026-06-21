@@ -337,12 +337,18 @@ class DialogManager(
         titleId: Int,
         listSettings: List<String>,
         defaultValue: Int,
+        titleActionIconResId: Int = 0,
+        titleActionDescriptionResId: Int = 0,
+        onTitleAction: (() -> Unit)? = null,
     ): Int? =
         ListSettingWithNameDialog(
             activity,
             titleId,
             listSettings,
-            defaultValue
+            defaultValue,
+            titleActionIconResId,
+            titleActionDescriptionResId,
+            onTitleAction,
         ).show()
 
     fun showBookmarkFilePicker(launcher: ActivityResultLauncher<Intent>) {
