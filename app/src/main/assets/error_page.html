@@ -74,13 +74,6 @@
   }
   button.retry:active { background: var(--fg); color: var(--bg); }
   button.retry[disabled] { opacity: .5; }
-  .status {
-    font-size: 13px;
-    color: var(--muted);
-    margin: 14px 0 0;
-    min-height: 18px;
-    text-align: center;
-  }
 
   .game-wrap {
     margin-top: 48px;
@@ -142,7 +135,6 @@
   <p class="msg" id="message">Check your connection and try again.</p>
   <p class="url" id="failedUrl"></p>
   <button class="retry" id="retryBtn">Retry</button>
-  <p class="status" id="status"></p>
 
   <div class="game-wrap">
     <div class="score" id="score">0</div>
@@ -160,7 +152,6 @@
   var reason = params.get('reason') || '';
   var titleEl = document.getElementById('title');
   var retryBtn = document.getElementById('retryBtn');
-  var statusEl = document.getElementById('status');
 
   if (failed) {
     document.getElementById('failedUrl').textContent = failed;
@@ -177,7 +168,6 @@
   function triggerRetry() {
     if (retrying) return;
     retrying = true;
-    stopProbing();
     retryBtn.disabled = true;
     retryBtn.textContent = 'Reconnecting…';
     // The native layer (einkbro://retry) re-fetches the real URL; if it fails again
@@ -186,30 +176,9 @@
   }
   retryBtn.addEventListener('click', triggerRetry);
 
-  // Auto-retry when connectivity returns. Android WebView does NOT reliably fire the
-  // 'online' event or update navigator.onLine on system network changes, so instead we
-  // actively probe the failed URL: a no-cors request resolves (opaque) as soon as the
-  // host is reachable again, and rejects fast while still offline. We listen for the
-  // 'online' event too in case a given WebView build does deliver it.
-  var probeTimer = null;
-  function probe() {
-    if (retrying || !failed) return;
-    fetch(failed, { mode: 'no-cors', cache: 'no-store' })
-      .then(function () {
-        statusEl.textContent = 'Connection restored — retrying…';
-        triggerRetry();
-      })
-      .catch(function () { /* still unreachable; keep waiting */ });
-  }
-  function startProbing() {
-    if (probeTimer || retrying || !failed) return;
-    probeTimer = setInterval(probe, 3000);
-  }
-  function stopProbing() {
-    if (probeTimer) { clearInterval(probeTimer); probeTimer = null; }
-  }
+  // Auto-retry only if the WebView happens to deliver the 'online' event. We do NOT
+  // poll: an interval probe would keep the CPU/radio awake on an idle E-ink device.
   window.addEventListener('online', triggerRetry);
-  startProbing();
 
   // --- Horse jump game ---
   var canvas = document.getElementById('game');
@@ -585,14 +554,12 @@
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       stopFrame();
-      stopProbing();
-    } else {
-      if (started) scheduleFrame();
-      startProbing();
+    } else if (started) {
+      scheduleFrame();
     }
   });
-  window.addEventListener('pagehide', function () { stopFrame(); stopProbing(); });
-  window.addEventListener('beforeunload', function () { stopFrame(); stopProbing(); });
+  window.addEventListener('pagehide', stopFrame);
+  window.addEventListener('beforeunload', stopFrame);
 })();
 </script>
 </body>
