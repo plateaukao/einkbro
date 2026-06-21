@@ -59,12 +59,17 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.dialog.compose.ComposeDialogFragment
@@ -275,7 +280,7 @@ private fun CreateToolbarIcon(
         when (toolbarAction) {
             Title -> VerticalTitleIcon(onClick, onLongClick)
             Spacer1, Spacer2 -> { /* handled in ComposedIconBar */ }
-            Time -> CurrentTimeText()
+            Time -> CurrentTimeText(isVertical = true)
             TabCount -> TabCountIcon(isIncognito, tabCount, onClick, onLongClick)
             PageInfo -> PageInfoIcon(pageInfo, onClick, onLongClick)
             else -> ToolbarIcon(
@@ -813,22 +818,36 @@ private fun TabCountIcon(
 @Composable
 fun CurrentTimeText(
     modifier: Modifier = Modifier,
+    isVertical: Boolean = false,
 ) {
     var currentTime by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         while (true) {
             currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-            delay(1000L * 60) // Update every second
+            delay(1000L * 60) // Update every minute
         }
     }
 
+    // The narrow vertical toolbar isn't wide enough for the full-size "HH:mm", so it
+    // gets ellipsized into something useless. Shrink the hour part while keeping the
+    // minute part at its normal size so the whole label stays readable and fits.
+    val text = if (isVertical && currentTime.contains(":")) {
+        val (hour, minute) = currentTime.split(":", limit = 2)
+        buildAnnotatedString {
+            withStyle(SpanStyle(fontSize = 0.7.em)) { append("$hour:") }
+            append(minute)
+        }
+    } else {
+        AnnotatedString(currentTime)
+    }
+
     Text(
-        text = currentTime,
+        text = text,
         color = MaterialTheme.colors.onBackground,
         modifier = modifier
             .wrapContentWidth()
-            .padding(horizontal = 6.dp),
+            .padding(horizontal = if (isVertical) 2.dp else 6.dp),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         textAlign = TextAlign.Center,
