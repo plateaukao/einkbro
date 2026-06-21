@@ -70,6 +70,15 @@ open class EBWebView(
 
     var baseUrl: String? = null
 
+    /**
+     * URL whose load failed and for which the offline error page is currently shown.
+     * Non-null only while the error page is on screen. The error page is rendered with
+     * [loadDataWithBaseURL] (not a real navigation), so reload()/retry and the address
+     * bar must consult this flag to re-fetch and display the real URL instead of the
+     * error document. Cleared in [resetState] whenever a genuine navigation begins.
+     */
+    var errorPageUrl: String? = null
+
     private val config: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
     private val javascript: Javascript by inject()
@@ -260,6 +269,7 @@ open class EBWebView(
     fun updateCssStyle() = readerHelper.updateCssStyle()
 
     private fun resetState(partial: Boolean = false) {
+        errorPageUrl = null
         dualCaption = null
         isTranslatePage = false
         isTranslateByParagraph = false
@@ -272,6 +282,10 @@ open class EBWebView(
     }
 
     override fun reload() {
+        // When the offline error page is showing, getUrl() is the error document, so a
+        // plain super.reload() would just reload the error page. Re-fetch the real URL.
+        if (retryErrorPage()) return
+
         resetState()
         settings.textZoom = config.display.fontSize
         settings.cacheMode = WebSettings.LOAD_DEFAULT
@@ -280,6 +294,40 @@ open class EBWebView(
         postDelayed({
             if (config.browser.webLoadCacheFirst) settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         }, 2000)
+    }
+
+    /**
+     * Renders the offline error page for [failedUrl]. Uses [loadDataWithBaseURL] rather
+     * than navigating to the asset file so the WebView's logical URL stays the failed URL:
+     * the toolbar reload and the page's own Retry button then re-fetch the real site
+     * instead of reloading file:///android_asset/error_page.html. [pageBaseUrl] carries the
+     * url/reason query the page's script reads from location.search.
+     */
+    fun showOfflineErrorPage(failedUrl: String, pageBaseUrl: String) {
+        album.isLoaded = true
+        // The error page needs JS for the Retry button and the mini-game; the failed
+        // site may have had JS disabled. loadUrl() restores the per-site setting on retry.
+        settings.javaScriptEnabled = true
+        val html = runCatching {
+            context.assets.open("error_page.html").bufferedReader().use { it.readText() }
+        }.getOrNull() ?: return
+        errorPageUrl = failedUrl
+        loadDataWithBaseURL(pageBaseUrl, html, "text/html", "UTF-8", failedUrl)
+    }
+
+    /**
+     * If the offline error page is showing, re-fetch the failed URL from the network and
+     * return true; otherwise return false. Safe to call repeatedly — the flag is consumed
+     * on the first call, so rapid Retry taps collapse into a single reload.
+     */
+    fun retryErrorPage(): Boolean {
+        val failed = errorPageUrl ?: return false
+        errorPageUrl = null
+        // Force a real network fetch; ignore any cache-first setting for the retry so a
+        // recovered connection actually reloads the page.
+        settings.cacheMode = WebSettings.LOAD_DEFAULT
+        loadUrl(failed)
+        return true
     }
 
     override fun goBack() {
@@ -521,7 +569,8 @@ open class EBWebView(
 
     // if url is with prefix data, maybe it's translated data, need to use base url instead
     override val albumUrl: String
-        get() = (if (url?.startsWith("data") == true) baseUrl else url).orEmpty()
+        get() = errorPageUrl
+            ?: (if (url?.startsWith("data") == true) baseUrl else url).orEmpty()
 
     override var initAlbumUrl: String = ""
     override fun activate() {

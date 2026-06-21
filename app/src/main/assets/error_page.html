@@ -73,6 +73,14 @@
     min-width: 160px;
   }
   button.retry:active { background: var(--fg); color: var(--bg); }
+  button.retry[disabled] { opacity: .5; }
+  .status {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 14px 0 0;
+    min-height: 18px;
+    text-align: center;
+  }
 
   .game-wrap {
     margin-top: 48px;
@@ -134,6 +142,7 @@
   <p class="msg" id="message">Check your connection and try again.</p>
   <p class="url" id="failedUrl"></p>
   <button class="retry" id="retryBtn">Retry</button>
+  <p class="status" id="status"></p>
 
   <div class="game-wrap">
     <div class="score" id="score">0</div>
@@ -149,15 +158,58 @@
   var params = new URLSearchParams(location.search);
   var failed = params.get('url') || '';
   var reason = params.get('reason') || '';
+  var titleEl = document.getElementById('title');
+  var retryBtn = document.getElementById('retryBtn');
+  var statusEl = document.getElementById('status');
+
   if (failed) {
     document.getElementById('failedUrl').textContent = failed;
   }
   if (reason) {
     document.getElementById('message').textContent = reason;
   }
-  document.getElementById('retryBtn').addEventListener('click', function () {
+  // "You're offline" only fits an actual connectivity drop; for DNS/cert/refused
+  // errors the device is online but the page can't be reached.
+  var looksOffline = /offline/i.test(reason) || navigator.onLine === false;
+  titleEl.textContent = looksOffline ? "You're offline" : "Can't reach this page";
+
+  var retrying = false;
+  function triggerRetry() {
+    if (retrying) return;
+    retrying = true;
+    stopProbing();
+    retryBtn.disabled = true;
+    retryBtn.textContent = 'Reconnecting…';
+    // The native layer (einkbro://retry) re-fetches the real URL; if it fails again
+    // a fresh error page replaces this one, resetting the button.
     location.href = 'einkbro://retry';
-  });
+  }
+  retryBtn.addEventListener('click', triggerRetry);
+
+  // Auto-retry when connectivity returns. Android WebView does NOT reliably fire the
+  // 'online' event or update navigator.onLine on system network changes, so instead we
+  // actively probe the failed URL: a no-cors request resolves (opaque) as soon as the
+  // host is reachable again, and rejects fast while still offline. We listen for the
+  // 'online' event too in case a given WebView build does deliver it.
+  var probeTimer = null;
+  function probe() {
+    if (retrying || !failed) return;
+    fetch(failed, { mode: 'no-cors', cache: 'no-store' })
+      .then(function () {
+        statusEl.textContent = 'Connection restored — retrying…';
+        triggerRetry();
+      })
+      .catch(function () { /* still unreachable; keep waiting */ });
+  }
+  function startProbing() {
+    if (probeTimer || retrying || !failed) return;
+    probeTimer = setInterval(probe, 3000);
+  }
+  function stopProbing() {
+    if (probeTimer) { clearInterval(probeTimer); probeTimer = null; }
+  }
+  window.addEventListener('online', triggerRetry);
+  startProbing();
 
   // --- Horse jump game ---
   var canvas = document.getElementById('game');
@@ -533,12 +585,14 @@
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       stopFrame();
-    } else if (started) {
-      scheduleFrame();
+      stopProbing();
+    } else {
+      if (started) scheduleFrame();
+      startProbing();
     }
   });
-  window.addEventListener('pagehide', stopFrame);
-  window.addEventListener('beforeunload', stopFrame);
+  window.addEventListener('pagehide', function () { stopFrame(); stopProbing(); });
+  window.addEventListener('beforeunload', function () { stopFrame(); stopProbing(); });
 })();
 </script>
 </body>

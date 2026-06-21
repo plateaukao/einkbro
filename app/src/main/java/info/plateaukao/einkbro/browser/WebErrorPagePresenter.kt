@@ -10,9 +10,6 @@ import info.plateaukao.einkbro.view.EBWebView
 class WebErrorPagePresenter(
     private val ebWebView: EBWebView,
 ) {
-    internal var lastFailedUrl: String? = null
-        private set
-
     fun onReceivedError(
         view: WebView?,
         request: WebResourceRequest?,
@@ -34,12 +31,14 @@ class WebErrorPagePresenter(
     }
 
     private fun showErrorPage(failedUrl: String, rawReason: String?) {
-        lastFailedUrl = failedUrl
         val friendly = friendlyReason(rawReason)
-        val query = "?url=" +
+        // The page is rendered from the error_page.html asset via loadDataWithBaseURL; the
+        // base URL carries the query the page's script reads from location.search, while the
+        // failed URL is kept as the WebView's logical URL (see EBWebView.showOfflineErrorPage).
+        val base = "file:///android_asset/?url=" +
                 Uri.encode(failedUrl) +
                 "&reason=" + Uri.encode(friendly)
-        ebWebView.loadUrl("file:///android_asset/error_page.html$query")
+        ebWebView.showOfflineErrorPage(failedUrl, base)
     }
 
     private fun friendlyReason(raw: String?): String {
