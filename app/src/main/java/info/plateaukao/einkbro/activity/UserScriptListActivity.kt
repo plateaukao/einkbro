@@ -33,9 +33,11 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.outlined.Public
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -50,6 +52,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.UserScript
+import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.userscript.UpdateResult
 import info.plateaukao.einkbro.userscript.UserScriptManager
 import info.plateaukao.einkbro.view.EBToast
@@ -124,11 +127,19 @@ class UserScriptListActivity : ComponentActivity() {
                             },
                             actions = {
                                 IconButton(onClick = {
+                                    IntentUnit.launchUrl(this@UserScriptListActivity, GREASY_FORK_URL)
+                                }) {
+                                    Icon(Icons.Outlined.Public, contentDescription = stringResource(R.string.userscript_browse))
+                                }
+                                IconButton(onClick = {
                                     editing = null
                                     editorSourceUrl = null
                                     showEditor = true
                                 }) {
                                     Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.userscript_add))
+                                }
+                                IconButton(onClick = { finish() }) {
+                                    Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.back))
                                 }
                             },
                         )
@@ -257,6 +268,7 @@ class UserScriptListActivity : ComponentActivity() {
 
     companion object {
         private const val EXTRA_INSTALL_URL = "installUrl"
+        private const val GREASY_FORK_URL = "https://greasyfork.org/"
 
         fun createIntent(context: Context): Intent =
             Intent(context, UserScriptListActivity::class.java)

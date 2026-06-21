@@ -773,7 +773,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
         lifecycleScope.launch {
             val index = dialogManager.getSelectedOptionWithString(
-                R.string.setting_title_userscripts, commands.map { it.first }, -1
+                R.string.setting_title_userscripts,
+                commands.map { it.first },
+                -1,
+                titleActionIconResId = R.drawable.ic_settings,
+                titleActionDescriptionResId = R.string.settings,
+                onTitleAction = { startActivity(UserScriptListActivity.createIntent(this@BrowserActivity)) },
             ) ?: return@launch
             commands.getOrNull(index)?.let { ebWebView.invokeUserScriptMenuCommand(it.second) }
         }
