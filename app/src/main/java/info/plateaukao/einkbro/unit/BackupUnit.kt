@@ -62,6 +62,13 @@ class BackupUnit(
     private val sp: SharedPreferences by inject()
     private val coroutineScope: CoroutineScope by inject()
 
+    // Per-app data directories derived from the running app's own context, so backup
+    // and restore touch *this* app's sandbox rather than a hardcoded package path.
+    // Required for non-default applicationIds (e.g. the `.a` side-by-side build),
+    // whose data lives under /data/data/info.plateaukao.einkbro.a/.
+    private val sharedPrefsDir: File get() = File(context.dataDir, "shared_prefs")
+    private val databasesDir: File get() = File(context.dataDir, "databases")
+
     suspend fun backupData(context: Context, uri: Uri, categories: Set<BackupCategory>): Boolean {
         try {
             val fos = context.contentResolver.openOutputStream(uri) ?: return false
@@ -101,7 +108,7 @@ class BackupUnit(
         zos.closeEntry()
 
         if (BackupCategory.ALL_PREFERENCES in categories) {
-            val sharedPrefsDirectory = File(SHARED_PREFS_PATH)
+            val sharedPrefsDirectory = sharedPrefsDir
             val sharedPrefsFiles = sharedPrefsDirectory.listFiles()
             if (sharedPrefsFiles != null) {
                 for (sharedPrefsFile in sharedPrefsFiles) {
@@ -294,7 +301,7 @@ class BackupUnit(
                     zipEntry.name.startsWith("shared_prefs/")
                             && BackupCategory.ALL_PREFERENCES in categories -> {
                         val fileName = zipEntry.name.removePrefix("shared_prefs/")
-                        val file = File("$SHARED_PREFS_PATH$fileName")
+                        val file = File(sharedPrefsDir, remapPrefsFileName(fileName))
                         writeStreamToFile(zis, file)
                     }
 
@@ -390,7 +397,7 @@ class BackupUnit(
                     zipEntry.name.startsWith("shared_prefs/")
                             && BackupCategory.ALL_PREFERENCES in categories -> {
                         val fileName = zipEntry.name.removePrefix("shared_prefs/")
-                        val target = File("$SHARED_PREFS_PATH$fileName")
+                        val target = File(sharedPrefsDir, remapPrefsFileName(fileName))
                         writeStreamToFile(zis, target)
                     }
 
@@ -453,12 +460,10 @@ class BackupUnit(
 
             var zipEntry = zis.nextEntry
             while (zipEntry != null) {
-                val file = File(
-                    if (zipEntry.name.endsWith(".db") ||
-                        zipEntry.name.contains("einkbro_db")
-                    ) "$DATABASE_PATH${zipEntry.name}"
-                    else "$SHARED_PREFS_PATH${zipEntry.name}"
-                )
+                val file = if (zipEntry.name.endsWith(".db") ||
+                    zipEntry.name.contains("einkbro_db")
+                ) File(databasesDir, zipEntry.name)
+                else File(sharedPrefsDir, remapPrefsFileName(zipEntry.name))
                 writeStreamToFile(zis, file)
                 zipEntry = zis.nextEntry
             }
@@ -643,7 +648,19 @@ class BackupUnit(
         }
     }
 
+    /**
+     * The default SharedPreferences file is named "<packageName>_preferences.xml".
+     * When restoring a backup made under a different applicationId (the real app into
+     * the `.a` build, or vice versa), rewrite that name to the current package so this
+     * app actually reads the restored values. Other prefs files keep their fixed names
+     * (ad-filter's "io.github.edsuns.filter", WebView's), so they restore as-is.
+     * No-op when source and target package already match.
+     */
+    private fun remapPrefsFileName(name: String): String =
+        if (name.endsWith("_preferences.xml")) "${context.packageName}_preferences.xml" else name
+
     private fun writeStreamToFile(zis: ZipInputStream, file: File) {
+        file.parentFile?.mkdirs()
         val fos = FileOutputStream(file)
         zis.copyTo(fos)
         fos.close()
@@ -811,8 +828,6 @@ class BackupUnit(
 
 
     companion object {
-        private const val DATABASE_PATH = "/data/data/info.plateaukao.einkbro/databases/"
-        private const val SHARED_PREFS_PATH = "/data/data/info.plateaukao.einkbro/shared_prefs/"
         private const val MANIFEST_FILE = "_manifest.json"
         private const val GPT_SETTINGS_FILE = "gpt_settings.json"
         private const val BOOKMARKS_FILE = "bookmarks.json"
