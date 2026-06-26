@@ -40,7 +40,9 @@ jobs:
         # which the previous action used: ignore whitespace/non-alphabet bytes.
         run: echo "${{ secrets.KEYSTORE }}" | tr -d '[:space:]' | base64 -di > "$RUNNER_TEMP/android_keystore.keystore"
       - name: Build the app
-        run: ./gradlew assembleRelease -PshowUpdateButton=true -PuniversalApk -Pandroid.injected.signing.store.file=$RUNNER_TEMP/android_keystore.keystore -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
+        # assembleReleaseAlt builds the side-by-side `info.plateaukao.einkbro.a` variant
+        # alongside the main release; -PuniversalApk applies to both.
+        run: ./gradlew assembleRelease assembleReleaseAlt -PshowUpdateButton=true -PuniversalApk -Pandroid.injected.signing.store.file=$RUNNER_TEMP/android_keystore.keystore -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
       - name: Upload arm64-v8a APK
         uses: actions/upload-artifact@v7
         with:
@@ -66,3 +68,8 @@ jobs:
         with:
           name: app-x86-release.apk
           path: app/build/outputs/apk/release/app-x86-release.apk
+      - name: Upload universal Alt APK (info.plateaukao.einkbro.a)
+        uses: actions/upload-artifact@v7
+        with:
+          name: app-universal-releaseAlt.apk
+          path: app/build/outputs/apk/releaseAlt/app-universal-releaseAlt.apk

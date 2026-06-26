@@ -69,6 +69,16 @@ android {
                 "proguard-rules.pro"
             )
         }
+        // Same as `release` (minify, shrink, proguard, signing) but with a `.a`
+        // applicationId suffix so it installs side-by-side with the real app as
+        // `info.plateaukao.einkbro.a`. `initWith` copies all of release's config;
+        // matchingFallbacks routes the :ad-filter dependency to its `release` variant.
+        create("releaseAlt") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".a"
+            versionNameSuffix = "-a"
+            matchingFallbacks += "release"
+        }
     }
 
     buildFeatures {
