@@ -1,6 +1,6 @@
-package info.plateaukao.einkbro.epub
+package info.plateaukao.einkbro.preference
 
-data class EpubFileInfo(
+data class SavedFileInfo(
         val title: String,
         val uri: String
 ) {
@@ -8,9 +8,9 @@ data class EpubFileInfo(
 
     companion object {
         private const val SEPARATOR = ":$:"
-        fun fromString(fileString: String): EpubFileInfo {
+        fun fromString(fileString: String): SavedFileInfo {
             val terms = fileString.split(SEPARATOR)
-            return EpubFileInfo(terms[0], terms[1])
+            return SavedFileInfo(terms[0], terms[1])
         }
     }
 }

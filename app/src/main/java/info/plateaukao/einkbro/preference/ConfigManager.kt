@@ -6,7 +6,6 @@ import androidx.core.content.edit
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.DomainConfigurationData
-import info.plateaukao.einkbro.epub.EpubFileInfo
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.util.TranslationLanguage
 import kotlinx.serialization.json.Json
@@ -185,13 +184,13 @@ class ConfigManager(
         recentBookmarks = emptyList()
     }
 
-    var savedEpubFileInfos: List<EpubFileInfo>
-        get() = sp.getString(K_SAVED_EPUBS, "")?.toEpubFileInfoList() ?: mutableListOf()
-        set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value)) }
+    var savedEpubFileInfos: List<SavedFileInfo>
+        get() = sp.getString(K_SAVED_EPUBS, "")?.toSavedFileInfoList() ?: mutableListOf()
+        set(value) = sp.edit { putString(K_SAVED_EPUBS, toSavedFileInfosString(value)) }
 
-    var savedPdfFileInfos: List<EpubFileInfo>
-        get() = sp.getString(K_SAVED_PDFS, "")?.toEpubFileInfoList() ?: mutableListOf()
-        set(value) = sp.edit { putString(K_SAVED_PDFS, toEpubFileInfosString(value)) }
+    var savedPdfFileInfos: List<SavedFileInfo>
+        get() = sp.getString(K_SAVED_PDFS, "")?.toSavedFileInfoList() ?: mutableListOf()
+        set(value) = sp.edit { putString(K_SAVED_PDFS, toSavedFileInfosString(value)) }
 
     var splitSearchItemInfoList: List<SplitSearchItemInfo>
         get() {
@@ -261,35 +260,35 @@ class ConfigManager(
         const val K_INSTAPAPER_PASSWORD = "sp_instapaper_password"
 
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
-        private const val EPUB_FILE_INFO_SEPARATOR = "::::"
+        private const val SAVED_FILE_INFO_SEPARATOR = "::::"
 
         private const val RECENT_BOOKMARK_LIST_SIZE = 10
 
         private const val K_SPLIT_SEARCH_ITEMS = "sp_split_search_items"
     }
 
-    private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =
-        if (this.isEmpty() || this == EPUB_FILE_INFO_SEPARATOR) mutableListOf()
-        else this.split(EPUB_FILE_INFO_SEPARATOR).map { fileString ->
-            EpubFileInfo.fromString(fileString)
+    private fun String.toSavedFileInfoList(): MutableList<SavedFileInfo> =
+        if (this.isEmpty() || this == SAVED_FILE_INFO_SEPARATOR) mutableListOf()
+        else this.split(SAVED_FILE_INFO_SEPARATOR).map { fileString ->
+            SavedFileInfo.fromString(fileString)
         }.toMutableList()
 
-    private fun toEpubFileInfosString(list: List<EpubFileInfo>): String =
-        list.joinToString(separator = EPUB_FILE_INFO_SEPARATOR) { it.toPrefString() }
+    private fun toSavedFileInfosString(list: List<SavedFileInfo>): String =
+        list.joinToString(separator = SAVED_FILE_INFO_SEPARATOR) { it.toPrefString() }
 
-    fun addSavedEpubFile(epubFileInfo: EpubFileInfo) {
+    fun addSavedEpubFile(epubFileInfo: SavedFileInfo) {
         savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { add(epubFileInfo) }
     }
 
-    fun removeSavedEpubFile(epubFileInfo: EpubFileInfo) {
+    fun removeSavedEpubFile(epubFileInfo: SavedFileInfo) {
         savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { remove(epubFileInfo) }
     }
 
-    fun addSavedPdfFile(pdfFileInfo: EpubFileInfo) {
+    fun addSavedPdfFile(pdfFileInfo: SavedFileInfo) {
         savedPdfFileInfos = savedPdfFileInfos.toMutableList().apply { add(pdfFileInfo) }
     }
 
-    fun removeSavedPdfFile(pdfFileInfo: EpubFileInfo) {
+    fun removeSavedPdfFile(pdfFileInfo: SavedFileInfo) {
         savedPdfFileInfos = savedPdfFileInfos.toMutableList().apply { remove(pdfFileInfo) }
     }
 
