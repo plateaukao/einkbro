@@ -1,3 +1,18 @@
+### 15.16.0
+#### Features
+* Save as PDF: every saved page gets a table-of-contents (outline) entry, and pages can be appended to an existing PDF — collect articles into one document with a navigable TOC
+* Faster startup: tabs restore lazily with persisted titles
+* GPT settings reorganized into a hub with per-provider sub-pages
+* Userscript UI: browse-scripts link and quick access to settings
+* Volume-key page-turn toggle in gesture settings
+* Side-by-side test build (.a application id) attached to releases
+
+#### Fixes
+* Settings screen stays in the browser task instead of opening a separate one (#612)
+* Backup/Restore works across application ids, so the .a build can share data
+* Offline error page: reload re-fetches the real URL and auto-recovers; connectivity polling removed to save battery
+* Toolbar clock no longer ellipsizes in vertical mode
+
 ### 15.15.0
 #### Features
 * Userscript support: a Tampermonkey-style engine to install and run userscripts, with GM_* APIs and per-script menu commands
