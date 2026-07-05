@@ -1,6 +1,8 @@
 package info.plateaukao.einkbro.activity.delegates
 
 import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
@@ -40,6 +42,9 @@ class TabManager(
 ) {
     private var preloadedWebView: EBWebView? = null
     private val dialogManager: DialogManager by lazy { DialogManager(activity) }
+
+    private val uiHandler = Handler(Looper.getMainLooper())
+    private val saveAlbumInfoRunnable = Runnable { updateSavedAlbumInfo() }
 
     fun destroyPreloadedWebView() {
         preloadedWebView?.destroy()
@@ -88,6 +93,7 @@ class TabManager(
         foreground: Boolean = true,
         incognito: Boolean = false,
         enablePreloadWebView: Boolean = true,
+        lazyLoad: Boolean = false,
     ) {
         val newWebView = (preloadedWebView ?: createWebView()).apply {
             this.albumTitle = title
@@ -100,7 +106,7 @@ class TabManager(
         updateTabPreview(newWebView, url)
         updateWebViewCount()
 
-        loadUrlInWebView(foreground, newWebView, url)
+        loadUrlInWebView(foreground, newWebView, url, lazyLoad)
 
         updateSavedAlbumInfo()
 
@@ -140,10 +146,15 @@ class TabManager(
         }
     }
 
-    private fun loadUrlInWebView(foreground: Boolean, webView: EBWebView, url: String) {
+    private fun loadUrlInWebView(
+        foreground: Boolean,
+        webView: EBWebView,
+        url: String,
+        lazyLoad: Boolean = false,
+    ) {
         if (!foreground) {
             webView.deactivate()
-            if (config.tab.enableWebBkgndLoad) {
+            if (!lazyLoad && config.tab.enableWebBkgndLoad) {
                 webView.loadUrl(url)
             } else {
                 webView.initAlbumUrl = url
@@ -247,7 +258,16 @@ class TabManager(
         state.currentAlbumController?.let { removeAlbum(it, showHome = false) }
     }
 
+    fun updateSavedAlbumInfoDebounced() {
+        uiHandler.removeCallbacks(saveAlbumInfoRunnable)
+        uiHandler.postDelayed(saveAlbumInfoRunnable, SAVE_ALBUM_INFO_DEBOUNCE_MS)
+    }
+
     fun updateSavedAlbumInfo() {
+        uiHandler.removeCallbacks(saveAlbumInfoRunnable)
+        // Fall back to the last saved title while a page is still loading, so a kill
+        // mid-load doesn't replace a resolved title with the "..." placeholder
+        val previousTitles = config.tab.savedAlbumInfoList.associate { it.url to it.title }
         val albumControllers = browserContainer.list()
         val albumInfoList = albumControllers
             .filter { !it.isTranslatePage }
@@ -258,10 +278,11 @@ class TabManager(
                         it.initAlbumUrl.isNotBlank()
             }
             .map { controller ->
-                AlbumInfo(
-                    controller.albumTitle,
-                    controller.albumUrl.ifBlank { controller.initAlbumUrl },
-                )
+                val url = controller.albumUrl.ifBlank { controller.initAlbumUrl }
+                val title = controller.albumTitle
+                    .takeUnless { it.isBlank() || it == EBWebView.LOADING_TITLE }
+                    ?: previousTitles[url].orEmpty()
+                AlbumInfo(title, url)
             }
         config.tab.savedAlbumInfoList = albumInfoList
         config.tab.currentAlbumIndex = browserContainer.indexOf(state.currentAlbumController)
@@ -305,7 +326,9 @@ class TabManager(
     }
 
     fun getUrlMatchedBrowser(url: String): EBWebView? {
-        return browserContainer.list().firstOrNull { it.albumUrl == url } as EBWebView?
+        return browserContainer.list().firstOrNull {
+            it.albumUrl == url || (it.albumUrl.isBlank() && it.initAlbumUrl == url)
+        } as EBWebView?
     }
 
     private fun getNextAlbumIndexAfterRemoval(removeIndex: Int): Int =
@@ -342,5 +365,9 @@ class TabManager(
                 okAction = okAction,
             )
         }
+    }
+
+    companion object {
+        private const val SAVE_ALBUM_INFO_DEBOUNCE_MS = 500L
     }
 }

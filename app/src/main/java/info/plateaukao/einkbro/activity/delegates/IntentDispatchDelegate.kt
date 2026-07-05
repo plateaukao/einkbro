@@ -34,7 +34,7 @@ class IntentDispatchDelegate(
     private val remoteConnViewModel: RemoteConnViewModel,
     private val translationViewModel: TranslationViewModel,
     private val overviewDialogControllerProvider: () -> OverviewDialogController,
-    private val addAlbum: (title: String, url: String, foreground: Boolean) -> Unit,
+    private val addAlbumAction: (title: String, url: String, foreground: Boolean, lazyLoad: Boolean) -> Unit,
     private val updateAlbum: (url: String) -> Unit,
     private val showAlbum: (controller: info.plateaukao.einkbro.browser.AlbumController) -> Unit,
     private val getUrlMatchedBrowser: (url: String) -> EBWebView?,
@@ -46,6 +46,13 @@ class IntentDispatchDelegate(
     private val showTranslationDialog: (isWholePageMode: Boolean) -> Unit,
 ) {
     private val epubManager: EpubManager by lazy { EpubManager(activity) }
+
+    private fun addAlbum(
+        title: String,
+        url: String,
+        foreground: Boolean,
+        lazyLoad: Boolean = false,
+    ) = addAlbumAction(title, url, foreground, lazyLoad)
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -224,10 +231,13 @@ class IntentDispatchDelegate(
                 var savedIndex = config.tab.currentAlbumIndex
                 if (savedIndex == -1) savedIndex = 0
                 albumList.forEachIndexed { index, albumInfo ->
+                    // Restore background tabs lazily: keep the saved title visible in the
+                    // tab list and only load the page when the tab is first activated
                     addAlbum(
                         albumInfo.title,
                         albumInfo.url,
                         index == savedIndex,
+                        lazyLoad = index != savedIndex,
                     )
                 }
             } else {
