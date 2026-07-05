@@ -218,6 +218,7 @@
     <string name="saving_epub">EPUB wordt opgeslagen</string>
     <string name="menu_open_epub">EPUB openen</string>
     <string name="new_epub_or_from_picker">Nieuwe EPUB of uit bestandskiezer</string>
+    <string name="new_pdf_or_from_picker">Nieuwe PDF of uit bestandskiezer</string>
     <string name="title">Hoofdstuknaam</string>
     <string name="title_in_toc">Inhoudsopgave</string>
     <string name="book_name">Boeknaam</string>

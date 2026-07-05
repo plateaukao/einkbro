@@ -193,6 +193,7 @@
     <string name="saving_epub">Guardando EPUB</string>
     <string name="menu_open_epub">Abrir\nEPUB</string>
     <string name="new_epub_or_from_picker">Nuevo EPUB o desde el selector</string>
+    <string name="new_pdf_or_from_picker">Nuevo PDF o desde el selector</string>
     <string name="title">Nombre del capítulo</string>
     <string name="title_in_toc">Índice</string>
     <string name="book_name">Nombre del libro</string>

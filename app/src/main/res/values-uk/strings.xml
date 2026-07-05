@@ -274,6 +274,7 @@
     <string name="move_to_background">Згорнути</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="new_epub_or_from_picker">Новий EPUB або обрати файл</string>
+    <string name="new_pdf_or_from_picker">Новий PDF або обрати файл</string>
     <string name="no_bookmarks">Довго натисніть на іконку Закладок, щоб додати закладки</string>
     <string name="no_previous_page">Немає попередньої сторінки!</string>
     <string name="no_saved_pages">Збережених сторінок ще немає</string>

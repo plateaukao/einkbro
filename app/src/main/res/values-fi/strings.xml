@@ -286,6 +286,7 @@
     <string name="move_to_background">Pienennä</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="new_epub_or_from_picker">Uusi EPUB tai tiedostovalitsimesta</string>
+    <string name="new_pdf_or_from_picker">Uusi PDF tai tiedostovalitsimesta</string>
     <string name="no_bookmarks">Paina pitkään kirjanmerkkikuvaketta lisätäksesi kirjanmerkkejä</string>
     <string name="no_previous_page">Ei edellistä sivua!</string>
     <string name="no_saved_pages">Ei tallennettuja sivuja vielä</string>

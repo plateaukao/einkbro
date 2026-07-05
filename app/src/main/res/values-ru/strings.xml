@@ -244,6 +244,7 @@
     <string name="saving_epub">Идёт сохранение файла EPUB</string>
     <string name="menu_open_epub">Открыть\nEPUB</string>
     <string name="new_epub_or_from_picker">Создать новый файл или выбрать название</string>
+    <string name="new_pdf_or_from_picker">Создать новый файл или выбрать название</string>
     <string name="title">Название главы</string>
     <string name="title_in_toc">Название главы в оглавлении</string>
     <string name="book_name">Название книги</string>

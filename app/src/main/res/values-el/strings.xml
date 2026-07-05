@@ -234,6 +234,7 @@
     <string name="saving_epub">Αποθήκευση EPUB</string>
     <string name="menu_open_epub">Άνοιγμα EPUB</string>
     <string name="new_epub_or_from_picker">Νέο EPUB ή από επιλογέα αρχείων</string>
+    <string name="new_pdf_or_from_picker">Νέο PDF ή από επιλογέα αρχείων</string>
     <string name="title">Όνομα κεφαλαίου</string>
     <string name="title_in_toc">Πίνακας Περιεχομένων</string>
     <string name="book_name">Όνομα Βιβλίου</string>

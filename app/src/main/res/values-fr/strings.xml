@@ -219,6 +219,7 @@
     <string name="saving_epub">Enregistrement EPUB</string>
     <string name="menu_open_epub">Ouvrir EPUB</string>
     <string name="new_epub_or_from_picker">Nouvel EPUB ou depuis le sélecteur</string>
+    <string name="new_pdf_or_from_picker">Nouveau PDF ou depuis le sélecteur</string>
     <string name="title">Nom du chapitre</string>
     <string name="title_in_toc">Table des matières</string>
     <string name="book_name">Nom du livre</string>

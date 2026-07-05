@@ -234,6 +234,7 @@
     <string name="saving_epub">EPUB kaydediliyor</string>
     <string name="menu_open_epub">EPUB aç</string>
     <string name="new_epub_or_from_picker">Yeni EPUB veya dosya seçiciden</string>
+    <string name="new_pdf_or_from_picker">Yeni PDF veya dosya seçiciden</string>
     <string name="title">Bölüm adı</string>
     <string name="title_in_toc">İçindekiler</string>
     <string name="book_name">Kitap Adı</string>

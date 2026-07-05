@@ -201,6 +201,7 @@
     <string name="saving_epub">A guardar EPUB</string>
     <string name="menu_open_epub">Abrir EPUB</string>
     <string name="new_epub_or_from_picker">Novo EPUB ou do seletor</string>
+    <string name="new_pdf_or_from_picker">Novo PDF ou do seletor</string>
     <string name="title">Nome do capítulo</string>
     <string name="title_in_toc">Índice</string>
     <string name="book_name">Nome do livro</string>

@@ -201,6 +201,7 @@
     <string name="saving_epub">Desant EPUB</string>
     <string name="menu_open_epub">Obrir EPUB</string>
     <string name="new_epub_or_from_picker">Nou EPUB o des del selector</string>
+    <string name="new_pdf_or_from_picker">Nou PDF o des del selector</string>
     <string name="title">Nom del capítol</string>
     <string name="title_in_toc">Índex</string>
     <string name="book_name">Nom del llibre</string>

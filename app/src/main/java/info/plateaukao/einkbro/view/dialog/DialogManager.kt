@@ -189,6 +189,53 @@ class DialogManager(
         dialogRef!!.show()
     }
 
+    // Mirrors showEpubDialog's "save" tab: first entry opens the system picker (new file,
+    // or an existing PDF to append into); the rest are previously used PDFs.
+    fun showPdfDialog(
+        onSavePdf: (Uri?) -> Unit,
+    ) {
+        val pdfFiles = mutableStateOf(config.savedPdfFileInfos.reversed())
+        var dialogRef: Dialog? = null
+
+        val composeView = ComposeView(activity).apply {
+            setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
+            setContent {
+                MyTheme {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        EpubListItem(
+                            title = stringResource(R.string.new_pdf_or_from_picker),
+                            showRemove = false,
+                            onClick = { onSavePdf(null); dialogRef?.dismiss() },
+                        )
+                        pdfFiles.value.forEach { pdfFileInfo ->
+                            EpubListItem(
+                                title = "${pdfFileInfo.title} (${getFileSizeString(pdfFileInfo.uri)})",
+                                showRemove = true,
+                                onClick = {
+                                    onSavePdf(pdfFileInfo.uri.toUri())
+                                    dialogRef?.dismiss()
+                                },
+                                onRemove = {
+                                    config.removeSavedPdfFile(pdfFileInfo)
+                                    pdfFiles.value = config.savedPdfFileInfos.reversed()
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        dialogRef = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+            .apply { setView(composeView) }
+            .create().apply {
+                window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
+                window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
+            }
+        dialogRef!!.show()
+    }
+
     private fun getFileSizeString(uri: String): String {
         val sizeInBytes = DocumentFile.fromSingleUri(activity, Uri.parse(uri))?.length() ?: 0
         val sizeInKB = sizeInBytes / 1024

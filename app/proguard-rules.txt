@@ -26,3 +26,8 @@
 # that no longer matches BrowserActionCatalog ids.
 -keepnames class info.plateaukao.einkbro.browser.BrowserAction
 -keepnames class info.plateaukao.einkbro.browser.BrowserAction$* { }
+
+# pdfbox-android: JPEG2000 support is optional (jp2-android not bundled)
+-dontwarn com.gemalto.jp2.**
+# pdfbox-android: BouncyCastle excluded (only needed for encrypted PDFs)
+-dontwarn org.bouncycastle.**

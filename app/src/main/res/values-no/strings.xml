@@ -286,6 +286,7 @@
     <string name="move_to_background">Minimer</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="new_epub_or_from_picker">Ny EPUB eller fra filvelger</string>
+    <string name="new_pdf_or_from_picker">Ny PDF eller fra filvelger</string>
     <string name="no_bookmarks">Langt trykk på bokmerke-ikonet for å legge til bokmerker</string>
     <string name="no_previous_page">Ingen forrige side!</string>
     <string name="no_saved_pages">Ingen lagrede sider ennå</string>

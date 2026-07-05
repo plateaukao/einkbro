@@ -300,6 +300,7 @@
     <string name="move_to_background">最小化</string>
     <string name="naver_translate">Naver翻訳</string>
     <string name="new_epub_or_from_picker">新規EPUBまたはピッカーから開く</string>
+    <string name="new_pdf_or_from_picker">新規PDFまたはピッカーから開く</string>
     <string name="no_bookmarks">ブックマークアイコンを長押ししてブックマークを追加</string>
     <string name="no_previous_page">前のページがありません！</string>
     <string name="no_saved_pages">保存済みページはありません</string>

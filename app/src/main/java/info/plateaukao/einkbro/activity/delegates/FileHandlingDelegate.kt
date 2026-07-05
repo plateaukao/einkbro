@@ -14,6 +14,7 @@ import android.webkit.ValueCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
@@ -21,12 +22,14 @@ import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.activity.SavedPagesActivity
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.SavedPage
+import info.plateaukao.einkbro.epub.EpubFileInfo
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.unit.PdfMergeUtil
 import info.plateaukao.einkbro.unit.SupernoteStorage
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
@@ -179,7 +182,17 @@ class FileHandlingDelegate(
         BrowserUnit.createFilePicker(createWebArchivePickerLauncher, fileName)
     }
 
-    fun showPdfFilePicker() {
+    // Mirrors showEpubDialog: pick a previously used PDF to append into, or open the
+    // system picker for a new file (or an existing one, which also appends).
+    fun showPdfDialog() = dialogManager.showPdfDialog { uri ->
+        if (uri == null) {
+            showPdfFilePicker()
+        } else {
+            savePdfToUri(uri)
+        }
+    }
+
+    private fun showPdfFilePicker() {
         val fileName = "${HelperUnit.fileName(state.ebWebView.url)}.pdf"
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -200,14 +213,31 @@ class FileHandlingDelegate(
     }
 
     private fun savePdfToUri(uri: Uri) {
-        val pfd = runCatching { activity.contentResolver.openFileDescriptor(uri, "rw") }
-            .getOrNull()
+        // Like the EPUB flow, a target that already has content gets the rendered pages
+        // appended (with a TOC entry); an empty/new target gets a fresh PDF.
+        val append = (runCatching {
+            activity.contentResolver.openFileDescriptor(uri, "r")?.use { it.statSize }
+        }.getOrNull() ?: 0L) > 0L
+
+        // Render to a cache temp file first, then post-process with pdfbox (TOC entry)
+        // into the picked document.
+        val tempPdf = File(activity.cacheDir, "web_pdf_render.pdf")
+        val pfd = runCatching {
+            android.os.ParcelFileDescriptor.open(
+                tempPdf,
+                android.os.ParcelFileDescriptor.MODE_CREATE or
+                    android.os.ParcelFileDescriptor.MODE_TRUNCATE or
+                    android.os.ParcelFileDescriptor.MODE_READ_WRITE
+            )
+        }.getOrNull()
         if (pfd == null) {
             EBToast.show(activity, R.string.toast_error)
             return
         }
 
         val ebWebView = state.ebWebView
+        // WebView getters are main-thread only; capture the title here for the IO stage
+        val tocTitle = ebWebView.title
         val mediaSize = config.display.pdfPaperSize.mediaSize
         // WebView's print pipeline lays out the page at mediaWidthInches * 96 CSS px,
         // regardless of Resolution dpi. Match that against the live page's layout width
@@ -220,7 +250,7 @@ class FileHandlingDelegate(
             val styleJs = HelperUnit.loadAssetFile("pdf_print_style.js")
                 .replace("__ZOOM__", "%.3f".format(java.util.Locale.US, zoom))
             ebWebView.evaluateJavascript(styleJs) {
-                startPdfRender(ebWebView, uri, pfd)
+                startPdfRender(ebWebView, uri, tempPdf, tocTitle, append, pfd)
             }
         }
     }
@@ -228,6 +258,9 @@ class FileHandlingDelegate(
     private fun startPdfRender(
         ebWebView: EBWebView,
         uri: Uri,
+        tempPdf: File,
+        tocTitle: String?,
+        append: Boolean,
         pfd: android.os.ParcelFileDescriptor,
     ) {
         val title = ebWebView.title.orEmpty().ifBlank { "page" }
@@ -248,22 +281,22 @@ class FileHandlingDelegate(
                         CancellationSignal(),
                         object : PrintCallbacks.WriteCallback() {
                             override fun onWriteFinished(pages: Array<out PageRange>?) {
-                                finalizePdf(adapter, pfd, uri, success = true)
+                                finalizePdf(adapter, pfd, uri, tempPdf, tocTitle, append, success = true)
                             }
                             override fun onWriteFailed(error: CharSequence?) {
-                                finalizePdf(adapter, pfd, uri, success = false)
+                                finalizePdf(adapter, pfd, uri, tempPdf, tocTitle, append, success = false)
                             }
                             override fun onWriteCancelled() {
-                                finalizePdf(adapter, pfd, uri, success = false)
+                                finalizePdf(adapter, pfd, uri, tempPdf, tocTitle, append, success = false)
                             }
                         }
                     )
                 }
                 override fun onLayoutFailed(error: CharSequence?) {
-                    finalizePdf(adapter, pfd, uri, success = false)
+                    finalizePdf(adapter, pfd, uri, tempPdf, tocTitle, append, success = false)
                 }
                 override fun onLayoutCancelled() {
-                    finalizePdf(adapter, pfd, uri, success = false)
+                    finalizePdf(adapter, pfd, uri, tempPdf, tocTitle, append, success = false)
                 }
             },
             null
@@ -274,26 +307,78 @@ class FileHandlingDelegate(
         adapter: PrintDocumentAdapter,
         pfd: android.os.ParcelFileDescriptor,
         uri: Uri,
+        tempPdf: File,
+        tocTitle: String?,
+        append: Boolean,
         success: Boolean,
     ) {
         runCatching { pfd.close() }
         runCatching { adapter.onFinish() }
-        activity.runOnUiThread {
-            state.ebWebView.evaluateJavascript(
-                HelperUnit.loadAssetFile("pdf_print_cleanup.js"),
-                null,
-            )
-            if (success) {
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.toast_downloadComplete,
-                    okAction = { HelperUnit.openFile(activity, uri) },
-                )
-            } else {
-                runCatching { activity.contentResolver.delete(uri, null, null) }
+        if (!success) {
+            tempPdf.delete()
+            activity.runOnUiThread {
+                cleanupPdfPrintStyle()
+                // only a freshly created (empty) document is safe to remove
+                if (!append) runCatching { activity.contentResolver.delete(uri, null, null) }
                 EBToast.show(activity, R.string.toast_error)
+            }
+            return
+        }
+        activity.lifecycleScope.launch(Dispatchers.IO) {
+            val ok = if (append) {
+                // append never falls back to a raw copy — that would clobber the target
+                PdfMergeUtil.appendPdfToExisting(activity, uri, tempPdf, tocTitle)
+            } else {
+                // write through pdfbox to add a TOC entry; fall back to the raw render
+                PdfMergeUtil.savePdfWithToc(activity, tempPdf, uri, tocTitle)
+                    || copyFileToUri(tempPdf, uri)
+            }
+            tempPdf.delete()
+            if (ok) rememberPdfTarget(uri)
+            withContext(Dispatchers.Main) {
+                cleanupPdfPrintStyle()
+                if (ok) {
+                    dialogManager.showOkCancelDialog(
+                        messageResId = R.string.toast_downloadComplete,
+                        okAction = { HelperUnit.openFile(activity, uri) },
+                    )
+                } else {
+                    if (!append) runCatching { activity.contentResolver.delete(uri, null, null) }
+                    EBToast.show(activity, R.string.toast_error)
+                }
             }
         }
     }
+
+    // Keep access to the document across restarts and list it in showPdfDialog, so the
+    // next "Save as PDF" can append to it directly (same pattern as saved EPUB files).
+    private fun rememberPdfTarget(uri: Uri) {
+        runCatching {
+            activity.contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+        }
+        val uriString = uri.toString()
+        if (config.savedPdfFileInfos.none { it.uri == uriString }) {
+            val name = DocumentFile.fromSingleUri(activity, uri)?.name ?: "PDF"
+            config.addSavedPdfFile(EpubFileInfo(name, uriString))
+        }
+    }
+
+    private fun cleanupPdfPrintStyle() {
+        state.ebWebView.evaluateJavascript(
+            HelperUnit.loadAssetFile("pdf_print_cleanup.js"),
+            null,
+        )
+    }
+
+    private fun copyFileToUri(file: File, uri: Uri): Boolean =
+        runCatching {
+            activity.contentResolver.openOutputStream(uri)?.use { out ->
+                file.inputStream().use { it.copyTo(out) }
+            } != null
+        }.getOrDefault(false)
 
     fun savePageForLater() {
         val ebWebView = state.ebWebView

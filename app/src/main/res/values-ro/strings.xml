@@ -219,6 +219,7 @@
     <string name="saving_epub">Salvare EPUB</string>
     <string name="menu_open_epub">Deschide EPUB</string>
     <string name="new_epub_or_from_picker">EPUB nou sau din selector</string>
+    <string name="new_pdf_or_from_picker">PDF nou sau din selector</string>
     <string name="title">Numele capitolului</string>
     <string name="title_in_toc">Cuprins</string>
     <string name="book_name">Numele cărții</string>
