@@ -489,7 +489,7 @@
     <string name="source_language">Kildesprog</string>
     <string name="split_screen">Delt skærm</string>
     <string name="split_search_settings">Delt søgning indstillinger</string>
-    <string name="summary_gpt_type">GPT-type til opsummering af webindhold</string>
+    <string name="summary_gpt_type">AI-motor til opsummering</string>
     <string name="switch_touch_area_action">Skift op/ned-retning</string>
     <string name="switch_touch_area_action_short">Skift retning</string>
     <string name="system_default">Standard</string>
@@ -532,7 +532,8 @@
     <string name="volume_page_turn_paused">Sideskift med lydstyrketast sat på pause i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sideskift med lydstyrketast genoptaget</string>
     <string name="web_content_processing">Webindholdsbehandling</string>
-    <string name="web_processing_gpt_type">GPT-motor</string>
+    <string name="web_processing_gpt_type">AI-motor til sidechat</string>
+    <string name="setting_title_default_ai_engine">Standard AI-motor</string>
     <string name="white_background">Hvid baggrund</string>
     <string name="site_force_viewport_width">Tving viewportbredde (px)</string>
     <string name="site_force_viewport_width_hint">Brug kun hvis desktop-UA alene ikke er nok</string>

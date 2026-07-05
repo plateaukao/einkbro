@@ -501,10 +501,11 @@
     <string name="setting_summary_gpt_audio_model_name">Dostępne opcje: tts-1 (domyślnie), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Czat ze stroną</string>
     <string name="web_content_processing">Przetwarzanie treści strony</string>
-    <string name="web_processing_gpt_type">Silnik GPT</string>
+    <string name="web_processing_gpt_type">Silnik AI do czatu ze stroną</string>
+    <string name="setting_title_default_ai_engine">Domyślny silnik AI</string>
     <string name="setting_summary_web_processing_gpt_type">Wybierz silnik do przetwarzania treści strony</string>
     <string name="self_hosted">Samodzielnie hostowany</string>
-    <string name="summary_gpt_type">Typ GPT do podsumowania treści strony</string>
+    <string name="summary_gpt_type">Silnik AI do podsumowań</string>
     <string name="setting_summary_summary_gpt_type">Wybierz silnik GPT do podsumowywania treści</string>
     <string name="menu_summarize">Podsumuj</string>
     <string name="setting_title_remote_query">Akcja zdalnego zapytania</string>

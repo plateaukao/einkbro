@@ -493,10 +493,11 @@
     <string name="setting_summary_gpt_audio_model_name">Beschikbare opties: tts-1 (standaard), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Chatten met web</string>
     <string name="web_content_processing">Webinhoudverwerking</string>
-    <string name="web_processing_gpt_type">GPT-engine</string>
+    <string name="web_processing_gpt_type">AI-engine voor paginachat</string>
+    <string name="setting_title_default_ai_engine">Standaard AI-engine</string>
     <string name="setting_summary_web_processing_gpt_type">Engine kiezen voor het verwerken van webinhoud</string>
     <string name="self_hosted">Zelf gehost</string>
-    <string name="summary_gpt_type">GPT-type voor webinhoud-samenvatting</string>
+    <string name="summary_gpt_type">AI-engine voor samenvattingen</string>
     <string name="setting_summary_summary_gpt_type">GPT-engine kiezen voor inhoud samenvatten</string>
     <string name="menu_summarize">Samenvatten</string>
     <string name="setting_title_remote_query">Externe query-actie</string>

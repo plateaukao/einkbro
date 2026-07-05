@@ -509,10 +509,11 @@
     <string name="setting_summary_gpt_audio_model_name">Διαθέσιμες επιλογές: tts-1 (προεπιλογή), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Συνομιλία με τον Ιστό</string>
     <string name="web_content_processing">Επεξεργασία Περιεχομένου Ιστού</string>
-    <string name="web_processing_gpt_type">Μηχανή GPT</string>
+    <string name="web_processing_gpt_type">Μηχανή AI για συνομιλία σελίδας</string>
+    <string name="setting_title_default_ai_engine">Προεπιλεγμένη μηχανή AI</string>
     <string name="setting_summary_web_processing_gpt_type">Επιλογή μηχανής για επεξεργασία περιεχομένου ιστού</string>
     <string name="self_hosted">Αυτο-φιλοξενούμενο</string>
-    <string name="summary_gpt_type">Τύπος GPT για σύνοψη περιεχομένου ιστού</string>
+    <string name="summary_gpt_type">Μηχανή AI για σύνοψη</string>
     <string name="setting_summary_summary_gpt_type">Επιλογή μηχανής GPT για σύνοψη περιεχομένου</string>
     <string name="menu_summarize">Σύνοψη</string>
     <string name="setting_title_remote_query">Ενέργεια Απομακρυσμένου Ερωτήματος</string>

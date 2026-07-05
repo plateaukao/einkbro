@@ -489,7 +489,7 @@
     <string name="source_language">Källspråk</string>
     <string name="split_screen">Delad skärm</string>
     <string name="split_search_settings">Delad sökning inställningar</string>
-    <string name="summary_gpt_type">GPT-typ för sammanfattning av webbinnehåll</string>
+    <string name="summary_gpt_type">AI-motor för sammanfattning</string>
     <string name="switch_touch_area_action">Byt upp/ned-riktning</string>
     <string name="switch_touch_area_action_short">Byt riktning</string>
     <string name="system_default">Standard</string>
@@ -532,7 +532,8 @@
     <string name="volume_page_turn_paused">Sidbyte med volymknapp pausat i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sidbyte med volymknapp återupptaget</string>
     <string name="web_content_processing">Webbinnehållsbearbetning</string>
-    <string name="web_processing_gpt_type">GPT-motor</string>
+    <string name="web_processing_gpt_type">AI-motor för sidchatt</string>
+    <string name="setting_title_default_ai_engine">Standard AI-motor</string>
     <string name="white_background">Vit bakgrund</string>
     <string name="site_force_viewport_width">Tvinga viewport-bredd (px)</string>
     <string name="site_force_viewport_width_hint">Använd endast om desktop-UA inte räcker</string>

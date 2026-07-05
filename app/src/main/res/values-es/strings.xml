@@ -475,10 +475,11 @@
     <string name="setting_summary_gpt_audio_model_name">Opciones disponibles: tts-1 (predeterminado), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Chatear con Web</string>
     <string name="web_content_processing">Procesamiento de contenido web</string>
-    <string name="web_processing_gpt_type">Motor GPT</string>
+    <string name="web_processing_gpt_type">Motor de IA para el chat de página</string>
+    <string name="setting_title_default_ai_engine">Motor de IA predeterminado</string>
     <string name="setting_summary_web_processing_gpt_type">Elige el motor para procesar el contenido web</string>
     <string name="self_hosted">Autoalojado</string>
-    <string name="summary_gpt_type">Tipo de GPT para resumir contenido web</string>
+    <string name="summary_gpt_type">Motor de IA para resúmenes</string>
     <string name="setting_summary_summary_gpt_type">Elige el motor GPT para la resumición de contenido</string>
     <string name="menu_summarize">Resumir</string>
     <string name="setting_title_toolbar_position">Posición de la barra de herramientas</string>

@@ -489,7 +489,7 @@
     <string name="source_language">Kildespråk</string>
     <string name="split_screen">Delt skjerm</string>
     <string name="split_search_settings">Delt søk innstillinger</string>
-    <string name="summary_gpt_type">GPT-type for oppsummering av nettinnhold</string>
+    <string name="summary_gpt_type">AI-motor for oppsummering</string>
     <string name="switch_touch_area_action">Bytt opp/ned-retning</string>
     <string name="switch_touch_area_action_short">Bytt retning</string>
     <string name="system_default">Standard</string>
@@ -532,7 +532,8 @@
     <string name="volume_page_turn_paused">Sidebytting med volumtast satt på pause i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sidebytting med volumtast gjenopptatt</string>
     <string name="web_content_processing">Nettinnholdsbehandling</string>
-    <string name="web_processing_gpt_type">GPT-motor</string>
+    <string name="web_processing_gpt_type">AI-motor for sidechat</string>
+    <string name="setting_title_default_ai_engine">Standard AI-motor</string>
     <string name="white_background">Hvit bakgrunn</string>
     <string name="site_force_viewport_width">Tving viewport-bredde (px)</string>
     <string name="site_force_viewport_width_hint">Bruk kun hvis skrivebords-UA alene ikke er nok</string>

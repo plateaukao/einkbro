@@ -43,6 +43,28 @@ class AiConfig(private val sp: SharedPreferences) {
     var useCustomGptUrl by BooleanPreference(sp, K_USE_CUSTOM_GPT_URL, false)
     var useGeminiApi by BooleanPreference(sp, K_USE_GEMINI_API, false)
 
+    // Single-choice view over the two booleans above; keeps the underlying
+    // preference keys unchanged so backup/restore and existing consumers work.
+    var defaultGptEngine: DefaultGptEngine
+        get() = when {
+            useGeminiApi -> DefaultGptEngine.Gemini
+            useCustomGptUrl -> DefaultGptEngine.SelfHosted
+            else -> DefaultGptEngine.OpenAi
+        }
+        set(value) = when (value) {
+            DefaultGptEngine.OpenAi -> {
+                useGeminiApi = false
+                useCustomGptUrl = false
+            }
+
+            DefaultGptEngine.SelfHosted -> {
+                useGeminiApi = false
+                useCustomGptUrl = true
+            }
+
+            DefaultGptEngine.Gemini -> useGeminiApi = true
+        }
+
     var enableOpenAiStream by BooleanPreference(sp, K_ENABLE_OPEN_AI_STREAM, true)
 
     var externalSearchWithGpt by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_GPT, false)
@@ -176,4 +198,10 @@ class AiConfig(private val sp: SharedPreferences) {
         private const val K_EXTERNAL_SEARCH_METHOD = "sp_external_search_method"
         private const val K_REMOTE_QUERY_ACTION_NAME = "sp_remote_query_action_name"
     }
+}
+
+enum class DefaultGptEngine {
+    OpenAi,
+    SelfHosted,
+    Gemini,
 }

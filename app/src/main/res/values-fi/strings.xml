@@ -489,7 +489,7 @@
     <string name="source_language">Lähdekieli</string>
     <string name="split_screen">Jaettu näyttö</string>
     <string name="split_search_settings">Jaetun haun asetukset</string>
-    <string name="summary_gpt_type">GPT-tyyppi verkkosisällön tiivistämiseen</string>
+    <string name="summary_gpt_type">Tekoälymoottori tiivistämiseen</string>
     <string name="switch_touch_area_action">Vaihda ylös/alas-suunta</string>
     <string name="switch_touch_area_action_short">Vaihda suunta</string>
     <string name="system_default">Oletus</string>
@@ -532,7 +532,8 @@
     <string name="volume_page_turn_paused">Sivunvaihto äänenvoimakkuusnäppäimellä pysäytetty 5 sekunniksi</string>
     <string name="volume_page_turn_resumed">Sivunvaihto äänenvoimakkuusnäppäimellä jatkettu</string>
     <string name="web_content_processing">Verkkosisällön käsittely</string>
-    <string name="web_processing_gpt_type">GPT-moottori</string>
+    <string name="web_processing_gpt_type">Tekoälymoottori sivukeskusteluun</string>
+    <string name="setting_title_default_ai_engine">Oletusarvoinen tekoälymoottori</string>
     <string name="white_background">Valkoinen tausta</string>
     <string name="site_force_viewport_width">Pakota näkymän leveys (px)</string>
     <string name="site_force_viewport_width_hint">Käytä vain jos pelkkä työpöytä-UA ei riitä</string>

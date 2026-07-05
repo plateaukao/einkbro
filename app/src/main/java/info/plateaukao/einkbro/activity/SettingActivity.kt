@@ -77,6 +77,9 @@ import info.plateaukao.einkbro.setting.screens.buildAboutSettingItems
 import info.plateaukao.einkbro.setting.screens.buildBackupSettingItems
 import info.plateaukao.einkbro.setting.screens.buildBehaviorSettingItems
 import info.plateaukao.einkbro.setting.screens.buildChatGptSettingItems
+import info.plateaukao.einkbro.setting.screens.buildGptGeminiSettingItems
+import info.plateaukao.einkbro.setting.screens.buildGptOpenAiSettingItems
+import info.plateaukao.einkbro.setting.screens.buildGptSelfHostedSettingItems
 import info.plateaukao.einkbro.setting.screens.buildClearDataSettingItems
 import info.plateaukao.einkbro.setting.screens.buildGestureSettingItems
 import info.plateaukao.einkbro.setting.screens.buildMainSettingItems
@@ -239,6 +242,15 @@ class SettingActivity : FragmentActivity(), BackupOps {
                         composable(ChatGPT.name) {
                             SettingScreen(navController, chatGptSettingItems, dialogManager, action, 1)
                         }
+                        composable(SettingRoute.GptOpenAi.name) {
+                            SettingScreen(navController, gptOpenAiSettingItems, dialogManager, action, 1)
+                        }
+                        composable(SettingRoute.GptSelfHosted.name) {
+                            SettingScreen(navController, gptSelfHostedSettingItems, dialogManager, action, 1)
+                        }
+                        composable(SettingRoute.GptGemini.name) {
+                            SettingScreen(navController, gptGeminiSettingItems, dialogManager, action, 1)
+                        }
                         composable(Search.name) {
                             SettingScreen(navController, searchSettingItems, dialogManager, action, 1)
                         }
@@ -363,6 +375,9 @@ class SettingActivity : FragmentActivity(), BackupOps {
             StartControl.titleId to startSettingItems,
             Misc.titleId to miscSettingItems,
             ChatGPT.titleId to chatGptSettingItems,
+            SettingRoute.GptOpenAi.titleId to gptOpenAiSettingItems,
+            SettingRoute.GptSelfHosted.titleId to gptSelfHostedSettingItems,
+            SettingRoute.GptGemini.titleId to gptGeminiSettingItems,
             UserAgent.titleId to userAgentSettingItems,
         ).flatMap { (categoryResId, items) ->
             items.filter { it !is DividerSettingItem }
@@ -383,6 +398,9 @@ class SettingActivity : FragmentActivity(), BackupOps {
     private val miscSettingItems = buildMiscSettingItems(deps)
     private val userAgentSettingItems = buildUserAgentSettingItems(deps)
     private val chatGptSettingItems = buildChatGptSettingItems(deps)
+    private val gptOpenAiSettingItems = buildGptOpenAiSettingItems(deps)
+    private val gptSelfHostedSettingItems = buildGptSelfHostedSettingItems(deps)
+    private val gptGeminiSettingItems = buildGptGeminiSettingItems(deps)
     private val startSettingItems = buildStartSettingItems(deps)
 
     @Suppress("DEPRECATION")
@@ -420,6 +438,9 @@ enum class SettingRoute(@StringRes val titleId: Int) {
     Search(R.string.setting_title_search),
     About(R.string.title_about),
     ChatGPT(R.string.setting_title_chat_gpt),
+    GptOpenAi(R.string.openai),
+    GptSelfHosted(R.string.openai_compatible_server),
+    GptGemini(R.string.google_gemini),
     Misc(R.string.misc),
     GesturePicker(R.string.setting_gestures);
 }

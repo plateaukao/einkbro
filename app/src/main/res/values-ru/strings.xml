@@ -579,7 +579,7 @@
     <string name="setting_title_text_wrap_reflow">Перенос текста при масштабировании</string>
     <string name="setting_title_use_gemini">Использовать Google Gemini</string>
     <string name="setting_title_zoom_in_custom_view">Масштабирование в полноэкранном режиме</string>
-    <string name="summary_gpt_type">Движок GPT для суммаризации</string>
+    <string name="summary_gpt_type">Движок ИИ для суммаризации</string>
     <string name="toast_save_page_failed">Не удалось сохранить страницу</string>
     <string name="toast_saved_page">Страница сохранена. Удерживайте эту иконку для просмотра списка.</string>
     <string name="toc_delete">Удалить</string>
@@ -587,7 +587,8 @@
     <string name="volume_page_turn_paused">Перелистывание кнопками громкости приостановлено на 5 секунд</string>
     <string name="volume_page_turn_resumed">Перелистывание кнопками громкости возобновлено</string>
     <string name="web_content_processing">Обработка веб-контента</string>
-    <string name="web_processing_gpt_type">Движок GPT</string>
+    <string name="web_processing_gpt_type">Движок ИИ для чата со страницей</string>
+    <string name="setting_title_default_ai_engine">Движок ИИ по умолчанию</string>
     <string name="site_force_viewport_width">Принудительная ширина viewport (px)</string>
     <string name="site_force_viewport_width_hint">Используйте, только если desktop UA недостаточно</string>
 </resources>

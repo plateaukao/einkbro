@@ -468,7 +468,8 @@
     <string name="setting_summary_gpt_audio_model_name">Available options: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">跟網頁聊聊</string>
     <string name="web_content_processing">網頁內容處理</string>
-    <string name="web_processing_gpt_type">處理網頁內容的AI方案</string>
+    <string name="web_processing_gpt_type">網頁對話的AI方案</string>
+    <string name="setting_title_default_ai_engine">預設 AI 方案</string>
     <string name="setting_summary_web_processing_gpt_type">選擇處理網頁內容的AI方案</string>
     <string name="self_hosted">自訂</string>
     <string name="summary_gpt_type">網頁內容摘要的AI方案</string>

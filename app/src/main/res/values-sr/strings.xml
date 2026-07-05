@@ -489,7 +489,7 @@
     <string name="source_language">Изворни језик</string>
     <string name="split_screen">Подели екран</string>
     <string name="split_search_settings">Подешавања подељене претраге</string>
-    <string name="summary_gpt_type">GPT мотор за сумаризацију</string>
+    <string name="summary_gpt_type">AI мотор за сумаризацију</string>
     <string name="switch_touch_area_action">Промени смер</string>
     <string name="switch_touch_area_action_short">Промени смер</string>
     <string name="system_default">Подразумевано</string>
@@ -532,7 +532,8 @@
     <string name="volume_page_turn_paused">Окретање страница дугмадима за јачину звука паузирано на 5 секунди</string>
     <string name="volume_page_turn_resumed">Окретање страница дугмадима за јачину звука настављено</string>
     <string name="web_content_processing">Обрада веб садржаја</string>
-    <string name="web_processing_gpt_type">GPT мотор</string>
+    <string name="web_processing_gpt_type">AI мотор за ћаскање са страницом</string>
+    <string name="setting_title_default_ai_engine">Подразумевани AI мотор</string>
     <string name="white_background">Бела позадина</string>
     <string name="site_force_viewport_width">Принуди ширину viewporta (px)</string>
     <string name="site_force_viewport_width_hint">Користите само ако desktop UA није довољан</string>

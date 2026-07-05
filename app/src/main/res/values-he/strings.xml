@@ -509,10 +509,11 @@
     <string name="setting_summary_gpt_audio_model_name">אפשרויות זמינות: tts-1 (ברירת מחדל), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">צ\'אט עם האינטרנט</string>
     <string name="web_content_processing">עיבוד תוכן אינטרנט</string>
-    <string name="web_processing_gpt_type">מנוע GPT</string>
+    <string name="web_processing_gpt_type">מנוע AI לצ\'אט עם הדף</string>
+    <string name="setting_title_default_ai_engine">מנוע AI כברירת מחדל</string>
     <string name="setting_summary_web_processing_gpt_type">בחירת מנוע לעיבוד תוכן אינטרנט</string>
     <string name="self_hosted">מארח עצמי</string>
-    <string name="summary_gpt_type">סוג GPT לסיכום תוכן אינטרנט</string>
+    <string name="summary_gpt_type">מנוע AI לסיכום</string>
     <string name="setting_summary_summary_gpt_type">בחירת מנוע GPT לסיכום תוכן</string>
     <string name="menu_summarize">סיכום</string>
     <string name="setting_title_remote_query">פעולת שאילתה מרוחקת</string>
