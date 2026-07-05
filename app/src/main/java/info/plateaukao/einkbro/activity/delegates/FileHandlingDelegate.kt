@@ -22,7 +22,7 @@ import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.activity.SavedPagesActivity
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.SavedPage
-import info.plateaukao.einkbro.epub.EpubFileInfo
+import info.plateaukao.einkbro.preference.SavedFileInfo
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BackupUnit
@@ -362,7 +362,7 @@ class FileHandlingDelegate(
         val uriString = uri.toString()
         if (config.savedPdfFileInfos.none { it.uri == uriString }) {
             val name = DocumentFile.fromSingleUri(activity, uri)?.name ?: "PDF"
-            config.addSavedPdfFile(EpubFileInfo(name, uriString))
+            config.addSavedPdfFile(SavedFileInfo(name, uriString))
         }
     }
 

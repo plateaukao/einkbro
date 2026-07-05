@@ -13,6 +13,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.SavedFileInfo
 import info.plateaukao.einkbro.unit.BrowserUnit.getResourceAndMimetypeFromUrl
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.pruneWebTitle
@@ -81,7 +82,7 @@ class EpubManager(private val context: Context) : KoinComponent {
                         // save epub file info to preference
                         val bookUri = fileUri.toString()
                         if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
-                            config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
+                            config.addSavedEpubFile(SavedFileInfo(savedBookName, bookUri))
                         }
                     },
                     onErrorAction,
