@@ -220,6 +220,7 @@
     <string name="touch_area_setting">Pengaturan sentuh</string>
     <string name="menu_save_epub">Simpan epub</string>
     <string name="new_epub_or_from_picker">Epub baru atau dari pemilih</string>
+    <string name="new_pdf_or_from_picker">PDF baru atau dari pemilih</string>
     <string name="title">Nama bab</string>
     <string name="title_in_toc">nama bab dalam Daftar Isi</string>
     <string name="book_name">Nama buku</string>

@@ -287,6 +287,7 @@
     <string name="move_to_background">Thu nhỏ</string>
     <string name="naver_translate">Naver Dịch</string>
     <string name="new_epub_or_from_picker">EPUB mới hoặc từ trình chọn</string>
+    <string name="new_pdf_or_from_picker">PDF mới hoặc từ trình chọn</string>
     <string name="no_bookmarks">Nhấn giữ biểu tượng dấu trang để thêm dấu trang</string>
     <string name="no_previous_page">Không có trang trước!</string>
     <string name="no_saved_pages">Chưa có trang nào được lưu</string>

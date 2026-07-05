@@ -230,6 +230,7 @@
     <string name="saving_epub">Ukládání EPUB</string>
     <string name="menu_open_epub">Otevřít EPUB</string>
     <string name="new_epub_or_from_picker">Nový EPUB nebo z výběru souborů</string>
+    <string name="new_pdf_or_from_picker">Nový PDF nebo z výběru souborů</string>
     <string name="title">Název kapitoly</string>
     <string name="title_in_toc">Obsah</string>
     <string name="book_name">Název knihy</string>

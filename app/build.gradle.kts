@@ -102,6 +102,13 @@ android {
         resources.excludes.add("META-INF/services/org.xmlpull.v1.XmlPullParserFactory")
     }
 
+    androidResources {
+        // Default ignore chain + tom_roush: drops pdfbox-android's 4.6MB of bundled
+        // font/CMap/AFM assets, which are only needed for text extraction/rendering,
+        // not for the COS-level operations (outline entries, page merging) we use.
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!tom_roush"
+    }
+
     lint {
         baseline = file("lint-baseline.xml")
         disable.add("MissingTranslation")
@@ -135,6 +142,13 @@ dependencies {
     // the transitive xmlpull jar is excluded to avoid duplicate XmlPullParser classes.
     implementation(libs.epub4j.core) {
         exclude(group = "xmlpull")
+    }
+
+    // PDF post-processing (TOC/outline entries, page merging). COS-level use only, so
+    // BouncyCastle (encrypted-PDF support, ~4MB of unstrippable crypto resources) is
+    // excluded — operating on password-protected PDFs will fail gracefully instead.
+    implementation(libs.pdfbox.android) {
+        exclude(group = "org.bouncycastle")
     }
 
     // for epub saving: html processing

@@ -211,6 +211,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="saving_epub">EPUB wird gespeichert</string>
     <string name="menu_open_epub">EPUB öffnen</string>
     <string name="new_epub_or_from_picker">Neues EPUB oder aus Auswahl</string>
+    <string name="new_pdf_or_from_picker">Neues PDF oder aus Auswahl</string>
     <string name="title">Kapitelname</string>
     <string name="title_in_toc">Inhaltsverzeichnis</string>
     <string name="book_name">Buchname</string>

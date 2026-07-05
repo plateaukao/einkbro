@@ -234,6 +234,7 @@
     <string name="saving_epub">שומר EPUB</string>
     <string name="menu_open_epub">פתיחת EPUB</string>
     <string name="new_epub_or_from_picker">EPUB חדש או מבורר קבצים</string>
+    <string name="new_pdf_or_from_picker">PDF חדש או מבורר קבצים</string>
     <string name="title">שם פרק</string>
     <string name="title_in_toc">תוכן עניינים</string>
     <string name="book_name">שם הספר</string>

@@ -189,6 +189,10 @@ class ConfigManager(
         get() = sp.getString(K_SAVED_EPUBS, "")?.toEpubFileInfoList() ?: mutableListOf()
         set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value)) }
 
+    var savedPdfFileInfos: List<EpubFileInfo>
+        get() = sp.getString(K_SAVED_PDFS, "")?.toEpubFileInfoList() ?: mutableListOf()
+        set(value) = sp.edit { putString(K_SAVED_PDFS, toEpubFileInfosString(value)) }
+
     var splitSearchItemInfoList: List<SplitSearchItemInfo>
         get() {
             val str = sp.getString(K_SPLIT_SEARCH_ITEMS, "").orEmpty()
@@ -251,6 +255,7 @@ class ConfigManager(
         const val K_CLEAR_WHEN_QUIT = "SP_CLEAR_QUIT_9"
 
         const val K_SAVED_EPUBS = "sp_saved_epubs"
+        const val K_SAVED_PDFS = "sp_saved_pdfs"
 
         const val K_INSTAPAPER_USERNAME = "sp_instapaper_username"
         const val K_INSTAPAPER_PASSWORD = "sp_instapaper_password"
@@ -278,6 +283,14 @@ class ConfigManager(
 
     fun removeSavedEpubFile(epubFileInfo: EpubFileInfo) {
         savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { remove(epubFileInfo) }
+    }
+
+    fun addSavedPdfFile(pdfFileInfo: EpubFileInfo) {
+        savedPdfFileInfos = savedPdfFileInfos.toMutableList().apply { add(pdfFileInfo) }
+    }
+
+    fun removeSavedPdfFile(pdfFileInfo: EpubFileInfo) {
+        savedPdfFileInfos = savedPdfFileInfos.toMutableList().apply { remove(pdfFileInfo) }
     }
 
 }

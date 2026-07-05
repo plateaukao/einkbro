@@ -241,6 +241,7 @@
     <string name="saving_epub">EPUB 저장 중</string>
     <string name="menu_open_epub">EPUB 열기</string>
     <string name="new_epub_or_from_picker">새 EPUB 또는 선택기에서 열기</string>
+    <string name="new_pdf_or_from_picker">새 PDF 또는 선택기에서 열기</string>
     <string name="title">장 제목</string>
     <string name="title_in_toc">목차의 장 제목</string>
     <string name="book_name">책 이름</string>

@@ -19,6 +19,7 @@ junit = "4.13.2"
 koin = "3.5.6"
 kotlinxSerializationJson = "1.6.3"
 lifecycle = "2.8.4"
+pdfboxAndroid = "2.0.27.0"
 material = "1.12.0"
 media = "1.7.0"
 mezzanine = "1.2.1"
@@ -66,6 +67,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 epub4j-core = { module = "io.documentnode:epub4j-core", version.ref = "epub4j" }
 http-request = { module = "com.github.Edsuns:HttpRequest", version.ref = "httpRequest" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfboxAndroid" }
 junit = { module = "junit:junit", version.ref = "junit" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-android-compat = { module = "io.insert-koin:koin-android-compat", version.ref = "koin" }

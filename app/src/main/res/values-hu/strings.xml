@@ -379,6 +379,7 @@
     <string name="saving_epub">EPUB mentése</string>
     <string name="menu_open_epub">EPUB megnyitása</string>
     <string name="new_epub_or_from_picker">Új EPUB vagy fájlválasztóból</string>
+    <string name="new_pdf_or_from_picker">Új PDF vagy fájlválasztóból</string>
     <string name="title">Fejezet neve</string>
     <string name="title_in_toc">Tartalomjegyzék</string>
     <string name="book_name">Könyv neve</string>

@@ -102,7 +102,7 @@ interface FileController {
     fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>)
     fun showEpubDialog()
     fun showWebArchiveFilePicker()
-    fun showPdfFilePicker()
+    fun showPdfDialog()
     fun showOpenEpubFilePicker()
     fun savePageForLater()
     fun showSavedPages()

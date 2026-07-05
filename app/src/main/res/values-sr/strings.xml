@@ -283,6 +283,7 @@
     <string name="move_to_background">Минимизуј</string>
     <string name="naver_translate">Naver Translate</string>
     <string name="new_epub_or_from_picker">Нов EPUB или из избора</string>
+    <string name="new_pdf_or_from_picker">Нов PDF или из избора</string>
     <string name="no_bookmarks">Дуго притисните иконицу Обележивача да додате обележиваче</string>
     <string name="no_previous_page">Нема претходне странице!</string>
     <string name="no_saved_pages">Нема сачуваних страница</string>
