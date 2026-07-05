@@ -33,6 +33,28 @@ class TabConfigTest {
     }
 
     @Test
+    fun `savedAlbumInfoList keeps titles containing double colons`() {
+        val albums = listOf(
+            AlbumInfo("std::vec::Vec - Rust", "https://doc.rust-lang.org/std/vec/struct.Vec.html"),
+        )
+        config.savedAlbumInfoList = albums
+        assertEquals(albums, config.savedAlbumInfoList)
+    }
+
+    @Test
+    fun `savedAlbumInfoList migrates legacy delimited format`() {
+        sp.store[TabConfig.K_SAVED_ALBUM_INFO] =
+            "Title A::https://a.com::::Title B::https://b.com/page?a=1"
+        assertEquals(
+            listOf(
+                AlbumInfo("Title A", "https://a.com"),
+                AlbumInfo("Title B", "https://b.com/page?a=1"),
+            ),
+            config.savedAlbumInfoList,
+        )
+    }
+
+    @Test
     fun `savedAlbumInfoList set to empty removes stored value`() {
         config.savedAlbumInfoList = listOf(AlbumInfo("t", "https://a.com"))
         config.savedAlbumInfoList = emptyList()

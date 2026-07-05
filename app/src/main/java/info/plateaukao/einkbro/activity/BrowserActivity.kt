@@ -288,7 +288,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             remoteConnViewModel = remoteConnViewModel,
             translationViewModel = translationViewModel,
             overviewDialogControllerProvider = { chromeSetupDelegate.overviewDialogController },
-            addAlbum = { title, url, foreground -> addAlbum(title, url, foreground) },
+            addAlbumAction = { title, url, foreground, lazyLoad ->
+                addAlbum(title, url, foreground, lazyLoad = lazyLoad)
+            },
             updateAlbum = { url -> updateAlbum(url) },
             showAlbum = { controller -> showAlbum(controller) },
             getUrlMatchedBrowser = { url -> tabManager.getUrlMatchedBrowser(url) },
@@ -790,7 +792,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     override fun openBookmarkPage() = bookmarkActionsDelegate.openBookmarkPage()
 
-    override fun updateTitle(title: String?) = updateTitle()
+    override fun updateTitle(title: String?) {
+        updateTitle()
+        // Persist resolved titles (also for background tabs) so the next session can
+        // show them without reloading the pages
+        tabManager.updateSavedAlbumInfoDebounced()
+    }
     override fun updateProgress(progress: Int) {
         progressBar.progress = progress
         progressBarVertical.progress = progress
@@ -1021,7 +1028,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         foreground: Boolean = true,
         incognito: Boolean = false,
         enablePreloadWebView: Boolean = true,
-    ) = tabManager.addAlbum(title, url, foreground, incognito, enablePreloadWebView)
+        lazyLoad: Boolean = false,
+    ) = tabManager.addAlbum(title, url, foreground, incognito, enablePreloadWebView, lazyLoad)
 
     open fun createebWebView(): EBWebView = EBWebView(this, this).apply { overScrollMode = View.OVER_SCROLL_NEVER }
 

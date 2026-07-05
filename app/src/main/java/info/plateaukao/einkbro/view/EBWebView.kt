@@ -472,7 +472,7 @@ open class EBWebView(
             return
         }
 
-        albumTitle = "..."
+        albumTitle = LOADING_TITLE
         // show progress right away
         if (url.startsWith("https")) {
             postDelayed({ if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
@@ -800,6 +800,9 @@ open class EBWebView(
     fun verticalScrollRange(): Int = computeVerticalScrollRange()
 
     companion object {
+        // Placeholder album title shown while a page is loading
+        const val LOADING_TITLE = "..."
+
         private const val FAKE_PRE_PROGRESS = 5
         private const val EBOOK_MOVE_THRESHOLD_DP = 15
         private const val EBOOK_LONG_PRESS_MS = 400L

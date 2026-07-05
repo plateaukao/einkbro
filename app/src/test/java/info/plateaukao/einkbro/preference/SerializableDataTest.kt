@@ -104,12 +104,15 @@ class SerializableDataTest {
         assertNull("no-separator-here".toCustomFontInfo())
     }
 
-    // ── AlbumInfo (delimited string) ─────────────────────────────────────────
+    // ── AlbumInfo (legacy delimited string) ──────────────────────────────────
 
     @Test
-    fun `AlbumInfo round trips through serialized string`() {
+    fun `AlbumInfo parses legacy serialized string`() {
         val info = AlbumInfo("EinkBro - E-ink Browser", "https://github.com/plateaukao/einkbro")
-        assertEquals(info, info.toSerializedString().toAlbumInfo())
+        assertEquals(
+            info,
+            "EinkBro - E-ink Browser::https://github.com/plateaukao/einkbro".toAlbumInfo()
+        )
     }
 
     @Test

@@ -2,6 +2,8 @@ package info.plateaukao.einkbro.preference
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 
 class TabConfig(private val sp: SharedPreferences) {
 
@@ -22,14 +24,19 @@ class TabConfig(private val sp: SharedPreferences) {
             if (string.isBlank()) return emptyList()
 
             return try {
-                string.split(ALBUM_INFO_SEPARATOR).mapNotNull { it.toAlbumInfo() }
+                Json.decodeFromString(albumInfoListSerializer, string)
             } catch (exception: Exception) {
-                sp.edit { remove(K_SAVED_ALBUM_INFO) }
-                emptyList()
+                // Not JSON: migrate from the legacy "title::url" format
+                try {
+                    string.split(ALBUM_INFO_SEPARATOR).mapNotNull { it.toAlbumInfo() }
+                } catch (exception: Exception) {
+                    sp.edit { remove(K_SAVED_ALBUM_INFO) }
+                    emptyList()
+                }
             }
         }
         set(value) {
-            if (value.containsAll(savedAlbumInfoList) && savedAlbumInfoList.containsAll(value)) {
+            if (value == savedAlbumInfoList) {
                 return
             }
 
@@ -39,7 +46,7 @@ class TabConfig(private val sp: SharedPreferences) {
                 } else {
                     putString(
                         K_SAVED_ALBUM_INFO,
-                        value.joinToString(ALBUM_INFO_SEPARATOR) { it.toSerializedString() }
+                        Json.encodeToString(albumInfoListSerializer, value)
                     )
                 }
             }
@@ -99,5 +106,7 @@ class TabConfig(private val sp: SharedPreferences) {
         const val K_IS_INCOGNITO_MODE = "sp_incognito"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
+
+        private val albumInfoListSerializer = ListSerializer(AlbumInfo.serializer())
     }
 }
