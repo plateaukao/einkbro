@@ -484,10 +484,11 @@
     <string name="setting_summary_gpt_audio_model_name">Opzioni disponibili: tts-1 (predefinito), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Chat con il web</string>
     <string name="web_content_processing">Elaborazione contenuto web</string>
-    <string name="web_processing_gpt_type">Motore GPT</string>
+    <string name="web_processing_gpt_type">Motore IA per la chat con la pagina</string>
+    <string name="setting_title_default_ai_engine">Motore IA predefinito</string>
     <string name="setting_summary_web_processing_gpt_type">Scegli il motore per elaborare il contenuto web</string>
     <string name="self_hosted">Self-hosted</string>
-    <string name="summary_gpt_type">Tipo GPT per riassunto contenuto</string>
+    <string name="summary_gpt_type">Motore IA per i riassunti</string>
     <string name="setting_summary_summary_gpt_type">Scegli il motore GPT per la sintesi del contenuto</string>
     <string name="menu_summarize">Riassumi</string>
     <string name="setting_title_remote_query">Azione query remota</string>

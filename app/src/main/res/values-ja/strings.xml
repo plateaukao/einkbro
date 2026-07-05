@@ -495,7 +495,7 @@
     <string name="show_touch_area_hint">タッチエリアの境界線を表示</string>
     <string name="source_language">ソース言語</string>
     <string name="split_search_settings">分割検索設定</string>
-    <string name="summary_gpt_type">コンテンツ要約用GPTタイプ</string>
+    <string name="summary_gpt_type">要約用AIエンジン</string>
     <string name="switch_touch_area_action">上下方向を切り替え</string>
     <string name="switch_touch_area_action_short">方向切り替え</string>
     <string name="system_default">デフォルト</string>
@@ -531,7 +531,8 @@
     <string name="volume_page_turn_paused">音量キーページめくりを5秒間一時停止</string>
     <string name="volume_page_turn_resumed">音量キーページめくりを再開</string>
     <string name="web_content_processing">ウェブコンテンツ処理</string>
-    <string name="web_processing_gpt_type">GPTエンジン</string>
+    <string name="web_processing_gpt_type">ページチャット用AIエンジン</string>
+    <string name="setting_title_default_ai_engine">デフォルトのAIエンジン</string>
     <string name="site_force_viewport_width">ビューポート幅を強制 (px)</string>
     <string name="site_force_viewport_width_hint">デスクトップUAだけで足りない場合にのみ使用</string>
 </resources>

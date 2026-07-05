@@ -505,10 +505,11 @@
     <string name="setting_summary_gpt_audio_model_name">Dostupné možnosti: tts-1 (výchozí), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Chat s webem</string>
     <string name="web_content_processing">Zpracování webového obsahu</string>
-    <string name="web_processing_gpt_type">Engine GPT</string>
+    <string name="web_processing_gpt_type">AI engine pro chat se stránkou</string>
+    <string name="setting_title_default_ai_engine">Výchozí AI engine</string>
     <string name="setting_summary_web_processing_gpt_type">Vyberte engine pro zpracování webového obsahu</string>
     <string name="self_hosted">Vlastní hosting</string>
-    <string name="summary_gpt_type">Typ GPT pro shrnutí webového obsahu</string>
+    <string name="summary_gpt_type">AI engine pro shrnutí</string>
     <string name="setting_summary_summary_gpt_type">Vyberte engine GPT pro shrnutí obsahu</string>
     <string name="menu_summarize">Shrnout</string>
     <string name="setting_title_remote_query">Akce vzdáleného dotazu</string>

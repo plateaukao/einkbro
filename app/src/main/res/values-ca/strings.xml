@@ -500,10 +500,11 @@
     <string name="setting_summary_gpt_audio_model_name">Opcions disponibles: tts-1 (per defecte), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Xatejar amb la Web</string>
     <string name="web_content_processing">Processament de contingut web</string>
-    <string name="web_processing_gpt_type">Motor GPT</string>
+    <string name="web_processing_gpt_type">Motor d\'IA per al xat de la pàgina</string>
+    <string name="setting_title_default_ai_engine">Motor d\'IA per defecte</string>
     <string name="setting_summary_web_processing_gpt_type">Trieu el motor per processar contingut web</string>
     <string name="self_hosted">Autoallotjat</string>
-    <string name="summary_gpt_type">Tipus de GPT per resumir contingut web</string>
+    <string name="summary_gpt_type">Motor d\'IA per als resums</string>
     <string name="setting_summary_summary_gpt_type">Trieu el motor GPT per al resum de contingut</string>
     <string name="menu_summarize">Resumir</string>
     <string name="setting_title_remote_query">Acció de consulta remota</string>

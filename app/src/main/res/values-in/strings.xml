@@ -562,7 +562,7 @@
     <string name="show_default_text_menu">Tampilkan menu teks default</string>
     <string name="source_language">Bahasa Sumber</string>
     <string name="split_search_settings">Pengaturan Pencarian Terpisah</string>
-    <string name="summary_gpt_type">Tipe GPT untuk ringkasan konten web</string>
+    <string name="summary_gpt_type">Mesin AI untuk ringkasan</string>
     <string name="switch_touch_area_action_short">Ganti arah</string>
     <string name="system_settings">Pengaturan Sistem</string>
     <string name="toast_save_page_failed">Gagal menyimpan halaman</string>
@@ -586,7 +586,8 @@
     <string name="volume_page_turn_paused">Balik halaman dengan tombol volume dijeda 5 detik</string>
     <string name="volume_page_turn_resumed">Balik halaman dengan tombol volume dilanjutkan</string>
     <string name="web_content_processing">Pemrosesan Konten Web</string>
-    <string name="web_processing_gpt_type">Engine GPT</string>
+    <string name="web_processing_gpt_type">Mesin AI untuk obrolan halaman</string>
+    <string name="setting_title_default_ai_engine">Mesin AI bawaan</string>
     <string name="site_force_viewport_width">Paksa lebar viewport (px)</string>
     <string name="site_force_viewport_width_hint">Gunakan hanya jika UA desktop saja tidak cukup</string>
 </resources>

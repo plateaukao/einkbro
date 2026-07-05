@@ -509,10 +509,11 @@
     <string name="setting_summary_gpt_audio_model_name">Mevcut seçenekler: tts-1 (varsayılan), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Web ile Sohbet</string>
     <string name="web_content_processing">Web İçerik İşleme</string>
-    <string name="web_processing_gpt_type">GPT Motoru</string>
+    <string name="web_processing_gpt_type">Sayfa sohbeti için yapay zeka motoru</string>
+    <string name="setting_title_default_ai_engine">Varsayılan yapay zeka motoru</string>
     <string name="setting_summary_web_processing_gpt_type">Web içeriğini işlemek için motoru seçin</string>
     <string name="self_hosted">Kendi Sunucusu</string>
-    <string name="summary_gpt_type">Web içeriği özetleme için GPT türü</string>
+    <string name="summary_gpt_type">Özetleme için yapay zeka motoru</string>
     <string name="setting_summary_summary_gpt_type">İçerik özetleme için GPT motorunu seçin</string>
     <string name="menu_summarize">Özetle</string>
     <string name="setting_title_remote_query">Uzak Sorgu Eylemi</string>

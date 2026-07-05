@@ -480,7 +480,7 @@
     <string name="source_language">Мова джерела</string>
     <string name="split_screen">Розділити екран</string>
     <string name="split_search_settings">Налаштування розділеного пошуку</string>
-    <string name="summary_gpt_type">Движок GPT для підсумку</string>
+    <string name="summary_gpt_type">Движок ШІ для підсумків</string>
     <string name="switch_touch_area_action">Змінити напрямок</string>
     <string name="switch_touch_area_action_short">Змінити напрямок</string>
     <string name="system_default">За замовчуванням</string>
@@ -523,7 +523,8 @@
     <string name="volume_page_turn_paused">Перегортання кнопками гучності призупинено на 5 секунд</string>
     <string name="volume_page_turn_resumed">Перегортання кнопками гучності відновлено</string>
     <string name="web_content_processing">Обробка веб-вмісту</string>
-    <string name="web_processing_gpt_type">Движок GPT</string>
+    <string name="web_processing_gpt_type">Движок ШІ для чату зі сторінкою</string>
+    <string name="setting_title_default_ai_engine">Движок ШІ за замовчуванням</string>
     <string name="white_background">Білий фон</string>
     <string name="site_force_viewport_width">Примусова ширина viewport (px)</string>
     <string name="site_force_viewport_width_hint">Використовуйте, лише якщо desktop UA недостатньо</string>

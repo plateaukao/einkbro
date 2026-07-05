@@ -486,10 +486,11 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_gpt_audio_model_name">Verfügbare Optionen: tts-1 (Standard), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Mit Web chatten</string>
     <string name="web_content_processing">Webinhaltsverarbeitung</string>
-    <string name="web_processing_gpt_type">GPT-Engine</string>
+    <string name="web_processing_gpt_type">KI-Engine für Seiten-Chat</string>
+    <string name="setting_title_default_ai_engine">Standard-KI-Engine</string>
     <string name="setting_summary_web_processing_gpt_type">Engine für die Verarbeitung von Webinhalten auswählen</string>
     <string name="self_hosted">Selbst gehostet</string>
-    <string name="summary_gpt_type">GPT-Typ für Webinhalts-Zusammenfassung</string>
+    <string name="summary_gpt_type">KI-Engine für Zusammenfassungen</string>
     <string name="setting_summary_summary_gpt_type">GPT-Engine für Inhaltszusammenfassung auswählen</string>
     <string name="menu_summarize">Zusammenfassen</string>
     <string name="setting_title_remote_query">Fernabfrage-Aktion</string>

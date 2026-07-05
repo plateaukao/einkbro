@@ -678,10 +678,11 @@
     <string name="setting_summary_gpt_audio_model_name">Elérhető lehetőségek: tts-1 (alapértelmezett), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="chat_with_web">Csevegés a weboldallal</string>
     <string name="web_content_processing">Webtartalom feldolgozás</string>
-    <string name="web_processing_gpt_type">GPT motor</string>
+    <string name="web_processing_gpt_type">AI motor az oldal-csevegéshez</string>
+    <string name="setting_title_default_ai_engine">Alapértelmezett AI motor</string>
     <string name="setting_summary_web_processing_gpt_type">Válassza ki a motort a webtartalom feldolgozásához</string>
     <string name="self_hosted">Saját üzemeltetés</string>
-    <string name="summary_gpt_type">GPT típus webtartalom összefoglaláshoz</string>
+    <string name="summary_gpt_type">AI motor összefoglaláshoz</string>
     <string name="setting_summary_summary_gpt_type">Válassza ki a GPT motort a tartalom összefoglalásához</string>
     <string name="menu_summarize">Összefoglalás</string>
     <string name="setting_title_remote_query">Távoli lekérdezési művelet</string>

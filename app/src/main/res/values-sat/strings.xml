@@ -583,6 +583,7 @@
     <string name="volume_page_turn_resumed">ᱵᱷᱚᱞᱭᱩᱢ ᱥᱟᱦᱴᱟ ᱯᱟᱞᱴᱟᱣ ᱫᱩᱦᱲᱟᱹ ᱪᱟᱹᱞᱩ ᱟᱠᱟᱱᱟ</string>
     <string name="web_content_processing">ᱣᱮᱵᱽ ᱡᱤᱱᱤᱥ ᱯᱨᱚᱥᱮᱥ</string>
     <string name="web_processing_gpt_type">GPT ᱤᱧᱡᱤᱱ</string>
+    <string name="setting_title_default_ai_engine">ᱢᱩᱞ AI ᱤᱧᱡᱤᱱ</string>
     <string name="site_force_viewport_width">Force viewport width (px)</string>
     <string name="site_force_viewport_width_hint">Use only if desktop UA alone is not enough</string>
 </resources>

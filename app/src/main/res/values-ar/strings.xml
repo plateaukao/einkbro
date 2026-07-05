@@ -509,10 +509,11 @@
     <string name="setting_summary_gpt_audio_model_name">الخيارات المتاحة: tts-1 (افتراضي)، tts-1-hd، gpt-4o-mini-tts</string>
     <string name="chat_with_web">الدردشة مع الويب</string>
     <string name="web_content_processing">معالجة محتوى الويب</string>
-    <string name="web_processing_gpt_type">محرك GPT</string>
+    <string name="web_processing_gpt_type">محرك الذكاء الاصطناعي لمحادثة الصفحة</string>
+    <string name="setting_title_default_ai_engine">محرك الذكاء الاصطناعي الافتراضي</string>
     <string name="setting_summary_web_processing_gpt_type">اختيار المحرك لمعالجة محتوى الويب</string>
     <string name="self_hosted">مستضاف ذاتياً</string>
-    <string name="summary_gpt_type">نوع GPT لتلخيص محتوى الويب</string>
+    <string name="summary_gpt_type">محرك الذكاء الاصطناعي للتلخيص</string>
     <string name="setting_summary_summary_gpt_type">اختيار محرك GPT لتلخيص المحتوى</string>
     <string name="menu_summarize">تلخيص</string>
     <string name="setting_title_remote_query">إجراء الاستعلام عن بُعد</string>

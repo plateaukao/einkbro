@@ -490,7 +490,7 @@
     <string name="source_language">Ngôn ngữ nguồn</string>
     <string name="split_screen">Chia đôi màn hình</string>
     <string name="split_search_settings">Cài đặt tìm kiếm chia đôi</string>
-    <string name="summary_gpt_type">Loại GPT cho tóm tắt nội dung web</string>
+    <string name="summary_gpt_type">Engine AI cho tóm tắt</string>
     <string name="switch_touch_area_action">Chuyển hướng lên/xuống</string>
     <string name="switch_touch_area_action_short">Chuyển hướng</string>
     <string name="system_default">Mặc định</string>
@@ -533,7 +533,8 @@
     <string name="volume_page_turn_paused">Lật trang bằng phím âm lượng đã tạm dừng 5 giây</string>
     <string name="volume_page_turn_resumed">Lật trang bằng phím âm lượng đã tiếp tục</string>
     <string name="web_content_processing">Xử lý nội dung web</string>
-    <string name="web_processing_gpt_type">Engine GPT</string>
+    <string name="web_processing_gpt_type">Engine AI cho trò chuyện trang web</string>
+    <string name="setting_title_default_ai_engine">Engine AI mặc định</string>
     <string name="white_background">Nền trắng</string>
     <string name="site_force_viewport_width">Buộc chiều rộng viewport (px)</string>
     <string name="site_force_viewport_width_hint">Chỉ dùng khi UA máy tính chưa đủ</string>

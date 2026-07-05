@@ -571,7 +571,7 @@
     <string name="setting_touch_up_long_click">위쪽 길게 누르기 동작</string>
     <string name="setting_tts_type">음성 합성 엔진</string>
     <string name="setting_tts_voice">음성</string>
-    <string name="summary_gpt_type">콘텐츠 요약용 GPT 유형</string>
+    <string name="summary_gpt_type">요약용 AI 엔진</string>
     <string name="system_settings">시스템 설정</string>
     <string name="toast_save_page_failed">페이지 저장에 실패했습니다</string>
     <string name="toast_saved_page">페이지가 저장되었습니다. 이 아이콘을 길게 눌러 저장 목록을 확인하세요.</string>
@@ -588,7 +588,8 @@
     <string name="volume_page_turn_paused">볼륨 키 페이지 넘기기가 5초간 일시 중지됨</string>
     <string name="volume_page_turn_resumed">볼륨 키 페이지 넘기기가 재개됨</string>
     <string name="web_content_processing">웹 콘텐츠 처리</string>
-    <string name="web_processing_gpt_type">GPT 엔진</string>
+    <string name="web_processing_gpt_type">페이지 채팅용 AI 엔진</string>
+    <string name="setting_title_default_ai_engine">기본 AI 엔진</string>
     <string name="site_force_viewport_width">뷰포트 너비 강제 (px)</string>
     <string name="site_force_viewport_width_hint">데스크톱 UA만으로 부족할 때만 사용</string>
 </resources>
