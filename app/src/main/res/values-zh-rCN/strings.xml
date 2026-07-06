@@ -1,52 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <!-- App -->
     <string name="app_name">EinkBro</string>
     <string name="list_empty">当前列表为空</string>
     <string name="bookmarks">书签</string>
     <string name="album_title_history">历史</string>
     <string name="album_title_home">主页</string>
     <string name="search_hint">搜索</string>
-
-
-    <!-- Menu -->
     <string name="main_menu_new_tab">新建标签页 (后)</string>
     <string name="main_menu_new_tabOpen">新建标签页 (前)</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
     <string name="menu_open_with">打开链接…</string>
-
     <string name="menu_quit">退出</string>
     <string name="menu_openFav">打开主页</string>
     <string name="menu_delete">删除</string>
     <string name="menu_edit">编辑</string>
-    <string name="menu_closeTab">关闭\n标签页</string>
-    <string name="menu_download">打开下\n载管理</string>
+    <string name="menu_closeTab">关闭标签页</string>
+    <string name="menu_download">下载</string>
     <string name="menu_fav">另存为主页</string>
     <string name="menu_sc">添加到主屏幕</string>
-
     <string name="menu_share_link">分享链接</string>
-
     <string name="menu_save_bookmark">另存为书签</string>
     <string name="menu_save_as">另存为…</string>
     <string name="menu_save_pdf">另存为PDF</string>
-
-    <string name="menu_other_searchSite">页面中\n搜索</string>
-    <string name="menu_other_info">关于 EinkBro</string>
-
-    <!-- Dialog -->
+    <string name="menu_other_searchSite">页面中搜索</string>
+    <string name="menu_other_info">关于EinkBro</string>
     <string name="dialog_title_hint">标题:</string>
     <string name="dialog_url_hint">网址:</string>
     <string name="dialog_extension_hint">扩展名 (例如: \".jpg\"):</string>
     <string name="dialog_title_download">是否下载该文件?</string>
     <string name="dialog_content_resubmission">是否重新提交数据?</string>
-
-    <!-- Settings -->
-
-    <!-- browser setting -->
     <string name="setting_title_clear_control">数据控制</string>
     <string name="setting_title_start_control">启动控制</string>
-
     <string name="setting_title_search_engine">搜索引擎</string>
     <string name="setting_summary_search_engine_google">谷歌</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
@@ -57,72 +42,51 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-
-
     <string name="setting_title_remote">远程内容</string>
     <string name="setting_summary_remote">启用并非直接来自您正在访问网站的远程内容。
         禁用此功能访问网站时更安全、更快并节省数据流量，但有些内容将不再显示</string>
-
     <string name="setting_title_save_data">请求 \'保存数据\'</string>
     <string name="setting_summary_save_data">请求网站希望保存数据，支持的网站下次访问时加载速度更快。</string>
-
-
     <!-- browser start -->
     <string name="setting_title_images">图片</string>
     <string name="setting_summary_images">启用网络图片，禁用可能有助于节省网络流量和更快加载网页。</string>
-    <string name="setting_title_cookie">Cookie</string>
-    <string name="setting_summary_cookie_delete">如果启用，将删除所有网站的Cookie，包括可信任网站。</string>
-    <string name="setting_summary_cookie">启用Cookie。Cookie是存储在设备上的小型文本文件，网站使用它们来存储用户设置 (例如搜索设置)，但也可以用来收集个人信息等用户数据。第三方Cookie (收集用户数据用于广告服务) 始终处于禁用状态。</string>
-    <string name="setting_title_whitelistCookie">Cookie白名单</string>
-    <string name="setting_summary_whitelistCookie">如果禁用Cookie，可以使用此白名单允许您访问的网站信任使用保存Cookie数据。</string>
-
+    <string name="setting_title_cookie">甜饼</string>
+    <string name="setting_summary_cookie_delete">如果启用，将删除所有网站的甜饼，包括可信任网站。</string>
+    <string name="setting_summary_cookie">启用甜饼。甜饼是存储在设备上的小型文本文件，网站使用它们来存储用户设置 (例如搜索设置)，但也可以用来收集个人信息等用户数据。第三方甜饼 (收集用户数据用于广告服务) 始终处于禁用状态。</string>
+    <string name="setting_title_whitelistCookie">甜饼白名单</string>
+    <string name="setting_summary_whitelistCookie">如果禁用甜饼，可以使用此白名单允许您访问的网站信任使用保存Cookie数据。</string>
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">启用JavaScript。许多网站需要使用JavaScript的功能 (菜单、加载和显示图片等)，但启用可能会引入一些潜在风险。</string>
     <string name="setting_title_whitelistJS">JavaScript白名单</string>
     <string name="setting_summary_whitelistJS">如果禁用JavaScript，可以使用此白名单允许您信任的网站使用JavaScript。</string>
-
     <string name="setting_title_adblock">AdBlock</string>
     <string name="setting_summary_adblock">启用AdBlock可阻止烦人的广告，同时网页的加载速度也会更快。</string>
     <string name="setting_title_whitelist">AdBlock白名单</string>
     <string name="setting_summary_whitelist">允许这些网站的页面显示广告。启用AdBlock后，某些网站可能无法运行。</string>
-
     <string name="setting_title_location">位置</string>
     <string name="setting_summary_location">允许网站访问您的位置，某些网站 (例如用于导航的谷歌地图) 需要启用此功能。</string>
-
     <string name="setting_title_history">历史</string>
     <string name="setting_summary_history">保存已访问网站的历史记录。</string>
-
-
     <!-- browser clear -->
     <string name="clear_title_quit">应用程序退出时进行清除</string>
     <string name="clear_summary_quit">每次退出 \"EinkBro浏览器\" 时，上述所有勾选的数据都将被删除。</string>
     <string name="clear_title_cache">清除缓存</string>
-    <string name="clear_title_cookie">清除Cookie</string>
+    <string name="clear_title_cookie">清除甜饼</string>
     <string name="clear_title_history">清除历史记录</string>
     <string name="clear_title_indexedDB">清除 \"索引数据库\" 和 \"本地网页视图存储\"</string>
-
     <string name="clear_title_deleteDatabase">删除数据库</string>
     <string name="clear_summary_deleteDatabase">删除整个数据库 (包括起始页、书签、历史记录和所有白名单内容)。</string>
-
-
     <!-- App setting -->
     <string name="setting_title_ui">用户界面</string>
     <string name="setting_title_data">备份</string>
-
-
     <string name="setting_title_searchEngine">自定义搜索引擎</string>
-
     <string name="setting_title_userAgent">自定义用户代理</string>
-
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隐藏工具栏</string>
     <string name="setting_summary_hide">在浏览网站时使用整个屏幕。如果您按下返回按钮，将离开全屏模式。</string>
-
     <string name="setting_title_behavior">操作习惯</string>
-
     <string name="setting_summary_toolbarShow">在返回历史记录之前，按返回按钮将使工具栏可见。</string>
     <string name="setting_title_toolbarShow">第一个工具栏 </string>
-
     <string name="setting_title_nav_pos">位置</string>
     <string name="setting_summary_nav_pos">设置 \"导航按钮\" 的位置。</string>
     <string name="setting_summary_nav_pos_right">右对齐</string>
@@ -130,20 +94,13 @@
     <string name="setting_summary_nav_pos_center">居中</string>
     <string name="setting_summary_nav_pos_not_show">不显示</string>
     <string name="setting_summary_nav_pos_custom">自定义</string>
-
-
     <string name="setting_title_confirm_tab_close">确认关闭标签页</string>
     <string name="setting_summary_confirm_tab_close">关闭标签页时的确认对话框。</string>
-
-
     <string name="setting_gestures">手势</string>
     <string name="setting_gestures_use_title">使用手势</string>
     <string name="setting_gestures_use_summary">在 \"导航按钮\" 上使用手势。</string>
-
     <string name="setting_title_saveTabs">保存标签页</string>
     <string name="setting_summary_saveTabs">保存标签页，便于下次使用浏览器时重新打开保存的网址。</string>
-
-    <!-- gestures -->
     <string name="setting_title_toolbar">工具栏</string>
     <string name="setting_gesture_up">上滑</string>
     <string name="setting_gesture_down">下滑</string>
@@ -161,21 +118,10 @@
     <string name="close_tab">关闭标签页</string>
     <string name="page_up">上一页</string>
     <string name="page_down">下一页</string>
-
-    <!-- Data -->
-
-
-
-
     <string name="setting_title_export_appData">导出应用程序数据</string>
     <string name="setting_title_import_appData">导入应用程序数据</string>
-    <string name="setting_summary_export_appData">导出应用程序数据（历史记录、书签）及您的个人设置</string>
+    <string name="setting_summary_export_appData">导出应用程序数据 (历史记录、书签) 及您的个人设置</string>
     <string name="title_appData">应用程序数据</string>
-
-
-    <!-- Others setting -->
-
-    <!-- Toast -->
     <string name="toast_copy_successful">成功复制</string>
     <string name="toast_input_empty">您还未输入任何数据</string>
     <string name="toast_load_error">无法加载此网址</string>
@@ -187,17 +133,7 @@
     <string name="toast_restart">必须重新启动 \"EinkBro浏览器\" 才能应用更改，确定现在重启吗？</string>
     <string name="toast_close_tab">是否关闭当前标签页？</string>
     <string name="toast_downloadComplete">下载完毕，是否打开文件？</string>
-
-
-    <!-- Whitelist -->
     <string name="whitelist_add">添加</string>
-
-
-    <!-- Dialog help -->
-
-
-
-
     <string name="setting_summary_desktop">支持网站桌面模式</string>
     <string name="history">历史</string>
     <string name="location">位置</string>
@@ -259,14 +195,17 @@
     <string name="setting_multitouch_use_title">使用两指滑动</string>
     <string name="setting_multitouch_use_summary">使用两指在网页内容上滑动来触发动作</string>
     <string name="translation_mode">翻译模式</string>
-    <!-- Strings used for fragments for navigation -->
-
     <string name="system_default">默认值</string>
     <string name="serif">衬线</string>
     <string name="googleserif">谷歌衬线</string>
     <string name="custom_font">自定义</string>
     <string name="font_type">字体类型</string>
     <string name="menu_quickToggle">快速切换</string>
+    <string name="site_settings">网站设置</string>
+    <string name="reset_to_global">重置所有为全局</string>
+    <string name="site_custom_css">自定义CSS</string>
+    <string name="site_post_load_js">后置加载JavaScript</string>
+    <string name="site_force_viewport_width">强制视口宽度 (px)</string>
     <string name="setting_title_vi_binding">VI键值绑定</string>
     <string name="setting_summary_vi_binding">启用VI键值绑定以简化键盘导航。</string>
     <string name="setting_clear_recent_bookmarks">清除最近书签列表</string>
@@ -318,7 +257,6 @@
     <string name="read_speed">读取速度</string>
     <string name="setting_summary_search_engine">请输入自定义搜索引擎</string>
     <string name="setting_summary_custom_process_text_url">当您在另一应用程序中选择文本时，可以使用此URL前缀在浏览器中进行搜索。</string>
-
     <string name="plus_start_input_url">显示输入区</string>
     <string name="plus_show_homepage">显示主页</string>
     <string name="plus_show_bookmarks">显示最近书签</string>
@@ -340,9 +278,9 @@
     <string name="manual">使用指南</string>
     <string name="black_font">黑色文本</string>
     <string name="menu_save_archive">保存存档文件</string>
-    <string name="setting_summary_import_appData">通过选择以前导出的zip文件导入应用程序数据。</string>
+    <string name="setting_summary_import_appData">通过选择以前导出的Zip文件导入应用程序数据。</string>
     <string name="backup_category_all_preferences">所有偏好设置</string>
-    <string name="backup_category_gpt_settings">GPT 设置</string>
+    <string name="backup_category_gpt_settings">GPT设置</string>
     <string name="backup_category_bookmarks">书签</string>
     <string name="backup_category_history">历史记录</string>
     <string name="dialog_title_backup_categories">选择要备份的数据</string>
@@ -361,7 +299,6 @@
     <string name="setting_summary_userAgent_toggle">启用自定义用户代理</string>
     <string name="content_adjustment">重排类</string>
     <string name="share_save"><![CDATA[分享保存类]]></string>
-
     <string name="setting_title_chat_gpt">GPT集成</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI密钥</string>
     <string name="setting_summary_edit_gpt_api_key">输入密钥以使用此功能。</string>
@@ -456,68 +393,69 @@
     <string name="setting_summary_app_locale">配置APP界面语言</string>
     <string name="drag_to_reorder">拖动以重新排列书签</string>
     <string name="toolbar_time">当前时间</string>
-    <string name="setting_title_disable_long_press_toucharea">Disable Long Press Touch Area</string>
-    <string name="setting_summary_disable_long_press_toucharea">Do not trigger actions when long pressing touch area.</string>
-    <string name="expand_space">Expand space</string>
+    <string name="setting_title_disable_long_press_toucharea">禁用长按触控区域</string>
+    <string name="setting_summary_disable_long_press_toucharea">长按触摸区域时不触发动作</string>
+    <string name="expand_space">拓展空间</string>
     <string name="open_epub">打开Epub</string>
-    <string name="setting_title_enable_web_cache">Enable Web Cache</string>
-    <string name="setting_summary_enabling_web_cache">Load web content faster by enabling web cache</string>
-    <string name="key_page_up">Send PageUp Key</string>
-    <string name="key_page_down">Send PageDown Key</string>
-    <string name="key_left">Send Left Key</string>
-    <string name="key_right">Send Right Key</string>
+    <string name="setting_title_enable_web_cache">启用网页缓存</string>
+    <string name="setting_summary_enabling_web_cache">通过启用网页缓存，网页内容加载速度更快</string>
+    <string name="key_page_up">发送PageUp键</string>
+    <string name="key_page_down">发送PageDown键</string>
+    <string name="key_left">发送左键</string>
+    <string name="key_right">发送右键</string>
     <string name="touch_aciton_settings">更多设置</string>
-    <string name="setting_touch_up_click">Up click action</string>
-    <string name="setting_title_touch_area_actions">Touch Area Click Actions</string>
-    <string name="setting_touch_up_long_click">Up long click action</string>
-    <string name="setting_touch_down_click">Down click action</string>
-    <string name="setting_touch_down_long_click">Down long click action</string>
-    <string name="setting_tts_type">Text-to-Speech Engine</string>
-    <string name="setting_tts_voice">Voice</string>
-    <string name="system_settings">System Settings</string>
-    <string name="other_voices">Other Voices…</string>
-    <string name="added_to_read_list">Added to read list</string>
-    <string name="tts_type_etts">ReadAloud</string>
-    <string name="tts_type_system">Built-in</string>
+    <string name="setting_touch_up_click">松开点击动作</string>
+    <string name="setting_title_touch_area_actions">触摸区域点击动作</string>
+    <string name="setting_touch_up_long_click">长按松开动作</string>
+    <string name="setting_touch_down_click">按下点击动作</string>
+    <string name="setting_touch_down_long_click">长按按下动作</string>
+    <string name="setting_tts_type">文本转语音引擎</string>
+    <string name="setting_tts_voice">语音</string>
+    <string name="system_settings">系统设置</string>
+    <string name="other_voices">其他语音…</string>
+    <string name="added_to_read_list">已添加到阅读列表</string>
+    <string name="tts_type_etts">朗读</string>
+    <string name="tts_type_system">内置</string>
     <string name="toolbar_icons">工具栏按钮</string>
     <string name="toolbar_icons_description">工具栏按钮设置</string>
-    <string name="gesture_on_floating_button">Gesture on floating button</string>
+    <string name="gesture_on_floating_button">悬浮按钮手势</string>
     <string name="openai">OpenAI</string>
-    <string name="openai_compatible_server">OpenAI Compatible Server</string>
-    <string name="dashed_border">Dashed border</string>
-    <string name="vertical_line">Vertical line</string>
-    <string name="setting_title_translation_style">Translation text block style</string>
-    <string name="setting_summary_translation_style">Choose the style you like for paragraph translation</string>
-    <string name="gray">Gray</string>
-    <string name="bold">Bold</string>
-    <string name="deepl_translate_by_paragraph">Deepl by Paragraph</string>
-    <string name="dialog_message_remove_highlight">Remove highlight?</string>
-    <string name="read_from_here">Read from here</string>
-    <string name="setting_title_reader_mode_padding">Padding for reader mode</string>
-    <string name="setting_summary_reader_mode_padding">Padding value (in px) for reader mode, default value is 10</string>
+    <string name="openai_compatible_server">OpenAI兼容服务器</string>
+    <string name="dashed_border">虚线边框</string>
+    <string name="vertical_line">垂直线</string>
+    <string name="setting_title_translation_style">翻译文本块样式</string>
+    <string name="setting_summary_translation_style">选择您喜欢的段落翻译样式</string>
+    <string name="gray">灰色</string>
+    <string name="bold">粗体</string>
+    <string name="deepl_translate_by_paragraph">Deepl按段落</string>
+    <string name="dialog_message_remove_highlight">取消突出显示?</string>
+    <string name="read_from_here">从此处阅读</string>
+    <string name="setting_title_reader_mode_padding">阅读模式内边距</string>
+    <string name="setting_summary_reader_mode_padding">阅读模式内边距数值 (单位：像素)，默认值为10</string>
     <string name="iansui_tc">iansui(TC)</string>
-    <string name="gemini_translate_by_paragraph">Gemini by Paragraph</string>
-    <string name="setting_title_gpt_prompt_for_tts">audio output instructions</string>
-    <string name="setting_summary_gpt_prompt_for_tts">instructions when gpt-4o-mini-tts model is used.</string>
-    <string name="setting_title_gpt_audio_model_name">OpenAI TTS model name</string>
-    <string name="setting_summary_gpt_audio_model_name">Available options: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
-    <string name="chat_with_web">Chat With Web</string>
-    <string name="web_content_processing">Web Content Processing</string>
-    <string name="web_processing_gpt_type">网页对话 AI 引擎</string>
-    <string name="setting_title_default_ai_engine">默认 AI 引擎</string>
-    <string name="setting_summary_web_processing_gpt_type">Choose the engine to process web content</string>
-    <string name="self_hosted">Self Hosted</string>
-    <string name="summary_gpt_type">网页摘要 AI 引擎</string>
-    <string name="setting_summary_summary_gpt_type">Choose gpt engine for content summarization</string>
-    <string name="menu_summarize">Summarize</string>
-    <string name="setting_title_remote_query">Remote Query Action</string>
-    <string name="sc_disable_adblock_short">No AdBlock</string>
-    <string name="sc_disable_adblock_long">No AdBlock</string>
-    <string name="sc_disable_adblock_disabled">No AdBlock</string>
-    <string name="setting_title_enable_url_drag_to_action">1 touch to url action</string>
-    <string name="setting_summary_enable_url_drag_to_action">Long click on url and move to action items</string>
-    <string name="setting_title_search_suggestion">Search suggestions</string>
-    <string name="setting_summary_search_suggestion">"while inputting content, show search suggestions "</string>
+    <string name="openai_translate_by_paragraph">OpenAi逐段</string>
+    <string name="gemini_translate_by_paragraph">Gemini逐段</string>
+    <string name="setting_title_gpt_prompt_for_tts">音频输出指令</string>
+    <string name="setting_summary_gpt_prompt_for_tts">使用 gpt-4o-mini-tts 模型时的指令。</string>
+    <string name="setting_title_gpt_audio_model_name">OpenAI TTS 模型名称</string>
+    <string name="setting_summary_gpt_audio_model_name">可用选项: tts-1 (默认), tts-1-hd, gpt-4o-mini-tts</string>
+    <string name="chat_with_web">与Web对话</string>
+    <string name="web_content_processing">Web内容处理</string>
+    <string name="web_processing_gpt_type">网页对话AI引擎</string>
+    <string name="setting_title_default_ai_engine">默认AI引擎</string>
+    <string name="setting_summary_web_processing_gpt_type">选择引擎来处理网页内容</string>
+    <string name="self_hosted">自托管</string>
+    <string name="summary_gpt_type">网页摘要AI引擎</string>
+    <string name="setting_summary_summary_gpt_type">为内容摘要选择GPT引擎</string>
+    <string name="menu_summarize">摘要</string>
+    <string name="setting_title_remote_query">远程查询动作</string>
+    <string name="sc_disable_adblock_short">无AdBlock</string>
+    <string name="sc_disable_adblock_long">无AdBlock</string>
+    <string name="sc_disable_adblock_disabled">无AdBlock</string>
+    <string name="setting_title_enable_url_drag_to_action">一键跳转到URL动作</string>
+    <string name="setting_summary_enable_url_drag_to_action">长按URL跳转到动作项</string>
+    <string name="setting_title_search_suggestion">搜索建议</string>
+    <string name="setting_summary_search_suggestion">"在输入内容时，显示搜索建议"</string>
     <string name="setting_title_toolbar_position">工具栏位置</string>
     <string name="toolbar_position_bottom">底部</string>
     <string name="toolbar_position_top">顶部</string>
@@ -527,15 +465,15 @@
     <string name="change_folder">更改文件夹</string>
     <string name="search_fonts">搜索字体…</string>
     <string name="no_fonts_found">此文件夹中未找到字体</string>
-    <string name="font_preview_text">你好世界 AaBb 123</string>
-    <string name="eink_image_adjustment">E-ink 图片优化</string>
-    <string name="eink_image_adjustment_summary">调整网页图片（JPEG/PNG/WebP）以获得更好的 E-ink 显示效果</string>
+    <string name="font_preview_text">您好世界 AaBb 123</string>
+    <string name="eink_image_adjustment">电子墨水屏图片优化</string>
+    <string name="eink_image_adjustment_summary">调整网页图片 (JPEG/PNG/WebP) 以获得更好的电子墨水屏显示效果</string>
     <string name="eink_image_off">关闭</string>
     <string name="setting_title_reader_keep_extra_content">阅读模式：保留额外内容</string>
-    <string name="setting_summary_reader_keep_extra_content">在阅读模式中保留样式、类和数学公式（MathJax/KaTeX）</string>
+    <string name="setting_summary_reader_keep_extra_content">在阅读模式中保留样式、类和数学公式 (MathJax/KaTeX)</string>
     <string name="audio_only_mode">仅音频</string>
     <string name="custom_scale">自定义字体缩放</string>
-    <string name="custom_scale_desc">输入所需的字体缩放比例（%）</string>
+    <string name="custom_scale_desc">输入所需的字体缩放比例 (%)</string>
     <string name="deepl_translate">DeepL</string>
     <string name="eink_image_10">10%</string>
     <string name="eink_image_100">100%</string>
@@ -543,7 +481,7 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="google_gemini">Google Gemini</string>
-    <string name="gpt_action_drag_handle">拖动以重新排列 ChatGPT 动作</string>
+    <string name="gpt_action_drag_handle">拖动以重新排列ChatGPT动作</string>
     <string name="gpt_scope">范围</string>
     <string name="gpt_scope_text_selection">选中文本</string>
     <string name="gpt_scope_whole_page">整个页面</string>
@@ -554,35 +492,108 @@
     <string name="menu_instapaper">Instapaper</string>
     <string name="no_saved_pages">尚无已保存的页面</string>
     <string name="none">无</string>
-    <string name="openai_translate_by_paragraph">OpenAI 逐段翻译</string>
-    <string name="page_ai">页面 AI</string>
-    <string name="page_ai_action_title">页面 AI 动作</string>
+    <string name="page_ai">页面AI</string>
+    <string name="page_ai_action_title">页面AI动作</string>
     <string name="papago">Papago</string>
-    <string name="papago_translate_by_screen">Papago 屏幕翻译</string>
+    <string name="papago_translate_by_screen">Papago屏幕翻译</string>
     <string name="reader_toolbar">阅读工具栏设置</string>
     <string name="save_history_mode_disabled">不保存</string>
     <string name="save_history_mode_save_when_close">关闭标签时保存</string>
     <string name="save_history_mode_save_when_open">打开标签时保存</string>
     <string name="saved_pages">已保存的页面</string>
     <string name="setting_floating_button_long_click">长按</string>
-    <string name="setting_summary_gpt_query_list">已保存的 GPT 查询结果</string>
+    <string name="setting_summary_gpt_query_list">已保存的GPT查询结果</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="setting_summary_text_wrap_reflow">缩放时重排文本</string>
-    <string name="setting_summary_use_custom_gpt_url">使用其他 API 服务器网址</string>
-    <string name="setting_summary_zoom_in_custom_view">全屏模式下启用双指缩放（默认: 关闭）</string>
-    <string name="setting_title_gpt_query_list">GPT 查询历史</string>
+    <string name="setting_summary_use_custom_gpt_url">使用其他API服务器网址</string>
+    <string name="setting_summary_zoom_in_custom_view">全屏模式下启用双指缩放 (默认：关闭)</string>
+    <string name="setting_title_gpt_query_list">GPT查询历史</string>
     <string name="setting_title_text_wrap_reflow">文本重排</string>
     <string name="setting_title_zoom_in_custom_view">自定义视图中缩放</string>
     <string name="switch_touch_area_action_short">切换方向</string>
-    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_setting">设置界面</string>
     <string name="toast_save_page_failed">保存页面失败</string>
     <string name="toast_saved_page">页面已保存。长按此图标可查看已保存列表。</string>
     <string name="toc_delete">删除</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">网址为空</string>
-    <string name="volume_page_turn_paused">音量键翻页已暂停 5 秒</string>
+    <string name="volume_page_turn_paused">音量键翻页已暂停5秒</string>
     <string name="volume_page_turn_resumed">音量键翻页已恢复</string>
     <string name="site_force_viewport_width">强制视口宽度 (px)</string>
-    <string name="site_force_viewport_width_hint">仅当桌面 UA 不足时使用</string>
+    <string name="site_force_viewport_width_hint">仅当桌面UA不足时使用</string>
+    <string name="search_settings_hint">搜索设置…</string>
+    <string name="setting_section_toolbar">工具栏</string>
+    <string name="setting_section_statusbar">状态栏</string>
+    <string name="setting_section_typography">排版</string>
+    <string name="setting_section_advanced">高级</string>
+    <string name="site_settings_overrides_count">%1$d 优先于</string>
+    <string name="site_settings_overrides_count_plural">%1$d 优先于</string>
+    <string name="default_value_hint">默认</string>
+    <string name="setting_title_statusbar_enabled">当工具栏隐藏时显示状态栏</string>
+    <string name="setting_summary_statusbar_enabled">时间、页面信息、电池、WiFi和分页状态的紧凑工具栏</string>
+    <string name="setting_title_statusbar_position">状态栏位置</string>
+    <string name="setting_title_statusbar_items">状态栏项</string>
+    <string name="setting_summary_statusbar_items">选择要显示的项并对其进行重新排序</string>
+    <string name="statusbar_position_top">顶部</string>
+    <string name="statusbar_position_bottom">底部</string>
+    <string name="statusbar_item_battery">电池</string>
+    <string name="statusbar_item_wifi">Wifi</string>
+    <string name="statusbar_item_volume_pagination">卷页翻动</string>
+    <string name="statusbar_config_available">可用项</string>
+    <string name="statusbar_config_available_hint">点击图标将其添加到状态栏</string>
+    <string name="statusbar_config_preview">预览</string>
+    <string name="statusbar_config_preview_hint">点击图标可移除；长按可拖动并重新排序</string>
+    <string name="setting_title_userscripts">用户脚本</string>
+    <string name="setting_summary_userscripts">管理油猴样式用户脚本</string>
+    <string name="userscript_add">添加用户脚本</string>
+    <string name="userscript_empty">尚未安装用户脚本。点击 + 添加一个，或打开 user.js 链接。</string>
+    <string name="userscript_install_from_url">从URL安装</string>
+    <string name="userscript_fetch">获取</string>
+    <string name="userscript_code">用户脚本代码</string>
+    <string name="userscript_update">检查更新</string>
+    <string name="userscript_updated">更新至v%1$s</string>
+    <string name="userscript_up_to_date">已是最新版本</string>
+    <string name="userscript_no_update_source">此脚本未更新URL</string>
+    <string name="userscript_update_failed">更新检查失败</string>
+    <string name="userscript_browse">在 Greasy Fork 查找用户脚本</string>
+    <string name="go_to">点击</string>
+    <string name="setting_title_share_long_press">长按动作分享</string>
+    <string name="setting_summary_share_long_press">长按分享图标时的动作</string>
+    <string name="share_long_press_copy_link">复制链接</string>
+    <string name="share_long_press_last_target">分享到最近应用</string>
+    <string name="setting_title_video_autoplay">允许视频自动播放</string>
+    <string name="setting_summary_video_autoplay">允许视频自动播放，无需用户交互</string>
+    <string name="backup_category_database_data">数据库 (突出显示、GPT查询、网站设置等)</string>
+    <string name="share_receiving">接收数据…</string>
+    <string name="menu_save_mht">另存为MHT</string>
+    <string name="openai_in_place">原位OpenAI</string>
+    <string name="gemini_in_place">原位Gemini</string>
+    <string name="action_category_tab">标签页</string>
+    <string name="action_category_navigation">导航</string>
+    <string name="action_category_content">内容</string>
+    <string name="action_category_view">视图</string>
+    <string name="action_category_translation">翻译</string>
+    <string name="action_category_tts">文本转语音</string>
+    <string name="action_category_bookmarks">书签历史(&amp;H)</string>
+    <string name="action_category_search">搜索</string>
+    <string name="action_category_share">分享</string>
+    <string name="action_category_touch">触控</string>
+    <string name="action_category_ai">AI</string>
+    <string name="action_category_file">文件</string>
+    <string name="action_category_dialog">对话框用户界面(&amp;U)</string>
+    <string name="action_text_search">文本搜索</string>
+    <string name="action_fast_toggle">快速切换</string>
+    <string name="action_summarize_content">页面摘要</string>
+    <string name="action_save_web_archive">保存网页档案文件</string>
+    <string name="action_selected_label">所选动作</string>
+    <string name="task_menu_title">任务</string>
+    <string name="task_read_article_list">新闻主播</string>
+    <string name="task_read_article_list_desc">从该页面提取文章链接，然后依次打开并大声朗读。</string>
+    <string name="task_custom">自定义任务…</string>
+    <string name="task_custom_desc">用自然语言描述一个多步骤任务；LLM将执行该任务。</string>
+    <string name="task_custom_hint">例如，打开前三个故事链接，并给我一句话的摘要</string>
+    <string name="task_run">运行</string>
+    <string name="task_requires_openai">自定义任务需要使用OpenAI (而非Gemini)。</string>
+    <string name="task_unknown">未知任务。</string>
 </resources>
