@@ -173,7 +173,7 @@ fun ArticlesScreen(
         modifier = Modifier.padding(10.dp),
         reverseLayout = true
     ) {
-        items(articles.size) { index ->
+        items(articles.size, key = { articles[it].id }) { index ->
             val article = articles[index]
             ArticleItem(
                 modifier = Modifier.padding(vertical = 10.dp),
@@ -276,7 +276,7 @@ fun HighlightsScreen(
                 )
             )
         }
-        items(highlights.size) { index ->
+        items(highlights.size, key = { highlights[it].id }) { index ->
             HighlightItem(
                 highlight = highlights[index],
                 deleteHighlight = deleteHighlight,
