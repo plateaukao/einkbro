@@ -57,6 +57,7 @@ class ChromeSetupDelegate(
     private val addAlbum: (String, String, Boolean) -> Unit,
     private val addIncognitoAlbum: () -> Unit,
     private val newATab: () -> Unit,
+    private val closeAllTabs: () -> Unit,
     private val toggleSplitScreen: (String?) -> Unit,
     private val focusOnInput: () -> Unit,
     private val showFastToggleDialog: () -> Unit,
@@ -143,6 +144,7 @@ class ChromeSetupDelegate(
             addIncognitoTabAction = { addIncognitoAlbum() },
             splitScreenAction = { url -> toggleSplitScreen(url) },
             addEmptyTabAction = { newATab() },
+            closeAllTabsAction = { closeAllTabs() },
         )
     }
 
