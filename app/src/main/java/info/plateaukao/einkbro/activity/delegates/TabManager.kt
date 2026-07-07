@@ -181,6 +181,9 @@ class TabManager(
                 return
             }
             currentAlbumController.deactivate()
+            // GONE views skip measure/layout/draw; a VISIBLE background tab is
+            // still fully drawn on every layout pass (FrameLayout doesn't cull).
+            (currentAlbumController as? View)?.visibility = View.GONE
         }
 
         val mainContentLayout = state.mainContentLayout
@@ -194,8 +197,9 @@ class TabManager(
             }
         }
 
+        controllerView.visibility = View.VISIBLE
         mainContentLayout.addView(
-            controller as View,
+            controllerView,
             FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
