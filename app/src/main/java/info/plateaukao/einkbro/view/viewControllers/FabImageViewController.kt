@@ -160,10 +160,13 @@ class FabImageViewController(
                 // need to consider whether top part height is occupied by toolbar
                 val currentViewY = event.rawY - textView.height * 2 / 3
                 val currentViewX = event.rawX - textView.width * 2 / 3
-                updateFabImageCustomizePosition(currentViewX.toInt(), currentViewY.toInt())
+                // only move the view while dragging; persist once on ACTION_UP
+                textView.x = currentViewX
+                textView.y = currentViewY
             }
 
             MotionEvent.ACTION_UP -> {
+                saveFabCustomPosition(textView.x.toInt(), textView.y.toInt())
                 textView.scaleX = 1.0f
                 textView.scaleY = 1.0f
                 textView.setOnTouchListener(defaultTouchListener)
@@ -173,9 +176,7 @@ class FabImageViewController(
         return true
     }
 
-    private fun updateFabImageCustomizePosition(x: Int, y: Int) {
-        textView.x = x.toFloat()
-        textView.y = y.toFloat()
+    private fun saveFabCustomPosition(x: Int, y: Int) {
         if (orientation == ORIENTATION_PORTRAIT) {
             config.ui.fabCustomPosition = Point(x, y)
         } else {
@@ -192,7 +193,7 @@ class FabImageViewController(
         if (orientation == ORIENTATION_PORTRAIT &&
             (config.ui.fabCustomPosition.x > maxWidth || config.ui.fabCustomPosition.y > maxHeight)){
             config.ui.fabCustomPosition = Point(0, 0)
-        } else if (orientation != ORIENTATION_LANDSCAPE &&
+        } else if (orientation == ORIENTATION_LANDSCAPE &&
             (config.ui.fabCustomPositionLandscape.x > maxWidth || config.ui.fabCustomPositionLandscape.y > maxHeight)){
             config.ui.fabCustomPositionLandscape = Point(0, 0)
         }
