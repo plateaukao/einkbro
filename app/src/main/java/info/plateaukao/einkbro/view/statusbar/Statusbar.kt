@@ -39,10 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.TouchConfig
+import info.plateaukao.einkbro.view.compose.rememberCurrentTimeText
 import kotlinx.coroutines.delay
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 private val iconSize = 16.dp
 private val barHeight = 22.dp
@@ -76,14 +74,7 @@ fun Statusbar(
 
 @Composable
 private fun StatusbarTime() {
-    var now by remember { mutableStateOf("") }
-    LaunchedEffect(Unit) {
-        while (true) {
-            now = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-            delay(60_000L)
-        }
-    }
-    StatusbarText(now)
+    StatusbarText(rememberCurrentTimeText())
 }
 
 @Composable
