@@ -54,6 +54,11 @@ class OverviewDialogController(
 
     private val currentRecordList = mutableListOf<Record>()
 
+    // Gates the composition: a GONE-but-attached ComposeView still recomposes,
+    // so without this every album title/favicon write recomposed the hidden
+    // panel for the app's whole lifetime.
+    private var isPanelVisible by mutableStateOf(false)
+
     // State previously held by HistoryAndTabsView
     private var isHistoryOpen by mutableStateOf(false)
     private var shouldReverse by mutableStateOf(true)
@@ -62,6 +67,7 @@ class OverviewDialogController(
 
     init {
         composeView.setContent {
+            if (!isPanelVisible) return@setContent
             MyTheme {
                 HistoryAndTabs(
                     bookmarkManager = bookmarkManager,
@@ -96,6 +102,7 @@ class OverviewDialogController(
     fun isVisible() = composeView.visibility == VISIBLE
 
     fun show() {
+        isPanelVisible = true
         composeView.visibility = VISIBLE
         openHomePage()
     }
@@ -121,10 +128,12 @@ class OverviewDialogController(
     }
 
     fun hide() {
+        isPanelVisible = false
         composeView.visibility = GONE
     }
 
     fun openHistoryPage(amount: Int = 0) {
+        isPanelVisible = true
         composeView.visibility = VISIBLE
         refreshHistoryList(amount)
     }
