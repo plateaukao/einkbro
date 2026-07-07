@@ -824,19 +824,29 @@ private fun TabCountIcon(
     }
 }
 
+/** Ticking "HH:mm" string, updated on the minute boundary (shared by toolbar and statusbar). */
+@Composable
+fun rememberCurrentTimeText(): String {
+    var currentTime by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+        while (true) {
+            currentTime = format.format(Date())
+            // Sleep to the next minute boundary; a fixed 60s delay from
+            // composition time lags reality by up to 59 seconds.
+            delay(60_000L - System.currentTimeMillis() % 60_000L)
+        }
+    }
+    return currentTime
+}
+
 @Composable
 fun CurrentTimeText(
     modifier: Modifier = Modifier,
     isVertical: Boolean = false,
 ) {
-    var currentTime by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-            delay(1000L * 60) // Update every minute
-        }
-    }
+    val currentTime = rememberCurrentTimeText()
 
     // The narrow vertical toolbar isn't wide enough for the full-size "HH:mm", so it
     // gets ellipsized into something useless. Shrink the hour part while keeping the
