@@ -185,7 +185,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val gestureHandler: GestureHandler by lazy { GestureHandler { dispatch(it) } }
     private val toolbarActionHandler: ToolbarActionHandler by lazy { ToolbarActionHandler(this) { dispatch(it) } }
     private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this, { dispatch(it) }) { ebWebView } }
-    private val externalSearchWebView: WebView by lazy { BrowserUnit.createNaverDictWebView(this) }
+    private var isExternalSearchWebViewCreated = false
+    private val externalSearchWebView: WebView by lazy {
+        isExternalSearchWebViewCreated = true
+        BrowserUnit.createNaverDictWebView(this)
+    }
 
     private val displayConfigDelegate: DisplayConfigDelegate by lazy {
         DisplayConfigDelegate(
@@ -921,6 +925,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         tabManager.updateSavedAlbumInfo()
         if (config.clearWhenQuit && shouldRunClearService) startService(Intent(this, ClearService::class.java))
         browserContainer.clear()
+        if (isTwoPaneControllerInitialized()) twoPaneController.destroy()
+        if (isExternalSearchWebViewCreated) externalSearchWebView.destroy()
         unregisterReceiver(downloadReceiver)
         config.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
         chromeSetupDelegate.dispose()

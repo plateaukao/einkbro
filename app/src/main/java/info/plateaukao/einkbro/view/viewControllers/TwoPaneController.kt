@@ -43,7 +43,9 @@ class TwoPaneController(
     private val translateByScreen: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
+    private var isWebViewCreated = false
     private val webView: EBWebView by lazy {
+        isWebViewCreated = true
         EBWebView(activity, null).apply {
             shouldHideTranslateContext = true
             setScrollChangeListener(object : OnScrollChangeListener {
@@ -306,6 +308,14 @@ class TwoPaneController(
         translationPanel.addView(webView, 0, params)
 
         return webView
+    }
+
+    // The second-pane WebView holds the activity; without this it leaks the
+    // whole activity across recreate() (e.g. dark-mode toggle).
+    fun destroy() {
+        if (!isWebViewCreated) return
+        translationPanel.removeView(webView)
+        webView.destroy()
     }
 
     private fun buildGUrlTranslateUrl(url: String): String {

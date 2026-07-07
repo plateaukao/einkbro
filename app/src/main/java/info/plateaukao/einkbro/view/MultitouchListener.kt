@@ -8,8 +8,6 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.View
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import info.plateaukao.einkbro.browser.LongPressGestureListener
 import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent
@@ -21,7 +19,7 @@ open class MultitouchListener(
     context: Context,
     webView: EBWebView,
     private val touchCount: Int = 2
-) : View.OnTouchListener, DefaultLifecycleObserver, KoinComponent {
+) : View.OnTouchListener, KoinComponent {
 
     private var startPoint0: Point = Point(0, 0)
     private var startPoint1: Point = Point(0, 0)
@@ -38,12 +36,6 @@ open class MultitouchListener(
     private val scaleGestureDetector: ScaleGestureDetector =
         ScaleGestureDetector(context, ScaleListener())
 
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        // clear swipe status if accidentally activity enters background
-        inSwipe = false
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         scaleGestureDetector.onTouchEvent(event);
@@ -51,6 +43,10 @@ open class MultitouchListener(
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_MOVE -> onLongPressMove(event)
             MotionEvent.ACTION_UP -> onMoveDone(event)
+            // Gesture interrupted (e.g. activity backgrounded mid-swipe); this
+            // replaces the previous per-listener lifecycle observer, which was
+            // registered per created tab and never removed.
+            MotionEvent.ACTION_CANCEL -> inSwipe = false
         }
 
         if (!config.touch.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)

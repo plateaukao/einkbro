@@ -309,7 +309,7 @@ class ChromeSetupDelegate(
                     return
                 }
             }
-        }.apply { activity.lifecycle.addObserver(this) }
+        }
 
     fun dispose() {
         touchControllerInternal?.dispose()
