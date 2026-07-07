@@ -67,7 +67,12 @@ class TwoPaneLayout : FrameLayout {
             updatePanels()
         }
 
+    // Remembered so initViews() (re-run on orientation change) doesn't silently
+    // revert the user's panel arrangement to raw child order.
+    private var panelsSwitched = false
+
     fun switchPanels() {
+        panelsSwitched = !panelsSwitched
         // replace view position
         val tempPanel = panel1
         panel1 = panel2
@@ -92,7 +97,10 @@ class TwoPaneLayout : FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         if (isHorizontal() && measuredWidth != oldMeasuredWidth) {
-            updatePanels()
+            // updatePanels() assigns children's layoutParams, which calls
+            // requestLayout — doing that inside a measure pass forces extra
+            // full-tree layouts. Defer until this pass completes.
+            post { updatePanels() }
         }
     }
 
@@ -146,21 +154,23 @@ class TwoPaneLayout : FrameLayout {
             !listOf(separator, floatingLine, dragHandle).contains(it)
         }.toList()
 
-        if (userAddedViews.size != 2) {
-            // print errors
-        }
+        if (userAddedViews.size < 2) return
 
-        panel1 = userAddedViews[0]
-        panel2 = userAddedViews[1]
-        subPanel = panel2
-
-        if (isHorizontal()) {
-            finalX = (measuredWidth / 2).toFloat()
-            finalY = (measuredHeight / 2).toFloat()
+        // subPanel is always the second user view (the translation panel),
+        // independent of the user's panel arrangement.
+        subPanel = userAddedViews[1]
+        if (panelsSwitched) {
+            panel1 = userAddedViews[1]
+            panel2 = userAddedViews[0]
         } else {
-            finalX = (measuredWidth / 2).toFloat()
-            finalY = (measuredHeight / 2).toFloat()
+            panel1 = userAddedViews[0]
+            panel2 = userAddedViews[1]
         }
+
+        // Keep a user-dragged split position across orientation changes;
+        // updateFinalPosition() clamps it if it no longer fits.
+        if (finalX == 0f) finalX = (measuredWidth / 2).toFloat()
+        if (finalY == 0f) finalY = (measuredHeight / 2).toFloat()
 
         updatePanels()
     }
@@ -244,7 +254,6 @@ class TwoPaneLayout : FrameLayout {
     private fun initDragHandle() {
         if (isHorizontal()) {
             dY = 0F
-            finalY = (measuredHeight / 2).toFloat()
 
             val params = LayoutParams(2.dp(context), LayoutParams.MATCH_PARENT)
             separator.layoutParams = params
@@ -286,7 +295,6 @@ class TwoPaneLayout : FrameLayout {
             }
         } else {
             dX = 0F
-            finalX = (measuredWidth / 2).toFloat()
 
             val params = LayoutParams(LayoutParams.MATCH_PARENT, 2.dp(context))
             separator.layoutParams = params
