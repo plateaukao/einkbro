@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
@@ -30,11 +29,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -58,6 +53,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
 import kotlinx.coroutines.Dispatchers
@@ -68,7 +64,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class GptQueryListActivity : ComponentActivity()  {
+class GptQueryListActivity : LocaleAwareComponentActivity()  {
     private val gptQueryViewModel: GptQueryViewModel by koinViewModel()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
     // Events, not state: a state write recomposed the whole screen twice per
@@ -100,45 +96,28 @@ class GptQueryListActivity : ComponentActivity()  {
             }
 
         setContent {
-            MyTheme {
-                // Scaffold with a top bar and back button
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text("Gpt Results") }, // Set your desired title
-                            navigationIcon = {
-                                IconButton(onClick = {
-                                    // Handle back button press
-                                    onBackPressedDispatcher.onBackPressed()
-                                }) {
-                                    Icon(
-                                        Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = "Back"
-                                    )
-                                }
-                            },
-                            actions = {
-                                // Add a button to export highlights
-                                IconButton(onClick = {
-                                    showExportFileChooser()
-                                }) {
-                                    Icon(
-                                        imageVector = ImageVector.vectorResource(id = R.drawable.icon_export),
-                                        contentDescription = "Export"
-                                    )
-                                }
-                            }
+            ListScaffold(
+                title = "Gpt Results",
+                onBack = { onBackPressedDispatcher.onBackPressed() },
+                actions = {
+                    // Add a button to export highlights
+                    IconButton(onClick = {
+                        showExportFileChooser()
+                    }) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.icon_export),
+                            contentDescription = "Export"
                         )
                     }
-                ) { _ ->
-                    GptQueriesScreen(
-                        gptQueryViewModel,
-                        volumeKeyEvents = volumeKeyEvents,
-                        onLinkClick = {
-                            IntentUnit.launchUrl(this, it.url)
-                        }
-                    )
-                }
+                },
+            ) { _ ->
+                GptQueriesScreen(
+                    gptQueryViewModel,
+                    volumeKeyEvents = volumeKeyEvents,
+                    onLinkClick = {
+                        IntentUnit.launchUrl(this, it.url)
+                    }
+                )
             }
         }
     }

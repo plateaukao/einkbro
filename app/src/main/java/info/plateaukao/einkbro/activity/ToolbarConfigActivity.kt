@@ -1,11 +1,9 @@
 package info.plateaukao.einkbro.activity
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
@@ -53,7 +51,6 @@ import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
 import org.koin.android.ext.android.inject
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ToolbarPosition
-import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.ReorderableComposedIconBar
 import info.plateaukao.einkbro.view.compose.ReorderableComposedIconColumn
@@ -70,7 +67,7 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import kotlinx.coroutines.delay
 
-class ToolbarConfigActivity : ComponentActivity() {
+class ToolbarConfigActivity : LocaleAwareComponentActivity() {
     private val config: ConfigManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,16 +130,6 @@ class ToolbarConfigActivity : ComponentActivity() {
         } else {
             @Suppress("DEPRECATION")
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        }
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        if (config.uiLocaleLanguage.isNotEmpty()) {
-            super.attachBaseContext(
-                LocaleManager.setLocale(newBase, config.uiLocaleLanguage)
-            )
-        } else {
-            super.attachBaseContext(newBase)
         }
     }
 

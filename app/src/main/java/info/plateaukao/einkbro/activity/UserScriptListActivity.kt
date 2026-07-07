@@ -3,7 +3,6 @@ package info.plateaukao.einkbro.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,14 +23,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
@@ -60,6 +56,7 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.userscript.UpdateResult
 import info.plateaukao.einkbro.userscript.UserScriptManager
 import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.compose.MyTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,7 +65,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.android.ext.android.inject
 
-class UserScriptListActivity : ComponentActivity() {
+class UserScriptListActivity : LocaleAwareComponentActivity() {
     private val userScriptManager: UserScriptManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,33 +122,25 @@ class UserScriptListActivity : ComponentActivity() {
             }
 
             MyTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text(stringResource(R.string.setting_title_userscripts)) },
-                            navigationIcon = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
-                                }
-                            },
-                            actions = {
-                                IconButton(onClick = {
-                                    IntentUnit.launchUrl(this@UserScriptListActivity, GREASY_FORK_URL)
-                                }) {
-                                    Icon(Icons.Outlined.Public, contentDescription = stringResource(R.string.userscript_browse))
-                                }
-                                IconButton(onClick = {
-                                    editing = null
-                                    editorSourceUrl = null
-                                    showEditor = true
-                                }) {
-                                    Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.userscript_add))
-                                }
-                                IconButton(onClick = { finish() }) {
-                                    Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.back))
-                                }
-                            },
-                        )
+                ListScaffold(
+                    title = stringResource(R.string.setting_title_userscripts),
+                    onBack = { finish() },
+                    actions = {
+                        IconButton(onClick = {
+                            IntentUnit.launchUrl(this@UserScriptListActivity, GREASY_FORK_URL)
+                        }) {
+                            Icon(Icons.Outlined.Public, contentDescription = stringResource(R.string.userscript_browse))
+                        }
+                        IconButton(onClick = {
+                            editing = null
+                            editorSourceUrl = null
+                            showEditor = true
+                        }) {
+                            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.userscript_add))
+                        }
+                        IconButton(onClick = { finish() }) {
+                            Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.back))
+                        }
                     },
                 ) { padding ->
                     Column(modifier = Modifier.fillMaxSize().padding(padding)) {
