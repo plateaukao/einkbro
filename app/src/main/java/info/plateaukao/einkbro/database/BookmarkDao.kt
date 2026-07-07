@@ -1,8 +1,10 @@
 package info.plateaukao.einkbro.database
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import android.util.LruCache
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
@@ -277,6 +279,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     private val faviconDao = database.faviconDao()
     private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
+    private val faviconBitmapCache = LruCache<String, Bitmap>(100)
 
     private val highlightDao = database.highlightDao()
     private val articleDao = database.articleDao()
@@ -405,15 +408,31 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     suspend fun insertFavicon(faviconInfo: FaviconInfo) {
         faviconDao.insert(faviconInfo)
+        faviconInfos.removeAll { it.domain == faviconInfo.domain }
         faviconInfos.add(faviconInfo)
+        faviconBitmapCache.remove(faviconInfo.domain)
     }
 
-    fun findFaviconBy(url: String): FaviconInfo? {
+    private fun findFaviconBy(url: String): FaviconInfo? {
         val host = Uri.parse(url).host ?: return null
         return faviconInfos.firstOrNull { it.domain == host }
     }
 
-    suspend fun deleteFavicon(faviconInfo: FaviconInfo) = faviconDao.delete(faviconInfo)
+    // Decoded bitmaps are cached per domain so repeated lookups return the same
+    // instance; Compose skipping and mutableStateOf equality rely on that.
+    fun findFaviconBitmapBy(url: String): Bitmap? {
+        val host = Uri.parse(url).host ?: return null
+        faviconBitmapCache.get(host)?.let { return it }
+        val bitmap = faviconInfos.firstOrNull { it.domain == host }?.getBitmap() ?: return null
+        faviconBitmapCache.put(host, bitmap)
+        return bitmap
+    }
+
+    suspend fun deleteFavicon(faviconInfo: FaviconInfo) {
+        faviconDao.delete(faviconInfo)
+        faviconInfos.removeAll { it.domain == faviconInfo.domain }
+        faviconBitmapCache.remove(faviconInfo.domain)
+    }
 
     // -- Bookmark --
 

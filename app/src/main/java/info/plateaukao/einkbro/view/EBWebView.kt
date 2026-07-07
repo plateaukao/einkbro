@@ -416,7 +416,7 @@ open class EBWebView(
 
     private fun initAlbum() {
         album.albumTitle = context!!.getString(R.string.app_name)
-        bookmarkManager.findFaviconBy(albumUrl)?.getBitmap()?.let {
+        bookmarkManager.findFaviconBitmapBy(albumUrl)?.let {
             setAlbumCover(it)
         }
     }
@@ -444,7 +444,7 @@ open class EBWebView(
 
         resetState()
 
-        bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
+        bookmarkManager.findFaviconBitmapBy(url)?.let {
             setAlbumCover(it)
         }
 
@@ -484,7 +484,7 @@ open class EBWebView(
 
         val strippedUrl = BrowserUnit.stripUrlQuery(processedUrl)
 
-        bookmarkManager.findFaviconBy(strippedUrl)?.getBitmap()?.let {
+        bookmarkManager.findFaviconBitmapBy(strippedUrl)?.let {
             setAlbumCover(it)
         }
 

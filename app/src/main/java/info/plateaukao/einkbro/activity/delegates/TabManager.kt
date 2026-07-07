@@ -130,7 +130,7 @@ class TabManager(
     }
 
     private fun updateTabPreview(newWebView: EBWebView, url: String) {
-        bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
+        bookmarkManager.findFaviconBitmapBy(url)?.let {
             newWebView.setAlbumCover(it)
         }
 
