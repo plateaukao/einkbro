@@ -57,9 +57,13 @@ class ComposeToolbarViewController(
     private val onTabClick: (Album) -> Unit = onTabClick
     private val onTabLongClick: (Album) -> Unit = onTabLongClick
 
+    // Cached: updatePageInfo runs on every scroll event.
+    private var hasPageInfoIcon = false
+
     init {
         val iconEnums = if (isReader) config.ui.readerToolbarActions else config.ui.toolbarActions
         toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
+        hasPageInfoIcon = iconEnums.contains(PageInfo)
         shouldShowTabs = config.tab.shouldShowTabBar
 
         composeView.setContent {
@@ -84,9 +88,6 @@ class ComposeToolbarViewController(
         }
     }
 
-    private fun containsPageInfo(): Boolean = toolbarActionInfoList
-        .map { it.toolbarAction }.contains(PageInfo)
-
     fun showTabbar(shouldShow: Boolean) {
         shouldShowTabs = shouldShow
     }
@@ -102,7 +103,7 @@ class ComposeToolbarViewController(
     }
 
     fun updatePageInfo(text: String) {
-        if (containsPageInfo()) pageInfo = text
+        if (hasPageInfoIcon) pageInfo = text
     }
 
     fun updateRefresh(isLoadingWeb: Boolean) {
@@ -125,6 +126,7 @@ class ComposeToolbarViewController(
         }
 
         toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
+        hasPageInfoIcon = iconEnums.contains(PageInfo)
         isIncognito = config.isIncognitoMode
         isVertical = config.ui.isVerticalToolbar
         isToolbarOnRight = config.ui.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right

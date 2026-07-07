@@ -194,7 +194,7 @@ enum class ToolbarAction(
 
 
     companion object {
-        fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
+        fun fromOrdinal(value: Int) = entries[value]
         val defaultActionsForPhone: List<ToolbarAction> = listOf(
             NewTab,
             Touch,
@@ -244,10 +244,11 @@ data class IconActiveInfo(
     val inactiveResId: Int = 0,
 )
 
-// a data class to wrap a state in it
-class ToolbarActionInfo(
+// Immutable so lists of it compare structurally: mutableStateOf can dedup
+// no-op rebuilds and Compose strong skipping can skip unchanged icons.
+data class ToolbarActionInfo(
     val toolbarAction: ToolbarAction,
-    var state: Boolean = false,
+    val state: Boolean = false,
 ) {
     fun getCurrentResId(): Int = toolbarAction.getCurrentResId(state)
 }
