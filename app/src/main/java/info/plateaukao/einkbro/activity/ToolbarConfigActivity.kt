@@ -66,6 +66,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import kotlinx.coroutines.delay
 
 class ToolbarConfigActivity : ComponentActivity() {
@@ -80,7 +82,15 @@ class ToolbarConfigActivity : ComponentActivity() {
 
         setContent {
             MyTheme {
-                var list = remember { mutableStateOf(toolbarActionInfoList) }
+                // Saveable so an unsaved arrangement survives rotation.
+                val list = rememberSaveable(
+                    stateSaver = listSaver(
+                        save = { infos -> infos.map { it.toolbarAction.ordinal } },
+                        restore = { saved ->
+                            saved.map { ToolbarActionInfo(ToolbarAction.fromOrdinal(it), false) }
+                        },
+                    )
+                ) { mutableStateOf(toolbarActionInfoList) }
                 val topBar: @Composable () -> Unit = {
                     TopAppBar(
                         title = {

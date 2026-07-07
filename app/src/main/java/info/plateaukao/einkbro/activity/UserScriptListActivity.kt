@@ -44,6 +44,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -78,9 +82,12 @@ class UserScriptListActivity : ComponentActivity() {
         setContent {
             val scripts = remember { mutableStateListOf<UserScript>() }
             val updatingIds = remember { mutableStateListOf<Long>() }
-            var editing by remember { mutableStateOf<UserScript?>(null) }
-            var showEditor by remember { mutableStateOf(false) }
-            var editorSourceUrl by remember { mutableStateOf<String?>(null) }
+            // Saveable so an in-progress edit survives rotation.
+            var editing by rememberSaveable(stateSaver = userScriptSaver) {
+                mutableStateOf<UserScript?>(null)
+            }
+            var showEditor by rememberSaveable { mutableStateOf(false) }
+            var editorSourceUrl by rememberSaveable { mutableStateOf<String?>(null) }
 
             fun refresh() {
                 lifecycleScope.launch {
@@ -93,13 +100,16 @@ class UserScriptListActivity : ComponentActivity() {
                 }
             }
 
-            var fetchingUrl by remember { mutableStateOf(installUrl) }
+            var fetchingUrl by remember {
+                mutableStateOf(if (savedInstanceState == null) installUrl else null)
+            }
 
-            remember {
+            LaunchedEffect(Unit) {
                 refresh()
                 // If launched with a script to install (from a .user.js URL), fetch it and
                 // open the editor; fetchingUrl drives the progress indicator meanwhile.
-                if (installUrl != null) {
+                // Skip after recreation so the restored editor state isn't clobbered.
+                if (installUrl != null && savedInstanceState == null) {
                     lifecycleScope.launch {
                         val fetched = withContext(Dispatchers.IO) { fetchScript(installUrl) }
                         fetchingUrl = null
@@ -112,7 +122,6 @@ class UserScriptListActivity : ComponentActivity() {
                         }
                     }
                 }
-                true
             }
 
             MyTheme {
@@ -321,6 +330,34 @@ private fun ScriptRow(
 
 private const val EDITOR_DISPLAY_LIMIT = 10_000
 
+// Multi-MB scripts would overflow the 1MB Binder limit in onSaveInstanceState;
+// above this size the value simply isn't saved (fetched scripts are
+// re-fetchable via their sourceUrl anyway).
+private const val SAVEABLE_CODE_LIMIT = 100_000
+
+private val largeStringSaver = Saver<String, String>(
+    save = { if (it.length <= SAVEABLE_CODE_LIMIT) it else null },
+    restore = { it },
+)
+
+private val userScriptSaver = listSaver<UserScript?, Any?>(
+    save = { script ->
+        if (script == null || script.code.length > SAVEABLE_CODE_LIMIT) emptyList()
+        else listOf(script.id, script.name, script.enabled, script.code, script.sourceUrl, script.order)
+    },
+    restore = { saved ->
+        if (saved.size < 6) null
+        else UserScript(
+            id = saved[0] as Long,
+            name = saved[1] as String,
+            enabled = saved[2] as Boolean,
+            code = saved[3] as String,
+            sourceUrl = saved[4] as String?,
+            order = saved[5] as Int,
+        )
+    },
+)
+
 @Composable
 private fun ScriptEditorDialog(
     initial: UserScript?,
@@ -328,8 +365,10 @@ private fun ScriptEditorDialog(
     onSaveCode: (String) -> Unit,
     onFetchUrl: (String, (String) -> Unit) -> Unit,
 ) {
-    var code by remember { mutableStateOf(initial?.code.orEmpty()) }
-    var url by remember { mutableStateOf("") }
+    var code by rememberSaveable(initial, stateSaver = largeStringSaver) {
+        mutableStateOf(initial?.code.orEmpty())
+    }
+    var url by rememberSaveable { mutableStateOf("") }
     // TextField cannot handle multi-MB scripts (composition stalls the UI thread
     // indefinitely), so beyond this size show a truncated read-only preview; `code`
     // keeps the full body and is what gets saved.
