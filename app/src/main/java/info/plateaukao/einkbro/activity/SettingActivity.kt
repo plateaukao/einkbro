@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -162,8 +163,8 @@ class SettingActivity : FragmentActivity(), BackupOps {
 
                 val backStackEntry = navController.currentBackStackEntryAsState()
                 val currentScreen = valueOf(backStackEntry.value?.destination?.route ?: Main.name)
-                var isSearching by remember { mutableStateOf(false) }
-                var searchQuery by remember { mutableStateOf("") }
+                var isSearching by rememberSaveable { mutableStateOf(false) }
+                var searchQuery by rememberSaveable { mutableStateOf("") }
 
                 Scaffold(
                     modifier = Modifier.semantics {

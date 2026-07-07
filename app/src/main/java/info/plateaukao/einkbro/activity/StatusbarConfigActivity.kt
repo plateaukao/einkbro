@@ -38,6 +38,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -63,7 +65,13 @@ class StatusbarConfigActivity : ComponentActivity() {
         val initial = config.ui.statusbarItems
         setContent {
             MyTheme {
-                val list = remember { mutableStateOf(initial) }
+                // Saveable so an unsaved arrangement survives rotation.
+                val list = rememberSaveable(
+                    stateSaver = listSaver(
+                        save = { items -> items.map { it.ordinal } },
+                        restore = { saved -> saved.map { StatusbarItem.entries[it] } },
+                    )
+                ) { mutableStateOf(initial) }
                 Scaffold(
                     topBar = {
                         TopAppBar(
