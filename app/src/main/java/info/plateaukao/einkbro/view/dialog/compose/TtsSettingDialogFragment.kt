@@ -115,7 +115,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                 readingState = readingState.value,
                 showNextButton = ttsViewModel.hasNextArticle(),
                 ttsType = ttsType.value,
-                readProgress = readProgress.value.toString(),
+                readProgress = { readProgress.value.toString() },
                 nextArticleAction = ttsViewModel::nextArticle,
                 gotoSettingAction = { IntentUnit.gotoSystemTtsSettings(requireActivity()) },
                 stopAction = ttsViewModel::reset,
@@ -358,7 +358,10 @@ fun TtsDialogButtonBar(
     readingState: TtsReadingState,
     showNextButton: Boolean = false,
     ttsType: TtsType,
-    readProgress: String,
+    // Lambda so the per-tick progress state is read only in this scope; the
+    // whole dialog (which re-reads config, incl. a JSON parse) must not
+    // recompose on every TTS progress tick.
+    readProgress: () -> String,
     nextArticleAction: () -> Unit,
     stopAction: () -> Unit,
     pauseOrResumeAction: () -> Unit,
@@ -378,7 +381,7 @@ fun TtsDialogButtonBar(
         ) {
             if (readingState != IDLE) {
                 Text(
-                    readProgress,
+                    readProgress(),
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .clickable { clickProgressAction() },
