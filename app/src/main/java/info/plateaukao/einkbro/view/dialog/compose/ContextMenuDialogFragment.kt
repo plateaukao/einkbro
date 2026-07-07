@@ -144,27 +144,26 @@ class ContextMenuDialogFragment(
         shouldShowInCenter = true
     }
 
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            ContextMenuItems(
-                url,
-                shouldShowAdBlock,
-                shouldShowTranslateImage,
-                showIcons = config.ui.showActionMenuIcons,
-                isEbookMode = isEbookMode,
-                hoveredItem = hoveredItemState.value,
-                onClicked = { item ->
+    @Composable
+    override fun Content() {
+        ContextMenuItems(
+            url,
+            shouldShowAdBlock,
+            shouldShowTranslateImage,
+            showIcons = config.ui.showActionMenuIcons,
+            isEbookMode = isEbookMode,
+            hoveredItem = hoveredItemState.value,
+            onClicked = { item ->
+                dialog?.dismiss()
+                itemClicked(item)
+            },
+            onLongClicked = { item ->
+                composeView.post {
                     dialog?.dismiss()
-                    itemClicked(item)
-                },
-                onLongClicked = { item ->
-                    composeView.post {
-                        dialog?.dismiss()
-                        itemLongClicked(item)
-                    }
+                    itemLongClicked(item)
                 }
-            )
-        }
+            }
+        )
     }
 
     fun updateHoveredItem(screenX: Float, screenY: Float) {

@@ -50,12 +50,11 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 class FastToggleDialogFragment(
     val extraAction: () -> Unit,
 ) : ComposeDialogFragment() {
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            FastToggleItemList(requireContext(), config) { needExtraAction ->
-                if (needExtraAction) extraAction()
-                dialog?.dismiss()
-            }
+    @Composable
+    override fun Content() {
+        FastToggleItemList(requireContext(), config) { needExtraAction ->
+            if (needExtraAction) extraAction()
+            dialog?.dismiss()
         }
     }
 }

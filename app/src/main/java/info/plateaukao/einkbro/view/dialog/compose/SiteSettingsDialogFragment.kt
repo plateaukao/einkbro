@@ -59,7 +59,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.TranslationMode
-import info.plateaukao.einkbro.view.compose.MyTheme
 
 private const val DEFAULT_DESKTOP_VIEWPORT_WIDTH = 1280
 
@@ -72,33 +71,32 @@ class SiteSettingsDialogFragment(
         shouldShowInCenter = true
     }
 
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            val host = Uri.parse(url)?.host.orEmpty()
-            SiteSettingsContent(
-                host = host,
-                domainConfig = config.getDomainConfig(url),
-                globalFontSize = config.display.fontSize,
-                globalFontType = config.display.fontType,
-                globalBoldFont = config.display.boldFontStyle,
-                globalBlackFont = config.display.blackFontStyle,
-                globalFontBoldness = config.display.fontBoldness,
-                globalDesktopMode = config.browser.desktop,
-                defaultViewportWidth = DEFAULT_DESKTOP_VIEWPORT_WIDTH,
-                globalJavascript = config.browser.enableJavascript,
-                globalTranslationMode = config.translation.translationMode,
-                onEditText = { title, initial, onResult ->
-                    TextEditorDialogFragment(title, initial, onResult)
-                        .show(parentFragmentManager, "text_editor")
-                },
-                onSave = { updatedConfig ->
-                    config.updateDomainConfig(updatedConfig)
-                    onDismissAction()
-                    dialog?.dismiss()
-                },
-                onDismiss = { dialog?.dismiss() },
-            )
-        }
+    @Composable
+    override fun Content() {
+        val host = Uri.parse(url)?.host.orEmpty()
+        SiteSettingsContent(
+            host = host,
+            domainConfig = config.getDomainConfig(url),
+            globalFontSize = config.display.fontSize,
+            globalFontType = config.display.fontType,
+            globalBoldFont = config.display.boldFontStyle,
+            globalBlackFont = config.display.blackFontStyle,
+            globalFontBoldness = config.display.fontBoldness,
+            globalDesktopMode = config.browser.desktop,
+            defaultViewportWidth = DEFAULT_DESKTOP_VIEWPORT_WIDTH,
+            globalJavascript = config.browser.enableJavascript,
+            globalTranslationMode = config.translation.translationMode,
+            onEditText = { title, initial, onResult ->
+                TextEditorDialogFragment(title, initial, onResult)
+                    .show(parentFragmentManager, "text_editor")
+            },
+            onSave = { updatedConfig ->
+                config.updateDomainConfig(updatedConfig)
+                onDismissAction()
+                dialog?.dismiss()
+            },
+            onDismiss = { dialog?.dismiss() },
+        )
     }
 }
 

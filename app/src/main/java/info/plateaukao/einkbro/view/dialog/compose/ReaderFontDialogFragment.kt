@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DisplayConfig
 import info.plateaukao.einkbro.preference.FontType
-import info.plateaukao.einkbro.view.compose.MyTheme
 
 class ReaderFontDialogFragment(
     private val onFontCustomizeClick: () -> Unit
@@ -41,33 +41,30 @@ class ReaderFontDialogFragment(
         super.onDestroyView()
     }
 
-    override fun setupComposeView() {
-        composeView.setContent {
-            MyTheme {
-                val customFontName =
-                    remember { customFontNameState }
-                MainFontDialog(
-                    selectedFontSizeValue = config.display.readerFontSize,
-                    customFontSizeValue = config.display.customFontSize,
-                    selectedFontType = config.display.readerFontType,
-                    customFontName = customFontName.value,
-                    onFontSizeClick = {
-                        config.display.readerFontSize = it
-                        dismiss()
-                    },
-                    onFontTypeClick = {
-                        if (it == FontType.CUSTOM && config.display.readerCustomFontInfo == null) {
-                            onFontCustomizeClick()
-                        } else {
-                            config.display.readerFontType = it
-                            dismiss()
-                        }
-                    },
-                    onFontTypeChanged = onFontCustomizeClick,
-                    onCustomFontSizeClick = onFontCustomizeClick,
-                    okAction = { dismiss() },
-                )
-            }
-        }
+    @Composable
+    override fun Content() {
+        val customFontName =
+            remember { customFontNameState }
+        MainFontDialog(
+            selectedFontSizeValue = config.display.readerFontSize,
+            customFontSizeValue = config.display.customFontSize,
+            selectedFontType = config.display.readerFontType,
+            customFontName = customFontName.value,
+            onFontSizeClick = {
+                config.display.readerFontSize = it
+                dismiss()
+            },
+            onFontTypeClick = {
+                if (it == FontType.CUSTOM && config.display.readerCustomFontInfo == null) {
+                    onFontCustomizeClick()
+                } else {
+                    config.display.readerFontType = it
+                    dismiss()
+                }
+            },
+            onFontTypeChanged = onFontCustomizeClick,
+            onCustomFontSizeClick = onFontCustomizeClick,
+            okAction = { dismiss() },
+        )
     }
 }

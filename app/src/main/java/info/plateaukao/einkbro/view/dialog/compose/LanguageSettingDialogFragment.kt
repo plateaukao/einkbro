@@ -18,7 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -35,18 +34,17 @@ class LanguageSettingDialogFragment(
         shouldShowInCenter = true
     }
 
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            PapagoSetting(
-                translateApi == TRANSLATE_API.PAPAGO,
-                translationViewModel,
-                { changeTranslationLanguage() },
-                { changeSourceLanguage() },
-                { translate() },
-                { dismiss() }
+    @Composable
+    override fun Content() {
+        PapagoSetting(
+            translateApi == TRANSLATE_API.PAPAGO,
+            translationViewModel,
+            { changeTranslationLanguage() },
+            { changeSourceLanguage() },
+            { translate() },
+            { dismiss() }
 
-            )
-        }
+        )
     }
 
     private fun changeTranslationLanguage() {

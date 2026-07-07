@@ -86,76 +86,75 @@ class BookmarksDialogFragment(
 
     private val isGridView = mutableStateOf(false)
 
-    override fun setupComposeView() {
+    override fun beforeComposing() {
         isGridView.value = config.ui.isBookmarkGridView
         bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
         }
+    }
 
-        composeView.setContent {
-            val context = LocalContext.current
-            val showTwoColumn = ViewUnit.isWideLayout(context)
+    @Composable
+    override fun Content() {
+        val context = LocalContext.current
+        val showTwoColumn = ViewUnit.isWideLayout(context)
 
-            MyTheme {
-                DialogPanel(
-                    folder = bookmarkViewModel.currentFolder.value,
-                    inSortMode = shouldShowDragHandle.value,
-                    isGridView = isGridView.value,
-                    upParentAction = { bookmarkViewModel.outOfFolder() },
-                    toggleGridViewAction = {
-                        isGridView.value = !isGridView.value
-                        config.ui.isBookmarkGridView = isGridView.value
-                    },
-                    reorderBookmarkAction = {
-                        if (shouldShowDragHandle.value) {
-                            // Exiting sort mode - persist the current order
-                            bookmarkViewModel.updateBookmarksOrder(bookmarks.value)
-                        }
-                        shouldShowDragHandle.value = !shouldShowDragHandle.value
-                        if (shouldShowDragHandle.value) {
-                            EBToast.show(context, getString(R.string.drag_to_reorder))
-                        }
-                    },
-                    closeAction = { dialog?.dismiss() }) {
-                    if (bookmarks.value.isEmpty()) {
-                        Text(
-                            modifier = NormalTextModifier,
-                            text = getString(R.string.no_bookmarks),
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    } else {
-                        BookmarkList(
-                            bookmarks = bookmarks.value,
-                            bookmarkViewModel = bookmarkViewModel,
-                            showTwoColumn = showTwoColumn,
-                            isGridView = isGridView.value,
-                            shouldReverse = !config.ui.isToolbarOnTop,
-                            shouldShowDragHandle = shouldShowDragHandle.value,
-                            onItemMoved = { from, to ->
-                                bookmarks.value =
-                                    if (!isGridView.value && showTwoColumn) moveItemInTwoColumns(bookmarks.value, from, to)
-                                    else bookmarks.value.toMutableList().apply { add(to, removeAt(from)) }
-                            },
-                            onBookmarkClick = {
-                                if (!it.isDirectory) {
-                                    gotoUrlAction(it.url)
-                                    config.addRecentBookmark(it)
-                                    dialog?.dismiss()
-                                } else {
-                                    bookmarkViewModel.intoFolder(it)
-                                }
-                            },
-                            onBookmarkIconClick = {
-                                if (!it.isDirectory) bookmarkIconClickAction(
-                                    it.title,
-                                    it.url,
-                                    true
-                                ); dialog?.dismiss()
-                            },
-                            onBookmarkLongClick = { bookmark, offSet -> showBookmarkContextMenu(bookmark, offSet) }
-                        )
-                    }
+        DialogPanel(
+            folder = bookmarkViewModel.currentFolder.value,
+            inSortMode = shouldShowDragHandle.value,
+            isGridView = isGridView.value,
+            upParentAction = { bookmarkViewModel.outOfFolder() },
+            toggleGridViewAction = {
+                isGridView.value = !isGridView.value
+                config.ui.isBookmarkGridView = isGridView.value
+            },
+            reorderBookmarkAction = {
+                if (shouldShowDragHandle.value) {
+                    // Exiting sort mode - persist the current order
+                    bookmarkViewModel.updateBookmarksOrder(bookmarks.value)
                 }
+                shouldShowDragHandle.value = !shouldShowDragHandle.value
+                if (shouldShowDragHandle.value) {
+                    EBToast.show(context, getString(R.string.drag_to_reorder))
+                }
+            },
+            closeAction = { dialog?.dismiss() }) {
+            if (bookmarks.value.isEmpty()) {
+                Text(
+                    modifier = NormalTextModifier,
+                    text = getString(R.string.no_bookmarks),
+                    color = MaterialTheme.colors.onBackground
+                )
+            } else {
+                BookmarkList(
+                    bookmarks = bookmarks.value,
+                    bookmarkViewModel = bookmarkViewModel,
+                    showTwoColumn = showTwoColumn,
+                    isGridView = isGridView.value,
+                    shouldReverse = !config.ui.isToolbarOnTop,
+                    shouldShowDragHandle = shouldShowDragHandle.value,
+                    onItemMoved = { from, to ->
+                        bookmarks.value =
+                            if (!isGridView.value && showTwoColumn) moveItemInTwoColumns(bookmarks.value, from, to)
+                            else bookmarks.value.toMutableList().apply { add(to, removeAt(from)) }
+                    },
+                    onBookmarkClick = {
+                        if (!it.isDirectory) {
+                            gotoUrlAction(it.url)
+                            config.addRecentBookmark(it)
+                            dialog?.dismiss()
+                        } else {
+                            bookmarkViewModel.intoFolder(it)
+                        }
+                    },
+                    onBookmarkIconClick = {
+                        if (!it.isDirectory) bookmarkIconClickAction(
+                            it.title,
+                            it.url,
+                            true
+                        ); dialog?.dismiss()
+                    },
+                    onBookmarkLongClick = { bookmark, offSet -> showBookmarkContextMenu(bookmark, offSet) }
+                )
             }
         }
     }

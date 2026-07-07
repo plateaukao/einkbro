@@ -72,7 +72,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.GptActionScope
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
@@ -88,17 +87,16 @@ class TranslateDialogFragment(
     private val closeAction: (() -> Unit)? = null,
 ) : DraggableComposeDialogFragment() {
 
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            TranslateResponse(
-                translationViewModel,
-                showExtraIcons = config.ai.imageApiKey.isNotBlank(),
-                this::changeTranslationLanguage,
-                this::getTranslationWebView,
-                closeAction ?: { dismiss() },
-                isWholePageMode = isWholePageMode,
-            )
-        }
+    @Composable
+    override fun Content() {
+        TranslateResponse(
+            translationViewModel,
+            showExtraIcons = config.ai.imageApiKey.isNotBlank(),
+            this::changeTranslationLanguage,
+            this::getTranslationWebView,
+            closeAction ?: { dismiss() },
+            isWholePageMode = isWholePageMode,
+        )
     }
 
     override fun onDismiss(dialog: DialogInterface) {

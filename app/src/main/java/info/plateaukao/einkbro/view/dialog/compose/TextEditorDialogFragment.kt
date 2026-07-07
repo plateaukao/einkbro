@@ -43,6 +43,14 @@ class TextEditorDialogFragment(
     private val onSave: (String) -> Unit,
 ) : AppCompatDialogFragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            // Constructor lambdas don't survive process death; drop the restored instance.
+            dismissAllowingStateLoss()
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.Theme_Einkbro_FullScreenDialog)
         return super.onCreateDialog(savedInstanceState)

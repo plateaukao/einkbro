@@ -49,7 +49,6 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
 import info.plateaukao.einkbro.preference.FontType
-import info.plateaukao.einkbro.view.compose.MyTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -75,29 +74,28 @@ class FontBrowserDialogFragment(
         }
     }
 
-    override fun setupComposeView() {
+    override fun beforeComposing() {
         shouldShowInCenter = true
         folderUri.value = config.display.fontFolderUri
+    }
 
-        composeView.setContent {
-            MyTheme {
-                FontBrowserScreen(
-                    folderUri = folderUri.value,
-                    onSelectFolder = { folderPickerLauncher.launch(null) },
-                    onFontSelected = { fontInfo ->
-                        if (isReaderMode) {
-                            config.display.readerCustomFontInfo = fontInfo
-                            config.display.readerFontType = FontType.CUSTOM
-                        } else {
-                            config.display.customFontInfo = fontInfo
-                            config.display.fontType = FontType.CUSTOM
-                        }
-                        dismiss()
-                    },
-                    onDismiss = { dismiss() },
-                )
-            }
-        }
+    @Composable
+    override fun Content() {
+        FontBrowserScreen(
+            folderUri = folderUri.value,
+            onSelectFolder = { folderPickerLauncher.launch(null) },
+            onFontSelected = { fontInfo ->
+                if (isReaderMode) {
+                    config.display.readerCustomFontInfo = fontInfo
+                    config.display.readerFontType = FontType.CUSTOM
+                } else {
+                    config.display.customFontInfo = fontInfo
+                    config.display.fontType = FontType.CUSTOM
+                }
+                dismiss()
+            },
+            onDismiss = { dismiss() },
+        )
     }
 }
 

@@ -17,8 +17,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import org.koin.core.component.KoinComponent
@@ -38,6 +40,16 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
         var anchorX: Int = -1
         /** Vertical center Y (px) of the last clicked toolbar icon. Set by toolbar, consumed by dialog. */
         var anchorY: Int = -1
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            // These dialogs take constructor lambdas/views; an instance restored
+            // after process death would hold dead callbacks. They are transient
+            // popups, so dropping them on restore is the correct behavior.
+            dismissAllowingStateLoss()
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -79,11 +91,17 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
     ): View {
         setupDialog()
 
-        composeView = ComposeView(requireContext())
-        setupComposeView()
+        composeView = ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        }
+        beforeComposing()
+        composeView.setContent { MyTheme { Content() } }
 
         return composeView
     }
+
+    /** One-time setup that must run before the composition is created. */
+    protected open fun beforeComposing() {}
 
     override fun onStart() {
         super.onStart()
@@ -137,7 +155,9 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
         }
     }
 
-    abstract fun setupComposeView()
+    /** Dialog content; the base class wraps it in MyTheme and sets it on composeView. */
+    @Composable
+    protected abstract fun Content()
 
 }
 

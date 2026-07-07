@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
-import info.plateaukao.einkbro.view.compose.MyTheme
 
 class BookmarkContextMenuDlgFragment(
     private val bookmark: Bookmark,
@@ -41,15 +40,12 @@ class BookmarkContextMenuDlgFragment(
         // Uses own anchor-point positioning
     }
 
-    override fun setupComposeView() {
-        composeView.setContent {
-            MyTheme {
-                BookmarkContextMenuScreen(
-                    bookmark = bookmark,
-                    allowEdit = allowEdit,
-                    onClicked = { onClicked(it); dismiss() })
-            }
-        }
+    @Composable
+    override fun Content() {
+        BookmarkContextMenuScreen(
+            bookmark = bookmark,
+            allowEdit = allowEdit,
+            onClicked = { onClicked(it); dismiss() })
     }
 
     override fun onCreateView(

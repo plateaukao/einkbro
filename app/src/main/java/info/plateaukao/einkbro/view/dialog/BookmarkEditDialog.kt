@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindowProvider
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
-import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.ComposeDialogFragment
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.launch
@@ -51,23 +50,20 @@ class BookmarkEditDialog(
         shouldShowInCenter = true
     }
 
-    override fun setupComposeView() {
-        composeView.setContent {
-            MyTheme {
-                BookmarkEditContent(
-                    bookmarkViewModel = bookmarkViewModel,
-                    bookmark = bookmark,
-                    okAction = {
-                        okAction()
-                        dismiss()
-                    },
-                    dismissAction = {
-                        cancelAction()
-                        dismiss()
-                    }
-                )
+    @Composable
+    override fun Content() {
+        BookmarkEditContent(
+            bookmarkViewModel = bookmarkViewModel,
+            bookmark = bookmark,
+            okAction = {
+                okAction()
+                dismiss()
+            },
+            dismissAction = {
+                cancelAction()
+                dismiss()
             }
-        }
+        )
     }
 }
 
