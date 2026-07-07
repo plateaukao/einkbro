@@ -48,7 +48,7 @@ class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewMode
     }
 
     fun getFavicon(bookmark: Bookmark): Bitmap? =
-        bookmarkManager.findFaviconBy(bookmark.url)?.getBitmap()
+        bookmarkManager.findFaviconBitmapBy(bookmark.url)
 
     fun toRootFolder() {
         while (folderStack.size > 1) {
