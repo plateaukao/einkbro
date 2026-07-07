@@ -68,48 +68,45 @@ class FontDialogFragment(
         super.onDestroyView()
     }
 
-    override fun setupComposeView() {
-        composeView.setContent {
-            MyTheme {
-                val customFontName = remember { customFontNameState }
-                val fontSizeState = remember { mutableIntStateOf(config.display.fontSize) }
-                MainFontDialog(
-                    selectedFontSizeValue = fontSizeState.value,
-                    customFontSizeValue = config.display.customFontSize,
-                    selectedFontType = config.display.fontType,
-                    customFontName = customFontName.value,
-                    onFontSizeClick = {
+    @Composable
+    override fun Content() {
+        val customFontName = remember { customFontNameState }
+        val fontSizeState = remember { mutableIntStateOf(config.display.fontSize) }
+        MainFontDialog(
+            selectedFontSizeValue = fontSizeState.value,
+            customFontSizeValue = config.display.customFontSize,
+            selectedFontType = config.display.fontType,
+            customFontName = customFontName.value,
+            onFontSizeClick = {
+                config.display.fontSize = it
+                fontSizeState.value = it
+                dismiss()
+            },
+            onFontTypeClick = {
+                if (it == FontType.CUSTOM && config.display.customFontInfo == null) {
+                    onFontTypeChanged()
+                } else {
+                    config.display.fontType = it
+                    dismiss()
+                }
+            },
+            onFontTypeChanged = { onFontTypeChanged() },
+            onCustomFontSizeClick = {
+                lifecycleScope.launch {
+                    TextInputDialog(
+                        requireContext(),
+                        getString(R.string.custom_scale),
+                        getString(R.string.custom_scale_desc),
+                        config.display.customFontSize.toString()
+                    ).show()?.toIntOrNull()?.let {
                         config.display.fontSize = it
+                        config.display.customFontSize = it
                         fontSizeState.value = it
-                        dismiss()
-                    },
-                    onFontTypeClick = {
-                        if (it == FontType.CUSTOM && config.display.customFontInfo == null) {
-                            onFontTypeChanged()
-                        } else {
-                            config.display.fontType = it
-                            dismiss()
-                        }
-                    },
-                    onFontTypeChanged = { onFontTypeChanged() },
-                    onCustomFontSizeClick = {
-                        lifecycleScope.launch {
-                            TextInputDialog(
-                                requireContext(),
-                                getString(R.string.custom_scale),
-                                getString(R.string.custom_scale_desc),
-                                config.display.customFontSize.toString()
-                            ).show()?.toIntOrNull()?.let {
-                                config.display.fontSize = it
-                                config.display.customFontSize = it
-                                fontSizeState.value = it
-                            }
-                        }
-                    },
-                    okAction = { dismiss() },
-                )
-            }
-        }
+                    }
+                }
+            },
+            okAction = { dismiss() },
+        )
     }
 }
 

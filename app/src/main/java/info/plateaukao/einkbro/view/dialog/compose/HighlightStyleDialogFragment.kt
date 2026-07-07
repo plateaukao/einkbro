@@ -32,14 +32,13 @@ class HighlightStyleDialogFragment(
     val okAction: (HighlightStyle) -> Unit,
     val onDismissAction: () -> Unit = {},
 ) : DraggableComposeDialogFragment(), KoinComponent {
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            HighlightStyleContent(
-                config.display.highlightStyle
-            ) { highlightStyle ->
-                okAction(highlightStyle)
-                dismiss()
-            }
+    @Composable
+    override fun Content() {
+        HighlightStyleContent(
+            config.display.highlightStyle
+        ) { highlightStyle ->
+            okAction(highlightStyle)
+            dismiss()
         }
     }
 

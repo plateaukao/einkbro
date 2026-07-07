@@ -39,32 +39,30 @@ import info.plateaukao.einkbro.preference.TouchAreaType.Ebook
 import info.plateaukao.einkbro.preference.TouchAreaType.Right
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 
 class TouchAreaDialogFragment : ComposeDialogFragment(), KoinComponent {
-    override fun setupComposeView() = composeView.setContent {
+    @Composable
+    override fun Content() {
         val touchAreaType = remember { mutableStateOf(config.touch.touchAreaType) }
         val enableTurn = remember { mutableStateOf(config.touch.enableTouchTurn) }
 
-        MyTheme {
-            TouchAreaContent(
-                touchAreaType = touchAreaType.value,
-                onTouchTypeClick = { type ->
-                    config.touch.touchAreaType = type
-                    touchAreaType.value = type
-                },
-                enableTurn = enableTurn.value,
-                onToggle = {
-                    config.touch::enableTouchTurn.toggle()
-                    enableTurn.value = config.touch.enableTouchTurn
-                },
-                onCloseClick = { dismiss() },
-                onConfigActionsClick = {
-                    IntentUnit.gotoSettings(requireActivity(), SettingRoute.Gesture)
-                }
-            )
-        }
+        TouchAreaContent(
+            touchAreaType = touchAreaType.value,
+            onTouchTypeClick = { type ->
+                config.touch.touchAreaType = type
+                touchAreaType.value = type
+            },
+            enableTurn = enableTurn.value,
+            onToggle = {
+                config.touch::enableTouchTurn.toggle()
+                enableTurn.value = config.touch.enableTouchTurn
+            },
+            onCloseClick = { dismiss() },
+            onConfigActionsClick = {
+                IntentUnit.gotoSettings(requireActivity(), SettingRoute.Gesture)
+            }
+        )
     }
 }
 

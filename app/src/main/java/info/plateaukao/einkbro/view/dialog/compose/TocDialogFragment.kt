@@ -34,7 +34,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.view.compose.MyTheme
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -49,48 +48,45 @@ class TocDialogFragment(
         shouldShowInCenter = true
     }
 
-    override fun setupComposeView() {
-        composeView.setContent {
-            MyTheme {
-                Column(
-                    Modifier.width(IntrinsicSize.Max),
-                    horizontalAlignment = Alignment.End,
-                ) {
-                    var items by remember { mutableStateOf(chapters) }
+    @Composable
+    override fun Content() {
+        Column(
+            Modifier.width(IntrinsicSize.Max),
+            horizontalAlignment = Alignment.End,
+        ) {
+            var items by remember { mutableStateOf(chapters) }
 
-                    Text(
-                        text = stringResource(R.string.dialog_toc_title),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                        style = MaterialTheme.typography.h6,
-                        color = MaterialTheme.colors.onBackground,
-                    )
-                    HorizontalSeparator()
-                    TocList(
-                        modifier = Modifier
-                            .weight(1F, fill = false)
-                            .width(300.dp)
-                            .padding(2.dp),
-                        items = items,
-                        isEditable = isEditable,
-                        onNavigate = { index ->
-                            onNavigate(items[index].originalIndex)
-                            dialog?.dismiss()
-                        },
-                        onDelete = { index ->
-                            if (items.size > 1) {
-                                items = items.toMutableList().apply { removeAt(index) }
-                                onTocChanged(items)
-                            }
-                        },
-                        onItemMoved = { from, to ->
-                            items = items.toMutableList().apply { add(to, removeAt(from)) }
-                            onTocChanged(items)
-                        },
-                    )
-                }
-            }
+            Text(
+                text = stringResource(R.string.dialog_toc_title),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground,
+            )
+            HorizontalSeparator()
+            TocList(
+                modifier = Modifier
+                    .weight(1F, fill = false)
+                    .width(300.dp)
+                    .padding(2.dp),
+                items = items,
+                isEditable = isEditable,
+                onNavigate = { index ->
+                    onNavigate(items[index].originalIndex)
+                    dialog?.dismiss()
+                },
+                onDelete = { index ->
+                    if (items.size > 1) {
+                        items = items.toMutableList().apply { removeAt(index) }
+                        onTocChanged(items)
+                    }
+                },
+                onItemMoved = { from, to ->
+                    items = items.toMutableList().apply { add(to, removeAt(from)) }
+                    onTocChanged(items)
+                },
+            )
         }
     }
 }

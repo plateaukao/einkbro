@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.tts.entity.VoiceItem
 import info.plateaukao.einkbro.unit.HelperUnit
-import info.plateaukao.einkbro.view.compose.MyTheme
 import kotlinx.serialization.json.Json
 import java.util.Locale
 
@@ -27,16 +26,15 @@ class ETtsVoiceDialogFragment(
         HelperUnit.getStringFromAsset("eVoiceList.json")
     )
 
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            LanguageListScreen(
-                selectedVoiceItem = config.tts.ettsVoice,
-                voices,
-            ) {
-                config.tts.ettsVoice = it
-                selectedAction(it)
-                dismiss()
-            }
+    @Composable
+    override fun Content() {
+        LanguageListScreen(
+            selectedVoiceItem = config.tts.ettsVoice,
+            voices,
+        ) {
+            config.tts.ettsVoice = it
+            selectedAction(it)
+            dismiss()
         }
     }
 

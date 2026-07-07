@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.TranslationMode
-import info.plateaukao.einkbro.view.compose.MyTheme
 
 class TranslationConfigDlgFragment(
     private val url: String,
@@ -39,34 +38,31 @@ class TranslationConfigDlgFragment(
     private val onToggledAction: (Boolean) -> Unit,
     private val onShowSiteSettings: (() -> Unit)? = null,
 ) : ComposeDialogFragment() {
-    override fun setupComposeView() {
-        composeView.setContent {
-            val translationMode = remember { mutableStateOf(config.getTranslationMode(url)) }
-            MyTheme {
-                TranslationConfigScreen(
-                    translationMode = translationMode.value,
-                    translationModeChanged = {
-                        val host = Uri.parse(url)?.host
-                        if (host != null) {
-                            val domainConfig = config.getDomainConfig(url)
-                            domainConfig.translationMode = it
-                            config.updateDomainConfig(domainConfig)
-                        }
-                        translationMode.value = it
-                        if (translateDirectly || config.shouldTranslateSite(url)) {
-                            onToggledAction(true)
-                            dismiss()
-                        }
-                    },
-                    onSiteSettingsClicked = if (onShowSiteSettings != null) {
-                        {
-                            dismiss()
-                            onShowSiteSettings.invoke()
-                        }
-                    } else null,
-                )
-            }
-        }
+    @Composable
+    override fun Content() {
+        val translationMode = remember { mutableStateOf(config.getTranslationMode(url)) }
+        TranslationConfigScreen(
+            translationMode = translationMode.value,
+            translationModeChanged = {
+                val host = Uri.parse(url)?.host
+                if (host != null) {
+                    val domainConfig = config.getDomainConfig(url)
+                    domainConfig.translationMode = it
+                    config.updateDomainConfig(domainConfig)
+                }
+                translationMode.value = it
+                if (translateDirectly || config.shouldTranslateSite(url)) {
+                    onToggledAction(true)
+                    dismiss()
+                }
+            },
+            onSiteSettingsClicked = if (onShowSiteSettings != null) {
+                {
+                    dismiss()
+                    onShowSiteSettings.invoke()
+                }
+            } else null,
+        )
     }
 }
 

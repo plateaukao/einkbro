@@ -14,6 +14,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.view.compose.MyTheme
 
 class CustomTaskInputDialogFragment(
     private val onSubmit: (String) -> Unit,
@@ -34,65 +34,62 @@ class CustomTaskInputDialogFragment(
         shouldShowInCenter = true
     }
 
-    override fun setupComposeView() {
-        composeView.setContent {
-            MyTheme {
-                var prompt by remember { mutableStateOf("") }
-                Column(
-                    modifier = Modifier
-                        .width(320.dp)
-                        .padding(16.dp)
-                ) {
+    @Composable
+    override fun Content() {
+        var prompt by remember { mutableStateOf("") }
+        Column(
+            modifier = Modifier
+                .width(320.dp)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.task_custom),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.task_custom_hint),
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.onBackground,
+            )
+            Spacer(Modifier.height(8.dp))
+            OutlinedTextField(
+                value = prompt,
+                onValueChange = { prompt = it },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                maxLines = 4,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = MaterialTheme.colors.onBackground,
+                    cursorColor = MaterialTheme.colors.onBackground,
+                    focusedBorderColor = MaterialTheme.colors.onBackground,
+                    unfocusedBorderColor = MaterialTheme.colors.onBackground,
+                ),
+            )
+            Spacer(Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(onClick = { dismiss() }) {
                     Text(
-                        text = stringResource(R.string.task_custom),
-                        style = MaterialTheme.typography.h6,
+                        text = stringResource(android.R.string.cancel),
                         color = MaterialTheme.colors.onBackground,
                     )
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(R.string.task_custom_hint),
-                        style = MaterialTheme.typography.caption,
-                        color = MaterialTheme.colors.onBackground,
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    OutlinedTextField(
-                        value = prompt,
-                        onValueChange = { prompt = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        maxLines = 4,
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colors.onBackground,
-                            cursorColor = MaterialTheme.colors.onBackground,
-                            focusedBorderColor = MaterialTheme.colors.onBackground,
-                            unfocusedBorderColor = MaterialTheme.colors.onBackground,
-                        ),
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        TextButton(onClick = { dismiss() }) {
-                            Text(
-                                text = stringResource(android.R.string.cancel),
-                                color = MaterialTheme.colors.onBackground,
-                            )
-                        }
-                        Spacer(Modifier.width(8.dp))
-                        TextButton(onClick = {
-                            if (prompt.isNotBlank()) {
-                                onSubmit(prompt.trim())
-                                dismiss()
-                            }
-                        }) {
-                            Text(
-                                text = stringResource(R.string.task_run),
-                                color = MaterialTheme.colors.onBackground,
-                            )
-                        }
+                }
+                Spacer(Modifier.width(8.dp))
+                TextButton(onClick = {
+                    if (prompt.isNotBlank()) {
+                        onSubmit(prompt.trim())
+                        dismiss()
                     }
+                }) {
+                    Text(
+                        text = stringResource(R.string.task_run),
+                        color = MaterialTheme.colors.onBackground,
+                    )
                 }
             }
         }

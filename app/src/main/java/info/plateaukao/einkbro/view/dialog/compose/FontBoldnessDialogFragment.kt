@@ -13,19 +13,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import info.plateaukao.einkbro.view.compose.MyTheme
 
 class FontBoldnessDialogFragment(
     private val initBoldness: Int,
     private val okAction: (Int) -> Unit,
     private val onDismissAction: () -> Unit = {},
 ) : ComposeDialogFragment() {
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            FontBoldnessContent(
-                initBoldness,
-            ) { fontBoldness -> okAction(fontBoldness) }
-        }
+    @Composable
+    override fun Content() {
+        FontBoldnessContent(
+            initBoldness,
+        ) { fontBoldness -> okAction(fontBoldness) }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

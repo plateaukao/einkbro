@@ -109,33 +109,30 @@ class MenuDialogFragment(
     private val itemLongClicked: (MenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
 
-    override fun setupComposeView() {
-        composeView.setContent {
-            MyTheme {
-                val hiddenItems = remember {
-                    config.ui.hiddenMenuItems.mapNotNull { name ->
-                        runCatching { MenuItemType.valueOf(name) }.getOrNull()
-                    }.toSet()
-                }
-                val menuItemOrder = remember { config.ui.menuItemOrder }
-                CompositionLocalProvider(
-                    LocalMenuHideConfig provides MenuHideConfig(hideMode = false, hiddenItems = hiddenItems)
-                ) {
-                    MenuItems(
-                        hasWhiteBkd = config.whiteBackground(url),
-                        boldFont = config.display.boldFontStyle,
-                        blackFont = config.display.blackFontStyle,
-                        isSpeaking = isSpeaking,
-                        isAudioOnly = isAudioOnly,
-                        hasVideo = hasVideo,
-                        hasInvertedColor = config.hasInvertedColor(url),
-                        isTouchPaginationEnabled = isTouchPaginationEnabled,
-                        onClicked = { dialog?.dismiss(); itemClicked(it) },
-                        onLongClicked = this::runItemLongClickAndDismiss,
-                        menuItemOrder = menuItemOrder,
-                    )
-                }
-            }
+    @Composable
+    override fun Content() {
+        val hiddenItems = remember {
+            config.ui.hiddenMenuItems.mapNotNull { name ->
+                runCatching { MenuItemType.valueOf(name) }.getOrNull()
+            }.toSet()
+        }
+        val menuItemOrder = remember { config.ui.menuItemOrder }
+        CompositionLocalProvider(
+            LocalMenuHideConfig provides MenuHideConfig(hideMode = false, hiddenItems = hiddenItems)
+        ) {
+            MenuItems(
+                hasWhiteBkd = config.whiteBackground(url),
+                boldFont = config.display.boldFontStyle,
+                blackFont = config.display.blackFontStyle,
+                isSpeaking = isSpeaking,
+                isAudioOnly = isAudioOnly,
+                hasVideo = hasVideo,
+                hasInvertedColor = config.hasInvertedColor(url),
+                isTouchPaginationEnabled = isTouchPaginationEnabled,
+                onClicked = { dialog?.dismiss(); itemClicked(it) },
+                onLongClicked = this::runItemLongClickAndDismiss,
+                menuItemOrder = menuItemOrder,
+            )
         }
     }
 

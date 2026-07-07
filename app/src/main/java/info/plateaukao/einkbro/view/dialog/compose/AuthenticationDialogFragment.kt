@@ -23,16 +23,15 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 class AuthenticationDialogFragment(
     val okAction: (String, String) -> Unit,
 ) : ComposeDialogFragment() {
-    override fun setupComposeView() = composeView.setContent {
-        MyTheme {
-            AuthenticationContent(
-                onOk = { username, password ->
-                    okAction(username, password)
-                    dismiss()
-                },
-                onCancel = { dismiss() }
-            )
-        }
+    @Composable
+    override fun Content() {
+        AuthenticationContent(
+            onOk = { username, password ->
+                okAction(username, password)
+                dismiss()
+            },
+            onCancel = { dismiss() }
+        )
     }
 }
 
