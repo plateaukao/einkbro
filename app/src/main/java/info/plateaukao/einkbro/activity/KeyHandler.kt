@@ -30,14 +30,16 @@ class KeyHandler(
 
     fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
+            // Consume only when the feature is on, so external keyboards keep
+            // normal focus navigation otherwise.
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 if (config.touch.useUpDownPageTurn) ebWebView.pageDownWithNoAnimation()
-                return true
+                return config.touch.useUpDownPageTurn
             }
 
             KeyEvent.KEYCODE_DPAD_UP -> {
                 if (config.touch.useUpDownPageTurn) ebWebView.pageUpWithNoAnimation()
-                return true
+                return config.touch.useUpDownPageTurn
             }
 
             KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey(event)

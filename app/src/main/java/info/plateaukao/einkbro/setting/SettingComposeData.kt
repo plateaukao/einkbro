@@ -136,7 +136,7 @@ enum class LinkSettingItem(
         R.drawable.icon_earth,
         "https://github.com/plateaukao/einkbro/releases"
     ),
-    Facebook(R.string.twitter, R.drawable.icon_earth, "https://twitter.com/einkbro"),
+    Twitter(R.string.twitter, R.drawable.icon_earth, "https://twitter.com/einkbro"),
     ChangeLogs(
         R.string.changelogs,
         R.drawable.icon_earth,

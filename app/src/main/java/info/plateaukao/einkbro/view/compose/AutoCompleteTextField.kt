@@ -73,7 +73,7 @@ fun AutoCompleteTextField(
     closeAction: () -> Unit,
     onRecordClick: (Record) -> Unit,
 ) {
-    val requester = remember { focusRequester }
+    val requester = focusRequester
 
     Column(
         Modifier
