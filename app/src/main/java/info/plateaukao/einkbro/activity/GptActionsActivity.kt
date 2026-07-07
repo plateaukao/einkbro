@@ -3,11 +3,9 @@ package info.plateaukao.einkbro.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -27,16 +25,13 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -65,13 +60,15 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionDisplay
 import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.preference.GptActionScope
+import info.plateaukao.einkbro.view.compose.EmptyListPlaceholder
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 import org.koin.android.ext.android.inject
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
-class GptActionsActivity : ComponentActivity() {
+class GptActionsActivity : LocaleAwareComponentActivity() {
     private val config: ConfigManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,71 +82,52 @@ class GptActionsActivity : ComponentActivity() {
             var showDialog by remember { mutableStateOf(false) }
             var editActionIndex by remember { mutableIntStateOf(actionIndex) }
 
-            MyTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(
-                                    stringResource(R.string.gpt_actions_title),
-                                    color = MaterialTheme.colors.onPrimary
-                                )
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(
-                                        tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = stringResource(R.string.back)
-                                    )
-                                }
-                            },
-                            actions = {
-                                IconButton(onClick = {
-                                    actionList.value = emptyList()
-                                    config.ai.deleteAllGptActions()
-                                }) {
-                                    Icon(
-                                        tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.Filled.Delete,
-                                        contentDescription = stringResource(R.string.menu_delete)
-                                    )
-                                }
-                                IconButton(onClick = {
-                                    editActionIndex = -1
-                                    showDialog = true
-                                }) {
-                                    Icon(
-                                        tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.Filled.Add,
-                                        contentDescription = stringResource(R.string.whitelist_add)
-                                    )
-                                }
-                            }
+            ListScaffold(
+                title = stringResource(R.string.gpt_actions_title),
+                onBack = { finish() },
+                actions = {
+                    IconButton(onClick = {
+                        actionList.value = emptyList()
+                        config.ai.deleteAllGptActions()
+                    }) {
+                        Icon(
+                            tint = MaterialTheme.colors.onPrimary,
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = stringResource(R.string.menu_delete)
                         )
                     }
-                ) { innerPadding ->
-                    GptActionListContent(
-                        modifier = Modifier.padding(innerPadding),
-                        list = actionList,
-                        defaultActionType = defaultActionType,
-                        editAction = { index ->
-                            editActionIndex = index
-                            showDialog = true
-                        },
-                        deleteAction = { action ->
-                            actionList.value = actionList.value.toMutableList().apply { remove(action) }
-                            config.ai.deleteGptAction(action)
-                        },
-                        reorderAction = { from, to ->
-                            val newList = actionList.value.toMutableList().apply {
-                                add(to, removeAt(from))
-                            }
-                            actionList.value = newList
-                            config.ai.gptActionList = newList
+                    IconButton(onClick = {
+                        editActionIndex = -1
+                        showDialog = true
+                    }) {
+                        Icon(
+                            tint = MaterialTheme.colors.onPrimary,
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = stringResource(R.string.whitelist_add)
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                GptActionListContent(
+                    modifier = Modifier.padding(innerPadding),
+                    list = actionList,
+                    defaultActionType = defaultActionType,
+                    editAction = { index ->
+                        editActionIndex = index
+                        showDialog = true
+                    },
+                    deleteAction = { action ->
+                        actionList.value = actionList.value.toMutableList().apply { remove(action) }
+                        config.ai.deleteGptAction(action)
+                    },
+                    reorderAction = { from, to ->
+                        val newList = actionList.value.toMutableList().apply {
+                            add(to, removeAt(from))
                         }
-                    )
-                }
+                        actionList.value = newList
+                        config.ai.gptActionList = newList
+                    }
+                )
             }
             if (showDialog) {
                 GptActionDialog(
@@ -204,19 +182,9 @@ fun GptActionListContent(
     reorderAction: (from: Int, to: Int) -> Unit = { _, _ -> },
 ) {
     if (list.value.isEmpty()) {
-        // show empty text in center of screen
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.list_empty) + stringResource(R.string.empty_whitelist_hint),
-                style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.onBackground,
-            )
-        }
+        EmptyListPlaceholder(
+            stringResource(R.string.list_empty) + stringResource(R.string.empty_whitelist_hint)
+        )
     } else {
         val lazyListState = rememberLazyListState()
         val reorderableState = rememberReorderableLazyListState(lazyListState) { from, to ->

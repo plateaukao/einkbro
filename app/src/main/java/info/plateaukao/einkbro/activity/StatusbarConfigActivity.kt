@@ -1,8 +1,6 @@
 package info.plateaukao.einkbro.activity
 
-import android.content.Context
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -26,11 +24,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
@@ -50,13 +45,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.unit.LocaleManager
-import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.statusbar.StatusbarItem
 import org.koin.android.ext.android.inject
 import sh.calvin.reorderable.ReorderableRow
 
-class StatusbarConfigActivity : ComponentActivity() {
+class StatusbarConfigActivity : LocaleAwareComponentActivity() {
     private val config: ConfigManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,47 +58,28 @@ class StatusbarConfigActivity : ComponentActivity() {
 
         val initial = config.ui.statusbarItems
         setContent {
-            MyTheme {
-                // Saveable so an unsaved arrangement survives rotation.
-                val list = rememberSaveable(
-                    stateSaver = listSaver(
-                        save = { items -> items.map { it.ordinal } },
-                        restore = { saved -> saved.map { StatusbarItem.entries[it] } },
-                    )
-                ) { mutableStateOf(initial) }
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text(text = stringResource(id = R.string.setting_title_statusbar_items)) },
-                            navigationIcon = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
-                                }
-                            },
-                            actions = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(Icons.Filled.Close, contentDescription = null)
-                                }
-                                IconButton(onClick = {
-                                    config.ui.statusbarItems = list.value
-                                    finish()
-                                }) {
-                                    Icon(Icons.Filled.Done, contentDescription = null)
-                                }
-                            },
-                        )
-                    },
-                    content = { _ -> StatusbarConfigPanel(list) }
+            // Saveable so an unsaved arrangement survives rotation.
+            val list = rememberSaveable(
+                stateSaver = listSaver(
+                    save = { items -> items.map { it.ordinal } },
+                    restore = { saved -> saved.map { StatusbarItem.entries[it] } },
                 )
-            }
-        }
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        if (config.uiLocaleLanguage.isNotEmpty()) {
-            super.attachBaseContext(LocaleManager.setLocale(newBase, config.uiLocaleLanguage))
-        } else {
-            super.attachBaseContext(newBase)
+            ) { mutableStateOf(initial) }
+            ListScaffold(
+                title = stringResource(id = R.string.setting_title_statusbar_items),
+                onBack = { finish() },
+                actions = {
+                    IconButton(onClick = { finish() }) {
+                        Icon(Icons.Filled.Close, contentDescription = null)
+                    }
+                    IconButton(onClick = {
+                        config.ui.statusbarItems = list.value
+                        finish()
+                    }) {
+                        Icon(Icons.Filled.Done, contentDescription = null)
+                    }
+                },
+            ) { _ -> StatusbarConfigPanel(list) }
         }
     }
 }

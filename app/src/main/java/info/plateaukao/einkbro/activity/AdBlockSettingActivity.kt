@@ -15,12 +15,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Refresh
@@ -36,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.EBToast
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import io.github.edsuns.adfilter.AdFilter
@@ -47,7 +45,7 @@ import java.util.*
 
 private val filterDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH)
 
-class AdBlockSettingActivity : ComponentActivity() {
+class AdBlockSettingActivity : LocaleAwareComponentActivity() {
 
     private val viewModel: FilterViewModel = AdFilter.get().viewModel
     private val dialogManager by lazy { DialogManager(this) }
@@ -107,48 +105,39 @@ fun SettingsScreen(
     val filters = viewModel.filters.collectAsState(initial = emptyMap())
     val context = LocalContext.current
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(R.string.settings)) },
-                navigationIcon = {
-                    IconButton(onClick = { (context as ComponentActivity).onBackPressedDispatcher.onBackPressed() }) {
-                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = null)
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { filters.value.keys.forEach { viewModel.download(it) } }) {
-                        Icon(Icons.Outlined.Refresh, contentDescription = "update")
-                    }
-                    IconButton(onClick = addFilterDialog) {
-                        Icon(Icons.Default.Add, contentDescription = "add filter")
-                    }
-                    IconButton(onClick = { onCloseAction() }) {
-                        Icon(Icons.Outlined.Close, contentDescription = stringResource(android.R.string.cancel))
-                    }
-                }
-            )
+    ListScaffold(
+        title = stringResource(R.string.settings),
+        onBack = { (context as ComponentActivity).onBackPressedDispatcher.onBackPressed() },
+        actions = {
+            IconButton(onClick = { filters.value.keys.forEach { viewModel.download(it) } }) {
+                Icon(Icons.Outlined.Refresh, contentDescription = "update")
+            }
+            IconButton(onClick = addFilterDialog) {
+                Icon(Icons.Default.Add, contentDescription = "add filter")
+            }
+            IconButton(onClick = { onCloseAction() }) {
+                Icon(Icons.Outlined.Close, contentDescription = stringResource(android.R.string.cancel))
+            }
         },
-        content = { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
-                LazyColumn {
-                    val filterList = filters.value.values.toList()
-                    items(filterList.size, key = { filterList[it].id }) { index ->
-                        val filter = filterList[index]
-                        FilterRow(filter, filterDateFormat,
-                            onClick = {
-                                viewModel.download(it.id)
-                            },
-                            onLongClick = { deleteFilterDialog(it) },
-                            onToggled = { filter, enabled ->
-                                viewModel.setFilterEnabled(filter.id, enabled)
-                            }
-                        )
-                    }
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            LazyColumn {
+                val filterList = filters.value.values.toList()
+                items(filterList.size, key = { filterList[it].id }) { index ->
+                    val filter = filterList[index]
+                    FilterRow(filter, filterDateFormat,
+                        onClick = {
+                            viewModel.download(it.id)
+                        },
+                        onLongClick = { deleteFilterDialog(it) },
+                        onToggled = { filter, enabled ->
+                            viewModel.setFilterEnabled(filter.id, enabled)
+                        }
+                    )
                 }
             }
         }
-    )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

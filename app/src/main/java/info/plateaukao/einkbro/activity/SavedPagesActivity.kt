@@ -3,30 +3,22 @@ package info.plateaukao.einkbro.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,58 +32,40 @@ import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.SavedPage
 import info.plateaukao.einkbro.unit.IntentUnit
-import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.EmptyListPlaceholder
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.viewmodel.SavedPageViewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class SavedPagesActivity : ComponentActivity() {
+class SavedPagesActivity : LocaleAwareComponentActivity() {
     private val viewModel: SavedPageViewModel by koinViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(
-                                    stringResource(R.string.saved_pages),
-                                    color = MaterialTheme.colors.onPrimary
-                                )
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(
-                                        tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = stringResource(R.string.back)
-                                    )
-                                }
-                            }
-                        )
-                    }
-                ) { innerPadding ->
-                    SavedPagesList(
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = viewModel,
-                        onPageClick = { savedPage ->
-                            val file = File(savedPage.filePath)
-                            if (file.exists()) {
-                                IntentUnit.launchUrl(
-                                    this@SavedPagesActivity,
-                                    "file://${savedPage.filePath}"
-                                )
-                                finish()
-                            }
-                        },
-                        onPageDelete = { savedPage ->
-                            viewModel.deleteSavedPage(savedPage)
+            ListScaffold(
+                title = stringResource(R.string.saved_pages),
+                onBack = { finish() },
+            ) { innerPadding ->
+                SavedPagesList(
+                    modifier = Modifier.padding(innerPadding),
+                    viewModel = viewModel,
+                    onPageClick = { savedPage ->
+                        val file = File(savedPage.filePath)
+                        if (file.exists()) {
+                            IntentUnit.launchUrl(
+                                this@SavedPagesActivity,
+                                "file://${savedPage.filePath}"
+                            )
+                            finish()
                         }
-                    )
-                }
+                    },
+                    onPageDelete = { savedPage ->
+                        viewModel.deleteSavedPage(savedPage)
+                    }
+                )
             }
         }
     }
@@ -111,15 +85,7 @@ fun SavedPagesList(
     val savedPages by viewModel.getAllSavedPages().collectAsState(emptyList())
 
     if (savedPages.isEmpty()) {
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.no_saved_pages),
-                color = MaterialTheme.colors.onBackground,
-            )
-        }
+        EmptyListPlaceholder(stringResource(R.string.no_saved_pages))
     } else {
         LazyColumn(
             modifier = modifier.padding(10.dp),

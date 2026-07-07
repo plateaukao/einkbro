@@ -3,22 +3,16 @@ package info.plateaukao.einkbro.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
@@ -38,13 +32,14 @@ import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.DomainInterface
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.search.SplitSearchListType
-import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.EmptyListPlaceholder
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DataListActivity : ComponentActivity(), KoinComponent {
+class DataListActivity : LocaleAwareComponentActivity() {
 
     private lateinit var whitelistType: BaseWhiteListType
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
@@ -56,59 +51,40 @@ class DataListActivity : ComponentActivity(), KoinComponent {
         setContent {
             val whitelist = remember { mutableStateOf(emptyList<String>()) }
             LaunchedEffect(Unit) { whitelist.value = whitelistType.getDomains() }
-            MyTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(
-                                    stringResource(whitelistType.titleId),
-                                    color = MaterialTheme.colors.onPrimary,
-                                )
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(
-                                        tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = stringResource(R.string.back)
-                                    )
-                                }
-                            },
-                            actions = {
-                                IconButton(onClick = {
-                                    lifecycleScope.launch {
-                                        whitelistType.deleteAllDomains()
-                                        whitelist.value = emptyList()
-                                    }
-                                }) {
-                                    Icon(
-                                        tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.Filled.Delete,
-                                        contentDescription = stringResource(R.string.menu_delete)
-                                    )
-                                }
-                                IconButton(onClick = {
-                                    whitelistType.addDomain(
-                                        lifecycleScope,
-                                        dialogManager
-                                    ) { whitelist.value += it }
-                                }) {
-                                    Icon(
-                                        tint = MaterialTheme.colors.onPrimary,
-                                        imageVector = Icons.Filled.Add,
-                                        contentDescription = stringResource(R.string.whitelist_add)
-                                    )
-                                }
-                            }
+            ListScaffold(
+                title = stringResource(whitelistType.titleId),
+                onBack = { finish() },
+                actions = {
+                    IconButton(onClick = {
+                        lifecycleScope.launch {
+                            whitelistType.deleteAllDomains()
+                            whitelist.value = emptyList()
+                        }
+                    }) {
+                        Icon(
+                            tint = MaterialTheme.colors.onPrimary,
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = stringResource(R.string.menu_delete)
                         )
                     }
-                ) { innerPadding ->
-                    WhiteListContent(
-                        modifier = Modifier.padding(innerPadding),
-                        whitelist,
-                    ) { domain -> lifecycleScope.launch { whitelistType.deleteDomain(domain) } }
-                }
+                    IconButton(onClick = {
+                        whitelistType.addDomain(
+                            lifecycleScope,
+                            dialogManager
+                        ) { whitelist.value += it }
+                    }) {
+                        Icon(
+                            tint = MaterialTheme.colors.onPrimary,
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = stringResource(R.string.whitelist_add)
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                WhiteListContent(
+                    modifier = Modifier.padding(innerPadding),
+                    whitelist,
+                ) { domain -> lifecycleScope.launch { whitelistType.deleteDomain(domain) } }
             }
         }
     }
@@ -148,19 +124,9 @@ fun WhiteListContent(
     deleteAction: (String) -> Unit = {},
 ) {
     if (list.value.isEmpty()) {
-        // show empty text in center of screen
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.list_empty) + "\n" + stringResource(R.string.empty_whitelist_hint),
-                style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.onBackground,
-            )
-        }
+        EmptyListPlaceholder(
+            stringResource(R.string.list_empty) + "\n" + stringResource(R.string.empty_whitelist_hint)
+        )
     } else {
         LazyColumn(
             modifier = modifier,

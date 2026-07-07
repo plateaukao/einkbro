@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
@@ -66,7 +65,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HighlightsActivity : ComponentActivity() {
+class HighlightsActivity : LocaleAwareComponentActivity() {
     private val highlightViewModel: HighlightViewModel by koinViewModel()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 

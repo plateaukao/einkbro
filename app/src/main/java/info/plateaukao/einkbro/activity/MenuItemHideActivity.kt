@@ -1,8 +1,6 @@
 package info.plateaukao.einkbro.activity
 
-import android.content.Context
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -18,11 +16,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.runtime.CompositionLocalProvider
@@ -38,8 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.unit.LocaleManager
-import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.dialog.compose.LocalMenuActions
 import info.plateaukao.einkbro.view.dialog.compose.LocalMenuHideConfig
 import info.plateaukao.einkbro.view.dialog.compose.MENU_GRID_COLUMNS
@@ -56,106 +50,85 @@ import org.koin.android.ext.android.inject
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
-class MenuItemHideActivity : ComponentActivity() {
+class MenuItemHideActivity : LocaleAwareComponentActivity() {
     private val config: ConfigManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MyTheme {
-                var hidden by remember {
-                    mutableStateOf(
-                        config.ui.hiddenMenuItems.mapNotNull { name ->
-                            runCatching { MenuItemType.valueOf(name) }.getOrNull()
-                        }.toSet()
-                    )
-                }
-                // We keep the *display* list as the source of truth during a session so the
-                // user's drags don't produce micro-jitter from re-normalisation; on every
-                // change we extract the underlying order to persist.
-                var display by remember {
-                    mutableStateOf(
-                        menuDisplayEntries(effectiveMenuEntries(config.ui.menuItemOrder))
-                    )
-                }
-                var reorderMode by remember { mutableStateOf(false) }
+            var hidden by remember {
+                mutableStateOf(
+                    config.ui.hiddenMenuItems.mapNotNull { name ->
+                        runCatching { MenuItemType.valueOf(name) }.getOrNull()
+                    }.toSet()
+                )
+            }
+            // We keep the *display* list as the source of truth during a session so the
+            // user's drags don't produce micro-jitter from re-normalisation; on every
+            // change we extract the underlying order to persist.
+            var display by remember {
+                mutableStateOf(
+                    menuDisplayEntries(effectiveMenuEntries(config.ui.menuItemOrder))
+                )
+            }
+            var reorderMode by remember { mutableStateOf(false) }
 
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text(stringResource(R.string.setting_title_hide_menu_items)) },
-                            navigationIcon = {
-                                IconButton(onClick = { finish() }) {
-                                    Icon(
-                                        Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = stringResource(R.string.back)
-                                    )
-                                }
-                            },
-                            actions = {
-                                IconButton(onClick = { reorderMode = !reorderMode }) {
-                                    Icon(
-                                        imageVector = if (reorderMode) Icons.Filled.Check else Icons.Outlined.SwapHoriz,
-                                        contentDescription = stringResource(R.string.menu_reorder),
-                                    )
-                                }
-                            },
+            ListScaffold(
+                title = stringResource(R.string.setting_title_hide_menu_items),
+                onBack = { finish() },
+                actions = {
+                    IconButton(onClick = { reorderMode = !reorderMode }) {
+                        Icon(
+                            imageVector = if (reorderMode) Icons.Filled.Check else Icons.Outlined.SwapHoriz,
+                            contentDescription = stringResource(R.string.menu_reorder),
                         )
                     }
-                ) { padding ->
-                    Column(
+                },
+            ) { padding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                ) {
+                    Text(
+                        text = stringResource(
+                            if (reorderMode) R.string.menu_hide_hint_reorder
+                            else R.string.menu_hide_hint_tap
+                        ),
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding)
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        color = MaterialTheme.colors.onBackground,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                    CompositionLocalProvider(
+                        LocalMenuHideConfig provides MenuHideConfig(
+                            hideMode = !reorderMode,
+                            reorderMode = reorderMode,
+                            hiddenItems = hidden,
+                            onToggleHide = { type ->
+                                hidden = if (type in hidden) hidden - type else hidden + type
+                                config.ui.hiddenMenuItems = hidden.map { it.name }.toSet()
+                            },
+                        ),
+                        LocalMenuActions provides MenuActions(),
                     ) {
-                        Text(
-                            text = stringResource(
-                                if (reorderMode) R.string.menu_hide_hint_reorder
-                                else R.string.menu_hide_hint_tap
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                            color = MaterialTheme.colors.onBackground,
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.Center,
+                        ReorderableMenuGrid(
+                            display = display,
+                            reorderMode = reorderMode,
+                            onReorder = { newDisplay ->
+                                display = newDisplay
+                                config.ui.menuItemOrder = encodeMenuEntries(
+                                    menuDisplayToUnderlying(newDisplay)
+                                )
+                            },
                         )
-                        CompositionLocalProvider(
-                            LocalMenuHideConfig provides MenuHideConfig(
-                                hideMode = !reorderMode,
-                                reorderMode = reorderMode,
-                                hiddenItems = hidden,
-                                onToggleHide = { type ->
-                                    hidden = if (type in hidden) hidden - type else hidden + type
-                                    config.ui.hiddenMenuItems = hidden.map { it.name }.toSet()
-                                },
-                            ),
-                            LocalMenuActions provides MenuActions(),
-                        ) {
-                            ReorderableMenuGrid(
-                                display = display,
-                                reorderMode = reorderMode,
-                                onReorder = { newDisplay ->
-                                    display = newDisplay
-                                    config.ui.menuItemOrder = encodeMenuEntries(
-                                        menuDisplayToUnderlying(newDisplay)
-                                    )
-                                },
-                            )
-                        }
                     }
                 }
             }
-        }
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        if (config.uiLocaleLanguage.isNotEmpty()) {
-            super.attachBaseContext(LocaleManager.setLocale(newBase, config.uiLocaleLanguage))
-        } else {
-            super.attachBaseContext(newBase)
         }
     }
 }
