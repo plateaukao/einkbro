@@ -73,8 +73,10 @@ class HighlightsActivity : ComponentActivity() {
     private lateinit var exportHighlightsLauncher: ActivityResultLauncher<Intent>
 
     private var highlightsRoute = HighlightsRoute.RouteArticles
-    private fun showFileChooser(highlightsRoute: HighlightsRoute) {
+    private var exportArticleId = 0
+    private fun showFileChooser(highlightsRoute: HighlightsRoute, articleId: Int) {
         this.highlightsRoute = highlightsRoute
+        this.exportArticleId = articleId
         BrowserUnit.createFilePicker(exportHighlightsLauncher, "highlights.html")
     }
 
@@ -101,7 +103,11 @@ class HighlightsActivity : ComponentActivity() {
                     topBar = {
                         HighlightsBar(
                             currentScreen = currentScreen,
-                            onClick = { showFileChooser(currentScreen) },
+                            onClick = {
+                                val articleId = backStackEntry.value?.arguments
+                                    ?.getString("articleId")?.toIntOrNull() ?: 0
+                                showFileChooser(currentScreen, articleId)
+                            },
                             navigateUp = {
                                 if (navController.previousBackStackEntry != null) navController.navigateUp()
                                 else finish()
@@ -138,7 +144,7 @@ class HighlightsActivity : ComponentActivity() {
             val data = if (highlightsRoute == HighlightsRoute.RouteArticles) {
                 highlightViewModel.dumpArticlesHighlightsAsHtml()
             } else {
-                highlightViewModel.dumpSingleArticleHighlights(highlightsRoute.articleId)
+                highlightViewModel.dumpSingleArticleHighlights(exportArticleId)
             }
             backupUnit.exportDataToFileUri(uri, data)
 
@@ -157,7 +163,7 @@ class HighlightsActivity : ComponentActivity() {
     }
 }
 
-enum class HighlightsRoute(@StringRes val articleId: Int) {
+enum class HighlightsRoute(@StringRes val titleResId: Int) {
     RouteArticles(R.string.articles),
     RouteHighlights(R.string.highlights),
 }
@@ -343,7 +349,7 @@ fun HighlightsBar(
     TopAppBar(
         title = {
             Text(
-                stringResource(currentScreen.articleId),
+                stringResource(currentScreen.titleResId),
                 color = MaterialTheme.colors.onPrimary
             )
         },
