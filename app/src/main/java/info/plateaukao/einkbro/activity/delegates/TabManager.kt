@@ -268,6 +268,25 @@ class TabManager(
         state.currentAlbumController?.let { removeAlbum(it, showHome = false) }
     }
 
+    // Batch close: one confirmation for all tabs. Going through removeAlbum
+    // per tab popped one dialog per tab and ended with loadUrl on a
+    // just-destroyed WebView.
+    fun closeAllTabs(onAllClosed: () -> Unit) {
+        closeTabConfirmation {
+            if (config.tab.isSaveHistoryWhenClose()) {
+                browserContainer.list().forEach {
+                    if (!it.isAIPage) addHistoryAction(it.albumTitle, it.albumUrl)
+                }
+            }
+            albumViewModel.clearAlbums()
+            browserContainer.clear()
+            state.currentAlbumController = null
+            updateSavedAlbumInfo()
+            updateWebViewCount()
+            onAllClosed()
+        }
+    }
+
     fun updateSavedAlbumInfoDebounced() {
         uiHandler.removeCallbacks(saveAlbumInfoRunnable)
         uiHandler.postDelayed(saveAlbumInfoRunnable, SAVE_ALBUM_INFO_DEBOUNCE_MS)

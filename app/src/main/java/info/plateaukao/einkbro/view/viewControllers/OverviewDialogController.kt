@@ -44,6 +44,7 @@ class OverviewDialogController(
     private val addIncognitoTabAction: () -> Unit,
     private val splitScreenAction: (String) -> Unit,
     private val addEmptyTabAction: () -> Unit,
+    private val closeAllTabsAction: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val recordDb: RecordRepository by inject()
@@ -87,7 +88,7 @@ class OverviewDialogController(
                     addTab = { hide(); addEmptyTabAction() },
                     closePanel = { hide() },
                     onDeleteAction = { hide(); deleteAllItems() },
-                    onCloseAllTabs = { hide(); closeAllTabs(); addEmptyTabAction() },
+                    onCloseAllTabs = { hide(); closeAllTabsAction() },
                     launchNewBrowserAction = {
                         hide(); IntentUnit.launchNewBrowser(
                         context as Activity,
@@ -170,12 +171,6 @@ class OverviewDialogController(
                 }
                 hide()
             })
-    }
-
-    private fun closeAllTabs() {
-        albumList.value.listIterator().forEach {
-            it.remove(true)
-        }
     }
 
     private fun showHistoryContextMenu(record: Record, position: Point) {

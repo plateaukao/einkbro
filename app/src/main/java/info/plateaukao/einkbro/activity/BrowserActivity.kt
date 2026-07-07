@@ -459,6 +459,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 focusOnInput()
             },
             newATab = { newATab() },
+            closeAllTabs = { tabManager.closeAllTabs { newATab() } },
             toggleSplitScreen = { url -> toggleSplitScreen(url) },
             focusOnInput = { focusOnInput() },
             showFastToggleDialog = { showFastToggleDialog() },
