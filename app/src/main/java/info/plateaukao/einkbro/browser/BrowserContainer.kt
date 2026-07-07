@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.browser
 
+import android.view.ViewGroup
 import info.plateaukao.einkbro.view.EBWebView
 import java.util.*
 
@@ -14,7 +15,7 @@ class BrowserContainer {
     fun add(controller: AlbumController, index: Int) = list.add(index, controller)
 
     fun remove(controller: AlbumController) {
-        (controller as EBWebView).destroy()
+        destroyWebView(controller as EBWebView)
         list.remove(controller)
     }
 
@@ -28,9 +29,16 @@ class BrowserContainer {
 
     fun clear() {
         for (albumController in list) {
-            (albumController as EBWebView).destroy()
+            destroyWebView(albumController as EBWebView)
         }
         list.clear()
+    }
+
+    // WebView.destroy() requires the view to be detached first; leaving it in
+    // the tree also kept every closed tab pinned by its parent.
+    private fun destroyWebView(webView: EBWebView) {
+        (webView.parent as? ViewGroup)?.removeView(webView)
+        webView.destroy()
     }
 
     fun pauseAll() = list.forEach { it.pauseWebView() }
