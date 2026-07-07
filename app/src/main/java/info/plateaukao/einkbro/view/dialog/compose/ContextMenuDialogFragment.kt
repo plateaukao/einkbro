@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.TabUnselected
 import androidx.compose.material.icons.outlined.ViewStream
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -188,8 +189,10 @@ class ContextMenuDialogFragment(
         }
     }
 
+    // Also consulted per touch-move during long-press drag; build once.
+    private val menuLayout by lazy { createMenuLayout(isEbookMode) }
+
     private fun determineHoveredItem(x: Float, y: Float): ContextMenuItemType? {
-        val menuLayout = createMenuLayout(isEbookMode)
 
         // Calculate precise dimensions based on MenuItem logic
         val screenWidthDp = resources.configuration.screenWidthDp
@@ -282,7 +285,10 @@ private fun ContextMenuItems(
     onClicked: (ContextMenuItemType) -> Unit,
     onLongClicked: (ContextMenuItemType) -> Unit = {},
 ) {
-    val menuLayout = createMenuLayout(isEbookMode)
+    // hoveredItem changes on every touch-move during long-press drag; don't
+    // rebuild the menu model (or re-decode the url) per hover change.
+    val menuLayout = remember(isEbookMode) { createMenuLayout(isEbookMode) }
+    val decodedUrl = remember(url) { URLDecoder.decode(url, "UTF-8") }
 
     Column(
         modifier = Modifier
@@ -332,7 +338,7 @@ private fun ContextMenuItems(
         }
         HorizontalSeparator()
         Text(
-            URLDecoder.decode(url, "UTF-8"),
+            decodedUrl,
             Modifier.padding(4.dp),
             color = MaterialTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
