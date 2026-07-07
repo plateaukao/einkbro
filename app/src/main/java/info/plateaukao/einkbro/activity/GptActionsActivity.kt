@@ -47,6 +47,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -314,28 +315,28 @@ fun GptActionDialog(
     okAction: (ChatGPTActionInfo) -> Unit,
     dismissAction: () -> Unit,
 ) {
-    val name = remember { mutableStateOf("") }
-    val systemPrompt = remember { mutableStateOf("") }
-    val userPrompt = remember { mutableStateOf("") }
-    val currentActionType = remember { mutableStateOf(GptActionType.Default) }
-    val currentActionDisplay = remember { mutableStateOf(GptActionDisplay.Popup) }
-    val currentActionScope = remember { mutableStateOf(GptActionScope.TextSelection) }
-    val model = remember { mutableStateOf(action.model) }
-
-    if (editActionIndex >= 0) {
-        name.value = action.name
-        systemPrompt.value = action.systemMessage
-        userPrompt.value = action.userMessage
-        currentActionType.value = action.actionType
-        currentActionDisplay.value = action.display
-        currentActionScope.value = action.scope
-    } else {
-        name.value = ""
-        systemPrompt.value = ""
-        userPrompt.value = ""
-        currentActionType.value = GptActionType.Default
-        currentActionScope.value = GptActionScope.TextSelection
+    // Keyed initialization: the previous unconditional assignment block ran on
+    // every recomposition of this scope and silently wiped user-typed values.
+    val isEdit = editActionIndex >= 0
+    val name = remember(editActionIndex, action) {
+        mutableStateOf(if (isEdit) action.name else "")
     }
+    val systemPrompt = remember(editActionIndex, action) {
+        mutableStateOf(if (isEdit) action.systemMessage else "")
+    }
+    val userPrompt = remember(editActionIndex, action) {
+        mutableStateOf(if (isEdit) action.userMessage else "")
+    }
+    val currentActionType = remember(editActionIndex, action) {
+        mutableStateOf(if (isEdit) action.actionType else GptActionType.Default)
+    }
+    val currentActionDisplay = remember(editActionIndex, action) {
+        mutableStateOf(if (isEdit) action.display else GptActionDisplay.Popup)
+    }
+    val currentActionScope = remember(editActionIndex, action) {
+        mutableStateOf(if (isEdit) action.scope else GptActionScope.TextSelection)
+    }
+    val model = remember(editActionIndex, action) { mutableStateOf(action.model) }
 
     AlertDialog(
         modifier = Modifier
@@ -350,7 +351,8 @@ fun GptActionDialog(
         title = { Text("Action Setting", style = MaterialTheme.typography.h6) },
         text = {
             // set dim amount to 0 to avoid dialog window's dim
-            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+            val dialogWindow = (LocalView.current.parent as? DialogWindowProvider)?.window
+            SideEffect { dialogWindow?.setDimAmount(0f) }
             Column {
                 TextField(
                     modifier = Modifier.padding(2.dp),
