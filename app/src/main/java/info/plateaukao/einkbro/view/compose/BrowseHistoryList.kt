@@ -251,8 +251,7 @@ private fun RecordItem(
             AndroidView(
                 modifier = Modifier
                     .conditional(isTypeSuggestion) {
-                        height(35.dp)
-                        padding(end = 5.dp)
+                        height(35.dp).padding(end = 5.dp)
                     },
                 factory = { context ->
                     TextView(context).apply {

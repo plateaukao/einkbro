@@ -269,7 +269,7 @@ class ChromeSetupDelegate(
                 if (!config.ui.shouldHideToolbar) return
                 val height = floor(ebWebView.contentHeight * ebWebView.resources.displayMetrics.density.toDouble()).toInt()
                 val webViewHeight = ebWebView.height
-                val cutoff = height - webViewHeight - 112 * activity.resources.displayMetrics.density.roundToInt()
+                val cutoff = height - webViewHeight - (112 * activity.resources.displayMetrics.density).roundToInt()
                 if (scrollY in (oldScrollY + 1)..cutoff) {
                     if (state.binding.appBar.isVisible) toggleFullscreen()
                 }
