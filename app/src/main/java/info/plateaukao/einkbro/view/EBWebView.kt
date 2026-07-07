@@ -292,6 +292,7 @@ open class EBWebView(
         super.reload()
 
         postDelayed({
+            if (isWebViewDestroyed) return@postDelayed
             if (config.browser.webLoadCacheFirst) settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         }, 2000)
     }
@@ -475,7 +476,9 @@ open class EBWebView(
         albumTitle = LOADING_TITLE
         // show progress right away
         if (url.startsWith("https")) {
-            postDelayed({ if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
+            postDelayed({
+                if (!isWebViewDestroyed && progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS)
+            }, 200)
         }
 
         if (webViewCallback?.loadInSecondPane(processedUrl) == true) {
@@ -621,7 +624,12 @@ open class EBWebView(
         webViewCallback?.updateTitle(album.albumTitle)
     }
 
+    // Guards the postDelayed callbacks above: touching a destroyed WebView is
+    // undefined behavior on older vendor builds.
+    private var isWebViewDestroyed = false
+
     override fun destroy() {
+        isWebViewDestroyed = true
         chatWebInterface?.disposeAgent()
         stopLoading()
         onPause()
