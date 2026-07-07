@@ -131,7 +131,7 @@ fun SettingsScreen(
             Column(modifier = Modifier.padding(paddingValues)) {
                 LazyColumn {
                     val filterList = filters.value.values.toList()
-                    items(filterList.size) { index ->
+                    items(filterList.size, key = { filterList[it].id }) { index ->
                         val filter = filterList[index]
                         FilterRow(filter, SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH),
                             onClick = {
@@ -158,7 +158,8 @@ fun FilterRow(
     onLongClick: (Filter) -> Unit,
     onToggled: (Filter, Boolean) -> Unit,
 ) {
-    val isChecked = remember { mutableStateOf(filter.isEnabled) }
+    // keyed so the switch reflects fresh data when the filters flow re-emits
+    val isChecked = remember(filter.isEnabled) { mutableStateOf(filter.isEnabled) }
 
     Row(
         modifier = Modifier

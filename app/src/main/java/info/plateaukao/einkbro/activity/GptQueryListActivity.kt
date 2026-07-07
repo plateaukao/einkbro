@@ -200,7 +200,7 @@ fun GptQueriesScreen(
         state = listState,
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
     ) {
-        items(gptQueries.size) { index ->
+        items(gptQueries.size, key = { gptQueries[it].id }) { index ->
             val gptQuery = gptQueries[index]
             QueryItem(
                 modifier = Modifier.padding(vertical = 4.dp),

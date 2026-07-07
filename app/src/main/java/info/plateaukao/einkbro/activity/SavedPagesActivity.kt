@@ -124,7 +124,7 @@ fun SavedPagesList(
         LazyColumn(
             modifier = modifier.padding(10.dp),
         ) {
-            items(savedPages.size) { index ->
+            items(savedPages.size, key = { savedPages[it].id }) { index ->
                 val savedPage = savedPages[index]
                 SavedPageItem(
                     savedPage = savedPage,

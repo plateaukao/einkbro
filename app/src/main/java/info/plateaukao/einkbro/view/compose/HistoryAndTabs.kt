@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -37,7 +36,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -54,7 +55,6 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.dialog.compose.ActionIcon
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
-import kotlinx.coroutines.launch
 import kotlin.math.max
 
 @Composable
@@ -208,11 +208,15 @@ fun PreviewTabs(
             else maxItemWidth
 
         val listState = rememberLazyListState()
-        val coroutineScope = rememberCoroutineScope()
         LazyRow(modifier = modifier, state = listState) {
-            items(albumList.size) { index ->
+            items(albumList.size, key = { albumList[it].id }) { index ->
                 val album = albumList[index]
                 val interactionSource = remember { MutableInteractionSource() }
+                // derivedStateOf: a focus change invalidates only the two
+                // affected items instead of every visible tab.
+                val isFocused by remember(index) {
+                    derivedStateOf { index == albumFocusIndex.value }
+                }
                 TabItem(
                     modifier = Modifier
                         .combinedClickable(
@@ -223,17 +227,17 @@ fun PreviewTabs(
                         )
                         .width(itemWidth.dp),
                     showCloseButton = false,
-                    isFocused = index == albumFocusIndex.value,
+                    isFocused = isFocused,
                     album = album
                 ) { closeAction(album) }
             }
         }
-        LaunchedEffect(albumFocusIndex.value) {
-            if (
-                !listState.layoutInfo.visibleItemsInfo.map { it.index }
-                    .contains(albumFocusIndex.value)
-            ) {
-                coroutineScope.launch { listState.scrollToItem(albumFocusIndex.value) }
+        // snapshotFlow keeps the focus-index read out of composition scope.
+        LaunchedEffect(Unit) {
+            snapshotFlow { albumFocusIndex.value }.collect { focusIndex ->
+                if (listState.layoutInfo.visibleItemsInfo.none { it.index == focusIndex }) {
+                    listState.scrollToItem(focusIndex)
+                }
             }
         }
     } else {
@@ -241,9 +245,12 @@ fun PreviewTabs(
             modifier = modifier,
             columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         ) {
-            items(albumList.size) { index ->
+            items(albumList.size, key = { albumList[it].id }) { index ->
                 val album = albumList[index]
                 val interactionSource = remember { MutableInteractionSource() }
+                val isFocused by remember(index) {
+                    derivedStateOf { index == albumFocusIndex.value }
+                }
                 TabItem(
                     modifier = Modifier
                         .combinedClickable(
@@ -254,25 +261,12 @@ fun PreviewTabs(
                                 closeAction(album)
                             }
                         ),
-                    isFocused = index == albumFocusIndex.value,
+                    isFocused = isFocused,
                     album = album
                 ) {
                     closeAction(album)
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun scrollToFocusedItem(
-    listState: LazyListState,
-    albumFocusIndex: Int,
-) {
-    val scope = rememberCoroutineScope()
-    LaunchedEffect(true) {
-        scope.launch {
-            listState.scrollToItem(albumFocusIndex)
         }
     }
 }

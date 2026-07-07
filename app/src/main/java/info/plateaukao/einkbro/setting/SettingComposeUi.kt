@@ -183,7 +183,7 @@ fun BooleanSettingItemUi(
     setting: BooleanSettingItem,
     showBorder: Boolean = false,
 ) {
-    val checked = remember { mutableStateOf(setting.config.get()) }
+    val checked = remember(setting) { mutableStateOf(setting.config.get()) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -224,7 +224,7 @@ fun <T> ValueSettingItemUi(
     showValue: Boolean = true,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val currentValue = remember { mutableStateOf(setting.config.get()) }
+    val currentValue = remember(setting) { mutableStateOf(setting.config.get()) }
     SettingItemUi(
         setting = setting,
         extraTitlePostfix = if (showValue) ": ${currentValue.value}" else "",
@@ -276,7 +276,7 @@ fun <T : Enum<T>> ListSettingItemUi(
 ) {
     val context = LocalContext.current
     var currentValueString =
-        remember { mutableStateOf(context.getString(setting.options[setting.config.get().ordinal])) }
+        remember(setting) { mutableStateOf(context.getString(setting.options[setting.config.get().ordinal])) }
     val coroutineScope = rememberCoroutineScope()
     SettingItemUi(
         setting = setting,
@@ -302,8 +302,8 @@ fun ToolbarPositionSettingItemUi(
     setting: ToolbarPositionSettingItem,
     showBorder: Boolean = false,
 ) {
-    val current = remember { mutableStateOf(setting.config.get()) }
-    var showDialog by remember { mutableStateOf(false) }
+    val current = remember(setting) { mutableStateOf(setting.config.get()) }
+    var showDialog by remember(setting) { mutableStateOf(false) }
     val label = stringResource(toolbarPositionLabelResId(current.value))
 
     SettingItemUi(
@@ -496,7 +496,7 @@ fun ListSettingWithStringItemUi(
     val context = LocalContext.current
     val currentIndex = setting.config.get().toInt()
     var currentValueString =
-        remember { mutableStateOf(context.getString(setting.options[currentIndex])) }
+        remember(setting) { mutableStateOf(context.getString(setting.options[currentIndex])) }
     val coroutineScope = rememberCoroutineScope()
     SettingItemUi(
         setting = setting,
@@ -522,7 +522,7 @@ fun <T> ListSettingWithClassItemUi(
     showBorder: Boolean = false,
 ) {
     val configString = setting.config.get()
-    var currentValueString = remember { mutableStateOf(configString) }
+    var currentValueString = remember(setting) { mutableStateOf(configString) }
     val coroutineScope = rememberCoroutineScope()
     SettingItemUi(
         setting = setting,
@@ -686,14 +686,22 @@ fun SearchSettingScreen(
         filteredSettings.forEach { (categoryResId, setting) ->
             if (categoryResId != lastCategoryResId) {
                 if (!isFirstCategory) {
-                    item(span = { GridItemSpan(if (supportTwoSpan) 2 else 1) }) {
+                    item(
+                        key = "divider-$categoryResId",
+                        span = { GridItemSpan(if (supportTwoSpan) 2 else 1) },
+                    ) {
                         DividerSettingItemUi(categoryResId, supportTwoSpan)
                     }
                 }
                 lastCategoryResId = categoryResId
                 isFirstCategory = false
             }
-            item(span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) }) {
+            // Keyed so per-item remember state follows the setting, not the grid
+            // position, as the filtered list morphs while typing.
+            item(
+                key = "$categoryResId-${setting.titleResId}",
+                span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) },
+            ) {
                 when (setting) {
                     is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder) {
                         navController.navigate(setting.destination.name)

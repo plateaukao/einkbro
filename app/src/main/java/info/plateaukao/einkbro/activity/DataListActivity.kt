@@ -165,7 +165,7 @@ fun WhiteListContent(
         LazyColumn(
             modifier = modifier,
             content = {
-                items(list.value.size) { index ->
+                items(list.value.size, key = { list.value[it] }) { index ->
                     val itemText = list.value[index]
                     Row(
                         Modifier.padding(16.dp),

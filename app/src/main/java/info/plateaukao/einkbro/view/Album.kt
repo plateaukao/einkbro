@@ -11,6 +11,10 @@ data class Album(
     private val albumController: AlbumController,
     private var albumCallback: AlbumCallback?
 ) {
+    // Stable identity for Compose lazy keys (data-class equals only covers
+    // constructor params, and the controller is a mutable WebView).
+    val id: Int = nextAlbumId++
+
     var isLoaded = false
 
     var isTranslatePage = false
@@ -50,5 +54,9 @@ data class Album(
 
     fun deactivate() {
         isActivated = false
+    }
+
+    companion object {
+        private var nextAlbumId = 0
     }
 }
