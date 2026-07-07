@@ -47,6 +47,10 @@ class StatusbarViewController(
     }
 
     fun updatePageInfo(text: String) {
+        // Called per scroll event; a GONE ComposeView still recomposes, so
+        // skip when the bar is hidden or the item isn't configured.
+        if (composeView.visibility != View.VISIBLE) return
+        if (!items.contains(StatusbarItem.PageInfo)) return
         pageInfo = text
     }
 
