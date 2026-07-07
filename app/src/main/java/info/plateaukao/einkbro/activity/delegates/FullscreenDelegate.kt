@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.widget.FrameLayout
@@ -165,9 +166,15 @@ class FullscreenDelegate(
     fun hideStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             activity.window.setDecorFitsSystemWindows(false)
-            activity.window.insetsController?.hide(WindowInsets.Type.statusBars())
-            if (ViewUnit.isEdgeToEdgeEnabled(activity.resources))
-                activity.window.insetsController?.hide(WindowInsets.Type.navigationBars())
+            activity.window.insetsController?.apply {
+                // Without this, an edge swipe re-shows the bars permanently
+                // (default behavior shows them non-transiently).
+                systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                hide(WindowInsets.Type.statusBars())
+                if (ViewUnit.isEdgeToEdgeEnabled(activity.resources))
+                    hide(WindowInsets.Type.navigationBars())
+            }
             state.binding.root.setPadding(0, 0, 0, 0)
         } else {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -180,7 +187,13 @@ class FullscreenDelegate(
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             activity.window.setDecorFitsSystemWindows(true)
-            activity.window.insetsController?.show(WindowInsets.Type.statusBars())
+            activity.window.insetsController?.apply {
+                show(WindowInsets.Type.statusBars())
+                // Symmetric with hideStatusBar: nav bars stayed hidden after
+                // leaving fullscreen in edge-to-edge mode.
+                if (ViewUnit.isEdgeToEdgeEnabled(activity.resources))
+                    show(WindowInsets.Type.navigationBars())
+            }
         } else {
             activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
