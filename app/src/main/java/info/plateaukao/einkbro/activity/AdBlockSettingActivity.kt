@@ -45,6 +45,8 @@ import io.github.edsuns.adfilter.FilterViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+private val filterDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH)
+
 class AdBlockSettingActivity : ComponentActivity() {
 
     private val viewModel: FilterViewModel = AdFilter.get().viewModel
@@ -133,7 +135,7 @@ fun SettingsScreen(
                     val filterList = filters.value.values.toList()
                     items(filterList.size, key = { filterList[it].id }) { index ->
                         val filter = filterList[index]
-                        FilterRow(filter, SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH),
+                        FilterRow(filter, filterDateFormat,
                             onClick = {
                                 viewModel.download(it.id)
                             },

@@ -37,13 +37,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,6 +61,8 @@ import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.viewmodel.GptQueryViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -71,7 +71,9 @@ import java.util.Locale
 class GptQueryListActivity : ComponentActivity()  {
     private val gptQueryViewModel: GptQueryViewModel by koinViewModel()
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
-    private var currentKeyCode: MutableState<Int> = mutableIntStateOf(INVALID_KEYCODE)
+    // Events, not state: a state write recomposed the whole screen twice per
+    // press (value, then a postDelayed reset back to a sentinel).
+    private val volumeKeyEvents = MutableSharedFlow<Int>(extraBufferCapacity = 4)
 
     private lateinit var exportGptQueriesLauncher: ActivityResultLauncher<Intent>
 
@@ -83,9 +85,7 @@ class GptQueryListActivity : ComponentActivity()  {
         if (event.action == KeyEvent.ACTION_DOWN &&
             (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP)
         ) {
-            currentKeyCode.value = keyCode
-            // workaround to reset the key code so that launchedeffect can be triggered
-            window.decorView.postDelayed({ currentKeyCode.value = INVALID_KEYCODE }, 50)
+            volumeKeyEvents.tryEmit(keyCode)
             return true
         }
         return super.onKeyDown(keyCode, event)
@@ -133,7 +133,7 @@ class GptQueryListActivity : ComponentActivity()  {
                 ) { _ ->
                     GptQueriesScreen(
                         gptQueryViewModel,
-                        keyCode = currentKeyCode.value,
+                        volumeKeyEvents = volumeKeyEvents,
                         onLinkClick = {
                             IntentUnit.launchUrl(this, it.url)
                         }
@@ -156,8 +156,6 @@ class GptQueryListActivity : ComponentActivity()  {
     }
 
     companion object {
-        const val INVALID_KEYCODE: Int = 999
-
         fun createIntent(context: Context) = Intent(
             context,
             GptQueryListActivity::class.java
@@ -168,16 +166,15 @@ class GptQueryListActivity : ComponentActivity()  {
 @Composable
 fun GptQueriesScreen(
     gptQueryViewModel: GptQueryViewModel,
-    keyCode: Int,
+    volumeKeyEvents: Flow<Int>,
     onLinkClick: (ChatGptQuery) -> Unit,
 ) {
     val gptQueries by gptQueryViewModel.getGptQueries().collectAsState(emptyList())
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
     val forceExpandIndex = remember { mutableIntStateOf(-1) }
 
-    LaunchedEffect(keyCode) {
-        coroutineScope.launch {
+    LaunchedEffect(Unit) {
+        volumeKeyEvents.collect { keyCode ->
             when (keyCode) {
                 KeyEvent.KEYCODE_VOLUME_UP -> {
                     if (listState.firstVisibleItemIndex > 0) {
@@ -213,6 +210,8 @@ fun GptQueriesScreen(
     }
 }
 
+private val queryDateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun QueryItem(
@@ -223,12 +222,14 @@ fun QueryItem(
     deleteQuery: () -> Unit,
 ) {
     var showResult by remember { mutableStateOf(false) }
-    val queryString = if (gptQuery.selectedText.contains("<<") &&
-        gptQuery.selectedText.contains(">>")
-    ) {
-        HelperUnit.parseMarkdown(gptQuery.selectedText.replace("<<", "**").replace(">>", "**"))
-    } else {
-        AnnotatedString(gptQuery.selectedText)
+    val queryString = remember(gptQuery.selectedText) {
+        if (gptQuery.selectedText.contains("<<") &&
+            gptQuery.selectedText.contains(">>")
+        ) {
+            HelperUnit.parseMarkdown(gptQuery.selectedText.replace("<<", "**").replace(">>", "**"))
+        } else {
+            AnnotatedString(gptQuery.selectedText)
+        }
     }
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -261,7 +262,7 @@ fun QueryItem(
                     color = MaterialTheme.colors.onBackground.copy(alpha = 0.2f),
                 )
                 Text(
-                    text = HelperUnit.parseMarkdown(gptQuery.result),
+                    text = remember(gptQuery.result) { HelperUnit.parseMarkdown(gptQuery.result) },
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.body2,
                 )
@@ -282,7 +283,7 @@ fun QueryItem(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(gptQuery.date),
+                    text = remember(gptQuery.date) { queryDateFormat.format(gptQuery.date) },
                     style = MaterialTheme.typography.caption.copy(
                         color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f)
                     )
