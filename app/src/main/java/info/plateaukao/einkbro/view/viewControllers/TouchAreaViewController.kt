@@ -10,7 +10,6 @@ import info.plateaukao.einkbro.view.MainContentLayout
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TouchAreaType
-import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.browser.BrowserAction
 import info.plateaukao.einkbro.view.handlers.GestureHandler
 import org.koin.core.component.KoinComponent
@@ -70,30 +69,36 @@ class TouchAreaViewController(
         }
     }
 
+    // Grab offset captured on ACTION_DOWN; a local in customOnTouch was reset
+    // to 0 on every event, so the handle snapped under the finger.
+    private var dragOffsetY = 0f
+    private var draggedCustomizeY = 0
+
     private fun customOnTouch(view: View, event: MotionEvent): Boolean {
-        var dY = 0F
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                dY = view.y - event.rawY
+                dragOffsetY = view.y - event.rawY
             }
 
             MotionEvent.ACTION_MOVE -> {
-                // need to consider whether top part height is occupied by toolbar
-                val currentViewY =
-                    event.rawY - dY - view.height - (if (config.ui.isToolbarOnTop) ViewUnit.dpToPixel(
-                        50
-                    ) else 0).toInt()
+                // dragOffsetY bakes in both the grab point and the parent's
+                // screen offset (toolbar on top etc.), so no extra correction
+                val currentViewY = event.rawY + dragOffsetY
                 val customizeY = currentViewY + view.height / 2
                 updateTouchAreaCustomizeY(customizeY.toInt())
             }
 
-            MotionEvent.ACTION_UP -> {}
+            // Persist once at drag end instead of one SharedPreferences write
+            // (plus a full preference-listener fan-out) per ACTION_MOVE.
+            MotionEvent.ACTION_UP -> {
+                config.touch.touchAreaCustomizeY = draggedCustomizeY
+            }
         }
         return true
     }
 
     private fun updateTouchAreaCustomizeY(customizeY: Int) {
-        config.touch.touchAreaCustomizeY = customizeY
+        draggedCustomizeY = customizeY
         val upDownDiffY = touchAreaPageDown.y - touchAreaPageUp.y
         touchAreaDragCustomize.y = (customizeY - touchAreaDragCustomize.height / 2).toFloat()
         touchAreaPageUp.y = customizeY.toFloat()

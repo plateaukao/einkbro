@@ -1,7 +1,10 @@
 package info.plateaukao.einkbro.view.compose
 
 import android.annotation.SuppressLint
-import android.view.KeyEvent.KEYCODE_ENTER
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.type
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -167,11 +170,16 @@ fun TextInput(
                 .focusRequester(focusRequester)
                 .horizontalScroll(scrollState)
                 .onKeyEvent {
-                    if (it.nativeKeyEvent.keyCode == KEYCODE_ENTER) {
-                        onValueSubmit(state.value.text)
+                    // Consume both down and up so the IME onSearch action can't
+                    // fire a second submit for the same hardware Enter press.
+                    if (it.key == Key.Enter) {
+                        if (it.type == KeyEventType.KeyUp) {
+                            onValueSubmit(state.value.text)
+                        }
                         true
+                    } else {
+                        false
                     }
-                    false
                 }
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused

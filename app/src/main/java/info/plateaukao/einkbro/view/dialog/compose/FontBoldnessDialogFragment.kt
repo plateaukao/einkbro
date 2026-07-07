@@ -55,7 +55,7 @@ fun FontBoldnessContent(
             modifier = Modifier.padding(16.dp),
             onValueChange = {
                 sliderPosition = it
-                onFontBoldnessChanged(progressValue.toInt())
+                onFontBoldnessChanged(values[it.toInt()].toInt())
             },
         )
     }
