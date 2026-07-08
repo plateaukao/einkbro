@@ -10,11 +10,10 @@ EinkBro is designed to fit E-Ink devices' needs; no unnecessary UI transitions a
 
 ## [Documentation](https://plateaukao.github.io/einkbro/) | [中文說明手冊](https://plateaukao.github.io/einkbro/zh-tw/index.html)
 
-## Development environment supported by JetBrains
 [<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/IntelliJ_IDEA_icon.png"
      alt="IDE supported by JetBrains"
-     height="80">](https://jb.gg/OpenSourceSupport)
+     height="24" align="middle">](https://jb.gg/OpenSourceSupport) Development environment supported by [JetBrains](https://jb.gg/OpenSourceSupport)
 
-<div>App icon is made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+<img src="fastlane/metadata/android/en-US/images/icon.png" alt="EinkBro app icon" height="24" align="middle"> App icon by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/language" title="language icons">Language icons created by Those Icons - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/split-screen" title="split screen icons">Split screen icons created by Fajrul Fitrianto - Flaticon</a>
