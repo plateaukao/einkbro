@@ -205,7 +205,6 @@
     <string name="reset_to_global">重置所有为全局</string>
     <string name="site_custom_css">自定义CSS</string>
     <string name="site_post_load_js">后置加载JavaScript</string>
-    <string name="site_force_viewport_width">强制视口宽度 (px)</string>
     <string name="setting_title_vi_binding">VI键值绑定</string>
     <string name="setting_summary_vi_binding">启用VI键值绑定以简化键盘导航。</string>
     <string name="setting_clear_recent_bookmarks">清除最近书签列表</string>
