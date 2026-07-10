@@ -188,6 +188,11 @@ class KeyHandler(
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var reenableJob: Job? = null
 
+    // Double-click-for-back: a single tap's page turn is deferred by this window
+    // so a second tap of the same key can be caught and treated as "back" instead.
+    private var pendingPageTurnJob: Job? = null
+    private var pendingPageTurnKeyCode: Int = 0
+
     private fun scheduleReenableVolumePageTurn() {
         reenableJob?.cancel()
         reenableJob = scope.launch {
@@ -202,9 +207,44 @@ class KeyHandler(
         scope.cancel()
     }
 
+    // Returns true if this press was consumed by the double-click gate.
+    // First tap of a key schedules a deferred page turn; a second tap of the
+    // same key within the window cancels it and goes back instead.
+    private fun handleVolumeDoubleClick(keyCode: Int): Boolean {
+        val pending = pendingPageTurnJob
+        if (pending?.isActive == true && pendingPageTurnKeyCode == keyCode) {
+            pending.cancel()
+            pendingPageTurnJob = null
+            keyCallback.handleBackKey()
+            return true
+        }
+        pendingPageTurnKeyCode = keyCode
+        pendingPageTurnJob = scope.launch {
+            delay(DOUBLE_CLICK_WINDOW_MS)
+            performVolumePageTurn(keyCode)
+            pendingPageTurnJob = null
+        }
+        return true
+    }
+
+    private fun cancelPendingPageTurn() {
+        pendingPageTurnJob?.cancel()
+        pendingPageTurnJob = null
+    }
+
+    private fun performVolumePageTurn(keyCode: Int) {
+        val pageUp = when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_DOWN -> ebWebView.isVerticalRead
+            else -> !ebWebView.isVerticalRead
+        }
+        if (pageUp) ebWebView.pageUpWithNoAnimation() else ebWebView.pageDownWithNoAnimation()
+    }
+
     fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             if (config.touch.volumePageTurn) {
+                // A long press is not a double tap: drop any deferred page turn.
+                cancelPendingPageTurn()
                 isVolumeLongPress = true
                 isVolumeTemporarilyDisabled = true
                 scheduleReenableVolumePageTurn()
@@ -238,6 +278,12 @@ class KeyHandler(
         audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, direction, AudioManager.FLAG_SHOW_UI)
     }
 
+    companion object {
+        // Gap allowed between the two taps of a double-click. This is also the
+        // delay added to a single tap's page turn when the feature is enabled.
+        private const val DOUBLE_CLICK_WINDOW_MS = 250L
+    }
+
     private fun handleVolumeDownKey(event: KeyEvent): Boolean {
         if (config.touch.volumePageTurn) {
             if (isVolumeTemporarilyDisabled) {
@@ -247,6 +293,9 @@ class KeyHandler(
             if (event.repeatCount == 0) {
                 isVolumeLongPress = false
                 event.startTracking()
+                if (config.touch.volumeDoubleClickBack) {
+                    return handleVolumeDoubleClick(KeyEvent.KEYCODE_VOLUME_DOWN)
+                }
                 if (ebWebView.isVerticalRead) {
                     ebWebView.pageUpWithNoAnimation()
                 } else {
@@ -254,6 +303,8 @@ class KeyHandler(
                 }
                 return true
             } else {
+                // Held down: abandon any pending single-tap page turn.
+                cancelPendingPageTurn()
                 if (isVolumeLongPress) {
                     adjustVolume(KeyEvent.KEYCODE_VOLUME_DOWN)
                     return true
@@ -273,6 +324,9 @@ class KeyHandler(
             if (event.repeatCount == 0) {
                 isVolumeLongPress = false
                 event.startTracking()
+                if (config.touch.volumeDoubleClickBack) {
+                    return handleVolumeDoubleClick(KeyEvent.KEYCODE_VOLUME_UP)
+                }
                 if (ebWebView.isVerticalRead) {
                     ebWebView.pageDownWithNoAnimation()
                 } else {
@@ -280,6 +334,8 @@ class KeyHandler(
                 }
                 return true
             } else {
+                // Held down: abandon any pending single-tap page turn.
+                cancelPendingPageTurn()
                 if (isVolumeLongPress) {
                     adjustVolume(KeyEvent.KEYCODE_VOLUME_UP)
                     return true

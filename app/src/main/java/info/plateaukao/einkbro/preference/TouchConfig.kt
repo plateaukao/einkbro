@@ -16,6 +16,7 @@ class TouchConfig(private val sp: SharedPreferences) {
     )
     var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
     var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
+    var volumeDoubleClickBack by BooleanPreference(sp, K_VOLUME_DOUBLE_CLICK_BACK, false)
     var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
     var longClickAsArrowKey by BooleanPreference(sp, K_TOUCH_AREA_ARROW_KEY, false)
     var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
@@ -74,6 +75,7 @@ class TouchConfig(private val sp: SharedPreferences) {
         const val K_ENABLE_TOUCH = "sp_enable_touch"
         const val K_TOUCH_HINT = "sp_touch_area_hint"
         const val K_VOLUME_PAGE_TURN = "volume_page_turn"
+        const val K_VOLUME_DOUBLE_CLICK_BACK = "sp_volume_double_click_back"
         const val K_UPDOWN_PAGE_TURN = "sp_useUpDownForPageTurn"
         const val K_MULTITOUCH = "sp_multitouch"
         const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
