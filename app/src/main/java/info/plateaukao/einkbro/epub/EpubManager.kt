@@ -91,6 +91,40 @@ class EpubManager(private val context: Context) : KoinComponent {
         }
     }
 
+    /**
+     * Non-interactive EPUB export used by agent tasks: builds a NEW book from
+     * [chapters] and writes it to [fileUri]. No dialogs, no reader launch, no
+     * saved-file bookkeeping — callers handle that. Returns true on success.
+     */
+    suspend fun saveEpubDirectly(
+        fileUri: Uri,
+        bookName: String,
+        chapters: List<EpubChapterContent>,
+    ): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val domain = Uri.parse(chapters.firstOrNull()?.url.orEmpty()).host ?: "EinkBro"
+            val book = createBook(domain, bookName)
+            chapters.forEachIndexed { index, chapter ->
+                val chapterIndex = index + 1
+                val webUri = Uri.parse(chapter.url)
+                val (processedHtml, imageMap) = processHtmlString(
+                    chapter.html,
+                    chapterIndex,
+                    "${webUri.scheme}://${webUri.host}/"
+                )
+                book.addSection(
+                    chapter.title,
+                    Resource(processedHtml.byteInputStream(), "chapter$chapterIndex.html")
+                )
+                saveImageResources(book, imageMap) {}
+            }
+            saveBook(book, fileUri)
+        } catch (e: Exception) {
+            Log.e(TAG, "saveEpubDirectly failed", e)
+            false
+        }
+    }
+
     private suspend fun getChapterName(defaultTitle: String?): String? {
         val chapterName = defaultTitle ?: "no title"
         return TextInputDialog(
@@ -235,13 +269,14 @@ class EpubManager(private val context: Context) : KoinComponent {
         }
     }
 
-    private fun saveBook(book: Book, uri: Uri) {
-        try {
-            val outputStream = context.contentResolver.openOutputStream(uri)
-            EpubWriter().write(book, outputStream)
-            outputStream?.close()
+    private fun saveBook(book: Book, uri: Uri): Boolean {
+        return try {
+            val outputStream = context.contentResolver.openOutputStream(uri) ?: return false
+            outputStream.use { EpubWriter().write(book, it) }
+            true
         } catch (e: IOException) {
             e.printStackTrace()
+            false
         }
     }
 
@@ -349,3 +384,7 @@ class EpubManager(private val context: Context) : KoinComponent {
         const val EINKBRO_IDENTIFIER_VALUE = "EinkBro"
     }
 }
+
+/** One resolved chapter for [EpubManager.saveEpubDirectly]: already-extracted reader
+ *  [html] plus the source [url] (used for the base URI and image resolution). */
+data class EpubChapterContent(val title: String, val html: String, val url: String)

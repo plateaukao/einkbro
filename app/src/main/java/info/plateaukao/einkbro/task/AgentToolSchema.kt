@@ -26,8 +26,11 @@ object AgentToolSchema {
             name = "read_initial_page",
             description = "Return the reader-mode text of the page the user was viewing when " +
                 "they triggered this task. Use when the user wants the current page summarized/" +
-                "translated/analyzed. Zero-cost lookup.",
-            parameters = """{"type":"object","properties":{},"required":[]}""",
+                "translated/analyzed. Zero-cost lookup. Long documents are windowed — " +
+                "pass offset to continue reading.",
+            parameters = """
+                {"type":"object","properties":{"offset":{"type":"integer","description":"Character offset to start from (default 0)"}},"required":[]}
+            """.trimIndent(),
         ),
         toolDef(
             name = "open_url",
@@ -39,10 +42,48 @@ object AgentToolSchema {
             """.trimIndent(),
         ),
         toolDef(
+            name = "web_search",
+            description = "Search the web using the user's configured search engine. Loads the " +
+                "results page in the off-screen WebView and returns its links (text + href). " +
+                "Follow up with read_current_page for result snippets, or open_url to visit a " +
+                "result. Use whenever you need a page you don't have a URL for.",
+            parameters = """
+                {"type":"object","properties":{"query":{"type":"string","description":"Search terms"}},"required":["query"]}
+            """.trimIndent(),
+        ),
+        toolDef(
+            name = "run_javascript",
+            description = "Evaluate JavaScript and return its completion value (JSON-encoded). " +
+                "target 'tab' (default) runs in the LIVE tab the user was viewing — DOM " +
+                "changes are immediately visible to the user, so use it to TEST a selector " +
+                "or element removal before persisting it with set_domain_javascript. " +
+                "target 'background' runs in the off-screen WebView (call open_url first) — " +
+                "use it to extract structured data (prices, dates, table rows) that " +
+                "reader-mode text loses. Make the last statement an expression that yields " +
+                "the value; use JSON.stringify for objects/arrays.",
+            parameters = """
+                {"type":"object","properties":{"code":{"type":"string","description":"JavaScript source to evaluate"},"target":{"type":"string","enum":["tab","background"],"description":"'tab' = live originating tab (default); 'background' = off-screen WebView"}},"required":["code"]}
+            """.trimIndent(),
+        ),
+        toolDef(
+            name = "save_epub",
+            description = "Fetch one or more pages and save their reader-mode content as " +
+                "chapters of a new EPUB file in the device's Downloads folder. Use when the " +
+                "user wants to keep articles for offline/e-reader reading (e.g. 'save these " +
+                "three articles as a book'). Each chapter loads in the off-screen WebView, " +
+                "so allow a few seconds per page. Returns the saved file location.",
+            parameters = """
+                {"type":"object","properties":{"book_title":{"type":"string","description":"EPUB book title, also used as the file name"},"chapters":{"type":"array","description":"Pages to save, in reading order","items":{"type":"object","properties":{"url":{"type":"string","description":"Absolute http(s) URL of the page"},"title":{"type":"string","description":"Chapter title; defaults to the page title"}},"required":["url"]}}},"required":["book_title","chapters"]}
+            """.trimIndent(),
+        ),
+        toolDef(
             name = "read_current_page",
             description = "Return the reader-mode text of the currently loaded off-screen page. " +
-                "Call open_url first.",
-            parameters = """{"type":"object","properties":{},"required":[]}""",
+                "Call open_url first. Long documents are windowed — pass offset to continue " +
+                "reading.",
+            parameters = """
+                {"type":"object","properties":{"offset":{"type":"integer","description":"Character offset to start from (default 0)"}},"required":[]}
+            """.trimIndent(),
         ),
         toolDef(
             name = "get_page_links",
@@ -74,12 +115,28 @@ object AgentToolSchema {
         ),
         toolDef(
             name = "read_initial_html",
-            description = "Return the raw `document.body.innerHTML` of the page the user was " +
-                "viewing when they triggered this task. Use this when the user describes a DOM " +
-                "element to act on (banner, popup, ad, modal) — read_initial_page returns " +
-                "reader-mode text which strips those out. Result is truncated; you may need " +
-                "to scan strategically. Zero-cost lookup.",
-            parameters = """{"type":"object","properties":{},"required":[]}""",
+            description = "Return the rendered `document.body.innerHTML` of the page the user " +
+                "was viewing — the live DOM AFTER JavaScript ran. Use it to inspect elements " +
+                "that are injected at runtime (popups, late-loading ads, cookie banners). For " +
+                "the original served markup use read_page_source instead. Long documents are " +
+                "windowed: page through with offset, or jump straight to an element with " +
+                "search (e.g. visible text the user quoted, or a class/id fragment).",
+            parameters = """
+                {"type":"object","properties":{"offset":{"type":"integer","description":"Character offset to start from (default 0)"},"search":{"type":"string","description":"Jump to the first occurrence of this string at/after offset (case-insensitive)"}},"required":[]}
+            """.trimIndent(),
+        ),
+        toolDef(
+            name = "read_page_source",
+            description = "Download and return the page's REAL HTML source — the exact markup " +
+                "the server sent, before any JavaScript ran (view-source equivalent, fetched " +
+                "with the browser's cookies and user agent). Defaults to the originating page; " +
+                "pass url for any other page. This is the ground truth for writing precise CSS " +
+                "selectors and DOM patches: ad containers, class/id names, hidden elements, " +
+                "inline scripts. Long documents are windowed: page through with offset, or " +
+                "jump straight to an element with search.",
+            parameters = """
+                {"type":"object","properties":{"url":{"type":"string","description":"Absolute http(s) URL; omit to read the originating page"},"offset":{"type":"integer","description":"Character offset to start from (default 0)"},"search":{"type":"string","description":"Jump to the first occurrence of this string at/after offset (case-insensitive)"}},"required":[]}
+            """.trimIndent(),
         ),
         toolDef(
             name = "get_domain_javascript",
@@ -139,24 +196,40 @@ object AgentToolSchema {
         "You help the user with multi-step browsing tasks by calling the provided tools. " +
         "The user triggered this task while viewing a specific page — call " +
         "get_initial_page_links or read_initial_page FIRST to inspect what they were " +
-        "looking at. Use open_url only when you need to navigate somewhere new. Never ask " +
+        "looking at. Use open_url only when you need to navigate somewhere new, and " +
+        "web_search when you need a page you don't have a URL for. Never ask " +
         "the user to paste content; fetch it via tools. When the user asks you to read, " +
         "speak, or narrate something out loud, call the speak tool (plain-text form, no " +
-        "markdown). Be decisive and frugal: fewer tool calls is better.\n\n" +
+        "markdown). When the user wants articles kept for offline or e-reader reading, " +
+        "call save_epub with the URLs as chapters. Be decisive and frugal: fewer tool " +
+        "calls is better.\n\n" +
         "DOM-PATCH WORKFLOW: When the user asks you to remove a banner, popup, modal, ad, " +
-        "cookie notice, or any other element from a site, follow this sequence: " +
-        "(1) call read_initial_html and locate the offending element by the text the user " +
-        "named or a stable structural cue; " +
+        "cookie notice, or any other element from a site (or show/hide specific elements), " +
+        "follow this sequence: " +
+        "(1) locate the offending element in the page's HTML. read_page_source gives the " +
+        "REAL served markup (best for stable selectors: ad containers, class/id names); " +
+        "read_initial_html gives the rendered DOM after JavaScript (best for elements " +
+        "injected at runtime). Use the search parameter with text the user quoted or a " +
+        "likely class/id fragment (e.g. 'ad', 'banner', 'cookie') instead of paging " +
+        "blindly through offsets; " +
         "(2) call get_domain_javascript to see what's already saved for this host; " +
         "(3) compose a self-contained JS snippet that finds and removes/hides the element. " +
         "Prefer querySelectorAll plus textContent matching over fragile DOM paths. Always " +
         "wrap in try/catch. For elements that appear after page load (popups, lazy " +
         "modals), use a MutationObserver or a short setInterval re-check. " +
-        "(4) call set_domain_javascript with the FULL combined script — your new code " +
-        "concatenated with whatever get_domain_javascript returned, so you don't clobber " +
-        "earlier rules. EinkBro will auto-run this after every page load on the host. " +
-        "Use set_domain_css instead if a CSS rule (e.g. `display:none`) suffices — it's " +
-        "lighter and harder to break. Tell the user in finish what selector/text you " +
-        "matched on so they can revert via Site Settings if it misfires.\n\n" +
+        "(4) TEST the snippet first: call run_javascript with target 'tab' to run it on " +
+        "the live page the user is viewing, returning a before/after element count so " +
+        "you can verify it actually matched and removed something (the user sees the " +
+        "element vanish immediately). Wrap the test snippet in try/catch and return the " +
+        "caught error message as a string — a thrown error otherwise looks identical to " +
+        "zero matches. If it matched nothing, refine the selector and re-test instead " +
+        "of persisting a broken rule. " +
+        "(5) once verified, call set_domain_javascript with the FULL combined script — " +
+        "your new code concatenated with whatever get_domain_javascript returned, so you " +
+        "don't clobber earlier rules. EinkBro will auto-run this after every page load " +
+        "on the host. Use set_domain_css instead if a CSS rule (e.g. `display:none`) " +
+        "suffices — it's lighter and harder to break. Tell the user in finish what " +
+        "selector/text you matched on so they can revert via Site Settings if it " +
+        "misfires.\n\n" +
         "Always end the task by calling the finish tool with your final answer as markdown."
 }

@@ -24,6 +24,10 @@ data class InitialPageSnapshot(
      *  that need to identify DOM elements the user described — `text` is reader-mode
      *  cleaned and strips out exactly the banners/popups callers want to target. */
     val rawHtml: String = "",
+    /** Weak reference to the live originating tab, so the agent can run JavaScript on
+     *  it with user-visible effect (e.g. test a removal selector before persisting it).
+     *  Weak because the user may close that tab while the agent chat is still open. */
+    val originWebView: java.lang.ref.WeakReference<info.plateaukao.einkbro.view.EBWebView>? = null,
 )
 
 interface BrowserTools {
@@ -42,6 +46,17 @@ interface BrowserTools {
     /** Raw `document.body.innerHTML` of the originating page. Captured at task entry —
      *  zero-cost lookup. Empty string if the snapshot did not include HTML. */
     fun initialPageRawHtml(): String
+
+    // ── Page source (network-level) ─────────────────────────────────────
+
+    /**
+     * Downloads the real HTML source of [url] — the exact markup the server sent,
+     * before any JavaScript ran (view-source equivalent). Sends the browser's
+     * User-Agent and the cookies stored for [url] so auth-walled pages match what
+     * the WebView would receive. The last result is cached per-URL so paged tool
+     * reads don't re-download. Returns null on network/HTTP failure or non-http(s) URLs.
+     */
+    suspend fun fetchPageSource(url: String): String?
 
     // ── Domain config (per-host CSS/JS that auto-injects on page load) ─────
     //
@@ -63,10 +78,25 @@ interface BrowserTools {
     /** Replaces the customCss for the originating page's host. Pass "" to clear. */
     fun setInitialDomainCss(code: String)
 
+    // ── JavaScript evaluation ───────────────────────────────────────────
+
+    /** Evaluates [code] in the off-screen WebView and returns the JSON-encoded
+     *  completion value. Null when no page has been loaded yet. */
+    suspend fun runJavascriptInBg(code: String): String?
+
+    /** Evaluates [code] in the LIVE tab the user was viewing when the task started —
+     *  DOM changes are immediately visible to the user. Returns the JSON-encoded
+     *  completion value, or null when that tab has been closed/collected. */
+    suspend fun runJavascriptInInitialTab(code: String): String?
+
     // ── Navigation / content ────────────────────────────────────────────
 
     /** Loads [url] in the off-screen WebView and awaits page load. Returns false on timeout. */
     suspend fun openUrlInBg(url: String): Boolean
+
+    /** Loads the user's configured search engine with [query] in the off-screen WebView.
+     *  Follow with [currentBgPageLinks]/[currentBgPageText] to read the results. */
+    suspend fun searchInBg(query: String): Boolean
 
     /** Reader-mode text of the off-screen WebView's current page (empty if none loaded). */
     suspend fun currentBgPageText(): String
@@ -126,8 +156,27 @@ interface BrowserTools {
     /** Commit the final markdown result. The runner marks the task Done after this. */
     fun finish(markdown: String)
 
+    // ── EPUB export ─────────────────────────────────────────────────────
+
+    /**
+     * Fetches each chapter URL in the off-screen WebView, extracts its reader-mode
+     * HTML, and writes all chapters into a new EPUB in the device's public Downloads
+     * folder (registered in the app's saved-EPUB list). Chapters that fail to load
+     * are skipped; [onChapterLoaded] fires as (index, total, chapterTitle) for each
+     * successful one. Returns a human-readable saved location, or null when nothing
+     * could be saved.
+     */
+    suspend fun saveEpub(
+        bookName: String,
+        chapters: List<EpubChapterSpec>,
+        onChapterLoaded: (Int, Int, String) -> Unit = { _, _, _ -> },
+    ): String?
+
     /** Releases the off-screen WebView. Called by TaskRunner when done. */
     fun dispose()
 
     data class Link(val text: String, val href: String)
+
+    /** One requested EPUB chapter: [url] to fetch, optional [title] (defaults to page title). */
+    data class EpubChapterSpec(val url: String, val title: String = "")
 }
