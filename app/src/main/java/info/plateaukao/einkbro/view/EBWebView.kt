@@ -43,11 +43,11 @@ import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 
 
@@ -624,9 +624,11 @@ open class EBWebView(
         webViewCallback?.updateTitle(album.albumTitle)
     }
 
-    // Guards the postDelayed callbacks above: touching a destroyed WebView is
-    // undefined behavior on older vendor builds.
-    private var isWebViewDestroyed = false
+    // Guards the postDelayed callbacks above (and agent tools holding weak references
+    // to this tab): touching a destroyed WebView is undefined behavior on older vendor
+    // builds.
+    var isWebViewDestroyed = false
+        private set
 
     override fun destroy() {
         isWebViewDestroyed = true
@@ -691,7 +693,11 @@ open class EBWebView(
     fun selectLinkText(point: Point) = touchSimulator.selectLinkText(point)
 
     var rawHtmlCache: String? = null
-    suspend fun getRawReaderHtml() = suspendCoroutine { continuation ->
+
+    // Cancellable so callers can wrap in withTimeoutOrNull: the JS bridge callback is
+    // not guaranteed to fire (CSP-blocked injection, page script errors), and a plain
+    // suspendCoroutine would ignore the timeout's cancellation and hang forever.
+    suspend fun getRawReaderHtml() = suspendCancellableCoroutine<String> { continuation ->
         if (isPlainText && rawHtmlCache != null) {
             continuation.resume(rawHtmlCache!!)
         } else if (!isReaderModeOn && !isTranslatePage) {
@@ -700,7 +706,7 @@ open class EBWebView(
                 val processedHtml = HelperUnit.unescapeJava(html)
                 val rawHtml = processedHtml.substring(1, processedHtml.length - 1)
                 rawHtmlCache = rawHtml
-                continuation.resume(rawHtml)
+                if (continuation.isActive) continuation.resume(rawHtml)
             }
         } else {
             evaluateJavascript(
@@ -709,24 +715,24 @@ open class EBWebView(
                 val processedHtml = HelperUnit.unescapeJava(html)
                 val rawHtml = processedHtml.substring(1, processedHtml.length - 1)
                 rawHtmlCache = rawHtmlCache ?: rawHtml
-                continuation.resume(rawHtml)
+                if (continuation.isActive) continuation.resume(rawHtml)
             }
         }
     }
 
-    suspend fun getRawText() = suspendCoroutine<String> { continuation ->
+    suspend fun getRawText() = suspendCancellableCoroutine<String> { continuation ->
         if (dualCaption != null) {
             continuation.resume(DualCaptionProcessor().convertToHtml(dualCaption ?: ""))
         } else if (!isReaderModeOn) {
             jsBridge.evaluateMozReaderModeJs {
                 jsBridge.getReaderModeBodyText(config.display.readerKeepExtraContent) { text ->
                     if (text == "null") {
-                        continuation.resume("")
+                        if (continuation.isActive) continuation.resume("")
                     } else {
                         val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
                             text.substring(1, text.length - 2)
                         } else text
-                        continuation.resume(processedText)
+                        if (continuation.isActive) continuation.resume(processedText)
                     }
                 }
             }
@@ -737,7 +743,7 @@ open class EBWebView(
                 val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
                     text.substring(1, text.length - 2)
                 } else text
-                continuation.resume(processedText)
+                if (continuation.isActive) continuation.resume(processedText)
             }
         }
     }

@@ -94,6 +94,7 @@ class TaskMenuDelegate(
                 text = rawText,
                 links = links,
                 rawHtml = rawHtml,
+                originWebView = java.lang.ref.WeakReference(current),
             )
             chatWithWebAgent(prompt, snapshot)
         }

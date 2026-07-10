@@ -19,6 +19,7 @@ import info.plateaukao.einkbro.task.BrowserTools
 import info.plateaukao.einkbro.task.BrowserToolsImpl
 import info.plateaukao.einkbro.task.InitialPageSnapshot
 import info.plateaukao.einkbro.task.TaskProgress
+import info.plateaukao.einkbro.task.ToolTextWindow
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.koin.core.component.KoinComponent
@@ -289,7 +291,7 @@ class ChatWebInterface(
                     agentToolsInitialized = true
                     val text = agentTools.initialPageText().trim()
                     if (text.isBlank()) "error: no initial page text captured"
-                    else text.take(MAX_TOOL_RESULT_CHARS)
+                    else windowToolResult(text, args)
                 }
                 "open_url" -> {
                     val url = args["url"]?.jsonPrimitive?.contentOrNull
@@ -298,11 +300,62 @@ class ChatWebInterface(
                     val ok = agentTools.openUrlInBg(url)
                     if (ok) "ok: loaded $url" else "error: failed to load $url"
                 }
+                "web_search" -> {
+                    val query = args["query"]?.jsonPrimitive?.contentOrNull
+                        ?.takeIf { it.isNotBlank() }
+                        ?: return "error: missing query"
+                    agentToolsInitialized = true
+                    val ok = agentTools.searchInBg(query)
+                    if (!ok) "error: search results page failed to load"
+                    else encodeLinks(agentTools.currentBgPageLinks())
+                }
+                "run_javascript" -> {
+                    val code = args["code"]?.jsonPrimitive?.contentOrNull
+                        ?.takeIf { it.isNotBlank() }
+                        ?: return "error: missing code"
+                    val target = args["target"]?.jsonPrimitive?.contentOrNull ?: "tab"
+                    agentToolsInitialized = true
+                    val result = when (target) {
+                        "background" -> agentTools.runJavascriptInBg(code)
+                            ?: "error: no page loaded — call open_url first"
+                        else -> agentTools.runJavascriptInInitialTab(code)
+                            ?: "error: the originating tab is no longer available"
+                    }
+                    if (result.length > MAX_TOOL_RESULT_CHARS) windowToolResult(result, args)
+                    else result
+                }
+                "save_epub" -> {
+                    val bookTitle = args["book_title"]?.jsonPrimitive?.contentOrNull
+                        ?.takeIf { it.isNotBlank() }
+                        ?: return "error: missing book_title"
+                    val chapterSpecs = (args["chapters"] as? JsonArray).orEmpty().mapNotNull { el ->
+                        val obj = el as? JsonObject ?: return@mapNotNull null
+                        val url = obj["url"]?.jsonPrimitive?.contentOrNull ?: return@mapNotNull null
+                        BrowserTools.EpubChapterSpec(
+                            url = url,
+                            title = obj["title"]?.jsonPrimitive?.contentOrNull.orEmpty(),
+                        )
+                    }
+                    if (chapterSpecs.isEmpty()) return "error: chapters array has no valid entries"
+                    agentToolsInitialized = true
+                    var loadedCount = 0
+                    val location = agentTools.saveEpub(bookTitle, chapterSpecs) { index, total, title ->
+                        loadedCount++
+                        appendBubble("\n\n_📖 chapter $index/$total: ${escapeMd(title)}_")
+                    }
+                    when {
+                        location == null -> "error: failed to save epub (no chapters loaded or write failed)"
+                        loadedCount < chapterSpecs.size ->
+                            "ok: saved $loadedCount of ${chapterSpecs.size} chapters to $location " +
+                                "(the other pages failed to load)"
+                        else -> "ok: saved $loadedCount chapters to $location"
+                    }
+                }
                 "read_current_page" -> {
                     agentToolsInitialized = true
                     val text = agentTools.currentBgPageText().trim()
                     if (text.isBlank()) "error: no page loaded or page body is empty"
-                    else text.take(MAX_TOOL_RESULT_CHARS)
+                    else windowToolResult(text, args)
                 }
                 "get_page_links" -> {
                     agentToolsInitialized = true
@@ -329,7 +382,23 @@ class ChatWebInterface(
                     agentToolsInitialized = true
                     val html = agentTools.initialPageRawHtml()
                     if (html.isBlank()) "error: no initial page HTML captured"
-                    else html.take(MAX_TOOL_RESULT_CHARS)
+                    else windowToolResult(html, args)
+                }
+                "read_page_source" -> {
+                    agentToolsInitialized = true
+                    val url = args["url"]?.jsonPrimitive?.contentOrNull
+                        ?.takeIf { it.isNotBlank() }
+                        ?: agentTools.initialPageUrl()
+                    if (url.isBlank()) {
+                        "error: no url available — pass a url argument"
+                    } else {
+                        val html = agentTools.fetchPageSource(url)
+                        when {
+                            html == null -> "error: failed to download $url"
+                            html.isBlank() -> "error: empty document at $url"
+                            else -> windowToolResult(html, args)
+                        }
+                    }
                 }
                 "get_domain_javascript" -> {
                     agentToolsInitialized = true
@@ -371,6 +440,15 @@ class ChatWebInterface(
             "error: ${e.message}"
         }
     }
+
+    /** Windows a large tool result, honoring the optional `offset`/`search` tool args. */
+    private fun windowToolResult(content: String, args: JsonObject): String =
+        ToolTextWindow.window(
+            content = content,
+            maxChars = MAX_TOOL_RESULT_CHARS,
+            offset = args["offset"]?.jsonPrimitive?.intOrNull ?: 0,
+            search = args["search"]?.jsonPrimitive?.contentOrNull,
+        )
 
     private fun encodeLinks(links: List<BrowserTools.Link>): String {
         if (links.isEmpty()) return "[]"
