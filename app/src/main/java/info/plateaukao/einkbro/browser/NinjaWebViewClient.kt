@@ -36,6 +36,7 @@ import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.view.WebViewConfigApplier
 import io.github.edsuns.adfilter.AdFilter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -136,7 +137,10 @@ class EBWebViewClient(
             adFilter.performScript(view, url)
         }
 
-        if (!config.browser.enableVideoAutoplay) {
+        // Fallback for WebViews without DOCUMENT_START_SCRIPT; newer ones get the
+        // blocker injected before any page script via addDocumentStartJavaScript
+        // (see WebViewConfigApplier.applyAutoplayBlocker).
+        if (!config.browser.enableVideoAutoplay && !WebViewConfigApplier.supportsDocumentStartScript()) {
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
         }
 
@@ -207,7 +211,7 @@ class EBWebViewClient(
 
         // Re-inject autoplay blocker in onPageFinished to ensure it's in the correct page context
         // (onPageStarted injection may race with the page's own scripts)
-        if (!config.browser.enableVideoAutoplay) {
+        if (!config.browser.enableVideoAutoplay && !WebViewConfigApplier.supportsDocumentStartScript()) {
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
         }
 
