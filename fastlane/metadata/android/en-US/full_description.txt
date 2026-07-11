@@ -1,38 +1,40 @@
-It's a lightweight browser to provide powerful features designed for Eink devices.
+EinkBro is a lightweight, fast browser designed for E-Ink devices such as e-readers and e-note tablets.
 
-E-Ink specific features
-* pageUp / pageDown / Back button on toolbar
-* Physical volume keys for pageUp/pageDown
-* Tapping on screen left/right edge for pageUp/Down (finger button on toolbar)
-* Desktop mode feature
-* All icons in high contrast colors
-* Tab count count toolbar
-* Font size change button
-* Bold font button
-* Reader mode
-* Vertical Read mode
+E-Ink optimized reading
+* Tap screen edges or use physical volume keys to turn pages
+* Reader mode with clean typography
+* Vertical reading mode for CJK text
+* Custom fonts, font size button, and bold toggle
+* High-contrast icons and no animations
 
-Basic UI/Handling:
-* optimized for one hand handling (toolbar at bottom)
-* tab control (switch, open, close unlimited tabs)
-* full material design
-* fullscreen browsing (optional)
-* navigation button in fullscreen mode
-* fast toggle for most important settings
-* advanced gesture control for toolbar and navigation button
+AI integration
+* Chat with the current page, summarize it, or run multi-step agent workflows
+* Read articles aloud with natural text-to-speech voices
+* Translate pages by paragraph or side by side
+* Works with OpenAI, Gemini, Ollama, and custom servers
 
-Some nice extra features:
-* small size
-* search on site
-* open links in background
-* Websearch (from marked text context menu)
-* screenshots of the whole website
-* share/save as PDF
-* open links in other apps (for example YouTube)
+Userscripts
+* Built-in Tampermonkey-style engine runs community scripts (e.g. from Greasy Fork)
+* GM APIs, per-script menu commands, automatic URL matching and script updates
+
+Save and export
+* Export pages to EPUB with chapters and images
+* Save as PDF with table-of-contents entries, or append pages to an existing PDF
+* Archive as MHT, capture full-page screenshots, send to Instapaper
+
+Customizable UI
+* 40+ configurable toolbar actions with drag reordering
+* Toolbar at top, bottom, or side; optimized for one-hand use
+* Split-screen view, floating navigation button, advanced gesture control
+* Unlimited tabs and fullscreen browsing
+
+Privacy and browsing
+* Built-in ad blocker
+* JavaScript and cookie whitelists
+* Tracking-parameter pruning, incognito mode, per-site desktop mode
 
 Permissions that may be used
 * INTERNET: it's a browser, so it's expected.
-* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: for saving web page as PDF or epub file, and for downloading files.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: for saving web pages as PDF or EPUB files, and for downloading files.
 * INSTALL_SHORTCUT: to install web shortcuts on Home.
-* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: when using some navigation web site, or some web service that needs location, these permissions are needed.
-
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: only used when a website requests location.

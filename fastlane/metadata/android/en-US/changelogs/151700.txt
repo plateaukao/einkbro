@@ -1,0 +1,4 @@
+* AI agent: read real HTML source, run JavaScript, search the web, export multi-chapter EPUBs
+* Double-click a volume key to go back (opt-in gesture)
+* Performance pass: far fewer UI recompositions, cached favicons
+* Fixes: duplicate translation requests, video autoplay blocking, fullscreen system bars, WebView leaks, edits lost on rotation, URL-bar double submit, and many small UI bugs
