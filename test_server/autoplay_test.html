@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autoplay block test</title>
+<style>
+  video { display: block; width: 320px; height: 240px; margin: 8px; background: #ddd; }
+  #status { font-family: monospace; white-space: pre-wrap; padding: 8px; }
+</style>
+</head>
+<body>
+<div id="status">waiting...</div>
+
+<!-- Vector 1: native muted autoplay attribute (Chromium starts this itself) -->
+<video id="native" src="tiny.mp4" muted autoplay loop playsinline></video>
+
+<!-- Vector 2: programmatic play() with no gesture, like IG/FB/X IntersectionObserver feeds -->
+<video id="jsplay" src="tiny.mp4" muted loop playsinline></video>
+
+<script>
+var results = { jsPlayResult: 'not-attempted' };
+window.__results = results;
+
+var nativeV = document.getElementById('native');
+var jsV = document.getElementById('jsplay');
+
+// Site-style tap-to-play overlay behavior
+jsV.addEventListener('click', function() {
+  jsV.play().then(
+    function() { results.tapPlayResult = 'resolved'; },
+    function(e) { results.tapPlayResult = 'rejected:' + e.name; });
+});
+
+// Simulate a feed calling play() when a video scrolls into view: no user
+// gesture involved. 2500ms is outside any gesture window from page load.
+setTimeout(function() {
+  jsV.play().then(
+    function() { results.jsPlayResult = 'resolved'; },
+    function(e) { results.jsPlayResult = 'rejected:' + e.name; });
+}, 2500);
+
+// Snapshot the steady state well after both vectors have fired
+setTimeout(function() {
+  results.nativePaused = nativeV.paused;
+  results.jsPaused = jsV.paused;
+  results.blockerInstalled = !!window.__einkbroAutoplayBlocked;
+  document.getElementById('status').textContent = JSON.stringify(results, null, 2);
+}, 4000);
+</script>
+</body>
+</html>

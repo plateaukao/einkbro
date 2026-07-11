@@ -6,17 +6,21 @@ import android.os.Build
 import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebSettings
+import androidx.webkit.ScriptHandler
 import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
 
 class WebViewConfigApplier(
     private val webView: EBWebView,
     private val config: ConfigManager,
 ) {
     private val cookieManager: CookieManager = CookieManager.getInstance()
+    private var autoplayBlockerHandler: ScriptHandler? = null
 
     fun updateDarkMode() {
         if (config.display.darkMode == DarkMode.DISABLED) {
@@ -93,6 +97,34 @@ class WebViewConfigApplier(
         }
         webView.webViewClient.enableAdBlock(config.browser.adBlock)
         toggleCookieSupport(config.browser.cookies)
+        applyAutoplayBlocker()
+    }
+
+    // mediaPlaybackRequiresUserGesture alone can't stop feed sites: muted
+    // playback is exempt from the gesture requirement, and IG/FB/X/Threads
+    // autoplay muted via JS play(). The blocker script must run before any
+    // page script and in every frame (embedded players), which only
+    // addDocumentStartJavaScript guarantees; older WebViews fall back to
+    // onPageStarted injection in EBWebViewClient.
+    private fun applyAutoplayBlocker() {
+        if (!supportsDocumentStartScript()) return
+        if (!config.browser.enableVideoAutoplay) {
+            if (autoplayBlockerHandler == null) {
+                autoplayBlockerHandler = WebViewCompat.addDocumentStartJavaScript(
+                    webView,
+                    HelperUnit.loadAssetFile("disable_video_autoplay.js"),
+                    setOf("*"),
+                )
+            }
+        } else {
+            autoplayBlockerHandler?.remove()
+            autoplayBlockerHandler = null
+        }
+    }
+
+    companion object {
+        fun supportsDocumentStartScript(): Boolean =
+            WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)
     }
 
     fun updateUserAgentString() {
