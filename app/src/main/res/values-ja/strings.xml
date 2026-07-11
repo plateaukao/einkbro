@@ -531,6 +531,8 @@
     <string name="volume_page_turn_summary">音量キーでページをめくる</string>
     <string name="volume_page_turn_paused">音量キーページめくりを5秒間一時停止</string>
     <string name="volume_page_turn_resumed">音量キーページめくりを再開</string>
+    <string name="volume_double_click_back">ダブルクリックで戻る</string>
+    <string name="volume_double_click_back_summary">音量キーを2回押すと前のページに戻ります。1回押すと少し遅れてページをめくります。音量キーでのページめくりが有効になっている必要があります。</string>
     <string name="web_content_processing">ウェブコンテンツ処理</string>
     <string name="web_processing_gpt_type">ページチャット用AIエンジン</string>
     <string name="setting_title_default_ai_engine">デフォルトのAIエンジン</string>

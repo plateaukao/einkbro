@@ -243,6 +243,8 @@
     <string name="volume_page_turn_summary">Χρήση των πλήκτρων έντασης για αλλαγή σελίδας</string>
     <string name="volume_page_turn_paused">Η αλλαγή σελίδας με πλήκτρο έντασης παύει για 5 δευτερόλεπτα</string>
     <string name="volume_page_turn_resumed">Η αλλαγή σελίδας με πλήκτρο έντασης συνεχίστηκε</string>
+    <string name="volume_double_click_back">Διπλό πάτημα για επιστροφή</string>
+    <string name="volume_double_click_back_summary">Πατήστε δύο φορές ένα πλήκτρο έντασης για επιστροφή· ένα πάτημα αλλάζει σελίδα μετά από μικρή καθυστέρηση. Απαιτεί την αλλαγή σελίδας με τα πλήκτρα έντασης.</string>
     <string name="folder_name">Όνομα φακέλου σελιδοδεικτών</string>
     <string name="folder_name_description">Εισάγετε όνομα φακέλου σελιδοδεικτών</string>
     <string name="setting_title_export_bookmarks">Εξαγωγή σελιδοδεικτών</string>

@@ -532,6 +532,8 @@
     <string name="volume_page_turn_summary">Brug lydstyrketasterne til at skifte side</string>
     <string name="volume_page_turn_paused">Sideskift med lydstyrketast sat på pause i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sideskift med lydstyrketast genoptaget</string>
+    <string name="volume_double_click_back">Dobbeltklik for tilbage</string>
+    <string name="volume_double_click_back_summary">Dobbelttryk på en lydstyrketast for at gå tilbage; et enkelt tryk skifter side efter en kort forsinkelse. Kræver sideskift med lydstyrketasterne.</string>
     <string name="web_content_processing">Webindholdsbehandling</string>
     <string name="web_processing_gpt_type">AI-motor til sidechat</string>
     <string name="setting_title_default_ai_engine">Standard AI-motor</string>

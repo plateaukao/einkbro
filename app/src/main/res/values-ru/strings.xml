@@ -587,6 +587,8 @@
     <string name="url_empty">URL пуст</string>
     <string name="volume_page_turn_paused">Перелистывание кнопками громкости приостановлено на 5 секунд</string>
     <string name="volume_page_turn_resumed">Перелистывание кнопками громкости возобновлено</string>
+    <string name="volume_double_click_back">Двойное нажатие — назад</string>
+    <string name="volume_double_click_back_summary">Дважды нажмите клавишу громкости, чтобы вернуться назад; одиночное нажатие перелистывает страницу с небольшой задержкой. Требуется перелистывание страниц клавишами громкости.</string>
     <string name="web_content_processing">Обработка веб-контента</string>
     <string name="web_processing_gpt_type">Движок ИИ для чата со страницей</string>
     <string name="setting_title_default_ai_engine">Движок ИИ по умолчанию</string>

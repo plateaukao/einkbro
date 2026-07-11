@@ -243,6 +243,8 @@
     <string name="volume_page_turn_summary">استخدم مفتاحَي رفع/خفض الصوت لتقليب الصفحات</string>
     <string name="volume_page_turn_paused">تقليب الصفحات بزر الصوت متوقف لمدة 5 ثوانٍ</string>
     <string name="volume_page_turn_resumed">تم استئناف تقليب الصفحات بزر الصوت</string>
+    <string name="volume_double_click_back">نقرة مزدوجة للرجوع</string>
+    <string name="volume_double_click_back_summary">انقر نقرًا مزدوجًا على مفتاح الصوت للرجوع؛ النقرة الواحدة تقلب الصفحة بعد تأخير قصير. يتطلب تفعيل تقليب الصفحات بمفاتيح الصوت.</string>
     <string name="folder_name">اسم مجلد الإشارات المرجعية</string>
     <string name="folder_name_description">أدخل اسم مجلد الإشارات المرجعية</string>
     <string name="setting_title_export_bookmarks">تصدير الإشارات المرجعية</string>

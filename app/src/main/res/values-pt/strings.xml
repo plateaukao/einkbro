@@ -210,6 +210,8 @@
     <string name="volume_page_turn_summary">Usar as teclas de volume para mudar de página</string>
     <string name="volume_page_turn_paused">Mudança de página por volume pausada durante 5 segundos</string>
     <string name="volume_page_turn_resumed">Mudança de página por volume retomada</string>
+    <string name="volume_double_click_back">Duplo clique para voltar</string>
+    <string name="volume_double_click_back_summary">Toque duas vezes numa tecla de volume para voltar; um único toque muda de página após um breve atraso. Requer mudança de página com as teclas de volume.</string>
     <string name="folder_name">Nome da pasta de marcadores</string>
     <string name="folder_name_description">Insira o nome da pasta de marcadores</string>
     <string name="setting_title_export_bookmarks">Exportar marcadores</string>

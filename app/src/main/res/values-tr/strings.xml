@@ -243,6 +243,8 @@
     <string name="volume_page_turn_summary">Sayfaları çevirmek için ses tuşlarını kullanın</string>
     <string name="volume_page_turn_paused">Ses tuşuyla sayfa çevirme 5 saniye duraklatıldı</string>
     <string name="volume_page_turn_resumed">Ses tuşuyla sayfa çevirme devam etti</string>
+    <string name="volume_double_click_back">Geri gitmek için çift tıklama</string>
+    <string name="volume_double_click_back_summary">Geri gitmek için bir ses tuşuna iki kez basın; tek basış kısa bir gecikmeyle sayfayı çevirir. Ses tuşlarıyla sayfa çevirme özelliğinin açık olması gerekir.</string>
     <string name="folder_name">Yer imi klasörü adı</string>
     <string name="folder_name_description">Yer imi klasörü adını girin</string>
     <string name="setting_title_export_bookmarks">Yer imlerini dışa aktar</string>

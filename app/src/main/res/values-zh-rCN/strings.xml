@@ -519,6 +519,8 @@
     <string name="url_empty">网址为空</string>
     <string name="volume_page_turn_paused">音量键翻页已暂停5秒</string>
     <string name="volume_page_turn_resumed">音量键翻页已恢复</string>
+    <string name="volume_double_click_back">双击返回</string>
+    <string name="volume_double_click_back_summary">双击音量键可返回；单击会在短暂延迟后翻页。需要开启音量键翻页。</string>
     <string name="site_force_viewport_width">强制视口宽度 (px)</string>
     <string name="site_force_viewport_width_hint">仅当桌面UA不足时使用</string>
     <string name="search_settings_hint">搜索设置…</string>

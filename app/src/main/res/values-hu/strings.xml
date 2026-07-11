@@ -388,6 +388,8 @@
     <string name="volume_page_turn_summary">Lapozás a hangerőgombokkal</string>
     <string name="volume_page_turn_paused">Hangerőgombos lapozás szüneteltetve 5 másodpercre</string>
     <string name="volume_page_turn_resumed">Hangerőgombos lapozás folytatva</string>
+    <string name="volume_double_click_back">Dupla kattintás a visszalépéshez</string>
+    <string name="volume_double_click_back_summary">Koppintson duplán egy hangerőgombra a visszalépéshez; egyetlen koppintás rövid késleltetés után lapoz. A hangerőgombos lapozás bekapcsolása szükséges.</string>
     <string name="folder_name">Könyvjelző mappa neve</string>
     <string name="folder_name_description">Adja meg a könyvjelző mappa nevét</string>
     <string name="setting_title_export_bookmarks">Könyvjelzők exportálása</string>

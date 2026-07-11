@@ -503,6 +503,8 @@
     <string name="reader_toolbar">Ajuste de barra de lectura</string>
     <string name="volume_page_turn_paused">Paso de página por volumen pausado durante 5 segundos</string>
     <string name="volume_page_turn_resumed">Paso de página por volumen reanudado</string>
+    <string name="volume_double_click_back">Doble clic para atrás</string>
+    <string name="volume_double_click_back_summary">Pulsa dos veces una tecla de volumen para ir atrás; una sola pulsación pasa la página tras un breve retardo. Requiere pasar páginas con las teclas de volumen.</string>
     <string name="toc_delete">Eliminar</string>
     <string name="gpt_scope">Alcance</string>
     <string name="gpt_scope_text_selection">Selección de texto</string>

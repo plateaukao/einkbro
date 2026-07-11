@@ -42,8 +42,8 @@ class KeyHandler(
                 return config.touch.useUpDownPageTurn
             }
 
-            KeyEvent.KEYCODE_VOLUME_DOWN -> return handleVolumeDownKey(event)
-            KeyEvent.KEYCODE_VOLUME_UP -> return handleVolumeUpKey(event)
+            KeyEvent.KEYCODE_VOLUME_DOWN, KeyEvent.KEYCODE_VOLUME_UP ->
+                return handleVolumeKey(keyCode, event)
             KeyEvent.KEYCODE_MENU -> {
                 keyCallback.showMenuDialog()
                 return true
@@ -188,10 +188,13 @@ class KeyHandler(
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var reenableJob: Job? = null
 
-    // Double-click-for-back: a single tap's page turn is deferred by this window
-    // so a second tap of the same key can be caught and treated as "back" instead.
-    private var pendingPageTurnJob: Job? = null
-    private var pendingPageTurnKeyCode: Int = 0
+    // Double-click-for-back: a short press schedules its page turn on key-up,
+    // deferred by DOUBLE_CLICK_WINDOW_MS, so a second press of the same key can
+    // cancel it and go back instead. Scheduling on key-up (not key-down) matters:
+    // the long-press callback only fires after ~400-500ms, so a turn deferred
+    // from key-down would fire mid-hold before it could be cancelled.
+    private val pendingPageTurnJobs = mutableMapOf<Int, Job>()
+    private var backHandledKeyCode: Int? = null
 
     private fun scheduleReenableVolumePageTurn() {
         reenableJob?.cancel()
@@ -207,29 +210,31 @@ class KeyHandler(
         scope.cancel()
     }
 
-    // Returns true if this press was consumed by the double-click gate.
-    // First tap of a key schedules a deferred page turn; a second tap of the
-    // same key within the window cancels it and goes back instead.
-    private fun handleVolumeDoubleClick(keyCode: Int): Boolean {
-        val pending = pendingPageTurnJob
-        if (pending?.isActive == true && pendingPageTurnKeyCode == keyCode) {
+    // A second press of the same key while its page turn is still pending is a
+    // double-click: drop the turn and go back. A first press just consumes the
+    // event; its page turn is scheduled when the key is released.
+    private fun handleVolumeDoubleClickDown(keyCode: Int): Boolean {
+        val pending = pendingPageTurnJobs.remove(keyCode)
+        if (pending?.isActive == true) {
             pending.cancel()
-            pendingPageTurnJob = null
+            backHandledKeyCode = keyCode
             keyCallback.handleBackKey()
-            return true
-        }
-        pendingPageTurnKeyCode = keyCode
-        pendingPageTurnJob = scope.launch {
-            delay(DOUBLE_CLICK_WINDOW_MS)
-            performVolumePageTurn(keyCode)
-            pendingPageTurnJob = null
         }
         return true
     }
 
-    private fun cancelPendingPageTurn() {
-        pendingPageTurnJob?.cancel()
-        pendingPageTurnJob = null
+    private fun scheduleDeferredPageTurn(keyCode: Int) {
+        pendingPageTurnJobs.remove(keyCode)?.cancel()
+        pendingPageTurnJobs[keyCode] = scope.launch {
+            delay(DOUBLE_CLICK_WINDOW_MS)
+            performVolumePageTurn(keyCode)
+            pendingPageTurnJobs.remove(keyCode)
+        }
+    }
+
+    private fun cancelPendingPageTurns() {
+        pendingPageTurnJobs.values.forEach { it.cancel() }
+        pendingPageTurnJobs.clear()
     }
 
     private fun performVolumePageTurn(keyCode: Int) {
@@ -243,8 +248,9 @@ class KeyHandler(
     fun onKeyLongPress(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             if (config.touch.volumePageTurn) {
-                // A long press is not a double tap: drop any deferred page turn.
-                cancelPendingPageTurn()
+                // Page turning is pausing: drop any page turn still pending
+                // from an earlier tap (possibly of the other volume key).
+                cancelPendingPageTurns()
                 isVolumeLongPress = true
                 isVolumeTemporarilyDisabled = true
                 scheduleReenableVolumePageTurn()
@@ -260,8 +266,15 @@ class KeyHandler(
     fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             if (config.touch.volumePageTurn) {
+                val wasBackHandled = backHandledKeyCode == keyCode
+                if (wasBackHandled) backHandledKeyCode = null
+                val wasLongPress = isVolumeLongPress
                 isVolumeLongPress = false
-                return !isVolumeTemporarilyDisabled
+                if (isVolumeTemporarilyDisabled) return false
+                if (config.touch.volumeDoubleClickBack && !wasBackHandled && !wasLongPress) {
+                    scheduleDeferredPageTurn(keyCode)
+                }
+                return true
             }
         }
         return false
@@ -279,70 +292,31 @@ class KeyHandler(
     }
 
     companion object {
-        // Gap allowed between the two taps of a double-click. This is also the
-        // delay added to a single tap's page turn when the feature is enabled.
+        // How long after releasing a volume key a second press still counts as
+        // a double-click. This is also the delay added to a single tap's page
+        // turn when the feature is enabled. Must stay well below the system
+        // long-press timeout so a double-click can't be mistaken for a hold.
         private const val DOUBLE_CLICK_WINDOW_MS = 250L
     }
 
-    private fun handleVolumeDownKey(event: KeyEvent): Boolean {
-        if (config.touch.volumePageTurn) {
-            if (isVolumeTemporarilyDisabled) {
-                if (event.repeatCount == 0) extendVolumeDisablePeriod()
-                return false
-            }
-            if (event.repeatCount == 0) {
-                isVolumeLongPress = false
-                event.startTracking()
-                if (config.touch.volumeDoubleClickBack) {
-                    return handleVolumeDoubleClick(KeyEvent.KEYCODE_VOLUME_DOWN)
-                }
-                if (ebWebView.isVerticalRead) {
-                    ebWebView.pageUpWithNoAnimation()
-                } else {
-                    ebWebView.pageDownWithNoAnimation()
-                }
-                return true
-            } else {
-                // Held down: abandon any pending single-tap page turn.
-                cancelPendingPageTurn()
-                if (isVolumeLongPress) {
-                    adjustVolume(KeyEvent.KEYCODE_VOLUME_DOWN)
-                    return true
-                }
-                return true
-            }
+    private fun handleVolumeKey(keyCode: Int, event: KeyEvent): Boolean {
+        if (!config.touch.volumePageTurn) return false
+        if (isVolumeTemporarilyDisabled) {
+            if (event.repeatCount == 0) extendVolumeDisablePeriod()
+            return false
         }
-        return false
-    }
-
-    private fun handleVolumeUpKey(event: KeyEvent): Boolean {
-        if (config.touch.volumePageTurn) {
-            if (isVolumeTemporarilyDisabled) {
-                if (event.repeatCount == 0) extendVolumeDisablePeriod()
-                return false
+        if (event.repeatCount == 0) {
+            isVolumeLongPress = false
+            event.startTracking()
+            if (config.touch.volumeDoubleClickBack) {
+                return handleVolumeDoubleClickDown(keyCode)
             }
-            if (event.repeatCount == 0) {
-                isVolumeLongPress = false
-                event.startTracking()
-                if (config.touch.volumeDoubleClickBack) {
-                    return handleVolumeDoubleClick(KeyEvent.KEYCODE_VOLUME_UP)
-                }
-                if (ebWebView.isVerticalRead) {
-                    ebWebView.pageDownWithNoAnimation()
-                } else {
-                    ebWebView.pageUpWithNoAnimation()
-                }
-                return true
-            } else {
-                // Held down: abandon any pending single-tap page turn.
-                cancelPendingPageTurn()
-                if (isVolumeLongPress) {
-                    adjustVolume(KeyEvent.KEYCODE_VOLUME_UP)
-                    return true
-                }
-                return true
-            }
+            performVolumePageTurn(keyCode)
+            return true
         }
-        return false
+        if (isVolumeLongPress) {
+            adjustVolume(keyCode)
+        }
+        return true
     }
 }

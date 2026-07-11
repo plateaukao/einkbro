@@ -533,6 +533,8 @@
     <string name="volume_page_turn_summary">Dùng phím âm lượng để lật trang</string>
     <string name="volume_page_turn_paused">Lật trang bằng phím âm lượng đã tạm dừng 5 giây</string>
     <string name="volume_page_turn_resumed">Lật trang bằng phím âm lượng đã tiếp tục</string>
+    <string name="volume_double_click_back">Nhấn đúp để quay lại</string>
+    <string name="volume_double_click_back_summary">Nhấn đúp phím âm lượng để quay lại; nhấn một lần sẽ lật trang sau một khoảng trễ ngắn. Yêu cầu bật lật trang bằng phím âm lượng.</string>
     <string name="web_content_processing">Xử lý nội dung web</string>
     <string name="web_processing_gpt_type">Engine AI cho trò chuyện trang web</string>
     <string name="setting_title_default_ai_engine">Engine AI mặc định</string>
