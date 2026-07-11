@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.setting
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.browser.BrowserAction
+import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import kotlin.reflect.KMutableProperty0
 
@@ -43,6 +44,14 @@ class ToolbarPositionSettingItem(
     override val iconId: Int = 0,
     override val summaryResId: Int = 0,
     val config: KMutableProperty0<ToolbarPosition>,
+    override val span: Int = 1,
+) : SettingItemInterface
+
+class EinkImageSettingItem(
+    override val titleResId: Int,
+    override val iconId: Int = 0,
+    override val summaryResId: Int = 0,
+    val config: KMutableProperty0<EinkImageAdjustment>,
     override val span: Int = 1,
 ) : SettingItemInterface
 

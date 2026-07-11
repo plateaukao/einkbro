@@ -6,6 +6,7 @@ import info.plateaukao.einkbro.activity.MenuItemHideActivity
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
+import info.plateaukao.einkbro.setting.EinkImageSettingItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.ValueSettingItem
@@ -86,19 +87,11 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
                 R.string.dark_mode_disabled,
             )
         ),
-        ListSettingWithEnumItem(
+        EinkImageSettingItem(
             R.string.eink_image_adjustment,
             0,
             R.string.eink_image_adjustment_summary,
             config.display::einkImageAdjustment,
-            listOf(
-                R.string.eink_image_off,
-                R.string.eink_image_10,
-                R.string.eink_image_30,
-                R.string.eink_image_50,
-                R.string.eink_image_70,
-                R.string.eink_image_100,
-            )
         ),
         ListSettingWithEnumItem(
             R.string.setting_title_nav_pos,

@@ -1,6 +1,10 @@
 package info.plateaukao.einkbro.setting
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -31,6 +36,7 @@ import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,24 +48,34 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.navigation.NavHostController
 import info.plateaukao.einkbro.BuildConfig
+import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import info.plateaukao.einkbro.preference.toggle
+import info.plateaukao.einkbro.unit.EinkImageProcessor
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SettingItemUi(
@@ -488,6 +504,133 @@ private fun ToolbarPositionDiagram(
 }
 
 @Composable
+fun EinkImageSettingItemUi(
+    setting: EinkImageSettingItem,
+    showBorder: Boolean = false,
+) {
+    val current = remember(setting) { mutableStateOf(setting.config.get()) }
+    var showDialog by remember(setting) { mutableStateOf(false) }
+
+    SettingItemUi(
+        setting = setting,
+        extraTitlePostfix = ": ${stringResource(current.value.labelResId)}",
+        showBorder = showBorder,
+    ) {
+        showDialog = true
+    }
+
+    if (showDialog) {
+        EinkImageAdjustmentDialog(
+            titleResId = setting.titleResId,
+            initial = current.value,
+            onDismiss = { showDialog = false },
+            onConfirm = { adjustment ->
+                setting.config.set(adjustment)
+                current.value = adjustment
+                showDialog = false
+            },
+        )
+    }
+}
+
+@Composable
+private fun EinkImageAdjustmentDialog(
+    titleResId: Int,
+    initial: EinkImageAdjustment,
+    onDismiss: () -> Unit,
+    onConfirm: (EinkImageAdjustment) -> Unit,
+) {
+    var pending by remember { mutableStateOf(initial) }
+    val context = LocalContext.current
+    val original = remember {
+        BitmapFactory.decodeResource(context.resources, R.drawable.eink_image_preview)
+    }
+    var preview by remember { mutableStateOf(original.asImageBitmap()) }
+    LaunchedEffect(pending) {
+        preview = if (pending.strength <= 0) {
+            original.asImageBitmap()
+        } else {
+            withContext(Dispatchers.Default) {
+                EinkImageProcessor
+                    .process(original.copy(Bitmap.Config.ARGB_8888, true), pending.strength)
+                    .asImageBitmap()
+            }
+        }
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background, RoundedCornerShape(8.dp))
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colors.onBackground,
+                    shape = RoundedCornerShape(8.dp),
+                )
+                .padding(16.dp),
+        ) {
+            Text(
+                text = stringResource(titleResId),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Image(
+                bitmap = preview,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(240.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .border(1.dp, MaterialTheme.colors.onBackground),
+                contentScale = ContentScale.Fit,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                EinkImageAdjustment.entries.forEach { adjustment ->
+                    val selected = adjustment == pending
+                    Text(
+                        text = stringResource(adjustment.labelResId),
+                        fontSize = 14.sp,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .weight(1f)
+                            .border(
+                                width = if (selected) 2.dp else 1.dp,
+                                color = if (selected) MaterialTheme.colors.onBackground
+                                else MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+                                shape = RoundedCornerShape(4.dp),
+                            )
+                            .clickable { pending = adjustment }
+                            .padding(vertical = 8.dp),
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.align(Alignment.End)) {
+                TextButton(onClick = onDismiss) {
+                    Text(
+                        text = stringResource(android.R.string.cancel),
+                        color = MaterialTheme.colors.onBackground,
+                    )
+                }
+                TextButton(onClick = { onConfirm(pending) }) {
+                    Text(
+                        text = stringResource(android.R.string.ok),
+                        color = MaterialTheme.colors.onBackground,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun ListSettingWithStringItemUi(
     setting: ListSettingWithStrResIdItem,
     dialogManager: DialogManager,
@@ -740,6 +883,11 @@ fun SearchSettingScreen(
                         showBorder
                     )
 
+                    is EinkImageSettingItem -> EinkImageSettingItemUi(
+                        setting,
+                        showBorder
+                    )
+
                     is ListSettingWithStrResIdItem -> ListSettingWithStringItemUi(
                         setting,
                         dialogManager,
@@ -831,6 +979,11 @@ fun SettingScreen(
                     )
 
                     is ToolbarPositionSettingItem -> ToolbarPositionSettingItemUi(
+                        setting,
+                        showBorder
+                    )
+
+                    is EinkImageSettingItem -> EinkImageSettingItemUi(
                         setting,
                         showBorder
                     )
