@@ -1,3 +1,26 @@
+### 15.17.0
+#### Features
+* AI agent tool upgrade: the LLM agent can now read a page's real HTML source, run JavaScript on the live page, search the web, and export multi-chapter EPUBs
+
+#### Improvements
+* Compose performance pass: far fewer recompositions in the toolbar, tab overview, context menu, TTS dialog, GPT query list, and adblock list; favicon bitmaps are cached
+* Config screens share a common scaffold and follow the app locale
+
+#### Fixes
+* In-place translation no longer requests each paragraph twice
+* "Allow video autoplay" setting now actually blocks autoplay on feed sites
+* Fullscreen on Android 11+: system bars swipe in transiently and restore symmetrically when leaving fullscreen
+* Fixed three WebView lifecycle leaks; background tab WebViews are detached and hidden properly
+* Closing all tabs is now a single batch operation
+* In-progress edits in config screens survive rotation; GPT action dialog no longer wipes typed fields
+* Two-pane layout keeps its arrangement and split ratio across orientation changes
+* Toolbar and status-bar clocks tick once per minute, aligned to the minute
+* Highlights export no longer mixes up article IDs
+* Hardware Enter in the URL bar no longer submits twice; D-pad focus navigation works when page-turn keys are off
+* HTTP-auth dialog masks the password field
+* Font boldness slider no longer lags one step behind; FAB position no longer gets wiped in portrait
+* Many other small UI fixes from a full audit (suggestion row height, auto-hide-toolbar scroll threshold, tab focus border, drag smoothness)
+
 ### 15.16.0
 #### Features
 * Save as PDF: every saved page gets a table-of-contents (outline) entry, and pages can be appended to an existing PDF — collect articles into one document with a navigable TOC

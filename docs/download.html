@@ -69,6 +69,36 @@
 <h2>Changelog</h2>
 
 <div class="changelog-version">
+<h3>15.17.0</h3>
+
+<h4>Features</h4>
+<ul>
+<li>AI agent tool upgrade: the LLM agent can now read a page's real HTML source, run JavaScript on the live page, search the web, and export multi-chapter EPUBs</li>
+</ul>
+
+<h4>Improvements</h4>
+<ul>
+<li>Compose performance pass: far fewer recompositions in the toolbar, tab overview, context menu, TTS dialog, GPT query list, and adblock list; favicon bitmaps are cached</li>
+<li>Config screens share a common scaffold and follow the app locale</li>
+</ul>
+
+<h4>Fixes</h4>
+<ul>
+<li>In-place translation no longer requests each paragraph twice</li>
+<li>"Allow video autoplay" setting now actually blocks autoplay on feed sites</li>
+<li>Fullscreen on Android 11+: system bars swipe in transiently and restore symmetrically when leaving fullscreen</li>
+<li>Fixed three WebView lifecycle leaks; background tab WebViews are detached and hidden properly</li>
+<li>Closing all tabs is now a single batch operation</li>
+<li>In-progress edits in config screens survive rotation; GPT action dialog no longer wipes typed fields</li>
+<li>Two-pane layout keeps its arrangement and split ratio across orientation changes</li>
+<li>Toolbar and status-bar clocks tick once per minute, aligned to the minute</li>
+<li>Highlights export no longer mixes up article IDs</li>
+<li>Hardware Enter in the URL bar no longer submits twice; D-pad focus navigation works when page-turn keys are off</li>
+<li>Many other small UI fixes from a full audit (HTTP-auth password masking, font boldness slider, FAB position, drag smoothness, tab focus border)</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>15.16.0</h3>
 
 <h4>Features</h4>
