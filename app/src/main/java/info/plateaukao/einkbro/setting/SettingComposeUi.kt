@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -47,6 +48,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -67,6 +70,7 @@ import androidx.navigation.NavHostController
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.EinkImageAdjustment
+import info.plateaukao.einkbro.preference.EinkImageMode
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.unit.EinkImageProcessor
@@ -523,9 +527,11 @@ fun EinkImageSettingItemUi(
         EinkImageAdjustmentDialog(
             titleResId = setting.titleResId,
             initial = current.value,
+            initialMode = setting.modeConfig.get(),
             onDismiss = { showDialog = false },
-            onConfirm = { adjustment ->
+            onConfirm = { adjustment, mode ->
                 setting.config.set(adjustment)
+                setting.modeConfig.set(mode)
                 current.value = adjustment
                 showDialog = false
             },
@@ -533,21 +539,76 @@ fun EinkImageSettingItemUi(
     }
 }
 
+/**
+ * Approximates the FAST mode CSS filter (brightness/contrast/saturate) so the
+ * preview shows what pages will render. Keep the factors in sync with
+ * WebViewReaderHelper.einkImageFilterCss().
+ */
+private fun cssFilterColorMatrix(strength: Int): ColorMatrix {
+    val t = strength / 100f
+    val b = 1f + 0.15f * t
+    val c = 1f + 0.2f * t
+    val s = 1f + 0.8f * t
+    val matrix = android.graphics.ColorMatrix()
+    matrix.setScale(b, b, b, 1f) // brightness
+    val offset = 127.5f * (1f - c)
+    matrix.postConcat(
+        android.graphics.ColorMatrix(
+            floatArrayOf(
+                c, 0f, 0f, 0f, offset,
+                0f, c, 0f, 0f, offset,
+                0f, 0f, c, 0f, offset,
+                0f, 0f, 0f, 1f, 0f,
+            )
+        )
+    ) // contrast
+    matrix.postConcat(android.graphics.ColorMatrix().apply { setSaturation(s) })
+    return ColorMatrix(matrix.array)
+}
+
+@Composable
+private fun RowScope.EinkOptionChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Text(
+        text = text,
+        fontSize = 14.sp,
+        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .weight(1f)
+            .border(
+                width = if (selected) 2.dp else 1.dp,
+                color = if (selected) MaterialTheme.colors.onBackground
+                else MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+                shape = RoundedCornerShape(4.dp),
+            )
+            .clickable(onClick = onClick)
+            .padding(vertical = 8.dp),
+    )
+}
+
 @Composable
 private fun EinkImageAdjustmentDialog(
     titleResId: Int,
     initial: EinkImageAdjustment,
+    initialMode: EinkImageMode,
     onDismiss: () -> Unit,
-    onConfirm: (EinkImageAdjustment) -> Unit,
+    onConfirm: (EinkImageAdjustment, EinkImageMode) -> Unit,
 ) {
     var pending by remember { mutableStateOf(initial) }
+    var pendingMode by remember { mutableStateOf(initialMode) }
     val context = LocalContext.current
     val original = remember {
         BitmapFactory.decodeResource(context.resources, R.drawable.eink_image_preview)
     }
     var preview by remember { mutableStateOf(original.asImageBitmap()) }
-    LaunchedEffect(pending) {
-        preview = if (pending.strength <= 0) {
+    LaunchedEffect(pending, pendingMode) {
+        // FAST mode is previewed with a ColorFilter on the original instead
+        preview = if (pending.strength <= 0 || pendingMode == EinkImageMode.FAST) {
             original.asImageBitmap()
         } else {
             withContext(Dispatchers.Default) {
@@ -584,6 +645,11 @@ private fun EinkImageAdjustmentDialog(
                     .align(Alignment.CenterHorizontally)
                     .border(1.dp, MaterialTheme.colors.onBackground),
                 contentScale = ContentScale.Fit,
+                colorFilter = if (pendingMode == EinkImageMode.FAST && pending.strength > 0) {
+                    ColorFilter.colorMatrix(cssFilterColorMatrix(pending.strength))
+                } else {
+                    null
+                },
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -591,23 +657,23 @@ private fun EinkImageAdjustmentDialog(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 EinkImageAdjustment.entries.forEach { adjustment ->
-                    val selected = adjustment == pending
-                    Text(
+                    EinkOptionChip(
                         text = stringResource(adjustment.labelResId),
-                        fontSize = 14.sp,
-                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.onBackground,
-                        modifier = Modifier
-                            .weight(1f)
-                            .border(
-                                width = if (selected) 2.dp else 1.dp,
-                                color = if (selected) MaterialTheme.colors.onBackground
-                                else MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
-                                shape = RoundedCornerShape(4.dp),
-                            )
-                            .clickable { pending = adjustment }
-                            .padding(vertical = 8.dp),
+                        selected = adjustment == pending,
+                        onClick = { pending = adjustment },
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                EinkImageMode.entries.forEach { mode ->
+                    EinkOptionChip(
+                        text = stringResource(mode.labelResId),
+                        selected = mode == pendingMode,
+                        onClick = { pendingMode = mode },
                     )
                 }
             }
@@ -619,7 +685,7 @@ private fun EinkImageAdjustmentDialog(
                         color = MaterialTheme.colors.onBackground,
                     )
                 }
-                TextButton(onClick = { onConfirm(pending) }) {
+                TextButton(onClick = { onConfirm(pending, pendingMode) }) {
                     Text(
                         text = stringResource(android.R.string.ok),
                         color = MaterialTheme.colors.onBackground,

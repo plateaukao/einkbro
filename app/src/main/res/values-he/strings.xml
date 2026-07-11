@@ -365,6 +365,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">עמוק (דיתרינג)</string>
+    <string name="eink_image_mode_fast">מהיר (מסנן CSS)</string>
     <string name="menu_save_archive">שמירה למועד מאוחר</string>
     <string name="toast_saved_page">העמוד נשמר. לחץ לחיצה ארוכה על סמל זה כדי לצפות ברשימה השמורה.</string>
     <string name="toast_save_page_failed">שמירת העמוד נכשלה</string>

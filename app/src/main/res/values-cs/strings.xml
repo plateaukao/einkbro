@@ -361,6 +361,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Hloubkový (dithering)</string>
+    <string name="eink_image_mode_fast">Rychlý (CSS filtr)</string>
     <string name="menu_save_archive">Uložit na později</string>
     <string name="toast_saved_page">Stránka uložena. Dlouhým stiskem této ikony zobrazíte uložené.</string>
     <string name="toast_save_page_failed">Uložení stránky selhalo</string>

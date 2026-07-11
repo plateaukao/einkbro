@@ -446,6 +446,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Deep (dithering)</string>
+    <string name="eink_image_mode_fast">Fast (CSS filter)</string>
     <string name="menu_save_archive">Save for later</string>
     <string name="menu_save_mht">Save as MHT</string>
     <string name="toast_saved_page">Page saved. Long press this icon to view saved list.</string>

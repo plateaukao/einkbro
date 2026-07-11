@@ -365,6 +365,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Βαθιά (dithering)</string>
+    <string name="eink_image_mode_fast">Γρήγορη (φίλτρο CSS)</string>
     <string name="menu_save_archive">Αποθήκευση για αργότερα</string>
     <string name="toast_saved_page">Η σελίδα αποθηκεύτηκε. Πατήστε παρατεταμένα αυτό το εικονίδιο για προβολή αποθηκευμένης λίστας.</string>
     <string name="toast_save_page_failed">Αποτυχία αποθήκευσης σελίδας</string>

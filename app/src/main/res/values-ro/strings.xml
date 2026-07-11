@@ -350,6 +350,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Profund (dithering)</string>
+    <string name="eink_image_mode_fast">Rapid (filtru CSS)</string>
     <string name="menu_save_archive">Salvare pentru mai târziu</string>
     <string name="toast_saved_page">Pagină salvată. Apăsați lung această pictogramă pentru a vedea lista.</string>
     <string name="toast_save_page_failed">Salvarea paginii a eșuat</string>

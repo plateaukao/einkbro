@@ -484,7 +484,7 @@
 <div class="setting-item"><div class="setting-item__name">換頁保留高度</div><div class="setting-item__desc"><span class="tag">輸入</span> 翻至下一頁時保留的像素或百分比（作為上下文重疊）。預設：<code>80</code>。</div></div>
 <div class="setting-item"><div class="setting-item__name">閱讀模式留白</div><div class="setting-item__desc"><span class="tag">輸入</span> 閱讀模式內容的留白像素值。預設：<code>10</code>。</div></div>
 <div class="setting-item"><div class="setting-item__name">深色模式</div><div class="setting-item__desc"><span class="tag">選項</span> 可選：<code>跟隨系統</code>、<code>強制開啟</code>、<code>停用</code>。預設：跟隨系統。</div></div>
-<div class="setting-item"><div class="setting-item__name">E-Ink 圖片最佳化</div><div class="setting-item__desc"><span class="tag">選項</span> 調整網頁圖片（JPEG/PNG/WebP）以適合 E-Ink 顯示：等級越高，陰影越亮、飽和度越高，並套用抖色處理，讓照片在 E-Ink 螢幕上更清晰。選擇對話框會即時預覽所選等級的效果。可選：<code>關閉</code>、<code>10%</code>、<code>30%</code>、<code>50%</code>、<code>70%</code>、<code>100%</code>。預設：關閉。</div></div>
+<div class="setting-item"><div class="setting-item__name">E-Ink 圖片最佳化</div><div class="setting-item__desc"><span class="tag">選項</span> 調整網頁圖片（JPEG/PNG/WebP）以適合 E-Ink 顯示：等級越高，陰影越亮、飽和度越高，並套用抖色處理，讓照片在 E-Ink 螢幕上更清晰。選擇對話框會即時預覽所選等級的效果，並可選擇處理模式：<code>深度</code>會重新編碼圖片並套用完整抖色；<code>快速</code>則改用輕量的 CSS 濾鏡，不耗處理效能，也涵蓋 JS 產生的圖片，但沒有抖色效果。可選：<code>關閉</code>、<code>10%</code>、<code>30%</code>、<code>50%</code>、<code>70%</code>、<code>100%</code>。預設：關閉、深度。</div></div>
 <div class="gallery__grid" style="margin: 1rem 0;">
   <figure class="gallery__item"><img src="../images/eink_image_original.jpg" alt="原始圖片（未最佳化）" loading="lazy"><figcaption>關閉（原圖）</figcaption></figure>
   <figure class="gallery__item"><img src="../images/eink_image_10.jpg" alt="E-Ink 圖片最佳化 10%" loading="lazy"><figcaption>10%</figcaption></figure>

@@ -510,6 +510,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Mély (dithering)</string>
+    <string name="eink_image_mode_fast">Gyors (CSS-szűrő)</string>
     <string name="menu_save_archive">Mentés későbbre</string>
     <string name="toast_saved_page">Oldal mentve. Tartsa hosszan nyomva ezt az ikont a mentett lista megtekintéséhez.</string>
     <string name="toast_save_page_failed">Az oldal mentése sikertelen</string>

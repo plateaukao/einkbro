@@ -107,6 +107,14 @@ enum class EinkImageAdjustment(val strength: Int, val labelResId: Int) {
     LEVEL_100(100, R.string.eink_image_100),
 }
 
+// DEEP re-encodes images at the network layer (full pipeline incl. dithering);
+// FAST injects a CSS filter instead: no CPU/re-encode cost, and it also covers
+// data:/blob: URIs and JS-generated images, but can't dither.
+enum class EinkImageMode(val labelResId: Int) {
+    DEEP(R.string.eink_image_mode_deep),
+    FAST(R.string.eink_image_mode_fast),
+}
+
 enum class ToolbarPosition {
     Bottom, Top, Left, Right
 }

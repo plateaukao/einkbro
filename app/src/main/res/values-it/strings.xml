@@ -341,6 +341,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Profondo (dithering)</string>
+    <string name="eink_image_mode_fast">Veloce (filtro CSS)</string>
     <string name="menu_save_archive">Salva per dopo</string>
     <string name="toast_saved_page">Pagina salvata. Premi a lungo questa icona per vedere la lista.</string>
     <string name="toast_save_page_failed">Salvataggio pagina fallito</string>

@@ -92,6 +92,7 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
             0,
             R.string.eink_image_adjustment_summary,
             config.display::einkImageAdjustment,
+            config.display::einkImageMode,
         ),
         ListSettingWithEnumItem(
             R.string.setting_title_nav_pos,

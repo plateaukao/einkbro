@@ -537,6 +537,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Profundo (tramado)</string>
+    <string name="eink_image_mode_fast">Rápido (filtro CSS)</string>
     <string name="setting_title_text_wrap_reflow">Reflujo de texto</string>
     <string name="setting_summary_text_wrap_reflow">Refluir texto al hacer zoom</string>
     <string name="setting_title_zoom_in_custom_view">Zoom en vista personalizada</string>

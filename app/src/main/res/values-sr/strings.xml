@@ -220,6 +220,8 @@
     <string name="duplicate_tab">Дуплирај картицу</string>
     <string name="eink_image_10">10%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Дубоко (дитеринг)</string>
+    <string name="eink_image_mode_fast">Брзо (CSS филтер)</string>
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>

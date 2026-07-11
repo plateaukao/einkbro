@@ -4,6 +4,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.browser.BrowserAction
 import info.plateaukao.einkbro.preference.EinkImageAdjustment
+import info.plateaukao.einkbro.preference.EinkImageMode
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import kotlin.reflect.KMutableProperty0
 
@@ -52,6 +53,7 @@ class EinkImageSettingItem(
     override val iconId: Int = 0,
     override val summaryResId: Int = 0,
     val config: KMutableProperty0<EinkImageAdjustment>,
+    val modeConfig: KMutableProperty0<EinkImageMode>,
     override val span: Int = 1,
 ) : SettingItemInterface
 

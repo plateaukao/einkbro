@@ -350,6 +350,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Profond (tramage)</string>
+    <string name="eink_image_mode_fast">Rapide (filtre CSS)</string>
     <string name="menu_save_archive">Enregistrer pour plus tard</string>
     <string name="toast_saved_page">Page enregistrée. Appui long sur cette icône pour voir la liste.</string>
     <string name="toast_save_page_failed">Échec de l\'enregistrement de la page</string>

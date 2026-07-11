@@ -74,6 +74,12 @@ class DisplayConfig(private val sp: SharedPreferences) {
         }
         set(value) = sp.edit { putInt(K_ENABLE_IMAGE_ADJUSTMENT, value.ordinal) }
 
+    var einkImageMode: EinkImageMode
+        get() = EinkImageMode.entries.getOrElse(
+            sp.getInt(K_EINK_IMAGE_MODE, 0)
+        ) { EinkImageMode.DEEP }
+        set(value) = sp.edit { putInt(K_EINK_IMAGE_MODE, value.ordinal) }
+
     var highlightStyle: HighlightStyle
         get() = HighlightStyle.entries[sp.getInt(K_HIGHLIGHT_STYLE, 0)]
         set(value) = sp.edit { putInt(K_HIGHLIGHT_STYLE, value.ordinal) }
@@ -106,6 +112,7 @@ class DisplayConfig(private val sp: SharedPreferences) {
         const val K_FONT_FOLDER_URI = "sp_font_folder_uri"
         const val K_DARK_MODE = "sp_dark_mode"
         const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
+        const val K_EINK_IMAGE_MODE = "sp_eink_image_mode"
         const val K_HIGHLIGHT_STYLE = "sp_highlight_style"
         const val K_ENABLE_ZOOM = "sp_enable_zoom"
         const val K_ENABLE_ZOOM_TEXT_WRAP_REFLOW = "sp_enable_zoom_text_wrap_reflow"

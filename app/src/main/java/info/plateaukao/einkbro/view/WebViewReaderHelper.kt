@@ -1,8 +1,10 @@
 package info.plateaukao.einkbro.view
 
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.EinkImageMode
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.unit.HelperUnit.loadAssetFile
+import java.util.Locale
 
 class WebViewReaderHelper(
     private val webView: EBWebView,
@@ -69,10 +71,27 @@ class WebViewReaderHelper(
                     (if (isBoldFont)
                         WebViewJsBridge.BOLD_FONT_CSS.replace("value", "$boldness") else "") +
                     (if (isEpubReaderMode) loadAssetFile("readerview.css") else "") +
+                    einkImageFilterCss() +
                     config.getCustomCss(url).orEmpty()
         if (cssStyle.isNotBlank()) {
             webView.jsBridge.injectCss(cssStyle.toByteArray())
         }
+    }
+
+    /**
+     * FAST e-ink image mode: adjust images with a render-time CSS filter
+     * instead of re-encoding them at the network layer (see EinkImageMode).
+     * Roughly matches the DEEP pipeline's tone/saturation lift.
+     */
+    private fun einkImageFilterCss(): String {
+        if (config.display.einkImageMode != EinkImageMode.FAST) return ""
+        val strength = config.display.einkImageAdjustment.strength
+        if (strength <= 0) return ""
+        val t = strength / 100.0
+        val brightness = String.format(Locale.ROOT, "%.3f", 1.0 + 0.15 * t)
+        val contrast = String.format(Locale.ROOT, "%.3f", 1.0 + 0.2 * t)
+        val saturate = String.format(Locale.ROOT, "%.3f", 1.0 + 0.8 * t)
+        return "img { filter: brightness($brightness) contrast($contrast) saturate($saturate) !important; }"
     }
 
     private fun getCustomFontCss(): String {

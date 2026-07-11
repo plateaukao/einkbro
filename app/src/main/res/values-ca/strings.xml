@@ -332,6 +332,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Profund (tramat)</string>
+    <string name="eink_image_mode_fast">Ràpid (filtre CSS)</string>
     <string name="menu_save_archive">Desar per a més tard</string>
     <string name="toast_saved_page">Pàgina desada. Premeu llargament aquesta icona per veure la llista desada.</string>
     <string name="toast_save_page_failed">Error en desar la pàgina</string>

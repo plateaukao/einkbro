@@ -464,6 +464,8 @@
     <string name="drag_to_reorder">ᱵᱩᱠᱢᱟᱨᱠ ᱠᱚ ᱫᱩᱦᱲᱟᱹ ᱥᱟᱡᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱴᱟᱱᱟᱭ ᱢᱮ</string>
     <string name="eink_image_10">10%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Deep (dithering)</string>
+    <string name="eink_image_mode_fast">Fast (CSS filter)</string>
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>

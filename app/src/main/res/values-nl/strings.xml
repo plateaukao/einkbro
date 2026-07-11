@@ -349,6 +349,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Diep (dithering)</string>
+    <string name="eink_image_mode_fast">Snel (CSS-filter)</string>
     <string name="menu_save_archive">Bewaren voor later</string>
     <string name="toast_saved_page">Pagina opgeslagen. Houd dit icoon ingedrukt om de opgeslagen lijst te bekijken.</string>
     <string name="toast_save_page_failed">Pagina opslaan mislukt</string>

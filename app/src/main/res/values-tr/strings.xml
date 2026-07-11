@@ -365,6 +365,8 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Derin (dithering)</string>
+    <string name="eink_image_mode_fast">Hızlı (CSS filtresi)</string>
     <string name="menu_save_archive">Daha sonra için kaydet</string>
     <string name="toast_saved_page">Sayfa kaydedildi. Kayıtlı listeyi görüntülemek için bu simgeye uzun basın.</string>
     <string name="toast_save_page_failed">Sayfa kaydedilemedi</string>

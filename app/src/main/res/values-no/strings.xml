@@ -223,6 +223,8 @@
     <string name="duplicate_tab">Dupliser fane</string>
     <string name="eink_image_10">10%</string>
     <string name="eink_image_100">100%</string>
+    <string name="eink_image_mode_deep">Dyp (dithering)</string>
+    <string name="eink_image_mode_fast">Rask (CSS-filter)</string>
     <string name="eink_image_30">30%</string>
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
