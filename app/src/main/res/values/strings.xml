@@ -267,6 +267,8 @@
     <string name="volume_page_turn_summary">Use volume up/down keys to turn pages</string>
     <string name="volume_page_turn_paused">Volume page turn paused for 5 seconds</string>
     <string name="volume_page_turn_resumed">Volume page turn resumed</string>
+    <string name="volume_double_click_back">Double-click for back</string>
+    <string name="volume_double_click_back_summary">Double-tap a volume key to go back; a single tap turns the page after a short delay. Requires volume key page turn.</string>
     <string name="folder_name">Bookmark folder name</string>
     <string name="folder_name_description">Insert Bookmark folder name</string>
     <string name="setting_title_export_bookmarks">Export bookmarks</string>

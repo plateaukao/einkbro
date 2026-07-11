@@ -533,6 +533,8 @@
     <string name="volume_page_turn_summary">Gebruik volume op/af-sleutels om bladsye om te blaai</string>
     <string name="volume_page_turn_paused">Volume-bladsyomdraai gepauzeer vir 5 sekondes</string>
     <string name="volume_page_turn_resumed">Volume-bladsyomdraai hervat</string>
+    <string name="volume_double_click_back">Dubbelklik vir terug</string>
+    <string name="volume_double_click_back_summary">Dubbeltik \'n volumesleutel om terug te gaan; \'n enkele tik blaai die bladsy na \'n kort vertraging om. Vereis omblaai met volumesleutels.</string>
     <string name="web_content_processing">Webinhoudverwerking</string>
     <string name="web_processing_gpt_type">KI-enjin vir bladsygesprek</string>
     <string name="setting_title_default_ai_engine">Verstek KI-enjin</string>

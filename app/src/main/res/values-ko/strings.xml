@@ -588,6 +588,8 @@
     <string name="vertical_line">세로선</string>
     <string name="volume_page_turn_paused">볼륨 키 페이지 넘기기가 5초간 일시 중지됨</string>
     <string name="volume_page_turn_resumed">볼륨 키 페이지 넘기기가 재개됨</string>
+    <string name="volume_double_click_back">두 번 눌러 뒤로 가기</string>
+    <string name="volume_double_click_back_summary">볼륨 키를 두 번 누르면 뒤로 이동합니다. 한 번 누르면 잠시 후 페이지를 넘깁니다. 볼륨 키 페이지 넘김이 켜져 있어야 합니다.</string>
     <string name="web_content_processing">웹 콘텐츠 처리</string>
     <string name="web_processing_gpt_type">페이지 채팅용 AI 엔진</string>
     <string name="setting_title_default_ai_engine">기본 AI 엔진</string>

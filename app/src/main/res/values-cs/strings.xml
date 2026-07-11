@@ -239,6 +239,8 @@
     <string name="volume_page_turn_summary">Otáčejte stránky tlačítky hlasitosti</string>
     <string name="volume_page_turn_paused">Otáčení stránek tlačítky hlasitosti pozastaveno na 5 sekund</string>
     <string name="volume_page_turn_resumed">Otáčení stránek tlačítky hlasitosti obnoveno</string>
+    <string name="volume_double_click_back">Dvojité stisknutí pro zpět</string>
+    <string name="volume_double_click_back_summary">Dvojím stisknutím tlačítka hlasitosti přejdete zpět; jedno stisknutí otočí stránku po krátké prodlevě. Vyžaduje otáčení stránek tlačítky hlasitosti.</string>
     <string name="folder_name">Název složky záložek</string>
     <string name="folder_name_description">Zadejte název složky záložek</string>
     <string name="setting_title_export_bookmarks">Exportovat záložky</string>

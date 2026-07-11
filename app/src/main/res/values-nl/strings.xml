@@ -227,6 +227,8 @@
     <string name="volume_page_turn_summary">Gebruik de volumetoetsen om te bladeren</string>
     <string name="volume_page_turn_paused">Pagina omslaan met volumetoets 5 seconden gepauzeerd</string>
     <string name="volume_page_turn_resumed">Pagina omslaan met volumetoets hervat</string>
+    <string name="volume_double_click_back">Dubbelklik voor terug</string>
+    <string name="volume_double_click_back_summary">Tik twee keer op een volumetoets om terug te gaan; één tik slaat de pagina om na een korte vertraging. Vereist bladeren met volumetoetsen.</string>
     <string name="folder_name">Bladwijzermap-naam</string>
     <string name="folder_name_description">Voer de bladwijzermap-naam in</string>
     <string name="setting_title_export_bookmarks">Bladwijzers exporteren</string>

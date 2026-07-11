@@ -582,6 +582,8 @@
     <string name="vertical_line">ᱥᱤᱫᱷ ᱜᱟᱨ</string>
     <string name="volume_page_turn_paused">ᱵᱷᱚᱞᱭᱩᱢ ᱥᱟᱦᱴᱟ ᱯᱟᱞᱴᱟᱣ 5 ᱥᱮᱠᱮᱱᱰ ᱞᱟᱹᱜᱤᱫ ᱵᱚᱸᱫ ᱟᱠᱟᱱᱟ</string>
     <string name="volume_page_turn_resumed">ᱵᱷᱚᱞᱭᱩᱢ ᱥᱟᱦᱴᱟ ᱯᱟᱞᱴᱟᱣ ᱫᱩᱦᱲᱟᱹ ᱪᱟᱹᱞᱩ ᱟᱠᱟᱱᱟ</string>
+    <string name="volume_double_click_back">Double-click for back</string>
+    <string name="volume_double_click_back_summary">Double-tap a volume key to go back; a single tap turns the page after a short delay. Requires volume key page turn.</string>
     <string name="web_content_processing">ᱣᱮᱵᱽ ᱡᱤᱱᱤᱥ ᱯᱨᱚᱥᱮᱥ</string>
     <string name="web_processing_gpt_type">GPT ᱤᱧᱡᱤᱱ</string>
     <string name="setting_title_default_ai_engine">ᱢᱩᱞ AI ᱤᱧᱡᱤᱱ</string>

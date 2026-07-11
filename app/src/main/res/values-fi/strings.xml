@@ -532,6 +532,8 @@
     <string name="volume_page_turn_summary">Käännä sivuja äänenvoimakkuusnäppäimillä</string>
     <string name="volume_page_turn_paused">Sivunvaihto äänenvoimakkuusnäppäimellä pysäytetty 5 sekunniksi</string>
     <string name="volume_page_turn_resumed">Sivunvaihto äänenvoimakkuusnäppäimellä jatkettu</string>
+    <string name="volume_double_click_back">Kaksoispainalluksella takaisin</string>
+    <string name="volume_double_click_back_summary">Paina äänenvoimakkuusnäppäintä kahdesti siirtyäksesi taaksepäin; yksi painallus kääntää sivun lyhyen viiveen jälkeen. Vaatii sivujen kääntämisen äänenvoimakkuusnäppäimillä.</string>
     <string name="web_content_processing">Verkkosisällön käsittely</string>
     <string name="web_processing_gpt_type">Tekoälymoottori sivukeskusteluun</string>
     <string name="setting_title_default_ai_engine">Oletusarvoinen tekoälymoottori</string>

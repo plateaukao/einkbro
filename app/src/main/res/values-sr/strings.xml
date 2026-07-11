@@ -532,6 +532,8 @@
     <string name="volume_page_turn_summary">Користите тастере за јачину звука за листање страница</string>
     <string name="volume_page_turn_paused">Окретање страница дугмадима за јачину звука паузирано на 5 секунди</string>
     <string name="volume_page_turn_resumed">Окретање страница дугмадима за јачину звука настављено</string>
+    <string name="volume_double_click_back">Двоструки клик за назад</string>
+    <string name="volume_double_click_back_summary">Двапут притисните тастер за јачину звука да бисте се вратили назад; један притисак листа страницу након кратког кашњења. Захтева листање страница тастерима за јачину звука.</string>
     <string name="web_content_processing">Обрада веб садржаја</string>
     <string name="web_processing_gpt_type">AI мотор за ћаскање са страницом</string>
     <string name="setting_title_default_ai_engine">Подразумевани AI мотор</string>

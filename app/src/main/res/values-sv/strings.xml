@@ -532,6 +532,8 @@
     <string name="volume_page_turn_summary">Använd volymknapparna för att bläddra mellan sidor</string>
     <string name="volume_page_turn_paused">Sidbyte med volymknapp pausat i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sidbyte med volymknapp återupptaget</string>
+    <string name="volume_double_click_back">Dubbelklick för bakåt</string>
+    <string name="volume_double_click_back_summary">Dubbeltryck på en volymknapp för att gå bakåt; ett enkelt tryck bläddrar sidan efter en kort fördröjning. Kräver bläddring med volymknapparna.</string>
     <string name="web_content_processing">Webbinnehållsbearbetning</string>
     <string name="web_processing_gpt_type">AI-motor för sidchatt</string>
     <string name="setting_title_default_ai_engine">Standard AI-motor</string>

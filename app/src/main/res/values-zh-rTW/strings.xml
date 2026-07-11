@@ -553,6 +553,8 @@
     <string name="twitter">Twitter</string>
     <string name="volume_page_turn_paused">音量鍵翻頁已暫停 5 秒</string>
     <string name="volume_page_turn_resumed">音量鍵翻頁已恢復</string>
+    <string name="volume_double_click_back">雙擊返回</string>
+    <string name="volume_double_click_back_summary">雙擊音量鍵可返回；單擊會在短暫延遲後翻頁。需開啟音量鍵翻頁。</string>
 
     <!-- Gesture action catalog -->
     <string name="action_category_tab">分頁</string>

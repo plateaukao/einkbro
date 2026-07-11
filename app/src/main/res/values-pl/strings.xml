@@ -235,6 +235,8 @@
     <string name="volume_page_turn_summary">Przewijaj strony klawiszami głośności</string>
     <string name="volume_page_turn_paused">Przewracanie stron klawiszami głośności wstrzymane na 5 sekund</string>
     <string name="volume_page_turn_resumed">Przewracanie stron klawiszami głośności wznowione</string>
+    <string name="volume_double_click_back">Podwójne naciśnięcie cofa</string>
+    <string name="volume_double_click_back_summary">Naciśnij dwukrotnie klawisz głośności, aby cofnąć; pojedyncze naciśnięcie przewraca stronę po krótkim opóźnieniu. Wymaga przewracania stron klawiszami głośności.</string>
     <string name="folder_name">Nazwa folderu zakładek</string>
     <string name="folder_name_description">Wpisz nazwę folderu zakładek</string>
     <string name="setting_title_export_bookmarks">Eksportuj zakładki</string>

@@ -228,6 +228,8 @@
     <string name="volume_page_turn_summary">Utiliser les touches de volume pour changer de page</string>
     <string name="volume_page_turn_paused">Pagination par volume en pause pendant 5 secondes</string>
     <string name="volume_page_turn_resumed">Pagination par volume reprise</string>
+    <string name="volume_double_click_back">Double-clic pour revenir en arrière</string>
+    <string name="volume_double_click_back_summary">Appuyez deux fois sur une touche de volume pour revenir en arrière ; un appui simple tourne la page après un court délai. Nécessite le changement de page par les touches de volume.</string>
     <string name="folder_name">Nom du dossier de signets</string>
     <string name="folder_name_description">Saisir le nom du dossier de signets</string>
     <string name="setting_title_export_bookmarks">Exporter les signets</string>

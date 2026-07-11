@@ -586,6 +586,8 @@
     <string name="vertical_line">Garis vertikal</string>
     <string name="volume_page_turn_paused">Balik halaman dengan tombol volume dijeda 5 detik</string>
     <string name="volume_page_turn_resumed">Balik halaman dengan tombol volume dilanjutkan</string>
+    <string name="volume_double_click_back">Klik dua kali untuk kembali</string>
+    <string name="volume_double_click_back_summary">Tekan tombol volume dua kali untuk kembali; sekali tekan membalik halaman setelah jeda singkat. Memerlukan pembalikan halaman dengan tombol volume.</string>
     <string name="web_content_processing">Pemrosesan Konten Web</string>
     <string name="web_processing_gpt_type">Mesin AI untuk obrolan halaman</string>
     <string name="setting_title_default_ai_engine">Mesin AI bawaan</string>

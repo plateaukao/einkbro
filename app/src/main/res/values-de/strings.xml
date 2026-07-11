@@ -220,6 +220,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="volume_page_turn_summary">Seiten mit den Lautstärketasten umblättern</string>
     <string name="volume_page_turn_paused">Seitenumblättern mit Lautstärketaste für 5 Sekunden pausiert</string>
     <string name="volume_page_turn_resumed">Seitenumblättern mit Lautstärketaste fortgesetzt</string>
+    <string name="volume_double_click_back">Doppelklick für Zurück</string>
+    <string name="volume_double_click_back_summary">Doppeltippen auf eine Lautstärketaste geht zurück; einfaches Tippen blättert nach kurzer Verzögerung um. Erfordert Umblättern mit Lautstärketasten.</string>
     <string name="folder_name">Lesezeichen-Ordnername</string>
     <string name="folder_name_description">Lesezeichen-Ordnername eingeben</string>
     <string name="setting_title_export_bookmarks">Lesezeichen exportieren</string>

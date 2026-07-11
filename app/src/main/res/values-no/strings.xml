@@ -532,6 +532,8 @@
     <string name="volume_page_turn_summary">Bruk volumtastene til å bla i sider</string>
     <string name="volume_page_turn_paused">Sidebytting med volumtast satt på pause i 5 sekunder</string>
     <string name="volume_page_turn_resumed">Sidebytting med volumtast gjenopptatt</string>
+    <string name="volume_double_click_back">Dobbeltklikk for tilbake</string>
+    <string name="volume_double_click_back_summary">Dobbelttrykk på en volumtast for å gå tilbake; ett trykk blar om siden etter en kort forsinkelse. Krever blaing med volumtaster.</string>
     <string name="web_content_processing">Nettinnholdsbehandling</string>
     <string name="web_processing_gpt_type">AI-motor for sidechat</string>
     <string name="setting_title_default_ai_engine">Standard AI-motor</string>

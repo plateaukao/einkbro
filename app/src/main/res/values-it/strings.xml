@@ -219,6 +219,8 @@
     <string name="volume_page_turn_summary">Usa i tasti del volume per cambiare pagina</string>
     <string name="volume_page_turn_paused">Cambio pagina con volume in pausa per 5 secondi</string>
     <string name="volume_page_turn_resumed">Cambio pagina con volume ripreso</string>
+    <string name="volume_double_click_back">Doppio clic per tornare indietro</string>
+    <string name="volume_double_click_back_summary">Tocca due volte un tasto del volume per tornare indietro; un singolo tocco cambia pagina dopo un breve ritardo. Richiede il cambio pagina con i tasti del volume.</string>
     <string name="folder_name">Nome cartella segnalibri</string>
     <string name="folder_name_description">Inserisci il nome della cartella segnalibri</string>
     <string name="setting_title_export_bookmarks">Esporta segnalibri</string>
