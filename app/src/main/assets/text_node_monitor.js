@@ -11,6 +11,10 @@ function _translateNormalize(s) {
 function _applyTranslationToElement(el, responseString) {
     if (!el) return false;
     if (window._translateInPlace) {
+        // Already translated — a duplicate/late response. Re-applying would churn the
+        // text nodes (visible refresh on e-ink) and overwrite the original-HTML backup
+        // below with already-translated content.
+        if (el.hasAttribute('data-original-html')) return true;
         el.setAttribute('data-original-html', el.innerHTML);
         // Replace only text nodes to preserve links, styles, and other elements.
         // Skip whitespace-only text nodes — they're source-formatting whitespace sitting
@@ -47,11 +51,7 @@ function _applyTranslationToElement(el, responseString) {
 }
 
 function myCallback(elementId, originalText, responseString) {
-    // Cache so future re-renders of the same text apply instantly without a round-trip
-    // (and so the element-replacement scenario below has data to work with).
     var key = _translateNormalize(originalText);
-    if (key) window._translateTextCache.set(key, responseString);
-
     var el = document.getElementById(elementId);
     if (!el) {
         // SPAs (e.g. news.daum.net) often re-render between request and response, killing the
@@ -64,6 +64,17 @@ function myCallback(elementId, originalText, responseString) {
             }
         }
     }
+
+    // Empty response = the native side failed to translate. Clear the in-flight flag so a
+    // later IntersectionObserver event or rebind scan can retry this element.
+    if (!responseString) {
+        if (el) window._translateRequested.delete(el);
+        return;
+    }
+
+    // Cache so future re-renders of the same text apply instantly without a round-trip
+    // (and so the element-replacement scenario above has data to work with).
+    if (key) window._translateTextCache.set(key, responseString);
     _applyTranslationToElement(el, responseString);
 }
 
@@ -78,26 +89,29 @@ function getTranslatableText(element) {
     return window._translateGetTextExcludingImages(element);
 }
 
-// Disconnect previous observer if re-injected
-if (window._translateObserver) {
-    window._translateObserver.disconnect();
-}
-
-window._translateObserver = new IntersectionObserver((entries) => {
+// Reuse the observer across re-injections. Recreating it (with disconnect) would orphan
+// every node already in _translateObservedNodes: they'd be detached from the old observer
+// but skipped by the rebind loop, so off-screen content would never translate on scroll.
+// The callback resolves maybeRequestTranslation/getTranslatableText as globals at call
+// time, so re-injected definitions apply to the reused observer too.
+window._translateObserver = window._translateObserver || new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      var text = getTranslatableText(entry.target);
-      if (text.trim() === "") return;
-      if (window._translateInPlace) {
-          if (!entry.target.hasAttribute('data-original-html')) {
-              androidApp.getTranslation(text, entry.target.id, "myCallback");
-          }
-      } else {
-          var nextNode = entry.target.nextElementSibling;
-          if (nextNode && nextNode.textContent === "") {
-              androidApp.getTranslation(text, entry.target.id, "myCallback");
-          }
-      }
+    if (!entry.isIntersecting) return;
+    if (window._translateInPlace) {
+      // Single request path shared with the rebind scan: checks data-original-html,
+      // the text cache, AND _translateRequested — otherwise this callback re-requests
+      // elements whose bind-time request is still awaiting its response.
+      maybeRequestTranslation(entry.target);
+      return;
+    }
+    var text = getTranslatableText(entry.target);
+    if (text.trim() === "") return;
+    var nextNode = entry.target.nextElementSibling;
+    // The empty-sibling check only holds until the response arrives, so guard in-flight
+    // requests with _translateRequested here too.
+    if (nextNode && nextNode.textContent === "" && !window._translateRequested.has(entry.target)) {
+      window._translateRequested.add(entry.target);
+      androidApp.getTranslation(text, entry.target.id, "myCallback");
     }
   });
 }, { rootMargin: "400px" });

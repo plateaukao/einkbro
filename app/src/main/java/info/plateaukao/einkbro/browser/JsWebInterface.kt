@@ -96,7 +96,10 @@ class JsWebInterface(
                 }
 
                 withContext(Dispatchers.Main) {
-                    if (webView.isAttachedToWindow && translatedString.isNotEmpty()) {
+                    // Invoke the callback even when translation failed (empty string):
+                    // the JS side uses it to clear the element's in-flight flag so a
+                    // later visibility event can retry instead of blocking it forever.
+                    if (webView.isAttachedToWindow) {
                         webView.evaluateJavascript(
                             "$callback('$elementId', '${escapeForJs(originalText)}', '${escapeForJs(translatedString)}')",
                             null
