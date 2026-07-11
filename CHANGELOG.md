@@ -1,6 +1,7 @@
 ### 15.17.0
 #### Features
 * AI agent tool upgrade: the LLM agent can now read a page's real HTML source, run JavaScript on the live page, search the web, and export multi-chapter EPUBs
+* Double-click a volume key to go back (opt-in gesture setting; single tap still turns the page, long-press still adjusts volume)
 
 #### Improvements
 * Compose performance pass: far fewer recompositions in the toolbar, tab overview, context menu, TTS dialog, GPT query list, and adblock list; favicon bitmaps are cached
