@@ -221,6 +221,7 @@
     <string name="page_margin">Margin halaman</string>
     <string name="line_spacing">Jarak baris</string>
     <string name="two_column_in_landscape">Dua kolom dalam mode lanskap</string>
+    <string name="keep_extra_content">Pertahankan Konten Tambahan</string>
     <string name="touch_area_setting">Pengaturan sentuh</string>
     <string name="menu_save_epub">Simpan epub</string>
     <string name="new_epub_or_from_picker">Epub baru atau dari pemilih</string>
@@ -410,8 +411,6 @@
     <string name="eink_image_adjustment">Optimasi gambar E-ink</string>
     <string name="eink_image_adjustment_summary">Sesuaikan gambar web (JPEG/PNG/WebP) untuk tampilan E-ink yang lebih baik</string>
     <string name="eink_image_off">Mati</string>
-    <string name="setting_title_reader_keep_extra_content">Mode Baca: Pertahankan Konten Tambahan</string>
-    <string name="setting_summary_reader_keep_extra_content">Pertahankan gaya, kelas, dan rumus (MathJax/KaTeX) dalam mode baca</string>
     <!-- Added missing translations -->
     <string name="added_to_read_list">Ditambahkan ke daftar baca</string>
     <string name="audio_only_mode">Hanya audio</string>
@@ -513,7 +512,6 @@
     <string name="setting_summary_hide_statusbar">Selalu sembunyikan bilah status</string>
     <string name="setting_summary_next_tab">Tampilkan tab berikutnya saat tab saat ini ditutup (jika tidak, tampilkan tab sebelumnya)</string>
     <string name="setting_summary_other_model_name">Masukkan nama model untuk server GPT alternatif</string>
-    <string name="setting_summary_reader_mode_padding">Nilai padding (px) untuk mode baca, default 10</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="setting_summary_search_in_dict">Saat mencari di pembaca, gunakan ChatGPT untuk hasil pencarian</string>
     <string name="setting_summary_search_in_same_tab">Gunakan tab yang sama untuk pencarian eksternal</string>
@@ -547,7 +545,6 @@
     <string name="setting_title_gpt_query_list">Riwayat hasil GPT</string>
     <string name="setting_title_next_tab">Tampilkan tab berikutnya</string>
     <string name="setting_title_other_model_name">Nama model alternatif</string>
-    <string name="setting_title_reader_mode_padding">Padding untuk mode baca</string>
     <string name="setting_title_remote_query">Aksi Kueri Jarak Jauh</string>
     <string name="setting_title_search_in_same_tab">Tab untuk pencarian eksternal</string>
     <string name="setting_title_search_suggestion">Saran pencarian</string>

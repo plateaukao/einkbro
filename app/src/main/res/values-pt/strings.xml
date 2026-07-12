@@ -153,8 +153,6 @@
     <string name="eink_image_adjustment">Otimização de imagem E-ink</string>
     <string name="eink_image_adjustment_summary">Ajustar imagens web (JPEG/PNG/WebP) para melhor exibição E-ink</string>
     <string name="eink_image_off">Desativado</string>
-    <string name="setting_title_reader_keep_extra_content">Modo leitura: Manter conteúdo extra</string>
-    <string name="setting_summary_reader_keep_extra_content">Preservar estilos, classes e fórmulas (MathJax/KaTeX) no modo leitura</string>
     <string name="audio_only_mode">Apenas áudio</string>
     <string name="setting_summary_search_engine">Escolher um motor de pesquisa</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
@@ -199,6 +197,7 @@
     <string name="page_margin">Margem da página</string>
     <string name="line_spacing">Espaçamento entre linhas</string>
     <string name="two_column_in_landscape">Duas colunas na horizontal</string>
+    <string name="keep_extra_content">Manter conteúdo extra</string>
     <string name="touch_area_setting">Definições de toque</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Guardar EPUB</string>
@@ -498,8 +497,6 @@
     <string name="deepl_translate_by_paragraph">DeepL por parágrafo</string>
     <string name="dialog_message_remove_highlight">Remover destaque?</string>
     <string name="read_from_here">A partir daqui</string>
-    <string name="setting_title_reader_mode_padding">Margem do modo leitura</string>
-    <string name="setting_summary_reader_mode_padding">Valor da margem (em px) para o modo leitura, valor predefinido é 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi por parágrafo</string>
     <string name="gemini_translate_by_paragraph">Gemini por parágrafo</string>

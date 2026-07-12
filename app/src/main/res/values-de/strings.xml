@@ -178,8 +178,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="eink_image_adjustment">E-Ink-Bildoptimierung</string>
     <string name="eink_image_adjustment_summary">Webbilder (JPEG/PNG/WebP) für bessere E-Ink-Anzeige anpassen</string>
     <string name="eink_image_off">Aus</string>
-    <string name="setting_title_reader_keep_extra_content">Lesemodus: Zusätzliche Inhalte beibehalten</string>
-    <string name="setting_summary_reader_keep_extra_content">Stile, Klassen und Formeln (MathJax/KaTeX) im Lesemodus beibehalten</string>
     <!-- Missing translations added automatically -->
     <string name="audio_only_mode">Nur Audio</string>
     <string name="setting_summary_search_engine">Wähle eine Suchmaschine</string>
@@ -209,6 +207,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="page_margin">Seitenrand</string>
     <string name="line_spacing">Zeilenabstand</string>
     <string name="two_column_in_landscape">Zwei Spalten im Querformat</string>
+    <string name="keep_extra_content">Zusätzliche Inhalte beibehalten</string>
     <string name="touch_area_setting">Touch-Einstellungen</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB speichern</string>
@@ -484,8 +483,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="deepl_translate_by_paragraph">DeepL absatzweise</string>
     <string name="dialog_message_remove_highlight">Markierung entfernen?</string>
     <string name="read_from_here">Ab hier</string>
-    <string name="setting_title_reader_mode_padding">Innenabstand für Lesemodus</string>
-    <string name="setting_summary_reader_mode_padding">Innenabstand (in px) für den Lesemodus, Standardwert ist 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI absatzweise</string>
     <string name="gemini_translate_by_paragraph">Gemini absatzweise</string>

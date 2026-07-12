@@ -178,8 +178,6 @@
     <string name="eink_image_adjustment">Optymalizacja obrazów E-ink</string>
     <string name="eink_image_adjustment_summary">Dostosuj obrazy (JPEG/PNG/WebP) do lepszego wyświetlania na E-ink</string>
     <string name="eink_image_off">Wył.</string>
-    <string name="setting_title_reader_keep_extra_content">Tryb czytnika: Zachowaj dodatkową zawartość</string>
-    <string name="setting_summary_reader_keep_extra_content">Zachowaj style, klasy i wzory (MathJax/KaTeX) w trybie czytnika</string>
     <string name="setting_summary_search_engine">Wybierz wyszukiwarkę</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="save_history_mode_save_when_open">Zapisz przy otwarciu karty</string>
@@ -224,6 +222,7 @@
     <string name="page_margin">Margines strony</string>
     <string name="line_spacing">Interlinia</string>
     <string name="two_column_in_landscape">Dwie kolumny w orientacji poziomej</string>
+    <string name="keep_extra_content">Zachowaj dodatkową zawartość</string>
     <string name="touch_area_setting">Ustawienia dotyku</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Zapisz EPUB</string>
@@ -499,8 +498,6 @@
     <string name="deepl_translate_by_paragraph">DeepL – akapitami</string>
     <string name="dialog_message_remove_highlight">Usunąć wyróżnienie?</string>
     <string name="read_from_here">Od tego miejsca</string>
-    <string name="setting_title_reader_mode_padding">Marginesy trybu czytnika</string>
-    <string name="setting_summary_reader_mode_padding">Wartość marginesi (w px) dla trybu czytnika, domyślnie 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI – akapitami</string>
     <string name="gemini_translate_by_paragraph">Gemini – akapitami</string>

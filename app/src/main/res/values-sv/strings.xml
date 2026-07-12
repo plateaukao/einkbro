@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">E-ink bildoptimering</string>
     <string name="eink_image_adjustment_summary">Anpassa webbbilder (JPEG/PNG/WebP) för bättre E-ink-visning</string>
     <string name="eink_image_off">Av</string>
-    <string name="setting_title_reader_keep_extra_content">Läsläge: Behåll extra innehåll</string>
-    <string name="setting_summary_reader_keep_extra_content">Bevara stilar, klasser och formler (MathJax/KaTeX) i läsläge</string>
     <string name="added_to_read_list">Tillagd i läslista</string>
     <string name="always_enable_zoom">Tillåt alltid innehållszoom</string>
     <string name="audio_only_mode">Endast ljud</string>
@@ -318,6 +316,7 @@
     <string name="page_margin">Sidmarginal</string>
     <string name="line_spacing">Radavstånd</string>
     <string name="two_column_in_landscape">Två kolumner i liggande läge</string>
+    <string name="keep_extra_content">Behåll extra innehåll</string>
     <string name="reader_toolbar">Inställning för läsverktygsfält</string>
     <string name="receive_link_terminate">Avsluta länkmottagning</string>
     <string name="recently_used_bookmarks">Senast använda bokmärken</string>
@@ -394,7 +393,6 @@
     <string name="setting_summary_page_left_value">Hur mycket höjd ska reserveras vid sidbyte (t.ex. 50 eller 10%)</string>
     <string name="setting_summary_plus_behavior">Vad ska visas när en ny flik läggs till</string>
     <string name="setting_summary_prune_query_parameter">Frågeparametrar som utm_medium, utm_source osv. tas bort från URL</string>
-    <string name="setting_summary_reader_mode_padding">Utfyllnad (i px) för läsläge, standardvärde är 10</string>
     <string name="setting_summary_saveTabs">Spara flikar så de kan öppnas nästa gång</string>
     <string name="setting_summary_screen_awake">Håll skärmen alltid vaken</string>
     <string name="setting_summary_search_engine">Välj en sökmotor</string>
@@ -456,7 +454,6 @@
     <string name="setting_title_plus_behavior">Ny flik-beteende</string>
     <string name="setting_title_process_text">Anpassad extern sök-URL</string>
     <string name="setting_title_prune_query_parameter">Ta bort spårningsparametrar i URL</string>
-    <string name="setting_title_reader_mode_padding">Utfyllnad för läsläge</string>
     <string name="setting_title_remote_query">Fjärrfrågeåtgärd</string>
     <string name="setting_title_saveTabs">Spara flikar</string>
     <string name="setting_title_screen_awake">Håll skärmen vaken</string>

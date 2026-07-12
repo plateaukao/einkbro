@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">E-ink görüntü optimizasyonu</string>
     <string name="eink_image_adjustment_summary">Web görüntülerini (JPEG/PNG/WebP) daha iyi E-ink görüntüleme için ayarlayın</string>
     <string name="eink_image_off">Kapalı</string>
-    <string name="setting_title_reader_keep_extra_content">Okuyucu Modu: Ekstra İçeriği Koru</string>
-    <string name="setting_summary_reader_keep_extra_content">Okuyucu modunda stilleri, sınıfları ve matematiği (MathJax/KaTeX) koru</string>
     <string name="audio_only_mode">Yalnızca ses</string>
     <string name="setting_summary_search_engine">Bir arama motoru seçin</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
@@ -232,6 +230,7 @@
     <string name="page_margin">Sayfa kenar boşluğu</string>
     <string name="line_spacing">Satır aralığı</string>
     <string name="two_column_in_landscape">Yatay modda iki sütun</string>
+    <string name="keep_extra_content">Ekstra İçeriği Koru</string>
     <string name="touch_area_setting">Dokunma ayarı</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB kaydet</string>
@@ -507,8 +506,6 @@
     <string name="deepl_translate_by_paragraph">DeepL Paragrafa göre</string>
     <string name="dialog_message_remove_highlight">Vurgu kaldırılsın mı?</string>
     <string name="read_from_here">Buradan</string>
-    <string name="setting_title_reader_mode_padding">Okuyucu modu dolgusu</string>
-    <string name="setting_summary_reader_mode_padding">Okuyucu modu için dolgu değeri (px cinsinden), varsayılan değer 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI Paragrafa göre</string>
     <string name="gemini_translate_by_paragraph">Gemini Paragrafa göre</string>

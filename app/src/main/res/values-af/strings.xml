@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">E-ink beeldoptimalisering</string>
     <string name="eink_image_adjustment_summary">Pas webbeelde (JPEG/PNG/WebP) aan vir beter E-ink-vertoning</string>
     <string name="eink_image_off">Af</string>
-    <string name="setting_title_reader_keep_extra_content">Leesmodus: Behou ekstra inhoud</string>
-    <string name="setting_summary_reader_keep_extra_content">Behou style, klasse en formules (MathJax/KaTeX) in leesmodus</string>
     <!-- Added missing translations -->
     <string name="added_to_read_list">By leeslys gevoeg</string>
     <string name="always_enable_zoom">Skakel altyd inhoudzoem aan</string>
@@ -319,6 +317,7 @@
     <string name="page_margin">Bladsykantlyn</string>
     <string name="line_spacing">Reëlspasiëring</string>
     <string name="two_column_in_landscape">Twee kolomme in landskap</string>
+    <string name="keep_extra_content">Behou ekstra inhoud</string>
     <string name="reader_toolbar">Leser-nutsbalkinstelling</string>
     <string name="receive_link_terminate">Staak ontvang skakel</string>
     <string name="recently_used_bookmarks">Onlangs gebruikte boekmerke</string>
@@ -395,7 +394,6 @@
     <string name="setting_summary_page_left_value">Hoeveel hoogte moet gereserveer word wanneer na volgende bladsy blaai</string>
     <string name="setting_summary_plus_behavior">Wat moet vertoon word wanneer \'n nuwe oortjie bygevoeg word</string>
     <string name="setting_summary_prune_query_parameter">Navraagparameters soos utm_medium, utm_source, ens. sal uit URL verwyder word</string>
-    <string name="setting_summary_reader_mode_padding">Vulwaarde (in px) vir leesmodus, verstekwaarde is 10</string>
     <string name="setting_summary_saveTabs">Stoor oortjies sodat dit volgende keer oopgemaak kan word</string>
     <string name="setting_summary_screen_awake">Hou skerm altyd wakker</string>
     <string name="setting_summary_search_engine">Kies \'n soekenjin</string>
@@ -457,7 +455,6 @@
     <string name="setting_title_plus_behavior">Nuwe oortjie-gedrag</string>
     <string name="setting_title_process_text">Pasgemaakte eksterne soek-URL</string>
     <string name="setting_title_prune_query_parameter">Snoei opsporingsnavraagparameters in URL</string>
-    <string name="setting_title_reader_mode_padding">Vulling vir leesmodus</string>
     <string name="setting_title_remote_query">Afgeleë navraag-aksie</string>
     <string name="setting_title_saveTabs">Stoor oortjies</string>
     <string name="setting_title_screen_awake">Hou skerm wakker</string>

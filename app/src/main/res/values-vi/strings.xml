@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">Tối ưu hình ảnh E-ink</string>
     <string name="eink_image_adjustment_summary">Điều chỉnh hình ảnh web (JPEG/PNG/WebP) cho hiển thị E-ink tốt hơn</string>
     <string name="eink_image_off">Tắt</string>
-    <string name="setting_title_reader_keep_extra_content">Chế độ đọc: Giữ nội dung bổ sung</string>
-    <string name="setting_summary_reader_keep_extra_content">Giữ lại kiểu, lớp và công thức (MathJax/KaTeX) trong chế độ đọc</string>
     <!-- Added missing translations -->
     <string name="added_to_read_list">Đã thêm vào danh sách đọc</string>
     <string name="always_enable_zoom">Luôn bật phóng to nội dung</string>
@@ -319,6 +317,7 @@
     <string name="page_margin">Lề trang</string>
     <string name="line_spacing">Giãn cách dòng</string>
     <string name="two_column_in_landscape">Hai cột khi xoay ngang</string>
+    <string name="keep_extra_content">Giữ nội dung bổ sung</string>
     <string name="reader_toolbar">Cài đặt thanh công cụ đọc</string>
     <string name="receive_link_terminate">Ngừng nhận liên kết</string>
     <string name="recently_used_bookmarks">Dấu trang dùng gần đây</string>
@@ -395,7 +394,6 @@
     <string name="setting_summary_page_left_value">Bao nhiêu chiều cao cần giữ lại khi chuyển sang trang tiếp theo</string>
     <string name="setting_summary_plus_behavior">Nội dung hiển thị khi thêm tab mới</string>
     <string name="setting_summary_prune_query_parameter">Các tham số truy vấn như utm_medium, utm_source, v.v. sẽ bị xóa khỏi URL</string>
-    <string name="setting_summary_reader_mode_padding">Giá trị khoảng đệm (px) cho chế độ đọc, mặc định là 10</string>
     <string name="setting_summary_saveTabs">Lưu các tab để có thể mở lại lần sau</string>
     <string name="setting_summary_screen_awake">Giữ màn hình luôn bật</string>
     <string name="setting_summary_search_engine">Chọn công cụ tìm kiếm</string>
@@ -457,7 +455,6 @@
     <string name="setting_title_plus_behavior">Hành vi tab mới</string>
     <string name="setting_title_process_text">URL tìm kiếm bên ngoài tùy chỉnh</string>
     <string name="setting_title_prune_query_parameter">Xóa tham số theo dõi trong URL</string>
-    <string name="setting_title_reader_mode_padding">Khoảng đệm chế độ đọc</string>
     <string name="setting_title_remote_query">Hành động truy vấn từ xa</string>
     <string name="setting_title_saveTabs">Lưu các tab</string>
     <string name="setting_title_screen_awake">Giữ màn hình sáng</string>

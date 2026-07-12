@@ -5,7 +5,6 @@ import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.preference.TranslationTextStyle
 import info.plateaukao.einkbro.setting.ActionSettingItem
-import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
 import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.NavigateSettingItem
@@ -78,11 +77,5 @@ fun buildMiscSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
                 TranslationLanguageDialog(deps.activity).showDualCaptionLocale()
             }
         },
-        BooleanSettingItem(
-            R.string.setting_title_reader_keep_extra_content,
-            0,
-            R.string.setting_summary_reader_keep_extra_content,
-            config.display::readerKeepExtraContent,
-        ),
     )
 }

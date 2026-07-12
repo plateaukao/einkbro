@@ -192,6 +192,7 @@
     <string name="page_margin">Margen de página</string>
     <string name="line_spacing">Interlineado</string>
     <string name="two_column_in_landscape">Dos columnas en horizontal</string>
+    <string name="keep_extra_content">Conservar contenido adicional</string>
     <string name="touch_area_setting">Ajuste de toque</string>
         <string name="menu_save_epub">Guardar\nEPUB</string>
     <string name="saving_epub">Guardando EPUB</string>
@@ -469,8 +470,6 @@
     <string name="deepl_translate_by_paragraph">DeepL por párrafo</string>
     <string name="dialog_message_remove_highlight">¿Eliminar resaltado?</string>
     <string name="read_from_here">Desde aquí</string>
-    <string name="setting_title_reader_mode_padding">Relleno para el modo de lectura</string>
-    <string name="setting_summary_reader_mode_padding">Valor de relleno (en px) para el modo de lectura, el valor predeterminado es 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi por párrafo</string>
     <string name="gemini_translate_by_paragraph">Gemini por párrafo</string>
@@ -500,8 +499,6 @@
     <string name="eink_image_adjustment">Optimización de imagen E-ink</string>
     <string name="eink_image_adjustment_summary">Ajustar imágenes web (JPEG/PNG/WebP) para mejor visualización E-ink</string>
     <string name="eink_image_off">Desactivado</string>
-    <string name="setting_title_reader_keep_extra_content">Modo lectura: Conservar contenido adicional</string>
-    <string name="setting_summary_reader_keep_extra_content">Conservar estilos, clases y fórmulas (MathJax/KaTeX) en modo lectura</string>
     <string name="audio_only_mode">Solo audio</string>
     <string name="menu_epub">EPUB</string>
     <string name="reader_toolbar">Ajuste de barra de lectura</string>

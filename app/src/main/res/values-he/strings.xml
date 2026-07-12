@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">אופטימיזציית תמונות E-ink</string>
     <string name="eink_image_adjustment_summary">התאמת תמונות אינטרנט (JPEG/PNG/WebP) לתצוגת E-ink טובה יותר</string>
     <string name="eink_image_off">כבוי</string>
-    <string name="setting_title_reader_keep_extra_content">מצב קריאה: שמירה על תוכן נוסף</string>
-    <string name="setting_summary_reader_keep_extra_content">שמירה על סגנונות, מחלקות ונוסחאות (MathJax/KaTeX) במצב קריאה</string>
     <string name="audio_only_mode">שמע בלבד</string>
     <string name="setting_summary_search_engine">בחירת מנוע חיפוש</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
@@ -232,6 +230,7 @@
     <string name="page_margin">שולי עמוד</string>
     <string name="line_spacing">מרווח שורות</string>
     <string name="two_column_in_landscape">שתי עמודות במצב לרוחב</string>
+    <string name="keep_extra_content">שמירה על תוכן נוסף</string>
     <string name="touch_area_setting">הגדרות מגע</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">שמירת EPUB</string>
@@ -507,8 +506,6 @@
     <string name="deepl_translate_by_paragraph">DeepL לפי פסקה</string>
     <string name="dialog_message_remove_highlight">להסיר הדגשה?</string>
     <string name="read_from_here">מכאן</string>
-    <string name="setting_title_reader_mode_padding">ריפוד למצב קריאה</string>
-    <string name="setting_summary_reader_mode_padding">ערך ריפוד (בפיקסלים) למצב קריאה, ערך ברירת מחדל 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI לפי פסקה</string>
     <string name="gemini_translate_by_paragraph">Gemini לפי פסקה</string>

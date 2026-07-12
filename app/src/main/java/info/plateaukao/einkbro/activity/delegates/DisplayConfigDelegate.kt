@@ -86,6 +86,14 @@ class DisplayConfigDelegate(
     fun showReaderSettingsDialog() {
         ReaderSettingsDialogFragment(
             onSettingChanged = { state.ebWebView.updateReaderSettingsStyle() },
+            onKeepExtraContentChanged = {
+                // The content scope only matters when Readability runs, so
+                // re-enter reader mode to re-parse the page with the new scope.
+                if (state.ebWebView.isReaderModeOn) {
+                    state.ebWebView.toggleReaderMode()
+                    state.ebWebView.toggleReaderMode()
+                }
+            },
             onFontConfigClick = {
                 ReaderFontDialogFragment { openCustomFontPicker() }
                     .show(activity.supportFragmentManager, "font_dialog")

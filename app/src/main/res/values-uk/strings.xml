@@ -174,8 +174,6 @@
     <string name="eink_image_adjustment">Оптимізація зображень для E-ink</string>
     <string name="eink_image_adjustment_summary">Налаштування веб-зображень (JPEG/PNG/WebP) для кращого відображення на E-ink</string>
     <string name="eink_image_off">Вимк.</string>
-    <string name="setting_title_reader_keep_extra_content">Режим читання: зберігати додатковий вміст</string>
-    <string name="setting_summary_reader_keep_extra_content">Зберігати стилі, класи та формули (MathJax/KaTeX) в режимі читання</string>
     <string name="added_to_read_list">Додано до списку читання</string>
     <string name="always_enable_zoom">Завжди дозволяти масштабування</string>
     <string name="audio_only_mode">Лише аудіо</string>
@@ -306,6 +304,7 @@
     <string name="page_margin">Поля сторінки</string>
     <string name="line_spacing">Міжрядковий інтервал</string>
     <string name="two_column_in_landscape">Дві колонки в альбомній орієнтації</string>
+    <string name="keep_extra_content">зберігати додатковий вміст</string>
     <string name="reader_toolbar">Налаштування панелі читання</string>
     <string name="receive_link_terminate">Зупинити отримання посилання</string>
     <string name="recently_used_bookmarks">Нещодавно використані закладки</string>
@@ -382,7 +381,6 @@
     <string name="setting_summary_page_left_value">Висота, що зарезервована при переході до наступної сторінки (напр., 50 або 10%)</string>
     <string name="setting_summary_plus_behavior">Що показувати при додаванні нової вкладки</string>
     <string name="setting_summary_prune_query_parameter">Параметри типу utm_medium, utm_source тощо будуть видалені з URL</string>
-    <string name="setting_summary_reader_mode_padding">Величина відступів (px) в режимі читання, за замовч. 10</string>
     <string name="setting_summary_saveTabs">Зберігати вкладки для наступного відкриття</string>
     <string name="setting_summary_screen_awake">Залишати екран завжди увімкненим</string>
     <string name="setting_summary_search_engine">Оберіть пошукову систему</string>
@@ -447,7 +445,6 @@
     <string name="setting_title_plus_behavior">Поведінка нової вкладки</string>
     <string name="setting_title_process_text">Власний URL зовнішнього пошуку</string>
     <string name="setting_title_prune_query_parameter">Видаляти параметри відстеження з URL</string>
-    <string name="setting_title_reader_mode_padding">Відступи в режимі читання</string>
     <string name="setting_title_remote_query">Дія віддаленого запиту</string>
     <string name="setting_title_saveTabs">Зберігати вкладки</string>
     <string name="setting_title_screen_awake">Не вимикати екран</string>

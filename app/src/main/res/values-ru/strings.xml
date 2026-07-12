@@ -243,6 +243,7 @@
     <string name="page_margin">Поля страницы</string>
     <string name="line_spacing">Межстрочный интервал</string>
     <string name="two_column_in_landscape">Две колонки в альбомной ориентации</string>
+    <string name="keep_extra_content">сохранять дополнительное содержимое</string>
     <string name="touch_area_setting">Настройка области нажатия</string>
     <string name="menu_save_epub">Сохранить в EPUB</string>
     <string name="saving_epub">Идёт сохранение файла EPUB</string>
@@ -529,8 +530,6 @@
     <string name="eink_image_adjustment">Оптимизация изображений для E-ink</string>
     <string name="eink_image_adjustment_summary">Настройка веб-изображений (JPEG/PNG/WebP) для лучшего отображения на E-ink</string>
     <string name="eink_image_off">Выкл.</string>
-    <string name="setting_title_reader_keep_extra_content">Режим чтения: сохранять дополнительное содержимое</string>
-    <string name="setting_summary_reader_keep_extra_content">Сохранять стили, классы и формулы (MathJax/KaTeX) в режиме чтения</string>
     <string name="audio_only_mode">Только аудио</string>
     <string name="chat_with_web">Чат со страницей</string>
     <string name="custom_scale">Пользовательский масштаб шрифта</string>
@@ -571,7 +570,6 @@
     <string name="setting_summary_enable_url_drag_to_action">Удерживайте URL и перетащите к нужному действию</string>
     <string name="setting_summary_gpt_audio_model_name">Доступные варианты: tts-1 (по умолчанию), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">Инструкции для модели gpt-4o-mini-tts</string>
-    <string name="setting_summary_reader_mode_padding">Величина отступов (px) в режиме чтения, по умолч. 10</string>
     <string name="setting_summary_search_suggestion">При вводе показывать поисковые подсказки</string>
     <string name="setting_summary_summary_gpt_type">Выберите движок GPT для суммаризации содержимого</string>
     <string name="setting_summary_text_wrap_reflow">Перестраивать текст при масштабировании</string>
@@ -580,7 +578,6 @@
     <string name="setting_title_enable_url_drag_to_action">Быстрое действие по URL</string>
     <string name="setting_title_gpt_audio_model_name">Название модели OpenAI TTS</string>
     <string name="setting_title_gpt_prompt_for_tts">Инструкции для аудиовывода</string>
-    <string name="setting_title_reader_mode_padding">Отступы в режиме чтения</string>
     <string name="setting_title_remote_query">Действие удалённого запроса</string>
     <string name="setting_title_search_suggestion">Поисковые подсказки</string>
     <string name="setting_title_text_wrap_reflow">Перенос текста при масштабировании</string>

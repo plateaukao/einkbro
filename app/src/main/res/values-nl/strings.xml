@@ -185,8 +185,6 @@
     <string name="eink_image_adjustment">E-ink beeldoptimalisatie</string>
     <string name="eink_image_adjustment_summary">Webafbeeldingen (JPEG/PNG/WebP) aanpassen voor betere E-ink weergave</string>
     <string name="eink_image_off">Uit</string>
-    <string name="setting_title_reader_keep_extra_content">Leesmodus: Extra inhoud behouden</string>
-    <string name="setting_summary_reader_keep_extra_content">Stijlen, klassen en formules (MathJax/KaTeX) behouden in leesmodus</string>
     <!-- Missing translations added automatically -->
     <string name="audio_only_mode">Alleen audio</string>
     <string name="setting_summary_search_engine">Kies een zoekmachine</string>
@@ -216,6 +214,7 @@
     <string name="page_margin">Paginamarge</string>
     <string name="line_spacing">Regelafstand</string>
     <string name="two_column_in_landscape">Twee kolommen in liggende stand</string>
+    <string name="keep_extra_content">Extra inhoud behouden</string>
     <string name="touch_area_setting">Aanraakinstellingen</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB opslaan</string>
@@ -491,8 +490,6 @@
     <string name="deepl_translate_by_paragraph">DeepL per alinea</string>
     <string name="dialog_message_remove_highlight">Markering verwijderen?</string>
     <string name="read_from_here">Vanaf hier</string>
-    <string name="setting_title_reader_mode_padding">Opvulling voor leesmodus</string>
-    <string name="setting_summary_reader_mode_padding">Opvullingswaarde (in px) voor leesmodus, standaardwaarde is 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI per alinea</string>
     <string name="gemini_translate_by_paragraph">Gemini per alinea</string>

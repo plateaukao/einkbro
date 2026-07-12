@@ -153,8 +153,6 @@
     <string name="eink_image_adjustment">Optimització d\'imatge E-ink</string>
     <string name="eink_image_adjustment_summary">Ajustar imatges web (JPEG/PNG/WebP) per a una millor visualització E-ink</string>
     <string name="eink_image_off">Desactivat</string>
-    <string name="setting_title_reader_keep_extra_content">Mode lectura: Conservar contingut addicional</string>
-    <string name="setting_summary_reader_keep_extra_content">Conservar estils, classes i fórmules (MathJax/KaTeX) en mode lectura</string>
     <string name="audio_only_mode">Només àudio</string>
     <string name="setting_summary_search_engine">Trieu un motor de cerca</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
@@ -199,6 +197,7 @@
     <string name="page_margin">Marge de pàgina</string>
     <string name="line_spacing">Interlineat</string>
     <string name="two_column_in_landscape">Dues columnes en horitzontal</string>
+    <string name="keep_extra_content">Conservar contingut addicional</string>
     <string name="touch_area_setting">Configuració tàctil</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Desar EPUB</string>
@@ -498,8 +497,6 @@
     <string name="deepl_translate_by_paragraph">DeepL per paràgraf</string>
     <string name="dialog_message_remove_highlight">Eliminar destacat?</string>
     <string name="read_from_here">Des d\'aquí</string>
-    <string name="setting_title_reader_mode_padding">Marge del mode lectura</string>
-    <string name="setting_summary_reader_mode_padding">Valor del marge (en px) per al mode lectura, el valor per defecte és 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi per paràgraf</string>
     <string name="gemini_translate_by_paragraph">Gemini per paràgraf</string>

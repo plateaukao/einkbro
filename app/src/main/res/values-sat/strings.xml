@@ -230,6 +230,7 @@
     <string name="page_margin">ᱥᱟᱦᱴᱟ ᱢᱟᱨᱡᱤᱱ</string>
     <string name="line_spacing">ᱜᱟᱨ ᱯᱷᱟᱨᱟᱠ</string>
     <string name="two_column_in_landscape">ᱞᱮᱱᱰᱥᱠᱮᱯ ᱨᱮ ᱵᱟᱨ ᱠᱚᱞᱚᱢ</string>
+    <string name="keep_extra_content">Keep Extra Content</string>
     <string name="touch_area_setting">ᱴᱚᱪ ᱥᱟᱡᱟᱣᱠᱚ</string>
     <string name="menu_save_epub">EPUB ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
     <string name="saving_epub">EPUB ᱥᱟᱧᱪᱟᱣᱜ ᱠᱟᱱᱟ</string>
@@ -452,8 +453,6 @@
     <string name="eink_image_adjustment">E-ink Image Optimization</string>
     <string name="eink_image_adjustment_summary">Adjust web images (JPEG/PNG/WebP) for better e-ink display</string>
     <string name="eink_image_off">Off</string>
-    <string name="setting_title_reader_keep_extra_content">Reader Mode: Keep Extra Content</string>
-    <string name="setting_summary_reader_keep_extra_content">Preserve styles, classes, and math (MathJax/KaTeX) in reader mode</string>
     <!-- Added missing translations -->
     <string name="added_to_read_list">ᱯᱟᱲᱦᱟᱣ ᱞᱤᱥᱴᱤ ᱨᱮ ᱥᱮᱞᱮᱫ ᱮᱱᱟ</string>
     <string name="audio_only_mode">ᱠᱷᱟᱹᱞᱤ ᱟᱰᱤᱭᱳ</string>
@@ -531,7 +530,6 @@
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-tts ᱢᱚᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱚᱠᱛᱚ ᱱᱤᱨᱫᱮᱥ</string>
     <string name="setting_summary_gpt_query_list">ᱥᱟᱧᱪᱟᱣ ᱟᱠᱟᱱ GPT ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ</string>
     <string name="setting_summary_other_model_name">ᱮᱴᱟᱜ GPT ᱥᱚᱨᱵᱷᱚᱨ ᱞᱟᱹᱜᱤᱫ ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱟᱫᱮᱨ ᱢᱮ</string>
-    <string name="setting_summary_reader_mode_padding">ᱯᱟᱲᱦᱟᱣ ᱢᱳᱰ ᱞᱟᱹᱜᱤᱫ ᱯᱮᱰᱤᱝ (px), ᱢᱩᱞ 10</string>
     <string name="setting_summary_search_suggestion">ᱡᱤᱱᱤᱥ ᱟᱫᱮᱨ ᱚᱠᱛᱚ ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_show_bookmarks_input_bar">ᱟᱫᱮᱨ ᱵᱟᱨ ᱨᱮ ᱚᱞ ᱚᱠᱛᱚ ᱵᱩᱠᱢᱟᱨᱠ ᱢᱤᱞᱟᱣ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_summary_gpt_type">ᱡᱤᱱᱤᱥ ᱯᱷᱚᱴᱮᱞ ᱞᱟᱹᱜᱤᱫ GPT ᱤᱧᱡᱤᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
@@ -554,7 +552,6 @@
     <string name="setting_title_gpt_prompt_for_tts">ᱟᱰᱤᱭᱳ ᱱᱤᱨᱫᱮᱥ</string>
     <string name="setting_title_gpt_query_list">GPT ᱛᱮᱞᱟ ᱱᱟᱜᱟᱢ</string>
     <string name="setting_title_other_model_name">ᱮᱴᱟᱜ ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ</string>
-    <string name="setting_title_reader_mode_padding">ᱯᱟᱲᱦᱟᱣ ᱢᱳᱰ ᱯᱮᱰᱤᱝ</string>
     <string name="setting_title_remote_query">ᱨᱤᱢᱳᱴ ᱥᱮᱸᱫᱽᱨᱟ ᱠᱟᱹᱢᱤ</string>
     <string name="setting_title_search_suggestion">ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ</string>
     <string name="setting_title_show_bookmarks_input_bar">URL ᱥᱟᱯᱲᱟᱣ ᱚᱠᱛᱚ ᱵᱩᱠᱢᱟᱨᱠ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>

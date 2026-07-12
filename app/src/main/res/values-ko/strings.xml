@@ -240,6 +240,7 @@
     <string name="page_margin">페이지 여백</string>
     <string name="line_spacing">줄 간격</string>
     <string name="two_column_in_landscape">가로 모드에서 2단 보기</string>
+    <string name="keep_extra_content">추가 콘텐츠 유지</string>
     <string name="touch_area_setting">터치 설정</string>
     <string name="menu_save_epub">EPUB 저장</string>
     <string name="saving_epub">EPUB 저장 중</string>
@@ -493,8 +494,6 @@
     <string name="eink_image_adjustment">E-ink 이미지 최적화</string>
     <string name="eink_image_adjustment_summary">E-ink 디스플레이에 맞게 웹 이미지(JPEG/PNG/WebP) 조정</string>
     <string name="eink_image_off">끄기</string>
-    <string name="setting_title_reader_keep_extra_content">리더 모드: 추가 콘텐츠 유지</string>
-    <string name="setting_summary_reader_keep_extra_content">리더 모드에서 스타일, 클래스 및 수식(MathJax/KaTeX) 보존</string>
     <string name="added_to_read_list">읽기 목록에 추가됨</string>
     <string name="audio_only_mode">오디오만</string>
     <string name="bold">굵게</string>
@@ -553,7 +552,6 @@
     <string name="setting_summary_enabling_web_cache">웹 캐시를 활성화하여 웹 콘텐츠를 더 빠르게 로드</string>
     <string name="setting_summary_gpt_audio_model_name">사용 가능: tts-1(기본값), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-tts 모델 사용 시 지시사항</string>
-    <string name="setting_summary_reader_mode_padding">리더 모드의 패딩 값(px), 기본값은 10</string>
     <string name="setting_summary_search_suggestion">입력 중 검색 추천 표시</string>
     <string name="setting_summary_summary_gpt_type">콘텐츠 요약용 GPT 엔진 선택</string>
     <string name="setting_summary_text_wrap_reflow">확대/축소 시 텍스트 재배치</string>
@@ -565,7 +563,6 @@
     <string name="setting_title_enable_web_cache">웹 캐시 활성화</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS 모델 이름</string>
     <string name="setting_title_gpt_prompt_for_tts">음성 출력 지시사항</string>
-    <string name="setting_title_reader_mode_padding">리더 모드 패딩</string>
     <string name="setting_title_remote_query">원격 쿼리 동작</string>
     <string name="setting_title_search_suggestion">검색 추천</string>
     <string name="setting_title_text_wrap_reflow">텍스트 줄바꿈 리플로우</string>

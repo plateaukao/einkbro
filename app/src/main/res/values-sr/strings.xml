@@ -183,8 +183,6 @@
     <string name="eink_image_adjustment">Оптимизација слика за E-ink</string>
     <string name="eink_image_adjustment_summary">Подесите веб слике (JPEG/PNG/WebP) за бољи приказ на E-ink екрану</string>
     <string name="eink_image_off">Искључено</string>
-    <string name="setting_title_reader_keep_extra_content">Режим читања: Задржи додатни садржај</string>
-    <string name="setting_summary_reader_keep_extra_content">Задржи стилове, класе и формуле (MathJax/KaTeX) у режиму читања</string>
     <string name="added_to_read_list">Додато у листу за читање</string>
     <string name="always_enable_zoom">Увек дозволи увећање</string>
     <string name="audio_only_mode">Само аудио</string>
@@ -315,6 +313,7 @@
     <string name="page_margin">Маргина странице</string>
     <string name="line_spacing">Проред</string>
     <string name="two_column_in_landscape">Две колоне у водоравном приказу</string>
+    <string name="keep_extra_content">Задржи додатни садржај</string>
     <string name="reader_toolbar">Подешавање траке за читање</string>
     <string name="receive_link_terminate">Заустави примање линка</string>
     <string name="recently_used_bookmarks">Недавно коришћени обележивачи</string>
@@ -391,7 +390,6 @@
     <string name="setting_summary_page_left_value">Колико висине треба резервисати при прелазу на следећу страницу (нпр. 50 или 10%)</string>
     <string name="setting_summary_plus_behavior">Шта приказати при додавању нове картице</string>
     <string name="setting_summary_prune_query_parameter">Параметри као utm_medium, utm_source итд. биће уклоњени из URL</string>
-    <string name="setting_summary_reader_mode_padding">Вредност маргина (px) у режиму читања, подразумевано 10</string>
     <string name="setting_summary_saveTabs">Сачувај картице да се могу отворити касније</string>
     <string name="setting_summary_screen_awake">Увек држи екран укључен</string>
     <string name="setting_summary_search_engine">Изаберите претраживач</string>
@@ -456,7 +454,6 @@
     <string name="setting_title_plus_behavior">Понашање нове картице</string>
     <string name="setting_title_process_text">Прилагођени URL за спољну претрагу</string>
     <string name="setting_title_prune_query_parameter">Уклони параметре праћења из URL</string>
-    <string name="setting_title_reader_mode_padding">Маргине у режиму читања</string>
     <string name="setting_title_remote_query">Акција удаљеног упита</string>
     <string name="setting_title_saveTabs">Сачувај картице</string>
     <string name="setting_title_screen_awake">Држи екран укључен</string>

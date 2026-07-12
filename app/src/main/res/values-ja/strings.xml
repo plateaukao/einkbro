@@ -152,6 +152,7 @@
     <string name="page_margin">ページ余白</string>
     <string name="line_spacing">行間</string>
     <string name="two_column_in_landscape">横向き時に2段組み</string>
+    <string name="keep_extra_content">追加コンテンツを保持</string>
     <string name="touch_area_setting">タッチ設定</string>
     <string name="menu_save_epub">epub保存</string>
     <string name="font_size">フォントサイズ</string>
@@ -212,8 +213,6 @@
     <string name="eink_image_adjustment">E-ink画像最適化</string>
     <string name="eink_image_adjustment_summary">ウェブ画像（JPEG/PNG/WebP）をE-inkディスプレイ向けに調整</string>
     <string name="eink_image_off">オフ</string>
-    <string name="setting_title_reader_keep_extra_content">リーダーモード：追加コンテンツを保持</string>
-    <string name="setting_summary_reader_keep_extra_content">リーダーモードでスタイル、クラス、数式（MathJax/KaTeX）を保持</string>
     <string name="added_to_read_list">リーディングリストに追加しました</string>
     <string name="always_enable_zoom">常にコンテンツのズームを有効化</string>
     <string name="audio_only_mode">音声のみ</string>
@@ -405,7 +404,6 @@
     <string name="setting_summary_page_left_value">次のページに移動する際の予約高さ（例：50、または10%）</string>
     <string name="setting_summary_plus_behavior">新しいタブを追加した時に表示する内容</string>
     <string name="setting_summary_prune_query_parameter">utm_medium、utm_sourceなどのクエリパラメータをURLから削除</string>
-    <string name="setting_summary_reader_mode_padding">リーダーモードのパディング値（px単位）、デフォルトは10</string>
     <string name="setting_summary_saveTabs">タブを保存して次回開けるようにする</string>
     <string name="setting_summary_screen_awake">画面を常にオンに保つ</string>
     <string name="setting_summary_search_engine">検索エンジンを選択</string>
@@ -466,7 +464,6 @@
     <string name="setting_title_plus_behavior">新しいタブの動作</string>
     <string name="setting_title_process_text">カスタム外部検索URL</string>
     <string name="setting_title_prune_query_parameter">URLのトラッキングパラメータを削除</string>
-    <string name="setting_title_reader_mode_padding">リーダーモードのパディング</string>
     <string name="setting_title_remote_query">リモートクエリアクション</string>
     <string name="setting_title_saveTabs">タブを保存</string>
     <string name="setting_title_screen_awake">画面を常にオン</string>

@@ -151,6 +151,7 @@
     <string name="page_margin">页面边距</string>
     <string name="line_spacing">行距</string>
     <string name="two_column_in_landscape">横屏时双栏显示</string>
+    <string name="keep_extra_content">保留额外内容</string>
     <string name="touch_area_setting">触控设置</string>
     <string name="menu_save_epub">保存Epub</string>
     <string name="new_epub_or_from_picker">新建Epub或来自选择器</string>
@@ -433,8 +434,6 @@
     <string name="deepl_translate_by_paragraph">Deepl按段落</string>
     <string name="dialog_message_remove_highlight">取消突出显示?</string>
     <string name="read_from_here">从此处阅读</string>
-    <string name="setting_title_reader_mode_padding">阅读模式内边距</string>
-    <string name="setting_summary_reader_mode_padding">阅读模式内边距数值 (单位：像素)，默认值为10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi逐段</string>
     <string name="gemini_translate_by_paragraph">Gemini逐段</string>
@@ -472,8 +471,6 @@
     <string name="eink_image_adjustment">电子墨水屏图片优化</string>
     <string name="eink_image_adjustment_summary">调整网页图片 (JPEG/PNG/WebP) 以获得更好的电子墨水屏显示效果</string>
     <string name="eink_image_off">关闭</string>
-    <string name="setting_title_reader_keep_extra_content">阅读模式：保留额外内容</string>
-    <string name="setting_summary_reader_keep_extra_content">在阅读模式中保留样式、类和数学公式 (MathJax/KaTeX)</string>
     <string name="audio_only_mode">仅音频</string>
     <string name="custom_scale">自定义字体缩放</string>
     <string name="custom_scale_desc">输入所需的字体缩放比例 (%)</string>

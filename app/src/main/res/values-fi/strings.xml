@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">E-ink-kuvan optimointi</string>
     <string name="eink_image_adjustment_summary">Säädä verkkokuvia (JPEG/PNG/WebP) parempaan E-ink-näyttöön</string>
     <string name="eink_image_off">Pois</string>
-    <string name="setting_title_reader_keep_extra_content">Lukutila: Säilytä lisäsisältö</string>
-    <string name="setting_summary_reader_keep_extra_content">Säilytä tyylit, luokat ja kaavat (MathJax/KaTeX) lukutilassa</string>
     <string name="added_to_read_list">Lisätty lukulistaan</string>
     <string name="always_enable_zoom">Salli aina sisällön zoomaus</string>
     <string name="audio_only_mode">Vain ääni</string>
@@ -318,6 +316,7 @@
     <string name="page_margin">Sivun marginaali</string>
     <string name="line_spacing">Riviväli</string>
     <string name="two_column_in_landscape">Kaksi palstaa vaakasuunnassa</string>
+    <string name="keep_extra_content">Säilytä lisäsisältö</string>
     <string name="reader_toolbar">Lukutyökalurivin asetus</string>
     <string name="receive_link_terminate">Lopeta linkin vastaanotto</string>
     <string name="recently_used_bookmarks">Viimeksi käytetyt kirjanmerkit</string>
@@ -394,7 +393,6 @@
     <string name="setting_summary_page_left_value">Kuinka paljon korkeutta varataan sivunvaihdossa (esim. 50 tai 10%)</string>
     <string name="setting_summary_plus_behavior">Mitä näytetään kun uusi välilehti lisätään</string>
     <string name="setting_summary_prune_query_parameter">Kyselyparametrit kuten utm_medium, utm_source jne. poistetaan URL:sta</string>
-    <string name="setting_summary_reader_mode_padding">Lukutilan täyte (px), oletusarvo on 10</string>
     <string name="setting_summary_saveTabs">Tallenna välilehdet, jotta ne voidaan avata seuraavalla kerralla</string>
     <string name="setting_summary_screen_awake">Pidä näyttö aina hereillä</string>
     <string name="setting_summary_search_engine">Valitse hakukone</string>
@@ -456,7 +454,6 @@
     <string name="setting_title_plus_behavior">Uuden välilehden käyttäytyminen</string>
     <string name="setting_title_process_text">Mukautettu ulkoinen haku-URL</string>
     <string name="setting_title_prune_query_parameter">Poista seurantaparametrit URL:sta</string>
-    <string name="setting_title_reader_mode_padding">Lukutilan täyte</string>
     <string name="setting_title_remote_query">Etäkyselytoiminto</string>
     <string name="setting_title_saveTabs">Tallenna välilehdet</string>
     <string name="setting_title_screen_awake">Pidä näyttö hereillä</string>

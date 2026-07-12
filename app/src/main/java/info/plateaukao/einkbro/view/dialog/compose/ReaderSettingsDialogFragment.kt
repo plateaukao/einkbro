@@ -31,11 +31,13 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 /**
- * Reader mode layout settings, shown on long-clicking the reader mode icon.
- * All changes are persisted and applied to the current page immediately.
+ * Reader mode layout settings, shown on long-clicking the reader mode icon
+ * (also reachable from Settings > UI). All changes are persisted and applied
+ * to the current page immediately.
  */
 class ReaderSettingsDialogFragment(
-    private val onSettingChanged: () -> Unit,
+    private val onSettingChanged: () -> Unit = {},
+    private val onKeepExtraContentChanged: () -> Unit = {},
     private val onFontConfigClick: () -> Unit,
 ) : ComposeDialogFragment() {
 
@@ -45,6 +47,7 @@ class ReaderSettingsDialogFragment(
             initPageMargin = config.display.paddingForReaderMode,
             initLineSpacing = config.display.readerLineSpacing,
             initTwoColumn = config.display.readerTwoColumnInLandscape,
+            initKeepExtraContent = config.display.readerKeepExtraContent,
             onPageMarginChanged = {
                 config.display.paddingForReaderMode = it
                 onSettingChanged()
@@ -56,6 +59,10 @@ class ReaderSettingsDialogFragment(
             onTwoColumnChanged = {
                 config.display.readerTwoColumnInLandscape = it
                 onSettingChanged()
+            },
+            onKeepExtraContentChanged = {
+                config.display.readerKeepExtraContent = it
+                onKeepExtraContentChanged()
             },
             onFontConfigClick = {
                 dismiss()
@@ -70,14 +77,17 @@ fun ReaderSettingsContent(
     initPageMargin: Int,
     initLineSpacing: Int,
     initTwoColumn: Boolean,
+    initKeepExtraContent: Boolean,
     onPageMarginChanged: (Int) -> Unit,
     onLineSpacingChanged: (Int) -> Unit,
     onTwoColumnChanged: (Boolean) -> Unit,
+    onKeepExtraContentChanged: (Boolean) -> Unit,
     onFontConfigClick: () -> Unit,
 ) {
     var pageMargin by remember { mutableFloatStateOf(initPageMargin.toFloat()) }
     var lineSpacing by remember { mutableFloatStateOf(initLineSpacing.toFloat()) }
     var twoColumn by remember { mutableStateOf(initTwoColumn) }
+    var keepExtraContent by remember { mutableStateOf(initKeepExtraContent) }
 
     Column(
         modifier = Modifier
@@ -152,6 +162,24 @@ fun ReaderSettingsContent(
                 },
             )
         }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.keep_extra_content),
+                color = MaterialTheme.colors.onBackground,
+            )
+            Switch(
+                checked = keepExtraContent,
+                onCheckedChange = {
+                    keepExtraContent = it
+                    onKeepExtraContentChanged(it)
+                },
+            )
+        }
     }
 }
 
@@ -163,9 +191,11 @@ private fun PreviewReaderSettingsContent() {
             initPageMargin = 10,
             initLineSpacing = 15,
             initTwoColumn = false,
+            initKeepExtraContent = false,
             onPageMarginChanged = {},
             onLineSpacingChanged = {},
             onTwoColumnChanged = {},
+            onKeepExtraContentChanged = {},
             onFontConfigClick = {},
         )
     }

@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">E-ink billedoptimering</string>
     <string name="eink_image_adjustment_summary">Tilpas webbilleder (JPEG/PNG/WebP) til bedre E-ink visning</string>
     <string name="eink_image_off">Fra</string>
-    <string name="setting_title_reader_keep_extra_content">Læsetilstand: Behold ekstra indhold</string>
-    <string name="setting_summary_reader_keep_extra_content">Bevar typografier, klasser og matematik (MathJax/KaTeX) i læsetilstand</string>
     <string name="added_to_read_list">Tilføjet til læseliste</string>
     <string name="always_enable_zoom">Tillad altid zoom af indhold</string>
     <string name="audio_only_mode">Kun lyd</string>
@@ -318,6 +316,7 @@
     <string name="page_margin">Sidemargen</string>
     <string name="line_spacing">Linjeafstand</string>
     <string name="two_column_in_landscape">To kolonner i liggende format</string>
+    <string name="keep_extra_content">Behold ekstra indhold</string>
     <string name="reader_toolbar">Indstilling for læserværktøjslinje</string>
     <string name="receive_link_terminate">Afslut linkmodtagelse</string>
     <string name="recently_used_bookmarks">Senest brugte bogmærker</string>
@@ -394,7 +393,6 @@
     <string name="setting_summary_page_left_value">Hvor meget højde skal reserveres ved sideskift (f.eks. 50 eller 10%)</string>
     <string name="setting_summary_plus_behavior">Hvad skal vises når en ny fane tilføjes</string>
     <string name="setting_summary_prune_query_parameter">Forespørgselsparametre som utm_medium, utm_source osv. fjernes fra URL</string>
-    <string name="setting_summary_reader_mode_padding">Indvendigt mellemrum (i px) for læsetilstand, standardværdi er 10</string>
     <string name="setting_summary_saveTabs">Gem faner, så de kan åbnes næste gang</string>
     <string name="setting_summary_screen_awake">Hold skærmen altid tændt</string>
     <string name="setting_summary_search_engine">Vælg en søgemaskine</string>
@@ -456,7 +454,6 @@
     <string name="setting_title_plus_behavior">Ny fane-opførsel</string>
     <string name="setting_title_process_text">Brugerdefineret ekstern søge-URL</string>
     <string name="setting_title_prune_query_parameter">Fjern sporingsparametre i URL</string>
-    <string name="setting_title_reader_mode_padding">Indvendig afstand for læsetilstand</string>
     <string name="setting_title_remote_query">Fjernforespørgselshandling</string>
     <string name="setting_title_saveTabs">Gem faner</string>
     <string name="setting_title_screen_awake">Hold skærmen tændt</string>

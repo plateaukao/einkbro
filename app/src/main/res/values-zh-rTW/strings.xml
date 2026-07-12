@@ -178,6 +178,7 @@
     <string name="page_margin">頁面邊距</string>
     <string name="line_spacing">行距</string>
     <string name="two_column_in_landscape">橫向時雙欄顯示</string>
+    <string name="keep_extra_content">保留額外內容</string>
     <string name="touch_area_setting">翻頁設定</string>
     <string name="menu_save_epub">儲存epub</string>
     <string name="new_epub_or_from_picker">新建Epub或選取既有檔案</string>
@@ -462,8 +463,6 @@
     <string name="deepl_translate_by_paragraph">Deepl by Paragraph</string>
     <string name="dialog_message_remove_highlight">移除劃線?</string>
     <string name="read_from_here">從這裡開始朗讀</string>
-    <string name="setting_title_reader_mode_padding">閱讀模式的留白</string>
-    <string name="setting_summary_reader_mode_padding">閱讀模式的四周留白(單位: px) 預設值是 10</string>
     <string name="iansui_tc">芫荽(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAi by Paragraph</string>
     <string name="gemini_translate_by_paragraph">Gemini by Paragraph</string>
@@ -502,8 +501,6 @@
     <string name="eink_image_adjustment">E-ink 圖片最佳化</string>
     <string name="eink_image_adjustment_summary">調整網頁圖片（JPEG/PNG/WebP）以獲得更好的 E-ink 顯示效果</string>
     <string name="eink_image_off">關閉</string>
-    <string name="setting_title_reader_keep_extra_content">閱讀模式：保留額外內容</string>
-    <string name="setting_summary_reader_keep_extra_content">在閱讀模式中保留樣式、類別和數學公式（MathJax/KaTeX）</string>
     <string name="audio_only_mode">僅播放音訊</string>
     <string name="custom_scale">自訂字型縮放</string>
     <string name="custom_scale_desc">輸入想要的字型縮放比例（%）</string>

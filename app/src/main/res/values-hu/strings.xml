@@ -205,8 +205,6 @@
     <string name="eink_image_adjustment">E-ink képoptimalizálás</string>
     <string name="eink_image_adjustment_summary">Webképek (JPEG/PNG/WebP) beállítása a jobb E-ink megjelenítéshez</string>
     <string name="eink_image_off">Ki</string>
-    <string name="setting_title_reader_keep_extra_content">Olvasó mód: Extra tartalom megtartása</string>
-    <string name="setting_summary_reader_keep_extra_content">Stílusok, osztályok és képletek (MathJax/KaTeX) megőrzése olvasó módban</string>
     <string name="list_empty">Az aktuális lista üres.</string>
     <string name="bookmarks">Könyvjelzők</string>
     <string name="album_title_history">Előzmények</string>
@@ -377,6 +375,7 @@
     <string name="page_margin">Oldalmargó</string>
     <string name="line_spacing">Sorköz</string>
     <string name="two_column_in_landscape">Két hasáb fekvő nézetben</string>
+    <string name="keep_extra_content">Extra tartalom megtartása</string>
     <string name="touch_area_setting">Érintés beállításai</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB mentése</string>
@@ -676,8 +675,6 @@
     <string name="deepl_translate_by_paragraph">DeepL – bekezdésenként</string>
     <string name="dialog_message_remove_highlight">Eltávolítja a kiemelést?</string>
     <string name="read_from_here">Innen</string>
-    <string name="setting_title_reader_mode_padding">Olvasó mód margó</string>
-    <string name="setting_summary_reader_mode_padding">Margó értéke (px-ben) az olvasó módhoz, alapértelmezett érték 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI – bekezdésenként</string>
     <string name="gemini_translate_by_paragraph">Gemini – bekezdésenként</string>

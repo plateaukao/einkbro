@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">Optimizare imagini E-ink</string>
     <string name="eink_image_adjustment_summary">Ajustați imaginile web (JPEG/PNG/WebP) pentru o afișare E-ink mai bună</string>
     <string name="eink_image_off">Oprit</string>
-    <string name="setting_title_reader_keep_extra_content">Mod citire: Păstrare conținut suplimentar</string>
-    <string name="setting_summary_reader_keep_extra_content">Păstrarea stilurilor, claselor și formulelor (MathJax/KaTeX) în modul citire</string>
     <!-- Missing translations added -->
     <string name="setting_summary_search_engine">Alegeți un motor de căutare</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
@@ -217,6 +215,7 @@
     <string name="page_margin">Margine pagină</string>
     <string name="line_spacing">Spațiere rânduri</string>
     <string name="two_column_in_landscape">Două coloane în modul peisaj</string>
+    <string name="keep_extra_content">Păstrare conținut suplimentar</string>
     <string name="touch_area_setting">Setări tactile</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Salvare EPUB</string>
@@ -491,8 +490,6 @@
     <string name="deepl_translate_by_paragraph">DeepL pe paragraf</string>
     <string name="dialog_message_remove_highlight">Eliminare evidențiere?</string>
     <string name="read_from_here">De aici</string>
-    <string name="setting_title_reader_mode_padding">Margine mod citire</string>
-    <string name="setting_summary_reader_mode_padding">Valoare margine (în px) pentru modul citire, implicit 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI pe paragraf</string>
     <string name="gemini_translate_by_paragraph">Gemini pe paragraf</string>

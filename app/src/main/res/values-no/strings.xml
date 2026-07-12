@@ -186,8 +186,6 @@
     <string name="eink_image_adjustment">E-ink bildeoptimalisering</string>
     <string name="eink_image_adjustment_summary">Juster nettbilder (JPEG/PNG/WebP) for bedre E-ink-visning</string>
     <string name="eink_image_off">Av</string>
-    <string name="setting_title_reader_keep_extra_content">Lesemodus: Behold ekstra innhold</string>
-    <string name="setting_summary_reader_keep_extra_content">Bevar stiler, klasser og matematikk (MathJax/KaTeX) i lesemodus</string>
     <string name="added_to_read_list">Lagt til i leseliste</string>
     <string name="always_enable_zoom">Tillat alltid innholdszoom</string>
     <string name="audio_only_mode">Kun lyd</string>
@@ -318,6 +316,7 @@
     <string name="page_margin">Sidemarg</string>
     <string name="line_spacing">Linjeavstand</string>
     <string name="two_column_in_landscape">To kolonner i liggende modus</string>
+    <string name="keep_extra_content">Behold ekstra innhold</string>
     <string name="reader_toolbar">Innstilling for leserverktøylinje</string>
     <string name="receive_link_terminate">Avslutt lenkemottak</string>
     <string name="recently_used_bookmarks">Nylig brukte bokmerker</string>
@@ -394,7 +393,6 @@
     <string name="setting_summary_page_left_value">Hvor mye høyde skal reserveres ved sidebytte (f.eks. 50 eller 10%)</string>
     <string name="setting_summary_plus_behavior">Hva skal vises når en ny fane legges til</string>
     <string name="setting_summary_prune_query_parameter">Søkeparametere som utm_medium, utm_source osv. fjernes fra URL</string>
-    <string name="setting_summary_reader_mode_padding">Innvendig marg (i px) for lesemodus, standardverdi er 10</string>
     <string name="setting_summary_saveTabs">Lagre faner slik at de kan åpnes neste gang</string>
     <string name="setting_summary_screen_awake">Hold skjermen alltid på</string>
     <string name="setting_summary_search_engine">Velg en søkemotor</string>
@@ -456,7 +454,6 @@
     <string name="setting_title_plus_behavior">Ny fane-oppførsel</string>
     <string name="setting_title_process_text">Egendefinert ekstern søke-URL</string>
     <string name="setting_title_prune_query_parameter">Fjern sporingsparametere i URL</string>
-    <string name="setting_title_reader_mode_padding">Innvendig marg for lesemodus</string>
     <string name="setting_title_remote_query">Fjernspørringshandling</string>
     <string name="setting_title_saveTabs">Lagre faner</string>
     <string name="setting_title_screen_awake">Hold skjermen på</string>

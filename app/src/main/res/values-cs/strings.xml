@@ -182,8 +182,6 @@
     <string name="eink_image_adjustment">Optimalizace obrázků pro E-ink</string>
     <string name="eink_image_adjustment_summary">Upravit webové obrázky (JPEG/PNG/WebP) pro lepší zobrazení na E-ink</string>
     <string name="eink_image_off">Vypnuto</string>
-    <string name="setting_title_reader_keep_extra_content">Režim čtení: Zachovat další obsah</string>
-    <string name="setting_summary_reader_keep_extra_content">Zachovat styly, třídy a vzorce (MathJax/KaTeX) v režimu čtení</string>
     <string name="setting_summary_search_engine">Vyberte vyhledávač</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="save_history_mode_save_when_open">Uložit při otevření karty</string>
@@ -228,6 +226,7 @@
     <string name="page_margin">Okraj stránky</string>
     <string name="line_spacing">Řádkování</string>
     <string name="two_column_in_landscape">Dva sloupce na šířku</string>
+    <string name="keep_extra_content">Zachovat další obsah</string>
     <string name="touch_area_setting">Nastavení dotyku</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Uložit EPUB</string>
@@ -503,8 +502,6 @@
     <string name="deepl_translate_by_paragraph">DeepL – po odstavcích</string>
     <string name="dialog_message_remove_highlight">Odebrat zvýraznění?</string>
     <string name="read_from_here">Od tohoto místa</string>
-    <string name="setting_title_reader_mode_padding">Odsazení režimu čtení</string>
-    <string name="setting_summary_reader_mode_padding">Hodnota odsazení (v px) pro režim čtení, výchozí hodnota je 10</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="openai_translate_by_paragraph">OpenAI – po odstavcích</string>
     <string name="gemini_translate_by_paragraph">Gemini – po odstavcích</string>

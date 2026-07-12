@@ -11,6 +11,9 @@ import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.ValueSettingItem
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
+import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ReaderSettingsDialogFragment
 import kotlinx.coroutines.launch
 
 fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
@@ -70,12 +73,21 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
             R.string.setting_summary_page_left_value,
             config.touch::pageReservedOffsetInString
         ),
-        ValueSettingItem(
-            R.string.setting_title_reader_mode_padding,
+        ActionSettingItem(
+            R.string.reader_settings,
             0,
-            R.string.setting_summary_reader_mode_padding,
-            config.display::paddingForReaderMode
-        ),
+        ) {
+            // No live webview in the settings activity: changes are persisted
+            // and picked up the next time reader mode is entered.
+            ReaderSettingsDialogFragment(
+                onFontConfigClick = {
+                    ReaderFontDialogFragment {
+                        FontBrowserDialogFragment(isReaderMode = true)
+                            .show(deps.activity.supportFragmentManager, "font_browser_dialog")
+                    }.show(deps.activity.supportFragmentManager, "font_dialog")
+                },
+            ).show(deps.activity.supportFragmentManager, "ReaderSettingsDialog")
+        },
         ListSettingWithEnumItem(
             R.string.dark_mode,
             0,
