@@ -93,8 +93,8 @@ class MenuActionHandler(
             MenuItemType.InvertColor -> dispatch(BrowserAction.InvertColors)
 
             MenuItemType.WhiteBknd -> {
-                val isOn = config.toggleWhiteBackground(ebWebView.url.orEmpty())
-                if (isOn) ebWebView.updateCssStyle() else ebWebView.reload()
+                config.toggleWhiteBackground(ebWebView.url.orEmpty())
+                ebWebView.updateCssStyle()
             }
 
             MenuItemType.BoldFont -> config.display::boldFontStyle.toggle()

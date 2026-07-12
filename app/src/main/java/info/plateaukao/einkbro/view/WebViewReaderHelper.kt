@@ -15,8 +15,6 @@ class WebViewReaderHelper(
     var isPlainText = false
     var isEpubReaderMode = false
 
-    private var fontNum = 0
-
     fun toggleVerticalRead() {
         isVerticalRead = !isVerticalRead
         if (isVerticalRead) {
@@ -45,12 +43,13 @@ class WebViewReaderHelper(
             webView.settings.textZoom = config.display.readerFontSize
             updateCssStyle()
         } else {
-            webView.jsBridge.disableReaderMode(isVertical)
+            webView.jsBridge.disableReaderMode()
             webView.settings.textZoom = config.display.fontSize
+            // Recompute the main style slot with the normal-mode font so the
+            // reader font doesn't stick after leaving reader mode.
+            updateCssStyle()
         }
     }
-
-    fun applyFontBoldness() = webView.jsBridge.applyFontBoldness(config.display.fontBoldness)
 
     fun updateCssStyle() {
         val url = webView.url.orEmpty()
@@ -59,23 +58,31 @@ class WebViewReaderHelper(
         val isBoldFont = config.getBoldFontStyle(url)
         val boldness = config.getFontBoldness(url)
 
-        val cssStyle =
-            (if (isBlackFont) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
-                    (if (fontType == FontType.GOOGLE_SERIF) WebViewJsBridge.NOTO_SANS_SERIF_FONT_CSS else "") +
-                    (if (fontType == FontType.TC_IANSUI) WebViewJsBridge.IANSUI_FONT_CSS else "") +
-                    (if (fontType == FontType.JA_MINCHO) WebViewJsBridge.JA_MINCHO_FONT_CSS else "") +
-                    (if (fontType == FontType.KO_GAMJA) WebViewJsBridge.KO_GAMJA_FONT_CSS else "") +
-                    (if (fontType == FontType.SERIF) WebViewJsBridge.SERIF_FONT_CSS else "") +
-                    (if (config.whiteBackground(url)) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
-                    (if (fontType == FontType.CUSTOM) getCustomFontCss() else "") +
-                    (if (isBoldFont)
-                        WebViewJsBridge.BOLD_FONT_CSS.replace("value", "$boldness") else "") +
-                    (if (isEpubReaderMode) loadAssetFile("readerview.css") else "") +
-                    einkImageFilterCss() +
-                    config.getCustomCss(url).orEmpty()
-        if (cssStyle.isNotBlank()) {
-            webView.jsBridge.injectCss(cssStyle.toByteArray())
+        // The font CSS must come first: its @import rules are only valid before
+        // any other rule, so placing e.g. the black-font CSS ahead of it would
+        // make the browser silently drop the web font imports.
+        val fontCss = when (fontType) {
+            FontType.SYSTEM_DEFAULT -> ""
+            FontType.SERIF -> WebViewJsBridge.SERIF_FONT_CSS
+            FontType.GOOGLE_SERIF -> WebViewJsBridge.NOTO_SANS_SERIF_FONT_CSS
+            FontType.CUSTOM -> getCustomFontCss()
+            FontType.TC_IANSUI -> WebViewJsBridge.IANSUI_FONT_CSS
+            FontType.JA_MINCHO -> WebViewJsBridge.JA_MINCHO_FONT_CSS
+            FontType.KO_GAMJA -> WebViewJsBridge.KO_GAMJA_FONT_CSS
         }
+
+        val cssStyle = fontCss +
+                (if (isBlackFont) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
+                (if (config.whiteBackground(url)) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
+                (if (isBoldFont)
+                    WebViewJsBridge.BOLD_FONT_CSS.replace("value", "$boldness") else "") +
+                (if (isEpubReaderMode) loadAssetFile("readerview.css") else "") +
+                einkImageFilterCss() +
+                config.getCustomCss(url).orEmpty()
+        // Always update, even when blank: an empty blob clears the slot, which
+        // is how reverting to system default font (or turning styles off)
+        // takes effect without reloading the page.
+        webView.jsBridge.updateCssSlot(WebViewJsBridge.CSS_SLOT_MAIN, cssStyle)
     }
 
     /**
@@ -95,7 +102,18 @@ class WebViewReaderHelper(
     }
 
     private fun getCustomFontCss(): String {
-        return WebViewJsBridge.CUSTOM_FONT_CSS.replace("mycustomfont", "mycustomfont${++fontNum}")
-            .replace("fontfamily", "fontfamily${fontNum}")
+        val info = if (shouldUseReaderFont()) {
+            config.display.readerCustomFontInfo
+        } else {
+            config.display.customFontInfo
+        }
+        val fontUrl = info?.url ?: return ""
+        // Version the synthetic font URL by the configured font so switching to
+        // a different font file forces a refetch, while repeated style updates
+        // with the same font keep hitting the already-loaded face.
+        val version = fontUrl.hashCode().toUInt().toString(16)
+        return WebViewJsBridge.CUSTOM_FONT_CSS
+            .replace("mycustomfont", "mycustomfont$version")
+            .replace("fontfamily", "fontfamily$version")
     }
 }

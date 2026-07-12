@@ -45,7 +45,7 @@ class DisplayConfig(private val sp: SharedPreferences) {
         get() = sp.getString(K_READER_CUSTOM_FONT, "")?.toCustomFontInfo()
         set(value) {
             sp.edit { putString(K_READER_CUSTOM_FONT, value?.toSerializedString().orEmpty()) }
-            if (fontType == FontType.CUSTOM) {
+            if (readerFontType == FontType.CUSTOM) {
                 customFontChanged = true
             }
         }

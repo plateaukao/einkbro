@@ -22,22 +22,25 @@ class WebViewJsBridge(private val webView: WebView) {
 
     //region CSS Injection
 
-    fun injectCss(bytes: ByteArray) {
+    /**
+     * Sets the CSS content of a managed, slot-identified <style> element.
+     * Calling again with the same slot replaces the previous CSS instead of
+     * appending another style tag; an empty [css] removes the slot, which
+     * reverts to the page's own styling without a reload.
+     */
+    fun updateCssSlot(slot: String, css: String) {
         try {
-            val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
-            webView.loadUrl(
-                "javascript:(function() {" +
-                        "var parent = document.getElementsByTagName('head').item(0);" +
-                        "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = window.atob('" + encoded + "');" +
-                        "parent.appendChild(style)" +
-                        "})()"
-            )
+            val encoded = Base64.encodeToString(css.toByteArray(), Base64.NO_WRAP)
+            val js = loadAssetFile("update_css_slot.js")
+                .replace("__SLOT_ID__", slot)
+                .replace("__CSS_B64__", encoded)
+            webView.evaluateJavascript(js, null)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
+    fun clearCssSlot(slot: String) = updateCssSlot(slot, "")
 
     //endregion
 
@@ -121,13 +124,10 @@ class WebViewJsBridge(private val webView: WebView) {
 
     //region Highlights
 
-    private var isHighlightCssInjected = false
-
     fun highlightTextSelection(highlightStyle: HighlightStyle) {
-        if (!isHighlightCssInjected) {
-            injectCss(loadAssetFile("highlight.css").toByteArray())
-            isHighlightCssInjected = true
-        }
+        // Idempotent slot update: safe to call on every highlight, and unlike a
+        // one-shot flag it survives navigations to a new document.
+        updateCssSlot(CSS_SLOT_HIGHLIGHT, loadAssetFile("highlight.css"))
 
         val className = when (highlightStyle) {
             HighlightStyle.UNDERLINE -> "highlight_underline"
@@ -167,7 +167,7 @@ class WebViewJsBridge(private val webView: WebView) {
             TranslationTextStyle.GRAY -> TRANSLATED_P_CSS_GRAY
             TranslationTextStyle.BOLD -> TRANSLATED_P_CSS_BOLD
         }
-        injectCss(textBlockStyle.toByteArray())
+        updateCssSlot(CSS_SLOT_TRANSLATION, textBlockStyle)
         evaluateJsFile("translate_by_paragraph.js") {
             evaluateJsFile("text_node_monitor.js", false)
         }
@@ -201,10 +201,11 @@ class WebViewJsBridge(private val webView: WebView) {
         isVertical: Boolean = false,
         postAction: (() -> Unit)? = null,
     ) {
-        val cssByteArray =
-            loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
-        injectCss(cssByteArray)
-        if (isVertical) injectCss(VERTICAL_LAYOUT_CSS.toByteArray())
+        updateCssSlot(
+            CSS_SLOT_READER,
+            loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css")
+        )
+        updateCssSlot(CSS_SLOT_VERTICAL, if (isVertical) VERTICAL_LAYOUT_CSS else "")
 
         val jsString = HelperUnit.getStringFromAsset("MozReadability.js") +
                 "\n" + HelperUnit.getStringFromAsset("jsonld_article.js")
@@ -251,22 +252,15 @@ class WebViewJsBridge(private val webView: WebView) {
         }
     }
 
-    fun disableReaderMode(isVertical: Boolean = false) {
-        val verticalCssString = if (isVertical) {
-            "var style = document.createElement('style');" +
-                    "style.type = 'text/css';" +
-                    "style.innerHTML = \"" + HORIZONTAL_LAYOUT_CSS + "\";" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "parent.appendChild(style);"
-        } else {
-            ""
-        }
-
+    fun disableReaderMode() {
+        // Removing the reader style slots restores the page's own layout and
+        // writing mode; no counteracting CSS is needed.
+        clearCssSlot(CSS_SLOT_READER)
+        clearCssSlot(CSS_SLOT_VERTICAL)
         webView.evaluateJavascript(
             "javascript:(function() {" +
                     "document.body.innerHTML = document.innerHTMLCache;" +
                     "document.body.classList.remove(\"mozac-readerview-body\");" +
-                    verticalCssString +
                     "window.scrollTo(0, 0);" +
                     "})()", null
         )
@@ -296,15 +290,6 @@ class WebViewJsBridge(private val webView: WebView) {
 
     //endregion
 
-    //region Font/Style Injection
-
-    fun applyFontBoldness(boldnessValue: Int) {
-        val fontCss = BOLD_FONT_CSS.replace("value", boldnessValue.toString())
-        injectCss(fontCss.toByteArray())
-    }
-
-    //endregion
-
     //region Audio Mode
 
     fun enableAudioOnlyMode() = evaluateJsFile("audio_only_mode.js")
@@ -315,6 +300,17 @@ class WebViewJsBridge(private val webView: WebView) {
 
     companion object {
         fun String.wrapJsFunction(): String = "javascript:(function() { $this })()"
+
+        //region CSS Slot Ids
+
+        // The main blob recomputed by WebViewReaderHelper.updateCssStyle()
+        const val CSS_SLOT_MAIN = "main"
+        const val CSS_SLOT_READER = "reader"
+        const val CSS_SLOT_VERTICAL = "vertical"
+        const val CSS_SLOT_HIGHLIGHT = "highlight"
+        const val CSS_SLOT_TRANSLATION = "translation"
+
+        //endregion
 
         //region Reader Mode JS Templates
 
@@ -379,11 +375,6 @@ class WebViewJsBridge(private val webView: WebView) {
                 "margin: 10px 10px 10px 10px;\n" +
                 "float: left;\n" +
                 "display: block;\n" +
-                "}\n"
-
-        const val HORIZONTAL_LAYOUT_CSS = "body {\n" +
-                "-webkit-writing-mode: horizontal-tb;\n" +
-                "writing-mode: horizontal-tb;\n" +
                 "}\n"
 
         const val NOTO_SANS_SERIF_FONT_CSS =

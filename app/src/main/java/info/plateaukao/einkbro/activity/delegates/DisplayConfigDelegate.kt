@@ -74,7 +74,10 @@ class DisplayConfigDelegate(
             config.display.fontBoldness,
             okAction = { changedBoldness ->
                 config.display.fontBoldness = changedBoldness
-                state.ebWebView.applyFontBoldness()
+                // Recompute the whole style blob instead of injecting bold CSS
+                // separately, so the preview respects the bold-font toggle and
+                // site overrides, and reverts cleanly with the rest.
+                state.ebWebView.updateCssStyle()
             },
         ).show(activity.supportFragmentManager, "FontBoldnessDialog")
     }

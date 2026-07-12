@@ -220,6 +220,10 @@ class TabManager(
 
         updateTitle()
         newEbWebView.updatePageInfo()
+        // Re-apply the current style config: font/style changes made while this
+        // tab was in the background only touched the foreground tab. The slot
+        // update is idempotent and skips the DOM write when nothing changed.
+        newEbWebView.updateCssStyle()
 
         externalSearchViewModel.setButtonVisibility(false)
         activity.runOnUiThread {

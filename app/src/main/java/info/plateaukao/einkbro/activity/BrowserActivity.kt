@@ -909,7 +909,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateTitle()
         disablePendingTransitions()
         if (config.display.customFontChanged && (config.display.fontType == FontType.CUSTOM || config.display.readerFontType == FontType.CUSTOM)) {
-            if (!ebWebView.shouldUseReaderFont()) ebWebView.reload() else ebWebView.updateCssStyle()
+            // The custom font URL is versioned by font file, so a style update is
+            // enough to fetch the new font; no reload needed.
+            ebWebView.updateCssStyle()
             config.display.customFontChanged = false
         }
         if (!config.browser.continueMedia && browserState.isWebViewInitialized) ebWebView.resumeTimers()
@@ -1071,12 +1073,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
             UiConfig.K_TOOLBAR_ICONS_FOR_LARGE, UiConfig.K_TOOLBAR_ICONS -> composeToolbarViewController.updateIcons()
             TabConfig.K_SHOW_TAB_BAR -> composeToolbarViewController.showTabbar(config.tab.shouldShowTabBar)
-            DisplayConfig.K_FONT_TYPE -> { if (config.display.fontType == FontType.SYSTEM_DEFAULT) ebWebView.reload() else ebWebView.updateCssStyle() }
-            DisplayConfig.K_READER_FONT_TYPE -> { if (config.display.readerFontType == FontType.SYSTEM_DEFAULT) ebWebView.reload() else ebWebView.updateCssStyle() }
+            DisplayConfig.K_FONT_TYPE -> ebWebView.updateCssStyle()
+            DisplayConfig.K_READER_FONT_TYPE -> ebWebView.updateCssStyle()
             DisplayConfig.K_FONT_SIZE -> ebWebView.settings.textZoom = config.display.fontSize
             DisplayConfig.K_READER_FONT_SIZE -> { if (ebWebView.shouldUseReaderFont()) ebWebView.settings.textZoom = config.display.readerFontSize }
-            DisplayConfig.K_BOLD_FONT -> { composeToolbarViewController.updateIcons(); if (config.display.boldFontStyle) ebWebView.updateCssStyle() else ebWebView.reload() }
-            DisplayConfig.K_BLACK_FONT -> { composeToolbarViewController.updateIcons(); if (config.display.blackFontStyle) ebWebView.updateCssStyle() else ebWebView.reload() }
+            DisplayConfig.K_BOLD_FONT -> { composeToolbarViewController.updateIcons(); ebWebView.updateCssStyle() }
+            DisplayConfig.K_BLACK_FONT -> { composeToolbarViewController.updateIcons(); ebWebView.updateCssStyle() }
             DisplayConfig.K_ENABLE_IMAGE_ADJUSTMENT -> ebWebView.reload()
             DisplayConfig.K_CUSTOM_FONT -> { if (config.display.fontType == FontType.CUSTOM) ebWebView.updateCssStyle() }
             DisplayConfig.K_READER_CUSTOM_FONT -> { if (config.display.readerFontType == FontType.CUSTOM && ebWebView.shouldUseReaderFont()) ebWebView.updateCssStyle() }

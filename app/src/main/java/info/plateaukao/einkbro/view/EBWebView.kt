@@ -772,8 +772,6 @@ open class EBWebView(
 
     fun toggleReaderMode(isVertical: Boolean = false) = readerHelper.toggleReaderMode(isVertical)
 
-    fun applyFontBoldness() = readerHelper.applyFontBoldness()
-
     //endregion
 
     //region Translation (delegated to WebViewTranslationHelper)
