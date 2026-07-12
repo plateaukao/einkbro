@@ -373,6 +373,10 @@
     <string name="setting_title_pdf_paper_size">Nyomtatott PDF papírméret</string>
     <string name="vertical_read">Függőleges mód</string>
     <string name="reader_mode">Olvasó mód</string>
+    <string name="reader_settings">Olvasó mód beállításai</string>
+    <string name="page_margin">Oldalmargó</string>
+    <string name="line_spacing">Sorköz</string>
+    <string name="two_column_in_landscape">Két hasáb fekvő nézetben</string>
     <string name="touch_area_setting">Érintés beállításai</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB mentése</string>

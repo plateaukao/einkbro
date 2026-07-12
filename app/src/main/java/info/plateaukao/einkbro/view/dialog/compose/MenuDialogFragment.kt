@@ -453,7 +453,7 @@ fun MenuItemForType(
         MenuItemType.SplitScreen -> HideableMenuItem(type, R.string.split_screen, Icons.Outlined.ViewStream)
         MenuItemType.Translate -> HideableMenuItem(type, R.string.translate, Icons.Outlined.Translate, supportsLongClick = true)
         MenuItemType.VerticalRead -> HideableMenuItem(type, R.string.vertical_read, Icons.Outlined.ViewColumn)
-        MenuItemType.ReaderMode -> HideableMenuItem(type, R.string.reader_mode, Icons.AutoMirrored.Outlined.ChromeReaderMode)
+        MenuItemType.ReaderMode -> HideableMenuItem(type, R.string.reader_mode, Icons.AutoMirrored.Outlined.ChromeReaderMode, supportsLongClick = true)
         MenuItemType.TouchSetting -> {
             val touchRes = if (isTouchPaginationEnabled) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
             HideableMenuItem(type, R.string.touch_area_setting, iconResId = touchRes, supportsLongClick = true)

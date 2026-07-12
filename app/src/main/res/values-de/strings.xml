@@ -205,6 +205,10 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_title_pdf_paper_size">PDF-Papiergröße</string>
     <string name="vertical_read">Vertikaler Modus</string>
     <string name="reader_mode">Lesemodus</string>
+    <string name="reader_settings">Lesemodus-Einstellungen</string>
+    <string name="page_margin">Seitenrand</string>
+    <string name="line_spacing">Zeilenabstand</string>
+    <string name="two_column_in_landscape">Zwei Spalten im Querformat</string>
     <string name="touch_area_setting">Touch-Einstellungen</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB speichern</string>

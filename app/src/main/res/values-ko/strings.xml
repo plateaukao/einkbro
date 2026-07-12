@@ -236,6 +236,10 @@
     <string name="setting_title_pdf_paper_size">인쇄된 PDF 용지 크기</string>
     <string name="vertical_read">세로</string>
     <string name="reader_mode">리더 모드</string>
+    <string name="reader_settings">리더 모드 설정</string>
+    <string name="page_margin">페이지 여백</string>
+    <string name="line_spacing">줄 간격</string>
+    <string name="two_column_in_landscape">가로 모드에서 2단 보기</string>
     <string name="touch_area_setting">터치 설정</string>
     <string name="menu_save_epub">EPUB 저장</string>
     <string name="saving_epub">EPUB 저장 중</string>

@@ -315,6 +315,10 @@
     <string name="read_from_here">Vanaf hier</string>
     <string name="read_speed">Leesspoed</string>
     <string name="reader_mode">Leesmodus</string>
+    <string name="reader_settings">Leesmodus-instellings</string>
+    <string name="page_margin">Bladsykantlyn</string>
+    <string name="line_spacing">Reëlspasiëring</string>
+    <string name="two_column_in_landscape">Twee kolomme in landskap</string>
     <string name="reader_toolbar">Leser-nutsbalkinstelling</string>
     <string name="receive_link_terminate">Staak ontvang skakel</string>
     <string name="recently_used_bookmarks">Onlangs gebruikte boekmerke</string>

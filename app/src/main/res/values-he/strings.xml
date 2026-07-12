@@ -228,6 +228,10 @@
     <string name="setting_title_pdf_paper_size">גודל נייר PDF מודפס</string>
     <string name="vertical_read">מצב אנכי</string>
     <string name="reader_mode">מצב קריאה</string>
+    <string name="reader_settings">הגדרות מצב קריאה</string>
+    <string name="page_margin">שולי עמוד</string>
+    <string name="line_spacing">מרווח שורות</string>
+    <string name="two_column_in_landscape">שתי עמודות במצב לרוחב</string>
     <string name="touch_area_setting">הגדרות מגע</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">שמירת EPUB</string>

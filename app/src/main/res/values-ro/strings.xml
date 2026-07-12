@@ -213,6 +213,10 @@
     <string name="setting_title_pdf_paper_size">Dimensiune hârtie PDF tipărită</string>
     <string name="vertical_read">Mod vertical</string>
     <string name="reader_mode">Mod citire</string>
+    <string name="reader_settings">Setări mod citire</string>
+    <string name="page_margin">Margine pagină</string>
+    <string name="line_spacing">Spațiere rânduri</string>
+    <string name="two_column_in_landscape">Două coloane în modul peisaj</string>
     <string name="touch_area_setting">Setări tactile</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Salvare EPUB</string>

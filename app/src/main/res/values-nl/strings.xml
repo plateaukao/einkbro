@@ -212,6 +212,10 @@
     <string name="setting_title_pdf_paper_size">PDF-papierformaat</string>
     <string name="vertical_read">Verticale modus</string>
     <string name="reader_mode">Leesmodus</string>
+    <string name="reader_settings">Leesmodus-instellingen</string>
+    <string name="page_margin">Paginamarge</string>
+    <string name="line_spacing">Regelafstand</string>
+    <string name="two_column_in_landscape">Twee kolommen in liggende stand</string>
     <string name="touch_area_setting">Aanraakinstellingen</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB opslaan</string>

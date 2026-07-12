@@ -315,6 +315,10 @@
     <string name="read_from_here">Từ đây</string>
     <string name="read_speed">Tốc độ đọc</string>
     <string name="reader_mode">Chế độ đọc</string>
+    <string name="reader_settings">Cài đặt chế độ đọc</string>
+    <string name="page_margin">Lề trang</string>
+    <string name="line_spacing">Giãn cách dòng</string>
+    <string name="two_column_in_landscape">Hai cột khi xoay ngang</string>
     <string name="reader_toolbar">Cài đặt thanh công cụ đọc</string>
     <string name="receive_link_terminate">Ngừng nhận liên kết</string>
     <string name="recently_used_bookmarks">Dấu trang dùng gần đây</string>

@@ -148,6 +148,10 @@
     <string name="white_background">白ベースカラー</string>
     <string name="vertical_read">縦書き</string>
     <string name="reader_mode">リーダーモード</string>
+    <string name="reader_settings">リーダーモード設定</string>
+    <string name="page_margin">ページ余白</string>
+    <string name="line_spacing">行間</string>
+    <string name="two_column_in_landscape">横向き時に2段組み</string>
     <string name="touch_area_setting">タッチ設定</string>
     <string name="menu_save_epub">epub保存</string>
     <string name="font_size">フォントサイズ</string>

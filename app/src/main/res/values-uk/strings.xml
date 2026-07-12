@@ -302,6 +302,10 @@
     <string name="read_from_here">Читати звідси</string>
     <string name="read_speed">Швидкість читання</string>
     <string name="reader_mode">Режим читання</string>
+    <string name="reader_settings">Налаштування режиму читання</string>
+    <string name="page_margin">Поля сторінки</string>
+    <string name="line_spacing">Міжрядковий інтервал</string>
+    <string name="two_column_in_landscape">Дві колонки в альбомній орієнтації</string>
     <string name="reader_toolbar">Налаштування панелі читання</string>
     <string name="receive_link_terminate">Зупинити отримання посилання</string>
     <string name="recently_used_bookmarks">Нещодавно використані закладки</string>

@@ -37,6 +37,7 @@ sealed class BrowserAction {
     object DecreaseFontSize : BrowserAction()
     object ShowFontSizeChangeDialog : BrowserAction()
     object ShowFontBoldnessDialog : BrowserAction()
+    object ShowReaderSettingsDialog : BrowserAction()
     object InvertColors : BrowserAction()
 
     // View state

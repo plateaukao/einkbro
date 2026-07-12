@@ -314,6 +314,10 @@
     <string name="read_from_here">Tästä eteenpäin</string>
     <string name="read_speed">Lukunopeus</string>
     <string name="reader_mode">Lukutila</string>
+    <string name="reader_settings">Lukutilan asetukset</string>
+    <string name="page_margin">Sivun marginaali</string>
+    <string name="line_spacing">Riviväli</string>
+    <string name="two_column_in_landscape">Kaksi palstaa vaakasuunnassa</string>
     <string name="reader_toolbar">Lukutyökalurivin asetus</string>
     <string name="receive_link_terminate">Lopeta linkin vastaanotto</string>
     <string name="recently_used_bookmarks">Viimeksi käytetyt kirjanmerkit</string>

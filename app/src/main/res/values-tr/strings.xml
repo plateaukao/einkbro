@@ -228,6 +228,10 @@
     <string name="setting_title_pdf_paper_size">Yazdırılmış PDF kağıt boyutu</string>
     <string name="vertical_read">Dikey mod</string>
     <string name="reader_mode">Okuyucu modu</string>
+    <string name="reader_settings">Okuyucu modu ayarları</string>
+    <string name="page_margin">Sayfa kenar boşluğu</string>
+    <string name="line_spacing">Satır aralığı</string>
+    <string name="two_column_in_landscape">Yatay modda iki sütun</string>
     <string name="touch_area_setting">Dokunma ayarı</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">EPUB kaydet</string>

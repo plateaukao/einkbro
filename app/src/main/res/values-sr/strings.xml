@@ -311,6 +311,10 @@
     <string name="read_from_here">Читај одавде</string>
     <string name="read_speed">Брзина читања</string>
     <string name="reader_mode">Режим читања</string>
+    <string name="reader_settings">Подешавања режима читања</string>
+    <string name="page_margin">Маргина странице</string>
+    <string name="line_spacing">Проред</string>
+    <string name="two_column_in_landscape">Две колоне у водоравном приказу</string>
     <string name="reader_toolbar">Подешавање траке за читање</string>
     <string name="receive_link_terminate">Заустави примање линка</string>
     <string name="recently_used_bookmarks">Недавно коришћени обележивачи</string>

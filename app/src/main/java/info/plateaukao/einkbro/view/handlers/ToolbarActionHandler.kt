@@ -31,6 +31,7 @@ class ToolbarActionHandler(
         ToolbarAction.PageDown -> dispatch(BrowserAction.JumpToBottom)
         ToolbarAction.PageInfo -> dispatch(BrowserAction.SummarizeContent)
         ToolbarAction.PageUp -> dispatch(BrowserAction.JumpToTop)
+        ToolbarAction.ReaderMode -> dispatch(BrowserAction.ShowReaderSettingsDialog)
         ToolbarAction.Refresh -> dispatch(BrowserAction.ToggleFullscreen)
         ToolbarAction.Settings -> dispatch(BrowserAction.ShowFastToggleDialog)
         ToolbarAction.TabCount -> config::isIncognitoMode.toggle()

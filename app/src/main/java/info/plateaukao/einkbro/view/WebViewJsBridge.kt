@@ -252,11 +252,27 @@ class WebViewJsBridge(private val webView: WebView) {
         }
     }
 
+    /**
+     * Rewrites the viewport meta tag. Reader mode's two-column layout pins the
+     * scale ("initial-scale=1.0, minimum-scale=1.0") because its horizontal
+     * column overflow otherwise makes WebView zoom out to fit the whole strip
+     * after an orientation change.
+     */
+    fun setViewportContent(content: String) {
+        val js = loadAssetFile("set_viewport_content.js")
+            .replace("__VIEWPORT_CONTENT__", content)
+        webView.evaluateJavascript(js, null)
+    }
+
     fun disableReaderMode() {
         // Removing the reader style slots restores the page's own layout and
         // writing mode; no counteracting CSS is needed.
         clearCssSlot(CSS_SLOT_READER)
         clearCssSlot(CSS_SLOT_VERTICAL)
+        clearCssSlot(CSS_SLOT_READER_SETTINGS)
+        // Undo the two-column scale pin (no-op when it was never applied:
+        // entering reader mode already set the meta to width=device-width).
+        setViewportContent(VIEWPORT_DEFAULT)
         webView.evaluateJavascript(
             "javascript:(function() {" +
                     "document.body.innerHTML = document.innerHTMLCache;" +
@@ -284,10 +300,6 @@ class WebViewJsBridge(private val webView: WebView) {
         webView.evaluateJavascript(getReaderModeBodyTextJs(keepExtraContent), callback)
     }
 
-    fun setPaddingInReaderMode(padding: Int) {
-        webView.evaluateJavascript("javascript:setPadding($padding)", null)
-    }
-
     //endregion
 
     //region Audio Mode
@@ -306,7 +318,11 @@ class WebViewJsBridge(private val webView: WebView) {
         // The main blob recomputed by WebViewReaderHelper.updateCssStyle()
         const val CSS_SLOT_MAIN = "main"
         const val CSS_SLOT_READER = "reader"
+        const val CSS_SLOT_READER_SETTINGS = "readerSettings"
         const val CSS_SLOT_VERTICAL = "vertical"
+
+        const val VIEWPORT_DEFAULT = "width=device-width"
+        const val VIEWPORT_FIXED_SCALE = "width=device-width, initial-scale=1.0, minimum-scale=1.0"
         const val CSS_SLOT_HIGHLIGHT = "highlight"
         const val CSS_SLOT_TRANSLATION = "translation"
 

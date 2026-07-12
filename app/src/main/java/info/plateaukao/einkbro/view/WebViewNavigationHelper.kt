@@ -18,12 +18,16 @@ class WebViewNavigationHelper(
         val totalPageCount = webView.horizontalScrollRange() / shiftOffset()
         val currentPage = totalPageCount - (floor(webView.scrollX.toDouble() / shiftOffset()).toInt())
         currentPage == 1
+    } else if (webView.isTwoColumnReaderOn) {
+        webView.scrollX == 0
     } else {
         webView.scrollY == 0 && webView.isInnerScrollAtTop
     }
 
     fun jumpToTop() = if (webView.isVerticalRead) {
         webView.scrollTo(webView.horizontalScrollRange() - shiftOffset(), 0)
+    } else if (webView.isTwoColumnReaderOn) {
+        webView.scrollTo(0, 0)
     } else {
         webView.scrollTo(0, 0)
         webView.evaluateJavascript("window.__einkbroScrollToTop && window.__einkbroScrollToTop()", null)
@@ -31,6 +35,8 @@ class WebViewNavigationHelper(
 
     fun jumpToBottom() = if (webView.isVerticalRead) {
         webView.scrollTo(webView.horizontalScrollRange() - shiftOffset(), 0)
+    } else if (webView.isTwoColumnReaderOn) {
+        webView.scrollTo(webView.horizontalScrollRange() - webView.width, 0)
     } else {
         webView.scrollTo(0, webView.verticalScrollRange() - shiftOffset())
     }
@@ -38,6 +44,12 @@ class WebViewNavigationHelper(
     fun pageDownWithNoAnimation() = if (webView.isVerticalRead) {
         webView.scrollBy(shiftOffset(), 0)
         webView.scrollX = min(webView.horizontalScrollRange() - webView.width, webView.scrollX)
+    } else if (webView.isTwoColumnReaderOn) {
+        // One "page" is exactly one viewport of two columns (the CSS sizes the
+        // margins/gap so pages tile by viewport width). Jump to the computed
+        // page boundary instead of scrollBy so sub-pixel layout rounding can't
+        // accumulate into visible drift over many page turns.
+        scrollToTwoColumnPage(currentTwoColumnPage() + 1)
     } else {
         jsPageScroll(1) { handled ->
             if (!handled) {
@@ -50,6 +62,8 @@ class WebViewNavigationHelper(
     fun pageUpWithNoAnimation() = if (webView.isVerticalRead) {
         webView.scrollBy(-shiftOffset(), 0)
         webView.scrollX = max(0, webView.scrollX)
+    } else if (webView.isTwoColumnReaderOn) {
+        scrollToTwoColumnPage(currentTwoColumnPage() - 1)
     } else {
         jsPageScroll(-1) { handled ->
             if (!handled) {
@@ -71,6 +85,11 @@ class WebViewNavigationHelper(
                 val currentPage = totalPageCount - (floor(webView.scrollX.toDouble() / pageHeight).toInt())
                 val info = "$currentPage/$totalPageCount"
                 onUpdatePageInfo(if (info != "0/0") info else "-/-")
+            } else if (webView.isTwoColumnReaderOn) {
+                val totalPageCount = ceil(webView.horizontalScrollRange().toDouble() / webView.width).toInt()
+                val currentPage = floor(webView.scrollX.toDouble() / webView.width).toInt() + 1
+                val info = "$currentPage/$totalPageCount"
+                onUpdatePageInfo(if (info != "0/0") info else "-/-")
             } else if (webView.innerClientHeight > 0 && webView.verticalScrollRange() <= webView.height + pageHeight / 2) {
                 val totalPageCount = webView.innerScrollHeight / webView.innerClientHeight
                 val currentPage = ceil((webView.innerScrollTop + 1).toDouble() / webView.innerClientHeight).toInt()
@@ -85,6 +104,14 @@ class WebViewNavigationHelper(
         } catch (e: ArithmeticException) {
             onUpdatePageInfo("-/-")
         }
+    }
+
+    private fun currentTwoColumnPage(): Int =
+        Math.round(webView.scrollX.toDouble() / webView.width).toInt()
+
+    private fun scrollToTwoColumnPage(page: Int) {
+        val maxScrollX = max(0, webView.horizontalScrollRange() - webView.width)
+        webView.scrollTo((page * webView.width).coerceIn(0, maxScrollX), 0)
     }
 
     fun shiftOffset(): Int {

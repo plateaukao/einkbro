@@ -515,6 +515,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         is BrowserAction.DecreaseFontSize -> decreaseFontSize()
         is BrowserAction.ShowFontSizeChangeDialog -> showFontSizeChangeDialog()
         is BrowserAction.ShowFontBoldnessDialog -> showFontBoldnessDialog()
+        is BrowserAction.ShowReaderSettingsDialog -> displayConfigDelegate.showReaderSettingsDialog()
         is BrowserAction.InvertColors -> invertColors()
         is BrowserAction.ShowOverview -> showOverview()
         is BrowserAction.ToggleFullscreen -> toggleFullscreen()

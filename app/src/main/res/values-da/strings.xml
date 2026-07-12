@@ -314,6 +314,10 @@
     <string name="read_from_here">Herfra</string>
     <string name="read_speed">Læsehastighed</string>
     <string name="reader_mode">Læsetilstand</string>
+    <string name="reader_settings">Indstillinger for læsetilstand</string>
+    <string name="page_margin">Sidemargen</string>
+    <string name="line_spacing">Linjeafstand</string>
+    <string name="two_column_in_landscape">To kolonner i liggende format</string>
     <string name="reader_toolbar">Indstilling for læserværktøjslinje</string>
     <string name="receive_link_terminate">Afslut linkmodtagelse</string>
     <string name="recently_used_bookmarks">Senest brugte bogmærker</string>

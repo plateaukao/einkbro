@@ -107,6 +107,8 @@ open class EBWebView(
     var isEpubReaderMode: Boolean
         get() = readerHelper.isEpubReaderMode
         set(value) { readerHelper.isEpubReaderMode = value }
+    val isTwoColumnReaderOn: Boolean
+        get() = readerHelper.isTwoColumnActive()
 
     // Delegated translation state
     var translateApi: TRANSLATE_API
@@ -267,6 +269,8 @@ open class EBWebView(
 
     // Delegated to readerHelper
     fun updateCssStyle() = readerHelper.updateCssStyle()
+
+    fun updateReaderSettingsStyle() = readerHelper.updateReaderSettingsStyle()
 
     private fun resetState(partial: Boolean = false) {
         errorPageUrl = null

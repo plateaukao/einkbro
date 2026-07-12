@@ -228,6 +228,10 @@
     <string name="setting_title_pdf_paper_size">Μέγεθος χαρτιού εκτυπωμένου PDF</string>
     <string name="vertical_read">Κάθετη λειτουργία</string>
     <string name="reader_mode">Λειτουργία ανάγνωσης</string>
+    <string name="reader_settings">Ρυθμίσεις λειτουργίας ανάγνωσης</string>
+    <string name="page_margin">Περιθώριο σελίδας</string>
+    <string name="line_spacing">Διάστιχο</string>
+    <string name="two_column_in_landscape">Δύο στήλες σε οριζόντιο προσανατολισμό</string>
     <string name="touch_area_setting">Ρυθμίσεις αφής</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Αποθήκευση EPUB</string>

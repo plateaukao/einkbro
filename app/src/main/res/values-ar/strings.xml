@@ -228,6 +228,10 @@
     <string name="setting_title_pdf_paper_size">حجم ورق PDF المطبوع</string>
     <string name="vertical_read">الوضع الرأسي</string>
     <string name="reader_mode">وضع القراءة</string>
+    <string name="reader_settings">إعدادات وضع القراءة</string>
+    <string name="page_margin">هامش الصفحة</string>
+    <string name="line_spacing">تباعد الأسطر</string>
+    <string name="two_column_in_landscape">عمودان في الوضع الأفقي</string>
     <string name="touch_area_setting">إعدادات اللمس</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">حفظ EPUB</string>

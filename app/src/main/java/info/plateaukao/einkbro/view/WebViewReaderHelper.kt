@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.view
 
+import android.content.res.Configuration
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.EinkImageMode
 import info.plateaukao.einkbro.preference.FontType
@@ -36,7 +37,7 @@ class WebViewReaderHelper(
                             webView.postDelayed({ webView.jumpToTop() }, 200)
                         }
                     } else {
-                        webView.jsBridge.setPaddingInReaderMode(config.display.paddingForReaderMode)
+                        updateReaderSettingsStyle()
                     }
                 }
             }
@@ -49,6 +50,61 @@ class WebViewReaderHelper(
             // reader font doesn't stick after leaving reader mode.
             updateCssStyle()
         }
+    }
+
+    /**
+     * Two-column landscape reading is active: the reader body flows into
+     * viewport-height columns extending horizontally, so page turns scroll
+     * sideways by one viewport width (see WebViewNavigationHelper).
+     */
+    fun isTwoColumnActive(): Boolean = isReaderModeOn && !isVerticalRead &&
+            config.display.readerTwoColumnInLandscape &&
+            webView.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    /**
+     * User-tunable reader layout (page margin, line spacing, two-column) in its
+     * own CSS slot, so the dialog can re-apply it live without touching the
+     * base readerview.css slot. Selectors are more specific than readerview.css
+     * so they win regardless of slot insertion order.
+     */
+    fun updateReaderSettingsStyle() {
+        if (!isReaderModeOn || isVerticalRead) return
+
+        val padding = config.display.paddingForReaderMode
+        val lineHeight = String.format(Locale.ROOT, "%.1f", config.display.readerLineSpacing / 10.0)
+        val css = StringBuilder()
+        css.append("body.mozac-readerview-body { padding: ${padding}px !important; }\n")
+        css.append(
+            ".mozac-readerview-body .mozac-readerview-content p, " +
+                    ".mozac-readerview-body .mozac-readerview-content li " +
+                    "{ line-height: $lineHeight !important; }\n"
+        )
+        if (config.display.readerTwoColumnInLandscape) {
+            // margin 0 (killing the 8px UA default) + column-gap = 2 * padding
+            // make each two-column "page" exactly one viewport wide, so page
+            // turns can jump by webView.width without drifting.
+            css.append(
+                """
+                @media screen and (orientation: landscape) {
+                  body.mozac-readerview-body {
+                    margin: 0 !important;
+                    height: 100vh;
+                    box-sizing: border-box;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    column-count: 2;
+                    column-gap: ${padding * 2}px;
+                    column-fill: auto;
+                  }
+                }
+                """.trimIndent()
+            )
+        }
+        webView.jsBridge.updateCssSlot(WebViewJsBridge.CSS_SLOT_READER_SETTINGS, css.toString())
+        webView.jsBridge.setViewportContent(
+            if (config.display.readerTwoColumnInLandscape) WebViewJsBridge.VIEWPORT_FIXED_SCALE
+            else WebViewJsBridge.VIEWPORT_DEFAULT
+        )
     }
 
     fun updateCssStyle() {

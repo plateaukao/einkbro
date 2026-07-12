@@ -226,6 +226,10 @@
     <string name="setting_title_pdf_paper_size">ᱪᱷᱟᱯᱟ PDF ᱥᱟᱦᱴᱟ ᱢᱟᱯ</string>
     <string name="vertical_read">ᱥᱤᱫᱷ</string>
     <string name="reader_mode">ᱯᱟᱲᱦᱟᱣ ᱢᱳᱰ</string>
+    <string name="reader_settings">ᱯᱟᱲᱦᱟᱣ ᱢᱳᱰ ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="page_margin">ᱥᱟᱦᱴᱟ ᱢᱟᱨᱡᱤᱱ</string>
+    <string name="line_spacing">ᱜᱟᱨ ᱯᱷᱟᱨᱟᱠ</string>
+    <string name="two_column_in_landscape">ᱞᱮᱱᱰᱥᱠᱮᱯ ᱨᱮ ᱵᱟᱨ ᱠᱚᱞᱚᱢ</string>
     <string name="touch_area_setting">ᱴᱚᱪ ᱥᱟᱡᱟᱣᱠᱚ</string>
     <string name="menu_save_epub">EPUB ᱥᱟᱧᱪᱟᱣ ᱢᱮ</string>
     <string name="saving_epub">EPUB ᱥᱟᱧᱪᱟᱣᱜ ᱠᱟᱱᱟ</string>

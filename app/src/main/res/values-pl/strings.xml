@@ -220,6 +220,10 @@
     <string name="setting_title_pdf_paper_size">Rozmiar papieru PDF</string>
     <string name="vertical_read">Tryb pionowy</string>
     <string name="reader_mode">Tryb czytnika</string>
+    <string name="reader_settings">Ustawienia trybu czytania</string>
+    <string name="page_margin">Margines strony</string>
+    <string name="line_spacing">Interlinia</string>
+    <string name="two_column_in_landscape">Dwie kolumny w orientacji poziomej</string>
     <string name="touch_area_setting">Ustawienia dotyku</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Zapisz EPUB</string>

@@ -12,6 +12,7 @@ import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.ReaderSettingsDialogFragment
 import java.util.Locale
 
 /**
@@ -80,6 +81,16 @@ class DisplayConfigDelegate(
                 state.ebWebView.updateCssStyle()
             },
         ).show(activity.supportFragmentManager, "FontBoldnessDialog")
+    }
+
+    fun showReaderSettingsDialog() {
+        ReaderSettingsDialogFragment(
+            onSettingChanged = { state.ebWebView.updateReaderSettingsStyle() },
+            onFontConfigClick = {
+                ReaderFontDialogFragment { openCustomFontPicker() }
+                    .show(activity.supportFragmentManager, "font_dialog")
+            },
+        ).show(activity.supportFragmentManager, "ReaderSettingsDialog")
     }
 
     fun increaseFontSize() {

@@ -54,6 +54,7 @@ object BrowserActionCatalog {
                 BrowserActionEntry(BrowserAction.DecreaseFontSize, R.string.font_size_decrease),
                 BrowserActionEntry(BrowserAction.ShowFontSizeChangeDialog, R.string.font_size),
                 BrowserActionEntry(BrowserAction.ShowFontBoldnessDialog, R.string.bold_font),
+                BrowserActionEntry(BrowserAction.ShowReaderSettingsDialog, R.string.reader_settings),
                 BrowserActionEntry(BrowserAction.InvertColors, R.string.menu_invert_color),
             ),
         ),

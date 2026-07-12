@@ -91,6 +91,10 @@ class DisplayConfig(private val sp: SharedPreferences) {
 
     var paddingForReaderMode by IntPreference(sp, K_PADDING_FOR_READER_MODE, 10)
 
+    // Line spacing (CSS line-height) in tenths: 15 -> 1.5
+    var readerLineSpacing by IntPreference(sp, K_READER_LINE_SPACING, 15)
+    var readerTwoColumnInLandscape by BooleanPreference(sp, K_READER_TWO_COLUMN_LANDSCAPE, false)
+
     var pdfPaperSize: PaperSize
         get() = PaperSize.entries[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
         set(value) {
@@ -117,5 +121,7 @@ class DisplayConfig(private val sp: SharedPreferences) {
         const val K_ENABLE_ZOOM = "sp_enable_zoom"
         const val K_ENABLE_ZOOM_TEXT_WRAP_REFLOW = "sp_enable_zoom_text_wrap_reflow"
         private const val K_PADDING_FOR_READER_MODE = "sp_padding_for_reader_mode"
+        private const val K_READER_LINE_SPACING = "sp_reader_line_spacing"
+        private const val K_READER_TWO_COLUMN_LANDSCAPE = "sp_reader_two_column_landscape"
     }
 }

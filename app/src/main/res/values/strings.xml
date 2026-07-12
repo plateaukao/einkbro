@@ -252,6 +252,10 @@
     <string name="setting_title_pdf_paper_size">Printed PDF paper size</string>
     <string name="vertical_read">Vertical mode</string>
     <string name="reader_mode">Reader mode</string>
+    <string name="reader_settings">Reader mode settings</string>
+    <string name="page_margin">Page margin</string>
+    <string name="line_spacing">Line spacing</string>
+    <string name="two_column_in_landscape">Two columns in landscape</string>
     <string name="touch_area_setting">Touch setting</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Save EPUB</string>

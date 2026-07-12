@@ -224,6 +224,10 @@
     <string name="setting_title_pdf_paper_size">Velikost papíru PDF</string>
     <string name="vertical_read">Svislý režim</string>
     <string name="reader_mode">Režim čtení</string>
+    <string name="reader_settings">Nastavení režimu čtení</string>
+    <string name="page_margin">Okraj stránky</string>
+    <string name="line_spacing">Řádkování</string>
+    <string name="two_column_in_landscape">Dva sloupce na šířku</string>
     <string name="touch_area_setting">Nastavení dotyku</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Uložit EPUB</string>

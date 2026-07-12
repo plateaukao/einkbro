@@ -314,6 +314,10 @@
     <string name="read_from_here">Härifrån</string>
     <string name="read_speed">Läshastighet</string>
     <string name="reader_mode">Läsläge</string>
+    <string name="reader_settings">Inställningar för läsläge</string>
+    <string name="page_margin">Sidmarginal</string>
+    <string name="line_spacing">Radavstånd</string>
+    <string name="two_column_in_landscape">Två kolumner i liggande läge</string>
     <string name="reader_toolbar">Inställning för läsverktygsfält</string>
     <string name="receive_link_terminate">Avsluta länkmottagning</string>
     <string name="recently_used_bookmarks">Senast använda bokmärken</string>

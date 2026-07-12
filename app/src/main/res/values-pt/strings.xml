@@ -195,6 +195,10 @@
     <string name="setting_title_pdf_paper_size">Tamanho do papel do PDF impresso</string>
     <string name="vertical_read">Modo vertical</string>
     <string name="reader_mode">Modo leitura</string>
+    <string name="reader_settings">Configurações do modo de leitura</string>
+    <string name="page_margin">Margem da página</string>
+    <string name="line_spacing">Espaçamento entre linhas</string>
+    <string name="two_column_in_landscape">Duas colunas na horizontal</string>
     <string name="touch_area_setting">Definições de toque</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_save_epub">Guardar EPUB</string>

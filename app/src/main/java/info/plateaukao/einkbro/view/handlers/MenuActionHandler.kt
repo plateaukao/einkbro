@@ -39,6 +39,7 @@ class MenuActionHandler(
             MenuItemType.ShareLink -> dispatch(BrowserAction.ShareLinkLongPress)
             MenuItemType.TouchSetting -> dispatch(BrowserAction.ToggleTouchPagination)
             MenuItemType.BoldFont -> dispatch(BrowserAction.ShowFontBoldnessDialog)
+            MenuItemType.ReaderMode -> dispatch(BrowserAction.ShowReaderSettingsDialog)
             MenuItemType.Settings -> IntentUnit.gotoSettings(activity)
             MenuItemType.Tts -> TtsSettingDialogFragment()
                 .show(activity.supportFragmentManager, "TtsSettingDialog")

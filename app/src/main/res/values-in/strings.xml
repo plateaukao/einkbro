@@ -217,6 +217,10 @@
     <string name="setting_title_pdf_paper_size">Ukuran cetak kertas pdf</string>
     <string name="vertical_read">Vertikal</string>
     <string name="reader_mode">Mode pembaca</string>
+    <string name="reader_settings">Pengaturan mode baca</string>
+    <string name="page_margin">Margin halaman</string>
+    <string name="line_spacing">Jarak baris</string>
+    <string name="two_column_in_landscape">Dua kolom dalam mode lanskap</string>
     <string name="touch_area_setting">Pengaturan sentuh</string>
     <string name="menu_save_epub">Simpan epub</string>
     <string name="new_epub_or_from_picker">Epub baru atau dari pemilih</string>
