@@ -205,7 +205,7 @@ class WebViewJsBridge(private val webView: WebView) {
             CSS_SLOT_READER,
             loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css")
         )
-        updateCssSlot(CSS_SLOT_VERTICAL, if (isVertical) VERTICAL_LAYOUT_CSS else "")
+        updateCssSlot(CSS_SLOT_VERTICAL, if (isVertical) loadAssetFile("vertical_layout.css") else "")
 
         val jsString = HelperUnit.getStringFromAsset("MozReadability.js") +
                 "\n" + HelperUnit.getStringFromAsset("jsonld_article.js")
@@ -214,21 +214,17 @@ class WebViewJsBridge(private val webView: WebView) {
         }
     }
 
-    fun injectMozReaderModeJs(isVertical: Boolean = false) {
+    /**
+     * Injects the Readability library + its stylesheet into the live page so a
+     * follow-up [getReaderModeBodyHtml] can extract the reader HTML without
+     * entering reader mode. Only ever used for horizontal raw-HTML extraction
+     * (EPUB export / save), so there is no vertical variant.
+     */
+    fun injectMozReaderModeJs() {
         try {
             val buffer = (loadAssetFile("MozReadability.js") +
                     "\n" + loadAssetFile("jsonld_article.js")).toByteArray()
-            val cssBuffer =
-                loadAssetFile(if (isVertical) "verticalReaderview.css" else "readerview.css").toByteArray()
-
-            val verticalCssString = if (isVertical) {
-                "var style = document.createElement('style');" +
-                        "style.type = 'text/css';" +
-                        "style.innerHTML = \"" + VERTICAL_LAYOUT_CSS + "\";" +
-                        "parent.appendChild(style);"
-            } else {
-                ""
-            }
+            val cssBuffer = loadAssetFile("readerview.css").toByteArray()
 
             val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
             val encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP)
@@ -243,7 +239,6 @@ class WebViewJsBridge(private val webView: WebView) {
                         "style.type = 'text/css';" +
                         "style.innerHTML = window.atob('" + encodedCss + "');" +
                         "parent.appendChild(style);" +
-                        verticalCssString +
                         "window.scrollTo(0, 0);" +
                         "})()", null
             )
@@ -382,16 +377,6 @@ class WebViewJsBridge(private val webView: WebView) {
         //endregion
 
         //region CSS Constants
-
-        const val VERTICAL_LAYOUT_CSS = "body {\n" +
-                "-webkit-writing-mode: vertical-rl;\n" +
-                "writing-mode: vertical-rl;\n" +
-                "}\n" +
-                "img {\n" +
-                "margin: 10px 10px 10px 10px;\n" +
-                "float: left;\n" +
-                "display: block;\n" +
-                "}\n"
 
         const val NOTO_SANS_SERIF_FONT_CSS =
             "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +

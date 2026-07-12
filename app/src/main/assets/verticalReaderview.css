@@ -264,17 +264,13 @@
   padding: 0;
 }
 
+/* Tate-chu-yoko: short Latin/digit runs composed horizontally inside one em
+ * square of the vertical line. Must stay a plain inline (not inline-block) or
+ * text-combine-upright doesn't apply. -webkit-text-combine is the legacy
+ * alias for old WebViews. */
 .vertical {
-    display: inline-block;
-    /* need to set a width for the vertical text */
-    margin: 0.8em 0.0em !important;
-    letter-spacing: 0.0em;
-    text-indent: 0.1em;
-    font-size: 1.0em;
-    -moz-transform:rotate(-90deg);
-    -webkit-transform:rotate(-90deg);
-    -o-transform:rotate(-90deg);
-    transform:rotate(-90deg);
+    -webkit-text-combine: horizontal;
+    text-combine-upright: all;
 }
 .verticalSingleChr {
     writing-mode: vertical-rl;
@@ -286,14 +282,9 @@ ol.cjk {
 }
 ol.cjk li:before {
   content: attr(data-marker);
-  display: -moz-inline-block;
-  display: inline-block;
-  width: 2em;
-  text-align: center;
-  margin: 0 -0.1em 0.7em 0;
+  /* physical bottom = inline-end gap between marker and item text in vertical-rl */
+  margin-bottom: 0.3em;
   font-size: 0.8em;
-  -moz-transform:rotate(-90deg);
-  -webkit-transform:rotate(-90deg);
-  -o-transform:rotate(-90deg);
-  transform:rotate(-90deg);
+  -webkit-text-combine: horizontal;
+  text-combine-upright: all;
 }

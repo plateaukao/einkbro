@@ -1,10 +1,10 @@
 function toChineseNumeral(num) {
-  const numerals = ['○', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  const numerals = ['〇', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
   return num.toString().split('').map(digit => numerals[parseInt(digit)]).join('');
 }
 
 function toChineseNumeralForDate(num) {
-  const numerals = ['○', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  const numerals = ['〇', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
 
   if (num < 10) {
     return numerals[num];
@@ -40,9 +40,7 @@ function convertMonthToChinese(dateString) {
 function convertYearToChinese(dateString) {
   const datePattern = /(\d{1,4})\s*年/g;
   return dateString.replace(datePattern, (match, year) => {
-    console.log(year);
     const chineseYear = year.split('').map(digit => toChineseNumeral(digit)).join('');
-    console.log('chineseYear', chineseYear);
     return `${chineseYear}年`;
   });
 }
@@ -70,12 +68,12 @@ function convertToVerticalStyle(node) {
             let matchedText = match[0];
             // exclude english words longer than 2 characters, e.g. "Hello" but keep a. b. c.
             if (matchedText.length > 4 && isLetter(matchedText[0]) && isLetter(matchedText[1])) { continue }
-            if (matchedText.length == 3 && isAllCapitalLetter(matchedText)) { continue }
+            // 3-letter all-caps runs (USA, CPU, ...) are acronyms: let them fall
+            // through to the length>=3 branch below so they stack upright
+            // (verticalSingleChr) instead of rotating sideways in the vertical line.
 
             // digits longer than 3 characters , e.g. 12345, keep 2024 similar year numbers
             if (match[0].length >= 3) {
-                //console.log("matchedText.length >= 3");
-                //console.log(matchedText);
                 if (matchedText[1] != '.') {
                     if (lastIndex < match.index) {
                         fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
@@ -126,17 +124,41 @@ function convertToVerticalStyle(node) {
     }
 }
 
-function convertToFullWidth(str) {
-  return str.replace(/%/g, '％').replace(/\,/g, '，').replace(/\?/g, '？').replace(/\!/g, '！').replace(/:/g, '：').replace(/\//g, '／');
+const fullWidthMap = {
+    '%': '％', ',': '，', ';': '；', '?': '？', '!': '！',
+    ':': '：', '/': '／', '(': '（', ')': '）'
+};
+
+function isCjkChar(ch) {
+    return ch !== undefined &&
+        /[⺀-鿿㐀-䶿豈-﫿＀-￯]/.test(ch);
 }
 
-function isAllCapitalLetter(str) {
+function nearestNonSpace(str, start, step) {
+    for (let j = start; j >= 0 && j < str.length; j += step) {
+        if (!/\s/.test(str[j])) return str[j];
+    }
+    return undefined;
+}
+
+// Convert ASCII punctuation to its full-width CJK form, but ONLY when it sits
+// inside CJK text (the nearest non-space neighbour on either side is a CJK
+// character). This leaves Latin prose ("Hello, world"), numbers ("3,000") and
+// URLs ("http://...") with their original half-width punctuation.
+function convertToFullWidth(str) {
+    let out = '';
     for (let i = 0; i < str.length; i++) {
-        if (!isLetter(str[i])) {
-            return false;
+        const ch = str[i];
+        const full = fullWidthMap[ch];
+        if (full !== undefined &&
+            (isCjkChar(nearestNonSpace(str, i - 1, -1)) ||
+                isCjkChar(nearestNonSpace(str, i + 1, 1)))) {
+            out += full;
+        } else {
+            out += ch;
         }
     }
-    return str === str.toUpperCase();
+    return out;
 }
 
 function isLetter(char) {
@@ -208,10 +230,8 @@ function convertListLabel(node) {
 
    olLists.forEach((ol) => {
        const listStyleType = window.getComputedStyle(ol).listStyleType;
-       //console.log(listStyleType);
        const listItems = ol.querySelectorAll("li");
        listItems.forEach((li, index) => {
-           //console.log(li.textContent);
            const marker = convertLabel(listStyleType, index);
            li.setAttribute("data-marker", marker);
        });

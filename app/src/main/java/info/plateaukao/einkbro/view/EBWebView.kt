@@ -101,6 +101,12 @@ open class EBWebView(
     var isVerticalRead: Boolean
         get() = readerHelper.isVerticalRead
         set(value) { readerHelper.isVerticalRead = value }
+
+    // Rendered line advance (physical px) of the vertical-read text, measured
+    // after entering vertical mode; 0 when unknown. Vertical page turns snap to
+    // integer multiples of it so a page edge never slices a line of text.
+    @Volatile
+    var verticalLineAdvancePx: Float = 0f
     var isPlainText: Boolean
         get() = readerHelper.isPlainText
         set(value) { readerHelper.isPlainText = value }
@@ -282,6 +288,7 @@ open class EBWebView(
         if (!partial) {
             isVerticalRead = false
             isReaderModeOn = false
+            verticalLineAdvancePx = 0f
         }
     }
 
@@ -705,7 +712,7 @@ open class EBWebView(
         if (isPlainText && rawHtmlCache != null) {
             continuation.resume(rawHtmlCache!!)
         } else if (!isReaderModeOn && !isTranslatePage) {
-            jsBridge.injectMozReaderModeJs(false)
+            jsBridge.injectMozReaderModeJs()
             jsBridge.getReaderModeBodyHtml(config.display.readerKeepExtraContent, url) { html ->
                 val processedHtml = HelperUnit.unescapeJava(html)
                 val rawHtml = processedHtml.substring(1, processedHtml.length - 1)

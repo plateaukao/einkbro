@@ -16,12 +16,48 @@ class WebViewReaderHelper(
     var isPlainText = false
     var isEpubReaderMode = false
 
+    // True when enabling vertical read was also what turned reader mode on, so
+    // disabling vertical read knows to leave reader mode entirely rather than
+    // fall back to the horizontal reader view the user hadn't asked for.
+    private var verticalActivatedReaderMode = false
+
     fun toggleVerticalRead() {
         isVerticalRead = !isVerticalRead
         if (isVerticalRead) {
-            toggleReaderMode(true)
+            if (isReaderModeOn) {
+                // Reader content is already showing: swap in the vertical styling
+                // without re-running Readability on the already-replaced body.
+                verticalActivatedReaderMode = false
+                webView.jsBridge.updateCssSlot(
+                    WebViewJsBridge.CSS_SLOT_READER,
+                    loadAssetFile("verticalReaderview.css")
+                )
+                webView.jsBridge.updateCssSlot(
+                    WebViewJsBridge.CSS_SLOT_VERTICAL,
+                    loadAssetFile("vertical_layout.css")
+                )
+                // applyVerticalTextProcessing() re-applies the reader-settings
+                // slot (vertical variant, no two-column) and resets the viewport.
+                applyVerticalTextProcessing()
+            } else {
+                verticalActivatedReaderMode = true
+                toggleReaderMode(true)
+            }
         } else {
-            webView.reload()
+            // process_text_nodes.js irreversibly rewrites the reader DOM (dates to
+            // kanji, tate-chu-yoko spans, full-width punctuation), so we can't just
+            // swap the CSS back; the body must be rebuilt. A plain webView.reload()
+            // does NOT work here — once reader mode replaced the body via
+            // document.body.outerHTML, WebView.reload() no longer re-fetches the
+            // document, leaving vertical mode stuck. Instead tear reader mode down
+            // (disableReaderMode restores the pre-reader body from its cache, no
+            // network) and, if the user had been reading horizontally before,
+            // re-enter the horizontal reader on that clean body.
+            val restoreHorizontalReader = !verticalActivatedReaderMode
+            toggleReaderMode()
+            if (restoreHorizontalReader) {
+                toggleReaderMode(false)
+            }
         }
     }
 
@@ -30,12 +66,14 @@ class WebViewReaderHelper(
     fun toggleReaderMode(isVertical: Boolean = false) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
+            // Keep the vertical flag in lockstep with the mode we're entering, so
+            // callers that re-enter reader mode directly (e.g. the reader-settings
+            // dialog re-parsing the page) preserve vertical read.
+            isVerticalRead = isVertical
             webView.jsBridge.evaluateMozReaderModeJs(isVertical) {
                 webView.jsBridge.replaceWithReaderModeBody(config.display.readerKeepExtraContent, webView.url) { _ ->
                     if (isVertical) {
-                        webView.jsBridge.evaluateJsFile("process_text_nodes.js", false) {
-                            webView.postDelayed({ webView.jumpToTop() }, 200)
-                        }
+                        applyVerticalTextProcessing()
                     } else {
                         updateReaderSettingsStyle()
                     }
@@ -44,11 +82,45 @@ class WebViewReaderHelper(
             webView.settings.textZoom = config.display.readerFontSize
             updateCssStyle()
         } else {
+            // Vertical read only exists inside reader mode; leaving reader mode
+            // (e.g. via the reader toolbar icon while vertical is on) exits it too.
+            isVerticalRead = false
             webView.jsBridge.disableReaderMode()
             webView.settings.textZoom = config.display.fontSize
             // Recompute the main style slot with the normal-mode font so the
             // reader font doesn't stick after leaving reader mode.
             updateCssStyle()
+        }
+    }
+
+    /**
+     * Post-processes the reader body for vertical reading (dates, tate-chu-yoko
+     * spans, list markers), applies the user's reader layout (margin, line
+     * spacing), measures the rendered line advance so page turns can snap to
+     * line boundaries, then jumps to the reading start (right edge).
+     */
+    private fun applyVerticalTextProcessing() {
+        updateReaderSettingsStyle()
+        webView.jsBridge.evaluateJsFile("process_text_nodes.js", false) {
+            measureVerticalLineAdvance {
+                webView.postDelayed({ webView.jumpToTop() }, 200)
+            }
+        }
+    }
+
+    /**
+     * Measures the rendered vertical line advance and stores it (in physical px)
+     * on the WebView so page turns can snap to it. Re-run whenever anything that
+     * changes line geometry is applied (entering vertical mode, line-spacing or
+     * font changes).
+     */
+    private fun measureVerticalLineAdvance(then: () -> Unit = {}) {
+        webView.jsBridge.evaluateJsFile("measure_line_advance.js", false) { value ->
+            // JS reports CSS px; native scrolling is in physical px.
+            @Suppress("DEPRECATION")
+            webView.verticalLineAdvancePx =
+                (value?.trim('"')?.toFloatOrNull() ?: 0f) * webView.scale
+            then()
         }
     }
 
@@ -66,12 +138,18 @@ class WebViewReaderHelper(
      * own CSS slot, so the dialog can re-apply it live without touching the
      * base readerview.css slot. Selectors are more specific than readerview.css
      * so they win regardless of slot insertion order.
+     *
+     * Works in vertical mode too: `padding` is physical and `line-height` sets
+     * the breadth of each vertical line (i.e. inter-line spacing) under
+     * writing-mode: vertical-rl. The two-column landscape layout is horizontal
+     * only — it can't coexist with vertical-rl — so it's skipped there.
      */
     fun updateReaderSettingsStyle() {
-        if (!isReaderModeOn || isVerticalRead) return
+        if (!isReaderModeOn) return
 
         val padding = config.display.paddingForReaderMode
         val lineHeight = String.format(Locale.ROOT, "%.1f", config.display.readerLineSpacing / 10.0)
+        val twoColumn = !isVerticalRead && config.display.readerTwoColumnInLandscape
         val css = StringBuilder()
         css.append("body.mozac-readerview-body { padding: ${padding}px !important; }\n")
         css.append(
@@ -79,7 +157,7 @@ class WebViewReaderHelper(
                     ".mozac-readerview-body .mozac-readerview-content li " +
                     "{ line-height: $lineHeight !important; }\n"
         )
-        if (config.display.readerTwoColumnInLandscape) {
+        if (twoColumn) {
             // margin 0 (killing the 8px UA default) + column-gap = 2 * padding
             // make each two-column "page" exactly one viewport wide, so page
             // turns can jump by webView.width without drifting.
@@ -102,9 +180,12 @@ class WebViewReaderHelper(
         }
         webView.jsBridge.updateCssSlot(WebViewJsBridge.CSS_SLOT_READER_SETTINGS, css.toString())
         webView.jsBridge.setViewportContent(
-            if (config.display.readerTwoColumnInLandscape) WebViewJsBridge.VIEWPORT_FIXED_SCALE
+            if (twoColumn) WebViewJsBridge.VIEWPORT_FIXED_SCALE
             else WebViewJsBridge.VIEWPORT_DEFAULT
         )
+        // Line spacing changes the vertical line advance, so page-turn snapping
+        // must be re-measured against the new layout.
+        if (isVerticalRead) measureVerticalLineAdvance()
     }
 
     fun updateCssStyle() {

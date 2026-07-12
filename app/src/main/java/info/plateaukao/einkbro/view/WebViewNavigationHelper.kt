@@ -7,6 +7,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 class WebViewNavigationHelper(
     private val webView: EBWebView,
@@ -15,9 +16,7 @@ class WebViewNavigationHelper(
 ) {
 
     fun isAtTop(): Boolean = if (webView.isVerticalRead) {
-        val totalPageCount = webView.horizontalScrollRange() / shiftOffset()
-        val currentPage = totalPageCount - (floor(webView.scrollX.toDouble() / shiftOffset()).toInt())
-        currentPage == 1
+        currentVerticalPage() <= 0
     } else if (webView.isTwoColumnReaderOn) {
         webView.scrollX == 0
     } else {
@@ -25,7 +24,7 @@ class WebViewNavigationHelper(
     }
 
     fun jumpToTop() = if (webView.isVerticalRead) {
-        webView.scrollTo(webView.horizontalScrollRange() - shiftOffset(), 0)
+        scrollToVerticalPage(0)
     } else if (webView.isTwoColumnReaderOn) {
         webView.scrollTo(0, 0)
     } else {
@@ -34,7 +33,8 @@ class WebViewNavigationHelper(
     }
 
     fun jumpToBottom() = if (webView.isVerticalRead) {
-        webView.scrollTo(webView.horizontalScrollRange() - shiftOffset(), 0)
+        // End of a vertical-rl document is its leftmost edge (last column).
+        webView.scrollTo(0, 0)
     } else if (webView.isTwoColumnReaderOn) {
         webView.scrollTo(webView.horizontalScrollRange() - webView.width, 0)
     } else {
@@ -42,8 +42,8 @@ class WebViewNavigationHelper(
     }
 
     fun pageDownWithNoAnimation() = if (webView.isVerticalRead) {
-        webView.scrollBy(shiftOffset(), 0)
-        webView.scrollX = min(webView.horizontalScrollRange() - webView.width, webView.scrollX)
+        // +x = toward the reading start; callers flip direction in vertical mode.
+        scrollToVerticalPage(currentVerticalPage() - 1)
     } else if (webView.isTwoColumnReaderOn) {
         // One "page" is exactly one viewport of two columns (the CSS sizes the
         // margins/gap so pages tile by viewport width). Jump to the computed
@@ -60,8 +60,7 @@ class WebViewNavigationHelper(
     }
 
     fun pageUpWithNoAnimation() = if (webView.isVerticalRead) {
-        webView.scrollBy(-shiftOffset(), 0)
-        webView.scrollX = max(0, webView.scrollX)
+        scrollToVerticalPage(currentVerticalPage() + 1)
     } else if (webView.isTwoColumnReaderOn) {
         scrollToTwoColumnPage(currentTwoColumnPage() - 1)
     } else {
@@ -81,10 +80,14 @@ class WebViewNavigationHelper(
         try {
             val pageHeight = shiftOffset()
             if (webView.isVerticalRead) {
-                val totalPageCount = webView.horizontalScrollRange() / pageHeight
-                val currentPage = totalPageCount - (floor(webView.scrollX.toDouble() / pageHeight).toInt())
-                val info = "$currentPage/$totalPageCount"
-                onUpdatePageInfo(if (info != "0/0") info else "-/-")
+                val step = verticalPageStepPx()
+                if (step <= 0) {
+                    onUpdatePageInfo("-/-")
+                    return
+                }
+                val totalPageCount = ceil(verticalPageAnchorX() / step).toInt() + 1
+                val currentPage = (currentVerticalPage() + 1).coerceIn(1, totalPageCount)
+                onUpdatePageInfo("$currentPage/$totalPageCount")
             } else if (webView.isTwoColumnReaderOn) {
                 val totalPageCount = ceil(webView.horizontalScrollRange().toDouble() / webView.width).toInt()
                 val currentPage = floor(webView.scrollX.toDouble() / webView.width).toInt() + 1
@@ -104,6 +107,35 @@ class WebViewNavigationHelper(
         } catch (e: ArithmeticException) {
             onUpdatePageInfo("-/-")
         }
+    }
+
+    // --- Vertical-read pagination ---------------------------------------
+    // Pages are anchored at the document's right edge (the reading start) and
+    // advance by an exact multiple of the rendered line advance, so a page
+    // turn never slices a vertical text line at the viewport edge. Absolute
+    // anchoring (instead of scrollBy from wherever we are) keeps every page on
+    // the same line grid even after clamping at the document's end.
+
+    private fun verticalPageAnchorX(): Int =
+        max(0, webView.horizontalScrollRange() - webView.width)
+
+    private fun verticalPageStepPx(): Double {
+        val usable = shiftOffset().toDouble()
+        val line = webView.verticalLineAdvancePx.toDouble()
+        return if (line > 1.0 && line < usable) floor(usable / line) * line else usable
+    }
+
+    private fun currentVerticalPage(): Int {
+        val step = verticalPageStepPx()
+        if (step <= 0) return 0
+        return ((verticalPageAnchorX() - webView.scrollX) / step).roundToInt()
+    }
+
+    private fun scrollToVerticalPage(page: Int) {
+        val anchor = verticalPageAnchorX()
+        val x = (anchor - page.coerceAtLeast(0) * verticalPageStepPx())
+            .roundToInt().coerceIn(0, anchor)
+        webView.scrollTo(x, 0)
     }
 
     private fun currentTwoColumnPage(): Int =

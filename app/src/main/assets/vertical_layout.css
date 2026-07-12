@@ -1,0 +1,20 @@
+body {
+    -webkit-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+    /* Progressive enhancement — ignored by older WebViews:
+     * trim the half-width space CJK punctuation reserves (JLREQ), and apply
+     * strict CJK line-breaking (kinsoku) for small kana / prolonged marks. */
+    text-spacing-trim: normal;
+    line-break: strict;
+}
+img {
+    margin: 10px 10px 10px 10px;
+    float: left;
+    display: block;
+}
+/* Ruby (furigana) rides alongside the vertical line as the browser's native
+ * vertical ruby; keep it upright and modestly sized. */
+rt {
+    text-orientation: upright;
+    font-size: 0.5em;
+}

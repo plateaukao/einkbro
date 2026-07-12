@@ -89,9 +89,12 @@ class DisplayConfigDelegate(
             onKeepExtraContentChanged = {
                 // The content scope only matters when Readability runs, so
                 // re-enter reader mode to re-parse the page with the new scope.
+                // Preserve vertical read across the re-entry — toggling reader
+                // mode off clears it, so restore it on the way back in.
                 if (state.ebWebView.isReaderModeOn) {
+                    val wasVertical = state.ebWebView.isVerticalRead
                     state.ebWebView.toggleReaderMode()
-                    state.ebWebView.toggleReaderMode()
+                    state.ebWebView.toggleReaderMode(wasVertical)
                 }
             },
             onFontConfigClick = {
