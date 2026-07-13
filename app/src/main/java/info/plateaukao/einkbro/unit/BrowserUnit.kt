@@ -60,7 +60,8 @@ object BrowserUnit : KoinComponent {
     const val URL_SCHEME_ABOUT = "about:"
     const val URL_SCHEME_MAIL_TO = "mailto:"
     const val URL_SCHEME_INTENT = "intent://"
-    val UA_DESKTOP_PREFIX = "Mozilla/5.0 (X11; Linux " + System.getProperty("os.arch") + ")"
+    // x86_64 regardless of device arch: sites treat aarch64 as a mobile hint
+    const val UA_DESKTOP_PREFIX = "Mozilla/5.0 (X11; Linux x86_64)"
     val UA_MOBILE_PREFIX = "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ")"
 
     private val config: ConfigManager by inject()

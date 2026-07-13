@@ -95,7 +95,10 @@ class TabManager(
         enablePreloadWebView: Boolean = true,
         lazyLoad: Boolean = false,
     ) {
-        val newWebView = (preloadedWebView ?: createWebView()).apply {
+        // the preloaded webview snapshots settings at creation time; desktop
+        // mode may have been toggled since, so refresh the user agent
+        val newWebView = (preloadedWebView?.also { it.updateUserAgentString() }
+            ?: createWebView()).apply {
             this.albumTitle = title
             this.incognito = incognito
             setOnTouchListener(createTouchListener(this))
