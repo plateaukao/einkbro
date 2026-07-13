@@ -2540,6 +2540,13 @@ Readability.prototype = {
         return false;
       }
 
+      // EinkBro: keep wrappers of code blocks. Sites like Quarto/downlit
+      // hyperlink every function name inside code, so short blocks exceed
+      // the link-density threshold below and would be stripped (#288).
+      if (node.querySelector && node.querySelector("pre code")) {
+        return false;
+      }
+
       // keep element if it has a data tables
       if (
         [...node.getElementsByTagName("table")].some(
