@@ -299,7 +299,7 @@ class DialogManager(
                 }
             },
             cancelAction = { ViewUnit.hideKeyboard(activity) }
-        )
+        ).allowImeForComposeContent()
     }
 
     fun showOkCancelDialog(
@@ -588,7 +588,7 @@ class DialogManager(
                 }
             },
             cancelAction = { ViewUnit.hideKeyboard(activity) }
-        )
+        ).allowImeForComposeContent()
     }
 
 
@@ -597,6 +597,13 @@ class DialogManager(
 fun Dialog.dismissWithAction(action: () -> Unit) {
     dismiss()
     action()
+}
+
+// AlertController sets FLAG_ALT_FOCUSABLE_IM when its custom view reports no text editor
+// (canTextInput). A ComposeView hasn't composed at that point, so dialogs whose text fields
+// live in Compose are wrongly excluded from IME targeting and the keyboard never opens.
+fun Dialog.allowImeForComposeContent() = apply {
+    window?.clearFlags(android.view.WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
 }
 
 @Composable
