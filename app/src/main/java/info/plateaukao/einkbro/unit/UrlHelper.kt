@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.search.SearchEngine
 import info.plateaukao.einkbro.util.Constants
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
@@ -128,6 +129,57 @@ object UrlHelper : KoinComponent {
             5 -> SEARCH_ENGINE_GOOGLE + query
             4 -> SEARCH_ENGINE_DUCKDUCKGO + query
             else -> SEARCH_ENGINE_GOOGLE + query
+        }
+    }
+
+    // if the url is a search result page of a known search engine, return the plain
+    // search query so the input bar can present it for editing (issue #69)
+    fun getQueryFromSearchUrl(url: String?): String? {
+        if (url.isNullOrEmpty()) return null
+        return try {
+            val uri = Uri.parse(url)
+            if (uri.scheme != "http" && uri.scheme != "https") return null
+            val host = uri.host?.lowercase(Locale.getDefault())?.removePrefix("www.")
+                ?: return null
+            val path = uri.path.orEmpty()
+            val paramNames = when {
+                hostMatches(host, "duckduckgo.com") -> listOf("q")
+                hostMatches(host, "startpage.com") -> listOf("query", "q")
+                hostMatches(host, "bing.com") && path.startsWith("/search") -> listOf("q")
+                hostMatches(host, "baidu.com") -> listOf("wd", "word")
+                hostMatches(host, "qwant.com") -> listOf("q")
+                hostMatches(host, "ecosia.org") && path.startsWith("/search") -> listOf("q")
+                host.startsWith("yandex.") && path.startsWith("/search") -> listOf("text")
+                hostMatches(host, "searx.me") -> listOf("q")
+                host.startsWith("google.") && path == "/search" -> listOf("q")
+                else -> customSearchQueryParamNames(host, path) ?: return null
+            }
+            paramNames.firstNotNullOfOrNull { name ->
+                uri.getQueryParameter(name)?.takeIf { it.isNotBlank() }
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun hostMatches(host: String, engineHost: String): Boolean =
+        host == engineHost || host.endsWith(".$engineHost")
+
+    private fun customSearchQueryParamNames(host: String, path: String): List<String>? {
+        if (config.browser.searchEngine.toInt() != SearchEngine.CUSTOM.ordinal) return null
+        return try {
+            val templateUri = Uri.parse(config.browser.searchEngineUrl.replace("%s", ""))
+            val templateHost = templateUri.host?.lowercase(Locale.getDefault())
+                ?.removePrefix("www.")
+            if (templateHost == host && templateUri.path.orEmpty() == path) {
+                templateUri.queryParameterNames
+                    .firstOrNull { templateUri.getQueryParameter(it).isNullOrEmpty() }
+                    ?.let { listOf(it) }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 

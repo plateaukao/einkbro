@@ -21,6 +21,7 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
+import info.plateaukao.einkbro.unit.UrlHelper
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.MainActivityLayout
@@ -125,7 +126,9 @@ class InputBarDelegate(
         val ebWebView = state.ebWebView
         val textOrUrl = if (ebWebView.url?.startsWith("data:") != true) {
             val url = ebWebView.url.orEmpty()
-            TextFieldValue(url, selection = TextRange(0, url.length))
+            // for search result pages, present the plain search query for easy editing
+            val text = UrlHelper.getQueryFromSearchUrl(url) ?: url
+            TextFieldValue(text, selection = TextRange(0, text.length))
         } else {
             TextFieldValue("")
         }
