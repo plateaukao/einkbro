@@ -340,6 +340,15 @@ class EBWebViewClient(
                 offerUserScriptInstall(url)
                 return true
             }
+            // Link clicks don't go through loadUrl, so a per-site desktop-mode
+            // override would leak to the next site. Changing the UA here makes
+            // Chromium reload the *current* page, racing the link navigation —
+            // so take the navigation over instead: loadUrl applies the UA for
+            // the target and then loads it.
+            if (ebWebView.desktopModeChanged(url)) {
+                ebWebView.loadUrl(url)
+                return true
+            }
             return false
         }
 

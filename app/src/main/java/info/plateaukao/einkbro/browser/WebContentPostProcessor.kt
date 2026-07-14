@@ -25,13 +25,14 @@ class WebContentPostProcessor : KoinComponent {
             }
         }
 
-        if (!ebWebView.shouldUseReaderFont() && (configManager.browser.desktop || configManager.display.enableZoom)) {
+        val isDesktopMode = configManager.getDesktopMode(url)
+        if (!ebWebView.shouldUseReaderFont() && (isDesktopMode || configManager.display.enableZoom)) {
             val context = application.applicationContext
             val width = if (ViewUnit.getWindowWidth(context) < 800) "800" else "device-width"
             ebWebView.evaluateJavascript(
                 zoomAndDesktopTemplateJs.format(
                     if (configManager.display.enableZoom) enableZoomJs else "",
-                    if (configManager.browser.desktop) "width=$width" else ""
+                    if (isDesktopMode) "width=$width" else ""
                 ),
                 null
             )

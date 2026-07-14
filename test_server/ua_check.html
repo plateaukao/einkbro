@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1"><title>UA check</title></head>
+<body>
+<h1 id="mode">NO-JS</h1>
+<p id="host"></p>
+<p id="ua" style="word-break:break-all"></p>
+<p>
+<a href="http://localhost:8000/ua_check.html">go-localhost</a> |
+<a href="http://127.0.0.1:8000/ua_check.html">go-127001</a>
+</p>
+<script>
+var ua = navigator.userAgent;
+document.getElementById('ua').textContent = ua;
+document.getElementById('host').textContent = 'host: ' + location.host;
+document.getElementById('mode').textContent =
+    ua.indexOf('X11; Linux') >= 0 ? 'DESKTOP-UA' : 'MOBILE-UA';
+</script>
+</body>
+</html>

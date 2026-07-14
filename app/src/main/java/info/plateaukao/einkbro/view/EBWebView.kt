@@ -440,6 +440,10 @@ open class EBWebView(
 
     fun updateUserAgentString() = configApplier.updateUserAgentString()
 
+    fun applyDesktopMode(url: String) = configApplier.applyDesktopMode(url)
+
+    fun desktopModeChanged(url: String): Boolean = configApplier.desktopModeChanged(url)
+
     private fun toggleCookieSupport(isEnabled: Boolean) = configApplier.toggleCookieSupport(isEnabled)
 
     private fun initAlbum() {
@@ -478,6 +482,7 @@ open class EBWebView(
 
         settings.javaScriptEnabled = isJavascriptEnabled(url)
         toggleCookieSupport(shouldAcceptCookies(url))
+        applyDesktopMode(url)
 
         super.loadUrl(url, additionalHttpHeaders)
     }
@@ -520,6 +525,7 @@ open class EBWebView(
 
         settings.javaScriptEnabled = isJavascriptEnabled(url)
         toggleCookieSupport(shouldAcceptCookies(url))
+        applyDesktopMode(url)
 
         super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }

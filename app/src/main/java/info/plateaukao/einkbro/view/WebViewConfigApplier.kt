@@ -130,12 +130,18 @@ class WebViewConfigApplier(
             WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)
     }
 
-    fun updateUserAgentString() {
+    /**
+     * Applies the UA string, client hints, and viewport flags for the effective
+     * desktop mode of [url] (per-site override, falling back to the global
+     * setting). Defaults to the currently loaded page.
+     */
+    fun updateUserAgentString(url: String? = webView.url) {
         val defaultUserAgentString = EBWebView.getDefaultUserAgent(webView.context)
         val prefix: String =
             defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
 
-        val isDesktopMode = config.browser.desktop
+        val isDesktopMode = config.getDesktopMode(url.orEmpty())
+        lastAppliedDesktopMode = isDesktopMode
         try {
             when {
                 isDesktopMode ->
@@ -160,6 +166,22 @@ class WebViewConfigApplier(
         webView.settings.useWideViewPort = isDesktopMode
         webView.settings.loadWithOverviewMode = isDesktopMode
     }
+
+    private var lastAppliedDesktopMode: Boolean? = null
+
+    /**
+     * Rewrites the UA only when the effective desktop mode for [url] differs
+     * from what is currently applied. Needed because per-site overrides make
+     * the UA URL-dependent.
+     */
+    fun applyDesktopMode(url: String) {
+        if (desktopModeChanged(url)) {
+            updateUserAgentString(url)
+        }
+    }
+
+    fun desktopModeChanged(url: String): Boolean =
+        config.getDesktopMode(url) != lastAppliedDesktopMode
 
     // Overriding the UA string doesn't stop WebView from sending the system
     // default client hints (Sec-CH-UA-Mobile: ?1, Sec-CH-UA-Platform:
