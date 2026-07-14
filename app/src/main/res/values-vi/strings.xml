@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Thanh công cụ / Thanh thông tin</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -253,7 +253,7 @@
     <string name="gpt_scope_text_selection">Văn bản đã chọn</string>
     <string name="gpt_scope_whole_page">Toàn trang</string>
     <string name="gray">Xám</string>
-    <string name="hide_statusbar">Ẩn thanh trạng thái</string>
+    <string name="hide_statusbar">Ẩn thanh trạng thái hệ thống</string>
     <string name="hie_touch_area_when_input">Ẩn khi nhập liệu</string>
     <string name="history">Lịch sử</string>
     <string name="iansui_tc">iansui(TC)</string>
@@ -373,7 +373,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">Hướng dẫn khi dùng mô hình gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Nhập lệnh để xử lý toàn bộ nội dung trang web (ví dụ: \"Tóm tắt trong 300 từ:\")</string>
     <string name="setting_summary_gpt_query_list">Kết quả truy vấn GPT đã lưu</string>
-    <string name="setting_summary_hide_statusbar">Luôn ẩn thanh trạng thái</string>
+    <string name="setting_summary_hide_statusbar">Luôn ẩn thanh trạng thái hệ thống</string>
     <string name="setting_summary_import_appData">Nhập dữ liệu ứng dụng bằng cách chọn tệp zip đã xuất trước đó</string>
     <string name="backup_category_all_preferences">Tất cả tùy chọn</string>
     <string name="backup_category_gpt_settings">Cài đặt GPT</string>

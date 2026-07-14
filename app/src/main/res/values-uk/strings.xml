@@ -102,7 +102,7 @@
     <string name="setting_gestures_use_title">Використовувати жести</string>
     <string name="setting_gestures_use_summary">Використовуйте жести на панелі інструментів і кнопку Навігація.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Панель інструментів</string>
+    <string name="setting_title_toolbar">Панель інструментів / Інформаційна панель</string>
     <string name="setting_gesture_up">Проведіть вгору</string>
     <string name="setting_gesture_down">Проведіть вниз</string>
     <string name="setting_gesture_left">Проведіть пальцем вліво</string>
@@ -240,7 +240,7 @@
     <string name="gpt_scope_text_selection">Виділений текст</string>
     <string name="gpt_scope_whole_page">Вся сторінка</string>
     <string name="gray">Сірий</string>
-    <string name="hide_statusbar">Приховати рядок стану</string>
+    <string name="hide_statusbar">Приховати системний рядок стану</string>
     <string name="hie_touch_area_when_input">Приховати під час введення</string>
     <string name="history">Історія</string>
     <string name="iansui_tc">iansui(TC)</string>
@@ -360,7 +360,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">Інструкції для моделі gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Введіть запит для обробки вмісту сторінки (напр.: \"Підсумуйте у 300 словах:\")</string>
     <string name="setting_summary_gpt_query_list">Збережена історія результатів GPT</string>
-    <string name="setting_summary_hide_statusbar">Завжди приховувати рядок стану</string>
+    <string name="setting_summary_hide_statusbar">Завжди приховувати системний рядок стану</string>
     <string name="setting_summary_import_appData">Імпортувати дані, обравши zip-файл з раніше експортованими даними</string>
     <string name="backup_category_all_preferences">Усі налаштування</string>
     <string name="backup_category_gpt_settings">Налаштування GPT</string>

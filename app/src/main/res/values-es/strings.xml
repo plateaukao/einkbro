@@ -98,7 +98,7 @@
     <string name="setting_title_userAgent">Agente de usuario personalizado</string>
 
     <!-- App behavior -->
-    <string name="setting_title_toolbar">Barra de herramientas</string>
+    <string name="setting_title_toolbar">Barra de herramientas / Barra de información</string>
     <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
     <string name="setting_summary_hide">Usa toda la pantalla al desplazarte por los sitios web. Para salir del modo de pantalla completa, presiona el botón Atrás</string>
     <string name="setting_title_behavior">Comportamiento</string>
@@ -350,8 +350,8 @@
     <string name="toggle_touch_turn_page">Alternar giro de página por toque</string>
     <string name="use_it_on_dict_search">Usar ChatGPT en la búsqueda del diccionario</string>
     <string name="setting_summary_search_in_dict">Cuando busques en lectores, usa ChatGPT para buscar resultados</string>
-    <string name="hide_statusbar">Ocultar la barra de estado</string>
-    <string name="setting_summary_hide_statusbar">Siempre ocultar la barra de estado</string>
+    <string name="hide_statusbar">Ocultar la barra de estado del sistema</string>
+    <string name="setting_summary_hide_statusbar">Siempre ocultar la barra de estado del sistema</string>
     <string name="enable_touch_area_as_arrow_key">Clic largo como tecla ← →</string>
     <string name="setting_title_chat_stream">Responder en flujo</string>
     <string name="setting_summary_chat_stream">La respuesta se mostrará carácter a carácter, así que será más rápido</string>

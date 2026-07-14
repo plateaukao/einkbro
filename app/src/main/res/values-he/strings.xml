@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">סרגל כלים / שורת מידע</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -406,8 +406,8 @@
     <string name="toggle_touch_turn_page">החלפת הפיכת עמוד במגע</string>
     <string name="use_it_on_dict_search">שימוש ב-ChatGPT בחיפוש מילון</string>
     <string name="setting_summary_search_in_dict">בעת חיפוש בקוראים, שימוש ב-ChatGPT לחיפוש תוצאות</string>
-    <string name="hide_statusbar">הסתרת שורת מצב</string>
-    <string name="setting_summary_hide_statusbar">הסתרת שורת מצב תמיד</string>
+    <string name="hide_statusbar">הסתרת שורת המצב של המערכת</string>
+    <string name="setting_summary_hide_statusbar">הסתרת שורת המצב של המערכת תמיד</string>
     <string name="enable_touch_area_as_arrow_key">לחיצה ארוכה כמקש ← →</string>
     <string name="setting_title_chat_stream">תגובה בזרם</string>
     <string name="setting_summary_chat_stream">התגובה תוצג תו אחר תו, כך שזה יהיה מהיר יותר</string>

@@ -120,7 +120,7 @@
     <string name="setting_title_userAgent">ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱮᱡᱮᱱᱴ</string>
 
     <!-- App behavior -->
-        <string name="setting_title_toolbar">ᱦᱟᱹᱛᱤᱭᱟᱹᱨ ᱵᱟᱨ</string>
+        <string name="setting_title_toolbar">ᱦᱟᱹᱛᱤᱭᱟᱹᱨ ᱵᱟᱨ / ᱤᱱᱯᱷᱚ ᱵᱟᱨ</string>
     <string name="setting_title_hideToolbar">ᱦᱟᱹᱛᱤᱭᱟᱹᱨᱵᱟᱨ ᱩᱠᱩᱭ ᱢᱮ</string>
     <string name="setting_summary_hide">ᱣᱮᱵᱽᱥᱟᱭᱤᱴ ᱠᱚᱨᱮ ᱥᱠᱨᱳᱞ ᱡᱷᱚᱜ ᱯᱩᱨᱟ ᱥᱠᱨᱤᱱ ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾ ᱡᱩᱫᱤ ᱟᱢ ᱛᱟᱭᱚᱢ ᱵᱩᱛᱟᱹᱢ ᱚᱛᱟ ᱠᱷᱟᱱ ᱯᱩᱨᱟ ᱥᱠᱨᱤᱱ ᱢᱳᱰ ᱟᱲᱟᱜ ᱟᱢ ᱾</string>
 
@@ -391,8 +391,8 @@
     <string name="toggle_touch_turn_page">ᱡᱚᱴᱮᱫ ᱯᱟᱞᱴᱟᱣ ᱥᱟᱦᱴᱟ ᱩᱪᱟᱹᱲ ᱢᱮ</string>
     <string name="use_it_on_dict_search">ᱟᱹᱲᱟᱹ ᱢᱩᱨᱟᱹᱭ ᱨᱮ ᱱᱚᱶᱟ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
     <string name="setting_summary_search_in_dict">ᱯᱟᱲᱦᱟᱣᱤᱭᱟᱹ ᱠᱚᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱚᱠᱛᱚ ᱨᱮ, ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ ᱞᱟᱹᱜᱤᱫ ᱛᱮ ChatGPT ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾</string>
-    <string name="hide_statusbar">ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱩᱠᱩᱭ ᱢᱮ</string>
-    <string name="setting_summary_hide_statusbar">ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱡᱟᱹᱣᱜᱮ ᱩᱠᱩᱭ ᱢᱮ</string>
+    <string name="hide_statusbar">ᱥᱤᱥᱴᱚᱢ ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱩᱠᱩᱭ ᱢᱮ</string>
+    <string name="setting_summary_hide_statusbar">ᱥᱤᱥᱴᱚᱢ ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱡᱟᱹᱣᱜᱮ ᱩᱠᱩᱭ ᱢᱮ</string>
     <string name="enable_touch_area_as_arrow_key">ᱞᱮᱝᱜᱟ/ᱡᱚᱡᱚᱢ ᱪᱟᱹᱵᱤ ᱞᱮᱠᱟᱛᱮ</string>
     <string name="setting_title_chat_stream">Stream ᱨᱮ ᱛᱮᱞᱟ ᱮᱢ ᱢᱮ</string>
     <string name="setting_summary_chat_stream">ᱛᱮᱞᱟ ᱫᱚ ᱪᱤᱠᱤ ᱛᱮ ᱪᱤᱠᱤ ᱧᱮᱞᱚᱜ-ᱟ, ᱚᱱᱟᱛᱮ ᱱᱚᱣᱟ ᱫᱚ ᱞᱚᱜᱚᱱ ᱜᱮᱭᱟ ᱾</string>

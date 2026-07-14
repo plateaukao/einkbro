@@ -154,7 +154,7 @@
     <string name="setting_summary_saveTabs">Simpan tab agar dapat dibuka lain kali.</string>
 
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Bilah alat / Bilah info</string>
     <string name="setting_gesture_up">Geser ke atas</string>
     <string name="setting_gesture_down">Geser ke bawah</string>
     <string name="setting_gesture_left">Geser ke kiri</string>
@@ -446,7 +446,7 @@
     <string name="gpt_scope_text_selection">Pilihan teks</string>
     <string name="gpt_scope_whole_page">Seluruh halaman</string>
     <string name="gray">Abu-abu</string>
-    <string name="hide_statusbar">Sembunyikan bilah status</string>
+    <string name="hide_statusbar">Sembunyikan bilah status sistem</string>
     <string name="iansui_tc">iansui(TC)</string>
     <string name="instapaper_create_account">Buat akun</string>
     <string name="instapaper_password_hint">Kata sandi</string>
@@ -509,7 +509,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">Instruksi saat model gpt-4o-mini-tts digunakan</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Masukkan prompt untuk memproses konten halaman web penuh (misal: \"Ringkas dalam 300 kata:\")</string>
     <string name="setting_summary_gpt_query_list">Hasil kueri GPT yang tersimpan</string>
-    <string name="setting_summary_hide_statusbar">Selalu sembunyikan bilah status</string>
+    <string name="setting_summary_hide_statusbar">Selalu sembunyikan bilah status sistem</string>
     <string name="setting_summary_next_tab">Tampilkan tab berikutnya saat tab saat ini ditutup (jika tidak, tampilkan tab sebelumnya)</string>
     <string name="setting_summary_other_model_name">Masukkan nama model untuk server GPT alternatif</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>

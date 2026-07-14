@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">شريط الأدوات / شريط المعلومات</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -406,8 +406,8 @@
     <string name="toggle_touch_turn_page">تبديل تقليب الصفحات باللمس</string>
     <string name="use_it_on_dict_search">استخدام ChatGPT في البحث بالقاموس</string>
     <string name="setting_summary_search_in_dict">عند البحث في القارئات، استخدام ChatGPT للبحث عن النتائج</string>
-    <string name="hide_statusbar">إخفاء شريط الحالة</string>
-    <string name="setting_summary_hide_statusbar">إخفاء شريط الحالة دائماً</string>
+    <string name="hide_statusbar">إخفاء شريط حالة النظام</string>
+    <string name="setting_summary_hide_statusbar">إخفاء شريط حالة النظام دائماً</string>
     <string name="enable_touch_area_as_arrow_key">ضغطة طويلة كمفتاح ← →</string>
     <string name="setting_title_chat_stream">الرد المباشر</string>
     <string name="setting_summary_chat_stream">سيتم عرض الرد حرفاً بحرف ليكون أسرع</string>

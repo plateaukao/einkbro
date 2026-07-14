@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Työkalupalkki / Tietopalkki</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -252,7 +252,7 @@
     <string name="gpt_scope_text_selection">Tekstivalinta</string>
     <string name="gpt_scope_whole_page">Koko sivu</string>
     <string name="gray">Harmaa</string>
-    <string name="hide_statusbar">Piilota tilarivi</string>
+    <string name="hide_statusbar">Piilota järjestelmän tilarivi</string>
     <string name="hie_touch_area_when_input">Piilota kirjoitettaessa</string>
     <string name="history">Historia</string>
     <string name="iansui_tc">iansui(TC)</string>
@@ -372,7 +372,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">Ohjeet kun gpt-4o-mini-tts-mallia käytetään.</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Syötä kehote verkkosivun koko sisällön käsittelyyn (esim. \"Tiivistä se 300 sanaan:\")</string>
     <string name="setting_summary_gpt_query_list">Tallennetut GPT-kyselytulokset</string>
-    <string name="setting_summary_hide_statusbar">Piilota tilarivi aina</string>
+    <string name="setting_summary_hide_statusbar">Piilota järjestelmän tilarivi aina</string>
     <string name="setting_summary_import_appData">Tuo sovellustiedot valitsemalla zip-tiedosto aiemmin viedyistä tiedoista</string>
     <string name="backup_category_all_preferences">Kaikki asetukset</string>
     <string name="backup_category_gpt_settings">GPT-asetukset</string>

@@ -95,10 +95,10 @@
     <string name="setting_title_hideToolbar">隱藏工具列</string>
     <string name="setting_summary_hide">向下捲動畫面時，會隱藏工具列。按返回鍵復原</string>
 
-    <string name="setting_title_statusbar_enabled">隱藏工具列時顯示狀態列</string>
-    <string name="setting_summary_statusbar_enabled">細長狀態列，可顯示時間、頁數、電量、Wi-Fi 與翻頁狀態</string>
-    <string name="setting_title_statusbar_position">狀態列位置</string>
-    <string name="setting_title_statusbar_items">狀態列項目</string>
+    <string name="setting_title_statusbar_enabled">隱藏工具列時顯示資訊列</string>
+    <string name="setting_summary_statusbar_enabled">細長資訊列，可顯示時間、頁數、電量、Wi-Fi 與翻頁狀態</string>
+    <string name="setting_title_statusbar_position">資訊列位置</string>
+    <string name="setting_title_statusbar_items">資訊列項目</string>
     <string name="setting_summary_statusbar_items">選擇要顯示的項目並調整順序</string>
     <string name="statusbar_position_top">上方</string>
     <string name="statusbar_position_bottom">下方</string>
@@ -106,7 +106,7 @@
     <string name="statusbar_item_wifi">Wi-Fi</string>
     <string name="statusbar_item_volume_pagination">音量鍵翻頁</string>
     <string name="statusbar_config_available">可用項目</string>
-    <string name="statusbar_config_available_hint">點擊圖示加入狀態列</string>
+    <string name="statusbar_config_available_hint">點擊圖示加入資訊列</string>
     <string name="statusbar_config_preview">預覽</string>
     <string name="statusbar_config_preview_hint">點擊圖示移除；長按拖曳可調整順序</string>
     <string name="setting_title_behavior">操作行為</string>
@@ -125,9 +125,9 @@
     <string name="setting_gestures_use_title">浮動按鈕使用手勢</string>
     <string name="setting_gestures_use_summary">在浮動按鈕上滑動手勢執行各項功能</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">工具列 / 狀態列</string>
+    <string name="setting_title_toolbar">工具列 / 資訊列</string>
     <string name="setting_section_toolbar">工具列</string>
-    <string name="setting_section_statusbar">狀態列</string>
+    <string name="setting_section_statusbar">資訊列</string>
     <string name="setting_gesture_up">往上滑</string>
     <string name="setting_gesture_down">往下滑</string>
     <string name="setting_gesture_left">往左滑</string>
@@ -349,8 +349,8 @@
     <string name="toggle_touch_turn_page">開關點擊翻頁</string>
     <string name="use_it_on_dict_search">字典查詢時，使用GPT</string>
     <string name="setting_summary_search_in_dict">在其他App中選取文字時，使用此功能</string>
-    <string name="hide_statusbar">隱藏狀態列</string>
-    <string name="setting_summary_hide_statusbar">總是隱藏上方狀態列</string>
+    <string name="hide_statusbar">隱藏系統狀態列</string>
+    <string name="setting_summary_hide_statusbar">總是隱藏系統狀態列</string>
     <string name="enable_touch_area_as_arrow_key">長按送出左/右鍵</string>
     <string name="setting_title_chat_stream">逐步回傳結果</string>
     <string name="setting_summary_chat_stream">結果將會部分回傳，降低等待時間</string>

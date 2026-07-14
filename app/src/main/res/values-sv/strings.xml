@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Verktygsfält / Infofält</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -252,7 +252,7 @@
     <string name="gpt_scope_text_selection">Textmarkering</string>
     <string name="gpt_scope_whole_page">Hela sidan</string>
     <string name="gray">Grå</string>
-    <string name="hide_statusbar">Dölj statusfält</string>
+    <string name="hide_statusbar">Dölj systemets statusfält</string>
     <string name="hie_touch_area_when_input">Dölj vid inmatning</string>
     <string name="history">Historik</string>
     <string name="iansui_tc">iansui(TC)</string>
@@ -372,7 +372,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">Instruktioner när gpt-4o-mini-tts-modellen används.</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Ange prompt för att bearbeta hela sidans innehåll (t.ex. \"Sammanfatta det i 300 ord:\")</string>
     <string name="setting_summary_gpt_query_list">Sparade GPT-frågeresultat</string>
-    <string name="setting_summary_hide_statusbar">Dölj alltid statusfältet</string>
+    <string name="setting_summary_hide_statusbar">Dölj alltid systemets statusfält</string>
     <string name="setting_summary_import_appData">Importera appdata genom att välja en zip-fil med tidigare exporterade data</string>
     <string name="backup_category_all_preferences">Alla inställningar</string>
     <string name="backup_category_gpt_settings">GPT-inställningar</string>

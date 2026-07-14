@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Γραμμή εργαλείων / Γραμμή πληροφοριών</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -406,8 +406,8 @@
     <string name="toggle_touch_turn_page">Εναλλαγή αλλαγής σελίδας με αφή</string>
     <string name="use_it_on_dict_search">Χρήση ChatGPT στην αναζήτηση λεξικού</string>
     <string name="setting_summary_search_in_dict">Κατά την αναζήτηση σε αναγνώστες, χρήση ChatGPT για αποτελέσματα</string>
-    <string name="hide_statusbar">Απόκρυψη γραμμής κατάστασης</string>
-    <string name="setting_summary_hide_statusbar">Πάντα απόκρυψη γραμμής κατάστασης</string>
+    <string name="hide_statusbar">Απόκρυψη γραμμής κατάστασης συστήματος</string>
+    <string name="setting_summary_hide_statusbar">Πάντα απόκρυψη γραμμής κατάστασης συστήματος</string>
     <string name="enable_touch_area_as_arrow_key">Παρατεταμένο πάτημα ως πλήκτρο ← →</string>
     <string name="setting_title_chat_stream">Απάντηση σε Ροή</string>
     <string name="setting_summary_chat_stream">Η απάντηση θα εμφανίζεται χαρακτήρα-χαρακτήρα για ταχύτερη εμφάνιση</string>

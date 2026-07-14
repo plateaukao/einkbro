@@ -102,7 +102,7 @@
     <string name="setting_gestures_use_title">Utilizar gestos</string>
     <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no botão de navegação.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Barra de ferramentas</string>
+    <string name="setting_title_toolbar">Barra de ferramentas / Barra de informações</string>
     <string name="setting_gesture_up">Deslizar para cima</string>
     <string name="setting_gesture_down">Deslizar para baixo</string>
     <string name="setting_gesture_left">Deslizar à esquerda</string>
@@ -373,8 +373,8 @@
     <string name="toggle_touch_turn_page">Alternar virar página por toque</string>
     <string name="use_it_on_dict_search">Usar ChatGPT na pesquisa de dicionário</string>
     <string name="setting_summary_search_in_dict">Ao pesquisar em leitores, usar ChatGPT para pesquisar resultados</string>
-    <string name="hide_statusbar">Ocultar barra de estado</string>
-    <string name="setting_summary_hide_statusbar">Ocultar sempre a barra de estado</string>
+    <string name="hide_statusbar">Ocultar barra de estado do sistema</string>
+    <string name="setting_summary_hide_statusbar">Ocultar sempre a barra de estado do sistema</string>
     <string name="enable_touch_area_as_arrow_key">Premir longamente como tecla ← →</string>
     <string name="setting_title_chat_stream">Resposta em fluxo</string>
     <string name="setting_summary_chat_stream">A resposta será exibida carácter a carácter, para ser mais rápido</string>

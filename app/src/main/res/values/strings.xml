@@ -131,9 +131,9 @@
     <string name="setting_title_userAgent">Custom User Agent</string>
 
     <!-- App behavior -->
-    <string name="setting_title_toolbar">Toolbar / Statusbar</string>
+    <string name="setting_title_toolbar">Toolbar / Info bar</string>
     <string name="setting_section_toolbar">Toolbar</string>
-    <string name="setting_section_statusbar">Statusbar</string>
+    <string name="setting_section_statusbar">Info bar</string>
     <string name="setting_section_typography">Typography</string>
     <string name="setting_section_advanced">Advanced</string>
     <string name="site_settings_overrides_count">%1$d override</string>
@@ -142,10 +142,10 @@
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. To leave fullscreen mode press Back button</string>
 
-    <string name="setting_title_statusbar_enabled">Show statusbar when toolbar is hidden</string>
+    <string name="setting_title_statusbar_enabled">Show info bar when toolbar is hidden</string>
     <string name="setting_summary_statusbar_enabled">A slim bar with time, page info, battery, wifi, and pagination status</string>
-    <string name="setting_title_statusbar_position">Statusbar position</string>
-    <string name="setting_title_statusbar_items">Statusbar items</string>
+    <string name="setting_title_statusbar_position">Info bar position</string>
+    <string name="setting_title_statusbar_items">Info bar items</string>
     <string name="setting_summary_statusbar_items">Choose which items appear and reorder them</string>
     <string name="statusbar_position_top">Top</string>
     <string name="statusbar_position_bottom">Bottom</string>
@@ -153,7 +153,7 @@
     <string name="statusbar_item_wifi">Wifi</string>
     <string name="statusbar_item_volume_pagination">Volume page turn</string>
     <string name="statusbar_config_available">Available items</string>
-    <string name="statusbar_config_available_hint">click icon to add it to the statusbar</string>
+    <string name="statusbar_config_available_hint">click icon to add it to the info bar</string>
     <string name="statusbar_config_preview">Preview</string>
     <string name="statusbar_config_preview_hint">click icon to remove; long click to drag and reorder</string>
 
@@ -490,8 +490,8 @@
     <string name="toggle_touch_turn_page">Toggle Touch turn page</string>
     <string name="use_it_on_dict_search">Use ChatGPT in dictionary search</string>
     <string name="setting_summary_search_in_dict">When searching in readers, use ChatGPT to search results</string>
-    <string name="hide_statusbar">Hide statusbar</string>
-    <string name="setting_summary_hide_statusbar">Always hide statusbar</string>
+    <string name="hide_statusbar">Hide system status bar</string>
+    <string name="setting_summary_hide_statusbar">Always hide the system status bar</string>
     <string name="enable_touch_area_as_arrow_key">Long click as ← → key</string>
     <string name="setting_title_chat_stream">Reply In-Stream</string> <!-- Not sure about this one -->
     <string name="setting_summary_chat_stream">Response will be displayed character by character, so that it\'s faster</string>

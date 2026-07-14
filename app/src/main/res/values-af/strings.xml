@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Nutsbalk / Inligtingsbalk</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -253,7 +253,7 @@
     <string name="gpt_scope_text_selection">Tekskeuse</string>
     <string name="gpt_scope_whole_page">Hele bladsy</string>
     <string name="gray">Grys</string>
-    <string name="hide_statusbar">Versteek statusbalk</string>
+    <string name="hide_statusbar">Versteek stelsel-statusbalk</string>
     <string name="hie_touch_area_when_input">Versteek tydens invoer</string>
     <string name="history">Geskiedenis</string>
     <string name="iansui_tc">iansui(TC)</string>
@@ -373,7 +373,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">Instruksies wanneer gpt-4o-mini-tts-model gebruik word</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Voer prompt in om volledige webbladsy-inhoud te verwerk (bv. \"Som op in 300 woorde:\")</string>
     <string name="setting_summary_gpt_query_list">Gestoorde GPT-navraagresultate</string>
-    <string name="setting_summary_hide_statusbar">Versteek altyd statusbalk</string>
+    <string name="setting_summary_hide_statusbar">Versteek altyd die stelsel-statusbalk</string>
     <string name="setting_summary_import_appData">Voer programdata in deur \'n voorheen uitgevoerde zip-lêer te kies</string>
     <string name="backup_category_all_preferences">Alle voorkeure</string>
     <string name="backup_category_gpt_settings">GPT-instellings</string>

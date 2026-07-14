@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Hareketleri kullan</string>
     <string name="setting_gestures_use_summary">Araç çubuğunda ve \"Gezinme düğmesi\" üzerinde hareketleri kullanın.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Araç çubuğu</string>
+    <string name="setting_title_toolbar">Araç çubuğu / Bilgi çubuğu</string>
     <string name="setting_gesture_up">Yukarı kaydır</string>
     <string name="setting_gesture_down">Aşağı kaydır</string>
     <string name="setting_gesture_left">Sola kaydır</string>
@@ -406,8 +406,8 @@
     <string name="toggle_touch_turn_page">Dokunarak sayfa çevirmeyi aç/kapat</string>
     <string name="use_it_on_dict_search">Sözlük aramasında ChatGPT kullan</string>
     <string name="setting_summary_search_in_dict">Okuyucularda ararken sonuçlar için ChatGPT kullan</string>
-    <string name="hide_statusbar">Durum çubuğunu gizle</string>
-    <string name="setting_summary_hide_statusbar">Durum çubuğunu her zaman gizle</string>
+    <string name="hide_statusbar">Sistem durum çubuğunu gizle</string>
+    <string name="setting_summary_hide_statusbar">Sistem durum çubuğunu her zaman gizle</string>
     <string name="enable_touch_area_as_arrow_key">Uzun basma ← → tuşu olarak</string>
     <string name="setting_title_chat_stream">Akış Halinde Yanıt</string>
     <string name="setting_summary_chat_stream">Yanıt karakter karakter gösterilir, böylece daha hızlı olur</string>

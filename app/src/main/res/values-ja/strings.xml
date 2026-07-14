@@ -109,7 +109,7 @@
     <string name="setting_gestures_use_title">ジェスチャー</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">ツールバー</string>
+    <string name="setting_title_toolbar">ツールバー / 情報バー</string>
     <string name="setting_gesture_up">上スワイプ</string>
     <string name="setting_gesture_down">下スワイプ</string>
     <string name="setting_gesture_left">左スワイプ</string>
@@ -277,7 +277,7 @@
     <string name="gpt_scope_text_selection">テキスト選択</string>
     <string name="gpt_scope_whole_page">ページ全体</string>
     <string name="gray">グレー</string>
-    <string name="hide_statusbar">ステータスバーを非表示</string>
+    <string name="hide_statusbar">システムのステータスバーを非表示</string>
     <string name="hie_touch_area_when_input">入力時に非表示</string>
     <string name="history">履歴</string>
     <string name="iansui_tc">iansui(TC)</string>
@@ -383,7 +383,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-ttsモデル使用時のインストラクション</string>
     <string name="setting_summary_gpt_prompt_for_web_page">ウェブページ全体の内容を処理するプロンプトを入力（例：「300語で要約：」）</string>
     <string name="setting_summary_gpt_query_list">保存されたGPTクエリ結果</string>
-    <string name="setting_summary_hide_statusbar">常にステータスバーを非表示</string>
+    <string name="setting_summary_hide_statusbar">常にシステムのステータスバーを非表示</string>
     <string name="setting_summary_import_appData">以前エクスポートしたデータのzipファイルを選択してインポート</string>
     <string name="backup_category_all_preferences">すべての設定</string>
     <string name="backup_category_gpt_settings">GPT設定</string>

@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Bară de instrumente / Bară de informații</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -391,8 +391,8 @@
     <string name="toggle_touch_turn_page">Comutare schimbare pagină tactilă</string>
     <string name="use_it_on_dict_search">Folosire ChatGPT în căutarea de dicționar</string>
     <string name="setting_summary_search_in_dict">La căutarea în cititor, folosiți ChatGPT pentru rezultate</string>
-    <string name="hide_statusbar">Ascundere bară de stare</string>
-    <string name="setting_summary_hide_statusbar">Ascundere permanentă a barei de stare</string>
+    <string name="hide_statusbar">Ascundere bară de stare a sistemului</string>
+    <string name="setting_summary_hide_statusbar">Ascundere permanentă a barei de stare a sistemului</string>
     <string name="enable_touch_area_as_arrow_key">Apăsare lungă ca tastă ← →</string>
     <string name="setting_title_chat_stream">Răspuns în flux</string>
     <string name="setting_summary_chat_stream">Răspunsul va fi afișat caracter cu caracter, pentru a fi mai rapid</string>

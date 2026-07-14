@@ -103,7 +103,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_gestures_use_title">Gesten benutzen</string>
     <string name="setting_gestures_use_summary">Gesten auf der Toolbar benutzen und den \"Navigationsknopf\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Toolbar / Infoleiste</string>
     <string name="setting_gesture_up">Nach oben wischen</string>
     <string name="setting_gesture_down">Nach unten wischen</string>
     <string name="setting_gesture_left">Nach links wischen</string>
@@ -383,8 +383,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="toggle_touch_turn_page">Touch-Seitenumblättern umschalten</string>
     <string name="use_it_on_dict_search">ChatGPT in der Wörterbuchsuche verwenden</string>
     <string name="setting_summary_search_in_dict">Beim Suchen in Readern ChatGPT für Suchergebnisse verwenden</string>
-    <string name="hide_statusbar">Statusleiste ausblenden</string>
-    <string name="setting_summary_hide_statusbar">Statusleiste immer ausblenden</string>
+    <string name="hide_statusbar">System-Statusleiste ausblenden</string>
+    <string name="setting_summary_hide_statusbar">System-Statusleiste immer ausblenden</string>
     <string name="enable_touch_area_as_arrow_key">Langes Drücken als ← → Taste</string>
     <string name="setting_title_chat_stream">Antwort im Stream</string>
     <string name="setting_summary_chat_stream">Die Antwort wird Zeichen für Zeichen angezeigt, sodass es schneller geht</string>

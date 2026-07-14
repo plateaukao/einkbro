@@ -102,7 +102,7 @@
     <string name="setting_gestures_use_title">Utilitzar gestos</string>
     <string name="setting_gestures_use_summary">Utilitzar gestos a la barra d\'eines i al \"Botó de navegació\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Barra d\'eines</string>
+    <string name="setting_title_toolbar">Barra d\'eines / Barra d\'informació</string>
     <string name="setting_gesture_up">Lliscar amunt</string>
     <string name="setting_gesture_down">Lliscar avall</string>
     <string name="setting_gesture_left">Lliscar a l\'esquerra</string>
@@ -373,8 +373,8 @@
     <string name="toggle_touch_turn_page">Alternar pas de pàgina tàctil</string>
     <string name="use_it_on_dict_search">Utilitzar ChatGPT en la cerca de diccionari</string>
     <string name="setting_summary_search_in_dict">En cercar en lectors, utilitzar ChatGPT per cercar resultats</string>
-    <string name="hide_statusbar">Amagar barra d\'estat</string>
-    <string name="setting_summary_hide_statusbar">Amagar sempre la barra d\'estat</string>
+    <string name="hide_statusbar">Amagar la barra d\'estat del sistema</string>
+    <string name="setting_summary_hide_statusbar">Amagar sempre la barra d\'estat del sistema</string>
     <string name="enable_touch_area_as_arrow_key">Premuda llarga com a tecla ← →</string>
     <string name="setting_title_chat_stream">Resposta en flux</string>
     <string name="setting_summary_chat_stream">La resposta es mostrarà caràcter per caràcter, per ser més ràpid</string>

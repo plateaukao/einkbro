@@ -102,7 +102,7 @@
     <string name="setting_gestures_use_title">Usa gesti</string>
     <string name="setting_gestures_use_summary">Usa gesti sulla barra degli strumenti e il pulsante \"Navigazione\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Barra degli Strumenti</string>
+    <string name="setting_title_toolbar">Barra degli Strumenti / Barra informazioni</string>
     <string name="setting_gesture_up">Scorri verso l\'alto</string>
     <string name="setting_gesture_down">Scorri verso il basso</string>
     <string name="setting_gesture_left">Scorri a sinistra</string>
@@ -382,8 +382,8 @@
     <string name="toggle_touch_turn_page">Attiva/Disattiva cambio pagina touch</string>
     <string name="use_it_on_dict_search">Usa ChatGPT nella ricerca dizionario</string>
     <string name="setting_summary_search_in_dict">Nella lettura, usa ChatGPT per i risultati di ricerca</string>
-    <string name="hide_statusbar">Nascondi barra di stato</string>
-    <string name="setting_summary_hide_statusbar">Nascondi sempre la barra di stato</string>
+    <string name="hide_statusbar">Nascondi barra di stato del sistema</string>
+    <string name="setting_summary_hide_statusbar">Nascondi sempre la barra di stato del sistema</string>
     <string name="enable_touch_area_as_arrow_key">Pressione lunga come tasto ← →</string>
     <string name="setting_title_chat_stream">Risposta in tempo reale</string>
     <string name="setting_summary_chat_stream">La risposta sarà mostrata carattere per carattere per una visualizzazione più rapida</string>

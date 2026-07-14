@@ -103,7 +103,7 @@
     <string name="setting_gestures_use_title">Używaj gestów</string>
     <string name="setting_gestures_use_summary">Korzystaj z gestów na pasku narzędziowym oraz przycisku nawigacyjnym.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Pasek narzędziowy</string>
+    <string name="setting_title_toolbar">Pasek narzędziowy / Pasek informacyjny</string>
     <string name="setting_gesture_up">Pociagniecie w górę</string>
     <string name="setting_gesture_down">Pociągnięcie w doł</string>
     <string name="setting_gesture_left">Przesunięcie w lewo</string>
@@ -398,8 +398,8 @@
     <string name="toggle_touch_turn_page">Przełącz przewracanie stron dotykiem</string>
     <string name="use_it_on_dict_search">Używaj ChatGPT w wyszukiwaniu słownikowym</string>
     <string name="setting_summary_search_in_dict">Podczas wyszukiwania w czytniku użyj ChatGPT do wyszukiwania wyników</string>
-    <string name="hide_statusbar">Ukryj pasek stanu</string>
-    <string name="setting_summary_hide_statusbar">Zawsze ukrywaj pasek stanu</string>
+    <string name="hide_statusbar">Ukryj systemowy pasek stanu</string>
+    <string name="setting_summary_hide_statusbar">Zawsze ukrywaj systemowy pasek stanu</string>
     <string name="enable_touch_area_as_arrow_key">Długie naciśnięcie jako klawisz ← →</string>
     <string name="setting_title_chat_stream">Odpowiedź strumieniowa</string>
     <string name="setting_summary_chat_stream">Odpowiedź będzie wyświetlana znak po znaku, aby była szybsza</string>

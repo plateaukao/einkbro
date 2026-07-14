@@ -110,7 +110,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Werkbalk / Infobalk</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -390,8 +390,8 @@
     <string name="toggle_touch_turn_page">Aanraak pagina omslaan wisselen</string>
     <string name="use_it_on_dict_search">ChatGPT gebruiken bij woordenboekzoeken</string>
     <string name="setting_summary_search_in_dict">Bij het zoeken in lezers ChatGPT gebruiken voor zoekresultaten</string>
-    <string name="hide_statusbar">Statusbalk verbergen</string>
-    <string name="setting_summary_hide_statusbar">Statusbalk altijd verbergen</string>
+    <string name="hide_statusbar">Systeemstatusbalk verbergen</string>
+    <string name="setting_summary_hide_statusbar">Systeemstatusbalk altijd verbergen</string>
     <string name="enable_touch_area_as_arrow_key">Lang indrukken als ← → toets</string>
     <string name="setting_title_chat_stream">Antwoord in stream</string>
     <string name="setting_summary_chat_stream">Het antwoord wordt teken voor teken weergegeven, zodat het sneller is</string>

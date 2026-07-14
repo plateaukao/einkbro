@@ -129,7 +129,7 @@
     <string name="setting_title_userAgent">Пользовательский User Agent</string>
 
     <!-- App behavior -->
-    <string name="setting_title_toolbar">Панель инструментов</string>
+    <string name="setting_title_toolbar">Панель инструментов / Информационная панель</string>
     <string name="setting_title_hideToolbar">Скрывать панель инструментов</string>
     <string name="setting_summary_hide">Использовать весь экран при прокрутке сайтов. Чтобы покинуть полноэкранный режим нажмите кнопку Назад</string>
 
@@ -401,8 +401,8 @@
     <string name="toggle_touch_turn_page">Включить прокрутку страниц нажатием</string>
     <string name="use_it_on_dict_search">Использовать ChatGPT для словарного поиска</string>
     <string name="setting_summary_search_in_dict">Использвать ChatGPT для поиска в ридерах</string> <!-- Meaning unclear, need context -->
-    <string name="hide_statusbar">Спрятать строку состояния</string>
-    <string name="setting_summary_hide_statusbar">Всегда прятать строку состояния</string>
+    <string name="hide_statusbar">Спрятать системную строку состояния</string>
+    <string name="setting_summary_hide_statusbar">Всегда прятать системную строку состояния</string>
     <string name="enable_touch_area_as_arrow_key">Использовать как клавиши ← →</string>
     <string name="setting_title_chat_stream">Посимвольный Вывод</string>
     <string name="setting_summary_chat_stream">Ответ будет отображаться символ за символом</string>

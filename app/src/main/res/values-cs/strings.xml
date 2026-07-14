@@ -107,7 +107,7 @@
     <string name="setting_gestures_use_title">Použít gesta</string>
     <string name="setting_gestures_use_summary">Použijte gesta na Panelu nástrojů a „Navigační tlačítka“.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Panel nástrojů</string>
+    <string name="setting_title_toolbar">Panel nástrojů / Informační lišta</string>
     <string name="setting_gesture_up">Přejetí nahoru</string>
     <string name="setting_gesture_down">Přejetí dolů</string>
     <string name="setting_gesture_left">Přejetí vlevo</string>
@@ -402,8 +402,8 @@
     <string name="toggle_touch_turn_page">Přepnout otáčení stránek dotykem</string>
     <string name="use_it_on_dict_search">Použít ChatGPT při vyhledávání ve slovníku</string>
     <string name="setting_summary_search_in_dict">Při vyhledávání ve čtečce použít ChatGPT pro výsledky</string>
-    <string name="hide_statusbar">Skrýt stavový řádek</string>
-    <string name="setting_summary_hide_statusbar">Vždy skrývat stavový řádek</string>
+    <string name="hide_statusbar">Skrýt systémový stavový řádek</string>
+    <string name="setting_summary_hide_statusbar">Vždy skrývat systémový stavový řádek</string>
     <string name="enable_touch_area_as_arrow_key">Dlouhé stisknutí jako klávesa ← →</string>
     <string name="setting_title_chat_stream">Odpověď proudem</string>
     <string name="setting_summary_chat_stream">Odpověď bude zobrazena znak po znaku, takže bude rychlejší</string>

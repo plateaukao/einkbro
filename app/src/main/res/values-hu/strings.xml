@@ -291,7 +291,7 @@
     <string name="setting_title_data">Biztonsági mentés</string>
     <string name="setting_title_searchEngine">Egyéni keresőmotor</string>
     <string name="setting_title_userAgent">Egyéni User Agent</string>
-    <string name="setting_title_toolbar">Eszköztár</string>
+    <string name="setting_title_toolbar">Eszköztár / Információs sáv</string>
     <string name="setting_title_hideToolbar">Eszköztár elrejtése</string>
     <string name="setting_summary_hide">Webhelyek görgetésekor a teljes képernyő használata. A Vissza gomb megnyomásával kilép a teljes képernyős módból</string>
     <string name="setting_title_behavior">Viselkedés</string>
@@ -551,8 +551,8 @@
     <string name="toggle_touch_turn_page">Érintéses lapozás váltása</string>
     <string name="use_it_on_dict_search">ChatGPT használata szótárkeresésben</string>
     <string name="setting_summary_search_in_dict">Olvasóban való kereséskor ChatGPT használata az eredményekhez</string>
-    <string name="hide_statusbar">Állapotsor elrejtése</string>
-    <string name="setting_summary_hide_statusbar">Állapotsor mindig rejtett</string>
+    <string name="hide_statusbar">A rendszer állapotsorának elrejtése</string>
+    <string name="setting_summary_hide_statusbar">A rendszer állapotsora mindig rejtett</string>
     <string name="enable_touch_area_as_arrow_key">Hosszú nyomás ← → gombként</string>
     <string name="setting_title_chat_stream">Folyamatos válasz</string>
     <string name="setting_summary_chat_stream">A válasz karakterenként jelenik meg, így gyorsabb</string>

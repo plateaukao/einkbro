@@ -111,7 +111,7 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">Трака са алаткама / Инфо трака</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -249,7 +249,7 @@
     <string name="gpt_scope_text_selection">Означени текст</string>
     <string name="gpt_scope_whole_page">Цела страница</string>
     <string name="gray">Сива</string>
-    <string name="hide_statusbar">Сакриј статусну траку</string>
+    <string name="hide_statusbar">Сакриј системску статусну траку</string>
     <string name="hie_touch_area_when_input">Сакриј при куцању</string>
     <string name="history">Историја</string>
     <string name="iansui_tc">iansui(TC)</string>
@@ -369,7 +369,7 @@
     <string name="setting_summary_gpt_prompt_for_tts">Упутства за модел gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Унесите промпт за обраду целог садржаја (нпр. \"Резимирај у 300 речи:\")</string>
     <string name="setting_summary_gpt_query_list">Сачувани GPT резултати</string>
-    <string name="setting_summary_hide_statusbar">Увек сакриј статусну траку</string>
+    <string name="setting_summary_hide_statusbar">Увек сакриј системску статусну траку</string>
     <string name="setting_summary_import_appData">Увезите податке апликације избором zip датотеке са претходно извезеним подацима</string>
     <string name="backup_category_all_preferences">Сва подешавања</string>
     <string name="backup_category_gpt_settings">GPT подешавања</string>
