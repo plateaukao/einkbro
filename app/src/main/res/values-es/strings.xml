@@ -39,7 +39,7 @@
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">Control de datos</string>
-    <string name="setting_title_start_control">Control de inicio</string>
+    <string name="setting_title_start_control">Configuración de sitios</string>
     <string name="setting_title_search_engine">Motor de búsqueda</string>
     <string name="setting_summary_search_engine">Elige un motor de búsqueda</string>
     <string name="setting_summary_search_engine_google">Google</string>

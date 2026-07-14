@@ -46,7 +46,7 @@
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">Data Control</string>
-    <string name="setting_title_start_control">Start Control</string>
+    <string name="setting_title_start_control">Site Settings</string>
 
     <string name="setting_title_search_engine">Search engine</string>
     <string name="setting_summary_search_engine">Choose a search engine</string>

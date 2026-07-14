@@ -36,7 +36,7 @@
     <!-- Settings -->
     <!-- browser setting -->
     <string name="setting_title_clear_control">Data Control</string>
-    <string name="setting_title_start_control">Start Control</string>
+    <string name="setting_title_start_control">Innstillinger for nettsteder</string>
     <string name="setting_title_search_engine">Search Engine</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>

@@ -47,7 +47,7 @@
 
     <!-- browser setting -->
     <string name="setting_title_clear_control">Kontrol data</string>
-    <string name="setting_title_start_control">Kontrol awal</string>
+    <string name="setting_title_start_control">Setelan situs</string>
 
     <string name="setting_title_search_engine">Mesin Pencari</string>
     <string name="setting_summary_search_engine_google">Google</string>

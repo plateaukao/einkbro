@@ -31,7 +31,7 @@
     <string name="dialog_title_download">是否下载该文件?</string>
     <string name="dialog_content_resubmission">是否重新提交数据?</string>
     <string name="setting_title_clear_control">数据控制</string>
-    <string name="setting_title_start_control">启动控制</string>
+    <string name="setting_title_start_control">网站设置</string>
     <string name="setting_title_search_engine">搜索引擎</string>
     <string name="setting_summary_search_engine_google">谷歌</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>

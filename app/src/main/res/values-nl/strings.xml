@@ -36,7 +36,7 @@
     <!-- Settings -->
     <!-- browser setting -->
     <string name="setting_title_clear_control">Gegevensbeheer</string>
-    <string name="setting_title_start_control">Beheer starten</string>
+    <string name="setting_title_start_control">Site-instellingen</string>
     <string name="setting_title_search_engine">Zoekmachine</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>

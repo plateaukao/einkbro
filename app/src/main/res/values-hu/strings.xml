@@ -235,7 +235,7 @@
     <string name="dialog_title_download">Letölti a fájlt?</string>
     <string name="dialog_content_resubmission">Újraküldi az adatokat?</string>
     <string name="setting_title_clear_control">Adatvezérlés</string>
-    <string name="setting_title_start_control">Indítási vezérlés</string>
+    <string name="setting_title_start_control">Webhelybeállítások</string>
     <string name="setting_title_search_engine">Keresőmotor</string>
     <string name="setting_summary_search_engine">Válasszon keresőmotort</string>
     <string name="setting_summary_search_engine_google">Google</string>

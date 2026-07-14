@@ -44,7 +44,7 @@
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">데이터 제어</string>
-    <string name="setting_title_start_control">시작 제어</string>
+    <string name="setting_title_start_control">사이트 설정</string>
 
     <string name="setting_title_search_engine">검색 엔진</string>
     <string name="setting_summary_search_engine">검색 엔진 선택</string>

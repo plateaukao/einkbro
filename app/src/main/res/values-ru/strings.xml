@@ -44,7 +44,7 @@
 
     <!-- Browser setting -->
     <string name="setting_title_clear_control">Управление данными</string>
-    <string name="setting_title_start_control">Управление запуском</string>
+    <string name="setting_title_start_control">Настройки сайтов</string>
 
     <string name="setting_title_search_engine">Поисковая система</string>
     <string name="setting_summary_search_engine">Выберите поисковую систему</string>
