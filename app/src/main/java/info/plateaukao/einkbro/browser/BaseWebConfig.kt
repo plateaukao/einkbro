@@ -18,22 +18,23 @@ import java.net.URI
 import java.net.URISyntaxException
 import java.util.*
 
-class AdBlock(context: Context) : BaseWebConfig(context) {
-    override val dbTable: String = RecordRepository.TABLE_WHITELIST
-    override val hostsFile: String = "hosts.txt"
-}
+class AdBlock(context: Context) :
+    BaseWebConfig(context, RecordRepository.TABLE_WHITELIST, "hosts.txt")
 
-class Javascript(context: Context) : BaseWebConfig(context) {
-    override val dbTable: String = RecordRepository.TABLE_JAVASCRIPT
-    override val hostsFile: String = "javaHosts.txt"
-}
+class Javascript(context: Context) :
+    BaseWebConfig(context, RecordRepository.TABLE_JAVASCRIPT, "javaHosts.txt")
 
-class Cookie(context: Context) : BaseWebConfig(context) {
-    override val dbTable: String = RecordRepository.TABLE_COOKIE
-    override val hostsFile: String = "cookieHosts.txt"
-}
+class Cookie(context: Context) :
+    BaseWebConfig(context, RecordRepository.TABLE_COOKIE, "cookieHosts.txt")
 
-abstract class BaseWebConfig(private val context: Context) : KoinComponent, DomainInterface {
+// dbTable/hostsFile are constructor params, not abstract vals: the init block
+// launches a coroutine that reads them, and subclass field initializers only
+// run after this class's init — the coroutine could observe them as null.
+abstract class BaseWebConfig(
+    private val context: Context,
+    private val dbTable: String,
+    private val hostsFile: String,
+) : KoinComponent, DomainInterface {
     private val config: ConfigManager by inject()
     private val recordDb: RecordRepository by inject()
     private val coroutineScope: CoroutineScope by inject()
@@ -42,9 +43,6 @@ abstract class BaseWebConfig(private val context: Context) : KoinComponent, Doma
 
     @SuppressLint("ConstantLocale")
     private val locale = Locale.getDefault()
-
-    abstract val dbTable: String
-    abstract val hostsFile: String
 
     init {
         coroutineScope.launch {

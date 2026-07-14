@@ -32,13 +32,17 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.CodeOff
+import androidx.compose.material.icons.outlined.Cookie
 import androidx.compose.material.icons.outlined.Copyright
+import androidx.compose.material.icons.outlined.DoNotDisturbOff
 import androidx.compose.material.icons.outlined.InvertColors
 import androidx.compose.material.icons.outlined.InvertColorsOff
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.twotone.Cookie
 import androidx.compose.material.icons.twotone.Copyright
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,16 +60,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.browser.AdBlock
+import info.plateaukao.einkbro.browser.Cookie
+import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.preference.TranslationMode
+import org.koin.core.component.inject
 
-private const val DEFAULT_DESKTOP_VIEWPORT_WIDTH = 1280
+const val DEFAULT_DESKTOP_VIEWPORT_WIDTH = 1280
 
 class SiteSettingsDialogFragment(
     private val url: String,
     private val onDismissAction: () -> Unit = {},
 ) : ComposeDialogFragment() {
+    private val adBlock: AdBlock by inject()
+    private val javascript: Javascript by inject()
+    private val cookie: Cookie by inject()
 
     init {
         shouldShowInCenter = true
@@ -74,7 +85,12 @@ class SiteSettingsDialogFragment(
     @Composable
     override fun Content() {
         val host = Uri.parse(url)?.host.orEmpty()
+        val maxDialogHeight = (LocalConfiguration.current.screenHeightDp * 0.85f).dp
         SiteSettingsContent(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .widthIn(min = 300.dp, max = 420.dp)
+                .heightIn(max = maxDialogHeight),
             host = host,
             domainConfig = config.getDomainConfig(url),
             globalFontSize = config.display.fontSize,
@@ -84,7 +100,11 @@ class SiteSettingsDialogFragment(
             globalFontBoldness = config.display.fontBoldness,
             globalDesktopMode = config.browser.desktop,
             defaultViewportWidth = DEFAULT_DESKTOP_VIEWPORT_WIDTH,
-            globalJavascript = config.browser.enableJavascript,
+            // "default" reflects what actually happens without an override,
+            // whitelists included, so the hint doesn't lie about the site.
+            globalJavascript = config.browser.enableJavascript || javascript.isWhite(url),
+            globalAdBlock = config.browser.adBlock && !adBlock.isWhite(url),
+            globalCookies = config.browser.cookies || cookie.isWhite(url),
             globalTranslationMode = config.translation.translationMode,
             onEditText = { title, initial, onResult ->
                 TextEditorDialogFragment(title, initial, onResult)
@@ -101,7 +121,8 @@ class SiteSettingsDialogFragment(
 }
 
 @Composable
-private fun SiteSettingsContent(
+fun SiteSettingsContent(
+    modifier: Modifier,
     host: String,
     domainConfig: DomainConfigurationData,
     globalFontSize: Int,
@@ -112,6 +133,8 @@ private fun SiteSettingsContent(
     globalDesktopMode: Boolean,
     defaultViewportWidth: Int,
     globalJavascript: Boolean,
+    globalAdBlock: Boolean,
+    globalCookies: Boolean,
     globalTranslationMode: TranslationMode,
     onEditText: (title: String, initial: String, onResult: (String) -> Unit) -> Unit,
     onSave: (DomainConfigurationData) -> Unit,
@@ -127,12 +150,12 @@ private fun SiteSettingsContent(
     var desktopMode by remember { mutableStateOf(domainConfig.desktopMode) }
     var viewportWidth by remember { mutableStateOf(domainConfig.desktopViewportWidth) }
     var javascript by remember { mutableStateOf(domainConfig.enableJavascript) }
+    var adBlock by remember { mutableStateOf(domainConfig.enableAdBlock) }
+    var cookies by remember { mutableStateOf(domainConfig.enableCookies) }
     var translateSite by remember { mutableStateOf(domainConfig.shouldTranslateSite) }
     var translationMode by remember { mutableStateOf(domainConfig.translationMode) }
     var customCss by remember { mutableStateOf(domainConfig.customCss.orEmpty()) }
     var postLoadJs by remember { mutableStateOf(domainConfig.postLoadJavascript.orEmpty()) }
-
-    val maxDialogHeight = (LocalConfiguration.current.screenHeightDp * 0.85f).dp
 
     val overrideCount = listOf(
         fontSize != null,
@@ -145,17 +168,15 @@ private fun SiteSettingsContent(
         desktopMode != null,
         viewportWidth != null,
         javascript != null,
+        adBlock != null,
+        cookies != null,
         translateSite,
         customCss.isNotBlank(),
         postLoadJs.isNotBlank(),
     ).count { it }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .widthIn(min = 300.dp, max = 420.dp)
-            .heightIn(max = maxDialogHeight)
-            .padding(16.dp),
+        modifier = modifier.padding(16.dp),
     ) {
         // Title block: caption + prominent host + override count
         DialogTitle(host = host, overrideCount = overrideCount)
@@ -280,6 +301,26 @@ private fun SiteSettingsContent(
                 onValueChange = { javascript = it },
             )
 
+            // AdBlock
+            NullableBooleanRow(
+                label = stringResource(R.string.setting_title_adblock),
+                value = adBlock,
+                globalValue = globalAdBlock,
+                onIcon = Icons.Outlined.Block,
+                offIcon = Icons.Outlined.DoNotDisturbOff,
+                onValueChange = { adBlock = it },
+            )
+
+            // Cookies
+            NullableBooleanRow(
+                label = stringResource(R.string.setting_title_cookie),
+                value = cookies,
+                globalValue = globalCookies,
+                onIcon = Icons.TwoTone.Cookie,
+                offIcon = Icons.Outlined.Cookie,
+                onValueChange = { cookies = it },
+            )
+
             SectionHeader(stringResource(R.string.action_category_translation))
 
             // Translation: checkbox (always translate) on its own row, mode dropdown nested below
@@ -320,6 +361,7 @@ private fun SiteSettingsContent(
                 onClick = {
                     fontSize = null; fontType = null; boldFont = null; blackFont = null
                     fontBoldness = null; desktopMode = null; viewportWidth = null; javascript = null
+                    adBlock = null; cookies = null
                     whiteBackground = false; invertColor = false
                     translateSite = false; translationMode = null
                     customCss = ""; postLoadJs = ""
@@ -343,6 +385,8 @@ private fun SiteSettingsContent(
                         desktopMode = desktopMode,
                         desktopViewportWidth = viewportWidth,
                         enableJavascript = javascript,
+                        enableAdBlock = adBlock,
+                        enableCookies = cookies,
                         shouldTranslateSite = translateSite,
                         translationMode = translationMode,
                         customCss = customCss.ifBlank { null },

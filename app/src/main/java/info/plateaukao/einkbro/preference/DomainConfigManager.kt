@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.preference
 
 import android.net.Uri
 import info.plateaukao.einkbro.database.DomainConfigurationData
+import java.util.concurrent.ConcurrentHashMap
 
 class DomainConfigManager(
     private val display: DisplayConfig,
@@ -9,7 +10,9 @@ class DomainConfigManager(
     private val translation: TranslationConfig,
     private val persist: (DomainConfigurationData) -> Unit,
 ) {
-    var domainConfigurationMap = mutableMapOf<String, DomainConfigurationData>()
+    // ConcurrentHashMap: read from WebView worker threads (shouldInterceptRequest),
+    // written on the main thread when a site config is saved.
+    var domainConfigurationMap: MutableMap<String, DomainConfigurationData> = ConcurrentHashMap()
 
     fun shouldFixScroll(url: String): Boolean =
         Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldFixScroll } ?: false

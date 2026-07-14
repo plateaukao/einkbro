@@ -762,12 +762,30 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         { menuActionHandler.handle(it) }, { menuActionHandler.handleLongClick(it) }
     ).show(supportFragmentManager, "menu_dialog")
 
+    private val siteSettingsLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        // The result arrives between onStart and onResume, while the WebView
+        // timers are still paused (see onPause) — a reload() issued here is
+        // dropped. Defer to onResume, which runs right after resumeTimers().
+        if (result.resultCode == RESULT_OK) pendingSiteSettingsReload = true
+    }
+
+    private var pendingSiteSettingsReload = false
+
     private fun showSiteSettingsDialog() {
         if (!browserState.isWebViewInitialized) return
-        SiteSettingsDialogFragment(
-            url = ebWebView.url.orEmpty(),
-            onDismissAction = { ebWebView.initPreferences(); ebWebView.reload() },
-        ).show(supportFragmentManager, "site_settings_dialog")
+        if (ViewUnit.isTablet(this)) {
+            SiteSettingsDialogFragment(
+                url = ebWebView.url.orEmpty(),
+                onDismissAction = { ebWebView.initPreferences(); ebWebView.reload() },
+            ).show(supportFragmentManager, "site_settings_dialog")
+        } else {
+            // on phones the dialog is too cramped; use the whole screen
+            siteSettingsLauncher.launch(
+                SiteSettingsActivity.createIntent(this, ebWebView.url.orEmpty())
+            )
+        }
     }
 
     private fun showUserScriptCommands() {
@@ -916,6 +934,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             config.display.customFontChanged = false
         }
         if (!config.browser.continueMedia && browserState.isWebViewInitialized) ebWebView.resumeTimers()
+        if (pendingSiteSettingsReload) {
+            pendingSiteSettingsReload = false
+            ebWebView.initPreferences()
+            ebWebView.reload()
+        }
     }
 
     override fun onPause() {

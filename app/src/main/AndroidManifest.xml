@@ -244,6 +244,10 @@
         <activity
             android:name=".activity.UserScriptListActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.SiteSettingsActivity"
+            android:exported="false"
+            android:label="@string/site_settings" />
 
         <receiver
             android:name=".service.TtsNotificationReceiver"

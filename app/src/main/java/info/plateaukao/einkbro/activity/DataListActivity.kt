@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -83,7 +84,24 @@ class DataListActivity : LocaleAwareComponentActivity() {
             ) { innerPadding ->
                 WhiteListContent(
                     modifier = Modifier.padding(innerPadding),
-                    whitelist,
+                    list = whitelist,
+                    editAction = { domain ->
+                        lifecycleScope.launch {
+                            val value = dialogManager.getTextInput(
+                                R.string.menu_edit, whitelistType.titleId, domain
+                            )?.trim() ?: return@launch
+                            if (value.isBlank() || value == domain) return@launch
+                            whitelistType.deleteDomain(domain)
+                            if (whitelist.value.contains(value)) {
+                                // renamed to an existing entry: just drop the old one
+                                whitelist.value = whitelist.value.filter { it != domain }
+                            } else {
+                                whitelistType.domainHandler.addDomain(value)
+                                whitelist.value =
+                                    whitelist.value.map { if (it == domain) value else it }
+                            }
+                        }
+                    },
                 ) { domain -> lifecycleScope.launch { whitelistType.deleteDomain(domain) } }
             }
         }
@@ -121,6 +139,7 @@ enum class WhiteListType {
 fun WhiteListContent(
     modifier: Modifier = Modifier,
     list: MutableState<List<String>>,
+    editAction: (String) -> Unit = {},
     deleteAction: (String) -> Unit = {},
 ) {
     if (list.value.isEmpty()) {
@@ -137,7 +156,12 @@ fun WhiteListContent(
                         Modifier.padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(modifier = Modifier.weight(1f), text = itemText)
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { editAction(itemText) },
+                            text = itemText,
+                        )
                         IconButton(onClick = {
                             deleteAction(itemText)
                             list.value = list.value.filter { it != itemText }

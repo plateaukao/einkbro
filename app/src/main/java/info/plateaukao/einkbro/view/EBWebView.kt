@@ -420,7 +420,23 @@ open class EBWebView(
     // endregion
 
     // Delegated to configApplier (see WebViewConfigApplier)
-    fun initPreferences() = configApplier.initPreferences()
+    fun initPreferences() {
+        configApplier.initPreferences()
+        // re-assert per-site overrides; the applier only knows global settings
+        url?.let {
+            settings.javaScriptEnabled = isJavascriptEnabled(it)
+            toggleCookieSupport(shouldAcceptCookies(it))
+        }
+    }
+
+    // Per-site override first, then the global setting widened by the whitelist.
+    private fun isJavascriptEnabled(url: String): Boolean =
+        config.getDomainConfig(url).enableJavascript
+            ?: (config.browser.enableJavascript || javascript.isWhite(url))
+
+    private fun shouldAcceptCookies(url: String): Boolean =
+        config.getDomainConfig(url).enableCookies
+            ?: (config.browser.cookies || cookie.isWhite(url))
 
     fun updateUserAgentString() = configApplier.updateUserAgentString()
 
@@ -460,8 +476,8 @@ open class EBWebView(
             setAlbumCover(it)
         }
 
-        settings.javaScriptEnabled = config.browser.enableJavascript || javascript.isWhite(url)
-        toggleCookieSupport(config.browser.cookies || cookie.isWhite(url))
+        settings.javaScriptEnabled = isJavascriptEnabled(url)
+        toggleCookieSupport(shouldAcceptCookies(url))
 
         super.loadUrl(url, additionalHttpHeaders)
     }
@@ -502,8 +518,8 @@ open class EBWebView(
             setAlbumCover(it)
         }
 
-        settings.javaScriptEnabled = config.browser.enableJavascript || javascript.isWhite(url)
-        toggleCookieSupport(config.browser.cookies || cookie.isWhite(url))
+        settings.javaScriptEnabled = isJavascriptEnabled(url)
+        toggleCookieSupport(shouldAcceptCookies(url))
 
         super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }

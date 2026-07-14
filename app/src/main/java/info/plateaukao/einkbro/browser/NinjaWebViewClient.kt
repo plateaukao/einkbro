@@ -55,6 +55,7 @@ class EBWebViewClient(
     private val context: Context = ebWebView.context
     private val config: ConfigManager by inject()
     private val cookie: Cookie by inject()
+    private val adBlock: AdBlock by inject()
 
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
@@ -72,6 +73,13 @@ class EBWebViewClient(
 
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
+    }
+
+    /** Per-site override first, then the global setting, minus the whitelist. */
+    private fun isAdBlockEnabled(pageUrl: String?): Boolean {
+        if (pageUrl == null) return config.browser.adBlock
+        return (config.getDomainConfig(pageUrl).enableAdBlock ?: config.browser.adBlock) &&
+                !adBlock.isWhite(pageUrl)
     }
 
 
@@ -133,7 +141,7 @@ class EBWebViewClient(
         ebWebView.innerClientHeight = 0
         ebWebView.isTouchOnInnerScrollable = false
 
-        if (config.browser.adBlock) {
+        if (isAdBlockEnabled(url)) {
             adFilter.performScript(view, url)
         }
 
@@ -425,7 +433,9 @@ class EBWebViewClient(
             return WebResourceResponse("text/plain", "UTF-8", ByteArrayInputStream(ByteArray(0)))
         }
 
-        if (config.browser.adBlock) {
+        val pageUrl =
+            if (request.isForMainFrame) request.url.toString() else ebWebView.currentPageUrl
+        if (isAdBlockEnabled(pageUrl)) {
             val result = adFilter.shouldIntercept(view, request)
             if (result.shouldBlock) {
                 //Log.d("EBWebViewClient", "blocked\n rule: ${result.rule}\n url:${result.resourceUrl}")
@@ -435,7 +445,7 @@ class EBWebViewClient(
 
         einkImageInterceptor.processEinkImageRequest(request)?.let { return it }
 
-        return handleWebRequest(view, request.url, request.requestHeaders)
+        return handleWebRequest(view, request.url, request.requestHeaders, request.isForMainFrame)
             ?: super.shouldInterceptRequest(view, request)
     }
 
@@ -446,19 +456,22 @@ class EBWebViewClient(
         webView: WebView,
         uri: Uri,
         requestHeaders: Map<String, String>?,
+        isMainFrame: Boolean = false,
     ): WebResourceResponse? {
         val url = uri.toString()
 
-        if (!config.browser.cookies) {
-            if (cookie.isWhite(url)) {
-                val manager = CookieManager.getInstance()
-                manager.getCookie(url)
-                manager.setAcceptCookie(true)
-            } else {
-                val manager = CookieManager.getInstance()
-                manager.setAcceptCookie(false)
-            }
+        // setAcceptCookie is process-wide, so it must be re-asserted on every
+        // request: link-click navigation never goes through loadUrl, and a
+        // per-site override on the previous page would otherwise stick forever.
+        // currentPageUrl lags for the main frame's own request — use its URL.
+        val pageUrl = if (isMainFrame) url else ebWebView.currentPageUrl ?: url
+        val acceptCookies = config.getDomainConfig(pageUrl).enableCookies
+            ?: (config.browser.cookies || cookie.isWhite(url))
+        val manager = CookieManager.getInstance()
+        if (acceptCookies && !config.browser.cookies) {
+            manager.getCookie(url)
         }
+        manager.setAcceptCookie(acceptCookies)
 
         processCustomFontRequest(uri)?.let { return it }
         dualCaptionProcessor.processUrl(url, requestHeaders)?.let {

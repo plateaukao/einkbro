@@ -29,6 +29,8 @@ data class DomainConfigurationData(
     var desktopMode: Boolean? = null,
     var desktopViewportWidth: Int? = null,
     var enableJavascript: Boolean? = null,
+    var enableAdBlock: Boolean? = null,
+    var enableCookies: Boolean? = null,
     var translationMode: TranslationMode? = null,
     var customCss: String? = null,
     var postLoadJavascript: String? = null,
