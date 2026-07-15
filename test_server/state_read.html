@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1"><title>state read</title></head>
+<body>
+<h1>State Read Test</h1>
+<div id="state" style="font-size: 24px;"></div>
+<script>
+  var msg = 'cookie=[' + document.cookie + '] ls=[' + localStorage.getItem('einkbro_ls_token') + ']';
+  document.getElementById('state').textContent = msg;
+  document.title = 'READ ' + msg;
+</script>
+</body>
+</html>

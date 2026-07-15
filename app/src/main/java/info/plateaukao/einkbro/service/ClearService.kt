@@ -10,6 +10,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit.clearHistory
 import info.plateaukao.einkbro.unit.BrowserUnit.clearIndexedDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.system.exitProcess
@@ -27,15 +28,23 @@ class ClearService : Service(), KoinComponent {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        clear()
-        stopSelf()
-        return START_STICKY
+        // stopSelf() kills the process (see onDestroy), so it must wait until
+        // all clearing has completed and been persisted.
+        coroutineScope.launch {
+            clear()
+            stopSelf()
+        }
+        return START_NOT_STICKY
     }
 
-    private fun clear() {
+    private suspend fun clear() {
         if (config.clearCache) clearCache(this)
-        if (config.clearCookies) clearCookie()
-        if (config.clearHistory) coroutineScope.launch { clearHistory(this@ClearService) }
+        if (config.clearCookies) withTimeoutOrNull(CLEAR_COOKIE_TIMEOUT) { clearCookie() }
+        if (config.clearHistory) clearHistory(this)
         if (config.clearIndexedDB) clearIndexedDB(this)
+    }
+
+    companion object {
+        private const val CLEAR_COOKIE_TIMEOUT = 5000L
     }
 }

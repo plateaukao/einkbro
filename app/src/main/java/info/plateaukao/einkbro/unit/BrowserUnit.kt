@@ -10,7 +10,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
@@ -40,6 +39,7 @@ import info.plateaukao.einkbro.view.dialog.ShortcutEditDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -47,6 +47,7 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.util.Objects
+import kotlin.coroutines.resume
 import kotlin.system.exitProcess
 
 object BrowserUnit : KoinComponent {
@@ -218,10 +219,16 @@ object BrowserUnit : KoinComponent {
     }
 
     @JvmStatic
-    fun clearCookie() {
-        val cookieManager = android.webkit.CookieManager.getInstance()
-        cookieManager.flush()
-        cookieManager.removeAllCookies { }
+    suspend fun clearCookie() = withContext(Dispatchers.Main) {
+        // removeAllCookies is asynchronous; flush after it completes so the
+        // removal reaches persistent storage before the process is killed.
+        suspendCancellableCoroutine { continuation ->
+            val cookieManager = android.webkit.CookieManager.getInstance()
+            cookieManager.removeAllCookies {
+                cookieManager.flush()
+                continuation.resume(Unit)
+            }
+        }
     }
 
     @JvmStatic
@@ -236,13 +243,13 @@ object BrowserUnit : KoinComponent {
 
     @JvmStatic
     fun clearIndexedDB(context: Context) {
-        val data = Environment.getDataDirectory()
-        val indexedDB = "//data//" + context.packageName + "//app_webview//" + "//IndexedDB"
-        val localStorage = "//data//" + context.packageName + "//app_webview//" + "//Local Storage"
-        val indexedDB_dir = File(data, indexedDB)
-        val localStorage_dir = File(data, localStorage)
-        deleteDir(indexedDB_dir)
-        deleteDir(localStorage_dir)
+        val webViewDir = File(context.dataDir, "app_webview")
+        // Older WebView versions kept storage directly under app_webview/;
+        // modern ones keep it under the app_webview/Default/ profile.
+        for (profileDir in listOf(webViewDir, File(webViewDir, "Default"))) {
+            deleteDir(File(profileDir, "IndexedDB"))
+            deleteDir(File(profileDir, "Local Storage"))
+        }
     }
 
     private fun deleteDir(dir: File?): Boolean {
