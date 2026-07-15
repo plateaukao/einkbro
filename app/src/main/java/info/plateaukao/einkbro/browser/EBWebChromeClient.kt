@@ -184,9 +184,12 @@ class EBWebChromeClient(
         callback: GeolocationPermissions.Callback,
     ) {
         val activity = ebWebView.context as Activity
-        HelperUnit.grantPermissionsLoc(activity)
-        callback.invoke(origin, true, false)
-        super.onGeolocationPermissionsShowPrompt(origin, callback)
+        // Don't grant before ACCESS_FINE_LOCATION is settled: a grant while the
+        // permission is still missing makes the WebView's geolocation stack start
+        // permissionless and keep failing until the process restarts (#391).
+        HelperUnit.requestLocationPermission(activity) { granted ->
+            callback.invoke(origin, granted, false)
+        }
     }
 
     override fun onConsoleMessage(message: ConsoleMessage): Boolean {

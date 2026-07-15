@@ -947,6 +947,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (!config.browser.continueMedia && !isMeetPipCriteria() && browserState.isWebViewInitialized) ebWebView.pauseTimers()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        HelperUnit.handlePermissionsResult(requestCode, grantResults)
+    }
+
     override fun onDestroy() {
         ttsViewModel.reset()
         tabManager.updateSavedAlbumInfo()
