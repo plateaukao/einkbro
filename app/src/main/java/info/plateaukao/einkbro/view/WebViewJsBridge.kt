@@ -176,6 +176,7 @@ class WebViewJsBridge(private val webView: WebView) {
     fun addGoogleTranslation(preferredLanguages: String) {
         val str = injectGoogleTranslateV2Js(preferredLanguages)
         webView.evaluateJavascript(str, null)
+        evaluateJsFile("hide_google_translate_popup.js")
     }
 
     private fun injectGoogleTranslateV2Js(preferredLanguages: String): String =
