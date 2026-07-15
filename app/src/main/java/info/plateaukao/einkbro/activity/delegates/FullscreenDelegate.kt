@@ -90,7 +90,9 @@ class FullscreenDelegate(
             }
         }
         customViewCallback = callback
-        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+        // FULL_USER, not FULL_SENSOR: allow any orientation for fullscreen video,
+        // but keep honoring the system auto-rotate lock (#584).
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
     }
 
     fun onHideCustomView(): Boolean {
