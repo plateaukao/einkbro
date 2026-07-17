@@ -236,6 +236,13 @@ class ConfigManager(
     var instapaperUsername by StringPreference(sp, K_INSTAPAPER_USERNAME, "")
     var instapaperPassword by StringPreference(sp, K_INSTAPAPER_PASSWORD, "")
 
+    // Serialized DriveAuthState (Google Drive backup sync); empty when signed out.
+    var driveAuthStateJson by StringPreference(sp, K_DRIVE_AUTH_STATE, "")
+
+    // In-flight sign-in (PKCE verifier + state) between opening the consent URL
+    // in the browser and the custom-scheme redirect coming back.
+    var drivePendingAuthJson by StringPreference(sp, K_DRIVE_PENDING_AUTH, "")
+
     companion object {
         const val K_SCROLL_FIX_LIST = "sp_scroll_fix_list"
         const val K_TRANSLATE_SITE_LIST = "sp_translate_site_list"
@@ -258,6 +265,9 @@ class ConfigManager(
 
         const val K_INSTAPAPER_USERNAME = "sp_instapaper_username"
         const val K_INSTAPAPER_PASSWORD = "sp_instapaper_password"
+
+        const val K_DRIVE_AUTH_STATE = "sp_drive_auth_state"
+        const val K_DRIVE_PENDING_AUTH = "sp_drive_pending_auth"
 
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
         private const val SAVED_FILE_INFO_SEPARATOR = "::::"

@@ -543,4 +543,11 @@
     <string name="setting_summary_zoom_in_custom_view">Tam ekran modunda 2 parmakla yakınlaştırmayı etkinleştir (varsayılan: kapalı)</string>
     <string name="site_force_viewport_width">Viewport genişliğini zorla (px)</string>
     <string name="site_force_viewport_width_hint">Yalnızca masaüstü UA yetmediğinde kullanın</string>
+    <string name="setting_title_gdrive_sync">Google Drive ile senkronize et</string>
+    <string name="setting_summary_gdrive_sync">Uygulama verilerini Google Drive\'ınıza yedekleyin veya geri yükleyin</string>
+    <string name="drive_upload_backup">Yedeği Google Drive\'a yükle</string>
+    <string name="drive_restore_backup">%s tarihli yedeği geri yükle</string>
+    <string name="drive_sign_out">Oturumu kapat (%s)</string>
+    <string name="drive_sign_in_failed">Google oturum açma başarısız oldu</string>
+    <string name="drive_not_configured">Bu derlemede yapılandırılmış bir Google OAuth istemcisi yok</string>
 </resources>

@@ -544,4 +544,11 @@
     <string name="audio_only_mode">Doar audio</string>
     <string name="site_force_viewport_width">Forțează lățimea viewportului (px)</string>
     <string name="site_force_viewport_width_hint">Folosiți doar dacă UA desktop nu este suficient</string>
+    <string name="setting_title_gdrive_sync">Sincronizare cu Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Faceți backup sau restaurați datele aplicației în Google Drive</string>
+    <string name="drive_upload_backup">Încărcați backupul în Google Drive</string>
+    <string name="drive_restore_backup">Restaurați backupul din %s</string>
+    <string name="drive_sign_out">Deconectare (%s)</string>
+    <string name="drive_sign_in_failed">Conectarea la Google a eșuat</string>
+    <string name="drive_not_configured">Niciun client Google OAuth nu este configurat în această versiune</string>
 </resources>

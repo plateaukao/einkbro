@@ -544,4 +544,11 @@
     <string name="white_background">Nền trắng</string>
     <string name="site_force_viewport_width">Buộc chiều rộng viewport (px)</string>
     <string name="site_force_viewport_width_hint">Chỉ dùng khi UA máy tính chưa đủ</string>
+    <string name="setting_title_gdrive_sync">Đồng bộ với Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Sao lưu hoặc khôi phục dữ liệu ứng dụng trong Google Drive của bạn</string>
+    <string name="drive_upload_backup">Tải bản sao lưu lên Google Drive</string>
+    <string name="drive_restore_backup">Khôi phục bản sao lưu từ %s</string>
+    <string name="drive_sign_out">Đăng xuất (%s)</string>
+    <string name="drive_sign_in_failed">Đăng nhập Google thất bại</string>
+    <string name="drive_not_configured">Bản dựng này chưa được cấu hình ứng dụng khách Google OAuth</string>
 </resources>

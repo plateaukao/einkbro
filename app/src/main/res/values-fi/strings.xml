@@ -543,4 +543,11 @@
     <string name="white_background">Valkoinen tausta</string>
     <string name="site_force_viewport_width">Pakota näkymän leveys (px)</string>
     <string name="site_force_viewport_width_hint">Käytä vain jos pelkkä työpöytä-UA ei riitä</string>
+    <string name="setting_title_gdrive_sync">Synkronoi Google Driven kanssa</string>
+    <string name="setting_summary_gdrive_sync">Varmuuskopioi tai palauta sovelluksen tiedot Google Drivessa</string>
+    <string name="drive_upload_backup">Lähetä varmuuskopio Google Driveen</string>
+    <string name="drive_restore_backup">Palauta varmuuskopio: %s</string>
+    <string name="drive_sign_out">Kirjaudu ulos (%s)</string>
+    <string name="drive_sign_in_failed">Google-kirjautuminen epäonnistui</string>
+    <string name="drive_not_configured">Tässä versiossa ei ole määritetty Google OAuth -asiakasta</string>
 </resources>

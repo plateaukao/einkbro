@@ -539,4 +539,11 @@
     <string name="setting_summary_zoom_in_custom_view">Zapnout přiblížení dvěma prsty v režimu celé obrazovky (výchozí: vypnuto)</string>
     <string name="site_force_viewport_width">Vynutit šířku viewportu (px)</string>
     <string name="site_force_viewport_width_hint">Použijte, jen když desktopový UA nestačí</string>
+    <string name="setting_title_gdrive_sync">Synchronizovat s Google Diskem</string>
+    <string name="setting_summary_gdrive_sync">Zálohujte nebo obnovte data aplikace na svém Google Disku</string>
+    <string name="drive_upload_backup">Nahrát zálohu na Google Disk</string>
+    <string name="drive_restore_backup">Obnovit zálohu z %s</string>
+    <string name="drive_sign_out">Odhlásit se (%s)</string>
+    <string name="drive_sign_in_failed">Přihlášení ke Google se nezdařilo</string>
+    <string name="drive_not_configured">V tomto sestavení není nakonfigurován žádný klient Google OAuth</string>
 </resources>

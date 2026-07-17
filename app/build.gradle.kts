@@ -43,6 +43,16 @@ android {
         buildConfigField("String", "lastCommitTime", "\"${getLastCommitTimeStamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
 
+        // Google Drive backup sync: an "installed app" OAuth client (not a secret;
+        // PKCE, no client secret) with the reversed-client-id custom-scheme redirect.
+        // Override locally with -Peinkbro.driveOAuthClientId=<id>.apps.googleusercontent.com
+        val driveOAuthClientId = project.findProperty("einkbro.driveOAuthClientId")?.toString()
+            ?: "540228800389-7e35n5f8vvcf9bfq6lb3ra8ud2vclffk.apps.googleusercontent.com"
+        val driveOAuthScheme =
+            "com.googleusercontent.apps." + driveOAuthClientId.removeSuffix(".apps.googleusercontent.com")
+        buildConfigField("String", "DRIVE_OAUTH_CLIENT_ID", "\"$driveOAuthClientId\"")
+        buildConfigField("String", "DRIVE_OAUTH_REDIRECT", "\"$driveOAuthScheme:/oauth2redirect\"")
+
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }

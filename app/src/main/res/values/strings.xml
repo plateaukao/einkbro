@@ -436,6 +436,13 @@
     <string name="setting_summary_share_appData">Share app data to another device over local network</string>
     <string name="setting_title_receive_appData">Receive app data</string>
     <string name="setting_summary_receive_appData">Receive app data from another device over local network</string>
+    <string name="setting_title_gdrive_sync">Sync with Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Back up or restore app data in your Google Drive</string>
+    <string name="drive_upload_backup">Upload backup to Google Drive</string>
+    <string name="drive_restore_backup">Restore backup from %s</string>
+    <string name="drive_sign_out">Sign out (%s)</string>
+    <string name="drive_sign_in_failed">Google sign-in failed</string>
+    <string name="drive_not_configured">No Google OAuth client is configured in this build</string>
     <string name="share_broadcasting">Broadcasting on local network…</string>
     <string name="share_waiting">Waiting for data from another device…</string>
     <string name="share_receiving">Receiving data…</string>

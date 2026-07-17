@@ -592,4 +592,11 @@
     <string name="task_unknown">未知的任務。</string>
     <string name="site_force_viewport_width">強制視窗寬度 (px)</string>
     <string name="site_force_viewport_width_hint">僅在桌面版 UA 不足時使用</string>
+    <string name="setting_title_gdrive_sync">與 Google Drive 同步</string>
+    <string name="setting_summary_gdrive_sync">在您的 Google Drive 中備份或還原應用程式資料</string>
+    <string name="drive_upload_backup">上傳備份到 Google Drive</string>
+    <string name="drive_restore_backup">還原備份（%s）</string>
+    <string name="drive_sign_out">登出（%s）</string>
+    <string name="drive_sign_in_failed">Google 登入失敗</string>
+    <string name="drive_not_configured">此版本未設定 Google OAuth 用戶端</string>
 </resources>

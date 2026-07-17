@@ -597,4 +597,11 @@
     <string name="setting_title_default_ai_engine">Движок ИИ по умолчанию</string>
     <string name="site_force_viewport_width">Принудительная ширина viewport (px)</string>
     <string name="site_force_viewport_width_hint">Используйте, только если desktop UA недостаточно</string>
+    <string name="setting_title_gdrive_sync">Синхронизация с Google Диском</string>
+    <string name="setting_summary_gdrive_sync">Резервное копирование и восстановление данных приложения в вашем Google Диске</string>
+    <string name="drive_upload_backup">Загрузить резервную копию на Google Диск</string>
+    <string name="drive_restore_backup">Восстановить резервную копию от %s</string>
+    <string name="drive_sign_out">Выйти (%s)</string>
+    <string name="drive_sign_in_failed">Не удалось войти в Google</string>
+    <string name="drive_not_configured">В этой сборке не настроен клиент Google OAuth</string>
 </resources>

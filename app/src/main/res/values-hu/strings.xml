@@ -712,4 +712,11 @@
     <string name="setting_summary_zoom_in_custom_view">Két ujjas nagyítás engedélyezése teljes képernyős módban (alapértelmezett: ki)</string>
     <string name="site_force_viewport_width">Nézetablak szélesség kényszerítése (px)</string>
     <string name="site_force_viewport_width_hint">Csak akkor, ha az asztali UA önmagában nem elég</string>
+    <string name="setting_title_gdrive_sync">Szinkronizálás a Google Drive-val</string>
+    <string name="setting_summary_gdrive_sync">Alkalmazásadatok biztonsági mentése vagy visszaállítása a Google Drive-on</string>
+    <string name="drive_upload_backup">Biztonsági mentés feltöltése a Google Drive-ra</string>
+    <string name="drive_restore_backup">Biztonsági mentés visszaállítása: %s</string>
+    <string name="drive_sign_out">Kijelentkezés (%s)</string>
+    <string name="drive_sign_in_failed">A Google-bejelentkezés sikertelen</string>
+    <string name="drive_not_configured">Ebben a buildben nincs beállítva Google OAuth-kliens</string>
 </resources>

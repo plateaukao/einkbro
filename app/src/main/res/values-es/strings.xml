@@ -546,4 +546,11 @@
     <string name="setting_summary_zoom_in_custom_view">Habilitar zoom con 2 dedos en modo pantalla completa (predeterminado: falso)</string>
     <string name="site_force_viewport_width">Forzar ancho del viewport (px)</string>
     <string name="site_force_viewport_width_hint">Úsalo solo si el UA de escritorio no es suficiente</string>
+    <string name="setting_title_gdrive_sync">Sincronizar con Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Haz copia de seguridad o restaura los datos de la aplicación en tu Google Drive</string>
+    <string name="drive_upload_backup">Subir copia de seguridad a Google Drive</string>
+    <string name="drive_restore_backup">Restaurar copia de seguridad de %s</string>
+    <string name="drive_sign_out">Cerrar sesión (%s)</string>
+    <string name="drive_sign_in_failed">Error al iniciar sesión en Google</string>
+    <string name="drive_not_configured">No hay ningún cliente OAuth de Google configurado en esta compilación</string>
 </resources>

@@ -544,4 +544,11 @@
     <string name="white_background">Wit agtergrond</string>
     <string name="site_force_viewport_width">Forseer kykvenster-wydte (px)</string>
     <string name="site_force_viewport_width_hint">Gebruik slegs as Desktop-UA alleen nie genoeg is nie</string>
+    <string name="setting_title_gdrive_sync">Sinkroniseer met Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Rugsteun of herstel toepdata in jou Google Drive</string>
+    <string name="drive_upload_backup">Laai rugsteun op na Google Drive</string>
+    <string name="drive_restore_backup">Herstel rugsteun van %s</string>
+    <string name="drive_sign_out">Meld af (%s)</string>
+    <string name="drive_sign_in_failed">Google-aanmelding het misluk</string>
+    <string name="drive_not_configured">Geen Google OAuth-kliënt is in hierdie bou opgestel nie</string>
 </resources>

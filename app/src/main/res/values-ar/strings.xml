@@ -543,4 +543,11 @@
     <string name="setting_summary_zoom_in_custom_view">تفعيل التكبير بإصبعين في وضع ملء الشاشة (الافتراضي: معطل)</string>
     <string name="site_force_viewport_width">فرض عرض النافذة (بكسل)</string>
     <string name="site_force_viewport_width_hint">استخدم فقط إذا كان وكيل المستخدم لسطح المكتب غير كافٍ</string>
+    <string name="setting_title_gdrive_sync">المزامنة مع Google Drive</string>
+    <string name="setting_summary_gdrive_sync">انسخ بيانات التطبيق احتياطيًا أو استعدها في Google Drive</string>
+    <string name="drive_upload_backup">رفع النسخة الاحتياطية إلى Google Drive</string>
+    <string name="drive_restore_backup">استعادة النسخة الاحتياطية من %s</string>
+    <string name="drive_sign_out">تسجيل الخروج (%s)</string>
+    <string name="drive_sign_in_failed">فشل تسجيل الدخول إلى Google</string>
+    <string name="drive_not_configured">لم يتم إعداد عميل Google OAuth في هذا الإصدار</string>
 </resources>

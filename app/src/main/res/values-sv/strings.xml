@@ -543,4 +543,11 @@
     <string name="white_background">Vit bakgrund</string>
     <string name="site_force_viewport_width">Tvinga viewport-bredd (px)</string>
     <string name="site_force_viewport_width_hint">Använd endast om desktop-UA inte räcker</string>
+    <string name="setting_title_gdrive_sync">Synkronisera med Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Säkerhetskopiera eller återställ appdata i din Google Drive</string>
+    <string name="drive_upload_backup">Ladda upp säkerhetskopia till Google Drive</string>
+    <string name="drive_restore_backup">Återställ säkerhetskopia från %s</string>
+    <string name="drive_sign_out">Logga ut (%s)</string>
+    <string name="drive_sign_in_failed">Google-inloggningen misslyckades</string>
+    <string name="drive_not_configured">Ingen Google OAuth-klient är konfigurerad i denna build</string>
 </resources>

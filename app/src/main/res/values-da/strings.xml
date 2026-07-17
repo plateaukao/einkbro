@@ -543,4 +543,11 @@
     <string name="white_background">Hvid baggrund</string>
     <string name="site_force_viewport_width">Tving viewportbredde (px)</string>
     <string name="site_force_viewport_width_hint">Brug kun hvis desktop-UA alene ikke er nok</string>
+    <string name="setting_title_gdrive_sync">Synkroniser med Google Drev</string>
+    <string name="setting_summary_gdrive_sync">Sikkerhedskopiér eller gendan appdata i dit Google Drev</string>
+    <string name="drive_upload_backup">Upload sikkerhedskopi til Google Drev</string>
+    <string name="drive_restore_backup">Gendan sikkerhedskopi fra %s</string>
+    <string name="drive_sign_out">Log ud (%s)</string>
+    <string name="drive_sign_in_failed">Google-login mislykkedes</string>
+    <string name="drive_not_configured">Ingen Google OAuth-klient er konfigureret i denne build</string>
 </resources>

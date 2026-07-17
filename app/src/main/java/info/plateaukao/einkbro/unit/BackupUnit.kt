@@ -81,9 +81,12 @@ class BackupUnit(
         }
     }
 
-    suspend fun backupToTempFile(categories: Set<BackupCategory>): File? {
+    suspend fun backupToTempFile(
+        categories: Set<BackupCategory>,
+        fileName: String = "backup_share.zip",
+    ): File? {
         return try {
-            val tempFile = File(context.cacheDir, "backup_share.zip")
+            val tempFile = File(context.cacheDir, fileName)
             writeBackupZip(FileOutputStream(tempFile), categories)
             tempFile
         } catch (e: IOException) {

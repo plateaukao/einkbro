@@ -535,4 +535,11 @@
     <string name="setting_summary_zoom_in_custom_view">Włącz powiększanie dwoma palcami w trybie pełnoekranowym (domyślnie: wył.)</string>
     <string name="site_force_viewport_width">Wymuś szerokość viewportu (px)</string>
     <string name="site_force_viewport_width_hint">Użyj tylko gdy desktopowy UA nie wystarcza</string>
+    <string name="setting_title_gdrive_sync">Synchronizuj z Dyskiem Google</string>
+    <string name="setting_summary_gdrive_sync">Utwórz kopię zapasową lub przywróć dane aplikacji na Dysku Google</string>
+    <string name="drive_upload_backup">Prześlij kopię zapasową na Dysk Google</string>
+    <string name="drive_restore_backup">Przywróć kopię zapasową z %s</string>
+    <string name="drive_sign_out">Wyloguj się (%s)</string>
+    <string name="drive_sign_in_failed">Logowanie do Google nie powiodło się</string>
+    <string name="drive_not_configured">W tej kompilacji nie skonfigurowano klienta Google OAuth</string>
 </resources>

@@ -536,4 +536,11 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="share_waiting">Warte auf Daten von einem anderen Gerät…</string>
     <string name="site_force_viewport_width">Viewport-Breite erzwingen (px)</string>
     <string name="site_force_viewport_width_hint">Nur verwenden, wenn Desktop-UA allein nicht reicht</string>
+    <string name="setting_title_gdrive_sync">Mit Google Drive synchronisieren</string>
+    <string name="setting_summary_gdrive_sync">App-Daten in Google Drive sichern oder wiederherstellen</string>
+    <string name="drive_upload_backup">Sicherung auf Google Drive hochladen</string>
+    <string name="drive_restore_backup">Sicherung vom %s wiederherstellen</string>
+    <string name="drive_sign_out">Abmelden (%s)</string>
+    <string name="drive_sign_in_failed">Google-Anmeldung fehlgeschlagen</string>
+    <string name="drive_not_configured">In diesem Build ist kein Google-OAuth-Client konfiguriert</string>
 </resources>

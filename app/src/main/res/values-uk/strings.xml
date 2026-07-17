@@ -534,4 +534,11 @@
     <string name="white_background">Білий фон</string>
     <string name="site_force_viewport_width">Примусова ширина viewport (px)</string>
     <string name="site_force_viewport_width_hint">Використовуйте, лише якщо desktop UA недостатньо</string>
+    <string name="setting_title_gdrive_sync">Синхронізація з Google Диском</string>
+    <string name="setting_summary_gdrive_sync">Резервне копіювання та відновлення даних застосунку у вашому Google Диску</string>
+    <string name="drive_upload_backup">Завантажити резервну копію на Google Диск</string>
+    <string name="drive_restore_backup">Відновити резервну копію від %s</string>
+    <string name="drive_sign_out">Вийти (%s)</string>
+    <string name="drive_sign_in_failed">Не вдалося ввійти в Google</string>
+    <string name="drive_not_configured">У цій збірці не налаштовано клієнт Google OAuth</string>
 </resources>

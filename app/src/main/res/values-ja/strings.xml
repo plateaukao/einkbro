@@ -541,4 +541,11 @@
     <string name="setting_title_default_ai_engine">デフォルトのAIエンジン</string>
     <string name="site_force_viewport_width">ビューポート幅を強制 (px)</string>
     <string name="site_force_viewport_width_hint">デスクトップUAだけで足りない場合にのみ使用</string>
+    <string name="setting_title_gdrive_sync">Google Drive と同期</string>
+    <string name="setting_summary_gdrive_sync">アプリのデータを Google Drive にバックアップ・復元します</string>
+    <string name="drive_upload_backup">バックアップを Google Drive にアップロード</string>
+    <string name="drive_restore_backup">バックアップを復元（%s）</string>
+    <string name="drive_sign_out">サインアウト（%s）</string>
+    <string name="drive_sign_in_failed">Google へのサインインに失敗しました</string>
+    <string name="drive_not_configured">このビルドには Google OAuth クライアントが設定されていません</string>
 </resources>

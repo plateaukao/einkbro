@@ -600,4 +600,11 @@
     <string name="task_run">运行</string>
     <string name="task_requires_openai">自定义任务需要使用OpenAI (而非Gemini)。</string>
     <string name="task_unknown">未知任务。</string>
+    <string name="setting_title_gdrive_sync">与 Google Drive 同步</string>
+    <string name="setting_summary_gdrive_sync">在您的 Google Drive 中备份或恢复应用数据</string>
+    <string name="drive_upload_backup">上传备份到 Google Drive</string>
+    <string name="drive_restore_backup">恢复备份（%s）</string>
+    <string name="drive_sign_out">退出登录（%s）</string>
+    <string name="drive_sign_in_failed">Google 登录失败</string>
+    <string name="drive_not_configured">此版本未配置 Google OAuth 客户端</string>
 </resources>

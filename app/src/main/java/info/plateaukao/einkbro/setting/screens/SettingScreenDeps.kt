@@ -21,6 +21,7 @@ interface BackupOps {
     fun importAppData()
     fun shareAppData()
     fun receiveAppData()
+    fun syncWithGoogleDrive()
     fun exportBookmarks()
     fun importBookmarks()
 }

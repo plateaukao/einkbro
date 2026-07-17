@@ -598,4 +598,11 @@
     <string name="setting_title_default_ai_engine">기본 AI 엔진</string>
     <string name="site_force_viewport_width">뷰포트 너비 강제 (px)</string>
     <string name="site_force_viewport_width_hint">데스크톱 UA만으로 부족할 때만 사용</string>
+    <string name="setting_title_gdrive_sync">Google Drive와 동기화</string>
+    <string name="setting_summary_gdrive_sync">앱 데이터를 Google Drive에 백업하거나 복원합니다</string>
+    <string name="drive_upload_backup">백업을 Google Drive에 업로드</string>
+    <string name="drive_restore_backup">백업 복원 (%s)</string>
+    <string name="drive_sign_out">로그아웃 (%s)</string>
+    <string name="drive_sign_in_failed">Google 로그인 실패</string>
+    <string name="drive_not_configured">이 빌드에는 Google OAuth 클라이언트가 설정되어 있지 않습니다</string>
 </resources>

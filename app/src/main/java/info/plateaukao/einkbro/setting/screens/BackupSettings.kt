@@ -9,6 +9,11 @@ fun buildBackupSettingItems(deps: SettingScreenDeps): List<SettingItemInterface>
     val backupOps = deps.backupOps
     return listOf(
         ActionSettingItem(
+            R.string.setting_title_gdrive_sync,
+            0,
+            R.string.setting_summary_gdrive_sync
+        ) { backupOps.syncWithGoogleDrive() },
+        ActionSettingItem(
             R.string.setting_title_export_appData,
             0,
             R.string.setting_summary_export_appData

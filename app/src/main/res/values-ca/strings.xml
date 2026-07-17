@@ -534,4 +534,11 @@
     <string name="setting_summary_zoom_in_custom_view">Activar zoom amb 2 dits en mode pantalla completa (per defecte: fals)</string>
     <string name="site_force_viewport_width">Força l\'amplada del viewport (px)</string>
     <string name="site_force_viewport_width_hint">Usa-ho només si l\'UA d\'escriptori no és suficient</string>
+    <string name="setting_title_gdrive_sync">Sincronitza amb Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Fes còpia de seguretat o restaura les dades de l\'aplicació al teu Google Drive</string>
+    <string name="drive_upload_backup">Puja la còpia de seguretat a Google Drive</string>
+    <string name="drive_restore_backup">Restaura la còpia de seguretat de %s</string>
+    <string name="drive_sign_out">Tanca la sessió (%s)</string>
+    <string name="drive_sign_in_failed">Ha fallat l\'inici de sessió de Google</string>
+    <string name="drive_not_configured">No hi ha cap client OAuth de Google configurat en aquesta compilació</string>
 </resources>

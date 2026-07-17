@@ -544,4 +544,11 @@
     <string name="audio_only_mode">Audio uniquement</string>
     <string name="site_force_viewport_width">Forcer la largeur du viewport (px)</string>
     <string name="site_force_viewport_width_hint">À utiliser uniquement si l\'UA bureau ne suffit pas</string>
+    <string name="setting_title_gdrive_sync">Synchroniser avec Google Drive</string>
+    <string name="setting_summary_gdrive_sync">Sauvegarder ou restaurer les données de l\'application dans votre Google Drive</string>
+    <string name="drive_upload_backup">Envoyer la sauvegarde vers Google Drive</string>
+    <string name="drive_restore_backup">Restaurer la sauvegarde du %s</string>
+    <string name="drive_sign_out">Se déconnecter (%s)</string>
+    <string name="drive_sign_in_failed">Échec de la connexion Google</string>
+    <string name="drive_not_configured">Aucun client OAuth Google n\'est configuré dans cette version</string>
 </resources>

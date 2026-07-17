@@ -543,4 +543,11 @@
     <string name="white_background">Бела позадина</string>
     <string name="site_force_viewport_width">Принуди ширину viewporta (px)</string>
     <string name="site_force_viewport_width_hint">Користите само ако desktop UA није довољан</string>
+    <string name="setting_title_gdrive_sync">Синхронизација са Google Drive-ом</string>
+    <string name="setting_summary_gdrive_sync">Направите резервну копију или вратите податке апликације на свој Google Drive</string>
+    <string name="drive_upload_backup">Отпреми резервну копију на Google Drive</string>
+    <string name="drive_restore_backup">Врати резервну копију од %s</string>
+    <string name="drive_sign_out">Одјави се (%s)</string>
+    <string name="drive_sign_in_failed">Пријава на Google није успела</string>
+    <string name="drive_not_configured">У овој верзији није подешен Google OAuth клијент</string>
 </resources>

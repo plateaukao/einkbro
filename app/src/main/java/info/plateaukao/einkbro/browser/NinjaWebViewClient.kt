@@ -27,9 +27,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.activity.SettingActivity
+import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
+import info.plateaukao.einkbro.data.remote.GoogleDriveRepository
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -70,6 +74,7 @@ class EBWebViewClient(
 
     private val userScriptManager: info.plateaukao.einkbro.userscript.UserScriptManager by inject()
     private val coroutineScope: CoroutineScope by inject()
+    private val googleDriveRepository: GoogleDriveRepository by inject()
 
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
@@ -322,6 +327,25 @@ class EBWebViewClient(
             // arrive before the reload commits collapse into a single network fetch.
             webView.post {
                 if (!ebWebView.retryErrorPage()) ebWebView.reload()
+            }
+            return true
+        }
+
+        // Google Drive sync OAuth redirect: exchange the code for tokens, then
+        // land the user back in Backup settings where the sync action lives.
+        if (url.startsWith(BuildConfig.DRIVE_OAUTH_REDIRECT)) {
+            coroutineScope.launch {
+                val success = runCatching { googleDriveRepository.completeAuth(uri) }
+                    .getOrDefault(false)
+                withContext(Dispatchers.Main) {
+                    if (success) {
+                        context.startActivity(
+                            SettingActivity.createIntent(context, SettingRoute.Backup)
+                        )
+                    } else {
+                        EBToast.show(context, R.string.drive_sign_in_failed)
+                    }
+                }
             }
             return true
         }

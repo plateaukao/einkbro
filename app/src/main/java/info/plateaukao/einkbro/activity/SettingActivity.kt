@@ -66,6 +66,8 @@ import info.plateaukao.einkbro.activity.SettingRoute.Toolbar
 import info.plateaukao.einkbro.activity.SettingRoute.Ui
 import info.plateaukao.einkbro.activity.SettingRoute.UserAgent
 import info.plateaukao.einkbro.activity.SettingRoute.valueOf
+import info.plateaukao.einkbro.data.remote.DriveReauthRequiredException
+import info.plateaukao.einkbro.data.remote.GoogleDriveRepository
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.setting.DividerSettingItem
 import info.plateaukao.einkbro.setting.GesturePickerScreen
@@ -95,15 +97,20 @@ import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.unit.disablePendingTransitions
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 class SettingActivity : FragmentActivity(), BackupOps {
     private val config: ConfigManager by inject()
+    private val driveRepository: GoogleDriveRepository by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
     private val backupUnit: BackupUnit by lazy { BackupUnit(this) }
 
@@ -350,6 +357,112 @@ class SettingActivity : FragmentActivity(), BackupOps {
             } else {
                 file.delete()
             }
+        }
+    }
+
+    override fun syncWithGoogleDrive() {
+        if (!driveRepository.isConfigured) {
+            EBToast.show(this, R.string.drive_not_configured)
+            return
+        }
+        if (driveRepository.email == null) {
+            startDriveSignIn()
+        } else {
+            showDriveSyncDialog()
+        }
+    }
+
+    /** Open the Google consent page as a normal browser tab; EBWebViewClient
+     *  intercepts the custom-scheme redirect and returns here on success. */
+    private fun startDriveSignIn() = handleLink(driveRepository.beginAuth())
+
+    /** Run a Drive operation; on an expired/revoked session restart sign-in,
+     *  on any other failure show a generic error toast. */
+    private fun launchDriveOp(block: suspend () -> Unit) {
+        lifecycleScope.launch {
+            try {
+                block()
+            } catch (e: DriveReauthRequiredException) {
+                startDriveSignIn()
+            } catch (e: Exception) {
+                EBToast.show(this@SettingActivity, R.string.toast_error)
+            }
+        }
+    }
+
+    private fun showDriveSyncDialog() = launchDriveOp {
+        val remote = driveRepository.getRemoteBackup()
+
+        val options = mutableListOf<Pair<String, () -> Unit>>(
+            getString(R.string.drive_upload_backup) to { uploadBackupToDrive(remote?.id) }
+        )
+        if (remote != null) {
+            options += getString(
+                R.string.drive_restore_backup, formatDriveTime(remote.modifiedTime)
+            ) to { restoreBackupFromDrive(remote.id) }
+        }
+        options += getString(R.string.drive_sign_out, driveRepository.email.orEmpty()) to {
+            driveRepository.signOut()
+        }
+
+        val selected = dialogManager.getSelectedOptionWithString(
+            R.string.setting_title_gdrive_sync, options.map { it.first }, -1
+        ) ?: return@launchDriveOp
+        options[selected].second()
+    }
+
+    private fun uploadBackupToDrive(existingId: String?) = launchDriveOp {
+        val tempFile = withContext(Dispatchers.IO) {
+            backupUnit.backupToTempFile(BackupCategory.entries.toSet(), "drive_upload.zip")
+        }
+        if (tempFile == null) {
+            EBToast.show(this@SettingActivity, R.string.toast_error)
+            return@launchDriveOp
+        }
+        try {
+            driveRepository.uploadBackup(tempFile, existingId)
+            EBToast.show(this@SettingActivity, R.string.toast_backup_successful)
+        } finally {
+            tempFile.delete()
+        }
+    }
+
+    private fun restoreBackupFromDrive(fileId: String) = launchDriveOp {
+        val tempFile = java.io.File(cacheDir, "drive_restore.zip")
+        try {
+            driveRepository.downloadBackup(fileId, tempFile)
+            val available = withContext(Dispatchers.IO) {
+                backupUnit.getAvailableCategories(tempFile)
+            }
+            if (available.isNullOrEmpty()) {
+                EBToast.show(this@SettingActivity, R.string.toast_error)
+                tempFile.delete()
+                return@launchDriveOp
+            }
+            dialogManager.showRestoreCategoryDialog(available) { selected ->
+                lifecycleScope.launch {
+                    if (backupUnit.restoreBackupData(tempFile, selected)) {
+                        dialogManager.showRestartConfirmDialog()
+                    }
+                    tempFile.delete()
+                }
+            }
+        } catch (e: Exception) {
+            tempFile.delete()
+            throw e
+        }
+    }
+
+    /** Drive's RFC3339 modifiedTime (UTC) as a local "yyyy-MM-dd HH:mm". */
+    private fun formatDriveTime(modifiedTime: String?): String {
+        modifiedTime ?: return ""
+        return try {
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                .apply { timeZone = TimeZone.getTimeZone("UTC") }
+            val date = parser.parse(modifiedTime.substringBefore(".").removeSuffix("Z"))
+            SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date!!)
+        } catch (e: Exception) {
+            modifiedTime
         }
     }
 

@@ -592,4 +592,11 @@
     <string name="setting_title_default_ai_engine">ᱢᱩᱞ AI ᱤᱧᱡᱤᱱ</string>
     <string name="site_force_viewport_width">Force viewport width (px)</string>
     <string name="site_force_viewport_width_hint">Use only if desktop UA alone is not enough</string>
+    <string name="setting_title_gdrive_sync">Google Drive ᱥᱟᱶ ᱥᱤᱸᱠ ᱢᱮ</string>
+    <string name="setting_summary_gdrive_sync">ᱟᱢᱟᱜ Google Drive ᱨᱮ ᱮᱯ ᱰᱟᱴᱟ ᱵᱮᱠᱚᱯᱷ ᱟᱨᱵᱟᱝ ᱨᱩᱣᱟᱹᱲ ᱢᱮ</string>
+    <string name="drive_upload_backup">ᱵᱮᱠᱚᱯᱷ Google Drive ᱨᱮ ᱟᱯᱞᱚᱰ ᱢᱮ</string>
+    <string name="drive_restore_backup">%s ᱨᱮᱭᱟᱜ ᱵᱮᱠᱚᱯᱷ ᱨᱩᱣᱟᱹᱲ ᱢᱮ</string>
+    <string name="drive_sign_out">ᱚᱰᱚᱠ ᱢᱮ (%s)</string>
+    <string name="drive_sign_in_failed">Google ᱵᱚᱞᱚ ᱵᱟᱝ ᱦᱩᱭ ᱞᱮᱱᱟ</string>
+    <string name="drive_not_configured">ᱱᱚᱶᱟ ᱵᱤᱞᱰ ᱨᱮ Google OAuth ᱠᱞᱟᱭᱮᱱᱴ ᱵᱟᱹᱱᱩᱜᱼᱟ</string>
 </resources>

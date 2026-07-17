@@ -543,4 +543,11 @@
     <string name="share_waiting">Wachten op gegevens van een ander apparaat…</string>
     <string name="site_force_viewport_width">Viewport-breedte forceren (px)</string>
     <string name="site_force_viewport_width_hint">Alleen gebruiken als desktop-UA niet voldoet</string>
+    <string name="setting_title_gdrive_sync">Synchroniseren met Google Drive</string>
+    <string name="setting_summary_gdrive_sync">App-gegevens back-uppen of herstellen in je Google Drive</string>
+    <string name="drive_upload_backup">Back-up uploaden naar Google Drive</string>
+    <string name="drive_restore_backup">Back-up herstellen van %s</string>
+    <string name="drive_sign_out">Uitloggen (%s)</string>
+    <string name="drive_sign_in_failed">Google-aanmelding mislukt</string>
+    <string name="drive_not_configured">Er is geen Google OAuth-client geconfigureerd in deze build</string>
 </resources>

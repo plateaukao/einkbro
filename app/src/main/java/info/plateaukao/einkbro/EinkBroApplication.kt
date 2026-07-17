@@ -27,6 +27,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
+import info.plateaukao.einkbro.data.remote.GoogleDriveRepository
 import info.plateaukao.einkbro.data.remote.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.service.TtsNotificationManager
@@ -79,6 +80,7 @@ class EinkBroApplication : Application() {
         single { ttsManager }
         single { TtsNotificationManager(androidContext()) }
         single { InstapaperRepository() }
+        single { GoogleDriveRepository() }
         single { SearchSuggestionViewModel() }
         viewModel { TranslationViewModel(get(), get()) }
         viewModel { TtsViewModel(get(), get(), get()) }
