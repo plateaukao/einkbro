@@ -177,7 +177,7 @@
     <string name="setting_title_import_appData">ᱮᱯ ᱰᱟᱴᱟ ᱟᱹᱜᱩᱭ ᱢᱮ</string>
     <string name="setting_summary_import_appData">ᱢᱟᱲᱟᱝ ᱛᱮ ᱵᱷᱮᱡᱟ ᱟᱠᱟᱱ ᱰᱟᱴᱟ ᱥᱟᱶ ᱢᱤᱫ zip ᱨᱮᱫᱽ ᱵᱟᱪᱷᱟᱣ ᱠᱟᱛᱮ ᱮᱯ ᱰᱟᱴᱟ ᱟᱹᱜᱩᱭᱢᱮ ᱾</string>
     <string name="backup_category_all_preferences">ᱡᱷᱚᱛᱚ ᱯᱟᱥᱱᱫᱠᱚ</string>
-    <string name="backup_category_gpt_settings">GPT ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="backup_category_gpt_settings">Gen AI ᱥᱟᱡᱟᱣᱠᱚ</string>
     <string name="backup_category_bookmarks">ᱵᱩᱠᱢᱟᱨᱠᱠᱚ</string>
     <string name="backup_category_history">ᱱᱟᱜᱟᱢ</string>
     <string name="dialog_title_backup_categories">ᱵᱮᱠᱟᱯ ᱞᱟᱹᱜᱤᱫ ᱰᱟᱴᱟ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
@@ -371,7 +371,7 @@
     <string name="setting_summary_userAgent_toggle">ᱢᱚᱱᱮᱛᱮᱭᱟᱜ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱮᱡᱮᱱᱴ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ </string>
     <string name="content_adjustment">ᱡᱤᱱᱤᱥ ᱮᱰᱡᱚᱥᱴᱢᱮᱱᱴ</string>
     <string name="share_save"><![CDATA[ᱦᱟᱹᱴᱤᱧ ᱟᱨ ᱥᱟᱧᱪᱟᱣ]]></string>
-    <string name="setting_title_chat_gpt">ChatGPT ᱠᱷᱚᱧᱡᱟ</string>
+    <string name="setting_title_chat_gpt">Gen AI</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI ᱪᱟᱹᱵᱤ ᱟᱫᱮᱨ</string>
     <string name="setting_summary_edit_gpt_api_key">ᱱᱚᱣᱟ ᱯᱷᱤᱪᱚᱨ ᱵᱮᱵᱷᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱪᱟᱹᱵᱤ ᱾</string>
     <string name="gpt_api_key_not_set">ᱥᱟᱡᱟᱣ ᱨᱮ OpenAI ᱪᱟᱹᱵᱤ ᱥᱮᱞᱮᱫ ᱢᱮ ᱾</string>
@@ -390,7 +390,7 @@
     <string name="papago_language_setting">ᱯᱟᱹᱨᱥᱤ ᱥᱟᱡᱟᱣ</string>
     <string name="toggle_touch_turn_page">ᱡᱚᱴᱮᱫ ᱯᱟᱞᱴᱟᱣ ᱥᱟᱦᱴᱟ ᱩᱪᱟᱹᱲ ᱢᱮ</string>
     <string name="use_it_on_dict_search">ᱟᱹᱲᱟᱹ ᱢᱩᱨᱟᱹᱭ ᱨᱮ ᱱᱚᱶᱟ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
-    <string name="setting_summary_search_in_dict">ᱯᱟᱲᱦᱟᱣᱤᱭᱟᱹ ᱠᱚᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱚᱠᱛᱚ ᱨᱮ, ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ ᱞᱟᱹᱜᱤᱫ ᱛᱮ ChatGPT ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾</string>
+    <string name="setting_summary_search_in_dict">ᱯᱟᱲᱦᱟᱣᱤᱭᱟᱹ ᱠᱚᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱚᱠᱛᱚ ᱨᱮ, ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ ᱞᱟᱹᱜᱤᱫ ᱛᱮ AI ᱵᱮᱵᱷᱟᱨ ᱢᱮ ᱾</string>
     <string name="hide_statusbar">ᱥᱤᱥᱴᱚᱢ ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱩᱠᱩᱭ ᱢᱮ</string>
     <string name="setting_summary_hide_statusbar">ᱥᱤᱥᱴᱚᱢ ᱥᱴᱟᱴᱚᱥᱵᱟᱨ ᱡᱟᱹᱣᱜᱮ ᱩᱠᱩᱭ ᱢᱮ</string>
     <string name="enable_touch_area_as_arrow_key">ᱞᱮᱝᱜᱟ/ᱡᱚᱡᱚᱢ ᱪᱟᱹᱵᱤ ᱞᱮᱠᱟᱛᱮ</string>
@@ -416,9 +416,9 @@
     <string name="setting_summary_gpt_prompt_for_web_page">ᱣᱮᱵᱽ ᱥᱟᱦᱴᱟ ᱨᱮᱱᱟᱜ ᱥᱟᱛᱟᱢ ᱯᱨᱚᱥᱮᱥ ᱞᱟᱹᱜᱤᱫ ᱟᱫᱮᱨ ᱴᱟᱴᱠᱟ ᱫᱷᱟᱶᱨᱟ (ᱡᱮᱞᱮᱠᱟ: \"300 ᱟᱹᱲᱟᱹ ᱨᱮ ᱱᱚᱶᱟ ᱯᱷᱚᱴᱮᱞ ᱢᱮ:\")</string>
     <string name="setting_title_next_tab">ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱩᱫᱩᱜ ᱢᱮ</string>
     <string name="setting_summary_next_tab">ᱡᱚᱠᱷᱚᱱ ᱱᱤᱛᱚᱜᱟᱜ ᱴᱮᱵᱽ ᱫᱚ ᱵᱚᱸᱫ ᱟᱠᱟᱱᱟ ᱤᱱᱟᱹ ᱛᱟᱭᱚᱢᱟᱜ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣᱟ ᱢᱮ (ᱟᱨ ᱵᱟᱝ ᱠᱷᱟᱱ ᱢᱟᱲᱟᱝ ᱴᱮᱵᱽ ᱫᱮᱠᱷᱟᱣ ᱢᱮ) ᱾</string>
-    <string name="setting_title_gpt_action_list">ChatGPT ᱠᱟᱹᱢᱤ ᱵᱩᱴᱟᱹᱱ</string>
-    <string name="setting_summary_gpt_action_list">ᱵᱷᱮᱜᱟᱨ ᱵᱷᱮᱜᱟᱨ ChatGPT ᱠᱟᱹᱢᱤ ᱞᱟᱹᱜᱤᱫ ᱵᱷᱮᱜᱟᱨ ᱵᱷᱮᱜᱟᱨ ᱴᱟᱴᱠᱴᱠᱟ ᱵᱟᱨᱚᱥ ᱚᱰᱚᱠ ᱢᱮ ᱾</string>
-    <string name="gpt_actions_title">ChatGPT ᱠᱟᱹᱢᱤ ᱠᱚ</string>
+    <string name="setting_title_gpt_action_list">AI ᱠᱟᱹᱢᱤ ᱵᱩᱴᱟᱹᱱ</string>
+    <string name="setting_summary_gpt_action_list">ᱵᱷᱮᱜᱟᱨ ᱵᱷᱮᱜᱟᱨ AI ᱠᱟᱹᱢᱤ ᱞᱟᱹᱜᱤᱫ ᱵᱷᱮᱜᱟᱨ ᱵᱷᱮᱜᱟᱨ ᱴᱟᱴᱠᱴᱠᱟ ᱵᱟᱨᱚᱥ ᱚᱰᱚᱠ ᱢᱮ ᱾</string>
+    <string name="gpt_actions_title">AI ᱠᱟᱹᱢᱤ ᱠᱚ</string>
     <string name="text_select">ᱚᱱᱚᱞ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
     <string name="show_context_menu_icons">ᱠᱟᱹᱢᱤ ᱢᱮᱱᱩ ᱨᱮ ᱟᱭᱠᱚᱱ ᱠᱚ ᱩᱫᱩᱜᱽ ᱢᱮ</string>
     <string name="setting_summary_show_context_menu_icons">ᱠᱟᱹᱢᱤ ᱢᱮᱱᱩ ᱨᱮ ᱪᱤᱱᱦᱟᱹ ᱠᱚ ᱩᱫᱩᱜ/ᱩᱠᱩ ᱢᱮ ᱡᱮ ᱱᱚᱶᱟ ᱫᱚ ᱟᱞᱜᱟ ᱛᱮᱭᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱾</string>
@@ -477,7 +477,7 @@
     <string name="gemini_translate_by_paragraph">Gemini ᱯᱮᱨᱟᱜᱽᱨᱟᱯᱷ ᱛᱮ</string>
     <string name="gesture_on_floating_button">ᱯᱟᱭᱨᱟ ᱵᱩᱛᱟᱹᱢ ᱜᱚᱥᱪᱚᱨ</string>
     <string name="google_gemini">Google Gemini</string>
-    <string name="gpt_action_drag_handle">ChatGPT ᱠᱟᱹᱢᱤ ᱫᱩᱦᱲᱟᱹ ᱥᱟᱡᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱴᱟᱱᱟᱭ ᱢᱮ</string>
+    <string name="gpt_action_drag_handle">AI ᱠᱟᱹᱢᱤ ᱫᱩᱦᱲᱟᱹ ᱥᱟᱡᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱴᱟᱱᱟᱭ ᱢᱮ</string>
     <string name="gpt_scope">ᱥᱤᱢᱟ</string>
     <string name="gpt_scope_text_selection">ᱚᱞ ᱵᱟᱪᱷᱟᱣ</string>
     <string name="gpt_scope_whole_page">ᱯᱩᱨᱟ ᱥᱟᱦᱴᱟ</string>
@@ -528,11 +528,11 @@
     <string name="setting_summary_gemini_model_name">Gemini ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱟᱫᱮᱨ ᱢᱮ (ᱢᱩᱞ: gemini-2.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">ᱵᱤᱠᱚᱞᱯ: tts-1 (ᱢᱩᱞ), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-tts ᱢᱚᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱚᱠᱛᱚ ᱱᱤᱨᱫᱮᱥ</string>
-    <string name="setting_summary_gpt_query_list">ᱥᱟᱧᱪᱟᱣ ᱟᱠᱟᱱ GPT ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ</string>
-    <string name="setting_summary_other_model_name">ᱮᱴᱟᱜ GPT ᱥᱚᱨᱵᱷᱚᱨ ᱞᱟᱹᱜᱤᱫ ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱟᱫᱮᱨ ᱢᱮ</string>
+    <string name="setting_summary_gpt_query_list">ᱥᱟᱧᱪᱟᱣ ᱟᱠᱟᱱ AI ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ</string>
+    <string name="setting_summary_other_model_name">ᱮᱴᱟᱜ ᱥᱚᱨᱵᱷᱚᱨ ᱞᱟᱹᱜᱤᱫ ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱟᱫᱮᱨ ᱢᱮ</string>
     <string name="setting_summary_search_suggestion">ᱡᱤᱱᱤᱥ ᱟᱫᱮᱨ ᱚᱠᱛᱚ ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_show_bookmarks_input_bar">ᱟᱫᱮᱨ ᱵᱟᱨ ᱨᱮ ᱚᱞ ᱚᱠᱛᱚ ᱵᱩᱠᱢᱟᱨᱠ ᱢᱤᱞᱟᱣ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
-    <string name="setting_summary_summary_gpt_type">ᱡᱤᱱᱤᱥ ᱯᱷᱚᱴᱮᱞ ᱞᱟᱹᱜᱤᱫ GPT ᱤᱧᱡᱤᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+    <string name="setting_summary_summary_gpt_type">ᱡᱤᱱᱤᱥ ᱯᱷᱚᱴᱮᱞ ᱞᱟᱹᱜᱤᱫ AI ᱤᱧᱡᱤᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_text_wrap_reflow">ᱡᱩᱢ ᱚᱠᱛᱚ ᱚᱞ ᱫᱩᱦᱲᱟᱹ ᱥᱟᱡᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_translation_style">ᱯᱮᱨᱟ ᱛᱚᱨᱡᱚᱢᱟ ᱞᱟᱹᱜᱤᱫ ᱟᱢᱟᱜ ᱠᱩᱥᱤ ᱥᱴᱟᱭᱤᱞ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_use_custom_gpt_url">ᱮᱴᱟᱜ API ᱥᱚᱨᱵᱷᱚᱨ URL ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
@@ -550,7 +550,7 @@
     <string name="setting_title_github_snapshot">Snapshot ᱛᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ</string>
     <string name="setting_title_gpt_prompt_for_tts">ᱟᱰᱤᱭᱳ ᱱᱤᱨᱫᱮᱥ</string>
-    <string name="setting_title_gpt_query_list">GPT ᱛᱮᱞᱟ ᱱᱟᱜᱟᱢ</string>
+    <string name="setting_title_gpt_query_list">AI ᱛᱮᱞᱟ ᱱᱟᱜᱟᱢ</string>
     <string name="setting_title_other_model_name">ᱮᱴᱟᱜ ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ</string>
     <string name="setting_title_remote_query">ᱨᱤᱢᱳᱴ ᱥᱮᱸᱫᱽᱨᱟ ᱠᱟᱹᱢᱤ</string>
     <string name="setting_title_search_suggestion">ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ</string>

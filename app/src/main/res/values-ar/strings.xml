@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -202,7 +202,7 @@
     <string name="page_down">صفحة لأسفل</string>
     <string name="setting_summary_import_appData">استيراد بيانات التطبيق باختيار ملف مضغوط يحتوي على بيانات تم تصديرها مسبقاً</string>
     <string name="backup_category_all_preferences">جميع التفضيلات</string>
-    <string name="backup_category_gpt_settings">إعدادات GPT</string>
+    <string name="backup_category_gpt_settings">الذكاء الاصطناعي التوليدي</string>
     <string name="backup_category_bookmarks">الإشارات المرجعية</string>
     <string name="backup_category_history">السجل</string>
     <string name="dialog_title_backup_categories">اختر البيانات للنسخ الاحتياطي</string>
@@ -383,7 +383,7 @@
     <string name="setting_summary_userAgent_toggle">تفعيل وكيل المستخدم المخصص</string>
     <string name="content_adjustment">ضبط المحتوى</string>
     <string name="share_save"><![CDATA[مشاركة وحفظ]]></string>
-    <string name="setting_title_chat_gpt">إعدادات GPT</string>
+    <string name="setting_title_chat_gpt">الذكاء الاصطناعي التوليدي</string>
     <string name="setting_title_edit_gpt_api_key">مفتاح OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">أدخل المفتاح لاستخدام هذه الميزة</string>
     <string name="gpt_api_key_not_set">أضف مفتاح OpenAI في الإعدادات</string>
@@ -404,8 +404,8 @@
     <string name="translate_image_key_summary">أدخل المفتاح اللازم لاستخدام ميزة ترجمة الصور</string>
     <string name="papago_language_setting">إعداد اللغة</string>
     <string name="toggle_touch_turn_page">تبديل تقليب الصفحات باللمس</string>
-    <string name="use_it_on_dict_search">استخدام ChatGPT في البحث بالقاموس</string>
-    <string name="setting_summary_search_in_dict">عند البحث في القارئات، استخدام ChatGPT للبحث عن النتائج</string>
+    <string name="use_it_on_dict_search">استخدام الذكاء الاصطناعي في البحث بالقاموس</string>
+    <string name="setting_summary_search_in_dict">عند البحث في القارئات، استخدام الذكاء الاصطناعي للبحث عن النتائج</string>
     <string name="hide_statusbar">إخفاء شريط حالة النظام</string>
     <string name="setting_summary_hide_statusbar">إخفاء شريط حالة النظام دائماً</string>
     <string name="enable_touch_area_as_arrow_key">ضغطة طويلة كمفتاح ← →</string>
@@ -451,17 +451,17 @@
     <string name="setting_title_gemini_key">مفتاح Gemini API</string>
     <string name="setting_summary_gemini_key">أدخل مفتاح Gemini API</string>
     <string name="setting_title_other_model_name">اسم النموذج البديل</string>
-    <string name="setting_summary_other_model_name">أدخل اسم النموذج لخادم GPT البديل</string>
+    <string name="setting_summary_other_model_name">أدخل اسم النموذج للخادم البديل</string>
     <string name="setting_title_gemini_model_name">اسم نموذج Gemini</string>
     <string name="setting_summary_gemini_model_name">أدخل اسم نموذج Gemini (الافتراضي: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">سجل نتائج GPT</string>
-    <string name="setting_summary_gpt_query_list">نتائج استعلام GPT المحفوظة</string>
+    <string name="setting_title_gpt_query_list">سجل نتائج الذكاء الاصطناعي</string>
+    <string name="setting_summary_gpt_query_list">نتائج استعلام الذكاء الاصطناعي المحفوظة</string>
     <string name="select_sentence">تحديد جملة</string>
     <string name="select_paragraph">تحديد فقرة</string>
     <string name="setting_app_locale">لغة التطبيق</string>
     <string name="setting_summary_app_locale">تغيير لغة الواجهة</string>
     <string name="drag_to_reorder">اسحب لإعادة ترتيب الإشارات المرجعية</string>
-    <string name="gpt_action_drag_handle">اسحب لإعادة ترتيب إجراءات ChatGPT</string>
+    <string name="gpt_action_drag_handle">اسحب لإعادة ترتيب إجراءات الذكاء الاصطناعي</string>
     <string name="page_ai">AI للصفحة</string>
     <string name="page_ai_action_title">إجراءات AI للصفحة</string>
     <string name="toolbar_time">الوقت الحالي</string>
@@ -520,7 +520,7 @@
     <string name="setting_summary_web_processing_gpt_type">اختيار المحرك لمعالجة محتوى الويب</string>
     <string name="self_hosted">مستضاف ذاتياً</string>
     <string name="summary_gpt_type">محرك الذكاء الاصطناعي للتلخيص</string>
-    <string name="setting_summary_summary_gpt_type">اختيار محرك GPT لتلخيص المحتوى</string>
+    <string name="setting_summary_summary_gpt_type">اختيار محرك الذكاء الاصطناعي لتلخيص المحتوى</string>
     <string name="menu_summarize">تلخيص</string>
     <string name="setting_title_remote_query">إجراء الاستعلام عن بُعد</string>
     <string name="sc_disable_adblock_short">بدون AdBlock</string>

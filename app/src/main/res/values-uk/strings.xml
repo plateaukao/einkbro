@@ -137,9 +137,9 @@
     <string name="toast_downloadComplete">Завантаження завершене. Відкрити файловий менеджер?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Додати</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -234,7 +234,7 @@
     <string name="google_in_place">Google на місці</string>
     <string name="google_translate">Google Translate</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">Перетягніть для зміни порядку дій ChatGPT</string>
+    <string name="gpt_action_drag_handle">Перетягніть для зміни порядку дій ШІ</string>
     <string name="gpt_api_key_not_set">Додайте ключ OpenAI в Налаштуваннях</string>
     <string name="gpt_scope">Область дії</string>
     <string name="gpt_scope_text_selection">Виділений текст</string>
@@ -359,11 +359,11 @@
     <string name="setting_summary_gpt_model_name">За замовч. gpt-4.1. Введіть іншу назву моделі за потреби</string>
     <string name="setting_summary_gpt_prompt_for_tts">Інструкції для моделі gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Введіть запит для обробки вмісту сторінки (напр.: \"Підсумуйте у 300 словах:\")</string>
-    <string name="setting_summary_gpt_query_list">Збережена історія результатів GPT</string>
+    <string name="setting_summary_gpt_query_list">Збережена історія результатів ШІ</string>
     <string name="setting_summary_hide_statusbar">Завжди приховувати системний рядок стану</string>
     <string name="setting_summary_import_appData">Імпортувати дані, обравши zip-файл з раніше експортованими даними</string>
     <string name="backup_category_all_preferences">Усі налаштування</string>
-    <string name="backup_category_gpt_settings">Налаштування GPT</string>
+    <string name="backup_category_gpt_settings">Генеративний ШІ</string>
     <string name="backup_category_bookmarks">Закладки</string>
     <string name="backup_category_history">Історія</string>
     <string name="dialog_title_backup_categories">Оберіть дані для резервного копіювання</string>
@@ -377,7 +377,7 @@
     <string name="setting_summary_nav_pos_custom">Настроюваний</string>
     <string name="setting_summary_nav_pos_not_show">Не показувати</string>
     <string name="setting_summary_next_tab">Показувати наступну вкладку при закритті поточної (інакше - попередню)</string>
-    <string name="setting_summary_other_model_name">Введіть назву моделі для альтернативного GPT-сервера</string>
+    <string name="setting_summary_other_model_name">Введіть назву моделі для альтернативного сервера</string>
     <string name="setting_summary_page_left_value">Висота, що зарезервована при переході до наступної сторінки (напр., 50 або 10%)</string>
     <string name="setting_summary_plus_behavior">Що показувати при додаванні нової вкладки</string>
     <string name="setting_summary_prune_query_parameter">Параметри типу utm_medium, utm_source тощо будуть видалені з URL</string>
@@ -385,14 +385,14 @@
     <string name="setting_summary_screen_awake">Залишати екран завжди увімкненим</string>
     <string name="setting_summary_search_engine">Оберіть пошукову систему</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_in_dict">Використовувати ChatGPT для пошуку в рідерах</string>
+    <string name="setting_summary_search_in_dict">Використовувати ШІ для пошуку в рідерах</string>
     <string name="setting_summary_search_in_same_tab">Використовувати ту ж вкладку для зовнішнього пошуку</string>
     <string name="setting_summary_search_suggestion">При введенні показувати пошукові підказки</string>
     <string name="setting_summary_show_bookmarks_input_bar">Показувати збіги закладок при введенні тексту в рядку</string>
     <string name="setting_summary_show_default_text_menu">Після виділення тексту показувати системне меню дій</string>
     <string name="setting_summary_show_tab_bar">Завжди показувати панель вкладок над панеллю інструментів</string>
     <string name="setting_summary_split_search_setting">Налаштувати пошук і відкриття результатів у розділеному екрані</string>
-    <string name="setting_summary_summary_gpt_type">Оберіть движок GPT для підсумку вмісту</string>
+    <string name="setting_summary_summary_gpt_type">Оберіть движок ШІ для підсумку вмісту</string>
     <string name="setting_summary_text_wrap_reflow">Перебудовувати текст при масштабуванні</string>
     <string name="setting_summary_translated_langs">Налаштуйте мови для перекладу (напр. en, fr, de, zh-TW, zh-CN)</string>
     <string name="setting_summary_translation_style">Оберіть стиль для перекладу параграфів</string>
@@ -412,7 +412,7 @@
     <string name="setting_summary_zoom_in_custom_view">Дозволити масштабування двома пальцями в повноекранному режимі (за замовч.: вимк.)</string>
     <string name="setting_title_auto_fill_form">Автозаповнення форм</string>
     <string name="setting_title_background_loading">Завантажувати неактивні вкладки</string>
-    <string name="setting_title_chat_gpt">Налаштування GPT</string>
+    <string name="setting_title_chat_gpt">Генеративний ШІ</string>
     <string name="setting_title_chat_stream">Потоковий вивід</string>
     <string name="setting_title_custom_gpt_url">URL сервера</string>
     <string name="setting_title_debug">Відладка WebView</string>
@@ -433,7 +433,7 @@
     <string name="setting_title_gpt_model_name">Назва моделі OpenAI</string>
     <string name="setting_title_gpt_prompt_for_tts">Інструкції для аудіовиводу</string>
     <string name="setting_title_gpt_prompt_for_web_page">Запит для повного вмісту сторінки</string>
-    <string name="setting_title_gpt_query_list">Історія результатів GPT</string>
+    <string name="setting_title_gpt_query_list">Історія результатів ШІ</string>
     <string name="setting_title_highlight_style">Стиль виділення</string>
     <string name="setting_summary_highlight_style">Оберіть стиль для виділення тексту</string>
     <string name="setting_title_import_bookmarks">Імпорт закладок</string>
@@ -518,7 +518,7 @@
     <string name="tts_type_system">Вбудований</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URL порожній</string>
-    <string name="use_it_on_dict_search">Використовувати ChatGPT для словникового пошуку</string>
+    <string name="use_it_on_dict_search">Використовувати ШІ для словникового пошуку</string>
     <string name="user_name">Ім\'я користувача</string>
     <string name="vertical_line">Вертикальна лінія</string>
     <string name="vertical_read">Вертикальний режим</string>

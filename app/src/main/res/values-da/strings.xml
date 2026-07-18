@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -246,7 +246,7 @@
     <string name="google_in_place">Google på stedet</string>
     <string name="google_translate">Google Translate</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">Træk for at omarrangere ChatGPT-handlinger</string>
+    <string name="gpt_action_drag_handle">Træk for at omarrangere AI-handlinger</string>
     <string name="gpt_api_key_not_set">Tilføj OpenAI-nøgle i Indstillinger</string>
     <string name="gpt_scope">Omfang</string>
     <string name="gpt_scope_text_selection">Tekstmarkering</string>
@@ -371,11 +371,11 @@
     <string name="setting_summary_gpt_model_name">Standard er gpt-4.1. Indtast andet modelnavn om nødvendigt</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruktioner når gpt-4o-mini-tts-modellen bruges.</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Indtast prompt til behandling af hele sidens indhold (f.eks. \"Opsummér det i 300 ord:\")</string>
-    <string name="setting_summary_gpt_query_list">Gemte GPT-forespørgselsresultater</string>
+    <string name="setting_summary_gpt_query_list">Gemte AI-forespørgselsresultater</string>
     <string name="setting_summary_hide_statusbar">Skjul altid systemets statuslinje</string>
     <string name="setting_summary_import_appData">Importér app-data ved at vælge en zip-fil med tidligere eksporterede data</string>
     <string name="backup_category_all_preferences">Alle præferencer</string>
-    <string name="backup_category_gpt_settings">GPT-indstillinger</string>
+    <string name="backup_category_gpt_settings">Generativ AI</string>
     <string name="backup_category_bookmarks">Bogmærker</string>
     <string name="backup_category_history">Historik</string>
     <string name="dialog_title_backup_categories">Vælg data til sikkerhedskopiering</string>
@@ -389,7 +389,7 @@
     <string name="setting_summary_nav_pos_custom">Brugerdefineret</string>
     <string name="setting_summary_nav_pos_not_show">Vis ikke</string>
     <string name="setting_summary_next_tab">Vis næste fane når den aktuelle lukkes (ellers vises den forrige)</string>
-    <string name="setting_summary_other_model_name">Indtast modelnavn for alternativ GPT-server</string>
+    <string name="setting_summary_other_model_name">Indtast modelnavn for alternativ server</string>
     <string name="setting_summary_page_left_value">Hvor meget højde skal reserveres ved sideskift (f.eks. 50 eller 10%)</string>
     <string name="setting_summary_plus_behavior">Hvad skal vises når en ny fane tilføjes</string>
     <string name="setting_summary_prune_query_parameter">Forespørgselsparametre som utm_medium, utm_source osv. fjernes fra URL</string>
@@ -397,14 +397,14 @@
     <string name="setting_summary_screen_awake">Hold skærmen altid tændt</string>
     <string name="setting_summary_search_engine">Vælg en søgemaskine</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_in_dict">Brug ChatGPT til søgeresultater i læsere</string>
+    <string name="setting_summary_search_in_dict">Brug AI til søgeresultater i læsere</string>
     <string name="setting_summary_search_in_same_tab">Brug samme fane til ekstern søgning</string>
     <string name="setting_summary_search_suggestion">Under indtastning vises søgeforslag</string>
     <string name="setting_summary_show_bookmarks_input_bar">Vis bogmærkeforslag ved indtastning i adresselinjen</string>
     <string name="setting_summary_show_default_text_menu">Vis systemets standard handlingsmenu efter tekstmarkering</string>
     <string name="setting_summary_show_tab_bar">Vis altid fanelinje over værktøjslinjen</string>
     <string name="setting_summary_split_search_setting">Brugerdefineret søgning og åbning af resultater i delt skærm</string>
-    <string name="setting_summary_summary_gpt_type">Vælg GPT-motor til opsummering af indhold</string>
+    <string name="setting_summary_summary_gpt_type">Vælg AI-motor til opsummering af indhold</string>
     <string name="setting_summary_text_wrap_reflow">Ombryd tekst ved zoom</string>
     <string name="setting_summary_translated_langs">Tilpas sprog til oversættelse (f.eks. en, fr, de, zh-TW, zh-CN)</string>
     <string name="setting_summary_translation_style">Vælg stil for afsnitsoversættelse</string>
@@ -424,7 +424,7 @@
     <string name="setting_summary_zoom_in_custom_view">Aktivér 2-finger zoom i fuldskærmstilstand (standard: fra)</string>
     <string name="setting_title_auto_fill_form">Auto-udfyld formulardata</string>
     <string name="setting_title_background_loading">Indlæs ikke-aktive faner</string>
-    <string name="setting_title_chat_gpt">GPT-indstillinger</string>
+    <string name="setting_title_chat_gpt">Generativ AI</string>
     <string name="setting_title_chat_stream">Svar i strøm</string>
     <string name="setting_title_custom_gpt_url">Brugerdefineret host-URL</string>
     <string name="setting_title_debug">Fejlfind WebView</string>
@@ -444,7 +444,7 @@
     <string name="setting_title_gpt_model_name">OpenAI-modelnavn</string>
     <string name="setting_title_gpt_prompt_for_tts">Lydudgangsinstruktioner</string>
     <string name="setting_title_gpt_prompt_for_web_page">Prompt for hele websidens indhold</string>
-    <string name="setting_title_gpt_query_list">GPT-resultathistorik</string>
+    <string name="setting_title_gpt_query_list">AI-resultathistorik</string>
     <string name="setting_title_import_bookmarks">Importér bogmærker</string>
     <string name="setting_title_incognito">Inkognitotilstand</string>
     <string name="setting_title_next_tab">Vis næste fane</string>
@@ -527,7 +527,7 @@
     <string name="tts_type_system">Indbygget</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URL er tom</string>
-    <string name="use_it_on_dict_search">Brug ChatGPT i ordbogssøgning</string>
+    <string name="use_it_on_dict_search">Brug AI i ordbogssøgning</string>
     <string name="user_name">Brugernavn</string>
     <string name="vertical_line">Lodret linje</string>
     <string name="vertical_read">Lodret tilstand</string>

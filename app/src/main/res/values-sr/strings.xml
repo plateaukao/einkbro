@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -243,7 +243,7 @@
     <string name="google_in_place">Google на месту</string>
     <string name="google_translate">Google Translate</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">Превуците за промену редоследа ChatGPT акција</string>
+    <string name="gpt_action_drag_handle">Превуците за промену редоследа AI акција</string>
     <string name="gpt_api_key_not_set">Додајте OpenAI кључ у Подешавањима</string>
     <string name="gpt_scope">Опсег</string>
     <string name="gpt_scope_text_selection">Означени текст</string>
@@ -368,11 +368,11 @@
     <string name="setting_summary_gpt_model_name">Подразумевано gpt-4.1. Унесите други назив модела по потреби</string>
     <string name="setting_summary_gpt_prompt_for_tts">Упутства за модел gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Унесите промпт за обраду целог садржаја (нпр. \"Резимирај у 300 речи:\")</string>
-    <string name="setting_summary_gpt_query_list">Сачувани GPT резултати</string>
+    <string name="setting_summary_gpt_query_list">Сачувани AI резултати</string>
     <string name="setting_summary_hide_statusbar">Увек сакриј системску статусну траку</string>
     <string name="setting_summary_import_appData">Увезите податке апликације избором zip датотеке са претходно извезеним подацима</string>
     <string name="backup_category_all_preferences">Сва подешавања</string>
-    <string name="backup_category_gpt_settings">GPT подешавања</string>
+    <string name="backup_category_gpt_settings">Генеративни AI</string>
     <string name="backup_category_bookmarks">Обележивачи</string>
     <string name="backup_category_history">Историја</string>
     <string name="dialog_title_backup_categories">Изаберите податке за резервну копију</string>
@@ -386,7 +386,7 @@
     <string name="setting_summary_nav_pos_custom">Прилагођено</string>
     <string name="setting_summary_nav_pos_not_show">Не приказуј</string>
     <string name="setting_summary_next_tab">Прикажи следећу картицу при затварању тренутне (иначе претходну)</string>
-    <string name="setting_summary_other_model_name">Унесите назив модела за алтернативни GPT сервер</string>
+    <string name="setting_summary_other_model_name">Унесите назив модела за алтернативни сервер</string>
     <string name="setting_summary_page_left_value">Колико висине треба резервисати при прелазу на следећу страницу (нпр. 50 или 10%)</string>
     <string name="setting_summary_plus_behavior">Шта приказати при додавању нове картице</string>
     <string name="setting_summary_prune_query_parameter">Параметри као utm_medium, utm_source итд. биће уклоњени из URL</string>
@@ -394,14 +394,14 @@
     <string name="setting_summary_screen_awake">Увек држи екран укључен</string>
     <string name="setting_summary_search_engine">Изаберите претраживач</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_in_dict">Користи ChatGPT за претрагу у читачима</string>
+    <string name="setting_summary_search_in_dict">Користи AI за претрагу у читачима</string>
     <string name="setting_summary_search_in_same_tab">Користи исту картицу за спољну претрагу</string>
     <string name="setting_summary_search_suggestion">Приказуј предлоге претраге при куцању</string>
     <string name="setting_summary_show_bookmarks_input_bar">Прикажи подударања обележивача при куцању у траци за унос</string>
     <string name="setting_summary_show_default_text_menu">По означавању текста прикажи системски мени акција</string>
     <string name="setting_summary_show_tab_bar">Увек приказуј траку картица изнад траке са алатима</string>
     <string name="setting_summary_split_search_setting">Подесите претрагу и отварање резултата на подељеном екрану</string>
-    <string name="setting_summary_summary_gpt_type">Изаберите GPT мотор за сумаризацију садржаја</string>
+    <string name="setting_summary_summary_gpt_type">Изаберите AI мотор за сумаризацију садржаја</string>
     <string name="setting_summary_text_wrap_reflow">Прелом текста при увећању</string>
     <string name="setting_summary_translated_langs">Прилагодите језике за превод (нпр. en, fr, de, zh-TW, zh-CN)</string>
     <string name="setting_summary_translation_style">Изаберите стил за превод параграфа</string>
@@ -421,7 +421,7 @@
     <string name="setting_summary_zoom_in_custom_view">Увећање са два прста у целом екрану (подразумевано: искључено)</string>
     <string name="setting_title_auto_fill_form">Аутоматско попуњавање образаца</string>
     <string name="setting_title_background_loading">Учитај неактивне картице</string>
-    <string name="setting_title_chat_gpt">GPT подешавања</string>
+    <string name="setting_title_chat_gpt">Генеративни AI</string>
     <string name="setting_title_chat_stream">Стримовање одговора</string>
     <string name="setting_title_custom_gpt_url">URL прилагођеног сервера</string>
     <string name="setting_title_debug">Отклањање грешака WebView</string>
@@ -442,7 +442,7 @@
     <string name="setting_title_gpt_model_name">Назив OpenAI модела</string>
     <string name="setting_title_gpt_prompt_for_tts">Упутства за аудио излаз</string>
     <string name="setting_title_gpt_prompt_for_web_page">Промпт за цео садржај странице</string>
-    <string name="setting_title_gpt_query_list">Историја GPT резултата</string>
+    <string name="setting_title_gpt_query_list">Историја AI резултата</string>
     <string name="setting_title_highlight_style">Стил означавања</string>
     <string name="setting_summary_highlight_style">Изаберите стил за означавање текста</string>
     <string name="setting_title_import_bookmarks">Увоз обележивача</string>
@@ -527,7 +527,7 @@
     <string name="tts_type_system">Уграђени</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URL је празан</string>
-    <string name="use_it_on_dict_search">Користи ChatGPT за претрагу речника</string>
+    <string name="use_it_on_dict_search">Користи AI за претрагу речника</string>
     <string name="user_name">Корисничко име</string>
     <string name="vertical_line">Вертикална линија</string>
     <string name="vertical_read">Вертикални режим</string>

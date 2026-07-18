@@ -138,9 +138,9 @@
     <string name="toast_downloadComplete">Pobieranie ukończone. Otworzyć katalog pobierania?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Dodaj</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -194,7 +194,7 @@
     <string name="audio_only_mode">Tylko dźwięk</string>
     <string name="setting_summary_import_appData">Importuj dane aplikacji, wybierając plik zip z wcześniej wyeksportowanymi danymi</string>
     <string name="backup_category_all_preferences">Wszystkie preferencje</string>
-    <string name="backup_category_gpt_settings">Ustawienia GPT</string>
+    <string name="backup_category_gpt_settings">Generatywna AI</string>
     <string name="backup_category_bookmarks">Zakładki</string>
     <string name="backup_category_history">Historia</string>
     <string name="dialog_title_backup_categories">Wybierz dane do kopii zapasowej</string>
@@ -375,7 +375,7 @@
     <string name="setting_summary_userAgent_toggle">Włącz własny User Agent</string>
     <string name="content_adjustment">Dostosowanie treści</string>
     <string name="share_save"><![CDATA[Udostępnij i zapisz]]></string>
-    <string name="setting_title_chat_gpt">Ustawienia GPT</string>
+    <string name="setting_title_chat_gpt">Generatywna AI</string>
     <string name="setting_title_edit_gpt_api_key">Klucz OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">Wprowadź klucz, aby korzystać z tej funkcji</string>
     <string name="gpt_api_key_not_set">Dodaj klucz OpenAI w Ustawieniach</string>
@@ -396,8 +396,8 @@
     <string name="translate_image_key_summary">Wprowadź klucz niezbędny do korzystania z tłumaczenia obrazów</string>
     <string name="papago_language_setting">Ustawienia języka</string>
     <string name="toggle_touch_turn_page">Przełącz przewracanie stron dotykiem</string>
-    <string name="use_it_on_dict_search">Używaj ChatGPT w wyszukiwaniu słownikowym</string>
-    <string name="setting_summary_search_in_dict">Podczas wyszukiwania w czytniku użyj ChatGPT do wyszukiwania wyników</string>
+    <string name="use_it_on_dict_search">Używaj AI w wyszukiwaniu słownikowym</string>
+    <string name="setting_summary_search_in_dict">Podczas wyszukiwania w czytniku użyj AI do wyszukiwania wyników</string>
     <string name="hide_statusbar">Ukryj systemowy pasek stanu</string>
     <string name="setting_summary_hide_statusbar">Zawsze ukrywaj systemowy pasek stanu</string>
     <string name="enable_touch_area_as_arrow_key">Długie naciśnięcie jako klawisz ← →</string>
@@ -443,17 +443,17 @@
     <string name="setting_title_gemini_key">Klucz API Gemini</string>
     <string name="setting_summary_gemini_key">Wprowadź klucz API Gemini</string>
     <string name="setting_title_other_model_name">Alternatywna nazwa modelu</string>
-    <string name="setting_summary_other_model_name">Wprowadź nazwę modelu dla alternatywnego serwera GPT</string>
+    <string name="setting_summary_other_model_name">Wprowadź nazwę modelu dla alternatywnego serwera</string>
     <string name="setting_title_gemini_model_name">Nazwa modelu Gemini</string>
     <string name="setting_summary_gemini_model_name">Wprowadź nazwę modelu Gemini (domyślnie: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Historia wyników GPT</string>
-    <string name="setting_summary_gpt_query_list">Zapisane wyniki zapytań GPT</string>
+    <string name="setting_title_gpt_query_list">Historia wyników AI</string>
+    <string name="setting_summary_gpt_query_list">Zapisane wyniki zapytań AI</string>
     <string name="select_sentence">Zaznacz zdanie</string>
     <string name="select_paragraph">Zaznacz akapit</string>
     <string name="setting_app_locale">Język aplikacji</string>
     <string name="setting_summary_app_locale">Zmień język interfejsu</string>
     <string name="drag_to_reorder">Przeciągnij, aby zmienić kolejność zakładek</string>
-    <string name="gpt_action_drag_handle">Przeciągnij, aby zmienić kolejność akcji ChatGPT</string>
+    <string name="gpt_action_drag_handle">Przeciągnij, aby zmienić kolejność akcji AI</string>
     <string name="page_ai">Page AI</string>
     <string name="page_ai_action_title">Akcje Page AI</string>
     <string name="toolbar_time">Bieżący czas</string>
@@ -512,7 +512,7 @@
     <string name="setting_summary_web_processing_gpt_type">Wybierz silnik do przetwarzania treści strony</string>
     <string name="self_hosted">Samodzielnie hostowany</string>
     <string name="summary_gpt_type">Silnik AI do podsumowań</string>
-    <string name="setting_summary_summary_gpt_type">Wybierz silnik GPT do podsumowywania treści</string>
+    <string name="setting_summary_summary_gpt_type">Wybierz silnik AI do podsumowywania treści</string>
     <string name="menu_summarize">Podsumuj</string>
     <string name="setting_title_remote_query">Akcja zdalnego zapytania</string>
     <string name="sc_disable_adblock_short">Bez AdBlock</string>

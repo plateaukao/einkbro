@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Téléchargement fini. Ouvrir le gestionnaire de fichiers?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Ajouté</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -368,7 +368,7 @@
     <string name="setting_summary_userAgent_toggle">Activer l\'agent utilisateur personnalisé</string>
     <string name="content_adjustment">Ajustement du contenu</string>
     <string name="share_save"><![CDATA[Partager & Enregistrer]]></string>
-    <string name="setting_title_chat_gpt">Paramètres GPT</string>
+    <string name="setting_title_chat_gpt">IA générative</string>
     <string name="setting_title_edit_gpt_api_key">Clé OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">Saisir la clé pour utiliser cette fonctionnalité</string>
     <string name="gpt_api_key_not_set">Ajouter la clé OpenAI dans les Réglages</string>
@@ -389,8 +389,8 @@
     <string name="translate_image_key_summary">Saisir la clé nécessaire pour la traduction d\'image</string>
     <string name="papago_language_setting">Paramètres de langue</string>
     <string name="toggle_touch_turn_page">Activer/Désactiver la pagination tactile</string>
-    <string name="use_it_on_dict_search">Utiliser ChatGPT dans la recherche de dictionnaire</string>
-    <string name="setting_summary_search_in_dict">Lors d\'une recherche dans les lecteurs, utiliser ChatGPT pour les résultats</string>
+    <string name="use_it_on_dict_search">Utiliser l\'IA dans la recherche de dictionnaire</string>
+    <string name="setting_summary_search_in_dict">Lors d\'une recherche dans les lecteurs, utiliser l\'IA pour les résultats</string>
     <string name="hide_statusbar">Masquer la barre d\'état du système</string>
     <string name="setting_summary_hide_statusbar">Toujours masquer la barre d\'état du système</string>
     <string name="enable_touch_area_as_arrow_key">Appui long comme touche ← →</string>
@@ -435,17 +435,17 @@
     <string name="setting_title_gemini_key">Clé API Gemini</string>
     <string name="setting_summary_gemini_key">Saisir la clé API Gemini</string>
     <string name="setting_title_other_model_name">Nom du modèle alternatif</string>
-    <string name="setting_summary_other_model_name">Saisir le nom du modèle pour le serveur GPT alternatif</string>
+    <string name="setting_summary_other_model_name">Saisir le nom du modèle pour le serveur alternatif</string>
     <string name="setting_title_gemini_model_name">Nom du modèle Gemini</string>
     <string name="setting_summary_gemini_model_name">Saisir le nom du modèle Gemini (par défaut : gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Historique des résultats GPT</string>
-    <string name="setting_summary_gpt_query_list">Résultats GPT enregistrés</string>
+    <string name="setting_title_gpt_query_list">Historique des résultats IA</string>
+    <string name="setting_summary_gpt_query_list">Résultats IA enregistrés</string>
     <string name="select_sentence">Sélectionner la phrase</string>
     <string name="select_paragraph">Sélectionner le paragraphe</string>
     <string name="setting_app_locale">Langue de l\'application</string>
     <string name="setting_summary_app_locale">Changer la langue de l\'interface</string>
     <string name="drag_to_reorder">Glisser pour réorganiser les signets</string>
-    <string name="gpt_action_drag_handle">Glisser pour réorganiser les actions ChatGPT</string>
+    <string name="gpt_action_drag_handle">Glisser pour réorganiser les actions IA</string>
     <string name="page_ai">Page AI</string>
     <string name="page_ai_action_title">Actions Page AI</string>
     <string name="toolbar_time">Heure actuelle</string>
@@ -504,7 +504,7 @@
     <string name="setting_summary_web_processing_gpt_type">Choisir le moteur pour traiter le contenu web</string>
     <string name="self_hosted">Auto-hébergé</string>
     <string name="summary_gpt_type">Moteur IA pour les résumés</string>
-    <string name="setting_summary_summary_gpt_type">Choisir le moteur GPT pour la synthèse de contenu</string>
+    <string name="setting_summary_summary_gpt_type">Choisir le moteur IA pour la synthèse de contenu</string>
     <string name="menu_summarize">Résumer</string>
     <string name="setting_title_remote_query">Action de requête distante</string>
     <string name="sc_disable_adblock_short">Sans AdBlock</string>
@@ -529,7 +529,7 @@
     <string name="setting_summary_nav_pos_custom">Personnalisé</string>
     <string name="setting_summary_import_appData">Importer les données en choisissant un fichier zip avec les données précédemment exportées</string>
     <string name="backup_category_all_preferences">Toutes les préférences</string>
-    <string name="backup_category_gpt_settings">Paramètres GPT</string>
+    <string name="backup_category_gpt_settings">IA générative</string>
     <string name="backup_category_bookmarks">Signets</string>
     <string name="backup_category_history">Historique</string>
     <string name="dialog_title_backup_categories">Sélectionner les données à sauvegarder</string>

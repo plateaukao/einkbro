@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -368,7 +368,7 @@
     <string name="setting_summary_userAgent_toggle">Activare user agent personalizat</string>
     <string name="content_adjustment">Ajustare conținut</string>
     <string name="share_save"><![CDATA[Partajare & Salvare]]></string>
-    <string name="setting_title_chat_gpt">Setări GPT</string>
+    <string name="setting_title_chat_gpt">IA generativă</string>
     <string name="setting_title_edit_gpt_api_key">Cheie OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">Introduceți cheia pentru a folosi această funcție</string>
     <string name="gpt_api_key_not_set">Adăugați cheia OpenAI în Setări</string>
@@ -389,8 +389,8 @@
     <string name="translate_image_key_summary">Introduceți cheia necesară pentru traducerea imaginilor</string>
     <string name="papago_language_setting">Setări limbă</string>
     <string name="toggle_touch_turn_page">Comutare schimbare pagină tactilă</string>
-    <string name="use_it_on_dict_search">Folosire ChatGPT în căutarea de dicționar</string>
-    <string name="setting_summary_search_in_dict">La căutarea în cititor, folosiți ChatGPT pentru rezultate</string>
+    <string name="use_it_on_dict_search">Folosire IA în căutarea de dicționar</string>
+    <string name="setting_summary_search_in_dict">La căutarea în cititor, folosiți IA pentru rezultate</string>
     <string name="hide_statusbar">Ascundere bară de stare a sistemului</string>
     <string name="setting_summary_hide_statusbar">Ascundere permanentă a barei de stare a sistemului</string>
     <string name="enable_touch_area_as_arrow_key">Apăsare lungă ca tastă ← →</string>
@@ -435,17 +435,17 @@
     <string name="setting_title_gemini_key">Cheie API Gemini</string>
     <string name="setting_summary_gemini_key">Introduceți cheia API Gemini</string>
     <string name="setting_title_other_model_name">Nume model alternativ</string>
-    <string name="setting_summary_other_model_name">Introduceți numele modelului pentru serverul GPT alternativ</string>
+    <string name="setting_summary_other_model_name">Introduceți numele modelului pentru serverul alternativ</string>
     <string name="setting_title_gemini_model_name">Nume model Gemini</string>
     <string name="setting_summary_gemini_model_name">Introduceți numele modelului Gemini (implicit: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Istoric rezultate GPT</string>
-    <string name="setting_summary_gpt_query_list">Rezultate GPT salvate</string>
+    <string name="setting_title_gpt_query_list">Istoric rezultate IA</string>
+    <string name="setting_summary_gpt_query_list">Rezultate IA salvate</string>
     <string name="select_sentence">Selectare propoziție</string>
     <string name="select_paragraph">Selectare paragraf</string>
     <string name="setting_app_locale">Limba aplicației</string>
     <string name="setting_summary_app_locale">Schimbare limba interfeței</string>
     <string name="drag_to_reorder">Trageți pentru a reordona marcajele</string>
-    <string name="gpt_action_drag_handle">Trageți pentru a reordona acțiunile ChatGPT</string>
+    <string name="gpt_action_drag_handle">Trageți pentru a reordona acțiunile IA</string>
     <string name="page_ai">Page AI</string>
     <string name="page_ai_action_title">Acțiuni Page AI</string>
     <string name="toolbar_time">Ora curentă</string>
@@ -504,7 +504,7 @@
     <string name="setting_summary_web_processing_gpt_type">Alegeți motorul pentru procesarea conținutului web</string>
     <string name="self_hosted">Auto-găzduit</string>
     <string name="summary_gpt_type">Motor AI pentru rezumate</string>
-    <string name="setting_summary_summary_gpt_type">Alegeți motorul GPT pentru rezumarea conținutului</string>
+    <string name="setting_summary_summary_gpt_type">Alegeți motorul IA pentru rezumarea conținutului</string>
     <string name="menu_summarize">Rezumare</string>
     <string name="setting_title_remote_query">Acțiune interogare la distanță</string>
     <string name="sc_disable_adblock_short">Fără AdBlock</string>
@@ -529,7 +529,7 @@
     <string name="setting_summary_nav_pos_custom">Personalizat</string>
     <string name="setting_summary_import_appData">Importare date prin alegerea unui fișier zip cu datele exportate anterior</string>
     <string name="backup_category_all_preferences">Toate preferințele</string>
-    <string name="backup_category_gpt_settings">Setări GPT</string>
+    <string name="backup_category_gpt_settings">IA generativă</string>
     <string name="backup_category_bookmarks">Marcaje</string>
     <string name="backup_category_history">Istoric</string>
     <string name="dialog_title_backup_categories">Selectați datele pentru copie de siguranță</string>

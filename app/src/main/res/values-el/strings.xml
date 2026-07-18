@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -202,7 +202,7 @@
     <string name="page_down">Σελίδα κάτω</string>
     <string name="setting_summary_import_appData">Εισαγωγή δεδομένων εφαρμογής επιλέγοντας ένα αρχείο zip με δεδομένα που εξήχθησαν προηγουμένως</string>
     <string name="backup_category_all_preferences">Όλες οι προτιμήσεις</string>
-    <string name="backup_category_gpt_settings">Ρυθμίσεις GPT</string>
+    <string name="backup_category_gpt_settings">Παραγωγική AI</string>
     <string name="backup_category_bookmarks">Σελιδοδείκτες</string>
     <string name="backup_category_history">Ιστορικό</string>
     <string name="dialog_title_backup_categories">Επιλογή δεδομένων για αντίγραφο ασφαλείας</string>
@@ -383,7 +383,7 @@
     <string name="setting_summary_userAgent_toggle">Ενεργοποίηση προσαρμοσμένου User Agent</string>
     <string name="content_adjustment">Ρύθμιση Περιεχομένου</string>
     <string name="share_save"><![CDATA[Κοινοποίηση & Αποθήκευση]]></string>
-    <string name="setting_title_chat_gpt">Ρυθμίσεις GPT</string>
+    <string name="setting_title_chat_gpt">Παραγωγική AI</string>
     <string name="setting_title_edit_gpt_api_key">Κλειδί OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">Εισάγετε κλειδί για χρήση αυτής της λειτουργίας</string>
     <string name="gpt_api_key_not_set">Προσθέστε κλειδί OpenAI στις Ρυθμίσεις</string>
@@ -404,8 +404,8 @@
     <string name="translate_image_key_summary">Εισάγετε το απαραίτητο κλειδί για χρήση μετάφρασης εικόνας</string>
     <string name="papago_language_setting">Ρύθμιση Γλώσσας</string>
     <string name="toggle_touch_turn_page">Εναλλαγή αλλαγής σελίδας με αφή</string>
-    <string name="use_it_on_dict_search">Χρήση ChatGPT στην αναζήτηση λεξικού</string>
-    <string name="setting_summary_search_in_dict">Κατά την αναζήτηση σε αναγνώστες, χρήση ChatGPT για αποτελέσματα</string>
+    <string name="use_it_on_dict_search">Χρήση AI στην αναζήτηση λεξικού</string>
+    <string name="setting_summary_search_in_dict">Κατά την αναζήτηση σε αναγνώστες, χρήση AI για αποτελέσματα</string>
     <string name="hide_statusbar">Απόκρυψη γραμμής κατάστασης συστήματος</string>
     <string name="setting_summary_hide_statusbar">Πάντα απόκρυψη γραμμής κατάστασης συστήματος</string>
     <string name="enable_touch_area_as_arrow_key">Παρατεταμένο πάτημα ως πλήκτρο ← →</string>
@@ -451,17 +451,17 @@
     <string name="setting_title_gemini_key">Κλειδί Gemini API</string>
     <string name="setting_summary_gemini_key">Εισάγετε κλειδί Gemini API</string>
     <string name="setting_title_other_model_name">Εναλλακτικό όνομα μοντέλου</string>
-    <string name="setting_summary_other_model_name">Εισάγετε όνομα μοντέλου για εναλλακτικό διακομιστή GPT</string>
+    <string name="setting_summary_other_model_name">Εισάγετε όνομα μοντέλου για εναλλακτικό διακομιστή</string>
     <string name="setting_title_gemini_model_name">Όνομα μοντέλου Gemini</string>
     <string name="setting_summary_gemini_model_name">Εισάγετε όνομα μοντέλου Gemini (προεπιλογή: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Ιστορικό αποτελεσμάτων GPT</string>
-    <string name="setting_summary_gpt_query_list">Αποθηκευμένα αποτελέσματα ερωτημάτων GPT</string>
+    <string name="setting_title_gpt_query_list">Ιστορικό αποτελεσμάτων AI</string>
+    <string name="setting_summary_gpt_query_list">Αποθηκευμένα αποτελέσματα ερωτημάτων AI</string>
     <string name="select_sentence">Επιλογή Πρότασης</string>
     <string name="select_paragraph">Επιλογή Παραγράφου</string>
     <string name="setting_app_locale">Γλώσσα εφαρμογής</string>
     <string name="setting_summary_app_locale">Αλλαγή γλώσσας διεπαφής</string>
     <string name="drag_to_reorder">Σύρετε για αναδιάταξη σελιδοδεικτών</string>
-    <string name="gpt_action_drag_handle">Σύρετε για αναδιάταξη ενεργειών ChatGPT</string>
+    <string name="gpt_action_drag_handle">Σύρετε για αναδιάταξη ενεργειών AI</string>
     <string name="page_ai">AI Σελίδας</string>
     <string name="page_ai_action_title">Ενέργειες AI Σελίδας</string>
     <string name="toolbar_time">Τρέχουσα ώρα</string>
@@ -520,7 +520,7 @@
     <string name="setting_summary_web_processing_gpt_type">Επιλογή μηχανής για επεξεργασία περιεχομένου ιστού</string>
     <string name="self_hosted">Αυτο-φιλοξενούμενο</string>
     <string name="summary_gpt_type">Μηχανή AI για σύνοψη</string>
-    <string name="setting_summary_summary_gpt_type">Επιλογή μηχανής GPT για σύνοψη περιεχομένου</string>
+    <string name="setting_summary_summary_gpt_type">Επιλογή μηχανής AI για σύνοψη περιεχομένου</string>
     <string name="menu_summarize">Σύνοψη</string>
     <string name="setting_title_remote_query">Ενέργεια Απομακρυσμένου Ερωτήματος</string>
     <string name="sc_disable_adblock_short">Χωρίς AdBlock</string>

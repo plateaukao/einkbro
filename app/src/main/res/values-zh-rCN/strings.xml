@@ -284,7 +284,7 @@
     <string name="menu_save_archive">保存存档文件</string>
     <string name="setting_summary_import_appData">通过选择以前导出的Zip文件导入应用程序数据。</string>
     <string name="backup_category_all_preferences">所有偏好设置</string>
-    <string name="backup_category_gpt_settings">GPT设置</string>
+    <string name="backup_category_gpt_settings">生成式AI</string>
     <string name="backup_category_bookmarks">书签</string>
     <string name="backup_category_history">历史记录</string>
     <string name="dialog_title_backup_categories">选择要备份的数据</string>
@@ -303,7 +303,7 @@
     <string name="setting_summary_userAgent_toggle">启用自定义用户代理</string>
     <string name="content_adjustment">重排类</string>
     <string name="share_save"><![CDATA[分享保存类]]></string>
-    <string name="setting_title_chat_gpt">GPT集成</string>
+    <string name="setting_title_chat_gpt">生成式AI</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI密钥</string>
     <string name="setting_summary_edit_gpt_api_key">输入密钥以使用此功能。</string>
     <string name="gpt_api_key_not_set">在设置中添加OpenAI密钥。</string>
@@ -320,8 +320,8 @@
     <string name="translate_image_key_summary">输入必要的关键字以显示图像翻译功能。</string>
     <string name="papago_language_setting">语言设置</string>
     <string name="toggle_touch_turn_page">切换触摸翻页</string>
-    <string name="use_it_on_dict_search">在字典搜索中使用</string>
-    <string name="setting_summary_search_in_dict">在读卡器中搜索时，使用ChatGPT搜索结果</string>
+    <string name="use_it_on_dict_search">在字典搜索中使用AI</string>
+    <string name="setting_summary_search_in_dict">在阅读器中搜索时，使用AI搜索结果</string>
     <string name="hide_statusbar">隐藏系统状态栏</string>
     <string name="setting_summary_hide_statusbar">始终隐藏系统状态栏</string>
     <string name="enable_touch_area_as_arrow_key">长按作为 ← → 键</string>
@@ -346,9 +346,9 @@
     <string name="setting_summary_gpt_prompt_for_web_page">输入提示以处理网页完整内容，例如 (用300字概括:)</string>
     <string name="setting_title_next_tab">转到下一标签页</string>
     <string name="setting_summary_next_tab">关闭当前标签页时显示下一个，否则为上一标签页。</string>
-    <string name="setting_title_gpt_action_list">ChatGPT动作定义</string>
-    <string name="setting_summary_gpt_action_list">为不同的ChatGPT动作定义不同的提示。</string>
-    <string name="gpt_actions_title">ChatGPT动作</string>
+    <string name="setting_title_gpt_action_list">AI动作定义</string>
+    <string name="setting_summary_gpt_action_list">为不同的AI动作定义不同的提示。</string>
+    <string name="gpt_actions_title">AI动作</string>
     <string name="text_select">选择文本</string>
     <string name="show_context_menu_icons">在活动菜单显示图标</string>
     <string name="setting_summary_show_context_menu_icons">显示/隐藏活动菜单的图标，使其更具个性化。</string>
@@ -388,7 +388,7 @@
     <string name="setting_title_gemini_key">Gemini API 密钥</string>
     <string name="setting_summary_gemini_key">输入 Gemini API 密钥</string>
     <string name="setting_title_other_model_name">替代模型名称</string>
-    <string name="setting_summary_other_model_name">输入替代GPT服务器模型名称</string>
+    <string name="setting_summary_other_model_name">输入替代服务器模型名称</string>
     <string name="setting_title_gemini_model_name">Gemini模型名称</string>
     <string name="setting_summary_gemini_model_name">输入Gemini模型名称 (默认: gemini-2.5-flash)</string>
     <string name="select_sentence">选择语句</string>
@@ -448,7 +448,7 @@
     <string name="setting_summary_web_processing_gpt_type">选择引擎来处理网页内容</string>
     <string name="self_hosted">自托管</string>
     <string name="summary_gpt_type">网页摘要AI引擎</string>
-    <string name="setting_summary_summary_gpt_type">为内容摘要选择GPT引擎</string>
+    <string name="setting_summary_summary_gpt_type">为内容摘要选择AI引擎</string>
     <string name="menu_summarize">摘要</string>
     <string name="setting_title_remote_query">远程查询动作</string>
     <string name="sc_disable_adblock_short">无AdBlock</string>
@@ -483,7 +483,7 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="google_gemini">Google Gemini</string>
-    <string name="gpt_action_drag_handle">拖动以重新排列ChatGPT动作</string>
+    <string name="gpt_action_drag_handle">拖动以重新排列AI动作</string>
     <string name="gpt_scope">范围</string>
     <string name="gpt_scope_text_selection">选中文本</string>
     <string name="gpt_scope_whole_page">整个页面</string>
@@ -504,12 +504,12 @@
     <string name="save_history_mode_save_when_open">打开标签时保存</string>
     <string name="saved_pages">已保存的页面</string>
     <string name="setting_floating_button_long_click">长按</string>
-    <string name="setting_summary_gpt_query_list">已保存的GPT查询结果</string>
+    <string name="setting_summary_gpt_query_list">已保存的AI查询结果</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
     <string name="setting_summary_text_wrap_reflow">缩放时重排文本</string>
     <string name="setting_summary_use_custom_gpt_url">使用其他API服务器网址</string>
     <string name="setting_summary_zoom_in_custom_view">全屏模式下启用双指缩放 (默认：关闭)</string>
-    <string name="setting_title_gpt_query_list">GPT查询历史</string>
+    <string name="setting_title_gpt_query_list">AI查询历史</string>
     <string name="setting_title_text_wrap_reflow">文本重排</string>
     <string name="setting_title_zoom_in_custom_view">自定义视图中缩放</string>
     <string name="switch_touch_area_action_short">切换方向</string>
@@ -568,7 +568,7 @@
     <string name="share_long_press_last_target">分享到最近应用</string>
     <string name="setting_title_video_autoplay">允许视频自动播放</string>
     <string name="setting_summary_video_autoplay">允许视频自动播放，无需用户交互</string>
-    <string name="backup_category_database_data">数据库 (突出显示、GPT查询、网站设置等)</string>
+    <string name="backup_category_database_data">数据库 (突出显示、AI查询、网站设置等)</string>
     <string name="share_receiving">接收数据…</string>
     <string name="menu_save_mht">另存为MHT</string>
     <string name="openai_in_place">原位OpenAI</string>

@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -246,7 +246,7 @@
     <string name="google_in_place">Google paikallaan</string>
     <string name="google_translate">Google Translate</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">Vedä järjestääksesi ChatGPT-toimintoja</string>
+    <string name="gpt_action_drag_handle">Vedä järjestääksesi tekoälytoimintoja</string>
     <string name="gpt_api_key_not_set">Lisää OpenAI-avain Asetuksissa</string>
     <string name="gpt_scope">Laajuus</string>
     <string name="gpt_scope_text_selection">Tekstivalinta</string>
@@ -371,11 +371,11 @@
     <string name="setting_summary_gpt_model_name">Oletus on gpt-4.1. Syötä muu mallinimi tarvittaessa</string>
     <string name="setting_summary_gpt_prompt_for_tts">Ohjeet kun gpt-4o-mini-tts-mallia käytetään.</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Syötä kehote verkkosivun koko sisällön käsittelyyn (esim. \"Tiivistä se 300 sanaan:\")</string>
-    <string name="setting_summary_gpt_query_list">Tallennetut GPT-kyselytulokset</string>
+    <string name="setting_summary_gpt_query_list">Tallennetut tekoälyn kyselytulokset</string>
     <string name="setting_summary_hide_statusbar">Piilota järjestelmän tilarivi aina</string>
     <string name="setting_summary_import_appData">Tuo sovellustiedot valitsemalla zip-tiedosto aiemmin viedyistä tiedoista</string>
     <string name="backup_category_all_preferences">Kaikki asetukset</string>
-    <string name="backup_category_gpt_settings">GPT-asetukset</string>
+    <string name="backup_category_gpt_settings">Generatiivinen tekoäly</string>
     <string name="backup_category_bookmarks">Kirjanmerkit</string>
     <string name="backup_category_history">Historia</string>
     <string name="dialog_title_backup_categories">Valitse varmuuskopioitavat tiedot</string>
@@ -389,7 +389,7 @@
     <string name="setting_summary_nav_pos_custom">Mukautettu</string>
     <string name="setting_summary_nav_pos_not_show">Älä näytä</string>
     <string name="setting_summary_next_tab">Näytä seuraava välilehti kun nykyinen suljetaan (muuten näytetään edellinen)</string>
-    <string name="setting_summary_other_model_name">Syötä mallinimi vaihtoehtoiselle GPT-palvelimelle</string>
+    <string name="setting_summary_other_model_name">Syötä mallinimi vaihtoehtoiselle palvelimelle</string>
     <string name="setting_summary_page_left_value">Kuinka paljon korkeutta varataan sivunvaihdossa (esim. 50 tai 10%)</string>
     <string name="setting_summary_plus_behavior">Mitä näytetään kun uusi välilehti lisätään</string>
     <string name="setting_summary_prune_query_parameter">Kyselyparametrit kuten utm_medium, utm_source jne. poistetaan URL:sta</string>
@@ -397,14 +397,14 @@
     <string name="setting_summary_screen_awake">Pidä näyttö aina hereillä</string>
     <string name="setting_summary_search_engine">Valitse hakukone</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_in_dict">Käytä ChatGPT:tä hakutuloksiin lukijoissa</string>
+    <string name="setting_summary_search_in_dict">Käytä tekoälyä hakutuloksiin lukijoissa</string>
     <string name="setting_summary_search_in_same_tab">Käytä samaa välilehteä ulkoiseen hakuun</string>
     <string name="setting_summary_search_suggestion">Kirjoitettaessa näytetään hakuehdotuksia</string>
     <string name="setting_summary_show_bookmarks_input_bar">Näytä kirjanmerkkien vastaavuudet kirjoitettaessa osoiteriville</string>
     <string name="setting_summary_show_default_text_menu">Näytä järjestelmän oletustoimintovalikko tekstin valinnan jälkeen</string>
     <string name="setting_summary_show_tab_bar">Näytä aina välilehtipalkki työkalurivin yläpuolella</string>
     <string name="setting_summary_split_search_setting">Mukautettu haku ja tulosten avaaminen jaetussa näytössä</string>
-    <string name="setting_summary_summary_gpt_type">Valitse GPT-moottori sisällön tiivistämiseen</string>
+    <string name="setting_summary_summary_gpt_type">Valitse tekoälymoottori sisällön tiivistämiseen</string>
     <string name="setting_summary_text_wrap_reflow">Sovita teksti zoomattaessa</string>
     <string name="setting_summary_translated_langs">Mukauta kielet käännökseen (esim. en, fr, de, zh-TW, zh-CN)</string>
     <string name="setting_summary_translation_style">Valitse tyyli kappalekäännökselle</string>
@@ -424,7 +424,7 @@
     <string name="setting_summary_zoom_in_custom_view">Ota 2 sormen zoomaus käyttöön koko näytön tilassa (oletus: pois)</string>
     <string name="setting_title_auto_fill_form">Täytä lomaketiedot automaattisesti</string>
     <string name="setting_title_background_loading">Lataa ei-aktiiviset välilehdet</string>
-    <string name="setting_title_chat_gpt">GPT-asetukset</string>
+    <string name="setting_title_chat_gpt">Generatiivinen tekoäly</string>
     <string name="setting_title_chat_stream">Vastaus suoratoistona</string>
     <string name="setting_title_custom_gpt_url">Mukautettu isäntä-URL</string>
     <string name="setting_title_debug">Virheenkorjaa WebView</string>
@@ -444,7 +444,7 @@
     <string name="setting_title_gpt_model_name">OpenAI-mallin nimi</string>
     <string name="setting_title_gpt_prompt_for_tts">Äänilähdön ohjeet</string>
     <string name="setting_title_gpt_prompt_for_web_page">Kehote koko verkkosivun sisällölle</string>
-    <string name="setting_title_gpt_query_list">GPT-tuloshistoria</string>
+    <string name="setting_title_gpt_query_list">Tekoälyn tuloshistoria</string>
     <string name="setting_title_import_bookmarks">Tuo kirjanmerkit</string>
     <string name="setting_title_incognito">Yksityinen tila</string>
     <string name="setting_title_next_tab">Näytä seuraava välilehti</string>
@@ -527,7 +527,7 @@
     <string name="tts_type_system">Sisäänrakennettu</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URL on tyhjä</string>
-    <string name="use_it_on_dict_search">Käytä ChatGPT:tä sanakirjahaussa</string>
+    <string name="use_it_on_dict_search">Käytä tekoälyä sanakirjahaussa</string>
     <string name="user_name">Käyttäjänimi</string>
     <string name="vertical_line">Pystyviiva</string>
     <string name="vertical_read">Pystytila</string>

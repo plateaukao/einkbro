@@ -190,7 +190,7 @@
     <string name="setting_title_import_appData">Импортировать данные</string>
     <string name="setting_summary_import_appData">Импортировать данные браузера с помощью zip-файла с экспортированными данными</string>
     <string name="backup_category_all_preferences">Все настройки</string>
-    <string name="backup_category_gpt_settings">Настройки GPT</string>
+    <string name="backup_category_gpt_settings">Генеративный ИИ</string>
     <string name="backup_category_bookmarks">Закладки</string>
     <string name="backup_category_history">История</string>
     <string name="dialog_title_backup_categories">Выберите данные для резервного копирования</string>
@@ -381,7 +381,7 @@
     <string name="setting_summary_userAgent">Введите здесь предпочитаемый юзер-агент</string>
     <string name="content_adjustment">Регулировка Страницы</string>
     <string name="share_save"><![CDATA[Поделиться и Сохранить]]></string>
-    <string name="setting_title_chat_gpt">Интеграция с ChatGPT</string>
+    <string name="setting_title_chat_gpt">Генеративный ИИ</string>
     <string name="setting_title_edit_gpt_api_key">Введите ключ OpenAI, чтобы использовать эту функцию</string>
     <string name="setting_summary_edit_gpt_api_key">Введите ключ для того, чтобы использовать эту функцию</string>
     <string name="gpt_api_key_not_set">Добавьте Ключ OpenAI в Настройках</string>
@@ -399,8 +399,8 @@
     <string name="translate_image_key_summary">Введите необходимый ключ, чтобы использовать режим перевода изображений</string>
     <string name="papago_language_setting">Настройка Языка</string>
     <string name="toggle_touch_turn_page">Включить прокрутку страниц нажатием</string>
-    <string name="use_it_on_dict_search">Использовать ChatGPT для словарного поиска</string>
-    <string name="setting_summary_search_in_dict">Использвать ChatGPT для поиска в ридерах</string> <!-- Meaning unclear, need context -->
+    <string name="use_it_on_dict_search">Использовать ИИ для словарного поиска</string>
+    <string name="setting_summary_search_in_dict">Использовать ИИ для поиска в ридерах</string> <!-- Meaning unclear, need context -->
     <string name="hide_statusbar">Спрятать системную строку состояния</string>
     <string name="setting_summary_hide_statusbar">Всегда прятать системную строку состояния</string>
     <string name="enable_touch_area_as_arrow_key">Использовать как клавиши ← →</string>
@@ -426,9 +426,9 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Введите запрос, при котором будет обработано полное содержание страницы (например: \"Изложи содежание страницы в 300 слов:\")</string>
     <string name="setting_title_next_tab">Показывать Следующую Вкладку</string>
     <string name="setting_summary_next_tab">Показывать следующую вкладку при закрытии предыдущей (в противном случае показывать предыдущую)</string>
-    <string name="setting_title_gpt_action_list">Определение команд ChatGPT</string>
-    <string name="setting_summary_gpt_action_list">Вы можете определить запросы для разный команд ChatGPT</string>
-    <string name="gpt_actions_title">Команды ChatGPT</string>
+    <string name="setting_title_gpt_action_list">Определение команд ИИ</string>
+    <string name="setting_summary_gpt_action_list">Вы можете определить запросы для разных команд ИИ</string>
+    <string name="gpt_actions_title">Команды ИИ</string>
     <string name="text_select">Выделить текст</string>
     <string name="show_context_menu_icons">Показывать иконки в меню Команд</string>
     <string name="setting_summary_show_context_menu_icons">Вы можете включить / выключить показ иконок в меню Команд для упрощения восприятия</string>
@@ -469,11 +469,11 @@
     <string name="setting_title_gemini_key">API-ключ Gemini</string>
     <string name="setting_summary_gemini_key">Вставьте сюда API-ключ Gemini</string>
     <string name="setting_title_other_model_name">Название альтернативной модели</string>
-    <string name="setting_summary_other_model_name">Вставьте сюда имя модели для альтернативного GPT-сервера</string>
+    <string name="setting_summary_other_model_name">Вставьте сюда имя модели для альтернативного сервера</string>
     <string name="setting_title_gemini_model_name">Название модели Gemini</string>
     <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">История результатов GPT</string>
-    <string name="setting_summary_gpt_query_list">Сохранённая история результатов GPT</string>
+    <string name="setting_title_gpt_query_list">История результатов ИИ</string>
+    <string name="setting_summary_gpt_query_list">Сохранённая история результатов ИИ</string>
     <string name="select_sentence">Выбрать предложение</string>
     <string name="select_paragraph">Выбрать параграф</string>
     <string name="setting_app_locale">Язык приложения</string>
@@ -543,7 +543,7 @@
     <string name="eink_image_50">50%</string>
     <string name="eink_image_70">70%</string>
     <string name="gemini_translate_by_paragraph">Gemini по параграфам</string>
-    <string name="gpt_action_drag_handle">Перетащите для изменения порядка команд ChatGPT</string>
+    <string name="gpt_action_drag_handle">Перетащите для изменения порядка команд ИИ</string>
     <string name="gpt_scope">Область действия</string>
     <string name="gpt_scope_text_selection">Выделенный текст</string>
     <string name="gpt_scope_whole_page">Вся страница</string>
@@ -571,7 +571,7 @@
     <string name="setting_summary_gpt_audio_model_name">Доступные варианты: tts-1 (по умолчанию), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">Инструкции для модели gpt-4o-mini-tts</string>
     <string name="setting_summary_search_suggestion">При вводе показывать поисковые подсказки</string>
-    <string name="setting_summary_summary_gpt_type">Выберите движок GPT для суммаризации содержимого</string>
+    <string name="setting_summary_summary_gpt_type">Выберите движок ИИ для суммаризации содержимого</string>
     <string name="setting_summary_text_wrap_reflow">Перестраивать текст при масштабировании</string>
     <string name="setting_summary_web_processing_gpt_type">Выберите движок для обработки веб-контента</string>
     <string name="setting_summary_zoom_in_custom_view">Разрешить масштабирование двумя пальцами в полноэкранном режиме (по умолч.: выкл.)</string>

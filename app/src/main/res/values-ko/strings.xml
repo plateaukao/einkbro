@@ -187,7 +187,7 @@
     <string name="setting_title_import_appData">앱 데이터 가져오기</string>
     <string name="setting_summary_import_appData">이전에 내보낸 데이터가 포함된 zip 파일을 선택하여 앱 데이터를 가져옵니다.</string>
     <string name="backup_category_all_preferences">모든 환경설정</string>
-    <string name="backup_category_gpt_settings">GPT 설정</string>
+    <string name="backup_category_gpt_settings">생성형 AI</string>
     <string name="backup_category_bookmarks">북마크</string>
     <string name="backup_category_history">방문 기록</string>
     <string name="dialog_title_backup_categories">백업할 데이터 선택</string>
@@ -382,7 +382,7 @@
     <string name="setting_summary_userAgent_toggle">사용자 지정 useragent 활성화</string>
     <string name="content_adjustment">콘텐츠 조정</string>
     <string name="share_save"><![CDATA[공유 및 저장]]></string>
-    <string name="setting_title_chat_gpt">GPT 설정</string>
+    <string name="setting_title_chat_gpt">생성형 AI</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI 키</string>
     <string name="setting_summary_edit_gpt_api_key">이 기능을 사용하려면 키를 입력하십시오.</string>
     <string name="gpt_api_key_not_set">설정에서 OpenAI 키를 추가하십시오.</string>
@@ -400,8 +400,8 @@
     <string name="translate_image_key_summary">이미지 번역 기능을 사용하려면 필요한 키를 입력하십시오.</string>
     <string name="papago_language_setting">언어 설정</string>
     <string name="toggle_touch_turn_page">터치 페이지 넘기기 토글</string>
-    <string name="use_it_on_dict_search">사전 검색에서 GPT 사용</string>
-    <string name="setting_summary_search_in_dict">리더에서 검색할 때 GPT를 사용하여 결과를 검색합니다.</string>
+    <string name="use_it_on_dict_search">사전 검색에서 AI 사용</string>
+    <string name="setting_summary_search_in_dict">리더에서 검색할 때 AI를 사용하여 결과를 검색합니다.</string>
     <string name="hide_statusbar">시스템 상태 표시줄 숨기기</string>
     <string name="setting_summary_hide_statusbar">항상 시스템 상태 표시줄 숨기기</string>
     <string name="enable_touch_area_as_arrow_key">길게 누르면 ← → 키</string>
@@ -427,9 +427,9 @@
     <string name="setting_summary_gpt_prompt_for_web_page">웹 페이지 전체 콘텐츠를 처리하기 위한 프롬프트를 입력하십시오(예: "300 단어로 요약하십시오:").</string>
     <string name="setting_title_next_tab">다음 탭 표시</string>
     <string name="setting_summary_next_tab">현재 탭이 닫히면 다음 탭을 표시합니다(그렇지 않으면 이전 탭을 표시합니다).</string>
-    <string name="setting_title_gpt_action_list">ChatGPT 동작 정의</string>
-    <string name="setting_summary_gpt_action_list">다른 ChatGPT 동작에 대한 다른 프롬프트를 정의합니다.</string>
-    <string name="gpt_actions_title">ChatGPT 동작</string>
+    <string name="setting_title_gpt_action_list">AI 동작 정의</string>
+    <string name="setting_summary_gpt_action_list">다른 AI 동작에 대한 다른 프롬프트를 정의합니다.</string>
+    <string name="gpt_actions_title">AI 동작</string>
     <string name="text_select">텍스트 선택</string>
     <string name="show_context_menu_icons">동작 메뉴에 아이콘 표시</string>
     <string name="setting_summary_show_context_menu_icons">동작 메뉴에서 아이콘을 표시/숨겨서 더 간단하게 만듭니다.</string>
@@ -471,11 +471,11 @@
     <string name="setting_title_gemini_key">Gemini API 키</string>
     <string name="setting_summary_gemini_key">Gemini API 키 입력</string>
     <string name="setting_title_other_model_name">대체 모델 이름</string>
-    <string name="setting_summary_other_model_name">대체 GPT 서버에 대한 모델 이름 입력</string>
+    <string name="setting_summary_other_model_name">대체 서버에 대한 모델 이름 입력</string>
     <string name="setting_title_gemini_model_name">Gemini 모델 이름</string>
     <string name="setting_summary_gemini_model_name">Gemini 모델 이름 입력(기본값: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">GPT 결과 기록</string>
-    <string name="setting_summary_gpt_query_list">저장된 GPT 쿼리 결과</string>
+    <string name="setting_title_gpt_query_list">AI 결과 기록</string>
+    <string name="setting_summary_gpt_query_list">저장된 AI 쿼리 결과</string>
     <string name="select_sentence">문장 선택</string>
     <string name="select_paragraph">단락 선택</string>
     <string name="setting_app_locale">UI 언어</string>
@@ -514,7 +514,7 @@
     <string name="gemini_translate_by_paragraph">Gemini 단락별 번역</string>
     <string name="gesture_on_floating_button">플로팅 버튼 제스처</string>
     <string name="google_gemini">Google Gemini</string>
-    <string name="gpt_action_drag_handle">드래그하여 ChatGPT 동작 순서 변경</string>
+    <string name="gpt_action_drag_handle">드래그하여 AI 동작 순서 변경</string>
     <string name="gpt_scope">범위</string>
     <string name="gpt_scope_text_selection">텍스트 선택</string>
     <string name="gpt_scope_whole_page">전체 페이지</string>
@@ -553,7 +553,7 @@
     <string name="setting_summary_gpt_audio_model_name">사용 가능: tts-1(기본값), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-tts 모델 사용 시 지시사항</string>
     <string name="setting_summary_search_suggestion">입력 중 검색 추천 표시</string>
-    <string name="setting_summary_summary_gpt_type">콘텐츠 요약용 GPT 엔진 선택</string>
+    <string name="setting_summary_summary_gpt_type">콘텐츠 요약용 AI 엔진 선택</string>
     <string name="setting_summary_text_wrap_reflow">확대/축소 시 텍스트 재배치</string>
     <string name="setting_summary_translation_style">단락 번역 스타일 선택</string>
     <string name="setting_summary_web_processing_gpt_type">웹 콘텐츠 처리에 사용할 엔진 선택</string>

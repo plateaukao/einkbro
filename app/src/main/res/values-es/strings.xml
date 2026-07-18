@@ -145,7 +145,7 @@
     <string name="setting_title_import_appData">Importar datos de la app</string>
     <string name="setting_summary_import_appData">Importar datos de la app seleccionando un archivo zip con datos exportados anteriormente</string>
     <string name="backup_category_all_preferences">Todas las preferencias</string>
-    <string name="backup_category_gpt_settings">Configuración de GPT</string>
+    <string name="backup_category_gpt_settings">IA generativa</string>
     <string name="backup_category_bookmarks">Marcadores</string>
     <string name="backup_category_history">Historial</string>
     <string name="dialog_title_backup_categories">Seleccionar datos para respaldar</string>
@@ -330,7 +330,7 @@
     <string name="setting_summary_userAgent_toggle">Habilitar agente de usuario personalizado</string>
     <string name="content_adjustment">Ajuste de contenido</string>
     <string name="share_save"><![CDATA[Compartir & Guardar]]></string>
-    <string name="setting_title_chat_gpt">Ajustes de GPT</string>
+    <string name="setting_title_chat_gpt">IA generativa</string>
     <string name="setting_title_edit_gpt_api_key">Clave de OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">Introduce la clave para usar esta característica</string>
     <string name="gpt_api_key_not_set">Añade la clave de OpenAI en Ajustes</string>
@@ -348,8 +348,8 @@
     <string name="translate_image_key_summary">Introduce la clave necesaria para usar la característica de traducción de imágenes</string>
     <string name="papago_language_setting">Configuración del idioma</string>
     <string name="toggle_touch_turn_page">Alternar giro de página por toque</string>
-    <string name="use_it_on_dict_search">Usar ChatGPT en la búsqueda del diccionario</string>
-    <string name="setting_summary_search_in_dict">Cuando busques en lectores, usa ChatGPT para buscar resultados</string>
+    <string name="use_it_on_dict_search">Usar IA en la búsqueda del diccionario</string>
+    <string name="setting_summary_search_in_dict">Cuando busques en lectores, usa IA para buscar resultados</string>
     <string name="hide_statusbar">Ocultar la barra de estado del sistema</string>
     <string name="setting_summary_hide_statusbar">Siempre ocultar la barra de estado del sistema</string>
     <string name="enable_touch_area_as_arrow_key">Clic largo como tecla ← →</string>
@@ -375,9 +375,9 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Introduce la indicación para procesar el contenido completo de la página web (por ejemplo: \"Resumir en 300 palabras:\")</string>
     <string name="setting_title_next_tab">Mostrar la siguiente pestaña</string>
     <string name="setting_summary_next_tab">Mostrar la siguiente pestaña cuando se cierre la actual (de lo contrario, mostrar la anterior)</string>
-    <string name="setting_title_gpt_action_list">Definición de acción de ChatGPT</string>
-    <string name="setting_summary_gpt_action_list">Definir diferentes indicaciones para diferentes acciones de ChatGPT</string>
-    <string name="gpt_actions_title">Acciones de ChatGPT</string>
+    <string name="setting_title_gpt_action_list">Definición de acción de IA</string>
+    <string name="setting_summary_gpt_action_list">Definir diferentes indicaciones para diferentes acciones de IA</string>
+    <string name="gpt_actions_title">Acciones de IA</string>
     <string name="text_select">Seleccionar texto</string>
     <string name="show_context_menu_icons">Mostrar iconos en los menús de acción</string>
     <string name="setting_summary_show_context_menu_icons">Mostrar/u ocultar iconos en los menús de acción para simplificarlo</string>
@@ -419,11 +419,11 @@
     <string name="setting_title_gemini_key">Clave API de Gemini</string>
     <string name="setting_summary_gemini_key">Introduce la clave API de Gemini</string>
     <string name="setting_title_other_model_name">Nombre de modelo alternativo</string>
-    <string name="setting_summary_other_model_name">Introduce el nombre del modelo para el servidor GPT alternativo</string>
+    <string name="setting_summary_other_model_name">Introduce el nombre del modelo para el servidor alternativo</string>
     <string name="setting_title_gemini_model_name">Nombre del modelo Gemini</string>
     <string name="setting_summary_gemini_model_name">Introduce el nombre del modelo Gemini (predeterminado: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Historial de resultados de GPT</string>
-    <string name="setting_summary_gpt_query_list">Resultados de consultas de GPT guardados</string>
+    <string name="setting_title_gpt_query_list">Historial de resultados de IA</string>
+    <string name="setting_summary_gpt_query_list">Resultados de consultas de IA guardados</string>
     <string name="select_sentence">Seleccionar oración</string>
     <string name="select_paragraph">Seleccionar párrafo</string>
     <string name="setting_app_locale">Idioma de la aplicación</string>
@@ -484,7 +484,7 @@
     <string name="setting_summary_web_processing_gpt_type">Elige el motor para procesar el contenido web</string>
     <string name="self_hosted">Autoalojado</string>
     <string name="summary_gpt_type">Motor de IA para resúmenes</string>
-    <string name="setting_summary_summary_gpt_type">Elige el motor GPT para la resumición de contenido</string>
+    <string name="setting_summary_summary_gpt_type">Elige el motor de IA para la resumición de contenido</string>
     <string name="menu_summarize">Resumir</string>
     <string name="setting_title_toolbar_position">Posición de la barra de herramientas</string>
     <string name="toolbar_position_bottom">Abajo</string>
@@ -530,7 +530,7 @@
     <string name="custom_scale">Escala de fuente personalizada</string>
     <string name="custom_scale_desc">Introduce la escala de fuente deseada (%)</string>
     <string name="setting_floating_button_long_click">Clic largo</string>
-    <string name="gpt_action_drag_handle">Arrastrar para reordenar acciones de ChatGPT</string>
+    <string name="gpt_action_drag_handle">Arrastrar para reordenar acciones de IA</string>
     <string name="page_ai">Page AI</string>
     <string name="page_ai_action_title">Acciones de Page AI</string>
     <string name="eink_image_10">10%</string>

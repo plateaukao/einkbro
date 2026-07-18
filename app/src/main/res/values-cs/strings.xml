@@ -142,9 +142,9 @@
     <string name="toast_downloadComplete">Stahování dokončeno. Otevřít správce souborů?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Přidat</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -198,7 +198,7 @@
     <string name="audio_only_mode">Pouze zvuk</string>
     <string name="setting_summary_import_appData">Importovat data aplikace výběrem souboru zip s dříve exportovanými daty</string>
     <string name="backup_category_all_preferences">Všechna nastavení</string>
-    <string name="backup_category_gpt_settings">Nastavení GPT</string>
+    <string name="backup_category_gpt_settings">Generativní AI</string>
     <string name="backup_category_bookmarks">Záložky</string>
     <string name="backup_category_history">Historie</string>
     <string name="dialog_title_backup_categories">Vyberte data k zálohování</string>
@@ -379,7 +379,7 @@
     <string name="setting_summary_userAgent_toggle">Zapnout vlastní User Agent</string>
     <string name="content_adjustment">Úprava obsahu</string>
     <string name="share_save"><![CDATA[Sdílet a uložit]]></string>
-    <string name="setting_title_chat_gpt">Nastavení GPT</string>
+    <string name="setting_title_chat_gpt">Generativní AI</string>
     <string name="setting_title_edit_gpt_api_key">Klíč OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">Zadejte klíč pro použití této funkce</string>
     <string name="gpt_api_key_not_set">Přidejte klíč OpenAI v Nastavení</string>
@@ -400,8 +400,8 @@
     <string name="translate_image_key_summary">Zadejte potřebný klíč pro použití funkce překladu obrázků</string>
     <string name="papago_language_setting">Nastavení jazyka</string>
     <string name="toggle_touch_turn_page">Přepnout otáčení stránek dotykem</string>
-    <string name="use_it_on_dict_search">Použít ChatGPT při vyhledávání ve slovníku</string>
-    <string name="setting_summary_search_in_dict">Při vyhledávání ve čtečce použít ChatGPT pro výsledky</string>
+    <string name="use_it_on_dict_search">Použít AI při vyhledávání ve slovníku</string>
+    <string name="setting_summary_search_in_dict">Při vyhledávání ve čtečce použít AI pro výsledky</string>
     <string name="hide_statusbar">Skrýt systémový stavový řádek</string>
     <string name="setting_summary_hide_statusbar">Vždy skrývat systémový stavový řádek</string>
     <string name="enable_touch_area_as_arrow_key">Dlouhé stisknutí jako klávesa ← →</string>
@@ -447,17 +447,17 @@
     <string name="setting_title_gemini_key">Klíč API Gemini</string>
     <string name="setting_summary_gemini_key">Zadejte klíč API Gemini</string>
     <string name="setting_title_other_model_name">Alternativní název modelu</string>
-    <string name="setting_summary_other_model_name">Zadejte název modelu pro alternativní server GPT</string>
+    <string name="setting_summary_other_model_name">Zadejte název modelu pro alternativní server</string>
     <string name="setting_title_gemini_model_name">Název modelu Gemini</string>
     <string name="setting_summary_gemini_model_name">Zadejte název modelu Gemini (výchozí: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Historie výsledků GPT</string>
-    <string name="setting_summary_gpt_query_list">Uložené výsledky dotazů GPT</string>
+    <string name="setting_title_gpt_query_list">Historie výsledků AI</string>
+    <string name="setting_summary_gpt_query_list">Uložené výsledky dotazů AI</string>
     <string name="select_sentence">Vybrat větu</string>
     <string name="select_paragraph">Vybrat odstavec</string>
     <string name="setting_app_locale">Jazyk aplikace</string>
     <string name="setting_summary_app_locale">Změnit jazyk rozhraní</string>
     <string name="drag_to_reorder">Přetáhněte pro změnu pořadí záložek</string>
-    <string name="gpt_action_drag_handle">Přetáhněte pro změnu pořadí akcí ChatGPT</string>
+    <string name="gpt_action_drag_handle">Přetáhněte pro změnu pořadí akcí AI</string>
     <string name="page_ai">Page AI</string>
     <string name="page_ai_action_title">Akce Page AI</string>
     <string name="toolbar_time">Aktuální čas</string>
@@ -516,7 +516,7 @@
     <string name="setting_summary_web_processing_gpt_type">Vyberte engine pro zpracování webového obsahu</string>
     <string name="self_hosted">Vlastní hosting</string>
     <string name="summary_gpt_type">AI engine pro shrnutí</string>
-    <string name="setting_summary_summary_gpt_type">Vyberte engine GPT pro shrnutí obsahu</string>
+    <string name="setting_summary_summary_gpt_type">Vyberte engine AI pro shrnutí obsahu</string>
     <string name="menu_summarize">Shrnout</string>
     <string name="setting_title_remote_query">Akce vzdáleného dotazu</string>
     <string name="sc_disable_adblock_short">Bez AdBlock</string>

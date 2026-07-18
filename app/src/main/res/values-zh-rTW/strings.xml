@@ -311,7 +311,7 @@
     <string name="no_saved_pages">尚無儲存的網頁</string>
     <string name="setting_summary_import_appData">選擇先前匯出的 zip 檔案來匯入應用程式資料</string>
     <string name="backup_category_all_preferences">所有偏好設定</string>
-    <string name="backup_category_gpt_settings">GPT 設定</string>
+    <string name="backup_category_gpt_settings">生成式 AI</string>
     <string name="backup_category_bookmarks">書籤</string>
     <string name="backup_category_history">歷史紀錄</string>
     <string name="dialog_title_backup_categories">選擇要備份的資料</string>
@@ -331,7 +331,7 @@
     <string name="setting_summary_userAgent_toggle">啟用自訂的 Useragent</string>
     <string name="content_adjustment">網頁內容調整</string>
     <string name="share_save">分享或儲存</string>
-    <string name="setting_title_chat_gpt">GPT功能</string>
+    <string name="setting_title_chat_gpt">生成式 AI</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI Key</string>
     <string name="setting_summary_edit_gpt_api_key">輸入OpenAI Key以使用相關的功能</string>
     <string name="gpt_api_key_not_set">請在設定中加入OpenAI Key</string>
@@ -347,7 +347,7 @@
     <string name="translate_image_key">Key for translate image</string>
     <string name="papago_language_setting">語言設定</string>
     <string name="toggle_touch_turn_page">開關點擊翻頁</string>
-    <string name="use_it_on_dict_search">字典查詢時，使用GPT</string>
+    <string name="use_it_on_dict_search">字典查詢時，使用 AI</string>
     <string name="setting_summary_search_in_dict">在其他App中選取文字時，使用此功能</string>
     <string name="hide_statusbar">隱藏系統狀態列</string>
     <string name="setting_summary_hide_statusbar">總是隱藏系統狀態列</string>
@@ -373,9 +373,9 @@
     <string name="setting_summary_gpt_prompt_for_web_page">輸入提示處理網頁全文。例：請將下面內容摘要成300字</string>
     <string name="setting_title_next_tab">顯示下個分頁</string>
     <string name="setting_summary_next_tab">當分頁被關閉時，顯示下個分頁(未勾選則顯示前分頁)</string>
-    <string name="setting_title_gpt_action_list">GPT功能列表</string>
+    <string name="setting_title_gpt_action_list">AI 功能列表</string>
     <string name="setting_summary_gpt_action_list">建立不同提示詞，使其提供各種結果</string>
-    <string name="gpt_actions_title">ChatGPT操作設定</string>
+    <string name="gpt_actions_title">AI 操作設定</string>
     <string name="text_select">選擇文字</string>
     <string name="show_context_menu_icons">顯示功能選單上的圖案</string>
     <string name="setting_summary_show_context_menu_icons">顯示或隱藏功能選單上的圖案</string>
@@ -415,11 +415,11 @@
     <string name="setting_title_gemini_key">Gemini Api Key</string>
     <string name="setting_summary_gemini_key">Input Gemini API Key</string>
     <string name="setting_title_other_model_name">Alternative Model Name</string>
-    <string name="setting_summary_other_model_name">Input model name for alternaltive gpt server</string>
+    <string name="setting_summary_other_model_name">Input model name for alternative server</string>
     <string name="setting_title_gemini_model_name">Gemini Model Name</string>
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">Gpt 查詢歷史記錄</string>
-    <string name="setting_summary_gpt_query_list">已儲存的Gpt回傳結果</string>
+    <string name="setting_title_gpt_query_list">AI 查詢歷史記錄</string>
+    <string name="setting_summary_gpt_query_list">已儲存的 AI 回傳結果</string>
     <string name="select_sentence">選取句子</string>
     <string name="select_paragraph">選取段落</string>
     <string name="setting_app_locale">介面語面</string>
@@ -515,7 +515,7 @@
     <string name="folder_name">書籤目錄名稱</string>
     <string name="google_gemini">Google Gemini</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">拖曳以重新排列 ChatGPT 動作</string>
+    <string name="gpt_action_drag_handle">拖曳以重新排列 AI 動作</string>
     <string name="gpt_scope">範圍</string>
     <string name="gpt_scope_text_selection">選取文字</string>
     <string name="gpt_scope_whole_page">整個網頁</string>

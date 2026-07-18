@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -202,7 +202,7 @@
     <string name="page_down">עמוד למטה</string>
     <string name="setting_summary_import_appData">ייבוא נתוני אפליקציה על ידי בחירת קובץ zip עם נתונים שיוצאו בעבר</string>
     <string name="backup_category_all_preferences">כל ההעדפות</string>
-    <string name="backup_category_gpt_settings">הגדרות GPT</string>
+    <string name="backup_category_gpt_settings">בינה מלאכותית יוצרת</string>
     <string name="backup_category_bookmarks">סימניות</string>
     <string name="backup_category_history">היסטוריה</string>
     <string name="dialog_title_backup_categories">בחר נתונים לגיבוי</string>
@@ -383,7 +383,7 @@
     <string name="setting_summary_userAgent_toggle">הפעלת User Agent מותאם</string>
     <string name="content_adjustment">התאמת תוכן</string>
     <string name="share_save"><![CDATA[שיתוף ושמירה]]></string>
-    <string name="setting_title_chat_gpt">הגדרות GPT</string>
+    <string name="setting_title_chat_gpt">בינה מלאכותית יוצרת</string>
     <string name="setting_title_edit_gpt_api_key">מפתח OpenAI</string>
     <string name="setting_summary_edit_gpt_api_key">הזן מפתח כדי להשתמש בתכונה זו</string>
     <string name="gpt_api_key_not_set">הוסף מפתח OpenAI בהגדרות</string>
@@ -404,8 +404,8 @@
     <string name="translate_image_key_summary">הזן מפתח נדרש לשימוש בתכונת תרגום תמונות</string>
     <string name="papago_language_setting">הגדרת שפה</string>
     <string name="toggle_touch_turn_page">החלפת הפיכת עמוד במגע</string>
-    <string name="use_it_on_dict_search">שימוש ב-ChatGPT בחיפוש מילון</string>
-    <string name="setting_summary_search_in_dict">בעת חיפוש בקוראים, שימוש ב-ChatGPT לחיפוש תוצאות</string>
+    <string name="use_it_on_dict_search">שימוש ב-AI בחיפוש מילון</string>
+    <string name="setting_summary_search_in_dict">בעת חיפוש בקוראים, שימוש ב-AI לחיפוש תוצאות</string>
     <string name="hide_statusbar">הסתרת שורת המצב של המערכת</string>
     <string name="setting_summary_hide_statusbar">הסתרת שורת המצב של המערכת תמיד</string>
     <string name="enable_touch_area_as_arrow_key">לחיצה ארוכה כמקש ← →</string>
@@ -451,17 +451,17 @@
     <string name="setting_title_gemini_key">מפתח Gemini API</string>
     <string name="setting_summary_gemini_key">הזן מפתח Gemini API</string>
     <string name="setting_title_other_model_name">שם מודל חלופי</string>
-    <string name="setting_summary_other_model_name">הזן שם מודל עבור שרת GPT חלופי</string>
+    <string name="setting_summary_other_model_name">הזן שם מודל עבור שרת חלופי</string>
     <string name="setting_title_gemini_model_name">שם מודל Gemini</string>
     <string name="setting_summary_gemini_model_name">הזן שם מודל Gemini (ברירת מחדל: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">היסטוריית תוצאות GPT</string>
-    <string name="setting_summary_gpt_query_list">תוצאות שאילתות GPT שנשמרו</string>
+    <string name="setting_title_gpt_query_list">היסטוריית תוצאות AI</string>
+    <string name="setting_summary_gpt_query_list">תוצאות שאילתות AI שנשמרו</string>
     <string name="select_sentence">בחירת משפט</string>
     <string name="select_paragraph">בחירת פסקה</string>
     <string name="setting_app_locale">שפת האפליקציה</string>
     <string name="setting_summary_app_locale">שינוי שפת הממשק</string>
     <string name="drag_to_reorder">גרור לסידור מחדש של סימניות</string>
-    <string name="gpt_action_drag_handle">גרור לסידור מחדש של פעולות ChatGPT</string>
+    <string name="gpt_action_drag_handle">גרור לסידור מחדש של פעולות AI</string>
     <string name="page_ai">AI לעמוד</string>
     <string name="page_ai_action_title">פעולות AI לעמוד</string>
     <string name="toolbar_time">שעה נוכחית</string>
@@ -520,7 +520,7 @@
     <string name="setting_summary_web_processing_gpt_type">בחירת מנוע לעיבוד תוכן אינטרנט</string>
     <string name="self_hosted">מארח עצמי</string>
     <string name="summary_gpt_type">מנוע AI לסיכום</string>
-    <string name="setting_summary_summary_gpt_type">בחירת מנוע GPT לסיכום תוכן</string>
+    <string name="setting_summary_summary_gpt_type">בחירת מנוע AI לסיכום תוכן</string>
     <string name="menu_summarize">סיכום</string>
     <string name="setting_title_remote_query">פעולת שאילתה מרוחקת</string>
     <string name="sc_disable_adblock_short">ללא AdBlock</string>

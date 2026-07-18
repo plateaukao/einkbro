@@ -138,9 +138,9 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="toast_downloadComplete">Download vollständig. Dateimanager öffnen?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Hinzufügen</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -360,7 +360,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_userAgent_toggle">Eigenen User Agent aktivieren</string>
     <string name="content_adjustment">Inhaltsanpassung</string>
     <string name="share_save"><![CDATA[Teilen & Speichern]]></string>
-    <string name="setting_title_chat_gpt">GPT-Einstellungen</string>
+    <string name="setting_title_chat_gpt">Generative KI</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI-Schlüssel</string>
     <string name="setting_summary_edit_gpt_api_key">Schlüssel eingeben, um diese Funktion zu nutzen</string>
     <string name="gpt_api_key_not_set">OpenAI-Schlüssel in Einstellungen hinzufügen</string>
@@ -381,8 +381,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="translate_image_key_summary">Notwendigen Schlüssel eingeben, um die Bildübersetzungsfunktion zu nutzen</string>
     <string name="papago_language_setting">Spracheinstellung</string>
     <string name="toggle_touch_turn_page">Touch-Seitenumblättern umschalten</string>
-    <string name="use_it_on_dict_search">ChatGPT in der Wörterbuchsuche verwenden</string>
-    <string name="setting_summary_search_in_dict">Beim Suchen in Readern ChatGPT für Suchergebnisse verwenden</string>
+    <string name="use_it_on_dict_search">KI in der Wörterbuchsuche verwenden</string>
+    <string name="setting_summary_search_in_dict">Beim Suchen in Readern KI für Suchergebnisse verwenden</string>
     <string name="hide_statusbar">System-Statusleiste ausblenden</string>
     <string name="setting_summary_hide_statusbar">System-Statusleiste immer ausblenden</string>
     <string name="enable_touch_area_as_arrow_key">Langes Drücken als ← → Taste</string>
@@ -428,17 +428,17 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_title_gemini_key">Gemini API-Schlüssel</string>
     <string name="setting_summary_gemini_key">Gemini API-Schlüssel eingeben</string>
     <string name="setting_title_other_model_name">Alternativer Modellname</string>
-    <string name="setting_summary_other_model_name">Modellnamen für alternativen GPT-Server eingeben</string>
+    <string name="setting_summary_other_model_name">Modellnamen für alternativen Server eingeben</string>
     <string name="setting_title_gemini_model_name">Gemini-Modellname</string>
     <string name="setting_summary_gemini_model_name">Gemini-Modellnamen eingeben (Standard: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">GPT-Ergebnisverlauf</string>
-    <string name="setting_summary_gpt_query_list">Gespeicherte GPT-Abfrageergebnisse</string>
+    <string name="setting_title_gpt_query_list">KI-Ergebnisverlauf</string>
+    <string name="setting_summary_gpt_query_list">Gespeicherte KI-Abfrageergebnisse</string>
     <string name="select_sentence">Satz auswählen</string>
     <string name="select_paragraph">Absatz auswählen</string>
     <string name="setting_app_locale">App-Sprache</string>
     <string name="setting_summary_app_locale">Oberflächensprache ändern</string>
     <string name="drag_to_reorder">Ziehen, um Lesezeichen neu anzuordnen</string>
-    <string name="gpt_action_drag_handle">Ziehen, um ChatGPT-Aktionen neu anzuordnen</string>
+    <string name="gpt_action_drag_handle">Ziehen, um KI-Aktionen neu anzuordnen</string>
     <string name="page_ai">Seiten-KI</string>
     <string name="page_ai_action_title">Seiten-KI-Aktionen</string>
     <string name="toolbar_time">Aktuelle Uhrzeit</string>
@@ -497,7 +497,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_web_processing_gpt_type">Engine für die Verarbeitung von Webinhalten auswählen</string>
     <string name="self_hosted">Selbst gehostet</string>
     <string name="summary_gpt_type">KI-Engine für Zusammenfassungen</string>
-    <string name="setting_summary_summary_gpt_type">GPT-Engine für Inhaltszusammenfassung auswählen</string>
+    <string name="setting_summary_summary_gpt_type">KI-Engine für Inhaltszusammenfassung auswählen</string>
     <string name="menu_summarize">Zusammenfassen</string>
     <string name="setting_title_remote_query">Fernabfrage-Aktion</string>
     <string name="sc_disable_adblock_short">Kein AdBlock</string>
@@ -523,7 +523,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="save_history_mode_disabled">Nicht speichern</string>
     <string name="setting_summary_import_appData">App-Daten importieren, indem eine ZIP-Datei mit zuvor exportierten Daten ausgewählt wird</string>
     <string name="backup_category_all_preferences">Alle Einstellungen</string>
-    <string name="backup_category_gpt_settings">GPT-Einstellungen</string>
+    <string name="backup_category_gpt_settings">Generative KI</string>
     <string name="backup_category_bookmarks">Lesezeichen</string>
     <string name="backup_category_history">Verlauf</string>
     <string name="dialog_title_backup_categories">Daten zum Sichern auswählen</string>

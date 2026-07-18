@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -247,7 +247,7 @@
     <string name="google_in_place">Google in-plek</string>
     <string name="google_translate">Google Vertaal</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">Sleep om ChatGPT-aksies te herrangskik</string>
+    <string name="gpt_action_drag_handle">Sleep om KI-aksies te herrangskik</string>
     <string name="gpt_api_key_not_set">Voeg OpenAI-sleutel by in Instellings</string>
     <string name="gpt_scope">Omvang</string>
     <string name="gpt_scope_text_selection">Tekskeuse</string>
@@ -372,11 +372,11 @@
     <string name="setting_summary_gpt_model_name">Verstek is gpt-4.1. Voer ander modelnaam in indien nodig</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruksies wanneer gpt-4o-mini-tts-model gebruik word</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Voer prompt in om volledige webbladsy-inhoud te verwerk (bv. \"Som op in 300 woorde:\")</string>
-    <string name="setting_summary_gpt_query_list">Gestoorde GPT-navraagresultate</string>
+    <string name="setting_summary_gpt_query_list">Gestoorde KI-navraagresultate</string>
     <string name="setting_summary_hide_statusbar">Versteek altyd die stelsel-statusbalk</string>
     <string name="setting_summary_import_appData">Voer programdata in deur \'n voorheen uitgevoerde zip-lêer te kies</string>
     <string name="backup_category_all_preferences">Alle voorkeure</string>
-    <string name="backup_category_gpt_settings">GPT-instellings</string>
+    <string name="backup_category_gpt_settings">Generatiewe KI</string>
     <string name="backup_category_bookmarks">Boekmerke</string>
     <string name="backup_category_history">Geskiedenis</string>
     <string name="dialog_title_backup_categories">Kies data om te rugsteun</string>
@@ -390,7 +390,7 @@
     <string name="setting_summary_nav_pos_custom">Aangepas</string>
     <string name="setting_summary_nav_pos_not_show">Moenie wys nie</string>
     <string name="setting_summary_next_tab">Wys volgende oortjie wanneer huidige een gesluit word (anders wys vorige een)</string>
-    <string name="setting_summary_other_model_name">Voer modelnaam in vir alternatiewe GPT-bediener</string>
+    <string name="setting_summary_other_model_name">Voer modelnaam in vir alternatiewe bediener</string>
     <string name="setting_summary_page_left_value">Hoeveel hoogte moet gereserveer word wanneer na volgende bladsy blaai</string>
     <string name="setting_summary_plus_behavior">Wat moet vertoon word wanneer \'n nuwe oortjie bygevoeg word</string>
     <string name="setting_summary_prune_query_parameter">Navraagparameters soos utm_medium, utm_source, ens. sal uit URL verwyder word</string>
@@ -398,14 +398,14 @@
     <string name="setting_summary_screen_awake">Hou skerm altyd wakker</string>
     <string name="setting_summary_search_engine">Kies \'n soekenjin</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_in_dict">Wanneer in lesers gesoek word, gebruik ChatGPT vir soekresultate</string>
+    <string name="setting_summary_search_in_dict">Wanneer in lesers gesoek word, gebruik KI vir soekresultate</string>
     <string name="setting_summary_search_in_same_tab">Gebruik dieselfde oortjie vir eksterne soektog</string>
     <string name="setting_summary_search_suggestion">Wys soekvoorstelle terwyl inhoud ingevoer word</string>
     <string name="setting_summary_show_bookmarks_input_bar">Wys boekmerktreffers wanneer teks in die invoerbalk getik word</string>
     <string name="setting_summary_show_default_text_menu">Na tekskeuse, wys stelsel se verstekaksiemenu</string>
     <string name="setting_summary_show_tab_bar">Wys altyd oortjiebalk bo nutsbalk</string>
     <string name="setting_summary_split_search_setting">Pasgemaakte soek en resultaatopening in verdeelde skerm</string>
-    <string name="setting_summary_summary_gpt_type">Kies GPT-enjin vir inhoudopsomming</string>
+    <string name="setting_summary_summary_gpt_type">Kies KI-enjin vir inhoudopsomming</string>
     <string name="setting_summary_text_wrap_reflow">Hervloei teks wanneer gezoem word</string>
     <string name="setting_summary_translated_langs">Pas tale aan vir vertaling (bv. en, fr, de, zh-TW, zh-CN)</string>
     <string name="setting_summary_translation_style">Kies die styl wat jy verkies vir paragraafvertaling</string>
@@ -425,7 +425,7 @@
     <string name="setting_summary_zoom_in_custom_view">Aktiveer 2-vinger-zoem in volskermmodus (verstek: af)</string>
     <string name="setting_title_auto_fill_form">Outomaties vormdata invul</string>
     <string name="setting_title_background_loading">Laai nie-aktiewe oortjies</string>
-    <string name="setting_title_chat_gpt">GPT-instellings</string>
+    <string name="setting_title_chat_gpt">Generatiewe KI</string>
     <string name="setting_title_chat_stream">Stroomantwoord</string>
     <string name="setting_title_custom_gpt_url">Pasgemaakte gasheer-URL</string>
     <string name="setting_title_debug">Ontfout WebView</string>
@@ -445,7 +445,7 @@
     <string name="setting_title_gpt_model_name">OpenAI-modelnaam</string>
     <string name="setting_title_gpt_prompt_for_tts">Oudio-uitvoerinstruksies</string>
     <string name="setting_title_gpt_prompt_for_web_page">Prompt vir volledige webbladsyinhoud</string>
-    <string name="setting_title_gpt_query_list">GPT-resultaatgeskiedenis</string>
+    <string name="setting_title_gpt_query_list">KI-resultaatgeskiedenis</string>
     <string name="setting_title_import_bookmarks">Voer boekmerke in</string>
     <string name="setting_title_incognito">Incognito-modus</string>
     <string name="setting_title_next_tab">Wys volgende oortjie</string>
@@ -528,7 +528,7 @@
     <string name="tts_type_system">Ingeboude</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URL is leeg</string>
-    <string name="use_it_on_dict_search">Gebruik ChatGPT in woordeboeksoek</string>
+    <string name="use_it_on_dict_search">Gebruik KI in woordeboeksoek</string>
     <string name="user_name">Gebruikersnaam</string>
     <string name="vertical_line">Vertikale lyn</string>
     <string name="vertical_read">Vertikale modus</string>

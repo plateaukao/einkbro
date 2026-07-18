@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">İndirme tamamlandı. Dosya yöneticisi açılsın mı?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Ekle</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -202,7 +202,7 @@
     <string name="page_down">Sayfa Aşağı</string>
     <string name="setting_summary_import_appData">Daha önce dışa aktarılmış verileri içeren bir zip dosyası seçerek uygulama verilerini içe aktarın</string>
     <string name="backup_category_all_preferences">Tüm Tercihler</string>
-    <string name="backup_category_gpt_settings">GPT Ayarları</string>
+    <string name="backup_category_gpt_settings">Üretken Yapay Zeka</string>
     <string name="backup_category_bookmarks">Yer İmleri</string>
     <string name="backup_category_history">Geçmiş</string>
     <string name="dialog_title_backup_categories">Yedeklenecek verileri seçin</string>
@@ -383,7 +383,7 @@
     <string name="setting_summary_userAgent_toggle">Özel kullanıcı aracısını etkinleştir</string>
     <string name="content_adjustment">İçerik Ayarı</string>
     <string name="share_save"><![CDATA[Paylaş ve Kaydet]]></string>
-    <string name="setting_title_chat_gpt">GPT Ayarları</string>
+    <string name="setting_title_chat_gpt">Üretken Yapay Zeka</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI anahtarı</string>
     <string name="setting_summary_edit_gpt_api_key">Bu özelliği kullanmak için anahtar girin</string>
     <string name="gpt_api_key_not_set">Ayarlara OpenAI anahtarı ekleyin</string>
@@ -404,8 +404,8 @@
     <string name="translate_image_key_summary">Görüntü çeviri özelliğini kullanmak için gerekli anahtarı girin</string>
     <string name="papago_language_setting">Dil Ayarı</string>
     <string name="toggle_touch_turn_page">Dokunarak sayfa çevirmeyi aç/kapat</string>
-    <string name="use_it_on_dict_search">Sözlük aramasında ChatGPT kullan</string>
-    <string name="setting_summary_search_in_dict">Okuyucularda ararken sonuçlar için ChatGPT kullan</string>
+    <string name="use_it_on_dict_search">Sözlük aramasında yapay zeka kullan</string>
+    <string name="setting_summary_search_in_dict">Okuyucularda ararken sonuçlar için yapay zeka kullan</string>
     <string name="hide_statusbar">Sistem durum çubuğunu gizle</string>
     <string name="setting_summary_hide_statusbar">Sistem durum çubuğunu her zaman gizle</string>
     <string name="enable_touch_area_as_arrow_key">Uzun basma ← → tuşu olarak</string>
@@ -451,17 +451,17 @@
     <string name="setting_title_gemini_key">Gemini API anahtarı</string>
     <string name="setting_summary_gemini_key">Gemini API anahtarını girin</string>
     <string name="setting_title_other_model_name">Alternatif model adı</string>
-    <string name="setting_summary_other_model_name">Alternatif GPT sunucusu için model adı girin</string>
+    <string name="setting_summary_other_model_name">Alternatif sunucu için model adı girin</string>
     <string name="setting_title_gemini_model_name">Gemini model adı</string>
     <string name="setting_summary_gemini_model_name">Gemini model adını girin (varsayılan: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">GPT sonuç geçmişi</string>
-    <string name="setting_summary_gpt_query_list">Kaydedilmiş GPT sorgu sonuçları</string>
+    <string name="setting_title_gpt_query_list">Yapay zeka sonuç geçmişi</string>
+    <string name="setting_summary_gpt_query_list">Kaydedilmiş yapay zeka sorgu sonuçları</string>
     <string name="select_sentence">Cümle Seç</string>
     <string name="select_paragraph">Paragraf Seç</string>
     <string name="setting_app_locale">Uygulama dili</string>
     <string name="setting_summary_app_locale">Arayüz dilini değiştir</string>
     <string name="drag_to_reorder">Yer imlerini yeniden sıralamak için sürükleyin</string>
-    <string name="gpt_action_drag_handle">ChatGPT eylemlerini yeniden sıralamak için sürükleyin</string>
+    <string name="gpt_action_drag_handle">Yapay zeka eylemlerini yeniden sıralamak için sürükleyin</string>
     <string name="page_ai">Sayfa AI</string>
     <string name="page_ai_action_title">Sayfa AI Eylemleri</string>
     <string name="toolbar_time">Geçerli saat</string>
@@ -520,7 +520,7 @@
     <string name="setting_summary_web_processing_gpt_type">Web içeriğini işlemek için motoru seçin</string>
     <string name="self_hosted">Kendi Sunucusu</string>
     <string name="summary_gpt_type">Özetleme için yapay zeka motoru</string>
-    <string name="setting_summary_summary_gpt_type">İçerik özetleme için GPT motorunu seçin</string>
+    <string name="setting_summary_summary_gpt_type">İçerik özetleme için yapay zeka motorunu seçin</string>
     <string name="menu_summarize">Özetle</string>
     <string name="setting_title_remote_query">Uzak Sorgu Eylemi</string>
     <string name="sc_disable_adblock_short">AdBlock Yok</string>

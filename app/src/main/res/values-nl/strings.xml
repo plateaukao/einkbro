@@ -145,9 +145,9 @@
     <string name="toast_downloadComplete">Downloaden voltooid. Wil je bestandsbeheer openen?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Toevoegen</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -367,7 +367,7 @@
     <string name="setting_summary_userAgent_toggle">Aangepaste User Agent inschakelen</string>
     <string name="content_adjustment">Inhoudsaanpassing</string>
     <string name="share_save"><![CDATA[Delen & Opslaan]]></string>
-    <string name="setting_title_chat_gpt">GPT-instellingen</string>
+    <string name="setting_title_chat_gpt">Generatieve AI</string>
     <string name="setting_title_edit_gpt_api_key">OpenAI-sleutel</string>
     <string name="setting_summary_edit_gpt_api_key">Sleutel invoeren om deze functie te gebruiken</string>
     <string name="gpt_api_key_not_set">Voeg OpenAI-sleutel toe in Instellingen</string>
@@ -388,8 +388,8 @@
     <string name="translate_image_key_summary">Benodigde sleutel invoeren om de beeldvertaalfunctie te gebruiken</string>
     <string name="papago_language_setting">Taalinstelling</string>
     <string name="toggle_touch_turn_page">Aanraak pagina omslaan wisselen</string>
-    <string name="use_it_on_dict_search">ChatGPT gebruiken bij woordenboekzoeken</string>
-    <string name="setting_summary_search_in_dict">Bij het zoeken in lezers ChatGPT gebruiken voor zoekresultaten</string>
+    <string name="use_it_on_dict_search">AI gebruiken bij woordenboekzoeken</string>
+    <string name="setting_summary_search_in_dict">Bij het zoeken in lezers AI gebruiken voor zoekresultaten</string>
     <string name="hide_statusbar">Systeemstatusbalk verbergen</string>
     <string name="setting_summary_hide_statusbar">Systeemstatusbalk altijd verbergen</string>
     <string name="enable_touch_area_as_arrow_key">Lang indrukken als ← → toets</string>
@@ -435,17 +435,17 @@
     <string name="setting_title_gemini_key">Gemini API-sleutel</string>
     <string name="setting_summary_gemini_key">Gemini API-sleutel invoeren</string>
     <string name="setting_title_other_model_name">Alternatieve modelnaam</string>
-    <string name="setting_summary_other_model_name">Modelnaam voor alternatieve GPT-server invoeren</string>
+    <string name="setting_summary_other_model_name">Modelnaam voor alternatieve server invoeren</string>
     <string name="setting_title_gemini_model_name">Gemini-modelnaam</string>
     <string name="setting_summary_gemini_model_name">Gemini-modelnaam invoeren (standaard: gemini-2.5-flash)</string>
-    <string name="setting_title_gpt_query_list">GPT-resultaatgeschiedenis</string>
-    <string name="setting_summary_gpt_query_list">Opgeslagen GPT-queryresultaten</string>
+    <string name="setting_title_gpt_query_list">AI-resultaatgeschiedenis</string>
+    <string name="setting_summary_gpt_query_list">Opgeslagen AI-queryresultaten</string>
     <string name="select_sentence">Zin selecteren</string>
     <string name="select_paragraph">Alinea selecteren</string>
     <string name="setting_app_locale">App-taal</string>
     <string name="setting_summary_app_locale">Interfacetaal wijzigen</string>
     <string name="drag_to_reorder">Slepen om bladwijzers te herordenen</string>
-    <string name="gpt_action_drag_handle">Slepen om ChatGPT-acties te herordenen</string>
+    <string name="gpt_action_drag_handle">Slepen om AI-acties te herordenen</string>
     <string name="page_ai">Pagina-AI</string>
     <string name="page_ai_action_title">Pagina-AI-acties</string>
     <string name="toolbar_time">Huidige tijd</string>
@@ -504,7 +504,7 @@
     <string name="setting_summary_web_processing_gpt_type">Engine kiezen voor het verwerken van webinhoud</string>
     <string name="self_hosted">Zelf gehost</string>
     <string name="summary_gpt_type">AI-engine voor samenvattingen</string>
-    <string name="setting_summary_summary_gpt_type">GPT-engine kiezen voor inhoud samenvatten</string>
+    <string name="setting_summary_summary_gpt_type">AI-engine kiezen voor inhoud samenvatten</string>
     <string name="menu_summarize">Samenvatten</string>
     <string name="setting_title_remote_query">Externe query-actie</string>
     <string name="sc_disable_adblock_short">Geen AdBlock</string>
@@ -530,7 +530,7 @@
     <string name="save_history_mode_disabled">Niet opslaan</string>
     <string name="setting_summary_import_appData">App-gegevens importeren door een ZIP-bestand te kiezen met eerder geëxporteerde gegevens</string>
     <string name="backup_category_all_preferences">Alle voorkeuren</string>
-    <string name="backup_category_gpt_settings">GPT-instellingen</string>
+    <string name="backup_category_gpt_settings">Generatieve AI</string>
     <string name="backup_category_bookmarks">Bladwijzers</string>
     <string name="backup_category_history">Geschiedenis</string>
     <string name="dialog_title_backup_categories">Selecteer gegevens om te back-uppen</string>

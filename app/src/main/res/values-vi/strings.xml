@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -247,7 +247,7 @@
     <string name="google_in_place">Google tại chỗ</string>
     <string name="google_translate">Google Dịch</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">Kéo để sắp xếp lại hành động ChatGPT</string>
+    <string name="gpt_action_drag_handle">Kéo để sắp xếp lại hành động AI</string>
     <string name="gpt_api_key_not_set">Thêm khóa OpenAI trong Cài đặt</string>
     <string name="gpt_scope">Phạm vi</string>
     <string name="gpt_scope_text_selection">Văn bản đã chọn</string>
@@ -372,11 +372,11 @@
     <string name="setting_summary_gpt_model_name">Mặc định là gpt-4.1. Nhập tên mô hình khác nếu cần</string>
     <string name="setting_summary_gpt_prompt_for_tts">Hướng dẫn khi dùng mô hình gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Nhập lệnh để xử lý toàn bộ nội dung trang web (ví dụ: \"Tóm tắt trong 300 từ:\")</string>
-    <string name="setting_summary_gpt_query_list">Kết quả truy vấn GPT đã lưu</string>
+    <string name="setting_summary_gpt_query_list">Kết quả truy vấn AI đã lưu</string>
     <string name="setting_summary_hide_statusbar">Luôn ẩn thanh trạng thái hệ thống</string>
     <string name="setting_summary_import_appData">Nhập dữ liệu ứng dụng bằng cách chọn tệp zip đã xuất trước đó</string>
     <string name="backup_category_all_preferences">Tất cả tùy chọn</string>
-    <string name="backup_category_gpt_settings">Cài đặt GPT</string>
+    <string name="backup_category_gpt_settings">AI tạo sinh</string>
     <string name="backup_category_bookmarks">Dấu trang</string>
     <string name="backup_category_history">Lịch sử</string>
     <string name="dialog_title_backup_categories">Chọn dữ liệu để sao lưu</string>
@@ -390,7 +390,7 @@
     <string name="setting_summary_nav_pos_custom">Tùy chỉnh</string>
     <string name="setting_summary_nav_pos_not_show">Không hiển thị</string>
     <string name="setting_summary_next_tab">Hiển thị tab tiếp theo khi đóng tab hiện tại (ngược lại hiển thị tab trước)</string>
-    <string name="setting_summary_other_model_name">Nhập tên mô hình cho máy chủ GPT thay thế</string>
+    <string name="setting_summary_other_model_name">Nhập tên mô hình cho máy chủ thay thế</string>
     <string name="setting_summary_page_left_value">Bao nhiêu chiều cao cần giữ lại khi chuyển sang trang tiếp theo</string>
     <string name="setting_summary_plus_behavior">Nội dung hiển thị khi thêm tab mới</string>
     <string name="setting_summary_prune_query_parameter">Các tham số truy vấn như utm_medium, utm_source, v.v. sẽ bị xóa khỏi URL</string>
@@ -398,14 +398,14 @@
     <string name="setting_summary_screen_awake">Giữ màn hình luôn bật</string>
     <string name="setting_summary_search_engine">Chọn công cụ tìm kiếm</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_in_dict">Khi tìm kiếm trong trình đọc, dùng ChatGPT để tìm kết quả</string>
+    <string name="setting_summary_search_in_dict">Khi tìm kiếm trong trình đọc, dùng AI để tìm kết quả</string>
     <string name="setting_summary_search_in_same_tab">Dùng cùng tab cho tìm kiếm từ bên ngoài</string>
     <string name="setting_summary_search_suggestion">Khi nhập nội dung, hiển thị gợi ý tìm kiếm</string>
     <string name="setting_summary_show_bookmarks_input_bar">Hiển thị dấu trang phù hợp khi nhập văn bản trên thanh nhập</string>
     <string name="setting_summary_show_default_text_menu">Sau khi chọn văn bản, hiển thị menu hành động mặc định của hệ thống</string>
     <string name="setting_summary_show_tab_bar">Luôn hiển thị thanh tab phía trên thanh công cụ</string>
     <string name="setting_summary_split_search_setting">Tìm kiếm tùy chỉnh và mở kết quả trong màn hình chia đôi</string>
-    <string name="setting_summary_summary_gpt_type">Chọn engine GPT cho tóm tắt nội dung</string>
+    <string name="setting_summary_summary_gpt_type">Chọn engine AI cho tóm tắt nội dung</string>
     <string name="setting_summary_text_wrap_reflow">Tự xuống dòng khi phóng to</string>
     <string name="setting_summary_translated_langs">Tùy chỉnh ngôn ngữ dịch (ví dụ: en, fr, de, zh-TW, zh-CN)</string>
     <string name="setting_summary_translation_style">Chọn kiểu bạn thích cho bản dịch đoạn văn</string>
@@ -425,7 +425,7 @@
     <string name="setting_summary_zoom_in_custom_view">Bật phóng to 2 ngón trong chế độ toàn màn hình (mặc định: tắt)</string>
     <string name="setting_title_auto_fill_form">Tự động điền biểu mẫu</string>
     <string name="setting_title_background_loading">Tải tab không hoạt động</string>
-    <string name="setting_title_chat_gpt">Cài đặt GPT</string>
+    <string name="setting_title_chat_gpt">AI tạo sinh</string>
     <string name="setting_title_chat_stream">Phản hồi theo luồng</string>
     <string name="setting_title_custom_gpt_url">URL máy chủ tùy chỉnh</string>
     <string name="setting_title_debug">Gỡ lỗi WebView</string>
@@ -445,7 +445,7 @@
     <string name="setting_title_gpt_model_name">Tên mô hình OpenAI</string>
     <string name="setting_title_gpt_prompt_for_tts">Hướng dẫn đầu ra âm thanh</string>
     <string name="setting_title_gpt_prompt_for_web_page">Lệnh cho nội dung toàn trang</string>
-    <string name="setting_title_gpt_query_list">Lịch sử kết quả GPT</string>
+    <string name="setting_title_gpt_query_list">Lịch sử kết quả AI</string>
     <string name="setting_title_import_bookmarks">Nhập dấu trang</string>
     <string name="setting_title_incognito">Chế độ ẩn danh</string>
     <string name="setting_title_next_tab">Hiển thị tab tiếp theo</string>
@@ -528,7 +528,7 @@
     <string name="tts_type_system">Tích hợp</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URL trống</string>
-    <string name="use_it_on_dict_search">Dùng ChatGPT trong tìm kiếm từ điển</string>
+    <string name="use_it_on_dict_search">Dùng AI trong tìm kiếm từ điển</string>
     <string name="user_name">Tên người dùng</string>
     <string name="vertical_line">Đường dọc</string>
     <string name="vertical_read">Chế độ dọc</string>

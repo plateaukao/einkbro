@@ -146,9 +146,9 @@
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <!-- Whitelist -->
     <string name="whitelist_add">Add</string>
-    <string name="setting_title_gpt_action_list">ChatGPT action definition</string>
-    <string name="setting_summary_gpt_action_list">Define different prompts for different ChatGPT actions.</string>
-    <string name="gpt_actions_title">ChatGPT Actions</string>
+    <string name="setting_title_gpt_action_list">AI action definition</string>
+    <string name="setting_summary_gpt_action_list">Define different prompts for different AI actions.</string>
+    <string name="gpt_actions_title">AI Actions</string>
     <string name="text_select">Select text</string>
     <string name="show_context_menu_icons">Show icons on action menus</string>
     <string name="setting_summary_show_context_menu_icons">Show/hide icons on action menus to make it simpler.</string>
@@ -246,7 +246,7 @@
     <string name="google_in_place">Google på plats</string>
     <string name="google_translate">Google Translate</string>
     <string name="googleserif">Google Serif</string>
-    <string name="gpt_action_drag_handle">Dra för att ordna om ChatGPT-åtgärder</string>
+    <string name="gpt_action_drag_handle">Dra för att ordna om AI-åtgärder</string>
     <string name="gpt_api_key_not_set">Lägg till OpenAI-nyckel i Inställningar</string>
     <string name="gpt_scope">Omfång</string>
     <string name="gpt_scope_text_selection">Textmarkering</string>
@@ -371,11 +371,11 @@
     <string name="setting_summary_gpt_model_name">Standard är gpt-4.1. Ange annat modellnamn vid behov</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruktioner när gpt-4o-mini-tts-modellen används.</string>
     <string name="setting_summary_gpt_prompt_for_web_page">Ange prompt för att bearbeta hela sidans innehåll (t.ex. \"Sammanfatta det i 300 ord:\")</string>
-    <string name="setting_summary_gpt_query_list">Sparade GPT-frågeresultat</string>
+    <string name="setting_summary_gpt_query_list">Sparade AI-frågeresultat</string>
     <string name="setting_summary_hide_statusbar">Dölj alltid systemets statusfält</string>
     <string name="setting_summary_import_appData">Importera appdata genom att välja en zip-fil med tidigare exporterade data</string>
     <string name="backup_category_all_preferences">Alla inställningar</string>
-    <string name="backup_category_gpt_settings">GPT-inställningar</string>
+    <string name="backup_category_gpt_settings">Generativ AI</string>
     <string name="backup_category_bookmarks">Bokmärken</string>
     <string name="backup_category_history">Historik</string>
     <string name="dialog_title_backup_categories">Välj data att säkerhetskopiera</string>
@@ -389,7 +389,7 @@
     <string name="setting_summary_nav_pos_custom">Anpassad</string>
     <string name="setting_summary_nav_pos_not_show">Visa inte</string>
     <string name="setting_summary_next_tab">Visa nästa flik när aktuell stängs (annars visa föregående)</string>
-    <string name="setting_summary_other_model_name">Ange modellnamn för alternativ GPT-server</string>
+    <string name="setting_summary_other_model_name">Ange modellnamn för alternativ server</string>
     <string name="setting_summary_page_left_value">Hur mycket höjd ska reserveras vid sidbyte (t.ex. 50 eller 10%)</string>
     <string name="setting_summary_plus_behavior">Vad ska visas när en ny flik läggs till</string>
     <string name="setting_summary_prune_query_parameter">Frågeparametrar som utm_medium, utm_source osv. tas bort från URL</string>
@@ -397,14 +397,14 @@
     <string name="setting_summary_screen_awake">Håll skärmen alltid vaken</string>
     <string name="setting_summary_search_engine">Välj en sökmotor</string>
     <string name="setting_summary_search_engine_yandex">Yandex</string>
-    <string name="setting_summary_search_in_dict">Använd ChatGPT för sökresultat i läsare</string>
+    <string name="setting_summary_search_in_dict">Använd AI för sökresultat i läsare</string>
     <string name="setting_summary_search_in_same_tab">Använd samma flik för extern sökning</string>
     <string name="setting_summary_search_suggestion">Under inmatning visas sökförslag</string>
     <string name="setting_summary_show_bookmarks_input_bar">Visa bokmärkesmatchningar vid inmatning i adressfältet</string>
     <string name="setting_summary_show_default_text_menu">Visa systemets standardåtgärdsmeny efter textmarkering</string>
     <string name="setting_summary_show_tab_bar">Visa alltid flikfält ovanför verktygsfältet</string>
     <string name="setting_summary_split_search_setting">Anpassad sökning och öppning av resultat i delad skärm</string>
-    <string name="setting_summary_summary_gpt_type">Välj GPT-motor för innehållssammanfattning</string>
+    <string name="setting_summary_summary_gpt_type">Välj AI-motor för innehållssammanfattning</string>
     <string name="setting_summary_text_wrap_reflow">Ombryt text vid zoom</string>
     <string name="setting_summary_translated_langs">Anpassa språk för översättning (t.ex. en, fr, de, zh-TW, zh-CN)</string>
     <string name="setting_summary_translation_style">Välj stil för styckeöversättning</string>
@@ -424,7 +424,7 @@
     <string name="setting_summary_zoom_in_custom_view">Aktivera 2-finger zoom i helskärmsläge (standard: av)</string>
     <string name="setting_title_auto_fill_form">Fyll i formulärdata automatiskt</string>
     <string name="setting_title_background_loading">Ladda inaktiva flikar</string>
-    <string name="setting_title_chat_gpt">GPT-inställningar</string>
+    <string name="setting_title_chat_gpt">Generativ AI</string>
     <string name="setting_title_chat_stream">Svar i ström</string>
     <string name="setting_title_custom_gpt_url">Anpassad värd-URL</string>
     <string name="setting_title_debug">Felsök WebView</string>
@@ -444,7 +444,7 @@
     <string name="setting_title_gpt_model_name">OpenAI-modellnamn</string>
     <string name="setting_title_gpt_prompt_for_tts">Ljudutgångsinstruktioner</string>
     <string name="setting_title_gpt_prompt_for_web_page">Prompt för hela webbsidans innehåll</string>
-    <string name="setting_title_gpt_query_list">GPT-resultathistorik</string>
+    <string name="setting_title_gpt_query_list">AI-resultathistorik</string>
     <string name="setting_title_import_bookmarks">Importera bokmärken</string>
     <string name="setting_title_incognito">Inkognitoläge</string>
     <string name="setting_title_next_tab">Visa nästa flik</string>
@@ -527,7 +527,7 @@
     <string name="tts_type_system">Inbyggd</string>
     <string name="twitter">Twitter</string>
     <string name="url_empty">URL är tom</string>
-    <string name="use_it_on_dict_search">Använd ChatGPT i ordbokssökning</string>
+    <string name="use_it_on_dict_search">Använd AI i ordbokssökning</string>
     <string name="user_name">Användarnamn</string>
     <string name="vertical_line">Vertikal linje</string>
     <string name="vertical_read">Vertikalt läge</string>
