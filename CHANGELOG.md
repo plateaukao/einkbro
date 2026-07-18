@@ -1,3 +1,25 @@
+### 15.18.0
+#### Features
+* Sync with Google Drive: back up and restore app data from Backup settings; sign-in runs entirely in the browser, no Play Services required
+* Site Settings dialog: per-site AdBlock, Cookies, JavaScript, and desktop mode overrides for the current site; whitelist entries can be edited by tapping; full-screen layout on phones
+* Vertical (CJK) reading mode overhaul: reliable toggle on/off, page turns snap to line boundaries, tate-chu-yoko and better CJK typography, and reader layout settings now apply in vertical mode
+* Reader layout settings dialog on long-press of the reader mode icon: live page margin, line spacing, two-column landscape, font shortcut; reader mode options consolidated there
+* E-ink image optimization: fast CSS-filter mode and a live preview dialog in settings
+* Editing a search result URL prefills just the search query, for all built-in engines and custom ones
+
+#### Improvements
+* Font and style changes apply immediately without reloading the page
+* Renamed "GPT Settings" to "Gen AI", "Statusbar" to "Info bar", and "Start Control" to "Site Settings" in all languages
+
+#### Fixes
+* Clear-on-exit now really clears cookies and site storage
+* Desktop mode presents a complete desktop Chrome fingerprint, so sites no longer serve the mobile/app-jump page
+* Fullscreen video respects the system rotation lock
+* Location prompt waits for the Android permission dialog, so geolocation no longer breaks until restart
+* Translation: fixed a freeze on pages with many visible paragraphs, dropdown menus no longer get corrupted, on-screen content translates first, and the Google widget's "Original text" popup is suppressed
+* Reader mode keeps code blocks whose identifiers are hyperlinks
+* Keyboard opens again in the save-file and Instapaper dialogs
+
 ### 15.17.0
 #### Features
 * AI agent tool upgrade: the LLM agent can now read a page's real HTML source, run JavaScript on the live page, search the web, and export multi-chapter EPUBs

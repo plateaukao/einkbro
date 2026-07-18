@@ -61,11 +61,11 @@
     <li><a href="#settings-behavior">Behavior</a></li>
     <li><a href="#settings-gestures">Gestures</a></li>
     <li><a href="#settings-backup">Backup</a></li>
-    <li><a href="#settings-startcontrol">Start Control</a></li>
+    <li><a href="#settings-startcontrol">Site Settings</a></li>
     <li><a href="#settings-datacontrol">Data Control</a></li>
     <li><a href="#settings-search">Search</a></li>
     <li><a href="#settings-misc">Misc</a></li>
-    <li><a href="#settings-gpt">GPT Settings</a></li>
+    <li><a href="#settings-gpt">Gen AI</a></li>
   </ul>
   <div class="toc-section">Features</div>
   <ul>
@@ -475,13 +475,13 @@
 <a href="images/settings_ui.png" target="_blank"><img src="images/settings_ui.png" alt="UI Settings" class="device-img"></a>
 
 <div class="setting-item"><div class="setting-item__name">App Language</div><div class="setting-item__desc">Change interface language. Default: system language.</div></div>
-<div class="setting-item"><div class="setting-item__name">Hide Statusbar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Always hide the system status bar. Default: off.</div></div>
+<div class="setting-item"><div class="setting-item__name">Hide System Status Bar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Always hide the system status bar. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Desktop Mode</div><div class="setting-item__desc"><span class="tag">Toggle</span> Request desktop versions of websites. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Always Enable Content Zooming</div><div class="setting-item__desc"><span class="tag">Toggle</span> Force all content to be zoomable, even on sites that disable it. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">Show Default Selected Text Menu</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show the system default text selection menu after selecting text. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Show Icons on Action Menus</div><div class="setting-item__desc"><span class="tag">Toggle</span> Show/hide icons in action menus. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">Page Reserved Height</div><div class="setting-item__desc"><span class="tag">Input</span> Pixels or percentage reserved when turning to the next page (overlap for context). Default: <code>80</code>.</div></div>
-<div class="setting-item"><div class="setting-item__name">Padding for Reader Mode</div><div class="setting-item__desc"><span class="tag">Input</span> Padding in px for reader mode content. Default: <code>10</code>.</div></div>
+<div class="setting-item"><div class="setting-item__name">Reader Mode Settings</div><div class="setting-item__desc"><span class="tag">Action</span> Opens the reader layout settings dialog (page margin, line spacing, two columns in landscape, keep extra content, font). The same dialog opens by long-pressing the reader mode icon; changes made here apply on the next reader mode entry.</div></div>
 <div class="setting-item"><div class="setting-item__name">Dark Mode</div><div class="setting-item__desc"><span class="tag">Select</span> Options: <code>Follow system</code>, <code>Force On</code>, <code>Disabled</code>. Default: Follow system.</div></div>
 <div class="setting-item"><div class="setting-item__name">E-ink Image Optimization</div><div class="setting-item__desc"><span class="tag">Select</span> Adjust web images (JPEG/PNG/WebP) for E-Ink display: each level progressively brightens shadows, boosts saturation, and applies dithering so photos stay legible on E-Ink screens. The picker dialog shows a live preview of the selected level, plus a processing mode: <code>Deep</code> re-encodes images with full dithering, while <code>Fast</code> applies a lightweight CSS filter instead — no processing cost, and it also covers JS-generated images, but without dithering. Options: <code>Off</code>, <code>10%</code>, <code>30%</code>, <code>50%</code>, <code>70%</code>, <code>100%</code>. Default: Off, Deep.</div></div>
 <div class="gallery__grid" style="margin: 1rem 0;">
@@ -508,7 +508,7 @@
 <div class="setting-item"><div class="setting-item__name">Hide Toolbar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Hide toolbar while scrolling for full-screen browsing. Press Back to restore. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Toolbar First</div><div class="setting-item__desc"><span class="tag">Toggle</span> Back button shows toolbar first before navigating back. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">Show Tab Bar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Always show the tab bar above/beside the toolbar. Default: off.</div></div>
-<div class="setting-item"><div class="setting-item__name">Statusbar (Fullscreen / No Toolbar)</div><div class="setting-item__desc"><span class="tag">Action</span> Configure a compact statusbar that appears when the toolbar is hidden — pick which items (URL, time, battery, page progress, etc.) to show. Useful in fullscreen reading.</div></div>
+<div class="setting-item"><div class="setting-item__name">Info Bar (Fullscreen / No Toolbar)</div><div class="setting-item__desc"><span class="tag">Action</span> Configure a compact info bar that appears when the toolbar is hidden — pick which items (URL, time, battery, page progress, etc.) to show. Useful in fullscreen reading.</div></div>
 </section>
 
 <section id="settings-behavior" class="settings-section">
@@ -576,6 +576,7 @@
 <h2>Settings: Backup</h2>
 <a href="images/settings_backup.png" target="_blank"><img src="images/settings_backup.png" alt="Backup Settings" class="device-img"></a>
 
+<div class="setting-item"><div class="setting-item__name">Sync with Google Drive</div><div class="setting-item__desc"><span class="tag">Action</span> Back up or restore app data in your Google Drive. Sign-in runs entirely inside EinkBro (OAuth in a normal tab) &mdash; no Play Services needed. The backup is stored in the app-private Drive area and can be restored on another device signed in to the same account.</div></div>
 <div class="setting-item"><div class="setting-item__name">Export App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Export history, bookmarks, settings, and WebView login data (cookies &amp; storage) as a zip file.</div></div>
 <div class="setting-item"><div class="setting-item__name">Import App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Import from a previously exported zip file, including WebView login data.</div></div>
 <div class="setting-item"><div class="setting-item__name">Share App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Share app data to another device over local network.</div></div>
@@ -585,8 +586,8 @@
 </section>
 
 <section id="settings-startcontrol" class="settings-section">
-<h2>Settings: Start Control</h2>
-<a href="images/settings_startcontrol.png" target="_blank"><img src="images/settings_startcontrol.png" alt="Start Control Settings" class="device-img"></a>
+<h2>Settings: Site Settings</h2>
+<a href="images/settings_startcontrol.png" target="_blank"><img src="images/settings_startcontrol.png" alt="Site Settings" class="device-img"></a>
 
 <div class="setting-item"><div class="setting-item__name">Images</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable network images. Disabling saves data. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">Auto Fill Form Data</div><div class="setting-item__desc"><span class="tag">Toggle</span> Auto-fill form fields. Default: on.</div></div>
@@ -649,12 +650,11 @@
 <div class="setting-item"><div class="setting-item__name">Translation Languages</div><div class="setting-item__desc"><span class="tag">Input</span> Customize languages for Google Translate (e.g., <code>en, fr, de, zh-TW, zh-CN</code>).</div></div>
 <div class="setting-item"><div class="setting-item__name">Translate Image API Key</div><div class="setting-item__desc"><span class="tag">Input</span> API key for image translation service.</div></div>
 <div class="setting-item"><div class="setting-item__name">Dual Captions for YouTube</div><div class="setting-item__desc"><span class="tag">Action</span> Select language for second subtitle track on YouTube.</div></div>
-<div class="setting-item"><div class="setting-item__name">Reader Mode: Keep Extra Content</div><div class="setting-item__desc"><span class="tag">Toggle</span> Preserve styles, classes, and math (MathJax/KaTeX) in reader mode. Default: off.</div></div>
 </section>
 
 <section id="settings-gpt" class="settings-section">
-<h2>Settings: GPT</h2>
-<a href="images/settings_gpt.png" target="_blank"><img src="images/settings_gpt.png" alt="GPT Settings" class="device-img"></a>
+<h2>Settings: Gen AI</h2>
+<a href="images/settings_gpt.png" target="_blank"><img src="images/settings_gpt.png" alt="Gen AI Settings" class="device-img"></a>
 
 <h4>General</h4>
 <div class="setting-item"><div class="setting-item__name">GPT Result History</div><div class="setting-item__desc"><span class="tag">Action</span> View saved GPT query results.</div></div>
@@ -693,8 +693,8 @@
 <ul>
   <li>Activate via <strong>Reader Mode</strong> toolbar button or <strong>Action Menu &rarr; Reader mode</strong></li>
   <li>Long-press the <strong>Font Size</strong> toolbar button also enters reader mode</li>
-  <li>Customize padding in <a href="#settings-ui">Settings &rarr; UI &rarr; Padding for Reader Mode</a></li>
-  <li>Enable <strong>Keep Extra Content</strong> in <a href="#settings-misc">Settings &rarr; Misc</a> to preserve math notation (MathJax/KaTeX) and styling</li>
+  <li><strong>Long-press the Reader Mode icon</strong> to open the reader layout settings dialog: page margin and line spacing apply live, plus two columns in landscape, <strong>Keep extra content</strong> (preserves math notation like MathJax/KaTeX and styling), and a shortcut to the reader font dialog</li>
+  <li><strong>Vertical (CJK) reading mode</strong>: page turns snap to line boundaries, tate-chu-yoko for short digits/acronyms, and the same margin/line-spacing settings apply</li>
   <li>Reader mode has its own toolbar configuration with: Rotate, Fullscreen, Bold Font, Font Size, Touch, TOC, Page Info, Settings, Close Tab</li>
 </ul>
 </section>
@@ -726,6 +726,13 @@
   <li><strong>Translation mode</strong> &mdash; pick paragraph vs. in-place, and the provider, on a per-site basis (see Translation section below)</li>
 </ul>
 
+<h4>Content Overrides</h4>
+<ul>
+  <li><strong>AdBlock, Cookies, JavaScript, Desktop mode</strong> &mdash; each can be forced on or off for the current site, overriding the global setting; whitelist the site you are on without typing domains in Settings</li>
+  <li>Whitelist entries in the Settings lists can be edited by tapping them</li>
+  <li>On phones the Site Settings dialog opens full-screen so all options fit; tablets keep the centered dialog</li>
+</ul>
+
 <h4>Custom CSS &amp; JavaScript</h4>
 <p>For sites that need style tweaks or scripted fixes, the Site Settings dialog accepts:</p>
 <ul>
@@ -742,7 +749,7 @@
 <h4>Installing a Script</h4>
 <ul>
   <li><strong>From a link</strong> &mdash; tap any <code>.user.js</code> link while browsing. EinkBro fetches it and opens an editor with the code pre-filled; tap <strong>OK</strong> to install.</li>
-  <li><strong>Manually</strong> &mdash; open <a href="#settings-startcontrol">Settings &rarr; Start Control &rarr; Userscripts</a> (labelled <em>"Manage Tampermonkey-style userscripts"</em>), then tap <strong>Add userscript</strong>. Paste code directly into the <strong>Userscript code</strong> field, or type a URL into <strong>Install from URL</strong> and tap <strong>Fetch</strong>.</li>
+  <li><strong>Manually</strong> &mdash; open <a href="#settings-startcontrol">Settings &rarr; Site Settings &rarr; Userscripts</a> (labelled <em>"Manage Tampermonkey-style userscripts"</em>), then tap <strong>Add userscript</strong>. Paste code directly into the <strong>Userscript code</strong> field, or type a URL into <strong>Install from URL</strong> and tap <strong>Fetch</strong>.</li>
 </ul>
 <p>Re-installing a script that shares an existing script's <code>@name</code> updates it in place instead of creating a duplicate.</p>
 
