@@ -89,29 +89,59 @@ function getTranslatableText(element) {
     return window._translateGetTextExcludingImages(element);
 }
 
+// An element still "intersects" the viewport when it sits behind an overlay or
+// backdrop (IntersectionObserver knows nothing about stacking), so probe the
+// topmost element at its visible center to tell whether the reader can see it.
+function isTranslateTargetOccluded(el) {
+  var r = el.getBoundingClientRect();
+  if (r.width === 0 || r.height === 0) return false;
+  var left = Math.max(r.left, 0), right = Math.min(r.right, window.innerWidth);
+  var top = Math.max(r.top, 0), bottom = Math.min(r.bottom, window.innerHeight);
+  if (left >= right || top >= bottom) return false; // outside the viewport: nothing to probe
+  var hit = document.elementFromPoint((left + right) / 2, (top + bottom) / 2);
+  if (!hit) return false;
+  return !(el.contains(hit) || hit.contains(el));
+}
+
+// Stable partition: on-top targets keep document order and go first, occluded ones
+// follow. Occluded content is still translated — this only decides who gets the
+// native side's limited translation slots first, so e.g. an article overlay isn't
+// stuck behind dozens of requests for the page hidden underneath it. Scores are
+// precomputed because elementFromPoint forces layout and a sort comparator would
+// call it O(n log n) times.
+function sortOnTopFirst(targets) {
+  var occluded = new Map();
+  targets.forEach(function (el) { occluded.set(el, isTranslateTargetOccluded(el) ? 1 : 0); });
+  targets.sort(function (a, b) { return occluded.get(a) - occluded.get(b); });
+}
+
 // Reuse the observer across re-injections. Recreating it (with disconnect) would orphan
 // every node already in _translateObservedNodes: they'd be detached from the old observer
 // but skipped by the rebind loop, so off-screen content would never translate on scroll.
 // The callback resolves maybeRequestTranslation/getTranslatableText as globals at call
 // time, so re-injected definitions apply to the reused observer too.
 window._translateObserver = window._translateObserver || new IntersectionObserver((entries) => {
+  var targets = [];
   entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
+    if (entry.isIntersecting) targets.push(entry.target);
+  });
+  sortOnTopFirst(targets);
+  targets.forEach((target) => {
     if (window._translateInPlace) {
       // Single request path shared with the rebind scan: checks data-original-html,
       // the text cache, AND _translateRequested — otherwise this callback re-requests
       // elements whose bind-time request is still awaiting its response.
-      maybeRequestTranslation(entry.target);
+      maybeRequestTranslation(target);
       return;
     }
-    var text = getTranslatableText(entry.target);
+    var text = getTranslatableText(target);
     if (text.trim() === "") return;
-    var nextNode = entry.target.nextElementSibling;
+    var nextNode = target.nextElementSibling;
     // The empty-sibling check only holds until the response arrives, so guard in-flight
     // requests with _translateRequested here too.
-    if (nextNode && nextNode.textContent === "" && !window._translateRequested.has(entry.target)) {
-      window._translateRequested.add(entry.target);
-      androidApp.getTranslation(text, entry.target.id, "myCallback");
+    if (nextNode && nextNode.textContent === "" && !window._translateRequested.has(target)) {
+      window._translateRequested.add(target);
+      androidApp.getTranslation(text, target.id, "myCallback");
     }
   });
 }, { rootMargin: "400px" });
@@ -142,7 +172,9 @@ function maybeRequestTranslation(targetNode) {
 }
 
 function bindObserverToTargets() {
-  document.querySelectorAll('.to-translate').forEach(function(targetNode) {
+  var targets = Array.from(document.querySelectorAll('.to-translate'));
+  sortOnTopFirst(targets);
+  targets.forEach(function(targetNode) {
     if (!window._translateObservedNodes.has(targetNode)) {
       window._translateObserver.observe(targetNode);
       window._translateObservedNodes.add(targetNode);

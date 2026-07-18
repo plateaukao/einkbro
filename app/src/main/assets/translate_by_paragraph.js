@@ -133,7 +133,11 @@ function fetchNodesWithText(element) {
       ) {
         continue;
       }
+      // SELECT/TEXTAREA/DATALIST subtree text is control state, not flow content;
+      // recursing in would wrap <option> text in spans and insert <p> placeholders
+      // inside the control, corrupting the dropdown.
       if (child.closest('button') || child.tagName === "SCRIPT" || child.tagName === "STYLE"
+        || child.tagName === "SELECT" || child.tagName === "TEXTAREA" || child.tagName === "DATALIST"
         || child.classList.contains("screen_out")
         || child.classList.contains("blind")
         || child.classList.contains("ico_view")
