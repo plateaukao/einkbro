@@ -18,10 +18,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
 private const val CACHE_EXPIRATION_DAYS = 5
@@ -44,7 +45,10 @@ class JsWebInterface(
             .replace("\n", "\\n")
             .replace("\r", "\\r")
 
-    // to control the translation request threshold
+    // Concurrency gates for translation requests. These must be kotlinx suspending
+    // semaphores: a page can fire 60+ getTranslation calls in one IntersectionObserver
+    // batch, and a thread-blocking semaphore would park the entire Dispatchers.IO pool,
+    // deadlocking permit release (and all other IO work) until the app is killed.
     private val semaphoreForTranslate = Semaphore(4)
 
     // deepL has a limit of 5 requests per second
@@ -79,8 +83,7 @@ class JsWebInterface(
             }
 
             val semaphore = getSemaphoreForApi(webView.translateApi)
-            semaphore.acquire()
-            try {
+            semaphore.withPermit {
                 Log.d("JsWebInterface", "getTranslation: $originalText")
                 val translatedString = performTranslation(originalText, webView.translateApi)
 
@@ -108,8 +111,6 @@ class JsWebInterface(
                 }
 
                 delayIfNeeded(webView.translateApi)
-            } finally {
-                semaphore.release()
             }
         }
     }
