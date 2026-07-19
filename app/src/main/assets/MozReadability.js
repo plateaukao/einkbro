@@ -3060,3 +3060,50 @@ function inlineCodeStyles() {
     }
   }
 }
+
+// Reader mode swaps only <body>, so the page's own stylesheets in <head> stay
+// loaded and keep styling the reader markup. On class-styled sites (e.g.
+// styled-components grids on Conde Nast pages) that turns the reader into
+// narrow multi-column tracks whenever keepExtraContent preserves class names.
+// Disable every non-einkbro sheet while the reader is showing; einkbro's own
+// css slots (id prefix "einkbro-css-") stay live. Code styling survives via
+// inlineCodeStyles(), which inlines it before the sheets go away.
+function disableSiteStyleSheets() {
+  for (var i = 0; i < document.styleSheets.length; i++) {
+    var sheet = document.styleSheets[i];
+    var owner = sheet.ownerNode;
+    if (owner && owner.id && owner.id.indexOf('einkbro-css-') === 0) continue;
+    if (!sheet.disabled) {
+      sheet.disabled = true;
+      if (owner && owner.setAttribute) owner.setAttribute('data-einkbro-disabled', '1');
+    }
+  }
+  if (document.adoptedStyleSheets && document.adoptedStyleSheets.length) {
+    window.__einkbroDisabledAdoptedSheets = [];
+    for (var j = 0; j < document.adoptedStyleSheets.length; j++) {
+      var adopted = document.adoptedStyleSheets[j];
+      if (!adopted.disabled) {
+        adopted.disabled = true;
+        window.__einkbroDisabledAdoptedSheets.push(adopted);
+      }
+    }
+  }
+}
+
+function enableSiteStyleSheets() {
+  for (var i = 0; i < document.styleSheets.length; i++) {
+    var sheet = document.styleSheets[i];
+    var owner = sheet.ownerNode;
+    if (owner && owner.getAttribute && owner.getAttribute('data-einkbro-disabled') === '1') {
+      owner.removeAttribute('data-einkbro-disabled');
+      sheet.disabled = false;
+    }
+  }
+  var adoptedList = window.__einkbroDisabledAdoptedSheets;
+  if (adoptedList) {
+    for (var j = 0; j < adoptedList.length; j++) {
+      adoptedList[j].disabled = false;
+    }
+    delete window.__einkbroDisabledAdoptedSheets;
+  }
+}

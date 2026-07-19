@@ -271,6 +271,7 @@ class WebViewJsBridge(private val webView: WebView) {
         setViewportContent(VIEWPORT_DEFAULT)
         webView.evaluateJavascript(
             "javascript:(function() {" +
+                    "if (typeof enableSiteStyleSheets === 'function') enableSiteStyleSheets();" +
                     "document.body.innerHTML = document.innerHTMLCache;" +
                     "document.body.classList.remove(\"mozac-readerview-body\");" +
                     "window.scrollTo(0, 0);" +
@@ -345,6 +346,7 @@ class WebViewJsBridge(private val webView: WebView) {
                 article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
 
                 document.body.outerHTML = createHtmlBody(article)
+                disableSiteStyleSheets();
 
                 var viewport = document.getElementsByName('viewport')[0];
                 if (viewport) viewport.setAttribute('content', 'width=device-width');
