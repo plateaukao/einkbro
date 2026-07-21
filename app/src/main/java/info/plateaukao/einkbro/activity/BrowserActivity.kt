@@ -933,7 +933,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ebWebView.updateCssStyle()
             config.display.customFontChanged = false
         }
-        if (!config.browser.continueMedia && browserState.isWebViewInitialized) ebWebView.resumeTimers()
+        // Always resume: pauseTimers() is process-global, and an unbalanced pause
+        // (e.g. continueMedia flipping on while paused) would freeze JS in every
+        // WebView until the process dies. Resuming running timers is a no-op.
+        if (browserState.isWebViewInitialized) ebWebView.resumeTimers()
         if (pendingSiteSettingsReload) {
             pendingSiteSettingsReload = false
             ebWebView.initPreferences()
