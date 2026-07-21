@@ -37,10 +37,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import java.net.URLDecoder
@@ -141,6 +146,8 @@ class ContextMenuDialogFragment(
         get() = hoveredItemState.value
         set(value) { hoveredItemState.value = value }
 
+    private val itemScreenBounds = mutableMapOf<ContextMenuItemType, Rect>()
+
     init {
         shouldShowInCenter = true
     }
@@ -154,6 +161,7 @@ class ContextMenuDialogFragment(
             showIcons = config.ui.showActionMenuIcons,
             isEbookMode = isEbookMode,
             hoveredItem = hoveredItemState.value,
+            onItemPositioned = { type, bounds -> itemScreenBounds[type] = bounds },
             onClicked = { item ->
                 dialog?.dismiss()
                 itemClicked(item)
@@ -170,81 +178,14 @@ class ContextMenuDialogFragment(
     fun updateHoveredItem(screenX: Float, screenY: Float) {
         if (!isAdded) return
 
-        // Convert screen coordinates to dialog coordinates and determine hovered item
-        val dialogLocation = IntArray(2)
-        composeView.getLocationOnScreen(dialogLocation)
-
-        val dialogX = screenX - dialogLocation[0]
-        val dialogY = screenY - dialogLocation[1]
-
-        // Simple hit testing - this is a basic implementation
-        // You might need to adjust based on your exact layout
-        hoveredItem = determineHoveredItem(dialogX, dialogY)
+        val position = Offset(screenX, screenY)
+        hoveredItem = itemScreenBounds.entries.firstOrNull { it.value.contains(position) }?.key
     }
 
     fun onFingerLifted() {
         hoveredItem?.let { item ->
             dialog?.dismiss()
             itemClicked(item)
-        }
-    }
-
-    // Also consulted per touch-move during long-press drag; build once.
-    private val menuLayout by lazy { createMenuLayout(isEbookMode) }
-
-    private fun determineHoveredItem(x: Float, y: Float): ContextMenuItemType? {
-
-        // Calculate precise dimensions based on MenuItem logic
-        val screenWidthDp = resources.configuration.screenWidthDp
-        val isLargeType = true // ContextMenuItem uses isLargeType = true
-        val showIcon = config.ui.showActionMenuIcons
-
-        // Calculate item width (same logic as MenuItem)
-        val itemWidthDp = when {
-            isLargeType -> if (screenWidthDp > 500) 62 else 50
-            screenWidthDp > 500 -> 55
-            else -> 45
-        }
-
-        // Calculate item height
-        val itemHeightDp = if (!showIcon) 50 else if (isLargeType) 80 else 70
-
-        // Convert dp to pixels (approximate density)
-        val density = resources.displayMetrics.density
-        val itemWidthPx = itemWidthDp * density
-        val itemHeightPx = itemHeightDp * density
-
-        // Layout structure:
-        // 1. URL text with 4dp padding = ~8dp height + text height (~20dp) = ~28dp
-        // 2. HorizontalSeparator = 1dp
-        // 3. First Row = itemHeightPx
-        // 4. HorizontalSeparator = 1dp
-        // 5. Second Row = itemHeightPx
-
-        //val urlTextHeight = 30 * density // URL text area
-        val separatorHeight = 1 * density // HorizontalSeparator
-
-        val firstRowStart = 0F // urlTextHeight + separatorHeight
-        val firstRowEnd = firstRowStart + itemHeightPx
-        val secondRowStart = firstRowEnd + separatorHeight
-        val secondRowEnd = secondRowStart + itemHeightPx
-
-        when {
-            y < firstRowStart -> return null // URL text area
-            y in firstRowStart..firstRowEnd -> {
-                // First row items
-                val itemIndex = (x / itemWidthPx).toInt()
-                return menuLayout.firstRowItems.getOrNull(itemIndex)?.type
-            }
-            y in secondRowStart..secondRowEnd -> {
-                // Second row items (filter based on conditions)
-                val visibleSecondRowItems = menuLayout.secondRowItems.filter { item ->
-                    item.shouldShow(url, shouldShowAdBlock, shouldShowTranslateImage)
-                }
-                val itemIndex = (x / itemWidthPx).toInt()
-                return visibleSecondRowItems.getOrNull(itemIndex)?.type
-            }
-            else -> return null
         }
     }
 
@@ -282,6 +223,7 @@ private fun ContextMenuItems(
     showIcons: Boolean = true,
     isEbookMode: Boolean = false,
     hoveredItem: ContextMenuItemType? = null,
+    onItemPositioned: (ContextMenuItemType, Rect) -> Unit = { _, _ -> },
     onClicked: (ContextMenuItemType) -> Unit,
     onLongClicked: (ContextMenuItemType) -> Unit = {},
 ) {
@@ -308,6 +250,9 @@ private fun ContextMenuItems(
                     imageVector = item.imageVector,
                     iconResId = item.iconResId,
                     isHovered = hoveredItem == item.type,
+                    modifier = Modifier.onGloballyPositioned {
+                        onItemPositioned(item.type, Rect(it.positionOnScreen(), it.size.toSize()))
+                    },
                     onLongClicked = { onLongClicked(item.type) }
                 ) {
                     onClicked(item.type)
@@ -330,6 +275,9 @@ private fun ContextMenuItems(
                     imageVector = item.imageVector,
                     iconResId = item.iconResId,
                     isHovered = hoveredItem == item.type,
+                    modifier = Modifier.onGloballyPositioned {
+                        onItemPositioned(item.type, Rect(it.positionOnScreen(), it.size.toSize()))
+                    },
                     onLongClicked = { onLongClicked(item.type) }
                 ) {
                     onClicked(item.type)
@@ -354,16 +302,19 @@ fun ContextMenuItem(
     imageVector: ImageVector? = null,
     iconResId: Int = 0,
     isHovered: Boolean = false,
+    modifier: Modifier = Modifier,
     onLongClicked: () -> Unit = {},
     onClicked: () -> Unit = {},
 ) {
-    Box {
+    Box(modifier) {
         if (isHovered) {
+            // Top padding keeps the dot clear of the dialog border.
             Box(
                 modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 2.dp)
                     .size(6.dp)
                     .background(MaterialTheme.colors.onBackground, shape = CircleShape)
-                    .align(Alignment.TopCenter)
             )
         }
         MenuItem(

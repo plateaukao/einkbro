@@ -7,15 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
@@ -23,10 +19,14 @@ import androidx.compose.material.icons.outlined.Tab
 import androidx.compose.material.icons.outlined.TabUnselected
 import androidx.compose.material.icons.outlined.ViewStream
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionOnScreen
+import androidx.compose.ui.unit.toSize
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 
@@ -36,8 +36,29 @@ class BookmarkContextMenuDlgFragment(
     private val anchorPoint: Point? = null,
     private val onClicked: (ContextMenuItemType) -> Unit,
 ) : ComposeDialogFragment() {
+
+    private val hoveredItemState = mutableStateOf<ContextMenuItemType?>(null)
+    private val itemScreenBounds = mutableMapOf<ContextMenuItemType, Rect>()
+
     override fun adjustHorizontalPosition() {
         // Uses own anchor-point positioning
+    }
+
+    fun updateHoveredItem(screenX: Float, screenY: Float) {
+        if (!isAdded) return
+
+        val position = Offset(screenX, screenY)
+        hoveredItemState.value =
+            itemScreenBounds.entries.firstOrNull { it.value.contains(position) }?.key
+    }
+
+    fun onFingerLifted() {
+        if (!isAdded) return
+
+        hoveredItemState.value?.let { item ->
+            dismiss()
+            onClicked(item)
+        }
     }
 
     @Composable
@@ -45,6 +66,8 @@ class BookmarkContextMenuDlgFragment(
         BookmarkContextMenuScreen(
             bookmark = bookmark,
             allowEdit = allowEdit,
+            hoveredItem = hoveredItemState.value,
+            onItemPositioned = { type, bounds -> itemScreenBounds[type] = bounds },
             onClicked = { onClicked(it); dismiss() })
     }
 
@@ -78,44 +101,59 @@ class BookmarkContextMenuDlgFragment(
 fun BookmarkContextMenuScreen(
     bookmark: Bookmark,
     allowEdit: Boolean = true,
+    hoveredItem: ContextMenuItemType? = null,
+    onItemPositioned: (ContextMenuItemType, Rect) -> Unit = { _, _ -> },
     onClicked: (ContextMenuItemType) -> Unit,
 ) {
-    Column(
+    Row(
         modifier = Modifier
             .wrapContentHeight()
-            .width(if (bookmark.isDirectory) 200.dp else 320.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .width(IntrinsicSize.Max)
+            .horizontalScroll(rememberScrollState()),
     ) {
-        Text(
-            text = bookmark.title,
-            Modifier.padding(4.dp),
-            color = MaterialTheme.colors.onBackground,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-        )
-        HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .width(IntrinsicSize.Max)
-                .horizontalScroll(rememberScrollState()),
-        ) {
-            if (!bookmark.isDirectory) {
-                ContextMenuItem(R.string.main_menu_new_tabOpen, true, Icons.Outlined.Tab) {
-                    onClicked(ContextMenuItemType.NewTabForeground)
-                }
-                ContextMenuItem(R.string.main_menu_new_tab, true, Icons.Outlined.TabUnselected) {
-                    onClicked(ContextMenuItemType.NewTabBackground)
-                }
-                ContextMenuItem(R.string.split_screen, true, Icons.Outlined.ViewStream) {
-                    onClicked(ContextMenuItemType.SplitScreen)
-                }
-            }
-            if (allowEdit) {
-                ContextMenuItem(R.string.menu_edit, true, Icons.Outlined.Edit) { onClicked(ContextMenuItemType.Edit) }
-            }
-            ContextMenuItem(R.string.menu_delete, true, Icons.Outlined.Delete) {
-                onClicked(ContextMenuItemType.Delete)
-            }
+        if (!bookmark.isDirectory) {
+            BookmarkMenuItem(
+                ContextMenuItemType.NewTabForeground, R.string.main_menu_new_tabOpen,
+                Icons.Outlined.Tab, hoveredItem, onItemPositioned, onClicked
+            )
+            BookmarkMenuItem(
+                ContextMenuItemType.NewTabBackground, R.string.main_menu_new_tab,
+                Icons.Outlined.TabUnselected, hoveredItem, onItemPositioned, onClicked
+            )
+            BookmarkMenuItem(
+                ContextMenuItemType.SplitScreen, R.string.split_screen,
+                Icons.Outlined.ViewStream, hoveredItem, onItemPositioned, onClicked
+            )
         }
+        if (allowEdit) {
+            BookmarkMenuItem(
+                ContextMenuItemType.Edit, R.string.menu_edit,
+                Icons.Outlined.Edit, hoveredItem, onItemPositioned, onClicked
+            )
+        }
+        BookmarkMenuItem(
+            ContextMenuItemType.Delete, R.string.menu_delete,
+            Icons.Outlined.Delete, hoveredItem, onItemPositioned, onClicked
+        )
     }
+}
+
+@Composable
+private fun BookmarkMenuItem(
+    type: ContextMenuItemType,
+    titleResId: Int,
+    imageVector: ImageVector,
+    hoveredItem: ContextMenuItemType?,
+    onPositioned: (ContextMenuItemType, Rect) -> Unit,
+    onClicked: (ContextMenuItemType) -> Unit,
+) {
+    ContextMenuItem(
+        titleResId = titleResId,
+        showIcon = true,
+        imageVector = imageVector,
+        isHovered = hoveredItem == type,
+        modifier = Modifier.onGloballyPositioned {
+            onPositioned(type, Rect(it.positionOnScreen(), it.size.toSize()))
+        },
+    ) { onClicked(type) }
 }

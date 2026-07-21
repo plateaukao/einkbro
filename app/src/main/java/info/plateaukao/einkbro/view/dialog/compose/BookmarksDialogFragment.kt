@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -79,6 +80,8 @@ class BookmarksDialogFragment(
 ) : ComposeDialogFragment(), KoinComponent {
 
     private lateinit var bookmarksUpdateJob: Job
+
+    private var activeContextMenu: BookmarkContextMenuDlgFragment? = null
 
     private val bookmarks = mutableStateOf(emptyList<Bookmark>())
 
@@ -153,7 +156,15 @@ class BookmarksDialogFragment(
                             true
                         ); dialog?.dismiss()
                     },
-                    onBookmarkLongClick = { bookmark, offSet -> showBookmarkContextMenu(bookmark, offSet) }
+                    onBookmarkLongClick = { bookmark, offSet -> showBookmarkContextMenu(bookmark, offSet) },
+                    enableDragToAction = config.touch.enableDragUrlToAction,
+                    onBookmarkLongPressMove = { point ->
+                        activeContextMenu?.updateHoveredItem(point.x.toFloat(), point.y.toFloat())
+                    },
+                    onBookmarkLongPressEnd = {
+                        activeContextMenu?.onFingerLifted()
+                        activeContextMenu = null
+                    },
                 )
             }
         }
@@ -170,7 +181,7 @@ class BookmarksDialogFragment(
     }
 
     private fun showBookmarkContextMenu(bookmark: Bookmark, point: Point) {
-        BookmarkContextMenuDlgFragment(
+        val contextMenu = BookmarkContextMenuDlgFragment(
             bookmark,
             anchorPoint = point
         ) {
@@ -211,8 +222,9 @@ class BookmarksDialogFragment(
 
                 else -> Unit
             }
-        }.show(parentFragmentManager, "bookmark_context_menu")
-
+        }
+        activeContextMenu = contextMenu
+        contextMenu.show(parentFragmentManager, "bookmark_context_menu")
     }
 }
 
@@ -295,6 +307,9 @@ fun BookmarkList(
     onBookmarkClick: OnBookmarkClick,
     onBookmarkIconClick: OnBookmarkIconClick,
     onBookmarkLongClick: OnBookmarkLongClick,
+    enableDragToAction: Boolean = false,
+    onBookmarkLongPressMove: (point: Point) -> Unit = {},
+    onBookmarkLongPressEnd: () -> Unit = {},
 ) {
     // key() forces full recreation (no animation) when folder or view mode changes
     key(bookmarkViewModel.currentFolder.value.id, isGridView) {
@@ -333,15 +348,45 @@ fun BookmarkList(
                                 shouldShowDragHandle = shouldShowDragHandle,
                                 iconDragModifier = if (shouldShowDragHandle) Modifier.draggableHandle() else Modifier,
                                 modifier = Modifier.then(
-                                    if (shouldShowDragHandle) {
-                                        Modifier
+                                    when {
+                                        shouldShowDragHandle -> Modifier
                                             .longPressDraggableHandle()
                                             .clickable(
                                                 interactionSource = interactionSource,
                                                 indication = null,
                                             ) { onBookmarkClick(bookmark) }
-                                    } else {
-                                        Modifier
+
+                                        enableDragToAction -> Modifier
+                                            .pointerInput(Unit) {
+                                                detectTapGestures(
+                                                    onTap = { onBookmarkClick(bookmark) }
+                                                )
+                                            }
+                                            .pointerInput(Unit) {
+                                                // Long press shows the context menu; keep the finger
+                                                // down and move onto an action to trigger it on lift.
+                                                detectDragGesturesAfterLongPress(
+                                                    onDragStart = { offset ->
+                                                        longClickPosition.value = offset
+                                                        onBookmarkLongClick(
+                                                            bookmark,
+                                                            offset.toScreenPoint(boxPosition.value)
+                                                        )
+                                                    },
+                                                    onDrag = { change, _ ->
+                                                        onBookmarkLongPressMove(
+                                                            change.position.toScreenPoint(boxPosition.value)
+                                                        )
+                                                    },
+                                                    onDragEnd = { onBookmarkLongPressEnd() },
+                                                    onDragCancel = { onBookmarkLongPressEnd() },
+                                                )
+                                            }
+                                            .onGloballyPositioned {
+                                                boxPosition.value = it.positionOnScreen()
+                                            }
+
+                                        else -> Modifier
                                             .pointerInput(Unit) {
                                                 detectTapGestures(
                                                     onTap = { onBookmarkClick(bookmark) },
