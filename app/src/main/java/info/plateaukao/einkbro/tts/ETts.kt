@@ -59,7 +59,7 @@ class ETts {
             val ssml = mkssml(
                 voice.locale,
                 voice.name,
-                processedContent,
+                escapeXml(processedContent),
                 "+0Hz",
                 if (speed < 100) "${speed - 100}%" else "+${speed - 100}%",
                 "+0%"
@@ -126,6 +126,16 @@ class ETts {
     private fun uuid(): String {
         return UUID.randomUUID().toString().replace("-", "")
     }
+
+    // The content is spliced into hand-built SSML; unescaped markup characters
+    // would corrupt the document — or, for web-page-supplied text
+    // (WebSpeechHandler), let a page inject its own SSML elements.
+    private fun escapeXml(input: String): String = input
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("\"", "&quot;")
+        .replace("'", "&apos;")
 
     private fun removeIncompatibleCharacters(input: String): String {
         if (input.isBlank()) {

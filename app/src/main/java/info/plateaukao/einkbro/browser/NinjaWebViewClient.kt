@@ -156,6 +156,9 @@ class EBWebViewClient(
         if (!config.browser.enableVideoAutoplay && !WebViewConfigApplier.supportsDocumentStartScript()) {
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
         }
+        if (!WebViewConfigApplier.supportsDocumentStartScript()) {
+            ebWebView.evaluateJsFile("speech_synthesis_polyfill.js", withPrefix = false)
+        }
 
         url?.let { injectForcedViewportWidth(it) }
 
@@ -226,6 +229,9 @@ class EBWebViewClient(
         // (onPageStarted injection may race with the page's own scripts)
         if (!config.browser.enableVideoAutoplay && !WebViewConfigApplier.supportsDocumentStartScript()) {
             ebWebView.evaluateJsFile("disable_video_autoplay.js", withPrefix = false)
+        }
+        if (!WebViewConfigApplier.supportsDocumentStartScript()) {
+            ebWebView.evaluateJsFile("speech_synthesis_polyfill.js", withPrefix = false)
         }
 
         // Safety net for sites whose hydration chain is broken by our filters

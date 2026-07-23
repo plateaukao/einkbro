@@ -31,6 +31,7 @@ import info.plateaukao.einkbro.data.remote.GoogleDriveRepository
 import info.plateaukao.einkbro.data.remote.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.service.TtsNotificationManager
+import info.plateaukao.einkbro.service.WebSpeechHandler
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.util.WebViewUtil
 import io.github.edsuns.adfilter.AdFilter
@@ -79,6 +80,7 @@ class EinkBroApplication : Application() {
         single { Cookie(androidContext()) }
         single { ttsManager }
         single { TtsNotificationManager(androidContext()) }
+        single { WebSpeechHandler(androidContext()) }
         single { InstapaperRepository() }
         single { GoogleDriveRepository() }
         single { SearchSuggestionViewModel() }

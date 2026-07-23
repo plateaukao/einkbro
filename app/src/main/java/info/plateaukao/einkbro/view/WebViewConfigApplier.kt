@@ -22,6 +22,7 @@ class WebViewConfigApplier(
 ) {
     private val cookieManager: CookieManager = CookieManager.getInstance()
     private var autoplayBlockerHandler: ScriptHandler? = null
+    private var webSpeechPolyfillHandler: ScriptHandler? = null
     private var defaultUserAgentMetadata: UserAgentMetadata? = null
     private var uaMetadataOverridden = false
 
@@ -101,6 +102,7 @@ class WebViewConfigApplier(
         webView.webViewClient.enableAdBlock(config.browser.adBlock)
         toggleCookieSupport(config.browser.cookies)
         applyAutoplayBlocker()
+        applyWebSpeechPolyfill()
     }
 
     // mediaPlaybackRequiresUserGesture alone can't stop feed sites: muted
@@ -122,6 +124,21 @@ class WebViewConfigApplier(
         } else {
             autoplayBlockerHandler?.remove()
             autoplayBlockerHandler = null
+        }
+    }
+
+    // WebView ships no Web Speech synthesis backend, so pages with their own
+    // read-aloud (speechSynthesis) stay silent. The polyfill must be installed
+    // before page scripts capture window.speechSynthesis at load time; older
+    // WebViews fall back to onPageStarted injection in NinjaWebViewClient.
+    private fun applyWebSpeechPolyfill() {
+        if (!supportsDocumentStartScript()) return
+        if (webSpeechPolyfillHandler == null) {
+            webSpeechPolyfillHandler = WebViewCompat.addDocumentStartJavaScript(
+                webView,
+                HelperUnit.loadAssetFile("speech_synthesis_polyfill.js"),
+                setOf("*"),
+            )
         }
     }
 

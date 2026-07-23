@@ -11,6 +11,7 @@ import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.data.remote.TranslateRepository
+import info.plateaukao.einkbro.service.WebSpeechHandler
 import info.plateaukao.einkbro.unit.DownloadHelper
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit
 private const val CACHE_EXPIRATION_DAYS = 5
 private const val CACHE_TEXT_LENGTH_LIMIT = 15
 private const val MAX_DOWNLOAD_ID_LENGTH = 64
+private const val MAX_TTS_TEXT_LENGTH = 4000
 
 class JsWebInterface(
     private val webView: EBWebView,
@@ -38,6 +40,7 @@ class JsWebInterface(
     private val configManager: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
     private val coroutineScope: CoroutineScope by inject()
+    private val webSpeechHandler: WebSpeechHandler by inject()
 
     private fun escapeForJs(text: String): String =
         text.replace("\\", "\\\\")
@@ -257,6 +260,34 @@ class JsWebInterface(
         val safeFileName = fileName?.takeIf { it.isNotBlank() } ?: "download"
         return DownloadHelper.beginBlobDownload(activity, safeFileName, mimeType.orEmpty())
     }
+
+    // Web Speech API bridge for assets/speech_synthesis_polyfill.js: WebView has
+    // no native speechSynthesis, so the polyfill forwards page utterances here.
+    @JavascriptInterface
+    fun ttsSpeak(
+        text: String,
+        lang: String,
+        rate: Float,
+        pitch: Float,
+        voiceName: String,
+        utteranceId: String,
+    ) {
+        if (!utteranceId.matches(WebSpeechHandler.UTTERANCE_ID_REGEX)) return
+        if (text.isBlank() || text.length > MAX_TTS_TEXT_LENGTH) return
+        webSpeechHandler.speak(webView, text, lang, rate, pitch, voiceName, utteranceId)
+    }
+
+    @JavascriptInterface
+    fun ttsCancel() = webSpeechHandler.cancel()
+
+    @JavascriptInterface
+    fun ttsPause() = webSpeechHandler.pause()
+
+    @JavascriptInterface
+    fun ttsResume() = webSpeechHandler.resume()
+
+    @JavascriptInterface
+    fun ttsGetVoices(): String = webSpeechHandler.getVoicesJson()
 }
 
 fun String.toUserMessage() = ChatMessage(
