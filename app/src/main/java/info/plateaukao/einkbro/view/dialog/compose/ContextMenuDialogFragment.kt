@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.text.style.TextOverflow
@@ -146,7 +147,9 @@ class ContextMenuDialogFragment(
         get() = hoveredItemState.value
         set(value) { hoveredItemState.value = value }
 
-    private val itemScreenBounds = mutableMapOf<ContextMenuItemType, Rect>()
+    // Kept as coordinates and resolved to screen rects per hit-test: the dialog
+    // window can settle after layout, so rects captured at layout time go stale.
+    private val itemCoordinates = mutableMapOf<ContextMenuItemType, LayoutCoordinates>()
 
     init {
         shouldShowInCenter = true
@@ -161,7 +164,7 @@ class ContextMenuDialogFragment(
             showIcons = config.ui.showActionMenuIcons,
             isEbookMode = isEbookMode,
             hoveredItem = hoveredItemState.value,
-            onItemPositioned = { type, bounds -> itemScreenBounds[type] = bounds },
+            onItemPositioned = { type, coordinates -> itemCoordinates[type] = coordinates },
             onClicked = { item ->
                 dialog?.dismiss()
                 itemClicked(item)
@@ -179,7 +182,10 @@ class ContextMenuDialogFragment(
         if (!isAdded) return
 
         val position = Offset(screenX, screenY)
-        hoveredItem = itemScreenBounds.entries.firstOrNull { it.value.contains(position) }?.key
+        hoveredItem = itemCoordinates.entries.firstOrNull { (_, coordinates) ->
+            coordinates.isAttached &&
+                Rect(coordinates.positionOnScreen(), coordinates.size.toSize()).contains(position)
+        }?.key
     }
 
     fun onFingerLifted() {
@@ -223,7 +229,7 @@ private fun ContextMenuItems(
     showIcons: Boolean = true,
     isEbookMode: Boolean = false,
     hoveredItem: ContextMenuItemType? = null,
-    onItemPositioned: (ContextMenuItemType, Rect) -> Unit = { _, _ -> },
+    onItemPositioned: (ContextMenuItemType, LayoutCoordinates) -> Unit = { _, _ -> },
     onClicked: (ContextMenuItemType) -> Unit,
     onLongClicked: (ContextMenuItemType) -> Unit = {},
 ) {
@@ -250,9 +256,7 @@ private fun ContextMenuItems(
                     imageVector = item.imageVector,
                     iconResId = item.iconResId,
                     isHovered = hoveredItem == item.type,
-                    modifier = Modifier.onGloballyPositioned {
-                        onItemPositioned(item.type, Rect(it.positionOnScreen(), it.size.toSize()))
-                    },
+                    modifier = Modifier.onGloballyPositioned { onItemPositioned(item.type, it) },
                     onLongClicked = { onLongClicked(item.type) }
                 ) {
                     onClicked(item.type)
@@ -275,9 +279,7 @@ private fun ContextMenuItems(
                     imageVector = item.imageVector,
                     iconResId = item.iconResId,
                     isHovered = hoveredItem == item.type,
-                    modifier = Modifier.onGloballyPositioned {
-                        onItemPositioned(item.type, Rect(it.positionOnScreen(), it.size.toSize()))
-                    },
+                    modifier = Modifier.onGloballyPositioned { onItemPositioned(item.type, it) },
                     onLongClicked = { onLongClicked(item.type) }
                 ) {
                     onClicked(item.type)

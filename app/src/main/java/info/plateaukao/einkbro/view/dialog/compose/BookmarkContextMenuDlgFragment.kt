@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.unit.toSize
@@ -38,7 +39,10 @@ class BookmarkContextMenuDlgFragment(
 ) : ComposeDialogFragment() {
 
     private val hoveredItemState = mutableStateOf<ContextMenuItemType?>(null)
-    private val itemScreenBounds = mutableMapOf<ContextMenuItemType, Rect>()
+
+    // Kept as coordinates and resolved to screen rects per hit-test: the dialog
+    // window can settle after layout, so rects captured at layout time go stale.
+    private val itemCoordinates = mutableMapOf<ContextMenuItemType, LayoutCoordinates>()
 
     override fun adjustHorizontalPosition() {
         // Uses own anchor-point positioning
@@ -48,8 +52,10 @@ class BookmarkContextMenuDlgFragment(
         if (!isAdded) return
 
         val position = Offset(screenX, screenY)
-        hoveredItemState.value =
-            itemScreenBounds.entries.firstOrNull { it.value.contains(position) }?.key
+        hoveredItemState.value = itemCoordinates.entries.firstOrNull { (_, coordinates) ->
+            coordinates.isAttached &&
+                Rect(coordinates.positionOnScreen(), coordinates.size.toSize()).contains(position)
+        }?.key
     }
 
     fun onFingerLifted() {
@@ -67,7 +73,7 @@ class BookmarkContextMenuDlgFragment(
             bookmark = bookmark,
             allowEdit = allowEdit,
             hoveredItem = hoveredItemState.value,
-            onItemPositioned = { type, bounds -> itemScreenBounds[type] = bounds },
+            onItemPositioned = { type, coordinates -> itemCoordinates[type] = coordinates },
             onClicked = { onClicked(it); dismiss() })
     }
 
@@ -102,7 +108,7 @@ fun BookmarkContextMenuScreen(
     bookmark: Bookmark,
     allowEdit: Boolean = true,
     hoveredItem: ContextMenuItemType? = null,
-    onItemPositioned: (ContextMenuItemType, Rect) -> Unit = { _, _ -> },
+    onItemPositioned: (ContextMenuItemType, LayoutCoordinates) -> Unit = { _, _ -> },
     onClicked: (ContextMenuItemType) -> Unit,
 ) {
     Row(
@@ -144,7 +150,7 @@ private fun BookmarkMenuItem(
     titleResId: Int,
     imageVector: ImageVector,
     hoveredItem: ContextMenuItemType?,
-    onPositioned: (ContextMenuItemType, Rect) -> Unit,
+    onPositioned: (ContextMenuItemType, LayoutCoordinates) -> Unit,
     onClicked: (ContextMenuItemType) -> Unit,
 ) {
     ContextMenuItem(
@@ -152,8 +158,6 @@ private fun BookmarkMenuItem(
         showIcon = true,
         imageVector = imageVector,
         isHovered = hoveredItem == type,
-        modifier = Modifier.onGloballyPositioned {
-            onPositioned(type, Rect(it.positionOnScreen(), it.size.toSize()))
-        },
+        modifier = Modifier.onGloballyPositioned { onPositioned(type, it) },
     ) { onClicked(type) }
 }

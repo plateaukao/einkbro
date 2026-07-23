@@ -44,6 +44,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.platform.LocalContext
@@ -334,7 +335,13 @@ fun BookmarkList(
                 val isPressed by interactionSource.collectIsPressedAsState()
                 // for getting long click point
                 var longClickPosition = remember { mutableStateOf(Offset.Zero) }
-                var boxPosition = remember { mutableStateOf(Offset.Zero) }
+                // Resolved to a screen position at event time: the dialog window can
+                // settle after layout, so a position captured in onGloballyPositioned
+                // would be stale.
+                val boxCoordinates = remember { mutableStateOf<LayoutCoordinates?>(null) }
+                val toScreen = { local: Offset ->
+                    local.toScreenPoint(boxCoordinates.value?.positionOnScreen() ?: Offset.Zero)
+                }
 
 
                 ReorderableItem(reorderableLazyGridState, key = bookmark.id) { isDragging ->
@@ -368,22 +375,17 @@ fun BookmarkList(
                                                 detectDragGesturesAfterLongPress(
                                                     onDragStart = { offset ->
                                                         longClickPosition.value = offset
-                                                        onBookmarkLongClick(
-                                                            bookmark,
-                                                            offset.toScreenPoint(boxPosition.value)
-                                                        )
+                                                        onBookmarkLongClick(bookmark, toScreen(offset))
                                                     },
                                                     onDrag = { change, _ ->
-                                                        onBookmarkLongPressMove(
-                                                            change.position.toScreenPoint(boxPosition.value)
-                                                        )
+                                                        onBookmarkLongPressMove(toScreen(change.position))
                                                     },
                                                     onDragEnd = { onBookmarkLongPressEnd() },
                                                     onDragCancel = { onBookmarkLongPressEnd() },
                                                 )
                                             }
                                             .onGloballyPositioned {
-                                                boxPosition.value = it.positionOnScreen()
+                                                boxCoordinates.value = it
                                             }
 
                                         else -> Modifier
@@ -394,13 +396,13 @@ fun BookmarkList(
                                                         longClickPosition.value = offset
                                                         onBookmarkLongClick(
                                                             bookmark,
-                                                            offset.toScreenPoint(boxPosition.value)
+                                                            toScreen(offset)
                                                         )
                                                     }
                                                 )
                                             }
                                             .onGloballyPositioned {
-                                                boxPosition.value = it.positionOnScreen()
+                                                boxCoordinates.value = it
                                             }
                                     }
                                 ),
@@ -430,13 +432,13 @@ fun BookmarkList(
                                                     longClickPosition.value = offset
                                                     onBookmarkLongClick(
                                                         bookmark,
-                                                        offset.toScreenPoint(boxPosition.value)
+                                                        toScreen(offset)
                                                     )
                                                 }
                                             )
                                         }
                                         .onGloballyPositioned {
-                                            boxPosition.value = it.positionOnScreen()
+                                            boxCoordinates.value = it
                                         }
                                 }
                             ),
