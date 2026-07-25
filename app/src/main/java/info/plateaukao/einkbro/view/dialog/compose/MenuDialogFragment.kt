@@ -16,8 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -79,6 +78,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -645,10 +645,18 @@ fun MenuItem(
                     .align(Alignment.TopCenter)
             )
         }
+        // Min heights sized so the default (font scale 1.0) geometry is unchanged;
+        // the cell and its label can grow when a larger system font scale wraps
+        // the label text (issue #623).
+        val labelMinHeight = when {
+            !showIcon -> 40.dp
+            isLargeType -> 25.dp
+            else -> 26.dp
+        }
         Column(
             modifier = Modifier
                 .width(width)
-                .height(if (!showIcon) 50.dp else if (isLargeType) 80.dp else 70.dp)
+                .heightIn(min = if (!showIcon) 50.dp else if (isLargeType) 80.dp else 70.dp)
                 .then(
                     if (reorderMode) Modifier
                     else Modifier.combinedClickable(
@@ -683,16 +691,15 @@ fun MenuItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp),
+                    .heightIn(min = labelMinHeight),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .offset(y = if (showIcon) (-5).dp else 0.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = titleResId),
                     textAlign = TextAlign.Center,
                     maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                     lineHeight = if (!showIcon) 20.sp else 12.sp,
                     fontSize = fontSize,
                     color = MaterialTheme.colors.onBackground

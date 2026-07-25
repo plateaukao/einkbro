@@ -12,6 +12,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -81,12 +83,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// Rows keep this as a minimum but can grow when a larger system font scale
+// makes the title/summary wrap (issue #623).
+private val settingItemMinHeight = 80.dp
+
 @Composable
 fun SettingItemUi(
     setting: SettingItemInterface,
     isChecked: Boolean = false,
     extraTitlePostfix: String = "",
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -95,20 +102,19 @@ fun SettingItemUi(
     // bold border as transient press feedback. isChecked is retained for callers
     // but no longer thickens the border (see discussion #605).
     val borderWidth = if (pressed) 3.dp else 1.dp
-    val height = 80.dp
-    var modifier = Modifier
+    var rowModifier = modifier
         .fillMaxWidth()
         .testTag(stringResource(setting.titleResId))
-        .height(height)
+        .heightIn(min = settingItemMinHeight)
         .clickable(
             indication = null,
             interactionSource = interactionSource,
         ) { onClick?.invoke() }
-    if (showBorder) modifier =
-        modifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+    if (showBorder) rowModifier =
+        rowModifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
 
     Row(
-        modifier = modifier.then(
+        modifier = rowModifier.then(
             if (setting is BooleanSettingItem) Modifier.padding(
                 0.dp,
                 0.dp,
@@ -132,7 +138,7 @@ fun SettingItemUi(
                 .width(6.dp)
                 .fillMaxHeight()
         )
-        Column {
+        Column(modifier = Modifier.padding(vertical = 8.dp)) {
             Text(
                 modifier = Modifier.wrapContentWidth(),
                 text = stringResource(id = setting.titleResId) + extraTitlePostfix,
@@ -202,16 +208,18 @@ fun DividerSettingItemUi(
 fun BooleanSettingItemUi(
     setting: BooleanSettingItem,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val checked = remember(setting) { mutableStateOf(setting.config.get()) }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
         SettingItemUi(
             setting = setting, checked.value,
-            showBorder = showBorder
+            showBorder = showBorder,
+            modifier = Modifier.fillMaxHeight(),
         ) {
             checked.value = !checked.value
             setting.config.toggle()
@@ -242,6 +250,7 @@ fun <T> ValueSettingItemUi(
     dialogManager: DialogManager,
     showBorder: Boolean = false,
     showValue: Boolean = true,
+    modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val currentValue = remember(setting) { mutableStateOf(setting.config.get()) }
@@ -249,6 +258,7 @@ fun <T> ValueSettingItemUi(
         setting = setting,
         extraTitlePostfix = if (showValue) ": ${currentValue.value}" else "",
         showBorder = showBorder,
+        modifier = modifier,
     ) {
         coroutineScope.launch {
             val value = dialogManager.getTextInput(
@@ -274,6 +284,7 @@ fun GestureActionSettingItemUi(
     setting: GestureActionSettingItem,
     navController: NavHostController,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val entry = info.plateaukao.einkbro.browser.BrowserActionCatalog.entryOf(setting.config.get())
@@ -282,6 +293,7 @@ fun GestureActionSettingItemUi(
         setting = setting,
         extraTitlePostfix = ": $label",
         showBorder = showBorder,
+        modifier = modifier,
     ) {
         GesturePickerState.editingSlot = setting
         navController.navigate(info.plateaukao.einkbro.activity.SettingRoute.GesturePicker.name)
@@ -293,6 +305,7 @@ fun <T : Enum<T>> ListSettingItemUi(
     setting: ListSettingWithEnumItem<T>,
     dialogManager: DialogManager,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     var currentValueString =
@@ -302,6 +315,7 @@ fun <T : Enum<T>> ListSettingItemUi(
         setting = setting,
         extraTitlePostfix = ": ${currentValueString.value}",
         showBorder = showBorder,
+        modifier = modifier,
     ) {
         coroutineScope.launch {
             val selectedIndex = dialogManager.getSelectedOption(
@@ -321,6 +335,7 @@ fun <T : Enum<T>> ListSettingItemUi(
 fun ToolbarPositionSettingItemUi(
     setting: ToolbarPositionSettingItem,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val current = remember(setting) { mutableStateOf(setting.config.get()) }
     var showDialog by remember(setting) { mutableStateOf(false) }
@@ -330,6 +345,7 @@ fun ToolbarPositionSettingItemUi(
         setting = setting,
         extraTitlePostfix = ": $label",
         showBorder = showBorder,
+        modifier = modifier,
     ) {
         showDialog = true
     }
@@ -511,6 +527,7 @@ private fun ToolbarPositionDiagram(
 fun EinkImageSettingItemUi(
     setting: EinkImageSettingItem,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val current = remember(setting) { mutableStateOf(setting.config.get()) }
     var showDialog by remember(setting) { mutableStateOf(false) }
@@ -519,6 +536,7 @@ fun EinkImageSettingItemUi(
         setting = setting,
         extraTitlePostfix = ": ${stringResource(current.value.labelResId)}",
         showBorder = showBorder,
+        modifier = modifier,
     ) {
         showDialog = true
     }
@@ -701,6 +719,7 @@ fun ListSettingWithStringItemUi(
     setting: ListSettingWithStrResIdItem,
     dialogManager: DialogManager,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val currentIndex = setting.config.get().toInt()
@@ -711,6 +730,7 @@ fun ListSettingWithStringItemUi(
         setting = setting,
         extraTitlePostfix = ": ${currentValueString.value}",
         showBorder = showBorder,
+        modifier = modifier,
     ) {
         coroutineScope.launch {
             val selectedIndex = dialogManager.getSelectedOption(
@@ -729,6 +749,7 @@ fun <T> ListSettingWithClassItemUi(
     setting: ListSettingWithClassItem<T>,
     dialogManager: DialogManager,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val configString = setting.config.get()
     var currentValueString = remember(setting) { mutableStateOf(configString) }
@@ -737,6 +758,7 @@ fun <T> ListSettingWithClassItemUi(
         setting = setting,
         extraTitlePostfix = ": ${currentValueString.value}",
         showBorder = showBorder,
+        modifier = modifier,
     ) {
         coroutineScope.launch {
             val selectedIndex = dialogManager.getSelectedOptionWithString(
@@ -755,18 +777,18 @@ fun <T> ListSettingWithClassItemUi(
 fun ProgressActionSettingItemUi(
     setting: ProgressActionSettingItem,
     showBorder: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val progressState = remember { mutableStateOf(ProgressState()) }
     val coroutineScope = rememberCoroutineScope()
-    
+
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val borderWidth = if (pressed) 3.dp else 1.dp
 
-    var modifier = Modifier
+    var columnModifier = modifier
         .fillMaxWidth()
         .testTag(stringResource(setting.titleResId))
-        .height(80.dp)
         .clickable(
             indication = null,
             interactionSource = interactionSource,
@@ -794,13 +816,17 @@ fun ProgressActionSettingItemUi(
             }
         }
     
-    if (showBorder) modifier = modifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+    if (showBorder) columnModifier =
+        columnModifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
 
-    Column(modifier = modifier) {
+    // Center keeps content balanced when a paired grid neighbor stretches this cell taller.
+    Column(modifier = columnModifier, verticalArrangement = Arrangement.Center) {
+        // Min height (not weight/fixed height) so the row can grow when a larger
+        // font scale wraps the title/summary; weight would cap it at the min.
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .heightIn(min = settingItemMinHeight)
                 .padding(if (progressState.value.isRunning) 8.dp else 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -819,7 +845,11 @@ fun ProgressActionSettingItemUi(
                     .width(6.dp)
                     .fillMaxHeight()
             )
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 8.dp)
+            ) {
                 Text(
                     modifier = Modifier.wrapContentWidth(),
                     text = stringResource(id = setting.titleResId),
@@ -882,6 +912,17 @@ fun SearchSettingScreen(
     val showBorder = columnCount == 2
     val supportTwoSpan = columnCount == 2
 
+    // Group into consecutive category runs so items can be paired per category
+    // in two-column mode while keeping the dividers between categories.
+    val categoryRuns = remember(filteredSettings) {
+        buildList<Pair<Int, MutableList<SettingItemInterface>>> {
+            filteredSettings.forEach { (categoryResId, setting) ->
+                if (isEmpty() || last().first != categoryResId) add(categoryResId to mutableListOf())
+                last().second.add(setting)
+            }
+        }
+    }
+
     LazyVerticalGrid(
         modifier = modifier
             .wrapContentHeight()
@@ -890,96 +931,31 @@ fun SearchSettingScreen(
         horizontalArrangement = Arrangement.spacedBy(7.dp),
         columns = GridCells.Fixed(columnCount),
     ) {
-        var lastCategoryResId = 0
-        var isFirstCategory = true
-        filteredSettings.forEach { (categoryResId, setting) ->
-            if (categoryResId != lastCategoryResId) {
-                if (!isFirstCategory) {
-                    item(
-                        key = "divider-$categoryResId",
-                        span = { GridItemSpan(if (supportTwoSpan) 2 else 1) },
-                    ) {
-                        DividerSettingItemUi(categoryResId, supportTwoSpan)
+        categoryRuns.forEachIndexed { index, (categoryResId, categorySettings) ->
+            if (index > 0) {
+                item(
+                    key = "divider-$categoryResId",
+                    span = { GridItemSpan(if (supportTwoSpan) 2 else 1) },
+                ) {
+                    DividerSettingItemUi(categoryResId, supportTwoSpan)
+                }
+            }
+            if (columnCount == 1) {
+                categorySettings.forEach { setting ->
+                    // Keyed so per-item remember state follows the setting, not the grid
+                    // position, as the filtered list morphs while typing.
+                    item(key = "$categoryResId-${setting.titleResId}") {
+                        SettingItemCell(setting, navController, dialogManager, linkAction, showBorder)
                     }
                 }
-                lastCategoryResId = categoryResId
-                isFirstCategory = false
-            }
-            // Keyed so per-item remember state follows the setting, not the grid
-            // position, as the filtered list morphs while typing.
-            item(
-                key = "$categoryResId-${setting.titleResId}",
-                span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) },
-            ) {
-                when (setting) {
-                    is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder) {
-                        navController.navigate(setting.destination.name)
+            } else {
+                pairSettingLines(categorySettings).forEach { line ->
+                    item(
+                        key = "$categoryResId-${line.first().titleResId}",
+                        span = { GridItemSpan(2) },
+                    ) {
+                        SettingLineUi(line, navController, dialogManager, linkAction, showBorder)
                     }
-
-                    is ActionSettingItem -> SettingItemUi(
-                        setting,
-                        showBorder = showBorder
-                    ) { setting.action() }
-
-                    is GestureActionSettingItem -> GestureActionSettingItemUi(
-                        setting, navController, showBorder
-                    )
-
-                    is ProgressActionSettingItem -> ProgressActionSettingItemUi(
-                        setting,
-                        showBorder = showBorder
-                    )
-
-                    is BooleanSettingItem -> BooleanSettingItemUi(setting, showBorder)
-                    is ValueSettingItem<*> -> ValueSettingItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder,
-                        setting.showValue
-                    )
-
-                    is ListSettingWithEnumItem<*> -> ListSettingItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder
-                    )
-
-                    is ToolbarPositionSettingItem -> ToolbarPositionSettingItemUi(
-                        setting,
-                        showBorder
-                    )
-
-                    is EinkImageSettingItem -> EinkImageSettingItemUi(
-                        setting,
-                        showBorder
-                    )
-
-                    is ListSettingWithStrResIdItem -> ListSettingWithStringItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder
-                    )
-
-                    is ListSettingWithClassItem<*> -> ListSettingWithClassItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder
-                    )
-
-                    is LinkSettingItem -> SettingItemUi(
-                        setting,
-                        showBorder = showBorder
-                    ) { linkAction(setting.url) }
-
-                    is VersionSettingItem -> {
-                        val version =
-                            " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
-                        SettingItemUi(setting, false, version, showBorder) {
-                            navController.navigate(setting.destination.name)
-                        }
-                    }
-
-                    else -> {}
                 }
             }
         }
@@ -1006,79 +982,166 @@ fun SettingScreen(
     ) {
         val showBorder = columnCount == 2
         val supportTwoSpan = columnCount == 2
-        settings.forEach { setting ->
-            item(span = { GridItemSpan(if (supportTwoSpan) setting.span else 1) }) {
-                when (setting) {
-                    is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder) {
-                        navController.navigate(setting.destination.name)
-                    }
-
-                    is ActionSettingItem -> SettingItemUi(
-                        setting,
-                        showBorder = showBorder
-                    ) { setting.action() }
-
-                    is GestureActionSettingItem -> GestureActionSettingItemUi(
-                        setting, navController, showBorder
-                    )
-
-                    is ProgressActionSettingItem -> ProgressActionSettingItemUi(
-                        setting,
-                        showBorder = showBorder
-                    )
-
-                    is BooleanSettingItem -> BooleanSettingItemUi(setting, showBorder)
-                    is ValueSettingItem<*> -> ValueSettingItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder,
-                        setting.showValue
-                    )
-
-                    is DividerSettingItem ->
+        if (columnCount == 1) {
+            settings.forEach { setting ->
+                item {
+                    if (setting is DividerSettingItem) {
                         DividerSettingItemUi(setting.titleResId, supportTwoSpan)
-
-                    is ListSettingWithEnumItem<*> -> ListSettingItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder
-                    )
-
-                    is ToolbarPositionSettingItem -> ToolbarPositionSettingItemUi(
-                        setting,
-                        showBorder
-                    )
-
-                    is EinkImageSettingItem -> EinkImageSettingItemUi(
-                        setting,
-                        showBorder
-                    )
-
-                    is ListSettingWithStrResIdItem -> ListSettingWithStringItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder
-                    )
-
-                    is ListSettingWithClassItem<*> -> ListSettingWithClassItemUi(
-                        setting,
-                        dialogManager,
-                        showBorder
-                    )
-
-                    is LinkSettingItem -> SettingItemUi(
-                        setting,
-                        showBorder = showBorder
-                    ) { linkAction(setting.url) }
-
-                    is VersionSettingItem -> {
-                        val version = " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
-                        SettingItemUi(setting, false, version, showBorder) {
-                            navController.navigate(setting.destination.name)
-                        }
+                    } else {
+                        SettingItemCell(setting, navController, dialogManager, linkAction, showBorder)
+                    }
+                }
+            }
+        } else {
+            pairSettingLines(settings).forEach { line ->
+                item(span = { GridItemSpan(2) }) {
+                    val single = line.singleOrNull()
+                    if (single is DividerSettingItem) {
+                        DividerSettingItemUi(single.titleResId, supportTwoSpan)
+                    } else {
+                        SettingLineUi(line, navController, dialogManager, linkAction, showBorder)
                     }
                 }
             }
         }
+    }
+}
+
+// Groups span-1 settings two per grid line; span-2 items (dividers) get their
+// own full-width line.
+private fun pairSettingLines(settings: List<SettingItemInterface>): List<List<SettingItemInterface>> {
+    val lines = mutableListOf<List<SettingItemInterface>>()
+    var pending: SettingItemInterface? = null
+    settings.forEach { setting ->
+        when {
+            setting.span == 2 -> {
+                pending?.let { lines.add(listOf(it)) }
+                pending = null
+                lines.add(listOf(setting))
+            }
+
+            pending == null -> pending = setting
+            else -> {
+                lines.add(listOf(pending!!, setting))
+                pending = null
+            }
+        }
+    }
+    pending?.let { lines.add(listOf(it)) }
+    return lines
+}
+
+// One two-column grid line. IntrinsicSize.Max + fillMaxHeight stretch both cells
+// to the taller one so their borders stay aligned when font scaling wraps text.
+@Composable
+private fun SettingLineUi(
+    line: List<SettingItemInterface>,
+    navController: NavHostController,
+    dialogManager: DialogManager,
+    linkAction: (String) -> Unit,
+    showBorder: Boolean,
+) {
+    Row(
+        modifier = Modifier.height(IntrinsicSize.Max),
+        horizontalArrangement = Arrangement.spacedBy(7.dp),
+    ) {
+        line.forEach { setting ->
+            SettingItemCell(
+                setting, navController, dialogManager, linkAction, showBorder,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+            )
+        }
+        if (line.size == 1) Spacer(modifier = Modifier.weight(1f))
+    }
+}
+
+@Composable
+private fun SettingItemCell(
+    setting: SettingItemInterface,
+    navController: NavHostController,
+    dialogManager: DialogManager,
+    linkAction: (String) -> Unit,
+    showBorder: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    when (setting) {
+        is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder, modifier = modifier) {
+            navController.navigate(setting.destination.name)
+        }
+
+        is ActionSettingItem -> SettingItemUi(
+            setting,
+            showBorder = showBorder,
+            modifier = modifier,
+        ) { setting.action() }
+
+        is GestureActionSettingItem -> GestureActionSettingItemUi(
+            setting, navController, showBorder, modifier
+        )
+
+        is ProgressActionSettingItem -> ProgressActionSettingItemUi(
+            setting,
+            showBorder = showBorder,
+            modifier = modifier,
+        )
+
+        is BooleanSettingItem -> BooleanSettingItemUi(setting, showBorder, modifier)
+        is ValueSettingItem<*> -> ValueSettingItemUi(
+            setting,
+            dialogManager,
+            showBorder,
+            setting.showValue,
+            modifier,
+        )
+
+        is ListSettingWithEnumItem<*> -> ListSettingItemUi(
+            setting,
+            dialogManager,
+            showBorder,
+            modifier,
+        )
+
+        is ToolbarPositionSettingItem -> ToolbarPositionSettingItemUi(
+            setting,
+            showBorder,
+            modifier,
+        )
+
+        is EinkImageSettingItem -> EinkImageSettingItemUi(
+            setting,
+            showBorder,
+            modifier,
+        )
+
+        is ListSettingWithStrResIdItem -> ListSettingWithStringItemUi(
+            setting,
+            dialogManager,
+            showBorder,
+            modifier,
+        )
+
+        is ListSettingWithClassItem<*> -> ListSettingWithClassItemUi(
+            setting,
+            dialogManager,
+            showBorder,
+            modifier,
+        )
+
+        is LinkSettingItem -> SettingItemUi(
+            setting,
+            showBorder = showBorder,
+            modifier = modifier,
+        ) { linkAction(setting.url) }
+
+        is VersionSettingItem -> {
+            val version = " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
+            SettingItemUi(setting, false, version, showBorder, modifier) {
+                navController.navigate(setting.destination.name)
+            }
+        }
+
+        else -> {}
     }
 }
