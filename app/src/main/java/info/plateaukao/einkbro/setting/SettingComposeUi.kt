@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -99,7 +100,7 @@ fun SettingItemUi(
     var modifier = Modifier
         .fillMaxWidth()
         .testTag(stringResource(setting.titleResId))
-        .height(height)
+        .heightIn(min = height)
         .clickable(
             indication = null,
             interactionSource = interactionSource,
@@ -766,7 +767,7 @@ fun ProgressActionSettingItemUi(
     var modifier = Modifier
         .fillMaxWidth()
         .testTag(stringResource(setting.titleResId))
-        .height(80.dp)
+        .heightIn(min = 80.dp)
         .clickable(
             indication = null,
             interactionSource = interactionSource,
