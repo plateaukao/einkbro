@@ -27,6 +27,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.concurrent.TimeUnit
 
 
 @Database(
@@ -46,7 +47,7 @@ import org.koin.core.component.inject
         UserScript::class,
         UserScriptValue::class,
     ],
-    version = 10,
+    version = 11,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -261,6 +262,15 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         }
     }
 
+    // Rekeys translation_cache by text hash + provider; old rows are disposable
+    // cache data, so drop and recreate instead of converting.
+    private val migration10To11: Migration = object : Migration(10, 11) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("DROP TABLE IF EXISTS `translation_cache`")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `translation_cache` (`textHash` TEXT NOT NULL, `targetLanguage` TEXT NOT NULL, `translateApi` TEXT NOT NULL, `translatedText` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, PRIMARY KEY(`textHash`, `targetLanguage`, `translateApi`))")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
@@ -271,6 +281,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         .addMigrations(migration7To8)
         .addMigrations(migration8To9)
         .addMigrations(migration9To10)
+        .addMigrations(migration10To11)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -297,6 +308,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
             migrateNinja4DbIfNeeded()
             faviconInfos.addAll(getAllFavicons())
             config.domainConfigurationMap.putAll(getAllDomainConfigurations())
+            cleanupTranslationCache()
         }
     }
 
@@ -519,14 +531,29 @@ class BookmarkManager(private val context: Context) : KoinComponent {
             )
         }
 
-    suspend fun getTranslationCache(originalText: String, targetLanguage: String): TranslationCache? =
-        translationCacheDao.getTranslation(originalText, targetLanguage)
+    suspend fun getTranslationCache(
+        textHash: String,
+        targetLanguage: String,
+        translateApi: String,
+    ): TranslationCache? =
+        translationCacheDao.getTranslation(textHash, targetLanguage, translateApi)
 
     suspend fun insertTranslationCache(translationCache: TranslationCache) =
         translationCacheDao.insert(translationCache)
 
-    suspend fun deleteOldTranslationCache(timestamp: Long) =
-        translationCacheDao.deleteOldCache(timestamp)
+    suspend fun refreshTranslationCacheTimestamp(
+        textHash: String,
+        targetLanguage: String,
+        translateApi: String,
+        timestamp: Long,
+    ) = translationCacheDao.refreshTimestamp(textHash, targetLanguage, translateApi, timestamp)
+
+    suspend fun cleanupTranslationCache() {
+        translationCacheDao.deleteOldCache(
+            System.currentTimeMillis() - TimeUnit.DAYS.toMillis(TRANSLATION_CACHE_EXPIRATION_DAYS)
+        )
+        translationCacheDao.trimToMaxEntries(TRANSLATION_CACHE_MAX_ENTRIES)
+    }
 
     // -- Saved Pages --
 

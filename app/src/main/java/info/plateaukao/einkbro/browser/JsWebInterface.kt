@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.browser
 import android.util.Log
 import android.webkit.JavascriptInterface
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.TRANSLATION_CACHE_EXPIRATION_DAYS
 import info.plateaukao.einkbro.database.TranslationCache
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -24,10 +25,12 @@ import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 
-private const val CACHE_EXPIRATION_DAYS = 5
-private const val CACHE_TEXT_LENGTH_LIMIT = 15
+// Upper bound on cacheable source text; the translation APIs themselves cap
+// around 5000 chars, so anything larger never produces a reusable result.
+private const val CACHE_MAX_TEXT_LENGTH = 10_000
 private const val MAX_DOWNLOAD_ID_LENGTH = 64
 private const val MAX_TTS_TEXT_LENGTH = 4000
 
@@ -61,15 +64,25 @@ class JsWebInterface(
     fun getTranslation(originalText: String, elementId: String, callback: String) {
         coroutineScope.launch(Dispatchers.IO) {
             val currentLanguage = configManager.translation.translationLanguage.value
+            val translateApi = webView.translateApi
             val currentTime = System.currentTimeMillis()
+            val cacheable = originalText.length <= CACHE_MAX_TEXT_LENGTH
+            val textHash = if (cacheable) sha256(originalText) else ""
 
-            // Check cache for short strings
-            if (originalText.length < CACHE_TEXT_LENGTH_LIMIT) {
-                val cachedEntry = bookmarkManager.getTranslationCache(originalText, currentLanguage)
+            if (cacheable) {
+                val cachedEntry =
+                    bookmarkManager.getTranslationCache(textHash, currentLanguage, translateApi.name)
                 if (cachedEntry != null) {
                     val daysDiff = TimeUnit.MILLISECONDS.toDays(currentTime - cachedEntry.timestamp)
-                    if (daysDiff < CACHE_EXPIRATION_DAYS) {
+                    if (daysDiff < TRANSLATION_CACHE_EXPIRATION_DAYS) {
                         Log.d("JsWebInterface", "Cache hit for: $originalText")
+                        // Sliding expiration: bump the timestamp (at most once a day)
+                        // so regularly re-read documents don't expire mid-habit.
+                        if (daysDiff >= 1) {
+                            bookmarkManager.refreshTranslationCacheTimestamp(
+                                textHash, currentLanguage, translateApi.name, currentTime
+                            )
+                        }
                         withContext(Dispatchers.Main) {
                             if (webView.isAttachedToWindow) {
                                 webView.evaluateJavascript(
@@ -79,22 +92,21 @@ class JsWebInterface(
                             }
                         }
                         return@launch
-                    } else {
-                        // Optionally delete old cache entry, though we have a bulk delete method
                     }
                 }
             }
 
-            val semaphore = getSemaphoreForApi(webView.translateApi)
+            val semaphore = getSemaphoreForApi(translateApi)
             semaphore.withPermit {
                 Log.d("JsWebInterface", "getTranslation: $originalText")
-                val translatedString = performTranslation(originalText, webView.translateApi)
+                val translatedString = performTranslation(originalText, translateApi)
 
-                if (translatedString.isNotEmpty() && originalText.length < CACHE_TEXT_LENGTH_LIMIT) {
+                if (translatedString.isNotEmpty() && cacheable) {
                     bookmarkManager.insertTranslationCache(
                         TranslationCache(
-                            originalText = originalText,
+                            textHash = textHash,
                             targetLanguage = currentLanguage,
+                            translateApi = translateApi.name,
                             translatedText = translatedString,
                             timestamp = currentTime
                         )
@@ -113,9 +125,14 @@ class JsWebInterface(
                     }
                 }
 
-                delayIfNeeded(webView.translateApi)
+                delayIfNeeded(translateApi)
             }
         }
+    }
+
+    private fun sha256(text: String): String {
+        val digest = MessageDigest.getInstance("SHA-256").digest(text.toByteArray())
+        return digest.joinToString("") { "%02x".format(it) }
     }
 
     private fun getSemaphoreForApi(api: TRANSLATE_API): Semaphore {
