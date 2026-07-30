@@ -604,4 +604,5 @@
     <string name="drive_sign_out">Выйти (%s)</string>
     <string name="drive_sign_in_failed">Не удалось войти в Google</string>
     <string name="drive_not_configured">В этой сборке не настроен клиент Google OAuth</string>
+    <string name="gemini_transcribing_note">Субтитры не найдены. Видео расшифровывается с помощью Gemini… это может занять несколько минут.</string>
 </resources>

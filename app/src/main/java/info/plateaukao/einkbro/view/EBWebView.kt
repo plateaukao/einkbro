@@ -756,8 +756,8 @@ open class EBWebView(
         }
     }
 
-    suspend fun getRawText(): String {
-        prepareYoutubeCaption()
+    suspend fun getRawText(onGeminiTranscribe: (() -> Unit)? = null): String {
+        prepareYoutubeCaption(onGeminiTranscribe)
         return suspendCancellableCoroutine { continuation ->
             getRawTextInto(continuation)
         }
@@ -771,16 +771,20 @@ open class EBWebView(
     // (summarize / chat with web / page AI) work on it instead of the watch-page DOM.
     // No-op when the player's own timedtext request was already captured, or when the
     // video has no captions (getRawText then falls back to Readability extraction).
-    private suspend fun prepareYoutubeCaption() {
+    private suspend fun prepareYoutubeCaption(onGeminiTranscribe: (() -> Unit)?) {
         if (dualCaption != null) return
         val pageUrl = url ?: return
         val videoId = YouTubeCaptionFetcher.extractVideoId(pageUrl) ?: return
         if (videoId == noCaptionVideoId) return
+        // Callers with a dialog pass their own notice; everyone else at least gets a
+        // toast, because the Gemini fallback can take minutes with no other feedback.
+        val notify = onGeminiTranscribe
+            ?: { EBToast.show(context, R.string.gemini_transcribing_note) }
         // The full transcript is always fetched; this outer timeout only guards
-        // against a hung network (3 requests x 10s connect + 10s read internally),
-        // in which case getRawText falls back to page text.
-        dualCaption = withTimeoutOrNull(60_000) {
-            YouTubeCaptionFetcher().fetchCaptionJson(pageUrl)
+        // against a hung network. Sized above the Gemini fallback's 5-minute read
+        // timeout; on expiry getRawText falls back to page text.
+        dualCaption = withTimeoutOrNull(360_000) {
+            YouTubeCaptionFetcher().fetchCaptionJson(pageUrl, notify)
         }
         if (dualCaption == null) noCaptionVideoId = videoId
     }

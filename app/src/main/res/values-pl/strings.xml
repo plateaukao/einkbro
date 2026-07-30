@@ -542,4 +542,5 @@
     <string name="drive_sign_out">Wyloguj się (%s)</string>
     <string name="drive_sign_in_failed">Logowanie do Google nie powiodło się</string>
     <string name="drive_not_configured">W tej kompilacji nie skonfigurowano klienta Google OAuth</string>
+    <string name="gemini_transcribing_note">Nie znaleziono napisów. Transkrybowanie filmu za pomocą Gemini… może to potrwać kilka minut.</string>
 </resources>

@@ -690,4 +690,5 @@
     <string name="task_run">Run</string>
     <string name="task_requires_openai">Custom tasks require OpenAI (not Gemini).</string>
     <string name="task_unknown">Unknown task.</string>
+    <string name="gemini_transcribing_note">No captions found. Transcribing video with Gemini… this may take a few minutes.</string>
 </resources>

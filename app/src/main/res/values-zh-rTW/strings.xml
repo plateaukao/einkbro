@@ -599,4 +599,5 @@
     <string name="drive_sign_out">登出（%s）</string>
     <string name="drive_sign_in_failed">Google 登入失敗</string>
     <string name="drive_not_configured">此版本未設定 Google OAuth 用戶端</string>
+    <string name="gemini_transcribing_note">找不到字幕。正在使用 Gemini 轉錄影片……可能需要幾分鐘。</string>
 </resources>

@@ -542,4 +542,5 @@
     <string name="drive_sign_out">Esci (%s)</string>
     <string name="drive_sign_in_failed">Accesso a Google non riuscito</string>
     <string name="drive_not_configured">Nessun client OAuth di Google configurato in questa build</string>
+    <string name="gemini_transcribing_note">Nessun sottotitolo trovato. Trascrizione del video con Gemini… potrebbe richiedere alcuni minuti.</string>
 </resources>

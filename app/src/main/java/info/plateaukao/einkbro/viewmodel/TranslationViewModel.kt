@@ -174,6 +174,20 @@ class TranslationViewModel(
         }
     }
 
+    /**
+     * Shows the popup with a status note without firing any LLM/translate query.
+     * [TranslateDialogFragment.onCreateView] unconditionally calls [translate] when
+     * the popup opens; the task-mode flag suppresses it until the real action's
+     * [setupGptAction] takes over.
+     */
+    fun setupStatusMessage(text: String) {
+        taskStreamJob?.cancel()
+        taskStreamJob = null
+        isTaskMode = true
+        _inputMessage.value = ""
+        _responseMessage.value = AnnotatedString(text)
+    }
+
     fun setupGptAction(gptAction: ChatGPTActionInfo) {
         // A task-stream collector may still be feeding progress into _responseMessage
         // from a prior task run; cancel it before this GPT action takes over the popup.

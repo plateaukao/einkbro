@@ -46,8 +46,9 @@ import java.util.concurrent.TimeUnit
         CookieDomain::class,
         UserScript::class,
         UserScriptValue::class,
+        VideoTranscript::class,
     ],
-    version = 11,
+    version = 12,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -63,6 +64,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun domainListDao(): DomainListDao
     abstract fun userScriptDao(): UserScriptDao
     abstract fun userScriptValueDao(): UserScriptValueDao
+    abstract fun videoTranscriptDao(): VideoTranscriptDao
 }
 
 @Dao
@@ -271,6 +273,12 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         }
     }
 
+    private val migration11To12: Migration = object : Migration(11, 12) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `video_transcripts` (`videoId` TEXT NOT NULL, `transcript` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, PRIMARY KEY(`videoId`))")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
@@ -282,6 +290,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         .addMigrations(migration8To9)
         .addMigrations(migration9To10)
         .addMigrations(migration10To11)
+        .addMigrations(migration11To12)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -540,6 +549,12 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     suspend fun insertTranslationCache(translationCache: TranslationCache) =
         translationCacheDao.insert(translationCache)
+
+    suspend fun getVideoTranscript(videoId: String): VideoTranscript? =
+        database.videoTranscriptDao().getTranscript(videoId)
+
+    suspend fun insertVideoTranscript(videoTranscript: VideoTranscript) =
+        database.videoTranscriptDao().insert(videoTranscript)
 
     suspend fun refreshTranslationCacheTimestamp(
         textHash: String,

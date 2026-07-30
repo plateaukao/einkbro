@@ -551,4 +551,5 @@
     <string name="drive_sign_out">Meld af (%s)</string>
     <string name="drive_sign_in_failed">Google-aanmelding het misluk</string>
     <string name="drive_not_configured">Geen Google OAuth-kliënt is in hierdie bou opgestel nie</string>
+    <string name="gemini_transcribing_note">Geen onderskrifte gevind nie. Video word met Gemini getranskribeer… dit kan enkele minute duur.</string>
 </resources>

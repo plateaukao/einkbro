@@ -77,6 +77,17 @@ class YouTubeCaptionFetcherTest {
     }
 
     @Test
+    fun `transcriptToTimedTextJson round-trips through TimedText`() {
+        val transcript = "First paragraph of speech.\n\nSecond paragraph.\n  \nThird."
+        val jsonString = YouTubeCaptionFetcher.transcriptToTimedTextJson(transcript)
+
+        val timedText = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+            .decodeFromString(TimedText.serializer(), jsonString)
+        val lines = timedText.events.mapNotNull { it.segs?.joinToString("") { seg -> seg.utf8 } }
+        assertEquals(listOf("First paragraph of speech.", "Second paragraph.", "Third."), lines)
+    }
+
+    @Test
     fun `captionUrl forces json3 format and resolves relative urls`() {
         assertEquals(
             "https://www.youtube.com/api/timedtext?v=abc&lang=en&fmt=json3",

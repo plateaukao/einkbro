@@ -550,4 +550,5 @@
     <string name="drive_sign_out">Αποσύνδεση (%s)</string>
     <string name="drive_sign_in_failed">Η σύνδεση Google απέτυχε</string>
     <string name="drive_not_configured">Δεν έχει ρυθμιστεί πρόγραμμα-πελάτης Google OAuth σε αυτήν την έκδοση</string>
+    <string name="gemini_transcribing_note">Δεν βρέθηκαν υπότιτλοι. Το βίντεο απομαγνητοφωνείται με το Gemini… μπορεί να διαρκέσει μερικά λεπτά.</string>
 </resources>

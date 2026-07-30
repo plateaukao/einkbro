@@ -550,4 +550,5 @@
     <string name="drive_sign_out">Uitloggen (%s)</string>
     <string name="drive_sign_in_failed">Google-aanmelding mislukt</string>
     <string name="drive_not_configured">Er is geen Google OAuth-client geconfigureerd in deze build</string>
+    <string name="gemini_transcribing_note">Geen ondertitels gevonden. Video wordt getranscribeerd met Gemini… dit kan enkele minuten duren.</string>
 </resources>

@@ -42,7 +42,7 @@ class AiChatDelegate(
                         EBToast.show(activity, R.string.gpt_api_key_not_set)
                         return@launch
                     }
-                    val content = linkContentWebView.getRawText()
+                    val content = linkContentWebView.getRawText(onGeminiTranscribe = ::showTranscribingNote)
                     loadUrl("about:blank")
                     if (content.isNotEmpty()) {
                         val isSuccess = translationViewModel.setupTextSummary(content)
@@ -74,7 +74,8 @@ class AiChatDelegate(
         activity.lifecycleScope.launch {
             val ebWebView = state.ebWebView
             translationViewModel.url = ebWebView.url.orEmpty()
-            val isSuccess = translationViewModel.setupTextSummary(ebWebView.getRawText())
+            val rawText = ebWebView.getRawText(onGeminiTranscribe = ::showTranscribingNote)
+            val isSuccess = translationViewModel.setupTextSummary(rawText)
 
             if (!isSuccess) {
                 EBToast.show(activity, R.string.gpt_api_key_not_set)
@@ -148,6 +149,16 @@ class AiChatDelegate(
         }
     }
 
+    // Opens the translation popup with a "transcribing with Gemini" note before the
+    // slow video transcription starts, so a minutes-long wait doesn't look like the
+    // AI action silently failed. The action's own setup later replaces the note.
+    private fun showTranscribingNote() {
+        translationViewModel.setupStatusMessage(
+            activity.getString(R.string.gemini_transcribing_note)
+        )
+        showTranslationDialog(false)
+    }
+
     fun showPageAiActionMenu() {
         val pageActions =
             config.ai.gptActionList.filter { it.scope == GptActionScope.WholePage }
@@ -176,7 +187,11 @@ class AiChatDelegate(
             }
 
             val ebWebView = state.ebWebView
-            val content = ebWebView.getRawText()
+            val content = ebWebView.getRawText(
+                onGeminiTranscribe = if (action.display == GptActionDisplay.Popup) {
+                    ::showTranscribingNote
+                } else null // EBWebView's default toast covers the non-popup displays
+            )
             translationViewModel.setupGptAction(action)
             translationViewModel.url = ebWebView.url.orEmpty()
             translationViewModel.pageTitle = ebWebView.title.orEmpty()

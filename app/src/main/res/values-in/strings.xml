@@ -603,4 +603,5 @@
     <string name="drive_sign_out">Keluar (%s)</string>
     <string name="drive_sign_in_failed">Login Google gagal</string>
     <string name="drive_not_configured">Tidak ada klien OAuth Google yang dikonfigurasi dalam build ini</string>
+    <string name="gemini_transcribing_note">Subtitel tidak ditemukan. Mentranskripsikan video dengan Gemini… ini bisa memakan waktu beberapa menit.</string>
 </resources>

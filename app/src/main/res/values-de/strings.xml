@@ -543,4 +543,5 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="drive_sign_out">Abmelden (%s)</string>
     <string name="drive_sign_in_failed">Google-Anmeldung fehlgeschlagen</string>
     <string name="drive_not_configured">In diesem Build ist kein Google-OAuth-Client konfiguriert</string>
+    <string name="gemini_transcribing_note">Keine Untertitel gefunden. Video wird mit Gemini transkribiert… das kann einige Minuten dauern.</string>
 </resources>
