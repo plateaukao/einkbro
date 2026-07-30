@@ -31,6 +31,7 @@ import info.plateaukao.einkbro.browser.EBWebViewClient
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.browser.JsWebInterface
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
+import info.plateaukao.einkbro.caption.YouTubeCaptionFetcher
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -41,9 +42,11 @@ import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
+import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
@@ -753,7 +756,36 @@ open class EBWebView(
         }
     }
 
-    suspend fun getRawText() = suspendCancellableCoroutine<String> { continuation ->
+    suspend fun getRawText(): String {
+        prepareYoutubeCaption()
+        return suspendCancellableCoroutine { continuation ->
+            getRawTextInto(continuation)
+        }
+    }
+
+    // Video id of the last YouTube page whose caption fetch came up empty, so a
+    // caption-less video doesn't re-hit the network on every AI action.
+    private var noCaptionVideoId: String? = null
+
+    // On YouTube video pages, actively fetch the caption transcript so AI features
+    // (summarize / chat with web / page AI) work on it instead of the watch-page DOM.
+    // No-op when the player's own timedtext request was already captured, or when the
+    // video has no captions (getRawText then falls back to Readability extraction).
+    private suspend fun prepareYoutubeCaption() {
+        if (dualCaption != null) return
+        val pageUrl = url ?: return
+        val videoId = YouTubeCaptionFetcher.extractVideoId(pageUrl) ?: return
+        if (videoId == noCaptionVideoId) return
+        // The full transcript is always fetched; this outer timeout only guards
+        // against a hung network (3 requests x 10s connect + 10s read internally),
+        // in which case getRawText falls back to page text.
+        dualCaption = withTimeoutOrNull(60_000) {
+            YouTubeCaptionFetcher().fetchCaptionJson(pageUrl)
+        }
+        if (dualCaption == null) noCaptionVideoId = videoId
+    }
+
+    private fun getRawTextInto(continuation: CancellableContinuation<String>) {
         if (dualCaption != null) {
             continuation.resume(DualCaptionProcessor().convertToHtml(dualCaption ?: ""))
         } else if (!isReaderModeOn) {
