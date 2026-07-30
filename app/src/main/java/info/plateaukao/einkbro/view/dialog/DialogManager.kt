@@ -413,6 +413,21 @@ class DialogManager(
         launcher.launch(intent)
     }
 
+    fun showExportUserscriptsFilePicker(launcher: ActivityResultLauncher<Intent>) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_ZIP
+        intent.putExtra(Intent.EXTRA_TITLE, "userscripts.zip")
+        launcher.launch(intent)
+    }
+
+    fun showImportUserscriptsFilePicker(launcher: ActivityResultLauncher<Intent>) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_ANY
+        launcher.launch(intent)
+    }
+
     fun showBackupFilePicker(launcher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)

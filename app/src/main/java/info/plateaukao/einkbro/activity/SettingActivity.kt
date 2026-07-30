@@ -128,6 +128,18 @@ class SettingActivity : FragmentActivity(), BackupOps {
             backupUnit.importBookmarks(uri)
         }
 
+    private val exportUserscriptsLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uri: Uri = result.data?.data ?: return@registerForActivityResult
+            backupUnit.exportUserscripts(uri)
+        }
+
+    private val importUserscriptsLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uri: Uri = result.data?.data ?: return@registerForActivityResult
+            backupUnit.importUserscripts(uri)
+        }
+
     private val exportBackupLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val uri: Uri = result.data?.data ?: return@registerForActivityResult
@@ -313,6 +325,14 @@ class SettingActivity : FragmentActivity(), BackupOps {
 
     override fun importBookmarks() {
         dialogManager.showImportBookmarkFilePicker(importBookmarksLauncher)
+    }
+
+    override fun exportUserscripts() {
+        dialogManager.showExportUserscriptsFilePicker(exportUserscriptsLauncher)
+    }
+
+    override fun importUserscripts() {
+        dialogManager.showImportUserscriptsFilePicker(importUserscriptsLauncher)
     }
 
     private fun shareAppData(categories: Set<BackupCategory>) {

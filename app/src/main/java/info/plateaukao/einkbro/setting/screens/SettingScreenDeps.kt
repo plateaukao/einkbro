@@ -24,4 +24,6 @@ interface BackupOps {
     fun syncWithGoogleDrive()
     fun exportBookmarks()
     fun importBookmarks()
+    fun exportUserscripts()
+    fun importUserscripts()
 }

@@ -269,6 +269,54 @@ class UserScriptManager(private val context: Context) : KoinComponent {
 
     // endregion
 
+    // region backup/restore support
+
+    /** All scripts with [UserScript.code] populated from body files, plus their GM values. */
+    suspend fun getAllForBackup(): List<Pair<UserScript, List<UserScriptValue>>> =
+        withContext(Dispatchers.IO) {
+            userScriptDao.getAll().map { row ->
+                row.copy(code = readCodeFile(row.id) ?: row.code) to
+                    valueDao.getAllForScript(row.id)
+            }
+        }
+
+    /** Removes every script, its GM values, and its body file (for replace-restore). */
+    suspend fun deleteAllScripts() = withContext(Dispatchers.IO) {
+        userScriptDao.getAll().forEach { row ->
+            valueDao.deleteAllForScript(row.id)
+            deleteCodeFile(row.id)
+        }
+        userScriptDao.deleteAll()
+        reload()
+    }
+
+    /**
+     * Installs one script from a backup: merges by @name via [add] (which reloads the
+     * cache itself), then applies the backed-up enabled state and GM values directly via
+     * the DAOs — so callers importing a batch must [reload] once afterwards for the cache
+     * to reflect the applied enabled states. Returns null when the script can't be installed.
+     */
+    suspend fun importScript(
+        code: String,
+        enabled: Boolean,
+        sourceUrl: String?,
+        values: Map<String, String>,
+    ): Long? = withContext(Dispatchers.IO) {
+        val id = try {
+            add(code, sourceUrl)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to import userscript: ${e.message}")
+            return@withContext null
+        }
+        userScriptDao.getById(id)?.let { row ->
+            if (row.enabled != enabled) userScriptDao.update(row.copy(enabled = enabled))
+        }
+        values.forEach { (key, value) -> valueDao.setValue(UserScriptValue(id, key, value)) }
+        id
+    }
+
+    // endregion
+
     // region GM value storage — called from the WebView JS-bridge thread (not main)
 
     fun gmGetValue(scriptId: Long, key: String): String? = valueDao.getValue(scriptId, key)

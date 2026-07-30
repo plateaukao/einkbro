@@ -25,6 +25,7 @@ import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.database.SavedPage
 import info.plateaukao.einkbro.database.WhitelistDomain
+import info.plateaukao.einkbro.userscript.UserScriptManager
 import info.plateaukao.einkbro.view.EBToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +52,7 @@ enum class BackupCategory(val displayNameResId: Int) {
     BOOKMARKS(R.string.backup_category_bookmarks),
     HISTORY(R.string.backup_category_history),
     DATABASE_DATA(R.string.backup_category_database_data),
+    USERSCRIPTS(R.string.backup_category_userscripts),
 }
 
 
@@ -58,6 +60,7 @@ class BackupUnit(
     private val context: Context,
 ) : KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
+    private val userScriptManager: UserScriptManager by inject()
     private val recordDb: RecordRepository by inject()
     private val sp: SharedPreferences by inject()
     private val coroutineScope: CoroutineScope by inject()
@@ -249,8 +252,94 @@ class BackupUnit(
             zos.closeEntry()
         }
 
+        if (BackupCategory.USERSCRIPTS in categories) {
+            writeUserscriptsToZip(zos, USERSCRIPTS_DIR)
+        }
+
         zos.close()
         outputStream.close()
+    }
+
+    /**
+     * Writes each script body as its own `<name>.user.js` entry — so the zip is also
+     * usable by other userscript managers — plus a [USERSCRIPTS_META_FILE] entry
+     * carrying the data the script header can't (enabled state, source URL, GM values),
+     * all under [prefix].
+     */
+    private suspend fun writeUserscriptsToZip(zos: ZipOutputStream, prefix: String = "") {
+        val manifest = JSONArray()
+        val usedNames = mutableSetOf<String>()
+        for ((script, values) in userScriptManager.getAllForBackup()) {
+            val base = script.name.replace(Regex("[\\\\/:*?\"<>|]"), "_").trim()
+                .ifEmpty { "script" }
+            var fileName = "$base.user.js"
+            var suffix = 0
+            while (!usedNames.add(fileName)) fileName = "$base-${++suffix}.user.js"
+            zos.putNextEntry(ZipEntry(prefix + fileName))
+            zos.write(script.code.toByteArray())
+            zos.closeEntry()
+            manifest.put(JSONObject().apply {
+                put("file", fileName)
+                put("name", script.name)
+                put("enabled", script.enabled)
+                script.sourceUrl?.let { put("sourceUrl", it) }
+                if (values.isNotEmpty()) {
+                    put("values", JSONObject().apply { values.forEach { put(it.key, it.value) } })
+                }
+            })
+        }
+        zos.putNextEntry(ZipEntry(prefix + USERSCRIPTS_META_FILE))
+        zos.write(JSONObject().put("scripts", manifest).toString().toByteArray())
+        zos.closeEntry()
+    }
+
+    /**
+     * Installs scripts collected from a zip. [meta] (the [USERSCRIPTS_META_FILE] entry)
+     * supplies enabled state, source URL, and GM values per file when present; scripts
+     * merge by @name, so importing over an existing installation updates in place rather
+     * than duplicating. [replaceExisting] first removes all installed scripts (full-backup
+     * restore semantics); the standalone import merges instead, so a zip from another
+     * device or script manager can't wipe local scripts. Returns the imported count.
+     */
+    private suspend fun restoreUserscripts(
+        bodies: Map<String, String>,
+        meta: JSONObject?,
+        replaceExisting: Boolean,
+    ): Int {
+        if (replaceExisting) userScriptManager.deleteAllScripts()
+        val metaByFile = LinkedHashMap<String, JSONObject>()
+        meta?.optJSONArray("scripts")?.let { arr ->
+            for (i in 0 until arr.length()) {
+                val obj = arr.getJSONObject(i)
+                obj.optString("file").takeIf { it.isNotEmpty() }?.let { metaByFile[it] = obj }
+            }
+        }
+        // Manifest order first (preserves the backed-up ordering), then any .user.js
+        // entries the manifest doesn't know about (e.g. zips from other managers).
+        val orderedFiles = metaByFile.keys.filter { it in bodies } +
+            bodies.keys.filter { it !in metaByFile }
+        var imported = 0
+        for (file in orderedFiles) {
+            // Per-file so one malformed manifest entry can't abort the rest of the batch.
+            try {
+                val scriptMeta = metaByFile[file]
+                val values = mutableMapOf<String, String>()
+                scriptMeta?.optJSONObject("values")?.let { v ->
+                    v.keys().forEach { key -> values[key] = v.optString(key) }
+                }
+                val id = userScriptManager.importScript(
+                    code = bodies.getValue(file),
+                    enabled = scriptMeta?.optBoolean("enabled", true) ?: true,
+                    sourceUrl = scriptMeta?.optString("sourceUrl")?.takeIf { it.isNotEmpty() },
+                    values = values,
+                )
+                if (id != null) imported++
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        userScriptManager.reload()
+        return imported
     }
 
     /**
@@ -292,69 +381,102 @@ class BackupUnit(
         uri: Uri,
         categories: Set<BackupCategory>,
     ): Boolean {
-        try {
-            val fis = context.contentResolver.openInputStream(uri) ?: return false
-            val zis = ZipInputStream(fis)
-
-            var zipEntry = zis.nextEntry
-            while (zipEntry != null) {
-                when {
-                    zipEntry.name == MANIFEST_FILE -> { /* skip */ }
-
-                    zipEntry.name.startsWith("shared_prefs/")
-                            && BackupCategory.ALL_PREFERENCES in categories -> {
-                        val fileName = zipEntry.name.removePrefix("shared_prefs/")
-                        val file = File(sharedPrefsDir, remapPrefsFileName(fileName))
-                        writeStreamToFile(zis, file)
-                    }
-
-                    zipEntry.name == GPT_SETTINGS_FILE
-                            && BackupCategory.GPT_SETTINGS in categories
-                            && BackupCategory.ALL_PREFERENCES !in categories -> {
-                        val content = zis.readBytes()
-                        importGptSettings(JSONObject(String(content)))
-                    }
-
-                    zipEntry.name == BOOKMARKS_FILE
-                            && BackupCategory.BOOKMARKS in categories -> {
-                        val content = zis.readBytes()
-                        val bookmarks = JSONArray(String(content))
-                            .toJSONObjectList()
-                            .map { it.toBookmark() }
-                        kotlinx.coroutines.runBlocking {
-                            bookmarkManager.overwriteBookmarks(bookmarks)
-                        }
-                    }
-
-                    zipEntry.name == HISTORY_FILE
-                            && BackupCategory.HISTORY in categories -> {
-                        val content = zis.readBytes()
-                        val jsonArray = JSONArray(String(content))
-                        val records = (0 until jsonArray.length()).map { i ->
-                            val obj = jsonArray.getJSONObject(i)
-                            Record(
-                                obj.optString("title"),
-                                obj.optString("url"),
-                                obj.optLong("time"),
-                            )
-                        }
-                        recordDb.replaceAllHistory(records)
-                    }
-
-                    zipEntry.name == DATABASE_DATA_FILE
-                            && BackupCategory.DATABASE_DATA in categories -> {
-                        val content = zis.readBytes()
-                        restoreDatabaseData(JSONObject(String(content)))
-                    }
-                }
-                zipEntry = zis.nextEntry
+        return try {
+            withContext(Dispatchers.IO) {
+                val fis = context.contentResolver.openInputStream(uri)
+                    ?: return@withContext false
+                val zis = ZipInputStream(fis)
+                restoreZipEntries(zis, categories)
+                zis.close()
+                fis.close()
+                true
             }
-            zis.close()
-            fis.close()
-            return true
         } catch (e: Exception) {
             e.printStackTrace()
-            return false
+            false
+        }
+    }
+
+    private suspend fun restoreZipEntries(
+        zis: ZipInputStream,
+        categories: Set<BackupCategory>,
+    ) {
+        // Userscript body entries and their metadata entry can appear in any order,
+        // so collect them during the single pass and restore after the loop.
+        val userscriptBodies = LinkedHashMap<String, String>()
+        var userscriptsMeta: JSONObject? = null
+
+        var zipEntry = zis.nextEntry
+        while (zipEntry != null) {
+            when {
+                zipEntry.name == MANIFEST_FILE -> { /* skip */ }
+
+                zipEntry.name.startsWith("shared_prefs/")
+                        && BackupCategory.ALL_PREFERENCES in categories -> {
+                    val fileName = zipEntry.name.removePrefix("shared_prefs/")
+                    val file = File(sharedPrefsDir, remapPrefsFileName(fileName))
+                    writeStreamToFile(zis, file)
+                }
+
+                zipEntry.name == GPT_SETTINGS_FILE
+                        && BackupCategory.GPT_SETTINGS in categories
+                        && BackupCategory.ALL_PREFERENCES !in categories -> {
+                    val content = zis.readBytes()
+                    importGptSettings(JSONObject(String(content)))
+                }
+
+                zipEntry.name == BOOKMARKS_FILE
+                        && BackupCategory.BOOKMARKS in categories -> {
+                    val content = zis.readBytes()
+                    val bookmarks = JSONArray(String(content))
+                        .toJSONObjectList()
+                        .map { it.toBookmark() }
+                    kotlinx.coroutines.runBlocking {
+                        bookmarkManager.overwriteBookmarks(bookmarks)
+                    }
+                }
+
+                zipEntry.name == HISTORY_FILE
+                        && BackupCategory.HISTORY in categories -> {
+                    val content = zis.readBytes()
+                    val jsonArray = JSONArray(String(content))
+                    val records = (0 until jsonArray.length()).map { i ->
+                        val obj = jsonArray.getJSONObject(i)
+                        Record(
+                            obj.optString("title"),
+                            obj.optString("url"),
+                            obj.optLong("time"),
+                        )
+                    }
+                    recordDb.replaceAllHistory(records)
+                }
+
+                zipEntry.name == DATABASE_DATA_FILE
+                        && BackupCategory.DATABASE_DATA in categories -> {
+                    val content = zis.readBytes()
+                    restoreDatabaseData(JSONObject(String(content)))
+                }
+
+                zipEntry.name.startsWith(USERSCRIPTS_DIR)
+                        && BackupCategory.USERSCRIPTS in categories -> {
+                    val fileName = zipEntry.name.removePrefix(USERSCRIPTS_DIR)
+                    when {
+                        fileName == USERSCRIPTS_META_FILE ->
+                            userscriptsMeta = JSONObject(String(zis.readBytes()))
+                        fileName.endsWith(".user.js") ->
+                            userscriptBodies[fileName] = String(zis.readBytes())
+                    }
+                }
+            }
+            zipEntry = zis.nextEntry
+        }
+
+        // Key on the metadata entry too: a backup taken with zero scripts installed has
+        // no bodies but must still clear existing scripts under replace semantics.
+        if (BackupCategory.USERSCRIPTS in categories &&
+            (userscriptBodies.isNotEmpty() || userscriptsMeta != null)
+        ) {
+            restoreUserscripts(userscriptBodies, userscriptsMeta, replaceExisting = true)
         }
     }
 
@@ -390,66 +512,16 @@ class BackupUnit(
         file: File,
         categories: Set<BackupCategory>,
     ): Boolean {
-        try {
-            val zis = ZipInputStream(file.inputStream())
-            var zipEntry = zis.nextEntry
-            while (zipEntry != null) {
-                when {
-                    zipEntry.name == MANIFEST_FILE -> { /* skip */ }
-
-                    zipEntry.name.startsWith("shared_prefs/")
-                            && BackupCategory.ALL_PREFERENCES in categories -> {
-                        val fileName = zipEntry.name.removePrefix("shared_prefs/")
-                        val target = File(sharedPrefsDir, remapPrefsFileName(fileName))
-                        writeStreamToFile(zis, target)
-                    }
-
-                    zipEntry.name == GPT_SETTINGS_FILE
-                            && BackupCategory.GPT_SETTINGS in categories
-                            && BackupCategory.ALL_PREFERENCES !in categories -> {
-                        val content = zis.readBytes()
-                        importGptSettings(JSONObject(String(content)))
-                    }
-
-                    zipEntry.name == BOOKMARKS_FILE
-                            && BackupCategory.BOOKMARKS in categories -> {
-                        val content = zis.readBytes()
-                        val bookmarks = JSONArray(String(content))
-                            .toJSONObjectList()
-                            .map { it.toBookmark() }
-                        kotlinx.coroutines.runBlocking {
-                            bookmarkManager.overwriteBookmarks(bookmarks)
-                        }
-                    }
-
-                    zipEntry.name == HISTORY_FILE
-                            && BackupCategory.HISTORY in categories -> {
-                        val content = zis.readBytes()
-                        val jsonArray = JSONArray(String(content))
-                        val records = (0 until jsonArray.length()).map { i ->
-                            val obj = jsonArray.getJSONObject(i)
-                            Record(
-                                obj.optString("title"),
-                                obj.optString("url"),
-                                obj.optLong("time"),
-                            )
-                        }
-                        recordDb.replaceAllHistory(records)
-                    }
-
-                    zipEntry.name == DATABASE_DATA_FILE
-                            && BackupCategory.DATABASE_DATA in categories -> {
-                        val content = zis.readBytes()
-                        restoreDatabaseData(JSONObject(String(content)))
-                    }
-                }
-                zipEntry = zis.nextEntry
+        return try {
+            withContext(Dispatchers.IO) {
+                val zis = ZipInputStream(file.inputStream())
+                restoreZipEntries(zis, categories)
+                zis.close()
+                true
             }
-            zis.close()
-            return true
         } catch (e: Exception) {
             e.printStackTrace()
-            return false
+            false
         }
     }
 
@@ -800,6 +872,75 @@ class BackupUnit(
         }
     }
 
+    fun exportUserscripts(uri: Uri) {
+        coroutineScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    context.contentResolver.openOutputStream(uri)?.use { os ->
+                        val zos = ZipOutputStream(os)
+                        writeUserscriptsToZip(zos)
+                        zos.close()
+                    }
+                }
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Userscripts are exported", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Userscripts export failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    fun importUserscripts(uri: Uri) {
+        coroutineScope.launch {
+            try {
+                val bodies = LinkedHashMap<String, String>()
+                var meta: JSONObject? = null
+                withContext(Dispatchers.IO) {
+                    context.contentResolver.openInputStream(uri)?.use { fis ->
+                        val zis = ZipInputStream(fis)
+                        var entry = zis.nextEntry
+                        while (entry != null) {
+                            // Match on the base name so both flat userscripts.zip files and
+                            // full app-data backups (entries under "userscripts/") import.
+                            if (!entry.isDirectory) {
+                                val baseName = entry.name.substringAfterLast('/')
+                                when {
+                                    baseName == USERSCRIPTS_META_FILE ->
+                                        meta = JSONObject(String(zis.readBytes()))
+                                    baseName.endsWith(".user.js") -> {
+                                        // Same base name at different depths: suffix instead
+                                        // of overwriting, so no script body is dropped.
+                                        var key = baseName
+                                        var n = 0
+                                        while (key in bodies) key = "${++n}-$baseName"
+                                        bodies[key] = String(zis.readBytes())
+                                    }
+                                }
+                            }
+                            entry = zis.nextEntry
+                        }
+                        zis.close()
+                    }
+                }
+                val count = restoreUserscripts(bodies, meta, replaceExisting = false)
+                withContext(Dispatchers.Main) {
+                    val message = if (count > 0) "$count userscript(s) imported"
+                    else "No userscripts found in file"
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Userscripts import failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     fun preprocessActivityResult(result: ActivityResult): Uri? {
         if (result.resultCode != FragmentActivity.RESULT_OK) return null
         val uri = result.data?.data ?: return null
@@ -836,6 +977,8 @@ class BackupUnit(
         private const val BOOKMARKS_FILE = "bookmarks.json"
         private const val HISTORY_FILE = "history.json"
         private const val DATABASE_DATA_FILE = "database_data.json"
+        private const val USERSCRIPTS_DIR = "userscripts/"
+        private const val USERSCRIPTS_META_FILE = "userscripts.json"
 
         private val GPT_PREF_KEYS = listOf(
             "sp_gpt_api_key",

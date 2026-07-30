@@ -42,5 +42,13 @@ fun buildBackupSettingItems(deps: SettingScreenDeps): List<SettingItemInterface>
             R.string.setting_title_import_bookmarks,
             0,
         ) { backupOps.importBookmarks() },
+        ActionSettingItem(
+            R.string.setting_title_export_userscripts,
+            0,
+        ) { backupOps.exportUserscripts() },
+        ActionSettingItem(
+            R.string.setting_title_import_userscripts,
+            0,
+        ) { backupOps.importUserscripts() },
     )
 }

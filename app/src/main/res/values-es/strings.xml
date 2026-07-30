@@ -209,6 +209,9 @@
     <string name="folder_name_description">Inserta el nombre de la carpeta de marcadores</string>
     <string name="setting_title_export_bookmarks">Exportar marcadores</string>
     <string name="setting_title_import_bookmarks">Importar marcadores</string>
+    <string name="setting_title_export_userscripts">Exportar scripts de usuario</string>
+    <string name="setting_title_import_userscripts">Importar scripts de usuario</string>
+    <string name="backup_category_userscripts">Scripts de usuario</string>
     <string name="setting_title_incognito">Modo incógnito</string>
     <string name="back">Atrás</string>
     <string name="refresh">Recargar</string>

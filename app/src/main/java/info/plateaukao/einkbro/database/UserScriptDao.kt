@@ -42,6 +42,9 @@ interface UserScriptValueDao {
     @Query("SELECT key FROM user_script_values WHERE scriptId = :scriptId")
     fun listKeys(scriptId: Long): List<String>
 
+    @Query("SELECT * FROM user_script_values WHERE scriptId = :scriptId")
+    fun getAllForScript(scriptId: Long): List<UserScriptValue>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun setValue(value: UserScriptValue)
 

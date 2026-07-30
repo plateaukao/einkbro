@@ -196,6 +196,9 @@
     <string name="folder_name_description">輸入書籤目錄名稱</string>
     <string name="setting_title_export_bookmarks">匯出書籤</string>
     <string name="setting_title_import_bookmarks">匯入書籤</string>
+    <string name="setting_title_export_userscripts">匯出使用者腳本</string>
+    <string name="setting_title_import_userscripts">匯入使用者腳本</string>
+    <string name="backup_category_userscripts">使用者腳本</string>
     <string name="setting_title_incognito">無痕模式</string>
     <string name="back">往回</string>
     <string name="refresh">更新網頁</string>

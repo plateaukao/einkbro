@@ -244,6 +244,9 @@
     <string name="folder_name_description">Wpisz nazwę folderu zakładek</string>
     <string name="setting_title_export_bookmarks">Eksportuj zakładki</string>
     <string name="setting_title_import_bookmarks">Importuj zakładki</string>
+    <string name="setting_title_export_userscripts">Eksportuj skrypty użytkownika</string>
+    <string name="setting_title_import_userscripts">Importuj skrypty użytkownika</string>
+    <string name="backup_category_userscripts">Skrypty użytkownika</string>
     <string name="setting_title_incognito">Tryb incognito</string>
     <string name="back">Wstecz</string>
     <string name="refresh">Odśwież</string>

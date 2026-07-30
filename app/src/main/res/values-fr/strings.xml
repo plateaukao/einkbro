@@ -237,6 +237,9 @@
     <string name="folder_name_description">Saisir le nom du dossier de signets</string>
     <string name="setting_title_export_bookmarks">Exporter les signets</string>
     <string name="setting_title_import_bookmarks">Importer les signets</string>
+    <string name="setting_title_export_userscripts">Exporter les scripts utilisateur</string>
+    <string name="setting_title_import_userscripts">Importer les scripts utilisateur</string>
+    <string name="backup_category_userscripts">Scripts utilisateur</string>
     <string name="setting_title_incognito">Mode incognito</string>
     <string name="back">Retour</string>
     <string name="refresh">Actualiser</string>

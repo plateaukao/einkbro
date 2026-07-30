@@ -219,6 +219,9 @@
     <string name="folder_name_description">Introduïu el nom de la carpeta d\'adreces d\'interès</string>
     <string name="setting_title_export_bookmarks">Exportar adreces d\'interès</string>
     <string name="setting_title_import_bookmarks">Importar adreces d\'interès</string>
+    <string name="setting_title_export_userscripts">Exportar scripts d\'usuari</string>
+    <string name="setting_title_import_userscripts">Importar scripts d\'usuari</string>
+    <string name="backup_category_userscripts">Scripts d\'usuari</string>
     <string name="setting_title_incognito">Mode d\'incògnit</string>
     <string name="back">Enrere</string>
     <string name="refresh">Actualitzar</string>

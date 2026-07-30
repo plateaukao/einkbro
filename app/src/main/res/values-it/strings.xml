@@ -228,6 +228,9 @@
     <string name="folder_name_description">Inserisci il nome della cartella segnalibri</string>
     <string name="setting_title_export_bookmarks">Esporta segnalibri</string>
     <string name="setting_title_import_bookmarks">Importa segnalibri</string>
+    <string name="setting_title_export_userscripts">Esporta script utente</string>
+    <string name="setting_title_import_userscripts">Importa script utente</string>
+    <string name="backup_category_userscripts">Script utente</string>
     <string name="setting_title_incognito">Modalità incognito</string>
     <string name="back">Indietro</string>
     <string name="refresh">Aggiorna</string>

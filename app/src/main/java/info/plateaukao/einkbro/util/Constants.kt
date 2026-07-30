@@ -6,6 +6,7 @@ class Constants {
         const val MIME_TYPE_EPUB = "application/epub+zip"
         const val MIME_TYPE_PDF = "application/pdf"
         const val MIME_TYPE_TEXT = "text/plain"
+        const val MIME_TYPE_ZIP = "application/zip"
         const val MIME_TYPE_ANY = "*/*"
         const val MIME_TYPE_FONT = "application/x-font-ttf"
         // from https://github.com/Smile4ever/Neat-URL

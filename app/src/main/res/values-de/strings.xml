@@ -229,6 +229,9 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="folder_name_description">Lesezeichen-Ordnername eingeben</string>
     <string name="setting_title_export_bookmarks">Lesezeichen exportieren</string>
     <string name="setting_title_import_bookmarks">Lesezeichen importieren</string>
+    <string name="setting_title_export_userscripts">Userscripts exportieren</string>
+    <string name="setting_title_import_userscripts">Userscripts importieren</string>
+    <string name="backup_category_userscripts">Userscripts</string>
     <string name="setting_title_incognito">Inkognito-Modus</string>
     <string name="back">Zurück</string>
     <string name="refresh">Aktualisieren</string>

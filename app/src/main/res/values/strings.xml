@@ -278,6 +278,8 @@
     <string name="folder_name_description">Insert Bookmark folder name</string>
     <string name="setting_title_export_bookmarks">Export bookmarks</string>
     <string name="setting_title_import_bookmarks">Import bookmarks</string>
+    <string name="setting_title_export_userscripts">Export userscripts</string>
+    <string name="setting_title_import_userscripts">Import userscripts</string>
     <string name="setting_title_incognito">Incognito mode</string>
     <string name="back">Back</string>
     <string name="setting_title_userscripts">Userscripts</string>
@@ -430,6 +432,7 @@
     <string name="backup_category_bookmarks">Bookmarks</string>
     <string name="backup_category_history">History</string>
     <string name="backup_category_database_data">Database (Highlights, AI Queries, Site Settings, etc.)</string>
+    <string name="backup_category_userscripts">Userscripts</string>
     <string name="dialog_title_backup_categories">Select data to backup</string>
     <string name="dialog_title_restore_categories">Select data to restore</string>
     <string name="setting_title_share_appData">Share app data</string>

@@ -397,6 +397,9 @@
     <string name="folder_name_description">Adja meg a könyvjelző mappa nevét</string>
     <string name="setting_title_export_bookmarks">Könyvjelzők exportálása</string>
     <string name="setting_title_import_bookmarks">Könyvjelzők importálása</string>
+    <string name="setting_title_export_userscripts">Felhasználói szkriptek exportálása</string>
+    <string name="setting_title_import_userscripts">Felhasználói szkriptek importálása</string>
+    <string name="backup_category_userscripts">Felhasználói szkriptek</string>
     <string name="setting_title_incognito">Inkognitó mód</string>
     <string name="back">Vissza</string>
     <string name="refresh">Frissítés</string>

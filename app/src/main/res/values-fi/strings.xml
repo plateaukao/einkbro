@@ -446,6 +446,9 @@
     <string name="setting_title_gpt_prompt_for_web_page">Kehote koko verkkosivun sisällölle</string>
     <string name="setting_title_gpt_query_list">Tekoälyn tuloshistoria</string>
     <string name="setting_title_import_bookmarks">Tuo kirjanmerkit</string>
+    <string name="setting_title_export_userscripts">Vie käyttäjäskriptit</string>
+    <string name="setting_title_import_userscripts">Tuo käyttäjäskriptit</string>
+    <string name="backup_category_userscripts">Käyttäjäskriptit</string>
     <string name="setting_title_incognito">Yksityinen tila</string>
     <string name="setting_title_next_tab">Näytä seuraava välilehti</string>
     <string name="setting_title_other_model_name">Vaihtoehtoinen mallinimi</string>

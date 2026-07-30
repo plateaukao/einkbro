@@ -447,6 +447,9 @@
     <string name="setting_title_gpt_prompt_for_web_page">Lệnh cho nội dung toàn trang</string>
     <string name="setting_title_gpt_query_list">Lịch sử kết quả AI</string>
     <string name="setting_title_import_bookmarks">Nhập dấu trang</string>
+    <string name="setting_title_export_userscripts">Xuất tập lệnh người dùng</string>
+    <string name="setting_title_import_userscripts">Nhập tập lệnh người dùng</string>
+    <string name="backup_category_userscripts">Tập lệnh người dùng</string>
     <string name="setting_title_incognito">Chế độ ẩn danh</string>
     <string name="setting_title_next_tab">Hiển thị tab tiếp theo</string>
     <string name="setting_title_other_model_name">Tên mô hình thay thế</string>

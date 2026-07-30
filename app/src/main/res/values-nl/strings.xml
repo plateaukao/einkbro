@@ -236,6 +236,9 @@
     <string name="folder_name_description">Voer de bladwijzermap-naam in</string>
     <string name="setting_title_export_bookmarks">Bladwijzers exporteren</string>
     <string name="setting_title_import_bookmarks">Bladwijzers importeren</string>
+    <string name="setting_title_export_userscripts">Gebruikersscripts exporteren</string>
+    <string name="setting_title_import_userscripts">Gebruikersscripts importeren</string>
+    <string name="backup_category_userscripts">Gebruikersscripts</string>
     <string name="setting_title_incognito">Incognito-modus</string>
     <string name="back">Terug</string>
     <string name="refresh">Vernieuwen</string>

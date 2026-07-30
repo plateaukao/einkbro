@@ -447,6 +447,9 @@
     <string name="setting_title_gpt_prompt_for_web_page">Prompt vir volledige webbladsyinhoud</string>
     <string name="setting_title_gpt_query_list">KI-resultaatgeskiedenis</string>
     <string name="setting_title_import_bookmarks">Voer boekmerke in</string>
+    <string name="setting_title_export_userscripts">Voer gebruikerskripte uit</string>
+    <string name="setting_title_import_userscripts">Voer gebruikerskripte in</string>
+    <string name="backup_category_userscripts">Gebruikerskripte</string>
     <string name="setting_title_incognito">Incognito-modus</string>
     <string name="setting_title_next_tab">Wys volgende oortjie</string>
     <string name="setting_title_other_model_name">Alternatiewe modelnaam</string>

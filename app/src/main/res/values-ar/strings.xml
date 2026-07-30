@@ -252,6 +252,9 @@
     <string name="folder_name_description">أدخل اسم مجلد الإشارات المرجعية</string>
     <string name="setting_title_export_bookmarks">تصدير الإشارات المرجعية</string>
     <string name="setting_title_import_bookmarks">استيراد الإشارات المرجعية</string>
+    <string name="setting_title_export_userscripts">تصدير سكربتات المستخدم</string>
+    <string name="setting_title_import_userscripts">استيراد سكربتات المستخدم</string>
+    <string name="backup_category_userscripts">سكربتات المستخدم</string>
     <string name="setting_title_incognito">وضع التصفح الخفي</string>
     <string name="back">رجوع</string>
     <string name="refresh">تحديث</string>

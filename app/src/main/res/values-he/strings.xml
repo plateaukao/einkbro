@@ -252,6 +252,9 @@
     <string name="folder_name_description">הזן שם תיקיית סימניות</string>
     <string name="setting_title_export_bookmarks">ייצוא סימניות</string>
     <string name="setting_title_import_bookmarks">ייבוא סימניות</string>
+    <string name="setting_title_export_userscripts">ייצוא סקריפטי משתמש</string>
+    <string name="setting_title_import_userscripts">ייבוא סקריפטי משתמש</string>
+    <string name="backup_category_userscripts">סקריפטי משתמש</string>
     <string name="setting_title_incognito">מצב גלישה פרטית</string>
     <string name="back">חזרה</string>
     <string name="refresh">רענון</string>

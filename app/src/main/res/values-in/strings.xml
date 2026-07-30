@@ -237,6 +237,9 @@
     <string name="folder_name_description">Masukan nama folder Bookmark</string>
     <string name="setting_title_export_bookmarks">expor bookmark</string>
     <string name="setting_title_import_bookmarks">impor bookmark</string>
+    <string name="setting_title_export_userscripts">expor skrip pengguna</string>
+    <string name="setting_title_import_userscripts">impor skrip pengguna</string>
+    <string name="backup_category_userscripts">Skrip pengguna</string>
     <string name="setting_title_incognito">Mode Penyamaran</string>
     <string name="back">Kembali</string>
     <string name="refresh">Perbarui</string>
