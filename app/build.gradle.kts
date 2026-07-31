@@ -1,3 +1,4 @@
+import com.android.build.api.variant.BuildConfigField
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.TimeZone
@@ -10,17 +11,24 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-fun getLastCommitTimeStamp(): String {
-    val epoch = System.getenv("SOURCE_DATE_EPOCH")?.toLongOrNull()
-    val date = if (epoch != null) {
-        Date(epoch * 1_000) // Convert seconds to milliseconds
-    } else {
-        Date()
-    }
+// A ValueSource so the timestamp is (re)computed on every build, even when the
+// configuration cache is reused — a plain config-time value gets frozen into the
+// cache entry and goes stale. SOURCE_DATE_EPOCH still wins so reproducible
+// (F-Droid) builds stay deterministic.
+abstract class BuildTimeValueSource :
+    ValueSource<String, ValueSourceParameters.None> {
+    override fun obtain(): String {
+        val epoch = System.getenv("SOURCE_DATE_EPOCH")?.toLongOrNull()
+        val date = if (epoch != null) {
+            Date(epoch * 1_000) // Convert seconds to milliseconds
+        } else {
+            Date()
+        }
 
-    val dateFormat = SimpleDateFormat("MMddHHmm")
-    dateFormat.timeZone = TimeZone.getTimeZone("Asia/Taipei")
-    return dateFormat.format(date)
+        val dateFormat = SimpleDateFormat("MMddHHmm")
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Taipei")
+        return dateFormat.format(date)
+    }
 }
 
 fun showUpdateButton(): String {
@@ -40,7 +48,6 @@ android {
         versionCode = 15_18_00
         versionName = "15.18.0"
 
-        buildConfigField("String", "lastCommitTime", "\"${getLastCommitTimeStamp()}\"")
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
 
         // Google Drive backup sync: an "installed app" OAuth client (not a secret;
@@ -105,7 +112,7 @@ android {
         jvmTarget = "17"
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         // kxml2's service file uses a non-standard comma-separated entry that R8 cannot
         // parse; Android registers KXmlParser/KXmlSerializer via its platform XmlPullParserFactory.
@@ -139,6 +146,19 @@ android {
         }
     }
     namespace = "info.plateaukao.einkbro"
+}
+
+androidComponents {
+    onVariants { variant ->
+        // Wired as a task input (not read at configuration time), so each build
+        // re-evaluates the ValueSource and regenerates BuildConfig without
+        // invalidating the configuration cache.
+        variant.buildConfigFields?.put(
+            "lastCommitTime",
+            providers.of(BuildTimeValueSource::class.java) {}
+                .map { BuildConfigField("String", "\"$it\"", "build timestamp") }
+        )
+    }
 }
 
 dependencies {
