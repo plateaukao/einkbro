@@ -1,3 +1,19 @@
+### 15.19.0
+#### Features
+* AI on YouTube: Page AI, Chat with Web, and summarize now work on the video's caption transcript; videos without captions are transcribed with Gemini (when a Gemini API key is configured), and transcripts are cached so each video is only transcribed once
+* Userscripts can be exported/imported as a zip compatible with other userscript managers, and are now included in app-data backup and Google Drive sync
+* AI chat sessions are stored in the app database, survive WebView storage clearing, and are included in backup/restore and Drive sync together with video transcripts; backup and restore dialogs show per-category sizes
+* Web pages with their own read-aloud buttons now speak through the app's TTS engine (system, Edge-TTS, or OpenAI) via a Web Speech API polyfill
+* Paragraph translations are cached for 7 days, so revisited pages translate instantly
+* Bookmarks grid: long press shows the context menu and lets the finger slide onto an action, triggering it on lift (with "1 touch to url action" enabled)
+
+#### Fixes
+* Reader mode no longer blanks the page after following a link from a reader-mode page
+* Site stylesheets are disabled while reader mode is showing, fixing collapsed layouts on some sites
+* Settings rows and menu cells grow with larger system font sizes instead of clipping text
+* Pages no longer freeze with unloaded content after returning to the app while "continue playing media" was toggled
+* About screen no longer shows a stale build timestamp
+
 ### 15.18.0
 #### Features
 * Sync with Google Drive: back up and restore app data from Backup settings; sign-in runs entirely in the browser, no Play Services required

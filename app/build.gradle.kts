@@ -72,8 +72,8 @@ android {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
         targetSdk = 34
-        versionCode = 15_18_00
-        versionName = "15.18.0"
+        versionCode = 15_19_00
+        versionName = "15.19.0"
 
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
         // Whether tapping the About row in the first Settings screen opens the

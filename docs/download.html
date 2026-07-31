@@ -69,6 +69,27 @@
 <h2>Changelog</h2>
 
 <div class="changelog-version">
+<h3>15.19.0</h3>
+<h4>Features</h4>
+<ul>
+<li>AI on YouTube: Page AI, Chat with Web, and summarize work on the video's caption transcript; videos without captions are transcribed with Gemini (when an API key is configured), with transcripts cached per video</li>
+<li>Userscripts can be exported/imported as a zip compatible with other userscript managers, and are included in app-data backup and Google Drive sync</li>
+<li>AI chat sessions are stored in the app database, survive WebView storage clearing, and are included in backup/restore and Drive sync; backup and restore dialogs show per-category sizes</li>
+<li>Web pages with their own read-aloud buttons now speak through the app's TTS engine (system, Edge-TTS, or OpenAI)</li>
+<li>Paragraph translations are cached for 7 days, so revisited pages translate instantly</li>
+<li>Bookmarks grid: long press shows the context menu and lets the finger slide onto an action, triggering it on lift</li>
+</ul>
+<h4>Fixes</h4>
+<ul>
+<li>Reader mode no longer blanks the page after following a link from a reader-mode page</li>
+<li>Site stylesheets are disabled while reader mode is showing, fixing collapsed layouts on some sites</li>
+<li>Settings rows and menu cells grow with larger system font sizes instead of clipping text</li>
+<li>Pages no longer freeze with unloaded content after returning to the app</li>
+<li>About screen no longer shows a stale build timestamp</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>15.18.0</h3>
 
 <h4>Features</h4>
