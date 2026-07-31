@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reader Mode Link Navigation Fixture</title>
+</head>
+<body>
+<article>
+<h1>Reader Mode Link Navigation Fixture</h1>
+<p class="byline">By Test Author — January 2026</p>
+<p>This page exists to exercise reader mode across a link navigation. Enter reader mode here, then follow the link below; the destination page must be able to enter reader mode on its own, without a manual reload (issue 309).</p>
+<p>Readability needs a few paragraphs of genuine prose before it will treat a document as an article, so this fixture carries some. E-ink readers reward software that does less: fewer repaints, fewer animations, fewer surprises. A browser built for such displays learns to replace the screen wholesale rather than nudge it along, and to treat every full refresh as a small ceremony worth scheduling deliberately.</p>
+<p>Navigation is where reading modes historically leak state. The reader view replaces the document body and caches the original markup in the page's own JavaScript context, which vanishes the moment a link is followed. Any native-side flag that outlives the document is then a lie, and acting on it produces the kind of bug this fixture is designed to catch.</p>
+<p>Continue to <a href="article.html">the article about the quiet craft of e-ink reading</a> to complete the scenario.</p>
+<p>Closing filler: the five boxing wizards jump quickly. The five boxing wizards jump quickly. The five boxing wizards jump quickly. Sphinx of black quartz, judge my vow. Sphinx of black quartz, judge my vow.</p>
+</article>
+</body>
+</html>
