@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XQSZXV7E00"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XQSZXV7E00');
+  </script>
+  <title>Privacy Policy — EinkBro</title>
+  <link rel="icon" href="favicon.webp" type="image/webp">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="lang-banner.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">User Guide</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="develop.html">Develop</a></li>
+      <li><a href="bugs.html">Bug Report</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>Privacy Policy</h1>
+<p><em>Effective date: August 1, 2026</em></p>
+
+<p>EinkBro is an open-source web browser for Android, developed by Daniel Kao. This policy explains what data the app handles and where it goes. The short version: <strong>EinkBro does not collect, store, or share any personal data with the developer.</strong> There are no ads, no analytics, and no tracking in the app, and the developer operates no servers that receive your data.</p>
+
+<h2>Data Stored on Your Device</h2>
+<p>Everything the browser saves stays on your device, including:</p>
+<ul>
+  <li>Browsing history, bookmarks, and open tabs</li>
+  <li>Cookies and website data managed by the Android WebView</li>
+  <li>App settings, per-site preferences, and userscripts</li>
+  <li>Downloads, saved articles, and exported EPUB/PDF files</li>
+  <li>AI chat sessions, video transcripts, and cached translations</li>
+</ul>
+<p>None of this is transmitted to the developer. You can remove it at any time with the app's clear-data options or by uninstalling the app.</p>
+
+<h2>Optional Features That Contact Third-Party Services</h2>
+<p>Some features send data to a third-party service, but only when you enable or invoke them. Each service processes that data under its own privacy policy:</p>
+<ul>
+  <li><strong>Web browsing</strong> — websites you visit receive standard web requests (IP address, user agent, cookies), exactly as with any browser.</li>
+  <li><strong>Search and suggestions</strong> — the text you type in the address bar is sent to your selected search engine to run the search and, if enabled, fetch suggestions.</li>
+  <li><strong>AI features</strong> — when you use summarize, chat with page, translation via AI, or read-aloud with a cloud voice, the relevant page text is sent to the provider you configured (OpenAI, Google Gemini, or a custom/self-hosted server) using your own API key. Nothing is sent unless you set up a provider and trigger an action.</li>
+  <li><strong>Translation</strong> — page or selected text is sent to the translation service you choose (Google Translate, Papago, or DeepL).</li>
+  <li><strong>Text-to-speech</strong> — with the Microsoft Edge or OpenAI voice engines, the text to be spoken is sent to that service. The system TTS engine works entirely on-device.</li>
+  <li><strong>Google Drive backup</strong> — if you enable it, backup archives are uploaded to <em>your own</em> Google Drive account. The developer has no access to them, and you can revoke the app's access at any time in your Google account settings.</li>
+  <li><strong>Save to Instapaper</strong> — if you use it, the article and your Instapaper credentials go to Instapaper.</li>
+  <li><strong>Ad blocking</strong> — filter lists are downloaded from their public hosts (e.g., AdGuard). No browsing data is sent.</li>
+  <li><strong>Update check</strong> — builds distributed via GitHub contact the GitHub API to check for new releases.</li>
+</ul>
+
+<h2>Permissions</h2>
+<ul>
+  <li><strong>Location</strong> — requested only when a website asks for your location and only shared with that site after you approve both the Android permission and the site's request. The app itself never uses your location.</li>
+  <li><strong>Storage / media</strong> — used to save downloads, backups, and exported files you request.</li>
+</ul>
+
+<h2>Security</h2>
+<p>API keys and service credentials you enter are stored only in the app's private storage on your device and are used solely to call the services you configured. All network connections use HTTPS.</p>
+
+<h2>Children</h2>
+<p>EinkBro does not collect personal data from anyone, including children.</p>
+
+<h2>Changes to This Policy</h2>
+<p>If this policy changes, the updated version will be published on this page with a new effective date.</p>
+
+<h2>Contact</h2>
+<p>Questions about this policy are welcome via <a href="mailto:daniel.kao@gmail.com">daniel.kao@gmail.com</a> or a <a href="https://github.com/plateaukao/einkbro/issues">GitHub issue</a>. EinkBro's complete source code is available for inspection on <a href="https://github.com/plateaukao/einkbro">GitHub</a>.</p>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> is open-source software. <a href="https://github.com/plateaukao/einkbro">View on GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

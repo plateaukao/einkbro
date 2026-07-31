@@ -1,0 +1,95 @@
+<!-- translated-from: ../policy.html -->
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XQSZXV7E00"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XQSZXV7E00');
+  </script>
+  <title>隱私權政策 — EinkBro</title>
+  <link rel="icon" href="../favicon.webp" type="image/webp">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../lang-banner.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="site-nav__logo">EinkBro</a>
+    <button class="nav-toggle" onclick="document.querySelector('.site-nav__links').classList.toggle('open')" aria-label="開關導覽選單">&#9776;</button>
+    <ul class="site-nav__links">
+      <li><a href="guide.html">使用指南</a></li>
+      <li><a href="download.html">下載</a></li>
+      <li><a href="develop.html">開發</a></li>
+      <li><a href="bugs.html">問題回報</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container page-content">
+
+<h1>隱私權政策</h1>
+<p><em>生效日期：2026 年 8 月 1 日</em></p>
+
+<p>EinkBro 是一款由 Daniel Kao 開發的開源 Android 網頁瀏覽器。本政策說明應用程式如何處理資料以及資料的流向。簡單來說：<strong>EinkBro 不會蒐集、儲存或與開發者分享任何個人資料。</strong>應用程式內沒有廣告、沒有分析追蹤，開發者也沒有任何接收您資料的伺服器。</p>
+
+<h2>儲存在您裝置上的資料</h2>
+<p>瀏覽器儲存的所有內容都只保留在您的裝置上，包括：</p>
+<ul>
+  <li>瀏覽記錄、書籤與開啟的分頁</li>
+  <li>由 Android WebView 管理的 Cookie 與網站資料</li>
+  <li>應用程式設定、各網站偏好設定與使用者腳本</li>
+  <li>下載檔案、儲存的文章，以及匯出的 EPUB／PDF 檔案</li>
+  <li>AI 對話記錄、影片逐字稿與翻譯快取</li>
+</ul>
+<p>以上資料都不會傳送給開發者。您可以隨時透過應用程式的清除資料選項或解除安裝來移除。</p>
+
+<h2>會連線第三方服務的選用功能</h2>
+<p>部分功能會將資料傳送給第三方服務，但只在您啟用或使用該功能時才會發生。各服務依其自身的隱私權政策處理資料：</p>
+<ul>
+  <li><strong>瀏覽網頁</strong> — 您造訪的網站會收到標準的網頁請求（IP 位址、使用者代理、Cookie），與任何瀏覽器相同。</li>
+  <li><strong>搜尋與建議</strong> — 您在網址列輸入的文字會傳送給您選擇的搜尋引擎以執行搜尋，若有啟用也會取得搜尋建議。</li>
+  <li><strong>AI 功能</strong> — 使用摘要、與網頁對話、AI 翻譯或雲端語音朗讀時，相關頁面文字會以您自己的 API 金鑰傳送給您設定的服務（OpenAI、Google Gemini 或自訂／自架伺服器）。未設定服務並主動觸發時，不會傳送任何內容。</li>
+  <li><strong>翻譯</strong> — 頁面或選取的文字會傳送給您選擇的翻譯服務（Google 翻譯、Papago 或 DeepL）。</li>
+  <li><strong>文字轉語音</strong> — 使用 Microsoft Edge 或 OpenAI 語音引擎時，要朗讀的文字會傳送給該服務。系統 TTS 引擎則完全在裝置上運作。</li>
+  <li><strong>Google Drive 備份</strong> — 若啟用，備份檔會上傳到<em>您自己的</em> Google Drive 帳戶。開發者無法存取，您也可以隨時在 Google 帳戶設定中撤銷應用程式的存取權。</li>
+  <li><strong>儲存到 Instapaper</strong> — 若使用此功能，文章與您的 Instapaper 帳號密碼會傳送給 Instapaper。</li>
+  <li><strong>廣告封鎖</strong> — 過濾清單從其公開主機下載（例如 AdGuard），不會傳送任何瀏覽資料。</li>
+  <li><strong>更新檢查</strong> — 經由 GitHub 發佈的版本會連線 GitHub API 檢查新版本。</li>
+</ul>
+
+<h2>權限</h2>
+<ul>
+  <li><strong>位置</strong> — 只有在網站要求您的位置時才會請求，且必須您同時核准 Android 權限與該網站的請求後，才會提供給該網站。應用程式本身不會使用您的位置。</li>
+  <li><strong>儲存空間／媒體</strong> — 用於儲存您要求的下載檔案、備份與匯出檔案。</li>
+</ul>
+
+<h2>安全性</h2>
+<p>您輸入的 API 金鑰與服務憑證只儲存在裝置上應用程式的私有儲存空間，僅用於呼叫您所設定的服務。所有網路連線均使用 HTTPS。</p>
+
+<h2>兒童</h2>
+<p>EinkBro 不會蒐集任何人的個人資料，包括兒童。</p>
+
+<h2>政策變更</h2>
+<p>若本政策有所變更，更新版本會連同新的生效日期發佈在本頁面。</p>
+
+<h2>聯絡方式</h2>
+<p>對本政策有任何疑問，歡迎來信 <a href="mailto:daniel.kao@gmail.com">daniel.kao@gmail.com</a> 或開立 <a href="https://github.com/plateaukao/einkbro/issues">GitHub issue</a>。EinkBro 的完整原始碼可在 <a href="https://github.com/plateaukao/einkbro">GitHub</a> 上檢視。</p>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>EinkBro</strong> 是開源軟體。<a href="https://github.com/plateaukao/einkbro">前往 GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
