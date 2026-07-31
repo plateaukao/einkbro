@@ -9,6 +9,10 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Play upload-key signing secrets (see keystore.properties.sample)
+keystore.properties
+*.keystore
+
 # Eclipse project files
 # Android Studio
 .idea/

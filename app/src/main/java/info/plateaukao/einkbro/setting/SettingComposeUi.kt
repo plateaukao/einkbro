@@ -1137,9 +1137,12 @@ private fun SettingItemCell(
 
         is VersionSettingItem -> {
             val version = " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
-            SettingItemUi(setting, false, version, showBorder, modifier) {
-                navController.navigate(setting.destination.name)
-            }
+            // The Play Store build (releasePlay) must not expose the About screen,
+            // whose GitHub-release update flow doesn't work there.
+            val onClick: (() -> Unit)? = if (BuildConfig.enableAboutClick) {
+                { navController.navigate(setting.destination.name) }
+            } else null
+            SettingItemUi(setting, false, version, showBorder, modifier, onClick)
         }
 
         else -> {}

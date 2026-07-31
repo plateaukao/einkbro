@@ -1,6 +1,8 @@
 import com.android.build.api.variant.BuildConfigField
+import java.io.FileInputStream
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Properties
 import java.util.TimeZone
 
 plugins {
@@ -9,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.play.publisher)
 }
 
 // A ValueSource so the timestamp is (re)computed on every build, even when the
@@ -36,10 +39,34 @@ fun showUpdateButton(): String {
     return value?.toString() ?: "false"
 }
 
+// Play upload-key signing, same pattern as calliplus_android, but the secrets
+// live outside the repo in ~/.secrets/einkbro-keystore.properties (keys:
+// storeFile [absolute path], storePassword, keyAlias, keyPassword). Override the
+// location with -Peinkbro.keystoreProperties=<path>.
+val keystorePropsFile = File(
+    project.findProperty("einkbro.keystoreProperties")?.toString()
+        ?: (System.getProperty("user.home") + "/.secrets/einkbro-keystore.properties")
+)
+val keystoreProps = Properties().apply {
+    if (keystorePropsFile.exists()) load(FileInputStream(keystorePropsFile))
+}
+val hasUploadKeystore = keystoreProps.containsKey("storeFile")
+
 android {
     // compileSdk 36 is required by current androidx artifacts; targetSdk stays 34,
     // so runtime behavior is unchanged.
     compileSdk = 36
+
+    signingConfigs {
+        if (hasUploadKeystore) {
+            create("play") {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
 
     defaultConfig {
         applicationId = "info.plateaukao.einkbro"
@@ -49,6 +76,9 @@ android {
         versionName = "15.18.0"
 
         buildConfigField("boolean", "showUpdateButton", showUpdateButton())
+        // Whether tapping the About row in the first Settings screen opens the
+        // About screen. The Play Store build turns this off (see playRelease).
+        buildConfigField("boolean", "enableAboutClick", "true")
 
         // Google Drive backup sync: an "installed app" OAuth client (not a secret;
         // PKCE, no client secret) with the reversed-client-id custom-scheme redirect.
@@ -96,6 +126,19 @@ android {
             versionNameSuffix = "-a"
             matchingFallbacks += "release"
         }
+        // Google Play Store build, installed as `info.plateaukao.einkbro.g`.
+        // Play policy forbids the self-update flow, so the About row in the first
+        // Settings screen is made non-clickable (enableAboutClick=false) to keep
+        // the GitHub-release update feature unreachable.
+        create("playRelease") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".g"
+            matchingFallbacks += "release"
+            buildConfigField("boolean", "enableAboutClick", "false")
+            if (hasUploadKeystore) {
+                signingConfig = signingConfigs.getByName("play")
+            }
+        }
     }
 
     buildFeatures {
@@ -134,7 +177,12 @@ android {
 
     splits {
         abi {
-            isEnable = true
+            // ABI splits break `bundle*` (AAB) builds — the bundle task refuses
+            // multi-APK shrunk resources — so disable them when building a bundle;
+            // bundletool does its own per-ABI splitting on the Play side.
+            val isBuildingBundle =
+                gradle.startParameter.taskNames.any { it.lowercase().contains("bundle") }
+            isEnable = !isBuildingBundle
             reset()
             val abis = (project.findProperty("buildAbis") as String?)?.split(",")
                 ?: listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
@@ -146,9 +194,41 @@ android {
         }
     }
     namespace = "info.plateaukao.einkbro"
+
+    // Only the playRelease variant has a Play listing; disabling the rest keeps
+    // aggregate GPP tasks (publishBundle, publishApps, ...) from trying to
+    // publish variants whose applicationIds don't exist on Play.
+    playConfigs {
+        register("release") { enabled.set(false) }
+        register("releaseAlt") { enabled.set(false) }
+        register("releaseDebuggable") { enabled.set(false) }
+    }
+}
+
+// Gradle Play Publisher (same plugin calliplus uses). Publishes the playRelease
+// variant (`info.plateaukao.einkbro.g`) via `./gradlew publishPlayReleaseBundle`.
+// Credentials path comes from the `playCredentials` key in the same ~/.secrets
+// properties file as the upload keystore.
+play {
+    serviceAccountCredentials.set(
+        file(
+            keystoreProps.getProperty(
+                "playCredentials",
+                System.getProperty("user.home") + "/.secrets/einkbro-play-publisher.json"
+            )
+        )
+    )
+    defaultToAppBundles.set(true)
+    // Safe default; production releases pass --track production explicitly.
+    track.set("internal")
 }
 
 androidComponents {
+    // Google Play requires targeting API 35+. Raise it only for the Play build
+    // type; sideloaded/F-Droid builds keep the tested targetSdk 34 behavior.
+    beforeVariants(selector().withBuildType("playRelease")) { variant ->
+        variant.targetSdk = 35
+    }
     onVariants { variant ->
         // Wired as a task input (not read at configuration time), so each build
         // re-evaluates the ValueSource and regenerates BuildConfig without
