@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upload test</title>
+<style>
+  body { font-size: 24px; padding: 24px; }
+  input, button { font-size: 24px; margin: 12px 0; display: block; }
+  #result { color: green; }
+</style>
+</head>
+<body>
+<h1>File upload test</h1>
+<input type="file" id="anyFile">
+<input type="file" id="imageOnly" accept="image/*">
+<input type="file" id="multi" multiple>
+<div id="result"></div>
+<script>
+  for (const input of document.querySelectorAll('input[type=file]')) {
+    input.addEventListener('change', () => {
+      document.getElementById('result').textContent =
+        input.id + ': ' + Array.from(input.files).map(f => f.name + ' (' + f.size + 'b)').join(', ');
+    });
+  }
+</script>
+</body>
+</html>
