@@ -16,6 +16,7 @@ import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.ChatGptQuery
+import info.plateaukao.einkbro.database.ChatSession
 import info.plateaukao.einkbro.database.CookieDomain
 import info.plateaukao.einkbro.database.DomainConfiguration
 import info.plateaukao.einkbro.database.FaviconInfo
@@ -24,6 +25,7 @@ import info.plateaukao.einkbro.database.JavascriptDomain
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.database.RecordRepository
 import info.plateaukao.einkbro.database.SavedPage
+import info.plateaukao.einkbro.database.VideoTranscript
 import info.plateaukao.einkbro.database.WhitelistDomain
 import info.plateaukao.einkbro.userscript.UserScriptManager
 import info.plateaukao.einkbro.view.EBToast
@@ -53,6 +55,8 @@ enum class BackupCategory(val displayNameResId: Int) {
     HISTORY(R.string.backup_category_history),
     DATABASE_DATA(R.string.backup_category_database_data),
     USERSCRIPTS(R.string.backup_category_userscripts),
+    TRANSCRIPTS(R.string.backup_category_transcripts),
+    CHAT_SESSIONS(R.string.backup_category_chat_sessions),
 }
 
 
@@ -256,6 +260,38 @@ class BackupUnit(
             writeUserscriptsToZip(zos, USERSCRIPTS_DIR)
         }
 
+        if (BackupCategory.TRANSCRIPTS in categories) {
+            val transcripts = JSONArray()
+            for (t in bookmarkManager.database.videoTranscriptDao().getAllTranscripts()) {
+                transcripts.put(JSONObject().apply {
+                    put("videoId", t.videoId)
+                    put("transcript", t.transcript)
+                    put("timestamp", t.timestamp)
+                })
+            }
+            zos.putNextEntry(ZipEntry(TRANSCRIPTS_FILE))
+            zos.write(transcripts.toString().toByteArray())
+            zos.closeEntry()
+        }
+
+        if (BackupCategory.CHAT_SESSIONS in categories) {
+            val chatSessions = JSONArray()
+            for (s in bookmarkManager.database.chatSessionDao().getAllSessions()) {
+                chatSessions.put(JSONObject().apply {
+                    put("id", s.id)
+                    put("title", s.title)
+                    put("created", s.created)
+                    put("lastUpdated", s.lastUpdated)
+                    put("webTitle", s.webTitle)
+                    put("webUrl", s.webUrl)
+                    put("messages", s.messages)
+                })
+            }
+            zos.putNextEntry(ZipEntry(CHAT_SESSIONS_FILE))
+            zos.write(chatSessions.toString().toByteArray())
+            zos.closeEntry()
+        }
+
         zos.close()
         outputStream.close()
     }
@@ -343,37 +379,73 @@ class BackupUnit(
     }
 
     /**
-     * Returns available categories in the zip, or null if it's a legacy backup format.
+     * Categories available in the zip, each with the uncompressed byte size of its
+     * entries (mirroring the backup dialog's estimates), or null for a legacy backup
+     * format (no manifest). Reads the whole stream once — call on an IO dispatcher.
      */
-    fun getAvailableCategories(context: Context, uri: Uri): Set<BackupCategory>? {
-        try {
-            val fis = context.contentResolver.openInputStream(uri) ?: return null
-            val zis = ZipInputStream(fis)
-            var zipEntry = zis.nextEntry
-            while (zipEntry != null) {
-                if (zipEntry.name == MANIFEST_FILE) {
-                    val content = zis.readBytes()
-                    val manifest = JSONObject(String(content))
-                    val categoriesArray = manifest.getJSONArray("categories")
-                    val categories = mutableSetOf<BackupCategory>()
+    fun getAvailableCategoryOptions(
+        context: Context,
+        uri: Uri,
+    ): List<Pair<BackupCategory, Long>>? = try {
+        context.contentResolver.openInputStream(uri)?.use { fis ->
+            scanZipCategories(ZipInputStream(fis))
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    fun getAvailableCategoryOptions(file: File): List<Pair<BackupCategory, Long>>? = try {
+        file.inputStream().use { fis -> scanZipCategories(ZipInputStream(fis)) }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    private fun scanZipCategories(zis: ZipInputStream): List<Pair<BackupCategory, Long>>? {
+        var manifestCategories: Set<BackupCategory>? = null
+        val sizes = mutableMapOf<BackupCategory, Long>()
+        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+        var zipEntry = zis.nextEntry
+        while (zipEntry != null) {
+            if (zipEntry.name == MANIFEST_FILE) {
+                val manifest = JSONObject(String(zis.readBytes()))
+                val categoriesArray = manifest.getJSONArray("categories")
+                manifestCategories = buildSet {
                     for (i in 0 until categoriesArray.length()) {
                         try {
-                            categories.add(BackupCategory.valueOf(categoriesArray.getString(i)))
+                            add(BackupCategory.valueOf(categoriesArray.getString(i)))
                         } catch (_: IllegalArgumentException) { }
                     }
-                    zis.close()
-                    fis.close()
-                    return categories
                 }
-                zipEntry = zis.nextEntry
+            } else {
+                categoryForEntry(zipEntry.name)?.let { category ->
+                    // ZipEntry.size is unreliable on a stream, so count the bytes.
+                    var entrySize = 0L
+                    while (true) {
+                        val n = zis.read(buffer)
+                        if (n < 0) break
+                        entrySize += n
+                    }
+                    sizes.merge(category, entrySize, Long::plus)
+                }
             }
-            zis.close()
-            fis.close()
-            return null // legacy format
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return null
+            zipEntry = zis.nextEntry
         }
+        val available = manifestCategories ?: return null // legacy format
+        return BackupCategory.entries.filter { it in available }.map { it to (sizes[it] ?: 0L) }
+    }
+
+    private fun categoryForEntry(name: String): BackupCategory? = when {
+        name.startsWith("shared_prefs/") -> BackupCategory.ALL_PREFERENCES
+        name == GPT_SETTINGS_FILE -> BackupCategory.GPT_SETTINGS
+        name == BOOKMARKS_FILE -> BackupCategory.BOOKMARKS
+        name == HISTORY_FILE -> BackupCategory.HISTORY
+        name == DATABASE_DATA_FILE -> BackupCategory.DATABASE_DATA
+        name.startsWith(USERSCRIPTS_DIR) -> BackupCategory.USERSCRIPTS
+        name == TRANSCRIPTS_FILE -> BackupCategory.TRANSCRIPTS
+        name == CHAT_SESSIONS_FILE -> BackupCategory.CHAT_SESSIONS
+        else -> null
     }
 
     suspend fun restoreBackupData(
@@ -457,6 +529,16 @@ class BackupUnit(
                     restoreDatabaseData(JSONObject(String(content)))
                 }
 
+                zipEntry.name == TRANSCRIPTS_FILE
+                        && BackupCategory.TRANSCRIPTS in categories -> {
+                    restoreTranscripts(JSONArray(String(zis.readBytes())))
+                }
+
+                zipEntry.name == CHAT_SESSIONS_FILE
+                        && BackupCategory.CHAT_SESSIONS in categories -> {
+                    restoreChatSessions(JSONArray(String(zis.readBytes())))
+                }
+
                 zipEntry.name.startsWith(USERSCRIPTS_DIR)
                         && BackupCategory.USERSCRIPTS in categories -> {
                     val fileName = zipEntry.name.removePrefix(USERSCRIPTS_DIR)
@@ -477,34 +559,6 @@ class BackupUnit(
             (userscriptBodies.isNotEmpty() || userscriptsMeta != null)
         ) {
             restoreUserscripts(userscriptBodies, userscriptsMeta, replaceExisting = true)
-        }
-    }
-
-    fun getAvailableCategories(file: File): Set<BackupCategory>? {
-        try {
-            val zis = ZipInputStream(file.inputStream())
-            var zipEntry = zis.nextEntry
-            while (zipEntry != null) {
-                if (zipEntry.name == MANIFEST_FILE) {
-                    val content = zis.readBytes()
-                    val manifest = JSONObject(String(content))
-                    val categoriesArray = manifest.getJSONArray("categories")
-                    val categories = mutableSetOf<BackupCategory>()
-                    for (i in 0 until categoriesArray.length()) {
-                        try {
-                            categories.add(BackupCategory.valueOf(categoriesArray.getString(i)))
-                        } catch (_: IllegalArgumentException) { }
-                    }
-                    zis.close()
-                    return categories
-                }
-                zipEntry = zis.nextEntry
-            }
-            zis.close()
-            return null
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return null
         }
     }
 
@@ -668,6 +722,98 @@ class BackupUnit(
             db.domainListDao().insertAllCookie(domains)
         }
     }
+
+    private suspend fun restoreTranscripts(arr: JSONArray) {
+        val dao = bookmarkManager.database.videoTranscriptDao()
+        val transcripts = (0 until arr.length()).map { i ->
+            val obj = arr.getJSONObject(i)
+            VideoTranscript(
+                videoId = obj.getString("videoId"),
+                transcript = obj.getString("transcript"),
+                timestamp = obj.optLong("timestamp"),
+            )
+        }
+        dao.deleteAll()
+        dao.insertAll(transcripts)
+    }
+
+    private suspend fun restoreChatSessions(arr: JSONArray) {
+        val dao = bookmarkManager.database.chatSessionDao()
+        val sessions = (0 until arr.length()).map { i ->
+            val obj = arr.getJSONObject(i)
+            ChatSession(
+                id = obj.getString("id"),
+                title = obj.optString("title"),
+                created = obj.optLong("created"),
+                lastUpdated = obj.optLong("lastUpdated"),
+                webTitle = obj.optString("webTitle"),
+                webUrl = obj.optString("webUrl"),
+                messages = obj.optString("messages", "[]"),
+            )
+        }
+        dao.deleteAll()
+        dao.insertAll(sessions)
+    }
+
+    /**
+     * Backup categories to offer in the backup dialog, each with a pre-compression
+     * estimate of its exported size in bytes. Categories that exist purely for
+     * optional bulky data (transcripts, chat sessions) are omitted while empty.
+     */
+    suspend fun getBackupCategoryOptions(): List<Pair<BackupCategory, Long>> =
+        withContext(Dispatchers.IO) {
+            BackupCategory.entries.mapNotNull { category ->
+                val size = estimateCategorySize(category)
+                if (size == 0L && category in OPTIONAL_WHEN_EMPTY) null
+                else category to size
+            }
+        }
+
+    /**
+     * Estimated size of one category's exported JSON. DB-backed categories are
+     * summed with SQL LENGTH() plus a rough per-row overhead for JSON keys and
+     * punctuation, so nothing is serialized twice just to be measured.
+     */
+    private fun estimateCategorySize(category: BackupCategory): Long = when (category) {
+        BackupCategory.ALL_PREFERENCES ->
+            sharedPrefsDir.listFiles()?.sumOf { it.length() } ?: 0L
+
+        BackupCategory.GPT_SETTINGS ->
+            exportGptSettings().toString().length.toLong()
+
+        BackupCategory.BOOKMARKS ->
+            rawSum("SELECT IFNULL(SUM(LENGTH(title) + LENGTH(url) + 80), 0) FROM bookmarks")
+
+        BackupCategory.HISTORY ->
+            rawSum("SELECT IFNULL(SUM(LENGTH(TITLE) + LENGTH(URL) + 50), 0) FROM HISTORY")
+
+        BackupCategory.DATABASE_DATA ->
+            // favicon blobs are base64-encoded in the zip, hence the 4/3 factor
+            rawSum("SELECT IFNULL(SUM(LENGTH(icon) * 4 / 3 + LENGTH(domain) + 40), 0) FROM favicons") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(title) + LENGTH(url) + LENGTH(tags) + 70), 0) FROM articles") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(content) + 50), 0) FROM highlights") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(selectedText) + LENGTH(result) + LENGTH(url) + LENGTH(model) + 90), 0) FROM chat_gpt_query") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(domain) + LENGTH(configuration) + 40), 0) FROM domain_configuration") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(title) + LENGTH(url) + LENGTH(filePath) + 70), 0) FROM saved_pages") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(DOMAIN) + 4), 0) FROM WHITELIST") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(DOMAIN) + 4), 0) FROM JAVASCRIPT") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(DOMAIN) + 4), 0) FROM COOKIE")
+
+        BackupCategory.USERSCRIPTS ->
+            rawSum("SELECT IFNULL(SUM(LENGTH(code) + LENGTH(name) + 80), 0) FROM user_scripts") +
+                rawSum("SELECT IFNULL(SUM(LENGTH(`key`) + LENGTH(`value`) + 10), 0) FROM user_script_values")
+
+        BackupCategory.TRANSCRIPTS ->
+            rawSum("SELECT IFNULL(SUM(LENGTH(transcript) + LENGTH(videoId) + 60), 0) FROM video_transcripts")
+
+        BackupCategory.CHAT_SESSIONS ->
+            rawSum("SELECT IFNULL(SUM(LENGTH(messages) + LENGTH(title) + LENGTH(webTitle) + LENGTH(webUrl) + 120), 0) FROM chat_sessions")
+    }
+
+    private fun rawSum(sql: String): Long =
+        bookmarkManager.database.openHelper.readableDatabase.query(sql).use { cursor ->
+            if (cursor.moveToFirst()) cursor.getLong(0) else 0L
+        }
 
     private fun exportGptSettings(): JSONObject {
         val json = JSONObject()
@@ -979,6 +1125,11 @@ class BackupUnit(
         private const val DATABASE_DATA_FILE = "database_data.json"
         private const val USERSCRIPTS_DIR = "userscripts/"
         private const val USERSCRIPTS_META_FILE = "userscripts.json"
+        private const val TRANSCRIPTS_FILE = "transcripts.json"
+        private const val CHAT_SESSIONS_FILE = "chat_sessions.json"
+
+        private val OPTIONAL_WHEN_EMPTY =
+            setOf(BackupCategory.TRANSCRIPTS, BackupCategory.CHAT_SESSIONS)
 
         private val GPT_PREF_KEYS = listOf(
             "sp_gpt_api_key",

@@ -153,16 +153,20 @@ class SettingActivity : FragmentActivity(), BackupOps {
     private val importBackupLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val uri: Uri = result.data?.data ?: return@registerForActivityResult
-            val available = backupUnit.getAvailableCategories(this, uri)
-            if (available == null) {
-                if (backupUnit.restoreLegacyBackupData(this, uri)) {
-                    dialogManager.showRestartConfirmDialog()
+            lifecycleScope.launch {
+                val options = withContext(Dispatchers.IO) {
+                    backupUnit.getAvailableCategoryOptions(this@SettingActivity, uri)
                 }
-            } else {
-                dialogManager.showRestoreCategoryDialog(available) { selected ->
-                    lifecycleScope.launch {
-                        if (backupUnit.restoreBackupData(this@SettingActivity, uri, selected)) {
-                            dialogManager.showRestartConfirmDialog()
+                if (options == null) {
+                    if (backupUnit.restoreLegacyBackupData(this@SettingActivity, uri)) {
+                        dialogManager.showRestartConfirmDialog()
+                    }
+                } else {
+                    dialogManager.showRestoreCategoryDialog(options) { selected ->
+                        lifecycleScope.launch {
+                            if (backupUnit.restoreBackupData(this@SettingActivity, uri, selected)) {
+                                dialogManager.showRestartConfirmDialog()
+                            }
                         }
                     }
                 }
@@ -303,9 +307,11 @@ class SettingActivity : FragmentActivity(), BackupOps {
     }
 
     override fun exportAppData() {
-        dialogManager.showBackupCategoryDialog { categories ->
-            pendingBackupCategories = categories
-            dialogManager.showBackupFilePicker(exportBackupLauncher)
+        lifecycleScope.launch {
+            dialogManager.showBackupCategoryDialog(backupUnit.getBackupCategoryOptions()) { categories ->
+                pendingBackupCategories = categories
+                dialogManager.showBackupFilePicker(exportBackupLauncher)
+            }
         }
     }
 
@@ -314,8 +320,10 @@ class SettingActivity : FragmentActivity(), BackupOps {
     }
 
     override fun shareAppData() {
-        dialogManager.showBackupCategoryDialog { categories ->
-            shareAppData(categories)
+        lifecycleScope.launch {
+            dialogManager.showBackupCategoryDialog(backupUnit.getBackupCategoryOptions()) { categories ->
+                shareAppData(categories)
+            }
         }
     }
 
@@ -364,18 +372,22 @@ class SettingActivity : FragmentActivity(), BackupOps {
                 getString(R.string.share_receiving)
         }) { file ->
             dialog.dismiss()
-            val available = backupUnit.getAvailableCategories(file)
-            if (available != null) {
-                dialogManager.showRestoreCategoryDialog(available) { selected ->
-                    lifecycleScope.launch {
-                        if (backupUnit.restoreBackupData(file, selected)) {
-                            dialogManager.showRestartConfirmDialog()
-                        }
-                        file.delete()
-                    }
+            lifecycleScope.launch {
+                val options = withContext(Dispatchers.IO) {
+                    backupUnit.getAvailableCategoryOptions(file)
                 }
-            } else {
-                file.delete()
+                if (options != null) {
+                    dialogManager.showRestoreCategoryDialog(options) { selected ->
+                        lifecycleScope.launch {
+                            if (backupUnit.restoreBackupData(file, selected)) {
+                                dialogManager.showRestartConfirmDialog()
+                            }
+                            file.delete()
+                        }
+                    }
+                } else {
+                    file.delete()
+                }
             }
         }
     }
@@ -433,7 +445,11 @@ class SettingActivity : FragmentActivity(), BackupOps {
 
     private fun uploadBackupToDrive(existingId: String?) = launchDriveOp {
         val tempFile = withContext(Dispatchers.IO) {
-            backupUnit.backupToTempFile(BackupCategory.entries.toSet(), "drive_upload.zip")
+            // Same category set the backup dialog offers, so empty optional
+            // categories (transcripts, chat sessions) aren't advertised in the
+            // manifest of a Drive backup either.
+            val categories = backupUnit.getBackupCategoryOptions().map { it.first }.toSet()
+            backupUnit.backupToTempFile(categories, "drive_upload.zip")
         }
         if (tempFile == null) {
             EBToast.show(this@SettingActivity, R.string.toast_error)
@@ -451,15 +467,15 @@ class SettingActivity : FragmentActivity(), BackupOps {
         val tempFile = java.io.File(cacheDir, "drive_restore.zip")
         try {
             driveRepository.downloadBackup(fileId, tempFile)
-            val available = withContext(Dispatchers.IO) {
-                backupUnit.getAvailableCategories(tempFile)
+            val options = withContext(Dispatchers.IO) {
+                backupUnit.getAvailableCategoryOptions(tempFile)
             }
-            if (available.isNullOrEmpty()) {
+            if (options.isNullOrEmpty()) {
                 EBToast.show(this@SettingActivity, R.string.toast_error)
                 tempFile.delete()
                 return@launchDriveOp
             }
-            dialogManager.showRestoreCategoryDialog(available) { selected ->
+            dialogManager.showRestoreCategoryDialog(options) { selected ->
                 lifecycleScope.launch {
                     if (backupUnit.restoreBackupData(tempFile, selected)) {
                         dialogManager.showRestartConfirmDialog()

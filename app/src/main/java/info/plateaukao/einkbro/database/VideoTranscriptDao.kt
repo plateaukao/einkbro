@@ -12,4 +12,13 @@ interface VideoTranscriptDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(videoTranscript: VideoTranscript)
+
+    @Query("SELECT * FROM video_transcripts")
+    suspend fun getAllTranscripts(): List<VideoTranscript>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(videoTranscripts: List<VideoTranscript>)
+
+    @Query("DELETE FROM video_transcripts")
+    suspend fun deleteAll()
 }

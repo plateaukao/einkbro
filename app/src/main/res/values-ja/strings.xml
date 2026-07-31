@@ -459,6 +459,8 @@
     <string name="setting_title_export_userscripts">ユーザースクリプトをエクスポート</string>
     <string name="setting_title_import_userscripts">ユーザースクリプトをインポート</string>
     <string name="backup_category_userscripts">ユーザースクリプト</string>
+    <string name="backup_category_transcripts">動画の文字起こし</string>
+    <string name="backup_category_chat_sessions">AIチャットセッション</string>
     <string name="setting_title_incognito">シークレットモード</string>
     <string name="setting_title_next_tab">次のタブを表示</string>
     <string name="setting_title_other_model_name">代替モデル名</string>

@@ -260,6 +260,8 @@
     <string name="setting_title_export_userscripts">사용자 스크립트 내보내기</string>
     <string name="setting_title_import_userscripts">사용자 스크립트 가져오기</string>
     <string name="backup_category_userscripts">사용자 스크립트</string>
+    <string name="backup_category_transcripts">동영상 스크립트</string>
+    <string name="backup_category_chat_sessions">AI 채팅 세션</string>
     <string name="setting_title_incognito">시크릿 모드</string>
     <string name="back">뒤로</string>
     <string name="refresh">새로고침</string>

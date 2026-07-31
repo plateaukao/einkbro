@@ -449,6 +449,8 @@
     <string name="setting_title_export_userscripts">Извоз корисничких скрипти</string>
     <string name="setting_title_import_userscripts">Увоз корисничких скрипти</string>
     <string name="backup_category_userscripts">Корисничке скрипте</string>
+    <string name="backup_category_transcripts">Транскрипти видео снимака</string>
+    <string name="backup_category_chat_sessions">Сесије AI ћаскања</string>
     <string name="setting_title_incognito">Инкогнито режим</string>
     <string name="setting_title_next_tab">Прикажи следећу картицу</string>
     <string name="setting_title_other_model_name">Назив алтернативног модела</string>

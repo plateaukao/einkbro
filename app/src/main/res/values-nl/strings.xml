@@ -239,6 +239,8 @@
     <string name="setting_title_export_userscripts">Gebruikersscripts exporteren</string>
     <string name="setting_title_import_userscripts">Gebruikersscripts importeren</string>
     <string name="backup_category_userscripts">Gebruikersscripts</string>
+    <string name="backup_category_transcripts">Videotranscripties</string>
+    <string name="backup_category_chat_sessions">AI-chatsessies</string>
     <string name="setting_title_incognito">Incognito-modus</string>
     <string name="back">Terug</string>
     <string name="refresh">Vernieuwen</string>

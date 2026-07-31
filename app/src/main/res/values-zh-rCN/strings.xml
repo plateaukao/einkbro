@@ -572,6 +572,8 @@
     <string name="setting_summary_video_autoplay">允许视频自动播放，无需用户交互</string>
     <string name="backup_category_database_data">数据库 (突出显示、AI查询、网站设置等)</string>
     <string name="backup_category_userscripts">用户脚本</string>
+    <string name="backup_category_transcripts">视频转录文本</string>
+    <string name="backup_category_chat_sessions">AI 聊天会话</string>
     <string name="share_receiving">接收数据…</string>
     <string name="menu_save_mht">另存为MHT</string>
     <string name="openai_in_place">原位OpenAI</string>

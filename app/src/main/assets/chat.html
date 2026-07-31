@@ -645,25 +645,82 @@
         tryGetMetadata();
     }
 
-    // Initialize sessions from localStorage
+    // Initialize sessions from the native database (via AndroidInterface)
     function initializeSessions() {
-        try {
-            // Load existing sessions and input history
-            const savedSessions = localStorage.getItem(SESSIONS_KEY);
-            if (savedSessions) {
-                sessions = JSON.parse(savedSessions);
-            }
-            
-            loadInputHistory();
-            
+        loadInputHistory();
+        loadSessionsFromAndroid(() => {
+            migrateLocalStorageSessions();
             // Get web metadata and then create new session
             getWebMetadata((metadata) => {
                 webMetadata = metadata;
                 createNewSession();
             });
+        });
+    }
+
+    // Load all sessions from the native database, retrying while the bridge attaches
+    function loadSessionsFromAndroid(callback) {
+        function tryLoad(attempts = 0) {
+            if (window.AndroidInterface && typeof window.AndroidInterface.loadChatSessions === 'function') {
+                try {
+                    sessions = JSON.parse(window.AndroidInterface.loadChatSessions()) || {};
+                    callback();
+                    return;
+                } catch (e) {
+                    console.warn('Failed to load sessions, attempt', attempts + 1, ':', e);
+                }
+            }
+            if (attempts < 5) {
+                setTimeout(() => tryLoad(attempts + 1), 100);
+            } else {
+                console.warn('Failed to load sessions after 5 attempts');
+                callback();
+            }
+        }
+        tryLoad();
+    }
+
+    // One-time migration of sessions that older app versions kept in localStorage
+    function migrateLocalStorageSessions() {
+        try {
+            const saved = localStorage.getItem(SESSIONS_KEY);
+            if (!saved) return;
+            const oldSessions = JSON.parse(saved);
+            Object.keys(oldSessions).forEach(id => {
+                if (!sessions[id] && oldSessions[id].messages && oldSessions[id].messages.length > 0) {
+                    sessions[id] = oldSessions[id];
+                    persistSession(id);
+                }
+            });
+            localStorage.removeItem(SESSIONS_KEY);
+            localStorage.removeItem(CURRENT_SESSION_KEY);
+            console.log('Migrated localStorage sessions to native database');
         } catch (error) {
-            console.warn('Failed to load sessions from localStorage:', error);
-            createNewSession();
+            console.warn('Failed to migrate localStorage sessions:', error);
+        }
+    }
+
+    // Persist one session to the native database
+    function persistSession(sessionId) {
+        const session = sessions[sessionId];
+        if (!session) return;
+        try {
+            if (window.AndroidInterface && typeof window.AndroidInterface.saveChatSession === 'function') {
+                window.AndroidInterface.saveChatSession(JSON.stringify(session));
+            }
+        } catch (error) {
+            console.error('Failed to save session:', error);
+        }
+    }
+
+    // Remove one session from the native database
+    function removeSessionFromAndroid(sessionId) {
+        try {
+            if (window.AndroidInterface && typeof window.AndroidInterface.deleteChatSession === 'function') {
+                window.AndroidInterface.deleteChatSession(sessionId);
+            }
+        } catch (error) {
+            console.error('Failed to delete session:', error);
         }
     }
 
@@ -673,19 +730,16 @@
         return firstMessage.length > 40 ? firstMessage.substring(0, 40) + '...' : firstMessage;
     }
 
-    // Save sessions to localStorage
+    // Persist the current session to the native database.
+    // Empty sessions stay in-memory only, so the database never accumulates
+    // "No messages" entries from pages that were opened but never chatted on.
     function saveSessions() {
-        try {
-            if (currentSessionId && sessions[currentSessionId]) {
-                sessions[currentSessionId].messages = [...currentMessages];
+        if (currentSessionId && sessions[currentSessionId]) {
+            sessions[currentSessionId].messages = [...currentMessages];
+            if (currentMessages.length > 0) {
+                sessions[currentSessionId].lastUpdated = Date.now();
+                persistSession(currentSessionId);
             }
-            
-            localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
-            if (currentSessionId) {
-                localStorage.setItem(CURRENT_SESSION_KEY, currentSessionId);
-            }
-        } catch (error) {
-            console.error('Failed to save sessions:', error);
         }
     }
 
@@ -719,6 +773,7 @@
             );
             
             for (let i = MAX_SESSIONS; i < sortedSessions.length; i++) {
+                removeSessionFromAndroid(sortedSessions[i]);
                 delete sessions[sortedSessions[i]];
             }
         }
@@ -737,6 +792,7 @@
                 sessions[currentSessionId].messages = [...currentMessages];
             } else {
                 // If no messages, delete the session from sessions
+                removeSessionFromAndroid(currentSessionId);
                 delete sessions[currentSessionId];
             }
         }
@@ -776,7 +832,8 @@
     // Delete session
     function deleteSession(sessionId) {
         if (!sessions[sessionId]) return;
-        
+
+        removeSessionFromAndroid(sessionId);
         delete sessions[sessionId];
         
         // If we deleted the current session, load first session in sessions; if empty, create a new one
@@ -796,6 +853,13 @@
     // Clear all sessions
     function clearAllSessions() {
         if (confirm('Are you sure you want to delete all chat sessions? This cannot be undone.')) {
+            try {
+                if (window.AndroidInterface && typeof window.AndroidInterface.deleteAllChatSessions === 'function') {
+                    window.AndroidInterface.deleteAllChatSessions();
+                }
+            } catch (error) {
+                console.error('Failed to clear sessions:', error);
+            }
             sessions = {};
             currentSessionId = null;
             currentMessages = [];

@@ -47,8 +47,9 @@ import java.util.concurrent.TimeUnit
         UserScript::class,
         UserScriptValue::class,
         VideoTranscript::class,
+        ChatSession::class,
     ],
-    version = 12,
+    version = 13,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -65,6 +66,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userScriptDao(): UserScriptDao
     abstract fun userScriptValueDao(): UserScriptValueDao
     abstract fun videoTranscriptDao(): VideoTranscriptDao
+    abstract fun chatSessionDao(): ChatSessionDao
 }
 
 @Dao
@@ -279,6 +281,12 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         }
     }
 
+    private val migration12To13: Migration = object : Migration(12, 13) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `chat_sessions` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `created` INTEGER NOT NULL, `lastUpdated` INTEGER NOT NULL, `webTitle` TEXT NOT NULL, `webUrl` TEXT NOT NULL, `messages` TEXT NOT NULL, PRIMARY KEY(`id`))")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
@@ -291,6 +299,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         .addMigrations(migration9To10)
         .addMigrations(migration10To11)
         .addMigrations(migration11To12)
+        .addMigrations(migration12To13)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -555,6 +564,18 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     suspend fun insertVideoTranscript(videoTranscript: VideoTranscript) =
         database.videoTranscriptDao().insert(videoTranscript)
+
+    // -- Chat sessions (AI chat-with-web-content) --
+
+    suspend fun getAllChatSessions(): List<ChatSession> =
+        database.chatSessionDao().getAllSessions()
+
+    suspend fun upsertChatSession(chatSession: ChatSession) =
+        database.chatSessionDao().upsert(chatSession)
+
+    suspend fun deleteChatSession(id: String) = database.chatSessionDao().deleteById(id)
+
+    suspend fun deleteAllChatSessions() = database.chatSessionDao().deleteAll()
 
     suspend fun refreshTranslationCacheTimestamp(
         textHash: String,

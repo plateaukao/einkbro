@@ -240,6 +240,8 @@
     <string name="setting_title_export_userscripts">expor skrip pengguna</string>
     <string name="setting_title_import_userscripts">impor skrip pengguna</string>
     <string name="backup_category_userscripts">Skrip pengguna</string>
+    <string name="backup_category_transcripts">Transkrip video</string>
+    <string name="backup_category_chat_sessions">Sesi obrolan AI</string>
     <string name="setting_title_incognito">Mode Penyamaran</string>
     <string name="back">Kembali</string>
     <string name="refresh">Perbarui</string>

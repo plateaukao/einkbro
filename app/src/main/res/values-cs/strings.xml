@@ -251,6 +251,8 @@
     <string name="setting_title_export_userscripts">Exportovat uživatelské skripty</string>
     <string name="setting_title_import_userscripts">Importovat uživatelské skripty</string>
     <string name="backup_category_userscripts">Uživatelské skripty</string>
+    <string name="backup_category_transcripts">Přepisy videí</string>
+    <string name="backup_category_chat_sessions">Relace chatu s AI</string>
     <string name="setting_title_incognito">Režim inkognito</string>
     <string name="back">Zpět</string>
     <string name="refresh">Obnovit</string>

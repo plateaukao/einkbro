@@ -247,6 +247,8 @@
     <string name="setting_title_export_userscripts">Eksportuj skrypty użytkownika</string>
     <string name="setting_title_import_userscripts">Importuj skrypty użytkownika</string>
     <string name="backup_category_userscripts">Skrypty użytkownika</string>
+    <string name="backup_category_transcripts">Transkrypcje wideo</string>
+    <string name="backup_category_chat_sessions">Sesje czatu AI</string>
     <string name="setting_title_incognito">Tryb incognito</string>
     <string name="back">Wstecz</string>
     <string name="refresh">Odśwież</string>

@@ -440,6 +440,8 @@
     <string name="setting_title_export_userscripts">Експорт користувацьких скриптів</string>
     <string name="setting_title_import_userscripts">Імпорт користувацьких скриптів</string>
     <string name="backup_category_userscripts">Користувацькі скрипти</string>
+    <string name="backup_category_transcripts">Розшифровки відео</string>
+    <string name="backup_category_chat_sessions">Сеанси чату зі ШІ</string>
     <string name="setting_title_incognito">Режим інкогніто</string>
     <string name="setting_title_next_tab">Показувати наступну вкладку</string>
     <string name="setting_title_other_model_name">Назва альтернативної моделі</string>

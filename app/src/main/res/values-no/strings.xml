@@ -449,6 +449,8 @@
     <string name="setting_title_export_userscripts">Eksporter brukerskript</string>
     <string name="setting_title_import_userscripts">Importer brukerskript</string>
     <string name="backup_category_userscripts">Brukerskript</string>
+    <string name="backup_category_transcripts">Videotranskripsjoner</string>
+    <string name="backup_category_chat_sessions">AI-chatøkter</string>
     <string name="setting_title_incognito">Inkognitomodus</string>
     <string name="setting_title_next_tab">Vis neste fane</string>
     <string name="setting_title_other_model_name">Alternativt modellnavn</string>

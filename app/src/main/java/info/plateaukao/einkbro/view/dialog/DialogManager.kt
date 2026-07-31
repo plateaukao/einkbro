@@ -7,6 +7,7 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
+import android.text.format.Formatter
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -443,23 +444,27 @@ class DialogManager(
         launcher.launch(intent)
     }
 
+    /** [options] pairs each offered category with its estimated data size in bytes. */
     fun showBackupCategoryDialog(
+        options: List<Pair<BackupCategory, Long>>,
         onSelected: (Set<BackupCategory>) -> Unit,
     ) {
         showCategoryDialog(
             R.string.dialog_title_backup_categories,
-            BackupCategory.entries.toTypedArray(),
+            options.map { it.first }.toTypedArray(),
+            options.map { it.second },
             onSelected,
         )
     }
 
     fun showRestoreCategoryDialog(
-        availableCategories: Set<BackupCategory>,
+        options: List<Pair<BackupCategory, Long>>,
         onSelected: (Set<BackupCategory>) -> Unit,
     ) {
         showCategoryDialog(
             R.string.dialog_title_restore_categories,
-            availableCategories.toTypedArray(),
+            options.map { it.first }.toTypedArray(),
+            options.map { it.second },
             onSelected,
         )
     }
@@ -467,9 +472,15 @@ class DialogManager(
     private fun showCategoryDialog(
         titleResId: Int,
         categories: Array<BackupCategory>,
+        sizes: List<Long>?,
         onSelected: (Set<BackupCategory>) -> Unit,
     ) {
-        val labels = categories.map { activity.getString(it.displayNameResId) }.toTypedArray()
+        val labels = categories.mapIndexed { index, category ->
+            val name = activity.getString(category.displayNameResId)
+            sizes?.getOrNull(index)
+                ?.let { "$name (${Formatter.formatShortFileSize(activity, it)})" }
+                ?: name
+        }.toTypedArray()
         val checked = BooleanArray(categories.size) { true }
         val allPrefsIndex = categories.indexOf(BackupCategory.ALL_PREFERENCES)
         val gptIndex = categories.indexOf(BackupCategory.GPT_SETTINGS)

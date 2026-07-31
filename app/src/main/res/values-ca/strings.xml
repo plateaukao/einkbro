@@ -222,6 +222,8 @@
     <string name="setting_title_export_userscripts">Exportar scripts d\'usuari</string>
     <string name="setting_title_import_userscripts">Importar scripts d\'usuari</string>
     <string name="backup_category_userscripts">Scripts d\'usuari</string>
+    <string name="backup_category_transcripts">Transcripcions de vídeo</string>
+    <string name="backup_category_chat_sessions">Sessions de xat d\'IA</string>
     <string name="setting_title_incognito">Mode d\'incògnit</string>
     <string name="back">Enrere</string>
     <string name="refresh">Actualitzar</string>

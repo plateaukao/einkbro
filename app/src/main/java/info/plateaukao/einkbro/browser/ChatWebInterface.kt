@@ -7,6 +7,8 @@ import android.webkit.WebView
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.data.remote.ApiResult
+import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.ChatSession
 import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.data.remote.ToolCall
@@ -23,6 +25,7 @@ import info.plateaukao.einkbro.task.ToolTextWindow
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -34,6 +37,8 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.json.JSONArray
+import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -57,6 +62,7 @@ class ChatWebInterface(
 ) : KoinComponent {
     private val openAiRepository: OpenAiRepository = OpenAiRepository()
     private val configManager: ConfigManager by inject()
+    private val bookmarkManager: BookmarkManager by inject()
 
     // Non-agent mode: plain text chat history (role/content pairs).
     private val chatHistory: MutableList<ChatMessage> = mutableListOf()
@@ -117,6 +123,77 @@ class ChatWebInterface(
     fun openUrlInNewTab(url: String) {
         lifecycleScope.launch(Dispatchers.Main) {
             jsHelper.openUrlInNewTab(url)
+        }
+    }
+
+    // ── Chat session persistence ───────────────────────────────────────
+    // The chat page keeps sessions in the app database (not page localStorage)
+    // so they survive WebView storage clearing and are included in backups.
+    // The map shape returned here matches the page's in-memory `sessions` object.
+
+    /** Synchronous by design: runs on the WebView's JS-bridge binder thread. */
+    @JavascriptInterface
+    fun loadChatSessions(): String = runBlocking {
+        val result = JSONObject()
+        try {
+            bookmarkManager.getAllChatSessions().forEach { session ->
+                result.put(session.id, JSONObject().apply {
+                    put("id", session.id)
+                    put("title", session.title)
+                    put("created", session.created)
+                    put("lastUpdated", session.lastUpdated)
+                    put("webTitle", session.webTitle)
+                    put("webUrl", session.webUrl)
+                    put("messages", JSONArray(session.messages))
+                })
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "loadChatSessions failed")
+        }
+        result.toString()
+    }
+
+    @JavascriptInterface
+    fun saveChatSession(sessionJson: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val obj = JSONObject(sessionJson)
+                bookmarkManager.upsertChatSession(
+                    ChatSession(
+                        id = obj.getString("id"),
+                        title = obj.optString("title"),
+                        created = obj.optLong("created"),
+                        lastUpdated = obj.optLong("lastUpdated"),
+                        webTitle = obj.optString("webTitle"),
+                        webUrl = obj.optString("webUrl"),
+                        messages = obj.optJSONArray("messages")?.toString() ?: "[]",
+                    )
+                )
+            } catch (e: Exception) {
+                Timber.e(e, "saveChatSession failed")
+            }
+        }
+    }
+
+    @JavascriptInterface
+    fun deleteChatSession(sessionId: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                bookmarkManager.deleteChatSession(sessionId)
+            } catch (e: Exception) {
+                Timber.e(e, "deleteChatSession failed")
+            }
+        }
+    }
+
+    @JavascriptInterface
+    fun deleteAllChatSessions() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                bookmarkManager.deleteAllChatSessions()
+            } catch (e: Exception) {
+                Timber.e(e, "deleteAllChatSessions failed")
+            }
         }
     }
 

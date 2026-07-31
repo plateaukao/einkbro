@@ -433,6 +433,8 @@
     <string name="backup_category_history">History</string>
     <string name="backup_category_database_data">Database (Highlights, AI Queries, Site Settings, etc.)</string>
     <string name="backup_category_userscripts">Userscripts</string>
+    <string name="backup_category_transcripts">Video Transcripts</string>
+    <string name="backup_category_chat_sessions">AI Chat Sessions</string>
     <string name="dialog_title_backup_categories">Select data to backup</string>
     <string name="dialog_title_restore_categories">Select data to restore</string>
     <string name="setting_title_share_appData">Share app data</string>

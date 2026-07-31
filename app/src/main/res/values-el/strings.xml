@@ -255,6 +255,8 @@
     <string name="setting_title_export_userscripts">Εξαγωγή σεναρίων χρήστη</string>
     <string name="setting_title_import_userscripts">Εισαγωγή σεναρίων χρήστη</string>
     <string name="backup_category_userscripts">Σενάρια χρήστη</string>
+    <string name="backup_category_transcripts">Απομαγνητοφωνήσεις βίντεο</string>
+    <string name="backup_category_chat_sessions">Συνεδρίες συνομιλίας AI</string>
     <string name="setting_title_incognito">Ιδιωτική λειτουργία</string>
     <string name="back">Πίσω</string>
     <string name="refresh">Ανανέωση</string>

@@ -263,6 +263,8 @@
     <string name="setting_title_export_userscripts">Экспорт пользовательских скриптов</string>
     <string name="setting_title_import_userscripts">Импорт пользовательских скриптов</string>
     <string name="backup_category_userscripts">Пользовательские скрипты</string>
+    <string name="backup_category_transcripts">Расшифровки видео</string>
+    <string name="backup_category_chat_sessions">Сеансы чата с ИИ</string>
     <string name="setting_title_incognito">Режим Инкогнито</string>
     <string name="back">Назад</string>
     <string name="refresh">Обновить</string>

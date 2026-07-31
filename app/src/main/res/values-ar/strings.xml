@@ -255,6 +255,8 @@
     <string name="setting_title_export_userscripts">تصدير سكربتات المستخدم</string>
     <string name="setting_title_import_userscripts">استيراد سكربتات المستخدم</string>
     <string name="backup_category_userscripts">سكربتات المستخدم</string>
+    <string name="backup_category_transcripts">نصوص الفيديو</string>
+    <string name="backup_category_chat_sessions">جلسات دردشة الذكاء الاصطناعي</string>
     <string name="setting_title_incognito">وضع التصفح الخفي</string>
     <string name="back">رجوع</string>
     <string name="refresh">تحديث</string>

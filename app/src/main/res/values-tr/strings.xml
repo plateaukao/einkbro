@@ -255,6 +255,8 @@
     <string name="setting_title_export_userscripts">Kullanıcı betiklerini dışa aktar</string>
     <string name="setting_title_import_userscripts">Kullanıcı betiklerini içe aktar</string>
     <string name="backup_category_userscripts">Kullanıcı betikleri</string>
+    <string name="backup_category_transcripts">Video transkriptleri</string>
+    <string name="backup_category_chat_sessions">Yapay zeka sohbet oturumları</string>
     <string name="setting_title_incognito">Gizli mod</string>
     <string name="back">Geri</string>
     <string name="refresh">Yenile</string>
