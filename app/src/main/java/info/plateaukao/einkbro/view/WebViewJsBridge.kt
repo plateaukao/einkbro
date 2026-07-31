@@ -269,14 +269,7 @@ class WebViewJsBridge(private val webView: WebView) {
         // Undo the two-column scale pin (no-op when it was never applied:
         // entering reader mode already set the meta to width=device-width).
         setViewportContent(VIEWPORT_DEFAULT)
-        webView.evaluateJavascript(
-            "javascript:(function() {" +
-                    "if (typeof enableSiteStyleSheets === 'function') enableSiteStyleSheets();" +
-                    "document.body.innerHTML = document.innerHTMLCache;" +
-                    "document.body.classList.remove(\"mozac-readerview-body\");" +
-                    "window.scrollTo(0, 0);" +
-                    "})()", null
-        )
+        webView.evaluateJavascript(loadAssetFile("disable_reader_mode.js"), null)
     }
 
     fun replaceWithReaderModeBody(keepExtraContent: Boolean, url: String?, callback: ValueCallback<String>?) {

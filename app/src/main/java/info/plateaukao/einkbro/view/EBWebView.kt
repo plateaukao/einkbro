@@ -351,6 +351,24 @@ open class EBWebView(
         super.goBack()
     }
 
+    /**
+     * Reader mode state is per-document: the reader body and the JS-side
+     * innerHTMLCache live in the page itself, so when a new document commits
+     * through a path that bypasses loadUrl/reload/goBack (link taps, JS
+     * navigations), the Kotlin-side flags must be dropped too. Leaving them set
+     * makes the next reader-mode tap toggle the stale flag off instead of on,
+     * and disableReaderMode() then restores a body cache the new document
+     * doesn't have (issue #309). Called from onPageStarted; loads that already
+     * went through resetState() make this a no-op.
+     */
+    fun resetReaderModeForNewPage() {
+        if (!isReaderModeOn && !isVerticalRead) return
+        isReaderModeOn = false
+        isVerticalRead = false
+        verticalLineAdvancePx = 0f
+        settings.textZoom = config.display.fontSize
+    }
+
     interface OnScrollChangeListener {
         fun onScrollChange(scrollY: Int, oldScrollY: Int)
     }

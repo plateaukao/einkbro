@@ -136,6 +136,11 @@ class EBWebViewClient(
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         ebWebView.currentPageUrl = url
+        // A committing document invalidates reader-mode state carried from the
+        // previous page: covers link taps and JS navigations that bypass
+        // loadUrl/reload (issue #309). Same-document fragment jumps don't fire
+        // onPageStarted, so in-article anchor links keep reader mode.
+        ebWebView.resetReaderModeForNewPage()
         // resetState() in EBWebView already cleared dualCaption; let the next
         // doUpdateVisitedHistory treat this as a fresh start so it doesn't wipe the
         // caption captured during this page's load.
