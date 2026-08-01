@@ -1,0 +1,1 @@
+Cleaned up the About settings screen.
