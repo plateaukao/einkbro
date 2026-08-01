@@ -366,7 +366,7 @@
     <string name="setting_summary_enabling_web_cache">Lataa verkkosisältö nopeammin ottamalla välimuisti käyttöön</string>
     <string name="setting_summary_external_search_pop">Hae ponnahdusikkunasanakirjana (sopii lukusovellusten sanakirjaintegraatioon)</string>
     <string name="setting_summary_gemini_key">Syötä Gemini API -avain</string>
-    <string name="setting_summary_gemini_model_name">Syötä Gemini-mallin nimi (oletus: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Syötä Gemini-mallin nimi (oletus: gemini-3.5-flash-lite)</string>
     <string name="setting_summary_gpt_audio_model_name">Saatavilla olevat vaihtoehdot: tts-1 (oletus), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Oletus on gpt-4.1. Syötä muu mallinimi tarvittaessa</string>
     <string name="setting_summary_gpt_prompt_for_tts">Ohjeet kun gpt-4o-mini-tts-mallia käytetään.</string>
@@ -556,4 +556,11 @@
     <string name="drive_sign_in_failed">Google-kirjautuminen epäonnistui</string>
     <string name="drive_not_configured">Tässä versiossa ei ole määritetty Google OAuth -asiakasta</string>
     <string name="gemini_transcribing_note">Tekstityksiä ei löytynyt. Videota litteroidaan Geminillä… tämä voi kestää muutaman minuutin.</string>
+    <string name="video_transcription_failed">Videon litterointi epäonnistui: %1$s</string>
+    <string name="chat_no_web_content">Tällä sivulla ei ole luettavaa sisältöä keskustelua varten</string>
+    <string name="setting_test_connection">Testaa yhteys</string>
+    <string name="setting_summary_test_connection">Lähettää pienen testipyynnön yllä olevalla avaimella ja mallilla</string>
+    <string name="test_connection_testing">Testataan…</string>
+    <string name="test_connection_success">Yhteys OK (%1$s)</string>
+    <string name="test_connection_failed">Yhteys epäonnistui: %1$s</string>
 </resources>

@@ -476,7 +476,7 @@
     <string name="setting_title_other_model_name">Название альтернативной модели</string>
     <string name="setting_summary_other_model_name">Вставьте сюда имя модели для альтернативного сервера</string>
     <string name="setting_title_gemini_model_name">Название модели Gemini</string>
-    <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">История результатов ИИ</string>
     <string name="setting_summary_gpt_query_list">Сохранённая история результатов ИИ</string>
     <string name="select_sentence">Выбрать предложение</string>
@@ -610,4 +610,11 @@
     <string name="drive_sign_in_failed">Не удалось войти в Google</string>
     <string name="drive_not_configured">В этой сборке не настроен клиент Google OAuth</string>
     <string name="gemini_transcribing_note">Субтитры не найдены. Видео расшифровывается с помощью Gemini… это может занять несколько минут.</string>
+    <string name="video_transcription_failed">Не удалось расшифровать видео: %1$s</string>
+    <string name="chat_no_web_content">На этой странице нет читаемого содержимого для чата</string>
+    <string name="setting_test_connection">Проверить подключение</string>
+    <string name="setting_summary_test_connection">Отправляет небольшой тестовый запрос с указанным выше ключом и моделью</string>
+    <string name="test_connection_testing">Проверка…</string>
+    <string name="test_connection_success">Подключение ОК (%1$s)</string>
+    <string name="test_connection_failed">Ошибка подключения: %1$s</string>
 </resources>

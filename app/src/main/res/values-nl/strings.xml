@@ -442,7 +442,7 @@
     <string name="setting_title_other_model_name">Alternatieve modelnaam</string>
     <string name="setting_summary_other_model_name">Modelnaam voor alternatieve server invoeren</string>
     <string name="setting_title_gemini_model_name">Gemini-modelnaam</string>
-    <string name="setting_summary_gemini_model_name">Gemini-modelnaam invoeren (standaard: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Gemini-modelnaam invoeren (standaard: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">AI-resultaatgeschiedenis</string>
     <string name="setting_summary_gpt_query_list">Opgeslagen AI-queryresultaten</string>
     <string name="select_sentence">Zin selecteren</string>
@@ -556,4 +556,11 @@
     <string name="drive_sign_in_failed">Google-aanmelding mislukt</string>
     <string name="drive_not_configured">Er is geen Google OAuth-client geconfigureerd in deze build</string>
     <string name="gemini_transcribing_note">Geen ondertitels gevonden. Video wordt getranscribeerd met Gemini… dit kan enkele minuten duren.</string>
+    <string name="video_transcription_failed">Videotranscriptie mislukt: %1$s</string>
+    <string name="chat_no_web_content">Geen leesbare inhoud op deze pagina om over te chatten</string>
+    <string name="setting_test_connection">Verbinding testen</string>
+    <string name="setting_summary_test_connection">Stuur een klein testverzoek met de bovenstaande sleutel en het model</string>
+    <string name="test_connection_testing">Testen…</string>
+    <string name="test_connection_success">Verbinding OK (%1$s)</string>
+    <string name="test_connection_failed">Verbinding mislukt: %1$s</string>
 </resources>

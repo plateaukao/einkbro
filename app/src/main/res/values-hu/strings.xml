@@ -627,7 +627,7 @@
     <string name="setting_title_other_model_name">Alternatív modell neve</string>
     <string name="setting_summary_other_model_name">Adja meg a modell nevét az alternatív szerverhez</string>
     <string name="setting_title_gemini_model_name">Gemini modell neve</string>
-    <string name="setting_summary_gemini_model_name">Adja meg a Gemini modell nevét (alapértelmezett: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Adja meg a Gemini modell nevét (alapértelmezett: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">AI eredmény előzmények</string>
     <string name="setting_summary_gpt_query_list">Mentett AI lekérdezési eredmények</string>
     <string name="select_sentence">Mondat kijelölése</string>
@@ -725,4 +725,11 @@
     <string name="drive_sign_in_failed">A Google-bejelentkezés sikertelen</string>
     <string name="drive_not_configured">Ebben a buildben nincs beállítva Google OAuth-kliens</string>
     <string name="gemini_transcribing_note">Nem található felirat. A videó átírása Gemini segítségével… ez eltarthat néhány percig.</string>
+    <string name="video_transcription_failed">A videó átírása nem sikerült: %1$s</string>
+    <string name="chat_no_web_content">Nincs olvasható tartalom ezen az oldalon a csevegéshez</string>
+    <string name="setting_test_connection">Kapcsolat tesztelése</string>
+    <string name="setting_summary_test_connection">Kis tesztkérést küld a fenti kulccsal és modellel</string>
+    <string name="test_connection_testing">Tesztelés…</string>
+    <string name="test_connection_success">Kapcsolat OK (%1$s)</string>
+    <string name="test_connection_failed">Sikertelen kapcsolat: %1$s</string>
 </resources>

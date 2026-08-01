@@ -3,10 +3,15 @@ package info.plateaukao.einkbro.data.remote.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ContentPart(val text: String)
+data class ContentPart(
+    val text: String = "",
+    // Gemini 3+ marks reasoning-summary parts with thought=true and may attach a
+    // thoughtSignature to answer parts; text must default so signature-only parts decode.
+    val thought: Boolean = false,
+)
 
 @Serializable
-data class Content(val parts: List<ContentPart>)
+data class Content(val parts: List<ContentPart> = emptyList())
 
 @Serializable
 data class SafetySetting(val category: String, val threshold: String)
@@ -25,7 +30,10 @@ data class RequestData(
 )
 
 @Serializable
-data class ResponseData(val candidates: List<Candidate>)
+data class ResponseData(val candidates: List<Candidate> = emptyList())
 
 @Serializable
-data class Candidate(val content: Content)
+data class Candidate(
+    val content: Content = Content(),
+    val finishReason: String? = null,
+)

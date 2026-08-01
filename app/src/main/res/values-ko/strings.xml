@@ -478,7 +478,7 @@
     <string name="setting_title_other_model_name">대체 모델 이름</string>
     <string name="setting_summary_other_model_name">대체 서버에 대한 모델 이름 입력</string>
     <string name="setting_title_gemini_model_name">Gemini 모델 이름</string>
-    <string name="setting_summary_gemini_model_name">Gemini 모델 이름 입력(기본값: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Gemini 모델 이름 입력(기본값: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">AI 결과 기록</string>
     <string name="setting_summary_gpt_query_list">저장된 AI 쿼리 결과</string>
     <string name="select_sentence">문장 선택</string>
@@ -611,4 +611,11 @@
     <string name="drive_sign_in_failed">Google 로그인 실패</string>
     <string name="drive_not_configured">이 빌드에는 Google OAuth 클라이언트가 설정되어 있지 않습니다</string>
     <string name="gemini_transcribing_note">자막을 찾을 수 없습니다. Gemini로 동영상을 전사하는 중… 몇 분 정도 걸릴 수 있습니다.</string>
+    <string name="video_transcription_failed">동영상 텍스트 변환 실패: %1$s</string>
+    <string name="chat_no_web_content">이 페이지에는 채팅할 수 있는 읽기 가능한 콘텐츠가 없습니다</string>
+    <string name="setting_test_connection">연결 테스트</string>
+    <string name="setting_summary_test_connection">위의 키와 모델로 간단한 테스트 요청을 보냅니다</string>
+    <string name="test_connection_testing">테스트 중…</string>
+    <string name="test_connection_success">연결 성공 (%1$s)</string>
+    <string name="test_connection_failed">연결 실패: %1$s</string>
 </resources>

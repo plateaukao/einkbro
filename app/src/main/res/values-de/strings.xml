@@ -435,7 +435,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_title_other_model_name">Alternativer Modellname</string>
     <string name="setting_summary_other_model_name">Modellnamen für alternativen Server eingeben</string>
     <string name="setting_title_gemini_model_name">Gemini-Modellname</string>
-    <string name="setting_summary_gemini_model_name">Gemini-Modellnamen eingeben (Standard: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Gemini-Modellnamen eingeben (Standard: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">KI-Ergebnisverlauf</string>
     <string name="setting_summary_gpt_query_list">Gespeicherte KI-Abfrageergebnisse</string>
     <string name="select_sentence">Satz auswählen</string>
@@ -549,4 +549,11 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="drive_sign_in_failed">Google-Anmeldung fehlgeschlagen</string>
     <string name="drive_not_configured">In diesem Build ist kein Google-OAuth-Client konfiguriert</string>
     <string name="gemini_transcribing_note">Keine Untertitel gefunden. Video wird mit Gemini transkribiert… das kann einige Minuten dauern.</string>
+    <string name="video_transcription_failed">Videotranskription fehlgeschlagen: %1$s</string>
+    <string name="chat_no_web_content">Kein lesbarer Inhalt auf dieser Seite zum Chatten</string>
+    <string name="setting_test_connection">Verbindung testen</string>
+    <string name="setting_summary_test_connection">Sendet eine kleine Testanfrage mit dem obigen Schlüssel und Modell</string>
+    <string name="test_connection_testing">Wird getestet…</string>
+    <string name="test_connection_success">Verbindung OK (%1$s)</string>
+    <string name="test_connection_failed">Verbindung fehlgeschlagen: %1$s</string>
 </resources>

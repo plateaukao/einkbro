@@ -449,7 +449,7 @@
     <string name="setting_title_other_model_name">Nome de modelo alternativo</string>
     <string name="setting_summary_other_model_name">Introduza o nome do modelo para o servidor alternativo</string>
     <string name="setting_title_gemini_model_name">Nome do modelo Gemini</string>
-    <string name="setting_summary_gemini_model_name">Introduza o nome do modelo Gemini (predefinição: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Introduza o nome do modelo Gemini (predefinição: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">Histórico de resultados de IA</string>
     <string name="setting_summary_gpt_query_list">Resultados de consultas de IA guardados</string>
     <string name="select_sentence">Selecionar frase</string>
@@ -547,4 +547,11 @@
     <string name="drive_sign_in_failed">Falha no login do Google</string>
     <string name="drive_not_configured">Nenhum cliente OAuth do Google está configurado nesta build</string>
     <string name="gemini_transcribing_note">Nenhuma legenda encontrada. A transcrever o vídeo com o Gemini… isto pode demorar alguns minutos.</string>
+    <string name="video_transcription_failed">Falha na transcrição do vídeo: %1$s</string>
+    <string name="chat_no_web_content">Nenhum conteúdo legível nesta página para conversar</string>
+    <string name="setting_test_connection">Testar ligação</string>
+    <string name="setting_summary_test_connection">Envia um pequeno pedido de teste com a chave e o modelo acima</string>
+    <string name="test_connection_testing">A testar…</string>
+    <string name="test_connection_success">Ligação OK (%1$s)</string>
+    <string name="test_connection_failed">Falha na ligação: %1$s</string>
 </resources>

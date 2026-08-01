@@ -366,7 +366,7 @@
     <string name="setting_summary_enabling_web_cache">Indlæs webindhold hurtigere ved at aktivere webcache</string>
     <string name="setting_summary_external_search_pop">Søg som popup-ordbog (velegnet til læseapps ordbogstilknytning)</string>
     <string name="setting_summary_gemini_key">Indtast Gemini API-nøgle</string>
-    <string name="setting_summary_gemini_model_name">Indtast Gemini-modelnavn (standard: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Indtast Gemini-modelnavn (standard: gemini-3.5-flash-lite)</string>
     <string name="setting_summary_gpt_audio_model_name">Tilgængelige muligheder: tts-1 (standard), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Standard er gpt-4.1. Indtast andet modelnavn om nødvendigt</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruktioner når gpt-4o-mini-tts-modellen bruges.</string>
@@ -556,4 +556,11 @@
     <string name="drive_sign_in_failed">Google-login mislykkedes</string>
     <string name="drive_not_configured">Ingen Google OAuth-klient er konfigureret i denne build</string>
     <string name="gemini_transcribing_note">Ingen undertekster fundet. Videoen transskriberes med Gemini… det kan tage et par minutter.</string>
+    <string name="video_transcription_failed">Videotransskription mislykkedes: %1$s</string>
+    <string name="chat_no_web_content">Intet læsbart indhold på denne side at chatte om</string>
+    <string name="setting_test_connection">Test forbindelse</string>
+    <string name="setting_summary_test_connection">Send en lille testanmodning med nøglen og modellen ovenfor</string>
+    <string name="test_connection_testing">Tester…</string>
+    <string name="test_connection_success">Forbindelse OK (%1$s)</string>
+    <string name="test_connection_failed">Forbindelse mislykkedes: %1$s</string>
 </resources>

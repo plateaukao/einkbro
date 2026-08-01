@@ -1,9 +1,14 @@
 package info.plateaukao.einkbro.setting.screens
 
+import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.GptActionsActivity
 import info.plateaukao.einkbro.activity.GptQueryListActivity
 import info.plateaukao.einkbro.activity.SettingRoute
+import info.plateaukao.einkbro.data.remote.ApiResult
+import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.preference.ChatGPTActionInfo
+import info.plateaukao.einkbro.preference.GptActionType
 import info.plateaukao.einkbro.setting.ActionSettingItem
 import info.plateaukao.einkbro.setting.BooleanSettingItem
 import info.plateaukao.einkbro.setting.DividerSettingItem
@@ -11,6 +16,36 @@ import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
 import info.plateaukao.einkbro.setting.NavigateSettingItem
 import info.plateaukao.einkbro.setting.SettingItemInterface
 import info.plateaukao.einkbro.setting.ValueSettingItem
+import info.plateaukao.einkbro.view.EBToast
+import kotlinx.coroutines.launch
+
+// Fires a tiny chat request with the engine's currently saved key/model and toasts
+// the outcome, so a freshly entered key or model name can be verified in place.
+// The model is read lazily at click time to pick up edits made just above the button.
+private fun testConnectionItem(
+    deps: SettingScreenDeps,
+    actionType: GptActionType,
+    model: () -> String,
+) = ActionSettingItem(
+    R.string.setting_test_connection,
+    0,
+    R.string.setting_summary_test_connection,
+) {
+    val activity = deps.activity
+    EBToast.showShort(activity, R.string.test_connection_testing)
+    activity.lifecycleScope.launch {
+        when (val result = OpenAiRepository().testConnection(
+            ChatGPTActionInfo(actionType = actionType, model = model())
+        )) {
+            is ApiResult.Success -> EBToast.show(
+                activity, activity.getString(R.string.test_connection_success, model())
+            )
+            is ApiResult.Failure -> EBToast.show(
+                activity, activity.getString(R.string.test_connection_failed, result.message)
+            )
+        }
+    }
+}
 
 fun buildChatGptSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
     val config = deps.config
@@ -112,6 +147,7 @@ fun buildGptOpenAiSettingItems(deps: SettingScreenDeps): List<SettingItemInterfa
             R.string.setting_summary_gpt_model_name,
             config.ai::gptModel
         ),
+        testConnectionItem(deps, GptActionType.OpenAi) { config.ai.gptModel },
         DividerSettingItem(),
         BooleanSettingItem(
             R.string.use_it_on_tts,
@@ -149,6 +185,7 @@ fun buildGptSelfHostedSettingItems(deps: SettingScreenDeps): List<SettingItemInt
             R.string.setting_summary_other_model_name,
             config.ai::alternativeModel
         ),
+        testConnectionItem(deps, GptActionType.SelfHosted) { config.ai.alternativeModel },
     )
 }
 
@@ -167,5 +204,6 @@ fun buildGptGeminiSettingItems(deps: SettingScreenDeps): List<SettingItemInterfa
             R.string.setting_summary_gemini_model_name,
             config.ai::geminiModel
         ),
+        testConnectionItem(deps, GptActionType.Gemini) { config.ai.geminiModel },
     )
 }

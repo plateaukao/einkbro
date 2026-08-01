@@ -573,7 +573,7 @@
     <string name="setting_title_other_model_name">Alternative model name</string>
     <string name="setting_summary_other_model_name">Input model name for alternative server</string>
     <string name="setting_title_gemini_model_name">Gemini model name</string>
-    <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">AI result history</string>
     <string name="setting_summary_gpt_query_list">Saved AI query results</string>
     <string name="select_sentence">Select Sentence</string>
@@ -696,4 +696,11 @@
     <string name="task_requires_openai">Custom tasks require OpenAI (not Gemini).</string>
     <string name="task_unknown">Unknown task.</string>
     <string name="gemini_transcribing_note">No captions found. Transcribing video with Gemini… this may take a few minutes.</string>
+    <string name="video_transcription_failed">Video transcription failed: %1$s</string>
+    <string name="chat_no_web_content">No readable content on this page to chat about</string>
+    <string name="setting_test_connection">Test connection</string>
+    <string name="setting_summary_test_connection">Send a small test request with the key and model above</string>
+    <string name="test_connection_testing">Testing…</string>
+    <string name="test_connection_success">Connection OK (%1$s)</string>
+    <string name="test_connection_failed">Connection failed: %1$s</string>
 </resources>

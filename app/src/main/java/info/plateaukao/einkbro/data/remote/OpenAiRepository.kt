@@ -9,7 +9,6 @@ import info.plateaukao.einkbro.data.remote.model.ContentPart
 import info.plateaukao.einkbro.data.remote.model.RequestData
 import info.plateaukao.einkbro.data.remote.model.ResponseData
 import info.plateaukao.einkbro.data.remote.model.SafetySetting
-import info.plateaukao.einkbro.viewmodel.unescape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -26,8 +25,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSources
-import okio.buffer
-import okio.source
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.Locale
@@ -169,54 +166,81 @@ class OpenAiRepository : KoinComponent {
             return
         }
         val request = createGeminiRequest(messages, gptActionInfo, true)
-        try {
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    val kind = when (response.code) {
-                        401, 403 -> ApiResult.Kind.MissingKey
-                        429 -> ApiResult.Kind.RateLimited
-                        in 500..599 -> ApiResult.Kind.ServerError
-                        else -> ApiResult.Kind.Unknown
-                    }
-                    failureAction(ApiResult.Failure(kind, "Gemini request failed (${response.code})"))
-                    return
-                }
-                val inputStream = response.body?.byteStream() ?: return
-                val textField = "\"text\": \""
-                val finishReasonString = "\"finishReason\": \""
-                inputStream.source().buffer().use { source ->
-                    while (!source.exhausted()) {
-                        val chunk = source.readUtf8Line()
-                        if (chunk == null) {
-                            failureAction(
-                                ApiResult.Failure(ApiResult.Kind.Network, "Gemini stream ended unexpectedly")
-                            )
-                            return
-                        }
-                        Log.d("OpenAiRepository", "chunk: $chunk")
-                        if (chunk.contains(textField)) {
-                            var text =
-                                chunk.substringAfter(textField).removeSuffix("\"")
-                            Log.d("OpenAiRepository", "text: $text")
-                            appendResponseAction(text.unescape())
-                        } else if (chunk.contains(finishReasonString)) {
-                            val finishReason = chunk.substringAfter(finishReasonString)
-                            Log.d("OpenAiRepository", "finishReason: $finishReason")
-                            if (finishReason.contains("STOP")) {
-                                doneAction()
-                                eventSource?.cancel()
-                            }
-                        }
-                    }
+        eventSource?.cancel()
+        eventSource = factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
+            // Gemini's SSE stream has no [DONE] sentinel: the last chunk carries a
+            // finishReason and then the server closes the connection. Cancelling in
+            // onEvent makes OkHttp report onFailure(canceled), so track completion.
+            private var finished = false
+
+            private fun finish(eventSource: EventSource) {
+                if (finished) return
+                finished = true
+                doneAction()
+                eventSource.cancel()
+                this@OpenAiRepository.eventSource = null
+            }
+
+            override fun onEvent(
+                eventSource: EventSource, id: String?, type: String?, data: String,
+            ) {
+                if (data.isEmpty()) return
+                try {
+                    val chunk = json.decodeFromString(ResponseData.serializer(), data)
+                    val candidate = chunk.candidates.firstOrNull() ?: return
+                    val text = candidate.content.parts
+                        .filterNot { it.thought }
+                        .joinToString("") { it.text }
+                    if (text.isNotEmpty()) appendResponseAction(text)
+                    // Any finishReason (STOP, MAX_TOKENS, SAFETY, ...) means the
+                    // model is done talking — finalize the UI either way.
+                    if (candidate.finishReason != null) finish(eventSource)
+                } catch (e: Exception) {
+                    Log.e("OpenAiRepository", "Error parsing Gemini chunk: $data", e)
+                    failureAction(
+                        ApiResult.Failure(ApiResult.Kind.Parse, "Could not parse AI response", cause = e)
+                    )
+                    finished = true
+                    eventSource.cancel()
+                    this@OpenAiRepository.eventSource = null
                 }
             }
-        } catch (e: Exception) {
-            Log.e("OpenAiRepository", "Error fetching Gemini stream", e)
-            failureAction(
-                ApiResult.Failure(ApiResult.Kind.Network, e.message ?: "Network error", cause = e)
-            )
-            return
-        }
+
+            override fun onClosed(eventSource: EventSource) {
+                finish(eventSource)
+            }
+
+            override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
+                if (finished) return
+                val code = response?.code
+                when {
+                    code == 200 -> finish(eventSource)
+                    code == 429 -> {
+                        val retryAfter = response.header("Retry-After")?.toLongOrNull()
+                        failureAction(
+                            ApiResult.Failure(
+                                ApiResult.Kind.RateLimited,
+                                "AI provider rate limit reached",
+                                retryAfterSeconds = retryAfter,
+                                cause = t,
+                            )
+                        )
+                    }
+                    code == 401 || code == 403 -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.MissingKey, "Gemini rejected the API key", cause = t)
+                    )
+                    code != null && code in 500..599 -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.ServerError, "Gemini error ($code)", cause = t)
+                    )
+                    t != null -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.Network, t.message ?: "Network error", cause = t)
+                    )
+                    else -> failureAction(
+                        ApiResult.Failure(ApiResult.Kind.Unknown, "Gemini request failed")
+                    )
+                }
+            }
+        })
     }
 
     suspend fun tts(text: String): ByteArray? = suspendCoroutine { continuation ->
@@ -332,7 +356,9 @@ class OpenAiRepository : KoinComponent {
                         ApiResult.Kind.Parse, "Empty response from Gemini"
                     )
                 val responseData = json.decodeFromString(ResponseData.serializer(), responseBody)
-                val text = responseData.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
+                val text = responseData.candidates.firstOrNull()?.content?.parts
+                    ?.filterNot { it.thought }
+                    ?.joinToString("") { it.text }
                 if (text.isNullOrEmpty()) {
                     ApiResult.Failure(ApiResult.Kind.Parse, "Gemini returned no content")
                 } else {
@@ -349,6 +375,50 @@ class OpenAiRepository : KoinComponent {
         }
     }
 
+    /**
+     * One-shot config check for the settings screens: sends a trivial prompt with the
+     * given engine's key/model and reports the concrete failure (HTTP status, parse,
+     * network) instead of a bare null, so the user can verify a key or model name
+     * right after entering it.
+     */
+    suspend fun testConnection(gptActionInfo: ChatGPTActionInfo): ApiResult<String> {
+        if (gptActionInfo.actionType == GptActionType.Gemini) {
+            return queryGemini(
+                listOf(ChatMessage(TEST_PROMPT, ChatRole.User)),
+                gptActionInfo,
+            )
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = createCompletionRequest(
+                    listOf(ChatMessage(TEST_PROMPT, ChatRole.User)),
+                    gptActionInfo,
+                )
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        val kind = when (response.code) {
+                            401, 403 -> ApiResult.Kind.MissingKey
+                            429 -> ApiResult.Kind.RateLimited
+                            in 500..599 -> ApiResult.Kind.ServerError
+                            else -> ApiResult.Kind.Unknown
+                        }
+                        return@use ApiResult.Failure(kind, "HTTP ${response.code}")
+                    }
+                    val body = response.body?.string().orEmpty()
+                    val text = json.decodeFromString(ChatCompletion.serializer(), body)
+                        .choices.firstOrNull()?.message?.content
+                    if (text.isNullOrBlank()) {
+                        ApiResult.Failure(ApiResult.Kind.Parse, "Empty response")
+                    } else {
+                        ApiResult.Success(text)
+                    }
+                }
+            } catch (e: Exception) {
+                ApiResult.Failure(ApiResult.Kind.Network, e.message ?: "Network error", cause = e)
+            }
+        }
+    }
+
     private fun createGeminiRequest(
         messages: List<ChatMessage>,
         gptActionInfo: ChatGPTActionInfo,
@@ -356,8 +426,11 @@ class OpenAiRepository : KoinComponent {
     ): Request {
         val apiPrefix = "https://generativelanguage.googleapis.com/v1beta/models/"
         val model = gptActionInfo.model
+        // alt=sse gives one complete JSON object per SSE data line, so the stream can
+        // be parsed with the regular serializers instead of scraping the pretty-printed
+        // JSON array format.
         val apiUrl = if (isStream)
-            "$apiPrefix$model:streamGenerateContent"
+            "$apiPrefix$model:streamGenerateContent?alt=sse"
         else
             "$apiPrefix$model:generateContent"
 
@@ -448,6 +521,7 @@ class OpenAiRepository : KoinComponent {
     companion object {
         private const val completionPath = "/v1/chat/completions"
         private const val ttsPath = "/v1/audio/speech"
+        private const val TEST_PROMPT = "Reply with one word: ok"
         private val mediaType = "application/json; charset=utf-8".toMediaType()
     }
 }

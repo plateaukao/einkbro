@@ -367,7 +367,7 @@
     <string name="setting_summary_enabling_web_cache">Tải nội dung web nhanh hơn bằng cách bật bộ nhớ đệm</string>
     <string name="setting_summary_external_search_pop">Tìm kiếm dưới dạng từ điển bật lên (phù hợp để tích hợp từ điển ứng dụng đọc)</string>
     <string name="setting_summary_gemini_key">Nhập khóa API Gemini</string>
-    <string name="setting_summary_gemini_model_name">Nhập tên mô hình Gemini (mặc định: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Nhập tên mô hình Gemini (mặc định: gemini-3.5-flash-lite)</string>
     <string name="setting_summary_gpt_audio_model_name">Tùy chọn: tts-1 (mặc định), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Mặc định là gpt-4.1. Nhập tên mô hình khác nếu cần</string>
     <string name="setting_summary_gpt_prompt_for_tts">Hướng dẫn khi dùng mô hình gpt-4o-mini-tts</string>
@@ -557,4 +557,11 @@
     <string name="drive_sign_in_failed">Đăng nhập Google thất bại</string>
     <string name="drive_not_configured">Bản dựng này chưa được cấu hình ứng dụng khách Google OAuth</string>
     <string name="gemini_transcribing_note">Không tìm thấy phụ đề. Đang chép lời video bằng Gemini… quá trình này có thể mất vài phút.</string>
+    <string name="video_transcription_failed">Phiên âm video thất bại: %1$s</string>
+    <string name="chat_no_web_content">Không có nội dung đọc được trên trang này để trò chuyện</string>
+    <string name="setting_test_connection">Kiểm tra kết nối</string>
+    <string name="setting_summary_test_connection">Gửi một yêu cầu kiểm tra nhỏ với khóa và mô hình ở trên</string>
+    <string name="test_connection_testing">Đang kiểm tra…</string>
+    <string name="test_connection_success">Kết nối OK (%1$s)</string>
+    <string name="test_connection_failed">Kết nối thất bại: %1$s</string>
 </resources>

@@ -90,6 +90,15 @@ class AiChatDelegate(
         activity.lifecycleScope.launch {
             val ebWebView = state.ebWebView
             val rawText = content ?: ebWebView.getRawText()
+            // Opening a chat with no page content silently looks like the content was
+            // lost (e.g. video transcription failed and the watch page has no
+            // readable text) — surface it instead.
+            if (rawText.isBlank()) {
+                withContext(Dispatchers.Main) {
+                    EBToast.show(activity, R.string.chat_no_web_content)
+                }
+                return@launch
+            }
             withContext(Dispatchers.Main) {
                 val scope = activity.lifecycleScope
                 if (useSplitScreen) {

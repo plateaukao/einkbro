@@ -458,7 +458,7 @@
     <string name="setting_title_other_model_name">Εναλλακτικό όνομα μοντέλου</string>
     <string name="setting_summary_other_model_name">Εισάγετε όνομα μοντέλου για εναλλακτικό διακομιστή</string>
     <string name="setting_title_gemini_model_name">Όνομα μοντέλου Gemini</string>
-    <string name="setting_summary_gemini_model_name">Εισάγετε όνομα μοντέλου Gemini (προεπιλογή: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Εισάγετε όνομα μοντέλου Gemini (προεπιλογή: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">Ιστορικό αποτελεσμάτων AI</string>
     <string name="setting_summary_gpt_query_list">Αποθηκευμένα αποτελέσματα ερωτημάτων AI</string>
     <string name="select_sentence">Επιλογή Πρότασης</string>
@@ -556,4 +556,11 @@
     <string name="drive_sign_in_failed">Η σύνδεση Google απέτυχε</string>
     <string name="drive_not_configured">Δεν έχει ρυθμιστεί πρόγραμμα-πελάτης Google OAuth σε αυτήν την έκδοση</string>
     <string name="gemini_transcribing_note">Δεν βρέθηκαν υπότιτλοι. Το βίντεο απομαγνητοφωνείται με το Gemini… μπορεί να διαρκέσει μερικά λεπτά.</string>
+    <string name="video_transcription_failed">Η απομαγνητοφώνηση του βίντεο απέτυχε: %1$s</string>
+    <string name="chat_no_web_content">Δεν υπάρχει αναγνώσιμο περιεχόμενο σε αυτήν τη σελίδα για συνομιλία</string>
+    <string name="setting_test_connection">Δοκιμή σύνδεσης</string>
+    <string name="setting_summary_test_connection">Αποστολή μικρού δοκιμαστικού αιτήματος με το παραπάνω κλειδί και μοντέλο</string>
+    <string name="test_connection_testing">Γίνεται δοκιμή…</string>
+    <string name="test_connection_success">Επιτυχής σύνδεση (%1$s)</string>
+    <string name="test_connection_failed">Αποτυχία σύνδεσης: %1$s</string>
 </resources>

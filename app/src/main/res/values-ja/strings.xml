@@ -377,7 +377,7 @@
     <string name="setting_summary_enabling_web_cache">ウェブキャッシュを有効にしてウェブコンテンツを高速に読み込み</string>
     <string name="setting_summary_external_search_pop">ポップアップ辞書として検索（リーダーアプリの辞書連携に最適）</string>
     <string name="setting_summary_gemini_key">Gemini APIキーを入力</string>
-    <string name="setting_summary_gemini_model_name">Geminiモデル名を入力（デフォルト: gemini-2.5-flash）</string>
+    <string name="setting_summary_gemini_model_name">Geminiモデル名を入力（デフォルト: gemini-3.5-flash-lite）</string>
     <string name="setting_summary_gpt_audio_model_name">選択肢: tts-1（デフォルト）、tts-1-hd、gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">デフォルトはgpt-4.1。必要に応じて他のモデル名を入力</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-ttsモデル使用時のインストラクション</string>
@@ -554,4 +554,11 @@
     <string name="drive_sign_in_failed">Google へのサインインに失敗しました</string>
     <string name="drive_not_configured">このビルドには Google OAuth クライアントが設定されていません</string>
     <string name="gemini_transcribing_note">字幕が見つかりません。Gemini で動画を文字起こししています… 数分かかることがあります。</string>
+    <string name="video_transcription_failed">動画の文字起こしに失敗しました：%1$s</string>
+    <string name="chat_no_web_content">このページにはチャットできる読み取り可能なコンテンツがありません</string>
+    <string name="setting_test_connection">接続テスト</string>
+    <string name="setting_summary_test_connection">上記のキーとモデルで小さなテストリクエストを送信します</string>
+    <string name="test_connection_testing">テスト中…</string>
+    <string name="test_connection_success">接続OK（%1$s）</string>
+    <string name="test_connection_failed">接続に失敗しました：%1$s</string>
 </resources>

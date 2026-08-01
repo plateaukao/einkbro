@@ -442,7 +442,7 @@
     <string name="setting_title_other_model_name">Nume model alternativ</string>
     <string name="setting_summary_other_model_name">Introduceți numele modelului pentru serverul alternativ</string>
     <string name="setting_title_gemini_model_name">Nume model Gemini</string>
-    <string name="setting_summary_gemini_model_name">Introduceți numele modelului Gemini (implicit: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Introduceți numele modelului Gemini (implicit: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">Istoric rezultate IA</string>
     <string name="setting_summary_gpt_query_list">Rezultate IA salvate</string>
     <string name="select_sentence">Selectare propoziție</string>
@@ -557,4 +557,11 @@
     <string name="drive_sign_in_failed">Conectarea la Google a eșuat</string>
     <string name="drive_not_configured">Niciun client Google OAuth nu este configurat în această versiune</string>
     <string name="gemini_transcribing_note">Nu s-au găsit subtitrări. Se transcrie videoclipul cu Gemini… poate dura câteva minute.</string>
+    <string name="video_transcription_failed">Transcrierea videoclipului a eșuat: %1$s</string>
+    <string name="chat_no_web_content">Nu există conținut lizibil pe această pagină pentru chat</string>
+    <string name="setting_test_connection">Testează conexiunea</string>
+    <string name="setting_summary_test_connection">Trimite o mică solicitare de test cu cheia și modelul de mai sus</string>
+    <string name="test_connection_testing">Se testează…</string>
+    <string name="test_connection_success">Conexiune OK (%1$s)</string>
+    <string name="test_connection_failed">Conexiune eșuată: %1$s</string>
 </resources>

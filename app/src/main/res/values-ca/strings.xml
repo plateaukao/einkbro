@@ -449,7 +449,7 @@
     <string name="setting_title_other_model_name">Nom de model alternatiu</string>
     <string name="setting_summary_other_model_name">Introduïu el nom del model per al servidor alternatiu</string>
     <string name="setting_title_gemini_model_name">Nom del model Gemini</string>
-    <string name="setting_summary_gemini_model_name">Introduïu el nom del model Gemini (per defecte: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Introduïu el nom del model Gemini (per defecte: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">Historial de resultats d\'IA</string>
     <string name="setting_summary_gpt_query_list">Resultats de consultes d\'IA desats</string>
     <string name="select_sentence">Seleccionar frase</string>
@@ -547,4 +547,11 @@
     <string name="drive_sign_in_failed">Ha fallat l\'inici de sessió de Google</string>
     <string name="drive_not_configured">No hi ha cap client OAuth de Google configurat en aquesta compilació</string>
     <string name="gemini_transcribing_note">No s\'han trobat subtítols. S\'està transcrivint el vídeo amb Gemini… pot trigar uns minuts.</string>
+    <string name="video_transcription_failed">La transcripció del vídeo ha fallat: %1$s</string>
+    <string name="chat_no_web_content">No hi ha contingut llegible en aquesta pàgina per conversar-hi</string>
+    <string name="setting_test_connection">Prova la connexió</string>
+    <string name="setting_summary_test_connection">Envia una petita sol·licitud de prova amb la clau i el model anteriors</string>
+    <string name="test_connection_testing">S\'està provant…</string>
+    <string name="test_connection_success">Connexió correcta (%1$s)</string>
+    <string name="test_connection_failed">Ha fallat la connexió: %1$s</string>
 </resources>

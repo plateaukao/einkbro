@@ -367,7 +367,7 @@
     <string name="setting_summary_enabling_web_cache">Laai webinhoud vinniger deur webkas te aktiveer</string>
     <string name="setting_summary_external_search_pop">Soek as opspringwoordeboek (geskik vir leser-program woordeboekintegrasie)</string>
     <string name="setting_summary_gemini_key">Voer Gemini API-sleutel in</string>
-    <string name="setting_summary_gemini_model_name">Voer Gemini-modelnaam in (verstek: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Voer Gemini-modelnaam in (verstek: gemini-3.5-flash-lite)</string>
     <string name="setting_summary_gpt_audio_model_name">Opsies: tts-1 (verstek), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Verstek is gpt-4.1. Voer ander modelnaam in indien nodig</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruksies wanneer gpt-4o-mini-tts-model gebruik word</string>
@@ -557,4 +557,11 @@
     <string name="drive_sign_in_failed">Google-aanmelding het misluk</string>
     <string name="drive_not_configured">Geen Google OAuth-kliënt is in hierdie bou opgestel nie</string>
     <string name="gemini_transcribing_note">Geen onderskrifte gevind nie. Video word met Gemini getranskribeer… dit kan enkele minute duur.</string>
+    <string name="video_transcription_failed">Videotranskripsie het misluk: %1$s</string>
+    <string name="chat_no_web_content">Geen leesbare inhoud op hierdie bladsy om oor te gesels nie</string>
+    <string name="setting_test_connection">Toets verbinding</string>
+    <string name="setting_summary_test_connection">Stuur \'n klein toetsversoek met die sleutel en model hierbo</string>
+    <string name="test_connection_testing">Toets tans…</string>
+    <string name="test_connection_success">Verbinding OK (%1$s)</string>
+    <string name="test_connection_failed">Verbinding het misluk: %1$s</string>
 </resources>

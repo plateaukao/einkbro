@@ -30,6 +30,7 @@ import info.plateaukao.einkbro.browser.EBWebChromeClient
 import info.plateaukao.einkbro.browser.EBWebViewClient
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.browser.JsWebInterface
+import info.plateaukao.einkbro.caption.CaptionFetchResult
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.caption.YouTubeCaptionFetcher
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -44,8 +45,10 @@ import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -789,6 +792,8 @@ open class EBWebView(
     // (summarize / chat with web / page AI) work on it instead of the watch-page DOM.
     // No-op when the player's own timedtext request was already captured, or when the
     // video has no captions (getRawText then falls back to Readability extraction).
+    // Failures (members-only video, Gemini error) are shown as a toast so a silent
+    // fallback to page text isn't mistaken for a successful transcription.
     private suspend fun prepareYoutubeCaption(onGeminiTranscribe: (() -> Unit)?) {
         if (dualCaption != null) return
         val pageUrl = url ?: return
@@ -801,10 +806,22 @@ open class EBWebView(
         // The full transcript is always fetched; this outer timeout only guards
         // against a hung network. Sized above the Gemini fallback's 5-minute read
         // timeout; on expiry getRawText falls back to page text.
-        dualCaption = withTimeoutOrNull(360_000) {
-            YouTubeCaptionFetcher().fetchCaptionJson(pageUrl, notify)
+        val result = withTimeoutOrNull(360_000) {
+            YouTubeCaptionFetcher().fetchCaption(pageUrl, notify)
+        } ?: CaptionFetchResult.Failed("timeout", transient = true)
+        when (result) {
+            is CaptionFetchResult.Captions -> dualCaption = result.timedTextJson
+            CaptionFetchResult.None -> noCaptionVideoId = videoId
+            is CaptionFetchResult.Failed -> {
+                if (!result.transient) noCaptionVideoId = videoId
+                withContext(Dispatchers.Main) {
+                    EBToast.show(
+                        context,
+                        context.getString(R.string.video_transcription_failed, result.message)
+                    )
+                }
+            }
         }
-        if (dualCaption == null) noCaptionVideoId = videoId
     }
 
     private fun getRawTextInto(continuation: CancellableContinuation<String>) {

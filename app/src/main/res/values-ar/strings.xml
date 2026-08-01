@@ -458,7 +458,7 @@
     <string name="setting_title_other_model_name">اسم النموذج البديل</string>
     <string name="setting_summary_other_model_name">أدخل اسم النموذج للخادم البديل</string>
     <string name="setting_title_gemini_model_name">اسم نموذج Gemini</string>
-    <string name="setting_summary_gemini_model_name">أدخل اسم نموذج Gemini (الافتراضي: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">أدخل اسم نموذج Gemini (الافتراضي: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">سجل نتائج الذكاء الاصطناعي</string>
     <string name="setting_summary_gpt_query_list">نتائج استعلام الذكاء الاصطناعي المحفوظة</string>
     <string name="select_sentence">تحديد جملة</string>
@@ -556,4 +556,11 @@
     <string name="drive_sign_in_failed">فشل تسجيل الدخول إلى Google</string>
     <string name="drive_not_configured">لم يتم إعداد عميل Google OAuth في هذا الإصدار</string>
     <string name="gemini_transcribing_note">لم يتم العثور على ترجمات. يتم تفريغ الفيديو باستخدام Gemini… قد يستغرق ذلك بضع دقائق.</string>
+    <string name="video_transcription_failed">فشل تفريغ الفيديو: %1$s</string>
+    <string name="chat_no_web_content">لا يوجد محتوى قابل للقراءة في هذه الصفحة للدردشة حوله</string>
+    <string name="setting_test_connection">اختبار الاتصال</string>
+    <string name="setting_summary_test_connection">أرسل طلب اختبار صغير باستخدام المفتاح والنموذج أعلاه</string>
+    <string name="test_connection_testing">جارٍ الاختبار…</string>
+    <string name="test_connection_success">الاتصال ناجح (%1$s)</string>
+    <string name="test_connection_failed">فشل الاتصال: %1$s</string>
 </resources>

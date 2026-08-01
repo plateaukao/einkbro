@@ -458,7 +458,7 @@
     <string name="setting_title_other_model_name">שם מודל חלופי</string>
     <string name="setting_summary_other_model_name">הזן שם מודל עבור שרת חלופי</string>
     <string name="setting_title_gemini_model_name">שם מודל Gemini</string>
-    <string name="setting_summary_gemini_model_name">הזן שם מודל Gemini (ברירת מחדל: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">הזן שם מודל Gemini (ברירת מחדל: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">היסטוריית תוצאות AI</string>
     <string name="setting_summary_gpt_query_list">תוצאות שאילתות AI שנשמרו</string>
     <string name="select_sentence">בחירת משפט</string>
@@ -556,4 +556,11 @@
     <string name="drive_sign_in_failed">הכניסה לחשבון Google נכשלה</string>
     <string name="drive_not_configured">לא הוגדר לקוח Google OAuth בגרסה זו</string>
     <string name="gemini_transcribing_note">לא נמצאו כתוביות. הסרטון מתומלל באמצעות Gemini… זה עשוי להימשך כמה דקות.</string>
+    <string name="video_transcription_failed">תמלול הסרטון נכשל: %1$s</string>
+    <string name="chat_no_web_content">אין תוכן קריא בדף זה לשיחה</string>
+    <string name="setting_test_connection">בדיקת חיבור</string>
+    <string name="setting_summary_test_connection">שליחת בקשת בדיקה קטנה עם המפתח והמודל שלמעלה</string>
+    <string name="test_connection_testing">בודק…</string>
+    <string name="test_connection_success">החיבור תקין (%1$s)</string>
+    <string name="test_connection_failed">החיבור נכשל: %1$s</string>
 </resources>

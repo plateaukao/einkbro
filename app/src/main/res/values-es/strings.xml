@@ -426,7 +426,7 @@
     <string name="setting_title_other_model_name">Nombre de modelo alternativo</string>
     <string name="setting_summary_other_model_name">Introduce el nombre del modelo para el servidor alternativo</string>
     <string name="setting_title_gemini_model_name">Nombre del modelo Gemini</string>
-    <string name="setting_summary_gemini_model_name">Introduce el nombre del modelo Gemini (predeterminado: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Introduce el nombre del modelo Gemini (predeterminado: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">Historial de resultados de IA</string>
     <string name="setting_summary_gpt_query_list">Resultados de consultas de IA guardados</string>
     <string name="select_sentence">Seleccionar oración</string>
@@ -559,4 +559,11 @@
     <string name="drive_sign_in_failed">Error al iniciar sesión en Google</string>
     <string name="drive_not_configured">No hay ningún cliente OAuth de Google configurado en esta compilación</string>
     <string name="gemini_transcribing_note">No se encontraron subtítulos. Transcribiendo el vídeo con Gemini… puede tardar unos minutos.</string>
+    <string name="video_transcription_failed">Error al transcribir el vídeo: %1$s</string>
+    <string name="chat_no_web_content">No hay contenido legible en esta página para chatear</string>
+    <string name="setting_test_connection">Probar conexión</string>
+    <string name="setting_summary_test_connection">Envía una pequeña solicitud de prueba con la clave y el modelo anteriores</string>
+    <string name="test_connection_testing">Probando…</string>
+    <string name="test_connection_success">Conexión correcta (%1$s)</string>
+    <string name="test_connection_failed">Error de conexión: %1$s</string>
 </resources>

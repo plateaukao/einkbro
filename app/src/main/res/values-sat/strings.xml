@@ -525,7 +525,7 @@
     <string name="setting_summary_enabling_web_cache">ᱣᱮᱵᱽ ᱠᱮᱪ ᱮᱢ ᱠᱟᱛᱮ ᱞᱚᱜᱚᱱ ᱞᱚᱰ ᱢᱮ</string>
     <string name="setting_summary_external_search_pop">ᱯᱚᱯᱟᱯ ᱥᱟᱵᱫᱠᱳᱥ ᱞᱮᱠᱟᱛᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱢᱮ (ᱯᱟᱲᱦᱟᱣ ᱮᱯ ᱥᱟᱵᱫᱠᱳᱥ ᱞᱟᱹᱜᱤᱫ)</string>
     <string name="setting_summary_gemini_key">Gemini API ᱪᱟᱹᱵᱤ ᱟᱫᱮᱨ ᱢᱮ</string>
-    <string name="setting_summary_gemini_model_name">Gemini ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱟᱫᱮᱨ ᱢᱮ (ᱢᱩᱞ: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Gemini ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱟᱫᱮᱨ ᱢᱮ (ᱢᱩᱞ: gemini-3.5-flash-lite)</string>
     <string name="setting_summary_gpt_audio_model_name">ᱵᱤᱠᱚᱞᱯ: tts-1 (ᱢᱩᱞ), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-tts ᱢᱚᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱚᱠᱛᱚ ᱱᱤᱨᱫᱮᱥ</string>
     <string name="setting_summary_gpt_query_list">ᱥᱟᱧᱪᱟᱣ ᱟᱠᱟᱱ AI ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ</string>
@@ -600,4 +600,11 @@
     <string name="drive_sign_in_failed">Google ᱵᱚᱞᱚ ᱵᱟᱝ ᱦᱩᱭ ᱞᱮᱱᱟ</string>
     <string name="drive_not_configured">ᱱᱚᱶᱟ ᱵᱤᱞᱰ ᱨᱮ Google OAuth ᱠᱞᱟᱭᱮᱱᱴ ᱵᱟᱹᱱᱩᱜᱼᱟ</string>
     <string name="gemini_transcribing_note">ᱥᱟᱵᱴᱟᱭᱴᱚᱞ ᱵᱟᱝ ᱧᱟᱢ ᱟᱠᱟᱱᱟ ᱾ Gemini ᱥᱟᱶᱛᱮ ᱵᱷᱤᱰᱤᱭᱚ ᱛᱨᱟᱱᱥᱠᱨᱤᱯᱴ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ… ᱱᱚᱶᱟ ᱨᱮ ᱛᱷᱚᱲᱟ ᱢᱤᱱᱤᱴ ᱞᱟᱜᱟᱣ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾</string>
+    <string name="video_transcription_failed">ᱵᱷᱤᱰᱤᱭᱚ ᱛᱨᱟᱱᱥᱠᱨᱤᱯᱴ ᱵᱟᱝ ᱦᱩᱭ ᱞᱮᱱᱟ: %1$s</string>
+    <string name="chat_no_web_content">ᱱᱚᱶᱟ ᱥᱟᱦᱴᱟ ᱨᱮ ᱜᱟᱞᱢᱟᱨᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱯᱟᱲᱦᱟᱣ ᱡᱤᱱᱤᱥ ᱵᱟᱹᱱᱩᱜᱼᱟ</string>
+    <string name="setting_test_connection">ᱡᱩᱲᱟᱹᱣ ᱵᱤᱰᱟᱹᱣ</string>
+    <string name="setting_summary_test_connection">ᱪᱮᱛᱟᱱ ᱨᱮᱭᱟᱜ ᱠᱟᱹᱴᱷᱤ ᱟᱨ ᱢᱚᱰᱮᱞ ᱥᱟᱶ ᱦᱩᱰᱤᱧ ᱵᱤᱰᱟᱹᱣ ᱱᱮᱦᱚᱨ ᱠᱩᱞᱢᱮ</string>
+    <string name="test_connection_testing">ᱵᱤᱰᱟᱹᱣᱚᱜ ᱠᱟᱱᱟ…</string>
+    <string name="test_connection_success">ᱡᱩᱲᱟᱹᱣ ᱴᱷᱤᱠ (%1$s)</string>
+    <string name="test_connection_failed">ᱡᱩᱲᱟᱹᱣ ᱵᱟᱝ ᱦᱩᱭ ᱞᱮᱱᱟ: %1$s</string>
 </resources>

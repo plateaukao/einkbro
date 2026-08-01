@@ -454,7 +454,7 @@
     <string name="setting_title_other_model_name">Alternativní název modelu</string>
     <string name="setting_summary_other_model_name">Zadejte název modelu pro alternativní server</string>
     <string name="setting_title_gemini_model_name">Název modelu Gemini</string>
-    <string name="setting_summary_gemini_model_name">Zadejte název modelu Gemini (výchozí: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Zadejte název modelu Gemini (výchozí: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">Historie výsledků AI</string>
     <string name="setting_summary_gpt_query_list">Uložené výsledky dotazů AI</string>
     <string name="select_sentence">Vybrat větu</string>
@@ -552,4 +552,11 @@
     <string name="drive_sign_in_failed">Přihlášení ke Google se nezdařilo</string>
     <string name="drive_not_configured">V tomto sestavení není nakonfigurován žádný klient Google OAuth</string>
     <string name="gemini_transcribing_note">Nebyly nalezeny žádné titulky. Video se přepisuje pomocí Gemini… může to trvat několik minut.</string>
+    <string name="video_transcription_failed">Přepis videa se nezdařil: %1$s</string>
+    <string name="chat_no_web_content">Na této stránce není žádný čitelný obsah pro chat</string>
+    <string name="setting_test_connection">Otestovat připojení</string>
+    <string name="setting_summary_test_connection">Odešle malý testovací požadavek s výše uvedeným klíčem a modelem</string>
+    <string name="test_connection_testing">Testování…</string>
+    <string name="test_connection_success">Připojení OK (%1$s)</string>
+    <string name="test_connection_failed">Připojení selhalo: %1$s</string>
 </resources>

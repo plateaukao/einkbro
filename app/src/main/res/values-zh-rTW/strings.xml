@@ -422,7 +422,7 @@
     <string name="setting_title_other_model_name">Alternative Model Name</string>
     <string name="setting_summary_other_model_name">Input model name for alternative server</string>
     <string name="setting_title_gemini_model_name">Gemini Model Name</string>
-    <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-2.5-flash)</string>
+    <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-3.5-flash-lite)</string>
     <string name="setting_title_gpt_query_list">AI 查詢歷史記錄</string>
     <string name="setting_summary_gpt_query_list">已儲存的 AI 回傳結果</string>
     <string name="select_sentence">選取句子</string>
@@ -605,4 +605,11 @@
     <string name="drive_sign_in_failed">Google 登入失敗</string>
     <string name="drive_not_configured">此版本未設定 Google OAuth 用戶端</string>
     <string name="gemini_transcribing_note">找不到字幕。正在使用 Gemini 轉錄影片……可能需要幾分鐘。</string>
+    <string name="video_transcription_failed">影片轉錄失敗：%1$s</string>
+    <string name="chat_no_web_content">此頁面沒有可讀取的內容，無法開始聊天</string>
+    <string name="setting_test_connection">測試連線</string>
+    <string name="setting_summary_test_connection">使用上方的金鑰與模型送出小型測試請求</string>
+    <string name="test_connection_testing">測試中…</string>
+    <string name="test_connection_success">連線正常（%1$s）</string>
+    <string name="test_connection_failed">連線失敗：%1$s</string>
 </resources>
