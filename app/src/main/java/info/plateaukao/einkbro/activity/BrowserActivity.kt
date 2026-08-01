@@ -906,11 +906,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initDownloadReceiver() {
         downloadReceiver = createDownloadReceiver(this)
+        // Must be EXPORTED: ACTION_DOWNLOAD_COMPLETE is sent by the DownloadProvider
+        // app (a different uid), and Android 14+ silently drops it for unexported
+        // receivers. The receiver ignores the intent payload and re-queries
+        // DownloadManager by our own stored id, so spoofed broadcasts are harmless.
         ContextCompat.registerReceiver(
             this,
             downloadReceiver,
             IntentFilter(ACTION_DOWNLOAD_COMPLETE),
-            ContextCompat.RECEIVER_NOT_EXPORTED
+            ContextCompat.RECEIVER_EXPORTED
         )
     }
 
