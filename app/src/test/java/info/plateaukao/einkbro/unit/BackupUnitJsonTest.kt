@@ -137,28 +137,32 @@ class BackupUnitJsonTest {
     }
 
     @Test
-    fun `getAvailableCategories reads categories from manifest`() {
+    fun `getAvailableCategoryOptions reads categories and sizes from manifest`() {
         val manifest = JSONObject().apply {
             put("version", 2)
             put("categories", JSONArray(listOf("BOOKMARKS", "HISTORY")))
         }
-        val categories = backupUnit.getAvailableCategories(createBackupZip(manifest))
-        assertEquals(setOf(BackupCategory.BOOKMARKS, BackupCategory.HISTORY), categories)
+        val options = backupUnit.getAvailableCategoryOptions(createBackupZip(manifest))
+        // bookmarks.json contains "[]" (2 bytes); HISTORY is listed but has no entry.
+        assertEquals(
+            listOf(BackupCategory.BOOKMARKS to 2L, BackupCategory.HISTORY to 0L),
+            options,
+        )
     }
 
     @Test
-    fun `getAvailableCategories ignores unknown category names`() {
+    fun `getAvailableCategoryOptions ignores unknown category names`() {
         val manifest = JSONObject().apply {
             put("version", 99)
             put("categories", JSONArray(listOf("BOOKMARKS", "FROM_THE_FUTURE")))
         }
-        val categories = backupUnit.getAvailableCategories(createBackupZip(manifest))
-        assertEquals(setOf(BackupCategory.BOOKMARKS), categories)
+        val options = backupUnit.getAvailableCategoryOptions(createBackupZip(manifest))
+        assertEquals(listOf(BackupCategory.BOOKMARKS to 2L), options)
     }
 
     @Test
-    fun `getAvailableCategories returns null for legacy zip without manifest`() {
-        assertNull(backupUnit.getAvailableCategories(createBackupZip(manifest = null)))
+    fun `getAvailableCategoryOptions returns null for legacy zip without manifest`() {
+        assertNull(backupUnit.getAvailableCategoryOptions(createBackupZip(manifest = null)))
     }
 
     // ── GPT settings export/import ───────────────────────────────────────────
