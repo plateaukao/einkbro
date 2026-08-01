@@ -134,3 +134,22 @@ The project has limited test coverage but includes:
 Use the `/release` skill (e.g., `/release 15.9.0`) to create a new release. It handles version bumping, changelog updates, signed APK builds, and GitHub release creation.
 
 The project also uses Fastlane for deployment automation and supports F-Droid distribution.
+
+### Self-update items and Google Play policy (do not change this)
+
+The About settings screen has two self-update items — "Update App" (latest GitHub
+release) and "Update with Snapshot" (latest CI artifact via nightly.link). Google
+Play policy strictly forbids apps updating themselves, so which builds contain
+them is deliberate and must be preserved:
+
+- The items are compiled in only when `-PshowUpdateButton=true` is passed
+  (`BuildConfig.showUpdateButton`, defaults to false in `app/build.gradle.kts`).
+- **GitHub-bound builds must pass the flag** — the CI workflow
+  (`.github/workflows/buid-app-workflow.yaml`) and the `/release` skill both do.
+  Keep the flag when editing either.
+- **The Play build must never get them**: `publishPlayReleaseBundle` /
+  `bundlePlayRelease` are run *without* the flag (items compiled out), and the
+  `playRelease` build type additionally sets `enableAboutClick=false`, making the
+  About row in Settings non-clickable so the About screen (and its GitHub links)
+  is unreachable. Never pass `-PshowUpdateButton=true` to a Play build and never
+  remove either safeguard — a violation risks the Play listing.
