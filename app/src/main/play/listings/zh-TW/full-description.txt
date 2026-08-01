@@ -1,0 +1,40 @@
+EinkBro 是專為 E-Ink 裝置（電子閱讀器、電子筆記本）打造的輕量、快速瀏覽器。
+
+E-Ink 最佳化閱讀
+* 點擊螢幕邊緣或使用實體音量鍵翻頁
+* 閱讀模式
+* 中日韓直書閱讀模式
+* 自訂字型、字級調整按鈕、粗體切換
+* 高對比圖示，沒有動畫效果
+
+AI 整合
+* 與網頁對話、摘要，或執行多步驟 Agent 任務流程
+* 以自然語音朗讀文章
+* 逐段或並列翻譯網頁
+* 支援 OpenAI、Gemini、Ollama 與自訂伺服器
+
+使用者指令碼
+* 內建 Tampermonkey 風格引擎，可執行 Greasy Fork 等社群指令碼
+* 支援 GM API、選單指令、網址自動比對與指令碼自動更新
+
+儲存與匯出
+* 匯出為包含章節與圖片的 EPUB
+* 儲存為 PDF（含目錄書籤），並可附加到既有 PDF
+* 封存為 MHT、擷取整頁截圖、傳送至 Instapaper
+
+可自訂介面
+* 40 個以上可設定的工具列動作，支援拖曳排序
+* 工具列可放在上方、下方或側邊，適合單手操作
+* 分割畫面、浮動按鈕、進階手勢控制
+* 無限分頁、全螢幕瀏覽
+
+隱私與瀏覽
+* 內建廣告封鎖
+* JavaScript 與 Cookie 白名單
+* 追蹤參數清除、無痕模式、網站個別桌面模式
+
+可能使用的權限
+* INTERNET：瀏覽器必要權限。
+* READ_EXTERNAL_STORAGE、WRITE_EXTERNAL_STORAGE：儲存 PDF/EPUB 與下載檔案。
+* INSTALL_SHORTCUT：在桌面建立網頁捷徑。
+* ACCESS_FINE_LOCATION、ACCESS_COARSE_LOCATION：僅在網站要求定位時使用。
