@@ -826,8 +826,7 @@ fun ProgressActionSettingItemUi(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = settingItemMinHeight)
-                .padding(if (progressState.value.isRunning) 8.dp else 0.dp),
+                .heightIn(min = settingItemMinHeight),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (setting.iconId != 0) {
@@ -850,9 +849,16 @@ fun ProgressActionSettingItemUi(
                     .weight(1f)
                     .padding(vertical = 8.dp)
             ) {
+                // While downloading, the percentage replaces the label in place —
+                // adding a second line would grow the item and reflow the list.
+                val progress = progressState.value
                 Text(
                     modifier = Modifier.wrapContentWidth(),
-                    text = stringResource(id = setting.titleResId),
+                    text = if (progress.isRunning && progress.progress > 0f) {
+                        "${(progress.progress * 100).toInt()}%"
+                    } else {
+                        stringResource(id = setting.titleResId)
+                    },
                     fontSize = 16.sp,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -866,15 +872,6 @@ fun ProgressActionSettingItemUi(
                     )
                 }
             }
-        }
-        
-        if (progressState.value.isRunning && progressState.value.progress > 0f) {
-            Text(
-                text = "${(progressState.value.progress * 100).toInt()}%",
-                fontSize = 10.sp,
-                color = MaterialTheme.colors.onBackground,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            )
         }
     }
 }
