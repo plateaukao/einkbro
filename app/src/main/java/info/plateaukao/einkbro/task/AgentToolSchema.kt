@@ -118,9 +118,10 @@ object AgentToolSchema {
             name = "add_bookmarks",
             description = "Add one or more bookmarks, each optionally filed into a folder " +
                 "by title (missing folders are created automatically; omit folder for the " +
-                "bookmark root). URLs already bookmarked are skipped. Batch the whole set " +
-                "into ONE call when organizing many links (e.g. categorizing channel " +
-                "subscriptions into topic folders).",
+                "bookmark root). URLs already bookmarked are skipped, and the result " +
+                "reports added/skipped counts. Batch roughly one page of links (~50) per " +
+                "call; for longer lists call it once per fetched page as you go — a " +
+                "single giant call gets truncated.",
             parameters = """
                 {"type":"object","properties":{"bookmarks":{"type":"array","description":"Bookmarks to add","items":{"type":"object","properties":{"title":{"type":"string","description":"Bookmark title"},"url":{"type":"string","description":"Absolute http(s) URL"},"folder":{"type":"string","description":"Folder title; created if missing; omit for root"}},"required":["title","url"]}}},"required":["bookmarks"]}
             """.trimIndent(),
@@ -238,17 +239,24 @@ object AgentToolSchema {
         "calls is better.\n\n" +
         "BOOKMARK-ORGANIZATION WORKFLOW: When the user wants pages bookmarked, or a set " +
         "of links identified and sorted into bookmark folders (e.g. 'categorize my " +
-        "YouTube subscriptions into bookmark folders'), follow this sequence: " +
-        "(1) collect ALL the links first — get_initial_page_links is windowed to 50, so " +
-        "keep paging with offset until the result says you have the full list; " +
-        "(2) call list_bookmark_folders and reuse existing folder names as categories " +
-        "where they fit, inventing new ones only for the rest; " +
-        "(3) categorize from the link titles you already have — only open_url a page " +
-        "when a title is too cryptic to classify; " +
-        "(4) file everything with ONE add_bookmarks call — each entry names its folder, " +
-        "and missing folders are created automatically (no need to call " +
-        "add_bookmark_folder first). Already-bookmarked URLs are skipped, so re-running " +
-        "is safe. In finish, list the folders and how many bookmarks went into each.\n\n" +
+        "YouTube subscriptions into bookmark folders'), work INCREMENTALLY, one page of " +
+        "links at a time — never accumulate the whole list for one giant call: " +
+        "(1) call list_bookmark_folders once and reuse existing folder names as " +
+        "categories where they fit, inventing new ones only for the rest; " +
+        "(2) call get_initial_page_links (windowed to 50; the result states the window " +
+        "and total), categorize THAT page from the link titles (only open_url a page " +
+        "when a title is too cryptic to classify), and file it immediately with one " +
+        "add_bookmarks call for just those ~50 entries — each entry names its folder, " +
+        "missing folders are created automatically; " +
+        "(3) repeat step 2 with the next offset until the window reaches the total. " +
+        "You can put the current page's add_bookmarks and the next page's " +
+        "get_initial_page_links in the SAME response to save turns. " +
+        "NEVER call finish while links remain unfiled — compare the last window's end " +
+        "against the total. Already-bookmarked URLs are skipped for free, so to RESUME " +
+        "an interrupted run (or when the user says 'continue'), just re-walk the pages " +
+        "from offset 0 and re-send add_bookmarks for each: a page answering 'skipped " +
+        "50' was already done and costs nothing. In finish, list the folders and how " +
+        "many bookmarks went into each.\n\n" +
         "DOM-PATCH WORKFLOW: When the user asks you to remove a banner, popup, modal, ad, " +
         "cookie notice, or any other element from a site (or show/hide specific elements), " +
         "follow this sequence: " +

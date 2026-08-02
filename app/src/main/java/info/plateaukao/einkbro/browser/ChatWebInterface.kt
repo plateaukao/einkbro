@@ -100,7 +100,10 @@ class ChatWebInterface(
 
     companion object {
         private const val WEB_CONTENT_MESSAGE_SUFFIX = "\n this is the web content;"
-        private const val MAX_AGENT_ITERATIONS = 12
+        // Bulk workflows legitimately need many turns: filing 650 links page-by-page
+        // is ~13 fetch+add rounds plus overhead. Each turn is one LLM call, so the
+        // cap bounds cost, not correctness — finish/no-tool-call exits end earlier.
+        private const val MAX_AGENT_ITERATIONS = 40
         private const val MAX_TOOL_RESULT_CHARS = 8_000
         private const val MAX_LINKS_RETURNED = 50
         private const val TAG = "ChatWebInterface"
