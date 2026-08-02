@@ -158,6 +158,10 @@ class ChatWebInterface(
 
     @JavascriptInterface
     fun saveChatSession(sessionJson: String) {
+        // Agent task transcripts (tool-call bubbles, progress lines) are working
+        // output, not conversations to revisit — only real chat-with-web sessions
+        // belong in the persisted history.
+        if (agentMode) return
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val obj = JSONObject(sessionJson)
