@@ -19,8 +19,11 @@ object AgentToolSchema {
             description = "Return the anchor links (text + href) from the page the user was " +
                 "viewing when they triggered this task. Use this FIRST when the user asks you " +
                 "to do something with 'this page', 'the articles', 'top stories', etc. Zero-cost " +
-                "lookup — no network fetch.",
-            parameters = """{"type":"object","properties":{},"required":[]}""",
+                "lookup — no network fetch. Long lists are windowed to 50 links; the result " +
+                "says so — pass offset to page through until you have them all.",
+            parameters = """
+                {"type":"object","properties":{"offset":{"type":"integer","description":"Skip this many links (default 0)"}},"required":[]}
+            """.trimIndent(),
         ),
         toolDef(
             name = "read_initial_page",
@@ -89,8 +92,38 @@ object AgentToolSchema {
             name = "get_page_links",
             description = "Return the anchor links (text + href) on the currently loaded " +
                 "off-screen page. Call open_url first. For the ORIGINATING page the user was " +
-                "viewing, use get_initial_page_links instead.",
+                "viewing, use get_initial_page_links instead. Long lists are windowed to 50 " +
+                "links — pass offset to page through.",
+            parameters = """
+                {"type":"object","properties":{"offset":{"type":"integer","description":"Skip this many links (default 0)"}},"required":[]}
+            """.trimIndent(),
+        ),
+        toolDef(
+            name = "list_bookmark_folders",
+            description = "Return the titles of the user's existing bookmark folders. Call " +
+                "this BEFORE filing bookmarks into folders so you reuse existing folders " +
+                "instead of creating near-duplicate categories.",
             parameters = """{"type":"object","properties":{},"required":[]}""",
+        ),
+        toolDef(
+            name = "add_bookmark_folder",
+            description = "Create a bookmark folder with the given title if it does not " +
+                "already exist (case-insensitive match). Rarely needed on its own — " +
+                "add_bookmarks creates missing folders automatically.",
+            parameters = """
+                {"type":"object","properties":{"name":{"type":"string","description":"Folder title"}},"required":["name"]}
+            """.trimIndent(),
+        ),
+        toolDef(
+            name = "add_bookmarks",
+            description = "Add one or more bookmarks, each optionally filed into a folder " +
+                "by title (missing folders are created automatically; omit folder for the " +
+                "bookmark root). URLs already bookmarked are skipped. Batch the whole set " +
+                "into ONE call when organizing many links (e.g. categorizing channel " +
+                "subscriptions into topic folders).",
+            parameters = """
+                {"type":"object","properties":{"bookmarks":{"type":"array","description":"Bookmarks to add","items":{"type":"object","properties":{"title":{"type":"string","description":"Bookmark title"},"url":{"type":"string","description":"Absolute http(s) URL"},"folder":{"type":"string","description":"Folder title; created if missing; omit for root"}},"required":["title","url"]}}},"required":["bookmarks"]}
+            """.trimIndent(),
         ),
         toolDef(
             name = "note",
@@ -203,6 +236,19 @@ object AgentToolSchema {
         "markdown). When the user wants articles kept for offline or e-reader reading, " +
         "call save_epub with the URLs as chapters. Be decisive and frugal: fewer tool " +
         "calls is better.\n\n" +
+        "BOOKMARK-ORGANIZATION WORKFLOW: When the user wants pages bookmarked, or a set " +
+        "of links identified and sorted into bookmark folders (e.g. 'categorize my " +
+        "YouTube subscriptions into bookmark folders'), follow this sequence: " +
+        "(1) collect ALL the links first — get_initial_page_links is windowed to 50, so " +
+        "keep paging with offset until the result says you have the full list; " +
+        "(2) call list_bookmark_folders and reuse existing folder names as categories " +
+        "where they fit, inventing new ones only for the rest; " +
+        "(3) categorize from the link titles you already have — only open_url a page " +
+        "when a title is too cryptic to classify; " +
+        "(4) file everything with ONE add_bookmarks call — each entry names its folder, " +
+        "and missing folders are created automatically (no need to call " +
+        "add_bookmark_folder first). Already-bookmarked URLs are skipped, so re-running " +
+        "is safe. In finish, list the folders and how many bookmarks went into each.\n\n" +
         "DOM-PATCH WORKFLOW: When the user asks you to remove a banner, popup, modal, ad, " +
         "cookie notice, or any other element from a site (or show/hide specific elements), " +
         "follow this sequence: " +

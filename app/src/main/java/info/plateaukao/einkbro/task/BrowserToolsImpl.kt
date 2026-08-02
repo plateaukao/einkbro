@@ -16,6 +16,8 @@ import info.plateaukao.einkbro.browser.WebViewCallback
 import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
+import info.plateaukao.einkbro.database.Bookmark
+import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubChapterContent
 import info.plateaukao.einkbro.epub.EpubManager
@@ -37,6 +39,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -55,10 +59,12 @@ class BrowserToolsImpl(
     private val progressSink: (TaskProgress.StepLine) -> Unit,
     private val finishSink: (String) -> Unit,
     private val initialSnapshot: InitialPageSnapshot? = null,
-) : BrowserTools {
+) : BrowserTools, KoinComponent {
 
     private var bgWebView: EBWebView? = null
     private var currentLoadDeferred: CompletableDeferred<Boolean>? = null
+
+    private val bookmarkManager: BookmarkManager by inject()
 
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -239,6 +245,32 @@ class BrowserToolsImpl(
 
     @Serializable
     private data class RawLink(val text: String, val href: String)
+
+    // ── Bookmarks ───────────────────────────────────────────────────────
+
+    override suspend fun bookmarkFolderNames(): List<String> =
+        bookmarkManager.getBookmarkFolders().map { it.title }
+
+    override suspend fun ensureBookmarkFolder(name: String): Boolean {
+        if (resolveFolder(name) != null) return false
+        bookmarkManager.insert(Bookmark(name.trim(), "", isDirectory = true))
+        return true
+    }
+
+    override suspend fun addBookmark(title: String, url: String, folderName: String): Boolean {
+        if (bookmarkManager.findBy(url).isNotEmpty()) return false
+        val parentId = if (folderName.isBlank()) 0
+        else resolveFolder(folderName)?.id ?: run {
+            bookmarkManager.insert(Bookmark(folderName.trim(), "", isDirectory = true))
+            resolveFolder(folderName)?.id ?: 0
+        }
+        bookmarkManager.insert(Bookmark(title, url, parent = parentId))
+        return true
+    }
+
+    private suspend fun resolveFolder(name: String): Bookmark? =
+        bookmarkManager.getBookmarkFolders()
+            .firstOrNull { it.title.equals(name.trim(), ignoreCase = true) }
 
     // ── LLM ─────────────────────────────────────────────────────────────
 

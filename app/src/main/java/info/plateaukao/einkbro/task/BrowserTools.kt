@@ -116,6 +116,25 @@ interface BrowserTools {
     /** Title of the user's active tab. */
     fun activeTabTitle(): String
 
+    // ── Bookmarks ───────────────────────────────────────────────────────
+
+    /** Titles of all existing bookmark folders (including nested ones). */
+    suspend fun bookmarkFolderNames(): List<String>
+
+    /**
+     * Ensures a bookmark folder titled [name] exists (title match is
+     * case-insensitive), creating it at the top level when missing.
+     * Returns true if it was created, false if it already existed.
+     */
+    suspend fun ensureBookmarkFolder(name: String): Boolean
+
+    /**
+     * Adds a bookmark. [folderName] selects the containing folder by title
+     * (created at the top level when missing); blank files it at the bookmark
+     * root. URLs that are already bookmarked are skipped — returns false then.
+     */
+    suspend fun addBookmark(title: String, url: String, folderName: String = ""): Boolean
+
     // ── LLM ─────────────────────────────────────────────────────────────
 
     /**

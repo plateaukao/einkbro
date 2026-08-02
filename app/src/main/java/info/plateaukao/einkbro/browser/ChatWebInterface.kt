@@ -362,7 +362,7 @@ class ChatWebInterface(
                 "get_initial_page_links" -> {
                     val links = agentTools.initialPageLinks()
                     agentToolsInitialized = true
-                    encodeLinks(links)
+                    encodeLinks(links, linkOffset(args))
                 }
                 "read_initial_page" -> {
                     agentToolsInitialized = true
@@ -437,7 +437,38 @@ class ChatWebInterface(
                 "get_page_links" -> {
                     agentToolsInitialized = true
                     val links = agentTools.currentBgPageLinks()
-                    encodeLinks(links)
+                    encodeLinks(links, linkOffset(args))
+                }
+                "list_bookmark_folders" -> {
+                    val names = agentTools.bookmarkFolderNames()
+                    if (names.isEmpty()) "(no bookmark folders yet)"
+                    else names.joinToString("\n")
+                }
+                "add_bookmark_folder" -> {
+                    val name = args["name"]?.jsonPrimitive?.contentOrNull
+                        ?.takeIf { it.isNotBlank() }
+                        ?: return "error: missing name"
+                    if (agentTools.ensureBookmarkFolder(name)) "ok: created folder '$name'"
+                    else "ok: folder '$name' already exists"
+                }
+                "add_bookmarks" -> {
+                    val specs = (args["bookmarks"] as? JsonArray).orEmpty().mapNotNull { el ->
+                        val obj = el as? JsonObject ?: return@mapNotNull null
+                        val url = obj["url"]?.jsonPrimitive?.contentOrNull
+                            ?.takeIf { it.isNotBlank() } ?: return@mapNotNull null
+                        val title = obj["title"]?.jsonPrimitive?.contentOrNull
+                            ?.takeIf { it.isNotBlank() } ?: url
+                        Triple(title, url, obj["folder"]?.jsonPrimitive?.contentOrNull.orEmpty())
+                    }
+                    if (specs.isEmpty()) return "error: bookmarks array has no valid entries"
+                    var added = 0
+                    var skipped = 0
+                    for ((title, url, folder) in specs) {
+                        if (agentTools.addBookmark(title, url, folder)) added++ else skipped++
+                    }
+                    appendBubble("\n\n_🔖 added $added bookmark(s)_")
+                    "ok: added $added bookmark(s)" +
+                        if (skipped > 0) ", skipped $skipped already-bookmarked url(s)" else ""
                 }
                 "note" -> {
                     val text = args["text"]?.jsonPrimitive?.contentOrNull.orEmpty()
@@ -527,17 +558,26 @@ class ChatWebInterface(
             search = args["search"]?.jsonPrimitive?.contentOrNull,
         )
 
-    private fun encodeLinks(links: List<BrowserTools.Link>): String {
+    /** Honors the optional `offset` tool arg for paging through long link lists. */
+    private fun linkOffset(args: JsonObject): Int =
+        (args["offset"]?.jsonPrimitive?.intOrNull ?: 0).coerceAtLeast(0)
+
+    private fun encodeLinks(links: List<BrowserTools.Link>, offset: Int = 0): String {
         if (links.isEmpty()) return "[]"
+        val window = links.drop(offset).take(MAX_LINKS_RETURNED)
         val array: JsonArray = buildJsonArray {
-            links.take(MAX_LINKS_RETURNED).forEach { link ->
+            window.forEach { link ->
                 add(buildJsonObject {
                     put("text", JsonPrimitive(link.text))
                     put("href", JsonPrimitive(link.href))
                 })
             }
         }
-        return array.toString()
+        // Prose prefix keeps truncation visible to the model so it pages instead
+        // of treating a 50-link window as the whole page.
+        return if (offset == 0 && links.size <= MAX_LINKS_RETURNED) array.toString()
+        else "links ${offset + 1}-${offset + window.size} of ${links.size} " +
+            "(pass offset to continue):\n" + array.toString()
     }
 
     private fun buildSnapshotHint(): String {
