@@ -272,10 +272,6 @@ class ChatWebInterface(
      * turn after the chat HTML has finished loading.
      */
     fun runAgentTurn(userMessage: String) {
-        if (configManager.ai.useGeminiApi) {
-            jsHelper.sendErrorUpdate("Custom tasks require OpenAI (not Gemini).")
-            return
-        }
         jsHelper.startMessageStream {
             lifecycleScope.launch { agentLoop(userMessage) }
         }
@@ -589,8 +585,16 @@ class ChatWebInterface(
         name = "agent",
         systemMessage = AgentToolSchema.SYSTEM_PROMPT,
         userMessage = "",
-        actionType = if (configManager.ai.useCustomGptUrl) GptActionType.SelfHosted else GptActionType.OpenAi,
-        model = if (configManager.ai.useCustomGptUrl) configManager.ai.alternativeModel else configManager.ai.gptModel,
+        actionType = when {
+            configManager.ai.useGeminiApi -> GptActionType.Gemini
+            configManager.ai.useCustomGptUrl -> GptActionType.SelfHosted
+            else -> GptActionType.OpenAi
+        },
+        model = when {
+            configManager.ai.useGeminiApi -> configManager.ai.geminiModel
+            configManager.ai.useCustomGptUrl -> configManager.ai.alternativeModel
+            else -> configManager.ai.gptModel
+        },
     )
 
     private fun appendBubble(chunk: String) {

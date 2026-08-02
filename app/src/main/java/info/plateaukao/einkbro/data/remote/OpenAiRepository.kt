@@ -288,7 +288,9 @@ class OpenAiRepository : KoinComponent {
 
     /**
      * Non-streaming chat completion with tool-calling support. Used by the free-form task
-     * agent loop. OpenAI-compatible backends only (the Gemini path has a different schema).
+     * agent loop. Speaks the OpenAI chat-completions schema everywhere: Gemini is served
+     * through Google's OpenAI-compatible endpoint (Bearer auth with the Gemini key), so
+     * the tool-calling loop works unchanged on all three backends.
      */
     suspend fun chatWithTools(
         messages: List<ToolChatMessage>,
@@ -303,10 +305,13 @@ class OpenAiRepository : KoinComponent {
         )
         val body = toolJson.encodeToString(payload)
         Log.d("OpenAiRepository", "chatWithTools request: $body")
+        val isGemini = gptActionInfo.actionType == GptActionType.Gemini
+        val url = if (isGemini) "$geminiOpenAiCompatUrl/chat/completions"
+        else "${getServerUrl(gptActionInfo.actionType)}$completionPath"
         val request = Request.Builder()
-            .url("${getServerUrl(gptActionInfo.actionType)}$completionPath")
+            .url(url)
             .post(body.toRequestBody(mediaType))
-            .header("Authorization", "Bearer $apiKey")
+            .header("Authorization", "Bearer ${if (isGemini) config.ai.geminiApiKey else apiKey}")
             .build()
         try {
             client.newCall(request).execute().use { response ->
@@ -520,6 +525,11 @@ class OpenAiRepository : KoinComponent {
 
     companion object {
         private const val completionPath = "/v1/chat/completions"
+
+        // Google's OpenAI-compatible surface for the Gemini API: same request/response
+        // schema as /v1/chat/completions (including tools), Bearer auth with the Gemini key.
+        private const val geminiOpenAiCompatUrl =
+            "https://generativelanguage.googleapis.com/v1beta/openai"
         private const val ttsPath = "/v1/audio/speech"
         private const val TEST_PROMPT = "Reply with one word: ok"
         private val mediaType = "application/json; charset=utf-8".toMediaType()
@@ -647,6 +657,13 @@ data class ToolCall(
     val id: String,
     val type: String = "function",
     val function: FunctionCall,
+    /**
+     * Opaque provider extras echoed back verbatim when the assistant turn is replayed.
+     * Gemini's OpenAI-compatible endpoint returns its (required) thought_signature here
+     * as {"google":{"thought_signature":...}} and rejects tool-call histories that drop
+     * it. Null for OpenAI/self-hosted, and omitted on encode (explicitNulls=false).
+     */
+    @SerialName("extra_content") val extraContent: JsonElement? = null,
 )
 
 @Serializable

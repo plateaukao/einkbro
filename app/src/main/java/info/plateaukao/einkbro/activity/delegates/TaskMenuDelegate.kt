@@ -67,11 +67,11 @@ class TaskMenuDelegate(
 
     fun runCustomTask(prompt: String) {
         if (prompt.isBlank()) return
-        if (config.ai.useGeminiApi) {
-            EBToast.show(activity, R.string.task_requires_openai)
-            return
-        }
-        if (!translationViewModel.hasOpenAiApiKey()) {
+        // Gemini works through its OpenAI-compatible endpoint, so the agent only
+        // needs whichever key matches the configured default engine.
+        val hasKey = if (config.ai.useGeminiApi) config.ai.geminiApiKey.isNotEmpty()
+        else translationViewModel.hasOpenAiApiKey()
+        if (!hasKey) {
             EBToast.show(activity, R.string.gpt_api_key_not_set)
             return
         }
