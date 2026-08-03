@@ -26,6 +26,8 @@ jobs:
             app/build/reports/lint-results-debug.html
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout the code
         uses: actions/checkout@v6
@@ -43,33 +45,23 @@ jobs:
         # assembleReleaseAlt builds the side-by-side `info.plateaukao.einkbro.a` variant
         # alongside the main release; -PuniversalApk applies to both.
         run: ./gradlew assembleRelease assembleReleaseAlt -PuniversalApk -Pandroid.injected.signing.store.file=$RUNNER_TEMP/android_keystore.keystore -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
-      - name: Upload arm64-v8a APK
-        uses: actions/upload-artifact@v7
-        with:
-          name: app-arm64-v8a-release.apk
-          path: app/build/outputs/apk/release/app-arm64-v8a-release.apk
-      - name: Upload x86_64 APK
-        uses: actions/upload-artifact@v7
-        with:
-          name: app-x86_64-release.apk
-          path: app/build/outputs/apk/release/app-x86_64-release.apk
-      - name: Upload armeabi-v7a APK
-        uses: actions/upload-artifact@v7
-        with:
-          name: app-armeabi-v7a-release.apk
-          path: app/build/outputs/apk/release/app-armeabi-v7a-release.apk
-      - name: Upload universal APK
-        uses: actions/upload-artifact@v7
-        with:
-          name: app-universal-release.apk
-          path: app/build/outputs/apk/release/app-universal-release.apk
-      - name: Upload x86 APK
-        uses: actions/upload-artifact@v7
-        with:
-          name: app-x86-release.apk
-          path: app/build/outputs/apk/release/app-x86-release.apk
-      - name: Upload universal Alt APK (info.plateaukao.einkbro.a)
-        uses: actions/upload-artifact@v7
-        with:
-          name: app-universal-releaseAlt.apk
-          path: app/build/outputs/apk/releaseAlt/app-universal-releaseAlt.apk
+      - name: Publish snapshot pre-release
+        # Rolling pre-release replacing the old CI-artifact "snapshot" downloads:
+        # each commit on main recreates the `snapshot` tag/release so the
+        # Releases page always offers one up-to-date pre-release build.
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete snapshot --yes --cleanup-tag || true
+          gh release create snapshot \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Snapshot (${GITHUB_SHA:0:7})" \
+            --notes "Automated pre-release build of commit ${GITHUB_SHA}. Built from main on every commit; may be unstable." \
+            app/build/outputs/apk/release/app-arm64-v8a-release.apk \
+            app/build/outputs/apk/release/app-armeabi-v7a-release.apk \
+            app/build/outputs/apk/release/app-x86_64-release.apk \
+            app/build/outputs/apk/release/app-x86-release.apk \
+            app/build/outputs/apk/release/app-universal-release.apk \
+            app/build/outputs/apk/releaseAlt/app-universal-releaseAlt.apk
