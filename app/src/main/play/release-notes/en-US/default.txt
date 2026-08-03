@@ -1,1 +1,6 @@
-Cleaned up the About settings screen.
+• AI agent can organize bookmarks: new tools to add bookmarks and folders, reliable even with large collections
+• Custom AI agent tasks now run on Gemini too
+• New thinking effort setting, global or per AI action, with live thinking status in translate and chat
+• Reopened chat sessions keep their full conversation context
+• Audio-only mode can invert video colors for E-Ink
+• What's New opens the full changelog
