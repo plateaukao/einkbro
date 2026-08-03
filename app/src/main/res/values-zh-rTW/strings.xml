@@ -256,8 +256,6 @@
     <string name="setting_title_background_loading">載入其他分頁內容</string>
     <string name="setting_summary_background_loading">分頁未顯示時，依然在背景載入</string>
     <string name="dialog_toc_title">目錄</string>
-    <string name="latest_release">最新版本</string>
-    <string name="medium_articles">相關文章</string>
     <string name="contributors">貢獻者們</string>
     <string name="title_about">關於 EinkBro</string>
     <string name="setting_title_auto_fill_form">自動填入表格</string>
@@ -400,8 +398,6 @@
     <string name="green">綠色</string>
     <string name="blue">藍色</string>
     <string name="pink">粉紅</string>
-    <string name="setting_title_github_update">更新到最新發行版本</string>
-    <string name="setting_title_github_snapshot">更新到開發中版本</string>
     <string name="setting_title_use_custom_gpt_url">使用其他服務</string>
     <string name="setting_title_custom_gpt_url">自定義網址</string>
     <string name="setting_summary_custom_gpt_url">輸入與OpenAI APi相容的網址</string>
@@ -534,7 +530,6 @@
     <string name="page_ai_action_title">網頁 AI 動作</string>
     <string name="papago">Papago</string>
     <string name="papago_translate_by_screen">Papago 螢幕翻譯</string>
-    <string name="project_site">專案網站</string>
     <string name="reader_toolbar">閱讀工具列設定</string>
     <string name="save_history_mode_disabled">不儲存</string>
     <string name="save_history_mode_save_when_close">關閉分頁時儲存</string>
@@ -558,7 +553,6 @@
     <string name="toc_delete">刪除</string>
     <string name="translate_image_key_summary">輸入必要的金鑰以使用圖片翻譯功能</string>
     <string name="tts_type_gpt">OpenAI</string>
-    <string name="twitter">Twitter</string>
     <string name="volume_page_turn_paused">音量鍵翻頁已暫停 5 秒</string>
     <string name="volume_page_turn_resumed">音量鍵翻頁已恢復</string>
     <string name="volume_double_click_back">雙擊返回</string>

@@ -280,10 +280,7 @@
     <string name="setting_title_search">Cercar</string>
     <string name="dialog_toc_title">Índex</string>
     <string name="toc_delete">Eliminar</string>
-    <string name="latest_release">Darrera versió</string>
-    <string name="project_site">Lloc del projecte</string>
     <string name="changelogs">Novetats</string>
-    <string name="medium_articles">Articles a Medium</string>
     <string name="contributors">Col·laboradors</string>
     <string name="title_about">Quant a</string>
     <string name="setting_title_auto_fill_form">Emplenament automàtic de formularis</string>
@@ -304,7 +301,6 @@
     <string name="password">Contrasenya</string>
     <string name="user_name">Nom d\'usuari</string>
     <string name="authentication">Autenticació</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Editar URL de la pàgina d\'inici</string>
     <string name="setting_title_plus_behavior">Comportament de nova pestanya</string>
     <string name="setting_summary_plus_behavior">Què s\'ha de mostrar en afegir una pestanya nova</string>
@@ -425,8 +421,6 @@
     <string name="green">Verd</string>
     <string name="blue">Blau</string>
     <string name="pink">Rosa</string>
-    <string name="setting_title_github_update">Actualitzar a la darrera versió</string>
-    <string name="setting_title_github_snapshot">Actualitzar amb snapshot</string>
     <string name="setting_title_use_custom_gpt_url">Utilitzar servidor alternatiu</string>
     <string name="setting_summary_use_custom_gpt_url">Utilitzar una altra URL de servidor d\'API</string>
     <string name="setting_title_custom_gpt_url">URL de host personalitzat</string>

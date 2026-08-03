@@ -168,7 +168,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -265,11 +264,9 @@
     <string name="key_page_down">Send Page Down tast</string>
     <string name="key_page_up">Send Page Up tast</string>
     <string name="key_right">Send højre-tast</string>
-    <string name="latest_release">Seneste udgivelse</string>
     <string name="location">Placering</string>
     <string name="manual">Manuelt</string>
     <string name="media_continue">Baggrundsafspilning</string>
-    <string name="medium_articles">Medium-artikler</string>
     <string name="menu">Menu</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_instapaper">Instapaper</string>
@@ -308,7 +305,6 @@
     <string name="plus_show_bookmarks">Vis seneste bogmærker</string>
     <string name="plus_show_homepage">Vis startside</string>
     <string name="plus_start_input_url">Begynd at indtaste URL</string>
-    <string name="project_site">Projektside</string>
     <string name="read_from_here">Herfra</string>
     <string name="read_speed">Læsehastighed</string>
     <string name="reader_mode">Læsetilstand</string>
@@ -439,7 +435,6 @@
     <string name="setting_title_external_search_pop">Brug popup til PROCESS_TEXT-begivenhed</string>
     <string name="setting_title_gemini_key">Gemini API-nøgle</string>
     <string name="setting_title_gemini_model_name">Gemini-modelnavn</string>
-    <string name="setting_title_github_snapshot">Opdater med snapshot</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS-modelnavn</string>
     <string name="setting_title_gpt_model_name">OpenAI-modelnavn</string>
     <string name="setting_title_gpt_prompt_for_tts">Lydudgangsinstruktioner</string>
@@ -530,7 +525,6 @@
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_system">Indbygget</string>
-    <string name="twitter">Twitter</string>
     <string name="url_empty">URL er tom</string>
     <string name="use_it_on_dict_search">Brug AI i ordbogssøgning</string>
     <string name="user_name">Brugernavn</string>

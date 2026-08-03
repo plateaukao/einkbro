@@ -167,7 +167,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -297,10 +296,7 @@
     <string name="setting_title_search">Zoeken</string>
     <string name="dialog_toc_title">Inhoudsopgave</string>
     <string name="toc_delete">Verwijderen</string>
-    <string name="latest_release">Nieuwste versie</string>
-    <string name="project_site">Projectsite</string>
     <string name="changelogs">Wat is er nieuw</string>
-    <string name="medium_articles">Medium-artikelen</string>
     <string name="contributors">Bijdragers</string>
     <string name="title_about">Over</string>
     <string name="setting_title_auto_fill_form">Formuliergegevens automatisch invullen</string>
@@ -321,7 +317,6 @@
     <string name="password">Wachtwoord</string>
     <string name="user_name">Gebruikersnaam</string>
     <string name="authentication">Authenticatie</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Startpagina-URL bewerken</string>
     <string name="setting_title_plus_behavior">Gedrag nieuw tabblad</string>
     <string name="setting_summary_plus_behavior">Wat moet worden weergegeven bij het openen van een nieuw tabblad</string>
@@ -420,7 +415,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Voer een prompt in om de volledige pagina-inhoud te verwerken (bijv. \"Vat het samen in 300 woorden:\")</string>
     <string name="setting_title_next_tab">Volgend tabblad tonen</string>
     <string name="setting_summary_next_tab">Volgend tabblad tonen wanneer huidig wordt gesloten (anders vorig tabblad)</string>
-    <string name="setting_title_github_snapshot">Bijwerken met snapshot</string>
     <string name="setting_title_use_custom_gpt_url">Alternatieve server gebruiken</string>
     <string name="setting_summary_use_custom_gpt_url">Andere API-server-URL gebruiken</string>
     <string name="setting_title_custom_gpt_url">Aangepaste host-URL</string>

@@ -168,7 +168,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -313,10 +312,7 @@
     <string name="setting_title_search">חיפוש</string>
     <string name="dialog_toc_title">תוכן עניינים</string>
     <string name="toc_delete">מחיקה</string>
-    <string name="latest_release">גרסה אחרונה</string>
-    <string name="project_site">אתר הפרויקט</string>
     <string name="changelogs">מה חדש</string>
-    <string name="medium_articles">מאמרי Medium</string>
     <string name="contributors">תורמים</string>
     <string name="title_about">אודות</string>
     <string name="setting_title_auto_fill_form">מילוי אוטומטי של נתוני טפסים</string>
@@ -337,7 +333,6 @@
     <string name="password">סיסמה</string>
     <string name="user_name">שם משתמש</string>
     <string name="authentication">אימות</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">עריכת URL דף הבית</string>
     <string name="setting_title_plus_behavior">התנהגות כרטיסייה חדשה</string>
     <string name="setting_summary_plus_behavior">מה יוצג בעת הוספת כרטיסייה חדשה</string>
@@ -436,7 +431,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">הזן הנחיה לעיבוד תוכן עמוד אינטרנט מלא (למשל: \"סכם ב-300 מילים:\")</string>
     <string name="setting_title_next_tab">הצגת כרטיסייה הבאה</string>
     <string name="setting_summary_next_tab">הצגת הכרטיסייה הבאה כשהנוכחית נסגרת (אחרת הצגת הקודמת)</string>
-    <string name="setting_title_github_snapshot">עדכון עם Snapshot</string>
     <string name="setting_title_use_custom_gpt_url">שימוש בשרת חלופי</string>
     <string name="setting_summary_use_custom_gpt_url">שימוש ב-URL שרת API אחר</string>
     <string name="setting_title_custom_gpt_url">URL מארח מותאם</string>

@@ -280,10 +280,7 @@
     <string name="setting_title_search">Pesquisar</string>
     <string name="dialog_toc_title">Índice</string>
     <string name="toc_delete">Apagar</string>
-    <string name="latest_release">Último lançamento</string>
-    <string name="project_site">Site do projeto</string>
     <string name="changelogs">Novidades</string>
-    <string name="medium_articles">Artigos no Medium</string>
     <string name="contributors">Contribuidores</string>
     <string name="title_about">Sobre</string>
     <string name="setting_title_auto_fill_form">Preenchimento automático de formulários</string>
@@ -304,7 +301,6 @@
     <string name="password">Palavra-passe</string>
     <string name="user_name">Nome de utilizador</string>
     <string name="authentication">Autenticação</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Editar URL da página inicial</string>
     <string name="setting_title_plus_behavior">Comportamento do novo separador</string>
     <string name="setting_summary_plus_behavior">O que deve ser mostrado ao adicionar um novo separador</string>
@@ -425,8 +421,6 @@
     <string name="green">Verde</string>
     <string name="blue">Azul</string>
     <string name="pink">Rosa</string>
-    <string name="setting_title_github_update">Atualizar para a última versão</string>
-    <string name="setting_title_github_snapshot">Atualizar com snapshot</string>
     <string name="setting_title_use_custom_gpt_url">Usar servidor alternativo</string>
     <string name="setting_summary_use_custom_gpt_url">Usar outro URL de servidor de API</string>
     <string name="setting_title_custom_gpt_url">URL de host personalizado</string>

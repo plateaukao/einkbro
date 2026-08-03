@@ -168,7 +168,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -313,10 +312,7 @@
     <string name="setting_title_search">Arama</string>
     <string name="dialog_toc_title">İçindekiler</string>
     <string name="toc_delete">Sil</string>
-    <string name="latest_release">Son Sürüm</string>
-    <string name="project_site">Proje Sitesi</string>
     <string name="changelogs">Yenilikler</string>
-    <string name="medium_articles">Medium Makaleleri</string>
     <string name="contributors">Katkıda Bulunanlar</string>
     <string name="title_about">Hakkında</string>
     <string name="setting_title_auto_fill_form">Form verilerini otomatik doldur</string>
@@ -337,7 +333,6 @@
     <string name="password">Şifre</string>
     <string name="user_name">Kullanıcı adı</string>
     <string name="authentication">Kimlik doğrulama</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Ana sayfa URL\'sini düzenle</string>
     <string name="setting_title_plus_behavior">Yeni sekme davranışı</string>
     <string name="setting_summary_plus_behavior">Yeni sekme eklendiğinde ne gösterilmeli</string>
@@ -436,7 +431,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Web sayfasının tam içeriğini işlemek için istem girin (örn.: \"300 kelimede özetle:\")</string>
     <string name="setting_title_next_tab">Sonraki sekmeyi göster</string>
     <string name="setting_summary_next_tab">Geçerli sekme kapatıldığında sonraki sekmeyi göster (aksi halde öncekini göster)</string>
-    <string name="setting_title_github_snapshot">Snapshot ile güncelle</string>
     <string name="setting_title_use_custom_gpt_url">Alternatif sunucu kullan</string>
     <string name="setting_summary_use_custom_gpt_url">Başka bir API sunucusu URL\'si kullan</string>
     <string name="setting_title_custom_gpt_url">Özel ana bilgisayar URL\'si</string>

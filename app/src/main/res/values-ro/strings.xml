@@ -168,7 +168,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -298,10 +297,7 @@
     <string name="setting_title_search">Căutare</string>
     <string name="dialog_toc_title">Cuprins</string>
     <string name="toc_delete">Ștergere</string>
-    <string name="latest_release">Ultima versiune</string>
-    <string name="project_site">Site proiect</string>
     <string name="changelogs">Noutăți</string>
-    <string name="medium_articles">Articole Medium</string>
     <string name="contributors">Contribuitori</string>
     <string name="title_about">Despre</string>
     <string name="setting_title_auto_fill_form">Completare automată formulare</string>
@@ -322,7 +318,6 @@
     <string name="password">Parolă</string>
     <string name="user_name">Nume utilizator</string>
     <string name="authentication">Autentificare</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Editare URL pagină de pornire</string>
     <string name="setting_title_plus_behavior">Comportament filă nouă</string>
     <string name="setting_summary_plus_behavior">Ce să se afișeze la adăugarea unei file noi</string>
@@ -545,7 +540,6 @@
     <string name="setting_summary_receive_appData">Primire date aplicație de pe alt dispozitiv prin rețea locală</string>
     <string name="share_broadcasting">Se transmite în rețeaua locală…</string>
     <string name="share_waiting">Se așteaptă date de pe alt dispozitiv…</string>
-    <string name="setting_title_github_snapshot">Actualizare cu instantaneu</string>
     <string name="audio_only_mode">Doar audio</string>
     <string name="site_force_viewport_width">Forțează lățimea viewportului (px)</string>
     <string name="site_force_viewport_width_hint">Folosiți doar dacă UA desktop nu este suficient</string>

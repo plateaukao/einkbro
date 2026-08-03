@@ -253,11 +253,9 @@
     <string name="key_page_down">Надіслати Page Down</string>
     <string name="key_page_up">Надіслати Page Up</string>
     <string name="key_right">Надіслати клавішу Вправо</string>
-    <string name="latest_release">Останній реліз</string>
     <string name="location">Місцезнаходження</string>
     <string name="manual">Інструкція</string>
     <string name="media_continue">Фонове відтворення</string>
-    <string name="medium_articles">Статті Medium</string>
     <string name="menu">Меню</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_instapaper">Instapaper</string>
@@ -296,7 +294,6 @@
     <string name="plus_show_bookmarks">Показати нещодавні закладки</string>
     <string name="plus_show_homepage">Показати домашню сторінку</string>
     <string name="plus_start_input_url">Почати введення URL</string>
-    <string name="project_site">Сайт проєкту</string>
     <string name="read_from_here">Читати звідси</string>
     <string name="read_speed">Швидкість читання</string>
     <string name="reader_mode">Режим читання</string>
@@ -427,8 +424,6 @@
     <string name="setting_title_external_search_pop">Спливне вікно для PROCESS_TEXT</string>
     <string name="setting_title_gemini_key">API-ключ Gemini</string>
     <string name="setting_title_gemini_model_name">Назва моделі Gemini</string>
-    <string name="setting_title_github_snapshot">Оновити через Snapshot</string>
-    <string name="setting_title_github_update">Оновити до останньої версії</string>
     <string name="setting_title_gpt_audio_model_name">Назва моделі OpenAI TTS</string>
     <string name="setting_title_gpt_model_name">Назва моделі OpenAI</string>
     <string name="setting_title_gpt_prompt_for_tts">Інструкції для аудіовиводу</string>
@@ -521,7 +516,6 @@
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_system">Вбудований</string>
-    <string name="twitter">Twitter</string>
     <string name="url_empty">URL порожній</string>
     <string name="use_it_on_dict_search">Використовувати ШІ для словникового пошуку</string>
     <string name="user_name">Ім\'я користувача</string>

@@ -34,11 +34,6 @@ abstract class BuildTimeValueSource :
     }
 }
 
-fun showUpdateButton(): String {
-    val value = project.findProperty("showUpdateButton")
-    return value?.toString() ?: "false"
-}
-
 // Play upload-key signing, same pattern as calliplus_android, but the secrets
 // live outside the repo in ~/.secrets/einkbro-keystore.properties (keys:
 // storeFile [absolute path], storePassword, keyAlias, keyPassword). Override the
@@ -72,13 +67,8 @@ android {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
         targetSdk = 34
-        versionCode = 15_19_00
-        versionName = "15.19.0"
-
-        buildConfigField("boolean", "showUpdateButton", showUpdateButton())
-        // Whether tapping the About row in the first Settings screen opens the
-        // About screen. The Play Store build turns this off (see playRelease).
-        buildConfigField("boolean", "enableAboutClick", "true")
+        versionCode = 16_00_00
+        versionName = "16.0.0"
 
         // Google Drive backup sync: an "installed app" OAuth client (not a secret;
         // PKCE, no client secret) with the reversed-client-id custom-scheme redirect.
@@ -127,14 +117,10 @@ android {
             matchingFallbacks += "release"
         }
         // Google Play Store build, installed as `info.plateaukao.einkbro.g`.
-        // Play policy forbids the self-update flow, so the About row in the first
-        // Settings screen is made non-clickable (enableAboutClick=false) to keep
-        // the GitHub-release update feature unreachable.
         create("playRelease") {
             initWith(getByName("release"))
             applicationIdSuffix = ".g"
             matchingFallbacks += "release"
-            buildConfigField("boolean", "enableAboutClick", "false")
             if (hasUploadKeystore) {
                 signingConfig = signingConfigs.getByName("play")
             }

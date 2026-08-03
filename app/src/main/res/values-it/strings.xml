@@ -159,7 +159,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -289,10 +288,7 @@
     <string name="setting_title_search">Ricerca</string>
     <string name="dialog_toc_title">Indice</string>
     <string name="toc_delete">Elimina</string>
-    <string name="latest_release">Ultima versione</string>
-    <string name="project_site">Sito del progetto</string>
     <string name="changelogs">Novità</string>
-    <string name="medium_articles">Articoli Medium</string>
     <string name="contributors">Collaboratori</string>
     <string name="title_about">Informazioni</string>
     <string name="setting_title_auto_fill_form">Compilazione automatica moduli</string>
@@ -313,7 +309,6 @@
     <string name="password">Password</string>
     <string name="user_name">Nome utente</string>
     <string name="authentication">Autenticazione</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Modifica URL pagina iniziale</string>
     <string name="setting_title_plus_behavior">Comportamento nuova scheda</string>
     <string name="setting_summary_plus_behavior">Cosa mostrare all\'apertura di una nuova scheda</string>
@@ -536,7 +531,6 @@
     <string name="setting_summary_receive_appData">Ricevi dati dell\'app da un altro dispositivo tramite rete locale</string>
     <string name="share_broadcasting">Trasmissione sulla rete locale…</string>
     <string name="share_waiting">In attesa di dati da un altro dispositivo…</string>
-    <string name="setting_title_github_snapshot">Aggiorna con snapshot</string>
     <string name="audio_only_mode">Solo audio</string>
     <string name="site_force_viewport_width">Forza la larghezza del viewport (px)</string>
     <string name="site_force_viewport_width_hint">Usa solo se l\'UA desktop da solo non basta</string>

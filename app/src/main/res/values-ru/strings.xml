@@ -322,10 +322,7 @@
     <string name="setting_summary_background_loading">Если вкладка неактивна, всё равно загружать данные в фоне</string>
     <string name="setting_title_search">Поиск</string>
     <string name="dialog_toc_title">Оглавление</string>
-    <string name="latest_release">Последний Релиз</string>
-    <string name="project_site">Сайт Проекта</string>
     <string name="changelogs">Что Нового</string>
-    <string name="medium_articles">Статьи На Medium</string>
     <string name="contributors">Вкладчики</string>
     <string name="title_about">О программе</string>
     <string name="setting_title_auto_fill_form">Автоматически заполнять формы</string>
@@ -346,7 +343,6 @@
     <string name="password">Пароль</string>
     <string name="user_name">Имя пользователя</string>
     <string name="authentication">Аутентификация</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Изменить адрес домашней страницы</string>
     <string name="setting_title_plus_behavior">Поведение новой вкладки</string>
     <string name="setting_summary_plus_behavior">Укажите, что должно отображаться при добавлении новой вкладки</string>
@@ -453,8 +449,6 @@
     <string name="green">Зелёный</string>
     <string name="blue">Синий</string>
     <string name="pink">Розовый</string>
-    <string name="setting_title_github_update">Обновиться до последней версии</string>
-    <string name="setting_title_github_snapshot">Обновиться с помощью Snapshot</string>
     <string name="setting_title_use_custom_gpt_url">Использовать альтернативный сервер</string>
     <string name="setting_summary_use_custom_gpt_url">Использовать другой адрес API сервера</string>
     <string name="setting_title_custom_gpt_url">Пользовательский сервер OpenAI</string>

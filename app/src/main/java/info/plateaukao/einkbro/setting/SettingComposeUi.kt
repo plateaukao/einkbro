@@ -774,109 +774,6 @@ fun <T> ListSettingWithClassItemUi(
 }
 
 @Composable
-fun ProgressActionSettingItemUi(
-    setting: ProgressActionSettingItem,
-    showBorder: Boolean = false,
-    modifier: Modifier = Modifier,
-) {
-    val progressState = remember { mutableStateOf(ProgressState()) }
-    val coroutineScope = rememberCoroutineScope()
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 3.dp else 1.dp
-
-    var columnModifier = modifier
-        .fillMaxWidth()
-        .testTag(stringResource(setting.titleResId))
-        .clickable(
-            indication = null,
-            interactionSource = interactionSource,
-            enabled = !progressState.value.isRunning
-        ) {
-            if (!progressState.value.isRunning) {
-                coroutineScope.launch {
-                    progressState.value = ProgressState(isRunning = true)
-                    
-                    val progressCallback = object : ProgressCallback {
-                        override suspend fun updateProgress(progress: Float) {
-                            progressState.value = ProgressState(
-                                isRunning = true,
-                                progress = progress,
-                            )
-                        }
-                    }
-                    
-                    try {
-                        setting.action(progressCallback)
-                    } finally {
-                        progressState.value = ProgressState()
-                    }
-                }
-            }
-        }
-    
-    if (showBorder) columnModifier =
-        columnModifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-
-    // Center keeps content balanced when a paired grid neighbor stretches this cell taller.
-    Column(modifier = columnModifier, verticalArrangement = Arrangement.Center) {
-        // Min height (not weight/fixed height) so the row can grow when a larger
-        // font scale wraps the title/summary; weight would cap it at the min.
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = settingItemMinHeight),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (setting.iconId != 0) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = setting.iconId),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(horizontal = 6.dp)
-                        .fillMaxHeight(),
-                    tint = MaterialTheme.colors.onBackground
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .width(6.dp)
-                    .fillMaxHeight()
-            )
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(vertical = 8.dp)
-            ) {
-                // While downloading, the percentage replaces the label in place —
-                // adding a second line would grow the item and reflow the list.
-                val progress = progressState.value
-                Text(
-                    modifier = Modifier.wrapContentWidth(),
-                    text = if (progress.isRunning && progress.progress > 0f) {
-                        "${(progress.progress * 100).toInt()}%"
-                    } else {
-                        stringResource(id = setting.titleResId)
-                    },
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colors.onBackground
-                )
-                if (setting.summaryResId != 0) {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Text(
-                        modifier = Modifier.wrapContentWidth(),
-                        text = stringResource(id = setting.summaryResId),
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun SearchSettingScreen(
     query: String,
     allSettings: List<Pair<Int, SettingItemInterface>>,
@@ -1078,12 +975,6 @@ private fun SettingItemCell(
             setting, navController, showBorder, modifier
         )
 
-        is ProgressActionSettingItem -> ProgressActionSettingItemUi(
-            setting,
-            showBorder = showBorder,
-            modifier = modifier,
-        )
-
         is BooleanSettingItem -> BooleanSettingItemUi(setting, showBorder, modifier)
         is ValueSettingItem<*> -> ValueSettingItemUi(
             setting,
@@ -1134,12 +1025,9 @@ private fun SettingItemCell(
 
         is VersionSettingItem -> {
             val version = " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
-            // The Play Store build (releasePlay) must not expose the About screen,
-            // whose GitHub-release update flow doesn't work there.
-            val onClick: (() -> Unit)? = if (BuildConfig.enableAboutClick) {
-                { navController.navigate(setting.destination.name) }
-            } else null
-            SettingItemUi(setting, false, version, showBorder, modifier, onClick)
+            SettingItemUi(setting, false, version, showBorder, modifier) {
+                navController.navigate(setting.destination.name)
+            }
         }
 
         else -> {}

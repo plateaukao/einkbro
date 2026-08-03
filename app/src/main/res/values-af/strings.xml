@@ -168,7 +168,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -266,11 +265,9 @@
     <string name="key_page_down">Stuur Page Down-sleutel</string>
     <string name="key_page_up">Stuur Page Up-sleutel</string>
     <string name="key_right">Stuur Regs-sleutel</string>
-    <string name="latest_release">Nuutste vrystelling</string>
     <string name="location">Ligging</string>
     <string name="manual">Handmatig</string>
     <string name="media_continue">Agtergrondspeel</string>
-    <string name="medium_articles">Medium-artikels</string>
     <string name="menu">Kieslys</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_instapaper">Instapaper</string>
@@ -309,7 +306,6 @@
     <string name="plus_show_bookmarks">Wys onlangse boekmerke</string>
     <string name="plus_show_homepage">Wys tuisblad</string>
     <string name="plus_start_input_url">Begin URL invoer</string>
-    <string name="project_site">Projekwerf</string>
     <string name="read_from_here">Vanaf hier</string>
     <string name="read_speed">Leesspoed</string>
     <string name="reader_mode">Leesmodus</string>
@@ -440,7 +436,6 @@
     <string name="setting_title_external_search_pop">Gebruik opspring vir PROCESS_TEXT-geleentheid</string>
     <string name="setting_title_gemini_key">Gemini API-sleutel</string>
     <string name="setting_title_gemini_model_name">Gemini-modelnaam</string>
-    <string name="setting_title_github_snapshot">Opdateer met Snapshot</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS-modelnaam</string>
     <string name="setting_title_gpt_model_name">OpenAI-modelnaam</string>
     <string name="setting_title_gpt_prompt_for_tts">Oudio-uitvoerinstruksies</string>
@@ -531,7 +526,6 @@
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_system">Ingeboude</string>
-    <string name="twitter">Twitter</string>
     <string name="url_empty">URL is leeg</string>
     <string name="use_it_on_dict_search">Gebruik KI in woordeboeksoek</string>
     <string name="user_name">Gebruikersnaam</string>

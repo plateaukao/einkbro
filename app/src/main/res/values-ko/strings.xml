@@ -322,10 +322,7 @@
     <string name="setting_summary_background_loading">탭이 활성화되지 않은 경우에도 백그라운드에서 콘텐츠를 로드합니다.</string>
     <string name="setting_title_search">검색</string>
     <string name="dialog_toc_title">목차</string>
-    <string name="latest_release">최신 릴리스</string>
-    <string name="project_site">프로젝트 사이트</string>
     <string name="changelogs">새로운 기능</string>
-    <string name="medium_articles">미디엄 기사</string>
     <string name="contributors">기여자</string>
     <string name="title_about">정보</string>
     <string name="setting_title_auto_fill_form">자동 양식 데이터 채우기</string>
@@ -346,7 +343,6 @@
     <string name="password">비밀번호</string>
     <string name="user_name">사용자 이름</string>
     <string name="authentication">인증</string>
-    <string name="twitter">트위터</string>
     <string name="setting_title_edit_homepage">홈 URL 편집</string>
     <string name="setting_title_plus_behavior">새 탭 동작</string>
     <string name="setting_summary_plus_behavior">새 탭을 추가할 때 표시할 항목입니다.</string>
@@ -454,8 +450,6 @@
     <string name="green">녹색</string>
     <string name="blue">파란색</string>
     <string name="pink">분홍색</string>
-    <string name="setting_title_github_update">최신 버전으로 업데이트</string>
-    <string name="setting_title_github_snapshot">스냅샷으로 업데이트</string>
     <string name="setting_title_use_custom_gpt_url">대체 서버 사용</string>
     <string name="setting_summary_use_custom_gpt_url">다른 API 서버 URL을 사용합니다.</string>
     <string name="setting_title_custom_gpt_url">사용자 지정 호스트 URL</string>

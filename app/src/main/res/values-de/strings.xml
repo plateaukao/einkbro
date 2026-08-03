@@ -160,7 +160,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -290,10 +289,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_title_search">Suche</string>
     <string name="dialog_toc_title">Inhaltsverzeichnis</string>
     <string name="toc_delete">Löschen</string>
-    <string name="latest_release">Neueste Version</string>
-    <string name="project_site">Projektseite</string>
     <string name="changelogs">Was ist neu</string>
-    <string name="medium_articles">Medium-Artikel</string>
     <string name="contributors">Mitwirkende</string>
     <string name="title_about">Über</string>
     <string name="setting_title_auto_fill_form">Formulardaten automatisch ausfüllen</string>
@@ -314,7 +310,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="password">Passwort</string>
     <string name="user_name">Benutzername</string>
     <string name="authentication">Authentifizierung</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Startseiten-URL bearbeiten</string>
     <string name="setting_title_plus_behavior">Verhalten bei neuem Tab</string>
     <string name="setting_summary_plus_behavior">Was soll beim Öffnen eines neuen Tabs angezeigt werden</string>
@@ -413,7 +408,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_gpt_prompt_for_web_page">Prompt eingeben, um den gesamten Seiteninhalt zu verarbeiten (z.B. \"Fasse es in 300 Wörtern zusammen:\")</string>
     <string name="setting_title_next_tab">Nächsten Tab anzeigen</string>
     <string name="setting_summary_next_tab">Nächsten Tab anzeigen, wenn aktueller geschlossen wird (sonst vorherigen)</string>
-    <string name="setting_title_github_snapshot">Mit Snapshot aktualisieren</string>
     <string name="setting_title_use_custom_gpt_url">Alternativen Server verwenden</string>
     <string name="setting_summary_use_custom_gpt_url">Andere API-Server-URL verwenden</string>
     <string name="setting_title_custom_gpt_url">Eigene Host-URL</string>

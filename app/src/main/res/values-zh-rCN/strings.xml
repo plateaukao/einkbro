@@ -229,10 +229,7 @@
     <string name="setting_summary_background_loading">标签页未激活时，仍在后台加载内容</string>
     <string name="setting_title_search">搜索</string>
     <string name="dialog_toc_title">目录</string>
-    <string name="latest_release">最新版本</string>
-    <string name="project_site">项目站点</string>
     <string name="changelogs">更新日志</string>
-    <string name="medium_articles">Medium文章</string>
     <string name="contributors">贡献者</string>
     <string name="title_about">关于</string>
     <string name="setting_title_auto_fill_form">自动填充表单数据</string>
@@ -370,8 +367,6 @@
     <string name="green">绿色</string>
     <string name="blue">蓝色</string>
     <string name="pink">粉红色</string>
-    <string name="setting_title_github_update">更新到最新版本</string>
-    <string name="setting_title_github_snapshot">使用快照更新</string>
     <string name="setting_title_use_custom_gpt_url">使用替代服务器</string>
     <string name="setting_title_custom_gpt_url">自定义主机网址</string>
     <string name="setting_summary_custom_gpt_url">输入备用openAI服务器网址</string>
@@ -520,7 +515,6 @@
     <string name="toast_saved_page">页面已保存。长按此图标可查看已保存列表。</string>
     <string name="toc_delete">删除</string>
     <string name="tts_type_gpt">OpenAI</string>
-    <string name="twitter">Twitter</string>
     <string name="url_empty">网址为空</string>
     <string name="volume_page_turn_paused">音量键翻页已暂停5秒</string>
     <string name="volume_page_turn_resumed">音量键翻页已恢复</string>

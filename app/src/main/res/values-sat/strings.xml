@@ -306,10 +306,7 @@
     <string name="setting_summary_background_loading">ᱡᱩᱫᱤ ᱴᱮᱵᱽ ᱫᱚ ᱮᱠᱴᱤᱵᱮᱴ ᱵᱟᱹᱱᱩᱜ ᱟᱹᱱᱤᱡ, ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ ᱨᱮ ᱡᱤᱱᱤᱥ ᱞᱚᱰᱚᱜ ᱠᱟᱱᱟ ᱾</string>
     <string name="setting_title_search">ᱥᱮᱸᱫᱽᱨᱟ</string>
     <string name="dialog_toc_title">ᱡᱤᱱᱤᱥ ᱨᱮᱭᱟᱜ ᱴᱮᱵᱤᱞ</string>
-    <string name="latest_release">ᱱᱮᱛᱟᱨᱟᱜ ᱨᱤᱞᱤᱡᱽ</string>
-    <string name="project_site">ᱯᱟᱱᱛᱷᱟ ᱥᱟᱭᱤᱴ</string>
     <string name="changelogs">ᱪᱮᱫ ᱱᱟᱶᱟ ᱢᱮᱱᱟᱼᱟ</string>
-    <string name="medium_articles">Medium ᱚᱱᱚᱞᱠᱚ</string>
     <string name="contributors">ᱮᱱᱮᱢᱤᱭᱟᱹ</string>
     <string name="title_about">ᱵᱟᱵᱚᱛ</string>
     <string name="setting_title_auto_fill_form">ᱟᱡ ᱛᱮ ᱯᱮᱨᱮᱡ ᱯᱷᱚᱨᱢ ᱰᱟᱴᱟ</string>
@@ -330,7 +327,6 @@
     <string name="password">ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ</string>
     <string name="user_name">ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱧᱩᱛᱩᱢ</string>
     <string name="authentication">ᱚᱛᱷᱮᱱᱴᱤᱠᱮᱥᱚᱱ</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">ᱚᱲᱟᱜ URL ᱥᱟᱯᱲᱟᱣ ᱢᱮ</string>
     <string name="setting_title_plus_behavior">ᱱᱟᱶᱟ ᱴᱮᱵᱽ ᱵᱮᱵᱷᱟᱨ</string>
     <string name="setting_summary_plus_behavior">ᱢᱤᱫ ᱱᱟᱶᱟ ᱴᱮᱵᱽ ᱥᱮᱞᱮᱫ ᱞᱟᱦᱟ ᱨᱮ ᱪᱮᱫ ᱪᱮᱠᱟᱛᱮ ᱩᱫᱩᱜ ᱦᱩᱭᱩᱜᱼᱟ ᱾</string>
@@ -438,7 +434,6 @@
     <string name="green">ᱦᱟᱹᱨᱤᱭᱟᱹᱲ</string>
     <string name="blue">ᱞᱤᱞ</string>
     <string name="pink">ᱜᱩᱞᱟᱹᱯ</string>
-    <string name="setting_title_github_update">ᱱᱟᱶᱟ ᱨᱤᱞᱤᱡᱽ ᱛᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <string name="setting_title_toolbar_position">Toolbar position</string>
     <string name="toolbar_position_bottom">Bottom</string>
@@ -547,7 +542,6 @@
     <string name="setting_title_external_search_pop">PROCESS_TEXT ᱞᱟᱹᱜᱤᱫ ᱯᱚᱯᱟᱯ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
     <string name="setting_title_gemini_key">Gemini API ᱪᱟᱹᱵᱤ</string>
     <string name="setting_title_gemini_model_name">Gemini ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ</string>
-    <string name="setting_title_github_snapshot">Snapshot ᱛᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTS ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ</string>
     <string name="setting_title_gpt_prompt_for_tts">ᱟᱰᱤᱭᱳ ᱱᱤᱨᱫᱮᱥ</string>
     <string name="setting_title_gpt_query_list">AI ᱛᱮᱞᱟ ᱱᱟᱜᱟᱢ</string>

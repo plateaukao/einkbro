@@ -59,17 +59,6 @@ object HelperUnit {
     fun parseMarkdown(markdownText: String): AnnotatedString =
         MarkdownParser.parseMarkdown(markdownText)
 
-    // --- Forwarding functions for AppUpdater ---
-    suspend fun upgradeToLatestRelease(
-        context: Context,
-        progressCallback: (suspend (Float) -> Unit)? = null,
-    ) = AppUpdater.upgradeToLatestRelease(context, progressCallback)
-
-    suspend fun upgradeFromSnapshot(
-        context: Context,
-        progressCallback: (suspend (Float) -> Unit)? = null,
-    ) = AppUpdater.upgradeFromSnapshot(context, progressCallback)
-
     // --- Forwarding functions for FileHelper ---
     fun getStringFromAsset(fileName: String): String =
         FileHelper.getStringFromAsset(fileName)

@@ -195,7 +195,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -290,11 +289,9 @@
     <string name="key_page_down">Page Downキーを送信</string>
     <string name="key_page_up">Page Upキーを送信</string>
     <string name="key_right">→キーを送信</string>
-    <string name="latest_release">最新リリース</string>
     <string name="location">位置情報</string>
     <string name="manual">マニュアル</string>
     <string name="media_continue">バックグラウンド再生</string>
-    <string name="medium_articles">Medium記事</string>
     <string name="menu">メニュー</string>
     <string name="menu_epub">EPUB</string>
     <string name="menu_instapaper">Instapaper</string>
@@ -326,7 +323,6 @@
     <string name="plus_show_bookmarks">最近のブックマークを表示</string>
     <string name="plus_show_homepage">ホームページを表示</string>
     <string name="plus_start_input_url">URL入力を開始</string>
-    <string name="project_site">プロジェクトサイト</string>
     <string name="read_from_here">ここから読む</string>
     <string name="read_speed">読み上げ速度</string>
     <string name="reader_toolbar">リーダーツールバー設定</string>
@@ -449,7 +445,6 @@
     <string name="setting_title_external_search_pop">PROCESS_TEXTイベントでポップアップを使用</string>
     <string name="setting_title_gemini_key">Gemini APIキー</string>
     <string name="setting_title_gemini_model_name">Geminiモデル名</string>
-    <string name="setting_title_github_snapshot">スナップショットで更新</string>
     <string name="setting_title_gpt_audio_model_name">OpenAI TTSモデル名</string>
     <string name="setting_title_gpt_model_name">OpenAIモデル名</string>
     <string name="setting_title_gpt_prompt_for_tts">音声出力のインストラクション</string>
@@ -530,7 +525,6 @@
     <string name="tts_type_etts">ReadAloud</string>
     <string name="tts_type_gpt">OpenAI</string>
     <string name="tts_type_system">内蔵</string>
-    <string name="twitter">Twitter</string>
     <string name="url_empty">URLが空です</string>
     <string name="use_it_on_dict_search">辞書検索でAIを使用</string>
     <string name="user_name">ユーザー名</string>

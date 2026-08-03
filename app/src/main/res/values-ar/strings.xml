@@ -168,7 +168,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -313,10 +312,7 @@
     <string name="setting_title_search">البحث</string>
     <string name="dialog_toc_title">جدول المحتويات</string>
     <string name="toc_delete">حذف</string>
-    <string name="latest_release">أحدث إصدار</string>
-    <string name="project_site">موقع المشروع</string>
     <string name="changelogs">ما الجديد</string>
-    <string name="medium_articles">مقالات Medium</string>
     <string name="contributors">المساهمون</string>
     <string name="title_about">حول</string>
     <string name="setting_title_auto_fill_form">ملء بيانات النماذج تلقائياً</string>
@@ -337,7 +333,6 @@
     <string name="password">كلمة المرور</string>
     <string name="user_name">اسم المستخدم</string>
     <string name="authentication">المصادقة</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">تعديل URL الصفحة الرئيسية</string>
     <string name="setting_title_plus_behavior">سلوك التبويب الجديد</string>
     <string name="setting_summary_plus_behavior">ماذا يُعرض عند إضافة تبويب جديد</string>
@@ -436,7 +431,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">أدخل الموجه لمعالجة محتوى صفحة الويب الكامل (مثال: \"لخصه في 300 كلمة:\")</string>
     <string name="setting_title_next_tab">إظهار التبويب التالي</string>
     <string name="setting_summary_next_tab">إظهار التبويب التالي عند إغلاق الحالي (وإلا يُظهر السابق)</string>
-    <string name="setting_title_github_snapshot">التحديث بنسخة تجريبية</string>
     <string name="setting_title_use_custom_gpt_url">استخدام خادم بديل</string>
     <string name="setting_summary_use_custom_gpt_url">استخدام URL خادم API آخر</string>
     <string name="setting_title_custom_gpt_url">URL مضيف مخصص</string>

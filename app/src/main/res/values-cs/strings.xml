@@ -164,7 +164,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -309,10 +308,7 @@
     <string name="setting_title_search">Vyhledávání</string>
     <string name="dialog_toc_title">Obsah</string>
     <string name="toc_delete">Smazat</string>
-    <string name="latest_release">Nejnovější verze</string>
-    <string name="project_site">Stránka projektu</string>
     <string name="changelogs">Co je nového</string>
-    <string name="medium_articles">Články na Medium</string>
     <string name="contributors">Přispěvatelé</string>
     <string name="title_about">O aplikaci</string>
     <string name="setting_title_auto_fill_form">Automatické vyplňování formulářů</string>
@@ -333,7 +329,6 @@
     <string name="password">Heslo</string>
     <string name="user_name">Uživatelské jméno</string>
     <string name="authentication">Ověření</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Upravit URL domovské stránky</string>
     <string name="setting_title_plus_behavior">Chování nové karty</string>
     <string name="setting_summary_plus_behavior">Co se má zobrazit při přidání nové karty</string>
@@ -432,7 +427,6 @@
     <string name="setting_summary_gpt_prompt_for_web_page">Zadejte prompt pro zpracování celého obsahu stránky (např. \"Shrňte to ve 300 slovech:\")</string>
     <string name="setting_title_next_tab">Zobrazit další kartu</string>
     <string name="setting_summary_next_tab">Zobrazit další kartu po zavření aktuální (jinak zobrazit předchozí)</string>
-    <string name="setting_title_github_snapshot">Aktualizovat testovací verzí</string>
     <string name="setting_title_use_custom_gpt_url">Použít alternativní server</string>
     <string name="setting_summary_use_custom_gpt_url">Použít jinou URL serveru API</string>
     <string name="setting_title_custom_gpt_url">Vlastní URL hostitele</string>

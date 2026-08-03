@@ -168,7 +168,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <!-- Dialog help -->
     <!-- Dialog changelog -->
@@ -298,10 +297,7 @@
     <string name="setting_title_search">Recherche</string>
     <string name="dialog_toc_title">Table des matières</string>
     <string name="toc_delete">Supprimer</string>
-    <string name="latest_release">Dernière version</string>
-    <string name="project_site">Site du projet</string>
     <string name="changelogs">Nouveautés</string>
-    <string name="medium_articles">Articles Medium</string>
     <string name="contributors">Contributeurs</string>
     <string name="title_about">À propos</string>
     <string name="setting_title_auto_fill_form">Remplissage auto des formulaires</string>
@@ -322,7 +318,6 @@
     <string name="password">Mot de passe</string>
     <string name="user_name">Nom d\'utilisateur</string>
     <string name="authentication">Authentification</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Modifier l\'URL de la page d\'accueil</string>
     <string name="setting_title_plus_behavior">Comportement du nouvel onglet</string>
     <string name="setting_summary_plus_behavior">Que faut-il afficher lors de l\'ajout d\'un nouvel onglet</string>
@@ -545,7 +540,6 @@
     <string name="setting_summary_receive_appData">Recevoir les données de l\'application depuis un autre appareil via le réseau local</string>
     <string name="share_broadcasting">Diffusion sur le réseau local…</string>
     <string name="share_waiting">En attente de données d\'un autre appareil…</string>
-    <string name="setting_title_github_snapshot">Mettre à jour avec un instantané</string>
     <string name="audio_only_mode">Audio uniquement</string>
     <string name="site_force_viewport_width">Forcer la largeur du viewport (px)</string>
     <string name="site_force_viewport_width_hint">À utiliser uniquement si l\'UA bureau ne suffit pas</string>

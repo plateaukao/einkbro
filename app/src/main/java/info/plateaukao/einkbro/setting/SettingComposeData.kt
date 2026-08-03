@@ -91,23 +91,6 @@ open class ActionSettingItem(
     open val action: () -> Unit,
 ) : SettingItemInterface
 
-data class ProgressState(
-    val isRunning: Boolean = false,
-    val progress: Float = 0f,
-)
-
-interface ProgressCallback {
-    suspend fun updateProgress(progress: Float)
-}
-
-class ProgressActionSettingItem(
-    override val titleResId: Int,
-    override val iconId: Int = 0,
-    override val summaryResId: Int = 0,
-    override val span: Int = 1,
-    val action: suspend (ProgressCallback) -> Unit,
-) : SettingItemInterface
-
 open class NavigateSettingItem(
     override val titleResId: Int,
     override val iconId: Int = 0,
@@ -141,13 +124,6 @@ enum class LinkSettingItem(
     override val summaryResId: Int = 0,
     override val span: Int = 1,
 ) : SettingItemInterface {
-    ProjectSite(R.string.project_site, R.drawable.ic_home, "https://plateaukao.github.io/einkbro/"),
-    LatestRelease(
-        R.string.latest_release,
-        R.drawable.icon_earth,
-        "https://github.com/plateaukao/einkbro/releases"
-    ),
-    Twitter(R.string.twitter, R.drawable.icon_earth, "https://twitter.com/einkbro"),
     ChangeLogs(
         R.string.changelogs,
         R.drawable.icon_earth,
@@ -158,6 +134,5 @@ enum class LinkSettingItem(
         R.drawable.icon_copyright,
         "https://github.com/plateaukao/einkbro/blob/main/CONTRIBUTORS.md"
     ),
-    Medium(R.string.medium_articles, R.drawable.ic_reader, "https://medium.com/einkbro"),
     Manual(R.string.manual, R.drawable.ic_reader, "https://plateaukao.github.io/einkbro/guide.html#overview")
 }

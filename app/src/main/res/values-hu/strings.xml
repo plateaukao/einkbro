@@ -458,10 +458,7 @@
     <string name="setting_title_search">Keresés</string>
     <string name="dialog_toc_title">Tartalomjegyzék</string>
     <string name="toc_delete">Törlés</string>
-    <string name="latest_release">Legújabb kiadás</string>
-    <string name="project_site">Projekt oldal</string>
     <string name="changelogs">Újdonságok</string>
-    <string name="medium_articles">Medium cikkek</string>
     <string name="contributors">Közreműködők</string>
     <string name="title_about">Névjegy</string>
     <string name="setting_title_auto_fill_form">Űrlapadatok automatikus kitöltése</string>
@@ -482,7 +479,6 @@
     <string name="password">Jelszó</string>
     <string name="user_name">Felhasználónév</string>
     <string name="authentication">Hitelesítés</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Kezdőlap URL szerkesztése</string>
     <string name="setting_title_plus_behavior">Új lap viselkedése</string>
     <string name="setting_summary_plus_behavior">Mi jelenjen meg új lap hozzáadásakor</string>
@@ -603,8 +599,6 @@
     <string name="green">Zöld</string>
     <string name="blue">Kék</string>
     <string name="pink">Rózsaszín</string>
-    <string name="setting_title_github_update">Frissítés a legújabb verzióra</string>
-    <string name="setting_title_github_snapshot">Frissítés tesztverziával</string>
     <string name="setting_title_use_custom_gpt_url">Alternatív szerver használata</string>
     <string name="setting_summary_use_custom_gpt_url">Más API szerver URL használata</string>
     <string name="setting_title_custom_gpt_url">Egyéni host URL</string>

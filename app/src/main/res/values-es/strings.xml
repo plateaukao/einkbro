@@ -270,10 +270,7 @@
     <string name="setting_summary_background_loading">Si una pestaña no está activada, seguir cargando su contenido en segundo plano</string>
     <string name="setting_title_search">Buscar</string>
     <string name="dialog_toc_title">Índice</string>
-    <string name="latest_release">Último lanzamiento</string>
-    <string name="project_site">Sitio del proyecto</string>
     <string name="changelogs">¿Qué hay nuevo?</string>
-    <string name="medium_articles">Artículos de Medium</string>
     <string name="contributors">Colaboradores</string>
     <string name="title_about">Acerca de</string>
     <string name="setting_title_auto_fill_form">Rellenar datos del formulario automáticamente</string>
@@ -294,7 +291,6 @@
     <string name="password">Contraseña</string>
     <string name="user_name">Nombre de usuario</string>
     <string name="authentication">Autenticación</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Editar URL de la página de inicio</string>
     <string name="setting_title_plus_behavior">Comportamiento de la nueva pestaña</string>
     <string name="setting_summary_plus_behavior">¿Qué debe mostrarse al añadir una nueva pestaña?</string>
@@ -402,8 +398,6 @@
     <string name="green">Verde</string>
     <string name="blue">Azul</string>
     <string name="pink">Rosa</string>
-    <string name="setting_title_github_update">Actualizar a la última versión</string>
-    <string name="setting_title_github_snapshot">Actualizar con instantánea</string>
     <string name="setting_title_use_custom_gpt_url">Usar servidor alternativo</string>
     <string name="setting_summary_use_custom_gpt_url">Usar otra URL del servidor de API</string>
     <string name="setting_title_custom_gpt_url">URL de host personalizada</string>

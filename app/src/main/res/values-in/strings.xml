@@ -300,10 +300,7 @@
     <string name="setting_summary_background_loading">Saat tab tidak aktif, tetap memuat konten di latar belakang</string>
     <string name="setting_title_search">Telusuri</string>
     <string name="dialog_toc_title">Daftar isi</string>
-    <string name="latest_release">Rilis Terbaru</string>
-    <string name="project_site">Situs Proyek</string>
     <string name="changelogs">Apa yang baru</string>
-    <string name="medium_articles">Artikel Medium</string>
     <string name="contributors">Kontributor</string>
     <string name="title_about">Tentang</string>
     <string name="setting_title_auto_fill_form">Isi formulir data secara otomatis</string>
@@ -324,7 +321,6 @@
     <string name="password">Kata sandi</string>
     <string name="user_name">Nama pengguna</string>
     <string name="authentication">Autentikasi</string>
-    <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Edit Url Beranda</string>
     <string name="setting_summary_plus_behavior">Ketika menambahkan tab baru, apa yang harus di tampilkan.</string>
     <string name="setting_title_plus_behavior">Perilaku tab baru</string>
@@ -401,7 +397,6 @@
     <string name="green">Green</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
-    <string name="setting_title_github_update">Update to Latest Release</string>
     <string name="cannot_save_epub">Something wrong saving epub. Please try again later.</string>
     <string name="setting_title_toolbar_position">Posisi bilah alat</string>
     <string name="toolbar_position_bottom">Bawah</string>
@@ -542,7 +537,6 @@
     <string name="setting_title_external_search_pop">Gunakan popup untuk event PROCESS_TEXT</string>
     <string name="setting_title_gemini_key">Kunci API Gemini</string>
     <string name="setting_title_gemini_model_name">Nama model Gemini</string>
-    <string name="setting_title_github_snapshot">Perbarui dengan Snapshot</string>
     <string name="setting_title_gpt_audio_model_name">Nama model TTS OpenAI</string>
     <string name="setting_title_gpt_model_name">Nama model OpenAI</string>
     <string name="setting_title_gpt_prompt_for_tts">Instruksi output audio</string>
