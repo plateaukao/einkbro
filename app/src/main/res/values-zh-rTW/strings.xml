@@ -293,6 +293,7 @@
     <string name="dark_mode_disabled">關閉</string>
 
     <string name="changelogs">最新功能介紹</string>
+    <string name="changelog_url">https://plateaukao.github.io/einkbro/zh-tw/download.html#changelog</string>
     <string name="setting_title_video_auto_fullscreen">播放影片時呈現全螢幕</string>
     <string name="setting_summary_video_auto_fullscreen">當影片開始播放時，自動切換至全螢幕</string>
     <string name="setting_title_video_pip">支援用小視窗播放影片</string>

@@ -120,14 +120,17 @@ class ValueSettingItem<T>(
 enum class LinkSettingItem(
     override val titleResId: Int,
     override val iconId: Int = 0,
-    val url: String,
+    val url: String = "",
     override val summaryResId: Int = 0,
     override val span: Int = 1,
+    // Resolved through resources so the link can differ per locale
+    // (e.g. zh-rTW points to the zh-tw site). Takes precedence over url.
+    val urlResId: Int = 0,
 ) : SettingItemInterface {
     ChangeLogs(
         R.string.changelogs,
         R.drawable.icon_earth,
-        "https://github.com/plateaukao/einkbro/blob/main/CHANGELOG.md"
+        urlResId = R.string.changelog_url,
     ),
     Contributors(
         R.string.contributors,

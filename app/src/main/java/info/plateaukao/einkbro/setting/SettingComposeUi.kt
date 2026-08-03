@@ -1017,11 +1017,14 @@ private fun SettingItemCell(
             modifier,
         )
 
-        is LinkSettingItem -> SettingItemUi(
-            setting,
-            showBorder = showBorder,
-            modifier = modifier,
-        ) { linkAction(setting.url) }
+        is LinkSettingItem -> {
+            val url = if (setting.urlResId != 0) stringResource(setting.urlResId) else setting.url
+            SettingItemUi(
+                setting,
+                showBorder = showBorder,
+                modifier = modifier,
+            ) { linkAction(url) }
+        }
 
         is VersionSettingItem -> {
             val version = " v${BuildConfig.VERSION_NAME} (${BuildConfig.lastCommitTime})"
