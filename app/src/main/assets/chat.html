@@ -173,6 +173,18 @@
         .typing-indicator span:nth-child(3) {
             animation-delay: 0.4s;
         }
+        .typing-indicator .typing-label {
+            display: none;
+            height: auto;
+            width: auto;
+            background: none;
+            border-radius: 0;
+            animation: none;
+            margin-left: 6px;
+            font-size: 13px;
+            color: #666;
+            vertical-align: middle;
+        }
         @keyframes bounce {
             0%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-6px); }
@@ -442,6 +454,7 @@
         <span></span>
         <span></span>
         <span></span>
+        <span class="typing-label" id="typing-label"></span>
     </div>
     <div class="input-area">
         <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
@@ -492,6 +505,7 @@
     const sendButton = document.getElementById('send-button');
     const inputHistoryButton = document.getElementById('input-history-button');
     const typingIndicator = document.getElementById('typing-indicator');
+    const typingLabel = document.getElementById('typing-label');
     const historyButton = document.getElementById('history-button');
     const sessionPanel = document.getElementById('session-panel');
     const sessionsContainer = document.getElementById('sessions-container');
@@ -1091,6 +1105,11 @@
     // Function to handle streaming updates to a message
     function updateStreamMessage(element, text, isComplete = false) {
         console.log('update Streaming:', text);
+        if (!element && isComplete && !text) {
+            // Final empty update with no stream in progress (e.g. a duplicate
+            // done signal): nothing to render, don't create an empty bubble.
+            return;
+        }
         if (!element) {
             currentStreamMessageElement = addMessage('', false);
             element = currentStreamMessageElement;
@@ -1170,7 +1189,18 @@
     // Function to hide typing indicator
     function hideTypingIndicator() {
         typingIndicator.style.display = 'none';
+        typingLabel.style.display = 'none';
+        typingLabel.textContent = '';
     }
+
+    // Called from Android while the model is reasoning: upgrades the plain
+    // waiting dots with a label so the two states are distinguishable.
+    function showThinkingIndicator() {
+        typingLabel.textContent = 'Thinking…';
+        typingLabel.style.display = 'inline-block';
+        typingIndicator.style.display = 'block';
+    }
+    window.showThinkingIndicator = showThinkingIndicator;
 
     // Function to send a message to Android
     function sendMessageToAndroid(message) {

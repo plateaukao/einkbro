@@ -20,6 +20,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNames
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -76,11 +77,12 @@ class OpenAiRepository : KoinComponent {
         appendResponseAction: (String) -> Unit,
         doneAction: () -> Unit = {},
         failureAction: (ApiResult.Failure) -> Unit,
+        thinkingAction: () -> Unit = {},
     ) {
         if (gptActionInfo.actionType == GptActionType.Gemini) {
-            geminiStream(messages, appendResponseAction, gptActionInfo, doneAction, failureAction)
+            geminiStream(messages, appendResponseAction, gptActionInfo, doneAction, failureAction, thinkingAction)
         } else {
-            openAiStream(messages, appendResponseAction, doneAction, gptActionInfo, failureAction)
+            openAiStream(messages, appendResponseAction, doneAction, gptActionInfo, failureAction, thinkingAction)
         }
     }
 
@@ -90,6 +92,7 @@ class OpenAiRepository : KoinComponent {
         doneAction: () -> Unit = {},
         gptActionInfo: ChatGPTActionInfo,
         failureAction: (ApiResult.Failure) -> Unit,
+        thinkingAction: () -> Unit = {},
     ) {
         if (apiKey.isEmpty() && gptActionInfo.actionType == GptActionType.OpenAi) {
             failureAction(ApiResult.Failure(ApiResult.Kind.MissingKey, "OpenAI API key not set"))
@@ -97,38 +100,54 @@ class OpenAiRepository : KoinComponent {
         }
         val request = createCompletionRequest(messages, gptActionInfo, true)
 
+        val thinkTagFilter = ThinkTagFilter()
         eventSource?.cancel()
         eventSource = factory.newEventSource(request, object : okhttp3.sse.EventSourceListener() {
+            // Cancelling in onEvent after [DONE] makes OkHttp also report
+            // onFailure(canceled) with the original 200 response, which used to
+            // run doneAction a second time — the chat UI then appended a stray
+            // empty assistant bubble. Track completion like geminiStream does.
+            private var finished = false
+
+            private fun finish(eventSource: EventSource) {
+                if (finished) return
+                finished = true
+                doneAction()
+                eventSource.cancel()
+                this@OpenAiRepository.eventSource = null
+            }
+
             override fun onEvent(
                 eventSource: EventSource, id: String?, type: String?, data: String,
             ) {
                 if (data == "[DONE]") {
-                    doneAction()
-                    eventSource.cancel()
-                    this@OpenAiRepository.eventSource = null
+                    finish(eventSource)
                     return
                 }
                 if (data.isEmpty()) return
                 try {
                     val chatCompletion =
                         json.decodeFromString(ChatCompletionDelta.serializer(), data)
-                    appendResponseAction(chatCompletion.choices.first().delta.content.orEmpty())
+                    val delta = chatCompletion.choices.first().delta
+                    // Dedicated reasoning channel (DeepSeek/Qwen-style servers).
+                    if (!delta.reasoningContent.isNullOrEmpty()) thinkingAction()
+                    val visible = thinkTagFilter.filter(delta.content.orEmpty())
+                    if (thinkTagFilter.thinking) thinkingAction()
+                    if (visible.isNotEmpty()) appendResponseAction(visible)
                 } catch (e: Exception) {
                     Log.e("OpenAiRepository", "Error parsing chat completion: $data", e)
                     failureAction(ApiResult.Failure(ApiResult.Kind.Parse, "Could not parse AI response", cause = e))
+                    finished = true
                     eventSource.cancel()
                     this@OpenAiRepository.eventSource = null
                 }
             }
 
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
-                super.onFailure(eventSource, t, response)
+                if (finished) return
                 val code = response?.code
                 when {
-                    code == 200 -> {
-                        doneAction()
-                        this@OpenAiRepository.eventSource = null
-                    }
+                    code == 200 -> finish(eventSource)
                     code == 429 -> {
                         val retryAfter = response.header("Retry-After")?.toLongOrNull()
                         failureAction(
@@ -163,6 +182,7 @@ class OpenAiRepository : KoinComponent {
         gptActionInfo: ChatGPTActionInfo,
         doneAction: () -> Unit = {},
         failureAction: (ApiResult.Failure) -> Unit,
+        thinkingAction: () -> Unit = {},
     ) {
         if (config.ai.geminiApiKey.isEmpty()) {
             failureAction(ApiResult.Failure(ApiResult.Kind.MissingKey, "Gemini API key not set"))
@@ -191,6 +211,7 @@ class OpenAiRepository : KoinComponent {
                 try {
                     val chunk = json.decodeFromString(ResponseData.serializer(), data)
                     val candidate = chunk.candidates.firstOrNull() ?: return
+                    if (candidate.content.parts.any { it.thought }) thinkingAction()
                     val text = candidate.content.parts
                         .filterNot { it.thought }
                         .joinToString("") { it.text }
@@ -464,9 +485,12 @@ class OpenAiRepository : KoinComponent {
             contents = listOf(
                 Content(parts = listOf(ContentPart(text = messages.joinToString(" ") { it.content })))
             ),
+            // includeThoughts makes Gemini stream thought summaries, which the UI
+            // uses purely as a "still thinking" signal (they are filtered from the
+            // visible answer either way).
             generationConfig = config.ai.resolveReasoningEffort(gptActionInfo)
                 .toGeminiThinkingBudget()
-                ?.let { GenerationConfig(ThinkingConfig(thinkingBudget = it)) },
+                ?.let { GenerationConfig(ThinkingConfig(thinkingBudget = it, includeThoughts = it > 0)) },
             safety_settings = listOf(
                 SafetySetting(
                     category = "HARM_CATEGORY_SEXUALLY_EXPLICIT",
@@ -665,10 +689,45 @@ enum class ChatRole {
     Assistant
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class ChatDelta(
     val content: String? = null,
+    // Separate reasoning channel used by DeepSeek/Qwen-style OpenAI-compatible
+    // servers; llama.cpp and vLLM call it reasoning_content, some proxies just
+    // reasoning. Only its presence matters — the text itself is never shown.
+    @SerialName("reasoning_content")
+    @JsonNames("reasoning")
+    val reasoningContent: String? = null,
 )
+
+/**
+ * Strips inline think blocks (Qwen3-style servers without a reasoning parser
+ * stream them as regular content) and remembers whether the stream is currently
+ * inside one. The tags arrive as whole tokens in practice, so no cross-chunk
+ * tag reassembly is attempted.
+ */
+internal class ThinkTagFilter {
+    var thinking = false
+        private set
+    private var answerStarted = false
+
+    /** Returns the visible part of [chunk] — empty while inside a think block. */
+    fun filter(chunk: String): String {
+        var content = chunk
+        if (!answerStarted && !thinking && content.trimStart().startsWith("<think>")) {
+            thinking = true
+            content = content.substringAfter("<think>")
+        }
+        if (thinking) {
+            if (!content.contains("</think>")) return ""
+            thinking = false
+            content = content.substringAfter("</think>").trimStart('\n')
+        }
+        if (content.isNotEmpty()) answerStarted = true
+        return content
+    }
+}
 
 @Serializable
 data class ChatMessage(

@@ -280,6 +280,9 @@ class ChatWebInterface(
         }
 
         val assistantResponseAggregator = StringBuilder()
+        // Fire the JS-side "Thinking…" label at most once per request; the first
+        // real content chunk hides the whole typing indicator again.
+        var thinkingSignaled = false
 
         jsHelper.startMessageStream {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -289,6 +292,12 @@ class ChatWebInterface(
                     appendResponseAction = { responseChunk ->
                         jsHelper.sendStreamUpdate(responseChunk)
                         assistantResponseAggregator.append(responseChunk)
+                    },
+                    thinkingAction = {
+                        if (!thinkingSignaled) {
+                            thinkingSignaled = true
+                            jsHelper.sendThinkingUpdate()
+                        }
                     },
                     doneAction = {
                         jsHelper.sendFinalEmptyUpdate()
@@ -703,6 +712,12 @@ class JsHelper(
     fun sendFinalEmptyUpdate() {
         lifecycleScope.launch(Dispatchers.Main) {
             webView.evaluateJavascript("javascript:receiveMessageFromAndroid('', true, true)", null)
+        }
+    }
+
+    fun sendThinkingUpdate() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            webView.evaluateJavascript("javascript:showThinkingIndicator()", null)
         }
     }
 

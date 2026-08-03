@@ -449,8 +449,9 @@ class TranslationViewModel(
             val responseContent = chatCompletion.choices
                 .firstOrNull { it.message.role == ChatRole.Assistant }?.message?.content
                 ?: "Something went wrong."
-            // to remove think tags from qwen3
-            toBeSavedResponseString = responseContent.replace("<think>\n\n</think>\n\n", "")
+            // to remove think content from qwen3-style responses
+            toBeSavedResponseString = responseContent
+                .replace(Regex("""<think>[\s\S]*?</think>\s*"""), "")
             _responseMessage.value = AnnotatedString(toBeSavedResponseString)
         }
     }
@@ -480,7 +481,14 @@ class TranslationViewModel(
                 _responseMessage.value = HelperUnit.parseMarkdown(toBeSavedResponseString)
             },
             doneAction = { },
-            failureAction = { failure -> emitFailure(failure) }
+            failureAction = { failure -> emitFailure(failure) },
+            thinkingAction = {
+                // Distinguish "model is reasoning" from the plain waiting dots, but
+                // never overwrite answer text a late thinking chunk might race with.
+                if (responseString.isEmpty()) {
+                    _responseMessage.value = AnnotatedString(THINKING_STATUS)
+                }
+            },
         )
     }
 
@@ -556,6 +564,10 @@ class TranslationViewModel(
 enum class TRANSLATE_API {
     GOOGLE, PAPAGO, NAVER, LLM, DEEPL, OPENAI, GEMINI,
 }
+
+// Status text shown while the model is reasoning, before any answer arrives.
+// Hardcoded English like the other status strings in this ViewModel.
+internal const val THINKING_STATUS = "Thinking…"
 
 fun String.unescape(): String {
     return this.replace("\\\\n", "\n")
