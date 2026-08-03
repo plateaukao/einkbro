@@ -26,7 +26,8 @@ data class GenerationConfig(val thinkingConfig: ThinkingConfig)
 data class RequestData(
     val contents: List<Content>,
     val safety_settings: List<SafetySetting>,
-    val generationConfig: GenerationConfig = GenerationConfig(ThinkingConfig(thinkingBudget = 0))
+    // null = omit thinkingConfig entirely and let the model use its default.
+    val generationConfig: GenerationConfig? = null,
 )
 
 @Serializable

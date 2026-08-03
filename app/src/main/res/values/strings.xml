@@ -638,6 +638,13 @@
     <string name="summary_gpt_type">AI engine for summary</string>
     <string name="setting_title_default_ai_engine">Default AI engine</string>
     <string name="setting_summary_summary_gpt_type">Choose AI engine for content summarization</string>
+    <string name="setting_title_reasoning">Reasoning effort</string>
+    <string name="setting_summary_reasoning">Thinking effort for AI requests; each AI action can override it</string>
+    <string name="reasoning_model_default">Model default</string>
+    <string name="reasoning_off">Off</string>
+    <string name="reasoning_low">Low</string>
+    <string name="reasoning_medium">Medium</string>
+    <string name="reasoning_high">High</string>
     <string name="menu_summarize">Summarize</string>
     <string name="setting_title_remote_query">Remote Query Action</string>
     <string name="sc_disable_adblock_short">No AdBlock</string>

@@ -67,6 +67,20 @@ class AiConfig(private val sp: SharedPreferences) {
 
     var enableOpenAiStream by BooleanPreference(sp, K_ENABLE_OPEN_AI_STREAM, true)
 
+    // Global default reasoning/thinking effort; Default = model default (send nothing).
+    var reasoningEffort: ReasoningEffort
+        get() = ReasoningEffort.entries[sp.getInt(K_REASONING_EFFORT, 0)]
+        set(value) = sp.edit { putInt(K_REASONING_EFFORT, value.ordinal) }
+
+    /**
+     * Effort to use for a request with this action: the action's own setting,
+     * falling back to the global one when the action says [ReasoningEffort.Default].
+     * A result of [ReasoningEffort.Default] means "model default" — send no
+     * reasoning parameter.
+     */
+    fun resolveReasoningEffort(action: ChatGPTActionInfo): ReasoningEffort =
+        action.reasoning.takeIf { it != ReasoningEffort.Default } ?: reasoningEffort
+
     var externalSearchWithGpt by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_GPT, false)
 
     var externalSearchWithPopUp by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_POPUP, false)
@@ -187,6 +201,7 @@ class AiConfig(private val sp: SharedPreferences) {
         const val K_EXTERNAL_SEARCH_WITH_GPT = "sp_external_search_with_gpt"
         const val K_EXTERNAL_SEARCH_WITH_POPUP = "sp_external_search_with_pop"
         const val K_ENABLE_OPEN_AI_STREAM = "sp_enable_open_ai_stream"
+        private const val K_REASONING_EFFORT = "sp_reasoning_effort"
         const val K_EXTERNAL_SEARCH_IN_SAME_TAB = "sp_external_search_in_same_tab"
         const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
         private const val K_GPT_ACTION_EXTERNAL = "sp_gpt_action_external"

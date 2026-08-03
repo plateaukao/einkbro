@@ -129,6 +129,40 @@ class AiConfigTest {
     }
 
     @Test
+    fun `reasoningEffort defaults to Default and round trips`() {
+        assertEquals(ReasoningEffort.Default, config.reasoningEffort)
+        config.reasoningEffort = ReasoningEffort.Off
+        assertEquals(ReasoningEffort.Off, config.reasoningEffort)
+    }
+
+    @Test
+    fun `resolveReasoningEffort prefers the action's own setting`() {
+        config.reasoningEffort = ReasoningEffort.High
+        val action = ChatGPTActionInfo(name = "A", reasoning = ReasoningEffort.Off)
+        assertEquals(ReasoningEffort.Off, config.resolveReasoningEffort(action))
+    }
+
+    @Test
+    fun `resolveReasoningEffort falls back to the global setting`() {
+        config.reasoningEffort = ReasoningEffort.Low
+        val action = ChatGPTActionInfo(name = "A")
+        assertEquals(ReasoningEffort.Low, config.resolveReasoningEffort(action))
+    }
+
+    @Test
+    fun `resolveReasoningEffort is Default when neither is set`() {
+        val action = ChatGPTActionInfo(name = "A")
+        assertEquals(ReasoningEffort.Default, config.resolveReasoningEffort(action))
+    }
+
+    @Test
+    fun `action reasoning survives a persistence round trip`() {
+        val action = ChatGPTActionInfo(name = "A", id = "1", reasoning = ReasoningEffort.Medium)
+        config.gptActionList = listOf(action)
+        assertEquals(ReasoningEffort.Medium, config.gptActionList[0].reasoning)
+    }
+
+    @Test
     fun `gptForChatWeb and gptForSummary round trip`() {
         assertEquals(GptActionType.Default, config.gptForChatWeb)
         config.gptForChatWeb = GptActionType.SelfHosted

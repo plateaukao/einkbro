@@ -508,6 +508,13 @@
     <string name="web_content_processing">Przetwarzanie treści strony</string>
     <string name="web_processing_gpt_type">Silnik AI do czatu ze stroną</string>
     <string name="setting_title_default_ai_engine">Domyślny silnik AI</string>
+    <string name="setting_title_reasoning">Wysiłek rozumowania</string>
+    <string name="setting_summary_reasoning">Wysiłek myślenia dla żądań AI; każda akcja AI może go nadpisać</string>
+    <string name="reasoning_model_default">Domyślne modelu</string>
+    <string name="reasoning_off">Wyłączony</string>
+    <string name="reasoning_low">Niski</string>
+    <string name="reasoning_medium">Średni</string>
+    <string name="reasoning_high">Wysoki</string>
     <string name="setting_summary_web_processing_gpt_type">Wybierz silnik do przetwarzania treści strony</string>
     <string name="self_hosted">Samodzielnie hostowany</string>
     <string name="summary_gpt_type">Silnik AI do podsumowań</string>

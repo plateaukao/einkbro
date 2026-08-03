@@ -516,6 +516,13 @@
     <string name="web_content_processing">معالجة محتوى الويب</string>
     <string name="web_processing_gpt_type">محرك الذكاء الاصطناعي لمحادثة الصفحة</string>
     <string name="setting_title_default_ai_engine">محرك الذكاء الاصطناعي الافتراضي</string>
+    <string name="setting_title_reasoning">جهد الاستدلال</string>
+    <string name="setting_summary_reasoning">جهد التفكير لطلبات الذكاء الاصطناعي؛ يمكن لكل إجراء ذكاء اصطناعي تجاوزه</string>
+    <string name="reasoning_model_default">افتراضي النموذج</string>
+    <string name="reasoning_off">إيقاف</string>
+    <string name="reasoning_low">منخفض</string>
+    <string name="reasoning_medium">متوسط</string>
+    <string name="reasoning_high">مرتفع</string>
     <string name="setting_summary_web_processing_gpt_type">اختيار المحرك لمعالجة محتوى الويب</string>
     <string name="self_hosted">مستضاف ذاتياً</string>
     <string name="summary_gpt_type">محرك الذكاء الاصطناعي للتلخيص</string>

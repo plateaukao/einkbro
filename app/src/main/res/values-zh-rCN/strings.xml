@@ -442,6 +442,13 @@
     <string name="web_content_processing">Web内容处理</string>
     <string name="web_processing_gpt_type">网页对话AI引擎</string>
     <string name="setting_title_default_ai_engine">默认AI引擎</string>
+    <string name="setting_title_reasoning">推理强度</string>
+    <string name="setting_summary_reasoning">AI 请求的思考强度；每个 AI 动作可单独覆盖</string>
+    <string name="reasoning_model_default">模型默认</string>
+    <string name="reasoning_off">关闭</string>
+    <string name="reasoning_low">低</string>
+    <string name="reasoning_medium">中</string>
+    <string name="reasoning_high">高</string>
     <string name="setting_summary_web_processing_gpt_type">选择引擎来处理网页内容</string>
     <string name="self_hosted">自托管</string>
     <string name="summary_gpt_type">网页摘要AI引擎</string>

@@ -493,6 +493,13 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="web_content_processing">Webinhaltsverarbeitung</string>
     <string name="web_processing_gpt_type">KI-Engine für Seiten-Chat</string>
     <string name="setting_title_default_ai_engine">Standard-KI-Engine</string>
+    <string name="setting_title_reasoning">Denkaufwand</string>
+    <string name="setting_summary_reasoning">Denkaufwand für KI-Anfragen; jede KI-Aktion kann ihn überschreiben</string>
+    <string name="reasoning_model_default">Modellstandard</string>
+    <string name="reasoning_off">Aus</string>
+    <string name="reasoning_low">Niedrig</string>
+    <string name="reasoning_medium">Mittel</string>
+    <string name="reasoning_high">Hoch</string>
     <string name="setting_summary_web_processing_gpt_type">Engine für die Verarbeitung von Webinhalten auswählen</string>
     <string name="self_hosted">Selbst gehostet</string>
     <string name="summary_gpt_type">KI-Engine für Zusammenfassungen</string>

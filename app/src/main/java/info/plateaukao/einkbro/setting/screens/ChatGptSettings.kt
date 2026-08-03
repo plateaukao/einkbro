@@ -61,6 +61,19 @@ fun buildChatGptSettingItems(deps: SettingScreenDeps): List<SettingItemInterface
                 R.string.google_gemini
             )
         ),
+        ListSettingWithEnumItem(
+            R.string.setting_title_reasoning,
+            0,
+            R.string.setting_summary_reasoning,
+            config.ai::reasoningEffort,
+            listOf(
+                R.string.reasoning_model_default,
+                R.string.reasoning_off,
+                R.string.reasoning_low,
+                R.string.reasoning_medium,
+                R.string.reasoning_high
+            )
+        ),
         NavigateSettingItem(
             R.string.openai,
             destination = SettingRoute.GptOpenAi,
@@ -73,6 +86,19 @@ fun buildChatGptSettingItems(deps: SettingScreenDeps): List<SettingItemInterface
             R.string.google_gemini,
             destination = SettingRoute.GptGemini,
         ),
+        DividerSettingItem(),
+        ActionSettingItem(
+            R.string.setting_title_gpt_action_list,
+            0,
+            R.string.setting_summary_gpt_action_list,
+        ) { GptActionsActivity.start(deps.activity) },
+        ActionSettingItem(
+            R.string.setting_title_gpt_query_list,
+            0,
+            R.string.setting_summary_gpt_query_list,
+        ) {
+            deps.activity.startActivity(GptQueryListActivity.createIntent(deps.activity))
+        },
         DividerSettingItem(R.string.web_content_processing),
         ListSettingWithEnumItem(
             R.string.summary_gpt_type,
@@ -116,19 +142,6 @@ fun buildChatGptSettingItems(deps: SettingScreenDeps): List<SettingItemInterface
             R.string.setting_summary_chat_stream,
             config.ai::enableOpenAiStream
         ),
-        DividerSettingItem(),
-        ActionSettingItem(
-            R.string.setting_title_gpt_action_list,
-            0,
-            R.string.setting_summary_gpt_action_list,
-        ) { GptActionsActivity.start(deps.activity) },
-        ActionSettingItem(
-            R.string.setting_title_gpt_query_list,
-            0,
-            R.string.setting_summary_gpt_query_list,
-        ) {
-            deps.activity.startActivity(GptQueryListActivity.createIntent(deps.activity))
-        },
     )
 }
 

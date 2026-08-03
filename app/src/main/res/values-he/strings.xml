@@ -516,6 +516,13 @@
     <string name="web_content_processing">עיבוד תוכן אינטרנט</string>
     <string name="web_processing_gpt_type">מנוע AI לצ\'אט עם הדף</string>
     <string name="setting_title_default_ai_engine">מנוע AI כברירת מחדל</string>
+    <string name="setting_title_reasoning">מאמץ הסקה</string>
+    <string name="setting_summary_reasoning">מאמץ חשיבה לבקשות AI; כל פעולת AI יכולה לעקוף אותו</string>
+    <string name="reasoning_model_default">ברירת המחדל של המודל</string>
+    <string name="reasoning_off">כבוי</string>
+    <string name="reasoning_low">נמוך</string>
+    <string name="reasoning_medium">בינוני</string>
+    <string name="reasoning_high">גבוה</string>
     <string name="setting_summary_web_processing_gpt_type">בחירת מנוע לעיבוד תוכן אינטרנט</string>
     <string name="self_hosted">מארח עצמי</string>
     <string name="summary_gpt_type">מנוע AI לסיכום</string>

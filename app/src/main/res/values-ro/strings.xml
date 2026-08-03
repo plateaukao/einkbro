@@ -501,6 +501,13 @@
     <string name="web_content_processing">Procesare conținut web</string>
     <string name="web_processing_gpt_type">Motor AI pentru chat cu pagina</string>
     <string name="setting_title_default_ai_engine">Motor AI implicit</string>
+    <string name="setting_title_reasoning">Efort de raționare</string>
+    <string name="setting_summary_reasoning">Efortul de gândire pentru cererile AI; fiecare acțiune AI îl poate suprascrie</string>
+    <string name="reasoning_model_default">Implicit al modelului</string>
+    <string name="reasoning_off">Oprit</string>
+    <string name="reasoning_low">Scăzut</string>
+    <string name="reasoning_medium">Mediu</string>
+    <string name="reasoning_high">Ridicat</string>
     <string name="setting_summary_web_processing_gpt_type">Alegeți motorul pentru procesarea conținutului web</string>
     <string name="self_hosted">Auto-găzduit</string>
     <string name="summary_gpt_type">Motor AI pentru rezumate</string>

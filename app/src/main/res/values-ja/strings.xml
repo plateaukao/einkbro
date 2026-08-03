@@ -538,6 +538,13 @@
     <string name="web_content_processing">ウェブコンテンツ処理</string>
     <string name="web_processing_gpt_type">ページチャット用AIエンジン</string>
     <string name="setting_title_default_ai_engine">デフォルトのAIエンジン</string>
+    <string name="setting_title_reasoning">推論の強度</string>
+    <string name="setting_summary_reasoning">AIリクエストの思考の強度。各AIアクションで上書きできます</string>
+    <string name="reasoning_model_default">モデルのデフォルト</string>
+    <string name="reasoning_off">オフ</string>
+    <string name="reasoning_low">低</string>
+    <string name="reasoning_medium">中</string>
+    <string name="reasoning_high">高</string>
     <string name="site_force_viewport_width">ビューポート幅を強制 (px)</string>
     <string name="site_force_viewport_width_hint">デスクトップUAだけで足りない場合にのみ使用</string>
     <string name="setting_title_gdrive_sync">Google Drive と同期</string>

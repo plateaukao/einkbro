@@ -539,6 +539,13 @@
     <string name="web_content_processing">Nettinnholdsbehandling</string>
     <string name="web_processing_gpt_type">AI-motor for sidechat</string>
     <string name="setting_title_default_ai_engine">Standard AI-motor</string>
+    <string name="setting_title_reasoning">Resonneringsinnsats</string>
+    <string name="setting_summary_reasoning">Tenkeinnsats for AI-forespørsler; hver AI-handling kan overstyre den</string>
+    <string name="reasoning_model_default">Modellens standard</string>
+    <string name="reasoning_off">Av</string>
+    <string name="reasoning_low">Lav</string>
+    <string name="reasoning_medium">Middels</string>
+    <string name="reasoning_high">Høy</string>
     <string name="white_background">Hvit bakgrunn</string>
     <string name="site_force_viewport_width">Tving viewport-bredde (px)</string>
     <string name="site_force_viewport_width_hint">Bruk kun hvis skrivebords-UA alene ikke er nok</string>

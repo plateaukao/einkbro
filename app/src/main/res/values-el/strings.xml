@@ -516,6 +516,13 @@
     <string name="web_content_processing">Επεξεργασία Περιεχομένου Ιστού</string>
     <string name="web_processing_gpt_type">Μηχανή AI για συνομιλία σελίδας</string>
     <string name="setting_title_default_ai_engine">Προεπιλεγμένη μηχανή AI</string>
+    <string name="setting_title_reasoning">Προσπάθεια συλλογισμού</string>
+    <string name="setting_summary_reasoning">Προσπάθεια σκέψης για αιτήματα ΤΝ· κάθε ενέργεια ΤΝ μπορεί να την παρακάμψει</string>
+    <string name="reasoning_model_default">Προεπιλογή μοντέλου</string>
+    <string name="reasoning_off">Ανενεργό</string>
+    <string name="reasoning_low">Χαμηλή</string>
+    <string name="reasoning_medium">Μεσαία</string>
+    <string name="reasoning_high">Υψηλή</string>
     <string name="setting_summary_web_processing_gpt_type">Επιλογή μηχανής για επεξεργασία περιεχομένου ιστού</string>
     <string name="self_hosted">Αυτο-φιλοξενούμενο</string>
     <string name="summary_gpt_type">Μηχανή AI για σύνοψη</string>

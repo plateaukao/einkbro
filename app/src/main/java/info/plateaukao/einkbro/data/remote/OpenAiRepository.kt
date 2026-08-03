@@ -4,11 +4,14 @@ import android.util.Log
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
+import info.plateaukao.einkbro.preference.ReasoningEffort
 import info.plateaukao.einkbro.data.remote.model.Content
 import info.plateaukao.einkbro.data.remote.model.ContentPart
+import info.plateaukao.einkbro.data.remote.model.GenerationConfig
 import info.plateaukao.einkbro.data.remote.model.RequestData
 import info.plateaukao.einkbro.data.remote.model.ResponseData
 import info.plateaukao.einkbro.data.remote.model.SafetySetting
+import info.plateaukao.einkbro.data.remote.model.ThinkingConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -297,15 +300,24 @@ class OpenAiRepository : KoinComponent {
         tools: List<ToolDefinition>,
         gptActionInfo: ChatGPTActionInfo,
     ): ToolChatCompletion? = suspendCoroutine { continuation ->
+        val isGemini = gptActionInfo.actionType == GptActionType.Gemini
+        val isSelfHosted = gptActionInfo.actionType == GptActionType.SelfHosted
+        val effort = config.ai.resolveReasoningEffort(gptActionInfo)
+        val enableThinking = if (isSelfHosted) effort.toEnableThinking() else null
         val payload = ToolChatRequest(
             model = gptActionInfo.model,
             messages = messages,
             tools = tools,
             toolChoice = "auto",
+            // Gemini's OpenAI-compat layer only understands low/medium/high, so
+            // "off" falls back to the model default there rather than erroring.
+            reasoningEffort = effort.toOpenAiEffort()
+                ?.takeUnless { isGemini && effort == ReasoningEffort.Off },
+            enableThinking = enableThinking,
+            chatTemplateKwargs = enableThinking?.let { ChatTemplateKwargs(it) },
         )
         val body = toolJson.encodeToString(payload)
         Log.d("OpenAiRepository", "chatWithTools request: $body")
-        val isGemini = gptActionInfo.actionType == GptActionType.Gemini
         val url = if (isGemini) "$geminiOpenAiCompatUrl/chat/completions"
         else "${getServerUrl(gptActionInfo.actionType)}$completionPath"
         val request = Request.Builder()
@@ -452,6 +464,9 @@ class OpenAiRepository : KoinComponent {
             contents = listOf(
                 Content(parts = listOf(ContentPart(text = messages.joinToString(" ") { it.content })))
             ),
+            generationConfig = config.ai.resolveReasoningEffort(gptActionInfo)
+                .toGeminiThinkingBudget()
+                ?.let { GenerationConfig(ThinkingConfig(thinkingBudget = it)) },
             safety_settings = listOf(
                 SafetySetting(
                     category = "HARM_CATEGORY_SEXUALLY_EXPLICIT",
@@ -485,14 +500,26 @@ class OpenAiRepository : KoinComponent {
         messages: List<ChatMessage>,
         gptActionInfo: ChatGPTActionInfo,
         stream: Boolean = false,
-    ): Request = Request.Builder()
-        .url("${getServerUrl(gptActionInfo.actionType)}$completionPath")
-        .post(
-            json.encodeToString(ChatRequest(gptActionInfo.model, messages, stream))
-                .toRequestBody(mediaType)
+    ): Request {
+        val effort = config.ai.resolveReasoningEffort(gptActionInfo)
+        // The enable_thinking pair is self-hosted-only: api.openai.com rejects
+        // requests with parameters it doesn't know.
+        val isSelfHosted = gptActionInfo.actionType == GptActionType.SelfHosted
+        val enableThinking = if (isSelfHosted) effort.toEnableThinking() else null
+        val chatRequest = ChatRequest(
+            model = gptActionInfo.model,
+            messages = messages,
+            stream = stream,
+            reasoningEffort = effort.toOpenAiEffort(),
+            enableThinking = enableThinking,
+            chatTemplateKwargs = enableThinking?.let { ChatTemplateKwargs(it) },
         )
-        .header("Authorization", "Bearer $apiKey")
-        .build()
+        return Request.Builder()
+            .url("${getServerUrl(gptActionInfo.actionType)}$completionPath")
+            .post(json.encodeToString(chatRequest).toRequestBody(mediaType))
+            .header("Authorization", "Bearer $apiKey")
+            .build()
+    }
 
     private fun getServerUrl(gptActionType: GptActionType): String {
         return if (gptActionType == GptActionType.SelfHosted) {
@@ -500,6 +527,31 @@ class OpenAiRepository : KoinComponent {
         } else {
             "https://api.openai.com"
         }
+    }
+
+    // null = model default: leave the parameter out entirely.
+    private fun ReasoningEffort.toOpenAiEffort(): String? = when (this) {
+        ReasoningEffort.Default -> null
+        ReasoningEffort.Off -> "none"
+        ReasoningEffort.Low -> "low"
+        ReasoningEffort.Medium -> "medium"
+        ReasoningEffort.High -> "high"
+    }
+
+    private fun ReasoningEffort.toEnableThinking(): Boolean? = when (this) {
+        ReasoningEffort.Default -> null
+        ReasoningEffort.Off -> false
+        else -> true
+    }
+
+    // thinkingBudget in tokens: 0 disables thinking; the tiers follow the
+    // low/medium/high budgets Google uses for its own effort mapping.
+    private fun ReasoningEffort.toGeminiThinkingBudget(): Int? = when (this) {
+        ReasoningEffort.Default -> null
+        ReasoningEffort.Off -> 0
+        ReasoningEffort.Low -> 1024
+        ReasoningEffort.Medium -> 8192
+        ReasoningEffort.High -> 24576
     }
 
     private fun createTtsRequest(
@@ -568,12 +620,20 @@ data class ChatRequest(
     val model: String,
     val messages: List<ChatMessage>,
     val stream: Boolean = false,
-    val reasoning: Reasoning = Reasoning(),
+    // Reasoning controls. All default to null and are then omitted from the JSON,
+    // so a "model default" request is byte-identical to what the app sent before
+    // reasoning became configurable.
+    @SerialName("reasoning_effort") val reasoningEffort: String? = null,
+    @SerialName("enable_thinking") val enableThinking: Boolean? = null,
+    @SerialName("chat_template_kwargs") val chatTemplateKwargs: ChatTemplateKwargs? = null,
 )
 
+// Qwen3-style thinking switch for self-hosted servers: vLLM/SGLang/llama.cpp take
+// it inside chat_template_kwargs, DashScope-like servers take enable_thinking at
+// the top level. Both are sent so either kind of server picks it up.
 @Serializable
-data class Reasoning(
-    val effort: String = "none",
+data class ChatTemplateKwargs(
+    @SerialName("enable_thinking") val enableThinking: Boolean,
 )
 
 @Serializable
@@ -642,6 +702,9 @@ data class ToolChatRequest(
     val tools: List<ToolDefinition>? = null,
     @SerialName("tool_choice") val toolChoice: String? = null,
     val stream: Boolean = false,
+    @SerialName("reasoning_effort") val reasoningEffort: String? = null,
+    @SerialName("enable_thinking") val enableThinking: Boolean? = null,
+    @SerialName("chat_template_kwargs") val chatTemplateKwargs: ChatTemplateKwargs? = null,
 )
 
 @Serializable

@@ -500,6 +500,13 @@
     <string name="web_content_processing">Webinhoudverwerking</string>
     <string name="web_processing_gpt_type">AI-engine voor paginachat</string>
     <string name="setting_title_default_ai_engine">Standaard AI-engine</string>
+    <string name="setting_title_reasoning">Redeneerinspanning</string>
+    <string name="setting_summary_reasoning">Denkinspanning voor AI-verzoeken; elke AI-actie kan dit overschrijven</string>
+    <string name="reasoning_model_default">Modelstandaard</string>
+    <string name="reasoning_off">Uit</string>
+    <string name="reasoning_low">Laag</string>
+    <string name="reasoning_medium">Gemiddeld</string>
+    <string name="reasoning_high">Hoog</string>
     <string name="setting_summary_web_processing_gpt_type">Engine kiezen voor het verwerken van webinhoud</string>
     <string name="self_hosted">Zelf gehost</string>
     <string name="summary_gpt_type">AI-engine voor samenvattingen</string>

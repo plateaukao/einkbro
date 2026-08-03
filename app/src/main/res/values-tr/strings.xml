@@ -516,6 +516,13 @@
     <string name="web_content_processing">Web İçerik İşleme</string>
     <string name="web_processing_gpt_type">Sayfa sohbeti için yapay zeka motoru</string>
     <string name="setting_title_default_ai_engine">Varsayılan yapay zeka motoru</string>
+    <string name="setting_title_reasoning">Akıl yürütme çabası</string>
+    <string name="setting_summary_reasoning">AI istekleri için düşünme çabası; her AI eylemi bunu geçersiz kılabilir</string>
+    <string name="reasoning_model_default">Model varsayılanı</string>
+    <string name="reasoning_off">Kapalı</string>
+    <string name="reasoning_low">Düşük</string>
+    <string name="reasoning_medium">Orta</string>
+    <string name="reasoning_high">Yüksek</string>
     <string name="setting_summary_web_processing_gpt_type">Web içeriğini işlemek için motoru seçin</string>
     <string name="self_hosted">Kendi Sunucusu</string>
     <string name="summary_gpt_type">Özetleme için yapay zeka motoru</string>

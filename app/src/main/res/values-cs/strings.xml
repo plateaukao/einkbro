@@ -512,6 +512,13 @@
     <string name="web_content_processing">Zpracování webového obsahu</string>
     <string name="web_processing_gpt_type">AI engine pro chat se stránkou</string>
     <string name="setting_title_default_ai_engine">Výchozí AI engine</string>
+    <string name="setting_title_reasoning">Úsilí uvažování</string>
+    <string name="setting_summary_reasoning">Úsilí přemýšlení pro požadavky AI; každá akce AI je může přepsat</string>
+    <string name="reasoning_model_default">Výchozí dle modelu</string>
+    <string name="reasoning_off">Vypnuto</string>
+    <string name="reasoning_low">Nízké</string>
+    <string name="reasoning_medium">Střední</string>
+    <string name="reasoning_high">Vysoké</string>
     <string name="setting_summary_web_processing_gpt_type">Vyberte engine pro zpracování webového obsahu</string>
     <string name="self_hosted">Vlastní hosting</string>
     <string name="summary_gpt_type">AI engine pro shrnutí</string>

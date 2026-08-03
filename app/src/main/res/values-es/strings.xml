@@ -480,6 +480,13 @@
     <string name="web_content_processing">Procesamiento de contenido web</string>
     <string name="web_processing_gpt_type">Motor de IA para el chat de página</string>
     <string name="setting_title_default_ai_engine">Motor de IA predeterminado</string>
+    <string name="setting_title_reasoning">Esfuerzo de razonamiento</string>
+    <string name="setting_summary_reasoning">Esfuerzo de pensamiento para las solicitudes de IA; cada acción de IA puede anularlo</string>
+    <string name="reasoning_model_default">Predeterminado del modelo</string>
+    <string name="reasoning_off">Desactivado</string>
+    <string name="reasoning_low">Bajo</string>
+    <string name="reasoning_medium">Medio</string>
+    <string name="reasoning_high">Alto</string>
     <string name="setting_summary_web_processing_gpt_type">Elige el motor para procesar el contenido web</string>
     <string name="self_hosted">Autoalojado</string>
     <string name="summary_gpt_type">Motor de IA para resúmenes</string>

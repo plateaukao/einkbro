@@ -539,6 +539,13 @@
     <string name="web_content_processing">Webbinnehållsbearbetning</string>
     <string name="web_processing_gpt_type">AI-motor för sidchatt</string>
     <string name="setting_title_default_ai_engine">Standard AI-motor</string>
+    <string name="setting_title_reasoning">Resonemangsansträngning</string>
+    <string name="setting_summary_reasoning">Tankeansträngning för AI-förfrågningar; varje AI-åtgärd kan åsidosätta den</string>
+    <string name="reasoning_model_default">Modellens standard</string>
+    <string name="reasoning_off">Av</string>
+    <string name="reasoning_low">Låg</string>
+    <string name="reasoning_medium">Medel</string>
+    <string name="reasoning_high">Hög</string>
     <string name="white_background">Vit bakgrund</string>
     <string name="site_force_viewport_width">Tvinga viewport-bredd (px)</string>
     <string name="site_force_viewport_width_hint">Använd endast om desktop-UA inte räcker</string>

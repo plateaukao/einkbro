@@ -540,6 +540,13 @@
     <string name="web_content_processing">Xử lý nội dung web</string>
     <string name="web_processing_gpt_type">Engine AI cho trò chuyện trang web</string>
     <string name="setting_title_default_ai_engine">Engine AI mặc định</string>
+    <string name="setting_title_reasoning">Mức độ suy luận</string>
+    <string name="setting_summary_reasoning">Mức độ suy nghĩ cho các yêu cầu AI; mỗi hành động AI có thể ghi đè</string>
+    <string name="reasoning_model_default">Mặc định của mô hình</string>
+    <string name="reasoning_off">Tắt</string>
+    <string name="reasoning_low">Thấp</string>
+    <string name="reasoning_medium">Trung bình</string>
+    <string name="reasoning_high">Cao</string>
     <string name="white_background">Nền trắng</string>
     <string name="site_force_viewport_width">Buộc chiều rộng viewport (px)</string>
     <string name="site_force_viewport_width_hint">Chỉ dùng khi UA máy tính chưa đủ</string>

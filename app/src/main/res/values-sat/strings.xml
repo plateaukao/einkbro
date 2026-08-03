@@ -584,6 +584,13 @@
     <string name="web_content_processing">ᱣᱮᱵᱽ ᱡᱤᱱᱤᱥ ᱯᱨᱚᱥᱮᱥ</string>
     <string name="web_processing_gpt_type">GPT ᱤᱧᱡᱤᱱ</string>
     <string name="setting_title_default_ai_engine">ᱢᱩᱞ AI ᱤᱧᱡᱤᱱ</string>
+    <string name="setting_title_reasoning">ᱩᱭᱦᱟᱹᱨ ᱠᱩᱨᱩᱢᱩᱴᱩ</string>
+    <string name="setting_summary_reasoning">AI ᱱᱮᱦᱚᱨ ᱠᱚ ᱞᱟᱹᱜᱤᱫ ᱩᱭᱦᱟᱹᱨ ᱢᱟᱛᱨᱟ; ᱢᱤᱫ ᱢᱤᱫ AI ᱠᱟᱹᱢᱤ ᱨᱮ ᱵᱚᱫᱚᱞ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ</string>
+    <string name="reasoning_model_default">ᱢᱳᱰᱮᱞ ᱢᱩᱞ</string>
+    <string name="reasoning_off">ᱵᱚᱸᱫ</string>
+    <string name="reasoning_low">ᱠᱚᱢ</string>
+    <string name="reasoning_medium">ᱛᱟᱞᱟ</string>
+    <string name="reasoning_high">ᱡᱟᱹᱥᱛᱤ</string>
     <string name="site_force_viewport_width">Force viewport width (px)</string>
     <string name="site_force_viewport_width_hint">Use only if desktop UA alone is not enough</string>
     <string name="setting_title_gdrive_sync">Google Drive ᱥᱟᱶ ᱥᱤᱸᱠ ᱢᱮ</string>

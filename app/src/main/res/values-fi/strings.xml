@@ -539,6 +539,13 @@
     <string name="web_content_processing">Verkkosisällön käsittely</string>
     <string name="web_processing_gpt_type">Tekoälymoottori sivukeskusteluun</string>
     <string name="setting_title_default_ai_engine">Oletusarvoinen tekoälymoottori</string>
+    <string name="setting_title_reasoning">Päättelyn taso</string>
+    <string name="setting_summary_reasoning">Ajattelun taso tekoälypyynnöille; jokainen tekoälytoiminto voi ohittaa sen</string>
+    <string name="reasoning_model_default">Mallin oletus</string>
+    <string name="reasoning_off">Pois</string>
+    <string name="reasoning_low">Matala</string>
+    <string name="reasoning_medium">Keskitaso</string>
+    <string name="reasoning_high">Korkea</string>
     <string name="white_background">Valkoinen tausta</string>
     <string name="site_force_viewport_width">Pakota näkymän leveys (px)</string>
     <string name="site_force_viewport_width_hint">Käytä vain jos pelkkä työpöytä-UA ei riitä</string>

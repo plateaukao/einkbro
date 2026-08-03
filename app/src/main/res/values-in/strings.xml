@@ -593,6 +593,13 @@
     <string name="web_content_processing">Pemrosesan Konten Web</string>
     <string name="web_processing_gpt_type">Mesin AI untuk obrolan halaman</string>
     <string name="setting_title_default_ai_engine">Mesin AI bawaan</string>
+    <string name="setting_title_reasoning">Upaya penalaran</string>
+    <string name="setting_summary_reasoning">Upaya berpikir untuk permintaan AI; setiap aksi AI dapat menggantinya</string>
+    <string name="reasoning_model_default">Bawaan model</string>
+    <string name="reasoning_off">Mati</string>
+    <string name="reasoning_low">Rendah</string>
+    <string name="reasoning_medium">Sedang</string>
+    <string name="reasoning_high">Tinggi</string>
     <string name="site_force_viewport_width">Paksa lebar viewport (px)</string>
     <string name="site_force_viewport_width_hint">Gunakan hanya jika UA desktop saja tidak cukup</string>
     <string name="setting_title_gdrive_sync">Sinkronkan dengan Google Drive</string>

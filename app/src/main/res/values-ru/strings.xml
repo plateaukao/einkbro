@@ -594,6 +594,13 @@
     <string name="web_content_processing">Обработка веб-контента</string>
     <string name="web_processing_gpt_type">Движок ИИ для чата со страницей</string>
     <string name="setting_title_default_ai_engine">Движок ИИ по умолчанию</string>
+    <string name="setting_title_reasoning">Усилие рассуждения</string>
+    <string name="setting_summary_reasoning">Усилие размышления для запросов ИИ; каждое действие ИИ может переопределить его</string>
+    <string name="reasoning_model_default">По умолчанию модели</string>
+    <string name="reasoning_off">Выкл.</string>
+    <string name="reasoning_low">Низкое</string>
+    <string name="reasoning_medium">Среднее</string>
+    <string name="reasoning_high">Высокое</string>
     <string name="site_force_viewport_width">Принудительная ширина viewport (px)</string>
     <string name="site_force_viewport_width_hint">Используйте, только если desktop UA недостаточно</string>
     <string name="setting_title_gdrive_sync">Синхронизация с Google Диском</string>

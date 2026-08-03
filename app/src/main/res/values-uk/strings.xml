@@ -530,6 +530,13 @@
     <string name="web_content_processing">Обробка веб-вмісту</string>
     <string name="web_processing_gpt_type">Движок ШІ для чату зі сторінкою</string>
     <string name="setting_title_default_ai_engine">Движок ШІ за замовчуванням</string>
+    <string name="setting_title_reasoning">Зусилля міркування</string>
+    <string name="setting_summary_reasoning">Зусилля мислення для запитів ШІ; кожна дія ШІ може його перевизначити</string>
+    <string name="reasoning_model_default">Типово для моделі</string>
+    <string name="reasoning_off">Вимкнено</string>
+    <string name="reasoning_low">Низьке</string>
+    <string name="reasoning_medium">Середнє</string>
+    <string name="reasoning_high">Високе</string>
     <string name="white_background">Білий фон</string>
     <string name="site_force_viewport_width">Примусова ширина viewport (px)</string>
     <string name="site_force_viewport_width_hint">Використовуйте, лише якщо desktop UA недостатньо</string>
