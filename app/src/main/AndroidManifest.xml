@@ -55,6 +55,7 @@
     <application
         android:name=".EinkBroApplication"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="false"
         android:fullBackupContent="@xml/backup_descriptor"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"

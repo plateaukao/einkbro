@@ -210,10 +210,13 @@ play {
 }
 
 androidComponents {
-    // Google Play requires targeting API 35+. Raise it only for the Play build
-    // type; sideloaded/F-Droid builds keep the tested targetSdk 34 behavior.
+    // Google Play requires targeting the latest API (36 from Aug 31, 2026).
+    // Raise it only for the Play build type; sideloaded/F-Droid builds keep the
+    // tested targetSdk 34 behavior. targetSdk 36 would default predictive back
+    // to on, which stops KEYCODE_BACK reaching BrowserActivity.onKeyDown ->
+    // KeyHandler; the manifest opts out via enableOnBackInvokedCallback=false.
     beforeVariants(selector().withBuildType("playRelease")) { variant ->
-        variant.targetSdk = 35
+        variant.targetSdk = 36
     }
     onVariants { variant ->
         // Wired as a task input (not read at configuration time), so each build
