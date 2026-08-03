@@ -222,7 +222,7 @@ img { max-width: 100%; height: auto; }
 /* --- Sidebar + Main layout for guide --- */
 .guide-layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 220px minmax(0, 1fr);
   gap: 3rem;
   padding: 2rem 0 4rem;
 }
@@ -328,7 +328,7 @@ tr:hover { background: var(--wash); }
 
 .setting-item {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 220px minmax(0, 1fr);
   gap: 0.5rem;
   padding: 0.6rem 0.8rem;
   border: 1px solid var(--faint);
@@ -337,7 +337,7 @@ tr:hover { background: var(--wash); }
   font-size: 0.9rem;
 }
 .setting-item__name { font-weight: 700; }
-.setting-item__desc { color: var(--mid); }
+.setting-item__desc { color: var(--mid); overflow-wrap: break-word; }
 .setting-item__desc .tag {
   display: inline-block;
   background: var(--ink);
@@ -443,7 +443,7 @@ tr:hover { background: var(--wash); }
   .site-nav__links.open { display: flex; }
   .hero h1 { font-size: 2.2rem; }
   .features__grid { grid-template-columns: repeat(2, 1fr); }
-  .guide-layout { grid-template-columns: 1fr; }
+  .guide-layout { grid-template-columns: minmax(0, 1fr); }
   .guide-sidebar {
     position: static;
     border-right: none;
@@ -453,7 +453,7 @@ tr:hover { background: var(--wash); }
     margin-bottom: 1.5rem;
     max-height: none;
   }
-  .setting-item { grid-template-columns: 1fr; }
+  .setting-item { grid-template-columns: minmax(0, 1fr); }
   .gallery__grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   .action-item { white-space: normal; }
   .device-img { width: 240px; }
