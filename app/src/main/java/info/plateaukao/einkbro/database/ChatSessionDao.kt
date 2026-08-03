@@ -10,6 +10,9 @@ interface ChatSessionDao {
     @Query("SELECT * FROM chat_sessions ORDER BY lastUpdated DESC")
     suspend fun getAllSessions(): List<ChatSession>
 
+    @Query("SELECT * FROM chat_sessions WHERE id = :id LIMIT 1")
+    suspend fun getSessionById(id: String): ChatSession?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(session: ChatSession)
 

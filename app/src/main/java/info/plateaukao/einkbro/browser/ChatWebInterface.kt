@@ -165,19 +165,57 @@ class ChatWebInterface(
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val obj = JSONObject(sessionJson)
+                val id = obj.getString("id")
+                // The page never sends webContent (it can be hundreds of KB and
+                // never changes after creation): an existing row keeps its
+                // stored copy; a new row is seeded from this tab's capture.
+                val storedWebContent = bookmarkManager.getChatSessionById(id)?.webContent
                 bookmarkManager.upsertChatSession(
                     ChatSession(
-                        id = obj.getString("id"),
+                        id = id,
                         title = obj.optString("title"),
                         created = obj.optLong("created"),
                         lastUpdated = obj.optLong("lastUpdated"),
                         webTitle = obj.optString("webTitle"),
                         webUrl = obj.optString("webUrl"),
                         messages = obj.optJSONArray("messages")?.toString() ?: "[]",
+                        webContent = storedWebContent ?: webContent,
                     )
                 )
             } catch (e: Exception) {
                 Timber.e(e, "saveChatSession failed")
+            }
+        }
+    }
+
+    /**
+     * The page switched to a stored session (chat.html loadSession): rebuild
+     * the LLM-facing state from the row so follow-ups continue the restored
+     * conversation — its history AND its page text, not the tab's. Freshly
+     * created sessions have no row yet and no-op.
+     */
+    @JavascriptInterface
+    fun restoreChatSession(sessionId: String) {
+        if (agentMode) return
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val session = bookmarkManager.getChatSessionById(sessionId) ?: return@launch
+                webTitle = session.webTitle
+                webUrl = session.webUrl
+                webContent = session.webContent
+                chatHistory.clear()
+                val array = JSONArray(session.messages)
+                for (i in 0 until array.length()) {
+                    val message = array.optJSONObject(i) ?: continue
+                    val content = message.optString("content")
+                    if (content.isEmpty()) continue
+                    chatHistory.add(
+                        if (message.optBoolean("isUser")) content.toUserMessage()
+                        else content.toAssistantMessage()
+                    )
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "restoreChatSession failed")
             }
         }
     }
@@ -234,7 +272,9 @@ class ChatWebInterface(
             if (gptActionInfo.systemMessage.isNotEmpty()) {
                 add(gptActionInfo.systemMessage.toSystemMessage())
             }
-            add(createWebContentMessage(webContent))
+            // Blank after restoring a session saved before webContent was
+            // persisted — send no page context rather than an empty code block.
+            if (webContent.isNotBlank()) add(createWebContentMessage(webContent))
             addAll(chatHistory)
             add(currentUserMessage)
         }

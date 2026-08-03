@@ -87,6 +87,9 @@
             border: 1px solid #ddd;
             border-radius: 20px;
             outline: none;
+            /* 16px stops iOS Safari/WKWebView auto-zooming the page when the
+               input gains focus (it zooms any input with a smaller font). */
+            font-size: 16px;
         }
         #send-button {
             flex-shrink: 0;
@@ -318,6 +321,14 @@
         .session-action-btn:hover {
             background-color: #f0f0f0;
         }
+        /* Touch screens have no real hover: keep each session's action buttons
+           visible so tapping a card switches sessions on the first tap (iOS
+           treats the first tap as hover) and Delete/Open URL stay reachable. */
+        @media (hover: none) {
+            .session-actions {
+                display: block;
+            }
+        }
         .empty-sessions {
             text-align: center;
             color: #888;
@@ -469,8 +480,9 @@
     </ul>
 </div>
 
-<!-- Include marked.js for Markdown parsing -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+<!-- Include marked.js for Markdown parsing (bundled so chat renders offline
+     and on iOS, where the page loads from a local file). -->
+<script src="marked.min.js"></script>
 
 <script>
     // Global variables
@@ -618,12 +630,15 @@
         }
     }
 
-    // Function to get web metadata with retry
+    // Function to get web metadata with retry.
+    // `await` works on both platforms: Android's @JavascriptInterface returns
+    // the string synchronously; iOS's injected AndroidInterface shim returns a
+    // Promise resolved through the webkit message-handler bridge.
     function getWebMetadata(callback) {
-        function tryGetMetadata(attempts = 0) {
+        async function tryGetMetadata(attempts = 0) {
             if (window.AndroidInterface && typeof window.AndroidInterface.getWebMetadata === 'function') {
                 try {
-                    const metadataJson = window.AndroidInterface.getWebMetadata();
+                    const metadataJson = await window.AndroidInterface.getWebMetadata();
                     const metadata = JSON.parse(metadataJson);
                     console.log('Web metadata loaded:', metadata);
                     webMetadata = metadata;
@@ -658,12 +673,13 @@
         });
     }
 
-    // Load all sessions from the native database, retrying while the bridge attaches
+    // Load all sessions from the native database, retrying while the bridge attaches.
+    // `await` for the same cross-platform reason as getWebMetadata above.
     function loadSessionsFromAndroid(callback) {
-        function tryLoad(attempts = 0) {
+        async function tryLoad(attempts = 0) {
             if (window.AndroidInterface && typeof window.AndroidInterface.loadChatSessions === 'function') {
                 try {
-                    sessions = JSON.parse(window.AndroidInterface.loadChatSessions()) || {};
+                    sessions = JSON.parse(await window.AndroidInterface.loadChatSessions()) || {};
                     callback();
                     return;
                 } catch (e) {
@@ -825,8 +841,16 @@
             
             chatMessages.appendChild(messageDiv);
         });
-        
+
         //scrollToBottom();
+
+        // Rebuild the native side's LLM context (chat history + captured page
+        // text) for the restored session, so follow-up questions continue THIS
+        // conversation instead of whatever the tab talked about before. A
+        // brand-new session has no stored row yet — the native side no-ops.
+        if (window.AndroidInterface && typeof window.AndroidInterface.restoreChatSession === 'function') {
+            window.AndroidInterface.restoreChatSession(sessionId);
+        }
     }
 
     // Delete session

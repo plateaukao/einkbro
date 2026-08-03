@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit
         VideoTranscript::class,
         ChatSession::class,
     ],
-    version = 13,
+    version = 14,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -287,6 +287,14 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         }
     }
 
+    // Per-session page text so restoring a saved chat also restores the web
+    // content the LLM sees (not the hosting tab's).
+    private val migration13To14: Migration = object : Migration(13, 14) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE `chat_sessions` ADD COLUMN `webContent` TEXT NOT NULL DEFAULT ''")
+        }
+    }
+
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
         .addMigrations(migration1To2)
         .addMigrations(migration2To3)
@@ -300,6 +308,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         .addMigrations(migration10To11)
         .addMigrations(migration11To12)
         .addMigrations(migration12To13)
+        .addMigrations(migration13To14)
         .build()
 
     val bookmarkDao = database.bookmarkDao()
@@ -569,6 +578,9 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     suspend fun getAllChatSessions(): List<ChatSession> =
         database.chatSessionDao().getAllSessions()
+
+    suspend fun getChatSessionById(id: String): ChatSession? =
+        database.chatSessionDao().getSessionById(id)
 
     suspend fun upsertChatSession(chatSession: ChatSession) =
         database.chatSessionDao().upsert(chatSession)

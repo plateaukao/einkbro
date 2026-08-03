@@ -17,4 +17,9 @@ data class ChatSession(
     val webTitle: String,
     val webUrl: String,
     val messages: String,
+    // The page text captured when the session was created, so a restored
+    // session keeps answering about ITS page. Written natively (never sent
+    // through the JS bridge — it can be hundreds of KB). Blank for sessions
+    // saved before this column existed.
+    val webContent: String = "",
 )
