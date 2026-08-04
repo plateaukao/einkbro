@@ -8,7 +8,7 @@ EinkBro is designed to fit E-Ink devices' needs; no unnecessary UI transitions a
      alt="Get it on F-Droid"
      height="60">](https://f-droid.org/packages/info.plateaukao.einkbro/)
 
-[<img src="https://badgen.net/github/release/plateaukao/einkbro">](https://github.com/plateaukao/einkbro/releases)   [<img src="https://badgen.net/badge/download/pre-release/orange">](https://github.com/plateaukao/einkbro/releases/tag/snapshot)
+[<img src="https://badgen.net/github/release/plateaukao/einkbro/stable">](https://github.com/plateaukao/einkbro/releases/latest)   [<img src="https://badgen.net/badge/download/pre-release/orange">](https://github.com/plateaukao/einkbro/releases/tag/snapshot)
 
 [<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/IntelliJ_IDEA_icon.png"
      alt="IDE supported by JetBrains"
