@@ -624,13 +624,15 @@ fun MenuItem(
     val pressed by interactionSource.collectIsPressedAsState()
 
     val configuration = LocalConfiguration.current
+    var isBigScreen = configuration.screenWidthDp > 450
+
     val width = when {
-        isLargeType -> if (configuration.screenWidthDp > 500) 62.dp else 50.dp
-        configuration.screenWidthDp > 500 -> 55.dp
+        isLargeType -> if (isBigScreen) 62.dp else 50.dp
+        isBigScreen -> 60.dp
         else -> 45.dp
     }
 
-    val fontSize = if (!showIcon) 16.sp else if (configuration.screenWidthDp > 500) 10.sp else 8.sp
+    val fontSize = if (!showIcon) 16.sp else if (isBigScreen) 11.sp else 8.sp
 
     // In reorder mode we hand gesture control to the outer ReorderableItem's
     // longPressDraggableHandle — combinedClickable here would consume long-press first.
