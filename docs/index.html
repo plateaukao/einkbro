@@ -33,11 +33,24 @@
 </nav>
 
 <header class="hero">
-  <h1>EinkBro</h1>
-  <p class="hero__tagline">Android Browser for E-Ink Devices</p>
-  <div class="hero__ctas">
-    <a href="guide.html#overview" class="hero__cta">User Guide</a>
-    <a href="download.html" class="hero__cta hero__cta--ghost">Download</a>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <h1>EinkBro</h1>
+      <p class="hero__tagline">Android Browser for E-Ink Devices</p>
+      <p class="hero__lead">Distraction-free browsing built for e-paper: turn pages with screen taps or volume keys, read in clean reader mode, and export articles to EPUB &mdash; with zero animations.</p>
+      <div class="hero__ctas">
+        <a href="https://play.google.com/store/apps/details?id=info.plateaukao.einkbro.g" class="hero__cta">Google Play Store</a>
+        <a href="https://apps.apple.com/tw/app/einkbro/id6792317757" class="hero__cta">Apple App Store</a>
+      </div>
+      <div class="hero__ctas hero__ctas--secondary">
+        <a href="https://github.com/plateaukao/einkbro/releases" class="hero__cta hero__cta--ghost hero__cta--small">GitHub Releases</a>
+        <a href="https://github.com/plateaukao/einkbro/releases/tag/snapshot" class="hero__cta hero__cta--ghost hero__cta--small">GitHub Pre-release</a>
+        <a href="https://f-droid.org/packages/info.plateaukao.einkbro/" class="hero__cta hero__cta--ghost hero__cta--small">F-Droid</a>
+      </div>
+    </div>
+    <div class="hero__shot">
+      <img class="hero__shot-img" src="images/hero_screenshot.png" alt="EinkBro start page with search bar and bookmark grid">
+    </div>
   </div>
 </header>
 
@@ -99,20 +112,20 @@
 
 <section class="gallery">
   <div class="container">
-    <h2 class="gallery__heading">Screenshots</h2>
+    <h2 class="gallery__heading">Features</h2>
     <div class="gallery__grid">
-      <figure class="gallery__item"><img src="images/01_main_browsing.png" alt="Main browsing" loading="lazy"><figcaption>Main Browsing</figcaption></figure>
-      <figure class="gallery__item"><img src="images/02_menu_panel.png" alt="Menu panel" loading="lazy"><figcaption>Menu Panel</figcaption></figure>
-      <figure class="gallery__item"><img src="images/03_translate.png" alt="Translation" loading="lazy"><figcaption>Translation</figcaption></figure>
-      <figure class="gallery__item"><img src="images/04_chat_with_web.png" alt="Chat with Web" loading="lazy"><figcaption>Chat with Web</figcaption></figure>
-      <figure class="gallery__item"><img src="images/05_bookmarks.png" alt="Bookmarks list" loading="lazy"><figcaption>Bookmarks (List)</figcaption></figure>
-      <figure class="gallery__item"><img src="images/06_toolbar_config.png" alt="Toolbar config" loading="lazy"><figcaption>Toolbar Config</figcaption></figure>
-      <figure class="gallery__item"><img src="images/07_touch_setting.png" alt="Touch setting" loading="lazy"><figcaption>Touch Setting</figcaption></figure>
-      <figure class="gallery__item"><img src="images/08_settings.png" alt="Settings" loading="lazy"><figcaption>Settings</figcaption></figure>
-      <figure class="gallery__item"><img src="images/09_vertical_read.png" alt="Vertical reading" loading="lazy"><figcaption>Vertical Read</figcaption></figure>
-      <figure class="gallery__item"><img src="images/10_font_size.png" alt="Font size" loading="lazy"><figcaption>Font Size</figcaption></figure>
-      <figure class="gallery__item"><img src="images/11_bookmarks_grid.png" alt="Bookmarks grid" loading="lazy"><figcaption>Bookmarks (Grid)</figcaption></figure>
-      <figure class="gallery__item"><img src="images/12_userscript.png" alt="Userscript translating a page" loading="lazy"><figcaption>Userscript</figcaption></figure>
+      <figure class="gallery__item"><img src="images/01_main_browsing.png" alt="Main browsing" loading="lazy"><figcaption><h3>Clean Browsing</h3><p>High-contrast pages and a configurable toolbar, tuned for e-paper.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/02_menu_panel.png" alt="Menu panel" loading="lazy"><figcaption><h3>Quick Menu</h3><p>Common actions gathered in one tap-friendly panel.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/03_translate.png" alt="Translation" loading="lazy"><figcaption><h3>Translation</h3><p>Translate in place or side by side &mdash; Google, Papago, or AI.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/04_chat_with_web.png" alt="Chat with Web" loading="lazy"><figcaption><h3>Chat with Web</h3><p>Ask AI about the page you're reading.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/05_bookmarks.png" alt="Bookmarks list" loading="lazy"><figcaption><h3>Bookmarks</h3><p>Folders, lists, and quick actions for your saved pages.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/06_toolbar_config.png" alt="Toolbar config" loading="lazy"><figcaption><h3>Toolbar Config</h3><p>Drag and drop to pick from 40+ toolbar actions.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/07_touch_setting.png" alt="Touch setting" loading="lazy"><figcaption><h3>Touch Gestures</h3><p>Tap screen edges to turn pages; customize every zone.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/08_settings.png" alt="Settings" loading="lazy"><figcaption><h3>Rich Settings</h3><p>Fine-tune gestures, UI, fonts, AI, and more.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/09_vertical_read.png" alt="Vertical reading" loading="lazy"><figcaption><h3>Vertical Reading</h3><p>Right-to-left vertical layout for CJK text.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/10_font_size.png" alt="Font size" loading="lazy"><figcaption><h3>Font Control</h3><p>Adjust size, boldness, and font family &mdash; or load your own font.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/11_bookmarks_grid.png" alt="Bookmarks grid" loading="lazy"><figcaption><h3>Bookmark Grid</h3><p>Browse bookmarks as a grid &mdash; a start page for favorite sites.</p></figcaption></figure>
+      <figure class="gallery__item"><img src="images/12_userscript.png" alt="Userscript translating a page" loading="lazy"><figcaption><h3>Userscripts</h3><p>Run Tampermonkey-style community scripts on your e-reader.</p></figcaption></figure>
     </div>
   </div>
 </section>

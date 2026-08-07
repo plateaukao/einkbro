@@ -34,11 +34,24 @@
 </nav>
 
 <header class="hero">
-  <h1>EinkBro</h1>
-  <p class="hero__tagline">專為 E-Ink 裝置打造的 Android 瀏覽器</p>
-  <div class="hero__ctas">
-    <a href="guide.html#overview" class="hero__cta">使用指南</a>
-    <a href="download.html" class="hero__cta hero__cta--ghost">下載</a>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <h1>EinkBro</h1>
+      <p class="hero__tagline">專為 E-Ink 裝置打造的 Android 瀏覽器</p>
+      <p class="hero__lead">為電子紙打造的無干擾瀏覽體驗：點擊螢幕邊緣或用音量鍵翻頁、以簡潔的閱讀模式閱讀，並可將文章匯出成 EPUB &mdash; 完全沒有動畫效果。</p>
+      <div class="hero__ctas">
+        <a href="https://play.google.com/store/apps/details?id=info.plateaukao.einkbro.g" class="hero__cta">Google Play 商店</a>
+        <a href="https://apps.apple.com/tw/app/einkbro/id6792317757" class="hero__cta">Apple App Store</a>
+      </div>
+      <div class="hero__ctas hero__ctas--secondary">
+        <a href="https://github.com/plateaukao/einkbro/releases" class="hero__cta hero__cta--ghost hero__cta--small">GitHub Releases</a>
+        <a href="https://github.com/plateaukao/einkbro/releases/tag/snapshot" class="hero__cta hero__cta--ghost hero__cta--small">GitHub 搶先版</a>
+        <a href="https://f-droid.org/packages/info.plateaukao.einkbro/" class="hero__cta hero__cta--ghost hero__cta--small">F-Droid</a>
+      </div>
+    </div>
+    <div class="hero__shot">
+      <img class="hero__shot-img" src="../images/hero_screenshot.png" alt="EinkBro 起始頁：搜尋列與書籤網格">
+    </div>
   </div>
 </header>
 
@@ -100,20 +113,20 @@
 
 <section class="gallery">
   <div class="container">
-    <h2 class="gallery__heading">畫面截圖</h2>
+    <h2 class="gallery__heading">功能特色</h2>
     <div class="gallery__grid">
-      <figure class="gallery__item"><img src="../images/01_main_browsing.png" alt="主要瀏覽" loading="lazy"><figcaption>主要瀏覽</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/02_menu_panel.png" alt="選單面板" loading="lazy"><figcaption>選單面板</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/03_translate.png" alt="翻譯" loading="lazy"><figcaption>翻譯</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/04_chat_with_web.png" alt="與網頁對話" loading="lazy"><figcaption>與網頁對話</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/05_bookmarks.png" alt="書籤清單" loading="lazy"><figcaption>書籤（清單）</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/06_toolbar_config.png" alt="工具列設定" loading="lazy"><figcaption>工具列設定</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/07_touch_setting.png" alt="觸控設定" loading="lazy"><figcaption>觸控設定</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/08_settings.png" alt="設定" loading="lazy"><figcaption>設定</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/09_vertical_read.png" alt="直書閱讀" loading="lazy"><figcaption>直書閱讀</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/10_font_size.png" alt="字級大小" loading="lazy"><figcaption>字級大小</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/11_bookmarks_grid.png" alt="書籤網格" loading="lazy"><figcaption>書籤（網格）</figcaption></figure>
-      <figure class="gallery__item"><img src="../images/12_userscript.png" alt="使用者指令碼翻譯網頁" loading="lazy"><figcaption>使用者指令碼</figcaption></figure>
+      <figure class="gallery__item"><img src="../images/01_main_browsing.png" alt="主要瀏覽" loading="lazy"><figcaption><h3>簡潔瀏覽</h3><p>高對比頁面與可自訂工具列，為電子紙量身調校。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/02_menu_panel.png" alt="選單面板" loading="lazy"><figcaption><h3>快速選單</h3><p>常用操作集中在一個易於點按的面板。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/03_translate.png" alt="翻譯" loading="lazy"><figcaption><h3>翻譯</h3><p>原地或並排翻譯，支援 Google、Papago 與 AI。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/04_chat_with_web.png" alt="與網頁對話" loading="lazy"><figcaption><h3>與網頁對話</h3><p>讓 AI 回答你正在閱讀頁面的問題。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/05_bookmarks.png" alt="書籤清單" loading="lazy"><figcaption><h3>書籤</h3><p>以資料夾與清單整理儲存的頁面，並提供快速操作。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/06_toolbar_config.png" alt="工具列設定" loading="lazy"><figcaption><h3>工具列設定</h3><p>拖曳排序，從 40 多種工具列動作中挑選。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/07_touch_setting.png" alt="觸控設定" loading="lazy"><figcaption><h3>觸控手勢</h3><p>點擊螢幕邊緣翻頁，每個區域都可自訂。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/08_settings.png" alt="設定" loading="lazy"><figcaption><h3>豐富設定</h3><p>手勢、介面、字型、AI 等都能細部調整。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/09_vertical_read.png" alt="直書閱讀" loading="lazy"><figcaption><h3>直書閱讀</h3><p>適合中日文的直書右至左版面。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/10_font_size.png" alt="字級大小" loading="lazy"><figcaption><h3>字型調整</h3><p>調整字級、粗細與字型，也可載入自己的字型。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/11_bookmarks_grid.png" alt="書籤網格" loading="lazy"><figcaption><h3>書籤網格</h3><p>以網格瀏覽書籤，作為常用網站的起始頁。</p></figcaption></figure>
+      <figure class="gallery__item"><img src="../images/12_userscript.png" alt="使用者指令碼翻譯網頁" loading="lazy"><figcaption><h3>使用者指令碼</h3><p>在電子閱讀器上執行 Tampermonkey 風格的社群指令碼。</p></figcaption></figure>
     </div>
   </div>
 </section>
