@@ -167,17 +167,15 @@ img { max-width: 100%; height: auto; }
 /* --- Hero screenshot (device frame) --- */
 .hero__shot {
   width: 280px;
-  border: 8px solid var(--ink);
-  border-top-width: 20px;
-  border-bottom-width: 20px;
-  border-radius: 26px;
+  border: 12px solid var(--ink);
+  border-radius: 34px;
   background: var(--ink);
+  overflow: hidden; /* clips the img to the border's inner edge, keeping the inner curve parallel to the outer one */
   justify-self: end;
 }
 .hero__shot-img {
   display: block;
   width: 100%;
-  border-radius: 26px;
 }
 
 /* --- Feature Grid --- */
