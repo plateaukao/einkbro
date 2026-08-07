@@ -48,8 +48,6 @@ val keystoreProps = Properties().apply {
 val hasUploadKeystore = keystoreProps.containsKey("storeFile")
 
 android {
-    // compileSdk 36 is required by current androidx artifacts; targetSdk stays 34,
-    // so runtime behavior is unchanged.
     compileSdk = 36
 
     signingConfigs {
@@ -66,9 +64,12 @@ android {
     defaultConfig {
         applicationId = "info.plateaukao.einkbro"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 16_00_00
-        versionName = "16.0.0"
+        // targetSdk 36 defaults predictive back to on, which would stop KEYCODE_BACK
+        // reaching BrowserActivity.onKeyDown -> KeyHandler; the manifest opts out
+        // via enableOnBackInvokedCallback=false.
+        targetSdk = 36
+        versionCode = 16_01_00
+        versionName = "16.1.0"
 
         // Google Drive backup sync: an "installed app" OAuth client (not a secret;
         // PKCE, no client secret) with the reversed-client-id custom-scheme redirect.
@@ -210,14 +211,6 @@ play {
 }
 
 androidComponents {
-    // Google Play requires targeting the latest API (36 from Aug 31, 2026).
-    // Raise it only for the Play build type; sideloaded/F-Droid builds keep the
-    // tested targetSdk 34 behavior. targetSdk 36 would default predictive back
-    // to on, which stops KEYCODE_BACK reaching BrowserActivity.onKeyDown ->
-    // KeyHandler; the manifest opts out via enableOnBackInvokedCallback=false.
-    beforeVariants(selector().withBuildType("playRelease")) { variant ->
-        variant.targetSdk = 36
-    }
     onVariants { variant ->
         // Wired as a task input (not read at configuration time), so each build
         // re-evaluates the ValueSource and regenerates BuildConfig without

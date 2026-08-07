@@ -1,3 +1,31 @@
+### 16.1.0
+#### Features
+* Built-in start page: a search box with the browser's own autosuggestions and a user-curated tile grid — add sites from bookmarks or by hand, tiles show the sites' favicons; available as a new-tab behavior option and the default homepage
+
+#### Improvements
+* All builds now target Android 16 (API 36)
+
+#### Fixes
+* Menus stay readable on big screens
+
+### 16.0.0
+#### Features
+* AI agent can organize bookmarks: new agent tools add bookmarks and folders, and large bookmark lists are filed page-by-page so the agent stays reliable
+* Custom AI agent tasks can now run on Gemini via its OpenAI-compatible API
+* Thinking (reasoning) effort setting for AI, configurable globally and per AI action
+* Translate dialog and Chat with Web show a live thinking status while the model reasons
+* Audio-only mode can invert video canvas colors
+* What's New in Settings opens the online changelog
+
+#### Changes
+* All in-app self-update features are removed to comply with Google Play policy; the About screen keeps What's New and Contributors
+
+#### Fixes
+* Reopening an AI chat session restores its full conversation context, not just the visible messages
+* Agent task transcripts no longer appear in Chat with Web history
+* Transcription failures are reported clearly, Gemini streaming is parsed correctly, and a connection test was added to provider settings
+* Download-complete dialog shows again on Android 14+
+
 ### 15.19.0
 #### Features
 * AI on YouTube: Page AI, Chat with Web, and summarize now work on the video's caption transcript; videos without captions are transcribed with Gemini (when a Gemini API key is configured), and transcripts are cached so each video is only transcribed once
