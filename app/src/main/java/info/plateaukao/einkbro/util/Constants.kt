@@ -2,7 +2,9 @@ package info.plateaukao.einkbro.util
 
 class Constants {
     companion object {
-        const val DEFAULT_HOME_URL = "https://www.google.com/"
+        // Sentinel url rendered as the built-in start page (see BookmarkRenderer.loadStartPage)
+        const val START_PAGE_URL = "einkbro://startpage"
+        const val DEFAULT_HOME_URL = START_PAGE_URL
         const val MIME_TYPE_EPUB = "application/epub+zip"
         const val MIME_TYPE_PDF = "application/pdf"
         const val MIME_TYPE_TEXT = "text/plain"

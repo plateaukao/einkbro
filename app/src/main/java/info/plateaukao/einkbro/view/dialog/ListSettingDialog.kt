@@ -47,6 +47,11 @@ class ListSettingWithNameDialog(
             builder.setTitle(context.resources.getString(titleId))
         }
 
+        // back key / outside tap cancels the dialog without a selection; resume
+        // with null so suspending callers don't hang (dismiss() from a selection
+        // does not trigger this listener)
+        builder.setOnCancelListener { continuation.resume(null) }
+
         builder.create().also { dialog ->
             titleActionButton?.setOnClickListener {
                 dialog.dismiss()

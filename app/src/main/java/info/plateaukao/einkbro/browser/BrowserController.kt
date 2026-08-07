@@ -179,6 +179,9 @@ interface WebViewCallback {
     fun handleKeyEvent(event: KeyEvent): Boolean
     fun isActionModeActive(): Boolean
     fun dismissActionMode()
+
+    // Invoked from einkbro:// links on the start page (see EBWebViewClient.handleUri)
+    fun focusOnInput()
 }
 
 /** Narrow interface for Album — only the callbacks it actually uses */

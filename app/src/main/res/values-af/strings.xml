@@ -304,6 +304,9 @@
     <string name="papago_translate_by_screen">Papago per skerm</string>
     <string name="password">Wagwoord</string>
     <string name="plus_show_bookmarks">Wys onlangse boekmerke</string>
+    <string name="plus_show_start_page">Wys beginblad</string>
+    <string name="start_page_pick_bookmark">Kies uit boekmerke</string>
+    <string name="start_page_enter_manually">Voer self in</string>
     <string name="plus_show_homepage">Wys tuisblad</string>
     <string name="plus_start_input_url">Begin URL invoer</string>
     <string name="read_from_here">Vanaf hier</string>

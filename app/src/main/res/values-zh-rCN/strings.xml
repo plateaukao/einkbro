@@ -263,6 +263,9 @@
     <string name="plus_start_input_url">显示输入区</string>
     <string name="plus_show_homepage">显示主页</string>
     <string name="plus_show_bookmarks">显示最近书签</string>
+    <string name="plus_show_start_page">显示起始页</string>
+    <string name="start_page_pick_bookmark">从书签中选择</string>
+    <string name="start_page_enter_manually">手动输入</string>
     <string name="dark_mode_follow_system">跟随系统</string>
     <string name="dark_mode_force_on">强制开启</string>
     <string name="dark_mode_disabled">禁用</string>

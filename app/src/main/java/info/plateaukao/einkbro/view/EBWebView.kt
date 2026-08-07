@@ -38,7 +38,9 @@ import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
+import info.plateaukao.einkbro.unit.BookmarkRenderer
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
@@ -410,6 +412,10 @@ open class EBWebView(
             info.plateaukao.einkbro.browser.UserScriptBridge(this),
             "einkbroGM",
         )
+        addJavascriptInterface(
+            info.plateaukao.einkbro.browser.StartPageBridge(this),
+            "einkbroStartPage",
+        )
     }
 
     // region userscript support
@@ -494,6 +500,12 @@ open class EBWebView(
     }
 
     override fun loadUrl(url: String, additionalHttpHeaders: MutableMap<String, String>) {
+        if (url == Constants.START_PAGE_URL) {
+            album.isLoaded = true
+            BookmarkRenderer.loadStartPage(this)
+            return
+        }
+
         if (webViewCallback?.loadInSecondPane(url) == true) {
             return
         }
@@ -526,6 +538,11 @@ open class EBWebView(
         val processedUrl = url.trim { it <= ' ' }
         if (processedUrl.isEmpty()) {
             EBToast.show(context, R.string.toast_load_error)
+            return
+        }
+
+        if (processedUrl == Constants.START_PAGE_URL) {
+            BookmarkRenderer.loadStartPage(this)
             return
         }
 

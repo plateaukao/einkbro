@@ -14,6 +14,7 @@ import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.preference.AlbumInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -71,6 +72,9 @@ class TabManager(
                 addAlbum("", "")
                 BrowserUnit.loadRecentlyUsedBookmarks(state.ebWebView)
             }
+
+            info.plateaukao.einkbro.preference.NewTabBehavior.SHOW_START_PAGE ->
+                addAlbum("", Constants.START_PAGE_URL)
         }
     }
 

@@ -35,12 +35,15 @@ import info.plateaukao.einkbro.activity.SettingRoute
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.data.remote.GoogleDriveRepository
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.unit.BookmarkRenderer
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.WebViewConfigApplier
+import info.plateaukao.einkbro.view.dialog.StartPageItemDialog
 import io.github.edsuns.adfilter.AdFilter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -262,6 +265,7 @@ class EBWebViewClient(
             !ebWebView.isAIPage &&
             !isTranslationDomain(url) &&
             url != BrowserUnit.URL_ABOUT_BLANK &&
+            !url.startsWith("einkbro://") &&
             ebWebView.errorPageUrl == null
         ) {
             addHistoryAction(ebWebView.albumTitle, url)
@@ -338,6 +342,25 @@ class EBWebViewClient(
             // arrive before the reload commits collapse into a single network fetch.
             webView.post {
                 if (!ebWebView.retryErrorPage()) ebWebView.reload()
+            }
+            return true
+        }
+
+        // Start page actions (assets/start_page.html)
+        if (url.startsWith("einkbro://")) {
+            webView.post {
+                when {
+                    url.startsWith(Constants.START_PAGE_URL) ->
+                        BookmarkRenderer.loadStartPage(ebWebView)
+
+                    url.startsWith("einkbro://focus_input") ->
+                        ebWebView.webViewCallback?.focusOnInput()
+
+                    url.startsWith("einkbro://add_start_item") ->
+                        coroutineScope.launch(Dispatchers.Main) {
+                            StartPageItemDialog(ebWebView).show()
+                        }
+                }
             }
             return true
         }

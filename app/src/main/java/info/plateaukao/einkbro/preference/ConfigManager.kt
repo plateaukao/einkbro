@@ -184,6 +184,39 @@ class ConfigManager(
         recentBookmarks = emptyList()
     }
 
+    var startPageItems: List<StartPageItem>
+        get() {
+            val string = sp.getString(K_START_PAGE_ITEMS, "").orEmpty()
+            if (string.isBlank()) return emptyList()
+
+            return try {
+                Json.decodeFromString(startPageItemsSerializer, string)
+            } catch (exception: Exception) {
+                sp.edit { remove(K_START_PAGE_ITEMS) }
+                emptyList()
+            }
+        }
+        set(value) {
+            sp.edit {
+                if (value.isEmpty()) {
+                    remove(K_START_PAGE_ITEMS)
+                } else {
+                    putString(
+                        K_START_PAGE_ITEMS,
+                        Json.encodeToString(startPageItemsSerializer, value)
+                    )
+                }
+            }
+        }
+
+    fun addStartPageItem(item: StartPageItem) {
+        startPageItems = startPageItems.filter { it.url != item.url } + item
+    }
+
+    fun removeStartPageItem(url: String) {
+        startPageItems = startPageItems.filter { it.url != url }
+    }
+
     var savedEpubFileInfos: List<SavedFileInfo>
         get() = sp.getString(K_SAVED_EPUBS, "")?.toSavedFileInfoList() ?: mutableListOf()
         set(value) = sp.edit { putString(K_SAVED_EPUBS, toSavedFileInfosString(value)) }
@@ -252,6 +285,7 @@ class ConfigManager(
         const val K_IS_INCOGNITO_MODE = "sp_incognito"
         const val K_WHITE_BACKGROUND = "sp_whitebackground"
         const val K_RECENT_BOOKMARKS = "sp_recent_bookmarks"
+        const val K_START_PAGE_ITEMS = "sp_start_page_items"
         const val K_RESTART_CHANGED = "restart_changed"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
@@ -270,6 +304,9 @@ class ConfigManager(
         const val K_DRIVE_PENDING_AUTH = "sp_drive_pending_auth"
 
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
+
+        private val startPageItemsSerializer =
+            kotlinx.serialization.builtins.ListSerializer(StartPageItem.serializer())
         private const val SAVED_FILE_INFO_SEPARATOR = "::::"
 
         private const val RECENT_BOOKMARK_LIST_SIZE = 10

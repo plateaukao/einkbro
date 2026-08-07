@@ -43,8 +43,9 @@ enum class DarkMode {
     SYSTEM, FORCE_ON, DISABLED
 }
 
+// Persisted by ordinal; only append new entries.
 enum class NewTabBehavior {
-    START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS
+    START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS, SHOW_START_PAGE
 }
 
 enum class ShareLongPressAction(val labelResId: Int) {

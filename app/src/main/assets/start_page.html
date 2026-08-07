@@ -1,0 +1,346 @@
+<html>
+<head>
+    <title>EinkBro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html {
+        height: 100%;
+    }
+    body {
+        /* min-height (not height): when the soft keyboard halves the viewport,
+           the page must scroll rather than squeeze the layout into overlap */
+        min-height: 100%;
+        font-family: -apple-system, sans-serif;
+        background: #fff;
+        color: #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 24px;
+    }
+    /* while the search box is focused, give it and the suggestions the whole
+       screen: everything else is hidden until blur */
+    body.searching .top-spacer,
+    body.searching .bottom-spacer,
+    body.searching .wordmark,
+    body.searching .grid {
+        display: none;
+    }
+    body.searching {
+        padding-top: 16px;
+    }
+    .top-spacer { flex: 2; min-height: 24px; }
+    .bottom-spacer { flex: 5; min-height: 24px; }
+    .wordmark {
+        font-size: 34px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 28px;
+    }
+    .search-wrap {
+        width: 100%;
+        max-width: 480px;
+        border: 2px solid #000;
+        border-radius: 28px;
+        margin-bottom: 36px;
+        background: #fff;
+        overflow: hidden;
+    }
+    .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 20px;
+    }
+    .search-bar svg {
+        flex-shrink: 0;
+        color: #000;
+    }
+    .input-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+    }
+    .search-bar input {
+        width: 100%;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #000;
+        font-size: 16px;
+        font-family: inherit;
+        padding: 0;
+        caret-animation: manual;  /* static caret on engines that support it */
+    }
+    .search-bar input::placeholder {
+        color: #555;
+    }
+    /* fake static caret for engines without caret-animation: the real caret is
+       hidden and a fixed bar is drawn instead — a blinking caret keeps
+       repainting, which e-ink displays cannot afford */
+    body.fakecaret .search-bar input {
+        caret-color: transparent;
+    }
+    #caretMirror {
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        white-space: pre;
+        font-size: 16px;
+        font-family: inherit;
+    }
+    #fakeCaret {
+        display: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2px;
+        height: 22px;
+        background: #000;
+        pointer-events: none;
+    }
+    body.fakecaret.caret-on #fakeCaret {
+        display: block;
+    }
+    .sugg {
+        display: none;
+        border-top: 1.5px solid #000;
+    }
+    .sugg .row {
+        padding: 10px 20px;
+    }
+    .sugg .row:active {
+        background: #e0e0e0;
+    }
+    .sugg .row + .row {
+        border-top: 1px solid #bbb;
+    }
+    .sugg .t {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .sugg .u {
+        font-size: 11px;
+        color: #555;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 2px;
+    }
+    .grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px 8px;
+        width: 100%;
+        max-width: 480px;
+    }
+    .tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #000;
+        width: 76px;
+    }
+    .tile-icon {
+        width: 60px;
+        height: 60px;
+        border: 1.5px solid #000;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .tile:active .tile-icon {
+        background: #e0e0e0;
+    }
+    .tile-icon img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+    }
+    .tile-icon .fallback {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        font-weight: 700;
+        width: 100%;
+        height: 100%;
+    }
+    .tile-name {
+        font-size: 12px;
+        font-weight: 500;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    </style>
+</head>
+<body>
+    <div class="top-spacer"></div>
+    <div class="wordmark">EinkBro</div>
+    <div class="search-wrap">
+        <div class="search-bar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                <circle cx="10.5" cy="10.5" r="6.5"/>
+                <line x1="15.5" y1="15.5" x2="21" y2="21"/>
+            </svg>
+            <div class="input-wrap">
+                <input id="searchInput" type="text" placeholder="{{SEARCH_HINT}}"
+                       autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+                <span id="caretMirror"></span>
+                <span id="fakeCaret"></span>
+            </div>
+        </div>
+        <div class="sugg" id="suggList"></div>
+    </div>
+    <div class="grid">
+        {{CONTENT}}
+        <a class="tile" href="einkbro://add_start_item">
+            <div class="tile-icon">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+            </div>
+            <div class="tile-name">{{ADD_LABEL}}</div>
+        </a>
+    </div>
+    <div class="bottom-spacer"></div>
+    <script>
+    (function() {
+        var input = document.getElementById('searchInput');
+        var list = document.getElementById('suggList');
+        var timer = null;
+        var token = 0;
+
+        function bridge() {
+            return window.einkbroStartPage;
+        }
+
+        function request(query) {
+            if (!bridge()) return;
+            token++;
+            bridge().querySuggestions(query, token);
+        }
+
+        // called by StartPageBridge with the suggestion list for request `t`
+        window.__einkbroSuggestions = function(t, items) {
+            if (t !== token) return;  // a newer request is in flight
+            render(items);
+        };
+
+        function render(items) {
+            list.innerHTML = '';
+            // drop responses that arrive after the input lost focus
+            if (!items || !items.length || document.activeElement !== input) {
+                list.style.display = 'none';
+                return;
+            }
+            items.forEach(function(item) {
+                var row = document.createElement('div');
+                row.className = 'row';
+                var title = document.createElement('div');
+                title.className = 't';
+                title.textContent = item.title || item.url;
+                row.appendChild(title);
+                if (!item.s && item.url) {
+                    var url = document.createElement('div');
+                    url.className = 'u';
+                    url.textContent = item.url;
+                    row.appendChild(url);
+                }
+                // pointerdown fires before the input's blur, so the tap wins
+                row.addEventListener('pointerdown', function(e) {
+                    e.preventDefault();
+                    go(item.url || item.title);
+                });
+                list.appendChild(row);
+            });
+            list.style.display = 'block';
+        }
+
+        function go(text) {
+            if (bridge() && text) bridge().submit(text);
+        }
+
+        // static caret: hide the blinking native caret and draw a fixed bar at
+        // the caret position, measured with a hidden mirror of the text
+        var supportsStaticCaret =
+            window.CSS && CSS.supports && CSS.supports('caret-animation', 'manual');
+        var mirror = document.getElementById('caretMirror');
+        var fakeCaret = document.getElementById('fakeCaret');
+        function updateCaret() {
+            var end = input.selectionEnd == null ? input.value.length : input.selectionEnd;
+            mirror.textContent = input.value.slice(0, end);
+            var x = mirror.offsetWidth - input.scrollLeft;
+            fakeCaret.style.left = Math.max(0, Math.min(x, input.clientWidth - 2)) + 'px';
+        }
+        if (!supportsStaticCaret) {
+            document.body.classList.add('fakecaret');
+            ['input', 'click', 'keyup'].forEach(function(ev) {
+                input.addEventListener(ev, function() {
+                    requestAnimationFrame(updateCaret);
+                });
+            });
+        }
+
+        input.addEventListener('input', function() {
+            clearTimeout(timer);
+            var value = input.value;
+            timer = setTimeout(function() { request(value); }, 300);
+        });
+        input.addEventListener('focus', function() {
+            if (!bridge()) {  // fall back to the native input bar
+                input.blur();
+                location.href = 'einkbro://focus_input';
+                return;
+            }
+            document.body.classList.add('searching');
+            document.body.classList.add('caret-on');
+            requestAnimationFrame(updateCaret);
+            request(input.value);
+        });
+        input.addEventListener('blur', function() {
+            setTimeout(function() {
+                list.style.display = 'none';
+                document.body.classList.remove('searching');
+                document.body.classList.remove('caret-on');
+            }, 150);
+        });
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                go(input.value);
+            }
+        });
+
+        // the back key closes the soft keyboard without blurring the input,
+        // which would leave the page stuck in search mode; detect the viewport
+        // growing back and blur to restore the full start page
+        if (window.visualViewport) {
+            var lastHeight = window.visualViewport.height;
+            window.visualViewport.addEventListener('resize', function() {
+                var height = window.visualViewport.height;
+                if (height > lastHeight * 1.2 && document.activeElement === input) {
+                    input.blur();
+                }
+                lastHeight = height;
+            });
+        }
+    })();
+    </script>
+</body>
+</html>

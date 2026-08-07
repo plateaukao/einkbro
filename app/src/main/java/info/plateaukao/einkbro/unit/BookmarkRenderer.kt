@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBWebView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -30,6 +31,54 @@ object BookmarkRenderer : KoinComponent {
             webView.albumTitle = webView.context.getString(R.string.recently_used_bookmarks)
         }
     }
+
+    fun loadStartPage(webView: EBWebView) {
+        // local trusted content; the favicon fallback needs js even when the
+        // previous page had it blocked per-domain
+        webView.settings.javaScriptEnabled = true
+        // base/history url is the sentinel so the tab is saved and restored as a
+        // start page (about:blank tabs are dropped from the saved album list)
+        webView.loadDataWithBaseURL(
+            Constants.START_PAGE_URL,
+            getStartPageContent(webView.context),
+            "text/html",
+            "utf-8",
+            Constants.START_PAGE_URL
+        )
+        webView.albumTitle = webView.context.getString(R.string.app_name)
+    }
+
+    private fun getStartPageContent(context: Context): String {
+        val content = config.startPageItems.joinToString(separator = "\n") {
+            val name = it.title.escapeHtml()
+            val initial = it.title.firstOrNull()?.uppercase()?.escapeHtml() ?: "#"
+            val faviconUrl = try {
+                val uri = java.net.URI(it.url)
+                "${uri.scheme}://${uri.host}/favicon.ico"
+            } catch (e: Exception) { "" }
+            """
+            <a href="${it.url}" class="tile">
+                <div class="tile-icon">
+                    <img src="$faviconUrl" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                    <span class="fallback">$initial</span>
+                </div>
+                <div class="tile-name">$name</div>
+            </a>
+            """
+        }
+        // loadAssetFile keeps newlines (loadAssetFileToString strips them, which
+        // would let the inline script's // comments swallow the rest of the page)
+        return HelperUnit.loadAssetFile("start_page.html")
+            .replace("{{SEARCH_HINT}}", context.getString(R.string.main_omnibox_input_hint))
+            .replace("{{ADD_LABEL}}", context.getString(R.string.whitelist_add))
+            .replace("{{CONTENT}}", content)
+    }
+
+    private fun String.escapeHtml(): String = this
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("\"", "&quot;")
 
     fun getRecentBookmarksContent(context: Context): String {
         if (config.recentBookmarks.isEmpty()) return ""

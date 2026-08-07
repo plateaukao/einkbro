@@ -345,6 +345,9 @@
     <string name="plus_start_input_url">URL girmeye başla</string>
     <string name="plus_show_homepage">Ana sayfayı göster</string>
     <string name="plus_show_bookmarks">Son yer imlerini göster</string>
+    <string name="plus_show_start_page">Başlangıç sayfasını göster</string>
+    <string name="start_page_pick_bookmark">Yer imlerinden seç</string>
+    <string name="start_page_enter_manually">Elle gir</string>
     <string name="dark_mode_follow_system">Sistemi takip et</string>
     <string name="dark_mode_force_on">Zorla Aç</string>
     <string name="dark_mode_disabled">Devre dışı</string>

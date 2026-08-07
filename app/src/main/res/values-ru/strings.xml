@@ -356,6 +356,9 @@
     <string name="plus_start_input_url">Начать ввод адреса</string>
     <string name="plus_show_homepage">Показать статую страницу</string>
     <string name="plus_show_bookmarks">Показать Недавние Закладки</string>
+    <string name="plus_show_start_page">Показать начальную страницу</string>
+    <string name="start_page_pick_bookmark">Выбрать из закладок</string>
+    <string name="start_page_enter_manually">Ввести вручную</string>
     <string name="dark_mode_follow_system">Как в системе</string>
     <string name="dark_mode_force_on">Включить принудительно</string>
     <string name="dark_mode_disabled">Выключить</string>

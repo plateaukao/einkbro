@@ -124,13 +124,17 @@ class InputBarDelegate(
         }
 
         val ebWebView = state.ebWebView
-        val textOrUrl = if (ebWebView.url?.startsWith("data:") != true) {
-            val url = ebWebView.url.orEmpty()
+        val url = ebWebView.url.orEmpty()
+        // in-app pages (start page, recent bookmarks) report a data: uri,
+        // about:blank, or the einkbro:// sentinel — start with an empty input
+        val textOrUrl = if (
+            url.startsWith("data:") || url == "about:blank" || url.startsWith("einkbro://")
+        ) {
+            TextFieldValue("")
+        } else {
             // for search result pages, present the plain search query for easy editing
             val text = UrlHelper.getQueryFromSearchUrl(url) ?: url
             TextFieldValue(text, selection = TextRange(0, text.length))
-        } else {
-            TextFieldValue("")
         }
 
         inputTextOrUrl.value = textOrUrl

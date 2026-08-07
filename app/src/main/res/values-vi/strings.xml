@@ -304,6 +304,9 @@
     <string name="papago_translate_by_screen">Papago theo màn hình</string>
     <string name="password">Mật khẩu</string>
     <string name="plus_show_bookmarks">Hiển thị dấu trang gần đây</string>
+    <string name="plus_show_start_page">Hiển thị trang bắt đầu</string>
+    <string name="start_page_pick_bookmark">Chọn từ dấu trang</string>
+    <string name="start_page_enter_manually">Nhập thủ công</string>
     <string name="plus_show_homepage">Hiển thị trang chủ</string>
     <string name="plus_start_input_url">Bắt đầu nhập URL</string>
     <string name="read_from_here">Từ đây</string>

@@ -345,6 +345,9 @@
     <string name="plus_start_input_url">بدء إدخال URL</string>
     <string name="plus_show_homepage">إظهار الصفحة الرئيسية</string>
     <string name="plus_show_bookmarks">إظهار الإشارات المرجعية الأخيرة</string>
+    <string name="plus_show_start_page">عرض صفحة البدء</string>
+    <string name="start_page_pick_bookmark">اختيار من الإشارات المرجعية</string>
+    <string name="start_page_enter_manually">إدخال يدوي</string>
     <string name="dark_mode_follow_system">اتباع النظام</string>
     <string name="dark_mode_force_on">تشغيل إجباري</string>
     <string name="dark_mode_disabled">معطل</string>

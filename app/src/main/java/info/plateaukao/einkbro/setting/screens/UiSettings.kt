@@ -128,6 +128,7 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
                 R.string.plus_start_input_url,
                 R.string.plus_show_homepage,
                 R.string.plus_show_bookmarks,
+                R.string.plus_show_start_page,
             )
         ),
         ActionSettingItem(

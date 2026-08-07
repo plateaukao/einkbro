@@ -304,6 +304,9 @@
     <string name="plus_start_input_url">Comenzar a introducir URL</string>
     <string name="plus_show_homepage">Mostrar página de inicio</string>
     <string name="plus_show_bookmarks">Mostrar marcadores recientes</string>
+    <string name="plus_show_start_page">Mostrar pantalla de inicio</string>
+    <string name="start_page_pick_bookmark">Elegir de marcadores</string>
+    <string name="start_page_enter_manually">Introducir manualmente</string>
     <string name="dark_mode_follow_system">Seguir el sistema</string>
     <string name="dark_mode_force_on">Forzar encendido</string>
     <string name="dark_mode_disabled">Deshabilitado</string>
