@@ -17,6 +17,7 @@ import java.net.URL
 object BookmarkRenderer : KoinComponent {
 
     private val config: ConfigManager by inject()
+    private val bookmarkManager: info.plateaukao.einkbro.database.BookmarkManager by inject()
 
     fun loadRecentlyUsedBookmarks(webView: EBWebView) {
         val html = getRecentBookmarksContent(webView.context)
@@ -52,14 +53,16 @@ object BookmarkRenderer : KoinComponent {
         val content = config.startPageItems.joinToString(separator = "\n") {
             val name = it.title.escapeHtml()
             val initial = it.title.firstOrNull()?.uppercase()?.escapeHtml() ?: "#"
-            val faviconUrl = try {
+            // prefer the favicon the browser already stored for this domain;
+            // fall back to fetching /favicon.ico, then to the initial letter
+            val iconSrc = faviconDataUri(it.url) ?: try {
                 val uri = java.net.URI(it.url)
                 "${uri.scheme}://${uri.host}/favicon.ico"
             } catch (e: Exception) { "" }
             """
             <a href="${it.url}" class="tile">
                 <div class="tile-icon">
-                    <img src="$faviconUrl" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                    <img src="$iconSrc" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
                     <span class="fallback">$initial</span>
                 </div>
                 <div class="tile-name">$name</div>
@@ -73,6 +76,14 @@ object BookmarkRenderer : KoinComponent {
             .replace("{{ADD_LABEL}}", context.getString(R.string.whitelist_add))
             .replace("{{CONTENT}}", content)
     }
+
+    private fun faviconDataUri(url: String): String? =
+        bookmarkManager.findFaviconBitmapBy(url)?.let { bitmap ->
+            val stream = java.io.ByteArrayOutputStream()
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, stream)
+            "data:image/png;base64," +
+                    android.util.Base64.encodeToString(stream.toByteArray(), android.util.Base64.NO_WRAP)
+        }
 
     private fun String.escapeHtml(): String = this
         .replace("&", "&amp;")

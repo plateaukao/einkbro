@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.view.dialog
 
 import android.app.Activity
+import android.app.AlertDialog
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,9 +24,12 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.StartPageItem
 import info.plateaukao.einkbro.unit.BookmarkRenderer
 import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * Flow behind the "+" tile on the built-in start page: add an item picked from
@@ -45,22 +49,39 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
             options.add(activity.getString(R.string.menu_delete))
         }
 
-        when (ListSettingWithNameDialog(activity, R.string.whitelist_add, options, -1).show()) {
+        when (showPlainListDialog(null, options)) {
             0 -> pickFromBookmarks()
             1 -> enterManually()
             2 -> removeItem()
         }
     }
 
+    // Simple tappable rows: no title bar clutter, no radio buttons
+    private suspend fun showPlainListDialog(titleId: Int?, names: List<String>): Int? =
+        suspendCoroutine { continuation ->
+            AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
+                titleId?.let { setTitle(it) }
+                setItems(names.toTypedArray()) { dialog, index ->
+                    dialog.dismiss()
+                    continuation.resume(index)
+                }
+                setOnCancelListener { continuation.resume(null) }
+            }.create().also { dialog ->
+                dialog.show()
+                dialog.window?.setLayout(
+                    300.dp(activity),
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
+        }
+
     private suspend fun pickFromBookmarks() {
         val bookmarks = bookmarkManager.getAllBookmarksOnly()
         if (bookmarks.isEmpty()) return
-        val index = ListSettingWithNameDialog(
-            activity,
+        val index = showPlainListDialog(
             R.string.start_page_pick_bookmark,
             bookmarks.map { it.title },
-            -1
-        ).show() ?: return
+        ) ?: return
         val bookmark = bookmarks.getOrNull(index) ?: return
         config.addStartPageItem(StartPageItem(bookmark.title, bookmark.url))
         BookmarkRenderer.loadStartPage(ebWebView)
@@ -120,12 +141,10 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
 
     private suspend fun removeItem() {
         val items = config.startPageItems
-        val index = ListSettingWithNameDialog(
-            activity,
+        val index = showPlainListDialog(
             R.string.menu_delete,
             items.map { it.title },
-            -1
-        ).show() ?: return
+        ) ?: return
         val item = items.getOrNull(index) ?: return
         config.removeStartPageItem(item.url)
         BookmarkRenderer.loadStartPage(ebWebView)
