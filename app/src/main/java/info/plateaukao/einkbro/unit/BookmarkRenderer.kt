@@ -74,15 +74,38 @@ object BookmarkRenderer : KoinComponent {
             </a>
             """
         }
+        val backgroundBytes = startPageBackgroundFile(context)
+            .takeIf { it.exists() }?.readBytes()
+        val sampledBackground = backgroundBytes?.let { decodeSampled(it) }
+        // with a background the image's own brightness picks the theme;
+        // without one the page follows the app's dark mode
+        val darkTheme =
+            if (sampledBackground != null) isDarkBitmap(sampledBackground)
+            else isAppDarkMode(context)
         // loadAssetFile keeps newlines (loadAssetFileToString strips them, which
         // would let the inline script's // comments swallow the rest of the page)
         return HelperUnit.loadAssetFile("start_page.html")
             .replace("{{TITLE}}", startPageTitle(context).escapeHtml())
-            .replace("{{BG_STYLE}}", backgroundStyle(context))
+            .replace("{{COLOR_SCHEME}}", if (darkTheme || backgroundBytes != null) "dark" else "light")
+            .replace("{{THEME_CLASS}}", if (darkTheme) "dark" else "")
+            .replace(
+                "{{BG_STYLE}}",
+                backgroundBytes?.let { backgroundStyle(it, sampledBackground, darkTheme) } ?: ""
+            )
             .replace("{{SEARCH_HINT}}", context.getString(R.string.main_omnibox_input_hint))
             .replace("{{ADD_LABEL}}", context.getString(R.string.whitelist_add))
             .replace("{{CONTENT}}", content)
     }
+
+    private fun isAppDarkMode(context: Context): Boolean =
+        when (config.display.darkMode) {
+            info.plateaukao.einkbro.preference.DarkMode.DISABLED -> false
+            info.plateaukao.einkbro.preference.DarkMode.FORCE_ON -> true
+            info.plateaukao.einkbro.preference.DarkMode.SYSTEM ->
+                context.resources.configuration.uiMode and
+                    android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                    android.content.res.Configuration.UI_MODE_NIGHT_YES
+        }
 
     // no extension: holds JPEG or PNG bytes depending on what was picked
     fun startPageBackgroundFile(context: Context): java.io.File =
@@ -143,10 +166,11 @@ object BookmarkRenderer : KoinComponent {
         false
     }
 
-    private fun backgroundStyle(context: Context): String {
-        val file = startPageBackgroundFile(context)
-        if (!file.exists()) return ""
-        val bytes = file.readBytes()
+    private fun backgroundStyle(
+        bytes: ByteArray,
+        sampledBitmap: android.graphics.Bitmap?,
+        darkTheme: Boolean,
+    ): String {
         val mime = if (bytes.size >= 4 &&
             bytes[0] == 0x89.toByte() && bytes[1] == 'P'.code.toByte() &&
             bytes[2] == 'N'.code.toByte() && bytes[3] == 'G'.code.toByte()
@@ -154,10 +178,13 @@ object BookmarkRenderer : KoinComponent {
         val base64 = android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
         // contain, not cover: show the whole image like its thumbnail instead
         // of a center crop. The letterbox areas above/below continue the
-        // image's own edge colors instead of showing bare white. A stacked
-        // white halo (not a solid backing) keeps the black text readable over
+        // image's own edge colors instead of showing bare page color. A halo
+        // in the page color (not a solid backing) keeps the text readable over
         // the image without boxing it in.
-        val (topColor, bottomColor) = backgroundEdgeColors(bytes)
+        val fallbackEdge = if (darkTheme) "#000000" else "#ffffff"
+        val topColor = sampledBitmap?.let { averageRowColor(it, 0) } ?: fallbackEdge
+        val bottomColor = sampledBitmap?.let { averageRowColor(it, it.height - 1) } ?: fallbackEdge
+        val halo = if (darkTheme) "#000" else "#fff"
         return """
         <style>
         html {
@@ -165,31 +192,41 @@ object BookmarkRenderer : KoinComponent {
                 url('data:$mime;base64,$base64') center center / contain no-repeat fixed,
                 linear-gradient(to bottom, $topColor 0%, $topColor 50%, $bottomColor 50%, $bottomColor 100%) fixed;
         }
-        body { background: transparent; }
+        body, body.dark { background: transparent; }
         .wordmark, .tile-name {
-            text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff, 0 0 10px #fff;
+            text-shadow: 0 0 2px $halo, 0 0 4px $halo, 0 0 6px $halo, 0 0 10px $halo;
         }
         .tile-icon, .tile-icon .fallback { background: #fff; }
         </style>
         """
     }
 
-    private val WHITE_EDGES = "#ffffff" to "#ffffff"
-
-    // average colors of the image's outermost pixel rows, used to extend the
-    // image into the letterbox areas; transparent pixels count as white
-    private fun backgroundEdgeColors(bytes: ByteArray): Pair<String, String> = runCatching {
+    // small decode for color/brightness analysis; resolution doesn't matter
+    private fun decodeSampled(bytes: ByteArray): android.graphics.Bitmap? = runCatching {
         val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
         android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
-        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return WHITE_EDGES
+        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null
         val options = android.graphics.BitmapFactory.Options().apply {
-            // color averaging doesn't need resolution; decode small and fast
             inSampleSize = maxOf(1, maxOf(bounds.outWidth, bounds.outHeight) / 64)
         }
-        val bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
-            ?: return WHITE_EDGES
-        averageRowColor(bitmap, 0) to averageRowColor(bitmap, bitmap.height - 1)
-    }.getOrDefault(WHITE_EDGES)
+        android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+    }.getOrNull()
+
+    // average perceived luminance; transparent pixels count as white
+    private fun isDarkBitmap(bitmap: android.graphics.Bitmap): Boolean {
+        var luma = 0.0
+        for (y in 0 until bitmap.height) {
+            for (x in 0 until bitmap.width) {
+                val pixel = bitmap.getPixel(x, y)
+                val alpha = android.graphics.Color.alpha(pixel) / 255.0
+                val r = android.graphics.Color.red(pixel) * alpha + 255 * (1 - alpha)
+                val g = android.graphics.Color.green(pixel) * alpha + 255 * (1 - alpha)
+                val b = android.graphics.Color.blue(pixel) * alpha + 255 * (1 - alpha)
+                luma += 0.299 * r + 0.587 * g + 0.114 * b
+            }
+        }
+        return luma / (bitmap.width * bitmap.height) < 128
+    }
 
     private fun averageRowColor(bitmap: android.graphics.Bitmap, y: Int): String {
         var r = 0.0

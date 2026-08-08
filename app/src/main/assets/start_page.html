@@ -2,6 +2,9 @@
 <head>
     <title>{{TITLE}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- declaring a scheme keeps WebView's algorithmic darkening from
+         re-darkening a page that already themes itself -->
+    <meta name="color-scheme" content="{{COLOR_SCHEME}}">
     <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html {
@@ -188,10 +191,28 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    /* dark theme: applied when the app is in dark mode, or when the chosen
+       background image is dark */
+    body.dark { background: #000; color: #fff; }
+    body.dark .wordmark { color: #fff; }
+    body.dark .search-wrap { border-color: #fff; background: #000; }
+    body.dark .search-bar svg { color: #fff; }
+    body.dark .search-bar input { color: #fff; }
+    body.dark .search-bar input::placeholder { color: #999; }
+    body.dark #fakeCaret { background: #fff; }
+    body.dark .sugg { border-top-color: #fff; }
+    body.dark .sugg .row:active { background: #333; }
+    body.dark .sugg .row + .row { border-top-color: #666; }
+    body.dark .sugg .u { color: #999; }
+    body.dark .tile { color: #fff; }
+    body.dark .tile-icon { background: #fff; }
+    /* the icon boxes stay white, so their content must stay dark */
+    body.dark .tile-icon svg { color: #000; }
+    body.dark .tile-icon .fallback { color: #000; }
     </style>
     {{BG_STYLE}}
 </head>
-<body>
+<body class="{{THEME_CLASS}}">
     <div class="top-spacer"></div>
     <a class="wordmark" href="einkbro://config_start_page">{{TITLE}}</a>
     <div class="search-wrap">
