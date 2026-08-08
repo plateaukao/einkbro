@@ -1,3 +1,10 @@
+### 16.1.1
+#### Features
+* Toolbar and tab bar hide automatically while the keyboard is up for web content, so the page keeps the remaining room; they return when the keyboard closes
+
+#### Fixes
+* Start page: the keyboard is no longer dismissed the moment the search box is focused on Android 17 devices
+
 ### 16.1.0
 #### Features
 * Built-in start page: a search box with the browser's own autosuggestions and a user-curated tile grid — add sites from bookmarks or by hand, tiles show the sites' favicons; available as a new-tab behavior option and the default homepage

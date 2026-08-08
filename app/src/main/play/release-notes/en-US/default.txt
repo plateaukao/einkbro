@@ -1,4 +1,3 @@
-• Built-in start page: search with the browser's own suggestions, plus your own site tiles with favicons — add from bookmarks or by hand
-• Start page available as new-tab behavior and default homepage
-• Menus stay readable on big screens
-• Now targets Android 16 (API 36)
+• Toolbar and tab bar hide while typing in web pages, giving content the room; restored when the keyboard closes
+• Fixed: start page keyboard was dismissed immediately on Android 17
+• Built-in start page with search suggestions and your own site tiles
