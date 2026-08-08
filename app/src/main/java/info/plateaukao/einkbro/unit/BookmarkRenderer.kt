@@ -1,7 +1,11 @@
 package info.plateaukao.einkbro.unit
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
+import android.os.Build
 import android.util.Log
+import androidx.core.view.WindowInsetsCompat
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.Constants
@@ -43,7 +47,7 @@ object BookmarkRenderer : KoinComponent {
         // start page (about:blank tabs are dropped from the saved album list)
         webView.loadDataWithBaseURL(
             Constants.START_PAGE_URL,
-            getStartPageContent(webView.context),
+            getStartPageContent(webView),
             "text/html",
             "utf-8",
             Constants.START_PAGE_URL
@@ -54,7 +58,8 @@ object BookmarkRenderer : KoinComponent {
     private fun startPageTitle(context: Context): String =
         config.startPageTitle.ifBlank { context.getString(R.string.app_name) }
 
-    private fun getStartPageContent(context: Context): String {
+    private fun getStartPageContent(webView: EBWebView): String {
+        val context = webView.context
         val content = config.startPageItems.joinToString(separator = "\n") {
             val name = it.title.escapeHtml()
             val initial = it.title.firstOrNull()?.uppercase()?.escapeHtml() ?: "#"
@@ -94,7 +99,31 @@ object BookmarkRenderer : KoinComponent {
             )
             .replace("{{SEARCH_HINT}}", context.getString(R.string.main_omnibox_input_hint))
             .replace("{{ADD_LABEL}}", context.getString(R.string.whitelist_add))
+            .replace("{{TOP_INSET}}", statusBarCssPx(webView).toString())
             .replace("{{CONTENT}}", content)
+    }
+
+    /**
+     * Status bar height in CSS pixels. On Android 15+ (targetSdk 35+) the
+     * window is forced edge-to-edge, so the page must pad its own content out
+     * from under the status bar — while the background image keeps covering the
+     * whole screen. Zero on older versions (the decor still keeps the WebView
+     * below the bar) and while the bar is hidden (fullscreen / hide statusbar).
+     * Reads zero while the view is not attached yet (tab restore during
+     * activity creation), so callers re-apply the value on page finish.
+     */
+    fun statusBarCssPx(view: android.view.View): Int {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return 0
+        var unwrapped: Context = view.context
+        while (unwrapped !is Activity && unwrapped is ContextWrapper) {
+            unwrapped = unwrapped.baseContext
+        }
+        val insets = view.rootWindowInsets
+            ?: (unwrapped as? Activity)?.window?.decorView?.rootWindowInsets
+            ?: return 0
+        val top = WindowInsetsCompat.toWindowInsetsCompat(insets)
+            .getInsets(WindowInsetsCompat.Type.statusBars()).top
+        return (top / view.resources.displayMetrics.density).toInt()
     }
 
     private fun isAppDarkMode(context: Context): Boolean =

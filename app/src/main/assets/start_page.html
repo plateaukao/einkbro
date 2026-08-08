@@ -7,6 +7,14 @@
     <meta name="color-scheme" content="{{COLOR_SCHEME}}">
     <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    /* status bar inset: the window is edge-to-edge on Android 15+, so the
+       content pads itself below the bar while the background image keeps
+       covering the whole screen. The template value can be 0 when the page is
+       rendered before the view is attached (tab restore); the browser sets the
+       definitive value on page finish. */
+    :root {
+        --top-inset: {{TOP_INSET}}px;
+    }
     html {
         height: 100%;
     }
@@ -20,7 +28,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 0 24px;
+        padding: var(--top-inset) 24px 0 24px;
     }
     /* while the search box is focused, give it and the suggestions the whole
        screen: everything else is hidden until blur */
@@ -31,7 +39,7 @@
         display: none;
     }
     body.searching {
-        padding-top: 16px;
+        padding-top: calc(var(--top-inset) + 16px);
     }
     .top-spacer { flex: 2; min-height: 24px; }
     .bottom-spacer { flex: 5; min-height: 24px; }

@@ -23,6 +23,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -58,6 +59,8 @@ import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.SystemBarIconsForBlackTopBar
+import info.plateaukao.einkbro.view.compose.scaffoldEdgeToEdgePadding
 import info.plateaukao.einkbro.viewmodel.HighlightViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -98,7 +101,9 @@ class HighlightsActivity : LocaleAwareComponentActivity() {
                         ?: HighlightsRoute.RouteArticles.name
                 )
 
+                SystemBarIconsForBlackTopBar()
                 Scaffold(
+                    modifier = Modifier.scaffoldEdgeToEdgePadding(),
                     topBar = {
                         HighlightsBar(
                             currentScreen = currentScreen,
@@ -346,6 +351,7 @@ fun HighlightsBar(
     navigateUp: () -> Unit,
 ) {
     TopAppBar(
+        windowInsets = AppBarDefaults.topAppBarWindowInsets,
         title = {
             Text(
                 stringResource(currentScreen.titleResId),

@@ -250,6 +250,16 @@ class EBWebViewClient(
         Log.d("ebWebViewClient", "onPageFinished: ${ebWebView.url}\n$url")
         webContentPostProcessor.postProcess(ebWebView, url)
 
+        // the start page rendered during tab restore reads a zero status bar
+        // inset (view not attached yet); re-apply the real value now
+        if (url.startsWith(Constants.START_PAGE_URL)) {
+            val topInset = BookmarkRenderer.statusBarCssPx(ebWebView)
+            ebWebView.evaluateJavascript(
+                "document.documentElement.style.setProperty('--top-inset', '${topInset}px')",
+                null,
+            )
+        }
+
         if (ebWebView.shouldHideTranslateContext) {
             ebWebView.postDelayed({
                 ebWebView.hideTranslateContext()

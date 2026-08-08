@@ -23,6 +23,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.MultitouchListener
 import info.plateaukao.einkbro.view.SwipeTouchListener
@@ -228,7 +229,45 @@ class ChromeSetupDelegate(
                 }
                 view.layoutParams = params
             }
+            updateTopInsetForPage(windowInsets)
             windowInsets
+        }
+    }
+
+    /**
+     * On Android 15+ (targetSdk 35+) the window is forced edge-to-edge, so a
+     * regular page would render under the transparent status bar and its web UI
+     * would be blocked; pad the content below the bar instead (the bar area
+     * shows the window background). The start page opts out: it stays behind
+     * the transparent bar for a full-bleed background and pads its own content
+     * (assets/start_page.html).
+     *
+     * The bottom is padded by the tappable inset: 3-button navigation is opaque
+     * and steals every tap aimed at the toolbar (#628), while gesture
+     * navigation just draws its pill over the app and reports no tappable
+     * inset. In hide-statusbar mode the insets listener already compensates
+     * with a bottom margin, so the padding stays out of it.
+     *
+     * Hidden bars (fullscreen mode, hide statusbar setting) report a zero
+     * inset, and older versions keep the decor-managed behavior, so both stay
+     * as before.
+     */
+    fun updateTopInsetForPage(insets: WindowInsetsCompat? = null) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return
+        val root = state.binding.root
+        val windowInsets = insets
+            ?: root.rootWindowInsets?.let { WindowInsetsCompat.toWindowInsetsCompat(it, root) }
+            ?: return
+        val isStartPage =
+            state.ebWebView.url?.startsWith(Constants.START_PAGE_URL) == true
+        val top =
+            if (isStartPage) 0
+            else windowInsets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+        val bottom =
+            if (config.ui.hideStatusbar) 0
+            else windowInsets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom
+        if (root.paddingTop != top || root.paddingBottom != bottom) {
+            root.setPadding(0, top, 0, bottom)
         }
     }
 
@@ -240,6 +279,8 @@ class ChromeSetupDelegate(
             if (keyboardDisplaying) controller?.maybeDisableTemporarily()
             else controller?.maybeEnableAgain()
             updateToolbarForKeyboard(keyboardDisplaying)
+            // tab switches and navigations all end in a layout pass; cheap check
+            updateTopInsetForPage()
 
             @Suppress("DEPRECATION")
             val isFullscreen = (activity.window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0

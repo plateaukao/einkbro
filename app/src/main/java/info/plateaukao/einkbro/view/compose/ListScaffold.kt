@@ -3,7 +3,13 @@ package info.plateaukao.einkbro.view.compose
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -32,7 +38,9 @@ fun ListScaffold(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     MyTheme {
+        SystemBarIconsForBlackTopBar()
         Scaffold(
+            modifier = Modifier.scaffoldEdgeToEdgePadding(),
             topBar = {
                 TopAppBar(
                     title = { Text(title, color = MaterialTheme.colors.onPrimary) },
@@ -46,12 +54,24 @@ fun ListScaffold(
                         }
                     },
                     actions = actions,
+                    windowInsets = AppBarDefaults.topAppBarWindowInsets,
                 )
             },
             content = content,
         )
     }
 }
+
+/**
+ * Edge-to-edge insets for a Scaffold whose TopAppBar is given
+ * AppBarDefaults.topAppBarWindowInsets: the body stays clear of the navigation
+ * bar while the app bar background extends behind the status bar. A no-op
+ * before Android 15, where the decor still consumes these insets.
+ */
+@Composable
+fun Modifier.scaffoldEdgeToEdgePadding(): Modifier = windowInsetsPadding(
+    WindowInsets.systemBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+)
 
 /** Centered placeholder for empty lists (was copy-pasted in four activities). */
 @Composable

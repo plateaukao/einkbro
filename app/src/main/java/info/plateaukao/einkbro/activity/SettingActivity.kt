@@ -17,6 +17,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -99,6 +100,8 @@ import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.SystemBarIconsForBlackTopBar
+import info.plateaukao.einkbro.view.compose.scaffoldEdgeToEdgePadding
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -189,10 +192,13 @@ class SettingActivity : FragmentActivity(), BackupOps {
                 var isSearching by rememberSaveable { mutableStateOf(false) }
                 var searchQuery by rememberSaveable { mutableStateOf("") }
 
+                SystemBarIconsForBlackTopBar()
                 Scaffold(
-                    modifier = Modifier.semantics {
-                        testTagsAsResourceId = true
-                    },
+                    modifier = Modifier
+                        .semantics {
+                            testTagsAsResourceId = true
+                        }
+                        .scaffoldEdgeToEdgePadding(),
                     topBar = {
                         if (isSearching) {
                             SearchSettingBar(
@@ -603,6 +609,7 @@ fun SettingBar(
     onSearch: () -> Unit,
 ) {
     TopAppBar(
+        windowInsets = AppBarDefaults.topAppBarWindowInsets,
         title = {
             Text(
                 stringResource(currentScreen.titleId),
@@ -647,6 +654,7 @@ fun SearchSettingBar(
 ) {
     val focusRequester = remember { FocusRequester() }
     TopAppBar(
+        windowInsets = AppBarDefaults.topAppBarWindowInsets,
         title = {
             TextField(
                 value = query,
