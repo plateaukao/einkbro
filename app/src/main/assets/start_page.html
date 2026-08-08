@@ -328,16 +328,34 @@
         });
 
         // the back key closes the soft keyboard without blurring the input,
-        // which would leave the page stuck in search mode; detect the viewport
-        // growing back and blur to restore the full start page
+        // which would leave the page stuck in search mode; blur when the
+        // viewport returns to its full keyboard-less height AFTER the keyboard
+        // was really up. Relative growth alone is not a usable signal: while
+        // the keyboard APPEARS, Android 17 applies the ime inset to the visual
+        // viewport before the window resize lands, then corrects
+        // (897 -> 172 -> 485 on a Pixel), and a grow-ratio check misreads that
+        // bounce and kills the keyboard it is reacting to. The browser also
+        // hides its toolbar while the keyboard is up, which grows the viewport
+        // mid-show, hence the keyboardSeen gate; the timer requires full
+        // height to hold for 100ms.
         if (window.visualViewport) {
-            var lastHeight = window.visualViewport.height;
+            var fullHeight = window.visualViewport.height;
+            var keyboardSeen = false;
+            var restoreTimer = null;
             window.visualViewport.addEventListener('resize', function() {
                 var height = window.visualViewport.height;
-                if (height > lastHeight * 1.2 && document.activeElement === input) {
-                    input.blur();
+                if (document.activeElement !== input) {
+                    fullHeight = height;  // keyboard-less height, tracks rotation
+                    keyboardSeen = false;
+                    return;
                 }
-                lastHeight = height;
+                if (height > fullHeight) fullHeight = height;  // toolbar hidden
+                clearTimeout(restoreTimer);
+                if (height < fullHeight * 0.7) {
+                    keyboardSeen = true;
+                } else if (keyboardSeen && height >= fullHeight * 0.9) {
+                    restoreTimer = setTimeout(function() { input.blur(); }, 100);
+                }
             });
         }
     })();
