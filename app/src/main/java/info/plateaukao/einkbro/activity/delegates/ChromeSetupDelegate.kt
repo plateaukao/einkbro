@@ -236,8 +236,10 @@ class ChromeSetupDelegate(
         val binding = state.binding
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             val controller = touchControllerInternal
-            if (inputBarDelegate.isKeyboardDisplaying()) controller?.maybeDisableTemporarily()
+            val keyboardDisplaying = inputBarDelegate.isKeyboardDisplaying()
+            if (keyboardDisplaying) controller?.maybeDisableTemporarily()
             else controller?.maybeEnableAgain()
+            updateToolbarForKeyboard(keyboardDisplaying)
 
             @Suppress("DEPRECATION")
             val isFullscreen = (activity.window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0
@@ -259,6 +261,31 @@ class ChromeSetupDelegate(
                     }
                 }
             }
+        }
+    }
+
+    private var toolbarHiddenForKeyboard = false
+
+    // While the soft keyboard is up for web content, hide the toolbar and tab
+    // bar so the page keeps the remaining room. Only when the WebView itself
+    // is being typed into: the url input bar and search-on-site panel live in
+    // the same toolbar area, and dialogs size their own window.
+    private fun updateToolbarForKeyboard(keyboardDisplaying: Boolean) {
+        val binding = state.binding
+        if (keyboardDisplaying) {
+            if (binding.appBar.isVisible &&
+                !state.searchOnSite &&
+                activity.hasWindowFocus() &&
+                activity.currentFocus is EBWebView
+            ) {
+                toolbarHiddenForKeyboard = true
+                binding.appBar.isVisible = false
+                binding.contentSeparator.isVisible = false
+            }
+        } else if (toolbarHiddenForKeyboard) {
+            toolbarHiddenForKeyboard = false
+            binding.appBar.isVisible = true
+            binding.contentSeparator.isVisible = true
         }
     }
 
