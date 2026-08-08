@@ -1,0 +1,40 @@
+Az EinkBro egy könnyű és gyors böngésző, amelyet E-Ink eszközökre terveztek, például e-könyv-olvasókra és jegyzettabletekre.
+
+E-Ink-re optimalizált olvasás
+* Lapozzon a képernyő széleinek érintésével vagy a hangerőgombokkal
+* Olvasó mód letisztult tipográfiával
+* Függőleges olvasási mód kínai, japán és koreai szövegekhez
+* Egyéni betűtípusok, betűméret-gomb és félkövér kapcsoló
+* Nagy kontrasztú ikonok, animációk nélkül
+
+AI-integráció
+* Beszélgessen az aktuális oldallal, foglaltassa össze, vagy futtasson többlépéses ügynökfolyamatokat
+* Hallgassa a cikkeket természetes felolvasóhangokkal
+* Fordítson oldalakat bekezdésenként vagy egymás melletti nézetben
+* Működik OpenAI, Gemini, Ollama és saját szerverekkel
+
+Felhasználói szkriptek
+* A beépített, Tampermonkey-stílusú motor futtatja a közösségi szkripteket (pl. a Greasy Fork oldalról)
+* GM APIs, szkriptenkénti menüparancsok, automatikus URL-egyeztetés és szkriptfrissítés
+
+Mentés és exportálás
+* Exportáljon oldalakat EPUB formátumba fejezetekkel és képekkel
+* Mentsen PDF-be tartalomjegyzék-bejegyzésekkel, vagy fűzzön oldalakat meglévő PDF-hez
+* Archiváljon MHT-ként, készítsen teljes oldalas képernyőképet, küldjön az Instapaper szolgáltatásba
+
+Testreszabható felület
+* Több mint 40 konfigurálható eszköztárművelet, húzással átrendezhető sorrendben
+* Eszköztár felül, alul vagy oldalt; egykezes használatra optimalizálva
+* Osztott képernyő, lebegő navigációs gomb, fejlett gesztusvezérlés
+* Korlátlan számú lap és teljes képernyős böngészés
+
+Adatvédelem és böngészés
+* Beépített reklámblokkoló
+* JavaScript- és cookie-engedélyezőlisták
+* Követési paraméterek eltávolítása, inkognitó mód, webhelyenkénti asztali mód
+
+Használható engedélyek
+* INTERNET: böngészőről van szó, így ez magától értetődő.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: weboldalak PDF vagy EPUB formátumban való mentéséhez és fájlok letöltéséhez.
+* INSTALL_SHORTCUT: webes parancsikonok elhelyezéséhez a kezdőképernyőn.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: csak akkor használatos, ha egy webhely helyadatot kér.

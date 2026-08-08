@@ -1,0 +1,40 @@
+EinkBro és un navegador lleuger i ràpid dissenyat per a dispositius E-Ink com ara lectors electrònics i tauletes de notes.
+
+Lectura optimitzada per a E-Ink
+* Toca les vores de la pantalla o fes servir les tecles de volum per passar pàgina
+* Mode de lectura amb tipografia neta
+* Mode de lectura vertical per a textos en xinès, japonès i coreà
+* Tipus de lletra personalitzats, botó de mida de lletra i negreta activable
+* Icones d'alt contrast i sense animacions
+
+Integració amb IA
+* Conversa amb la pàgina actual, resumeix-la o executa fluxos d'agent de diversos passos
+* Escolta els articles en veu alta amb veus sintètiques naturals
+* Tradueix pàgines paràgraf a paràgraf o en vista comparada
+* Funciona amb OpenAI, Gemini, Ollama i servidors personalitzats
+
+Scripts d'usuari
+* Motor integrat a l'estil de Tampermonkey que executa scripts de la comunitat (p. ex. de Greasy Fork)
+* GM APIs, ordres de menú per script, coincidència automàtica d'URL i actualitzacions de scripts
+
+Desa i exporta
+* Exporta pàgines a EPUB amb capítols i imatges
+* Desa com a PDF amb entrades d'índex o afegeix pàgines a un PDF existent
+* Arxiva en MHT, captura pàgines senceres, envia a Instapaper
+
+Interfície personalitzable
+* Més de 40 accions configurables a la barra d'eines, reordenables arrossegant
+* Barra d'eines a dalt, a baix o al costat; optimitzada per a l'ús amb una mà
+* Pantalla dividida, botó de navegació flotant, control avançat de gestos
+* Pestanyes il·limitades i navegació a pantalla completa
+
+Privadesa i navegació
+* Bloquejador d'anuncis integrat
+* Llistes blanques de JavaScript i cookies
+* Eliminació de paràmetres de seguiment, mode d'incògnit, mode d'escriptori per lloc web
+
+Permisos que es poden utilitzar
+* INTERNET: és un navegador, així que és d'esperar.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: per desar pàgines web com a PDF o EPUB i per baixar fitxers.
+* INSTALL_SHORTCUT: per afegir dreceres web a la pantalla d'inici.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: només s'utilitzen quan un lloc web sol·licita la ubicació.

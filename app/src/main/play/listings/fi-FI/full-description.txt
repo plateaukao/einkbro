@@ -1,0 +1,40 @@
+EinkBro on kevyt ja nopea selain, joka on suunniteltu E-Ink-laitteille, kuten lukulaitteille ja e-muistiinpanotableteille.
+
+E-Ink-optimoitu lukeminen
+* Käännä sivua napauttamalla näytön reunoja tai äänenvoimakkuusnäppäimillä
+* Lukutila selkeällä typografialla
+* Pystysuora lukutila kiinan-, japanin- ja koreankieliselle tekstille
+* Omat fontit, fonttikoon painike ja lihavoinnin vaihto
+* Suurikontrastiset kuvakkeet, ei animaatioita
+
+Tekoälyintegraatio
+* Keskustele avoimen sivun kanssa, tiivistä se tai suorita monivaiheisia agenttityönkulkuja
+* Kuuntele artikkeleita luonnollisilla teksti puheeksi -äänillä
+* Käännä sivut kappale kerrallaan tai rinnakkain
+* Toimii OpenAI-, Gemini- ja Ollama-palveluiden sekä omien palvelinten kanssa
+
+Käyttäjäskriptit
+* Sisäänrakennettu Tampermonkey-tyylinen moottori suorittaa yhteisön skriptejä (esim. Greasy Fork -palvelusta)
+* GM APIs, skriptikohtaiset valikkokomennot, automaattinen URL-osoitteiden tunnistus ja skriptipäivitykset
+
+Tallenna ja vie
+* Vie sivut EPUB-muotoon lukuineen ja kuvineen
+* Tallenna PDF-muodossa sisällysluettelomerkinnöin tai lisää sivuja olemassa olevaan PDF-tiedostoon
+* Arkistoi MHT-muodossa, ota koko sivun kuvakaappauksia, lähetä Instapaper-palveluun
+
+Muokattava käyttöliittymä
+* Yli 40 muokattavaa työkalupalkin toimintoa, järjestys vaihdettavissa vetämällä
+* Työkalupalkki ylhäällä, alhaalla tai sivussa; optimoitu yhden käden käyttöön
+* Jaettu näyttö, kelluva navigointipainike, edistynyt elehallinta
+* Rajaton määrä välilehtiä ja koko näytön selaus
+
+Yksityisyys ja selaaminen
+* Sisäänrakennettu mainosten esto
+* Sallittujen luettelot JavaScriptille ja cookieille
+* Seurantaparametrien poisto, incognito-tila, sivustokohtainen työpöytätila
+
+Mahdollisesti käytettävät käyttöoikeudet
+* INTERNET: kyseessä on selain, joten tämä on odotettua.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: verkkosivujen tallentamiseen PDF- tai EPUB-tiedostoina sekä tiedostojen lataamiseen.
+* INSTALL_SHORTCUT: verkkopikakuvakkeiden lisäämiseen aloitusnäytölle.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: käytetään vain, kun verkkosivusto pyytää sijaintia.

@@ -1,0 +1,40 @@
+EinkBro är en lätt och snabb webbläsare utformad för E-Ink-enheter som läsplattor och e-anteckningsplattor.
+
+Läsning optimerad för E-Ink
+* Tryck på skärmens kanter eller använd volymknapparna för att bläddra
+* Läsläge med ren typografi
+* Vertikalt läsläge för kinesisk, japansk och koreansk text
+* Egna typsnitt, knapp för textstorlek och fetstilsväxling
+* Ikoner med hög kontrast och inga animationer
+
+AI-integration
+* Chatta med den aktuella sidan, sammanfatta den eller kör agentflöden i flera steg
+* Lyssna på artiklar med naturliga text-till-tal-röster
+* Översätt sidor stycke för stycke eller sida vid sida
+* Fungerar med OpenAI, Gemini, Ollama och egna servrar
+
+Användarskript
+* Inbyggd motor i Tampermonkey-stil kör communityskript (t.ex. från Greasy Fork)
+* GM APIs, menykommandon per skript, automatisk URL-matchning och skriptuppdateringar
+
+Spara och exportera
+* Exportera sidor till EPUB med kapitel och bilder
+* Spara som PDF med innehållsförteckning eller lägg till sidor i en befintlig PDF
+* Arkivera som MHT, ta helsidesskärmdumpar, skicka till Instapaper
+
+Anpassningsbart gränssnitt
+* Över 40 konfigurerbara verktygsfältsåtgärder med dra-och-släpp-sortering
+* Verktygsfält uppe, nere eller på sidan; optimerat för enhandsanvändning
+* Delad skärm, flytande navigeringsknapp, avancerad geststyrning
+* Obegränsat antal flikar och surfning i helskärm
+
+Integritet och surfning
+* Inbyggd annonsblockerare
+* Vitlistor för JavaScript och cookies
+* Rensning av spårningsparametrar, inkognitoläge, skrivbordsläge per webbplats
+
+Behörigheter som kan användas
+* INTERNET: det är en webbläsare, så det är väntat.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: för att spara webbsidor som PDF- eller EPUB-filer och för att ladda ner filer.
+* INSTALL_SHORTCUT: för att lägga till webbgenvägar på hemskärmen.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: används endast när en webbplats begär platsinformation.

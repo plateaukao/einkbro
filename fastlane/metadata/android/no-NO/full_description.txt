@@ -1,0 +1,40 @@
+EinkBro er en lett og rask nettleser designet for E-Ink-enheter som lesebrett og e-notatbrett.
+
+Lesing optimalisert for E-Ink
+* Trykk på skjermkantene eller bruk volumknappene for å bla
+* Lesemodus med ren typografi
+* Vertikal lesemodus for kinesisk, japansk og koreansk tekst
+* Egne skrifttyper, knapp for skriftstørrelse og fet skrift av/på
+* Ikoner med høy kontrast og ingen animasjoner
+
+AI-integrasjon
+* Chat med den aktive siden, få den oppsummert, eller kjør agentarbeidsflyter i flere trinn
+* Få artikler lest høyt med naturlige tekst-til-tale-stemmer
+* Oversett sider avsnitt for avsnitt eller side om side
+* Fungerer med OpenAI, Gemini, Ollama og egne servere
+
+Brukerskript
+* Innebygd motor i Tampermonkey-stil kjører fellesskapsskript (f.eks. fra Greasy Fork)
+* GM APIs, menykommandoer per skript, automatisk URL-matching og skriptoppdateringer
+
+Lagre og eksporter
+* Eksporter sider til EPUB med kapitler og bilder
+* Lagre som PDF med innholdsfortegnelse, eller legg sider til en eksisterende PDF
+* Arkiver som MHT, ta skjermbilder av hele siden, send til Instapaper
+
+Tilpassbart grensesnitt
+* Over 40 konfigurerbare verktøylinjehandlinger med dra-og-slipp-sortering
+* Verktøylinje øverst, nederst eller på siden; optimalisert for enhåndsbruk
+* Delt skjerm, flytende navigasjonsknapp, avansert bevegelsesstyring
+* Ubegrenset antall faner og fullskjermsurfing
+
+Personvern og surfing
+* Innebygd annonseblokkering
+* Hvitelister for JavaScript og cookies
+* Fjerning av sporingsparametere, inkognitomodus, skrivebordsmodus per nettsted
+
+Tillatelser som kan bli brukt
+* INTERNET: det er en nettleser, så det er forventet.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: for å lagre nettsider som PDF- eller EPUB-filer og for å laste ned filer.
+* INSTALL_SHORTCUT: for å legge til websnarveier på startskjermen.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: brukes bare når et nettsted ber om posisjon.

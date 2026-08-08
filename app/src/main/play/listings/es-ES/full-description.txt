@@ -1,0 +1,40 @@
+EinkBro es un navegador ligero y rápido diseñado para dispositivos E-Ink como lectores electrónicos y tabletas de notas.
+
+Lectura optimizada para E-Ink
+* Toca los bordes de la pantalla o usa las teclas de volumen para pasar página
+* Modo de lectura con tipografía limpia
+* Modo de lectura vertical para textos en chino, japonés y coreano
+* Fuentes personalizadas, botón de tamaño de letra y negrita activable
+* Iconos de alto contraste y sin animaciones
+
+Integración con IA
+* Chatea con la página actual, resúmela o ejecuta flujos de agente de varios pasos
+* Escucha los artículos en voz alta con voces sintéticas naturales
+* Traduce páginas párrafo a párrafo o en vista comparada
+* Funciona con OpenAI, Gemini, Ollama y servidores personalizados
+
+Scripts de usuario
+* Motor integrado al estilo Tampermonkey que ejecuta scripts de la comunidad (p. ej. de Greasy Fork)
+* GM APIs, comandos de menú por script, coincidencia automática de URL y actualizaciones de scripts
+
+Guardar y exportar
+* Exporta páginas a EPUB con capítulos e imágenes
+* Guarda en PDF con entradas de índice o añade páginas a un PDF existente
+* Archiva en MHT, captura páginas completas, envía a Instapaper
+
+Interfaz personalizable
+* Más de 40 acciones configurables en la barra de herramientas, reordenables arrastrando
+* Barra de herramientas arriba, abajo o lateral; optimizada para usar con una mano
+* Pantalla dividida, botón de navegación flotante, control avanzado de gestos
+* Pestañas ilimitadas y navegación a pantalla completa
+
+Privacidad y navegación
+* Bloqueador de anuncios integrado
+* Listas blancas de JavaScript y cookies
+* Eliminación de parámetros de rastreo, modo incógnito, modo escritorio por sitio
+
+Permisos que pueden usarse
+* INTERNET: es un navegador, así que es de esperar.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: para guardar páginas web como PDF o EPUB y para descargar archivos.
+* INSTALL_SHORTCUT: para crear accesos directos web en la pantalla de inicio.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: solo se usan cuando un sitio web solicita la ubicación.

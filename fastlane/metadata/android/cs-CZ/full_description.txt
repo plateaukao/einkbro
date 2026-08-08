@@ -1,0 +1,40 @@
+EinkBro je lehký a rychlý prohlížeč navržený pro zařízení E-Ink, jako jsou čtečky e-knih a poznámkové tablety.
+
+Čtení optimalizované pro E-Ink
+* Otáčejte stránky klepnutím na okraje obrazovky nebo tlačítky hlasitosti
+* Režim čtečky s čistou typografií
+* Svislý režim čtení pro čínské, japonské a korejské texty
+* Vlastní písma, tlačítko velikosti písma a přepínač tučného textu
+* Kontrastní ikony a žádné animace
+
+Integrace AI
+* Povídejte si s aktuální stránkou, nechte si ji shrnout nebo spouštějte vícekrokové agentní postupy
+* Nechte si články předčítat přirozenými hlasy převodu textu na řeč
+* Překládejte stránky po odstavcích nebo vedle sebe
+* Funguje s OpenAI, Gemini, Ollama i vlastními servery
+
+Uživatelské skripty
+* Vestavěný engine ve stylu Tampermonkey spouští komunitní skripty (např. z Greasy Fork)
+* GM APIs, příkazy nabídky pro jednotlivé skripty, automatické porovnávání URL a aktualizace skriptů
+
+Ukládání a export
+* Exportujte stránky do EPUB s kapitolami a obrázky
+* Ukládejte do PDF s položkami obsahu nebo přidávejte stránky do existujícího PDF
+* Archivujte jako MHT, pořizujte snímky celé stránky, odesílejte do Instapaper
+
+Přizpůsobitelné rozhraní
+* Více než 40 konfigurovatelných akcí panelu nástrojů s řazením přetažením
+* Panel nástrojů nahoře, dole nebo na boku; pohodlné ovládání jednou rukou
+* Rozdělená obrazovka, plovoucí navigační tlačítko, pokročilé ovládání gesty
+* Neomezený počet karet a prohlížení na celou obrazovku
+
+Soukromí a prohlížení
+* Vestavěný blokátor reklam
+* Seznamy povolených pro JavaScript a cookies
+* Odstraňování sledovacích parametrů, anonymní režim, režim počítače pro jednotlivé weby
+
+Oprávnění, která mohou být použita
+* INTERNET: je to prohlížeč, takže je to samozřejmost.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: pro ukládání webových stránek do PDF nebo EPUB a pro stahování souborů.
+* INSTALL_SHORTCUT: pro přidávání zástupců webů na plochu.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: použito pouze tehdy, když web požádá o polohu.

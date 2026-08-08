@@ -1,0 +1,40 @@
+EinkBro to lekka i szybka przeglądarka stworzona dla urządzeń E-Ink, takich jak czytniki e-booków i tablety do notatek.
+
+Czytanie zoptymalizowane pod E-Ink
+* Przewracaj strony dotykiem krawędzi ekranu lub klawiszami głośności
+* Tryb czytelnika z przejrzystą typografią
+* Pionowy tryb czytania dla tekstów chińskich, japońskich i koreańskich
+* Własne czcionki, przycisk rozmiaru czcionki i przełącznik pogrubienia
+* Kontrastowe ikony i brak animacji
+
+Integracja z AI
+* Rozmawiaj z bieżącą stroną, streszczaj ją lub uruchamiaj wielokrokowe scenariusze agenta
+* Słuchaj artykułów czytanych naturalnymi głosami syntezatora mowy
+* Tłumacz strony akapit po akapicie lub w widoku obok siebie
+* Współpracuje z OpenAI, Gemini, Ollama i własnymi serwerami
+
+Skrypty użytkownika
+* Wbudowany silnik w stylu Tampermonkey uruchamia skrypty społeczności (np. z Greasy Fork)
+* GM APIs, polecenia menu dla każdego skryptu, automatyczne dopasowywanie URL i aktualizacje skryptów
+
+Zapisywanie i eksport
+* Eksportuj strony do EPUB z rozdziałami i obrazami
+* Zapisuj jako PDF z wpisami w spisie treści lub dołączaj strony do istniejącego PDF
+* Archiwizuj jako MHT, rób zrzuty całej strony, wysyłaj do Instapaper
+
+Konfigurowalny interfejs
+* Ponad 40 konfigurowalnych akcji paska narzędzi z układaniem przez przeciąganie
+* Pasek narzędzi u góry, u dołu lub z boku; wygodny w obsłudze jedną ręką
+* Podzielony ekran, pływający przycisk nawigacji, zaawansowane sterowanie gestami
+* Nieograniczona liczba kart i przeglądanie na pełnym ekranie
+
+Prywatność i przeglądanie
+* Wbudowana blokada reklam
+* Białe listy dla JavaScript i plików cookie
+* Usuwanie parametrów śledzących, tryb incognito, tryb komputerowy dla wybranych stron
+
+Uprawnienia, które mogą być używane
+* INTERNET: to przeglądarka, więc to oczywiste.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: do zapisywania stron jako pliki PDF lub EPUB oraz do pobierania plików.
+* INSTALL_SHORTCUT: do dodawania skrótów do stron na ekranie głównym.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: używane tylko wtedy, gdy strona prosi o lokalizację.

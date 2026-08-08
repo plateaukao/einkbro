@@ -1,0 +1,40 @@
+EinkBro ist ein leichter, schneller Browser für E-Ink-Geräte wie E-Reader und E-Note-Tablets.
+
+Optimiertes Lesen auf E-Ink
+* Zum Umblättern auf die Bildschirmränder tippen oder die Lautstärketasten nutzen
+* Lesemodus mit klarer Typografie
+* Vertikaler Lesemodus für chinesische, japanische und koreanische Texte
+* Eigene Schriftarten, Schriftgrößen-Button und Fettdruck-Umschalter
+* Kontrastreiche Symbole und keine Animationen
+
+KI-Integration
+* Mit der aktuellen Seite chatten, sie zusammenfassen oder mehrstufige Agenten-Workflows ausführen
+* Artikel mit natürlichen Text-zu-Sprache-Stimmen vorlesen lassen
+* Seiten absatzweise oder nebeneinander übersetzen
+* Funktioniert mit OpenAI, Gemini, Ollama und eigenen Servern
+
+Userscripts
+* Integrierte Engine im Tampermonkey-Stil führt Community-Skripte aus (z. B. von Greasy Fork)
+* GM APIs, Menübefehle pro Skript, automatischer URL-Abgleich und Skript-Updates
+
+Speichern und Exportieren
+* Seiten als EPUB mit Kapiteln und Bildern exportieren
+* Als PDF mit Inhaltsverzeichnis speichern oder Seiten an ein bestehendes PDF anhängen
+* Als MHT archivieren, ganzseitige Screenshots aufnehmen, an Instapaper senden
+
+Anpassbare Oberfläche
+* Über 40 konfigurierbare Toolbar-Aktionen mit Anordnung per Drag-and-drop
+* Toolbar oben, unten oder seitlich; optimiert für die Einhandbedienung
+* Geteilte Bildschirmansicht, schwebende Navigationstaste, erweiterte Gestensteuerung
+* Unbegrenzte Tabs und Browsen im Vollbild
+
+Privatsphäre und Browsen
+* Integrierter Werbeblocker
+* Whitelists für JavaScript und Cookies
+* Entfernen von Tracking-Parametern, Inkognito-Modus, Desktop-Modus pro Website
+
+Möglicherweise verwendete Berechtigungen
+* INTERNET: Es ist ein Browser, also selbstverständlich.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: zum Speichern von Webseiten als PDF- oder EPUB-Dateien und zum Herunterladen von Dateien.
+* INSTALL_SHORTCUT: zum Anlegen von Web-Verknüpfungen auf dem Startbildschirm.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: wird nur verwendet, wenn eine Website den Standort anfragt.

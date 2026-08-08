@@ -1,0 +1,40 @@
+EinkBro est un navigateur léger et rapide conçu pour les appareils E-Ink tels que les liseuses et les tablettes de prise de notes.
+
+Lecture optimisée pour E-Ink
+* Touchez les bords de l'écran ou utilisez les touches de volume pour tourner les pages
+* Mode lecture avec une typographie épurée
+* Mode de lecture verticale pour les textes chinois, japonais et coréens
+* Polices personnalisées, bouton de taille de police et gras activable
+* Icônes à fort contraste et aucune animation
+
+Intégration de l'IA
+* Discutez avec la page ouverte, résumez-la ou lancez des flux d'agents en plusieurs étapes
+* Écoutez les articles lus à voix haute avec des voix de synthèse naturelles
+* Traduisez les pages paragraphe par paragraphe ou côte à côte
+* Compatible avec OpenAI, Gemini, Ollama et des serveurs personnalisés
+
+Scripts utilisateur
+* Moteur intégré de type Tampermonkey pour exécuter les scripts de la communauté (p. ex. depuis Greasy Fork)
+* GM APIs, commandes de menu par script, correspondance d'URL et mises à jour automatiques des scripts
+
+Enregistrement et export
+* Exportez les pages en EPUB avec chapitres et images
+* Enregistrez en PDF avec entrées de table des matières, ou ajoutez des pages à un PDF existant
+* Archivez en MHT, capturez des pages entières, envoyez vers Instapaper
+
+Interface personnalisable
+* Plus de 40 actions de barre d'outils configurables, réorganisables par glissement
+* Barre d'outils en haut, en bas ou sur le côté ; optimisée pour une utilisation à une main
+* Écran partagé, bouton de navigation flottant, contrôle gestuel avancé
+* Onglets illimités et navigation en plein écran
+
+Confidentialité et navigation
+* Bloqueur de publicités intégré
+* Listes blanches pour JavaScript et les cookies
+* Suppression des paramètres de suivi, mode navigation privée, mode bureau par site
+
+Autorisations pouvant être utilisées
+* INTERNET : c'est un navigateur, c'est donc attendu.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE : pour enregistrer des pages web en PDF ou EPUB, et pour télécharger des fichiers.
+* INSTALL_SHORTCUT : pour installer des raccourcis web sur l'écran d'accueil.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION : utilisées uniquement lorsqu'un site web demande la localisation.

@@ -1,0 +1,40 @@
+EinkBro is 'n ligte, vinnige blaaier wat ontwerp is vir E-Ink-toestelle soos e-lesers en e-notatablette.
+
+E-Ink-geoptimaliseerde lees
+* Tik op die skermrande of gebruik die volumeknoppies om te blaai
+* Leesmodus met skoon tipografie
+* Vertikale leesmodus vir Chinese, Japannese en Koreaanse teks
+* Eie lettertipes, lettergrootteknoppie en vetdruk-skakelaar
+* Hoëkontras-ikone en geen animasies nie
+
+KI-integrasie
+* Gesels met die huidige bladsy, som dit op, of voer meerstap-agentwerkvloeie uit
+* Laat artikels voorlees met natuurlike teks-na-spraak-stemme
+* Vertaal bladsye paragraaf vir paragraaf of sy aan sy
+* Werk met OpenAI, Gemini, Ollama en eie bedieners
+
+Gebruikerskripte
+* Ingeboude enjin in Tampermonkey-styl voer gemeenskapskripte uit (bv. van Greasy Fork)
+* GM APIs, kieslysopdragte per skrip, outomatiese URL-passing en skripopdaterings
+
+Stoor en uitvoer
+* Voer bladsye uit as EPUB met hoofstukke en beelde
+* Stoor as PDF met inhoudsopgawe-inskrywings, of heg bladsye aan 'n bestaande PDF
+* Argiveer as MHT, neem volbladsy-skermkiekies, stuur na Instapaper
+
+Aanpasbare koppelvlak
+* Meer as 40 instelbare nutsbalkaksies met sleep-en-rangskik
+* Nutsbalk bo, onder of aan die kant; geoptimaliseer vir eenhandgebruik
+* Verdeelde skermaansig, swewende navigasieknoppie, gevorderde gebaarbeheer
+* Onbeperkte oortjies en volskermblaai
+
+Privaatheid en blaai
+* Ingeboude advertensieblokkeerder
+* Witlyste vir JavaScript en cookies
+* Verwydering van naspoorparameters, inkognitomodus, rekenaarmodus per webwerf
+
+Toestemmings wat gebruik kan word
+* INTERNET: dit is 'n blaaier, dus te verwagte.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: om webbladsye as PDF- of EPUB-lêers te stoor en om lêers af te laai.
+* INSTALL_SHORTCUT: om webkortpaaie op die tuisskerm te installeer.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: word slegs gebruik wanneer 'n webwerf ligging versoek.

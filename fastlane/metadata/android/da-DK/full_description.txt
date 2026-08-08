@@ -1,0 +1,40 @@
+EinkBro er en let og hurtig browser designet til E-Ink-enheder som e-boglæsere og e-notat-tablets.
+
+Læsning optimeret til E-Ink
+* Tryk på skærmens kanter, eller brug volumenknapperne til at bladre
+* Læsetilstand med ren typografi
+* Lodret læsetilstand til kinesisk, japansk og koreansk tekst
+* Egne skrifttyper, knap til skriftstørrelse og fed skrift til/fra
+* Ikoner med høj kontrast og ingen animationer
+
+AI-integration
+* Chat med den aktuelle side, få den opsummeret, eller kør agent-arbejdsgange i flere trin
+* Få artikler læst højt med naturlige tekst-til-tale-stemmer
+* Oversæt sider afsnit for afsnit eller side om side
+* Fungerer med OpenAI, Gemini, Ollama og egne servere
+
+Brugerscripts
+* Indbygget motor i Tampermonkey-stil kører community-scripts (f.eks. fra Greasy Fork)
+* GM APIs, menukommandoer pr. script, automatisk URL-matchning og scriptopdateringer
+
+Gem og eksportér
+* Eksportér sider til EPUB med kapitler og billeder
+* Gem som PDF med indholdsfortegnelse, eller føj sider til en eksisterende PDF
+* Arkivér som MHT, tag skærmbilleder af hele siden, send til Instapaper
+
+Brugerdefineret grænseflade
+* Over 40 konfigurerbare værktøjslinjehandlinger med træk-og-slip-sortering
+* Værktøjslinje øverst, nederst eller i siden; optimeret til enhåndsbetjening
+* Delt skærm, svævende navigationsknap, avanceret gestusstyring
+* Ubegrænset antal faner og browsing i fuld skærm
+
+Privatliv og browsing
+* Indbygget annonceblokering
+* Hvidlister til JavaScript og cookies
+* Fjernelse af sporingsparametre, inkognitotilstand, skrivebordstilstand pr. websted
+
+Tilladelser, der kan blive brugt
+* INTERNET: det er en browser, så det er forventet.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: til at gemme websider som PDF- eller EPUB-filer og til at downloade filer.
+* INSTALL_SHORTCUT: til at oprette webgenveje på startskærmen.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: bruges kun, når et websted anmoder om placering.

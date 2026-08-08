@@ -1,0 +1,40 @@
+EinkBro è un browser leggero e veloce progettato per dispositivi E-Ink come e-reader e tablet per appunti.
+
+Lettura ottimizzata per E-Ink
+* Tocca i bordi dello schermo o usa i tasti del volume per voltare pagina
+* Modalità lettura con tipografia pulita
+* Modalità di lettura verticale per testi in cinese, giapponese e coreano
+* Caratteri personalizzati, pulsante per la dimensione del testo e grassetto attivabile
+* Icone ad alto contrasto e nessuna animazione
+
+Integrazione con l'IA
+* Chatta con la pagina corrente, riassumila o esegui flussi di agenti in più passaggi
+* Ascolta gli articoli letti ad alta voce con voci sintetiche naturali
+* Traduci le pagine paragrafo per paragrafo o in vista affiancata
+* Funziona con OpenAI, Gemini, Ollama e server personalizzati
+
+Script utente
+* Motore integrato in stile Tampermonkey per eseguire gli script della community (ad es. da Greasy Fork)
+* GM APIs, comandi di menu per script, corrispondenza automatica degli URL e aggiornamenti automatici degli script
+
+Salvataggio ed esportazione
+* Esporta le pagine in EPUB con capitoli e immagini
+* Salva in PDF con voci di indice, oppure aggiungi pagine a un PDF esistente
+* Archivia in MHT, cattura screenshot a pagina intera, invia a Instapaper
+
+Interfaccia personalizzabile
+* Oltre 40 azioni configurabili nella barra degli strumenti, riordinabili col trascinamento
+* Barra degli strumenti in alto, in basso o di lato; ottimizzata per l'uso con una mano
+* Schermo diviso, pulsante di navigazione flottante, controllo avanzato dei gesti
+* Schede illimitate e navigazione a schermo intero
+
+Privacy e navigazione
+* Blocco pubblicità integrato
+* Liste consentite per JavaScript e cookie
+* Rimozione dei parametri di tracciamento, modalità in incognito, modalità desktop per sito
+
+Autorizzazioni che possono essere usate
+* INTERNET: è un browser, quindi è prevedibile.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: per salvare le pagine web come file PDF o EPUB e per scaricare file.
+* INSTALL_SHORTCUT: per aggiungere scorciatoie web alla schermata Home.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: usate solo quando un sito web richiede la posizione.

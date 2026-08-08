@@ -1,0 +1,40 @@
+EinkBro adalah peramban ringan dan cepat yang dirancang untuk perangkat E-Ink seperti e-reader dan tablet catatan elektronik.
+
+Membaca yang dioptimalkan untuk E-Ink
+* Ketuk tepi layar atau gunakan tombol volume fisik untuk berpindah halaman
+* Mode baca dengan tipografi yang bersih
+* Mode baca vertikal untuk teks CJK (Tionghoa, Jepang, Korea)
+* Font kustom, tombol ukuran huruf, dan pengalih huruf tebal
+* Ikon kontras tinggi tanpa animasi
+
+Integrasi AI
+* Mengobrol dengan halaman yang sedang dibuka, meringkasnya, atau menjalankan alur kerja agen multi-langkah
+* Membacakan artikel dengan suara text-to-speech yang alami
+* Menerjemahkan halaman per paragraf atau berdampingan
+* Mendukung OpenAI, Gemini, Ollama, dan server kustom
+
+Userscript
+* Mesin bergaya Tampermonkey bawaan menjalankan skrip komunitas (mis. dari Greasy Fork)
+* GM APIs, perintah menu per skrip, pencocokan URL otomatis, dan pembaruan skrip otomatis
+
+Simpan dan ekspor
+* Ekspor halaman ke EPUB lengkap dengan bab dan gambar
+* Simpan sebagai PDF dengan entri daftar isi, atau tambahkan halaman ke PDF yang sudah ada
+* Arsipkan sebagai MHT, ambil tangkapan layar halaman penuh, kirim ke Instapaper
+
+UI yang dapat disesuaikan
+* Lebih dari 40 aksi bilah alat yang dapat diurutkan ulang dengan menyeret
+* Bilah alat di atas, bawah, atau samping; dioptimalkan untuk satu tangan
+* Tampilan layar terbagi, tombol navigasi mengambang, kontrol gestur tingkat lanjut
+* Tab tanpa batas dan penjelajahan layar penuh
+
+Privasi dan penjelajahan
+* Pemblokir iklan bawaan
+* Daftar putih JavaScript dan Cookie
+* Pembersihan parameter pelacak, mode penyamaran, mode desktop per situs
+
+Izin yang mungkin digunakan
+* INTERNET: ini peramban, jadi sudah sewajarnya.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: untuk menyimpan halaman web sebagai berkas PDF atau EPUB, dan untuk mengunduh berkas.
+* INSTALL_SHORTCUT: untuk memasang pintasan web di layar utama.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: hanya digunakan saat situs web meminta lokasi.

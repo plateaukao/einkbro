@@ -1,0 +1,40 @@
+O EinkBro é um navegador leve e rápido, concebido para dispositivos E-Ink como e-readers e tablets de notas eletrónicas.
+
+Leitura otimizada para E-Ink
+* Toque nas margens do ecrã ou use as teclas de volume para mudar de página
+* Modo de leitura com tipografia limpa
+* Modo de leitura vertical para texto chinês, japonês e coreano
+* Tipos de letra personalizados, botão de tamanho de letra e alternador de negrito
+* Ícones de alto contraste e sem animações
+
+Integração de IA
+* Converse com a página atual, resuma-a ou execute fluxos de agente em vários passos
+* Ouça artigos lidos em voz alta com vozes naturais de texto para voz
+* Traduza páginas parágrafo a parágrafo ou lado a lado
+* Funciona com OpenAI, Gemini, Ollama e servidores personalizados
+
+Scripts de utilizador
+* Motor integrado ao estilo Tampermonkey executa scripts da comunidade (p. ex., do Greasy Fork)
+* GM APIs, comandos de menu por script, correspondência automática de URL e atualização de scripts
+
+Guardar e exportar
+* Exporte páginas para EPUB com capítulos e imagens
+* Guarde como PDF com entradas de índice ou acrescente páginas a um PDF existente
+* Arquive como MHT, capture o ecrã da página inteira, envie para o Instapaper
+
+Interface personalizável
+* Mais de 40 ações da barra de ferramentas configuráveis, com reordenação por arrastar
+* Barra de ferramentas em cima, em baixo ou ao lado; otimizada para uso com uma mão
+* Vista de ecrã dividido, botão de navegação flutuante, controlo avançado por gestos
+* Separadores ilimitados e navegação em ecrã inteiro
+
+Privacidade e navegação
+* Bloqueador de anúncios integrado
+* Listas de permissões para JavaScript e cookies
+* Remoção de parâmetros de rastreio, modo anónimo, modo de computador por site
+
+Permissões que podem ser utilizadas
+* INTERNET: é um navegador, por isso é de esperar.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: para guardar páginas web como ficheiros PDF ou EPUB e para transferir ficheiros.
+* INSTALL_SHORTCUT: para instalar atalhos de páginas web no ecrã inicial.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: usadas apenas quando um site pede a localização.

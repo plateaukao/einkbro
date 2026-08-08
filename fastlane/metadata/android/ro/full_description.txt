@@ -1,0 +1,40 @@
+EinkBro este un browser ușor și rapid, conceput pentru dispozitive E-Ink precum e-readerele și tabletele pentru notițe.
+
+Lectură optimizată pentru E-Ink
+* Atinge marginile ecranului sau folosește tastele de volum pentru a întoarce paginile
+* Mod de citire cu tipografie curată
+* Mod de citire verticală pentru texte în chineză, japoneză și coreeană
+* Fonturi personalizate, buton pentru dimensiunea textului și comutator pentru aldine
+* Pictograme cu contrast ridicat și fără animații
+
+Integrare cu IA
+* Conversează cu pagina curentă, rezum-o sau rulează fluxuri de agent în mai mulți pași
+* Ascultă articolele citite cu voce tare, cu voci sintetice naturale
+* Tradu paginile paragraf cu paragraf sau în vizualizare alăturată
+* Funcționează cu OpenAI, Gemini, Ollama și servere personalizate
+
+Scripturi de utilizator
+* Motor integrat în stil Tampermonkey care rulează scripturi ale comunității (de ex. de pe Greasy Fork)
+* GM APIs, comenzi de meniu per script, potrivire automată a URL-urilor și actualizări automate ale scripturilor
+
+Salvare și export
+* Exportă paginile în EPUB, cu capitole și imagini
+* Salvează ca PDF cu intrări în cuprins sau adaugă pagini la un PDF existent
+* Arhivează ca MHT, capturează pagini întregi, trimite către Instapaper
+
+Interfață personalizabilă
+* Peste 40 de acțiuni configurabile în bara de instrumente, reordonabile prin tragere
+* Bară de instrumente sus, jos sau lateral; optimizată pentru utilizarea cu o singură mână
+* Ecran împărțit, buton de navigare flotant, control avansat prin gesturi
+* File nelimitate și navigare pe tot ecranul
+
+Confidențialitate și navigare
+* Blocare integrată a reclamelor
+* Liste albe pentru JavaScript și cookie-uri
+* Eliminarea parametrilor de urmărire, mod incognito, mod desktop per site
+
+Permisiuni care pot fi folosite
+* INTERNET: este un browser, deci e de așteptat.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: pentru salvarea paginilor web ca PDF sau EPUB și pentru descărcarea fișierelor.
+* INSTALL_SHORTCUT: pentru a adăuga scurtături web pe ecranul de start.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: folosite doar când un site web solicită locația.

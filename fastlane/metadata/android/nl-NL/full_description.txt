@@ -1,0 +1,40 @@
+EinkBro is een lichte, snelle browser ontworpen voor E-Ink-apparaten zoals e-readers en e-note-tablets.
+
+Geoptimaliseerd lezen op E-Ink
+* Tik op de schermranden of gebruik de volumeknoppen om te bladeren
+* Leesmodus met rustige typografie
+* Verticale leesmodus voor Chinese, Japanse en Koreaanse tekst
+* Eigen lettertypen, knop voor lettergrootte en vetgedrukt-schakelaar
+* Contrastrijke pictogrammen en geen animaties
+
+AI-integratie
+* Chat met de huidige pagina, vat deze samen of voer meerstaps-agentworkflows uit
+* Laat artikelen voorlezen met natuurlijke tekst-naar-spraakstemmen
+* Vertaal pagina's per alinea of naast elkaar
+* Werkt met OpenAI, Gemini, Ollama en eigen servers
+
+Userscripts
+* Ingebouwde engine in Tampermonkey-stijl voert communityscripts uit (bijv. van Greasy Fork)
+* GM APIs, menuopdrachten per script, automatische URL-herkenning en scriptupdates
+
+Opslaan en exporteren
+* Exporteer pagina's naar EPUB met hoofdstukken en afbeeldingen
+* Sla op als PDF met inhoudsopgave of voeg pagina's toe aan een bestaande PDF
+* Archiveer als MHT, maak schermafbeeldingen van de hele pagina, stuur naar Instapaper
+
+Aanpasbare interface
+* Ruim 40 instelbare werkbalkacties, te ordenen door te slepen
+* Werkbalk boven, onder of opzij; geoptimaliseerd voor bediening met één hand
+* Gesplitste weergave, zwevende navigatieknop, geavanceerde gebarenbediening
+* Onbeperkt aantal tabbladen en browsen op volledig scherm
+
+Privacy en browsen
+* Ingebouwde advertentieblokkering
+* Whitelists voor JavaScript en cookies
+* Verwijderen van trackingparameters, incognitomodus, desktopmodus per site
+
+Machtigingen die gebruikt kunnen worden
+* INTERNET: het is een browser, dus vanzelfsprekend.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: voor het opslaan van webpagina's als PDF- of EPUB-bestand en voor het downloaden van bestanden.
+* INSTALL_SHORTCUT: om websnelkoppelingen op het startscherm te plaatsen.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: alleen gebruikt wanneer een website om locatie vraagt.

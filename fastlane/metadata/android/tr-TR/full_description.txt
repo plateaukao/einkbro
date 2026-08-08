@@ -1,0 +1,40 @@
+EinkBro, e-okuyucular ve e-not tabletleri gibi E-Ink cihazlar için tasarlanmış hafif ve hızlı bir tarayıcıdır.
+
+E-Ink için optimize edilmiş okuma
+* Sayfa çevirmek için ekran kenarlarına dokunun veya fiziksel ses tuşlarını kullanın
+* Sade tipografiye sahip okuyucu modu
+* CJK (Çince, Japonca, Korece) metinler için dikey okuma modu
+* Özel yazı tipleri, yazı boyutu düğmesi ve kalın yazı geçişi
+* Yüksek kontrastlı simgeler, animasyon yok
+
+AI entegrasyonu
+* Geçerli sayfayla sohbet edin, özetleyin veya çok adımlı ajan iş akışları çalıştırın
+* Makaleleri doğal metin okuma sesleriyle dinleyin
+* Sayfaları paragraf paragraf veya yan yana çevirin
+* OpenAI, Gemini, Ollama ve özel sunucularla çalışır
+
+Kullanıcı betikleri
+* Yerleşik Tampermonkey tarzı motor, topluluk betiklerini çalıştırır (ör. Greasy Fork)
+* GM APIs, betik başına menü komutları, otomatik URL eşleştirme ve otomatik betik güncellemeleri
+
+Kaydetme ve dışa aktarma
+* Sayfaları bölümler ve görsellerle EPUB olarak dışa aktarın
+* İçindekiler girişleriyle PDF olarak kaydedin veya sayfaları mevcut bir PDF'ye ekleyin
+* MHT olarak arşivleyin, tam sayfa ekran görüntüsü alın, Instapaper'a gönderin
+
+Özelleştirilebilir arayüz
+* Sürükleyerek sıralanabilen 40'tan fazla araç çubuğu eylemi
+* Araç çubuğu üstte, altta veya yanda; tek elle kullanım için optimize
+* Bölünmüş ekran görünümü, yüzen gezinme düğmesi, gelişmiş hareket kontrolü
+* Sınırsız sekme ve tam ekran gezinme
+
+Gizlilik ve gezinme
+* Yerleşik reklam engelleyici
+* JavaScript ve Cookie beyaz listeleri
+* İzleme parametrelerini temizleme, gizli mod, siteye özel masaüstü modu
+
+Kullanılabilecek izinler
+* INTERNET: bu bir tarayıcı, dolayısıyla gerekli.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: web sayfalarını PDF veya EPUB olarak kaydetmek ve dosya indirmek için.
+* INSTALL_SHORTCUT: ana ekrana web kısayolları eklemek için.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: yalnızca bir web sitesi konum istediğinde kullanılır.

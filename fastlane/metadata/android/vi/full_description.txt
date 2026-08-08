@@ -1,0 +1,40 @@
+EinkBro là trình duyệt nhẹ và nhanh, được thiết kế cho các thiết bị E-Ink như máy đọc sách và máy tính bảng ghi chú điện tử.
+
+Đọc tối ưu cho E-Ink
+* Chạm vào mép màn hình hoặc dùng phím âm lượng để lật trang
+* Chế độ đọc với kiểu chữ gọn gàng, dễ đọc
+* Chế độ đọc dọc cho văn bản CJK (Trung, Nhật, Hàn)
+* Phông chữ tùy chỉnh, nút chỉnh cỡ chữ, bật/tắt chữ đậm
+* Biểu tượng tương phản cao, không hiệu ứng động
+
+Tích hợp AI
+* Trò chuyện với trang hiện tại, tóm tắt nội dung hoặc chạy quy trình agent nhiều bước
+* Đọc bài viết bằng giọng nói tự nhiên
+* Dịch trang theo từng đoạn hoặc hiển thị song song
+* Hỗ trợ OpenAI, Gemini, Ollama và máy chủ tùy chỉnh
+
+Userscript
+* Công cụ kiểu Tampermonkey tích hợp sẵn, chạy được các script cộng đồng (ví dụ từ Greasy Fork)
+* Hỗ trợ GM APIs, lệnh menu cho từng script, tự động khớp URL và tự động cập nhật script
+
+Lưu và xuất
+* Xuất trang thành EPUB kèm chương và hình ảnh
+* Lưu thành PDF có mục lục, hoặc nối thêm trang vào PDF sẵn có
+* Lưu trữ dưới dạng MHT, chụp ảnh toàn trang, gửi tới Instapaper
+
+Giao diện tùy biến
+* Hơn 40 thao tác trên thanh công cụ, sắp xếp lại bằng cách kéo thả
+* Thanh công cụ đặt ở trên, dưới hoặc bên cạnh; tối ưu cho thao tác một tay
+* Chia đôi màn hình, nút điều hướng nổi, điều khiển cử chỉ nâng cao
+* Không giới hạn thẻ và duyệt web toàn màn hình
+
+Quyền riêng tư và duyệt web
+* Chặn quảng cáo tích hợp sẵn
+* Danh sách trắng cho JavaScript và Cookie
+* Loại bỏ tham số theo dõi, chế độ ẩn danh, chế độ máy tính cho từng trang web
+
+Các quyền có thể được sử dụng
+* INTERNET: đây là trình duyệt nên quyền này là hiển nhiên.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: để lưu trang web thành tệp PDF hoặc EPUB và tải tệp về.
+* INSTALL_SHORTCUT: để tạo lối tắt trang web trên màn hình chính.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: chỉ dùng khi trang web yêu cầu vị trí.

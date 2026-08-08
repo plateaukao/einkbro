@@ -1,0 +1,40 @@
+O EinkBro é um navegador leve e rápido, projetado para dispositivos E-Ink como leitores digitais e tablets de anotações.
+
+Leitura otimizada para E-Ink
+* Toque nas bordas da tela ou use as teclas de volume para virar as páginas
+* Modo de leitura com tipografia limpa
+* Modo de leitura vertical para texto chinês, japonês e coreano
+* Fontes personalizadas, botão de tamanho de fonte e alternância de negrito
+* Ícones de alto contraste e sem animações
+
+Integração com IA
+* Converse com a página atual, resuma o conteúdo ou execute fluxos de agente em várias etapas
+* Ouça artigos em voz alta com vozes naturais de conversão de texto em fala
+* Traduza páginas parágrafo por parágrafo ou lado a lado
+* Funciona com OpenAI, Gemini, Ollama e servidores personalizados
+
+Scripts de usuário
+* Mecanismo integrado no estilo Tampermonkey executa scripts da comunidade (por exemplo, do Greasy Fork)
+* GM APIs, comandos de menu por script, correspondência automática de URL e atualização de scripts
+
+Salvar e exportar
+* Exporte páginas para EPUB com capítulos e imagens
+* Salve como PDF com entradas de sumário ou anexe páginas a um PDF existente
+* Arquive como MHT, capture a tela da página inteira, envie para o Instapaper
+
+Interface personalizável
+* Mais de 40 ações configuráveis na barra de ferramentas, com reordenação por arrastar
+* Barra de ferramentas em cima, embaixo ou na lateral; otimizada para uso com uma mão
+* Tela dividida, botão de navegação flutuante, controle avançado por gestos
+* Abas ilimitadas e navegação em tela cheia
+
+Privacidade e navegação
+* Bloqueador de anúncios integrado
+* Listas de permissões para JavaScript e cookies
+* Remoção de parâmetros de rastreamento, modo anônimo, modo desktop por site
+
+Permissões que podem ser usadas
+* INTERNET: é um navegador, então é esperado.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: para salvar páginas da web como arquivos PDF ou EPUB e para baixar arquivos.
+* INSTALL_SHORTCUT: para instalar atalhos de sites na tela inicial.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: usadas somente quando um site solicita a localização.
