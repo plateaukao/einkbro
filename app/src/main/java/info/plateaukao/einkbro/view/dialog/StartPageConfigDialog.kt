@@ -71,6 +71,9 @@ class StartPageConfigDialog(private val ebWebView: EBWebView) : KoinComponent {
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
+                                // the default cursor color is primary, which is
+                                // black on the dark theme's black surface
+                                cursorColor = MaterialTheme.colors.onBackground,
                             ),
                         )
                     }
@@ -88,7 +91,7 @@ class StartPageConfigDialog(private val ebWebView: EBWebView) : KoinComponent {
                     if (title == activity.getString(R.string.app_name)) "" else title
                 BookmarkRenderer.loadStartPage(ebWebView)
             },
-        )
+        ).allowImeForComposeContent()
     }
 
     private fun clearBackground() {

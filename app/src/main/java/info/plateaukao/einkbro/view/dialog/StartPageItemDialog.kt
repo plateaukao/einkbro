@@ -88,6 +88,7 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
+                                cursorColor = MaterialTheme.colors.onBackground,
                             ),
                         )
                         OutlinedTextField(
@@ -97,6 +98,7 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
+                                cursorColor = MaterialTheme.colors.onBackground,
                             ),
                         )
                     }
@@ -117,7 +119,7 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
                 config.addStartPageItem(StartPageItem(title, url))
                 BookmarkRenderer.loadStartPage(ebWebView)
             },
-        )
+        ).allowImeForComposeContent()
     }
 
     private suspend fun removeItem() {

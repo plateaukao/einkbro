@@ -270,6 +270,7 @@ class DialogManager(
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
+                                cursorColor = MaterialTheme.colors.onBackground,
                             ),
                         )
                         OutlinedTextField(
@@ -279,6 +280,7 @@ class DialogManager(
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
+                                cursorColor = MaterialTheme.colors.onBackground,
                             ),
                         )
                     }
@@ -567,6 +569,7 @@ class DialogManager(
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
+                                cursorColor = MaterialTheme.colors.onBackground,
                             ),
                         )
                         OutlinedTextField(
@@ -577,6 +580,7 @@ class DialogManager(
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = MaterialTheme.colors.onBackground,
+                                cursorColor = MaterialTheme.colors.onBackground,
                             ),
                         )
                         Text(
