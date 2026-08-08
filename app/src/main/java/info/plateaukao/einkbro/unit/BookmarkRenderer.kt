@@ -176,21 +176,19 @@ object BookmarkRenderer : KoinComponent {
             bytes[2] == 'N'.code.toByte() && bytes[3] == 'G'.code.toByte()
         ) "image/png" else "image/jpeg"
         val base64 = android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
-        // contain, not cover: show the whole image like its thumbnail instead
-        // of a center crop. The letterbox areas above/below continue the
-        // image's own edge colors instead of showing bare page color. A halo
-        // in the page color (not a solid backing) keeps the text readable over
-        // the image without boxing it in.
+        // contain + bottom anchor: show the whole image like its thumbnail,
+        // seated at the bottom of the screen away from the search bar and
+        // tiles near the top. The area above continues the image's own top
+        // edge color instead of showing bare page color. A halo in the page
+        // color (not a solid backing) keeps the text readable over the image
+        // without boxing it in.
         val fallbackEdge = if (darkTheme) "#000000" else "#ffffff"
         val topColor = sampledBitmap?.let { averageRowColor(it, 0) } ?: fallbackEdge
-        val bottomColor = sampledBitmap?.let { averageRowColor(it, it.height - 1) } ?: fallbackEdge
         val halo = if (darkTheme) "#000" else "#fff"
         return """
         <style>
         html {
-            background:
-                url('data:$mime;base64,$base64') center center / contain no-repeat fixed,
-                linear-gradient(to bottom, $topColor 0%, $topColor 50%, $bottomColor 50%, $bottomColor 100%) fixed;
+            background: url('data:$mime;base64,$base64') center bottom / contain no-repeat fixed $topColor;
         }
         body, body.dark { background: transparent; }
         .wordmark, .tile-name {
