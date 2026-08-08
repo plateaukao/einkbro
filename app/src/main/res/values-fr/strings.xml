@@ -333,6 +333,9 @@
     <string name="plus_show_start_page">Afficher la page de démarrage</string>
     <string name="start_page_pick_bookmark">Choisir parmi les signets</string>
     <string name="start_page_enter_manually">Saisir manuellement</string>
+    <string name="start_page_edit_title">Modifier le titre</string>
+    <string name="start_page_set_background">Définir l\'image de fond</string>
+    <string name="start_page_clear_background">Supprimer l\'image de fond</string>
     <string name="dark_mode_follow_system">Suivre le système</string>
     <string name="dark_mode_force_on">Forcer l\'activation</string>
     <string name="dark_mode_disabled">Désactivé</string>

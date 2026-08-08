@@ -332,6 +332,9 @@
     <string name="plus_show_start_page">Startscherm tonen</string>
     <string name="start_page_pick_bookmark">Kiezen uit bladwijzers</string>
     <string name="start_page_enter_manually">Handmatig invoeren</string>
+    <string name="start_page_edit_title">Titel bewerken</string>
+    <string name="start_page_set_background">Achtergrondafbeelding instellen</string>
+    <string name="start_page_clear_background">Achtergrondafbeelding verwijderen</string>
     <string name="dark_mode_follow_system">Systeem volgen</string>
     <string name="dark_mode_force_on">Geforceerd aan</string>
     <string name="dark_mode_disabled">Uitgeschakeld</string>

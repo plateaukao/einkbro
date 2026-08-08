@@ -184,6 +184,9 @@ class ConfigManager(
         recentBookmarks = emptyList()
     }
 
+    // Custom start page heading; blank means the default app name
+    var startPageTitle by StringPreference(sp, K_START_PAGE_TITLE, "")
+
     var startPageItems: List<StartPageItem>
         get() {
             val string = sp.getString(K_START_PAGE_ITEMS, "").orEmpty()
@@ -286,6 +289,7 @@ class ConfigManager(
         const val K_WHITE_BACKGROUND = "sp_whitebackground"
         const val K_RECENT_BOOKMARKS = "sp_recent_bookmarks"
         const val K_START_PAGE_ITEMS = "sp_start_page_items"
+        const val K_START_PAGE_TITLE = "sp_start_page_title"
         const val K_RESTART_CHANGED = "restart_changed"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"

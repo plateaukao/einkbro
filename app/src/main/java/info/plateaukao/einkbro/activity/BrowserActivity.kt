@@ -60,6 +60,7 @@ import info.plateaukao.einkbro.preference.TranslationMode
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.search.suggestion.SearchSuggestionViewModel
 import info.plateaukao.einkbro.service.ClearService
+import info.plateaukao.einkbro.unit.BookmarkRenderer
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.BrowserUnit.createDownloadReceiver
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -79,6 +80,7 @@ import info.plateaukao.einkbro.view.dialog.compose.FastToggleDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.SiteSettingsDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.MenuDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.TouchAreaDialogFragment
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.activity.delegates.ActionModeDelegate
 import info.plateaukao.einkbro.activity.delegates.AiChatDelegate
 import info.plateaukao.einkbro.activity.delegates.BookmarkActionsDelegate
@@ -773,6 +775,30 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private var pendingSiteSettingsReload = false
 
+    private val startPageBackgroundLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val uri = result.data?.data
+        if (result.resultCode != RESULT_OK || uri == null) return@registerForActivityResult
+        // Don't read the uri here: the result arrives while the WebView timers
+        // are still paused (see onPause); defer to onResume.
+        pendingStartPageBackgroundUri = uri
+    }
+
+    private var pendingStartPageBackgroundUri: Uri? = null
+
+    override fun chooseStartPageBackground() {
+        // The files UI, not the photo picker: it lists every folder (Downloads,
+        // SD card, cloud providers), while the photo picker only shows
+        // MediaStore-indexed items.
+        startPageBackgroundLauncher.launch(
+            Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
+        )
+    }
+
     private fun showSiteSettingsDialog() {
         if (!browserState.isWebViewInitialized) return
         if (ViewUnit.isTablet(this)) {
@@ -945,6 +971,19 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             pendingSiteSettingsReload = false
             ebWebView.initPreferences()
             ebWebView.reload()
+        }
+        pendingStartPageBackgroundUri?.let { uri ->
+            pendingStartPageBackgroundUri = null
+            lifecycleScope.launch(Dispatchers.IO) {
+                val saved = BookmarkRenderer.saveStartPageBackground(this@BrowserActivity, uri)
+                withContext(Dispatchers.Main) {
+                    if (!saved) {
+                        EBToast.show(this@BrowserActivity, R.string.toast_error)
+                    } else if (ebWebView.url?.startsWith(Constants.START_PAGE_URL) == true) {
+                        BookmarkRenderer.loadStartPage(ebWebView)
+                    }
+                }
+            }
         }
     }
 

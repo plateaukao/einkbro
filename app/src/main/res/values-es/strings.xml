@@ -307,6 +307,9 @@
     <string name="plus_show_start_page">Mostrar pantalla de inicio</string>
     <string name="start_page_pick_bookmark">Elegir de marcadores</string>
     <string name="start_page_enter_manually">Introducir manualmente</string>
+    <string name="start_page_edit_title">Editar título</string>
+    <string name="start_page_set_background">Establecer imagen de fondo</string>
+    <string name="start_page_clear_background">Quitar imagen de fondo</string>
     <string name="dark_mode_follow_system">Seguir el sistema</string>
     <string name="dark_mode_force_on">Forzar encendido</string>
     <string name="dark_mode_disabled">Deshabilitado</string>

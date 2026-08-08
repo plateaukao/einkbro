@@ -182,6 +182,7 @@ interface WebViewCallback {
 
     // Invoked from einkbro:// links on the start page (see EBWebViewClient.handleUri)
     fun focusOnInput()
+    fun chooseStartPageBackground()
 }
 
 /** Narrow interface for Album — only the callbacks it actually uses */

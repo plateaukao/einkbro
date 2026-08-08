@@ -49,36 +49,17 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
             options.add(activity.getString(R.string.menu_delete))
         }
 
-        when (showPlainListDialog(null, options)) {
+        when (activity.showPlainListDialog(null, options)) {
             0 -> pickFromBookmarks()
             1 -> enterManually()
             2 -> removeItem()
         }
     }
 
-    // Simple tappable rows: no title bar clutter, no radio buttons
-    private suspend fun showPlainListDialog(titleId: Int?, names: List<String>): Int? =
-        suspendCoroutine { continuation ->
-            AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
-                titleId?.let { setTitle(it) }
-                setItems(names.toTypedArray()) { dialog, index ->
-                    dialog.dismiss()
-                    continuation.resume(index)
-                }
-                setOnCancelListener { continuation.resume(null) }
-            }.create().also { dialog ->
-                dialog.show()
-                dialog.window?.setLayout(
-                    300.dp(activity),
-                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            }
-        }
-
     private suspend fun pickFromBookmarks() {
         val bookmarks = bookmarkManager.getAllBookmarksOnly()
         if (bookmarks.isEmpty()) return
-        val index = showPlainListDialog(
+        val index = activity.showPlainListDialog(
             R.string.start_page_pick_bookmark,
             bookmarks.map { it.title },
         ) ?: return
@@ -141,7 +122,7 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
 
     private suspend fun removeItem() {
         val items = config.startPageItems
-        val index = showPlainListDialog(
+        val index = activity.showPlainListDialog(
             R.string.menu_delete,
             items.map { it.title },
         ) ?: return
@@ -150,3 +131,22 @@ class StartPageItemDialog(private val ebWebView: EBWebView) : KoinComponent {
         BookmarkRenderer.loadStartPage(ebWebView)
     }
 }
+
+// Simple tappable rows: no title bar clutter, no radio buttons
+internal suspend fun Activity.showPlainListDialog(titleId: Int?, names: List<String>): Int? =
+    suspendCoroutine { continuation ->
+        AlertDialog.Builder(this, R.style.TouchAreaDialog).apply {
+            titleId?.let { setTitle(it) }
+            setItems(names.toTypedArray()) { dialog, index ->
+                dialog.dismiss()
+                continuation.resume(index)
+            }
+            setOnCancelListener { continuation.resume(null) }
+        }.create().also { dialog ->
+            dialog.show()
+            dialog.window?.setLayout(
+                300.dp(this),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+    }

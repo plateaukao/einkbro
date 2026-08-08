@@ -16,6 +16,8 @@ import java.net.URL
 
 object BookmarkRenderer : KoinComponent {
 
+    private const val BG_MAX_DIMENSION = 1600
+
     private val config: ConfigManager by inject()
     private val bookmarkManager: info.plateaukao.einkbro.database.BookmarkManager by inject()
 
@@ -46,8 +48,11 @@ object BookmarkRenderer : KoinComponent {
             "utf-8",
             Constants.START_PAGE_URL
         )
-        webView.albumTitle = webView.context.getString(R.string.app_name)
+        webView.albumTitle = startPageTitle(webView.context)
     }
+
+    private fun startPageTitle(context: Context): String =
+        config.startPageTitle.ifBlank { context.getString(R.string.app_name) }
 
     private fun getStartPageContent(context: Context): String {
         val content = config.startPageItems.joinToString(separator = "\n") {
@@ -72,9 +77,136 @@ object BookmarkRenderer : KoinComponent {
         // loadAssetFile keeps newlines (loadAssetFileToString strips them, which
         // would let the inline script's // comments swallow the rest of the page)
         return HelperUnit.loadAssetFile("start_page.html")
+            .replace("{{TITLE}}", startPageTitle(context).escapeHtml())
+            .replace("{{BG_STYLE}}", backgroundStyle(context))
             .replace("{{SEARCH_HINT}}", context.getString(R.string.main_omnibox_input_hint))
             .replace("{{ADD_LABEL}}", context.getString(R.string.whitelist_add))
             .replace("{{CONTENT}}", content)
+    }
+
+    // no extension: holds JPEG or PNG bytes depending on what was picked
+    fun startPageBackgroundFile(context: Context): java.io.File =
+        java.io.File(context.filesDir, "start_page_bg")
+
+    /**
+     * Copy the picked image into app storage, downscaled and re-encoded so the
+     * start page's inline data URI stays small. Returns false when the image
+     * cannot be decoded.
+     */
+    fun saveStartPageBackground(context: Context, uri: android.net.Uri): Boolean = runCatching {
+        val resolver = context.contentResolver
+        val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        // decodeStream always returns null with inJustDecodeBounds; only the
+        // stream itself can be null-checked here
+        val boundsStream = resolver.openInputStream(uri) ?: return false
+        boundsStream.use { android.graphics.BitmapFactory.decodeStream(it, null, bounds) }
+        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return false
+
+        val options = android.graphics.BitmapFactory.Options().apply {
+            inSampleSize = maxOf(1, maxOf(bounds.outWidth, bounds.outHeight) / BG_MAX_DIMENSION)
+        }
+        var bitmap = resolver.openInputStream(uri)?.use {
+            android.graphics.BitmapFactory.decodeStream(it, null, options)
+        } ?: return false
+
+        // camera photos carry their rotation only in EXIF
+        val rotation = resolver.openInputStream(uri)?.use {
+            when (android.media.ExifInterface(it).getAttributeInt(
+                android.media.ExifInterface.TAG_ORIENTATION,
+                android.media.ExifInterface.ORIENTATION_NORMAL
+            )) {
+                android.media.ExifInterface.ORIENTATION_ROTATE_90 -> 90f
+                android.media.ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+                android.media.ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+                else -> 0f
+            }
+        } ?: 0f
+        if (rotation != 0f) {
+            val matrix = android.graphics.Matrix().apply { postRotate(rotation) }
+            bitmap = android.graphics.Bitmap.createBitmap(
+                bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true
+            )
+        }
+
+        // keep PNG sources as PNG (transparency, crisp flat graphics);
+        // everything else re-encodes to JPEG
+        val isPng = bounds.outMimeType == "image/png"
+        startPageBackgroundFile(context).outputStream().use { stream ->
+            if (isPng) {
+                bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, stream)
+            } else {
+                bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 80, stream)
+            }
+        }
+    }.getOrElse { e ->
+        Log.w("browser", "Failed saving start page background: $e")
+        false
+    }
+
+    private fun backgroundStyle(context: Context): String {
+        val file = startPageBackgroundFile(context)
+        if (!file.exists()) return ""
+        val bytes = file.readBytes()
+        val mime = if (bytes.size >= 4 &&
+            bytes[0] == 0x89.toByte() && bytes[1] == 'P'.code.toByte() &&
+            bytes[2] == 'N'.code.toByte() && bytes[3] == 'G'.code.toByte()
+        ) "image/png" else "image/jpeg"
+        val base64 = android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
+        // contain, not cover: show the whole image like its thumbnail instead
+        // of a center crop. The letterbox areas above/below continue the
+        // image's own edge colors instead of showing bare white. A stacked
+        // white halo (not a solid backing) keeps the black text readable over
+        // the image without boxing it in.
+        val (topColor, bottomColor) = backgroundEdgeColors(bytes)
+        return """
+        <style>
+        html {
+            background:
+                url('data:$mime;base64,$base64') center center / contain no-repeat fixed,
+                linear-gradient(to bottom, $topColor 0%, $topColor 50%, $bottomColor 50%, $bottomColor 100%) fixed;
+        }
+        body { background: transparent; }
+        .wordmark, .tile-name {
+            text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff, 0 0 10px #fff;
+        }
+        .tile-icon, .tile-icon .fallback { background: #fff; }
+        </style>
+        """
+    }
+
+    private val WHITE_EDGES = "#ffffff" to "#ffffff"
+
+    // average colors of the image's outermost pixel rows, used to extend the
+    // image into the letterbox areas; transparent pixels count as white
+    private fun backgroundEdgeColors(bytes: ByteArray): Pair<String, String> = runCatching {
+        val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
+        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return WHITE_EDGES
+        val options = android.graphics.BitmapFactory.Options().apply {
+            // color averaging doesn't need resolution; decode small and fast
+            inSampleSize = maxOf(1, maxOf(bounds.outWidth, bounds.outHeight) / 64)
+        }
+        val bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+            ?: return WHITE_EDGES
+        averageRowColor(bitmap, 0) to averageRowColor(bitmap, bitmap.height - 1)
+    }.getOrDefault(WHITE_EDGES)
+
+    private fun averageRowColor(bitmap: android.graphics.Bitmap, y: Int): String {
+        var r = 0.0
+        var g = 0.0
+        var b = 0.0
+        for (x in 0 until bitmap.width) {
+            val pixel = bitmap.getPixel(x, y)
+            val alpha = android.graphics.Color.alpha(pixel) / 255.0
+            r += android.graphics.Color.red(pixel) * alpha + 255 * (1 - alpha)
+            g += android.graphics.Color.green(pixel) * alpha + 255 * (1 - alpha)
+            b += android.graphics.Color.blue(pixel) * alpha + 255 * (1 - alpha)
+        }
+        return "#%02x%02x%02x".format(
+            (r / bitmap.width).toInt(),
+            (g / bitmap.width).toInt(),
+            (b / bitmap.width).toInt(),
+        )
     }
 
     private fun faviconDataUri(url: String): String? =

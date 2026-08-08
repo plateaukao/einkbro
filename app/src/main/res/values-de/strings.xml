@@ -325,6 +325,9 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="plus_show_start_page">Startbildschirm anzeigen</string>
     <string name="start_page_pick_bookmark">Aus Lesezeichen wählen</string>
     <string name="start_page_enter_manually">Manuell eingeben</string>
+    <string name="start_page_edit_title">Titel bearbeiten</string>
+    <string name="start_page_set_background">Hintergrundbild festlegen</string>
+    <string name="start_page_clear_background">Hintergrundbild entfernen</string>
     <string name="dark_mode_follow_system">System folgen</string>
     <string name="dark_mode_force_on">Erzwungen an</string>
     <string name="dark_mode_disabled">Deaktiviert</string>

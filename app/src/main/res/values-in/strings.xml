@@ -338,6 +338,9 @@
     <string name="plus_show_start_page">Tampilkan Halaman Awal</string>
     <string name="start_page_pick_bookmark">Pilih dari Bookmark</string>
     <string name="start_page_enter_manually">Masukkan Manual</string>
+    <string name="start_page_edit_title">Ubah judul</string>
+    <string name="start_page_set_background">Atur gambar latar</string>
+    <string name="start_page_clear_background">Hapus gambar latar</string>
     <string name="dark_mode_follow_system">Ikuti Sistem</string>
     <string name="dark_mode_force_on">Paksa On</string>
     <string name="dark_mode_disabled">dinonaktifkan</string>

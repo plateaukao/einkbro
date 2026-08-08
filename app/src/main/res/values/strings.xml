@@ -411,6 +411,9 @@
     <string name="plus_show_start_page">Show start page</string>
     <string name="start_page_pick_bookmark">Choose from bookmarks</string>
     <string name="start_page_enter_manually">Enter manually</string>
+    <string name="start_page_edit_title">Edit title</string>
+    <string name="start_page_set_background">Set background image</string>
+    <string name="start_page_clear_background">Remove background image</string>
     <string name="dark_mode_follow_system">Follow system</string>
     <string name="dark_mode_force_on">Force On</string>
     <string name="dark_mode_disabled">Disabled</string>

@@ -306,6 +306,9 @@
     <string name="plus_show_start_page">Vis startside</string>
     <string name="start_page_pick_bookmark">Velg fra bokmerker</string>
     <string name="start_page_enter_manually">Skriv inn manuelt</string>
+    <string name="start_page_edit_title">Rediger tittel</string>
+    <string name="start_page_set_background">Velg bakgrunnsbilde</string>
+    <string name="start_page_clear_background">Fjern bakgrunnsbilde</string>
     <string name="plus_show_homepage">Vis hjemmeside</string>
     <string name="plus_start_input_url">Begynn å skrive inn URL</string>
     <string name="read_from_here">Herfra</string>

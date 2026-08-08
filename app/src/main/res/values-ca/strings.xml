@@ -316,6 +316,9 @@
     <string name="plus_show_start_page">Mostrar pàgina inicial</string>
     <string name="start_page_pick_bookmark">Triar de les adreces d\'interès</string>
     <string name="start_page_enter_manually">Introduir manualment</string>
+    <string name="start_page_edit_title">Edita el títol</string>
+    <string name="start_page_set_background">Estableix la imatge de fons</string>
+    <string name="start_page_clear_background">Elimina la imatge de fons</string>
     <string name="dark_mode_follow_system">Seguir el sistema</string>
     <string name="dark_mode_force_on">Forçar activació</string>
     <string name="dark_mode_disabled">Desactivat</string>

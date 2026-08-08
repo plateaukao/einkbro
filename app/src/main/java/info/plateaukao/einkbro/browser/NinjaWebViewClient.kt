@@ -43,6 +43,7 @@ import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.WebViewConfigApplier
+import info.plateaukao.einkbro.view.dialog.StartPageConfigDialog
 import info.plateaukao.einkbro.view.dialog.StartPageItemDialog
 import io.github.edsuns.adfilter.AdFilter
 import kotlinx.coroutines.CoroutineScope
@@ -359,6 +360,11 @@ class EBWebViewClient(
                     url.startsWith("einkbro://add_start_item") ->
                         coroutineScope.launch(Dispatchers.Main) {
                             StartPageItemDialog(ebWebView).show()
+                        }
+
+                    url.startsWith("einkbro://config_start_page") ->
+                        coroutineScope.launch(Dispatchers.Main) {
+                            StartPageConfigDialog(ebWebView).show()
                         }
                 }
             }
