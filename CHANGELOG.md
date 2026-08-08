@@ -1,3 +1,14 @@
+### 16.2.0
+#### Features
+* Start page: tap the title to rename the heading or set a background image picked from your device
+* Start page: follows the app's dark mode, and a background image picks the light/dark theme from its brightness
+* Start page: the background image anchors to the bottom of the screen
+
+#### Fixes
+* Android 15+: web pages, settings screens, and the toolbar no longer extend under the system status/navigation bars — with classic 3-button navigation the toolbar is tappable again; the start page keeps its full-screen background while its content stays clear of the status bar
+* Text field dialogs show the keyboard and caret when opened
+* Reader mode: titles no longer fall back to URLs from page metadata, and a link to the original page sits next to the reading time
+
 ### 16.1.1
 #### Features
 * Toolbar and tab bar hide automatically while the keyboard is up for web content, so the page keeps the remaining room; they return when the keyboard closes
