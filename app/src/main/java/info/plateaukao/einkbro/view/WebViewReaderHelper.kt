@@ -71,7 +71,7 @@ class WebViewReaderHelper(
             // dialog re-parsing the page) preserve vertical read.
             isVerticalRead = isVertical
             webView.jsBridge.evaluateMozReaderModeJs(isVertical) {
-                webView.jsBridge.replaceWithReaderModeBody(config.display.readerKeepExtraContent, webView.url) { _ ->
+                webView.jsBridge.replaceWithReaderModeBody(config.display.readerKeepExtraContent) { _ ->
                     if (isVertical) {
                         applyVerticalTextProcessing()
                     } else {

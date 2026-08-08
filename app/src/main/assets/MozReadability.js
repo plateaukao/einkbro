@@ -1734,6 +1734,12 @@ Readability.prototype = {
           } else if (typeof parsed.headline === "string") {
             metadata.title = parsed.headline.trim();
           }
+          // EinkBro: some sites (e.g. itmedia.co.jp) put the page URL in the
+          // JSON-LD headline. A URL is never a real title; drop it so
+          // _getArticleMetadata falls back to og:title / document title.
+          if (metadata.title && /^https?:\/\/\S+$/i.test(metadata.title)) {
+            delete metadata.title;
+          }
           if (parsed.author) {
             if (typeof parsed.author.name === "string") {
               metadata.byline = parsed.author.name.trim();
@@ -2896,6 +2902,7 @@ function escapeHTML(text) {
 }
 
 function createHtmlBodyWithUrl(article, originalUrl) {
+  if (!originalUrl || originalUrl === "null") return createHtmlBody(article);
   const safeTitle = escapeHTML(article.title);
   const safeReadingTime = escapeHTML(article.readingTime);
   return `
@@ -2905,7 +2912,7 @@ function createHtmlBodyWithUrl(article, originalUrl) {
           <h3>${safeTitle}</h3>
         </div>
         <div>
-          ${safeReadingTime}&nbsp;|&nbsp;<a href=${originalUrl}>original link</a>
+          ${safeReadingTime}&nbsp;|&nbsp;<a href="${escapeHTML(originalUrl)}">link</a>
         </div>
         <hr/>
         <div class="content">

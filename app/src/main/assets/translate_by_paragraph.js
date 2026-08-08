@@ -129,6 +129,7 @@ function fetchNodesWithText(element) {
     if (child.nodeType === Node.ELEMENT_NODE) {
       if (
         child.getAttribute("data-tiara-action-name") === "헤드글씨크기_클릭" ||
+        child.innerText === "link" ||
         child.innerText === "original link"
       ) {
         continue;

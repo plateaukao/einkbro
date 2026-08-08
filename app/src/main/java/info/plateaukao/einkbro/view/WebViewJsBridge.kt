@@ -272,9 +272,9 @@ class WebViewJsBridge(private val webView: WebView) {
         webView.evaluateJavascript(loadAssetFile("disable_reader_mode.js"), null)
     }
 
-    fun replaceWithReaderModeBody(keepExtraContent: Boolean, url: String?, callback: ValueCallback<String>?) {
+    fun replaceWithReaderModeBody(keepExtraContent: Boolean, callback: ValueCallback<String>?) {
         webView.evaluateJavascript(
-            "(function() { ${String.format(replaceWithReaderModeBodyJs(keepExtraContent), url)} })();",
+            "(function() { ${replaceWithReaderModeBodyJs(keepExtraContent)} })();",
             callback
         )
     }
@@ -338,7 +338,7 @@ class WebViewJsBridge(private val webView: WebView) {
             if (article) {
                 article.readingTime = getReadingTime(article.length, document.documentElement.lang.substring(0, 2));
 
-                document.body.outerHTML = createHtmlBody(article)
+                document.body.outerHTML = createHtmlBodyWithUrl(article, location.href)
                 disableSiteStyleSheets();
 
                 var viewport = document.getElementsByName('viewport')[0];
