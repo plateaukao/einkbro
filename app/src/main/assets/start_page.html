@@ -294,9 +294,15 @@
                     url.textContent = item.url;
                     row.appendChild(url);
                 }
-                // pointerdown fires before the input's blur, so the tap wins
+                // pointerdown fires before the input's blur; preventing it keeps
+                // the input focused so the list stays up. Navigation waits for
+                // click, which the browser only fires for a real tap - a scroll
+                // gesture over the list ends in pointercancel and must not
+                // activate the row under the finger.
                 row.addEventListener('pointerdown', function(e) {
                     e.preventDefault();
+                });
+                row.addEventListener('click', function() {
                     go(item.url || item.title);
                 });
                 list.appendChild(row);
