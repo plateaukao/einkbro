@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResult
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
+import androidx.room.withTransaction
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Bookmark
@@ -331,18 +332,16 @@ class BackupUnit(
 
     /**
      * Installs scripts collected from a zip. [meta] (the [USERSCRIPTS_META_FILE] entry)
-     * supplies enabled state, source URL, and GM values per file when present; scripts
-     * merge by @name, so importing over an existing installation updates in place rather
-     * than duplicating. [replaceExisting] first removes all installed scripts (full-backup
-     * restore semantics); the standalone import merges instead, so a zip from another
-     * device or script manager can't wipe local scripts. Returns the imported count.
+     * supplies enabled state, source URL, and GM values per file when present. Scripts
+     * merge by @name — a same-named script updates in place rather than duplicating,
+     * while scripts only installed locally are left untouched — so neither a backup
+     * restore nor a zip from another device or script manager can wipe local scripts.
+     * Returns the imported count.
      */
     private suspend fun restoreUserscripts(
         bodies: Map<String, String>,
         meta: JSONObject?,
-        replaceExisting: Boolean,
     ): Int {
-        if (replaceExisting) userScriptManager.deleteAllScripts()
         val metaByFile = LinkedHashMap<String, JSONObject>()
         meta?.optJSONArray("scripts")?.let { arr ->
             for (i in 0 until arr.length()) {
@@ -503,9 +502,7 @@ class BackupUnit(
                     val bookmarks = JSONArray(String(content))
                         .toJSONObjectList()
                         .map { it.toBookmark() }
-                    kotlinx.coroutines.runBlocking {
-                        bookmarkManager.overwriteBookmarks(bookmarks)
-                    }
+                    mergeBookmarks(bookmarks)
                 }
 
                 zipEntry.name == HISTORY_FILE
@@ -553,12 +550,8 @@ class BackupUnit(
             zipEntry = zis.nextEntry
         }
 
-        // Key on the metadata entry too: a backup taken with zero scripts installed has
-        // no bodies but must still clear existing scripts under replace semantics.
-        if (BackupCategory.USERSCRIPTS in categories &&
-            (userscriptBodies.isNotEmpty() || userscriptsMeta != null)
-        ) {
-            restoreUserscripts(userscriptBodies, userscriptsMeta, replaceExisting = true)
+        if (BackupCategory.USERSCRIPTS in categories && userscriptBodies.isNotEmpty()) {
+            restoreUserscripts(userscriptBodies, userscriptsMeta)
         }
     }
 
@@ -605,58 +598,123 @@ class BackupUnit(
         }
     }
 
+    /**
+     * Merges a backed-up bookmark tree into the local one instead of replacing it.
+     * Imported ids are per-device autoincrements and mean nothing here, so folders
+     * match by title within the same (already mapped) parent — created with fresh
+     * ids when missing — and bookmarks match by url within their mapped folder, so
+     * nothing local is deleted and re-restoring the same backup adds nothing.
+     */
+    private suspend fun mergeBookmarks(imported: List<Bookmark>) = bookmarkManager.database.withTransaction {
+        val dao = bookmarkManager.database.bookmarkDao()
+        val local = dao.getAllBookmarks()
+        val localFolders = HashMap<Pair<Int, String>, Int>()
+        local.filter { it.isDirectory }.forEach { localFolders[it.parent to it.title] = it.id }
+        val localUrls = local.filterNot { it.isDirectory }
+            .map { it.parent to it.url }
+            .toHashSet()
+
+        // Map imported folder ids to local ones, walking parents before children.
+        // Real exports only have positive ids; a non-positive one would collide with
+        // the id 0 root sentinel, so such corrupted entries aren't created at all. A
+        // parent id that isn't an imported folder falls back to the root folder
+        // rather than dropping the subtree, and on a parent cycle (equally only
+        // possible in a hand-corrupted zip) the first-processed member lands at the
+        // root with the rest of the cycle chained under it.
+        val folders = imported.filter { it.isDirectory && it.id > 0 }
+        val importedFolderIds = folders.map { it.id }.toHashSet()
+        val idMap = HashMap<Int, Int>().apply { put(0, 0) }
+        val pending = folders.toMutableList()
+        while (pending.isNotEmpty()) {
+            val ready = pending
+                .filter { it.parent in idMap || it.parent !in importedFolderIds }
+                .ifEmpty { pending.toList() }
+            for (folder in ready) {
+                val localParent = idMap[folder.parent] ?: 0
+                val key = localParent to folder.title
+                idMap[folder.id] = localFolders[key] ?: dao.insert(
+                    Bookmark(folder.title, folder.url, true, localParent, folder.order)
+                ).toInt().also { localFolders[key] = it }
+            }
+            pending.removeAll(ready)
+        }
+
+        for (bookmark in imported.filterNot { it.isDirectory }) {
+            val localParent = idMap[bookmark.parent] ?: 0
+            if (localUrls.add(localParent to bookmark.url)) {
+                dao.insert(Bookmark(bookmark.title, bookmark.url, false, localParent, bookmark.order))
+            }
+        }
+    }
+
     private suspend fun restoreDatabaseData(json: JSONObject) {
         val db = bookmarkManager.database
 
-        // Favicons
+        // Favicons — merge: keep local icons and add only domains without one.
         if (json.has("favicons")) {
+            val dao = db.faviconDao()
+            val existingDomains = dao.getAllFavicons().map { it.domain }.toHashSet()
             val arr = json.getJSONArray("favicons")
-            val favicons = (0 until arr.length()).map { i ->
+            val favicons = (0 until arr.length()).mapNotNull { i ->
                 val obj = arr.getJSONObject(i)
                 FaviconInfo(
                     domain = obj.getString("domain"),
                     icon = if (obj.isNull("icon")) null
                         else Base64.decode(obj.getString("icon"), Base64.NO_WRAP)
-                )
+                ).takeIf { existingDomains.add(it.domain) }
             }
-            db.faviconDao().deleteAll()
-            db.faviconDao().insertAll(favicons)
+            dao.insertAll(favicons)
         }
 
-        // Articles (restore before highlights due to foreign key)
+        // Articles + Highlights — merge: an article matches a local one on
+        // url + date (ids are per-device autoincrements); unmatched articles are
+        // inserted with fresh ids. Backup article ids are remapped through
+        // [articleIdMap] so highlights land on the right local article; highlights
+        // dedupe on (article, content), and one without a mapped article is skipped
+        // rather than tripping the foreign key.
+        val articleIdMap = HashMap<Int, Int>()
         if (json.has("articles")) {
+            val dao = db.articleDao()
+            val localByKey = HashMap<Pair<String, Long>, Int>()
+            dao.getAllArticlesAsync().forEach { localByKey[it.url to it.date] = it.id }
             val arr = json.getJSONArray("articles")
-            val articles = (0 until arr.length()).map { i ->
+            for (i in 0 until arr.length()) {
                 val obj = arr.getJSONObject(i)
-                Article(
+                val article = Article(
                     title = obj.getString("title"),
                     url = obj.getString("url"),
                     date = obj.getLong("date"),
                     tags = obj.optString("tags", ""),
-                ).apply { id = obj.getInt("id") }
+                )
+                val key = article.url to article.date
+                articleIdMap[obj.getInt("id")] = localByKey[key]
+                    ?: dao.insert(article).toInt().also { localByKey[key] = it }
             }
-            db.highlightDao().deleteAll()
-            db.articleDao().deleteAll()
-            db.articleDao().insertAll(articles)
         }
 
-        // Highlights
         if (json.has("highlights")) {
+            val dao = db.highlightDao()
+            val seen = dao.getAllHighlightsAsync().map { it.articleId to it.content }.toHashSet()
             val arr = json.getJSONArray("highlights")
-            val highlights = (0 until arr.length()).map { i ->
+            val highlights = (0 until arr.length()).mapNotNull { i ->
                 val obj = arr.getJSONObject(i)
+                val articleId = articleIdMap[obj.getInt("articleId")] ?: return@mapNotNull null
                 Highlight(
-                    articleId = obj.getInt("articleId"),
+                    articleId = articleId,
                     content = obj.getString("content"),
-                ).apply { id = obj.getInt("id") }
+                ).takeIf { seen.add(articleId to it.content) }
             }
-            db.highlightDao().insertAll(highlights)
+            dao.insertAll(highlights)
         }
 
-        // ChatGptQuery
+        // ChatGptQuery — merge: keep local rows and append only queries not already
+        // present. Ids are per-device autoincrements, so matching is on content
+        // (date + url + model + selectedText) and inserted rows get fresh ids.
         if (json.has("chat_gpt_queries")) {
+            val dao = db.chatGptQueryDao()
+            val seenKeys = dao.getAllChatGptQueriesAsync().map { it.mergeKey() }.toHashSet()
             val arr = json.getJSONArray("chat_gpt_queries")
-            val queries = (0 until arr.length()).map { i ->
+            val queries = (0 until arr.length()).mapNotNull { i ->
                 val obj = arr.getJSONObject(i)
                 ChatGptQuery(
                     date = obj.getLong("date"),
@@ -664,14 +722,16 @@ class BackupUnit(
                     model = obj.getString("model"),
                     selectedText = obj.getString("selectedText"),
                     result = obj.getString("result"),
-                ).apply { id = obj.getInt("id") }
+                ).takeIf { seenKeys.add(it.mergeKey()) }
             }
-            db.chatGptQueryDao().deleteAll()
-            db.chatGptQueryDao().insertAll(queries)
+            dao.insertAll(queries)
         }
 
-        // DomainConfiguration
+        // DomainConfiguration — merge: only domains with no local configuration are
+        // added, so restoring never changes a site setting tweaked on this device.
         if (json.has("domain_configurations")) {
+            val dao = db.domainConfigurationDao()
+            val existingDomains = dao.getAllDomainConfigurations().map { it.domain }.toHashSet()
             val arr = json.getJSONArray("domain_configurations")
             val configs = (0 until arr.length()).map { i ->
                 val obj = arr.getJSONObject(i)
@@ -679,68 +739,77 @@ class BackupUnit(
                     domain = obj.getString("domain"),
                     configuration = obj.getString("configuration"),
                 )
-            }
-            db.domainConfigurationDao().deleteAll()
-            db.domainConfigurationDao().insertAll(configs)
+            }.filter { it.domain !in existingDomains }
+            dao.insertAll(configs)
         }
 
-        // SavedPage
+        // SavedPage — merge: append entries whose file isn't tracked locally yet
+        // (filePath identifies the saved file); new rows get fresh ids.
         if (json.has("saved_pages")) {
+            val dao = db.savedPageDao()
+            val seenPaths = dao.getAllSavedPagesAsync().map { it.filePath }.toHashSet()
             val arr = json.getJSONArray("saved_pages")
-            val pages = (0 until arr.length()).map { i ->
+            val pages = (0 until arr.length()).mapNotNull { i ->
                 val obj = arr.getJSONObject(i)
                 SavedPage(
                     title = obj.getString("title"),
                     url = obj.getString("url"),
                     filePath = obj.getString("filePath"),
                     savedAt = obj.getLong("savedAt"),
-                ).apply { id = obj.getInt("id") }
+                ).takeIf { seenPaths.add(it.filePath) }
             }
-            db.savedPageDao().deleteAll()
-            db.savedPageDao().insertAll(pages)
+            dao.insertAll(pages)
         }
 
-        // Domain lists
+        // Domain lists — merge: rows are just the domain (its primary key), so the
+        // REPLACE inserts dedupe against local entries and nothing is deleted.
         if (json.has("whitelist_domains")) {
             val arr = json.getJSONArray("whitelist_domains")
             val domains = (0 until arr.length()).map { WhitelistDomain(arr.getString(it)) }
-            db.domainListDao().deleteAllWhitelist()
             db.domainListDao().insertAllWhitelist(domains)
         }
 
         if (json.has("javascript_domains")) {
             val arr = json.getJSONArray("javascript_domains")
             val domains = (0 until arr.length()).map { JavascriptDomain(arr.getString(it)) }
-            db.domainListDao().deleteAllJavascript()
             db.domainListDao().insertAllJavascript(domains)
         }
 
         if (json.has("cookie_domains")) {
             val arr = json.getJSONArray("cookie_domains")
             val domains = (0 until arr.length()).map { CookieDomain(arr.getString(it)) }
-            db.domainListDao().deleteAllCookie()
             db.domainListDao().insertAllCookie(domains)
         }
     }
 
+    // Merge: local transcripts are kept (each one cost a Gemini transcription) and
+    // only videos not transcribed on this device are appended.
     private suspend fun restoreTranscripts(arr: JSONArray) {
         val dao = bookmarkManager.database.videoTranscriptDao()
-        val transcripts = (0 until arr.length()).map { i ->
+        val existingIds = dao.getAllTranscripts().map { it.videoId }.toHashSet()
+        val transcripts = (0 until arr.length()).mapNotNull { i ->
             val obj = arr.getJSONObject(i)
             VideoTranscript(
                 videoId = obj.getString("videoId"),
                 transcript = obj.getString("transcript"),
                 timestamp = obj.optLong("timestamp"),
-            )
+            ).takeIf { it.videoId !in existingIds }
         }
-        dao.deleteAll()
         dao.insertAll(transcripts)
     }
 
+    // Merge: sessions this device doesn't have are appended; when both sides hold
+    // the same session (same UUID), the one updated last wins. The backup doesn't
+    // carry webContent, so a backup-wins update keeps the local page text.
     private suspend fun restoreChatSessions(arr: JSONArray) {
         val dao = bookmarkManager.database.chatSessionDao()
-        val sessions = (0 until arr.length()).map { i ->
+        val existingById = dao.getAllSessions().associateBy { it.id }
+        val sessions = (0 until arr.length()).mapNotNull { i ->
             val obj = arr.getJSONObject(i)
+            val local = existingById[obj.getString("id")]
+            if (local != null && local.lastUpdated >= obj.optLong("lastUpdated")) {
+                return@mapNotNull null
+            }
             ChatSession(
                 id = obj.getString("id"),
                 title = obj.optString("title"),
@@ -749,9 +818,9 @@ class BackupUnit(
                 webTitle = obj.optString("webTitle"),
                 webUrl = obj.optString("webUrl"),
                 messages = obj.optString("messages", "[]"),
+                webContent = local?.webContent ?: "",
             )
         }
-        dao.deleteAll()
         dao.insertAll(sessions)
     }
 
@@ -1072,7 +1141,7 @@ class BackupUnit(
                         zis.close()
                     }
                 }
-                val count = restoreUserscripts(bodies, meta, replaceExisting = false)
+                val count = restoreUserscripts(bodies, meta)
                 withContext(Dispatchers.Main) {
                     val message = if (count > 0) "$count userscript(s) imported"
                     else "No userscripts found in file"
@@ -1156,6 +1225,10 @@ class BackupUnit(
         )
     }
 }
+
+// List equality makes this collision-proof (a "|"-joined string key would be
+// ambiguous when the url or selected text itself contains the delimiter).
+private fun ChatGptQuery.mergeKey(): List<Any> = listOf(date, url, model, selectedText)
 
 private fun List<Bookmark>.toJsonString(): String {
     val jsonArrays = JSONArray()

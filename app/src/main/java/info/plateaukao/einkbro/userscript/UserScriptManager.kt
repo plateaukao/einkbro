@@ -280,16 +280,6 @@ class UserScriptManager(private val context: Context) : KoinComponent {
             }
         }
 
-    /** Removes every script, its GM values, and its body file (for replace-restore). */
-    suspend fun deleteAllScripts() = withContext(Dispatchers.IO) {
-        userScriptDao.getAll().forEach { row ->
-            valueDao.deleteAllForScript(row.id)
-            deleteCodeFile(row.id)
-        }
-        userScriptDao.deleteAll()
-        reload()
-    }
-
     /**
      * Installs one script from a backup: merges by @name via [add] (which reloads the
      * cache itself), then applies the backed-up enabled state and GM values directly via

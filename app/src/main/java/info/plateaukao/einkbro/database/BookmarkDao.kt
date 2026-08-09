@@ -184,7 +184,7 @@ interface BookmarkDao {
     suspend fun findBy(url: String): List<Bookmark>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(bookmark: Bookmark)
+    suspend fun insert(bookmark: Bookmark): Long
 
     @Delete
     suspend fun delete(bookmark: Bookmark)
@@ -496,7 +496,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     suspend fun getBookmarkFolders(): List<Bookmark> = bookmarkDao.getBookmarkFolders()
 
-    suspend fun insert(bookmark: Bookmark) = bookmarkDao.insert(bookmark)
+    suspend fun insert(bookmark: Bookmark): Long = bookmarkDao.insert(bookmark)
 
     suspend fun insert(title: String, url: String) {
         if (existsUrl(url)) return
