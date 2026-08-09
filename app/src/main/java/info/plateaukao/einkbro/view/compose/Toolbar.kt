@@ -18,6 +18,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -229,43 +230,48 @@ fun ComposedIconBar(
             }
         }
     } else {
-        // Loop-invariant: computed once per bar recomposition instead of per icon.
-        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-        val spacerWidth = remember(toolbarActionInfos, screenWidth) {
-            calculateSpacerWidth(toolbarActionInfos, screenWidth)
-        }
-        val titleWidth = remember(toolbarActionInfos, screenWidth) {
-            calculateTitleWidth(toolbarActionInfos, screenWidth)
-        }
-        val shouldRowFixed = toolbarActionInfos.any { it.toolbarAction in spacerActions }
-                && spacerWidth > 5.dp
+        // Size from the real layout constraints, not Configuration screen dims:
+        // at targetSdk 35+ screenWidthDp includes the system bars, so it can
+        // exceed the bar's usable width (e.g. landscape 3-button navigation).
+        BoxWithConstraints {
+            val barWidth = maxWidth
+            // Loop-invariant: computed once per bar recomposition instead of per icon.
+            val spacerWidth = remember(toolbarActionInfos, barWidth) {
+                calculateSpacerWidth(toolbarActionInfos, barWidth)
+            }
+            val titleWidth = remember(toolbarActionInfos, barWidth) {
+                calculateTitleWidth(toolbarActionInfos, barWidth)
+            }
+            val shouldRowFixed = toolbarActionInfos.any { it.toolbarAction in spacerActions }
+                    && spacerWidth > 5.dp
 
-        Row(
-            modifier = Modifier
-                .height(50.dp)
-                .background(MaterialTheme.colors.background)
-                .conditional(!shouldRowFixed) {
-                    horizontalScroll(
-                        rememberScrollState(),
-                        reverseScrolling = true
+            Row(
+                modifier = Modifier
+                    .height(50.dp)
+                    .background(MaterialTheme.colors.background)
+                    .conditional(!shouldRowFixed) {
+                        horizontalScroll(
+                            rememberScrollState(),
+                            reverseScrolling = true
+                        )
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                toolbarActionInfos.forEach { toolbarActionInfo ->
+                    CreateToolbarIcon(
+                        toolbarActionInfo,
+                        spacerWidth,
+                        titleWidth,
+                        onClick,
+                        title,
+                        isIncognito,
+                        tabCount,
+                        onLongClick,
+                        pageInfo,
+                        isVertical = false,
                     )
-                },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
-        ) {
-            toolbarActionInfos.forEach { toolbarActionInfo ->
-                CreateToolbarIcon(
-                    toolbarActionInfo,
-                    spacerWidth,
-                    titleWidth,
-                    onClick,
-                    title,
-                    isIncognito,
-                    tabCount,
-                    onLongClick,
-                    pageInfo,
-                    isVertical = false,
-                )
+                }
             }
         }
     }
@@ -339,62 +345,65 @@ fun ReorderableComposedIconBar(
     onClick: (ToolbarAction) -> Unit,
     highlightedAction: ToolbarAction? = null,
 ) {
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val spacerWidth = calculateSpacerWidth(list.value, screenWidth)
-    val titleWidth = calculateTitleWidth(list.value, screenWidth)
-    ReorderableRow(
-        modifier = Modifier
-            .height(50.dp)
-            .fillMaxWidth()
-            .background(MaterialTheme.colors.background)
-            .horizontalScroll(
-                rememberScrollState(),
-                reverseScrolling = true
-            ),
-        list = list.value,
-        onSettle = { fromIndex, toIndex ->
-            list.value = list.value.toMutableList().apply {
-                add(toIndex, removeAt(fromIndex))
-            }
-        },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End
-    ) { _, toolbarActionInfo, isDragging ->
-        key(toolbarActionInfo) {
-            val toolbarAction = toolbarActionInfo.toolbarAction
-            val blinkAlpha = rememberBlinkAlpha(toolbarAction == highlightedAction)
-            Box(
-                modifier = Modifier
-                    .alpha(blinkAlpha)
-                    .longPressDraggableHandle()
-                    .border(
-                        if (isDragging) 1.5.dp else (-1).dp,
-                        MaterialTheme.colors.onBackground,
-                        RoundedCornerShape(3.dp)
-                    )
-                    .conditional(toolbarAction in listOf(Spacer1, Spacer2, Time)) {
-                        clickable(onClick = { onClick(toolbarAction) })
+    // Real constraints, not Configuration screen dims: at targetSdk 35+
+    // screenWidthDp includes the system bars and can exceed the bar's width.
+    BoxWithConstraints {
+        val spacerWidth = calculateSpacerWidth(list.value, maxWidth)
+        val titleWidth = calculateTitleWidth(list.value, maxWidth)
+        ReorderableRow(
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colors.background)
+                .horizontalScroll(
+                    rememberScrollState(),
+                    reverseScrolling = true
+                ),
+            list = list.value,
+            onSettle = { fromIndex, toIndex ->
+                list.value = list.value.toMutableList().apply {
+                    add(toIndex, removeAt(fromIndex))
+                }
+            },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
+        ) { _, toolbarActionInfo, isDragging ->
+            key(toolbarActionInfo) {
+                val toolbarAction = toolbarActionInfo.toolbarAction
+                val blinkAlpha = rememberBlinkAlpha(toolbarAction == highlightedAction)
+                Box(
+                    modifier = Modifier
+                        .alpha(blinkAlpha)
+                        .longPressDraggableHandle()
+                        .border(
+                            if (isDragging) 1.5.dp else (-1).dp,
+                            MaterialTheme.colors.onBackground,
+                            RoundedCornerShape(3.dp)
+                        )
+                        .conditional(toolbarAction in listOf(Spacer1, Spacer2, Time)) {
+                            clickable(onClick = { onClick(toolbarAction) })
+                        }
+                ) {
+                    if (toolbarAction in spacerActions) {
+                        Spacer(
+                            modifier = Modifier
+                                .height(40.dp)
+                                .width(spacerWidth)
+                                .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.onBackground)
+                        )
+                    } else {
+                        CreateToolbarIcon(
+                            toolbarActionInfo,
+                            spacerWidth,
+                            titleWidth,
+                            onClick,
+                            title,
+                            false,
+                            tabCount,
+                            null,
+                            pageInfo,
+                        )
                     }
-            ) {
-                if (toolbarAction in spacerActions) {
-                    Spacer(
-                        modifier = Modifier
-                            .height(40.dp)
-                            .width(spacerWidth)
-                            .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.onBackground)
-                    )
-                } else {
-                    CreateToolbarIcon(
-                        toolbarActionInfo,
-                        spacerWidth,
-                        titleWidth,
-                        onClick,
-                        title,
-                        false,
-                        tabCount,
-                        null,
-                        pageInfo,
-                    )
                 }
             }
         }
@@ -410,8 +419,26 @@ fun ReorderableComposedIconColumn(
     onClick: (ToolbarAction) -> Unit,
     highlightedAction: ToolbarAction? = null,
 ) {
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val spacerHeight = calculateSpacerHeight(list.value, screenHeight)
+    // Real constraints, not Configuration screen dims: at targetSdk 35+
+    // screenHeightDp includes the system bars and overshoots the column height.
+    BoxWithConstraints {
+        ReorderableComposedIconColumnContent(
+            list, title, tabCount, pageInfo, onClick, highlightedAction,
+            spacerHeight = calculateSpacerHeight(list.value, maxHeight),
+        )
+    }
+}
+
+@Composable
+private fun ReorderableComposedIconColumnContent(
+    list: MutableState<List<ToolbarActionInfo>>,
+    title: String,
+    tabCount: String,
+    pageInfo: String,
+    onClick: (ToolbarAction) -> Unit,
+    highlightedAction: ToolbarAction?,
+    spacerHeight: Dp,
+) {
     ReorderableColumn(
         modifier = Modifier
             .width(50.dp)

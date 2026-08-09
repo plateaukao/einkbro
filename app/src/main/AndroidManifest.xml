@@ -67,6 +67,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+
+        <!-- Android 16 (targetSdk 36) ignores setRequestedOrientation on
+             large screens (sw >= 600dp), which would silently break the
+             rotation-lock feature and fullscreen-video orientation on
+             tablets/e-readers. Temporary compat opt-out; removed at
+             targetSdk 37, so the feature needs a large-screen rethink then. -->
+        <property
+            android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+            android:value="true" />
+
         <activity
             android:name=".activity.DictActivity"
             android:exported="true"

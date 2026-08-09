@@ -43,7 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -199,44 +199,48 @@ fun PreviewTabs(
 ) {
     if (showHorizontal) {
         val maxItemWidth = 200
-        val barWidth = LocalConfiguration.current.screenWidthDp - 50 // 50 is the plus button width
-        val itemWidth =
-            if (albumList.size * 200 > barWidth) max(
-                barWidth / albumList.size,
-                80
-            )
-            else maxItemWidth
+        // Real constraints, not Configuration screen dims: at targetSdk 35+
+        // screenWidthDp includes the system bars and overshoots the bar width.
+        BoxWithConstraints(modifier = modifier) {
+            val barWidth = maxWidth.value.toInt() - 50 // 50 is the plus button width
+            val itemWidth =
+                if (albumList.size * 200 > barWidth) max(
+                    barWidth / albumList.size,
+                    80
+                )
+                else maxItemWidth
 
-        val listState = rememberLazyListState()
-        LazyRow(modifier = modifier, state = listState) {
-            items(albumList.size, key = { albumList[it].id }) { index ->
-                val album = albumList[index]
-                val interactionSource = remember { MutableInteractionSource() }
-                // derivedStateOf: a focus change invalidates only the two
-                // affected items instead of every visible tab.
-                val isFocused by remember(index) {
-                    derivedStateOf { index == albumFocusIndex.value }
+            val listState = rememberLazyListState()
+            LazyRow(state = listState) {
+                items(albumList.size, key = { albumList[it].id }) { index ->
+                    val album = albumList[index]
+                    val interactionSource = remember { MutableInteractionSource() }
+                    // derivedStateOf: a focus change invalidates only the two
+                    // affected items instead of every visible tab.
+                    val isFocused by remember(index) {
+                        derivedStateOf { index == albumFocusIndex.value }
+                    }
+                    TabItem(
+                        modifier = Modifier
+                            .combinedClickable(
+                                interactionSource = interactionSource,
+                                indication = null,
+                                onClick = { onClick(album) },
+                                onLongClick = { closeAction(album) }
+                            )
+                            .width(itemWidth.dp),
+                        showCloseButton = false,
+                        isFocused = isFocused,
+                        album = album
+                    ) { closeAction(album) }
                 }
-                TabItem(
-                    modifier = Modifier
-                        .combinedClickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { onClick(album) },
-                            onLongClick = { closeAction(album) }
-                        )
-                        .width(itemWidth.dp),
-                    showCloseButton = false,
-                    isFocused = isFocused,
-                    album = album
-                ) { closeAction(album) }
             }
-        }
-        // snapshotFlow keeps the focus-index read out of composition scope.
-        LaunchedEffect(Unit) {
-            snapshotFlow { albumFocusIndex.value }.collect { focusIndex ->
-                if (listState.layoutInfo.visibleItemsInfo.none { it.index == focusIndex }) {
-                    listState.scrollToItem(focusIndex)
+            // snapshotFlow keeps the focus-index read out of composition scope.
+            LaunchedEffect(Unit) {
+                snapshotFlow { albumFocusIndex.value }.collect { focusIndex ->
+                    if (listState.layoutInfo.visibleItemsInfo.none { it.index == focusIndex }) {
+                        listState.scrollToItem(focusIndex)
+                    }
                 }
             }
         }

@@ -441,7 +441,7 @@ class EBWebViewClient(
                 return true
             }
             try {
-                val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME).sanitizedForWebIntent()
                 if (intent.resolveActivity(context.packageManager) != null || intent.data?.scheme == "market") {
                     try {
                         context.startActivity(intent)
@@ -471,10 +471,23 @@ class EBWebViewClient(
         return true //do nothing in other cases
     }
 
+    /**
+     * Hygiene for intents built from web content: only implicit BROWSABLE
+     * targets, never a page-chosen component or selector. This is the classic
+     * intent-redirection guard for browsers, and the pattern Android 16's
+     * intent hardening expects (unsanitized launches get "Access blocked").
+     * An intent's package= hint survives, so app-targeted links still work.
+     */
+    private fun Intent.sanitizedForWebIntent(): Intent = apply {
+        addCategory(Intent.CATEGORY_BROWSABLE)
+        component = null
+        selector = null
+    }
+
     private fun maybeHandleFallbackUrl(webView: WebView, intent: Intent): Boolean {
         val fallbackUrl = intent.getStringExtra("browser_fallback_url") ?: return false
         if (fallbackUrl.startsWith("market://")) {
-            val intent = Intent.parseUri(fallbackUrl, Intent.URI_INTENT_SCHEME)
+            val intent = Intent.parseUri(fallbackUrl, Intent.URI_INTENT_SCHEME).sanitizedForWebIntent()
             try {
                 context.startActivity(intent)
             } catch (e: Exception) {

@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.activity
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -54,6 +55,7 @@ import info.plateaukao.einkbro.preference.ToolbarPosition
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.ReorderableComposedIconBar
 import info.plateaukao.einkbro.view.compose.ReorderableComposedIconColumn
+import info.plateaukao.einkbro.view.compose.scaffoldEdgeToEdgePadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.height
@@ -115,18 +117,29 @@ class ToolbarConfigActivity : LocaleAwareComponentActivity() {
                         },
                     )
                 }
-                ToolbarConfigPanel(
-                    list = list,
-                    isVerticalPreview = config.ui.isVerticalToolbar,
-                    isPreviewOnRight = config.ui.toolbarPosition == ToolbarPosition.Right,
-                    topBar = topBar,
-                )
+                // Same edge-to-edge handling as the ListScaffold screens: on
+                // Android 15+ the window is forced edge-to-edge, and the
+                // 3-button navigation bar would otherwise cover (and steal taps
+                // from) the bottom of the panel. The hidden status bar reports
+                // a zero inset, so only real bars add padding.
+                Box(Modifier.scaffoldEdgeToEdgePadding()) {
+                    ToolbarConfigPanel(
+                        list = list,
+                        isVerticalPreview = config.ui.isVerticalToolbar,
+                        isPreviewOnRight = config.ui.toolbarPosition == ToolbarPosition.Right,
+                        topBar = topBar,
+                    )
+                }
             }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
+            window.insetsController?.apply {
+                hide(WindowInsets.Type.statusBars())
+                systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
         } else {
             @Suppress("DEPRECATION")
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
