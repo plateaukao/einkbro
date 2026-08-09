@@ -245,8 +245,11 @@ class ChromeSetupDelegate(
      * The bottom is padded by the tappable inset: 3-button navigation is opaque
      * and steals every tap aimed at the toolbar (#628), while gesture
      * navigation just draws its pill over the app and reports no tappable
-     * inset. In hide-statusbar mode the insets listener already compensates
-     * with a bottom margin, so the padding stays out of it.
+     * inset. The keyboard inset is folded in the same way, because
+     * adjustResize is also ignored on a forced edge-to-edge window — without
+     * it the bottom-docked address bar input opens behind the keyboard. In
+     * hide-statusbar mode the insets listener already compensates with a
+     * bottom margin, so the padding stays out of it.
      *
      * Hidden bars (fullscreen mode, hide statusbar setting) report a zero
      * inset, and older versions keep the decor-managed behavior, so both stay
@@ -265,7 +268,10 @@ class ChromeSetupDelegate(
             else windowInsets.getInsets(WindowInsetsCompat.Type.statusBars()).top
         val bottom =
             if (config.ui.hideStatusbar) 0
-            else windowInsets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom
+            else maxOf(
+                windowInsets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom,
+                windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
+            )
         if (root.paddingTop != top || root.paddingBottom != bottom) {
             root.setPadding(0, top, 0, bottom)
         }
