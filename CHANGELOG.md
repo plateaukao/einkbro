@@ -1,3 +1,14 @@
+### 16.2.1
+#### Features
+* Restoring a backup (from Google Drive or a zip) now merges into local data instead of replacing it: bookmarks, site settings, userscripts, AI query results, chat sessions, video transcripts, highlights, and saved pages are appended — locally created data is never deleted, and restoring the same backup twice adds no duplicates
+
+#### Fixes
+* Android 15+: the address bar input no longer opens hidden behind the keyboard (#628)
+* Start page: scrolling the search suggestion list no longer accidentally opens the item under the finger
+* Android 15+: toolbar and tab bar spacing no longer miscounts the system bar sizes, and the toolbar settings screen stays clear of the 3-button navigation bar
+* Android 16: rotation lock and fullscreen video orientation keep working on large-screen devices
+* intent:// links from web pages are launched with browser-standard safety restrictions
+
 ### 16.2.0
 #### Features
 * Start page: tap the title to rename the heading or set a background image picked from your device
