@@ -497,6 +497,19 @@ object DownloadHelper {
             .ifBlank { "download" }
     }
 
+    private fun downloadedLocalUri(manager: DownloadManager, id: Long): String? = try {
+        manager.query(DownloadManager.Query().setFilterById(id))?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                cursor.getString(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_URI))
+            } else {
+                null
+            }
+        }
+    } catch (e: Exception) {
+        Log.w("browser", "Failed to query downloaded file uri: $e")
+        null
+    }
+
     fun createDownloadReceiver(activity: Activity): BroadcastReceiver {
         return object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -505,13 +518,26 @@ object DownloadHelper {
                 val downloadManager = activity.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
                 val mostRecentDownload: Uri =
                     downloadManager.getUriForDownloadedFile(downloadFileId) ?: return
-                val mimeType: String = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
-                val fileIntent = Intent(ACTION_VIEW).apply {
-                    setDataAndType(mostRecentDownload, mimeType)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
+                val mimeType: String? = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
+                val localUri = downloadedLocalUri(downloadManager, downloadFileId)
                 downloadFileId = -1L
+                // Without REQUEST_INSTALL_PACKAGES (dropped in v16.0.0 for Play policy),
+                // the package installer silently ignores install intents from this app.
+                // Hand APKs to the system Downloads UI instead, so the Files app the user
+                // taps the APK in becomes the install source.
+                val isApk = mimeType == "application/vnd.android.package-archive" ||
+                    localUri?.endsWith(".apk", ignoreCase = true) == true
+                val fileIntent = if (isApk) {
+                    Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                } else {
+                    Intent(ACTION_VIEW).apply {
+                        setDataAndType(mostRecentDownload, mimeType)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                }
                 DialogManager(activity).showOkCancelDialog(
                     messageResId = R.string.toast_downloadComplete,
                     okAction = {
