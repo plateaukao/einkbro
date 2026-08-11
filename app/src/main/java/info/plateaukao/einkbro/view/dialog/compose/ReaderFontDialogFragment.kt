@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.lifecycle.lifecycleScope
+import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DisplayConfig
 import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.view.dialog.TextInputDialog
+import kotlinx.coroutines.launch
 
 class ReaderFontDialogFragment(
     private val onFontCustomizeClick: () -> Unit
@@ -45,13 +50,15 @@ class ReaderFontDialogFragment(
     override fun Content() {
         val customFontName =
             remember { customFontNameState }
+        val fontSizeState = remember { mutableIntStateOf(config.display.readerFontSize) }
         MainFontDialog(
-            selectedFontSizeValue = config.display.readerFontSize,
+            selectedFontSizeValue = fontSizeState.intValue,
             customFontSizeValue = config.display.customFontSize,
             selectedFontType = config.display.readerFontType,
             customFontName = customFontName.value,
             onFontSizeClick = {
                 config.display.readerFontSize = it
+                fontSizeState.intValue = it
                 dismiss()
             },
             onFontTypeClick = {
@@ -63,7 +70,20 @@ class ReaderFontDialogFragment(
                 }
             },
             onFontTypeChanged = onFontCustomizeClick,
-            onCustomFontSizeClick = onFontCustomizeClick,
+            onCustomFontSizeClick = {
+                lifecycleScope.launch {
+                    TextInputDialog(
+                        requireContext(),
+                        getString(R.string.custom_scale),
+                        getString(R.string.custom_scale_desc),
+                        config.display.customFontSize.toString()
+                    ).show()?.toIntOrNull()?.let {
+                        config.display.readerFontSize = it
+                        config.display.customFontSize = it
+                        fontSizeState.intValue = it
+                    }
+                }
+            },
             okAction = { dismiss() },
         )
     }
