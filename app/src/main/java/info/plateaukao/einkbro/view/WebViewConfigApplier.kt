@@ -23,6 +23,7 @@ class WebViewConfigApplier(
     private val cookieManager: CookieManager = CookieManager.getInstance()
     private var autoplayBlockerHandler: ScriptHandler? = null
     private var webSpeechPolyfillHandler: ScriptHandler? = null
+    private var dragStartBlockerHandler: ScriptHandler? = null
     private var defaultUserAgentMetadata: UserAgentMetadata? = null
     private var uaMetadataOverridden = false
 
@@ -103,6 +104,29 @@ class WebViewConfigApplier(
         toggleCookieSupport(config.browser.cookies)
         applyAutoplayBlocker()
         applyWebSpeechPolyfill()
+        applyDragStartBlocker()
+    }
+
+    // WebView 131+ turns a long-press on an image into a system drag, and on
+    // Android 8.x releasing that drag freezes the entire device until a forced
+    // reboot (issue #629; chromium android-webview-dev "Severe freeze bug -
+    // drag image in WebView freezes entire UI"). WebView for Android 9- is
+    // EOL, so no upstream fix will ever ship. View.startDragAndDrop is final,
+    // so the drag is cancelled renderer-side instead: Blink fires a cancelable
+    // dragstart before any drag, and the blocker preventDefaults it in every
+    // frame. No fallback for WebViews without DOCUMENT_START_SCRIPT (< 91):
+    // those predate the regression (131+). The long-press context menu is
+    // driven by our own gesture detector and is unaffected.
+    private fun applyDragStartBlocker() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) return
+        if (!supportsDocumentStartScript()) return
+        if (dragStartBlockerHandler == null) {
+            dragStartBlockerHandler = WebViewCompat.addDocumentStartJavaScript(
+                webView,
+                HelperUnit.loadAssetFile("disable_drag_start.js"),
+                setOf("*"),
+            )
+        }
     }
 
     // mediaPlaybackRequiresUserGesture alone can't stop feed sites: muted
