@@ -1,3 +1,9 @@
+### 16.2.2
+#### Fixes
+* Android 8.x: long-pressing an image no longer freezes the entire device — the system drag WebView 131+ starts on image long-press (a known unfixable WebView regression on Android 8) is now blocked (#629)
+* Reader mode / translated pages: the custom font size option in the font dialog opens the size input again instead of the custom font picker (#631)
+* Finished APK downloads open the system Files app instead of failing to launch the package installer
+
 ### 16.2.1
 #### Features
 * Restoring a backup (from Google Drive or a zip) now merges into local data instead of replacing it: bookmarks, site settings, userscripts, AI query results, chat sessions, video transcripts, highlights, and saved pages are appended — locally created data is never deleted, and restoring the same backup twice adds no duplicates
