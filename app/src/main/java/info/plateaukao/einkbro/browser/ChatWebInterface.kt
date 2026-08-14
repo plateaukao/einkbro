@@ -13,6 +13,7 @@ import info.plateaukao.einkbro.data.remote.ChatMessage
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.data.remote.ToolCall
 import info.plateaukao.einkbro.data.remote.ToolChatMessage
+import info.plateaukao.einkbro.data.remote.ToolChatOutcome
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionType
@@ -349,14 +350,15 @@ class ChatWebInterface(
         var iter = 0
         while (iter < MAX_AGENT_ITERATIONS) {
             iter++
-            val resp = withContext(Dispatchers.IO) {
+            val outcome = withContext(Dispatchers.IO) {
                 openAiRepository.chatWithTools(toolHistory, AgentToolSchema.tools, actionInfo)
             }
-            if (resp == null) {
-                appendBubble("\n\n_(LLM call failed on turn $iter)_")
+            if (outcome is ToolChatOutcome.Failure) {
+                appendBubble("\n\n_(LLM call failed on turn $iter: ${escapeMd(outcome.message)})_")
                 jsHelper.sendFinalEmptyUpdate()
                 return
             }
+            val resp = (outcome as ToolChatOutcome.Success).completion
             val msg = resp.choices.firstOrNull()?.message
             if (msg == null) {
                 appendBubble("\n\n_(empty response)_")
@@ -368,19 +370,17 @@ class ChatWebInterface(
 
             if (toolCalls.isEmpty()) {
                 val text = msg.content.orEmpty().ifBlank { "_(no response)_" }
-                toolHistory += ToolChatMessage(role = "assistant", content = text)
+                // toolCalls = null (not a decoded empty array) so the replayed turn
+                // never serializes "tool_calls": []; rawItems survives the copy.
+                toolHistory += msg.copy(content = text, toolCalls = null)
                 appendBubble("\n\n$text")
                 jsHelper.sendFinalEmptyUpdate()
                 return
             }
 
-            // Record the assistant tool-call turn so subsequent API calls see
-            // a valid conversation transcript.
-            toolHistory += ToolChatMessage(
-                role = "assistant",
-                content = msg.content,
-                toolCalls = toolCalls,
-            )
+            // Record the assistant tool-call turn as-is so subsequent API calls see
+            // a valid conversation transcript (including any raw Responses-API items).
+            toolHistory += msg
 
             for (call in toolCalls) {
                 val preview = call.function.arguments.take(120)

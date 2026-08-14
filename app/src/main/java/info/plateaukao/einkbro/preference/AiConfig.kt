@@ -81,6 +81,15 @@ class AiConfig(private val sp: SharedPreferences) {
     fun resolveReasoningEffort(action: ChatGPTActionInfo): ReasoningEffort =
         action.reasoning.takeIf { it != ReasoningEffort.Default } ?: reasoningEffort
 
+    /**
+     * OpenAI models learned (from the server's 400 guidance) to require /v1/responses
+     * for function-tool calls. Known-from-the-start families are hardcoded in
+     * OpenAiRepository; this set persists what's discovered at runtime.
+     */
+    var responsesApiModels: Set<String>
+        get() = sp.getStringSet(K_RESPONSES_API_MODELS, null) ?: emptySet()
+        set(value) = sp.edit { putStringSet(K_RESPONSES_API_MODELS, value) }
+
     var externalSearchWithGpt by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_GPT, false)
 
     var externalSearchWithPopUp by BooleanPreference(sp, K_EXTERNAL_SEARCH_WITH_POPUP, false)
@@ -202,6 +211,7 @@ class AiConfig(private val sp: SharedPreferences) {
         const val K_EXTERNAL_SEARCH_WITH_POPUP = "sp_external_search_with_pop"
         const val K_ENABLE_OPEN_AI_STREAM = "sp_enable_open_ai_stream"
         private const val K_REASONING_EFFORT = "sp_reasoning_effort"
+        private const val K_RESPONSES_API_MODELS = "sp_responses_api_models"
         const val K_EXTERNAL_SEARCH_IN_SAME_TAB = "sp_external_search_in_same_tab"
         const val K_GPT_ACTION_ITEMS = "sp_gpt_action_items"
         private const val K_GPT_ACTION_EXTERNAL = "sp_gpt_action_external"

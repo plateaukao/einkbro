@@ -17,10 +17,19 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNames
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -48,6 +57,12 @@ class OpenAiRepository : KoinComponent {
         .writeTimeout(60, TimeUnit.SECONDS)
         .build()
     private val factory by lazy { EventSources.createFactory(client) }
+
+    // Agent tool calls are non-streaming, so a reasoning model's whole thinking pass
+    // has to fit inside the read timeout — 30s is not enough at higher efforts.
+    private val toolClient by lazy {
+        client.newBuilder().readTimeout(180, TimeUnit.SECONDS).build()
+    }
 
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -93,12 +108,13 @@ class OpenAiRepository : KoinComponent {
         gptActionInfo: ChatGPTActionInfo,
         failureAction: (ApiResult.Failure) -> Unit,
         thinkingAction: () -> Unit = {},
+        dropReasoningEffort: Boolean = false,
     ) {
         if (apiKey.isEmpty() && gptActionInfo.actionType == GptActionType.OpenAi) {
             failureAction(ApiResult.Failure(ApiResult.Kind.MissingKey, "OpenAI API key not set"))
             return
         }
-        val request = createCompletionRequest(messages, gptActionInfo, true)
+        val request = createCompletionRequest(messages, gptActionInfo, true, dropReasoningEffort)
 
         val thinkTagFilter = ThinkTagFilter()
         eventSource?.cancel()
@@ -146,6 +162,23 @@ class OpenAiRepository : KoinComponent {
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
                 if (finished) return
                 val code = response?.code
+                val errorBody = if (code != null && code != 200) {
+                    try {
+                        response.body?.string().orEmpty()
+                    } catch (e: Exception) {
+                        ""
+                    }
+                } else ""
+                if (!dropReasoningEffort && isEffortRejection(gptActionInfo, code, errorBody)) {
+                    // Pre-reasoning models 400 on the reasoning_effort argument itself;
+                    // learn the quirk and restart the stream once without it.
+                    modelsRejectingEffort.add(gptActionInfo.model)
+                    openAiStream(
+                        messages, appendResponseAction, doneAction, gptActionInfo,
+                        failureAction, thinkingAction, dropReasoningEffort = true,
+                    )
+                    return
+                }
                 when {
                     code == 200 -> finish(eventSource)
                     code == 429 -> {
@@ -169,7 +202,11 @@ class OpenAiRepository : KoinComponent {
                         ApiResult.Failure(ApiResult.Kind.Network, t.message ?: "Network error", cause = t)
                     )
                     else -> failureAction(
-                        ApiResult.Failure(ApiResult.Kind.Unknown, "AI request failed")
+                        ApiResult.Failure(
+                            ApiResult.Kind.Unknown,
+                            if (errorBody.isNotBlank()) extractApiError(code ?: 0, errorBody)
+                            else "AI request failed",
+                        )
                     )
                 }
             }
@@ -290,37 +327,101 @@ class OpenAiRepository : KoinComponent {
     suspend fun chatCompletion(
         messages: List<ChatMessage>,
         gptActionInfo: ChatGPTActionInfo,
-    ): ChatCompletion? = suspendCoroutine { continuation ->
-        val request = createCompletionRequest(messages, gptActionInfo)
+    ): ChatCompletion? {
+        val first = chatCompletionOnce(messages, gptActionInfo, dropReasoningEffort = false)
+        if (first.completion != null) return first.completion
+        if (isEffortRejection(gptActionInfo, first.code, first.errorBody)) {
+            modelsRejectingEffort.add(gptActionInfo.model)
+            return chatCompletionOnce(messages, gptActionInfo, dropReasoningEffort = true).completion
+        }
+        return null
+    }
+
+    private class ChatHttpResponse(
+        val completion: ChatCompletion?,
+        val code: Int?,
+        val errorBody: String,
+    )
+
+    private suspend fun chatCompletionOnce(
+        messages: List<ChatMessage>,
+        gptActionInfo: ChatGPTActionInfo,
+        dropReasoningEffort: Boolean,
+    ): ChatHttpResponse = suspendCoroutine { continuation ->
+        val request = createCompletionRequest(
+            messages, gptActionInfo, stream = false, dropReasoningEffort = dropReasoningEffort,
+        )
         try {
             client.newCall(request).execute().use { response ->
-                if (response.code != 200 || response.body == null) {
-                    return@use continuation.resume(null)
-                }
-
                 val responseString = response.body?.string().orEmpty()
+                if (response.code != 200) {
+                    Log.e("OpenAiRepository", "chatCompletion ${response.code}: $responseString")
+                    return@use continuation.resume(ChatHttpResponse(null, response.code, responseString))
+                }
                 val chatCompletion =
                     json.decodeFromString(ChatCompletion.serializer(), responseString)
                 Log.d("OpenAiRepository", "chatCompletion: $chatCompletion")
-                continuation.resume(chatCompletion)
+                continuation.resume(ChatHttpResponse(chatCompletion, 200, ""))
             }
         } catch (e: Exception) {
             Log.e("OpenAiRepository", "Error fetching chat completion", e)
-            continuation.resume(null)
+            continuation.resume(ChatHttpResponse(null, null, ""))
         }
     }
 
     /**
-     * Non-streaming chat completion with tool-calling support. Used by the free-form task
-     * agent loop. Speaks the OpenAI chat-completions schema everywhere: Gemini is served
-     * through Google's OpenAI-compatible endpoint (Bearer auth with the Gemini key), so
-     * the tool-calling loop works unchanged on all three backends.
+     * Tool-calling entry point for the free-form task agent. OpenAI now splits its
+     * models across two APIs: reasoning-first models (gpt-5.6*) reject function tools
+     * on /v1/chat/completions and require /v1/responses, while older models only speak
+     * chat/completions (and some reject the reasoning_effort parameter outright). The
+     * split isn't discoverable up front, so it is learned from the server's own 400
+     * guidance and persisted; known-Responses models route there directly. Gemini
+     * (OpenAI-compat layer) and self-hosted servers always use chat/completions.
      */
     suspend fun chatWithTools(
         messages: List<ToolChatMessage>,
         tools: List<ToolDefinition>,
         gptActionInfo: ChatGPTActionInfo,
-    ): ToolChatCompletion? = suspendCoroutine { continuation ->
+    ): ToolChatOutcome {
+        val isOpenAi = gptActionInfo.actionType != GptActionType.Gemini &&
+            gptActionInfo.actionType != GptActionType.SelfHosted
+        val model = gptActionInfo.model
+        if (isOpenAi && modelNeedsResponsesApi(model)) {
+            return responsesWithTools(messages, tools, gptActionInfo)
+        }
+        // Learned-behavior sets are keyed by bare model name, so only consult/teach
+        // them for api.openai.com — a self-hosted or Gemini model reusing an OpenAI
+        // model name must keep its wire behavior untouched.
+        val dropEffort = isOpenAi && model in modelsRejectingEffort
+        val result = chatCompletionsWithTools(messages, tools, gptActionInfo, dropEffort)
+        if (result is ToolHttpResult.Ok) return ToolChatOutcome.Success(result.completion)
+        val error = result as ToolHttpResult.Error
+        if (isOpenAi && error.body.contains("/v1/responses")) {
+            // "Function tools with reasoning_effort are not supported for <model> in
+            // /v1/chat/completions. To use function tools, use /v1/responses or set
+            // reasoning_effort to 'none'." — happens even with the parameter omitted,
+            // because the model's default effort counts too.
+            rememberResponsesApiModel(model)
+            return responsesWithTools(messages, tools, gptActionInfo)
+        }
+        if (!dropEffort && isEffortRejection(gptActionInfo, error.code, error.body)) {
+            // Pre-reasoning models: "Unrecognized request argument supplied:
+            // reasoning_effort". Retry without it; the model can't honor the
+            // setting either way.
+            modelsRejectingEffort.add(model)
+            val retry = chatCompletionsWithTools(messages, tools, gptActionInfo, true)
+            if (retry is ToolHttpResult.Ok) return ToolChatOutcome.Success(retry.completion)
+            return ToolChatOutcome.Failure((retry as ToolHttpResult.Error).toUserMessage())
+        }
+        return ToolChatOutcome.Failure(error.toUserMessage())
+    }
+
+    private suspend fun chatCompletionsWithTools(
+        messages: List<ToolChatMessage>,
+        tools: List<ToolDefinition>,
+        gptActionInfo: ChatGPTActionInfo,
+        dropReasoningEffort: Boolean,
+    ): ToolHttpResult = suspendCoroutine { continuation ->
         val isGemini = gptActionInfo.actionType == GptActionType.Gemini
         val isSelfHosted = gptActionInfo.actionType == GptActionType.SelfHosted
         val effort = config.ai.resolveReasoningEffort(gptActionInfo)
@@ -333,7 +434,8 @@ class OpenAiRepository : KoinComponent {
             // Gemini's OpenAI-compat layer only understands low/medium/high, so
             // "off" falls back to the model default there rather than erroring.
             reasoningEffort = effort.toOpenAiEffort()
-                ?.takeUnless { isGemini && effort == ReasoningEffort.Off },
+                ?.takeUnless { isGemini && effort == ReasoningEffort.Off }
+                ?.takeUnless { dropReasoningEffort },
             enableThinking = enableThinking,
             chatTemplateKwargs = enableThinking?.let { ChatTemplateKwargs(it) },
         )
@@ -347,21 +449,186 @@ class OpenAiRepository : KoinComponent {
             .header("Authorization", "Bearer ${if (isGemini) config.ai.geminiApiKey else apiKey}")
             .build()
         try {
-            client.newCall(request).execute().use { response ->
+            toolClient.newCall(request).execute().use { response ->
                 val responseBody = response.body?.string().orEmpty()
                 if (response.code != 200) {
                     Log.e("OpenAiRepository", "chatWithTools ${response.code}: $responseBody")
-                    return@use continuation.resume(null)
+                    return@use continuation.resume(ToolHttpResult.Error(response.code, responseBody))
                 }
                 Log.d("OpenAiRepository", "chatWithTools response: $responseBody")
                 val parsed = toolJson.decodeFromString(ToolChatCompletion.serializer(), responseBody)
-                continuation.resume(parsed)
+                continuation.resume(ToolHttpResult.Ok(parsed))
             }
         } catch (e: Exception) {
             Log.e("OpenAiRepository", "Error in chatWithTools", e)
-            continuation.resume(null)
+            continuation.resume(ToolHttpResult.Error(-1, e.message ?: e.javaClass.simpleName))
         }
     }
+
+    /**
+     * Tool-calling via OpenAI's /v1/responses API — the only place reasoning-first
+     * models accept function tools. The wire schema differs from chat/completions
+     * (flat tool objects, typed input items) but the result is folded back into
+     * [ToolChatCompletion] so the agent loop stays API-agnostic. Each assistant turn
+     * keeps its raw output items ([ToolChatMessage.rawItems]) and replays them
+     * verbatim on the next call, preserving item ids and any reasoning items the
+     * server expects to see back.
+     */
+    private suspend fun responsesWithTools(
+        messages: List<ToolChatMessage>,
+        tools: List<ToolDefinition>,
+        gptActionInfo: ChatGPTActionInfo,
+    ): ToolChatOutcome = suspendCoroutine { continuation ->
+        val effort = config.ai.resolveReasoningEffort(gptActionInfo)
+        val payload = buildJsonObject {
+            put("model", gptActionInfo.model)
+            put("input", buildResponsesInput(messages))
+            put("tools", buildJsonArray {
+                tools.forEach { tool ->
+                    add(buildJsonObject {
+                        put("type", "function")
+                        put("name", tool.function.name)
+                        put("description", tool.function.description)
+                        put("parameters", tool.function.parameters)
+                    })
+                }
+            })
+            put("tool_choice", "auto")
+            effort.toOpenAiEffort()?.let {
+                put("reasoning", buildJsonObject { put("effort", it) })
+            }
+        }
+        val body = payload.toString()
+        Log.d("OpenAiRepository", "responsesWithTools request: $body")
+        val request = Request.Builder()
+            .url("${getServerUrl(gptActionInfo.actionType)}$responsesPath")
+            .post(body.toRequestBody(mediaType))
+            .header("Authorization", "Bearer $apiKey")
+            .build()
+        try {
+            toolClient.newCall(request).execute().use { response ->
+                val responseBody = response.body?.string().orEmpty()
+                if (response.code != 200) {
+                    Log.e("OpenAiRepository", "responsesWithTools ${response.code}: $responseBody")
+                    return@use continuation.resume(
+                        ToolChatOutcome.Failure(ToolHttpResult.Error(response.code, responseBody).toUserMessage())
+                    )
+                }
+                Log.d("OpenAiRepository", "responsesWithTools response: $responseBody")
+                continuation.resume(parseResponsesOutput(responseBody))
+            }
+        } catch (e: Exception) {
+            Log.e("OpenAiRepository", "Error in responsesWithTools", e)
+            continuation.resume(ToolChatOutcome.Failure(e.message ?: e.javaClass.simpleName))
+        }
+    }
+
+    private fun buildResponsesInput(messages: List<ToolChatMessage>): JsonArray = buildJsonArray {
+        messages.forEach { m ->
+            when {
+                // Assistant turn that came from a previous /v1/responses call:
+                // replay its output items untouched.
+                m.rawItems != null -> m.rawItems.forEach { add(it) }
+                m.role == "tool" -> add(buildJsonObject {
+                    put("type", "function_call_output")
+                    put("call_id", m.toolCallId.orEmpty())
+                    put("output", m.content.orEmpty())
+                })
+                else -> {
+                    if (!m.content.isNullOrBlank() || m.toolCalls.isNullOrEmpty()) {
+                        add(buildJsonObject {
+                            put("role", m.role)
+                            put("content", m.content.orEmpty())
+                        })
+                    }
+                    // Assistant turns recorded by the chat-completions path: synthesize
+                    // function_call items so a mid-session API switch keeps a transcript
+                    // the Responses API can pair with its function_call_output items.
+                    m.toolCalls?.forEach { call ->
+                        add(buildJsonObject {
+                            put("type", "function_call")
+                            put("call_id", call.id)
+                            put("name", call.function.name)
+                            put("arguments", call.function.arguments)
+                        })
+                    }
+                }
+            }
+        }
+    }
+
+    private fun parseResponsesOutput(responseBody: String): ToolChatOutcome {
+        val root = json.parseToJsonElement(responseBody).jsonObject
+        val output = root["output"] as? JsonArray ?: JsonArray(emptyList())
+        val toolCalls = output.mapNotNull { item ->
+            val obj = item as? JsonObject ?: return@mapNotNull null
+            if (obj["type"]?.jsonPrimitive?.contentOrNull != "function_call") return@mapNotNull null
+            ToolCall(
+                id = obj["call_id"]?.jsonPrimitive?.contentOrNull ?: return@mapNotNull null,
+                function = FunctionCall(
+                    name = obj["name"]?.jsonPrimitive?.contentOrNull.orEmpty(),
+                    arguments = obj["arguments"]?.jsonPrimitive?.contentOrNull ?: "{}",
+                ),
+            )
+        }
+        val text = output.filterIsInstance<JsonObject>()
+            .filter { it["type"]?.jsonPrimitive?.contentOrNull == "message" }
+            .flatMap { msg -> (msg["content"] as? JsonArray ?: emptyList()).filterIsInstance<JsonObject>() }
+            .filter { it["type"]?.jsonPrimitive?.contentOrNull == "output_text" }
+            .mapNotNull { it["text"]?.jsonPrimitive?.contentOrNull }
+            .joinToString("")
+        if (toolCalls.isEmpty() && text.isBlank()) {
+            val status = root["status"]?.jsonPrimitive?.contentOrNull
+            return ToolChatOutcome.Failure("empty response (status=$status)")
+        }
+        val message = ToolChatMessage(
+            role = "assistant",
+            content = text.ifBlank { null },
+            toolCalls = toolCalls.ifEmpty { null },
+            rawItems = output,
+        )
+        return ToolChatOutcome.Success(ToolChatCompletion(listOf(ToolChatChoice(message = message))))
+    }
+
+    /**
+     * Models that must call /v1/responses for function tools. gpt-5.6* is known from
+     * the server's own 400 guidance; anything else is learned the same way at runtime
+     * and remembered in prefs so later sessions skip the doomed chat/completions call.
+     */
+    private fun modelNeedsResponsesApi(model: String): Boolean =
+        model.startsWith("gpt-5.6") || config.ai.responsesApiModels.contains(model)
+
+    private fun rememberResponsesApiModel(model: String) {
+        config.ai.responsesApiModels = config.ai.responsesApiModels + model
+    }
+
+    private fun ToolHttpResult.Error.toUserMessage(): String =
+        if (code == -1) body.take(300) else extractApiError(code, body)
+
+    private fun extractApiError(code: Int, body: String): String {
+        val apiMessage = try {
+            json.parseToJsonElement(body).jsonObject["error"]
+                ?.jsonObject?.get("message")?.jsonPrimitive?.contentOrNull
+        } catch (e: Exception) {
+            null
+        }
+        return apiMessage?.take(300)
+            ?: "HTTP $code${if (body.isBlank()) "" else ": ${body.take(200)}"}"
+    }
+
+    /**
+     * True when a 400 is OpenAI's "Unrecognized request argument supplied:
+     * reasoning_effort" quirk (pre-reasoning models like gpt-4.1) — worth one retry
+     * without the parameter. Scoped to api.openai.com action types so Gemini and
+     * self-hosted wire behavior is never second-guessed.
+     */
+    private fun isEffortRejection(
+        gptActionInfo: ChatGPTActionInfo,
+        code: Int?,
+        body: String,
+    ): Boolean = gptActionInfo.actionType != GptActionType.Gemini &&
+        gptActionInfo.actionType != GptActionType.SelfHosted &&
+        code == 400 && body.contains("reasoning_effort")
 
     suspend fun queryGemini(
         messages: List<ChatMessage>,
@@ -524,17 +791,23 @@ class OpenAiRepository : KoinComponent {
         messages: List<ChatMessage>,
         gptActionInfo: ChatGPTActionInfo,
         stream: Boolean = false,
+        dropReasoningEffort: Boolean = false,
     ): Request {
         val effort = config.ai.resolveReasoningEffort(gptActionInfo)
         // The enable_thinking pair is self-hosted-only: api.openai.com rejects
         // requests with parameters it doesn't know.
         val isSelfHosted = gptActionInfo.actionType == GptActionType.SelfHosted
         val enableThinking = if (isSelfHosted) effort.toEnableThinking() else null
+        // Consult the learned quirk set (api.openai.com models only) so a model
+        // that already 400'd on reasoning_effort never gets it again.
+        val dropEffort = dropReasoningEffort || (!isSelfHosted &&
+            gptActionInfo.actionType != GptActionType.Gemini &&
+            gptActionInfo.model in modelsRejectingEffort)
         val chatRequest = ChatRequest(
             model = gptActionInfo.model,
             messages = messages,
             stream = stream,
-            reasoningEffort = effort.toOpenAiEffort(),
+            reasoningEffort = effort.toOpenAiEffort()?.takeUnless { dropEffort },
             enableThinking = enableThinking,
             chatTemplateKwargs = enableThinking?.let { ChatTemplateKwargs(it) },
         )
@@ -601,6 +874,13 @@ class OpenAiRepository : KoinComponent {
 
     companion object {
         private const val completionPath = "/v1/chat/completions"
+        private const val responsesPath = "/v1/responses"
+
+        // Models that 400 on the reasoning_effort argument itself (pre-reasoning
+        // families like gpt-4.1). Learned per process; a wrong entry only costs
+        // sending the user's effort setting to a model that ignores it anyway.
+        private val modelsRejectingEffort =
+            java.util.Collections.synchronizedSet(mutableSetOf<String>())
 
         // Google's OpenAI-compatible surface for the Gemini API: same request/response
         // schema as /v1/chat/completions (including tools), Bearer auth with the Gemini key.
@@ -772,7 +1052,25 @@ data class ToolChatMessage(
     val content: String? = null,
     @SerialName("tool_call_id") val toolCallId: String? = null,
     @SerialName("tool_calls") val toolCalls: List<ToolCall>? = null,
+    /**
+     * Raw /v1/responses output items this assistant turn was parsed from, replayed
+     * verbatim as input items on later turns. @Transient keeps it out of every JSON
+     * encoding — chat/completions payloads must not carry it, and agent transcripts
+     * are never persisted.
+     */
+    @Transient val rawItems: JsonArray? = null,
 )
+
+/** Result of a [OpenAiRepository.chatWithTools] turn, with the API's error text on failure. */
+sealed class ToolChatOutcome {
+    data class Success(val completion: ToolChatCompletion) : ToolChatOutcome()
+    data class Failure(val message: String) : ToolChatOutcome()
+}
+
+private sealed class ToolHttpResult {
+    class Ok(val completion: ToolChatCompletion) : ToolHttpResult()
+    class Error(val code: Int, val body: String) : ToolHttpResult()
+}
 
 @Serializable
 data class ToolCall(
