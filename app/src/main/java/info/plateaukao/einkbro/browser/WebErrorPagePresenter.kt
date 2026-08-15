@@ -10,25 +10,52 @@ import info.plateaukao.einkbro.view.EBWebView
 class WebErrorPagePresenter(
     private val ebWebView: EBWebView,
 ) {
+    /**
+     * Scheme-less form of the URL last auto-downgraded from https to http, so each
+     * address is retried at most once per visit. Cleared by [onPageStarted] as soon
+     * as the user moves somewhere else. See [onReceivedError].
+     */
+    private var downgradedKey: String? = null
+
+    /** Release the one-shot downgrade once a different page starts loading. */
+    fun onPageStarted(url: String?) {
+        if (url == null) return
+        if (schemeless(url) != downgradedKey) downgradedKey = null
+    }
+
     fun onReceivedError(
         view: WebView?,
         request: WebResourceRequest?,
         error: WebResourceError?,
     ) {
-        // if https is not available, try http
-        if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
-            ebWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
-            return
-        }
         Log.e("ebWebViewClient", "onReceivedError:${request?.url} / ${error?.description}")
 
-        if (request?.isForMainFrame == true) {
-            val scheme = request.url.scheme
-            if (scheme == "http" || scheme == "https") {
-                showErrorPage(request.url.toString(), error?.description?.toString())
+        if (request?.isForMainFrame != true) return
+        val scheme = request.url.scheme
+        if (scheme != "http" && scheme != "https") return
+
+        // A site with broken TLS may still serve plain http, so retry the address
+        // once over http. All three guards matter, because loadUrl() here is a
+        // *top-level* navigation: onReceivedError fires for every subresource since
+        // API 23, so without isForMainFrame a single third-party script with a bad
+        // certificate navigates the whole tab away from the page the user is
+        // reading. And hosts that 308-redirect http straight back to https would
+        // otherwise bounce between the two schemes until the WebView gives up,
+        // burying the real page under a stack of error entries the back button
+        // can't escape.
+        if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && scheme == "https") {
+            val key = schemeless(request.url.toString())
+            if (key != downgradedKey) {
+                downgradedKey = key
+                ebWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
+                return
             }
         }
+
+        showErrorPage(request.url.toString(), error?.description?.toString())
     }
+
+    private fun schemeless(url: String): String = url.substringAfter("://")
 
     private fun showErrorPage(failedUrl: String, rawReason: String?) {
         val friendly = friendlyReason(rawReason)

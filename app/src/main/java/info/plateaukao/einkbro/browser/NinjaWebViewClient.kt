@@ -140,6 +140,7 @@ class EBWebViewClient(
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         ebWebView.currentPageUrl = url
+        errorPagePresenter.onPageStarted(url)
         // A committing document invalidates reader-mode state carried from the
         // previous page: covers link taps and JS navigations that bypass
         // loadUrl/reload (issue #309). Same-document fragment jumps don't fire
