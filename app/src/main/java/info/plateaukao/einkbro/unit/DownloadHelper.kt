@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.unit
 
 import android.app.Activity
 import android.app.DownloadManager
+import android.content.ContentValues
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
@@ -10,6 +11,7 @@ import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.URLUtil
@@ -28,6 +30,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.IOException
+import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLDecoder
@@ -80,6 +84,59 @@ object DownloadHelper {
 
     private fun useSupernoteStorage(context: Context): Boolean =
         HelperUnit.isSupernoteDocumentInstalled(context)
+
+    /**
+     * MediaStore normalizes DISPLAY_NAME against the given MIME type and appends
+     * the canonical extension when they disagree (e.g. `skin.cskin` +
+     * `application/zip` becomes `skin.cskin.zip`). Derive the MIME from the
+     * extension instead, falling back to octet-stream (no canonical extension,
+     * so unknown extensions are kept verbatim).
+     */
+    private fun mediaStoreMime(fileName: String): String {
+        val ext = fileName.substringAfterLast('.', "").lowercase()
+        return android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext)
+            ?: "application/octet-stream"
+    }
+
+    /**
+     * Stream a new file into the public Download folder. On API 29+ this must go
+     * through MediaStore.Downloads: scoped storage denies raw `File` writes on
+     * Android 10 (EACCES) and the manifest caps WRITE_EXTERNAL_STORAGE at API 28,
+     * so there is no permission left to request. Pre-29 keeps the direct write,
+     * guarded by the runtime prompt in [needGrantStoragePermission]. Throws on
+     * failure; a partially written MediaStore row is deleted before rethrowing.
+     */
+    private fun writeToPublicDownloads(
+        context: Context,
+        fileName: String,
+        write: (OutputStream) -> Unit,
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val resolver = context.contentResolver
+            val values = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                put(MediaStore.MediaColumns.MIME_TYPE, mediaStoreMime(fileName))
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
+            }
+            val uri = resolver.insert(
+                MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY),
+                values,
+            ) ?: throw IOException("MediaStore insert failed for $fileName")
+            try {
+                (resolver.openOutputStream(uri)
+                    ?: throw IOException("openOutputStream failed for $uri")).use(write)
+                values.clear()
+                values.put(MediaStore.MediaColumns.IS_PENDING, 0)
+                resolver.update(uri, values, null, null)
+            } catch (e: Exception) {
+                resolver.delete(uri, null, null)
+                throw e
+            }
+        } else {
+            File(publicDownloadDir(context), fileName).outputStream().use(write)
+        }
+    }
 
     private fun guessMime(fileName: String, fallback: String): String {
         if (fallback.isNotBlank()) return fallback
@@ -246,8 +303,7 @@ object DownloadHelper {
             if (useSupernoteStorage(activity)) {
                 writeBytesViaSupernote(activity, filename, effectiveMimeType, bytes)
             } else {
-                val destFile = File(publicDownloadDir(activity), filename)
-                destFile.writeBytes(bytes)
+                writeToPublicDownloads(activity, filename) { it.write(bytes) }
                 showShort(activity, R.string.toast_downloadComplete)
             }
         } catch (e: Exception) {
@@ -308,16 +364,17 @@ object DownloadHelper {
                         )
                     }
                 } else {
-                    val destFile = File(publicDownloadDir(activity), pending.fileName)
-                    destFile.writeBytes(bytes)
+                    writeToPublicDownloads(activity, pending.fileName) { it.write(bytes) }
                     withContext(Dispatchers.Main) {
                         showShort(activity, R.string.toast_downloadComplete)
                     }
                 }
             } catch (e: Exception) {
+                // The link already delivered its bytes at this point — only the local
+                // save can fail here, so don't blame the download link.
                 Log.w("browser", "Failed to complete blob download: $e")
                 withContext(Dispatchers.Main) {
-                    showShort(activity, R.string.error_download_link_invalid)
+                    showShort(activity, R.string.error_download_save_failed)
                 }
             }
         }
@@ -398,11 +455,8 @@ object DownloadHelper {
                         writeBytesViaSupernote(activity, filename, mimeType, bytes)
                     }
                 } else {
-                    val destFile = File(publicDownloadDir(activity), filename)
-                    connection.inputStream.use { input ->
-                        destFile.outputStream().use { output ->
-                            input.copyTo(output)
-                        }
+                    writeToPublicDownloads(activity, filename) { output ->
+                        connection.inputStream.use { input -> input.copyTo(output) }
                     }
                     withContext(Dispatchers.Main) {
                         showShort(activity, R.string.toast_downloadComplete)
