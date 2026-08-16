@@ -405,6 +405,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">Vis bogmærkeforslag ved indtastning i adresselinjen</string>
     <string name="setting_summary_show_default_text_menu">Vis systemets standard handlingsmenu efter tekstmarkering</string>
     <string name="setting_summary_show_tab_bar">Vis altid fanelinje over værktøjslinjen</string>
+    <string name="setting_title_side_tab_bar_on_top">Fanelinje øverst</string>
+    <string name="setting_summary_side_tab_bar_on_top">Med en lodret værktøjslinje placeres fanelinjen øverst i stedet for nederst</string>
     <string name="setting_summary_split_search_setting">Brugerdefineret søgning og åbning af resultater i delt skærm</string>
     <string name="setting_summary_summary_gpt_type">Vælg AI-motor til opsummering af indhold</string>
     <string name="setting_summary_text_wrap_reflow">Ombryd tekst ved zoom</string>

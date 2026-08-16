@@ -403,6 +403,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">Прикажи подударања обележивача при куцању у траци за унос</string>
     <string name="setting_summary_show_default_text_menu">По означавању текста прикажи системски мени акција</string>
     <string name="setting_summary_show_tab_bar">Увек приказуј траку картица изнад траке са алатима</string>
+    <string name="setting_title_side_tab_bar_on_top">Трака картица на врху</string>
+    <string name="setting_summary_side_tab_bar_on_top">Уз вертикалну траку алата, поставите траку картица на врх уместо на дно</string>
     <string name="setting_summary_split_search_setting">Подесите претрагу и отварање резултата на подељеном екрану</string>
     <string name="setting_summary_summary_gpt_type">Изаберите AI мотор за сумаризацију садржаја</string>
     <string name="setting_summary_text_wrap_reflow">Прелом текста при увећању</string>

@@ -320,6 +320,8 @@
     <string name="setting_summary_prune_query_parameter">Parametry takie jak utm_medium, utm_source itp. zostaną usunięte z URL</string>
     <string name="setting_title_show_tab_bar">Pokaż pasek kart</string>
     <string name="setting_summary_show_tab_bar">Zawsze pokazuj pasek kart nad paskiem narzędzi</string>
+    <string name="setting_title_side_tab_bar_on_top">Pasek kart u góry</string>
+    <string name="setting_summary_side_tab_bar_on_top">Przy pionowym pasku narzędzi umieść pasek kart u góry zamiast u dołu</string>
     <string name="error_download_link_invalid">Link do pobrania jest nieprawidłowy</string>
     <string name="duplicate_tab">Duplikuj kartę</string>
     <string name="password">Hasło</string>

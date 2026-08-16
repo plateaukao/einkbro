@@ -286,6 +286,8 @@
     <string name="setting_summary_prune_query_parameter">Parámetros de consulta como utm_medium, utm_source, etc., serán eliminados de la URL</string>
     <string name="setting_title_show_tab_bar">Mostrar barra de pestañas</string>
     <string name="setting_summary_show_tab_bar">Siempre mostrar la barra de pestañas encima de la barra de herramientas</string>
+    <string name="setting_title_side_tab_bar_on_top">Barra de pestañas arriba</string>
+    <string name="setting_summary_side_tab_bar_on_top">Con una barra de herramientas vertical, coloca la barra de pestañas arriba en lugar de abajo</string>
     <string name="error_download_link_invalid">El enlace de descarga no es válido</string>
     <string name="duplicate_tab">Duplicar pestaña</string>
     <string name="password">Contraseña</string>

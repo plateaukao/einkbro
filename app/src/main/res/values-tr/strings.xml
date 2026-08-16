@@ -328,6 +328,8 @@
     <string name="setting_summary_prune_query_parameter">utm_medium, utm_source gibi sorgu parametreleri URL\'den kaldırılacaktır</string>
     <string name="setting_title_show_tab_bar">Sekme çubuğunu göster</string>
     <string name="setting_summary_show_tab_bar">Araç çubuğunun üstünde sekme çubuğunu her zaman göster</string>
+    <string name="setting_title_side_tab_bar_on_top">Sekme çubuğu üstte</string>
+    <string name="setting_summary_side_tab_bar_on_top">Dikey araç çubuğunda sekme çubuğunu altta yerine üstte göster</string>
     <string name="error_download_link_invalid">İndirme bağlantısı geçerli değil</string>
     <string name="duplicate_tab">Sekmeyi çoğalt</string>
     <string name="password">Şifre</string>

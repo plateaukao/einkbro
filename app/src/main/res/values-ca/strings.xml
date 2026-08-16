@@ -296,6 +296,8 @@
     <string name="setting_summary_prune_query_parameter">Paràmetres com utm_medium, utm_source, etc. seran eliminats de la URL</string>
     <string name="setting_title_show_tab_bar">Mostrar barra de pestanyes</string>
     <string name="setting_summary_show_tab_bar">Mostrar sempre la barra de pestanyes sobre la barra d\'eines</string>
+    <string name="setting_title_side_tab_bar_on_top">Barra de pestanyes a dalt</string>
+    <string name="setting_summary_side_tab_bar_on_top">Amb una barra d\'eines vertical, col·loca la barra de pestanyes a dalt en lloc d\'a baix</string>
     <string name="error_download_link_invalid">L\'enllaç de descàrrega no és vàlid</string>
     <string name="duplicate_tab">Duplicar pestanya</string>
     <string name="password">Contrasenya</string>

@@ -328,6 +328,8 @@
     <string name="setting_summary_prune_query_parameter">Παράμετροι όπως utm_medium, utm_source κλπ. θα αφαιρεθούν από το URL</string>
     <string name="setting_title_show_tab_bar">Εμφάνιση γραμμής καρτελών</string>
     <string name="setting_summary_show_tab_bar">Πάντα εμφάνιση γραμμής καρτελών πάνω από τη γραμμή εργαλείων</string>
+    <string name="setting_title_side_tab_bar_on_top">Γραμμή καρτελών επάνω</string>
+    <string name="setting_summary_side_tab_bar_on_top">Με κάθετη γραμμή εργαλείων, τοποθέτηση της γραμμής καρτελών επάνω αντί για κάτω</string>
     <string name="error_download_link_invalid">Ο σύνδεσμος λήψης δεν είναι έγκυρος</string>
     <string name="duplicate_tab">Αντιγραφή καρτέλας</string>
     <string name="password">Κωδικός πρόσβασης</string>

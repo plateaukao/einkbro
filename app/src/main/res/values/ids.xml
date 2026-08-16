@@ -17,4 +17,5 @@
     <item name="content_separator" type="id" />
     <item name="layout_overview" type="id" />
     <item name="status_bar" type="id" />
+    <item name="side_tab_bar" type="id" />
 </resources>

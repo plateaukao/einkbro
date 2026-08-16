@@ -338,6 +338,8 @@
     <string name="setting_summary_prune_query_parameter">Такие параметры отслеживания, как utm_medium, utm_source и другие будут удаляться из URL</string>
     <string name="setting_title_show_tab_bar">Показывать панель вкладок</string>
     <string name="setting_summary_show_tab_bar">Всегда показывать панель вкакладок над панелью инструментов</string>
+    <string name="setting_title_side_tab_bar_on_top">Панель вкладок сверху</string>
+    <string name="setting_summary_side_tab_bar_on_top">С вертикальной панелью инструментов размещать панель вкладок сверху, а не снизу</string>
     <string name="error_download_link_invalid">Ссылка для скачивания недействительна</string>
     <string name="duplicate_tab">Дублировать вкладку</string>
     <string name="password">Пароль</string>

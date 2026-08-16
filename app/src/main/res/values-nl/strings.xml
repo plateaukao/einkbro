@@ -312,6 +312,8 @@
     <string name="setting_summary_prune_query_parameter">Parameters zoals utm_medium, utm_source, enz. worden uit de URL verwijderd</string>
     <string name="setting_title_show_tab_bar">Tabbladbalk tonen</string>
     <string name="setting_summary_show_tab_bar">Tabbladbalk altijd boven de werkbalk tonen</string>
+    <string name="setting_title_side_tab_bar_on_top">Tabbladbalk bovenaan</string>
+    <string name="setting_summary_side_tab_bar_on_top">Bij een verticale werkbalk de tabbladbalk bovenaan plaatsen in plaats van onderaan</string>
     <string name="error_download_link_invalid">Downloadlink is ongeldig</string>
     <string name="duplicate_tab">Tabblad dupliceren</string>
     <string name="password">Wachtwoord</string>

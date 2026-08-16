@@ -328,6 +328,8 @@
     <string name="setting_summary_prune_query_parameter">פרמטרים כמו utm_medium, utm_source וכו\' יוסרו מ-URL</string>
     <string name="setting_title_show_tab_bar">הצגת שורת כרטיסיות</string>
     <string name="setting_summary_show_tab_bar">הצגת שורת כרטיסיות מעל סרגל הכלים תמיד</string>
+    <string name="setting_title_side_tab_bar_on_top">סרגל לשוניות למעלה</string>
+    <string name="setting_summary_side_tab_bar_on_top">עם סרגל כלים אנכי, מיקום סרגל הלשוניות למעלה במקום למטה</string>
     <string name="error_download_link_invalid">קישור ההורדה אינו תקין</string>
     <string name="duplicate_tab">שכפול כרטיסייה</string>
     <string name="password">סיסמה</string>

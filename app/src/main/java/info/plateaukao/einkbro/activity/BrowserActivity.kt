@@ -472,6 +472,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
             binding.composeIconBar,
+            binding.sideTabBar,
             albumViewModel.albums,
             ttsViewModel,
             { toolbarActionHandler.handleClick(it) },
@@ -1151,7 +1152,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 else statusbarViewController.hide()
             }
             UiConfig.K_TOOLBAR_ICONS_FOR_LARGE, UiConfig.K_TOOLBAR_ICONS -> composeToolbarViewController.updateIcons()
-            TabConfig.K_SHOW_TAB_BAR -> composeToolbarViewController.showTabbar(config.tab.shouldShowTabBar)
+            TabConfig.K_SHOW_TAB_BAR -> {
+                composeToolbarViewController.showTabbar(config.tab.shouldShowTabBar)
+                // In vertical mode the strip is a separate view outside the app bar, so
+                // toggling the setting has to re-run the constraints that show it and
+                // push the content down.
+                ViewUnit.updateAppbarPosition(binding)
+            }
+            TabConfig.K_SIDE_TAB_BAR_ON_TOP -> {
+                composeToolbarViewController.updateIcons()
+                ViewUnit.updateAppbarPosition(binding)
+            }
             DisplayConfig.K_FONT_TYPE -> ebWebView.updateCssStyle()
             DisplayConfig.K_READER_FONT_TYPE -> ebWebView.updateCssStyle()
             DisplayConfig.K_FONT_SIZE -> ebWebView.settings.textZoom = config.display.fontSize

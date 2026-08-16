@@ -316,6 +316,8 @@
     <string name="setting_summary_prune_query_parameter">parameter kueri seperti utm_medium, utm_source, dll akan dihapus dari url.</string>
     <string name="setting_title_show_tab_bar">Tampilkan bilah tab</string>
     <string name="setting_summary_show_tab_bar">Selalu tampilkan bilah tab di atas bilah alat</string>
+    <string name="setting_title_side_tab_bar_on_top">Bilah tab di atas</string>
+    <string name="setting_summary_side_tab_bar_on_top">Dengan bilah alat vertikal, tempatkan bilah tab di atas alih-alih di bawah</string>
     <string name="error_download_link_invalid">Tautan unduhan tidak valid.</string>
     <string name="duplicate_tab">Tab duplikat</string>
     <string name="password">Kata sandi</string>

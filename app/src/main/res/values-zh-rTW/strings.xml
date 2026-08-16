@@ -270,6 +270,8 @@
     <string name="setting_title_prune_query_parameter">去除網址追蹤碼</string>
     <string name="setting_title_show_tab_bar">顯示分頁列</string>
     <string name="setting_summary_show_tab_bar">在工具列上顯示分頁列表</string>
+    <string name="setting_title_side_tab_bar_on_top">分頁列在頂部</string>
+    <string name="setting_summary_side_tab_bar_on_top">工具列為直向時，將分頁列放在頂部而非底部</string>
     <string name="error_download_link_invalid">下載連結無效</string>
     <string name="duplicate_tab">複製分頁</string>
     <string name="password">密碼</string>

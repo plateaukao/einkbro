@@ -416,6 +416,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">入力バーでテキスト入力時にブックマーク候補を表示</string>
     <string name="setting_summary_show_default_text_menu">テキスト選択後にシステムデフォルトのアクションメニューを表示</string>
     <string name="setting_summary_show_tab_bar">ツールバーの上にタブバーを常に表示</string>
+    <string name="setting_title_side_tab_bar_on_top">タブバーを上に表示</string>
+    <string name="setting_summary_side_tab_bar_on_top">縦型ツールバーのとき、タブバーを下ではなく上に配置します</string>
     <string name="setting_summary_split_search_setting">分割画面でのカスタム検索と結果表示</string>
     <string name="setting_summary_summary_gpt_type">コンテンツ要約用のAIエンジンを選択</string>
     <string name="setting_summary_text_wrap_reflow">ズーム時にテキストを再配置</string>

@@ -150,25 +150,14 @@ fun ComposedToolbar(
             horizontalAlignment = Alignment.End
         ) {
             if (showTabs) {
-                Row(
-                    Modifier
-                        .height(50.dp)
-                        .fillMaxWidth()
-                ) {
-                    PreviewTabs(
-                        Modifier.weight(1f),
-                        albumList = albumList.value,
-                        albumFocusIndex = albumFocusIndex,
-                        onClick = onAlbumClick,
-                        closeAction = onAlbumLongClick,
-                        showHorizontal = true
-                    )
-                    ButtonIcon(
-                        iconResId = R.drawable.icon_plus,
-                        onClick = { onIconClick(NewTab) },
-                        onLongClick = { onIconLongClick?.invoke(NewTab) },
-                    )
-                }
+                TabStripRow(
+                    albumList = albumList,
+                    albumFocusIndex = albumFocusIndex,
+                    onAlbumClick = onAlbumClick,
+                    onAlbumLongClick = onAlbumLongClick,
+                    onIconClick = onIconClick,
+                    onIconLongClick = onIconLongClick,
+                )
                 HorizontalSeparator()
             }
             ComposedIconBar(
@@ -182,6 +171,78 @@ fun ComposedToolbar(
                 onLongClick = onIconLongClick,
             )
         }
+    }
+}
+
+/**
+ * The tab strip: previews plus a new-tab button. Shared by the bottom/top toolbar,
+ * which stacks it above the icon row, and by [ComposedSideTabBar], which the
+ * activity anchors across the top of the content when the toolbar is vertical.
+ */
+@Composable
+private fun TabStripRow(
+    albumList: MutableState<List<Album>>,
+    albumFocusIndex: MutableState<Int>,
+    onAlbumClick: (Album) -> Unit,
+    onAlbumLongClick: (Album) -> Unit,
+    onIconClick: (ToolbarAction) -> Unit,
+    onIconLongClick: ((ToolbarAction) -> Unit)?,
+) {
+    Row(
+        Modifier
+            .height(50.dp)
+            .fillMaxWidth()
+    ) {
+        PreviewTabs(
+            Modifier.weight(1f),
+            albumList = albumList.value,
+            albumFocusIndex = albumFocusIndex,
+            onClick = onAlbumClick,
+            closeAction = onAlbumLongClick,
+            showHorizontal = true
+        )
+        ButtonIcon(
+            iconResId = R.drawable.icon_plus,
+            onClick = { onIconClick(NewTab) },
+            onLongClick = { onIconLongClick?.invoke(NewTab) },
+        )
+    }
+}
+
+/**
+ * Standalone tab strip for vertical toolbar mode. The vertical toolbar is a 50dp
+ * column with no room for readable tab titles, so the strip stays horizontal and
+ * the activity constrains it beside the toolbar, across the top of the content.
+ */
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun ComposedSideTabBar(
+    albumList: MutableState<List<Album>>,
+    albumFocusIndex: MutableState<Int>,
+    isOnTop: Boolean,
+    onAlbumClick: (Album) -> Unit,
+    onAlbumLongClick: (Album) -> Unit,
+    onIconClick: (ToolbarAction) -> Unit,
+    onIconLongClick: ((ToolbarAction) -> Unit)? = null,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colors.background)
+            .semantics { testTagsAsResourceId = true },
+    ) {
+        // The rule divides the strip from the page, so it belongs on whichever side
+        // the content is on.
+        if (!isOnTop) HorizontalSeparator()
+        TabStripRow(
+            albumList = albumList,
+            albumFocusIndex = albumFocusIndex,
+            onAlbumClick = onAlbumClick,
+            onAlbumLongClick = onAlbumLongClick,
+            onIconClick = onIconClick,
+            onIconLongClick = onIconLongClick,
+        )
+        if (isOnTop) HorizontalSeparator()
     }
 }
 

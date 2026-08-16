@@ -405,6 +405,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">Visa bokmärkesmatchningar vid inmatning i adressfältet</string>
     <string name="setting_summary_show_default_text_menu">Visa systemets standardåtgärdsmeny efter textmarkering</string>
     <string name="setting_summary_show_tab_bar">Visa alltid flikfält ovanför verktygsfältet</string>
+    <string name="setting_title_side_tab_bar_on_top">Flikfält överst</string>
+    <string name="setting_summary_side_tab_bar_on_top">Med ett vertikalt verktygsfält placeras flikfältet överst i stället för nederst</string>
     <string name="setting_summary_split_search_setting">Anpassad sökning och öppning av resultat i delad skärm</string>
     <string name="setting_summary_summary_gpt_type">Välj AI-motor för innehållssammanfattning</string>
     <string name="setting_summary_text_wrap_reflow">Ombryt text vid zoom</string>

@@ -19,6 +19,7 @@ class MainActivityLayout(
     val contentSeparator: View,
     val layoutOverview: ComposeView,
     val statusBar: ComposeView,
+    val sideTabBar: ComposeView,
 ) {
     companion object {
         fun create(context: Context): MainActivityLayout {
@@ -114,6 +115,20 @@ class MainActivityLayout(
             }
             root.addView(statusBar)
 
+            // sideTabBar ComposeView: the tab strip for vertical toolbar mode, where
+            // the 50dp toolbar column has no room for it. Positioned at runtime by
+            // ViewUnit.updateAppbarPosition; GONE for top/bottom toolbars, which keep
+            // the strip inside the app bar itself.
+            val sideTabBar = ComposeView(context).apply {
+                id = R.id.side_tab_bar
+                layoutParams = ConstraintLayout.LayoutParams(
+                    0,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                )
+                visibility = View.GONE
+            }
+            root.addView(sideTabBar)
+
             // Apply constraints
             val constraintSet = ConstraintSet()
             constraintSet.clone(root)
@@ -147,6 +162,12 @@ class MainActivityLayout(
             constraintSet.connect(statusBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
             constraintSet.connect(statusBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
 
+            // sideTabBar: anchored to the top edge; the start/end sides are attached to
+            // the app bar at runtime, since which side it clears depends on the toolbar.
+            constraintSet.connect(sideTabBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            constraintSet.connect(sideTabBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            constraintSet.connect(sideTabBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+
             constraintSet.applyTo(root)
 
             return MainActivityLayout(
@@ -160,6 +181,7 @@ class MainActivityLayout(
                 contentSeparator = contentSeparator,
                 layoutOverview = layoutOverview,
                 statusBar = statusBar,
+                sideTabBar = sideTabBar,
             )
         }
     }

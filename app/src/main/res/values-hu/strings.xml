@@ -474,6 +474,8 @@
     <string name="setting_summary_prune_query_parameter">Az utm_medium, utm_source stb. paraméterek eltávolítása az URL-ből</string>
     <string name="setting_title_show_tab_bar">Lapsáv megjelenítése</string>
     <string name="setting_summary_show_tab_bar">Lapsáv mindig megjelenítése az eszköztár felett</string>
+    <string name="setting_title_side_tab_bar_on_top">Lapsáv felül</string>
+    <string name="setting_summary_side_tab_bar_on_top">Függőleges eszköztár esetén a lapsáv felülre kerüljön az alsó helyett</string>
     <string name="error_download_link_invalid">A letöltési hivatkozás érvénytelen</string>
     <string name="duplicate_tab">Lap másolása</string>
     <string name="password">Jelszó</string>

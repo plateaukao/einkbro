@@ -406,6 +406,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">Wys boekmerktreffers wanneer teks in die invoerbalk getik word</string>
     <string name="setting_summary_show_default_text_menu">Na tekskeuse, wys stelsel se verstekaksiemenu</string>
     <string name="setting_summary_show_tab_bar">Wys altyd oortjiebalk bo nutsbalk</string>
+    <string name="setting_title_side_tab_bar_on_top">Oortjiebalk bo</string>
+    <string name="setting_summary_side_tab_bar_on_top">Met \'n vertikale nutsbalk, plaas die oortjiebalk bo in plaas van onder</string>
     <string name="setting_summary_split_search_setting">Pasgemaakte soek en resultaatopening in verdeelde skerm</string>
     <string name="setting_summary_summary_gpt_type">Kies KI-enjin vir inhoudopsomming</string>
     <string name="setting_summary_text_wrap_reflow">Hervloei teks wanneer gezoem word</string>

@@ -394,6 +394,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">Показувати збіги закладок при введенні тексту в рядку</string>
     <string name="setting_summary_show_default_text_menu">Після виділення тексту показувати системне меню дій</string>
     <string name="setting_summary_show_tab_bar">Завжди показувати панель вкладок над панеллю інструментів</string>
+    <string name="setting_title_side_tab_bar_on_top">Панель вкладок угорі</string>
+    <string name="setting_summary_side_tab_bar_on_top">З вертикальною панеллю інструментів розміщувати панель вкладок угорі замість унизу</string>
     <string name="setting_summary_split_search_setting">Налаштувати пошук і відкриття результатів у розділеному екрані</string>
     <string name="setting_summary_summary_gpt_type">Оберіть движок ШІ для підсумку вмісту</string>
     <string name="setting_summary_text_wrap_reflow">Перебудовувати текст при масштабуванні</string>

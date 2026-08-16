@@ -27,6 +27,12 @@ fun buildToolbarSettingItems(deps: SettingScreenDeps): List<SettingItemInterface
             R.string.setting_summary_show_tab_bar,
             config.tab::shouldShowTabBar,
         ),
+        BooleanSettingItem(
+            R.string.setting_title_side_tab_bar_on_top,
+            0,
+            R.string.setting_summary_side_tab_bar_on_top,
+            config.tab::sideTabBarOnTop,
+        ),
         ActionSettingItem(
             R.string.toolbar_icons,
             0,

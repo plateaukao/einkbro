@@ -313,6 +313,8 @@
     <string name="setting_summary_prune_query_parameter">Les paramètres comme utm_medium, utm_source, etc. seront supprimés de l\'URL</string>
     <string name="setting_title_show_tab_bar">Afficher la barre d\'onglets</string>
     <string name="setting_summary_show_tab_bar">Toujours afficher la barre d\'onglets au-dessus de la barre d\'outils</string>
+    <string name="setting_title_side_tab_bar_on_top">Barre d\'onglets en haut</string>
+    <string name="setting_summary_side_tab_bar_on_top">Avec une barre d\'outils verticale, placer la barre d\'onglets en haut plutôt qu\'en bas</string>
     <string name="error_download_link_invalid">Le lien de téléchargement n\'est pas valide</string>
     <string name="duplicate_tab">Dupliquer l\'onglet</string>
     <string name="password">Mot de passe</string>

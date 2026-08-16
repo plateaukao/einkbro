@@ -313,6 +313,8 @@
     <string name="setting_summary_prune_query_parameter">Parametrii precum utm_medium, utm_source etc. vor fi eliminați din URL</string>
     <string name="setting_title_show_tab_bar">Afișare bară de file</string>
     <string name="setting_summary_show_tab_bar">Afișare permanentă a barei de file deasupra barei de instrumente</string>
+    <string name="setting_title_side_tab_bar_on_top">Bara de file sus</string>
+    <string name="setting_summary_side_tab_bar_on_top">Cu o bară de instrumente verticală, plasează bara de file sus în loc de jos</string>
     <string name="error_download_link_invalid">Link-ul de descărcare nu este valid</string>
     <string name="duplicate_tab">Duplicare filă</string>
     <string name="password">Parolă</string>

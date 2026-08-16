@@ -405,6 +405,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">Näytä kirjanmerkkien vastaavuudet kirjoitettaessa osoiteriville</string>
     <string name="setting_summary_show_default_text_menu">Näytä järjestelmän oletustoimintovalikko tekstin valinnan jälkeen</string>
     <string name="setting_summary_show_tab_bar">Näytä aina välilehtipalkki työkalurivin yläpuolella</string>
+    <string name="setting_title_side_tab_bar_on_top">Välilehtipalkki ylhäällä</string>
+    <string name="setting_summary_side_tab_bar_on_top">Pystysuuntaisen työkalupalkin kanssa sijoita välilehtipalkki ylös alaosan sijaan</string>
     <string name="setting_summary_split_search_setting">Mukautettu haku ja tulosten avaaminen jaetussa näytössä</string>
     <string name="setting_summary_summary_gpt_type">Valitse tekoälymoottori sisällön tiivistämiseen</string>
     <string name="setting_summary_text_wrap_reflow">Sovita teksti zoomattaessa</string>

@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.Album
+import info.plateaukao.einkbro.view.compose.ComposedSideTabBar
 import info.plateaukao.einkbro.view.compose.ComposedToolbar
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
@@ -28,6 +29,7 @@ import org.koin.core.component.inject
 
 class ComposeToolbarViewController(
     private val composeView: ComposeView,
+    private val sideTabBarView: ComposeView,
     private val albums: MutableState<List<Album>>,
     private val ttsViewModel: TtsViewModel,
     private val onIconClick: (ToolbarAction) -> Unit,
@@ -52,6 +54,7 @@ class ComposeToolbarViewController(
     var isIncognito by mutableStateOf(false)
     var isVertical by mutableStateOf(config.ui.isVerticalToolbar)
     var isToolbarOnRight by mutableStateOf(config.ui.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right)
+    var isSideTabBarOnTop by mutableStateOf(config.tab.sideTabBarOnTop)
     var albumFocusIndex = mutableStateOf(0)
 
     private val onTabClick: (Album) -> Unit = onTabClick
@@ -83,6 +86,24 @@ class ComposeToolbarViewController(
                     albumFocusIndex = albumFocusIndex,
                     onAlbumClick = this.onTabClick,
                     onAlbumLongClick = this.onTabLongClick,
+                )
+            }
+        }
+
+        // The vertical toolbar column is too narrow for readable tab titles, so in that
+        // mode the strip lives in its own view that the activity anchors across the top
+        // of the content. Placement and visibility are ViewUnit's job; this only
+        // supplies the content.
+        sideTabBarView.setContent {
+            MyTheme {
+                ComposedSideTabBar(
+                    albumList = albums,
+                    albumFocusIndex = albumFocusIndex,
+                    isOnTop = isSideTabBarOnTop,
+                    onAlbumClick = this.onTabClick,
+                    onAlbumLongClick = this.onTabLongClick,
+                    onIconClick = onIconClick,
+                    onIconLongClick = onIconLongClick,
                 )
             }
         }
@@ -130,6 +151,7 @@ class ComposeToolbarViewController(
         isIncognito = config.isIncognitoMode
         isVertical = config.ui.isVerticalToolbar
         isToolbarOnRight = config.ui.toolbarPosition == info.plateaukao.einkbro.preference.ToolbarPosition.Right
+        isSideTabBarOnTop = config.tab.sideTabBarOnTop
     }
 
     private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo> {

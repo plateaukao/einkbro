@@ -304,6 +304,8 @@
     <string name="setting_summary_prune_query_parameter">Parametri come utm_medium, utm_source, ecc. saranno rimossi dall\'URL</string>
     <string name="setting_title_show_tab_bar">Mostra barra schede</string>
     <string name="setting_summary_show_tab_bar">Mostra sempre la barra delle schede sopra la barra degli strumenti</string>
+    <string name="setting_title_side_tab_bar_on_top">Barra schede in alto</string>
+    <string name="setting_summary_side_tab_bar_on_top">Con una barra degli strumenti verticale, posiziona la barra delle schede in alto anziché in basso</string>
     <string name="error_download_link_invalid">Il link di download non è valido</string>
     <string name="duplicate_tab">Duplica scheda</string>
     <string name="password">Password</string>

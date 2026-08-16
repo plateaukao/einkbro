@@ -338,6 +338,8 @@
     <string name="setting_summary_prune_query_parameter">utm_medium, utm_source 등과 같은 쿼리 매개변수가 URL에서 제거됩니다.</string>
     <string name="setting_title_show_tab_bar">탭 바 표시</string>
     <string name="setting_summary_show_tab_bar">항상 툴바 위에 탭 바를 표시합니다.</string>
+    <string name="setting_title_side_tab_bar_on_top">탭 바를 위에 표시</string>
+    <string name="setting_summary_side_tab_bar_on_top">세로 도구 모음일 때 탭 바를 아래가 아닌 위에 배치</string>
     <string name="error_download_link_invalid">다운로드 링크가 유효하지 않습니다.</string>
     <string name="duplicate_tab">탭 복제</string>
     <string name="password">비밀번호</string>

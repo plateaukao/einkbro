@@ -343,6 +343,9 @@ object ViewUnit: KoinComponent {
                 binding.appBar.id,
                 ConstraintSet.TOP
             )
+
+            // Horizontal toolbars keep the strip inside the app bar itself.
+            setVisibility(binding.sideTabBar.id, View.GONE)
         }
         constraintSet.applyTo(binding.root)
     }
@@ -398,6 +401,9 @@ object ViewUnit: KoinComponent {
                 binding.appBar.id,
                 ConstraintSet.BOTTOM
             )
+
+            // Horizontal toolbars keep the strip inside the app bar itself.
+            setVisibility(binding.sideTabBar.id, View.GONE)
         }
         constraintSet.applyTo(binding.root)
     }
@@ -405,6 +411,7 @@ object ViewUnit: KoinComponent {
     private fun moveAppbarToLeft(binding: MainActivityLayout) {
         setAppbarVerticalLayoutParams(binding)
         binding.contentSeparator.visibility = android.view.View.GONE
+        val showTabBar = config.tab.shouldShowTabBar
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.TOP)
@@ -414,10 +421,16 @@ object ViewUnit: KoinComponent {
             connect(binding.appBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
             connect(binding.appBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
 
+            // The strip clears the toolbar column and spans the rest of the width.
+            clear(binding.sideTabBar.id, ConstraintSet.START)
+            clear(binding.sideTabBar.id, ConstraintSet.END)
+            connect(binding.sideTabBar.id, ConstraintSet.START, binding.appBar.id, ConstraintSet.END)
+            connect(binding.sideTabBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            anchorSideTabBar(binding, showTabBar)
+
             connect(binding.twoPanelLayout.id, ConstraintSet.START, binding.appBar.id, ConstraintSet.END)
             connect(binding.twoPanelLayout.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            connectContentEdges(binding, showTabBar)
         }
         constraintSet.applyTo(binding.root)
         setProgressBarVertical(binding, isLeft = true)
@@ -426,6 +439,7 @@ object ViewUnit: KoinComponent {
     private fun moveAppbarToRight(binding: MainActivityLayout) {
         setAppbarVerticalLayoutParams(binding)
         binding.contentSeparator.visibility = android.view.View.GONE
+        val showTabBar = config.tab.shouldShowTabBar
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.TOP)
@@ -435,13 +449,45 @@ object ViewUnit: KoinComponent {
             connect(binding.appBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
             connect(binding.appBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
 
+            clear(binding.sideTabBar.id, ConstraintSet.START)
+            clear(binding.sideTabBar.id, ConstraintSet.END)
+            connect(binding.sideTabBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            connect(binding.sideTabBar.id, ConstraintSet.END, binding.appBar.id, ConstraintSet.START)
+            anchorSideTabBar(binding, showTabBar)
+
             connect(binding.twoPanelLayout.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
             connect(binding.twoPanelLayout.id, ConstraintSet.END, binding.appBar.id, ConstraintSet.START)
-            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            connectContentEdges(binding, showTabBar)
         }
         constraintSet.applyTo(binding.root)
         setProgressBarVertical(binding, isLeft = false)
+    }
+
+    /** Pin the side strip to whichever edge the user picked, and show or hide it. */
+    private fun ConstraintSet.anchorSideTabBar(binding: MainActivityLayout, showTabBar: Boolean) {
+        clear(binding.sideTabBar.id, ConstraintSet.TOP)
+        clear(binding.sideTabBar.id, ConstraintSet.BOTTOM)
+        if (config.tab.sideTabBarOnTop) {
+            connect(binding.sideTabBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        } else {
+            connect(binding.sideTabBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        }
+        setVisibility(binding.sideTabBar.id, if (showTabBar) View.VISIBLE else View.GONE)
+    }
+
+    /** Content fills the space the side strip leaves, on whichever edge it occupies. */
+    private fun ConstraintSet.connectContentEdges(binding: MainActivityLayout, showTabBar: Boolean) {
+        val onTop = config.tab.sideTabBarOnTop
+        if (showTabBar && onTop) {
+            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, binding.sideTabBar.id, ConstraintSet.BOTTOM)
+        } else {
+            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        }
+        if (showTabBar && !onTop) {
+            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, binding.sideTabBar.id, ConstraintSet.TOP)
+        } else {
+            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        }
     }
 
     private fun setProgressBarVertical(binding: MainActivityLayout, isLeft: Boolean) {

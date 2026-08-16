@@ -406,6 +406,8 @@
     <string name="setting_summary_show_bookmarks_input_bar">Hiển thị dấu trang phù hợp khi nhập văn bản trên thanh nhập</string>
     <string name="setting_summary_show_default_text_menu">Sau khi chọn văn bản, hiển thị menu hành động mặc định của hệ thống</string>
     <string name="setting_summary_show_tab_bar">Luôn hiển thị thanh tab phía trên thanh công cụ</string>
+    <string name="setting_title_side_tab_bar_on_top">Thanh thẻ ở trên</string>
+    <string name="setting_summary_side_tab_bar_on_top">Với thanh công cụ dọc, đặt thanh thẻ ở trên thay vì ở dưới</string>
     <string name="setting_summary_split_search_setting">Tìm kiếm tùy chỉnh và mở kết quả trong màn hình chia đôi</string>
     <string name="setting_summary_summary_gpt_type">Chọn engine AI cho tóm tắt nội dung</string>
     <string name="setting_summary_text_wrap_reflow">Tự xuống dòng khi phóng to</string>

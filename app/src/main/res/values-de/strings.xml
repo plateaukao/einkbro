@@ -305,6 +305,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_prune_query_parameter">Parameter wie utm_medium, utm_source usw. werden aus der URL entfernt</string>
     <string name="setting_title_show_tab_bar">Tab-Leiste anzeigen</string>
     <string name="setting_summary_show_tab_bar">Tab-Leiste immer über der Toolbar anzeigen</string>
+    <string name="setting_title_side_tab_bar_on_top">Tableiste oben</string>
+    <string name="setting_summary_side_tab_bar_on_top">Bei vertikaler Symbolleiste die Tableiste oben statt unten anzeigen</string>
     <string name="error_download_link_invalid">Download-Link ist ungültig</string>
     <string name="duplicate_tab">Tab duplizieren</string>
     <string name="password">Passwort</string>

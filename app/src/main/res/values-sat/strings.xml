@@ -322,6 +322,8 @@
     <string name="setting_summary_prune_query_parameter">utm_medium, utm_source, ᱮᱢᱟᱱ ᱞᱮᱠᱟᱱᱟᱜ ᱠᱩᱣᱮᱨᱤ ᱯᱟᱨᱟᱢᱤᱴᱚᱨ URL ᱠᱷᱚᱱ ᱚᱪᱚᱜᱽ ᱦᱩᱭᱩᱜᱼᱟ ᱾</string>
     <string name="setting_title_show_tab_bar">ᱴᱮᱵᱽ ᱵᱟᱨ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
     <string name="setting_summary_show_tab_bar">ᱴᱩᱞᱵᱟᱨ ᱪᱮᱛᱟᱱ ᱨᱮ ᱴᱮᱵᱽ ᱵᱟᱨ ᱚᱞ ᱫᱮᱠᱷᱟᱣ  ᱢᱮ</string>
+    <string name="setting_title_side_tab_bar_on_top">ᱴᱮᱵᱽ ᱵᱟᱨ ᱪᱮᱛᱟᱱ ᱨᱮ</string>
+    <string name="setting_summary_side_tab_bar_on_top">ᱛᱷᱟᱲᱟ ᱴᱩᱞᱵᱟᱨ ᱥᱟᱶ, ᱴᱮᱵᱽ ᱵᱟᱨ ᱞᱟᱛᱟᱨ ᱨᱮ ᱵᱟᱝ ᱠᱟᱛᱮ ᱪᱮᱛᱟᱱ ᱨᱮ ᱫᱚᱦᱚ ᱢᱮ</string>
     <string name="error_download_link_invalid">ᱰᱟᱩᱱᱞᱚᱰ ᱞᱤᱝᱠ ᱫᱚ ᱵᱟᱭ ᱴᱷᱤᱠ ᱟ ᱾</string>
     <string name="duplicate_tab">ᱰᱩᱯᱞᱤᱠᱮᱴ ᱴᱮᱵᱽ</string>
     <string name="password">ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ</string>

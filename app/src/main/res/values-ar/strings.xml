@@ -328,6 +328,8 @@
     <string name="setting_summary_prune_query_parameter">سيتم إزالة المعلمات مثل utm_medium و utm_source وغيرها من URL</string>
     <string name="setting_title_show_tab_bar">إظهار شريط التبويبات</string>
     <string name="setting_summary_show_tab_bar">إظهار شريط التبويبات فوق شريط الأدوات دائماً</string>
+    <string name="setting_title_side_tab_bar_on_top">شريط التبويبات في الأعلى</string>
+    <string name="setting_summary_side_tab_bar_on_top">مع شريط أدوات عمودي، ضع شريط التبويبات في الأعلى بدلاً من الأسفل</string>
     <string name="error_download_link_invalid">رابط التحميل غير صالح</string>
     <string name="duplicate_tab">تكرار التبويب</string>
     <string name="password">كلمة المرور</string>

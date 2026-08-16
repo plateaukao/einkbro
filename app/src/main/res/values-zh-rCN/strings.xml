@@ -245,6 +245,8 @@
     <string name="setting_summary_prune_query_parameter">诸如 utm_medium、utm_source 等查询参数将从URL中移除。</string>
     <string name="setting_title_show_tab_bar">显示标签栏</string>
     <string name="setting_summary_show_tab_bar">始终在工具栏上方显示标签栏</string>
+    <string name="setting_title_side_tab_bar_on_top">标签栏在顶部</string>
+    <string name="setting_summary_side_tab_bar_on_top">工具栏为竖向时，将标签栏放在顶部而非底部</string>
     <string name="error_download_link_invalid">下载链接无效。</string>
     <string name="duplicate_tab">复制标签页</string>
     <string name="password">密码</string>

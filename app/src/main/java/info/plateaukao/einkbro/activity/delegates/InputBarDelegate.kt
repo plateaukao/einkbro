@@ -172,10 +172,27 @@ class InputBarDelegate(
 
     private fun adjustInputUrlForVerticalToolbar() {
         val binding = state.binding
+        // The side tab strip is a sibling view added after inputUrl, so it draws on
+        // top of this overlay. Stop the overlay short of whichever edge the strip
+        // occupies, or the URL field ends up hidden underneath it (bottom) and the
+        // suggestion list is clipped by it (top). Horizontal toolbars have no such
+        // clash: they hide the whole app bar, tab strip included.
+        val clearsTabBar = config.tab.shouldShowTabBar
+        val tabBarOnTop = config.tab.sideTabBarOnTop
         val constraintSet = androidx.constraintlayout.widget.ConstraintSet().apply {
             clone(binding.root)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
-            connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
+            clear(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            clear(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
+            if (clearsTabBar && tabBarOnTop) {
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, binding.sideTabBar.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
+            } else {
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.TOP, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            }
+            if (clearsTabBar && !tabBarOnTop) {
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, binding.sideTabBar.id, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            } else {
+                connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.BOTTOM, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.BOTTOM)
+            }
             if (config.ui.toolbarPosition == ToolbarPosition.Left) {
                 connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.START, binding.appBar.id, androidx.constraintlayout.widget.ConstraintSet.END)
                 connect(binding.inputUrl.id, androidx.constraintlayout.widget.ConstraintSet.END, androidx.constraintlayout.widget.ConstraintSet.PARENT_ID, androidx.constraintlayout.widget.ConstraintSet.END)

@@ -14,6 +14,13 @@ class TabConfig(private val sp: SharedPreferences) {
     var confirmTabClose by BooleanPreference(sp, K_CONFIRM_TAB_CLOSE, false)
     var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
 
+    /**
+     * Which edge the tab bar sticks to while the toolbar is vertical, where the strip
+     * is a standalone view beside the toolbar rather than part of the app bar. Has no
+     * effect for top/bottom toolbars, which stack the strip against the toolbar itself.
+     */
+    var sideTabBarOnTop by BooleanPreference(sp, K_SIDE_TAB_BAR_ON_TOP, true)
+
     var newTabBehavior: NewTabBehavior
         get() = NewTabBehavior.entries[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_NEW_TAB_BEHAVIOR, value.ordinal.toString()) }
@@ -97,6 +104,7 @@ class TabConfig(private val sp: SharedPreferences) {
         const val K_CLOSE_TAB_WHEN_BACK = "sp_close_tab_when_no_more_back_history"
         const val K_CONFIRM_TAB_CLOSE = "sp_close_tab_confirm"
         const val K_SHOW_TAB_BAR = "sp_show_tab_bar"
+        const val K_SIDE_TAB_BAR_ON_TOP = "sp_side_tab_bar_on_top"
         const val K_NEW_TAB_BEHAVIOR = "sp_plus_behavior"
         const val K_SAVED_ALBUM_INFO = "sp_saved_album_info"
         const val K_SAVED_ALBUM_INDEX = "sp_saved_album_index"

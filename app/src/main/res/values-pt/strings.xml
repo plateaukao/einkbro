@@ -296,6 +296,8 @@
     <string name="setting_summary_prune_query_parameter">Parâmetros como utm_medium, utm_source, etc. serão removidos da URL</string>
     <string name="setting_title_show_tab_bar">Mostrar barra de separadores</string>
     <string name="setting_summary_show_tab_bar">Mostrar sempre a barra de separadores acima da barra de ferramentas</string>
+    <string name="setting_title_side_tab_bar_on_top">Barra de separadores no topo</string>
+    <string name="setting_summary_side_tab_bar_on_top">Com uma barra de ferramentas vertical, colocar a barra de separadores no topo em vez de em baixo</string>
     <string name="error_download_link_invalid">O link de descarga não é válido</string>
     <string name="duplicate_tab">Duplicar separador</string>
     <string name="password">Palavra-passe</string>
