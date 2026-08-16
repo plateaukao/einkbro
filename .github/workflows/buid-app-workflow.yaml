@@ -25,6 +25,11 @@ jobs:
             app/build/reports/tests/
             app/build/reports/lint-results-debug.html
   build:
+    # Gate the release build on the test job: without this the two jobs run in
+    # parallel, so a red suite still published a `snapshot` pre-release. The unit
+    # tests were unbuildable for three commits and every one of them shipped a
+    # snapshot anyway.
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: write
