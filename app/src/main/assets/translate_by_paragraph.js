@@ -1,9 +1,12 @@
 // Shared with text_node_monitor.js (which loads after this file). Kept as a window
 // property so both scripts use one canonical definition.
+//
+// <img> is a void element: it can hold no child nodes, so it contributes nothing to
+// textContent and alt text never appears there either. Stripping images is therefore a
+// no-op on the result, and the deep cloneNode(true) this used to do was pure cost — paid
+// once per block candidate on every tree scan, and once per element on every rebind.
 window._translateGetTextExcludingImages = window._translateGetTextExcludingImages || function(element) {
-  var clone = element.cloneNode(true);
-  clone.querySelectorAll('img').forEach(function(img) { img.remove(); });
-  return clone.textContent;
+  return element.textContent;
 };
 function getTextExcludingImages(element) {
   return window._translateGetTextExcludingImages(element);
@@ -231,22 +234,98 @@ function injectTranslateTag(node) {
   fetchNodesWithText(document.body);
 
   // Observe future DOM mutations and mark new text-bearing content as it appears.
-  // Coalesce rapid bursts so we don't churn the tree on every keystroke-like mutation.
+  //
+  // This observer lives for the page's whole lifetime, so on a site that never stops
+  // mutating (ad rotation, infinite scroll, live tickers) its cost is paid forever.
+  // Three things keep it bounded:
+  //
+  //   * Our own writes are ignored. Marking a node inserts a placeholder <p>, and every
+  //     arriving translation rewrites text inside a marker — both are childList mutations
+  //     under document.body. Without this filter each translation scheduled another scan,
+  //     so a page-full of them kept the loop fed indefinitely.
+  //   * Scans are scoped to the subtrees that actually changed rather than restarting from
+  //     document.body, so the cost tracks the size of the mutation, not the size of the page.
+  //   * The delay backs off once scans stop finding new content, so a page whose DOM churns
+  //     without adding text isn't rescanned three times a second forever.
   if (window._translateMutationObserver) {
     window._translateMutationObserver.disconnect();
   }
-  var pendingScan = false;
-  window._translateMutationObserver = new MutationObserver(function () {
-    if (pendingScan) return;
-    pendingScan = true;
-    setTimeout(function () {
-      pendingScan = false;
-      fetchNodesWithText(document.body);
-      // Re-run text_node_monitor's IntersectionObserver bind for any new markers.
+
+  var MIN_SCAN_DELAY_MS = 300;
+  var MAX_SCAN_DELAY_MS = 5000;
+  // Past this many distinct mutation targets, dedup costs more than it saves and a single
+  // pass from body is the cheaper scan.
+  var MAX_TRACKED_ROOTS = 32;
+
+  var scanDelay = MIN_SCAN_DELAY_MS;
+  var pendingRoots = null; // Set of elements awaiting a scan; null when none is scheduled.
+
+  // True when a record describes a change we made ourselves. Everything we write lands
+  // under a marker we already own: myCallback's in-place text rewrite happens inside the
+  // .to-translate element, and its by-paragraph counterpart fills the sibling placeholder
+  // that it then tags .translated. Site content appearing inside an existing marker is
+  // already covered by that marker, so skipping these loses nothing.
+  //
+  // document.body carries its own "translated" class meaning "this page is set up for
+  // translation", which is unrelated to the per-placeholder one. closest() would match it
+  // for every node on the page and silence the observer entirely, so a match on body means
+  // there was no real marker ancestor.
+  function isOwnMutation(record) {
+    var target = record.target;
+    if (!target) return false;
+    var el = target.nodeType === Node.ELEMENT_NODE ? target : target.parentElement;
+    if (!el || !el.closest) return false;
+    var owner = el.closest('.to-translate, .translated');
+    return !!owner && owner !== document.body;
+  }
+
+  // Collapse to the shallowest still-attached roots: scanning a parent already covers its
+  // descendants, and fetchNodesWithText skips marked subtrees on the way down.
+  function shallowestRoots(roots) {
+    var list = [];
+    roots.forEach(function (el) { if (el.isConnected) list.push(el); });
+    if (list.length > MAX_TRACKED_ROOTS) return [document.body];
+    return list.filter(function (el) {
+      return !list.some(function (other) { return other !== el && other.contains(el); });
+    });
+  }
+
+  function runScan() {
+    var roots = shallowestRoots(pendingRoots);
+    pendingRoots = null;
+
+    var markedBefore = document.querySelectorAll('.to-translate').length;
+    roots.forEach(function (root) { fetchNodesWithText(root); });
+    var markedAfter = document.querySelectorAll('.to-translate').length;
+
+    // Drop the records our own marking just queued so they don't schedule another scan.
+    // isOwnMutation can't catch these: injectTranslateTag's placeholder is inserted next
+    // to a brand-new marker, so the mutation's target is the unmarked parent.
+    window._translateMutationObserver.takeRecords();
+
+    if (markedAfter > markedBefore) {
+      scanDelay = MIN_SCAN_DELAY_MS;
+      // Re-run text_node_monitor's IntersectionObserver bind for the new markers.
       if (typeof window._translateRebindObserver === "function") {
         window._translateRebindObserver();
       }
-    }, 300);
+    } else {
+      scanDelay = Math.min(scanDelay * 2, MAX_SCAN_DELAY_MS);
+    }
+  }
+
+  window._translateMutationObserver = new MutationObserver(function (records) {
+    var alreadyScheduled = pendingRoots !== null;
+    for (var i = 0; i < records.length; i++) {
+      if (isOwnMutation(records[i])) continue;
+      var target = records[i].target;
+      var el = target.nodeType === Node.ELEMENT_NODE ? target : target.parentElement;
+      if (!el) continue;
+      if (pendingRoots === null) pendingRoots = new Set();
+      pendingRoots.add(el);
+    }
+    if (pendingRoots === null || alreadyScheduled) return;
+    setTimeout(runScan, scanDelay);
   });
   window._translateMutationObserver.observe(document.body, { childList: true, subtree: true });
 })();
