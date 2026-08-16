@@ -1,3 +1,18 @@
+### 16.3.0
+#### Features
+* Vertical toolbar mode now shows the tab bar, in its own horizontal strip beside the toolbar
+
+#### Improvements
+* Translating a page paragraph by paragraph starts almost immediately — a long article used to sit for seconds before the first translated line appeared
+* Translated pages stay responsive on sites that keep loading content (ads, infinite scroll, live tickers)
+
+#### Fixes
+* Starting paragraph translation no longer shifts the page sideways or changes the text size
+* Vertical toolbar mode: the tab strip is hidden along with the toolbar when entering fullscreen or opening the keyboard
+* A single subresource served over broken TLS can no longer navigate the whole tab away from the page you are reading
+* Android 10: downloads to the public Download folder work again instead of failing with "Download link is not valid"
+* AI: calls are routed to the right OpenAI endpoint per model, fixing agent tasks failing on the first turn with gpt-5.6 models and gpt-4.1 actions breaking on a non-default reasoning effort
+
 ### 16.2.2
 #### Fixes
 * Android 8.x: long-pressing an image no longer freezes the entire device — the system drag WebView 131+ starts on image long-press (a known unfixable WebView regression on Android 8) is now blocked (#629)

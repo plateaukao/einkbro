@@ -79,6 +79,27 @@
 <h2 id="changelog">Changelog</h2>
 
 <div class="changelog-version">
+<h3>16.3.0</h3>
+<h4>Features</h4>
+<ul>
+<li>Vertical toolbar mode now shows the tab bar, in its own horizontal strip beside the toolbar</li>
+</ul>
+<h4>Improvements</h4>
+<ul>
+<li>Translating a page paragraph by paragraph starts almost immediately — a long article used to sit for seconds before the first translated line appeared</li>
+<li>Translated pages stay responsive on sites that keep loading content (ads, infinite scroll, live tickers)</li>
+</ul>
+<h4>Fixes</h4>
+<ul>
+<li>Starting paragraph translation no longer shifts the page sideways or changes the text size</li>
+<li>Vertical toolbar mode: the tab strip is hidden along with the toolbar when entering fullscreen or opening the keyboard</li>
+<li>A single subresource served over broken TLS can no longer navigate the whole tab away from the page you are reading</li>
+<li>Android 10: downloads to the public Download folder work again instead of failing with "Download link is not valid"</li>
+<li>AI: calls are routed to the right OpenAI endpoint per model, fixing agent tasks failing on the first turn with gpt-5.6 models and gpt-4.1 actions breaking on a non-default reasoning effort</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>16.2.2</h3>
 <h4>Fixes</h4>
 <ul>

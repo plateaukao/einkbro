@@ -68,8 +68,8 @@ android {
         // reaching BrowserActivity.onKeyDown -> KeyHandler; the manifest opts out
         // via enableOnBackInvokedCallback=false.
         targetSdk = 36
-        versionCode = 16_02_02
-        versionName = "16.2.2"
+        versionCode = 16_03_00
+        versionName = "16.3.0"
 
         // Google Drive backup sync: an "installed app" OAuth client (not a secret;
         // PKCE, no client secret) with the reversed-client-id custom-scheme redirect.
