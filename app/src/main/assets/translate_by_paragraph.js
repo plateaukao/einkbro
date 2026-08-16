@@ -12,6 +12,24 @@ function getTextExcludingImages(element) {
   return window._translateGetTextExcludingImages(element);
 }
 
+// Site-specific junk labels that must not be marked for translation.
+//
+// This used to read child.innerText, which is layout-dependent: reading it flushes any
+// pending layout. The marking pass dirties layout constantly (every marked block inserts
+// a placeholder <p>), so each read forced a synchronous relayout of the whole document —
+// once per element visited. That made a single scan quadratic: 2.6s on a long article,
+// all of it before the first translation request could be sent. textContent needs no
+// layout, and normalizing whitespace reproduces innerText's collapsing for labels this
+// short. Containers are rejected on child count first so we never materialize a large
+// subtree's text just to compare it against a one-word label.
+function isJunkLabel(element) {
+  if (element.children.length > 2) return false;
+  var text = element.textContent;
+  if (text.length > 32) return false;
+  text = text.replace(/\s+/g, ' ').trim();
+  return text === "link" || text === "original link";
+}
+
 function isInline(node) {
   if (node.nodeType === Node.TEXT_NODE) {
     return true;
@@ -132,8 +150,7 @@ function fetchNodesWithText(element) {
     if (child.nodeType === Node.ELEMENT_NODE) {
       if (
         child.getAttribute("data-tiara-action-name") === "헤드글씨크기_클릭" ||
-        child.innerText === "link" ||
-        child.innerText === "original link"
+        isJunkLabel(child)
       ) {
         continue;
       }

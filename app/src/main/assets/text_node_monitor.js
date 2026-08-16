@@ -130,24 +130,10 @@ window._translateObserver = window._translateObserver || new IntersectionObserve
     if (entry.isIntersecting) targets.push(entry.target);
   });
   sortOnTopFirst(targets);
-  targets.forEach((target) => {
-    if (window._translateInPlace) {
-      // Single request path shared with the rebind scan: checks data-original-html,
-      // the text cache, AND _translateRequested — otherwise this callback re-requests
-      // elements whose bind-time request is still awaiting its response.
-      maybeRequestTranslation(target);
-      return;
-    }
-    var text = getTranslatableText(target);
-    if (text.trim() === "") return;
-    var nextNode = target.nextElementSibling;
-    // The empty-sibling check only holds until the response arrives, so guard in-flight
-    // requests with _translateRequested here too.
-    if (nextNode && nextNode.textContent === "" && !window._translateRequested.has(target)) {
-      window._translateRequested.add(target);
-      androidApp.getTranslation(text, target.id, "myCallback");
-    }
-  });
+  // Single request path shared with the rebind scan: it checks the already-translated
+  // marker for the current mode, the text cache, AND _translateRequested — otherwise
+  // this callback re-requests elements whose bind-time request is still in flight.
+  targets.forEach(maybeRequestTranslation);
 }, { rootMargin: "400px" });
 
 // Track which nodes are already observed so the rebind hook doesn't double-observe.
@@ -159,9 +145,28 @@ window._translateRequested = window._translateRequested || new WeakSet();
 // on the page looking for work — see bindObserverToTargets.
 window._translateRetryQueue = window._translateRetryQueue || new Set();
 
+// Whether this marker is already carrying its translation. In-place mode stamps the
+// element itself; by-paragraph mode fills the sibling placeholder, which starts empty.
+function isTranslationApplied(targetNode) {
+  if (window._translateInPlace) return targetNode.hasAttribute('data-original-html');
+  var placeholder = targetNode.nextElementSibling;
+  return !placeholder || placeholder.textContent !== "";
+}
+
 function maybeRequestTranslation(targetNode) {
-  if (!window._translateInPlace) return;
-  if (targetNode.hasAttribute('data-original-html')) return;
+  if (isTranslationApplied(targetNode)) return;
+  if (window._translateRequested.has(targetNode)) return;
+
+  // Viewport gate first, before any work that writes to the DOM. Applying a cached
+  // translation dirties layout, so a write here would force the next element's
+  // getBoundingClientRect to re-run layout — the same read/write interleaving that made
+  // the marking pass quadratic. Gating first bounds the writes to the handful of markers
+  // actually near the viewport; everything else is picked up when it scrolls into view.
+  var r = targetNode.getBoundingClientRect();
+  if (r.width === 0 || r.height === 0) return;
+  // Match the IntersectionObserver's rootMargin so we don't translate way-off-screen content.
+  if (r.top > window.innerHeight + 400 || r.bottom < -400) return;
+
   var text = getTranslatableText(targetNode);
   if (text.trim() === "") return;
   // If this exact text was translated before in this session, apply instantly.
@@ -170,11 +175,6 @@ function maybeRequestTranslation(targetNode) {
     _applyTranslationToElement(targetNode, cached);
     return;
   }
-  if (window._translateRequested.has(targetNode)) return;
-  var r = targetNode.getBoundingClientRect();
-  if (r.width === 0 || r.height === 0) return;
-  // Match the IntersectionObserver's rootMargin so we don't translate way-off-screen content.
-  if (r.top > window.innerHeight + 400 || r.bottom < -400) return;
   window._translateRequested.add(targetNode);
   androidApp.getTranslation(text, targetNode.id, "myCallback");
 }
