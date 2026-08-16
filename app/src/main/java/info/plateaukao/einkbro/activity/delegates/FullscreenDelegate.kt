@@ -138,6 +138,7 @@ class FullscreenDelegate(
             binding.mainSearchPanel.visibility = View.INVISIBLE
             binding.appBar.visibility = GONE
             binding.contentSeparator.visibility = GONE
+            ViewUnit.updateSideTabBarVisibility(binding)
             hideStatusBar()
             state.statusbarViewController.show()
         } else {
@@ -154,6 +155,7 @@ class FullscreenDelegate(
         binding.mainSearchPanel.visibility = View.INVISIBLE
         binding.appBar.visibility = VISIBLE
         binding.contentSeparator.visibility = VISIBLE
+        ViewUnit.updateSideTabBarVisibility(binding)
         binding.inputUrl.visibility = View.INVISIBLE
         state.composeToolbarViewController.show()
         state.statusbarViewController.hide()

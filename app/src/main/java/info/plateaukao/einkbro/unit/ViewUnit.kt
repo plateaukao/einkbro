@@ -411,7 +411,7 @@ object ViewUnit: KoinComponent {
     private fun moveAppbarToLeft(binding: MainActivityLayout) {
         setAppbarVerticalLayoutParams(binding)
         binding.contentSeparator.visibility = android.view.View.GONE
-        val showTabBar = config.tab.shouldShowTabBar
+        val showTabBar = shouldShowSideTabBar(binding)
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.TOP)
@@ -439,7 +439,7 @@ object ViewUnit: KoinComponent {
     private fun moveAppbarToRight(binding: MainActivityLayout) {
         setAppbarVerticalLayoutParams(binding)
         binding.contentSeparator.visibility = android.view.View.GONE
-        val showTabBar = config.tab.shouldShowTabBar
+        val showTabBar = shouldShowSideTabBar(binding)
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.TOP)
@@ -461,6 +461,28 @@ object ViewUnit: KoinComponent {
         }
         constraintSet.applyTo(binding.root)
         setProgressBarVertical(binding, isLeft = false)
+    }
+
+    /**
+     * A horizontal toolbar carries its tab strip inside the app bar, so hiding the bar
+     * hides the strip with it. The vertical toolbar's strip is a separate view, and has
+     * to be hidden explicitly whenever the bar gives up its space — fullscreen, or the
+     * soft keyboard taking over. GONE means exactly that; the url input overlay only
+     * makes the bar INVISIBLE, and the strip stays with it.
+     */
+    private fun shouldShowSideTabBar(binding: MainActivityLayout): Boolean =
+        config.tab.shouldShowTabBar && binding.appBar.visibility != View.GONE
+
+    /** Re-sync the side strip with the app bar after the bar is hidden or shown. */
+    fun updateSideTabBarVisibility(binding: MainActivityLayout) {
+        if (!config.ui.isVerticalToolbar) return
+
+        val showTabBar = shouldShowSideTabBar(binding)
+        ConstraintSet().apply {
+            clone(binding.root)
+            anchorSideTabBar(binding, showTabBar)
+            connectContentEdges(binding, showTabBar)
+        }.applyTo(binding.root)
     }
 
     /** Pin the side strip to whichever edge the user picked, and show or hide it. */

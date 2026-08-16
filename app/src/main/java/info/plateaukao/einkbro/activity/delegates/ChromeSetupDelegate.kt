@@ -328,11 +328,13 @@ class ChromeSetupDelegate(
                 toolbarHiddenForKeyboard = true
                 binding.appBar.isVisible = false
                 binding.contentSeparator.isVisible = false
+                ViewUnit.updateSideTabBarVisibility(binding)
             }
         } else if (toolbarHiddenForKeyboard) {
             toolbarHiddenForKeyboard = false
             binding.appBar.isVisible = true
             binding.contentSeparator.isVisible = true
+            ViewUnit.updateSideTabBarVisibility(binding)
         }
     }
 
