@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.FunctionDef
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.data.remote.ToolChatMessage
+import info.plateaukao.einkbro.data.remote.ToolChatOutcome
 import info.plateaukao.einkbro.data.remote.ToolDefinition
 import info.plateaukao.einkbro.preference.AiConfig
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -249,10 +250,10 @@ class OpenAiRepositoryTest {
             gptActionInfo = selfHostedAction,
         )
 
-        assertNotNull(result)
-        val message = result!!.choices.first().message
+        val completion = (result as ToolChatOutcome.Success).completion
+        val message = completion.choices.first().message
         assertNull(message.content)
-        assertEquals("tool_calls", result.choices.first().finishReason)
+        assertEquals("tool_calls", completion.choices.first().finishReason)
         val toolCall = message.toolCalls!!.first()
         assertEquals("call_1", toolCall.id)
         assertEquals("get_weather", toolCall.function.name)
@@ -283,7 +284,7 @@ class OpenAiRepositoryTest {
     }
 
     @Test
-    fun `chatWithTools returns null on http error`() = runBlocking {
+    fun `chatWithTools reports the api error on http error`() = runBlocking {
         val repository = createRepository()
         server.enqueue(MockResponse().setResponseCode(400).setBody("""{"error":"bad request"}"""))
 
@@ -293,11 +294,15 @@ class OpenAiRepositoryTest {
             gptActionInfo = selfHostedAction,
         )
 
-        assertNull(result)
+        // The failure text is what surfaces to the user, so it has to carry enough
+        // to diagnose the call rather than collapsing to a bare null.
+        val message = (result as ToolChatOutcome.Failure).message
+        assertTrue(message, message.contains("400"))
+        assertTrue(message, message.contains("bad request"))
     }
 
     @Test
-    fun `chatWithTools returns null on malformed json`() = runBlocking {
+    fun `chatWithTools reports a failure on malformed json`() = runBlocking {
         val repository = createRepository()
         server.enqueue(MockResponse().setResponseCode(200).setBody("oops"))
 
@@ -307,7 +312,8 @@ class OpenAiRepositoryTest {
             gptActionInfo = selfHostedAction,
         )
 
-        assertNull(result)
+        val message = (result as ToolChatOutcome.Failure).message
+        assertTrue("expected a non-blank failure message", message.isNotBlank())
     }
 
     // ── chatStream (SSE) ──────────────────────────────────────────────────
