@@ -484,12 +484,25 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
 
         //region Translation CSS
 
+        // Every rule below is scoped to `p.translated`, never a bare `.translated`.
+        // translate_by_paragraph.js also puts a "translated" class on <body> as a state
+        // flag meaning "this page is set up for translation" — unrelated to the
+        // per-placeholder class. A bare `.translated` selector matched that flag, so the
+        // moment translation started the whole page picked up display:inline-block,
+        // padding, a forced line-height and max-width:100vw: the body grew 10px wider than
+        // the viewport and the content visibly shifted/rescaled.
+        //
+        // Padding is vertical-only for the same reason. These blocks are content-box, so
+        // any horizontal padding adds to `max-width: 100vw` and pushes a full-width
+        // translation past the viewport edge, making the page horizontally scrollable.
+        // Translated placeholders are always <p> (injectTranslateTag creates them), so
+        // the `p` prefix costs nothing and keeps the flag unstyled.
         private const val TRANSLATED_P_CSS_NONE = """
             .to-translate + p:not(.translated) {
                 display: none;
             }
-            .translated {
-                padding: 5px; display: inline-block; line-height: 1.5; max-width: 100vw;
+            p.translated {
+                padding: 5px 0; display: inline-block; line-height: 1.5; max-width: 100vw;
             }
         """
 
@@ -497,8 +510,8 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
             .to-translate + p:not(.translated) {
                 display: none;
             }
-            .translated {
-                color: gray; padding: 5px; display: inline-block; max-width: 100vw; line-height: 1.5;
+            p.translated {
+                color: gray; padding: 5px 0; display: inline-block; max-width: 100vw; line-height: 1.5;
             }
         """
 
@@ -506,28 +519,33 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
             .to-translate + p:not(.translated) {
                 display: none;
             }
-            .translated {
-                font-weight: bold; padding: 5px; display: inline-block; max-width: 100vw; line-height: 1.5;
+            p.translated {
+                font-weight: bold; padding: 5px 0; display: inline-block; max-width: 100vw; line-height: 1.5;
             }
         """
 
+        // The dashed border is the point of this style, so it keeps a horizontal inset —
+        // but as border-box, so the border and padding fit inside max-width instead of
+        // adding to it.
         private const val TRANSLATED_P_CSS_DASHED_BORDER = """
             .to-translate + p:not(.translated) {
                 display: none;
             }
-            .translated {
-                border: 1px dashed lightgray; padding: 5px; display: inline-block; position: relative; max-width: 100vw; line-height: 1.5;
+            p.translated {
+                box-sizing: border-box; border: 1px dashed lightgray; padding: 5px; display: inline-block; position: relative; max-width: 100vw; line-height: 1.5;
             }
         """
 
+        // margin-left leaves room for the ::before bar, so max-width has to leave room for
+        // the margin too or a full-width translation overflows by exactly that 7px.
         private const val TRANSLATED_P_CSS_VERTICAL_LINE = """
             .to-translate + p:not(.translated) {
                 display: none;
             }
-            .translated {
-                padding: 2px; margin-left: 7px; display: inline-block; position: relative; max-width: 100vw; line-height: 1.5;
+            p.translated {
+                padding: 2px 0; margin-left: 7px; display: inline-block; position: relative; max-width: calc(100vw - 7px); line-height: 1.5;
             }
-            .translated::before {
+            p.translated::before {
                 content: ''; display: inline-block; width: 2px; height: 90%; background-color: black; position: absolute; left: -7px;
             }
         """
