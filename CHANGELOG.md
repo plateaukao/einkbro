@@ -1,3 +1,7 @@
+### 16.3.1
+#### Fixes
+* Hide-statusbar mode: the url input bar no longer bounces up and down above the keyboard on Android 10 and older devices
+
 ### 16.3.0
 #### Features
 * Vertical toolbar mode now shows the tab bar, in its own horizontal strip beside the toolbar

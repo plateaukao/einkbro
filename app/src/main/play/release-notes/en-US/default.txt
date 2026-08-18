@@ -1,3 +1,3 @@
-• Toolbar and tab bar hide while typing in web pages, giving content the room; restored when the keyboard closes
-• Fixed: start page keyboard was dismissed immediately on Android 17
-• Built-in start page with search suggestions and your own site tiles
+• Fixed: with the status bar hidden, the URL input bar kept jumping up and down above the keyboard on Android 10 and older devices
+• By-paragraph translation starts almost immediately and stays responsive on sites that keep loading content
+• Vertical toolbar mode now shows the tab bar beside the toolbar
