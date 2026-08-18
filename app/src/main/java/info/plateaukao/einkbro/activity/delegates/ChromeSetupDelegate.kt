@@ -220,8 +220,15 @@ class ChromeSetupDelegate(
         ViewCompat.setOnApplyWindowInsetsListener(state.binding.root) { view, windowInsets ->
             val insetsNavigationBar: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
             val insetsKeyboard: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
-            val params = view.layoutParams as FrameLayout.LayoutParams
-            if (config.ui.hideStatusbar) {
+            // Pre-R the visible-frame listener in listenKeyboardShowHide() owns
+            // this margin. The insets dispatched here are unusable there anyway:
+            // the decor has already consumed the navigation bar (nav reads 0)
+            // while ime still includes the nav-bar band, so any value computed
+            // from them is off by that band — and a second writer makes the two
+            // listeners overwrite each other every frame, visibly bouncing the
+            // url input bar.
+            if (config.ui.hideStatusbar && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val params = view.layoutParams as FrameLayout.LayoutParams
                 params.bottomMargin = when {
                     insetsKeyboard.bottom > 0 -> insetsKeyboard.bottom
                     insetsNavigationBar.bottom > 0 -> insetsNavigationBar.bottom
@@ -290,22 +297,32 @@ class ChromeSetupDelegate(
 
             @Suppress("DEPRECATION")
             val isFullscreen = (activity.window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && isFullscreen) {
-                val rect = Rect()
-                binding.root.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = binding.root.rootView.height
-                val keypadHeight = screenHeight - rect.bottom
-                val params = binding.root.layoutParams as FrameLayout.LayoutParams
-                if (keypadHeight > screenHeight * 0.15) {
-                    if (params.bottomMargin != keypadHeight) {
-                        params.bottomMargin = keypadHeight
-                        binding.root.layoutParams = params
-                    }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                // Sole owner of the root bottom margin on pre-R (see
+                // handleWindowInsets). In fullscreen the window ignores
+                // adjustResize, so lift the content by the keyboard height,
+                // measured from the visible frame; the frame ends above the
+                // navigation bar the decor already insets the root by, so that
+                // bar must not be counted again. Without fullscreen the window
+                // resizes itself and no margin is needed.
+                val keypadHeight = if (isFullscreen) {
+                    val rect = Rect()
+                    binding.root.getWindowVisibleDisplayFrame(rect)
+                    val screenHeight = binding.root.rootView.height
+                    val navigationBarHeight = binding.root.rootWindowInsets?.let {
+                        WindowInsetsCompat.toWindowInsetsCompat(it, binding.root)
+                            .getInsets(WindowInsetsCompat.Type.navigationBars())
+                            .bottom
+                    } ?: 0
+                    val height = (screenHeight - rect.bottom - navigationBarHeight).coerceAtLeast(0)
+                    if (height > screenHeight * 0.15) height else 0
                 } else {
-                    if (params.bottomMargin != 0) {
-                        params.bottomMargin = 0
-                        binding.root.layoutParams = params
-                    }
+                    0
+                }
+                val params = binding.root.layoutParams as FrameLayout.LayoutParams
+                if (params.bottomMargin != keypadHeight) {
+                    params.bottomMargin = keypadHeight
+                    binding.root.layoutParams = params
                 }
             }
         }
