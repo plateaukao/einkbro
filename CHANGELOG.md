@@ -1,3 +1,7 @@
+### 16.3.2
+#### Fixes
+* Userscripts: the GM bridge is now reachable only by installed userscripts — ordinary web pages can no longer invoke native GM functions such as writing to the clipboard
+
 ### 16.3.1
 #### Fixes
 * Hide-statusbar mode: the url input bar no longer bounces up and down above the keyboard on Android 10 and older devices
