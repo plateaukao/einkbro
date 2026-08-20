@@ -21,12 +21,23 @@ import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.net.URI
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 /**
  * Native side of the GM_* API. Registered on the WebView as `window.einkbroGM`.
  * All @JavascriptInterface methods run on the WebView's private JS-bridge thread
  * (never the main thread), so synchronous Room access here is safe.
+ *
+ * A WebView JavaScript interface cannot be scoped to a single origin, so this bridge
+ * is present on *every* page. To stop arbitrary page JS from reaching these
+ * capabilities, no method acts on a bare caller-supplied script id; every call must
+ * present a random per-injection [token]. A token is minted only when the GM shim is
+ * injected for a userscript that matches the page (see NinjaWebViewClient), and it
+ * lives inside that shim's IIFE closure — page scripts (and other pages) never see it
+ * and so cannot forge a call. The token also pins the exact script the caller may act
+ * as, which closes the confused-deputy hole where a page could borrow another script's
+ * @connect allow-list or stored values by naming its id.
  */
 class UserScriptBridge(
     private val webView: EBWebView,
@@ -40,23 +51,57 @@ class UserScriptBridge(
         .retryOnConnectionFailure(true)
         .build()
 
+    // region capability tokens
+
+    /** token -> script id, populated as shims are injected, cleared on each navigation. */
+    private val tokens = ConcurrentHashMap<String, Long>()
+
+    fun registerToken(token: String, scriptId: Long) {
+        tokens[token] = scriptId
+    }
+
+    fun clearTokens() {
+        tokens.clear()
+    }
+
+    /**
+     * Resolve a caller-presented token to the script id it authorizes, or null when the
+     * token is unknown or its script no longer matches the page currently loaded. The
+     * re-match guard stops a token from being reused after the JS context outlived the
+     * navigation it was minted for (e.g. a lingering timer firing after the page changed).
+     */
+    private fun scriptIdFor(token: String?): Long? {
+        val scriptId = tokens[token] ?: return null
+        val pageUrl = webView.currentPageUrl ?: return null
+        return if (userScriptManager.matches(scriptId, pageUrl)) scriptId else null
+    }
+
+    // endregion
+
     // region GM value storage (synchronous)
 
     @JavascriptInterface
-    fun gmGetValue(scriptId: String, key: String): String? =
-        userScriptManager.gmGetValue(scriptId.toLong(), key)
+    fun gmGetValue(token: String, key: String): String? {
+        val scriptId = scriptIdFor(token) ?: return null
+        return userScriptManager.gmGetValue(scriptId, key)
+    }
 
     @JavascriptInterface
-    fun gmSetValue(scriptId: String, key: String, value: String) =
-        userScriptManager.gmSetValue(scriptId.toLong(), key, value)
+    fun gmSetValue(token: String, key: String, value: String) {
+        val scriptId = scriptIdFor(token) ?: return
+        userScriptManager.gmSetValue(scriptId, key, value)
+    }
 
     @JavascriptInterface
-    fun gmDeleteValue(scriptId: String, key: String) =
-        userScriptManager.gmDeleteValue(scriptId.toLong(), key)
+    fun gmDeleteValue(token: String, key: String) {
+        val scriptId = scriptIdFor(token) ?: return
+        userScriptManager.gmDeleteValue(scriptId, key)
+    }
 
     @JavascriptInterface
-    fun gmListValues(scriptId: String): String {
-        val keys = userScriptManager.gmListValues(scriptId.toLong())
+    fun gmListValues(token: String): String {
+        val scriptId = scriptIdFor(token) ?: return "[]"
+        val keys = userScriptManager.gmListValues(scriptId)
         val arr = org.json.JSONArray()
         keys.forEach { arr.put(it) }
         return arr.toString()
@@ -67,13 +112,19 @@ class UserScriptBridge(
     // region GM_xmlhttpRequest
 
     @JavascriptInterface
-    fun gmXhr(scriptId: String, reqId: String, detailsJson: String) {
+    fun gmXhr(token: String, reqId: String, detailsJson: String) {
+        val scriptId = scriptIdFor(token)
+        if (scriptId == null) {
+            Log.w(TAG, "gmXhr rejected: invalid token")
+            deliverXhrError(reqId, "unauthorized")
+            return
+        }
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 val details = JSONObject(detailsJson)
                 val url = details.getString("url")
 
-                if (!isConnectAllowed(scriptId.toLong(), url)) {
+                if (!isConnectAllowed(scriptId, url)) {
                     Log.w(TAG, "gmXhr blocked (not in @connect): $url")
                     deliverXhrError(reqId, "url not in @connect allow-list: $url")
                     return@launch
@@ -179,28 +230,32 @@ class UserScriptBridge(
     // region menu / misc
 
     @JavascriptInterface
-    fun gmRegisterMenuCommand(scriptId: String, caption: String, fnId: String) {
+    fun gmRegisterMenuCommand(token: String, caption: String, fnId: String) {
+        if (scriptIdFor(token) == null) return
         coroutineScope.launch(Dispatchers.Main) {
             webView.registerUserScriptMenuCommand(caption, fnId)
         }
     }
 
     @JavascriptInterface
-    fun gmUnregisterMenuCommand(fnId: String) {
+    fun gmUnregisterMenuCommand(token: String, fnId: String) {
+        if (scriptIdFor(token) == null) return
         coroutineScope.launch(Dispatchers.Main) {
             webView.unregisterUserScriptMenuCommand(fnId)
         }
     }
 
     @JavascriptInterface
-    fun gmOpenInTab(url: String, active: Boolean) {
+    fun gmOpenInTab(token: String, url: String, active: Boolean) {
+        if (scriptIdFor(token) == null) return
         coroutineScope.launch(Dispatchers.Main) {
             webView.openInNewTab(url)
         }
     }
 
     @JavascriptInterface
-    fun gmSetClipboard(text: String) {
+    fun gmSetClipboard(token: String, text: String) {
+        if (scriptIdFor(token) == null) return
         coroutineScope.launch(Dispatchers.Main) {
             val cm = webView.context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
             cm?.setPrimaryClip(ClipData.newPlainText("userscript", text))
@@ -208,14 +263,16 @@ class UserScriptBridge(
     }
 
     @JavascriptInterface
-    fun gmNotification(text: String) {
+    fun gmNotification(token: String, text: String) {
+        if (scriptIdFor(token) == null) return
         coroutineScope.launch(Dispatchers.Main) {
             Toast.makeText(webView.context, text, Toast.LENGTH_SHORT).show()
         }
     }
 
     @JavascriptInterface
-    fun gmLog(message: String) {
+    fun gmLog(token: String, message: String) {
+        if (scriptIdFor(token) == null) return
         Log.d(TAG, "userscript: $message")
     }
 

@@ -32,6 +32,9 @@ if (typeof globalThis === 'undefined') {
 
 (function () {
     var SCRIPT_ID = __SCRIPT_ID__;
+    // Per-injection capability token. The native bridge rejects any call without it,
+    // and it never leaves this closure, so the page's own scripts can't forge GM calls.
+    var GM_TOKEN = __GM_TOKEN__;
     var GM_INFO = __GM_INFO__;
 
     // Shared per-page registry, keyed by script id, on a single hidden global.
@@ -89,7 +92,7 @@ if (typeof globalThis === 'undefined') {
 
     function GM_getValue(key, defaultValue) {
         try {
-            var raw = bridge.gmGetValue(SCRIPT_ID, key);
+            var raw = bridge.gmGetValue(GM_TOKEN, key);
             if (raw === null || raw === undefined) return defaultValue;
             return JSON.parse(raw);
         } catch (e) {
@@ -98,16 +101,16 @@ if (typeof globalThis === 'undefined') {
     }
 
     function GM_setValue(key, value) {
-        bridge.gmSetValue(SCRIPT_ID, key, JSON.stringify(value));
+        bridge.gmSetValue(GM_TOKEN, key, JSON.stringify(value));
     }
 
     function GM_deleteValue(key) {
-        bridge.gmDeleteValue(SCRIPT_ID, key);
+        bridge.gmDeleteValue(GM_TOKEN, key);
     }
 
     function GM_listValues() {
         try {
-            return JSON.parse(bridge.gmListValues(SCRIPT_ID) || '[]');
+            return JSON.parse(bridge.gmListValues(GM_TOKEN) || '[]');
         } catch (e) {
             return [];
         }
@@ -158,47 +161,47 @@ if (typeof globalThis === 'undefined') {
             password: details.password || null
         };
         try {
-            bridge.gmXhr(SCRIPT_ID, reqId, JSON.stringify(wire));
+            bridge.gmXhr(GM_TOKEN, reqId, JSON.stringify(wire));
         } catch (e) {
             delete hub.xhrCallbacks[reqId];
             if (details.onerror) details.onerror({ error: String(e) });
         }
         return {
-            abort: function () { try { bridge.gmAbortXhr(reqId); } catch (e) {} }
+            abort: function () { try { bridge.gmAbortXhr(GM_TOKEN, reqId); } catch (e) {} }
         };
     }
 
     function GM_registerMenuCommand(caption, fn) {
         var fnId = SCRIPT_ID + ':menu:' + (++hub.seq);
         hub.menuCallbacks[fnId] = fn;
-        try { bridge.gmRegisterMenuCommand(SCRIPT_ID, String(caption), fnId); } catch (e) {}
+        try { bridge.gmRegisterMenuCommand(GM_TOKEN, String(caption), fnId); } catch (e) {}
         return fnId;
     }
 
     function GM_unregisterMenuCommand(fnId) {
         delete hub.menuCallbacks[fnId];
-        try { bridge.gmUnregisterMenuCommand(fnId); } catch (e) {}
+        try { bridge.gmUnregisterMenuCommand(GM_TOKEN, fnId); } catch (e) {}
     }
 
     function GM_openInTab(url, options) {
         var active = true;
         if (typeof options === 'boolean') active = !options; // legacy: openInBackground
         else if (options && typeof options === 'object') active = options.active !== false;
-        try { bridge.gmOpenInTab(url, active); } catch (e) {}
+        try { bridge.gmOpenInTab(GM_TOKEN, url, active); } catch (e) {}
         return { closed: false, close: function () {} };
     }
 
     function GM_setClipboard(text) {
-        try { bridge.gmSetClipboard(String(text)); } catch (e) {}
+        try { bridge.gmSetClipboard(GM_TOKEN, String(text)); } catch (e) {}
     }
 
     function GM_log() {
-        try { bridge.gmLog(Array.prototype.join.call(arguments, ' ')); } catch (e) {}
+        try { bridge.gmLog(GM_TOKEN, Array.prototype.join.call(arguments, ' ')); } catch (e) {}
     }
 
     function GM_notification(textOrDetails) {
         var text = typeof textOrDetails === 'object' ? textOrDetails.text : textOrDetails;
-        try { bridge.gmNotification(String(text)); } catch (e) {}
+        try { bridge.gmNotification(GM_TOKEN, String(text)); } catch (e) {}
     }
 
     function promisify(fn) {

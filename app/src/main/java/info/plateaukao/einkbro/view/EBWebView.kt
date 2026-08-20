@@ -406,12 +406,19 @@ open class EBWebView(
         setupJsWebInterface()
     }
 
+    /**
+     * The GM_* native bridge. It is attached to every page (a WebView interface
+     * cannot be scoped to a single origin), so it hands out no capability without a
+     * per-injection token that only the injected userscript shim holds. Kept as a
+     * property so the WebViewClient can mint/clear those tokens per navigation.
+     */
+    lateinit var userScriptBridge: info.plateaukao.einkbro.browser.UserScriptBridge
+        private set
+
     private fun setupJsWebInterface() {
         addJavascriptInterface(JsWebInterface(this, webViewCallback as? JsBrowserCallback), "androidApp")
-        addJavascriptInterface(
-            info.plateaukao.einkbro.browser.UserScriptBridge(this),
-            "einkbroGM",
-        )
+        userScriptBridge = info.plateaukao.einkbro.browser.UserScriptBridge(this)
+        addJavascriptInterface(userScriptBridge, "einkbroGM")
         addJavascriptInterface(
             info.plateaukao.einkbro.browser.StartPageBridge(this),
             "einkbroStartPage",

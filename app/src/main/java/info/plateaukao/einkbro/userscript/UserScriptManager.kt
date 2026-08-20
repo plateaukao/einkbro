@@ -133,12 +133,26 @@ class UserScriptManager(private val context: Context) : KoinComponent {
     fun getById(id: Long): ParsedUserScript? = scripts.firstOrNull { it.script.id == id }
 
     /**
+     * True if the enabled script [id] applies to [url] by its @match/@include rules
+     * (and is not @exclude'd). Used by the GM bridge to confirm, at call time, that a
+     * capability token is being used on a page its script still matches.
+     */
+    fun matches(id: Long, url: String): Boolean {
+        if (!url.startsWith("http")) return false
+        val parsed = getById(id) ?: return false
+        if (!parsed.script.enabled) return false
+        val m = parsed.metadata
+        return UrlMatcher.matches(url, m.matches, m.includes) && !UrlMatcher.isExcluded(url, m.excludes)
+    }
+
+    /**
      * Builds the JS to inject for a script: the templated GM shim, then any
      * resolved @require contents, then the script body.
      */
-    fun buildInjectionJs(parsed: ParsedUserScript): String {
+    fun buildInjectionJs(parsed: ParsedUserScript, token: String): String {
         val shim = HelperUnit.loadAssetFile("gm_shim.js")
             .replace("__SCRIPT_ID__", parsed.script.id.toString())
+            .replace("__GM_TOKEN__", JSONObject.quote(token))
             .replace("__GM_INFO__", buildGmInfo(parsed))
         return buildString {
             append(shim).append('\n')

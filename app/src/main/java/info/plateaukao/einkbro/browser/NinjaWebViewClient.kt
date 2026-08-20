@@ -180,6 +180,9 @@ class EBWebViewClient(
         url?.let { u ->
             if (u != lastUserScriptUrl) {
                 ebWebView.userScriptMenuCommands.clear()
+                // Invalidate the previous document's GM capability tokens; the new
+                // document's injections below mint fresh ones.
+                ebWebView.userScriptBridge.clearTokens()
                 lastUserScriptUrl = u
             }
             injectUserScripts(u, info.plateaukao.einkbro.userscript.RunAt.DOCUMENT_START)
@@ -195,7 +198,12 @@ class EBWebViewClient(
             // to opaque "Script error." and some scripts misbehave. A script tag runs the
             // userscript exactly like a real userscript manager does. The body is passed as
             // base64 to avoid escaping issues with large UTF-8 payloads.
-            val js = userScriptManager.buildInjectionJs(parsed)
+            // A fresh unguessable token per injection: it authorizes bridge calls and
+            // pins them to this script. It lives only inside the injected shim's closure,
+            // so neither the page's own scripts nor other pages can present it.
+            val token = java.util.UUID.randomUUID().toString()
+            ebWebView.userScriptBridge.registerToken(token, parsed.script.id)
+            val js = userScriptManager.buildInjectionJs(parsed, token)
             val b64 = android.util.Base64.encodeToString(
                 js.toByteArray(Charsets.UTF_8), android.util.Base64.NO_WRAP,
             )
