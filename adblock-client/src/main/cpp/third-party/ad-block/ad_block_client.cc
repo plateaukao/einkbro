@@ -23,7 +23,7 @@
 #include "linked_list.h"
 
 #ifdef PERF_STATS
-#include <iostream>
+#include "./null_stream.h"  // was <iostream>; see null_stream.h
 using std::cout;
 using std::endl;
 #endif

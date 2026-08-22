@@ -8,7 +8,10 @@
  * Origin: https://github.com/brave/ad-block
  */
 
-#define ENABLE_REGEX
+// Regex rules (/.../) are matched on the Kotlin side (see RegexFilterSet.kt)
+// with java.util.regex, which costs no binary size; std::regex alone adds
+// ~250 KB per ABI to the statically linked libc++.
+// #define ENABLE_REGEX
 
 #ifdef ENABLE_REGEX
 // putting it at the top can solve the dependency conflict problem
@@ -19,7 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
-#include <iostream>
+#include "./null_stream.h"  // was <iostream>; see null_stream.h
 #include <set>
 #include <string>
 

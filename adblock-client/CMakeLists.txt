@@ -15,6 +15,19 @@ endif()
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Oz -s")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Oz -s")
 
+# Size: libc++ is linked statically, so only export the JNI entry points
+# (JNIEXPORT carries default visibility) and let the linker drop every
+# unreferenced function/data section and fold identical ones. Without this
+# the .so exported ~2500 symbols, most of them libc++ internals, and the
+# symbol tables + relocations alone cost ~290 KB per ABI.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections")
+# The engine never throws or catches (its only try/catch guarded std::regex,
+# which is disabled; regex rules are matched in Kotlin) and uses no RTTI, so
+# drop the unwinder and exception tables too (~20 KB per ABI).
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-rtti -fno-unwind-tables -fno-asynchronous-unwind-tables")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -ffunction-sections -fdata-sections")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--gc-sections -Wl,--exclude-libs,ALL -Wl,--icf=all")
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.

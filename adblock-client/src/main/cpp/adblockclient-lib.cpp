@@ -71,8 +71,10 @@ JNICALL
 Java_io_github_edsuns_adblockclient_AdBlockClient_loadProcessedData(JNIEnv *env,
                                                                     jobject /* this */,
                                                                     jlong clientPointer,
-                                                                    jbyteArray data) {
-    int dataLength = env->GetArrayLength(data);
+                                                                    jbyteArray data,
+                                                                    jint dataLength) {
+    // Only the first dataLength bytes belong to the native engine; the Kotlin
+    // side appends its own regex-rule section after them (see RegexFilterSet).
     char *dataChars = new char[dataLength];
     env->GetByteArrayRegion(data, 0, dataLength, reinterpret_cast<jbyte *>(dataChars));
 

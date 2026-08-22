@@ -32,6 +32,13 @@ class AdBlockClient(override val id: String) : Client {
     private var rawDataPointer: Long
     private var processedDataPointer: Long
 
+    /**
+     * `/regex/` rules, matched in Kotlin because the native engine is built
+     * without regex support to keep the .so small (see [RegexFilterSet]).
+     */
+    @Volatile
+    private var regexFilters: RegexFilterSet = RegexFilterSet.EMPTY
+
     init {
         nativeClientPointer = createClient()
         rawDataPointer = 0
@@ -44,8 +51,8 @@ class AdBlockClient(override val id: String) : Client {
      * @param data requires UTF-8 bytes
      */
     fun loadBasicData(data: ByteArray, preserveRules: Boolean = false) {
-        val timestamp = System.currentTimeMillis()
         rawDataPointer = loadBasicData(nativeClientPointer, data, preserveRules)
+        regexFilters = RegexFilterSet.parse(String(data, Charsets.UTF_8))
     }
 
     override var isGenericElementHidingEnabled: Boolean
@@ -63,17 +70,19 @@ class AdBlockClient(override val id: String) : Client {
     ): Long
 
     fun loadProcessedData(data: ByteArray) {
-        val timestamp = System.currentTimeMillis()
-        processedDataPointer = loadProcessedData(nativeClientPointer, data)
+        val unpacked = RegexFilterSet.unpack(data)
+        processedDataPointer = loadProcessedData(nativeClientPointer, data, unpacked.nativeLength)
+        regexFilters = unpacked.regexSet
     }
 
-    private external fun loadProcessedData(clientPointer: Long, data: ByteArray): Long
+    private external fun loadProcessedData(clientPointer: Long, data: ByteArray, length: Int): Long
 
-    fun getProcessedData(): ByteArray = getProcessedData(nativeClientPointer)
+    fun getProcessedData(): ByteArray =
+        RegexFilterSet.pack(getProcessedData(nativeClientPointer), regexFilters)
 
     private external fun getProcessedData(clientPointer: Long): ByteArray
 
-    fun getFiltersCount(): Int = getFiltersCount(nativeClientPointer)
+    fun getFiltersCount(): Int = getFiltersCount(nativeClientPointer) + regexFilters.size
 
     private external fun getFiltersCount(clientPointer: Long): Int
 
@@ -83,7 +92,8 @@ class AdBlockClient(override val id: String) : Client {
         resourceType: ResourceType
     ): MatchResult {
         val firstPartyDomain = documentUrl.baseHost() ?: return MatchResult(false, null, null)
-        return matches(nativeClientPointer, url, firstPartyDomain, resourceType.filterOption)
+        val result = matches(nativeClientPointer, url, firstPartyDomain, resourceType.filterOption)
+        return regexFilters.combine(result, url, firstPartyDomain, resourceType)
     }
 
     private external fun matches(

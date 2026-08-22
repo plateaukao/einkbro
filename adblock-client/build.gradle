@@ -68,4 +68,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
+    testImplementation libs.junit
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
 }
