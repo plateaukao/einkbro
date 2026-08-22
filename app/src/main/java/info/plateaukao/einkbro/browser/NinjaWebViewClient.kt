@@ -72,7 +72,8 @@ class EBWebViewClient(
 
     private val dualCaptionProcessor = DualCaptionProcessor()
 
-    private val einkImageInterceptor = EinkImageInterceptor(config, EinkImageCache(context))
+    private val einkImageCache: EinkImageCache by inject()
+    private val einkImageInterceptor = EinkImageInterceptor(config, einkImageCache)
     private val errorPagePresenter = WebErrorPagePresenter(ebWebView)
     private val sslHandler = WebViewSslHandler(context, config)
 

@@ -32,6 +32,7 @@ import info.plateaukao.einkbro.data.remote.InstapaperRepository
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.service.TtsNotificationManager
 import info.plateaukao.einkbro.service.WebSpeechHandler
+import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.unit.LocaleManager
 import info.plateaukao.einkbro.util.WebViewUtil
 import io.github.edsuns.adfilter.AdFilter
@@ -60,6 +61,8 @@ class EinkBroApplication : Application() {
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
+    private val einkImageCache: EinkImageCache by lazy { EinkImageCache(this) }
+
     private val config: ConfigManager by lazy {
         ConfigManager(applicationContext, sp)
     }
@@ -73,6 +76,7 @@ class EinkBroApplication : Application() {
         single { config }
         single { sp }
         single { BookmarkManager(androidContext()) }
+        single { einkImageCache }
         single { info.plateaukao.einkbro.userscript.UserScriptManager(androidContext()) }
         single { RecordRepository() }
         single { AdBlock(androidContext()) }
@@ -124,6 +128,19 @@ class EinkBroApplication : Application() {
                 filter.viewModel.workToFilterMap.collect { notifyDownloading(it.isEmpty()) }
             }
         }
+    }
+
+    // The image cache is process-wide, so it is trimmed from the Application
+    // rather than from an Activity that may already be gone when the system
+    // asks for memory back.
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        einkImageCache.trimMemory(level)
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        einkImageCache.clearMemory()
     }
 
     override fun onTerminate() {

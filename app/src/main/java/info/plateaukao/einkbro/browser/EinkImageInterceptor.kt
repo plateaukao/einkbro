@@ -9,6 +9,8 @@ import info.plateaukao.einkbro.preference.EinkImageMode
 import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.unit.EinkImageProcessor
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import java.util.concurrent.Semaphore
 
 class EinkImageInterceptor(
@@ -29,12 +31,19 @@ class EinkImageInterceptor(
             val mimeType = getImageMimeFromUrl(url) ?: "image/jpeg"
             return WebResourceResponse(mimeType, null, cachedStream)
         }
+        // Known to exceed the size cap: don't download it again just to reject it.
+        if (einkImageCache.isOversized(url)) return null
 
         return try {
             val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
             request.requestHeaders?.forEach { (key, value) ->
-                connection.setRequestProperty(key, value)
+                // The WebView advertises gzip/br; a compressed body would defeat
+                // both the size cap below and BitmapFactory.
+                if (!key.equals("Accept-Encoding", ignoreCase = true)) {
+                    connection.setRequestProperty(key, value)
+                }
             }
+            connection.setRequestProperty("Accept-Encoding", "identity")
             // Add cookies from WebView's CookieManager (CDNs like Instagram require auth cookies)
             val cookies = CookieManager.getInstance().getCookie(url)
             if (!cookies.isNullOrEmpty()) {
@@ -61,7 +70,23 @@ class EinkImageInterceptor(
                 ?: getImageMimeFromUrl(url)
                 ?: run { connection.disconnect(); return null }
 
-            val originalBytes = connection.inputStream.use { it.readBytes() }
+            // Never buffer an unbounded body: a huge (or hostile) image would
+            // OOM the process. Reject by declared length first, then enforce
+            // the same cap while streaming for chunked / unknown lengths. On
+            // rejection the WebView fetches and renders the image natively.
+            val declaredLength = connection.contentLengthLong
+            if (declaredLength > MAX_SOURCE_BYTES) {
+                connection.disconnect()
+                einkImageCache.markOversized(url)
+                return null
+            }
+            val originalBytes = connection.inputStream.use {
+                readAtMost(it, MAX_SOURCE_BYTES, declaredLength)
+            } ?: run {
+                connection.disconnect()
+                einkImageCache.markOversized(url)
+                return null
+            }
 
             // Bound concurrent decode/process/encode: several WebView threads
             // intercept at once, and each full-size bitmap is tens of MB.
@@ -99,8 +124,35 @@ class EinkImageInterceptor(
         }
     }
 
+    /**
+     * Read [input] fully, or return null once more than [maxBytes] arrive.
+     * [sizeHint] (the Content-Length, or -1) presizes the buffer so a known
+     * length costs one allocation instead of repeated doubling.
+     */
+    private fun readAtMost(input: InputStream, maxBytes: Long, sizeHint: Long): ByteArray? {
+        val output = ByteArrayOutputStream(sizeHint.coerceIn(0L, maxBytes).toInt().coerceAtLeast(DEFAULT_BUFFER_SIZE))
+        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+        var total = 0L
+        while (true) {
+            val count = input.read(buffer)
+            if (count < 0) return output.toByteArray()
+            total += count
+            if (total > maxBytes) return null
+            output.write(buffer, 0, count)
+        }
+    }
+
     companion object {
         private val processSemaphore = Semaphore(2)
+
+        private const val MB = 1024L * 1024
+
+        // Largest source image worth processing; anything beyond this is
+        // decoded by the WebView instead. Decoding downsamples to the screen,
+        // so the body itself is the dominant per-request cost: budget 1/16 of
+        // the heap, between 10 MB (phones/e-readers) and 25 MB (tablets).
+        private val MAX_SOURCE_BYTES: Long =
+            (Runtime.getRuntime().maxMemory() / 16).coerceIn(10 * MB, 25 * MB)
     }
 
     private fun looksLikeImageUrl(url: String): Boolean {
