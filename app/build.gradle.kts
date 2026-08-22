@@ -322,9 +322,6 @@ dependencies {
     implementation(libs.okhttp.sse)
     implementation(libs.kotlinx.serialization.json)
 
-    // adfilter
-    implementation(libs.androidx.work.runtime.ktx)
-
     // media session for TTS notification
     implementation(libs.androidx.media)
 }

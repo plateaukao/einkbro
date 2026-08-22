@@ -65,7 +65,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.http.request)

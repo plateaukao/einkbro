@@ -1,20 +1,12 @@
 package io.github.edsuns.adfilter.impl
 
 import android.content.Context
-import androidx.work.*
-import io.github.edsuns.adfilter.DownloadState
 import io.github.edsuns.adfilter.Filter
 import io.github.edsuns.adfilter.FilterViewModel
-import io.github.edsuns.adfilter.impl.Constants.KEY_CHECK_LICENSE
-import io.github.edsuns.adfilter.impl.Constants.KEY_DOWNLOAD_URL
-import io.github.edsuns.adfilter.impl.Constants.KEY_FILTER_ID
-import io.github.edsuns.adfilter.impl.Constants.KEY_RAW_CHECKSUM
-import io.github.edsuns.adfilter.impl.Constants.TAG_INSTALLATION
-import io.github.edsuns.adfilter.workers.DownloadWorker
-import io.github.edsuns.adfilter.workers.InstallationWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -27,19 +19,15 @@ import kotlinx.serialization.json.Json
 internal class FilterViewModelImpl(
     context: Context,
     private val filterDataLoader: FilterDataLoader,
+    binaryDataStore: BinaryDataStore,
 ) : FilterViewModel {
 
     internal val sharedPreferences: FilterSharedPreferences =
         FilterSharedPreferences(context)
 
-    private val workManager: WorkManager = WorkManager.getInstance(context)
+    private val updater = FilterUpdater(context, binaryDataStore, ::updateFilter, ::onInstalled)
 
-    private val _workInfo: MutableStateFlow<List<WorkInfo>> = MutableStateFlow(emptyList())
-    override val workInfo: StateFlow<List<WorkInfo>> = _workInfo.asStateFlow().apply {
-        workManager.getWorkInfosByTagLiveData(TAG_FILTER_WORK).let {
-            it.observeForever { _workInfo.value = it }
-        }
-    }
+    override val activeDownloads: StateFlow<Set<String>> get() = updater.activeDownloads
 
     /**
      * Count of enabled filters (excluding custom filter).
@@ -65,8 +53,36 @@ internal class FilterViewModelImpl(
 
     override val filters: StateFlow<Map<String, Filter>> = _filterMap.asStateFlow()
     override fun updateFilterByFilterId(id: String, filter: Filter) {
-        _filterMap.value = filters.value.toMutableMap().apply { set(id, filter) }
+        _filterMap.update { it + (id to filter) }
         saveFilterMap()
+    }
+
+    /**
+     * Atomically replace the filter with [id] by [transform] of its current value.
+     * No-op if the filter has been removed in the meantime (e.g. a download
+     * finishing after [removeFilter]). Called from the updater's IO threads.
+     */
+    private fun updateFilter(id: String, transform: (Filter) -> Filter) {
+        var changed = false
+        _filterMap.update { map ->
+            val current = map[id] ?: return@update map
+            changed = true
+            map + (id to transform(current))
+        }
+        if (changed) saveFilterMap()
+    }
+
+    /**
+     * Load freshly installed filter data into the detector right away, so an
+     * update takes effect without restarting the app. [Detector.addClient]
+     * replaces any client with the same id.
+     */
+    private fun onInstalled(id: String) {
+        val filter = filters.value[id] ?: return
+        if (filter.isEnabled && filter.filtersCount > 0) {
+            filterDataLoader.load(id)
+            updateEnabledFilterCount()
+        }
     }
 
     override fun updateFilters() {
@@ -74,44 +90,19 @@ internal class FilterViewModelImpl(
     }
 
 
-    /**
-     * Used to observe download has been added or removed.
-     * [WorkRequest.getId] to [Filter.id]
-     */
-    private val _workToFilterMap: MutableStateFlow<Map<String, String>> = MutableStateFlow(HashMap<String, String>())
-    override val workToFilterMap: StateFlow<Map<String, String>> = _workToFilterMap.asStateFlow()
-    override fun updateWorkToFilterMap(map: Map<String, String>) {
-        _workToFilterMap.value = map
-    }
-
     init {
+        // Downloads do not survive the process. A filter still flagged as running was
+        // interrupted by process death rather than by a real failure, so pick it up
+        // again (WorkManager used to persist and resume such work). Filters that
+        // genuinely FAILED are left alone: nothing retries them automatically.
         try {
-            workManager.pruneWork()
-            // clear bad running download state
             filters.value.values.forEach { filter ->
                 if (filter.downloadState.isRunning) {
-                    try {
-                        val list = workManager.getWorkInfosForUniqueWork(filter.id).get()
-                        if (list == null || list.isEmpty()) {
-                            val updatedFilter = filter.copy(downloadState = DownloadState.FAILED)
-                            updateFilterByFilterId(filter.id, updatedFilter)
-                        } else {
-                            if (list[0].state == WorkInfo.State.ENQUEUED
-                                && filter.downloadState != DownloadState.ENQUEUED
-                            ) {
-                                val updatedFilter =
-                                    filter.copy(downloadState = DownloadState.ENQUEUED)
-                                updateFilterByFilterId(filter.id, updatedFilter)
-                            }
-                        }
-                    } catch (_: Exception) {
-                        val updatedFilter = filter.copy(downloadState = DownloadState.FAILED)
-                        updateFilterByFilterId(filter.id, updatedFilter)
-                    }
+                    updater.download(filter)
                 }
             }
         } catch (_: Exception) {
-            // guard against WorkManager or SharedPreferences failures during init
+            // guard against SharedPreferences failures during init
         }
     }
 
@@ -178,53 +169,11 @@ internal class FilterViewModelImpl(
     }
 
     override fun download(id: String) {
-        if (workToFilterMap.value.any { it.value == id }) {
-            return
-        }
-        filters.value[id]?.let {
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .setRequiresCharging(false)
-                .build()
-            val inputData = workDataOf(
-                KEY_FILTER_ID to it.id,
-                KEY_DOWNLOAD_URL to it.url
-            )
-            val download =
-                OneTimeWorkRequestBuilder<DownloadWorker>()
-                    .setConstraints(constraints)
-                    .addTag(TAG_FILTER_WORK)
-                    .setInputData(inputData)
-                    .build()
-            val install =
-                OneTimeWorkRequestBuilder<InstallationWorker>()
-                    .addTag(TAG_FILTER_WORK)
-                    .addTag(TAG_INSTALLATION)
-                    .setInputData(
-                        workDataOf(
-                            KEY_RAW_CHECKSUM to it.checksum,
-                            KEY_CHECK_LICENSE to true
-                        )
-                    )
-                    .build()
-            val continuation = workManager.beginUniqueWork(
-                it.id, ExistingWorkPolicy.KEEP, download
-            ).then(install)
-            // record worker ids
-            _workToFilterMap.value = _workToFilterMap.value.toMutableMap().apply {
-                this[download.id.toString()] = it.id
-                this[install.id.toString()] = it.id
-            }
-            // notify download work added
-            // mark the beginning of the download
-            filters.value[id]?.copy(downloadState = DownloadState.NONE)?.let { updateFilterByFilterId(id, it) }
-            // start the work
-            continuation.enqueue()
-        }
+        filters.value[id]?.let { updater.download(it) }
     }
 
     override fun cancelDownload(id: String) {
-        workManager.cancelUniqueWork(id)
+        updater.cancel(id)
     }
 
     internal fun flushFilter() {
@@ -233,9 +182,5 @@ internal class FilterViewModelImpl(
 
     private fun saveFilterMap() {
         sharedPreferences.filterMap = Json.encodeToString(_filterMap.value)
-    }
-
-    companion object {
-        private const val TAG_FILTER_WORK = "TAG_FILTER_WORK"
     }
 }

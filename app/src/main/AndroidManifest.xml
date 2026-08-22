@@ -26,6 +26,9 @@
         </intent>
     </queries> <!-- Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Status bar Wi-Fi indicator and ad-filter download scheduling. Used to arrive
+         via WorkManager's manifest, which is no longer a dependency. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- https://developer.android.com/guide/topics/manifest/uses-feature-element#permissions -->
     <uses-feature

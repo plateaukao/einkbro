@@ -125,7 +125,7 @@ class EinkBroApplication : Application() {
         filter.setEnabled(config.browser.adBlock)
         if (config.browser.adBlock) {
             appScope.launch {
-                filter.viewModel.workToFilterMap.collect { notifyDownloading(it.isEmpty()) }
+                filter.viewModel.activeDownloads.collect { notifyDownloading(it.isEmpty()) }
             }
         }
     }

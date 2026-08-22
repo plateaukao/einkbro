@@ -1,14 +1,12 @@
 package io.github.edsuns.adfilter
 
-import androidx.work.WorkInfo
-import androidx.work.WorkRequest
 import kotlinx.coroutines.flow.StateFlow
 
 interface FilterViewModel {
     /**
-     * Work info of AdFilter.
+     * [Filter.id]s with a download or installation currently in progress.
      */
-    val workInfo: StateFlow<List<WorkInfo>>
+    val activeDownloads: StateFlow<Set<String>>
 
     /**
      * Count of enabled filters (excluding custom filter).
@@ -22,14 +20,6 @@ interface FilterViewModel {
     val filters: StateFlow<Map<String, Filter>>
     fun updateFilterByFilterId(id: String, filter: Filter)
     fun updateFilters()
-
-    /**
-     * Used to observe download has been added or removed.
-     * Only includes [ENQUEUED], [RUNNING] and [BLOCKED].
-     * [WorkRequest.getId] to [Filter.id]
-     */
-    val workToFilterMap: StateFlow<Map<String, String>>
-    fun updateWorkToFilterMap(map: Map<String, String>)
 
     /**
      * Add a new filter.

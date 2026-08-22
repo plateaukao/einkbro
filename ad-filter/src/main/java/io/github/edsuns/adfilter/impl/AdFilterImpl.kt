@@ -5,21 +5,12 @@ import android.net.Uri
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
-import androidx.work.WorkInfo
 import io.github.edsuns.adblockclient.ResourceType
 import io.github.edsuns.adfilter.*
 import io.github.edsuns.adfilter.impl.Constants.FILE_STORE_DIR
-import io.github.edsuns.adfilter.impl.Constants.KEY_ALREADY_UP_TO_DATE
-import io.github.edsuns.adfilter.impl.Constants.KEY_FILTERS_COUNT
-import io.github.edsuns.adfilter.impl.Constants.KEY_FILTER_NAME
-import io.github.edsuns.adfilter.impl.Constants.KEY_RAW_CHECKSUM
-import io.github.edsuns.adfilter.impl.Constants.TAG_INSTALLATION
 import io.github.edsuns.adfilter.script.ElementHiding
 import io.github.edsuns.adfilter.script.ScriptInjection
 import io.github.edsuns.adfilter.script.Scriptlet
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Collections
 import java.util.WeakHashMap
@@ -27,7 +18,6 @@ import java.util.WeakHashMap
 /**
  * Created by Edsuns@qq.com on 2021/7/29.
  */
-@OptIn(DelicateCoroutinesApi::class)
 internal class AdFilterImpl(appContext: Context) : AdFilter {
 
     private val detector: Detector = DetectorImpl()
@@ -40,7 +30,7 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
 
     override val customFilter = filterDataLoader.getCustomFilter()
 
-    override val viewModel = FilterViewModelImpl(appContext, filterDataLoader)
+    override val viewModel = FilterViewModelImpl(appContext, filterDataLoader, binaryDataStore)
 
     // Cached current main-frame URL per WebView. Written on the main-frame
     // shouldInterceptRequest and in performScript (onPageStarted); read on
@@ -52,13 +42,6 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
 
     override val hasInstallation: Boolean
         get() = viewModel.sharedPreferences.hasInstallation
-
-    init {
-        GlobalScope.launch {
-            viewModel.workInfo.collect { list -> processWorkInfo(list) }
-        }
-
-    }
 
     override fun setEnabled(enable: Boolean) {
         if (enable) {
@@ -74,119 +57,6 @@ internal class AdFilterImpl(appContext: Context) : AdFilter {
         }
         viewModel.updateEnabledFilterCount()
     }
-
-    private fun processWorkInfo(workInfoList: List<WorkInfo>) {
-        workInfoList.forEach { workInfo ->
-            val filterId = viewModel.workToFilterMap.value[workInfo.id.toString()] ?: return@forEach
-            val filter = viewModel.filters.value[filterId] ?: return@forEach
-            viewModel.updateFilterByFilterId(filterId, updateFilter(filter, workInfo))
-        }
-    }
-
-    private fun updateFilter(filter: Filter, workInfo: WorkInfo): Filter {
-        val state = workInfo.state
-        val isInstallation = workInfo.tags.contains(TAG_INSTALLATION)
-        var downloadState = filter.downloadState
-        var filtersCount = filter.filtersCount
-        var checksum = ""
-        var updateTime = filter.updateTime
-        var name = filter.name
-        var isEnabled = false
-
-        if (isInstallation) {
-            downloadState =
-                when (state) {
-                    WorkInfo.State.RUNNING -> DownloadState.INSTALLING
-                    WorkInfo.State.SUCCEEDED -> {
-                        val alreadyUpToDate =
-                            workInfo.outputData.getBoolean(KEY_ALREADY_UP_TO_DATE, false)
-                        if (!alreadyUpToDate) {
-                            filtersCount =
-                                workInfo.outputData.getInt(KEY_FILTERS_COUNT, 0)
-                            checksum = workInfo.outputData.getString(KEY_RAW_CHECKSUM) ?: ""
-                            isEnabled = true
-                        }
-                        name = workInfo.outputData.getString(KEY_FILTER_NAME) ?: ""
-                        updateTime = System.currentTimeMillis()
-                        DownloadState.SUCCESS
-                    }
-
-                    WorkInfo.State.FAILED -> DownloadState.FAILED
-                    WorkInfo.State.CANCELLED -> DownloadState.CANCELLED
-                    else -> downloadState
-                }
-        } else {
-            downloadState = when (state) {
-                WorkInfo.State.ENQUEUED -> DownloadState.ENQUEUED
-                WorkInfo.State.RUNNING -> DownloadState.DOWNLOADING
-                WorkInfo.State.FAILED -> DownloadState.FAILED
-                else -> downloadState
-            }
-        }
-        if (state.isFinished) {
-            viewModel.updateWorkToFilterMap(viewModel.workToFilterMap.value - workInfo.id.toString())
-        }
-
-        return Filter(
-            url = filter.url,
-            name = name,
-            isEnabled = isEnabled,
-            downloadState = downloadState,
-            updateTime = updateTime,
-            filtersCount = filtersCount,
-            checksum = checksum
-        )
-    }
-//    ```
-//    private fun updateFilter(filter: Filter, workInfo: WorkInfo) {
-//        val state = workInfo.state
-//        val isInstallation = workInfo.tags.contains(TAG_INSTALLATION)
-//        var downloadState = filter.downloadState
-//        if (isInstallation) {
-//            downloadState =
-//                when (state) {
-//                    WorkInfo.State.RUNNING -> DownloadState.INSTALLING
-//                    WorkInfo.State.SUCCEEDED -> {
-//                        val alreadyUpToDate =
-//                            workInfo.outputData.getBoolean(KEY_ALREADY_UP_TO_DATE, false)
-//                        if (!alreadyUpToDate) {
-//                            filter.filtersCount =
-//                                workInfo.outputData.getInt(KEY_FILTERS_COUNT, 0)
-//                            workInfo.outputData.getString(KEY_RAW_CHECKSUM)
-//                                ?.let { filter.checksum = it }
-//                            if (filter.isEnabled || !filter.hasDownloaded()) {
-//                                viewModel.enableFilter(filter)
-//                            }
-//                        }
-//                        if (filter.name.isBlank()) {
-//                            workInfo.outputData.getString(KEY_FILTER_NAME)
-//                                ?.let { filter.name = it }
-//                        }
-//                        filter.updateTime = System.currentTimeMillis()
-//                        DownloadState.SUCCESS
-//                    }
-//
-//                    WorkInfo.State.FAILED -> DownloadState.FAILED
-//                    WorkInfo.State.CANCELLED -> DownloadState.CANCELLED
-//                    else -> downloadState
-//                }
-//        } else {
-//            downloadState = when (state) {
-//                WorkInfo.State.ENQUEUED -> DownloadState.ENQUEUED
-//                WorkInfo.State.RUNNING -> DownloadState.DOWNLOADING
-//                WorkInfo.State.FAILED -> DownloadState.FAILED
-//                else -> downloadState
-//            }
-//        }
-//        if (state.isFinished) {
-//            viewModel.updateWorkToFilterMap(viewModel.workToFilterMap.value - workInfo.id.toString())
-//        }
-//        if (downloadState != filter.downloadState) {
-//            filter.downloadState = downloadState
-//            viewModel.updateFilters()
-//            viewModel.flushFilter()
-//        }
-//    }
 
     /**
      * Notify the application of a resource request and allow the application to return the data.
