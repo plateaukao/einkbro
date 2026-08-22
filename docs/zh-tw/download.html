@@ -80,6 +80,21 @@
 <h2 id="changelog">更新日誌</h2>
 
 <div class="changelog-version">
+<h3>16.4.0</h3>
+<h4>改善</h4>
+<ul>
+<li>App 大小：arm64 APK 從 6.2 MB 縮小到 4.4 MB（-29%），移除了 Material Components、WorkManager 與 AppCompat 函式庫，並只打包 app 實際翻譯的 31 種語言</li>
+<li>廣告阻擋引擎：原生函式庫縮小 77%（每個 ABI 從 1.1 MB 降到 267 KB），並開始支援正規表示式規則，使用這類規則的清單能擋下更多廣告</li>
+<li>廣告過濾清單：新下載的清單會立即生效，不必等下次重開 app；更新已關閉的清單會維持關閉；下載途中 app 被系統結束的話，下次啟動會自動續傳</li>
+</ul>
+<h4>修正</h4>
+<ul>
+<li>書籤對話框開啟時不再先出現一個小小的空白面板、再滑到定位</li>
+<li>電子紙圖片快取現在真的以 16 MB 為上限（過去是計算張數而不是位元組）並在分頁間共用；過大的攔截圖片不再有記憶體不足的風險</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>16.3.2</h3>
 <h4>修正</h4>
 <ul>

@@ -1,3 +1,13 @@
+### 16.4.0
+#### Improvements
+* App size: the arm64 APK shrinks from 6.2 MB to 4.4 MB (−29%) by dropping the Material Components, WorkManager and AppCompat libraries and packaging only the 31 languages the app is translated into
+* Ad-block engine: the native library is 77% smaller (1.1 MB → 267 KB per ABI) and regex filter rules are now matched, so lists that use them block more
+* Ad-block filter lists: a freshly downloaded list takes effect immediately instead of after the next app restart, updating a list you had switched off keeps it off, and a download interrupted by the app being killed resumes on the next launch
+
+#### Fixes
+* Bookmark dialog no longer appears as a small empty panel and then slides into place when opened
+* E-ink image cache now really honours its 16 MB budget (it used to count images, not bytes) and is shared across tabs; oversized intercepted images no longer risk out-of-memory
+
 ### 16.3.2
 #### Fixes
 * Userscripts: the GM bridge is now reachable only by installed userscripts — ordinary web pages can no longer invoke native GM functions such as writing to the clipboard
