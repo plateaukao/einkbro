@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import org.koin.core.component.KoinComponent

@@ -10,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.widget.ImageViewCompat
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ViewUnit.dp
@@ -39,7 +38,7 @@ class TranslationPanelView(context: Context) : RelativeLayout(context) {
         val margin = 1 // 0.5dp ~= 1px
 
         fun createButton(iconRes: Int): ImageButton {
-            return AppCompatImageButton(context).apply {
+            return ImageButton(context).apply {
                 layoutParams = LinearLayout.LayoutParams(btnSize, btnSize).apply {
                     setMargins(margin, margin, margin, margin)
                 }
@@ -50,7 +49,7 @@ class TranslationPanelView(context: Context) : RelativeLayout(context) {
         }
 
         // Expanded button (initially invisible)
-        expandedButton = AppCompatImageButton(context).apply {
+        expandedButton = ImageButton(context).apply {
             val lp = LayoutParams(btnSize, btnSize).apply {
                 addRule(ALIGN_PARENT_END)
                 addRule(ALIGN_PARENT_BOTTOM)

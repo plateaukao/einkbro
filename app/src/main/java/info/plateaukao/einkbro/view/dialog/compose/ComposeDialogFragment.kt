@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.DialogFragment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -27,7 +27,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 
-abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent {
+abstract class ComposeDialogFragment : DialogFragment(), KoinComponent {
     protected val config: ConfigManager by inject()
     protected lateinit var composeView: ComposeView
 
@@ -56,7 +56,7 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        setStyle(STYLE_NO_FRAME, 0)
+        setStyle(STYLE_NO_FRAME, R.style.EinkPanelDialogTheme)
         dialogAnchorX = anchorX
         dialogAnchorY = anchorY
         anchorX = -1

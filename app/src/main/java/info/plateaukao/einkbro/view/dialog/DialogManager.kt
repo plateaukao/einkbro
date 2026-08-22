@@ -13,7 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.webkit.URLUtil
 import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

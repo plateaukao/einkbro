@@ -24,7 +24,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
-import androidx.appcompat.view.ContextThemeWrapper
+import android.view.ContextThemeWrapper
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R

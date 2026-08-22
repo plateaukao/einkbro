@@ -151,7 +151,7 @@ class TranslateDialogFragment(
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): android.app.Dialog {
-        setStyle(STYLE_NO_FRAME, 0)
+        setStyle(STYLE_NO_FRAME, R.style.EinkPanelDialogTheme)
         return object : android.app.Dialog(requireContext(), theme) {
             override fun dispatchKeyEvent(event: KeyEvent): Boolean {
                 val keyCode = event.keyCode

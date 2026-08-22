@@ -6,7 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.util.Log
 import android.util.TypedValue
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.WebViewCallback
 import info.plateaukao.einkbro.view.EBWebView

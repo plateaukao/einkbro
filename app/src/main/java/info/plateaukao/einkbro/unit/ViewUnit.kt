@@ -25,7 +25,6 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView.LAYER_TYPE_HARDWARE
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
@@ -179,7 +178,7 @@ object ViewUnit: KoinComponent {
 
     fun hideKeyboard(activity: Activity) {
         val imm =
-            activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         activity.runOnUiThread {
             imm.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
         }
@@ -187,7 +186,7 @@ object ViewUnit: KoinComponent {
 
     fun showKeyboard(activity: Activity) {
         val imm =
-            activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         activity.runOnUiThread {
             val view = activity.currentFocus ?: return@runOnUiThread
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)

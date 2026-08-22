@@ -13,7 +13,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Looper
 import android.preference.PreferenceManager
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -107,7 +106,6 @@ class EinkBroApplication : Application() {
             modules(myModule)
         }
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         if (config.uiLocaleLanguage.isNotEmpty()) {
             LocaleManager.setLocale(this, config.uiLocaleLanguage)

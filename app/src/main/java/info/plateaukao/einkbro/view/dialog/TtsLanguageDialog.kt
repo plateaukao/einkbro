@@ -1,7 +1,7 @@
 package info.plateaukao.einkbro.view.dialog
 
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent

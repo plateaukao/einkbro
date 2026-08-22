@@ -7,7 +7,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R

@@ -253,7 +253,13 @@ dependencies {
 
     // for epub saving: html processing
     implementation(libs.jsoup)
-    implementation(libs.androidx.constraintlayout)
+    // Nothing in the app uses AppCompat any more (framework Material theme, framework
+    // AlertDialog, fragment DialogFragment). These two still declare it transitively;
+    // keeping it off the classpath matters because AGP's aapt keep rules would otherwise
+    // pin every view referenced from AppCompat's own layouts (~120 KB of dex).
+    implementation(libs.androidx.constraintlayout) {
+        exclude(group = "androidx.appcompat")
+    }
     implementation(libs.androidx.swiperefreshlayout)
 
     implementation(libs.androidx.room.runtime)
@@ -282,8 +288,9 @@ dependencies {
     // Koin
     implementation(libs.koin.core)
     testImplementation(libs.koin.test)
-    implementation(libs.koin.android)
-    implementation(libs.koin.android.compat)
+    implementation(libs.koin.android) {
+        exclude(group = "androidx.appcompat")
+    }
 
     // Unit testing
     testImplementation(libs.junit)

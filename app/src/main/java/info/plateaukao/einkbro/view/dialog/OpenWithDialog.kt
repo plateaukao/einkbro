@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.Gravity
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

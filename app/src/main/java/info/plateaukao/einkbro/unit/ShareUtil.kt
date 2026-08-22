@@ -3,7 +3,6 @@ package info.plateaukao.einkbro.unit
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.EBToast
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +32,7 @@ object ShareUtil : KoinComponent {
 
     fun copyToClipboard(context: Context, url: String) {
         val clipboard =
-            context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("text", url)
         clipboard.setPrimaryClip(clip)
         EBToast.show(context, R.string.toast_copy_successful)

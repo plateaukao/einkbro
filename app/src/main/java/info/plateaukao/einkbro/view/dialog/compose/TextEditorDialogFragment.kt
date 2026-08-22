@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.DialogFragment
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,7 +41,7 @@ class TextEditorDialogFragment(
     private val title: String,
     private val initialText: String,
     private val onSave: (String) -> Unit,
-) : AppCompatDialogFragment() {
+) : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

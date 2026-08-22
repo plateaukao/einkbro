@@ -2,7 +2,7 @@ package info.plateaukao.einkbro.view.dialog
 
 import android.content.Context
 import android.widget.ProgressBar
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
