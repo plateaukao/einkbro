@@ -1,1 +1,4 @@
-<manifest />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- FilterUpdater waits for connectivity before downloading filter lists. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>
