@@ -36,6 +36,9 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
     private var dialogAnchorY: Int = -1
 
     companion object {
+        /** WindowManager.LayoutParams.PRIVATE_FLAG_NO_MOVE_ANIMATION (hidden). */
+        private const val PRIVATE_FLAG_NO_MOVE_ANIMATION = 0x00000040
+
         /** Horizontal center X (px) of the last clicked toolbar icon. Set by toolbar, consumed by dialog. */
         var anchorX: Int = -1
         /** Vertical center Y (px) of the last clicked toolbar icon. Set by toolbar, consumed by dialog. */
@@ -65,7 +68,10 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
         dialog?.apply {
             setCanceledOnTouchOutside(true)
             val w = window ?: return
-            w.attributes = w.attributes.apply { windowAnimations = 0 }
+            w.attributes = w.attributes.apply {
+                windowAnimations = 0
+                disableMoveAnimation()
+            }
             if (!shouldShowInCenter) {
                 if (config.ui.isVerticalToolbar) {
                     val horizontalGravity = if (config.ui.toolbarPosition == ToolbarPosition.Left) Gravity.START else Gravity.END
@@ -152,6 +158,22 @@ abstract class ComposeDialogFragment : AppCompatDialogFragment(), KoinComponent 
                 y = targetY
                 alpha = 1f
             }
+        }
+    }
+
+    /**
+     * WindowManager animates a window whose frame moves (~250ms slide). These wrap-content,
+     * bottom/side-anchored dialogs move whenever their content changes height or they are
+     * repositioned over the toolbar anchor, which on e-ink shows as a smeared "shift".
+     * `android:windowNoMoveAnimation` (API 34+, set in the dialog theme) maps to the same
+     * private flag; this covers older devices.
+     */
+    private fun WindowManager.LayoutParams.disableMoveAnimation() {
+        try {
+            val field = WindowManager.LayoutParams::class.java.getDeclaredField("privateFlags")
+            field.setInt(this, field.getInt(this) or PRIVATE_FLAG_NO_MOVE_ANIMATION)
+        } catch (_: Throwable) {
+            // Hidden field unavailable; the theme attribute still applies on API 34+.
         }
     }
 

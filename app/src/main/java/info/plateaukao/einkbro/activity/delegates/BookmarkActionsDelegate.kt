@@ -16,6 +16,7 @@ import info.plateaukao.einkbro.view.dialog.BookmarkEditDialog
 import info.plateaukao.einkbro.view.dialog.compose.BookmarksDialogFragment
 import info.plateaukao.einkbro.view.viewControllers.OverviewDialogController
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
+import kotlinx.coroutines.launch
 
 class BookmarkActionsDelegate(
     private val activity: FragmentActivity,
@@ -53,13 +54,20 @@ class BookmarkActionsDelegate(
     fun openHistoryPage(amount: Int) = overviewDialogControllerProvider().openHistoryPage(amount)
 
     fun openBookmarkPage() {
-        BookmarksDialogFragment(
-            activity.lifecycleScope,
-            bookmarkViewModel,
-            gotoUrlAction = { url -> updateAlbum(url) },
-            bookmarkIconClickAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-            splitScreenAction = { url -> toggleSplitScreen(url) },
-        ).show(activity.supportFragmentManager, "bookmarks dialog")
+        activity.lifecycleScope.launch {
+            // Wait for the list so the dialog opens at its final size; showing it
+            // empty and letting it grow once the query finishes made the window
+            // visibly resize and shift on screen.
+            bookmarkViewModel.awaitLoaded()
+            if (activity.isFinishing || activity.supportFragmentManager.isStateSaved) return@launch
+            BookmarksDialogFragment(
+                activity.lifecycleScope,
+                bookmarkViewModel,
+                gotoUrlAction = { url -> updateAlbum(url) },
+                bookmarkIconClickAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+                splitScreenAction = { url -> toggleSplitScreen(url) },
+            ).show(activity.supportFragmentManager, "bookmarks dialog")
+        }
     }
 
     fun prepareRecord(): Boolean {

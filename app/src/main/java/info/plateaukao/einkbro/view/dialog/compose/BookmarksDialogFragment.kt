@@ -92,6 +92,9 @@ class BookmarksDialogFragment(
 
     override fun beforeComposing() {
         isGridView.value = config.ui.isBookmarkGridView
+        // Seed with the current list so the first composition already shows it;
+        // otherwise the dialog flashes "no bookmarks" and the items appear a frame later.
+        bookmarks.value = bookmarkViewModel.uiState.value
         bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks.value = it }
         }

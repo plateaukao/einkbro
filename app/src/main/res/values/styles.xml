@@ -23,12 +23,19 @@
         <item name="backgroundColor">@android:color/white</item>
         <item name="android:selectableItemBackground">@drawable/item_bg_selector</item>
         <item name="android:windowAnimationStyle">@null</item>
+        <item name="dialogTheme">@style/EinkDialogTheme</item>
         <item name="snackbarStyle">@style/CustomSnackbar</item>
         <item name="colorSurface">@android:color/white</item>
 
         <item name="android:statusBarColor">@android:color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <!-- Theme for AppCompatDialog/DialogFragment (ComposeDialogFragment etc.).
+         values-v34 adds android:windowNoMoveAnimation so WindowManager does not animate
+         the window when a wrap-content dialog changes size or is repositioned. -->
+    <style name="EinkDialogTheme.Base" parent="ThemeOverlay.AppCompat.Dialog" />
+    <style name="EinkDialogTheme" parent="EinkDialogTheme.Base" />
 
     <!-- remove preference activity background color -->
     <!--    <style name="preferenceTheme" parent="PreferenceThemeOverlay.v14">-->
