@@ -32,6 +32,12 @@ android {
         }
     }
 
+    buildFeatures {
+        // ScriptInjection toggles the {{DEBUG}} console.log lines in the injected JS
+        // on BuildConfig.DEBUG.
+        buildConfig = true
+    }
+
     packagingOptions {
         resources.pickFirsts.add("META-INF/AL2.0")
         resources.pickFirsts.add("META-INF/LGPL2.1")
@@ -51,7 +57,6 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.androidx.core.ktx)
-    implementation(libs.smooth.progress.animator)
 
     implementation(project(":adblock-client"))
 

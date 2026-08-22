@@ -33,16 +33,12 @@ import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
 import android.provider.OpenableColumns
-import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import info.plateaukao.einkbro.view.dialog.OpenWithDialog
 import java.io.File
 import androidx.compose.ui.text.AnnotatedString
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
 import info.plateaukao.einkbro.util.Constants
@@ -159,20 +155,6 @@ object HelperUnit {
     @JvmStatic
     fun applyTheme(context: Context) = context.setTheme(R.style.AppTheme)
 
-    @JvmStatic
-    fun setBottomSheetBehavior(dialog: BottomSheetDialog, view: View, beh: Int) {
-        val mBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(view.parent as View)
-        mBehavior.state = beh
-        mBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    dialog.cancel()
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-        })
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic

@@ -20,7 +20,6 @@ koin = "3.5.6"
 kotlinxSerializationJson = "1.6.3"
 lifecycle = "2.8.4"
 pdfboxAndroid = "2.0.27.0"
-material = "1.12.0"
 media = "1.7.0"
 mezzanine = "1.2.1"
 mockk = "1.13.12"
@@ -30,11 +29,11 @@ okhttpSse = "4.11.0"
 orgJson = "20240303"
 reorderable = "2.3.3"
 room = "2.6.1"
-smoothProgressAnimator = "1.0"
 swiperefreshlayout = "1.1.0"
 timber = "4.7.1"
 turbine = "1.0.0"
 webkit = "1.11.0"
+documentfile = "1.1.0"
 work = "2.10.5"
 
 [libraries]
@@ -56,6 +55,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
+androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
@@ -76,7 +76,6 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-material = { module = "com.google.android.material:material", version.ref = "material" }
 mezzanine = { module = "com.github.Edsuns.Mezzanine:mezzanine", version.ref = "mezzanine" }
 mezzanine-compiler = { module = "com.github.Edsuns.Mezzanine:mezzanine-compiler", version.ref = "mezzanine" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
@@ -85,7 +84,6 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 okhttp-sse = { group = "com.squareup.okhttp3", name = "okhttp-sse", version.ref = "okhttpSse" }
 org-json = { module = "org.json:json", version.ref = "orgJson" }
 reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
-smooth-progress-animator = { module = "com.github.Edsuns:SmoothProgressAnimator", version.ref = "smoothProgressAnimator" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 

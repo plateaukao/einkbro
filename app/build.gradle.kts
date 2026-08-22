@@ -154,6 +154,16 @@ android {
         // font/CMap/AFM assets, which are only needed for text extraction/rendering,
         // not for the COS-level operations (outline entries, page merging) we use.
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!tom_roush"
+
+        // Only package the locales the app itself is translated into. Without this,
+        // AppCompat (and formerly Material Components) add ~80 extra locale configs
+        // to resources.arsc for strings the app never shows in those languages.
+        // Keep in sync with values-*/ and TranslationLanguageDialog.showAppLocale().
+        localeFilters += listOf(
+            "af", "ar", "ca", "cs", "da", "de", "el", "en", "es", "fi", "fr",
+            "he", "hu", "in", "it", "ja", "ko", "nl", "no", "pl", "pt",
+            "ro", "ru", "sat", "sr", "sv", "tr", "uk", "vi", "zh-rCN", "zh-rTW",
+        )
     }
 
     lint {
@@ -228,8 +238,6 @@ dependencies {
 
     implementation(project(":ad-filter"))
 
-    implementation(libs.material)
-
     // epub4j (maintained fork of epublib). Android ships xmlpull in the platform, so
     // the transitive xmlpull jar is excluded to avoid duplicate XmlPullParser classes.
     implementation(libs.epub4j.core) {
@@ -266,6 +274,10 @@ dependencies {
 
     // for dark mode
     implementation(libs.androidx.webkit)
+
+    // SAF folder access (fonts, Supernote storage, EPUB export). Previously came in
+    // transitively via Material Components, which is no longer a dependency.
+    implementation(libs.androidx.documentfile)
 
     // Koin
     implementation(libs.koin.core)

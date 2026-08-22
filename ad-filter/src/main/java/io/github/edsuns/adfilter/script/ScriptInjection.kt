@@ -2,7 +2,7 @@ package io.github.edsuns.adfilter.script
 
 import com.anthonycr.mezzanine.FileStream
 import com.anthonycr.mezzanine.MezzanineGenerator
-import io.github.edsuns.smoothprogress.BuildConfig
+import io.github.edsuns.adfilter.BuildConfig
 
 /**
  * Created by Edsuns@qq.com on 2021/4/3.

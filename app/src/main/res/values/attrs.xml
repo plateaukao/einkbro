@@ -2,6 +2,9 @@
 <resources>
     <!-- Icons -->
     <attr name="dragIcon" format="reference" />
+    <!-- Theme background for the bordered drawables and MainContentLayout; was
+         inherited from Material Components before that dependency was dropped. -->
+    <attr name="backgroundColor" format="color" />
     <attr name="entryValues" format="reference" />
     <attr name="entryIconIds" format="reference"/>
 
