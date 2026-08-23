@@ -727,20 +727,30 @@ class BackupUnit(
             dao.insertAll(queries)
         }
 
-        // DomainConfiguration — merge: only domains with no local configuration are
-        // added, so restoring never changes a site setting tweaked on this device.
+        // DomainConfiguration — merge field by field: a setting tweaked on this
+        // device is kept, the backup fills in whatever the local rule leaves
+        // unset (or the whole rule when there is none). Decoding both sides
+        // normalises legacy rows, so an empty leftover rule never blocks a
+        // restore. The in-memory map is refreshed right away; it is otherwise
+        // only loaded at startup and the restart prompt may be declined.
         if (json.has("domain_configurations")) {
             val dao = db.domainConfigurationDao()
-            val existingDomains = dao.getAllDomainConfigurations().map { it.domain }.toHashSet()
+            val local = dao.getAllDomainConfigurations()
+                .associate { it.domain to bookmarkManager.decodeDomainConfiguration(it) }
             val arr = json.getJSONArray("domain_configurations")
-            val configs = (0 until arr.length()).map { i ->
+            val merged = (0 until arr.length()).mapNotNull { i ->
                 val obj = arr.getJSONObject(i)
-                DomainConfiguration(
+                val row = DomainConfiguration(
                     domain = obj.getString("domain"),
                     configuration = obj.getString("configuration"),
                 )
-            }.filter { it.domain !in existingDomains }
-            dao.insertAll(configs)
+                val imported = runCatching { bookmarkManager.decodeDomainConfiguration(row) }
+                    .getOrNull() ?: return@mapNotNull null
+                val result = local[row.domain]?.mergedWith(imported) ?: imported
+                result.takeIf { !it.isEmpty }?.let { bookmarkManager.encodeDomainConfiguration(it) }
+            }
+            dao.insertAll(merged)
+            bookmarkManager.reloadDomainConfigurations()
         }
 
         // SavedPage — merge: append entries whose file isn't tracked locally yet

@@ -541,13 +541,27 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     private suspend fun getAllDomainConfigurations(): Map<String, DomainConfigurationData> =
         mutableMapOf<String, DomainConfigurationData>().apply {
             domainConfigurationDao.getAllDomainConfigurations().forEach {
-                put(
-                    it.domain,
-                    json.decodeFromString<DomainConfigurationData>(it.configuration)
-                        .normalizedLegacyFlags(),
-                )
+                put(it.domain, decodeDomainConfiguration(it))
             }
         }
+
+    fun decodeDomainConfiguration(row: DomainConfiguration): DomainConfigurationData =
+        json.decodeFromString<DomainConfigurationData>(row.configuration).normalizedLegacyFlags()
+
+    fun encodeDomainConfiguration(data: DomainConfigurationData): DomainConfiguration =
+        DomainConfiguration(
+            domain = data.domain,
+            configuration = json.encodeToString(DomainConfigurationData.serializer(), data),
+        )
+
+    /**
+     * Re-reads every site rule from Room into the in-memory map. The map is
+     * otherwise only filled at startup, so a restore that wrote new rows
+     * would not take effect until the next launch.
+     */
+    suspend fun reloadDomainConfigurations() {
+        config.domainConfigurationMap.putAll(getAllDomainConfigurations())
+    }
 
     fun deleteDomainConfiguration(key: String) =
         coroutineScope.launch(Dispatchers.IO) {
@@ -557,13 +571,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     fun addDomainConfiguration(domainConfigurationData: DomainConfigurationData) =
         coroutineScope.launch(Dispatchers.IO) {
             domainConfigurationDao.addDomainConfiguration(
-                DomainConfiguration(
-                    domain = domainConfigurationData.domain,
-                    configuration = json.encodeToString(
-                        DomainConfigurationData.serializer(),
-                        domainConfigurationData
-                    )
-                )
+                encodeDomainConfiguration(domainConfigurationData)
             )
         }
 

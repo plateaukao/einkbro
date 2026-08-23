@@ -59,6 +59,31 @@ data class DomainConfigurationData(
     val isEmpty: Boolean get() = overrideCount == 0
 
     /**
+     * This rule with every unset field filled in from [fallback]. Used when a
+     * restore meets a rule that already exists locally: local values win,
+     * the backup only contributes what is missing here.
+     */
+    fun mergedWith(fallback: DomainConfigurationData): DomainConfigurationData = copy(
+        shouldFixScroll = shouldFixScroll ?: fallback.shouldFixScroll,
+        shouldTranslateSite = shouldTranslateSite ?: fallback.shouldTranslateSite,
+        shouldUseWhiteBackground = shouldUseWhiteBackground ?: fallback.shouldUseWhiteBackground,
+        shouldInvertColor = shouldInvertColor ?: fallback.shouldInvertColor,
+        fontSize = fontSize ?: fallback.fontSize,
+        fontType = fontType ?: fallback.fontType,
+        boldFontStyle = boldFontStyle ?: fallback.boldFontStyle,
+        blackFontStyle = blackFontStyle ?: fallback.blackFontStyle,
+        fontBoldness = fontBoldness ?: fallback.fontBoldness,
+        desktopMode = desktopMode ?: fallback.desktopMode,
+        desktopViewportWidth = desktopViewportWidth ?: fallback.desktopViewportWidth,
+        enableJavascript = enableJavascript ?: fallback.enableJavascript,
+        enableAdBlock = enableAdBlock ?: fallback.enableAdBlock,
+        enableCookies = enableCookies ?: fallback.enableCookies,
+        translationMode = translationMode ?: fallback.translationMode,
+        customCss = customCss?.takeIf { it.isNotBlank() } ?: fallback.customCss,
+        postLoadJavascript = postLoadJavascript?.takeIf { it.isNotBlank() } ?: fallback.postLoadJavascript,
+    )
+
+    /**
      * Rows written before path rules existed stored the four legacy flags as
      * plain `false`. On a host rule `false` and `null` resolve identically (the
      * host rule is the end of the chain), so normalise to null; otherwise old

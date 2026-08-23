@@ -271,6 +271,25 @@ class DomainConfigManagerTest {
     }
 
     @Test
+    fun `mergedWith keeps local values and fills gaps from the backup`() {
+        val local = DomainConfigurationData("example.com", fontSize = 150, customCss = " ")
+        val backup = DomainConfigurationData(
+            "example.com", fontSize = 170, desktopMode = true, customCss = "a{}",
+            shouldUseWhiteBackground = true,
+        )
+        val merged = local.mergedWith(backup)
+        assertEquals(150, merged.fontSize)
+        assertEquals(true, merged.desktopMode)
+        assertEquals("a{}", merged.customCss)
+        assertEquals(true, merged.shouldUseWhiteBackground)
+
+        // an empty leftover row takes everything from the backup
+        val leftover = DomainConfigurationData("example.com", shouldInvertColor = false)
+            .normalizedLegacyFlags()
+        assertEquals(backup.copy(), leftover.mergedWith(backup))
+    }
+
+    @Test
     fun `legacy host rows normalise false flags to unset`() {
         val legacy = DomainConfigurationData(
             "example.com",
