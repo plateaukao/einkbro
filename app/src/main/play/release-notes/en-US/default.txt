@@ -1,4 +1,4 @@
+• Fix security issues
 • Site settings: rules can be scoped to a URL path as well as a host; new "Configured sites" list to review, edit or remove all rules
-• Security: GM_openInTab only opens http/https URLs; file:// pages can no longer read local files by default ("Remote content" now off by default)
 • Fixed: site rules restored from a backup are merged and apply without a restart
 • Fixed: pushState/hash navigations re-apply site rules for the new path
