@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Path rules test</title>
+<style>body{font-family:sans-serif;padding:16px} button{font-size:18px;padding:12px;margin:6px 0;display:block;width:100%}</style>
+</head><body>
+<h1 id="where">path: ?</h1>
+<p id="ua">ua: ?</p>
+<p>Sample paragraph text to judge the effective font size. The quick brown fox jumps over the lazy dog.</p>
+<button onclick="go('/site/docs/app')">pushState → /site/docs/app</button>
+<button onclick="go('/site/blog/app')">pushState → /site/blog/app</button>
+<button onclick="go('/site/desk/app')">pushState → /site/desk/app</button>
+<button onclick="go('/site/app')">pushState → /site/app</button>
+<a href="/site/blog/page.html">link → /site/blog/page.html</a><br>
+<a href="/site/docs/page.html">link → /site/docs/page.html</a>
+<script>
+function show(){document.getElementById('where').textContent='path: '+location.pathname;
+document.getElementById('ua').textContent='ua: '+(/Mobile/.test(navigator.userAgent)?'MOBILE':'DESKTOP')+' / '+navigator.userAgent.slice(0,60);}
+function go(p){history.pushState({},'',p);show();}
+window.addEventListener('popstate',show);show();
+</script></body></html>

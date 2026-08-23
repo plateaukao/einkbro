@@ -4,6 +4,7 @@ import android.content.Intent
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.AdBlockSettingActivity
 import info.plateaukao.einkbro.activity.DataListActivity
+import info.plateaukao.einkbro.activity.SiteRuleListActivity
 import info.plateaukao.einkbro.activity.UserScriptListActivity
 import info.plateaukao.einkbro.activity.WhiteListType
 import info.plateaukao.einkbro.setting.ActionSettingItem
@@ -15,6 +16,12 @@ import info.plateaukao.einkbro.setting.SettingItemInterface
 fun buildStartSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
     val config = deps.config
     return listOf(
+        ActionSettingItem(
+            R.string.setting_title_site_rules,
+            0,
+            R.string.setting_summary_site_rules,
+        ) { deps.activity.startActivity(SiteRuleListActivity.createIntent(deps.activity)) },
+        DividerSettingItem(),
         BooleanSettingItem(
             R.string.setting_title_images,
             0,

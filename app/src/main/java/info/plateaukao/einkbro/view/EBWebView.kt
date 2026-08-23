@@ -42,6 +42,7 @@ import info.plateaukao.einkbro.unit.BookmarkRenderer
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
@@ -466,13 +467,30 @@ open class EBWebView(
         }
     }
 
+    /**
+     * Re-asserts everything a site rule controls that can change without a
+     * reload: JS, cookies, text zoom, injected CSS (font, white background,
+     * custom CSS) and colour inversion. Used when a same-document navigation
+     * crosses into a different path rule. Desktop mode is deliberately not
+     * handled here — it needs a reload (see NinjaWebViewClient).
+     */
+    fun applySiteOverrides(url: String) {
+        settings.javaScriptEnabled = isJavascriptEnabled(url)
+        toggleCookieSupport(shouldAcceptCookies(url))
+        if (!shouldUseReaderFont()) {
+            settings.textZoom = config.getFontSize(url)
+        }
+        updateCssStyle()
+        ViewUnit.invertColor(this, config.hasInvertedColor(url))
+    }
+
     // Per-site override first, then the global setting widened by the whitelist.
     private fun isJavascriptEnabled(url: String): Boolean =
-        config.getDomainConfig(url).enableJavascript
+        config.getEffectiveConfig(url).enableJavascript
             ?: (config.browser.enableJavascript || javascript.isWhite(url))
 
     private fun shouldAcceptCookies(url: String): Boolean =
-        config.getDomainConfig(url).enableCookies
+        config.getEffectiveConfig(url).enableCookies
             ?: (config.browser.cookies || cookie.isWhite(url))
 
     fun updateUserAgentString() = configApplier.updateUserAgentString()

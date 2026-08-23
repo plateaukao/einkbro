@@ -541,8 +541,17 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     private suspend fun getAllDomainConfigurations(): Map<String, DomainConfigurationData> =
         mutableMapOf<String, DomainConfigurationData>().apply {
             domainConfigurationDao.getAllDomainConfigurations().forEach {
-                put(it.domain, json.decodeFromString<DomainConfigurationData>(it.configuration))
+                put(
+                    it.domain,
+                    json.decodeFromString<DomainConfigurationData>(it.configuration)
+                        .normalizedLegacyFlags(),
+                )
             }
+        }
+
+    fun deleteDomainConfiguration(key: String) =
+        coroutineScope.launch(Dispatchers.IO) {
+            domainConfigurationDao.deleteDomainConfiguration(key)
         }
 
     fun addDomainConfiguration(domainConfigurationData: DomainConfigurationData) =

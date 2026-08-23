@@ -1,134 +1,232 @@
 package info.plateaukao.einkbro.preference
 
-import android.net.Uri
 import info.plateaukao.einkbro.database.DomainConfigurationData
+import info.plateaukao.einkbro.database.SiteRuleKey
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * Per-site settings, resolved per URL through a chain of rules.
+ *
+ * Rules are keyed by [SiteRuleKey]: a bare host, or a host plus a path
+ * prefix. For a URL the matching rules are ordered most specific first
+ * (longest path prefix, host rule last), and each field takes the first
+ * non-null value along that chain, falling back to the global setting.
+ * Hosts match exactly — no subdomain wildcards.
+ */
 class DomainConfigManager(
     private val display: DisplayConfig,
     private val browser: BrowserConfig,
     private val translation: TranslationConfig,
     private val persist: (DomainConfigurationData) -> Unit,
+    private val remove: (String) -> Unit = {},
 ) {
     // ConcurrentHashMap: read from WebView worker threads (shouldInterceptRequest),
     // written on the main thread when a site config is saved.
     var domainConfigurationMap: MutableMap<String, DomainConfigurationData> = ConcurrentHashMap()
 
-    fun shouldFixScroll(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldFixScroll } ?: false
+    // region resolution
 
-    fun toggleFixScroll(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
-
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldFixScroll = !config.shouldFixScroll
-        persist(config)
-
-        return shouldFixScroll(url)
+    /** Rules that apply to [url], most specific first. Empty for non-http(s)-style URLs. */
+    fun matchingRules(url: String): List<DomainConfigurationData> {
+        val host = SiteRuleKey.hostOfUrl(url) ?: return emptyList()
+        val path = SiteRuleKey.pathOfUrl(url)
+        return domainConfigurationMap.values
+            .filter { SiteRuleKey.matches(it.domain, host, path) }
+            .sortedByDescending { SiteRuleKey.specificity(it.domain) }
     }
 
-    fun shouldTranslateSite(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldTranslateSite } ?: false
+    /** Keys of [matchingRules]; cheap identity for "did the rule chain change". */
+    fun matchingKeys(url: String): List<String> = matchingRules(url).map { it.domain }
 
-    fun toggleTranslateSite(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
-
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldTranslateSite = !config.shouldTranslateSite
-        persist(config)
-
-        return shouldTranslateSite(url)
+    private inline fun <T> resolve(url: String, field: (DomainConfigurationData) -> T?): T? {
+        for (rule in matchingRules(url)) {
+            field(rule)?.let { return it }
+        }
+        return null
     }
 
-    fun whiteBackground(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldUseWhiteBackground } ?: false
+    /**
+     * The merged view for [url]: every field is the first value set along the
+     * rule chain. Read-only — do not save it back (that would freeze inherited
+     * values into whichever rule [DomainConfigurationData.domain] names).
+     */
+    fun getEffectiveConfig(url: String): DomainConfigurationData = merge(url, matchingRules(url))
 
-    fun toggleWhiteBackground(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
+    /**
+     * What [url] would resolve to if the rule [excludingKey] did not exist —
+     * the "inherited" value the editor shows as the fallback for that rule.
+     */
+    fun getInheritedConfig(url: String, excludingKey: String): DomainConfigurationData =
+        merge(url, matchingRules(url).filter { it.domain != excludingKey })
 
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldUseWhiteBackground = !config.shouldUseWhiteBackground
-        persist(config)
-        return whiteBackground(url)
+    private fun merge(url: String, chain: List<DomainConfigurationData>): DomainConfigurationData {
+        val host = SiteRuleKey.hostOfUrl(url) ?: return DomainConfigurationData("")
+        if (chain.isEmpty()) return DomainConfigurationData(host)
+        return DomainConfigurationData(
+            domain = chain.first().domain,
+            shouldFixScroll = chain.firstNotNullOfOrNull { it.shouldFixScroll },
+            shouldTranslateSite = chain.firstNotNullOfOrNull { it.shouldTranslateSite },
+            shouldUseWhiteBackground = chain.firstNotNullOfOrNull { it.shouldUseWhiteBackground },
+            shouldInvertColor = chain.firstNotNullOfOrNull { it.shouldInvertColor },
+            fontSize = chain.firstNotNullOfOrNull { it.fontSize },
+            fontType = chain.firstNotNullOfOrNull { it.fontType },
+            boldFontStyle = chain.firstNotNullOfOrNull { it.boldFontStyle },
+            blackFontStyle = chain.firstNotNullOfOrNull { it.blackFontStyle },
+            fontBoldness = chain.firstNotNullOfOrNull { it.fontBoldness },
+            desktopMode = chain.firstNotNullOfOrNull { it.desktopMode },
+            desktopViewportWidth = chain.firstNotNullOfOrNull { it.desktopViewportWidth },
+            enableJavascript = chain.firstNotNullOfOrNull { it.enableJavascript },
+            enableAdBlock = chain.firstNotNullOfOrNull { it.enableAdBlock },
+            enableCookies = chain.firstNotNullOfOrNull { it.enableCookies },
+            translationMode = chain.firstNotNullOfOrNull { it.translationMode },
+            customCss = chain.firstNotNullOfOrNull { it.customCss?.takeIf { css -> css.isNotBlank() } },
+            postLoadJavascript = chain.firstNotNullOfOrNull { it.postLoadJavascript?.takeIf { js -> js.isNotBlank() } },
+        )
     }
 
-    fun hasInvertedColor(url: String): Boolean =
-        Uri.parse(url)?.host?.let { domainConfigurationMap[it]?.shouldInvertColor } ?: false
+    // endregion
 
-    fun toggleInvertedColor(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return false
+    // region rule access (for the editor)
 
-        val config = domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
-        config.shouldInvertColor = !config.shouldInvertColor
-        persist(config)
-        return hasInvertedColor(url)
-    }
+    fun getRule(key: String): DomainConfigurationData? = domainConfigurationMap[key]
 
-    // Per-site display overrides (null = use global setting)
+    fun getRuleOrNew(key: String): DomainConfigurationData =
+        domainConfigurationMap[key] ?: DomainConfigurationData(key)
 
-    fun getFontSize(url: String): Int {
-        val host = Uri.parse(url)?.host ?: return display.fontSize
-        return domainConfigurationMap[host]?.fontSize ?: display.fontSize
-    }
+    /** All rules whose host is [host] (the host rule and its path rules), host first. */
+    fun rulesForHost(host: String): List<DomainConfigurationData> =
+        domainConfigurationMap.values
+            .filter { it.host.equals(host, ignoreCase = true) }
+            .sortedWith(compareBy({ SiteRuleKey.specificity(it.domain) }, { it.domain }))
 
-    fun getFontType(url: String): FontType {
-        val host = Uri.parse(url)?.host ?: return display.fontType
-        return domainConfigurationMap[host]?.fontType ?: display.fontType
-    }
-
-    fun getBoldFontStyle(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return display.boldFontStyle
-        return domainConfigurationMap[host]?.boldFontStyle ?: display.boldFontStyle
-    }
-
-    fun getBlackFontStyle(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return display.blackFontStyle
-        return domainConfigurationMap[host]?.blackFontStyle ?: display.blackFontStyle
-    }
-
-    fun getFontBoldness(url: String): Int {
-        val host = Uri.parse(url)?.host ?: return display.fontBoldness
-        return domainConfigurationMap[host]?.fontBoldness ?: display.fontBoldness
-    }
-
-    fun getDesktopMode(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return browser.desktop
-        return domainConfigurationMap[host]?.desktopMode ?: browser.desktop
-    }
-
-    fun getDesktopViewportWidth(url: String): Int? {
-        val host = Uri.parse(url)?.host ?: return null
-        return domainConfigurationMap[host]?.desktopViewportWidth
-    }
-
-    fun getEnableJavascript(url: String): Boolean {
-        val host = Uri.parse(url)?.host ?: return browser.enableJavascript
-        return domainConfigurationMap[host]?.enableJavascript ?: browser.enableJavascript
-    }
-
-    fun getTranslationMode(url: String): TranslationMode {
-        val host = Uri.parse(url)?.host ?: return translation.translationMode
-        return domainConfigurationMap[host]?.translationMode ?: translation.translationMode
-    }
-
-    fun getCustomCss(url: String): String? {
-        val host = Uri.parse(url)?.host ?: return null
-        return domainConfigurationMap[host]?.customCss?.takeIf { it.isNotBlank() }
-    }
-
-    fun getPostLoadJavascript(url: String): String? {
-        val host = Uri.parse(url)?.host ?: return null
-        return domainConfigurationMap[host]?.postLoadJavascript?.takeIf { it.isNotBlank() }
-    }
-
-    fun getDomainConfig(url: String): DomainConfigurationData {
-        val host = Uri.parse(url)?.host ?: return DomainConfigurationData("")
-        return domainConfigurationMap[host] ?: DomainConfigurationData(host)
-    }
+    /**
+     * Every rule that sets something, grouped by host (host rule first, then
+     * its paths). Rows left behind by a quick toggle that was switched back
+     * off carry no overrides and are skipped.
+     */
+    fun allRules(): List<DomainConfigurationData> =
+        domainConfigurationMap.values
+            .filter { !it.normalizedLegacyFlags().isEmpty }
+            .sortedWith(compareBy({ it.host }, { SiteRuleKey.specificity(it.domain) }, { it.domain }))
 
     fun updateDomainConfig(config: DomainConfigurationData) {
         if (config.domain.isBlank()) return
+        if (config.normalizedLegacyFlags().isEmpty) {
+            // nothing set any more: drop the row instead of storing an empty rule
+            deleteRule(config.domain)
+            return
+        }
         domainConfigurationMap[config.domain] = config
         persist(config)
     }
+
+    fun deleteRule(key: String) {
+        if (domainConfigurationMap.remove(key) != null) remove(key)
+    }
+
+    /**
+     * Rule a quick toggle writes into: the most specific matching rule that
+     * already sets [field], else the host rule (created on demand). Path rules
+     * only take part once the user set that field up in site settings.
+     */
+    private fun writeTargetFor(
+        url: String,
+        field: (DomainConfigurationData) -> Any?,
+    ): DomainConfigurationData? {
+        val host = SiteRuleKey.hostOfUrl(url) ?: return null
+        matchingRules(url).firstOrNull { field(it) != null }?.let { return it }
+        return domainConfigurationMap.getOrPut(host) { DomainConfigurationData(host) }
+    }
+
+    // endregion
+
+    // region legacy boolean flags + quick toggles
+
+    fun shouldFixScroll(url: String): Boolean = resolve(url) { it.shouldFixScroll } ?: false
+
+    fun toggleFixScroll(url: String): Boolean {
+        val target = writeTargetFor(url) { it.shouldFixScroll } ?: return false
+        target.shouldFixScroll = !shouldFixScroll(url)
+        persist(target)
+        return shouldFixScroll(url)
+    }
+
+    fun shouldTranslateSite(url: String): Boolean = resolve(url) { it.shouldTranslateSite } ?: false
+
+    fun toggleTranslateSite(url: String): Boolean {
+        val target = writeTargetFor(url) { it.shouldTranslateSite } ?: return false
+        target.shouldTranslateSite = !shouldTranslateSite(url)
+        persist(target)
+        return shouldTranslateSite(url)
+    }
+
+    fun whiteBackground(url: String): Boolean = resolve(url) { it.shouldUseWhiteBackground } ?: false
+
+    fun toggleWhiteBackground(url: String): Boolean {
+        val target = writeTargetFor(url) { it.shouldUseWhiteBackground } ?: return false
+        target.shouldUseWhiteBackground = !whiteBackground(url)
+        persist(target)
+        return whiteBackground(url)
+    }
+
+    fun hasInvertedColor(url: String): Boolean = resolve(url) { it.shouldInvertColor } ?: false
+
+    fun toggleInvertedColor(url: String): Boolean {
+        val target = writeTargetFor(url) { it.shouldInvertColor } ?: return false
+        target.shouldInvertColor = !hasInvertedColor(url)
+        persist(target)
+        return hasInvertedColor(url)
+    }
+
+    fun setTranslationMode(url: String, mode: TranslationMode) {
+        val target = writeTargetFor(url) { it.translationMode } ?: return
+        target.translationMode = mode
+        persist(target)
+    }
+
+    fun setPostLoadJavascript(url: String, code: String?) {
+        val target = writeTargetFor(url) { it.postLoadJavascript } ?: return
+        target.postLoadJavascript = code?.ifBlank { null }
+        persist(target)
+    }
+
+    fun setCustomCss(url: String, code: String?) {
+        val target = writeTargetFor(url) { it.customCss } ?: return
+        target.customCss = code?.ifBlank { null }
+        persist(target)
+    }
+
+    // endregion
+
+    // region per-site display overrides (null = use global setting)
+
+    fun getFontSize(url: String): Int = resolve(url) { it.fontSize } ?: display.fontSize
+
+    fun getFontType(url: String): FontType = resolve(url) { it.fontType } ?: display.fontType
+
+    fun getBoldFontStyle(url: String): Boolean =
+        resolve(url) { it.boldFontStyle } ?: display.boldFontStyle
+
+    fun getBlackFontStyle(url: String): Boolean =
+        resolve(url) { it.blackFontStyle } ?: display.blackFontStyle
+
+    fun getFontBoldness(url: String): Int = resolve(url) { it.fontBoldness } ?: display.fontBoldness
+
+    fun getDesktopMode(url: String): Boolean = resolve(url) { it.desktopMode } ?: browser.desktop
+
+    fun getDesktopViewportWidth(url: String): Int? = resolve(url) { it.desktopViewportWidth }
+
+    fun getEnableJavascript(url: String): Boolean =
+        resolve(url) { it.enableJavascript } ?: browser.enableJavascript
+
+    fun getTranslationMode(url: String): TranslationMode =
+        resolve(url) { it.translationMode } ?: translation.translationMode
+
+    fun getCustomCss(url: String): String? =
+        resolve(url) { it.customCss?.takeIf { css -> css.isNotBlank() } }
+
+    fun getPostLoadJavascript(url: String): String? =
+        resolve(url) { it.postLoadJavascript?.takeIf { js -> js.isNotBlank() } }
+
+    // endregion
 }

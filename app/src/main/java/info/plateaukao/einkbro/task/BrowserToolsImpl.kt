@@ -18,7 +18,6 @@ import info.plateaukao.einkbro.data.remote.ChatRole
 import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.database.DomainConfigurationData
 import info.plateaukao.einkbro.epub.EpubChapterContent
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
@@ -205,31 +204,27 @@ class BrowserToolsImpl(
 
     // ── Domain config ───────────────────────────────────────────────────
 
-    private fun initialHost(): String? {
-        val url = initialSnapshot?.url ?: return null
-        return android.net.Uri.parse(url)?.host?.takeIf { it.isNotBlank() }
-    }
+    private fun initialUrl(): String? =
+        initialSnapshot?.url?.takeIf { Uri.parse(it)?.host?.isNotBlank() == true }
 
     override fun getInitialDomainJavascript(): String {
-        val host = initialHost() ?: return ""
-        return config.domainConfigurationMap[host]?.postLoadJavascript.orEmpty()
+        val url = initialUrl() ?: return ""
+        return config.getPostLoadJavascript(url).orEmpty()
     }
 
     override fun getInitialDomainCss(): String {
-        val host = initialHost() ?: return ""
-        return config.domainConfigurationMap[host]?.customCss.orEmpty()
+        val url = initialUrl() ?: return ""
+        return config.getCustomCss(url).orEmpty()
     }
 
     override fun setInitialDomainJavascript(code: String) {
-        val host = initialHost() ?: return
-        val current = config.domainConfigurationMap[host] ?: DomainConfigurationData(host)
-        config.updateDomainConfig(current.copy(postLoadJavascript = code.ifBlank { null }))
+        val url = initialUrl() ?: return
+        config.domain.setPostLoadJavascript(url, code)
     }
 
     override fun setInitialDomainCss(code: String) {
-        val host = initialHost() ?: return
-        val current = config.domainConfigurationMap[host] ?: DomainConfigurationData(host)
-        config.updateDomainConfig(current.copy(customCss = code.ifBlank { null }))
+        val url = initialUrl() ?: return
+        config.domain.setCustomCss(url, code)
     }
 
     private fun parseLinks(raw: String): List<BrowserTools.Link> {

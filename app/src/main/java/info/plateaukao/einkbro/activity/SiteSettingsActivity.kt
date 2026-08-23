@@ -2,7 +2,6 @@ package info.plateaukao.einkbro.activity
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -51,7 +50,6 @@ class SiteSettingsActivity : FragmentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
 
         val url = intent.getStringExtra(KEY_URL).orEmpty()
-        val host = Uri.parse(url)?.host.orEmpty()
 
         setContent {
             ListScaffold(
@@ -68,8 +66,8 @@ class SiteSettingsActivity : FragmentActivity(), KoinComponent {
                         modifier = Modifier
                             .widthIn(max = 600.dp)
                             .fillMaxHeight(),
-                        host = host,
-                        domainConfig = config.getDomainConfig(url),
+                        url = url,
+                        domainConfigs = config.domain,
                         globalFontSize = config.display.fontSize,
                         globalFontType = config.display.fontType,
                         globalBoldFont = config.display.boldFontStyle,
@@ -87,6 +85,11 @@ class SiteSettingsActivity : FragmentActivity(), KoinComponent {
                         },
                         onSave = { updatedConfig ->
                             config.updateDomainConfig(updatedConfig)
+                            setResult(RESULT_OK)
+                            finish()
+                        },
+                        onDeleteRule = { key ->
+                            config.domain.deleteRule(key)
                             setResult(RESULT_OK)
                             finish()
                         },

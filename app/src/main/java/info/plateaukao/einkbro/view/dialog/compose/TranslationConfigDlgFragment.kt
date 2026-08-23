@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -44,12 +43,7 @@ class TranslationConfigDlgFragment(
         TranslationConfigScreen(
             translationMode = translationMode.value,
             translationModeChanged = {
-                val host = Uri.parse(url)?.host
-                if (host != null) {
-                    val domainConfig = config.getDomainConfig(url)
-                    domainConfig.translationMode = it
-                    config.updateDomainConfig(domainConfig)
-                }
+                config.domain.setTranslationMode(url, it)
                 translationMode.value = it
                 if (translateDirectly || config.shouldTranslateSite(url)) {
                     onToggledAction(true)

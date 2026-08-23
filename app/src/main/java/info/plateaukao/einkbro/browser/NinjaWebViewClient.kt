@@ -88,7 +88,7 @@ class EBWebViewClient(
     /** Per-site override first, then the global setting, minus the whitelist. */
     private fun isAdBlockEnabled(pageUrl: String?): Boolean {
         if (pageUrl == null) return config.browser.adBlock
-        return (config.getDomainConfig(pageUrl).enableAdBlock ?: config.browser.adBlock) &&
+        return (config.getEffectiveConfig(pageUrl).enableAdBlock ?: config.browser.adBlock) &&
                 !adBlock.isWhite(pageUrl)
     }
 
@@ -109,6 +109,8 @@ class EBWebViewClient(
         // where onPageFinished doesn't fire
         ebWebView.hasVideo = WebContentPostProcessor.isVideoSiteUrl(url)
 
+        if (!isReload && applyPathRulesForNavigation(url)) return
+
         // Drop the captured caption when the user navigates to a different page
         // (including YouTube SPA route changes that bypass loadUrl/resetState).
         // YouTube rewrites the URL with timestamp/playback params (t, pp, ...)
@@ -120,6 +122,33 @@ class EBWebViewClient(
         }
         lastVisitedHistoryKey = key
     }
+
+    /**
+     * Site rules can be scoped to a URL path, so a navigation that never went
+     * through loadUrl/onPageStarted — pushState routing, hash changes, server
+     * redirects — may land under a different rule chain than the one applied.
+     * Re-applies the overrides for [url] in that case. A desktop-mode change
+     * needs a different UA and viewport, which only a reload can deliver;
+     * returns true when that reload was issued so the caller stops here.
+     */
+    private fun applyPathRulesForNavigation(url: String): Boolean {
+        val previousUrl = ebWebView.currentPageUrl ?: return false
+        if (previousUrl == url) return false
+        ebWebView.currentPageUrl = url
+        // One reload per URL until a page finishes loading: a site that
+        // redirects desktop UAs to one path and mobile UAs back to the other
+        // would otherwise bounce between the two forever.
+        if (ebWebView.desktopModeChanged(url) && desktopReloadedUrls.add(url)) {
+            ebWebView.loadUrl(url)
+            return true
+        }
+        if (config.domain.matchingKeys(previousUrl) != config.domain.matchingKeys(url)) {
+            ebWebView.applySiteOverrides(url)
+        }
+        return false
+    }
+
+    private val desktopReloadedUrls = mutableSetOf<String>()
 
     private fun navigationKey(url: String): String {
         return try {
@@ -242,6 +271,7 @@ class EBWebViewClient(
 
     override fun onPageFinished(view: WebView, url: String) {
         ebWebView.currentPageUrl = url
+        desktopReloadedUrls.clear()
         ebWebView.updateCssStyle()
 
         // Re-inject autoplay blocker in onPageFinished to ensure it's in the correct page context
@@ -571,7 +601,7 @@ class EBWebViewClient(
         // per-site override on the previous page would otherwise stick forever.
         // currentPageUrl lags for the main frame's own request — use its URL.
         val pageUrl = if (isMainFrame) url else ebWebView.currentPageUrl ?: url
-        val acceptCookies = config.getDomainConfig(pageUrl).enableCookies
+        val acceptCookies = config.getEffectiveConfig(pageUrl).enableCookies
             ?: (config.browser.cookies || cookie.isWhite(url))
         val manager = CookieManager.getInstance()
         if (acceptCookies && !config.browser.cookies) {

@@ -66,9 +66,11 @@ class ConfigManager(
 
     // Per-domain configuration (extracted to DomainConfigManager); forwards kept so
     // existing call sites are unchanged.
-    val domain = DomainConfigManager(display, browser, translation) {
-        bookmarkManager.addDomainConfiguration(it)
-    }
+    val domain = DomainConfigManager(
+        display, browser, translation,
+        persist = { bookmarkManager.addDomainConfiguration(it) },
+        remove = { bookmarkManager.deleteDomainConfiguration(it) },
+    )
 
     var domainConfigurationMap: MutableMap<String, DomainConfigurationData>
         get() = domain.domainConfigurationMap
@@ -129,7 +131,8 @@ class ConfigManager(
 
     fun getPostLoadJavascript(url: String): String? = domain.getPostLoadJavascript(url)
 
-    fun getDomainConfig(url: String): DomainConfigurationData = domain.getDomainConfig(url)
+    /** Merged per-URL view (path rules over host rule); read-only, see [DomainConfigManager]. */
+    fun getEffectiveConfig(url: String): DomainConfigurationData = domain.getEffectiveConfig(url)
 
     fun updateDomainConfig(config: DomainConfigurationData) = domain.updateDomainConfig(config)
 

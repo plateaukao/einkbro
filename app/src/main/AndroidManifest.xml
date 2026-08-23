@@ -261,6 +261,10 @@
             android:name=".activity.SiteSettingsActivity"
             android:exported="false"
             android:label="@string/site_settings" />
+        <activity
+            android:name=".activity.SiteRuleListActivity"
+            android:exported="false"
+            android:label="@string/setting_title_site_rules" />
 
         <receiver
             android:name=".service.TtsNotificationReceiver"
