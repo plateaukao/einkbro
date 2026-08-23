@@ -1,3 +1,12 @@
+### 16.4.1
+#### Features
+* Site settings: rules can now be scoped to a URL path (e.g. example.com/docs) as well as a whole host, with the most specific rule winning field by field; the editor shows where each inherited value comes from, and Settings > Site Settings gains a "Configured sites" list to review, edit or remove every rule in one place
+
+#### Fixes
+* Security: the userscript bridge's GM_openInTab only opens http/https URLs, and file:// pages can no longer read other local files or other origins by default (the "Remote content" setting now defaults to off). Defense in depth for GHSA-rcv7-662w-4gvr; the reported navigation vector was already closed in 16.3.2
+* Site settings: rules restored from a backup are merged into existing ones instead of being skipped, and take effect without restarting the app
+* Site settings: same-document navigations (pushState, hash changes, redirects) re-apply the rules for the new path
+
 ### 16.4.0
 #### Improvements
 * App size: the arm64 APK shrinks from 6.2 MB to 4.4 MB (−29%) by dropping the Material Components, WorkManager and AppCompat libraries and packaging only the 31 languages the app is translated into

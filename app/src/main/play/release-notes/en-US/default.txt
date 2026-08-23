@@ -1,5 +1,4 @@
-• App size: arm64 APK shrinks 29% (6.2 MB → 4.4 MB) by dropping Material Components, WorkManager and AppCompat and packaging only translated languages
-• Ad-block engine is 77% smaller and now matches regex filter rules, so more ads are blocked
-• Filter lists take effect right after download, stay off if disabled, and resume if interrupted
-• Fixed: bookmark dialog no longer opens as an empty panel before sliding into place
-• Fixed: e-ink image cache honours its 16 MB budget, shared across tabs
+• Site settings: rules can be scoped to a URL path as well as a host; new "Configured sites" list to review, edit or remove all rules
+• Security: GM_openInTab only opens http/https URLs; file:// pages can no longer read local files by default ("Remote content" now off by default)
+• Fixed: site rules restored from a backup are merged and apply without a restart
+• Fixed: pushState/hash navigations re-apply site rules for the new path

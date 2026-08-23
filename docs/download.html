@@ -79,6 +79,20 @@
 <h2 id="changelog">Changelog</h2>
 
 <div class="changelog-version">
+<h3>16.4.1</h3>
+<h4>Features</h4>
+<ul>
+<li>Site settings: rules can now be scoped to a URL path (e.g. example.com/docs) as well as a whole host, with the most specific rule winning field by field; the editor shows where each inherited value comes from, and Settings > Site Settings gains a "Configured sites" list to review, edit or remove every rule in one place</li>
+</ul>
+<h4>Fixes</h4>
+<ul>
+<li>Security: the userscript bridge's GM_openInTab only opens http/https URLs, and file:// pages can no longer read other local files or other origins by default (the "Remote content" setting now defaults to off). Defense in depth for GHSA-rcv7-662w-4gvr; the reported navigation vector was already closed in 16.3.2</li>
+<li>Site settings: rules restored from a backup are merged into existing ones instead of being skipped, and take effect without restarting the app</li>
+<li>Site settings: same-document navigations (pushState, hash changes, redirects) re-apply the rules for the new path</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>16.4.0</h3>
 <h4>Improvements</h4>
 <ul>
