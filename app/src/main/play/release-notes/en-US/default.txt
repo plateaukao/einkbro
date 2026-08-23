@@ -1,3 +1,5 @@
-• Fixed: with the status bar hidden, the URL input bar kept jumping up and down above the keyboard on Android 10 and older devices
-• By-paragraph translation starts almost immediately and stays responsive on sites that keep loading content
-• Vertical toolbar mode now shows the tab bar beside the toolbar
+• App size: arm64 APK shrinks 29% (6.2 MB → 4.4 MB) by dropping Material Components, WorkManager and AppCompat and packaging only translated languages
+• Ad-block engine is 77% smaller and now matches regex filter rules, so more ads are blocked
+• Filter lists take effect right after download, stay off if disabled, and resume if interrupted
+• Fixed: bookmark dialog no longer opens as an empty panel before sliding into place
+• Fixed: e-ink image cache honours its 16 MB budget, shared across tabs
