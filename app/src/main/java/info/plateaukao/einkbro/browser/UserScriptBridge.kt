@@ -248,6 +248,10 @@ class UserScriptBridge(
     @JavascriptInterface
     fun gmOpenInTab(token: String, url: String, active: Boolean) {
         if (scriptIdFor(token) == null) return
+        // A userscript only ever opens web pages. Refusing every other scheme keeps the
+        // bridge from becoming a way to navigate a tab to file:, content: or intent:
+        // targets that Chromium would never let page JS reach on its own.
+        if (!isWebUrl(url)) return
         coroutineScope.launch(Dispatchers.Main) {
             webView.openInNewTab(url)
         }
@@ -280,5 +284,11 @@ class UserScriptBridge(
 
     companion object {
         private const val TAG = "UserScriptBridge"
+
+        /** True only for absolute http(s) URLs — the sole targets GM_openInTab may open. */
+        fun isWebUrl(url: String): Boolean {
+            val scheme = runCatching { URI(url.trim()).scheme }.getOrNull() ?: return false
+            return scheme.equals("http", ignoreCase = true) || scheme.equals("https", ignoreCase = true)
+        }
     }
 }

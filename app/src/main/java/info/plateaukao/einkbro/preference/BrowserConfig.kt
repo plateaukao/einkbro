@@ -17,7 +17,9 @@ class BrowserConfig(private val sp: SharedPreferences) {
     var shouldTrimInputUrl by BooleanPreference(sp, K_TRIM_INPUT_URL, false)
     var shouldPruneQueryParameters by BooleanPreference(sp, K_PRUNE_QUERY_PARAMETERS, false)
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
-    var enableRemoteAccess by BooleanPreference(sp, K_ENABLE_REMOTE_ACCESS, true)
+    // Off by default: this lets a file:// page read other local files (the app's own
+    // shared_prefs/databases included) and reach any origin. See GHSA-rcv7-662w-4gvr.
+    var enableRemoteAccess by BooleanPreference(sp, K_ENABLE_REMOTE_ACCESS, false)
     var enableImages by BooleanPreference(sp, K_ENABLE_IMAGES, true)
     var enableVideoAutoFullscreen by BooleanPreference(sp, K_ENABLE_VIDEO_AUTO_FULLSCREEN, false)
     var enableVideoAutoplay by BooleanPreference(sp, K_ENABLE_VIDEO_AUTOPLAY, false)

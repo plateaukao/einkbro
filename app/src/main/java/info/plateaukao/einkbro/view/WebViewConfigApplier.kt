@@ -79,6 +79,12 @@ class WebViewConfigApplier(
                 cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
 
             textZoom = config.display.fontSize
+            // Local HTML/EPUB files must still open (allowFileAccess), but a file:// page
+            // reading other local files or reaching other origins is opt-in (off by
+            // default): with these on, any page that lands on a file:// URL can XHR the
+            // app's private storage (shared_prefs, databases) and exfiltrate it. Nothing in
+            // the app relies on it — start/error pages use loadDataWithBaseURL and the
+            // custom font is served by shouldInterceptRequest on a same-origin URL.
             allowFileAccessFromFileURLs = config.browser.enableRemoteAccess
             allowFileAccess = true
             allowUniversalAccessFromFileURLs = config.browser.enableRemoteAccess

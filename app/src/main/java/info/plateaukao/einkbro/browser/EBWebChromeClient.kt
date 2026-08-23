@@ -119,8 +119,11 @@ class EBWebChromeClient(
             .replace("wv", "")
             .replace(Regex("Version/\\d+\\.\\d+\\s"), "")
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
-        webSettings.allowFileAccessFromFileURLs = true
-        webSettings.allowUniversalAccessFromFileURLs = true
+        // Popups only ever host web login windows, so a popup that ends up on file://
+        // must never be able to read local files or other origins (no opt-in here, unlike
+        // the main WebView's "Remote content" setting).
+        webSettings.allowFileAccessFromFileURLs = false
+        webSettings.allowUniversalAccessFromFileURLs = false
         webSettings.domStorageEnabled = true
         webSettings.databaseEnabled = true
         webSettings.javaScriptEnabled = true
