@@ -63,6 +63,7 @@ import info.plateaukao.einkbro.view.ThemedBorders
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.UiThemeState
 import info.plateaukao.einkbro.view.compose.dashedBorder
+import info.plateaukao.einkbro.view.compose.stampShape
 import info.plateaukao.einkbro.view.compose.isAppInDarkTheme
 
 /**
@@ -500,10 +501,14 @@ private fun StyleSwatch(
                     )
                     if (hasBorder) filled.border(style.borderWidthDp.dp, accent, shape) else filled
                 }
+                BorderStyle.STAMP ->
+                    base.border(style.borderWidthDp.dp, accent, stampShape(3.dp))
                 BorderStyle.SOLID -> base.border(style.borderWidthDp.dp, accent, shape)
             }
         }
-    val label = stringResource(uiStyle.titleResId) + uiStyle.labelSuffix
+    val label = if (uiStyle.titleResId != 0) {
+        stringResource(uiStyle.titleResId) + uiStyle.labelSuffix
+    } else null
     Column(
         modifier = modifier
             .clickable(onClick = onClick, onClickLabel = label)

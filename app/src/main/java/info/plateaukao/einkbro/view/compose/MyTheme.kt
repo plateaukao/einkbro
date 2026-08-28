@@ -86,6 +86,53 @@ class AngleGradientBrush(
     }
 }
 
+/**
+ * Postage-stamp outline: straight edges with evenly spaced semicircular
+ * perforation bites. Corners stay square (bites keep clear of them), so the
+ * corner region remains plain vertical/horizontal edge.
+ */
+fun stampShape(scallopRadius: Dp): androidx.compose.ui.graphics.Shape =
+    object : androidx.compose.ui.graphics.Shape {
+        override fun createOutline(
+            size: Size,
+            layoutDirection: androidx.compose.ui.unit.LayoutDirection,
+            density: androidx.compose.ui.unit.Density,
+        ): androidx.compose.ui.graphics.Outline {
+            val r = with(density) { scallopRadius.toPx() }
+            val path = androidx.compose.ui.graphics.Path()
+            val w = size.width
+            val h = size.height
+
+            fun biteCenters(edge: Float): List<Float> {
+                // keep a long straight run at each corner (about 3 bite radii)
+                val margin = 3f * r
+                val span = edge - 2f * margin
+                if (span < 2f * r) return listOf(edge / 2f)
+                val n = kotlin.math.max(1, (span / (3.5f * r)).toInt())
+                val step = span / n
+                return List(n) { margin + (it + 0.5f) * step }
+            }
+
+            fun arc(cx: Float, cy: Float, startDeg: Float) {
+                path.arcTo(
+                    androidx.compose.ui.geometry.Rect(cx - r, cy - r, cx + r, cy + r),
+                    startDeg, -180f, forceMoveTo = false,
+                )
+            }
+
+            path.moveTo(0f, 0f)
+            biteCenters(w).forEach { cx -> path.lineTo(cx - r, 0f); arc(cx, 0f, 180f) }
+            path.lineTo(w, 0f)
+            biteCenters(h).forEach { cy -> path.lineTo(w, cy - r); arc(w, cy, 270f) }
+            path.lineTo(w, h)
+            biteCenters(w).map { w - it }.forEach { cx -> path.lineTo(cx + r, h); arc(cx, h, 0f) }
+            path.lineTo(0f, h)
+            biteCenters(h).map { h - it }.forEach { cy -> path.lineTo(0f, cy + r); arc(0f, cy, 90f) }
+            path.close()
+            return androidx.compose.ui.graphics.Outline.Generic(path)
+        }
+    }
+
 /** Applies the user's gradient level (percent) to a spec blend fraction. */
 fun Float.withGradientLevel(levelPercent: Int): Float =
     (this * levelPercent / 100f).coerceIn(0f, 0.9f)
@@ -137,6 +184,7 @@ fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
             shape,
         )
         BorderStyle.DASHED -> dashedBorder(width, style.itemRadiusDp.dp, MaterialTheme.colors.primary)
+        BorderStyle.STAMP -> border(width, MaterialTheme.colors.primary, stampShape(4.dp))
         BorderStyle.GRADIENT, BorderStyle.GRADIENT_FLAT, BorderStyle.GRADIENT_DEEP -> {
             val (start, end, hasBorder) = style.borderStyle.gradientSpec()!!
             val angle = UiThemeState.gradientAngle.value

@@ -216,7 +216,7 @@ fun deriveThemePalette(base: Color): ThemePalette {
 }
 
 // How themed borders are drawn.
-enum class BorderStyle { SOLID, DASHED, DOUBLE, NONE, GRADIENT, GRADIENT_FLAT, GRADIENT_DEEP }
+enum class BorderStyle { SOLID, DASHED, DOUBLE, NONE, GRADIENT, GRADIENT_FLAT, GRADIENT_DEEP, STAMP }
 
 /**
  * Shape/stroke styling bundled with a theme, so each theme is a distinct
@@ -254,6 +254,8 @@ enum class UiStyle(
     BORDERLESS(R.string.style_no_border, ThemeStyle(1f, 16f, 12f, BorderStyle.NONE)),
     // accent gradient fill on dialogs, panels, and other filled areas
     GRADIENT(R.string.style_gradient, ThemeStyle(1f, 12f, 10f, BorderStyle.GRADIENT)),
+    // postage-stamp scalloped edge
+    STAMP(0, ThemeStyle(1f, 0f, 0f, BorderStyle.STAMP)),
     // borderless subtle gradient
     GRADIENT_FLAT(
         R.string.style_gradient,

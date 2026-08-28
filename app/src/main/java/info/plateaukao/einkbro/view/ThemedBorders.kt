@@ -133,6 +133,8 @@ object ThemedBorders : KoinComponent {
         }
 
         return when {
+            style.borderStyle == BorderStyle.STAMP && !forceSolid ->
+                StampDrawable(fill, accent, strokeWidth.toFloat(), context.dp(4f).toFloat())
             style.borderStyle == BorderStyle.NONE -> single(withStroke = false)
             style.borderStyle == BorderStyle.DOUBLE && !forceSolid -> {
                 val layers = LayerDrawable(arrayOf(single(true), single(true)))
@@ -157,8 +159,9 @@ object ThemedBorders : KoinComponent {
         val stroke = if (style.borderStyle == BorderStyle.NONE) 0f else style.borderWidthDp
         val doubleExtra =
             if (style.borderStyle == BorderStyle.DOUBLE) 3f + style.borderWidthDp else 0f
+        val stampExtra = if (style.borderStyle == BorderStyle.STAMP) 5f else 0f
         val cornerAllowance = style.frameRadiusDp * 0.3f
-        return context.dp(stroke + doubleExtra + cornerAllowance)
+        return context.dp(stroke + doubleExtra + stampExtra + cornerAllowance)
     }
 
     private fun withContentPadding(context: Context, drawable: Drawable): Drawable {
@@ -187,6 +190,87 @@ object ThemedBorders : KoinComponent {
         val margin = context.dp(16f)
         return InsetDrawable(withContentPadding(context, box(context)), margin, margin, margin, margin)
     }
+}
+
+/**
+ * Postage-stamp drawable: straight edges with semicircular perforation
+ * bites; corners stay square. Used for dialog window frames and panels
+ * when the STAMP style is selected.
+ */
+private class StampDrawable(
+    private val fillColor: Int,
+    private val strokeColor: Int,
+    private val strokeWidth: Float,
+    private val scallopRadius: Float,
+) : Drawable() {
+    private val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG)
+    private val path = android.graphics.Path()
+
+    override fun onBoundsChange(bounds: android.graphics.Rect) {
+        super.onBoundsChange(bounds)
+        rebuildPath()
+    }
+
+    private fun rebuildPath() {
+        val r = scallopRadius
+        val inset = strokeWidth
+        val left = bounds.left + inset
+        val top = bounds.top + inset
+        val right = bounds.right - inset
+        val bottom = bounds.bottom - inset
+        val w = right - left
+        val h = bottom - top
+        path.reset()
+        if (w <= 0 || h <= 0) return
+
+            fun biteCenters(edge: Float): List<Float> {
+            // keep a long straight run at each corner (about 3 bite radii)
+            val margin = 3f * r
+            val span = edge - 2f * margin
+            if (span < 2f * r) return listOf(edge / 2f)
+            val n = kotlin.math.max(1, (span / (3.5f * r)).toInt())
+            val step = span / n
+            return List(n) { margin + (it + 0.5f) * step }
+        }
+
+        fun arc(cx: Float, cy: Float, startDeg: Float) {
+            path.arcTo(
+                android.graphics.RectF(cx - r, cy - r, cx + r, cy + r),
+                startDeg, -180f,
+            )
+        }
+
+        path.moveTo(left, top)
+        biteCenters(w).forEach { c -> path.lineTo(left + c - r, top); arc(left + c, top, 180f) }
+        path.lineTo(right, top)
+        biteCenters(h).forEach { c -> path.lineTo(right, top + c - r); arc(right, top + c, 270f) }
+        path.lineTo(right, bottom)
+        biteCenters(w).map { w - it }.forEach { c ->
+            path.lineTo(left + c + r, bottom); arc(left + c, bottom, 0f)
+        }
+        path.lineTo(left, bottom)
+        biteCenters(h).map { h - it }.forEach { c ->
+            path.lineTo(left, top + c + r); arc(left, top + c, 90f)
+        }
+        path.close()
+    }
+
+    override fun draw(canvas: android.graphics.Canvas) {
+        paint.style = android.graphics.Paint.Style.FILL
+        paint.color = fillColor
+        canvas.drawPath(path, paint)
+        paint.style = android.graphics.Paint.Style.STROKE
+        paint.strokeWidth = strokeWidth
+        paint.color = strokeColor
+        canvas.drawPath(path, paint)
+    }
+
+    override fun setAlpha(alpha: Int) { paint.alpha = alpha }
+    override fun setColorFilter(colorFilter: android.graphics.ColorFilter?) {
+        paint.colorFilter = colorFilter
+    }
+    @Deprecated("Deprecated in Java")
+    override fun getOpacity(): Int = android.graphics.PixelFormat.TRANSLUCENT
 }
 
 /**
