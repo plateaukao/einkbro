@@ -270,7 +270,7 @@ private fun FontItemRow(
             .clickable(onClick = onClick)
             .border(
                 width = (-1).dp,
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colors.primary,
                 shape = RoundedCornerShape(4.dp),
             )
             .padding(horizontal = 8.dp, vertical = 8.dp),

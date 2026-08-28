@@ -584,4 +584,14 @@
     <string name="test_connection_testing">Test ediliyor…</string>
     <string name="test_connection_success">Bağlantı başarılı (%1$s)</string>
     <string name="test_connection_failed">Bağlantı başarısız: %1$s</string>
+    <string name="setting_title_ui_theme">Tema rengi</string>
+    <string name="setting_summary_ui_theme">Düğmeler, kenarlıklar ve iletişim kutuları için vurgu rengi</string>
+    <string name="theme_classic">Klasik</string>
+    <string name="theme_light_blue">Açık mavi</string>
+    <string name="theme_dark_blue">Koyu mavi</string>
+    <string name="theme_teal">Camgöbeği</string>
+    <string name="theme_green">Yeşil</string>
+    <string name="theme_sepia">Sepya</string>
+    <string name="theme_purple">Mor</string>
+    <string name="theme_red">Kırmızı</string>
 </resources>

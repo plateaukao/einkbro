@@ -575,4 +575,14 @@
     <string name="test_connection_testing">Перевірка…</string>
     <string name="test_connection_success">З\'єднання ОК (%1$s)</string>
     <string name="test_connection_failed">Помилка з\'єднання: %1$s</string>
+    <string name="setting_title_ui_theme">Колір теми</string>
+    <string name="setting_summary_ui_theme">Акцентний колір для кнопок, рамок і діалогів</string>
+    <string name="theme_classic">Класична</string>
+    <string name="theme_light_blue">Блакитний</string>
+    <string name="theme_dark_blue">Темно-синій</string>
+    <string name="theme_teal">Бірюзовий</string>
+    <string name="theme_green">Зелений</string>
+    <string name="theme_sepia">Сепія</string>
+    <string name="theme_purple">Фіолетовий</string>
+    <string name="theme_red">Червоний</string>
 </resources>

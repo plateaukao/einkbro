@@ -98,7 +98,7 @@ fun BookmarkEditContent(
             .padding(2.dp)
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colors.primary,
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(2.dp),

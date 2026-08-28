@@ -132,7 +132,7 @@ private fun ToolbarList(
                     modifier = Modifier
                         .border(
                             borderWidth,
-                            MaterialTheme.colors.onBackground,
+                            MaterialTheme.colors.primary,
                             RoundedCornerShape(3.dp)
                         )
                         .background(MaterialTheme.colors.background)
@@ -195,7 +195,7 @@ fun DialogButtonBar(
         ) {
             Text(
                 stringResource(id = android.R.string.cancel),
-                color = MaterialTheme.colors.onBackground
+                color = MaterialTheme.colors.primary
             )
         }
         VerticalSeparator()
@@ -204,7 +204,7 @@ fun DialogButtonBar(
             onClick = { dismissAction(); okAction() }) {
             Text(
                 stringResource(okResId),
-                color = MaterialTheme.colors.onBackground
+                color = MaterialTheme.colors.primary
             )
         }
     }

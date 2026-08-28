@@ -587,4 +587,14 @@
     <string name="test_connection_testing">Probando…</string>
     <string name="test_connection_success">Conexión correcta (%1$s)</string>
     <string name="test_connection_failed">Error de conexión: %1$s</string>
+    <string name="setting_title_ui_theme">Color del tema</string>
+    <string name="setting_summary_ui_theme">Color de acento para botones, bordes y diálogos</string>
+    <string name="theme_classic">Clásico</string>
+    <string name="theme_light_blue">Azul claro</string>
+    <string name="theme_dark_blue">Azul oscuro</string>
+    <string name="theme_teal">Verde azulado</string>
+    <string name="theme_green">Verde</string>
+    <string name="theme_sepia">Sepia</string>
+    <string name="theme_purple">Morado</string>
+    <string name="theme_red">Rojo</string>
 </resources>

@@ -249,7 +249,7 @@ fun DialogPanel(
         Box(Modifier.weight(1F, fill = false)) {
             content()
         }
-        Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
+        Divider(thickness = 1.dp, color = MaterialTheme.colors.primary)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -474,7 +474,7 @@ fun BookmarkItem(
         modifier = modifier
             .height(54.dp)
             .padding(4.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
             .padding(4.dp),
         horizontalArrangement = Arrangement.Center,
     ) {
@@ -544,7 +544,7 @@ fun BookmarkGridItem(
     Column(
         modifier = modifier
             .padding(4.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

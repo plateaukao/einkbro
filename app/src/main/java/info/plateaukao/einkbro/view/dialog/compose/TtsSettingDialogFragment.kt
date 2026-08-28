@@ -385,7 +385,7 @@ fun TtsDialogButtonBar(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .clickable { clickProgressAction() },
-                    color = MaterialTheme.colors.onBackground
+                    color = MaterialTheme.colors.primary
                 )
                 VerticalSeparator()
                 IconButton(
@@ -395,7 +395,7 @@ fun TtsDialogButtonBar(
                     Icon(
                         Icons.Default.Add,
                         "Add to read list",
-                        tint = MaterialTheme.colors.onBackground
+                        tint = MaterialTheme.colors.primary
                     )
                 }
                 if (ttsType != TtsType.SYSTEM) {
@@ -406,7 +406,7 @@ fun TtsDialogButtonBar(
                         Icon(
                             if (readingState != PAUSED) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                             "pause or resume",
-                            tint = MaterialTheme.colors.onBackground
+                            tint = MaterialTheme.colors.primary
                         )
                     }
                 }
@@ -418,7 +418,7 @@ fun TtsDialogButtonBar(
                         Icon(
                             Icons.Filled.SkipNext,
                             "Next Article",
-                            tint = MaterialTheme.colors.onBackground
+                            tint = MaterialTheme.colors.primary
                         )
                     }
                 }
@@ -429,7 +429,7 @@ fun TtsDialogButtonBar(
                     Icon(
                         Icons.Default.Stop,
                         "Stop",
-                        tint = MaterialTheme.colors.onBackground
+                        tint = MaterialTheme.colors.primary
                     )
                 }
             }
@@ -440,7 +440,7 @@ fun TtsDialogButtonBar(
                 ) {
                     Text(
                         stringResource(id = R.string.system_settings),
-                        color = MaterialTheme.colors.onBackground
+                        color = MaterialTheme.colors.primary
                     )
                 }
             }
@@ -452,7 +452,7 @@ fun TtsDialogButtonBar(
                     Icon(
                         Icons.Default.PlayArrow,
                         "pause or resume",
-                        tint = MaterialTheme.colors.onBackground
+                        tint = MaterialTheme.colors.primary
                     )
                 }
             }
@@ -463,7 +463,7 @@ fun TtsDialogButtonBar(
                 Icon(
                     Icons.Default.KeyboardArrowDown,
                     "Stop",
-                    tint = MaterialTheme.colors.onBackground
+                    tint = MaterialTheme.colors.primary
                 )
             }
         }

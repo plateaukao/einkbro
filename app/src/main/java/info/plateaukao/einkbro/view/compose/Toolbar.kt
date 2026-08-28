@@ -438,7 +438,7 @@ fun ReorderableComposedIconBar(
                         .longPressDraggableHandle()
                         .border(
                             if (isDragging) 1.5.dp else (-1).dp,
-                            MaterialTheme.colors.onBackground,
+                            MaterialTheme.colors.primary,
                             RoundedCornerShape(3.dp)
                         )
                         .conditional(toolbarAction in listOf(Spacer1, Spacer2, Time)) {
@@ -450,7 +450,7 @@ fun ReorderableComposedIconBar(
                             modifier = Modifier
                                 .height(40.dp)
                                 .width(spacerWidth)
-                                .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.onBackground)
+                                .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.primary)
                         )
                     } else {
                         CreateToolbarIcon(
@@ -525,7 +525,7 @@ private fun ReorderableComposedIconColumnContent(
                     .longPressDraggableHandle()
                     .border(
                         if (isDragging) 1.5.dp else (-1).dp,
-                        MaterialTheme.colors.onBackground,
+                        MaterialTheme.colors.primary,
                         RoundedCornerShape(3.dp)
                     )
                     .conditional(toolbarAction in listOf(Spacer1, Spacer2, Time)) {
@@ -537,7 +537,7 @@ private fun ReorderableComposedIconColumnContent(
                         modifier = Modifier
                             .width(40.dp)
                             .height(spacerHeight)
-                            .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.onBackground)
+                            .dashedBorder(1.dp, 8.dp, color = MaterialTheme.colors.primary)
                     )
                 } else {
                     CreateToolbarIcon(
@@ -620,7 +620,7 @@ private fun ToolbarTitle(
         .fillMaxHeight()
         .border(
             0.5.dp,
-            MaterialTheme.colors.onBackground,
+            MaterialTheme.colors.primary,
             RoundedCornerShape(12.dp)
         )
         .padding(start = 10.dp, end = 10.dp)
@@ -675,7 +675,7 @@ private fun VerticalTitleIcon(
         Icon(
             imageVector = Icons.Outlined.Search,
             contentDescription = stringResource(id = R.string.main_menu_new_tabOpen),
-            tint = MaterialTheme.colors.onBackground,
+            tint = MaterialTheme.colors.primary,
             modifier = Modifier.size(26.dp)
         )
     }
@@ -775,14 +775,14 @@ fun ToolbarIcon(
                 modifier = modifier,
                 imageVector = ImageVector.vectorResource(id = iconResId),
                 contentDescription = stringResource(id = toolbarAction.titleResId),
-                tint = MaterialTheme.colors.onBackground
+                tint = MaterialTheme.colors.primary
             )
         } else {
             Icon(
                 modifier = modifier,
                 imageVector = toolbarAction.imageVector!!,
                 contentDescription = stringResource(id = toolbarAction.titleResId),
-                tint = MaterialTheme.colors.onBackground
+                tint = MaterialTheme.colors.primary
             )
         }
     }
@@ -797,9 +797,9 @@ private fun TabCountIcon(
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
     val border = if (isIncognito)
-        Modifier.dashedBorder(1.dp, 7.dp, color = MaterialTheme.colors.onBackground)
+        Modifier.dashedBorder(1.dp, 7.dp, color = MaterialTheme.colors.primary)
     else
-        Modifier.border(1.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+        Modifier.border(1.dp, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
 
     val iconCenterXRef = remember { intArrayOf(-1) }
     val iconCenterYRef = remember { intArrayOf(-1) }

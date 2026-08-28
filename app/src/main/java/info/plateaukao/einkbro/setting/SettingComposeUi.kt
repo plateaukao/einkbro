@@ -111,7 +111,7 @@ fun SettingItemUi(
             interactionSource = interactionSource,
         ) { onClick?.invoke() }
     if (showBorder) rowModifier =
-        rowModifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+        rowModifier.border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
 
     Row(
         modifier = rowModifier.then(
@@ -235,10 +235,10 @@ fun BooleanSettingItemUi(
                 .align(Alignment.CenterEnd)
                 .padding(end = 3.dp),
             colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.colors.onBackground,
+                checkedThumbColor = MaterialTheme.colors.primary,
                 uncheckedThumbColor = Color.Gray,
                 uncheckedTrackColor = Color.Gray,
-                checkedTrackColor = MaterialTheme.colors.onBackground,
+                checkedTrackColor = MaterialTheme.colors.primary,
             )
         )
     }
@@ -384,7 +384,7 @@ private fun ToolbarPositionDialog(
             .padding(2.dp)
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colors.primary,
                 shape = RoundedCornerShape(8.dp),
             )
             .padding(2.dp),
@@ -600,8 +600,8 @@ private fun RowScope.EinkOptionChip(
             .weight(1f)
             .border(
                 width = if (selected) 2.dp else 1.dp,
-                color = if (selected) MaterialTheme.colors.onBackground
-                else MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+                color = if (selected) MaterialTheme.colors.primary
+                else MaterialTheme.colors.primary.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(4.dp),
             )
             .clickable(onClick = onClick)
@@ -644,7 +644,7 @@ private fun EinkImageAdjustmentDialog(
                 .background(MaterialTheme.colors.background, RoundedCornerShape(8.dp))
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colors.onBackground,
+                    color = MaterialTheme.colors.primary,
                     shape = RoundedCornerShape(8.dp),
                 )
                 .padding(16.dp),
@@ -661,7 +661,7 @@ private fun EinkImageAdjustmentDialog(
                 modifier = Modifier
                     .size(240.dp)
                     .align(Alignment.CenterHorizontally)
-                    .border(1.dp, MaterialTheme.colors.onBackground),
+                    .border(1.dp, MaterialTheme.colors.primary),
                 contentScale = ContentScale.Fit,
                 colorFilter = if (pendingMode == EinkImageMode.FAST && pending.strength > 0) {
                     ColorFilter.colorMatrix(cssFilterColorMatrix(pending.strength))

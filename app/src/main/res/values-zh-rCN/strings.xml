@@ -641,4 +641,14 @@
     <string name="test_connection_testing">测试中…</string>
     <string name="test_connection_success">连接正常（%1$s）</string>
     <string name="test_connection_failed">连接失败：%1$s</string>
+    <string name="setting_title_ui_theme">主题颜色</string>
+    <string name="setting_summary_ui_theme">按钮、边框和对话框的强调色</string>
+    <string name="theme_classic">经典</string>
+    <string name="theme_light_blue">浅蓝</string>
+    <string name="theme_dark_blue">深蓝</string>
+    <string name="theme_teal">青色</string>
+    <string name="theme_green">绿色</string>
+    <string name="theme_sepia">棕褐</string>
+    <string name="theme_purple">紫色</string>
+    <string name="theme_red">红色</string>
 </resources>

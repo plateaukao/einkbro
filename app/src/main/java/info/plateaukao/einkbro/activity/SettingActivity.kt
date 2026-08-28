@@ -110,6 +110,7 @@ import org.koin.android.ext.android.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
+import info.plateaukao.einkbro.view.compose.onTopBar
 
 class SettingActivity : FragmentActivity(), BackupOps {
     private val config: ConfigManager by inject()
@@ -613,13 +614,13 @@ fun SettingBar(
         title = {
             Text(
                 stringResource(currentScreen.titleId),
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colors.onTopBar
             )
         },
         navigationIcon = {
             IconButton(onClick = navigateUp) {
                 Icon(
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onTopBar,
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
@@ -628,7 +629,7 @@ fun SettingBar(
         actions = {
             IconButton(onClick = onSearch) {
                 Icon(
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onTopBar,
                     imageVector = Icons.Filled.Search,
                     contentDescription = stringResource(R.string.search_hint)
                 )
@@ -636,7 +637,7 @@ fun SettingBar(
             if (currentScreen != SettingRoute.Main) {
                 IconButton(onClick = close) {
                     Icon(
-                        tint = MaterialTheme.colors.onPrimary,
+                        tint = MaterialTheme.colors.onTopBar,
                         imageVector = Icons.Filled.Close,
                         contentDescription = stringResource(R.string.back)
                     )
@@ -662,13 +663,13 @@ fun SearchSettingBar(
                 placeholder = {
                     Text(
                         stringResource(R.string.search_settings_hint),
-                        color = MaterialTheme.colors.onPrimary.copy(alpha = 0.6f)
+                        color = MaterialTheme.colors.onTopBar.copy(alpha = 0.6f)
                     )
                 },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = MaterialTheme.colors.onPrimary,
-                    cursorColor = MaterialTheme.colors.onPrimary,
+                    textColor = MaterialTheme.colors.onTopBar,
+                    cursorColor = MaterialTheme.colors.onTopBar,
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -684,7 +685,7 @@ fun SearchSettingBar(
         navigationIcon = {
             IconButton(onClick = onClose) {
                 Icon(
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onTopBar,
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )

@@ -38,6 +38,7 @@ import info.plateaukao.einkbro.view.compose.EmptyListPlaceholder
 import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
+import info.plateaukao.einkbro.view.compose.onTopBar
 
 /**
  * Every stored site rule, grouped by host, so per-site settings can be
@@ -60,7 +61,7 @@ class SiteRuleListActivity : LocaleAwareComponentActivity() {
                     if (rules.isNotEmpty()) {
                         IconButton(onClick = ::confirmDeleteAll) {
                             Icon(
-                                tint = MaterialTheme.colors.onPrimary,
+                                tint = MaterialTheme.colors.onTopBar,
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = stringResource(R.string.menu_delete),
                             )

@@ -7,6 +7,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.PaperSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import info.plateaukao.einkbro.view.withThemedFrame
 
 class PrinterDocumentPaperSizeDialog(val context: Context) : KoinComponent {
     private val config: ConfigManager by inject()
@@ -20,6 +21,6 @@ class PrinterDocumentPaperSizeDialog(val context: Context) : KoinComponent {
                 config.display.pdfPaperSize = PaperSize.values()[selectedIndex]
                 dialog.dismiss()
             }
-        }.create().show()
+        }.create().withThemedFrame().show()
     }
 }

@@ -584,4 +584,14 @@
     <string name="test_connection_testing">Тестирање…</string>
     <string name="test_connection_success">Веза је у реду (%1$s)</string>
     <string name="test_connection_failed">Веза није успела: %1$s</string>
+    <string name="setting_title_ui_theme">Боја теме</string>
+    <string name="setting_summary_ui_theme">Боја акцента за дугмад, ивице и дијалоге</string>
+    <string name="theme_classic">Класична</string>
+    <string name="theme_light_blue">Светлоплава</string>
+    <string name="theme_dark_blue">Тамноплава</string>
+    <string name="theme_teal">Тиркизна</string>
+    <string name="theme_green">Зелена</string>
+    <string name="theme_sepia">Сепија</string>
+    <string name="theme_purple">Љубичаста</string>
+    <string name="theme_red">Црвена</string>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ViewUnit.dp
+import info.plateaukao.einkbro.view.ThemedBorders
 
 class TranslationPanelView(context: Context) : RelativeLayout(context) {
 
@@ -42,7 +43,7 @@ class TranslationPanelView(context: Context) : RelativeLayout(context) {
                 layoutParams = LinearLayout.LayoutParams(btnSize, btnSize).apply {
                     setMargins(margin, margin, margin, margin)
                 }
-                setBackgroundResource(R.drawable.background_with_border)
+                background = ThemedBorders.panel(context)
                 setImageResource(iconRes)
                 ImageViewCompat.setImageTintList(this, tint)
             }
@@ -55,7 +56,7 @@ class TranslationPanelView(context: Context) : RelativeLayout(context) {
                 addRule(ALIGN_PARENT_BOTTOM)
             }
             layoutParams = lp
-            setBackgroundResource(R.drawable.background_with_border)
+            background = ThemedBorders.panel(context)
             setImageResource(R.drawable.icon_info)
             ImageViewCompat.setImageTintList(this, tint)
             visibility = View.INVISIBLE
@@ -80,7 +81,7 @@ class TranslationPanelView(context: Context) : RelativeLayout(context) {
             layoutParams = LinearLayout.LayoutParams(btnSize, btnSize).apply {
                 setMargins(margin, margin, margin, margin)
             }
-            setBackgroundResource(R.drawable.background_with_border)
+            background = ThemedBorders.panel(context)
             gravity = Gravity.CENTER
             textAlignment = TEXT_ALIGNMENT_CENTER
             textSize = 16f

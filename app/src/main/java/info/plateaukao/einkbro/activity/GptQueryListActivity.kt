@@ -238,7 +238,7 @@ fun QueryItem(
                 Divider(
                     modifier = Modifier.padding(vertical = 8.dp),
                     thickness = 1.dp,
-                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.2f),
+                    color = MaterialTheme.colors.primary.copy(alpha = 0.2f),
                 )
                 Text(
                     text = remember(gptQuery.result) { HelperUnit.parseMarkdown(gptQuery.result) },

@@ -15,6 +15,7 @@ import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderSettingsDialogFragment
 import kotlinx.coroutines.launch
+import info.plateaukao.einkbro.view.dialog.compose.ThemeColorDialogFragment
 
 fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
     val config = deps.config
@@ -29,6 +30,25 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
                 TranslationLanguageDialog(deps.activity).showAppLocale()
                 if (config.uiLocaleLanguage != oldLocale) deps.activity.recreate()
             }
+        },
+        ListSettingWithEnumItem(
+            R.string.dark_mode,
+            0,
+            R.string.setting_summary_dark_mode,
+            config.display::darkMode,
+            listOf(
+                R.string.dark_mode_follow_system,
+                R.string.dark_mode_force_on,
+                R.string.dark_mode_disabled,
+            )
+        ),
+        ActionSettingItem(
+            R.string.setting_title_ui_theme,
+            0,
+            R.string.setting_summary_ui_theme,
+        ) {
+            ThemeColorDialogFragment()
+                .show(deps.activity.supportFragmentManager, "theme_color_dialog")
         },
         BooleanSettingItem(
             R.string.hide_statusbar,
@@ -88,17 +108,6 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
                 },
             ).show(deps.activity.supportFragmentManager, "ReaderSettingsDialog")
         },
-        ListSettingWithEnumItem(
-            R.string.dark_mode,
-            0,
-            R.string.setting_summary_dark_mode,
-            config.display::darkMode,
-            listOf(
-                R.string.dark_mode_follow_system,
-                R.string.dark_mode_force_on,
-                R.string.dark_mode_disabled,
-            )
-        ),
         EinkImageSettingItem(
             R.string.eink_image_adjustment,
             0,

@@ -584,4 +584,14 @@
     <string name="test_connection_testing">Γίνεται δοκιμή…</string>
     <string name="test_connection_success">Επιτυχής σύνδεση (%1$s)</string>
     <string name="test_connection_failed">Αποτυχία σύνδεσης: %1$s</string>
+    <string name="setting_title_ui_theme">Χρώμα θέματος</string>
+    <string name="setting_summary_ui_theme">Χρώμα έμφασης για κουμπιά, περιγράμματα και διαλόγους</string>
+    <string name="theme_classic">Κλασικό</string>
+    <string name="theme_light_blue">Γαλάζιο</string>
+    <string name="theme_dark_blue">Σκούρο μπλε</string>
+    <string name="theme_teal">Πετρόλ</string>
+    <string name="theme_green">Πράσινο</string>
+    <string name="theme_sepia">Σέπια</string>
+    <string name="theme_purple">Μοβ</string>
+    <string name="theme_red">Κόκκινο</string>
 </resources>

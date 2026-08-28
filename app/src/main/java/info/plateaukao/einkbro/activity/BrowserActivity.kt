@@ -52,6 +52,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TabConfig
 import info.plateaukao.einkbro.preference.UiConfig
 import info.plateaukao.einkbro.preference.DisplayConfig
+import info.plateaukao.einkbro.view.compose.UiThemeState
 import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TtsConfig
 import info.plateaukao.einkbro.preference.FabPosition
@@ -1179,7 +1180,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
             UiConfig.K_KEEP_AWAKE -> { if (config.ui.keepAwake) window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) else window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
             BrowserConfig.K_DESKTOP -> { ebWebView.updateUserAgentString(); ebWebView.reload(); composeToolbarViewController.updateIcons() }
-            DisplayConfig.K_DARK_MODE -> config.restartChanged = true
+            DisplayConfig.K_DARK_MODE -> {
+                UiThemeState.darkMode.value = config.display.darkMode
+                config.restartChanged = true
+            }
+            DisplayConfig.K_UI_THEME -> UiThemeState.current.value = config.display.uiTheme
+            DisplayConfig.K_CUSTOM_THEME_COLOR ->
+                UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(config.display.customThemeColor)
             UiConfig.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
             UiConfig.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
             UiConfig.K_NAV_POSITION -> fabImageViewController.applyFabPosition()

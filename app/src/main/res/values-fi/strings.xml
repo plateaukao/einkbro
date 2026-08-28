@@ -584,4 +584,14 @@
     <string name="test_connection_testing">Testataan…</string>
     <string name="test_connection_success">Yhteys OK (%1$s)</string>
     <string name="test_connection_failed">Yhteys epäonnistui: %1$s</string>
+    <string name="setting_title_ui_theme">Teeman väri</string>
+    <string name="setting_summary_ui_theme">Korostusväri painikkeille, reunoille ja valintaikkunoille</string>
+    <string name="theme_classic">Klassinen</string>
+    <string name="theme_light_blue">Vaaleansininen</string>
+    <string name="theme_dark_blue">Tummansininen</string>
+    <string name="theme_teal">Sinivihreä</string>
+    <string name="theme_green">Vihreä</string>
+    <string name="theme_sepia">Seepia</string>
+    <string name="theme_purple">Violetti</string>
+    <string name="theme_red">Punainen</string>
 </resources>

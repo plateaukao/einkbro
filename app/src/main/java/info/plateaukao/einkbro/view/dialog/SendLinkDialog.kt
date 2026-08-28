@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.view.withThemedFrame
 
 class SendLinkDialog(
     private val context: Context,
@@ -19,6 +20,6 @@ class SendLinkDialog(
             setNeutralButton(R.string.done) { _, _ -> ShareUtil.stopBroadcast() }
             setTitle(R.string.menu_send_link)
             setOnDismissListener { ShareUtil.stopBroadcast() }
-        }.show()
+        }.show().withThemedFrame()
     }
 }

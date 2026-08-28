@@ -68,6 +68,7 @@ import info.plateaukao.einkbro.view.compose.SelectableText
 import org.koin.android.ext.android.inject
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import info.plateaukao.einkbro.view.compose.onTopBar
 
 class GptActionsActivity : LocaleAwareComponentActivity() {
     private val config: ConfigManager by inject()
@@ -92,7 +93,7 @@ class GptActionsActivity : LocaleAwareComponentActivity() {
                         config.ai.deleteAllGptActions()
                     }) {
                         Icon(
-                            tint = MaterialTheme.colors.onPrimary,
+                            tint = MaterialTheme.colors.onTopBar,
                             imageVector = Icons.Filled.Delete,
                             contentDescription = stringResource(R.string.menu_delete)
                         )
@@ -102,7 +103,7 @@ class GptActionsActivity : LocaleAwareComponentActivity() {
                         showDialog = true
                     }) {
                         Icon(
-                            tint = MaterialTheme.colors.onPrimary,
+                            tint = MaterialTheme.colors.onTopBar,
                             imageVector = Icons.Filled.Add,
                             contentDescription = stringResource(R.string.whitelist_add)
                         )
@@ -315,7 +316,7 @@ fun GptActionDialog(
             .padding(2.dp)
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colors.primary,
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(2.dp),

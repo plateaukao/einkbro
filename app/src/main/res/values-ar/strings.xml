@@ -584,4 +584,14 @@
     <string name="test_connection_testing">جارٍ الاختبار…</string>
     <string name="test_connection_success">الاتصال ناجح (%1$s)</string>
     <string name="test_connection_failed">فشل الاتصال: %1$s</string>
+    <string name="setting_title_ui_theme">لون السمة</string>
+    <string name="setting_summary_ui_theme">لون مميز للأزرار والحدود ومربعات الحوار</string>
+    <string name="theme_classic">كلاسيكي</string>
+    <string name="theme_light_blue">أزرق فاتح</string>
+    <string name="theme_dark_blue">أزرق داكن</string>
+    <string name="theme_teal">أزرق مخضر</string>
+    <string name="theme_green">أخضر</string>
+    <string name="theme_sepia">سيبيا</string>
+    <string name="theme_purple">بنفسجي</string>
+    <string name="theme_red">أحمر</string>
 </resources>

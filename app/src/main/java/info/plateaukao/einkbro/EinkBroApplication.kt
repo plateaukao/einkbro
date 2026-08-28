@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import info.plateaukao.einkbro.activity.BrowserActivity
 import info.plateaukao.einkbro.activity.SettingActivity
 import info.plateaukao.einkbro.browser.AdBlock
+import info.plateaukao.einkbro.view.compose.UiThemeState
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -106,6 +107,10 @@ class EinkBroApplication : Application() {
             modules(myModule)
         }
 
+
+        UiThemeState.current.value = config.display.uiTheme
+        UiThemeState.darkMode.value = config.display.darkMode
+        UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(config.display.customThemeColor)
 
         if (config.uiLocaleLanguage.isNotEmpty()) {
             LocaleManager.setLocale(this, config.uiLocaleLanguage)

@@ -25,6 +25,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.ToolbarPosition
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import info.plateaukao.einkbro.view.ThemedBorders
 
 
 abstract class ComposeDialogFragment : DialogFragment(), KoinComponent {
@@ -85,7 +86,7 @@ abstract class ComposeDialogFragment : DialogFragment(), KoinComponent {
                     }
                 }
             }
-            w.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+            w.setBackgroundDrawable(ThemedBorders.dialogFrame(requireContext()))
             w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         }
     }
@@ -185,7 +186,7 @@ abstract class ComposeDialogFragment : DialogFragment(), KoinComponent {
 
 @Composable
 fun HorizontalSeparator() {
-    Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
+    Divider(thickness = 1.dp, color = MaterialTheme.colors.primary)
 }
 
 @Composable
@@ -194,7 +195,7 @@ fun VerticalSeparator() {
         modifier = Modifier
             .width(1.dp)
             .height(30.dp)
-            .background(color = MaterialTheme.colors.onBackground)
+            .background(color = MaterialTheme.colors.primary)
     )
 }
 

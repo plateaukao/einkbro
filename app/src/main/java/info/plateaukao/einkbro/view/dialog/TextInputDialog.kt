@@ -7,6 +7,7 @@ import android.widget.EditText
 import info.plateaukao.einkbro.R
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import info.plateaukao.einkbro.view.withThemedFrame
 
 
 class TextInputDialog(
@@ -33,6 +34,6 @@ class TextInputDialog(
                 .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                     dialog.dismiss()
                     continuation.resume(null)
-                }.show()
+                }.show().withThemedFrame()
     }
 }

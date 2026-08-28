@@ -6,24 +6,73 @@ import android.content.ContextWrapper
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import info.plateaukao.einkbro.preference.DarkMode
+import info.plateaukao.einkbro.preference.ThemePalette
+import info.plateaukao.einkbro.preference.UiTheme
+import info.plateaukao.einkbro.preference.palette
+
+/**
+ * Holds the currently selected [UiTheme] as Compose state so every MyTheme
+ * root recomposes immediately when the user picks a new theme in Settings —
+ * no activity restart needed. Initialized from config in EinkBroApplication;
+ * kept in sync by the DisplayConfig.uiTheme setter (and the browser's
+ * SharedPreferences listener, for writes that bypass the setter, e.g. backup
+ * restore).
+ */
+object UiThemeState {
+    val current: MutableState<UiTheme> = mutableStateOf(UiTheme.CLASSIC)
+    val darkMode: MutableState<DarkMode> = mutableStateOf(DarkMode.SYSTEM)
+    val customColor: MutableState<Color> = mutableStateOf(Color(0xFF4A90D9))
+}
+
+/**
+ * Whether the app UI should use the dark palette: the Dark mode setting wins
+ * (Force on / Disabled), and Follow system falls back to the system setting.
+ * This gives every UiTheme a dark variant independent of system dark mode.
+ */
+@Composable
+fun isAppInDarkTheme(): Boolean = when (UiThemeState.darkMode.value) {
+    DarkMode.FORCE_ON -> true
+    DarkMode.DISABLED -> false
+    DarkMode.SYSTEM -> isSystemInDarkTheme()
+}
+
+/**
+ * Content color for the app's TopAppBars. M2's TopAppBar background is
+ * primarySurface: the accent (primary) in light mode but surface (black) in
+ * dark mode — so bar content must be onPrimary in light and onSurface in
+ * dark. (Dark onPrimary is black for accent-filled buttons and would be
+ * invisible on the dark bar.)
+ */
+val Colors.onTopBar: Color get() = if (isLight) onPrimary else onSurface
 
 @Composable
 fun MyTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = isAppInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val uiTheme by UiThemeState.current
+    val customColor by UiThemeState.customColor
     MaterialTheme(
-        colors = if (darkTheme) DarkColors else LightColors,
+        colors = remember(uiTheme, customColor, darkTheme) {
+            val palette = uiTheme.palette(customColor)
+            if (darkTheme) palette.toDarkColors() else palette.toLightColors()
+        },
         content = content,
     )
 }
@@ -36,7 +85,7 @@ fun MyTheme(
  * is still honored, so the default dark icons must be kept.
  */
 @Composable
-fun SystemBarIconsForBlackTopBar(darkTheme: Boolean = isSystemInDarkTheme()) {
+fun SystemBarIconsForBlackTopBar(darkTheme: Boolean = isAppInDarkTheme()) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return
     val view = LocalView.current
     if (view.isInEditMode) return
@@ -56,21 +105,33 @@ private tailrec fun Context.findActivity(): Activity? = when (this) {
 
 val NormalTextModifier = Modifier.padding(6.dp)
 
-private val DarkColors = darkColors(
-    primary = Color.Black,
-    onPrimary = Color.Gray,
-    secondary = Color.Gray,
-    onSecondary = Color.White,
-    surface = Color.Black,
-    onSurface = Color.Gray,
-    background = Color.Black,
-    onBackground = Color.Gray,
-)
-private val LightColors = lightColors(
-    primary = Color.Black,
+// The accent lands on primary/secondary(+variants): Material components
+// (Button, Switch, Checkbox, TextField cursor, ProgressIndicator) pick it up
+// automatically; borders, dividers, and toolbar icons reference
+// MaterialTheme.colors.primary. Text and screen surfaces come from the
+// theme's onBackground/background so a theme can tint them too. CLASSIC's
+// values reproduce the original hardcoded black-and-white palette exactly.
+private fun ThemePalette.toLightColors() = lightColors(
+    primary = accent,
+    primaryVariant = accent,
     onPrimary = Color.White,
-    surface = Color.White,
-    onSurface = Color.Black,
-    background = Color.White,
-    onBackground = Color.Black,
+    secondary = accent,
+    secondaryVariant = accent,
+    onSecondary = Color.White,
+    surface = background,
+    onSurface = onBackground,
+    background = background,
+    onBackground = onBackground,
+)
+
+private fun ThemePalette.toDarkColors() = darkColors(
+    primary = accentDark,
+    primaryVariant = accentDark,
+    onPrimary = Color.Black,
+    secondary = accentDark,
+    onSecondary = Color.Black,
+    surface = Color.Black,
+    onSurface = onBackgroundDark,
+    background = Color.Black,
+    onBackground = onBackgroundDark,
 )

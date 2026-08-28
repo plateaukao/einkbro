@@ -639,4 +639,14 @@
     <string name="test_connection_testing">테스트 중…</string>
     <string name="test_connection_success">연결 성공 (%1$s)</string>
     <string name="test_connection_failed">연결 실패: %1$s</string>
+    <string name="setting_title_ui_theme">테마 색상</string>
+    <string name="setting_summary_ui_theme">버튼, 테두리, 대화상자의 강조 색상</string>
+    <string name="theme_classic">클래식</string>
+    <string name="theme_light_blue">밝은 파랑</string>
+    <string name="theme_dark_blue">어두운 파랑</string>
+    <string name="theme_teal">청록</string>
+    <string name="theme_green">초록</string>
+    <string name="theme_sepia">세피아</string>
+    <string name="theme_purple">보라</string>
+    <string name="theme_red">빨강</string>
 </resources>
