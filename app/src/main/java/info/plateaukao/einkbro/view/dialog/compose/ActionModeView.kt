@@ -49,10 +49,9 @@ fun ActionModeMenu(
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         modifier = Modifier
-            .background(MaterialTheme.colors.background)
             .wrapContentHeight()
             .width(280.dp)
-            .ebItemFrame()
+            .ebItemFrame(paintBackground = true)
     ) {
         val menuInfos = menus.value
         items(menuInfos.size) { index ->

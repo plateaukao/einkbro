@@ -16,6 +16,7 @@ import info.plateaukao.einkbro.preference.GRADIENT_START_FRACTION
 import info.plateaukao.einkbro.preference.ThemePalette
 import info.plateaukao.einkbro.preference.UiBorder
 import info.plateaukao.einkbro.preference.UiFill
+import info.plateaukao.einkbro.preference.isPattern
 import info.plateaukao.einkbro.preference.palette
 import info.plateaukao.einkbro.view.compose.UiThemeState
 import org.koin.core.component.KoinComponent
@@ -91,6 +92,55 @@ object ThemedBorders : KoinComponent {
         }
     }
 
+    /** Repeating-tile shader for the pattern fills, in the current colors. */
+    internal fun patternShader(context: Context, fill: UiFill): android.graphics.BitmapShader {
+        val (base, accent) = baseAndAccent(context)
+        val night = UiThemeState.inverted.value || isNight(context)
+        // faint lines so content on top stays readable
+        val lineArgb = lerp(base, accent, if (night) 0.16f else 0.12f).toArgb()
+        val baseArgb = base.toArgb()
+        val p = context.dp(
+            when (fill) {
+                UiFill.RULED -> 18f
+                UiFill.STRIPES, UiFill.DOTS -> 14f
+                else -> 16f
+            }
+        ).coerceAtLeast(4)
+        val bmp = android.graphics.Bitmap.createBitmap(p, p, android.graphics.Bitmap.Config.ARGB_8888)
+        val c = android.graphics.Canvas(bmp)
+        c.drawColor(baseArgb)
+        val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+            color = lineArgb
+            strokeWidth = context.dp(if (fill == UiFill.STRIPES) 1.5f else 1f).toFloat()
+        }
+        val pf = p.toFloat()
+        when (fill) {
+            UiFill.STRIPES -> {
+                c.drawLine(-pf, pf * 2f, pf * 2f, -pf, paint)
+                c.drawLine(0f, pf, pf, 0f, paint)
+                c.drawLine(0f, pf * 2f, pf * 2f, 0f, paint)
+            }
+            UiFill.DOTS -> c.drawCircle(pf / 2f, pf / 2f, context.dp(1.5f).toFloat(), paint)
+            UiFill.GRAPH -> {
+                c.drawLine(0.5f, 0f, 0.5f, pf, paint)
+                c.drawLine(0f, 0.5f, pf, 0.5f, paint)
+            }
+            UiFill.RULED -> c.drawLine(0f, 0.5f, pf, 0.5f, paint)
+            UiFill.CROSSHATCH -> {
+                c.drawLine(-pf, pf * 2f, pf * 2f, -pf, paint)
+                c.drawLine(0f, pf, pf, 0f, paint)
+                c.drawLine(0f, 0f, pf, pf, paint)
+                c.drawLine(-pf, -pf, pf * 2f, pf * 2f, paint)
+            }
+            else -> Unit
+        }
+        return android.graphics.BitmapShader(
+            bmp,
+            android.graphics.Shader.TileMode.REPEAT,
+            android.graphics.Shader.TileMode.REPEAT,
+        )
+    }
+
     /** Solid fill color when the fill is not a gradient. */
     private fun flatFillArgb(context: Context, fill: UiFill): Int = when (fill) {
         UiFill.TONAL -> tonalFillArgb(context)
@@ -117,19 +167,30 @@ object ThemedBorders : KoinComponent {
         val radius = context.dp(border.frameRadiusDp).toFloat()
         val strokeWidth = context.dp(maxOf(border.widthDp, 1f))
 
-        fun filledBox(withStroke: Boolean, dashed: Boolean = false) =
-            GradientDrawable().apply {
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = radius
-                applyFill(context, fill)
-                if (withStroke) {
-                    if (dashed) {
-                        setStroke(
-                            strokeWidth, accent,
-                            context.dp(5f).toFloat(), context.dp(4f).toFloat(),
-                        )
-                    } else {
-                        setStroke(strokeWidth, accent)
+        fun filledBox(withStroke: Boolean, dashed: Boolean = false): Drawable =
+            if (fill.isPattern()) {
+                PatternBoxDrawable(
+                    context, fill, radius,
+                    strokeColor = if (withStroke) accent else null,
+                    strokeWidth = strokeWidth.toFloat(),
+                    dashed = dashed,
+                    dashOn = context.dp(5f).toFloat(),
+                    dashOff = context.dp(4f).toFloat(),
+                )
+            } else {
+                GradientDrawable().apply {
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = radius
+                    applyFill(context, fill)
+                    if (withStroke) {
+                        if (dashed) {
+                            setStroke(
+                                strokeWidth, accent,
+                                context.dp(5f).toFloat(), context.dp(4f).toFloat(),
+                            )
+                        } else {
+                            setStroke(strokeWidth, accent)
+                        }
                     }
                 }
             }
@@ -208,6 +269,10 @@ object ThemedBorders : KoinComponent {
         bounds: android.graphics.Rect,
     ) {
         paint.shader = null
+        if (fill.isPattern()) {
+            paint.shader = patternShader(context, fill)
+            return
+        }
         if (fill == UiFill.GRADIENT) {
             val colors = gradientColors(context)
             val rad = Math.toRadians(UiThemeState.gradientAngle.value.toDouble())
@@ -417,6 +482,50 @@ private class SketchDrawable(
         paint.strokeWidth = strokeWidth
         paint.color = strokeColor
         canvas.drawPath(path, paint)
+    }
+
+    override fun setAlpha(alpha: Int) { paint.alpha = alpha }
+    override fun setColorFilter(colorFilter: android.graphics.ColorFilter?) {
+        paint.colorFilter = colorFilter
+    }
+    @Deprecated("Deprecated in Java")
+    override fun getOpacity(): Int = android.graphics.PixelFormat.TRANSLUCENT
+}
+
+/** Rounded box whose fill is a repeating pattern tile shader. */
+private class PatternBoxDrawable(
+    private val context: Context,
+    private val fill: UiFill,
+    private val radius: Float,
+    private val strokeColor: Int?,
+    private val strokeWidth: Float,
+    private val dashed: Boolean,
+    private val dashOn: Float,
+    private val dashOff: Float,
+) : Drawable() {
+    private val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG)
+
+    override fun draw(canvas: android.graphics.Canvas) {
+        val r = android.graphics.RectF(bounds)
+        paint.style = android.graphics.Paint.Style.FILL
+        paint.pathEffect = null
+        paint.shader = ThemedBorders.patternShader(context, fill)
+        canvas.drawRoundRect(r, radius, radius, paint)
+        paint.shader = null
+        if (strokeColor != null) {
+            val inset = strokeWidth / 2f
+            val rs = android.graphics.RectF(
+                r.left + inset, r.top + inset, r.right - inset, r.bottom - inset,
+            )
+            paint.style = android.graphics.Paint.Style.STROKE
+            paint.strokeWidth = strokeWidth
+            paint.color = strokeColor
+            paint.pathEffect =
+                if (dashed) android.graphics.DashPathEffect(floatArrayOf(dashOn, dashOff), 0f)
+                else null
+            canvas.drawRoundRect(rs, radius, radius, paint)
+            paint.pathEffect = null
+        }
     }
 
     override fun setAlpha(alpha: Int) { paint.alpha = alpha }

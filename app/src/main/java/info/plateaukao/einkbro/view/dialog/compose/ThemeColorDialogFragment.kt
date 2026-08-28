@@ -63,6 +63,7 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.UiThemeState
 import info.plateaukao.einkbro.view.compose.dashedBorder
 import info.plateaukao.einkbro.view.compose.stampShape
+import info.plateaukao.einkbro.view.compose.patternFill
 import info.plateaukao.einkbro.view.compose.tonalFillColor
 import info.plateaukao.einkbro.view.compose.sketchShape
 import info.plateaukao.einkbro.view.compose.isAppInDarkTheme
@@ -223,23 +224,25 @@ private fun ThemeColorContent(
             color = MaterialTheme.colors.onBackground,
         )
         var showGradientAdjust by remember { mutableStateOf(false) }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            UiFill.entries.forEach { fill ->
-                FillSwatch(
-                    fill = fill,
-                    isSelected = fill == currentFill,
-                    onClick = {
-                        // tapping the selected Gradient fill again toggles the
-                        // direction/level dial
-                        showGradientAdjust =
-                            if (fill == currentFill && fill == UiFill.GRADIENT) !showGradientAdjust
-                            else false
-                        if (fill != currentFill) onSelectFill(fill)
-                    },
-                    modifier = Modifier.weight(1f),
-                )
+        UiFill.entries.chunked(4).forEach { rowFills ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                rowFills.forEach { fill ->
+                    FillSwatch(
+                        fill = fill,
+                        isSelected = fill == currentFill,
+                        onClick = {
+                            // tapping the selected Gradient fill again toggles
+                            // the direction/level dial
+                            showGradientAdjust =
+                                if (fill == currentFill && fill == UiFill.GRADIENT) !showGradientAdjust
+                                else false
+                            if (fill != currentFill) onSelectFill(fill)
+                        },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+                repeat(4 - rowFills.size) { Spacer(modifier = Modifier.weight(1f)) }
             }
-            Spacer(modifier = Modifier.weight(1f))
         }
         if (showGradientAdjust && currentFill == UiFill.GRADIENT) {
             GradientAdjust(
@@ -591,6 +594,12 @@ private fun FillSwatch(
             ),
             shape,
         )
+        else -> base
+            .border(1.dp, accent.copy(alpha = 0.25f), shape)
+            .patternFill(
+                fill, shape,
+                lerp(MaterialTheme.colors.background, accent, 0.45f),
+            )
     }
     SwatchCell(isSelected, onClick, modifier) { Box(modifier = previewModifier) }
 }

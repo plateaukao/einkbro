@@ -251,7 +251,17 @@ enum class UiBorder(
  * independent of the border. NONE is the plain theme background; GRADIENT
  * uses the adjustable angle/level. Persisted by ordinal; only append.
  */
-enum class UiFill { NONE, TONAL, GRADIENT }
+enum class UiFill {
+    NONE, TONAL, GRADIENT,
+    // repeating patterns drawn in a soft accent blend
+    STRIPES, DOTS, GRAPH, RULED, CROSSHATCH,
+}
+
+/** True for the repeating-pattern fills. */
+fun UiFill.isPattern(): Boolean = when (this) {
+    UiFill.STRIPES, UiFill.DOTS, UiFill.GRAPH, UiFill.RULED, UiFill.CROSSHATCH -> true
+    else -> false
+}
 
 // baseline accent-blend fractions of the gradient fill (the user's gradient
 // level scales them)

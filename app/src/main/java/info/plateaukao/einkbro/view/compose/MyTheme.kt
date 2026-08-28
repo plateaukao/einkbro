@@ -30,7 +30,9 @@ import androidx.compose.ui.graphics.LinearGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -47,6 +49,7 @@ import info.plateaukao.einkbro.preference.UiBorder
 import info.plateaukao.einkbro.preference.UiFill
 import info.plateaukao.einkbro.preference.UiTheme
 import info.plateaukao.einkbro.preference.palette
+import info.plateaukao.einkbro.preference.isPattern
 
 /**
  * Holds the currently selected [UiTheme] as Compose state so every MyTheme
@@ -245,13 +248,102 @@ fun gradientFillBrush(): Brush {
     )
 }
 
+/** Draws a repeating pattern fill (stripes, dots, graph, ruled, crosshatch). */
+fun androidx.compose.ui.graphics.drawscope.DrawScope.drawFillPattern(
+    fill: UiFill,
+    lineColor: Color,
+) {
+    when (fill) {
+        UiFill.STRIPES -> {
+            val p = 14.dp.toPx()
+            val w = 1.5.dp.toPx()
+            var x = -size.height
+            while (x < size.width) {
+                drawLine(lineColor, Offset(x, size.height), Offset(x + size.height, 0f), w)
+                x += p
+            }
+        }
+        UiFill.DOTS -> {
+            val p = 14.dp.toPx()
+            val r = 1.5.dp.toPx()
+            var y = p / 2f
+            var row = 0
+            while (y < size.height) {
+                var x = if (row % 2 == 0) p / 2f else p
+                while (x < size.width) {
+                    drawCircle(lineColor, r, Offset(x, y))
+                    x += p
+                }
+                y += p
+                row++
+            }
+        }
+        UiFill.GRAPH -> {
+            val p = 16.dp.toPx()
+            val w = 0.8.dp.toPx()
+            var x = p
+            while (x < size.width) {
+                drawLine(lineColor, Offset(x, 0f), Offset(x, size.height), w); x += p
+            }
+            var y = p
+            while (y < size.height) {
+                drawLine(lineColor, Offset(0f, y), Offset(size.width, y), w); y += p
+            }
+        }
+        UiFill.RULED -> {
+            val p = 18.dp.toPx()
+            val w = 1.dp.toPx()
+            var y = p
+            while (y < size.height) {
+                drawLine(lineColor, Offset(0f, y), Offset(size.width, y), w); y += p
+            }
+        }
+        UiFill.CROSSHATCH -> {
+            val p = 16.dp.toPx()
+            val w = 0.8.dp.toPx()
+            var x = -size.height
+            while (x < size.width) {
+                drawLine(lineColor, Offset(x, size.height), Offset(x + size.height, 0f), w)
+                drawLine(lineColor, Offset(x, 0f), Offset(x + size.height, size.height), w)
+                x += p
+            }
+        }
+        else -> Unit
+    }
+}
+
+/** Line color used by the pattern fills — kept faint so text stays readable. */
+@Composable
+fun patternLineColor(): Color = lerp(
+    MaterialTheme.colors.background,
+    MaterialTheme.colors.primary,
+    if (MaterialTheme.colors.isLight) 0.12f else 0.16f,
+)
+
+/** Pattern fill clipped to a shape, as a modifier. */
+fun Modifier.patternFill(
+    fill: UiFill,
+    shape: androidx.compose.ui.graphics.Shape,
+    lineColor: Color,
+): Modifier = drawBehind {
+    val outline = shape.createOutline(size, layoutDirection, this)
+    val path = androidx.compose.ui.graphics.Path().apply { addOutline(outline) }
+    clipPath(path) { drawFillPattern(fill, lineColor) }
+}
+
 /**
  * Themed frame for in-content bordered items, combining the independent
  * border and fill preferences. A non-positive widthOverride keeps the call
  * site's "no frame in this state" behavior; a positive one keeps its
  * emphasis (never thinner than the border's width).
  */
-fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
+fun Modifier.ebItemFrame(
+    widthOverride: Dp? = null,
+    // paints an opaque theme background clipped to the frame shape first —
+    // for floating panels that must cover the content behind them without
+    // spilling a rectangular fill past an irregular (stamp/sketch) outline
+    paintBackground: Boolean = false,
+): Modifier = composed {
     val border = UiThemeState.uiBorder.value
     val fill = UiThemeState.uiFill.value
     if (widthOverride != null && widthOverride <= 0.dp) return@composed this
@@ -265,6 +357,7 @@ fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
     val width = maxOf(widthOverride ?: 0.dp, border.widthDp.dp)
     val accent = MaterialTheme.colors.primary
     val bg = MaterialTheme.colors.background
+    val withBase = if (paintBackground) background(bg, shape) else this
 
     if (border == UiBorder.STICKER) {
         // draw shadow, fill, and outline entirely inside the bounds (the
@@ -272,10 +365,11 @@ fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
         // by or overlaps neighboring items
         val radius = border.itemRadiusDp
         val fillBrush: Brush? = when (fill) {
-            UiFill.NONE -> null
             UiFill.TONAL -> SolidColor(tonalFillColor())
             UiFill.GRADIENT -> gradientFillBrush()
+            else -> null
         }
+        val patternColor = patternLineColor()
         return@composed drawBehind {
             val off = 3.dp.toPx()
             val corner = CornerRadius(radius.dp.toPx())
@@ -284,6 +378,15 @@ fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
             drawRoundRect(bg, size = boxSize, cornerRadius = corner)
             if (fillBrush != null) {
                 drawRoundRect(fillBrush, size = boxSize, cornerRadius = corner)
+            } else if (fill.isPattern()) {
+                val clip = androidx.compose.ui.graphics.Path().apply {
+                    addRoundRect(
+                        androidx.compose.ui.geometry.RoundRect(
+                            0f, 0f, boxSize.width, boxSize.height, corner,
+                        ),
+                    )
+                }
+                clipPath(clip) { drawFillPattern(fill, patternColor) }
             }
             drawRoundRect(
                 accent, size = boxSize, cornerRadius = corner,
@@ -292,10 +395,11 @@ fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
         }
     }
 
-    var m: Modifier = when (fill) {
-        UiFill.NONE -> this
-        UiFill.TONAL -> background(tonalFillColor(), shape)
-        UiFill.GRADIENT -> background(gradientFillBrush(), shape)
+    var m: Modifier = when {
+        fill == UiFill.NONE -> withBase
+        fill == UiFill.TONAL -> withBase.background(tonalFillColor(), shape)
+        fill == UiFill.GRADIENT -> withBase.background(gradientFillBrush(), shape)
+        else -> withBase.patternFill(fill, shape, patternLineColor())
     }
 
     when (border) {
