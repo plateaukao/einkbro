@@ -52,6 +52,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TabConfig
 import info.plateaukao.einkbro.preference.UiConfig
 import info.plateaukao.einkbro.preference.DisplayConfig
+import info.plateaukao.einkbro.view.SplashThemer
 import info.plateaukao.einkbro.view.compose.UiThemeState
 import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TtsConfig
@@ -880,6 +881,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
 
         config.restartChanged = false
+        SplashThemer.apply(this)
         displayConfigDelegate.onCreate()
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
@@ -1184,15 +1186,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 UiThemeState.darkMode.value = config.display.darkMode
                 config.restartChanged = true
             }
-            DisplayConfig.K_UI_THEME -> UiThemeState.current.value = config.display.uiTheme
+            DisplayConfig.K_UI_THEME -> {
+                UiThemeState.current.value = config.display.uiTheme
+                SplashThemer.apply(this)
+            }
             DisplayConfig.K_UI_BORDER -> UiThemeState.uiBorder.value = config.display.uiBorder
             DisplayConfig.K_UI_FILL -> UiThemeState.uiFill.value = config.display.uiFill
             DisplayConfig.K_UI_THEME_INVERTED -> UiThemeState.inverted.value = config.display.uiThemeInverted
             DisplayConfig.K_GRADIENT_ANGLE ->
                 UiThemeState.gradientAngle.value = config.display.gradientAngle
             DisplayConfig.K_GRADIENT_LEVEL -> UiThemeState.gradientLevel.value = config.display.gradientLevel
-            DisplayConfig.K_CUSTOM_THEME_COLOR ->
-                UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(config.display.customThemeColor)
+            DisplayConfig.K_CUSTOM_THEME_COLOR -> {
+                UiThemeState.customColor.value =
+                    androidx.compose.ui.graphics.Color(config.display.customThemeColor)
+                SplashThemer.apply(this)
+            }
             UiConfig.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
             UiConfig.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
             UiConfig.K_NAV_POSITION -> fabImageViewController.applyFabPosition()

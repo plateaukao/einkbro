@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SplashTheme.Classic" parent="AppTheme">
+        <item name="android:windowSplashScreenBackground">#000000</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="splashLogoTint">#888888</item>
+    </style>
+    <style name="SplashTheme.LightBlue" parent="AppTheme">
+        <item name="android:windowSplashScreenBackground">#000000</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="splashLogoTint">#9FB6CC</item>
+    </style>
+    <style name="SplashTheme.DarkBlue" parent="AppTheme">
+        <item name="android:windowSplashScreenBackground">#000000</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="splashLogoTint">#97A8C0</item>
+    </style>
+    <style name="SplashTheme.Green" parent="AppTheme">
+        <item name="android:windowSplashScreenBackground">#000000</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="splashLogoTint">#9DB89E</item>
+    </style>
+    <style name="SplashTheme.Sepia" parent="AppTheme">
+        <item name="android:windowSplashScreenBackground">#000000</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="splashLogoTint">#B3A79B</item>
+    </style>
+    <style name="SplashTheme.Purple" parent="AppTheme">
+        <item name="android:windowSplashScreenBackground">#000000</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="splashLogoTint">#A99BC4</item>
+    </style>
+    <style name="SplashTheme.Red" parent="AppTheme">
+        <item name="android:windowSplashScreenBackground">#000000</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="splashLogoTint">#C09A98</item>
+    </style>
+</resources>
