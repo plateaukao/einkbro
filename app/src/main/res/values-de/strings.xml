@@ -577,7 +577,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="test_connection_testing">Wird getestet…</string>
     <string name="test_connection_success">Verbindung OK (%1$s)</string>
     <string name="test_connection_failed">Verbindung fehlgeschlagen: %1$s</string>
-    <string name="setting_title_ui_theme">Themenfarbe</string>
+    <string name="setting_title_ui_theme">Design</string>
+    <string name="theme_section_color">Farbe</string>
     <string name="setting_summary_ui_theme">Akzentfarbe für Schaltflächen, Rahmen und Dialoge</string>
     <string name="theme_classic">Klassisch</string>
     <string name="theme_light_blue">Hellblau</string>
@@ -587,4 +588,11 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="theme_sepia">Sepia</string>
     <string name="theme_purple">Violett</string>
     <string name="theme_red">Rot</string>
+    <string name="setting_title_ui_style">Stil</string>
+    <string name="style_soft">Sanft</string>
+    <string name="style_round">Rund</string>
+    <string name="style_sharp">Eckig</string>
+    <string name="style_paper">Papier</string>
+    <string name="style_dashed">Gestrichelt</string>
+    <string name="style_no_border">Ohne Rahmen</string>
 </resources>

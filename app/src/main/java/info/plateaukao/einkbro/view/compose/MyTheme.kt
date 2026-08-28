@@ -4,8 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Build
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -17,12 +20,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import info.plateaukao.einkbro.preference.BorderStyle
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.ThemePalette
+import info.plateaukao.einkbro.preference.ThemeStyle
+import info.plateaukao.einkbro.preference.UiStyle
 import info.plateaukao.einkbro.preference.UiTheme
 import info.plateaukao.einkbro.preference.palette
 
@@ -38,6 +47,8 @@ object UiThemeState {
     val current: MutableState<UiTheme> = mutableStateOf(UiTheme.CLASSIC)
     val darkMode: MutableState<DarkMode> = mutableStateOf(DarkMode.SYSTEM)
     val customColor: MutableState<Color> = mutableStateOf(Color(0xFF4A90D9))
+    val uiStyle: MutableState<UiStyle> = mutableStateOf(UiStyle.CLASSIC)
+    val inverted: MutableState<Boolean> = mutableStateOf(false)
 }
 
 /**
@@ -46,7 +57,7 @@ object UiThemeState {
  * This gives every UiTheme a dark variant independent of system dark mode.
  */
 @Composable
-fun isAppInDarkTheme(): Boolean = when (UiThemeState.darkMode.value) {
+fun isAppInDarkTheme(): Boolean = UiThemeState.inverted.value || when (UiThemeState.darkMode.value) {
     DarkMode.FORCE_ON -> true
     DarkMode.DISABLED -> false
     DarkMode.SYSTEM -> isSystemInDarkTheme()
@@ -62,16 +73,53 @@ fun isAppInDarkTheme(): Boolean = when (UiThemeState.darkMode.value) {
 val Colors.onTopBar: Color get() = if (isLight) onPrimary else onSurface
 
 @Composable
+fun currentThemeStyle(): ThemeStyle = UiThemeState.uiStyle.value.style
+
+/**
+ * Themed frame for in-content bordered items: width, corner radius, and
+ * border style come from the current theme's ThemeStyle. A non-positive
+ * widthOverride keeps the call site's "no border in this state" behavior;
+ * a positive one keeps its emphasis (never thinner than the theme width).
+ * NONE styles use a tonal fill instead of a stroke; DOUBLE falls back to a
+ * solid stroke for small items (the double frame stays on dialog windows).
+ */
+fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
+    val style = currentThemeStyle()
+    if (widthOverride != null && widthOverride <= 0.dp) return@composed this
+    val shape = RoundedCornerShape(style.itemRadiusDp.dp)
+    val width = maxOf(widthOverride ?: 0.dp, style.borderWidthDp.dp)
+    when (style.borderStyle) {
+        BorderStyle.NONE -> background(
+            lerp(
+                MaterialTheme.colors.background,
+                MaterialTheme.colors.primary,
+                if (MaterialTheme.colors.isLight) 0.10f else 0.16f,
+            ),
+            shape,
+        )
+        BorderStyle.DASHED -> dashedBorder(width, style.itemRadiusDp.dp, MaterialTheme.colors.primary)
+        else -> border(width, MaterialTheme.colors.primary, shape)
+    }
+}
+
+@Composable
 fun MyTheme(
     darkTheme: Boolean = isAppInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val uiTheme by UiThemeState.current
     val customColor by UiThemeState.customColor
+    val inverted by UiThemeState.inverted
     MaterialTheme(
-        colors = remember(uiTheme, customColor, darkTheme) {
+        colors = remember(uiTheme, customColor, darkTheme, inverted) {
             val palette = uiTheme.palette(customColor)
-            if (darkTheme) palette.toDarkColors() else palette.toLightColors()
+            when {
+                // inverted: the theme's dark text shade becomes the background
+                // and the light background tint becomes the text color
+                inverted -> palette.toInvertedColors()
+                darkTheme -> palette.toDarkColors()
+                else -> palette.toLightColors()
+            }
         },
         content = content,
     )
@@ -122,6 +170,18 @@ private fun ThemePalette.toLightColors() = lightColors(
     onSurface = onBackground,
     background = background,
     onBackground = onBackground,
+)
+
+private fun ThemePalette.toInvertedColors() = darkColors(
+    primary = accentDark,
+    primaryVariant = accentDark,
+    onPrimary = Color.Black,
+    secondary = accentDark,
+    onSecondary = Color.Black,
+    surface = onBackground,
+    onSurface = background,
+    background = onBackground,
+    onBackground = background,
 )
 
 private fun ThemePalette.toDarkColors() = darkColors(

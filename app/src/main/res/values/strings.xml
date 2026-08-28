@@ -320,7 +320,8 @@
     <string name="split_screen">Split screen</string>
     <string name="dark_mode">Dark mode</string>
     <string name="setting_summary_dark_mode">Configure dark mode</string>
-    <string name="setting_title_ui_theme">Theme color</string>
+    <string name="setting_title_ui_theme">Theme</string>
+    <string name="theme_section_color">Color</string>
     <string name="setting_summary_ui_theme">Accent color for buttons, borders, and dialogs</string>
     <string name="theme_classic">Classic</string>
     <string name="theme_light_blue">Light blue</string>
@@ -330,6 +331,13 @@
     <string name="theme_sepia">Sepia</string>
     <string name="theme_purple">Purple</string>
     <string name="theme_red">Red</string>
+    <string name="setting_title_ui_style">Style</string>
+    <string name="style_soft">Soft</string>
+    <string name="style_round">Round</string>
+    <string name="style_sharp">Sharp</string>
+    <string name="style_paper">Paper</string>
+    <string name="style_dashed">Dashed</string>
+    <string name="style_no_border">No border</string>
     <string name="hie_touch_area_when_input">Hide when typing</string> <!-- Typo in variable name -->
     <string name="switch_touch_area_action">Switch up/down direction</string>
     <string name="switch_touch_area_action_short">Switch direction</string>

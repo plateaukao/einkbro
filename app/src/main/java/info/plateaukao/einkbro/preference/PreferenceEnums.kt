@@ -218,3 +218,38 @@ fun deriveThemePalette(base: Color): ThemePalette {
         onBackgroundDark = make(h, minOf(s * 0.4f, 0.2f), 0.72f),
     )
 }
+
+// How themed borders are drawn.
+enum class BorderStyle { SOLID, DASHED, DOUBLE, NONE }
+
+/**
+ * Shape/stroke styling bundled with a theme, so each theme is a distinct
+ * "look" rather than just a recolor. frameRadius applies to dialog window
+ * frames and floating panels; itemRadius to in-content bordered items.
+ * NONE draws no stroke and uses a tonal (accent-tinted) fill instead.
+ */
+data class ThemeStyle(
+    val borderWidthDp: Float,
+    val frameRadiusDp: Float,
+    val itemRadiusDp: Float,
+    val borderStyle: BorderStyle,
+)
+
+// UI shape styles, independent of the color theme so any color can pair
+// with any look. Persisted by ordinal; only append new entries.
+enum class UiStyle(val titleResId: Int, val style: ThemeStyle) {
+    // unchanged original look
+    CLASSIC(R.string.theme_classic, ThemeStyle(1f, 5f, 7f, BorderStyle.SOLID)),
+    // soft rounded corners
+    SOFT(R.string.style_soft, ThemeStyle(1f, 12f, 10f, BorderStyle.SOLID)),
+    // pill / very round
+    ROUND(R.string.style_round, ThemeStyle(1f, 16f, 14f, BorderStyle.SOLID)),
+    // sharp corners with a bold stroke, technical
+    SHARP(R.string.style_sharp, ThemeStyle(2f, 0f, 0f, BorderStyle.SOLID)),
+    // print-like card with a double frame
+    PAPER(R.string.style_paper, ThemeStyle(1f, 10f, 8f, BorderStyle.DOUBLE)),
+    // dashed accent frame
+    DASHED(R.string.style_dashed, ThemeStyle(1.5f, 6f, 6f, BorderStyle.DASHED)),
+    // no stroke; tonal accent-tinted fill instead
+    BORDERLESS(R.string.style_no_border, ThemeStyle(1f, 16f, 12f, BorderStyle.NONE)),
+}

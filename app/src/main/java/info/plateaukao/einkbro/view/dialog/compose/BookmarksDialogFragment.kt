@@ -71,6 +71,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
+import info.plateaukao.einkbro.view.compose.ebItemFrame
 
 class BookmarksDialogFragment(
     private val lifecycleScope: LifecycleCoroutineScope,
@@ -474,7 +475,7 @@ fun BookmarkItem(
         modifier = modifier
             .height(54.dp)
             .padding(4.dp)
-            .border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
+            .ebItemFrame(borderWidth)
             .padding(4.dp),
         horizontalArrangement = Arrangement.Center,
     ) {
@@ -544,7 +545,7 @@ fun BookmarkGridItem(
     Column(
         modifier = modifier
             .padding(4.dp)
-            .border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
+            .ebItemFrame(borderWidth)
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

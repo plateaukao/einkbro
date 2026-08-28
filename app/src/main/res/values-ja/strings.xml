@@ -582,7 +582,8 @@
     <string name="test_connection_testing">テスト中…</string>
     <string name="test_connection_success">接続OK（%1$s）</string>
     <string name="test_connection_failed">接続に失敗しました：%1$s</string>
-    <string name="setting_title_ui_theme">テーマカラー</string>
+    <string name="setting_title_ui_theme">テーマ</string>
+    <string name="theme_section_color">カラー</string>
     <string name="setting_summary_ui_theme">ボタン・枠線・ダイアログのアクセントカラー</string>
     <string name="theme_classic">クラシック</string>
     <string name="theme_light_blue">ライトブルー</string>
@@ -592,4 +593,11 @@
     <string name="theme_sepia">セピア</string>
     <string name="theme_purple">パープル</string>
     <string name="theme_red">レッド</string>
+    <string name="setting_title_ui_style">スタイル</string>
+    <string name="style_soft">ソフト</string>
+    <string name="style_round">丸型</string>
+    <string name="style_sharp">シャープ</string>
+    <string name="style_paper">ペーパー</string>
+    <string name="style_dashed">破線</string>
+    <string name="style_no_border">枠なし</string>
 </resources>

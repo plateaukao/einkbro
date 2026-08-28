@@ -637,7 +637,8 @@
     <string name="test_connection_testing">Menguji…</string>
     <string name="test_connection_success">Koneksi OK (%1$s)</string>
     <string name="test_connection_failed">Koneksi gagal: %1$s</string>
-    <string name="setting_title_ui_theme">Warna tema</string>
+    <string name="setting_title_ui_theme">Tema</string>
+    <string name="theme_section_color">Warna</string>
     <string name="setting_summary_ui_theme">Warna aksen untuk tombol, garis tepi, dan dialog</string>
     <string name="theme_classic">Klasik</string>
     <string name="theme_light_blue">Biru muda</string>
@@ -647,4 +648,11 @@
     <string name="theme_sepia">Sepia</string>
     <string name="theme_purple">Ungu</string>
     <string name="theme_red">Merah</string>
+    <string name="setting_title_ui_style">Gaya</string>
+    <string name="style_soft">Lembut</string>
+    <string name="style_round">Bulat</string>
+    <string name="style_sharp">Tajam</string>
+    <string name="style_paper">Kertas</string>
+    <string name="style_dashed">Putus-putus</string>
+    <string name="style_no_border">Tanpa tepi</string>
 </resources>

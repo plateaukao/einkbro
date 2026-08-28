@@ -60,7 +60,7 @@ class ListSettingWithNameDialog(
                 onTitleAction?.invoke()
             }
             dialog.show()
-            dialog.window?.setBackgroundDrawable(ThemedBorders.panel(context))
+            dialog.window?.setBackgroundDrawable(ThemedBorders.windowPanel(context))
             dialog.window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
@@ -118,7 +118,7 @@ class ListSettingWithNameDialog(
            }
        }.create().also {
            it.show()
-           it.window?.setBackgroundDrawable(ThemedBorders.panel(context))
+           it.window?.setBackgroundDrawable(ThemedBorders.windowPanel(context))
            it.window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
        }
    }

@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.data.MenuInfo
+import info.plateaukao.einkbro.view.compose.ebItemFrame
 
 @Composable
 fun ActionModeMenu(
@@ -51,7 +52,7 @@ fun ActionModeMenu(
             .background(MaterialTheme.colors.background)
             .wrapContentHeight()
             .width(280.dp)
-            .border(1.dp, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
+            .ebItemFrame()
     ) {
         val menuInfos = menus.value
         items(menuInfos.size) { index ->

@@ -33,7 +33,7 @@ fun SelectableText(
         overflow = TextOverflow.Ellipsis,
         textAlign = textAlign,
         modifier = modifier
-            .border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
+            .ebItemFrame(borderWidth)
             .padding(horizontal = 6.dp, vertical = 6.dp)
             .clickable(
                 indication = null,

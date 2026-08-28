@@ -799,7 +799,7 @@ private fun TabCountIcon(
     val border = if (isIncognito)
         Modifier.dashedBorder(1.dp, 7.dp, color = MaterialTheme.colors.primary)
     else
-        Modifier.border(1.dp, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
+        Modifier.ebItemFrame()
 
     val iconCenterXRef = remember { intArrayOf(-1) }
     val iconCenterYRef = remember { intArrayOf(-1) }

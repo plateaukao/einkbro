@@ -111,6 +111,8 @@ class EinkBroApplication : Application() {
         UiThemeState.current.value = config.display.uiTheme
         UiThemeState.darkMode.value = config.display.darkMode
         UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(config.display.customThemeColor)
+        UiThemeState.uiStyle.value = config.display.uiStyle
+        UiThemeState.inverted.value = config.display.uiThemeInverted
 
         if (config.uiLocaleLanguage.isNotEmpty()) {
             LocaleManager.setLocale(this, config.uiLocaleLanguage)

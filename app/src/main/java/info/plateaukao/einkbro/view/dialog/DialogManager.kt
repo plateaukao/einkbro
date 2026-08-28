@@ -185,7 +185,7 @@ class DialogManager(
         dialogRef = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .apply { setView(composeView) }
             .create().apply {
-                window?.setBackgroundDrawable(ThemedBorders.panel(activity))
+                window?.setBackgroundDrawable(ThemedBorders.windowPanel(activity))
                 window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
                 window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             }
@@ -233,7 +233,7 @@ class DialogManager(
         dialogRef = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .apply { setView(composeView) }
             .create().apply {
-                window?.setBackgroundDrawable(ThemedBorders.panel(activity))
+                window?.setBackgroundDrawable(ThemedBorders.windowPanel(activity))
                 window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
                 window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
             }

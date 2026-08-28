@@ -82,6 +82,7 @@ import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import info.plateaukao.einkbro.view.compose.ebItemFrame
 
 // Rows keep this as a minimum but can grow when a larger system font scale
 // makes the title/summary wrap (issue #623).
@@ -111,7 +112,7 @@ fun SettingItemUi(
             interactionSource = interactionSource,
         ) { onClick?.invoke() }
     if (showBorder) rowModifier =
-        rowModifier.border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
+        rowModifier.ebItemFrame(borderWidth)
 
     Row(
         modifier = rowModifier.then(

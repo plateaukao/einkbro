@@ -580,7 +580,8 @@
     <string name="test_connection_testing">Testování…</string>
     <string name="test_connection_success">Připojení OK (%1$s)</string>
     <string name="test_connection_failed">Připojení selhalo: %1$s</string>
-    <string name="setting_title_ui_theme">Barva motivu</string>
+    <string name="setting_title_ui_theme">Motiv</string>
+    <string name="theme_section_color">Barva</string>
     <string name="setting_summary_ui_theme">Barva zvýraznění pro tlačítka, okraje a dialogy</string>
     <string name="theme_classic">Klasická</string>
     <string name="theme_light_blue">Světle modrá</string>
@@ -590,4 +591,11 @@
     <string name="theme_sepia">Sépiová</string>
     <string name="theme_purple">Fialová</string>
     <string name="theme_red">Červená</string>
+    <string name="setting_title_ui_style">Styl</string>
+    <string name="style_soft">Jemný</string>
+    <string name="style_round">Kulatý</string>
+    <string name="style_sharp">Ostrý</string>
+    <string name="style_paper">Papír</string>
+    <string name="style_dashed">Čárkovaný</string>
+    <string name="style_no_border">Bez okraje</string>
 </resources>

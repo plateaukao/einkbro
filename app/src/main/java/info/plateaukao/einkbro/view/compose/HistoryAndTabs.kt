@@ -290,7 +290,7 @@ private fun TabItem(
         modifier = modifier
             .height(54.dp)
             .padding(4.dp)
-            .border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
+            .ebItemFrame(borderWidth)
             .padding(4.dp),
         horizontalArrangement = Arrangement.Center
     ) {

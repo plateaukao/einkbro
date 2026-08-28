@@ -575,7 +575,8 @@
     <string name="test_connection_testing">S\'està provant…</string>
     <string name="test_connection_success">Connexió correcta (%1$s)</string>
     <string name="test_connection_failed">Ha fallat la connexió: %1$s</string>
-    <string name="setting_title_ui_theme">Color del tema</string>
+    <string name="setting_title_ui_theme">Tema</string>
+    <string name="theme_section_color">Color</string>
     <string name="setting_summary_ui_theme">Color d\'accent per a botons, vores i diàlegs</string>
     <string name="theme_classic">Clàssic</string>
     <string name="theme_light_blue">Blau clar</string>
@@ -585,4 +586,11 @@
     <string name="theme_sepia">Sèpia</string>
     <string name="theme_purple">Porpra</string>
     <string name="theme_red">Vermell</string>
+    <string name="setting_title_ui_style">Estil</string>
+    <string name="style_soft">Suau</string>
+    <string name="style_round">Arrodonit</string>
+    <string name="style_sharp">Angulós</string>
+    <string name="style_paper">Paper</string>
+    <string name="style_dashed">Discontinu</string>
+    <string name="style_no_border">Sense vora</string>
 </resources>

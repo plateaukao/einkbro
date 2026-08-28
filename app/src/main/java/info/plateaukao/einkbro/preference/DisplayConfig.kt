@@ -73,6 +73,20 @@ class DisplayConfig(private val sp: SharedPreferences) {
             UiThemeState.current.value = value
         }
 
+    var uiStyle: UiStyle
+        get() = UiStyle.entries.getOrElse(sp.getInt(K_UI_STYLE, 0)) { UiStyle.CLASSIC }
+        set(value) {
+            sp.edit { putInt(K_UI_STYLE, value.ordinal) }
+            UiThemeState.uiStyle.value = value
+        }
+
+    var uiThemeInverted: Boolean
+        get() = sp.getBoolean(K_UI_THEME_INVERTED, false)
+        set(value) {
+            sp.edit { putBoolean(K_UI_THEME_INVERTED, value) }
+            UiThemeState.inverted.value = value
+        }
+
     var customThemeColor: Int
         get() = sp.getInt(K_CUSTOM_THEME_COLOR, DEFAULT_CUSTOM_THEME_COLOR)
         set(value) {
@@ -135,6 +149,8 @@ class DisplayConfig(private val sp: SharedPreferences) {
         const val K_DARK_MODE = "sp_dark_mode"
         const val K_UI_THEME = "sp_ui_theme"
         const val K_CUSTOM_THEME_COLOR = "sp_custom_theme_color"
+        const val K_UI_STYLE = "sp_ui_style"
+        const val K_UI_THEME_INVERTED = "sp_ui_theme_inverted"
         const val DEFAULT_CUSTOM_THEME_COLOR = 0xFF4A90D9.toInt()
         const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
         const val K_EINK_IMAGE_MODE = "sp_eink_image_mode"
