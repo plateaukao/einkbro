@@ -113,6 +113,8 @@ class EinkBroApplication : Application() {
         UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(config.display.customThemeColor)
         UiThemeState.uiStyle.value = config.display.uiStyle
         UiThemeState.inverted.value = config.display.uiThemeInverted
+        UiThemeState.gradientAngle.value = config.display.gradientAngle
+        UiThemeState.gradientLevel.value = config.display.gradientLevel
 
         if (config.uiLocaleLanguage.isNotEmpty()) {
             LocaleManager.setLocale(this, config.uiLocaleLanguage)

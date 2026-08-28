@@ -80,6 +80,22 @@ class DisplayConfig(private val sp: SharedPreferences) {
             UiThemeState.uiStyle.value = value
         }
 
+    // gradient flow direction in degrees (0 = left-to-right, 90 = top-down)
+    var gradientAngle: Int
+        get() = sp.getInt(K_GRADIENT_ANGLE, 45)
+        set(value) {
+            sp.edit { putInt(K_GRADIENT_ANGLE, value) }
+            UiThemeState.gradientAngle.value = value
+        }
+
+    // percent: 100 = the style's default blend strength
+    var gradientLevel: Int
+        get() = sp.getInt(K_GRADIENT_LEVEL, 100)
+        set(value) {
+            sp.edit { putInt(K_GRADIENT_LEVEL, value) }
+            UiThemeState.gradientLevel.value = value
+        }
+
     var uiThemeInverted: Boolean
         get() = sp.getBoolean(K_UI_THEME_INVERTED, false)
         set(value) {
@@ -151,6 +167,8 @@ class DisplayConfig(private val sp: SharedPreferences) {
         const val K_CUSTOM_THEME_COLOR = "sp_custom_theme_color"
         const val K_UI_STYLE = "sp_ui_style"
         const val K_UI_THEME_INVERTED = "sp_ui_theme_inverted"
+        const val K_GRADIENT_ANGLE = "sp_gradient_angle"
+        const val K_GRADIENT_LEVEL = "sp_gradient_level"
         const val DEFAULT_CUSTOM_THEME_COLOR = 0xFF4A90D9.toInt()
         const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
         const val K_EINK_IMAGE_MODE = "sp_eink_image_mode"

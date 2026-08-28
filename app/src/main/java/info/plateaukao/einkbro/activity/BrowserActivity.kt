@@ -1187,6 +1187,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             DisplayConfig.K_UI_THEME -> UiThemeState.current.value = config.display.uiTheme
             DisplayConfig.K_UI_STYLE -> UiThemeState.uiStyle.value = config.display.uiStyle
             DisplayConfig.K_UI_THEME_INVERTED -> UiThemeState.inverted.value = config.display.uiThemeInverted
+            DisplayConfig.K_GRADIENT_ANGLE ->
+                UiThemeState.gradientAngle.value = config.display.gradientAngle
+            DisplayConfig.K_GRADIENT_LEVEL -> UiThemeState.gradientLevel.value = config.display.gradientLevel
             DisplayConfig.K_CUSTOM_THEME_COLOR ->
                 UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(config.display.customThemeColor)
             UiConfig.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)

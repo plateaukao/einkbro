@@ -16,6 +16,7 @@ import info.plateaukao.einkbro.preference.ThemePalette
 import info.plateaukao.einkbro.preference.ThemeStyle
 import info.plateaukao.einkbro.preference.gradientSpec
 import info.plateaukao.einkbro.preference.palette
+import info.plateaukao.einkbro.view.compose.UiThemeState
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -43,28 +44,48 @@ object ThemedBorders : KoinComponent {
     private fun Context.dp(value: Float): Int =
         (value * resources.displayMetrics.density + 0.5f).toInt()
 
+    // Read the live UiThemeState (kept in sync with config) instead of the
+    // persisted preferences, so drag previews (color wheel, gradient dial)
+    // retint window frames instantly before the value is committed.
     private fun currentPalette(): ThemePalette =
-        config.display.uiTheme.palette(Color(config.display.customThemeColor))
+        UiThemeState.current.value.palette(UiThemeState.customColor.value)
 
     /** Start/end colors for a gradient style fill, per display mode. */
     private fun gradientColors(context: Context, start: Float, end: Float): IntArray {
         val palette = currentPalette()
+        val level = UiThemeState.gradientLevel.value
         val (base, accent) = when {
-            config.display.uiThemeInverted -> palette.onBackground to palette.accentDark
+            UiThemeState.inverted.value -> palette.onBackground to palette.accentDark
             isNight(context) -> Color.Black to palette.accentDark
             else -> palette.background to palette.accent
         }
         return intArrayOf(
-            lerp(base, accent, start).toArgb(),
-            lerp(base, accent, end).toArgb(),
+            lerp(base, accent, (start * level / 100f).coerceIn(0f, 0.9f)).toArgb(),
+            lerp(base, accent, (end * level / 100f).coerceIn(0f, 0.9f)).toArgb(),
         )
+    }
+
+    // GradientDrawable supports only the 8 axis/diagonal orientations, so the
+    // free angle snaps to the nearest 45 degrees for window frames/panels.
+    private fun drawableOrientation(): GradientDrawable.Orientation {
+        val snapped = (((UiThemeState.gradientAngle.value % 360) + 360) % 360 + 22) / 45 % 8
+        return when (snapped) {
+            0 -> GradientDrawable.Orientation.LEFT_RIGHT
+            1 -> GradientDrawable.Orientation.TL_BR
+            2 -> GradientDrawable.Orientation.TOP_BOTTOM
+            3 -> GradientDrawable.Orientation.TR_BL
+            4 -> GradientDrawable.Orientation.RIGHT_LEFT
+            5 -> GradientDrawable.Orientation.BR_TL
+            6 -> GradientDrawable.Orientation.BOTTOM_TOP
+            else -> GradientDrawable.Orientation.BL_TR
+        }
     }
 
     /** Accent-tinted fill used instead of a stroke for BorderStyle.NONE. */
     fun tonalFillArgb(context: Context): Int {
         val palette = currentPalette()
         return when {
-            config.display.uiThemeInverted ->
+            UiThemeState.inverted.value ->
                 lerp(palette.onBackground, palette.accentDark, 0.16f).toArgb()
             isNight(context) -> lerp(Color.Black, palette.accentDark, 0.16f).toArgb()
             else -> lerp(palette.background, palette.accent, 0.10f).toArgb()
@@ -73,10 +94,10 @@ object ThemedBorders : KoinComponent {
 
     private fun box(
         context: Context,
-        style: ThemeStyle = config.display.uiStyle.style,
+        style: ThemeStyle = UiThemeState.uiStyle.value.style,
         forceSolid: Boolean = false,
     ): Drawable {
-        val inverted = config.display.uiThemeInverted
+        val inverted = UiThemeState.inverted.value
         val night = inverted || isNight(context)
         val palette = currentPalette()
         val accent = (if (night) palette.accentDark else palette.accent).toArgb()
@@ -94,7 +115,7 @@ object ThemedBorders : KoinComponent {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = radius
             if (gradientSpec != null) {
-                orientation = GradientDrawable.Orientation.TL_BR
+                orientation = drawableOrientation()
                 colors = gradientColors(context, gradientSpec.first, gradientSpec.second)
             } else {
                 setColor(fill)
@@ -141,7 +162,7 @@ object ThemedBorders : KoinComponent {
     }
 
     private fun withContentPadding(context: Context, drawable: Drawable): Drawable {
-        val style = config.display.uiStyle.style
+        val style = UiThemeState.uiStyle.value.style
         val pad = contentPad(context, style)
         return LayerDrawable(arrayOf(drawable)).apply { setPadding(pad, pad, pad, pad) }
     }

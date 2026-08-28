@@ -13,6 +13,7 @@ import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
@@ -21,6 +22,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.LinearGradientShader
+import androidx.compose.ui.graphics.Shader
+import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -51,7 +58,37 @@ object UiThemeState {
     val customColor: MutableState<Color> = mutableStateOf(Color(0xFF4A90D9))
     val uiStyle: MutableState<UiStyle> = mutableStateOf(UiStyle.CLASSIC)
     val inverted: MutableState<Boolean> = mutableStateOf(false)
+    val gradientAngle: MutableState<Int> = mutableStateOf(45)
+    val gradientLevel: MutableState<Int> = mutableStateOf(100)
 }
+
+/**
+ * Linear gradient at an arbitrary angle (degrees; 0 = left-to-right,
+ * 90 = top-down), spanning the drawn box regardless of its size.
+ */
+class AngleGradientBrush(
+    private val gradientColors: List<Color>,
+    private val angleDegrees: Float,
+) : ShaderBrush() {
+    override fun createShader(size: Size): Shader {
+        val rad = Math.toRadians(angleDegrees.toDouble())
+        val dx = kotlin.math.cos(rad).toFloat()
+        val dy = kotlin.math.sin(rad).toFloat()
+        val cx = size.width / 2f
+        val cy = size.height / 2f
+        val halfLen =
+            (kotlin.math.abs(dx) * size.width + kotlin.math.abs(dy) * size.height) / 2f
+        return LinearGradientShader(
+            from = Offset(cx - dx * halfLen, cy - dy * halfLen),
+            to = Offset(cx + dx * halfLen, cy + dy * halfLen),
+            colors = gradientColors,
+        )
+    }
+}
+
+/** Applies the user's gradient level (percent) to a spec blend fraction. */
+fun Float.withGradientLevel(levelPercent: Int): Float =
+    (this * levelPercent / 100f).coerceIn(0f, 0.9f)
 
 /**
  * Whether the app UI should use the dark palette: the Dark mode setting wins
@@ -102,12 +139,23 @@ fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
         BorderStyle.DASHED -> dashedBorder(width, style.itemRadiusDp.dp, MaterialTheme.colors.primary)
         BorderStyle.GRADIENT, BorderStyle.GRADIENT_FLAT, BorderStyle.GRADIENT_DEEP -> {
             val (start, end, hasBorder) = style.borderStyle.gradientSpec()!!
+            val angle = UiThemeState.gradientAngle.value
+            val level = UiThemeState.gradientLevel.value
             val filled = background(
-                Brush.linearGradient(
+                AngleGradientBrush(
                     listOf(
-                        lerp(MaterialTheme.colors.background, MaterialTheme.colors.primary, start),
-                        lerp(MaterialTheme.colors.background, MaterialTheme.colors.primary, end),
+                        lerp(
+                            MaterialTheme.colors.background,
+                            MaterialTheme.colors.primary,
+                            start.withGradientLevel(level),
+                        ),
+                        lerp(
+                            MaterialTheme.colors.background,
+                            MaterialTheme.colors.primary,
+                            end.withGradientLevel(level),
+                        ),
                     ),
+                    angle.toFloat(),
                 ),
                 shape,
             )
@@ -141,20 +189,26 @@ fun MyTheme(
 }
 
 /**
- * On Android 15+ (targetSdk 35+) windows are forced edge-to-edge, so the
- * settings screens extend their black TopAppBar behind the transparent status
- * bar: the status bar icons must turn white, and the navigation bar icons
- * follow the theme background. On older versions the theme's white status bar
- * is still honored, so the default dark icons must be kept.
+ * Makes the status bar match the settings screens' TopAppBar. On Android 15+
+ * (targetSdk 35+) windows are forced edge-to-edge and the TopAppBar already
+ * extends behind the transparent status bar; on older versions the status bar
+ * is painted with the top bar's background color (the theme accent in light
+ * mode, surface in dark mode) directly. Either way the bar is dark/accent
+ * colored, so status bar icons turn light, and the navigation bar icons
+ * follow the theme background.
  */
 @Composable
 fun SystemBarIconsForBlackTopBar(darkTheme: Boolean = isAppInDarkTheme()) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return
     val view = LocalView.current
     if (view.isInEditMode) return
+    val topBarColor = MaterialTheme.colors.primarySurface
     SideEffect {
         val window = view.context.findActivity()?.window ?: return@SideEffect
         val controller = WindowCompat.getInsetsController(window, view)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            @Suppress("DEPRECATION")
+            window.statusBarColor = topBarColor.toArgb()
+        }
         controller.isAppearanceLightStatusBars = false
         controller.isAppearanceLightNavigationBars = !darkTheme
     }

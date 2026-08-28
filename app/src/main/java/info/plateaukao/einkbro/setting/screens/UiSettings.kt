@@ -31,6 +31,14 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
                 if (config.uiLocaleLanguage != oldLocale) deps.activity.recreate()
             }
         },
+        ActionSettingItem(
+            R.string.setting_title_ui_theme,
+            0,
+            R.string.setting_summary_ui_theme,
+        ) {
+            ThemeColorDialogFragment()
+                .show(deps.activity.supportFragmentManager, "theme_color_dialog")
+        },
         ListSettingWithEnumItem(
             R.string.dark_mode,
             0,
@@ -42,14 +50,6 @@ fun buildUiSettingItems(deps: SettingScreenDeps): List<SettingItemInterface> {
                 R.string.dark_mode_disabled,
             )
         ),
-        ActionSettingItem(
-            R.string.setting_title_ui_theme,
-            0,
-            R.string.setting_summary_ui_theme,
-        ) {
-            ThemeColorDialogFragment()
-                .show(deps.activity.supportFragmentManager, "theme_color_dialog")
-        },
         BooleanSettingItem(
             R.string.hide_statusbar,
             0,

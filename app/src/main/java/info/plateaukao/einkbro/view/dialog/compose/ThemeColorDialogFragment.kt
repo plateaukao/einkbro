@@ -1,6 +1,8 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.geometry.Offset
@@ -86,9 +88,20 @@ class ThemeColorDialogFragment : ComposeDialogFragment() {
                 config.display.uiThemeInverted = inverted
                 retintWindowFrame()
             },
+            onGradientPreview = { angle, level ->
+                UiThemeState.gradientAngle.value = angle
+                UiThemeState.gradientLevel.value = level
+                retintWindowFrame()
+            },
+            onGradientPicked = { angle, level ->
+                config.display.gradientAngle = angle
+                config.display.gradientLevel = level
+                retintWindowFrame()
+            },
             onCustomColorPreview = { color ->
-                // live preview while dragging the sliders; not yet persisted
+                // live preview while dragging; not yet persisted
                 UiThemeState.customColor.value = color
+                retintWindowFrame()
             },
             onCustomColorPicked = { color ->
                 config.display.customThemeColor = color.toArgb()
@@ -108,15 +121,19 @@ private fun ThemeColorContent(
     onSelect: (UiTheme) -> Unit,
     onSelectStyle: (UiStyle) -> Unit,
     onToggleInvert: (Boolean) -> Unit,
+    onGradientPreview: (Int, Int) -> Unit,
+    onGradientPicked: (Int, Int) -> Unit,
     onCustomColorPreview: (Color) -> Unit,
     onCustomColorPicked: (Color) -> Unit,
     onClose: () -> Unit,
 ) {
     val current by UiThemeState.current
-    var showCustomWheel by remember { mutableStateOf(current == UiTheme.CUSTOM) }
+    // hidden by default; shown by tapping the Custom swatch
+    var showCustomWheel by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .widthIn(max = 360.dp)
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 8.dp, vertical = 10.dp),
     ) {
         Text(
@@ -160,18 +177,33 @@ private fun ThemeColorContent(
             style = MaterialTheme.typography.h6,
             color = MaterialTheme.colors.onBackground,
         )
+        var showGradientAdjust by remember { mutableStateOf(false) }
         UiStyle.entries.chunked(4).forEach { rowStyles ->
             Row(modifier = Modifier.fillMaxWidth()) {
                 rowStyles.forEach { style ->
                     StyleSwatch(
                         uiStyle = style,
                         isSelected = style == currentStyle,
-                        onClick = { onSelectStyle(style) },
+                        onClick = {
+                            val isGradient = style.style.borderStyle.gradientSpec() != null
+                            // tapping the selected gradient chip again toggles
+                            // the direction/level adjustment panel
+                            showGradientAdjust =
+                                if (style == currentStyle && isGradient) !showGradientAdjust
+                                else false
+                            if (style != currentStyle) onSelectStyle(style)
+                        },
                         modifier = Modifier.weight(1f),
                     )
                 }
                 repeat(4 - rowStyles.size) { Spacer(modifier = Modifier.weight(1f)) }
             }
+        }
+        if (showGradientAdjust && currentStyle.style.borderStyle.gradientSpec() != null) {
+            GradientAdjust(
+                onPreview = onGradientPreview,
+                onPicked = onGradientPicked,
+            )
         }
         val inverted by UiThemeState.inverted
         Row(
@@ -338,6 +370,103 @@ private fun CustomColorWheel(
     }
 }
 
+/**
+ * One dial for the gradient: the angle sets the direction, the distance
+ * from the center sets the blend level. The fill previews the result.
+ */
+@Composable
+private fun GradientAdjust(
+    onPreview: (Int, Int) -> Unit,
+    onPicked: (Int, Int) -> Unit,
+) {
+    val angle by UiThemeState.gradientAngle
+    val level by UiThemeState.gradientLevel
+    val accent = MaterialTheme.colors.primary
+    val bg = MaterialTheme.colors.background
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Canvas(
+            modifier = Modifier
+                .requiredSize(140.dp)
+                .pointerInput(Unit) {
+                    fun toAngleLevel(x: Float, y: Float): Pair<Int, Int> {
+                        val cx = size.width / 2f
+                        val cy = size.height / 2f
+                        val dx = x - cx
+                        val dy = y - cy
+                        val a = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
+                            .toInt()
+                        val frac = (kotlin.math.sqrt(dx * dx + dy * dy) / kotlin.math.min(cx, cy))
+                            .coerceIn(0f, 1f)
+                        return a to (40 + frac * 140).toInt()
+                    }
+                    detectDragGestures(
+                        onDragEnd = {
+                            onPicked(
+                                UiThemeState.gradientAngle.value,
+                                UiThemeState.gradientLevel.value,
+                            )
+                        },
+                    ) { change, _ ->
+                        change.consume()
+                        val (a, l) = toAngleLevel(change.position.x, change.position.y)
+                        onPreview(a, l)
+                    }
+                }
+                .pointerInput(Unit) {
+                    detectTapGestures { offset ->
+                        val cx = size.width / 2f
+                        val cy = size.height / 2f
+                        val dx = offset.x - cx
+                        val dy = offset.y - cy
+                        val a = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
+                            .toInt()
+                        val frac = (kotlin.math.sqrt(dx * dx + dy * dy) / kotlin.math.min(cx, cy))
+                            .coerceIn(0f, 1f)
+                        val l = (40 + frac * 140).toInt()
+                        onPreview(a, l)
+                        onPicked(a, l)
+                    }
+                },
+        ) {
+            val radius = kotlin.math.min(size.width, size.height) / 2f - 4.dp.toPx()
+            val center = Offset(size.width / 2f, size.height / 2f)
+            val rad = Math.toRadians(angle.toDouble())
+            val dir = Offset(
+                kotlin.math.cos(rad).toFloat(),
+                kotlin.math.sin(rad).toFloat(),
+            )
+            // fill previews the gradient with the chosen direction and level
+            drawCircle(
+                brush = Brush.linearGradient(
+                    listOf(bg, lerp(bg, accent, (0.28f * level / 100f).coerceIn(0f, 0.9f))),
+                    start = center - Offset(dir.x * radius, dir.y * radius),
+                    end = center + Offset(dir.x * radius, dir.y * radius),
+                ),
+                radius = radius,
+                center = center,
+            )
+            drawCircle(
+                color = accent,
+                radius = radius,
+                center = center,
+                style = Stroke(width = 2.dp.toPx()),
+            )
+            // needle: length shows the level, direction the flow
+            val frac = ((level - 40) / 140f).coerceIn(0f, 1f)
+            val tip = center + Offset(dir.x * radius * frac, dir.y * radius * frac)
+            drawLine(accent, center, tip, strokeWidth = 2.dp.toPx())
+            drawCircle(accent, radius = 7.dp.toPx(), center = tip)
+            drawCircle(bg, radius = 3.dp.toPx(), center = tip)
+        }
+    }
+}
+
 @Composable
 private fun StyleSwatch(
     uiStyle: UiStyle,
@@ -455,6 +584,6 @@ private fun ThemeSwatch(
 @Composable
 private fun PreviewThemeColorContent() {
     MyTheme {
-        ThemeColorContent(onSelect = {}, onSelectStyle = {}, onToggleInvert = {}, onCustomColorPreview = {}, onCustomColorPicked = {}, onClose = {})
+        ThemeColorContent(onSelect = {}, onSelectStyle = {}, onToggleInvert = {}, onGradientPreview = { _, _ -> }, onGradientPicked = { _, _ -> }, onCustomColorPreview = {}, onCustomColorPicked = {}, onClose = {})
     }
 }
