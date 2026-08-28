@@ -4,10 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.widthIn
@@ -130,9 +132,13 @@ private fun ThemeColorContent(
     val current by UiThemeState.current
     // hidden by default; shown by tapping the Custom swatch
     var showCustomWheel by remember { mutableStateOf(false) }
+    // cap below the screen height so the dialog window never grows to the
+    // window maximum, which would push its border frame out of view
+    val maxDialogHeight = (LocalConfiguration.current.screenHeightDp * 0.78f).dp
     Column(
         modifier = Modifier
             .widthIn(max = 360.dp)
+            .heightIn(max = maxDialogHeight)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 8.dp, vertical = 10.dp),
     ) {
@@ -273,36 +279,30 @@ private fun CustomColorWheel(
             modifier = Modifier
                 .requiredSize(wheelSize)
                 .pointerInput(Unit) {
-                    fun update(x: Float, y: Float, finished: Boolean) {
-                        val cx = size.width / 2f
-                        val cy = size.height / 2f
-                        val dx = x - cx
-                        val dy = y - cy
-                        val radius = kotlin.math.min(cx, cy)
-                        hue = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
-                            .toFloat()
-                        sat = (kotlin.math.sqrt(dx * dx + dy * dy) / radius).coerceIn(0f, 1f)
-                        onPreview(currentColor())
-                        if (finished) onPicked(currentColor())
-                    }
-                    detectDragGestures(
-                        onDragEnd = { onPicked(currentColor()) },
-                    ) { change, _ ->
-                        change.consume()
-                        update(change.position.x, change.position.y, finished = false)
-                    }
-                }
-                .pointerInput(Unit) {
-                    detectTapGestures { offset -> 
-                        val cx = size.width / 2f
-                        val cy = size.height / 2f
-                        val dx = offset.x - cx
-                        val dy = offset.y - cy
-                        val radius = kotlin.math.min(cx, cy)
-                        hue = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
-                            .toFloat()
-                        sat = (kotlin.math.sqrt(dx * dx + dy * dy) / radius).coerceIn(0f, 1f)
-                        onPreview(currentColor())
+                    // consume from the first down so a press applies instantly
+                    // and the dialog's scroll container never steals the drag
+                    awaitEachGesture {
+                        fun apply(x: Float, y: Float) {
+                            val cx = size.width / 2f
+                            val cy = size.height / 2f
+                            val dx = x - cx
+                            val dy = y - cy
+                            hue = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
+                                .toFloat()
+                            sat = (kotlin.math.sqrt(dx * dx + dy * dy) / kotlin.math.min(cx, cy))
+                                .coerceIn(0f, 1f)
+                            onPreview(currentColor())
+                        }
+                        val down = awaitFirstDown()
+                        down.consume()
+                        apply(down.position.x, down.position.y)
+                        while (true) {
+                            val change = awaitPointerEvent().changes
+                                .firstOrNull { it.id == down.id } ?: break
+                            change.consume()
+                            apply(change.position.x, change.position.y)
+                            if (!change.pressed) break
+                        }
                         onPicked(currentColor())
                     }
                 },
@@ -394,43 +394,34 @@ private fun GradientAdjust(
             modifier = Modifier
                 .requiredSize(140.dp)
                 .pointerInput(Unit) {
-                    fun toAngleLevel(x: Float, y: Float): Pair<Int, Int> {
-                        val cx = size.width / 2f
-                        val cy = size.height / 2f
-                        val dx = x - cx
-                        val dy = y - cy
-                        val a = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
-                            .toInt()
-                        val frac = (kotlin.math.sqrt(dx * dx + dy * dy) / kotlin.math.min(cx, cy))
-                            .coerceIn(0f, 1f)
-                        return a to (40 + frac * 140).toInt()
-                    }
-                    detectDragGestures(
-                        onDragEnd = {
-                            onPicked(
-                                UiThemeState.gradientAngle.value,
-                                UiThemeState.gradientLevel.value,
-                            )
-                        },
-                    ) { change, _ ->
-                        change.consume()
-                        val (a, l) = toAngleLevel(change.position.x, change.position.y)
-                        onPreview(a, l)
-                    }
-                }
-                .pointerInput(Unit) {
-                    detectTapGestures { offset ->
-                        val cx = size.width / 2f
-                        val cy = size.height / 2f
-                        val dx = offset.x - cx
-                        val dy = offset.y - cy
-                        val a = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
-                            .toInt()
-                        val frac = (kotlin.math.sqrt(dx * dx + dy * dy) / kotlin.math.min(cx, cy))
-                            .coerceIn(0f, 1f)
-                        val l = (40 + frac * 140).toInt()
-                        onPreview(a, l)
-                        onPicked(a, l)
+                    // consume from the first down: a press applies direction and
+                    // level immediately, and the dialog's scroll never intercepts
+                    awaitEachGesture {
+                        fun apply(x: Float, y: Float) {
+                            val cx = size.width / 2f
+                            val cy = size.height / 2f
+                            val dx = x - cx
+                            val dy = y - cy
+                            val a = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
+                                .toInt()
+                            val frac = (kotlin.math.sqrt(dx * dx + dy * dy) / kotlin.math.min(cx, cy))
+                                .coerceIn(0f, 1f)
+                            onPreview(a, (40 + frac * 140).toInt())
+                        }
+                        val down = awaitFirstDown()
+                        down.consume()
+                        apply(down.position.x, down.position.y)
+                        while (true) {
+                            val change = awaitPointerEvent().changes
+                                .firstOrNull { it.id == down.id } ?: break
+                            change.consume()
+                            apply(change.position.x, change.position.y)
+                            if (!change.pressed) break
+                        }
+                        onPicked(
+                            UiThemeState.gradientAngle.value,
+                            UiThemeState.gradientLevel.value,
+                        )
                     }
                 },
         ) {
