@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.preference
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import info.plateaukao.einkbro.view.compose.UiThemeState
 
 class DisplayConfig(private val sp: SharedPreferences) {
 
@@ -60,7 +61,24 @@ class DisplayConfig(private val sp: SharedPreferences) {
 
     var darkMode: DarkMode
         get() = DarkMode.entries[sp.getString(K_DARK_MODE, "2")?.toInt() ?: 2]
-        set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
+        set(value) {
+            sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
+            UiThemeState.darkMode.value = value
+        }
+
+    var uiTheme: UiTheme
+        get() = UiTheme.entries.getOrElse(sp.getInt(K_UI_THEME, 0)) { UiTheme.CLASSIC }
+        set(value) {
+            sp.edit { putInt(K_UI_THEME, value.ordinal) }
+            UiThemeState.current.value = value
+        }
+
+    var customThemeColor: Int
+        get() = sp.getInt(K_CUSTOM_THEME_COLOR, DEFAULT_CUSTOM_THEME_COLOR)
+        set(value) {
+            sp.edit { putInt(K_CUSTOM_THEME_COLOR, value) }
+            UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(value)
+        }
 
     var einkImageAdjustment: EinkImageAdjustment
         get() = try {
@@ -115,6 +133,9 @@ class DisplayConfig(private val sp: SharedPreferences) {
         const val K_CUSTOM_FONT_CHANGED = "sp_custom_font_changed"
         const val K_FONT_FOLDER_URI = "sp_font_folder_uri"
         const val K_DARK_MODE = "sp_dark_mode"
+        const val K_UI_THEME = "sp_ui_theme"
+        const val K_CUSTOM_THEME_COLOR = "sp_custom_theme_color"
+        const val DEFAULT_CUSTOM_THEME_COLOR = 0xFF4A90D9.toInt()
         const val K_ENABLE_IMAGE_ADJUSTMENT = "sp_image_adjustment"
         const val K_EINK_IMAGE_MODE = "sp_eink_image_mode"
         const val K_HIGHLIGHT_STYLE = "sp_highlight_style"

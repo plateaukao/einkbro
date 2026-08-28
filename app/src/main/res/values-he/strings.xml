@@ -584,4 +584,14 @@
     <string name="test_connection_testing">בודק…</string>
     <string name="test_connection_success">החיבור תקין (%1$s)</string>
     <string name="test_connection_failed">החיבור נכשל: %1$s</string>
+    <string name="setting_title_ui_theme">צבע ערכת הנושא</string>
+    <string name="setting_summary_ui_theme">צבע הדגשה לכפתורים, מסגרות ותיבות דו־שיח</string>
+    <string name="theme_classic">קלאסי</string>
+    <string name="theme_light_blue">כחול בהיר</string>
+    <string name="theme_dark_blue">כחול כהה</string>
+    <string name="theme_teal">טורקיז</string>
+    <string name="theme_green">ירוק</string>
+    <string name="theme_sepia">ספיה</string>
+    <string name="theme_purple">סגול</string>
+    <string name="theme_red">אדום</string>
 </resources>

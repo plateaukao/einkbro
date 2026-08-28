@@ -114,7 +114,7 @@ fun HistoryAndTabs(
                 .horizontalBorder(
                     drawTop = !isBarOnTop,
                     drawBottom = isBarOnTop,
-                    MaterialTheme.colors.onBackground
+                    MaterialTheme.colors.primary
                 ),
             isHistoryOpen,
             shouldShowTwoColumns,
@@ -290,7 +290,7 @@ private fun TabItem(
         modifier = modifier
             .height(54.dp)
             .padding(4.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .border(borderWidth, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
             .padding(4.dp),
         horizontalArrangement = Arrangement.Center
     ) {

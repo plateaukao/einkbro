@@ -176,7 +176,7 @@ private fun ReorderableMenuGrid(
                                 .fillMaxWidth()
                                 .padding(vertical = 6.dp),
                         ) {
-                            Divider(color = MaterialTheme.colors.onBackground, thickness = 1.dp)
+                            Divider(color = MaterialTheme.colors.primary, thickness = 1.dp)
                             entry.sectionStart.headerRes?.let { res ->
                                 Text(
                                     text = stringResource(res),

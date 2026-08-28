@@ -191,7 +191,7 @@ fun ToolbarConfigPanel(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(50.dp)
-                    .border(1.dp, MaterialTheme.colors.onBackground),
+                    .border(1.dp, MaterialTheme.colors.primary),
             ) {
                 ReorderableComposedIconColumn(
                     list = list,
@@ -339,7 +339,7 @@ private fun HorizontalConfigContent(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(1.dp, MaterialTheme.colors.onBackground),
+                    .border(1.dp, MaterialTheme.colors.primary),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 ReorderableComposedIconBar(

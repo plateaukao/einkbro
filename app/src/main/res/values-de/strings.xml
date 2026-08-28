@@ -577,4 +577,14 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="test_connection_testing">Wird getestet…</string>
     <string name="test_connection_success">Verbindung OK (%1$s)</string>
     <string name="test_connection_failed">Verbindung fehlgeschlagen: %1$s</string>
+    <string name="setting_title_ui_theme">Themenfarbe</string>
+    <string name="setting_summary_ui_theme">Akzentfarbe für Schaltflächen, Rahmen und Dialoge</string>
+    <string name="theme_classic">Klassisch</string>
+    <string name="theme_light_blue">Hellblau</string>
+    <string name="theme_dark_blue">Dunkelblau</string>
+    <string name="theme_teal">Blaugrün</string>
+    <string name="theme_green">Grün</string>
+    <string name="theme_sepia">Sepia</string>
+    <string name="theme_purple">Violett</string>
+    <string name="theme_red">Rot</string>
 </resources>

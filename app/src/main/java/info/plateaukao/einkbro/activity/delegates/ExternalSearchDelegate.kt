@@ -14,6 +14,7 @@ import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel
 import kotlinx.coroutines.launch
 import java.util.Locale
+import info.plateaukao.einkbro.view.ThemedBorders
 
 class ExternalSearchDelegate(
     private val activity: FragmentActivity,
@@ -33,7 +34,7 @@ class ExternalSearchDelegate(
                 height = 40.dp.value.toInt()
                 textSize = 10.sp.value
                 gravity = Gravity.CENTER
-                background = activity.getDrawable(R.drawable.background_with_border)
+                background = ThemedBorders.panel(activity)
                 text = action.title.take(2).uppercase(Locale.getDefault())
                 setOnClickListener {
                     externalSearchViewModel.currentSearchAction = action

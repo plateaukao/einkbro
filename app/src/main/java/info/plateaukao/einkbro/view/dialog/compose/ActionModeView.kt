@@ -51,7 +51,7 @@ fun ActionModeMenu(
             .background(MaterialTheme.colors.background)
             .wrapContentHeight()
             .width(280.dp)
-            .border(1.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .border(1.dp, MaterialTheme.colors.primary, RoundedCornerShape(7.dp))
     ) {
         val menuInfos = menus.value
         items(menuInfos.size) { index ->

@@ -66,7 +66,7 @@ class TaskMenuDialogFragment(
                     )
                 }
             }
-            Divider(color = MaterialTheme.colors.onBackground)
+            Divider(color = MaterialTheme.colors.primary)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

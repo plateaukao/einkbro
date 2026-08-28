@@ -30,6 +30,8 @@ import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import info.plateaukao.einkbro.view.ThemedBorders
+import info.plateaukao.einkbro.view.withThemedFrame
 
 class TwoPaneController(
     private val activity: Activity,
@@ -233,15 +235,17 @@ class TwoPaneController(
     }
 
     private fun updateSyncScrollView(shouldSyncScroll: Boolean = false) {
-        val drawable =
-            if (shouldSyncScroll) R.drawable.selected_border_bg else R.drawable.background_with_border
-        translationPanel.syncScroll.setBackgroundResource(drawable)
+        val view = translationPanel.syncScroll
+        view.background =
+            if (shouldSyncScroll) ThemedBorders.selectedPanel(view.context)
+            else ThemedBorders.panel(view.context)
     }
 
     private fun updateLinkHereView(shouldLinkHere: Boolean = false) {
-        val drawable =
-            if (shouldLinkHere) R.drawable.selected_border_bg else R.drawable.background_with_border
-        translationPanel.linkHere.setBackgroundResource(drawable)
+        val view = translationPanel.linkHere
+        view.background =
+            if (shouldLinkHere) ThemedBorders.selectedPanel(view.context)
+            else ThemedBorders.panel(view.context)
     }
 
     private fun launchTranslateWindow(text: String) {
@@ -289,6 +293,7 @@ class TwoPaneController(
                 if (translateDirectly) showTranslationAction.invoke()
             }
         }.create().also {
+            it.withThemedFrame()
             it.show()
             it.window?.setLayout(300.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
         }

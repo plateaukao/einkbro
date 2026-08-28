@@ -141,7 +141,7 @@ private fun StatusbarConfigPanel(list: MutableState<List<StatusbarItem>>) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colors.onBackground),
+                .border(1.dp, MaterialTheme.colors.primary),
             contentAlignment = Alignment.CenterEnd,
         ) {
             ReorderableStatusbarRow(list = list, onClick = onRemove)
@@ -173,7 +173,7 @@ private fun ReorderableStatusbarRow(
                     .longPressDraggableHandle()
                     .border(
                         if (isDragging) 1.5.dp else (-1).dp,
-                        MaterialTheme.colors.onBackground,
+                        MaterialTheme.colors.primary,
                         RoundedCornerShape(3.dp),
                     )
                     .clickable { onClick(item) }

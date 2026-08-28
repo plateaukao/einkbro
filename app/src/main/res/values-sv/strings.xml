@@ -584,4 +584,14 @@
     <string name="test_connection_testing">Testar…</string>
     <string name="test_connection_success">Anslutning OK (%1$s)</string>
     <string name="test_connection_failed">Anslutningen misslyckades: %1$s</string>
+    <string name="setting_title_ui_theme">Temafärg</string>
+    <string name="setting_summary_ui_theme">Accentfärg för knappar, kanter och dialogrutor</string>
+    <string name="theme_classic">Klassisk</string>
+    <string name="theme_light_blue">Ljusblå</string>
+    <string name="theme_dark_blue">Mörkblå</string>
+    <string name="theme_teal">Blågrön</string>
+    <string name="theme_green">Grön</string>
+    <string name="theme_sepia">Sepia</string>
+    <string name="theme_purple">Lila</string>
+    <string name="theme_red">Röd</string>
 </resources>

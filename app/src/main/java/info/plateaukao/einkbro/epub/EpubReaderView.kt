@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.math.min
 import kotlin.math.roundToInt
+import info.plateaukao.einkbro.view.withThemedFrame
 
 /**
  * Created by Avinash on 25-05-2017.
@@ -160,6 +161,7 @@ elements[i].style.color='white';
                         overscrollFooter = ColorDrawable(Color.TRANSPARENT)
                     }
                 }
+                .withThemedFrame()
                 .show()
         } catch (e: Exception) {
             Log.e("EpubReaderView", e.toString())

@@ -638,4 +638,14 @@
     <string name="test_connection_testing">Проверка…</string>
     <string name="test_connection_success">Подключение ОК (%1$s)</string>
     <string name="test_connection_failed">Ошибка подключения: %1$s</string>
+    <string name="setting_title_ui_theme">Цвет темы</string>
+    <string name="setting_summary_ui_theme">Акцентный цвет для кнопок, рамок и диалогов</string>
+    <string name="theme_classic">Классическая</string>
+    <string name="theme_light_blue">Голубой</string>
+    <string name="theme_dark_blue">Тёмно-синий</string>
+    <string name="theme_teal">Бирюзовый</string>
+    <string name="theme_green">Зелёный</string>
+    <string name="theme_sepia">Сепия</string>
+    <string name="theme_purple">Фиолетовый</string>
+    <string name="theme_red">Красный</string>
 </resources>

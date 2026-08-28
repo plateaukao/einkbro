@@ -30,6 +30,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import info.plateaukao.einkbro.view.withThemedFrame
 
 /**
  * Flow behind the "+" tile on the built-in start page: add an item picked from
@@ -145,6 +146,7 @@ internal suspend fun Activity.showPlainListDialog(titleId: Int?, names: List<Str
             }
             setOnCancelListener { continuation.resume(null) }
         }.create().also { dialog ->
+            dialog.withThemedFrame()
             dialog.show()
             dialog.window?.setLayout(
                 300.dp(this),

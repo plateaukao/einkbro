@@ -191,7 +191,7 @@ fun TouchAreaItem(
             contentDescription = null,
             modifier = Modifier
                 .height(80.dp)
-                .border(borderWidth, MaterialTheme.colors.onBackground),
+                .border(borderWidth, MaterialTheme.colors.primary),
             tint = MaterialTheme.colors.onBackground
         )
     }

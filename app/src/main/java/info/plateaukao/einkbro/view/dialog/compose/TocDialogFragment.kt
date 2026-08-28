@@ -126,7 +126,7 @@ private fun TocList(
                         modifier = Modifier
                             .border(
                                 borderWidth,
-                                MaterialTheme.colors.onBackground,
+                                MaterialTheme.colors.primary,
                                 RoundedCornerShape(3.dp)
                             )
                             .background(MaterialTheme.colors.background),

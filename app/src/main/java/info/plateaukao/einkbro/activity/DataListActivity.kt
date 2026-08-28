@@ -39,6 +39,7 @@ import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import info.plateaukao.einkbro.view.compose.onTopBar
 
 class DataListActivity : LocaleAwareComponentActivity() {
 
@@ -63,7 +64,7 @@ class DataListActivity : LocaleAwareComponentActivity() {
                         }
                     }) {
                         Icon(
-                            tint = MaterialTheme.colors.onPrimary,
+                            tint = MaterialTheme.colors.onTopBar,
                             imageVector = Icons.Filled.Delete,
                             contentDescription = stringResource(R.string.menu_delete)
                         )
@@ -75,7 +76,7 @@ class DataListActivity : LocaleAwareComponentActivity() {
                         ) { whitelist.value += it }
                     }) {
                         Icon(
-                            tint = MaterialTheme.colors.onPrimary,
+                            tint = MaterialTheme.colors.onTopBar,
                             imageVector = Icons.Filled.Add,
                             contentDescription = stringResource(R.string.whitelist_add)
                         )

@@ -67,6 +67,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
+import info.plateaukao.einkbro.view.compose.onTopBar
 
 class HighlightsActivity : LocaleAwareComponentActivity() {
     private val highlightViewModel: HighlightViewModel by koinViewModel()
@@ -355,13 +356,13 @@ fun HighlightsBar(
         title = {
             Text(
                 stringResource(currentScreen.titleResId),
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colors.onTopBar
             )
         },
         navigationIcon = {
             IconButton(onClick = navigateUp) {
                 Icon(
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onTopBar,
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
@@ -370,7 +371,7 @@ fun HighlightsBar(
         actions = {
             IconButton(onClick = onClick) {
                 Icon(
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onTopBar,
                     imageVector = ImageVector.vectorResource(id = R.drawable.icon_export),
                     contentDescription = ""
                 )

@@ -43,11 +43,11 @@ fun ListScaffold(
             modifier = Modifier.scaffoldEdgeToEdgePadding(),
             topBar = {
                 TopAppBar(
-                    title = { Text(title, color = MaterialTheme.colors.onPrimary) },
+                    title = { Text(title, color = MaterialTheme.colors.onTopBar) },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
                             Icon(
-                                tint = MaterialTheme.colors.onPrimary,
+                                tint = MaterialTheme.colors.onTopBar,
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(R.string.back),
                             )

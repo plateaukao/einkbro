@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import info.plateaukao.einkbro.view.withThemedFrame
 
 class ReceiveDataDialog(
     private val context: Context,
@@ -21,7 +22,7 @@ class ReceiveDataDialog(
             setOnDismissListener {
                 afterAction("")
             }
-        }.show()
+        }.show().withThemedFrame()
 
         ShareUtil.startReceiving(lifecycleCoroutineScope) {
             lifecycleCoroutineScope.launch(Dispatchers.Main) {

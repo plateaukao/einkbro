@@ -74,7 +74,7 @@ private fun HighlightStyleContent(
                     .size(40.dp)
                     .border(
                         1.dp,
-                        if (style == highlightStyle) MaterialTheme.colors.onBackground else Color.Transparent
+                        if (style == highlightStyle) MaterialTheme.colors.primary else Color.Transparent
                     )
                     .background(MaterialTheme.colors.background),
                 onClick = { onOk(highlightStyle) }

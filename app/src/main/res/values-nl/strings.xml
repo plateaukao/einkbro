@@ -584,4 +584,14 @@
     <string name="test_connection_testing">Testen…</string>
     <string name="test_connection_success">Verbinding OK (%1$s)</string>
     <string name="test_connection_failed">Verbinding mislukt: %1$s</string>
+    <string name="setting_title_ui_theme">Themakleur</string>
+    <string name="setting_summary_ui_theme">Accentkleur voor knoppen, randen en dialoogvensters</string>
+    <string name="theme_classic">Klassiek</string>
+    <string name="theme_light_blue">Lichtblauw</string>
+    <string name="theme_dark_blue">Donkerblauw</string>
+    <string name="theme_teal">Blauwgroen</string>
+    <string name="theme_green">Groen</string>
+    <string name="theme_sepia">Sepia</string>
+    <string name="theme_purple">Paars</string>
+    <string name="theme_red">Rood</string>
 </resources>

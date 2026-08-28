@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ViewUnit.dp
+import info.plateaukao.einkbro.view.ThemedBorders
 
 class MainContentLayout(
     val root: ConstraintLayout,
@@ -311,7 +312,7 @@ class MainContentLayout(
                 val size = dpToPx(context, 40)
                 layoutParams = ConstraintLayout.LayoutParams(size, size)
                 val margin = dpToPx(context, 0) // 0.5dp rounds to 0 or 1
-                background = ContextCompat.getDrawable(context, R.drawable.background_with_border)
+                background = ThemedBorders.panel(context)
                 gravity = android.view.Gravity.CENTER
                 textAlignment = View.TEXT_ALIGNMENT_CENTER
                 textSize = 16f
@@ -325,7 +326,7 @@ class MainContentLayout(
                 id = R.id.remote_text_search
                 val size = dpToPx(context, 40)
                 layoutParams = ConstraintLayout.LayoutParams(size, size)
-                background = ContextCompat.getDrawable(context, R.drawable.background_with_border)
+                background = ThemedBorders.panel(context)
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_search))
                 val tintColor = resolveColorControlNormal(context)
                 imageTintList = android.content.res.ColorStateList.valueOf(tintColor)
@@ -350,7 +351,7 @@ class MainContentLayout(
                     val m = dpToPx(context, 0) // 0.5dp
                     setMargins(m, m, m, m)
                 }
-                background = ContextCompat.getDrawable(context, R.drawable.background_with_border)
+                background = ThemedBorders.panel(context)
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_minimize))
                 val tintColor = resolveColorControlNormal(context)
                 imageTintList = android.content.res.ColorStateList.valueOf(tintColor)

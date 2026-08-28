@@ -585,4 +585,14 @@
     <string name="test_connection_testing">Đang kiểm tra…</string>
     <string name="test_connection_success">Kết nối OK (%1$s)</string>
     <string name="test_connection_failed">Kết nối thất bại: %1$s</string>
+    <string name="setting_title_ui_theme">Màu chủ đề</string>
+    <string name="setting_summary_ui_theme">Màu nhấn cho nút, viền và hộp thoại</string>
+    <string name="theme_classic">Cổ điển</string>
+    <string name="theme_light_blue">Xanh dương nhạt</string>
+    <string name="theme_dark_blue">Xanh dương đậm</string>
+    <string name="theme_teal">Xanh mòng két</string>
+    <string name="theme_green">Xanh lá</string>
+    <string name="theme_sepia">Nâu sepia</string>
+    <string name="theme_purple">Tím</string>
+    <string name="theme_red">Đỏ</string>
 </resources>
