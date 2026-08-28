@@ -587,18 +587,6 @@
     <string name="setting_title_ui_theme">Tema</string>
     <string name="theme_section_color">Renk</string>
     <string name="setting_summary_ui_theme">Düğmeler, kenarlıklar ve iletişim kutuları için vurgu rengi</string>
-    <string name="theme_classic">Klasik</string>
-    <string name="theme_light_blue">Açık mavi</string>
-    <string name="theme_dark_blue">Koyu mavi</string>
-    <string name="theme_green">Yeşil</string>
-    <string name="theme_sepia">Sepya</string>
-    <string name="theme_purple">Mor</string>
-    <string name="theme_red">Kırmızı</string>
-    <string name="setting_title_ui_style">Stil</string>
-    <string name="style_round">Yuvarlak</string>
-    <string name="style_sharp">Keskin</string>
-    <string name="style_paper">Kağıt</string>
-    <string name="style_dashed">Kesikli</string>
-    <string name="style_no_border">Kenarlıksız</string>
-    <string name="style_gradient">Degrade</string>
+    <string name="setting_title_border">Kenarlık</string>
+    <string name="setting_title_fill">Dolgu</string>
 </resources>

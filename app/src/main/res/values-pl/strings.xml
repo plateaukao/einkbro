@@ -579,18 +579,6 @@
     <string name="setting_title_ui_theme">Motyw</string>
     <string name="theme_section_color">Kolor</string>
     <string name="setting_summary_ui_theme">Kolor akcentu dla przycisków, obramowań i okien dialogowych</string>
-    <string name="theme_classic">Klasyczny</string>
-    <string name="theme_light_blue">Jasnoniebieski</string>
-    <string name="theme_dark_blue">Ciemnoniebieski</string>
-    <string name="theme_green">Zielony</string>
-    <string name="theme_sepia">Sepia</string>
-    <string name="theme_purple">Fioletowy</string>
-    <string name="theme_red">Czerwony</string>
-    <string name="setting_title_ui_style">Styl</string>
-    <string name="style_round">Zaokrąglony</string>
-    <string name="style_sharp">Ostry</string>
-    <string name="style_paper">Papier</string>
-    <string name="style_dashed">Przerywany</string>
-    <string name="style_no_border">Bez obramowania</string>
-    <string name="style_gradient">Gradient</string>
+    <string name="setting_title_border">Obramowanie</string>
+    <string name="setting_title_fill">Wypełnienie</string>
 </resources>

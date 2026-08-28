@@ -125,41 +125,40 @@ enum class ToolbarPosition {
 // background/onBackground: light-mode surface tint and text color.
 // onBackgroundDark: dark-mode text color (dark background stays black for e-ink).
 enum class UiTheme(
-    val titleResId: Int,
     val accent: Color,
     val accentDark: Color,
     val background: Color = Color.White,
     val onBackground: Color = Color.Black,
     val onBackgroundDark: Color = Color.Gray,
 ) {
-    CLASSIC(R.string.theme_classic, Color.Black, Color(0xFFAAAAAA)),
+    CLASSIC(Color.Black, Color(0xFFAAAAAA)),
     LIGHT_BLUE(
-        R.string.theme_light_blue, Color(0xFF4A90D9), Color(0xFF8FBCE8),
+        Color(0xFF4A90D9), Color(0xFF8FBCE8),
         Color(0xFFF3F7FC), Color(0xFF1B3A5C), Color(0xFF9FB6CC),
     ),
     DARK_BLUE(
-        R.string.theme_dark_blue, Color(0xFF16437E), Color(0xFF7A9CC6),
+        Color(0xFF16437E), Color(0xFF7A9CC6),
         Color(0xFFF2F5FA), Color(0xFF122F58), Color(0xFF97A8C0),
     ),
     GREEN(
-        R.string.theme_green, Color(0xFF2E7D32), Color(0xFF81C784),
+        Color(0xFF2E7D32), Color(0xFF81C784),
         Color(0xFFF2F8F2), Color(0xFF1B421D), Color(0xFF9DB89E),
     ),
     SEPIA(
-        R.string.theme_sepia, Color(0xFF795548), Color(0xFFBCAAA4),
+        Color(0xFF795548), Color(0xFFBCAAA4),
         Color(0xFFF7F1E3), Color(0xFF3E2C23), Color(0xFFB3A79B),
     ),
     PURPLE(
-        R.string.theme_purple, Color(0xFF673AB7), Color(0xFFB39DDB),
+        Color(0xFF673AB7), Color(0xFFB39DDB),
         Color(0xFFF6F3FB), Color(0xFF32205C), Color(0xFFA99BC4),
     ),
     RED(
-        R.string.theme_red, Color(0xFFC62828), Color(0xFFE57373),
+        Color(0xFFC62828), Color(0xFFE57373),
         Color(0xFFFBF3F2), Color(0xFF571A17), Color(0xFFC09A98),
     ),
 
     // Colors ignored: the palette is derived from DisplayConfig.customThemeColor.
-    CUSTOM(R.string.custom_font, Color(0xFF4A90D9), Color(0xFF8FBCE8)),
+    CUSTOM(Color(0xFF4A90D9), Color(0xFF8FBCE8)),
 }
 
 // Resolved colors for the current theme; equals the enum's fixed colors for
@@ -215,66 +214,46 @@ fun deriveThemePalette(base: Color): ThemePalette {
     )
 }
 
-// How themed borders are drawn.
-enum class BorderStyle { SOLID, DASHED, DOUBLE, NONE, GRADIENT, GRADIENT_FLAT, GRADIENT_DEEP, STAMP }
-
 /**
- * Shape/stroke styling bundled with a theme, so each theme is a distinct
- * "look" rather than just a recolor. frameRadius applies to dialog window
- * frames and floating panels; itemRadius to in-content bordered items.
- * NONE draws no stroke and uses a tonal (accent-tinted) fill instead.
+ * Border edge treatment, independent of the color theme and of the fill.
+ * widthDp is the stroke weight; frameRadius applies to dialog window frames
+ * and floating panels, itemRadius to in-content bordered items (the radii
+ * also shape the fill when the border is NONE).
+ * Persisted by ordinal; only append new entries.
  */
-data class ThemeStyle(
-    val borderWidthDp: Float,
+enum class UiBorder(
+    val widthDp: Float,
     val frameRadiusDp: Float,
     val itemRadiusDp: Float,
-    val borderStyle: BorderStyle,
-)
-
-// UI shape styles, independent of the color theme so any color can pair
-// with any look. Persisted by ordinal; only append new entries.
-enum class UiStyle(
-    val titleResId: Int,
-    val style: ThemeStyle,
-    // appended verbatim after the localized title (numbered variants need no
-    // extra translations)
-    val labelSuffix: String = "",
 ) {
-    // unchanged original look
-    CLASSIC(R.string.theme_classic, ThemeStyle(1f, 5f, 7f, BorderStyle.SOLID)),
+    NONE(0f, 16f, 12f),
+    // the original 1dp look
+    CLASSIC(1f, 5f, 7f),
     // pill / very round
-    ROUND(R.string.style_round, ThemeStyle(1f, 16f, 14f, BorderStyle.SOLID)),
-    // sharp corners with a bold stroke, technical
-    SHARP(R.string.style_sharp, ThemeStyle(2f, 0f, 0f, BorderStyle.SOLID)),
-    // print-like card with a double frame
-    PAPER(R.string.style_paper, ThemeStyle(1f, 10f, 8f, BorderStyle.DOUBLE)),
-    // dashed accent frame
-    DASHED(R.string.style_dashed, ThemeStyle(1.5f, 6f, 6f, BorderStyle.DASHED)),
-    // no stroke; tonal accent-tinted fill instead
-    BORDERLESS(R.string.style_no_border, ThemeStyle(1f, 16f, 12f, BorderStyle.NONE)),
-    // accent gradient fill on dialogs, panels, and other filled areas
-    GRADIENT(R.string.style_gradient, ThemeStyle(1f, 12f, 10f, BorderStyle.GRADIENT)),
+    ROUND(1f, 16f, 14f),
+    // sharp corners with a bold stroke
+    SHARP(2f, 0f, 0f),
+    // print-like double frame
+    PAPER(1f, 10f, 8f),
+    DASHED(1.5f, 6f, 6f),
     // postage-stamp scalloped edge
-    STAMP(0, ThemeStyle(1f, 0f, 0f, BorderStyle.STAMP)),
-    // borderless subtle gradient
-    GRADIENT_FLAT(
-        R.string.style_gradient,
-        ThemeStyle(1f, 16f, 12f, BorderStyle.GRADIENT_FLAT),
-        labelSuffix = " 2",
-    ),
-    // borderless deep gradient
-    GRADIENT_DEEP(
-        R.string.style_gradient,
-        ThemeStyle(1f, 16f, 12f, BorderStyle.GRADIENT_DEEP),
-        labelSuffix = " 3",
-    ),
+    STAMP(1f, 0f, 0f),
+    // wobbly hand-drawn line
+    SKETCH(1.5f, 4f, 4f),
+    // thick outer frame with a hairline inner frame
+    CERTIFICATE(3f, 0f, 0f),
+    // rounded frame with a solid offset shadow
+    STICKER(1.5f, 14f, 12f),
 }
 
-// (start, end) accent-blend fractions of the gradient fill, and whether the
-// box keeps a solid accent stroke.
-fun BorderStyle.gradientSpec(): Triple<Float, Float, Boolean>? = when (this) {
-    BorderStyle.GRADIENT -> Triple(0.0f, 0.24f, true)
-    BorderStyle.GRADIENT_FLAT -> Triple(0.06f, 0.28f, false)
-    BorderStyle.GRADIENT_DEEP -> Triple(0.15f, 0.45f, false)
-    else -> null
-}
+/**
+ * Fill treatment for themed surfaces (dialogs, panels, selected items),
+ * independent of the border. NONE is the plain theme background; GRADIENT
+ * uses the adjustable angle/level. Persisted by ordinal; only append.
+ */
+enum class UiFill { NONE, TONAL, GRADIENT }
+
+// baseline accent-blend fractions of the gradient fill (the user's gradient
+// level scales them)
+const val GRADIENT_START_FRACTION = 0.02f
+const val GRADIENT_END_FRACTION = 0.28f

@@ -588,18 +588,6 @@
     <string name="setting_title_ui_theme">Tema</string>
     <string name="theme_section_color">Kleur</string>
     <string name="setting_summary_ui_theme">Aksentkleur vir knoppies, rande en dialoë</string>
-    <string name="theme_classic">Klassiek</string>
-    <string name="theme_light_blue">Ligblou</string>
-    <string name="theme_dark_blue">Donkerblou</string>
-    <string name="theme_green">Groen</string>
-    <string name="theme_sepia">Sepia</string>
-    <string name="theme_purple">Pers</string>
-    <string name="theme_red">Rooi</string>
-    <string name="setting_title_ui_style">Styl</string>
-    <string name="style_round">Rond</string>
-    <string name="style_sharp">Skerp</string>
-    <string name="style_paper">Papier</string>
-    <string name="style_dashed">Streepjes</string>
-    <string name="style_no_border">Geen rand</string>
-    <string name="style_gradient">Gradiënt</string>
+    <string name="setting_title_border">Rand</string>
+    <string name="setting_title_fill">Vul</string>
 </resources>

@@ -587,18 +587,6 @@
     <string name="setting_title_ui_theme">Teema</string>
     <string name="theme_section_color">Väri</string>
     <string name="setting_summary_ui_theme">Korostusväri painikkeille, reunoille ja valintaikkunoille</string>
-    <string name="theme_classic">Klassinen</string>
-    <string name="theme_light_blue">Vaaleansininen</string>
-    <string name="theme_dark_blue">Tummansininen</string>
-    <string name="theme_green">Vihreä</string>
-    <string name="theme_sepia">Seepia</string>
-    <string name="theme_purple">Violetti</string>
-    <string name="theme_red">Punainen</string>
-    <string name="setting_title_ui_style">Tyyli</string>
-    <string name="style_round">Pyöreä</string>
-    <string name="style_sharp">Terävä</string>
-    <string name="style_paper">Paperi</string>
-    <string name="style_dashed">Katkoviiva</string>
-    <string name="style_no_border">Ei reunaa</string>
-    <string name="style_gradient">Liukuväri</string>
+    <string name="setting_title_border">Reunus</string>
+    <string name="setting_title_fill">Täyttö</string>
 </resources>

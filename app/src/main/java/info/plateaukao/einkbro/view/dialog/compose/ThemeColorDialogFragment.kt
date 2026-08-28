@@ -6,6 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -29,8 +30,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Slider
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
@@ -44,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -54,16 +54,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.preference.BorderStyle
-import info.plateaukao.einkbro.preference.UiStyle
+import info.plateaukao.einkbro.preference.UiBorder
+import info.plateaukao.einkbro.preference.UiFill
 import info.plateaukao.einkbro.preference.UiTheme
-import info.plateaukao.einkbro.preference.gradientSpec
 import info.plateaukao.einkbro.preference.palette
 import info.plateaukao.einkbro.view.ThemedBorders
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.UiThemeState
 import info.plateaukao.einkbro.view.compose.dashedBorder
 import info.plateaukao.einkbro.view.compose.stampShape
+import info.plateaukao.einkbro.view.compose.tonalFillColor
+import info.plateaukao.einkbro.view.compose.sketchShape
 import info.plateaukao.einkbro.view.compose.isAppInDarkTheme
 
 /**
@@ -83,8 +84,12 @@ class ThemeColorDialogFragment : ComposeDialogFragment() {
                 config.display.uiTheme = theme
                 retintWindowFrame()
             },
-            onSelectStyle = { style ->
-                config.display.uiStyle = style
+            onSelectBorder = { border ->
+                config.display.uiBorder = border
+                retintWindowFrame()
+            },
+            onSelectFill = { fill ->
+                config.display.uiFill = fill
                 retintWindowFrame()
             },
             onToggleInvert = { inverted ->
@@ -122,7 +127,8 @@ class ThemeColorDialogFragment : ComposeDialogFragment() {
 @Composable
 private fun ThemeColorContent(
     onSelect: (UiTheme) -> Unit,
-    onSelectStyle: (UiStyle) -> Unit,
+    onSelectBorder: (UiBorder) -> Unit,
+    onSelectFill: (UiFill) -> Unit,
     onToggleInvert: (Boolean) -> Unit,
     onGradientPreview: (Int, Int) -> Unit,
     onGradientPicked: (Int, Int) -> Unit,
@@ -149,26 +155,38 @@ private fun ThemeColorContent(
             style = MaterialTheme.typography.h6,
             color = MaterialTheme.colors.onBackground,
         )
-        UiTheme.entries.chunked(4).forEach { rowThemes ->
+        val inverted by UiThemeState.inverted
+        // color swatches plus the invert chip (half dark / half light circle)
+        val colorCells = UiTheme.entries.size + 1
+        (0 until colorCells).chunked(4).forEach { rowIndices ->
             Row(modifier = Modifier.fillMaxWidth()) {
-                rowThemes.forEach { theme ->
-                    ThemeSwatch(
-                        theme = theme,
-                        isSelected = theme == current,
-                        onClick = {
-                            // tapping Custom again toggles the wheel visibility
-                            showCustomWheel =
-                                if (theme == UiTheme.CUSTOM && current == UiTheme.CUSTOM) {
-                                    !showCustomWheel
-                                } else {
-                                    theme == UiTheme.CUSTOM
-                                }
-                            if (theme != current) onSelect(theme)
-                        },
-                        modifier = Modifier.weight(1f),
-                    )
+                rowIndices.forEach { index ->
+                    if (index < UiTheme.entries.size) {
+                        val theme = UiTheme.entries[index]
+                        ThemeSwatch(
+                            theme = theme,
+                            isSelected = theme == current,
+                            onClick = {
+                                // tapping Custom again toggles the wheel visibility
+                                showCustomWheel =
+                                    if (theme == UiTheme.CUSTOM && current == UiTheme.CUSTOM) {
+                                        !showCustomWheel
+                                    } else {
+                                        theme == UiTheme.CUSTOM
+                                    }
+                                if (theme != current) onSelect(theme)
+                            },
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        InvertSwatch(
+                            isSelected = inverted,
+                            onClick = { onToggleInvert(!inverted) },
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
                 }
-                repeat(4 - rowThemes.size) { Spacer(modifier = Modifier.weight(1f)) }
+                repeat(4 - rowIndices.size) { Spacer(modifier = Modifier.weight(1f)) }
             }
         }
         if (current == UiTheme.CUSTOM && showCustomWheel) {
@@ -177,62 +195,56 @@ private fun ThemeColorContent(
                 onPicked = onCustomColorPicked,
             )
         }
-        val currentStyle by UiThemeState.uiStyle
+        val currentBorder by UiThemeState.uiBorder
+        val currentFill by UiThemeState.uiFill
         Text(
-            stringResource(R.string.setting_title_ui_style),
+            stringResource(R.string.setting_title_border),
+            modifier = Modifier.padding(start = 8.dp, top = 10.dp, bottom = 2.dp),
+            style = MaterialTheme.typography.h6,
+            color = MaterialTheme.colors.onBackground,
+        )
+        UiBorder.entries.chunked(4).forEach { rowBorders ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                rowBorders.forEach { border ->
+                    BorderSwatch(
+                        border = border,
+                        isSelected = border == currentBorder,
+                        onClick = { if (border != currentBorder) onSelectBorder(border) },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+                repeat(4 - rowBorders.size) { Spacer(modifier = Modifier.weight(1f)) }
+            }
+        }
+        Text(
+            stringResource(R.string.setting_title_fill),
             modifier = Modifier.padding(start = 8.dp, top = 10.dp, bottom = 2.dp),
             style = MaterialTheme.typography.h6,
             color = MaterialTheme.colors.onBackground,
         )
         var showGradientAdjust by remember { mutableStateOf(false) }
-        UiStyle.entries.chunked(4).forEach { rowStyles ->
-            Row(modifier = Modifier.fillMaxWidth()) {
-                rowStyles.forEach { style ->
-                    StyleSwatch(
-                        uiStyle = style,
-                        isSelected = style == currentStyle,
-                        onClick = {
-                            val isGradient = style.style.borderStyle.gradientSpec() != null
-                            // tapping the selected gradient chip again toggles
-                            // the direction/level adjustment panel
-                            showGradientAdjust =
-                                if (style == currentStyle && isGradient) !showGradientAdjust
-                                else false
-                            if (style != currentStyle) onSelectStyle(style)
-                        },
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-                repeat(4 - rowStyles.size) { Spacer(modifier = Modifier.weight(1f)) }
+        Row(modifier = Modifier.fillMaxWidth()) {
+            UiFill.entries.forEach { fill ->
+                FillSwatch(
+                    fill = fill,
+                    isSelected = fill == currentFill,
+                    onClick = {
+                        // tapping the selected Gradient fill again toggles the
+                        // direction/level dial
+                        showGradientAdjust =
+                            if (fill == currentFill && fill == UiFill.GRADIENT) !showGradientAdjust
+                            else false
+                        if (fill != currentFill) onSelectFill(fill)
+                    },
+                    modifier = Modifier.weight(1f),
+                )
             }
+            Spacer(modifier = Modifier.weight(1f))
         }
-        if (showGradientAdjust && currentStyle.style.borderStyle.gradientSpec() != null) {
+        if (showGradientAdjust && currentFill == UiFill.GRADIENT) {
             GradientAdjust(
                 onPreview = onGradientPreview,
                 onPicked = onGradientPicked,
-            )
-        }
-        val inverted by UiThemeState.inverted
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp, top = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                stringResource(R.string.menu_invert_color),
-                modifier = Modifier.weight(1f),
-                color = MaterialTheme.colors.onBackground,
-            )
-            Switch(
-                checked = inverted,
-                onCheckedChange = onToggleInvert,
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = MaterialTheme.colors.primary,
-                    uncheckedThumbColor = Color.Gray,
-                    uncheckedTrackColor = Color.Gray,
-                    checkedTrackColor = MaterialTheme.colors.primary,
-                ),
             )
         }
         Row(
@@ -460,67 +472,163 @@ private fun GradientAdjust(
 }
 
 @Composable
-private fun StyleSwatch(
-    uiStyle: UiStyle,
+private fun SwatchCell(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier,
+    preview: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .padding(vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            preview()
+            if (isSelected) {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = null,
+                    tint = MaterialTheme.colors.primary,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun BorderSwatch(
+    border: UiBorder,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val style = uiStyle.style
     val accent = MaterialTheme.colors.primary
-    val shape = RoundedCornerShape(minOf(style.itemRadiusDp, 12f).dp)
-    val previewModifier = Modifier
+    val bgColor = MaterialTheme.colors.background
+    val shape = RoundedCornerShape(minOf(border.itemRadiusDp, 12f).dp)
+    val base = Modifier.requiredSize(width = 52.dp, height = 32.dp)
+    val previewModifier = when (border) {
+        // "none": faint outline with a diagonal strike-through
+        UiBorder.NONE -> base
+            .border(1.dp, accent.copy(alpha = 0.25f), shape)
+            .drawBehind {
+                drawLine(
+                    accent.copy(alpha = 0.6f),
+                    start = Offset(4.dp.toPx(), size.height - 4.dp.toPx()),
+                    end = Offset(size.width - 4.dp.toPx(), 4.dp.toPx()),
+                    strokeWidth = 1.5.dp.toPx(),
+                )
+            }
+        UiBorder.CLASSIC, UiBorder.ROUND, UiBorder.SHARP ->
+            base.border(border.widthDp.dp, accent, shape)
+        UiBorder.DASHED ->
+            base.dashedBorder(border.widthDp.dp, minOf(border.itemRadiusDp, 12f).dp, accent)
+        UiBorder.PAPER -> base
+            .border(border.widthDp.dp, accent, shape)
+            .padding(3.dp)
+            .border(border.widthDp.dp, accent, shape)
+        UiBorder.STAMP -> base.border(border.widthDp.dp, accent, stampShape(3.dp))
+        UiBorder.SKETCH -> base.border(1.dp, accent, sketchShape(1.5.dp))
+        UiBorder.CERTIFICATE -> base
+            .border(2.dp, accent, shape)
+            .padding(3.dp)
+            .border(1.dp, accent, shape)
+        UiBorder.STICKER -> base.drawBehind {
+            // front box inset by the shadow offset so the shadow reads clearly
+            val off = 5.dp.toPx()
+            val corner = CornerRadius(8.dp.toPx())
+            val boxSize = androidx.compose.ui.geometry.Size(size.width - off, size.height - off)
+            drawRoundRect(
+                accent,
+                topLeft = Offset(off, off),
+                size = boxSize,
+                cornerRadius = corner,
+            )
+            drawRoundRect(bgColor, size = boxSize, cornerRadius = corner)
+            drawRoundRect(
+                accent,
+                size = boxSize,
+                cornerRadius = corner,
+                style = Stroke(1.5.dp.toPx()),
+            )
+        }
+    }
+    SwatchCell(isSelected, onClick, modifier) { Box(modifier = previewModifier) }
+}
+
+@Composable
+private fun FillSwatch(
+    fill: UiFill,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val accent = MaterialTheme.colors.primary
+    val shape = RoundedCornerShape(8.dp)
+    val base = Modifier
         .requiredSize(width = 52.dp, height = 32.dp)
         .clip(shape)
-        .let { base ->
-            when (style.borderStyle) {
-                BorderStyle.NONE -> base.background(
-                    lerp(
-                        MaterialTheme.colors.background,
-                        accent,
-                        if (MaterialTheme.colors.isLight) 0.14f else 0.2f,
-                    ),
-                    shape,
+    val previewModifier = when (fill) {
+        // "none": faint outline with a diagonal strike-through
+        UiFill.NONE -> base
+            .border(1.dp, accent.copy(alpha = 0.25f), shape)
+            .drawBehind {
+                drawLine(
+                    accent.copy(alpha = 0.6f),
+                    start = Offset(4.dp.toPx(), size.height - 4.dp.toPx()),
+                    end = Offset(size.width - 4.dp.toPx(), 4.dp.toPx()),
+                    strokeWidth = 1.5.dp.toPx(),
                 )
-                BorderStyle.DASHED ->
-                    base.dashedBorder(style.borderWidthDp.dp, minOf(style.itemRadiusDp, 12f).dp, accent)
-                BorderStyle.DOUBLE -> base
-                    .border(style.borderWidthDp.dp, accent, shape)
-                    .padding(3.dp)
-                    .border(style.borderWidthDp.dp, accent, shape)
-                BorderStyle.GRADIENT, BorderStyle.GRADIENT_FLAT, BorderStyle.GRADIENT_DEEP -> {
-                    val (start, end, hasBorder) = style.borderStyle.gradientSpec()!!
-                    val filled = base.background(
-                        Brush.linearGradient(
-                            listOf(
-                                lerp(MaterialTheme.colors.background, accent, start + 0.08f),
-                                lerp(MaterialTheme.colors.background, accent, end + 0.12f),
-                            ),
-                        ),
-                        shape,
-                    )
-                    if (hasBorder) filled.border(style.borderWidthDp.dp, accent, shape) else filled
-                }
-                BorderStyle.STAMP ->
-                    base.border(style.borderWidthDp.dp, accent, stampShape(3.dp))
-                BorderStyle.SOLID -> base.border(style.borderWidthDp.dp, accent, shape)
             }
-        }
-    val label = if (uiStyle.titleResId != 0) {
-        stringResource(uiStyle.titleResId) + uiStyle.labelSuffix
-    } else null
+        UiFill.TONAL -> base.background(tonalFillColor(), shape)
+        UiFill.GRADIENT -> base.background(
+            Brush.linearGradient(
+                listOf(
+                    lerp(MaterialTheme.colors.background, accent, 0.10f),
+                    lerp(MaterialTheme.colors.background, accent, 0.40f),
+                ),
+            ),
+            shape,
+        )
+    }
+    SwatchCell(isSelected, onClick, modifier) { Box(modifier = previewModifier) }
+}
+
+/** Half-dark / half-light circle: tap to toggle inverted colors. */
+@Composable
+private fun InvertSwatch(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
-            .clickable(onClick = onClick, onClickLabel = label)
-            .padding(vertical = 8.dp),
+            .clickable(onClick = onClick)
+            .padding(vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(modifier = previewModifier, contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .requiredSize(44.dp)
+                .clip(CircleShape)
+                .drawBehind {
+                    drawArc(Color.Black, 90f, 180f, useCenter = true)
+                    drawArc(Color.White, 270f, 180f, useCenter = true)
+                }
+                .border(
+                    width = if (isSelected) 3.dp else 1.dp,
+                    color = if (isSelected) MaterialTheme.colors.onBackground
+                    else MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+                    shape = CircleShape,
+                ),
+            contentAlignment = Alignment.Center,
+        ) {
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Filled.Check,
-                    contentDescription = label,
-                    tint = accent,
+                    contentDescription = null,
+                    tint = MaterialTheme.colors.primary,
                 )
             }
         }
@@ -549,12 +657,28 @@ private fun ThemeSwatch(
                 .requiredSize(44.dp)
                 .clip(CircleShape)
                 .background(swatchColor)
-                .border(
-                    width = if (isSelected) 3.dp else 1.dp,
-                    color = if (isSelected) MaterialTheme.colors.onBackground
-                    else MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
-                    shape = CircleShape,
-                ),
+                .let { base ->
+                    if (theme == UiTheme.CUSTOM) {
+                        // rainbow ring marks the adjustable custom color
+                        base.border(
+                            width = if (isSelected) 4.dp else 3.dp,
+                            brush = Brush.sweepGradient(
+                                listOf(
+                                    Color.Red, Color.Yellow, Color.Green, Color.Cyan,
+                                    Color.Blue, Color.Magenta, Color.Red,
+                                ),
+                            ),
+                            shape = CircleShape,
+                        )
+                    } else {
+                        base.border(
+                            width = if (isSelected) 3.dp else 1.dp,
+                            color = if (isSelected) MaterialTheme.colors.onBackground
+                            else MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+                            shape = CircleShape,
+                        )
+                    }
+                },
             contentAlignment = Alignment.Center,
         ) {
             if (isSelected) {
@@ -565,14 +689,6 @@ private fun ThemeSwatch(
                 )
             }
         }
-        Text(
-            stringResource(theme.titleResId),
-            modifier = Modifier.padding(top = 4.dp),
-            fontSize = 12.sp,
-            maxLines = 1,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.onBackground,
-        )
     }
 }
 
@@ -580,6 +696,6 @@ private fun ThemeSwatch(
 @Composable
 private fun PreviewThemeColorContent() {
     MyTheme {
-        ThemeColorContent(onSelect = {}, onSelectStyle = {}, onToggleInvert = {}, onGradientPreview = { _, _ -> }, onGradientPicked = { _, _ -> }, onCustomColorPreview = {}, onCustomColorPicked = {}, onClose = {})
+        ThemeColorContent(onSelect = {}, onSelectBorder = {}, onSelectFill = {}, onToggleInvert = {}, onGradientPreview = { _, _ -> }, onGradientPicked = { _, _ -> }, onCustomColorPreview = {}, onCustomColorPicked = {}, onClose = {})
     }
 }

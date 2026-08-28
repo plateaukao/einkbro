@@ -585,18 +585,6 @@
     <string name="setting_title_ui_theme">テーマ</string>
     <string name="theme_section_color">カラー</string>
     <string name="setting_summary_ui_theme">ボタン・枠線・ダイアログのアクセントカラー</string>
-    <string name="theme_classic">クラシック</string>
-    <string name="theme_light_blue">ライトブルー</string>
-    <string name="theme_dark_blue">ダークブルー</string>
-    <string name="theme_green">グリーン</string>
-    <string name="theme_sepia">セピア</string>
-    <string name="theme_purple">パープル</string>
-    <string name="theme_red">レッド</string>
-    <string name="setting_title_ui_style">スタイル</string>
-    <string name="style_round">丸型</string>
-    <string name="style_sharp">シャープ</string>
-    <string name="style_paper">ペーパー</string>
-    <string name="style_dashed">破線</string>
-    <string name="style_no_border">枠なし</string>
-    <string name="style_gradient">グラデーション</string>
+    <string name="setting_title_border">枠線</string>
+    <string name="setting_title_fill">塗りつぶし</string>
 </resources>

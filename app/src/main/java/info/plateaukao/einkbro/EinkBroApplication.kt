@@ -111,7 +111,8 @@ class EinkBroApplication : Application() {
         UiThemeState.current.value = config.display.uiTheme
         UiThemeState.darkMode.value = config.display.darkMode
         UiThemeState.customColor.value = androidx.compose.ui.graphics.Color(config.display.customThemeColor)
-        UiThemeState.uiStyle.value = config.display.uiStyle
+        UiThemeState.uiBorder.value = config.display.uiBorder
+        UiThemeState.uiFill.value = config.display.uiFill
         UiThemeState.inverted.value = config.display.uiThemeInverted
         UiThemeState.gradientAngle.value = config.display.gradientAngle
         UiThemeState.gradientLevel.value = config.display.gradientLevel

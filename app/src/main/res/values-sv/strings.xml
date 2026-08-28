@@ -587,18 +587,6 @@
     <string name="setting_title_ui_theme">Tema</string>
     <string name="theme_section_color">Färg</string>
     <string name="setting_summary_ui_theme">Accentfärg för knappar, kanter och dialogrutor</string>
-    <string name="theme_classic">Klassisk</string>
-    <string name="theme_light_blue">Ljusblå</string>
-    <string name="theme_dark_blue">Mörkblå</string>
-    <string name="theme_green">Grön</string>
-    <string name="theme_sepia">Sepia</string>
-    <string name="theme_purple">Lila</string>
-    <string name="theme_red">Röd</string>
-    <string name="setting_title_ui_style">Stil</string>
-    <string name="style_round">Rund</string>
-    <string name="style_sharp">Skarp</string>
-    <string name="style_paper">Papper</string>
-    <string name="style_dashed">Streckad</string>
-    <string name="style_no_border">Utan kant</string>
-    <string name="style_gradient">Gradient</string>
+    <string name="setting_title_border">Kant</string>
+    <string name="setting_title_fill">Fyllning</string>
 </resources>

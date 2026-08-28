@@ -578,18 +578,6 @@
     <string name="setting_title_ui_theme">Тема</string>
     <string name="theme_section_color">Колір</string>
     <string name="setting_summary_ui_theme">Акцентний колір для кнопок, рамок і діалогів</string>
-    <string name="theme_classic">Класична</string>
-    <string name="theme_light_blue">Блакитний</string>
-    <string name="theme_dark_blue">Темно-синій</string>
-    <string name="theme_green">Зелений</string>
-    <string name="theme_sepia">Сепія</string>
-    <string name="theme_purple">Фіолетовий</string>
-    <string name="theme_red">Червоний</string>
-    <string name="setting_title_ui_style">Стиль</string>
-    <string name="style_round">Округлий</string>
-    <string name="style_sharp">Гострий</string>
-    <string name="style_paper">Папір</string>
-    <string name="style_dashed">Пунктир</string>
-    <string name="style_no_border">Без рамки</string>
-    <string name="style_gradient">Градієнт</string>
+    <string name="setting_title_border">Рамка</string>
+    <string name="setting_title_fill">Заливка</string>
 </resources>

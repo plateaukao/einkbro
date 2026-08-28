@@ -1185,7 +1185,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 config.restartChanged = true
             }
             DisplayConfig.K_UI_THEME -> UiThemeState.current.value = config.display.uiTheme
-            DisplayConfig.K_UI_STYLE -> UiThemeState.uiStyle.value = config.display.uiStyle
+            DisplayConfig.K_UI_BORDER -> UiThemeState.uiBorder.value = config.display.uiBorder
+            DisplayConfig.K_UI_FILL -> UiThemeState.uiFill.value = config.display.uiFill
             DisplayConfig.K_UI_THEME_INVERTED -> UiThemeState.inverted.value = config.display.uiThemeInverted
             DisplayConfig.K_GRADIENT_ANGLE ->
                 UiThemeState.gradientAngle.value = config.display.gradientAngle

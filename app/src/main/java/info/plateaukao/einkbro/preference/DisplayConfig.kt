@@ -73,12 +73,50 @@ class DisplayConfig(private val sp: SharedPreferences) {
             UiThemeState.current.value = value
         }
 
-    var uiStyle: UiStyle
-        get() = UiStyle.entries.getOrElse(sp.getInt(K_UI_STYLE, 0)) { UiStyle.CLASSIC }
-        set(value) {
-            sp.edit { putInt(K_UI_STYLE, value.ordinal) }
-            UiThemeState.uiStyle.value = value
+    var uiBorder: UiBorder
+        get() {
+            migrateUiStyleIfNeeded()
+            return UiBorder.entries.getOrElse(
+                sp.getInt(K_UI_BORDER, UiBorder.CLASSIC.ordinal)
+            ) { UiBorder.CLASSIC }
         }
+        set(value) {
+            sp.edit { putInt(K_UI_BORDER, value.ordinal) }
+            UiThemeState.uiBorder.value = value
+        }
+
+    var uiFill: UiFill
+        get() {
+            migrateUiStyleIfNeeded()
+            return UiFill.entries.getOrElse(sp.getInt(K_UI_FILL, 0)) { UiFill.NONE }
+        }
+        set(value) {
+            sp.edit { putInt(K_UI_FILL, value.ordinal) }
+            UiThemeState.uiFill.value = value
+        }
+
+    // maps the legacy single style preference onto the border/fill pair
+    private fun migrateUiStyleIfNeeded() {
+        if (sp.contains(K_UI_BORDER) || !sp.contains(K_UI_STYLE)) return
+        val (border, fill) = when (sp.getInt(K_UI_STYLE, 0)) {
+            1 -> UiBorder.ROUND to UiFill.NONE
+            2 -> UiBorder.SHARP to UiFill.NONE
+            3 -> UiBorder.PAPER to UiFill.NONE
+            4 -> UiBorder.DASHED to UiFill.NONE
+            5 -> UiBorder.NONE to UiFill.TONAL
+            6 -> UiBorder.ROUND to UiFill.GRADIENT
+            7 -> UiBorder.STAMP to UiFill.NONE
+            8, 9 -> UiBorder.NONE to UiFill.GRADIENT
+            10 -> UiBorder.SKETCH to UiFill.NONE
+            11 -> UiBorder.CERTIFICATE to UiFill.NONE
+            12 -> UiBorder.STICKER to UiFill.NONE
+            else -> UiBorder.CLASSIC to UiFill.NONE
+        }
+        sp.edit {
+            putInt(K_UI_BORDER, border.ordinal)
+            putInt(K_UI_FILL, fill.ordinal)
+        }
+    }
 
     // gradient flow direction in degrees (0 = left-to-right, 90 = top-down)
     var gradientAngle: Int
@@ -166,6 +204,8 @@ class DisplayConfig(private val sp: SharedPreferences) {
         const val K_UI_THEME = "sp_ui_theme"
         const val K_CUSTOM_THEME_COLOR = "sp_custom_theme_color"
         const val K_UI_STYLE = "sp_ui_style"
+        const val K_UI_BORDER = "sp_ui_border"
+        const val K_UI_FILL = "sp_ui_fill"
         const val K_UI_THEME_INVERTED = "sp_ui_theme_inverted"
         const val K_GRADIENT_ANGLE = "sp_gradient_angle"
         const val K_GRADIENT_LEVEL = "sp_gradient_level"

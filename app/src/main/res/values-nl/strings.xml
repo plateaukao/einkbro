@@ -587,18 +587,6 @@
     <string name="setting_title_ui_theme">Thema</string>
     <string name="theme_section_color">Kleur</string>
     <string name="setting_summary_ui_theme">Accentkleur voor knoppen, randen en dialoogvensters</string>
-    <string name="theme_classic">Klassiek</string>
-    <string name="theme_light_blue">Lichtblauw</string>
-    <string name="theme_dark_blue">Donkerblauw</string>
-    <string name="theme_green">Groen</string>
-    <string name="theme_sepia">Sepia</string>
-    <string name="theme_purple">Paars</string>
-    <string name="theme_red">Rood</string>
-    <string name="setting_title_ui_style">Stijl</string>
-    <string name="style_round">Rond</string>
-    <string name="style_sharp">Hoekig</string>
-    <string name="style_paper">Papier</string>
-    <string name="style_dashed">Gestreept</string>
-    <string name="style_no_border">Zonder rand</string>
-    <string name="style_gradient">Verloop</string>
+    <string name="setting_title_border">Rand</string>
+    <string name="setting_title_fill">Vulling</string>
 </resources>

@@ -756,18 +756,6 @@
     <string name="setting_title_ui_theme">Téma</string>
     <string name="theme_section_color">Szín</string>
     <string name="setting_summary_ui_theme">Kiemelőszín a gombokhoz, keretekhez és párbeszédablakokhoz</string>
-    <string name="theme_classic">Klasszikus</string>
-    <string name="theme_light_blue">Világoskék</string>
-    <string name="theme_dark_blue">Sötétkék</string>
-    <string name="theme_green">Zöld</string>
-    <string name="theme_sepia">Szépia</string>
-    <string name="theme_purple">Lila</string>
-    <string name="theme_red">Piros</string>
-    <string name="setting_title_ui_style">Stílus</string>
-    <string name="style_round">Kerek</string>
-    <string name="style_sharp">Szögletes</string>
-    <string name="style_paper">Papír</string>
-    <string name="style_dashed">Szaggatott</string>
-    <string name="style_no_border">Keret nélkül</string>
-    <string name="style_gradient">Színátmenet</string>
+    <string name="setting_title_border">Keret</string>
+    <string name="setting_title_fill">Kitöltés</string>
 </resources>
