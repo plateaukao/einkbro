@@ -2,11 +2,10 @@ package info.plateaukao.einkbro.view.viewControllers
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
-import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.MainContentLayout
+import info.plateaukao.einkbro.view.TouchAreaHintView
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.TouchConfig
 import info.plateaukao.einkbro.preference.TouchAreaType
@@ -203,17 +202,28 @@ class TouchAreaViewController(
         }
     }
 
+    // Corner-hint views toggle their own drawing; the Long type's plain views
+    // keep the dashed-line background, so its alpha is toggled instead of
+    // swapping the drawable.
+    private fun setHintVisible(view: View, visible: Boolean) {
+        if (view is TouchAreaHintView) {
+            view.hintVisible = visible
+        } else {
+            view.background?.alpha = if (visible) 255 else 0
+        }
+    }
+
     fun hideTouchAreaHint() {
         if (!this::touchAreaPageUp.isInitialized) return
         binding.root.post {
-            touchAreaPageUp.setBackgroundColor(Color.TRANSPARENT)
-            touchAreaPageDown.setBackgroundColor(Color.TRANSPARENT)
+            setHintVisible(touchAreaPageUp, false)
+            setHintVisible(touchAreaPageDown, false)
         }
     }
 
     private fun showTouchAreaHint() {
-        touchAreaPageUp.setBackgroundResource(R.drawable.touch_area_border)
-        touchAreaPageDown.setBackgroundResource(R.drawable.touch_area_border)
+        setHintVisible(touchAreaPageUp, true)
+        setHintVisible(touchAreaPageDown, true)
         if (!config.touch.touchAreaHint) {
             Timer("showTouchAreaHint", false)
                 .schedule(object : TimerTask() {

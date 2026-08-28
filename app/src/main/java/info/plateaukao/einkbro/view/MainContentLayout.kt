@@ -94,13 +94,12 @@ class MainContentLayout(
             }
             swipeRefreshLayout.addView(mainContent)
 
-            val touchAreaBorderDrawable = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
-
-            // Touch area views
-            val touchAreaMiddleLeft = View(context).apply {
+            // Touch area views. TouchAreaHintView draws only the corners that lie
+            // inside the screen; the full-height Long areas keep the dashed line
+            // because none of their corners is ever on screen.
+            val touchAreaMiddleLeft = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaMiddleLeft, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 250)
@@ -111,7 +110,7 @@ class MainContentLayout(
             val touchAreaLongLeft = View(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
+                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)?.mutate()
             }
             root.addView(touchAreaLongLeft, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), 0
@@ -121,10 +120,9 @@ class MainContentLayout(
                 bottomMargin = dpToPx(context, -5)
             })
 
-            val touchAreaBottomLeft = View(context).apply {
+            val touchAreaBottomLeft = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaBottomLeft, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 250)
@@ -133,10 +131,9 @@ class MainContentLayout(
                 bottomMargin = dpToPx(context, -2)
             })
 
-            val touchAreaMiddleRight = View(context).apply {
+            val touchAreaMiddleRight = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaMiddleRight, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 250)
@@ -147,7 +144,7 @@ class MainContentLayout(
             val touchAreaLongRight = View(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
+                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)?.mutate()
             }
             root.addView(touchAreaLongRight, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), 0
@@ -169,10 +166,9 @@ class MainContentLayout(
                 topMargin = dpToPx(context, -20)
             })
 
-            val touchAreaBottomRight = View(context).apply {
+            val touchAreaBottomRight = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaBottomRight, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 250)
@@ -193,10 +189,9 @@ class MainContentLayout(
                 topMargin = dpToPx(context, -20)
             })
 
-            val touchAreaRight1 = View(context).apply {
+            val touchAreaRight1 = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaRight1, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 150)
@@ -205,10 +200,9 @@ class MainContentLayout(
                 bottomMargin = dpToPx(context, 150)
             })
 
-            val touchAreaRight2 = View(context).apply {
+            val touchAreaRight2 = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaRight2, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 150)
@@ -229,10 +223,9 @@ class MainContentLayout(
                 topMargin = dpToPx(context, -20)
             })
 
-            val touchAreaLeft1 = View(context).apply {
+            val touchAreaLeft1 = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaLeft1, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 150)
@@ -241,10 +234,9 @@ class MainContentLayout(
                 bottomMargin = dpToPx(context, 150)
             })
 
-            val touchAreaLeft2 = View(context).apply {
+            val touchAreaLeft2 = TouchAreaHintView(context).apply {
                 id = View.generateViewId()
                 visibility = View.INVISIBLE
-                background = ContextCompat.getDrawable(context, R.drawable.touch_area_border)
             }
             root.addView(touchAreaLeft2, ConstraintLayout.LayoutParams(
                 dpToPx(context, 150), dpToPx(context, 150)
