@@ -590,16 +590,15 @@
     <string name="theme_classic">كلاسيكي</string>
     <string name="theme_light_blue">أزرق فاتح</string>
     <string name="theme_dark_blue">أزرق داكن</string>
-    <string name="theme_teal">أزرق مخضر</string>
     <string name="theme_green">أخضر</string>
     <string name="theme_sepia">سيبيا</string>
     <string name="theme_purple">بنفسجي</string>
     <string name="theme_red">أحمر</string>
     <string name="setting_title_ui_style">النمط</string>
-    <string name="style_soft">ناعم</string>
     <string name="style_round">مستدير</string>
     <string name="style_sharp">حاد</string>
     <string name="style_paper">ورقي</string>
     <string name="style_dashed">متقطع</string>
     <string name="style_no_border">بدون حد</string>
+    <string name="style_gradient">متدرج</string>
 </resources>

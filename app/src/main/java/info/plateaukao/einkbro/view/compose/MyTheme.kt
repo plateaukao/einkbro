@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalView
@@ -32,6 +33,7 @@ import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.ThemePalette
 import info.plateaukao.einkbro.preference.ThemeStyle
 import info.plateaukao.einkbro.preference.UiStyle
+import info.plateaukao.einkbro.preference.gradientSpec
 import info.plateaukao.einkbro.preference.UiTheme
 import info.plateaukao.einkbro.preference.palette
 
@@ -98,6 +100,19 @@ fun Modifier.ebItemFrame(widthOverride: Dp? = null): Modifier = composed {
             shape,
         )
         BorderStyle.DASHED -> dashedBorder(width, style.itemRadiusDp.dp, MaterialTheme.colors.primary)
+        BorderStyle.GRADIENT, BorderStyle.GRADIENT_FLAT, BorderStyle.GRADIENT_DEEP -> {
+            val (start, end, hasBorder) = style.borderStyle.gradientSpec()!!
+            val filled = background(
+                Brush.linearGradient(
+                    listOf(
+                        lerp(MaterialTheme.colors.background, MaterialTheme.colors.primary, start),
+                        lerp(MaterialTheme.colors.background, MaterialTheme.colors.primary, end),
+                    ),
+                ),
+                shape,
+            )
+            if (hasBorder) filled.border(width, MaterialTheme.colors.primary, shape) else filled
+        }
         else -> border(width, MaterialTheme.colors.primary, shape)
     }
 }

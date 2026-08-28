@@ -590,16 +590,15 @@
     <string name="theme_classic">Κλασικό</string>
     <string name="theme_light_blue">Γαλάζιο</string>
     <string name="theme_dark_blue">Σκούρο μπλε</string>
-    <string name="theme_teal">Πετρόλ</string>
     <string name="theme_green">Πράσινο</string>
     <string name="theme_sepia">Σέπια</string>
     <string name="theme_purple">Μοβ</string>
     <string name="theme_red">Κόκκινο</string>
     <string name="setting_title_ui_style">Στυλ</string>
-    <string name="style_soft">Απαλό</string>
     <string name="style_round">Στρογγυλό</string>
     <string name="style_sharp">Γωνιώδες</string>
     <string name="style_paper">Χαρτί</string>
     <string name="style_dashed">Διακεκομμένο</string>
     <string name="style_no_border">Χωρίς περίγραμμα</string>
+    <string name="style_gradient">Ντεγκραντέ</string>
 </resources>

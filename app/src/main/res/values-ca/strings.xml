@@ -581,16 +581,15 @@
     <string name="theme_classic">Clàssic</string>
     <string name="theme_light_blue">Blau clar</string>
     <string name="theme_dark_blue">Blau fosc</string>
-    <string name="theme_teal">Turquesa</string>
     <string name="theme_green">Verd</string>
     <string name="theme_sepia">Sèpia</string>
     <string name="theme_purple">Porpra</string>
     <string name="theme_red">Vermell</string>
     <string name="setting_title_ui_style">Estil</string>
-    <string name="style_soft">Suau</string>
     <string name="style_round">Arrodonit</string>
     <string name="style_sharp">Angulós</string>
     <string name="style_paper">Paper</string>
     <string name="style_dashed">Discontinu</string>
     <string name="style_no_border">Sense vora</string>
+    <string name="style_gradient">Degradat</string>
 </resources>

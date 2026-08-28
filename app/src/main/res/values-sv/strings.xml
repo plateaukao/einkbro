@@ -590,16 +590,15 @@
     <string name="theme_classic">Klassisk</string>
     <string name="theme_light_blue">Ljusblå</string>
     <string name="theme_dark_blue">Mörkblå</string>
-    <string name="theme_teal">Blågrön</string>
     <string name="theme_green">Grön</string>
     <string name="theme_sepia">Sepia</string>
     <string name="theme_purple">Lila</string>
     <string name="theme_red">Röd</string>
     <string name="setting_title_ui_style">Stil</string>
-    <string name="style_soft">Mjuk</string>
     <string name="style_round">Rund</string>
     <string name="style_sharp">Skarp</string>
     <string name="style_paper">Papper</string>
     <string name="style_dashed">Streckad</string>
     <string name="style_no_border">Utan kant</string>
+    <string name="style_gradient">Gradient</string>
 </resources>

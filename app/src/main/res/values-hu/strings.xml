@@ -759,16 +759,15 @@
     <string name="theme_classic">Klasszikus</string>
     <string name="theme_light_blue">Világoskék</string>
     <string name="theme_dark_blue">Sötétkék</string>
-    <string name="theme_teal">Kékeszöld</string>
     <string name="theme_green">Zöld</string>
     <string name="theme_sepia">Szépia</string>
     <string name="theme_purple">Lila</string>
     <string name="theme_red">Piros</string>
     <string name="setting_title_ui_style">Stílus</string>
-    <string name="style_soft">Lágy</string>
     <string name="style_round">Kerek</string>
     <string name="style_sharp">Szögletes</string>
     <string name="style_paper">Papír</string>
     <string name="style_dashed">Szaggatott</string>
     <string name="style_no_border">Keret nélkül</string>
+    <string name="style_gradient">Színátmenet</string>
 </resources>

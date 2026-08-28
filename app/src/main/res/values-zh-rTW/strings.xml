@@ -640,16 +640,15 @@
     <string name="theme_classic">經典</string>
     <string name="theme_light_blue">淺藍</string>
     <string name="theme_dark_blue">深藍</string>
-    <string name="theme_teal">藍綠</string>
     <string name="theme_green">綠色</string>
     <string name="theme_sepia">深褐</string>
     <string name="theme_purple">紫色</string>
     <string name="theme_red">紅色</string>
     <string name="setting_title_ui_style">樣式</string>
-    <string name="style_soft">柔和</string>
     <string name="style_round">圓角</string>
     <string name="style_sharp">直角</string>
     <string name="style_paper">紙張</string>
     <string name="style_dashed">虛線</string>
     <string name="style_no_border">無邊框</string>
+    <string name="style_gradient">漸層</string>
 </resources>

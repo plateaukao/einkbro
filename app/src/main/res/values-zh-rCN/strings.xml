@@ -647,16 +647,15 @@
     <string name="theme_classic">经典</string>
     <string name="theme_light_blue">浅蓝</string>
     <string name="theme_dark_blue">深蓝</string>
-    <string name="theme_teal">青色</string>
     <string name="theme_green">绿色</string>
     <string name="theme_sepia">棕褐</string>
     <string name="theme_purple">紫色</string>
     <string name="theme_red">红色</string>
     <string name="setting_title_ui_style">样式</string>
-    <string name="style_soft">柔和</string>
     <string name="style_round">圆角</string>
     <string name="style_sharp">直角</string>
     <string name="style_paper">纸张</string>
     <string name="style_dashed">虚线</string>
     <string name="style_no_border">无边框</string>
+    <string name="style_gradient">渐变</string>
 </resources>

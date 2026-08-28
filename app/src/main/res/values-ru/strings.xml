@@ -644,16 +644,15 @@
     <string name="theme_classic">Классическая</string>
     <string name="theme_light_blue">Голубой</string>
     <string name="theme_dark_blue">Тёмно-синий</string>
-    <string name="theme_teal">Бирюзовый</string>
     <string name="theme_green">Зелёный</string>
     <string name="theme_sepia">Сепия</string>
     <string name="theme_purple">Фиолетовый</string>
     <string name="theme_red">Красный</string>
     <string name="setting_title_ui_style">Стиль</string>
-    <string name="style_soft">Мягкий</string>
     <string name="style_round">Округлый</string>
     <string name="style_sharp">Острый</string>
     <string name="style_paper">Бумага</string>
     <string name="style_dashed">Пунктир</string>
     <string name="style_no_border">Без рамки</string>
+    <string name="style_gradient">Градиент</string>
 </resources>

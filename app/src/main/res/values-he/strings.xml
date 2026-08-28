@@ -590,16 +590,15 @@
     <string name="theme_classic">קלאסי</string>
     <string name="theme_light_blue">כחול בהיר</string>
     <string name="theme_dark_blue">כחול כהה</string>
-    <string name="theme_teal">טורקיז</string>
     <string name="theme_green">ירוק</string>
     <string name="theme_sepia">ספיה</string>
     <string name="theme_purple">סגול</string>
     <string name="theme_red">אדום</string>
     <string name="setting_title_ui_style">סגנון</string>
-    <string name="style_soft">רך</string>
     <string name="style_round">מעוגל</string>
     <string name="style_sharp">חד</string>
     <string name="style_paper">נייר</string>
     <string name="style_dashed">מקווקו</string>
     <string name="style_no_border">ללא מסגרת</string>
+    <string name="style_gradient">מעבר צבע</string>
 </resources>

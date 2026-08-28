@@ -645,16 +645,15 @@
     <string name="theme_classic">클래식</string>
     <string name="theme_light_blue">밝은 파랑</string>
     <string name="theme_dark_blue">어두운 파랑</string>
-    <string name="theme_teal">청록</string>
     <string name="theme_green">초록</string>
     <string name="theme_sepia">세피아</string>
     <string name="theme_purple">보라</string>
     <string name="theme_red">빨강</string>
     <string name="setting_title_ui_style">스타일</string>
-    <string name="style_soft">부드러움</string>
     <string name="style_round">둥글게</string>
     <string name="style_sharp">각지게</string>
     <string name="style_paper">종이</string>
     <string name="style_dashed">점선</string>
     <string name="style_no_border">테두리 없음</string>
+    <string name="style_gradient">그라데이션</string>
 </resources>

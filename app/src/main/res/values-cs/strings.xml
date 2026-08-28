@@ -586,16 +586,15 @@
     <string name="theme_classic">Klasická</string>
     <string name="theme_light_blue">Světle modrá</string>
     <string name="theme_dark_blue">Tmavě modrá</string>
-    <string name="theme_teal">Modrozelená</string>
     <string name="theme_green">Zelená</string>
     <string name="theme_sepia">Sépiová</string>
     <string name="theme_purple">Fialová</string>
     <string name="theme_red">Červená</string>
     <string name="setting_title_ui_style">Styl</string>
-    <string name="style_soft">Jemný</string>
     <string name="style_round">Kulatý</string>
     <string name="style_sharp">Ostrý</string>
     <string name="style_paper">Papír</string>
     <string name="style_dashed">Čárkovaný</string>
     <string name="style_no_border">Bez okraje</string>
+    <string name="style_gradient">Přechod</string>
 </resources>

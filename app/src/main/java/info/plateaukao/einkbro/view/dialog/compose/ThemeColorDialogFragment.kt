@@ -1,6 +1,12 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import androidx.compose.foundation.background
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,11 +34,13 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.toArgb
@@ -45,6 +53,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.BorderStyle
 import info.plateaukao.einkbro.preference.UiStyle
 import info.plateaukao.einkbro.preference.UiTheme
+import info.plateaukao.einkbro.preference.gradientSpec
 import info.plateaukao.einkbro.preference.palette
 import info.plateaukao.einkbro.view.ThemedBorders
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -104,6 +113,7 @@ private fun ThemeColorContent(
     onClose: () -> Unit,
 ) {
     val current by UiThemeState.current
+    var showCustomWheel by remember { mutableStateOf(current == UiTheme.CUSTOM) }
     Column(
         modifier = Modifier
             .widthIn(max = 360.dp)
@@ -121,15 +131,24 @@ private fun ThemeColorContent(
                     ThemeSwatch(
                         theme = theme,
                         isSelected = theme == current,
-                        onClick = { onSelect(theme) },
+                        onClick = {
+                            // tapping Custom again toggles the wheel visibility
+                            showCustomWheel =
+                                if (theme == UiTheme.CUSTOM && current == UiTheme.CUSTOM) {
+                                    !showCustomWheel
+                                } else {
+                                    theme == UiTheme.CUSTOM
+                                }
+                            if (theme != current) onSelect(theme)
+                        },
                         modifier = Modifier.weight(1f),
                     )
                 }
                 repeat(4 - rowThemes.size) { Spacer(modifier = Modifier.weight(1f)) }
             }
         }
-        if (current == UiTheme.CUSTOM) {
-            CustomColorSliders(
+        if (current == UiTheme.CUSTOM && showCustomWheel) {
+            CustomColorWheel(
                 onPreview = onCustomColorPreview,
                 onPicked = onCustomColorPicked,
             )
@@ -192,49 +211,129 @@ private fun ThemeColorContent(
 }
 
 /**
- * Minimal HSB color picker: three sliders. The palette (accent, background
- * tint, text shades) is derived from the picked color with contrast-safe
- * adjustments, so any pick stays readable.
+ * Color wheel picker: hue around the circle, saturation from center to edge,
+ * plus one brightness slider. The derived palette keeps any pick readable.
  */
 @Composable
-private fun CustomColorSliders(
+private fun CustomColorWheel(
     onPreview: (Color) -> Unit,
     onPicked: (Color) -> Unit,
 ) {
-    val customColor by UiThemeState.customColor
-    val hsv = remember(Unit) {
+    val initial = remember {
         val arr = FloatArray(3)
-        android.graphics.Color.colorToHSV(customColor.toArgb(), arr)
+        android.graphics.Color.colorToHSV(UiThemeState.customColor.value.toArgb(), arr)
         arr
     }
-    var hue by remember { mutableFloatStateOf(hsv[0]) }
-    var sat by remember { mutableFloatStateOf(hsv[1]) }
-    var value by remember { mutableFloatStateOf(hsv[2]) }
+    var hue by remember { mutableFloatStateOf(initial[0]) }
+    var sat by remember { mutableFloatStateOf(initial[1]) }
+    var value by remember { mutableFloatStateOf(initial[2]) }
     fun currentColor() =
         Color(android.graphics.Color.HSVToColor(floatArrayOf(hue, sat, value)))
 
-    Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)) {
-        listOf(
-            Triple("H", hue / 360f) { v: Float -> hue = v * 360f },
-            Triple("S", sat) { v: Float -> sat = v },
-            Triple("B", value) { v: Float -> value = v },
-        ).forEach { (label, sliderValue, update) ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    label,
-                    modifier = Modifier.width(20.dp),
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colors.onBackground,
-                )
-                Slider(
-                    value = sliderValue,
-                    onValueChange = {
-                        update(it)
+    val wheelSize = 220.dp
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Canvas(
+            modifier = Modifier
+                .requiredSize(wheelSize)
+                .pointerInput(Unit) {
+                    fun update(x: Float, y: Float, finished: Boolean) {
+                        val cx = size.width / 2f
+                        val cy = size.height / 2f
+                        val dx = x - cx
+                        val dy = y - cy
+                        val radius = kotlin.math.min(cx, cy)
+                        hue = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
+                            .toFloat()
+                        sat = (kotlin.math.sqrt(dx * dx + dy * dy) / radius).coerceIn(0f, 1f)
                         onPreview(currentColor())
-                    },
-                    onValueChangeFinished = { onPicked(currentColor()) },
-                )
-            }
+                        if (finished) onPicked(currentColor())
+                    }
+                    detectDragGestures(
+                        onDragEnd = { onPicked(currentColor()) },
+                    ) { change, _ ->
+                        change.consume()
+                        update(change.position.x, change.position.y, finished = false)
+                    }
+                }
+                .pointerInput(Unit) {
+                    detectTapGestures { offset -> 
+                        val cx = size.width / 2f
+                        val cy = size.height / 2f
+                        val dx = offset.x - cx
+                        val dy = offset.y - cy
+                        val radius = kotlin.math.min(cx, cy)
+                        hue = ((Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()) + 360.0) % 360.0)
+                            .toFloat()
+                        sat = (kotlin.math.sqrt(dx * dx + dy * dy) / radius).coerceIn(0f, 1f)
+                        onPreview(currentColor())
+                        onPicked(currentColor())
+                    }
+                },
+        ) {
+            val radius = kotlin.math.min(size.width, size.height) / 2f
+            val center = Offset(size.width / 2f, size.height / 2f)
+            drawCircle(
+                brush = Brush.sweepGradient(
+                    listOf(
+                        Color.Red, Color.Yellow, Color.Green, Color.Cyan,
+                        Color.Blue, Color.Magenta, Color.Red,
+                    ),
+                    center = center,
+                ),
+                radius = radius,
+                center = center,
+            )
+            drawCircle(
+                brush = Brush.radialGradient(
+                    listOf(Color.White, Color(0x00FFFFFF)),
+                    center = center,
+                    radius = radius,
+                ),
+                radius = radius,
+                center = center,
+            )
+            // thumb at the current hue/saturation position
+            val rad = Math.toRadians(hue.toDouble())
+            val thumb = Offset(
+                center.x + radius * sat * kotlin.math.cos(rad).toFloat(),
+                center.y + radius * sat * kotlin.math.sin(rad).toFloat(),
+            )
+            drawCircle(Color.White, radius = 11.dp.toPx(), center = thumb)
+            drawCircle(
+                Color(android.graphics.Color.HSVToColor(floatArrayOf(hue, sat, value))),
+                radius = 8.dp.toPx(),
+                center = thumb,
+            )
+            drawCircle(
+                Color.Black,
+                radius = 11.dp.toPx(),
+                center = thumb,
+                style = Stroke(width = 1.dp.toPx()),
+            )
+        }
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                "B",
+                modifier = Modifier.width(20.dp),
+                fontSize = 13.sp,
+                color = MaterialTheme.colors.onBackground,
+            )
+            Slider(
+                value = value,
+                onValueChange = {
+                    value = it
+                    onPreview(currentColor())
+                },
+                onValueChangeFinished = { onPicked(currentColor()) },
+            )
         }
     }
 }
@@ -268,32 +367,38 @@ private fun StyleSwatch(
                     .border(style.borderWidthDp.dp, accent, shape)
                     .padding(3.dp)
                     .border(style.borderWidthDp.dp, accent, shape)
+                BorderStyle.GRADIENT, BorderStyle.GRADIENT_FLAT, BorderStyle.GRADIENT_DEEP -> {
+                    val (start, end, hasBorder) = style.borderStyle.gradientSpec()!!
+                    val filled = base.background(
+                        Brush.linearGradient(
+                            listOf(
+                                lerp(MaterialTheme.colors.background, accent, start + 0.08f),
+                                lerp(MaterialTheme.colors.background, accent, end + 0.12f),
+                            ),
+                        ),
+                        shape,
+                    )
+                    if (hasBorder) filled.border(style.borderWidthDp.dp, accent, shape) else filled
+                }
                 BorderStyle.SOLID -> base.border(style.borderWidthDp.dp, accent, shape)
             }
         }
+    val label = stringResource(uiStyle.titleResId) + uiStyle.labelSuffix
     Column(
         modifier = modifier
-            .clickable(onClick = onClick)
-            .padding(vertical = 6.dp),
+            .clickable(onClick = onClick, onClickLabel = label)
+            .padding(vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(modifier = previewModifier, contentAlignment = Alignment.Center) {
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Filled.Check,
-                    contentDescription = null,
+                    contentDescription = label,
                     tint = accent,
                 )
             }
         }
-        Text(
-            stringResource(uiStyle.titleResId),
-            modifier = Modifier.padding(top = 4.dp),
-            fontSize = 12.sp,
-            maxLines = 1,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.onBackground,
-        )
     }
 }
 

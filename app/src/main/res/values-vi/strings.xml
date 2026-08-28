@@ -591,16 +591,15 @@
     <string name="theme_classic">Cổ điển</string>
     <string name="theme_light_blue">Xanh dương nhạt</string>
     <string name="theme_dark_blue">Xanh dương đậm</string>
-    <string name="theme_teal">Xanh mòng két</string>
     <string name="theme_green">Xanh lá</string>
     <string name="theme_sepia">Nâu sepia</string>
     <string name="theme_purple">Tím</string>
     <string name="theme_red">Đỏ</string>
     <string name="setting_title_ui_style">Kiểu</string>
-    <string name="style_soft">Mềm</string>
     <string name="style_round">Bo tròn</string>
     <string name="style_sharp">Sắc cạnh</string>
     <string name="style_paper">Giấy</string>
     <string name="style_dashed">Nét đứt</string>
     <string name="style_no_border">Không viền</string>
+    <string name="style_gradient">Chuyển sắc</string>
 </resources>

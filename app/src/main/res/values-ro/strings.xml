@@ -591,16 +591,15 @@
     <string name="theme_classic">Clasic</string>
     <string name="theme_light_blue">Albastru deschis</string>
     <string name="theme_dark_blue">Albastru închis</string>
-    <string name="theme_teal">Turcoaz</string>
     <string name="theme_green">Verde</string>
     <string name="theme_sepia">Sepia</string>
     <string name="theme_purple">Violet</string>
     <string name="theme_red">Roșu</string>
     <string name="setting_title_ui_style">Stil</string>
-    <string name="style_soft">Moale</string>
     <string name="style_round">Rotunjit</string>
     <string name="style_sharp">Ascuțit</string>
     <string name="style_paper">Hârtie</string>
     <string name="style_dashed">Întrerupt</string>
     <string name="style_no_border">Fără margine</string>
+    <string name="style_gradient">Degrade</string>
 </resources>

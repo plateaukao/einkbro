@@ -591,16 +591,15 @@
     <string name="theme_classic">Classique</string>
     <string name="theme_light_blue">Bleu clair</string>
     <string name="theme_dark_blue">Bleu foncé</string>
-    <string name="theme_teal">Bleu sarcelle</string>
     <string name="theme_green">Vert</string>
     <string name="theme_sepia">Sépia</string>
     <string name="theme_purple">Violet</string>
     <string name="theme_red">Rouge</string>
     <string name="setting_title_ui_style">Style</string>
-    <string name="style_soft">Doux</string>
     <string name="style_round">Arrondi</string>
     <string name="style_sharp">Anguleux</string>
     <string name="style_paper">Papier</string>
     <string name="style_dashed">Pointillé</string>
     <string name="style_no_border">Sans bordure</string>
+    <string name="style_gradient">Dégradé</string>
 </resources>

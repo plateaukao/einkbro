@@ -643,16 +643,15 @@
     <string name="theme_classic">Klasik</string>
     <string name="theme_light_blue">Biru muda</string>
     <string name="theme_dark_blue">Biru tua</string>
-    <string name="theme_teal">Hijau kebiruan</string>
     <string name="theme_green">Hijau</string>
     <string name="theme_sepia">Sepia</string>
     <string name="theme_purple">Ungu</string>
     <string name="theme_red">Merah</string>
     <string name="setting_title_ui_style">Gaya</string>
-    <string name="style_soft">Lembut</string>
     <string name="style_round">Bulat</string>
     <string name="style_sharp">Tajam</string>
     <string name="style_paper">Kertas</string>
     <string name="style_dashed">Putus-putus</string>
     <string name="style_no_border">Tanpa tepi</string>
+    <string name="style_gradient">Gradasi</string>
 </resources>

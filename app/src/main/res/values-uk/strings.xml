@@ -581,16 +581,15 @@
     <string name="theme_classic">Класична</string>
     <string name="theme_light_blue">Блакитний</string>
     <string name="theme_dark_blue">Темно-синій</string>
-    <string name="theme_teal">Бірюзовий</string>
     <string name="theme_green">Зелений</string>
     <string name="theme_sepia">Сепія</string>
     <string name="theme_purple">Фіолетовий</string>
     <string name="theme_red">Червоний</string>
     <string name="setting_title_ui_style">Стиль</string>
-    <string name="style_soft">М\'який</string>
     <string name="style_round">Округлий</string>
     <string name="style_sharp">Гострий</string>
     <string name="style_paper">Папір</string>
     <string name="style_dashed">Пунктир</string>
     <string name="style_no_border">Без рамки</string>
+    <string name="style_gradient">Градієнт</string>
 </resources>

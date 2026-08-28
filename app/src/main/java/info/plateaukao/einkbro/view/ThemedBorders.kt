@@ -14,6 +14,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.preference.ThemePalette
 import info.plateaukao.einkbro.preference.ThemeStyle
+import info.plateaukao.einkbro.preference.gradientSpec
 import info.plateaukao.einkbro.preference.palette
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -45,6 +46,20 @@ object ThemedBorders : KoinComponent {
     private fun currentPalette(): ThemePalette =
         config.display.uiTheme.palette(Color(config.display.customThemeColor))
 
+    /** Start/end colors for a gradient style fill, per display mode. */
+    private fun gradientColors(context: Context, start: Float, end: Float): IntArray {
+        val palette = currentPalette()
+        val (base, accent) = when {
+            config.display.uiThemeInverted -> palette.onBackground to palette.accentDark
+            isNight(context) -> Color.Black to palette.accentDark
+            else -> palette.background to palette.accent
+        }
+        return intArrayOf(
+            lerp(base, accent, start).toArgb(),
+            lerp(base, accent, end).toArgb(),
+        )
+    }
+
     /** Accent-tinted fill used instead of a stroke for BorderStyle.NONE. */
     fun tonalFillArgb(context: Context): Int {
         val palette = currentPalette()
@@ -74,11 +89,17 @@ object ThemedBorders : KoinComponent {
         val radius = context.dp(style.frameRadiusDp).toFloat()
         val strokeWidth = context.dp(style.borderWidthDp)
 
+        val gradientSpec = style.borderStyle.gradientSpec()
         fun single(withStroke: Boolean) = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = radius
-            setColor(fill)
-            if (withStroke) {
+            if (gradientSpec != null) {
+                orientation = GradientDrawable.Orientation.TL_BR
+                colors = gradientColors(context, gradientSpec.first, gradientSpec.second)
+            } else {
+                setColor(fill)
+            }
+            if (withStroke && (gradientSpec == null || gradientSpec.third)) {
                 if (style.borderStyle == BorderStyle.DASHED && !forceSolid) {
                     setStroke(
                         strokeWidth, accent,

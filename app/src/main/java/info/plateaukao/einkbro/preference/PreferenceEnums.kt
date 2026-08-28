@@ -141,10 +141,6 @@ enum class UiTheme(
         R.string.theme_dark_blue, Color(0xFF16437E), Color(0xFF7A9CC6),
         Color(0xFFF2F5FA), Color(0xFF122F58), Color(0xFF97A8C0),
     ),
-    TEAL(
-        R.string.theme_teal, Color(0xFF00796B), Color(0xFF4DB6AC),
-        Color(0xFFF0F7F6), Color(0xFF0B3B34), Color(0xFF8FB3AE),
-    ),
     GREEN(
         R.string.theme_green, Color(0xFF2E7D32), Color(0xFF81C784),
         Color(0xFFF2F8F2), Color(0xFF1B421D), Color(0xFF9DB89E),
@@ -220,7 +216,7 @@ fun deriveThemePalette(base: Color): ThemePalette {
 }
 
 // How themed borders are drawn.
-enum class BorderStyle { SOLID, DASHED, DOUBLE, NONE }
+enum class BorderStyle { SOLID, DASHED, DOUBLE, NONE, GRADIENT, GRADIENT_FLAT, GRADIENT_DEEP }
 
 /**
  * Shape/stroke styling bundled with a theme, so each theme is a distinct
@@ -237,11 +233,15 @@ data class ThemeStyle(
 
 // UI shape styles, independent of the color theme so any color can pair
 // with any look. Persisted by ordinal; only append new entries.
-enum class UiStyle(val titleResId: Int, val style: ThemeStyle) {
+enum class UiStyle(
+    val titleResId: Int,
+    val style: ThemeStyle,
+    // appended verbatim after the localized title (numbered variants need no
+    // extra translations)
+    val labelSuffix: String = "",
+) {
     // unchanged original look
     CLASSIC(R.string.theme_classic, ThemeStyle(1f, 5f, 7f, BorderStyle.SOLID)),
-    // soft rounded corners
-    SOFT(R.string.style_soft, ThemeStyle(1f, 12f, 10f, BorderStyle.SOLID)),
     // pill / very round
     ROUND(R.string.style_round, ThemeStyle(1f, 16f, 14f, BorderStyle.SOLID)),
     // sharp corners with a bold stroke, technical
@@ -252,4 +252,27 @@ enum class UiStyle(val titleResId: Int, val style: ThemeStyle) {
     DASHED(R.string.style_dashed, ThemeStyle(1.5f, 6f, 6f, BorderStyle.DASHED)),
     // no stroke; tonal accent-tinted fill instead
     BORDERLESS(R.string.style_no_border, ThemeStyle(1f, 16f, 12f, BorderStyle.NONE)),
+    // accent gradient fill on dialogs, panels, and other filled areas
+    GRADIENT(R.string.style_gradient, ThemeStyle(1f, 12f, 10f, BorderStyle.GRADIENT)),
+    // borderless subtle gradient
+    GRADIENT_FLAT(
+        R.string.style_gradient,
+        ThemeStyle(1f, 16f, 12f, BorderStyle.GRADIENT_FLAT),
+        labelSuffix = " 2",
+    ),
+    // borderless deep gradient
+    GRADIENT_DEEP(
+        R.string.style_gradient,
+        ThemeStyle(1f, 16f, 12f, BorderStyle.GRADIENT_DEEP),
+        labelSuffix = " 3",
+    ),
+}
+
+// (start, end) accent-blend fractions of the gradient fill, and whether the
+// box keeps a solid accent stroke.
+fun BorderStyle.gradientSpec(): Triple<Float, Float, Boolean>? = when (this) {
+    BorderStyle.GRADIENT -> Triple(0.0f, 0.24f, true)
+    BorderStyle.GRADIENT_FLAT -> Triple(0.06f, 0.28f, false)
+    BorderStyle.GRADIENT_DEEP -> Triple(0.15f, 0.45f, false)
+    else -> null
 }

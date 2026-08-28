@@ -583,16 +583,15 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="theme_classic">Klassisch</string>
     <string name="theme_light_blue">Hellblau</string>
     <string name="theme_dark_blue">Dunkelblau</string>
-    <string name="theme_teal">Blaugrün</string>
     <string name="theme_green">Grün</string>
     <string name="theme_sepia">Sepia</string>
     <string name="theme_purple">Violett</string>
     <string name="theme_red">Rot</string>
     <string name="setting_title_ui_style">Stil</string>
-    <string name="style_soft">Sanft</string>
     <string name="style_round">Rund</string>
     <string name="style_sharp">Eckig</string>
     <string name="style_paper">Papier</string>
     <string name="style_dashed">Gestrichelt</string>
     <string name="style_no_border">Ohne Rahmen</string>
+    <string name="style_gradient">Verlauf</string>
 </resources>
