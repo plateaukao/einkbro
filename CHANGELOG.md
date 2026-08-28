@@ -1,3 +1,13 @@
+### 16.5.0
+#### Features
+* Theming: choose an accent color (7 presets or a custom color picked on a hue wheel), a border style (classic, round, sharp, paper, dashed, postage stamp, hand-drawn sketch, certificate, sticker, or none), and a fill (tonal, gradient with an adjustable direction/level dial, or subtle stripe/dot/graph/ruled/crosshatch patterns) - every combination applies live to dialogs, panels, settings, and the toolbar, with an Invert colors mode for a colored dark look
+* Theming: the Android 12+ system splash screen and the built-in start page (background, fill pattern, search bar, wordmark, and tiles) follow the selected theme; settings screens tint the status bar to match their header
+
+#### Improvements
+* Touch area page-turn hints are drawn with rounded corners instead of a dashed box
+
+---
+
 ### 16.4.1
 #### Features
 * Site settings: rules can now be scoped to a URL path (e.g. example.com/docs) as well as a whole host, with the most specific rule winning field by field; the editor shows where each inherited value comes from, and Settings > Site Settings gains a "Configured sites" list to review, edit or remove every rule in one place
