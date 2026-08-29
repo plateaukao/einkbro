@@ -348,6 +348,7 @@
     <string name="site_settings_other_rules">Other rules on this site</string>
     <string name="site_settings_inherited_from">from %1$s</string>
     <string name="site_settings_remove_rule">Remove Rule</string>
+    <string name="site_rule_part_off">%1$s (off)</string>
     <string name="site_settings_reset_to_inherited">Reset All to Inherited</string>
     <string name="setting_title_site_rules">Configured sites</string>
     <string name="setting_summary_site_rules">Review, edit or remove per-site settings without visiting each site</string>

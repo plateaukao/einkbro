@@ -555,6 +555,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="site_settings_other_rules">Weitere Regeln für diese Website</string>
     <string name="site_settings_inherited_from">von %1$s</string>
     <string name="site_settings_remove_rule">Regel entfernen</string>
+    <string name="site_rule_part_off">%1$s (aus)</string>
     <string name="site_settings_reset_to_inherited">Alles auf Geerbt zurücksetzen</string>
     <string name="setting_title_site_rules">Konfigurierte Websites</string>
     <string name="setting_summary_site_rules">Website-Einstellungen prüfen, bearbeiten oder entfernen, ohne jede Website zu besuchen</string>

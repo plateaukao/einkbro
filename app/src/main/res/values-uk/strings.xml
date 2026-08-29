@@ -553,6 +553,7 @@
     <string name="site_settings_other_rules">Інші правила для цього сайту</string>
     <string name="site_settings_inherited_from">з %1$s</string>
     <string name="site_settings_remove_rule">Видалити правило</string>
+    <string name="site_rule_part_off">%1$s (вимк.)</string>
     <string name="site_settings_reset_to_inherited">Скинути все на успадковане</string>
     <string name="setting_title_site_rules">Налаштовані сайти</string>
     <string name="setting_summary_site_rules">Переглядайте, змінюйте або видаляйте налаштування сайтів, не відвідуючи кожен сайт</string>

@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">כללים אחרים באתר זה</string>
     <string name="site_settings_inherited_from">מ-%1$s</string>
     <string name="site_settings_remove_rule">הסר כלל</string>
+    <string name="site_rule_part_off">%1$s (כבוי)</string>
     <string name="site_settings_reset_to_inherited">אפס הכל לערכים שעברו בירושה</string>
     <string name="setting_title_site_rules">אתרים מוגדרים</string>
     <string name="setting_summary_site_rules">סקירה, עריכה או הסרה של הגדרות לכל אתר בלי לבקר בכל אתר</string>

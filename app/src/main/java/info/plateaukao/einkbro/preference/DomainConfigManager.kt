@@ -79,8 +79,8 @@ class DomainConfigManager(
             enableAdBlock = chain.firstNotNullOfOrNull { it.enableAdBlock },
             enableCookies = chain.firstNotNullOfOrNull { it.enableCookies },
             translationMode = chain.firstNotNullOfOrNull { it.translationMode },
-            customCss = chain.firstNotNullOfOrNull { it.customCss?.takeIf { css -> css.isNotBlank() } },
-            postLoadJavascript = chain.firstNotNullOfOrNull { it.postLoadJavascript?.takeIf { js -> js.isNotBlank() } },
+            customCss = chain.firstNotNullOfOrNull { it.activeCustomCss },
+            postLoadJavascript = chain.firstNotNullOfOrNull { it.activePostLoadJavascript },
         )
     }
 
@@ -184,15 +184,18 @@ class DomainConfigManager(
         persist(target)
     }
 
+    /** Writing new code switches the script back on: a fresh save is meant to take effect. */
     fun setPostLoadJavascript(url: String, code: String?) {
         val target = writeTargetFor(url) { it.postLoadJavascript } ?: return
         target.postLoadJavascript = code?.ifBlank { null }
+        target.postLoadJavascriptEnabled = true
         persist(target)
     }
 
     fun setCustomCss(url: String, code: String?) {
         val target = writeTargetFor(url) { it.customCss } ?: return
         target.customCss = code?.ifBlank { null }
+        target.customCssEnabled = true
         persist(target)
     }
 
@@ -222,11 +225,11 @@ class DomainConfigManager(
     fun getTranslationMode(url: String): TranslationMode =
         resolve(url) { it.translationMode } ?: translation.translationMode
 
-    fun getCustomCss(url: String): String? =
-        resolve(url) { it.customCss?.takeIf { css -> css.isNotBlank() } }
+    /** The CSS to inject for [url]: first rule in the chain whose CSS is set and switched on. */
+    fun getCustomCss(url: String): String? = resolve(url) { it.activeCustomCss }
 
-    fun getPostLoadJavascript(url: String): String? =
-        resolve(url) { it.postLoadJavascript?.takeIf { js -> js.isNotBlank() } }
+    /** The JS to run after load for [url]: first rule in the chain whose JS is set and switched on. */
+    fun getPostLoadJavascript(url: String): String? = resolve(url) { it.activePostLoadJavascript }
 
     // endregion
 }

@@ -563,6 +563,7 @@
     <string name="site_settings_other_rules">Quy tắc khác trên trang này</string>
     <string name="site_settings_inherited_from">từ %1$s</string>
     <string name="site_settings_remove_rule">Xóa quy tắc</string>
+    <string name="site_rule_part_off">%1$s (tắt)</string>
     <string name="site_settings_reset_to_inherited">Đặt lại tất cả về kế thừa</string>
     <string name="setting_title_site_rules">Trang đã cấu hình</string>
     <string name="setting_summary_site_rules">Xem, sửa hoặc xóa cài đặt theo trang mà không cần truy cập từng trang</string>

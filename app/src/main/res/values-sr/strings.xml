@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">Друга правила на овом сајту</string>
     <string name="site_settings_inherited_from">из %1$s</string>
     <string name="site_settings_remove_rule">Уклони правило</string>
+    <string name="site_rule_part_off">%1$s (искључено)</string>
     <string name="site_settings_reset_to_inherited">Врати све на наслеђено</string>
     <string name="setting_title_site_rules">Подешени сајтови</string>
     <string name="setting_summary_site_rules">Прегледајте, измените или уклоните подешавања по сајту без посете сваком сајту</string>

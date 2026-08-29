@@ -554,6 +554,7 @@
     <string name="site_settings_other_rules">Inne reguły w tej witrynie</string>
     <string name="site_settings_inherited_from">z %1$s</string>
     <string name="site_settings_remove_rule">Usuń regułę</string>
+    <string name="site_rule_part_off">%1$s (wył.)</string>
     <string name="site_settings_reset_to_inherited">Przywróć wszystko do odziedziczonych</string>
     <string name="setting_title_site_rules">Skonfigurowane witryny</string>
     <string name="setting_summary_site_rules">Przeglądaj, edytuj lub usuwaj ustawienia witryn bez odwiedzania każdej z nich</string>

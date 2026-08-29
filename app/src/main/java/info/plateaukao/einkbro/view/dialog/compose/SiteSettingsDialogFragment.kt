@@ -29,6 +29,8 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -213,7 +215,9 @@ fun SiteSettingsContent(
     var translateSite by remember(selectedKey) { mutableStateOf(rule.shouldTranslateSite) }
     var translationMode by remember(selectedKey) { mutableStateOf(rule.translationMode) }
     var customCss by remember(selectedKey) { mutableStateOf(rule.customCss.orEmpty()) }
+    var customCssEnabled by remember(selectedKey) { mutableStateOf(rule.customCssEnabled) }
     var postLoadJs by remember(selectedKey) { mutableStateOf(rule.postLoadJavascript.orEmpty()) }
+    var postLoadJsEnabled by remember(selectedKey) { mutableStateOf(rule.postLoadJavascriptEnabled) }
 
     fun buildRule() = rule.copy(
         fontSize = fontSize,
@@ -232,6 +236,8 @@ fun SiteSettingsContent(
         translationMode = translationMode,
         customCss = customCss.ifBlank { null },
         postLoadJavascript = postLoadJs.ifBlank { null },
+        customCssEnabled = customCssEnabled,
+        postLoadJavascriptEnabled = postLoadJsEnabled,
     )
 
     val overrideCount = buildRule().overrideCount
@@ -451,14 +457,30 @@ fun SiteSettingsContent(
             EditTextButtonRow(
                 label = cssLabel,
                 hasContent = customCss.isNotBlank(),
-                onClick = { onEditText(cssLabel, customCss) { customCss = it } },
+                enabled = customCssEnabled,
+                onEnabledChange = { customCssEnabled = it },
+                onClick = {
+                    onEditText(cssLabel, customCss) {
+                        // Newly written code is meant to take effect; saving the
+                        // editor unchanged must not flip a switched-off script back on.
+                        if (it.isNotBlank() && it != customCss) customCssEnabled = true
+                        customCss = it
+                    }
+                },
             )
 
             val jsLabel = stringResource(R.string.site_post_load_js)
             EditTextButtonRow(
                 label = jsLabel,
                 hasContent = postLoadJs.isNotBlank(),
-                onClick = { onEditText(jsLabel, postLoadJs) { postLoadJs = it } },
+                enabled = postLoadJsEnabled,
+                onEnabledChange = { postLoadJsEnabled = it },
+                onClick = {
+                    onEditText(jsLabel, postLoadJs) {
+                        if (it.isNotBlank() && it != postLoadJs) postLoadJsEnabled = true
+                        postLoadJs = it
+                    }
+                },
             )
         }
 
@@ -489,6 +511,7 @@ fun SiteSettingsContent(
                         whiteBackground = null; invertColor = null
                         translateSite = null; translationMode = null
                         customCss = ""; postLoadJs = ""
+                        customCssEnabled = true; postLoadJsEnabled = true
                     },
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = MaterialTheme.colors.onBackground,
@@ -1172,9 +1195,13 @@ private fun <T> NullableDropdownRow(
 private fun EditTextButtonRow(
     label: String,
     hasContent: Boolean,
+    enabled: Boolean,
+    onEnabledChange: (Boolean) -> Unit,
     onClick: () -> Unit,
 ) {
-    val color = if (hasContent) MaterialTheme.colors.onBackground
+    // Dim when there is nothing to apply, or the saved script is switched off.
+    val active = hasContent && enabled
+    val color = if (active) MaterialTheme.colors.onBackground
         else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
     Row(
         modifier = Modifier
@@ -1182,6 +1209,22 @@ private fun EditTextButtonRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        // Temporarily disable the script without deleting it. Always shown so
+        // the switch is discoverable; inert until there is code to switch.
+        Switch(
+            checked = active,
+            enabled = hasContent,
+            onCheckedChange = onEnabledChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colors.onBackground,
+                checkedTrackColor = MaterialTheme.colors.onBackground,
+                uncheckedThumbColor = Color.Gray,
+                uncheckedTrackColor = Color.Gray,
+                disabledUncheckedThumbColor = Color.LightGray,
+                disabledUncheckedTrackColor = Color.LightGray,
+            ),
+        )
+        Spacer(Modifier.width(8.dp))
         Text(
             text = label,
             modifier = Modifier.weight(1f),

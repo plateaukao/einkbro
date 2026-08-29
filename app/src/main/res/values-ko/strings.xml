@@ -617,6 +617,7 @@
     <string name="site_settings_other_rules">이 사이트의 다른 규칙</string>
     <string name="site_settings_inherited_from">%1$s에서 상속</string>
     <string name="site_settings_remove_rule">규칙 삭제</string>
+    <string name="site_rule_part_off">%1$s (꺼짐)</string>
     <string name="site_settings_reset_to_inherited">모두 상속값으로 재설정</string>
     <string name="setting_title_site_rules">설정된 사이트</string>
     <string name="setting_summary_site_rules">각 사이트를 방문하지 않고 사이트별 설정을 확인, 수정 또는 삭제합니다</string>

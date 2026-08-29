@@ -563,6 +563,7 @@
     <string name="site_settings_other_rules">Alte reguli pe acest site</string>
     <string name="site_settings_inherited_from">de la %1$s</string>
     <string name="site_settings_remove_rule">Elimină regula</string>
+    <string name="site_rule_part_off">%1$s (dezactivat)</string>
     <string name="site_settings_reset_to_inherited">Resetează tot la moștenit</string>
     <string name="setting_title_site_rules">Site-uri configurate</string>
     <string name="setting_summary_site_rules">Examinați, editați sau eliminați setările per site fără a vizita fiecare site</string>

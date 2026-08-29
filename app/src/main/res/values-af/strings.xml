@@ -563,6 +563,7 @@
     <string name="site_settings_other_rules">Ander reëls op hierdie webwerf</string>
     <string name="site_settings_inherited_from">van %1$s</string>
     <string name="site_settings_remove_rule">Verwyder reël</string>
+    <string name="site_rule_part_off">%1$s (af)</string>
     <string name="site_settings_reset_to_inherited">Stel alles terug na oorgeërf</string>
     <string name="setting_title_site_rules">Gekonfigureerde webwerwe</string>
     <string name="setting_summary_site_rules">Hersien, wysig of verwyder per-webwerf-instellings sonder om elke webwerf te besoek</string>

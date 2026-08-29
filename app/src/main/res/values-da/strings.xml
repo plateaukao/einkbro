@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">Andre regler på dette websted</string>
     <string name="site_settings_inherited_from">fra %1$s</string>
     <string name="site_settings_remove_rule">Fjern regel</string>
+    <string name="site_rule_part_off">%1$s (fra)</string>
     <string name="site_settings_reset_to_inherited">Nulstil alt til nedarvet</string>
     <string name="setting_title_site_rules">Konfigurerede websteder</string>
     <string name="setting_summary_site_rules">Gennemse, rediger eller fjern indstillinger pr. websted uden at besøge hvert websted</string>

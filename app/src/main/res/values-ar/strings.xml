@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">قواعد أخرى على هذا الموقع</string>
     <string name="site_settings_inherited_from">من %1$s</string>
     <string name="site_settings_remove_rule">إزالة القاعدة</string>
+    <string name="site_rule_part_off">%1$s (إيقاف)</string>
     <string name="site_settings_reset_to_inherited">إعادة الكل إلى الموروث</string>
     <string name="setting_title_site_rules">المواقع المهيأة</string>
     <string name="setting_summary_site_rules">راجع أو عدّل أو أزل إعدادات كل موقع دون زيارة كل موقع</string>

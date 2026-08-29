@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">Andere regels op deze site</string>
     <string name="site_settings_inherited_from">van %1$s</string>
     <string name="site_settings_remove_rule">Regel verwijderen</string>
+    <string name="site_rule_part_off">%1$s (uit)</string>
     <string name="site_settings_reset_to_inherited">Alles terugzetten naar overgeërfd</string>
     <string name="setting_title_site_rules">Geconfigureerde sites</string>
     <string name="setting_summary_site_rules">Bekijk, bewerk of verwijder instellingen per site zonder elke site te bezoeken</string>

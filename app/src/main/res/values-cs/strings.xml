@@ -558,6 +558,7 @@
     <string name="site_settings_other_rules">Další pravidla na tomto webu</string>
     <string name="site_settings_inherited_from">z %1$s</string>
     <string name="site_settings_remove_rule">Odebrat pravidlo</string>
+    <string name="site_rule_part_off">%1$s (vypnuto)</string>
     <string name="site_settings_reset_to_inherited">Obnovit vše na zděděné</string>
     <string name="setting_title_site_rules">Nakonfigurované weby</string>
     <string name="setting_summary_site_rules">Zkontrolujte, upravte nebo odeberte nastavení webů, aniž byste je museli navštívit</string>

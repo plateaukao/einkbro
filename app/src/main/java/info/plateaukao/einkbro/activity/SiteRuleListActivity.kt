@@ -200,10 +200,21 @@ private fun overrideSummary(rule: DomainConfigurationData): String {
         if (rule.enableCookies != null) add(stringResource(R.string.setting_title_cookie))
         if (rule.shouldTranslateSite != null) add(stringResource(R.string.action_category_translation))
         if (rule.translationMode != null) add(stringResource(R.string.translation_mode))
-        if (!rule.customCss.isNullOrBlank()) add(stringResource(R.string.site_custom_css))
-        if (!rule.postLoadJavascript.isNullOrBlank()) add(stringResource(R.string.site_post_load_js))
+        if (!rule.customCss.isNullOrBlank()) {
+            add(scriptPart(R.string.site_custom_css, rule.customCssEnabled))
+        }
+        if (!rule.postLoadJavascript.isNullOrBlank()) {
+            add(scriptPart(R.string.site_post_load_js, rule.postLoadJavascriptEnabled))
+        }
     }.distinct()
     return if (parts.isEmpty()) stringResource(R.string.site_rules_no_overrides) else parts.joinToString(", ")
+}
+
+/** Script name, marked "(off)" when the rule keeps the code but has it switched off. */
+@Composable
+private fun scriptPart(labelRes: Int, enabled: Boolean): String {
+    val label = stringResource(labelRes)
+    return if (enabled) label else stringResource(R.string.site_rule_part_off, label)
 }
 
 @Composable

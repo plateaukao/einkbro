@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">Andra regler på den här webbplatsen</string>
     <string name="site_settings_inherited_from">från %1$s</string>
     <string name="site_settings_remove_rule">Ta bort regel</string>
+    <string name="site_rule_part_off">%1$s (av)</string>
     <string name="site_settings_reset_to_inherited">Återställ allt till ärvt</string>
     <string name="setting_title_site_rules">Konfigurerade webbplatser</string>
     <string name="setting_summary_site_rules">Granska, redigera eller ta bort inställningar per webbplats utan att besöka varje webbplats</string>

@@ -563,6 +563,7 @@
     <string name="site_settings_other_rules">Autres règles sur ce site</string>
     <string name="site_settings_inherited_from">de %1$s</string>
     <string name="site_settings_remove_rule">Supprimer la règle</string>
+    <string name="site_rule_part_off">%1$s (désactivé)</string>
     <string name="site_settings_reset_to_inherited">Tout réinitialiser sur hérité</string>
     <string name="setting_title_site_rules">Sites configurés</string>
     <string name="setting_summary_site_rules">Consulter, modifier ou supprimer les réglages par site sans visiter chaque site</string>

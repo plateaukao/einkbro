@@ -560,6 +560,7 @@
     <string name="site_settings_other_rules">このサイトの他のルール</string>
     <string name="site_settings_inherited_from">%1$s から継承</string>
     <string name="site_settings_remove_rule">ルールを削除</string>
+    <string name="site_rule_part_off">%1$s（オフ）</string>
     <string name="site_settings_reset_to_inherited">すべて継承値に戻す</string>
     <string name="setting_title_site_rules">設定済みサイト</string>
     <string name="setting_summary_site_rules">各サイトを開かずにサイトごとの設定を確認・編集・削除します</string>

@@ -731,6 +731,7 @@
     <string name="site_settings_other_rules">Más szabályok ezen a webhelyen</string>
     <string name="site_settings_inherited_from">innen: %1$s</string>
     <string name="site_settings_remove_rule">Szabály eltávolítása</string>
+    <string name="site_rule_part_off">%1$s (ki)</string>
     <string name="site_settings_reset_to_inherited">Minden visszaállítása örököltre</string>
     <string name="setting_title_site_rules">Beállított webhelyek</string>
     <string name="setting_summary_site_rules">Webhelyenkénti beállítások áttekintése, szerkesztése vagy eltávolítása az egyes webhelyek felkeresése nélkül</string>

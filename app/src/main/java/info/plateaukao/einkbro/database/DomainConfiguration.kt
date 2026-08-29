@@ -41,10 +41,23 @@ data class DomainConfigurationData(
     var translationMode: TranslationMode? = null,
     var customCss: String? = null,
     var postLoadJavascript: String? = null,
+    // Off = keep the script but do not apply it (temporary disable without
+    // losing the code). A disabled script is treated as unset for resolution,
+    // so a parent rule's script takes over.
+    var customCssEnabled: Boolean = true,
+    var postLoadJavascriptEnabled: Boolean = true,
 ) {
     val host: String get() = SiteRuleKey.hostOf(domain)
     val path: String get() = SiteRuleKey.pathOf(domain)
     val isHostRule: Boolean get() = path.isEmpty()
+
+    /** [customCss] when it is set and switched on, else null. */
+    val activeCustomCss: String?
+        get() = customCss?.takeIf { customCssEnabled && it.isNotBlank() }
+
+    /** [postLoadJavascript] when it is set and switched on, else null. */
+    val activePostLoadJavascript: String?
+        get() = postLoadJavascript?.takeIf { postLoadJavascriptEnabled && it.isNotBlank() }
 
     /** Number of fields this rule sets explicitly. */
     val overrideCount: Int
@@ -81,6 +94,10 @@ data class DomainConfigurationData(
         translationMode = translationMode ?: fallback.translationMode,
         customCss = customCss?.takeIf { it.isNotBlank() } ?: fallback.customCss,
         postLoadJavascript = postLoadJavascript?.takeIf { it.isNotBlank() } ?: fallback.postLoadJavascript,
+        // the on/off switch travels with whichever side supplied the script
+        customCssEnabled = if (customCss.isNullOrBlank()) fallback.customCssEnabled else customCssEnabled,
+        postLoadJavascriptEnabled = if (postLoadJavascript.isNullOrBlank()) fallback.postLoadJavascriptEnabled
+            else postLoadJavascriptEnabled,
     )
 
     /**

@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">Muut säännöt tällä sivustolla</string>
     <string name="site_settings_inherited_from">lähde: %1$s</string>
     <string name="site_settings_remove_rule">Poista sääntö</string>
+    <string name="site_rule_part_off">%1$s (pois)</string>
     <string name="site_settings_reset_to_inherited">Palauta kaikki perityiksi</string>
     <string name="setting_title_site_rules">Määritetyt sivustot</string>
     <string name="setting_summary_site_rules">Tarkastele, muokkaa tai poista sivustokohtaisia asetuksia käymättä jokaisella sivustolla</string>

@@ -553,6 +553,7 @@
     <string name="site_settings_other_rules">Altres regles en aquest lloc</string>
     <string name="site_settings_inherited_from">de %1$s</string>
     <string name="site_settings_remove_rule">Elimina la regla</string>
+    <string name="site_rule_part_off">%1$s (desactivat)</string>
     <string name="site_settings_reset_to_inherited">Restableix tot a l\'heretat</string>
     <string name="setting_title_site_rules">Llocs configurats</string>
     <string name="setting_summary_site_rules">Revisa, edita o elimina la configuració per lloc sense visitar cada lloc</string>

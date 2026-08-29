@@ -271,6 +271,71 @@ class DomainConfigManagerTest {
     }
 
     @Test
+    fun `switched-off css and js are skipped and fall through to the parent rule`() {
+        put(DomainConfigurationData("example.com", customCss = "a{}", postLoadJavascript = "x()"))
+        put(
+            DomainConfigurationData(
+                "example.com/docs", customCss = "b{}", postLoadJavascript = "y()",
+                customCssEnabled = false, postLoadJavascriptEnabled = false,
+            )
+        )
+
+        // the path rule keeps its code but the host rule's scripts apply
+        assertEquals("a{}", manager.getCustomCss(page))
+        assertEquals("x()", manager.getPostLoadJavascript(page))
+        assertEquals("b{}", manager.getRule("example.com/docs")!!.customCss)
+
+        // switching the host rule off too leaves nothing to inject
+        manager.getRule("example.com")!!.customCssEnabled = false
+        manager.getRule("example.com")!!.postLoadJavascriptEnabled = false
+        assertNull(manager.getCustomCss(page))
+        assertNull(manager.getPostLoadJavascript(page))
+        assertNull(manager.getEffectiveConfig(page).customCss)
+    }
+
+    @Test
+    fun `saving new code switches a disabled script back on`() {
+        put(DomainConfigurationData("example.com", customCss = "a{}", customCssEnabled = false))
+        put(DomainConfigurationData("example.com", postLoadJavascript = "x()", postLoadJavascriptEnabled = false)
+            .let { it.copy(customCss = "a{}", customCssEnabled = false) })
+
+        manager.setCustomCss(page, "b{}")
+        manager.setPostLoadJavascript(page, "y()")
+
+        val rule = manager.getRule("example.com")!!
+        assertTrue(rule.customCssEnabled)
+        assertTrue(rule.postLoadJavascriptEnabled)
+        assertEquals("b{}", manager.getCustomCss(page))
+        assertEquals("y()", manager.getPostLoadJavascript(page))
+    }
+
+    @Test
+    fun `rows written before the switches existed decode as enabled`() {
+        val json = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+        val old = json.decodeFromString(
+            DomainConfigurationData.serializer(),
+            """{"domain":"example.com","customCss":"a{}","postLoadJavascript":"x()"}""",
+        )
+        assertTrue(old.customCssEnabled)
+        assertTrue(old.postLoadJavascriptEnabled)
+        assertEquals("a{}", old.activeCustomCss)
+        assertNull(old.copy(customCssEnabled = false).activeCustomCss)
+    }
+
+    @Test
+    fun `mergedWith carries the switch with whichever side supplied the script`() {
+        val local = DomainConfigurationData("example.com", customCss = "a{}", customCssEnabled = false)
+        val backup = DomainConfigurationData(
+            "example.com", customCss = "b{}", postLoadJavascript = "x()", postLoadJavascriptEnabled = false,
+        )
+        val merged = local.mergedWith(backup)
+        assertEquals("a{}", merged.customCss)
+        assertFalse(merged.customCssEnabled)
+        assertEquals("x()", merged.postLoadJavascript)
+        assertFalse(merged.postLoadJavascriptEnabled)
+    }
+
+    @Test
     fun `mergedWith keeps local values and fills gaps from the backup`() {
         val local = DomainConfigurationData("example.com", fontSize = 150, customCss = " ")
         val backup = DomainConfigurationData(

@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">Άλλοι κανόνες σε αυτόν τον ιστότοπο</string>
     <string name="site_settings_inherited_from">από %1$s</string>
     <string name="site_settings_remove_rule">Αφαίρεση κανόνα</string>
+    <string name="site_rule_part_off">%1$s (ανενεργό)</string>
     <string name="site_settings_reset_to_inherited">Επαναφορά όλων στα κληρονομημένα</string>
     <string name="setting_title_site_rules">Ρυθμισμένοι ιστότοποι</string>
     <string name="setting_summary_site_rules">Δείτε, επεξεργαστείτε ή αφαιρέστε ρυθμίσεις ανά ιστότοπο χωρίς να επισκεφθείτε κάθε ιστότοπο</string>

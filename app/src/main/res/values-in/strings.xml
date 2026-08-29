@@ -615,6 +615,7 @@
     <string name="site_settings_other_rules">Aturan lain di situs ini</string>
     <string name="site_settings_inherited_from">dari %1$s</string>
     <string name="site_settings_remove_rule">Hapus aturan</string>
+    <string name="site_rule_part_off">%1$s (nonaktif)</string>
     <string name="site_settings_reset_to_inherited">Setel ulang semua ke warisan</string>
     <string name="setting_title_site_rules">Situs terkonfigurasi</string>
     <string name="setting_summary_site_rules">Tinjau, ubah, atau hapus pengaturan per situs tanpa mengunjungi setiap situs</string>

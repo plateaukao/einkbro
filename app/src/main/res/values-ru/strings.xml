@@ -616,6 +616,7 @@
     <string name="site_settings_other_rules">Другие правила для этого сайта</string>
     <string name="site_settings_inherited_from">из %1$s</string>
     <string name="site_settings_remove_rule">Удалить правило</string>
+    <string name="site_rule_part_off">%1$s (выкл.)</string>
     <string name="site_settings_reset_to_inherited">Сбросить всё на унаследованное</string>
     <string name="setting_title_site_rules">Настроенные сайты</string>
     <string name="setting_summary_site_rules">Просматривайте, изменяйте и удаляйте настройки сайтов, не открывая каждый сайт</string>

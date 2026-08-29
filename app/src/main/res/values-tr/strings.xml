@@ -562,6 +562,7 @@
     <string name="site_settings_other_rules">Bu sitedeki diğer kurallar</string>
     <string name="site_settings_inherited_from">%1$s kaynağından</string>
     <string name="site_settings_remove_rule">Kuralı kaldır</string>
+    <string name="site_rule_part_off">%1$s (kapalı)</string>
     <string name="site_settings_reset_to_inherited">Tümünü devralınana sıfırla</string>
     <string name="setting_title_site_rules">Yapılandırılmış siteler</string>
     <string name="setting_summary_site_rules">Her siteyi ziyaret etmeden siteye özel ayarları inceleyin, düzenleyin veya kaldırın</string>
