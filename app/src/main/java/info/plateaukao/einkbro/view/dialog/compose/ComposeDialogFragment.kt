@@ -1,12 +1,16 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.app.Dialog
+import android.graphics.Point
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.OneShotPreDrawListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.DialogFragment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +24,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.ToolbarPosition
@@ -39,6 +44,9 @@ abstract class ComposeDialogFragment : DialogFragment(), KoinComponent {
     companion object {
         /** WindowManager.LayoutParams.PRIVATE_FLAG_NO_MOVE_ANIMATION (hidden). */
         private const val PRIVATE_FLAG_NO_MOVE_ANIMATION = 0x00000040
+
+        /** Space between a long-press point and the edge of a menu anchored to it. */
+        private const val FINGER_GAP_DP = 16
 
         /** Horizontal center X (px) of the last clicked toolbar icon. Set by toolbar, consumed by dialog. */
         var anchorX: Int = -1
@@ -160,6 +168,83 @@ abstract class ComposeDialogFragment : DialogFragment(), KoinComponent {
                 alpha = 1f
             }
         }
+    }
+
+    /** A long-press anchor; (0,0) is what callers pass when no position is known. */
+    protected fun Point.isValidAnchor() = x != 0 && y != 0
+
+    /**
+     * True between [prepareFingerAnchor] and the window landing at its final
+     * place. Until then the (invisible) window sits at the top-left corner, so
+     * hover hit-tests against its items would match the wrong spot.
+     */
+    protected var isFingerAnchorPending = false
+        private set
+
+    /**
+     * Call from onCreateView for a dialog anchored to a long-press point:
+     * absolute top-left placement, kept invisible until [positionAboveFinger]
+     * has measured the content and moved the window there.
+     *
+     * The window starts just below the top system inset: a floating window
+     * that overlaps the status bar gets that inset applied as decor padding,
+     * which inflates the measured size and does not go away when the window
+     * is moved later, so the content would end up shifted and clipped.
+     */
+    protected fun prepareFingerAnchor() {
+        val window = dialog?.window ?: return
+        window.setGravity(Gravity.TOP or Gravity.LEFT)
+        window.attributes = window.attributes.apply {
+            x = 0
+            y = topSystemInset()
+            alpha = 0f
+        }
+        isFingerAnchorPending = true
+    }
+
+    /**
+     * Places the dialog above [finger] (screen coordinates): the finger that is
+     * still holding the item, and may drag onto a menu entry, covers anything
+     * drawn below it. Only when there is no room above (without going under
+     * the status bar) does the dialog go below. Needs the laid-out size,
+     * hence the post; call from onStart.
+     */
+    protected fun positionAboveFinger(finger: Point) {
+        val window = dialog?.window ?: return
+        window.decorView.post {
+            val w = dialog?.window ?: return@post
+            val decor = w.decorView
+            // Window x/y are relative to the area the window may occupy; the
+            // finger point is on-screen.
+            val origin = IntArray(2).also { decor.getLocationOnScreen(it) }
+            val originX = origin[0] - w.attributes.x
+            val originY = origin[1] - w.attributes.y
+            val gap = ViewUnit.dpToPixel(FINGER_GAP_DP).toInt()
+            val topInset = topSystemInset()
+            val screenWidth = resources.displayMetrics.widthPixels
+
+            val aboveY = finger.y - originY - decor.height - gap
+            val targetY = if (decor.height > 0 && aboveY >= topInset) aboveY
+                else (finger.y - originY + gap).coerceAtLeast(topInset)
+            val targetX = (finger.x - originX).coerceIn(0, maxOf(0, screenWidth - decor.width))
+            // Hover hit-tests use on-screen item positions, which only update
+            // once the moved window has gone through a traversal.
+            OneShotPreDrawListener.add(decor) { isFingerAnchorPending = false }
+            w.attributes = w.attributes.apply {
+                x = targetX
+                y = targetY
+                alpha = 1f
+            }
+        }
+    }
+
+    /** Height of the status bar / display cutout band at the top of the screen. */
+    private fun topSystemInset(): Int {
+        val activityDecor = activity?.window?.decorView ?: return 0
+        val insets = ViewCompat.getRootWindowInsets(activityDecor) ?: return 0
+        return insets.getInsets(
+            WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+        ).top
     }
 
     /**

@@ -2,7 +2,6 @@ package info.plateaukao.einkbro.view.dialog.compose
 
 import android.graphics.Point
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -180,6 +179,10 @@ class ContextMenuDialogFragment(
 
     fun updateHoveredItem(screenX: Float, screenY: Float) {
         if (!isAdded) return
+        if (isFingerAnchorPending) {
+            hoveredItem = null
+            return
+        }
 
         val position = Offset(screenX, screenY)
         hoveredItem = itemCoordinates.entries.firstOrNull { (_, coordinates) ->
@@ -201,24 +204,14 @@ class ContextMenuDialogFragment(
         savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        setupDialogPosition(anchorPoint)
+        if (anchorPoint.isValidAnchor()) prepareFingerAnchor()
         return view
     }
 
-    private fun setupDialogPosition(position: Point) {
-        val window = dialog?.window ?: return
-        window.setGravity(Gravity.TOP or Gravity.START)
-
-        if (position.isValid()) {
-            val params = window.attributes.apply {
-                x = position.x
-                y = position.y
-            }
-            window.attributes = params
-        }
+    override fun onStart() {
+        super.onStart()
+        if (anchorPoint.isValidAnchor()) positionAboveFinger(anchorPoint)
     }
-
-    private fun Point.isValid() = x != 0 && y != 0
 }
 
 @Composable

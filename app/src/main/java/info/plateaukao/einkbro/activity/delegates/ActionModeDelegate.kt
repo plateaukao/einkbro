@@ -59,6 +59,9 @@ class ActionModeDelegate(
 ) {
     private var actionModeView: View? = null
 
+    /** Top edge of the current text selection, px in the root layout. */
+    private var selectionTopPx = 0
+
     private val json = Json {
         ignoreUnknownKeys = true
         encodeDefaults = false
@@ -139,7 +142,7 @@ class ActionModeDelegate(
         activity.lifecycleScope.launch {
             actionModeMenuViewModel.clickedPoint.collect { point ->
                 val view = actionModeView ?: return@collect
-                ViewUnit.updateViewPosition(view, point)
+                placeActionModeView(view, point)
             }
         }
 
@@ -150,11 +153,11 @@ class ActionModeDelegate(
                     val point = actionModeMenuViewModel.clickedPoint.value
                     if (view.width == 0 || view.height == 0) {
                         view.post {
-                            ViewUnit.updateViewPosition(view, point)
+                            placeActionModeView(view, point)
                             view.visibility = VISIBLE
                         }
                     } else {
-                        ViewUnit.updateViewPosition(view, point)
+                        placeActionModeView(view, point)
                         view.visibility = VISIBLE
                     }
                 } else {
@@ -295,10 +298,25 @@ class ActionModeDelegate(
         actionModeMenuViewModel.show()
     }
 
+    /**
+     * Puts the selection menu above the selected text, where the hand dragging
+     * the selection handles is not in the way; [belowPoint] (under the
+     * selection) is the fallback when there is no room above.
+     */
+    private fun placeActionModeView(view: View, belowPoint: Point) {
+        // updateViewPosition offsets the view by 10dp, so subtract it here to
+        // end up SELECTION_GAP_DP above the selection, mirroring the gap below.
+        val aboveY = selectionTopPx - view.height -
+            ViewUnit.dpToPixel(SELECTION_GAP_DP + 10).toInt()
+        val point = if (view.height > 0 && aboveY >= 0) Point(belowPoint.x, aboveY) else belowPoint
+        ViewUnit.updateViewPosition(view, point)
+    }
+
     fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) {
+        selectionTopPx = ViewUnit.dpToPixel(top.toInt()).toInt()
         val newPoint = Point(
             ViewUnit.dpToPixel(right.toInt()).toInt(),
-            ViewUnit.dpToPixel(bottom.toInt() + 16).toInt()
+            ViewUnit.dpToPixel(bottom.toInt() + SELECTION_GAP_DP).toInt()
         )
         if (kotlin.math.abs(newPoint.x - actionModeMenuViewModel.clickedPoint.value.x) > ViewUnit.dpToPixel(15) ||
             kotlin.math.abs(newPoint.y - actionModeMenuViewModel.clickedPoint.value.y) > ViewUnit.dpToPixel(15)
@@ -331,4 +349,9 @@ class ActionModeDelegate(
 
     val actionModeViewRef: View?
         get() = actionModeView
+
+    companion object {
+        /** Space between the selection and the menu, above or below it. */
+        private const val SELECTION_GAP_DP = 16
+    }
 }
