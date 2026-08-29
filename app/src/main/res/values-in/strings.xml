@@ -21,6 +21,8 @@
     <string name="menu_quit">Keluar</string>
     <string name="menu_openFav">Buka Beranda</string>
     <string name="menu_delete">Hapus</string>
+    <string name="menu_refresh_icon">Segarkan ikon</string>
+    <string name="toast_favicon_not_found">Ikon tidak ditemukan untuk situs ini</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Tutup tab</string>
     <string name="menu_download">Buka unduhan</string>

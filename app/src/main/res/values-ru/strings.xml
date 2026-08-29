@@ -18,6 +18,8 @@
     <string name="menu_quit">Выход</string>
     <string name="menu_openFav">Открыть Избранное</string>
     <string name="menu_delete">Удалить</string>
+    <string name="menu_refresh_icon">Обновить значок</string>
+    <string name="toast_favicon_not_found">Значок для этого сайта не найден</string>
     <string name="menu_edit">Изменить</string>
     <string name="menu_closeTab">Закрыть вкладку</string>
     <string name="menu_download">Загрузки</string>

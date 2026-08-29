@@ -16,6 +16,8 @@
     <string name="menu_quit">Çık</string>
     <string name="menu_openFav">Sık Kullanılanı Aç</string>
     <string name="menu_delete">Sil</string>
+    <string name="menu_refresh_icon">Simgeyi yenile</string>
+    <string name="toast_favicon_not_found">Bu site için simge bulunamadı</string>
     <string name="menu_edit">Düzenle</string>
     <string name="menu_closeTab">Sekmeyi kapat</string>
     <string name="menu_download">İndirmeleri aç</string>

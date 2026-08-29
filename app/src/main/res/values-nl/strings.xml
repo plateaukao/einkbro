@@ -16,6 +16,8 @@
     <string name="menu_quit">Afsluiten</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Verwijderen</string>
+    <string name="menu_refresh_icon">Pictogram vernieuwen</string>
+    <string name="toast_favicon_not_found">Geen pictogram gevonden voor deze site</string>
     <string name="menu_edit">Bewerken</string>
     <string name="menu_closeTab">Tabblad sluiten</string>
     <string name="menu_download">Downloads openen</string>

@@ -16,6 +16,8 @@
     <string name="menu_quit">Wyjdź</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Usuń</string>
+    <string name="menu_refresh_icon">Odśwież ikonę</string>
+    <string name="toast_favicon_not_found">Nie znaleziono ikony dla tej witryny</string>
     <string name="menu_edit">Dostosuj</string>
     <string name="menu_closeTab">Zamknij kartę</string>
     <string name="menu_download">Pobrane</string>

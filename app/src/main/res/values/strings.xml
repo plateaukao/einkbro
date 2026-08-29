@@ -19,6 +19,8 @@
     <string name="menu_quit">Quit</string>
     <string name="menu_openFav">Open homepage</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_refresh_icon">Refresh icon</string>
+    <string name="toast_favicon_not_found">No icon found for this site</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Downloads</string>

@@ -217,6 +217,8 @@
     <string name="menu_quit">Kilépés</string>
     <string name="menu_openFav">Kedvenc megnyitása</string>
     <string name="menu_delete">Törlés</string>
+    <string name="menu_refresh_icon">Ikon frissítése</string>
+    <string name="toast_favicon_not_found">Nem található ikon ehhez a webhelyhez</string>
     <string name="menu_edit">Szerkesztés</string>
     <string name="menu_closeTab">Lap bezárása</string>
     <string name="menu_download">Letöltések</string>

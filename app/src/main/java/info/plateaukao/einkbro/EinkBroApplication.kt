@@ -76,6 +76,7 @@ class EinkBroApplication : Application() {
         single { config }
         single { sp }
         single { BookmarkManager(androidContext()) }
+        single { info.plateaukao.einkbro.unit.FaviconFetcher(get()) }
         single { einkImageCache }
         single { info.plateaukao.einkbro.userscript.UserScriptManager(androidContext()) }
         single { RecordRepository() }

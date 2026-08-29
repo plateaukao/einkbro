@@ -16,6 +16,8 @@
     <string name="menu_quit">Chiudi</string>
     <string name="menu_openFav">Apri i preferiti</string>
     <string name="menu_delete">Elimina</string>
+    <string name="menu_refresh_icon">Aggiorna icona</string>
+    <string name="toast_favicon_not_found">Nessuna icona trovata per questo sito</string>
     <string name="menu_edit">Modifica</string>
     <string name="menu_closeTab">Chiudi scheda</string>
     <string name="menu_download">Apri download</string>

@@ -15,6 +15,8 @@
     <string name="menu_quit">終了</string>
     <string name="menu_openFav">お気に入り開く</string>
     <string name="menu_delete">削除</string>
+    <string name="menu_refresh_icon">アイコンを更新</string>
+    <string name="toast_favicon_not_found">このサイトのアイコンが見つかりません</string>
     <string name="menu_edit">編集</string>
     <string name="menu_closeTab">タブを閉じる</string>
     <string name="menu_download">ダウンロード開く</string>

@@ -16,6 +16,8 @@
     <string name="menu_quit">Sair</string>
     <string name="menu_openFav">Abrir favorito</string>
     <string name="menu_delete">Apagar</string>
+    <string name="menu_refresh_icon">Atualizar ícone</string>
+    <string name="toast_favicon_not_found">Nenhum ícone encontrado para este site</string>
     <string name="menu_edit">Editar</string>
     <string name="menu_closeTab">Fechar separador</string>
     <string name="menu_download">Abrir descargas</string>

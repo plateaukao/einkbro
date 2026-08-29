@@ -81,6 +81,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.view.View
@@ -599,14 +600,37 @@ fun MenuItem(
     onClicked: () -> Unit = {},
 ) {
     MenuItem(
-        titleResId,
-        0,
-        imageVector,
-        isLargeType,
-        showIcon,
-        onLongClicked,
-        onClicked,
+        titleResId = titleResId,
+        iconResId = 0,
+        imageVector = imageVector,
+        isLargeType = isLargeType,
+        showIcon = showIcon,
+        onLongClicked = onLongClicked,
+        onClicked = onClicked,
     )
+}
+
+/** Natural width of a [MenuItem] cell. */
+@Composable
+fun menuItemWidth(isLargeType: Boolean): Dp {
+    val isBigScreen = LocalConfiguration.current.screenWidthDp > 450
+    return when {
+        isLargeType -> if (isBigScreen) 62.dp else 50.dp
+        isBigScreen -> 60.dp
+        else -> 45.dp
+    }
+}
+
+/**
+ * Width for [count] cells side by side in [available] space: the natural size
+ * unless they would overflow, then evenly shrunk so every cell stays visible
+ * instead of being cut off at the dialog edge.
+ */
+@Composable
+fun fittedMenuItemWidth(count: Int, available: Dp, isLargeType: Boolean = true): Dp {
+    val natural = menuItemWidth(isLargeType)
+    if (count <= 0 || available == Dp.Infinity || available <= 0.dp) return natural
+    return minOf(natural, available / count)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -617,6 +641,7 @@ fun MenuItem(
     imageVector: ImageVector? = null,
     isLargeType: Boolean = false,
     showIcon: Boolean = true,
+    cellWidth: Dp? = null,
     onLongClicked: () -> Unit = {},
     onClicked: () -> Unit = {},
 ) {
@@ -626,11 +651,7 @@ fun MenuItem(
     val configuration = LocalConfiguration.current
     var isBigScreen = configuration.screenWidthDp > 450
 
-    val width = when {
-        isLargeType -> if (isBigScreen) 62.dp else 50.dp
-        isBigScreen -> 60.dp
-        else -> 45.dp
-    }
+    val width = cellWidth ?: menuItemWidth(isLargeType)
 
     val fontSize = if (!showIcon) 16.sp else if (isBigScreen) 11.sp else 8.sp
 

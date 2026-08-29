@@ -34,12 +34,12 @@ import info.plateaukao.einkbro.caption.CaptionFetchResult
 import info.plateaukao.einkbro.caption.DualCaptionProcessor
 import info.plateaukao.einkbro.caption.YouTubeCaptionFetcher
 import info.plateaukao.einkbro.database.BookmarkManager
-import info.plateaukao.einkbro.database.FaviconInfo
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.HighlightStyle
 import info.plateaukao.einkbro.unit.BookmarkRenderer
 import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.FaviconFetcher
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
@@ -55,7 +55,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.ByteArrayOutputStream
 import kotlin.coroutines.resume
 
 
@@ -93,6 +92,7 @@ open class EBWebView(
     private val javascript: Javascript by inject()
     private val cookie: Cookie by inject()
     private val coroutineScope: CoroutineScope by inject()
+    private val faviconFetcher: FaviconFetcher by inject()
 
     // Helpers for delegated concerns
     val readerHelper = WebViewReaderHelper(this, config)
@@ -384,7 +384,7 @@ open class EBWebView(
         isForeground = false
         webViewClient =
             EBWebViewClient(this) { title, url -> webViewCallback?.addHistory(title, url) }
-        webChromeClient = EBWebChromeClient(this, { setAlbumCoverAndSyncDb(it) }, webViewCallback as? WebChromeCallback)
+        webChromeClient = EBWebChromeClient(this, { onChromiumFavicon(it) }, webViewCallback as? WebChromeCallback)
         clickHandler = EBClickHandler { msg, event ->
             (webViewCallback as? InputController)?.onLongPress(msg, event)
         }
@@ -645,20 +645,59 @@ open class EBWebView(
         chatWebInterface?.runAgentTurn(prompt)
     }
 
-    private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
-        setAlbumCover(bitmap)
+    // Host of the last committed document, and the host whose icon the tab cover
+    // was last set from a verified fetch (see FaviconFetcher).
+    private var committedHost: String? = null
+    private var verifiedCoverHost: String? = null
 
-        if (originalUrl == null) return
-        val host = Uri.parse(originalUrl).host ?: return
-        coroutineScope.launch {
-            bookmarkManager.insertFavicon(FaviconInfo(domain = host, bitmap.convertBytes()))
-        }
+    /**
+     * Chromium's onReceivedIcon bitmap is display-only. It is never persisted:
+     * Chromium doesn't say which page the icon belongs to, and late deliveries
+     * after a navigation (never cancelled) used to be stored under the new page's
+     * host. Once this page's icon has been verified, late bitmaps are ignored too.
+     */
+    private fun onChromiumFavicon(bitmap: Bitmap) {
+        if (verifiedCoverHost != null && verifiedCoverHost == committedHost) return
+        setAlbumCover(bitmap)
     }
 
-    private fun Bitmap.convertBytes(): ByteArray {
-        val stream = ByteArrayOutputStream()
-        this.compress(Bitmap.CompressFormat.PNG, 0, stream)
-        return stream.toByteArray()
+    /**
+     * A document committed (doUpdateVisitedHistory). Crossing to another host
+     * drops the previous site's icon from the tab: the cover becomes that host's
+     * stored icon, or nothing, instead of lingering when the new page has none.
+     */
+    fun onDocumentCommitted(url: String) {
+        val host = Uri.parse(url).host
+        if (host == committedHost) return
+        committedHost = host
+        verifiedCoverHost = null
+        album.setAlbumCover(host?.let { bookmarkManager.findFaviconBitmapBy(url) })
+    }
+
+    /**
+     * Fetches and stores the finished page's own favicon. The document reports its
+     * hostname alongside its icon links, so the icon is keyed by the page it came
+     * from — the association WebView's onReceivedIcon cannot provide.
+     */
+    fun probeFavicon(pageUrl: String) {
+        if (!pageUrl.startsWith("http") || isAIPage || errorPageUrl != null) return
+        val host = Uri.parse(pageUrl).host ?: return
+        if (faviconFetcher.isHandled(host)) return
+        evaluateJsFile("favicon_probe.js", withPrefix = false) { result ->
+            val probe = FaviconFetcher.parseProbe(result)
+            // No probe (JS unavailable) still gets the /favicon.ico fallback; a probe
+            // from a different document than the one that finished is not trusted.
+            if (probe != null && probe.host != host) return@evaluateJsFile
+            val candidates = probe?.candidates.orEmpty()
+            coroutineScope.launch(Dispatchers.IO) {
+                val bitmap = faviconFetcher.storeForPage(host, pageUrl, candidates)
+                withContext(Dispatchers.Main) {
+                    if (isWebViewDestroyed || Uri.parse(url.orEmpty()).host != host) return@withContext
+                    verifiedCoverHost = host
+                    if (bitmap != null) setAlbumCover(bitmap)
+                }
+            }
+        }
     }
 
 

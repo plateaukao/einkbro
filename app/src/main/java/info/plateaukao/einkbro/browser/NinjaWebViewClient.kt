@@ -105,6 +105,9 @@ class EBWebViewClient(
 
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
+        // Commit-time, post-redirect URL: the one reliable moment to say which host
+        // the tab is now showing.
+        ebWebView.onDocumentCommitted(url)
         // Update hasVideo for SPA navigations (e.g., YouTube client-side routing)
         // where onPageFinished doesn't fire
         ebWebView.hasVideo = WebContentPostProcessor.isVideoSiteUrl(url)
@@ -289,6 +292,7 @@ class EBWebViewClient(
 
         Log.d("ebWebViewClient", "onPageFinished: ${ebWebView.url}\n$url")
         webContentPostProcessor.postProcess(ebWebView, url)
+        ebWebView.probeFavicon(url)
 
         // the start page rendered during tab restore reads a zero status bar
         // inset (view not attached yet); re-apply the real value now

@@ -225,6 +225,10 @@ class BookmarksDialogFragment(
                     bookmarkViewModel.deleteBookmark(bookmark)
                 }
 
+                ContextMenuItemType.RefreshIcon -> bookmarkViewModel.refreshFavicon(bookmark) { found ->
+                    if (!found) context?.let { EBToast.show(it, getString(R.string.toast_favicon_not_found)) }
+                }
+
                 else -> Unit
             }
         }
@@ -354,7 +358,7 @@ fun BookmarkList(
                         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                             BookmarkGridItem(
                                 bookmark = bookmark,
-                                bitmap = remember(bookmark.url) { bookmarkViewModel.getFavicon(bookmark) },
+                                bitmap = remember(bookmark.url, bookmarkViewModel.faviconVersion.value) { bookmarkViewModel.getFavicon(bookmark) },
                                 isPressed = isPressed || isDragging,
                                 shouldShowDragHandle = shouldShowDragHandle,
                                 iconDragModifier = if (shouldShowDragHandle) Modifier.draggableHandle() else Modifier,
@@ -415,7 +419,7 @@ fun BookmarkList(
                     } else {
                         BookmarkItem(
                             bookmark = bookmark,
-                            bitmap = remember(bookmark.url) { bookmarkViewModel.getFavicon(bookmark) },
+                            bitmap = remember(bookmark.url, bookmarkViewModel.faviconVersion.value) { bookmarkViewModel.getFavicon(bookmark) },
                             isPressed = isPressed || isDragging,
                             shouldShowDragHandle = shouldShowDragHandle,
                             dragModifier = Modifier.draggableHandle(),

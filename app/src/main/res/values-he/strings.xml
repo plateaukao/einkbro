@@ -16,6 +16,8 @@
     <string name="menu_quit">Quit</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_refresh_icon">רענון סמל</string>
+    <string name="toast_favicon_not_found">לא נמצא סמל לאתר זה</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Open downloads</string>

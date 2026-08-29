@@ -8,13 +8,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.unit.FaviconFetcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.Stack
 
-class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewModel() {
+class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewModel(), KoinComponent {
+
+    private val faviconFetcher: FaviconFetcher by inject()
+
+    /** Bumped when a stored icon changes so remembered bitmaps re-read the store. */
+    var faviconVersion: MutableState<Int> = mutableStateOf(0)
 
     private val _uiState = MutableStateFlow<List<Bookmark>>(emptyList())
     val uiState: StateFlow<List<Bookmark>> = _uiState
@@ -57,6 +65,15 @@ class BookmarkViewModel(private val bookmarkManager: BookmarkManager) : ViewMode
 
     fun getFavicon(bookmark: Bookmark): Bitmap? =
         bookmarkManager.findFaviconBitmapBy(bookmark.url)
+
+    /** Re-fetches the site's icon and replaces the stored one; [onDone] gets whether one was found. */
+    fun refreshFavicon(bookmark: Bookmark, onDone: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val found = faviconFetcher.refresh(bookmark.url) != null
+            if (found) faviconVersion.value++
+            onDone(found)
+        }
+    }
 
     fun toRootFolder() {
         while (folderStack.size > 1) {

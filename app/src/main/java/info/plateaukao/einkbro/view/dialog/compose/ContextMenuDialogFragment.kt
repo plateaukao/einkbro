@@ -6,17 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -44,6 +42,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import info.plateaukao.einkbro.R
@@ -231,62 +230,64 @@ private fun ContextMenuItems(
     val menuLayout = remember(isEbookMode) { createMenuLayout(isEbookMode) }
     val decodedUrl = remember(url) { URLDecoder.decode(url, "UTF-8") }
 
-    Column(
-        modifier = Modifier
-            .wrapContentHeight()
-            .width(320.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
+    // The dialog window caps how wide the menu can be; cells shrink evenly to
+    // that width rather than running past the edge (and needing a scroll to reach).
+    BoxWithConstraints {
+        val columnWidth = minOf(320.dp, maxWidth)
+        val secondRowItems = menuLayout.secondRowItems.filter { item ->
+            item.shouldShow(url, shouldShowAdBlock, shouldShowTranslateImage)
+        }
+        val firstRowCellWidth = fittedMenuItemWidth(menuLayout.firstRowItems.size, columnWidth)
+        val secondRowCellWidth = fittedMenuItemWidth(secondRowItems.size, columnWidth)
+
+        Column(
             modifier = Modifier
-                .width(IntrinsicSize.Max)
-                .horizontalScroll(rememberScrollState()),
+                .wrapContentHeight()
+                .width(columnWidth),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            menuLayout.firstRowItems.forEach { item ->
-                ContextMenuItem(
-                    titleResId = item.titleResId,
-                    showIcon = showIcons,
-                    imageVector = item.imageVector,
-                    iconResId = item.iconResId,
-                    isHovered = hoveredItem == item.type,
-                    modifier = Modifier.onGloballyPositioned { onItemPositioned(item.type, it) },
-                    onLongClicked = { onLongClicked(item.type) }
-                ) {
-                    onClicked(item.type)
+            Row {
+                menuLayout.firstRowItems.forEach { item ->
+                    ContextMenuItem(
+                        titleResId = item.titleResId,
+                        showIcon = showIcons,
+                        imageVector = item.imageVector,
+                        iconResId = item.iconResId,
+                        isHovered = hoveredItem == item.type,
+                        modifier = Modifier.onGloballyPositioned { onItemPositioned(item.type, it) },
+                        cellWidth = firstRowCellWidth,
+                        onLongClicked = { onLongClicked(item.type) }
+                    ) {
+                        onClicked(item.type)
+                    }
                 }
             }
-        }
-        HorizontalSeparator()
-        Row(
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            menuLayout.secondRowItems.filter { item ->
-                item.shouldShow(url, shouldShowAdBlock, shouldShowTranslateImage)
-            }.forEach { item ->
-                ContextMenuItem(
-                    titleResId = item.titleResId,
-                    showIcon = showIcons,
-                    imageVector = item.imageVector,
-                    iconResId = item.iconResId,
-                    isHovered = hoveredItem == item.type,
-                    modifier = Modifier.onGloballyPositioned { onItemPositioned(item.type, it) },
-                    onLongClicked = { onLongClicked(item.type) }
-                ) {
-                    onClicked(item.type)
+            HorizontalSeparator()
+            Row(horizontalArrangement = Arrangement.Center) {
+                secondRowItems.forEach { item ->
+                    ContextMenuItem(
+                        titleResId = item.titleResId,
+                        showIcon = showIcons,
+                        imageVector = item.imageVector,
+                        iconResId = item.iconResId,
+                        isHovered = hoveredItem == item.type,
+                        modifier = Modifier.onGloballyPositioned { onItemPositioned(item.type, it) },
+                        cellWidth = secondRowCellWidth,
+                        onLongClicked = { onLongClicked(item.type) }
+                    ) {
+                        onClicked(item.type)
+                    }
                 }
             }
+            HorizontalSeparator()
+            Text(
+                decodedUrl,
+                Modifier.padding(4.dp),
+                color = MaterialTheme.colors.onBackground,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
         }
-        HorizontalSeparator()
-        Text(
-            decodedUrl,
-            Modifier.padding(4.dp),
-            color = MaterialTheme.colors.onBackground,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-        )
     }
 }
 
@@ -298,6 +299,7 @@ fun ContextMenuItem(
     iconResId: Int = 0,
     isHovered: Boolean = false,
     modifier: Modifier = Modifier,
+    cellWidth: Dp? = null,
     onLongClicked: () -> Unit = {},
     onClicked: () -> Unit = {},
 ) {
@@ -318,6 +320,7 @@ fun ContextMenuItem(
             imageVector = imageVector,
             isLargeType = true,
             showIcon = showIcon,
+            cellWidth = cellWidth,
             onLongClicked = onLongClicked,
             onClicked = onClicked
         )
@@ -328,7 +331,7 @@ enum class ContextMenuItemType {
     NewTabForeground, NewTabBackground,
     ShareLink, SelectText, OpenWith,
     SaveBookmark, SaveAs,
-    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete, Summarize, GotoLink
+    SplitScreen, AdBlock, TranslateImage, Tts, Edit, Delete, Summarize, GotoLink, RefreshIcon
 }
 
 @Preview(showBackground = true)

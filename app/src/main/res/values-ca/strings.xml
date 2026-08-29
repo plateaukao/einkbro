@@ -16,6 +16,8 @@
     <string name="menu_quit">Sortir</string>
     <string name="menu_openFav">Obrir pàgina d\'inici</string>
     <string name="menu_delete">Eliminar</string>
+    <string name="menu_refresh_icon">Actualitza la icona</string>
+    <string name="toast_favicon_not_found">No s\'ha trobat cap icona per a aquest lloc</string>
     <string name="menu_edit">Editar</string>
     <string name="menu_closeTab">Tancar pestanya</string>
     <string name="menu_download">Descàrregues</string>

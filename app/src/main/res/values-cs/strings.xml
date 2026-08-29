@@ -16,6 +16,8 @@
     <string name="menu_quit">Ukončit</string>
     <string name="menu_openFav">Otevřít oblíbené</string>
     <string name="menu_delete">Smazat</string>
+    <string name="menu_refresh_icon">Obnovit ikonu</string>
+    <string name="toast_favicon_not_found">Pro tento web nebyla nalezena žádná ikona</string>
     <string name="menu_edit">Upravit</string>
     <string name="menu_closeTab">Zavřít kartu</string>
     <string name="menu_download">Otevřít stažené</string>

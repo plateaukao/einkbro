@@ -16,6 +16,8 @@
     <string name="menu_quit">Beenden</string>
     <string name="menu_openFav">Favorit öffnen</string>
     <string name="menu_delete">Löschen</string>
+    <string name="menu_refresh_icon">Symbol aktualisieren</string>
+    <string name="toast_favicon_not_found">Kein Symbol für diese Website gefunden</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_closeTab">Tab schließen</string>
     <string name="menu_download">Downloads öffnen</string>

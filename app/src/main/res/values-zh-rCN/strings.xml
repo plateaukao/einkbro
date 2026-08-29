@@ -14,6 +14,8 @@
     <string name="menu_quit">退出</string>
     <string name="menu_openFav">打开主页</string>
     <string name="menu_delete">删除</string>
+    <string name="menu_refresh_icon">刷新图标</string>
+    <string name="toast_favicon_not_found">未找到此网站的图标</string>
     <string name="menu_edit">编辑</string>
     <string name="menu_closeTab">关闭标签页</string>
     <string name="menu_download">下载</string>

@@ -18,6 +18,8 @@
     <string name="menu_quit">종료</string>
     <string name="menu_openFav">즐겨찾기 열기</string>
     <string name="menu_delete">삭제</string>
+    <string name="menu_refresh_icon">아이콘 새로고침</string>
+    <string name="toast_favicon_not_found">이 사이트의 아이콘을 찾을 수 없습니다</string>
     <string name="menu_edit">편집</string>
     <string name="menu_closeTab">탭 닫기</string>
     <string name="menu_download">다운로드 열기</string>
