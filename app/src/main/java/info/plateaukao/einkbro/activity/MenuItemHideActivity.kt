@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -31,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.compose.ListScaffold
@@ -176,7 +176,7 @@ private fun ReorderableMenuGrid(
                                 .fillMaxWidth()
                                 .padding(vertical = 6.dp),
                         ) {
-                            Divider(color = MaterialTheme.colors.primary, thickness = 1.dp)
+                            HorizontalSeparator()
                             entry.sectionStart.headerRes?.let { res ->
                                 Text(
                                     text = stringResource(res),

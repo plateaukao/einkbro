@@ -16,8 +16,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
+import info.plateaukao.einkbro.preference.UiBorder
+import info.plateaukao.einkbro.view.compose.UiThemeState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -269,18 +279,102 @@ abstract class ComposeDialogFragment : DialogFragment(), KoinComponent {
 
 }
 
+/**
+ * Divider that follows the theme's border style, so separators inside a dialog
+ * speak the same visual language as its frame: dashed borders get dashed
+ * dividers, paper/certificate get double lines, stamp gets a perforation row,
+ * sketch a hand-drawn line; the rest stay solid at the border's weight.
+ */
 @Composable
-fun HorizontalSeparator() {
-    Divider(thickness = 1.dp, color = MaterialTheme.colors.primary)
+fun HorizontalSeparator(modifier: Modifier = Modifier) {
+    ThemedSeparator(modifier, horizontal = true)
 }
 
 @Composable
-fun VerticalSeparator() {
+fun VerticalSeparator(modifier: Modifier = Modifier) {
+    ThemedSeparator(modifier, horizontal = false)
+}
+
+@Composable
+private fun ThemedSeparator(modifier: Modifier, horizontal: Boolean) {
+    val border = UiThemeState.uiBorder.value
+    val color = MaterialTheme.colors.primary
+    val thickness = when (border) {
+        UiBorder.PAPER -> 4.dp
+        UiBorder.CERTIFICATE -> 5.dp
+        UiBorder.SKETCH -> 4.dp
+        UiBorder.STAMP -> 3.dp
+        else -> maxOf(border.widthDp, 1f).dp
+    }
     Spacer(
-        modifier = Modifier
-            .width(1.dp)
-            .height(30.dp)
-            .background(color = MaterialTheme.colors.primary)
+        modifier
+            .then(
+                if (horizontal) Modifier
+                    .fillMaxWidth()
+                    .height(thickness)
+                else Modifier
+                    .width(thickness)
+                    .height(30.dp)
+            )
+            .drawBehind { drawThemedSeparator(border, color, horizontal) }
     )
+}
+
+private fun DrawScope.drawThemedSeparator(border: UiBorder, color: Color, horizontal: Boolean) {
+    val length = if (horizontal) size.width else size.height
+    val breadth = if (horizontal) size.height else size.width
+    fun line(
+        cross: Float,
+        stroke: Float,
+        effect: PathEffect? = null,
+        cap: StrokeCap = StrokeCap.Butt,
+    ) {
+        val start = if (horizontal) Offset(0f, cross) else Offset(cross, 0f)
+        val end = if (horizontal) Offset(length, cross) else Offset(cross, length)
+        drawLine(color, start, end, strokeWidth = stroke, pathEffect = effect, cap = cap)
+    }
+    when (border) {
+        UiBorder.DASHED -> line(
+            breadth / 2f, 1.5.dp.toPx(),
+            PathEffect.dashPathEffect(floatArrayOf(5.dp.toPx(), 4.dp.toPx()), 0f),
+        )
+        UiBorder.PAPER -> {
+            line(0.5.dp.toPx(), 1.dp.toPx())
+            line(breadth - 0.5.dp.toPx(), 1.dp.toPx())
+        }
+        UiBorder.CERTIFICATE -> {
+            line(1.dp.toPx(), 2.dp.toPx())
+            line(breadth - 0.5.dp.toPx(), 1.dp.toPx())
+        }
+        // perforation row, echoing the stamp frame's bite holes
+        UiBorder.STAMP -> line(
+            breadth / 2f, 2.5.dp.toPx(),
+            PathEffect.dashPathEffect(floatArrayOf(0.1f, 6.dp.toPx()), 0f),
+            StrokeCap.Round,
+        )
+        UiBorder.SKETCH -> {
+            // same idea as sketchShape: short segments with a deterministic
+            // wobble, so the line looks hand-drawn but doesn't shimmer
+            val amplitude = 1.2.dp.toPx()
+            val step = 12.dp.toPx()
+            val mid = breadth / 2f
+            val n = kotlin.math.max(2, (length / step).toInt())
+            val path = Path()
+            for (k in 0..n) {
+                val t = k.toFloat() / n
+                val h = kotlin.math.sin(k * 12.9898 + length) * 43758.5453
+                val j =
+                    if (k == 0 || k == n) 0f
+                    else ((h - kotlin.math.floor(h)).toFloat() * 2f - 1f) * amplitude
+                val along = t * length
+                val x = if (horizontal) along else mid + j
+                val y = if (horizontal) mid + j else along
+                if (k == 0) path.moveTo(x, y) else path.lineTo(x, y)
+            }
+            drawPath(path, color, style = Stroke(1.5.dp.toPx()))
+        }
+        // NONE, CLASSIC, ROUND, SHARP, STICKER: solid at the border's weight
+        else -> line(breadth / 2f, maxOf(border.widthDp, 1f).dp.toPx())
+    }
 }
 

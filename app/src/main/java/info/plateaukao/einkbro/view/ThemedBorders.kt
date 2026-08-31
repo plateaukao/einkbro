@@ -312,7 +312,9 @@ object ThemedBorders : KoinComponent {
             else -> 0f
         }
         val cornerAllowance = border.frameRadiusDp * 0.3f
-        return context.dp(border.widthDp + extra + cornerAllowance)
+        // breathing room so text/labels never sit right against the frame
+        val breathing = 4f
+        return context.dp(border.widthDp + extra + cornerAllowance + breathing)
     }
 
     private fun withContentPadding(context: Context, drawable: Drawable): Drawable {

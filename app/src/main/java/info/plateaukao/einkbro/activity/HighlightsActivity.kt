@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -50,6 +49,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Article
 import info.plateaukao.einkbro.database.Highlight
@@ -195,7 +195,7 @@ fun ArticlesScreen(
                     highlightViewModel.deleteArticle(article.id)
                 }
             )
-            if (index < articles.lastIndex) Divider(thickness = 1.dp)
+            if (index < articles.lastIndex) HorizontalSeparator()
         }
     }
 }
@@ -292,7 +292,7 @@ fun HighlightsScreen(
                 highlight = highlights[index],
                 deleteHighlight = deleteHighlight,
             )
-            if (index < highlights.lastIndex) Divider(thickness = 1.dp)
+            if (index < highlights.lastIndex) HorizontalSeparator()
         }
     }
 }

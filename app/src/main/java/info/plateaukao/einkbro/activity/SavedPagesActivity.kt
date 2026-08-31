@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -29,6 +28,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.SavedPage
 import info.plateaukao.einkbro.unit.IntentUnit
@@ -97,7 +97,7 @@ fun SavedPagesList(
                     onClick = { onPageClick(savedPage) },
                     onDelete = { onPageDelete(savedPage) },
                 )
-                if (index < savedPages.lastIndex) Divider(thickness = 1.dp)
+                if (index < savedPages.lastIndex) HorizontalSeparator()
             }
         }
     }

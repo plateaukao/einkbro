@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -84,7 +83,7 @@ fun LanguageListScreen(
                         },
                     color = MaterialTheme.colors.onBackground
                 )
-                Divider()
+                HorizontalSeparator()
                 if (isExpanded.value) {
                     voices.filter { it.getLanguageCode() == language }
                         .forEach { voice ->
@@ -121,6 +120,6 @@ fun VoiceItemRow(
         text = "$country - $role",
         color = MaterialTheme.colors.onBackground
     )
-    Divider()
+    HorizontalSeparator()
 }
 

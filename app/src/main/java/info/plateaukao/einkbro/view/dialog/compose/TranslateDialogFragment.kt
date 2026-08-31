@@ -30,7 +30,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -277,7 +276,7 @@ private fun TranslateResponse(
                         .fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
-                Divider()
+                HorizontalSeparator()
             }
             if (viewModel.isWebViewStyle() && responseMessage.text != "...") {
                 WebResultView(

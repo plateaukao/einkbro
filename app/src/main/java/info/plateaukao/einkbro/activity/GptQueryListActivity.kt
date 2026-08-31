@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -46,6 +45,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
+import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.ChatGptQuery
 import info.plateaukao.einkbro.unit.BackupUnit
@@ -235,11 +235,7 @@ fun QueryItem(
                 style = MaterialTheme.typography.body1,
             )
             if (showResult || forceExpand) {
-                Divider(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colors.primary.copy(alpha = 0.2f),
-                )
+                HorizontalSeparator(Modifier.padding(vertical = 8.dp))
                 Text(
                     text = remember(gptQuery.result) { HelperUnit.parseMarkdown(gptQuery.result) },
                     color = MaterialTheme.colors.onBackground,
