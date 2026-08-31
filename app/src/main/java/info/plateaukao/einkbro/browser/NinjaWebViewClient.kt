@@ -173,6 +173,9 @@ class EBWebViewClient(
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         ebWebView.currentPageUrl = url
+        // Applied at every document start (not only loadUrl) so reloads, link
+        // taps and redirects honor the per-site image switch (issue #634).
+        url?.let { ebWebView.applyImagePolicy(it) }
         errorPagePresenter.onPageStarted(url)
         // A committing document invalidates reader-mode state carried from the
         // previous page: covers link taps and JS navigations that bypass

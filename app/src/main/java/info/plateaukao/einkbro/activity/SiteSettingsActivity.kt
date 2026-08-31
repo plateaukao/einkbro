@@ -78,6 +78,7 @@ class SiteSettingsActivity : FragmentActivity(), KoinComponent {
                         globalJavascript = config.browser.enableJavascript || javascript.isWhite(url),
                         globalAdBlock = config.browser.adBlock && !adBlock.isWhite(url),
                         globalCookies = config.browser.cookies || cookie.isWhite(url),
+                        globalImages = config.browser.enableImages,
                         globalTranslationMode = config.translation.translationMode,
                         onEditText = { title, initial, onResult ->
                             TextEditorDialogFragment(title, initial, onResult)

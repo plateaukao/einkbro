@@ -108,6 +108,22 @@ class DomainConfigManagerTest {
     }
 
     @Test
+    fun `enableImages cascades per site and falls back to the global switch`() {
+        assertTrue(manager.getEnableImages(page))
+
+        browser.enableImages = false
+        assertFalse(manager.getEnableImages(page))
+
+        put(DomainConfigurationData("example.com", enableImages = true))
+        assertTrue(manager.getEnableImages(page))
+
+        put(DomainConfigurationData("example.com/docs", enableImages = false))
+        assertFalse(manager.getEnableImages(page))
+        assertTrue(manager.getEnableImages("https://example.com/blog"))
+        assertFalse(manager.getEnableImages("https://other.com/")) // global off
+    }
+
+    @Test
     fun `host rule applies to every path`() {
         put(DomainConfigurationData("example.com", fontSize = 150))
         assertEquals(150, manager.getFontSize(page))

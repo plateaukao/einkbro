@@ -476,12 +476,18 @@ open class EBWebView(
      */
     fun applySiteOverrides(url: String) {
         settings.javaScriptEnabled = isJavascriptEnabled(url)
+        applyImagePolicy(url)
         toggleCookieSupport(shouldAcceptCookies(url))
         if (!shouldUseReaderFont()) {
             settings.textZoom = config.getFontSize(url)
         }
         updateCssStyle()
         ViewUnit.invertColor(this, config.hasInvertedColor(url))
+    }
+
+    /** Per-site image switch first, then the global Images setting (issue #634). */
+    fun applyImagePolicy(url: String) {
+        settings.blockNetworkImage = !config.domain.getEnableImages(url)
     }
 
     // Per-site override first, then the global setting widened by the whitelist.
@@ -542,6 +548,7 @@ open class EBWebView(
         }
 
         settings.javaScriptEnabled = isJavascriptEnabled(url)
+        applyImagePolicy(url)
         toggleCookieSupport(shouldAcceptCookies(url))
         applyDesktopMode(url)
 
@@ -590,6 +597,7 @@ open class EBWebView(
         }
 
         settings.javaScriptEnabled = isJavascriptEnabled(url)
+        applyImagePolicy(strippedUrl)
         toggleCookieSupport(shouldAcceptCookies(url))
         applyDesktopMode(url)
 

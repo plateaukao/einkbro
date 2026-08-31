@@ -41,6 +41,8 @@ import androidx.compose.material.icons.outlined.CodeOff
 import androidx.compose.material.icons.outlined.Cookie
 import androidx.compose.material.icons.outlined.Copyright
 import androidx.compose.material.icons.outlined.DoNotDisturbOff
+import androidx.compose.material.icons.outlined.HideImage
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.InvertColors
 import androidx.compose.material.icons.outlined.InvertColorsOff
 import androidx.compose.material.icons.outlined.Remove
@@ -112,6 +114,7 @@ class SiteSettingsDialogFragment(
             globalJavascript = config.browser.enableJavascript || javascript.isWhite(url),
             globalAdBlock = config.browser.adBlock && !adBlock.isWhite(url),
             globalCookies = config.browser.cookies || cookie.isWhite(url),
+            globalImages = config.browser.enableImages,
             globalTranslationMode = config.translation.translationMode,
             onEditText = { title, initial, onResult ->
                 TextEditorDialogFragment(title, initial, onResult)
@@ -154,6 +157,7 @@ fun SiteSettingsContent(
     globalJavascript: Boolean,
     globalAdBlock: Boolean,
     globalCookies: Boolean,
+    globalImages: Boolean,
     globalTranslationMode: TranslationMode,
     onEditText: (title: String, initial: String, onResult: (String) -> Unit) -> Unit,
     onSave: (DomainConfigurationData) -> Unit,
@@ -197,6 +201,7 @@ fun SiteSettingsContent(
     val hintJavascript = hintFor { it.enableJavascript }
     val hintAdBlock = hintFor { it.enableAdBlock }
     val hintCookies = hintFor { it.enableCookies }
+    val hintImages = hintFor { it.enableImages }
     val hintTranslateSite = hintFor { it.shouldTranslateSite }
     val hintTranslationMode = hintFor { it.translationMode }
 
@@ -212,6 +217,7 @@ fun SiteSettingsContent(
     var javascript by remember(selectedKey) { mutableStateOf(rule.enableJavascript) }
     var adBlock by remember(selectedKey) { mutableStateOf(rule.enableAdBlock) }
     var cookies by remember(selectedKey) { mutableStateOf(rule.enableCookies) }
+    var images by remember(selectedKey) { mutableStateOf(rule.enableImages) }
     var translateSite by remember(selectedKey) { mutableStateOf(rule.shouldTranslateSite) }
     var translationMode by remember(selectedKey) { mutableStateOf(rule.translationMode) }
     var customCss by remember(selectedKey) { mutableStateOf(rule.customCss.orEmpty()) }
@@ -232,6 +238,7 @@ fun SiteSettingsContent(
         enableJavascript = javascript,
         enableAdBlock = adBlock,
         enableCookies = cookies,
+        enableImages = images,
         shouldTranslateSite = translateSite,
         translationMode = translationMode,
         customCss = customCss.ifBlank { null },
@@ -255,6 +262,7 @@ fun SiteSettingsContent(
     val fbJavascript = inherited.enableJavascript ?: globalJavascript
     val fbAdBlock = inherited.enableAdBlock ?: globalAdBlock
     val fbCookies = inherited.enableCookies ?: globalCookies
+    val fbImages = inherited.enableImages ?: globalImages
     val fbTranslateSite = inherited.shouldTranslateSite ?: false
     val fbTranslationMode = inherited.translationMode ?: globalTranslationMode
 
@@ -426,6 +434,17 @@ fun SiteSettingsContent(
                 offIcon = Icons.Outlined.Cookie,
                 fallbackHint = hintCookies,
                 onValueChange = { cookies = it },
+            )
+
+            // Images (issue #634: block image loading per site)
+            NullableBooleanRow(
+                label = stringResource(R.string.setting_title_images),
+                value = images,
+                globalValue = fbImages,
+                onIcon = Icons.Outlined.Image,
+                offIcon = Icons.Outlined.HideImage,
+                fallbackHint = hintImages,
+                onValueChange = { images = it },
             )
 
             SectionHeader(stringResource(R.string.action_category_translation))

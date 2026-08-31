@@ -38,6 +38,7 @@ data class DomainConfigurationData(
     var enableJavascript: Boolean? = null,
     var enableAdBlock: Boolean? = null,
     var enableCookies: Boolean? = null,
+    var enableImages: Boolean? = null,
     var translationMode: TranslationMode? = null,
     var customCss: String? = null,
     var postLoadJavascript: String? = null,
@@ -65,7 +66,7 @@ data class DomainConfigurationData(
             shouldFixScroll, shouldTranslateSite, shouldUseWhiteBackground, shouldInvertColor,
             fontSize, fontType, boldFontStyle, blackFontStyle, fontBoldness,
             desktopMode, desktopViewportWidth, enableJavascript, enableAdBlock, enableCookies,
-            translationMode, customCss?.takeIf { it.isNotBlank() },
+            enableImages, translationMode, customCss?.takeIf { it.isNotBlank() },
             postLoadJavascript?.takeIf { it.isNotBlank() },
         ).count { it != null }
 
@@ -91,6 +92,7 @@ data class DomainConfigurationData(
         enableJavascript = enableJavascript ?: fallback.enableJavascript,
         enableAdBlock = enableAdBlock ?: fallback.enableAdBlock,
         enableCookies = enableCookies ?: fallback.enableCookies,
+        enableImages = enableImages ?: fallback.enableImages,
         translationMode = translationMode ?: fallback.translationMode,
         customCss = customCss?.takeIf { it.isNotBlank() } ?: fallback.customCss,
         postLoadJavascript = postLoadJavascript?.takeIf { it.isNotBlank() } ?: fallback.postLoadJavascript,

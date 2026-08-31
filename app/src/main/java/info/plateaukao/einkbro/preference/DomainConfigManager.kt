@@ -78,6 +78,7 @@ class DomainConfigManager(
             enableJavascript = chain.firstNotNullOfOrNull { it.enableJavascript },
             enableAdBlock = chain.firstNotNullOfOrNull { it.enableAdBlock },
             enableCookies = chain.firstNotNullOfOrNull { it.enableCookies },
+            enableImages = chain.firstNotNullOfOrNull { it.enableImages },
             translationMode = chain.firstNotNullOfOrNull { it.translationMode },
             customCss = chain.firstNotNullOfOrNull { it.activeCustomCss },
             postLoadJavascript = chain.firstNotNullOfOrNull { it.activePostLoadJavascript },
@@ -221,6 +222,9 @@ class DomainConfigManager(
 
     fun getEnableJavascript(url: String): Boolean =
         resolve(url) { it.enableJavascript } ?: browser.enableJavascript
+
+    fun getEnableImages(url: String): Boolean =
+        resolve(url) { it.enableImages } ?: browser.enableImages
 
     fun getTranslationMode(url: String): TranslationMode =
         resolve(url) { it.translationMode } ?: translation.translationMode

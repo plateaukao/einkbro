@@ -198,6 +198,7 @@ private fun overrideSummary(rule: DomainConfigurationData): String {
         if (rule.enableJavascript != null) add(stringResource(R.string.setting_title_javascript))
         if (rule.enableAdBlock != null) add(stringResource(R.string.setting_title_adblock))
         if (rule.enableCookies != null) add(stringResource(R.string.setting_title_cookie))
+        if (rule.enableImages != null) add(stringResource(R.string.setting_title_images))
         if (rule.shouldTranslateSite != null) add(stringResource(R.string.action_category_translation))
         if (rule.translationMode != null) add(stringResource(R.string.translation_mode))
         if (!rule.customCss.isNullOrBlank()) {
