@@ -416,8 +416,25 @@ open class EBWebView(
     lateinit var userScriptBridge: info.plateaukao.einkbro.browser.UserScriptBridge
         private set
 
+    /**
+     * The `androidApp` bridge. Retained so a translation session can be opened/closed on
+     * it: [JsWebInterface.getTranslation] is the only page-reachable method that spends
+     * the user's translation/LLM key, and it is gated on a token minted here.
+     */
+    lateinit var jsWebInterface: JsWebInterface
+        private set
+
+    /** Mint a translation-session token so the injected monitor may call getTranslation. */
+    fun beginTranslationSession(): String = jsWebInterface.beginTranslationSession()
+
+    /** End the translation session; further getTranslation calls are rejected. */
+    fun endTranslationSession() {
+        if (::jsWebInterface.isInitialized) jsWebInterface.endTranslationSession()
+    }
+
     private fun setupJsWebInterface() {
-        addJavascriptInterface(JsWebInterface(this, webViewCallback as? JsBrowserCallback), "androidApp")
+        jsWebInterface = JsWebInterface(this, webViewCallback as? JsBrowserCallback)
+        addJavascriptInterface(jsWebInterface, "androidApp")
         userScriptBridge = info.plateaukao.einkbro.browser.UserScriptBridge(this)
         addJavascriptInterface(userScriptBridge, "einkbroGM")
         addJavascriptInterface(

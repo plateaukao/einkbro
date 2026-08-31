@@ -149,13 +149,28 @@ class WebViewJsBridge(private val webView: WebView) {
     //region Translation JS
 
     fun clearTranslationElements() {
+        (webView as? EBWebView)?.endTranslationSession()
         webView.evaluateJavascript(CLEAR_TRANSLATION_ELEMENTS_JS, null)
     }
 
+    /**
+     * Inject text_node_monitor.js with the current translation-session token baked into
+     * its getTranslation call site. The token authorizes the native bridge to spend the
+     * user's translation key; it is substituted as a string literal (never assigned to a
+     * page-visible variable). Falls back to an empty token when the host isn't an
+     * EBWebView, which the native side then rejects — no translation, but no leak.
+     */
+    private fun injectTextNodeMonitor(token: String) {
+        val js = loadAssetFile("text_node_monitor.js")
+            .replace("__EINKBRO_TL_TOKEN__", token)
+        webView.evaluateJavascript(js, null)
+    }
+
     fun translateByParagraphInPlaceReplace() {
+        val token = (webView as? EBWebView)?.beginTranslationSession() ?: ""
         webView.evaluateJavascript("window._translateInPlace = true;", null)
         evaluateJsFile("translate_by_paragraph.js") {
-            evaluateJsFile("text_node_monitor.js", false)
+            injectTextNodeMonitor(token)
         }
     }
 
@@ -168,8 +183,9 @@ class WebViewJsBridge(private val webView: WebView) {
             TranslationTextStyle.BOLD -> TRANSLATED_P_CSS_BOLD
         }
         updateCssSlot(CSS_SLOT_TRANSLATION, textBlockStyle)
+        val token = (webView as? EBWebView)?.beginTranslationSession() ?: ""
         evaluateJsFile("translate_by_paragraph.js") {
-            evaluateJsFile("text_node_monitor.js", false)
+            injectTextNodeMonitor(token)
         }
     }
 

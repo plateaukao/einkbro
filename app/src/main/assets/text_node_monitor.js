@@ -176,7 +176,10 @@ function maybeRequestTranslation(targetNode) {
     return;
   }
   window._translateRequested.add(targetNode);
-  androidApp.getTranslation(text, targetNode.id, "myCallback");
+  // The token is substituted natively at injection time (WebViewJsBridge). It authorizes
+  // this app-injected script to spend the user's translation key; arbitrary page JS has
+  // no valid token, so the native side rejects its getTranslation calls.
+  androidApp.getTranslation("__EINKBRO_TL_TOKEN__", text, targetNode.id, "myCallback");
 }
 
 // Only newly-marked elements need work here. Re-probing every marker on the page was the

@@ -219,6 +219,9 @@ class EBWebViewClient(
                 // Invalidate the previous document's GM capability tokens; the new
                 // document's injections below mint fresh ones.
                 ebWebView.userScriptBridge.clearTokens()
+                // End any in-place translation session too: its getTranslation token was
+                // minted for the previous document and must not carry over to this one.
+                ebWebView.endTranslationSession()
                 lastUserScriptUrl = u
             }
             injectUserScripts(u, info.plateaukao.einkbro.userscript.RunAt.DOCUMENT_START)

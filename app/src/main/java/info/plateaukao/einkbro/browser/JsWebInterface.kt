@@ -34,6 +34,11 @@ private const val CACHE_MAX_TEXT_LENGTH = 10_000
 private const val MAX_DOWNLOAD_ID_LENGTH = 64
 private const val MAX_TTS_TEXT_LENGTH = 4000
 
+// A bare JavaScript identifier: the only shape the page-supplied translation
+// callback name is allowed to take before it is interpolated into an
+// evaluateJavascript call (the injected monitor always passes "myCallback").
+private val JS_IDENTIFIER_REGEX = Regex("^[A-Za-z_$][A-Za-z0-9_$]*$")
+
 class JsWebInterface(
     private val webView: EBWebView,
     private val jsBrowserCallback: JsBrowserCallback? = null,
@@ -60,8 +65,54 @@ class JsWebInterface(
     // deepL has a limit of 5 requests per second
     private val semaphoreForDeepL = Semaphore(1)
 
+    // Per-session capability token for getTranslation. `getTranslation` is the only
+    // page-reachable bridge method that spends the user's translation/LLM key, and a
+    // WebView JavaScript interface cannot be scoped to a single origin, so it is present
+    // on every page. Without a gate, any loaded site could call
+    // androidApp.getTranslation() in a loop to drain the user's OpenAI/Gemini quota or
+    // use the key as a free inference proxy (the model output returns via the callback).
+    //
+    // The token is minted natively in [beginTranslationSession] when the user starts an
+    // in-place translation, substituted into the app's own injected text_node_monitor.js,
+    // and cleared on navigation or when translation is cleared. A non-null token means a
+    // user-initiated translation session is active; the value binds calls to the app's
+    // injected script. There is no JS path to set it, so a page cannot forge a session.
+    // (Residual: because a JS interface shares the page's JS context, a page that hooks
+    // androidApp.getTranslation before the user triggers translation could observe the
+    // token and piggyback during the active session — the null check still fully blocks
+    // the unconditional, no-interaction abuse.)
+    @Volatile
+    private var translationToken: String? = null
+
+    fun beginTranslationSession(): String {
+        val token = generateTranslationToken()
+        translationToken = token
+        return token
+    }
+
+    fun endTranslationSession() {
+        translationToken = null
+    }
+
+    private fun generateTranslationToken(): String {
+        val bytes = ByteArray(16)
+        java.security.SecureRandom().nextBytes(bytes)
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
+
     @JavascriptInterface
-    fun getTranslation(originalText: String, elementId: String, callback: String) {
+    fun getTranslation(token: String, originalText: String, elementId: String, callback: String) {
+        val activeToken = translationToken
+        if (activeToken == null || token != activeToken) {
+            Log.w("JsWebInterface", "getTranslation rejected: no active translation session")
+            return
+        }
+        // Reject a callback that isn't a bare identifier; elementId is escaped where it is
+        // interpolated below. Together these close the raw-interpolation injection hole.
+        if (!callback.matches(JS_IDENTIFIER_REGEX)) {
+            Log.w("JsWebInterface", "getTranslation rejected: invalid callback name")
+            return
+        }
         coroutineScope.launch(Dispatchers.IO) {
             val currentLanguage = configManager.translation.translationLanguage.value
             val translateApi = webView.translateApi
@@ -86,7 +137,7 @@ class JsWebInterface(
                         withContext(Dispatchers.Main) {
                             if (webView.isAttachedToWindow) {
                                 webView.evaluateJavascript(
-                                    "$callback('$elementId', '${escapeForJs(originalText)}', '${escapeForJs(cachedEntry.translatedText)}')",
+                                    "$callback('${escapeForJs(elementId)}', '${escapeForJs(originalText)}', '${escapeForJs(cachedEntry.translatedText)}')",
                                     null
                                 )
                             }
@@ -119,7 +170,7 @@ class JsWebInterface(
                     // later visibility event can retry instead of blocking it forever.
                     if (webView.isAttachedToWindow) {
                         webView.evaluateJavascript(
-                            "$callback('$elementId', '${escapeForJs(originalText)}', '${escapeForJs(translatedString)}')",
+                            "$callback('${escapeForJs(elementId)}', '${escapeForJs(originalText)}', '${escapeForJs(translatedString)}')",
                             null
                         )
                     }
