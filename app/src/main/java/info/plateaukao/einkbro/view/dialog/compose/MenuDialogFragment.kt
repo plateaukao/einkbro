@@ -7,7 +7,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.draw.alpha
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -561,17 +560,6 @@ fun MenuItems(
             sectionsFiltered.forEach { sec ->
                 if (sec.items.isEmpty()) return@forEach
                 if (renderedAnySection) HorizontalSeparator()
-                sec.section.headerRes?.let { res ->
-                    Text(
-                        stringResource(res),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState()),
-                        textAlign = TextAlign.Center,
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colors.onBackground,
-                    )
-                }
                 // Reverse the chunk order so the last chunk (full row) ends up visually at
                 // the bottom and any partial chunk (overflow) ends up at the top. For 11 items
                 // with 6 columns, this renders as 5 items on top and 6 on bottom instead of
