@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -46,6 +47,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionOnScreen
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
@@ -247,8 +249,16 @@ fun DialogPanel(
     toggleGridViewAction: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
+    // Cap the panel to the usable screen height: without a bound the grid
+    // measures at full content height, the window overflows the screen, and
+    // the bottom action bar lands under (or past) the dialog frame. With the
+    // cap, the weighted list shrinks and scrolls while the bar stays visible.
+    val configuration = LocalConfiguration.current
+    val maxPanelHeight = (configuration.screenHeightDp - 120).dp
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(max = maxPanelHeight)
     ) {
         Box(Modifier.weight(1F, fill = false)) {
             content()
