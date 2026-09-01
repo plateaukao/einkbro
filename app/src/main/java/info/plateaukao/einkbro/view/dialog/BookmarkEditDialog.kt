@@ -1,14 +1,13 @@
 package info.plateaukao.einkbro.view.dialog
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,12 +26,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogWindowProvider
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.view.dialog.compose.ComposeDialogFragment
@@ -93,19 +90,22 @@ fun BookmarkEditContent(
     val coroutineScope = rememberCoroutineScope()
     val dialogManager = remember { DialogManager(context as android.app.Activity) }
 
-    AlertDialog(
-        modifier = Modifier
-            .padding(2.dp)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colors.primary,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(2.dp),
-        title = { Text(stringResource(R.string.menu_save_bookmark)) },
-        text = {
-            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+    // Rendered straight into the fragment's themed window: the inner material
+    // AlertDialog opened a SECOND dialog window whose default chrome (opaque
+    // surface + a hand-drawn 1dp border) covered the ThemedBorders frame, so
+    // the edit dialog never showed the selected border style.
+    Column(modifier = Modifier.padding(8.dp)) {
+        Text(
+            stringResource(R.string.menu_save_bookmark),
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.onBackground,
+        )
+        Column(
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .verticalScroll(rememberScrollState())
+                .padding(top = 8.dp),
+        ) {
                 OutlinedTextField(
                     value = titleState.value,
                     onValueChange = { titleState.value = it },
@@ -200,9 +200,16 @@ fun BookmarkEditContent(
                     )
                 }
             }
-        },
-        onDismissRequest = { dismissAction() },
-        confirmButton = {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            TextButton(onClick = { dismissAction() }) {
+                Text(
+                    stringResource(id = android.R.string.cancel),
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
             TextButton(
                 onClick = {
                     val newBookmark = bookmark.copy(
@@ -217,14 +224,6 @@ fun BookmarkEditContent(
                     color = MaterialTheme.colors.onBackground
                 )
             }
-        },
-        dismissButton = {
-            TextButton(onClick = { dismissAction() }) {
-                Text(
-                    stringResource(id = android.R.string.cancel),
-                    color = MaterialTheme.colors.onBackground
-                )
-            }
         }
-    )
+    }
 }
