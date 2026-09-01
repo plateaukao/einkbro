@@ -1,4 +1,5 @@
-• Fix security issues
-• Site settings: rules can be scoped to a URL path as well as a host; new "Configured sites" list to review, edit or remove all rules
-• Fixed: site rules restored from a backup are merged and apply without a restart
-• Fixed: pushState/hash navigations re-apply site rules for the new path
+• Site settings: per-site Images switch (#634) and on/off switches for custom CSS and post-load JS
+• Theming: toolbar edge border, load-progress line, and dialog dividers follow the theme
+• Security fix: untrusted pages can no longer use the translation bridge to spend your AI API key
+• Favicons are stored under the correct host; long-press menus open above the finger
+• Bookmark dialog fixes (themed edit dialog, action bar stays visible)

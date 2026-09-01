@@ -1,3 +1,22 @@
+### 16.6.0
+#### Features
+* Site settings: per-site Images switch — turn image loading off for just one site, resolved through the same path → host → global rule chain and applied on every navigation within the site (#634)
+* Site settings: per-site on/off switches for custom CSS and post-load JavaScript
+* Theming: the toolbar's page-facing edge is drawn as a real themed border (stamp perforations and sketch wobble show the page through them), and the load-progress line renders the theme's separator pattern in the accent color
+* Theming: dividers inside dialogs follow the theme's border style (dashed, double rule, perforation, hand-drawn wobble…), with a little more breathing room around dialog content
+
+#### Improvements
+* Menu dialog: section subtitle labels are removed — the themed dividers already separate the groups
+
+#### Fixes
+* Security: the translation JS bridge is gated behind a native per-session token, so untrusted pages can no longer call it to spend your OpenAI/Gemini API key
+* Favicons are fetched from the document itself and stored under the correct host, so an icon can no longer end up on another site's bookmarks, history, tabs or start page; bookmark long-press gains "Refresh icon"
+* Long-press menus (bookmarks, links/images, text selection) open above the finger instead of underneath it
+* Bookmarks: the edit dialog renders in the themed window, so it shows the selected border style
+* Bookmarks: the dialog no longer grows past the screen height, keeping the bottom action bar visible
+
+---
+
 ### 16.5.0
 #### Features
 * Theming: choose an accent color (7 presets or a custom color picked on a hue wheel), a border style (classic, round, sharp, paper, dashed, postage stamp, hand-drawn sketch, certificate, sticker, or none), and a fill (tonal, gradient with an adjustable direction/level dial, or subtle stripe/dot/graph/ruled/crosshatch patterns) - every combination applies live to dialogs, panels, settings, and the toolbar, with an Invert colors mode for a colored dark look

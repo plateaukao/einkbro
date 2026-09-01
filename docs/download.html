@@ -79,6 +79,29 @@
 <h2 id="changelog">Changelog</h2>
 
 <div class="changelog-version">
+<h3>16.6.0</h3>
+<h4>Features</h4>
+<ul>
+<li>Site settings: per-site Images switch — turn image loading off for just one site, applied on every navigation within it (#634)</li>
+<li>Site settings: per-site on/off switches for custom CSS and post-load JavaScript</li>
+<li>Theming: the toolbar's page-facing edge is drawn as a real themed border, and the load-progress line renders the theme's separator pattern in the accent color</li>
+<li>Theming: dividers inside dialogs follow the theme's border style (dashed, double rule, perforation, hand-drawn wobble…), with a little more breathing room around dialog content</li>
+</ul>
+<h4>Improvements</h4>
+<ul>
+<li>Menu dialog: section subtitle labels are removed — the themed dividers already separate the groups</li>
+</ul>
+<h4>Fixes</h4>
+<ul>
+<li>Security: the translation JS bridge is gated behind a native per-session token, so untrusted pages can no longer call it to spend your OpenAI/Gemini API key</li>
+<li>Favicons are fetched from the document itself and stored under the correct host, so an icon can no longer end up on another site's bookmarks, history, tabs or start page; bookmark long-press gains "Refresh icon"</li>
+<li>Long-press menus (bookmarks, links/images, text selection) open above the finger instead of underneath it</li>
+<li>Bookmarks: the edit dialog renders in the themed window, so it shows the selected border style</li>
+<li>Bookmarks: the dialog no longer grows past the screen height, keeping the bottom action bar visible</li>
+</ul>
+</div>
+
+<div class="changelog-version">
 <h3>16.5.0</h3>
 <h4>Features</h4>
 <ul>
