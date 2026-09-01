@@ -28,6 +28,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
+import info.plateaukao.einkbro.view.CenterExpandProgressBar
 import info.plateaukao.einkbro.view.MainActivityLayout
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.TranslationLanguage
@@ -289,6 +290,8 @@ object ViewUnit: KoinComponent {
         setAppbarHorizontalLayoutParams(binding)
         setProgressBarHorizontal(binding)
         binding.contentSeparator.visibility = android.view.View.VISIBLE
+        // toolbar below the band: edge line at the band's top, fill below it
+        binding.contentSeparator.edgeAtTop = true
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.TOP)
@@ -353,6 +356,8 @@ object ViewUnit: KoinComponent {
         setAppbarHorizontalLayoutParams(binding)
         setProgressBarHorizontal(binding, atTop = true)
         binding.contentSeparator.visibility = android.view.View.VISIBLE
+        // toolbar above the band: edge line at the band's bottom, fill above it
+        binding.contentSeparator.edgeAtTop = false
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.BOTTOM)
@@ -556,10 +561,13 @@ object ViewUnit: KoinComponent {
         cs.constrainHeight(horizontalBar.id, barThickness)
         cs.connect(horizontalBar.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
         cs.connect(horizontalBar.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        // Inset by the themed contentSeparator's 5dp band so the load line
+        // sits just past the border instead of drawing on top of it.
+        val borderBand = (5 * density).toInt()
         if (atTop) {
-            cs.connect(horizontalBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            cs.connect(horizontalBar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, borderBand)
         } else {
-            cs.connect(horizontalBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            cs.connect(horizontalBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, borderBand)
         }
         cs.setVisibility(verticalBar.id, View.GONE)
         // ConstraintSet.clear() resets visibility to the default VISIBLE; restore the current value.

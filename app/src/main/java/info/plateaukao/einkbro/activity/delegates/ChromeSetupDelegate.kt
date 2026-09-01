@@ -104,7 +104,7 @@ class ChromeSetupDelegate(
         if (config.display.darkMode == DarkMode.FORCE_ON) {
             val nightModeFlags = activity.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
             if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_NO) {
-                state.progressBar.progressTintMode = PorterDuff.Mode.LIGHTEN
+                state.progressBar.setFillColor(android.graphics.Color.WHITE)
                 state.progressBarVertical.setFillColor(android.graphics.Color.WHITE)
             }
         }

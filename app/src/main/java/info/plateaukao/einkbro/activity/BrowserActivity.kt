@@ -174,7 +174,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var mainContentLayout: FrameLayout
         get() = browserState.mainContentLayout
         set(value) { browserState.mainContentLayout = value }
-    private var progressBar: ProgressBar
+    private var progressBar: CenterExpandProgressBar
         get() = browserState.progressBar
         set(value) { browserState.progressBar = value }
     private var progressBarVertical: CenterExpandProgressBar

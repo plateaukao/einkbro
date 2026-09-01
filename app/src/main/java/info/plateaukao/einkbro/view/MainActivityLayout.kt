@@ -16,7 +16,7 @@ class MainActivityLayout(
     val twoPanelLayout: TwoPaneLayout,
     val activityMainContent: MainContentLayout,
     val inputUrl: ComposeView,
-    val contentSeparator: View,
+    val contentSeparator: ThemedEdgeBorderView,
     val layoutOverview: ComposeView,
     val statusBar: ComposeView,
     val sideTabBar: ComposeView,
@@ -86,13 +86,18 @@ class MainActivityLayout(
             }
             root.addView(inputUrl)
 
-            // contentSeparator View
-            val contentSeparator = View(context).apply {
+            // contentSeparator: the toolbar's page-facing edge as a themed
+            // border. It overlaps the content flush against the app bar; the
+            // toolbar side of the line is filled with the theme background
+            // and the page side stays transparent (stamp bites / sketch
+            // wobble are die-cut, showing the page through them) — the same
+            // semantics as the dialog frames.
+            val contentSeparator = ThemedEdgeBorderView(context).apply {
                 id = R.id.content_separator
                 layoutParams = ConstraintLayout.LayoutParams(
-                    ConstraintLayout.LayoutParams.MATCH_PARENT, 1
+                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                    (5 * context.resources.displayMetrics.density).toInt(),
                 )
-                setBackgroundColor(android.graphics.Color.DKGRAY)
             }
             root.addView(contentSeparator)
 

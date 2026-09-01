@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -34,7 +33,7 @@ class MainContentLayout(
     val touchAreaLeft1: View,
     val touchAreaLeft2: View,
     val touchAreaLeftDrag: View,
-    val mainProgressBar: ProgressBar,
+    val mainProgressBar: CenterExpandProgressBar,
     val mainProgressBarVertical: CenterExpandProgressBar,
     val fabImageButtonNav: TextView,
     val translationLanguage: TextView,
@@ -259,11 +258,11 @@ class MainContentLayout(
             })
 
             // Horizontal ProgressBar (used when toolbar is at top/bottom)
-            val mainProgressBar = ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal).apply {
+            val mainProgressBar = CenterExpandProgressBar(context).apply {
                 id = R.id.main_progress_bar
                 max = 100
-                val tintColor = resolveColorControlNormal(context)
-                progressTintList = android.content.res.ColorStateList.valueOf(tintColor)
+                // classic left-anchored reveal; drawn in the themed border style
+                anchor = CenterExpandProgressBar.Anchor.START
             }
             root.addView(mainProgressBar, ConstraintLayout.LayoutParams(
                 0, dpToPx(context, 4)
@@ -277,10 +276,9 @@ class MainContentLayout(
                 max = 100
                 orientation = CenterExpandProgressBar.Orientation.VERTICAL
                 visibility = View.GONE
-                setFillColor(resolveColorControlNormal(context))
             }
             root.addView(mainProgressBarVertical, ConstraintLayout.LayoutParams(
-                dpToPx(context, 2), 0
+                dpToPx(context, 4), 0
             ))
 
             // fab_imageButtonNav

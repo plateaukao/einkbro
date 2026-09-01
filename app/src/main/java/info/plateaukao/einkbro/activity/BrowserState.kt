@@ -2,7 +2,6 @@ package info.plateaukao.einkbro.activity
 
 import android.graphics.Point
 import android.widget.FrameLayout
-import android.widget.ProgressBar
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.view.CenterExpandProgressBar
@@ -29,7 +28,7 @@ class BrowserState {
     lateinit var mainContentLayout: FrameLayout
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     lateinit var translationPanelView: TranslationPanelView
-    lateinit var progressBar: ProgressBar
+    lateinit var progressBar: CenterExpandProgressBar
     lateinit var progressBarVertical: CenterExpandProgressBar
     lateinit var composeToolbarViewController: ComposeToolbarViewController
     lateinit var fabImageViewController: FabImageViewController

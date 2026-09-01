@@ -58,6 +58,12 @@ object ThemedBorders : KoinComponent {
         }
     }
 
+    /** The theme's accent in the current light/dark/inverted mode. */
+    fun accentArgb(context: Context): Int = baseAndAccent(context).second.toArgb()
+
+    /** The theme's background in the current light/dark/inverted mode. */
+    fun baseArgb(context: Context): Int = baseAndAccent(context).first.toArgb()
+
     /** Accent-tinted fill used for UiFill.TONAL. */
     fun tonalFillArgb(context: Context): Int {
         val (base, accent) = baseAndAccent(context)
