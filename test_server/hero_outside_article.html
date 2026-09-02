@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero Outside Article Test</title>
+<meta property="og:image" content="http://10.0.2.2:8000/img.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+</head>
+<body>
+<header><nav><a href="/">Home</a> | <a href="/news">News</a></nav></header>
+<div class="hero-section">
+  <div class="hero-media">
+    <img src="img.png" alt="Hero image">
+  </div>
+  <div class="hero-text-wrap">
+    <div class="article-text">
+      <h1>Hero Outside Article Test</h1>
+      <p>HERO-TEST-MARKER. This fixture replicates the epaper.bisnis.com structure from issue 635: the lead photograph lives in a sibling branch of the article text container, so Readability's candidate algorithm drops it. The reader mode lead-image fallback should restore it from the og:image metadata declared in the page head. This paragraph and the ones after it exist to push the extracted text well past the five hundred character threshold so the parser accepts the text container as the top candidate on the first pass without falling back to grabbing the whole page.</p>
+      <p>Second paragraph with more sustained prose to keep the scoring firmly on this container. The candidate scoring assigns points for paragraph count and comma density, so a few reasonably long sentences with several clauses, like this one, ensure the article text div wins by a comfortable margin over navigation and footer noise.</p>
+      <p>Third paragraph continuing the body of the article with additional filler text that reads like a genuine news story rather than lorem ipsum, because the extraction heuristics weigh commas and sentence structure when scoring blocks of text for inclusion in the reader view.</p>
+      <p>Fourth and final paragraph of the article body, wrapping up the fixture with enough characters that the total comfortably clears the threshold and produces a clean single-container extraction that excludes the hero image div entirely.</p>
+    </div>
+  </div>
+</div>
+<footer><p>Footer links and copyright notice</p></footer>
+</body>
+</html>

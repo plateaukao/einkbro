@@ -1767,6 +1767,16 @@ Readability.prototype = {
           if (typeof parsed.datePublished === "string") {
             metadata.datePublished = parsed.datePublished.trim();
           }
+          var parsedImage = parsed.image;
+          if (Array.isArray(parsedImage)) {
+            parsedImage = parsedImage[0];
+          }
+          if (parsedImage && typeof parsedImage === "object") {
+            parsedImage = parsedImage.url;
+          }
+          if (typeof parsedImage === "string" && parsedImage.trim()) {
+            metadata.leadImage = parsedImage.trim();
+          }
         } catch (err) {
           this.log(err.message);
         }
@@ -1790,11 +1800,11 @@ Readability.prototype = {
 
     // property is a space-separated list of values
     var propertyPattern =
-      /\s*(article|dc|dcterm|og|twitter)\s*:\s*(author|creator|description|published_time|title|site_name)\s*/gi;
+      /\s*(article|dc|dcterm|og|twitter)\s*:\s*(author|creator|description|image|published_time|title|site_name)\s*/gi;
 
     // name is a single value
     var namePattern =
-      /^\s*(?:(dc|dcterm|og|twitter|parsely|weibo:(article|webpage))\s*[-\.:]\s*)?(author|creator|pub-date|description|title|site_name)\s*$/i;
+      /^\s*(?:(dc|dcterm|og|twitter|parsely|weibo:(article|webpage))\s*[-\.:]\s*)?(author|creator|pub-date|description|image|title|site_name)\s*$/i;
 
     // Find description tags.
     this._forEachNode(metaElements, function (element) {
@@ -1810,11 +1820,17 @@ Readability.prototype = {
       if (elementProperty) {
         matches = elementProperty.match(propertyPattern);
         if (matches) {
-          // Convert to lowercase, and remove any whitespace
-          // so we can match below.
-          name = matches[0].toLowerCase().replace(/\s/g, "");
-          // multiple authors
-          values[name] = content.trim();
+          // sub-properties such as og:image:width must not overwrite
+          // the base og:image value
+          var matchEnd =
+            elementProperty.indexOf(matches[0]) + matches[0].length;
+          if (elementProperty.charAt(matchEnd) !== ":") {
+            // Convert to lowercase, and remove any whitespace
+            // so we can match below.
+            name = matches[0].toLowerCase().replace(/\s/g, "");
+            // multiple authors
+            values[name] = content.trim();
+          }
         }
       }
       if (!matches && elementName && namePattern.test(elementName)) {
@@ -1873,6 +1889,11 @@ Readability.prototype = {
     // get site name
     metadata.siteName = jsonld.siteName || values["og:site_name"];
 
+    // get lead (hero) image, so reader mode can restore it when the
+    // extractor drops an image that sits outside the article container
+    metadata.leadImage =
+      jsonld.leadImage || values["og:image"] || values["twitter:image"];
+
     // get article published time
     metadata.publishedTime =
       jsonld.datePublished ||
@@ -1887,6 +1908,7 @@ Readability.prototype = {
     metadata.excerpt = this._unescapeHtmlEntities(metadata.excerpt);
     metadata.siteName = this._unescapeHtmlEntities(metadata.siteName);
     metadata.publishedTime = this._unescapeHtmlEntities(metadata.publishedTime);
+    metadata.leadImage = this._unescapeHtmlEntities(metadata.leadImage);
 
     return metadata;
   },
@@ -2868,6 +2890,7 @@ Readability.prototype = {
       excerpt: metadata.excerpt,
       siteName: metadata.siteName || this._articleSiteName,
       publishedTime: metadata.publishedTime,
+      leadImage: metadata.leadImage || null,
     };
   },
 };
@@ -2901,6 +2924,34 @@ function escapeHTML(text) {
     .replace(/\'/g, "&#039;");
 }
 
+
+// Prepends the metadata lead image (og:image / twitter:image / JSON-LD image)
+// when Readability dropped it — news sites often place the hero image outside
+// the article-text container, where the candidate algorithm never picks it up.
+// Matching by URL pathname (ignoring query params) avoids duplicating a hero
+// that did survive extraction.
+function articleContentWithLeadImage(article) {
+  try {
+    if (!article.leadImage) return article.content;
+    var base = document.baseURI || location.href;
+    var leadPath = new URL(article.leadImage, base).pathname;
+    var container = document.createElement("div");
+    container.innerHTML = article.content;
+    var imgs = container.getElementsByTagName("img");
+    for (var i = 0; i < imgs.length; i++) {
+      var src = imgs[i].getAttribute("src");
+      if (!src) continue;
+      try {
+        if (new URL(src, base).pathname === leadPath) return article.content;
+      } catch (e) { /* unparsable src: keep scanning */ }
+    }
+    return '<p><img src="' + escapeHTML(article.leadImage) + '" alt=""/></p>' +
+      article.content;
+  } catch (e) {
+    return article.content;
+  }
+}
+
 function createHtmlBodyWithUrl(article, originalUrl) {
   if (!originalUrl || originalUrl === "null") return createHtmlBody(article);
   const safeTitle = escapeHTML(article.title);
@@ -2916,7 +2967,7 @@ function createHtmlBodyWithUrl(article, originalUrl) {
         </div>
         <hr/>
         <div class="content">
-          <div class="mozac-readerview-content">${article.content}</div>
+          <div class="mozac-readerview-content">${articleContentWithLeadImage(article)}</div>
         </div>
       </div>
     </body>
@@ -2937,7 +2988,7 @@ function createHtmlBody(article) {
         </div>
         <hr/>
         <div class="content">
-          <div class="mozac-readerview-content">${article.content}</div>
+          <div class="mozac-readerview-content">${articleContentWithLeadImage(article)}</div>
         </div>
       </div>
     </body>
