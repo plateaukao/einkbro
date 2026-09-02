@@ -71,6 +71,8 @@
   <div class="toc-section">功能</div>
   <ul>
     <li><a href="#feature-reader">閱讀模式</a></li>
+    <li><a href="#feature-theme">介面主題</a></li>
+    <li><a href="#feature-startpage">起始頁</a></li>
     <li><a href="#feature-split">分割畫面</a></li>
     <li><a href="#feature-site-overrides">個別站台設定</a></li>
     <li><a href="#feature-userscripts">使用者指令碼</a></li>
@@ -476,6 +478,7 @@
 <a href="../images/settings_ui.png" target="_blank"><img src="../images/settings_ui.png" alt="介面設定" class="device-img"></a>
 
 <div class="setting-item"><div class="setting-item__name">應用程式語言</div><div class="setting-item__desc">變更介面語言。預設：系統語言。</div></div>
+<div class="setting-item"><div class="setting-item__name">主題</div><div class="setting-item__desc"><span class="tag">動作</span> 按鈕、邊框與對話框的強調色。開啟主題對話框選擇顏色、邊框樣式與填色 &mdash; 詳見<a href="#feature-theme">介面主題</a>。預設：經典（黑色）。</div></div>
 <div class="setting-item"><div class="setting-item__name">隱藏系統狀態列</div><div class="setting-item__desc"><span class="tag">切換</span> 永遠隱藏系統狀態列。預設：關閉。</div></div>
 <div class="setting-item"><div class="setting-item__name">桌面模式</div><div class="setting-item__desc"><span class="tag">切換</span> 要求網站提供桌面版。預設：關閉。</div></div>
 <div class="setting-item"><div class="setting-item__name">永遠啟用內容縮放</div><div class="setting-item__desc"><span class="tag">切換</span> 即使網站停用縮放，仍強制允許。預設：開啟。</div></div>
@@ -494,7 +497,7 @@
   <figure class="gallery__item"><img src="../images/eink_image_100.jpg" alt="E-Ink 圖片最佳化 100%" loading="lazy"><figcaption>100%</figcaption></figure>
 </div>
 <div class="setting-item"><div class="setting-item__name">浮動按鈕位置</div><div class="setting-item__desc"><span class="tag">選項</span> 導航浮動按鈕的位置。可選：<code>右側</code>、<code>左側</code>、<code>置中</code>、<code>不顯示</code>、<code>自訂</code>。預設：右側。</div></div>
-<div class="setting-item"><div class="setting-item__name">新分頁行為</div><div class="setting-item__desc"><span class="tag">選項</span> 新分頁開啟時顯示什麼。可選：<code>從輸入網址開始</code>、<code>顯示首頁</code>、<code>顯示書籤</code>。預設：從輸入網址開始。</div></div>
+<div class="setting-item"><div class="setting-item__name">新分頁行為</div><div class="setting-item__desc"><span class="tag">選項</span> 新分頁開啟時顯示什麼。可選：<code>從輸入網址開始</code>、<code>顯示首頁</code>、<code>顯示書籤</code>、<code>顯示起始頁</code>（見<a href="#feature-startpage">起始頁</a>）。預設：從輸入網址開始。</div></div>
 <div class="setting-item"><div class="setting-item__name">清除最近書籤清單</div><div class="setting-item__desc"><span class="tag">動作</span> 清除最近使用的書籤清單。</div></div>
 </section>
 
@@ -580,6 +583,7 @@
 <div class="setting-item"><div class="setting-item__name">與 Google Drive 同步</div><div class="setting-item__desc"><span class="tag">動作</span> 在您的 Google Drive 中備份或還原應用程式資料。登入流程完全在 EinkBro 內完成（以一般分頁進行 OAuth 授權），不需要 Play 服務。備份儲存在應用程式專屬的 Drive 空間，可在登入同一帳號的其他裝置上還原。</div></div>
 <div class="setting-item"><div class="setting-item__name">匯出應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 將歷史、書籤、設定與 WebView 登入資料（Cookie 與儲存空間）匯出為壓縮檔。</div></div>
 <div class="setting-item"><div class="setting-item__name">匯入應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 從先前匯出的壓縮檔匯入，包含 WebView 登入資料。</div></div>
+<p><strong>還原採合併而非取代：</strong>還原備份（來自 Google Drive 或壓縮檔）會合併到本機資料 &mdash; 書籤、網站設定、使用者指令碼、AI 查詢紀錄、聊天工作階段、劃線與已儲存頁面都以附加方式加入。本機建立的資料不會被刪除，重複還原同一份備份也不會產生重複項目。</p>
 <div class="setting-item"><div class="setting-item__name">分享應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 透過區域網路將應用程式資料分享至另一裝置。</div></div>
 <div class="setting-item"><div class="setting-item__name">接收應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 透過區域網路從另一裝置接收應用程式資料。</div></div>
 <div class="setting-item"><div class="setting-item__name">匯出書籤</div><div class="setting-item__desc"><span class="tag">動作</span> 將書籤匯出為檔案。</div></div>
@@ -590,6 +594,7 @@
 <h2>設定：網站設定</h2>
 <a href="../images/settings_startcontrol.png" target="_blank"><img src="../images/settings_startcontrol.png" alt="網站設定" class="device-img"></a>
 
+<div class="setting-item"><div class="setting-item__name">已設定的網站</div><div class="setting-item__desc"><span class="tag">動作</span> 無需逐一造訪網站，即可在同一份清單中檢視、編輯或移除各網站的規則。詳見<a href="#feature-site-overrides">個別站台設定</a>。</div></div>
 <div class="setting-item"><div class="setting-item__name">圖片</div><div class="setting-item__desc"><span class="tag">切換</span> 啟用網路圖片。停用可節省流量。預設：開啟。</div></div>
 <div class="setting-item"><div class="setting-item__name">自動填入表單</div><div class="setting-item__desc"><span class="tag">切換</span> 自動填入表單欄位。預設：開啟。</div></div>
 <div class="setting-item"><div class="setting-item__name">歷史</div><div class="setting-item__desc"><span class="tag">選項</span> 可選：<code>開啟時儲存</code>、<code>關閉時儲存</code>、<code>停用</code>。預設：開啟時儲存。</div></div>
@@ -700,6 +705,38 @@
 </ul>
 </section>
 
+<section id="feature-theme">
+<h2>介面主題</h2>
+<p>為瀏覽器介面打造專屬外觀。開啟「<strong>設定 &rarr; 介面 &rarr; 主題</strong>」選擇強調色、邊框樣式與填色 &mdash; 任何組合都會即時套用到對話框、面板、設定頁與工具列，無需重新啟動。</p>
+
+<h4>顏色</h4>
+<ul>
+  <li>七種預設：經典（黑色）、淺藍、深藍、綠色、復古褐、紫色、紅色</li>
+  <li><strong>自訂</strong> &mdash; 在色相環上挑選任意強調色，背景與文字色調會自動推導</li>
+  <li><strong>反轉顏色</strong> &mdash; 將主題翻轉為帶色彩的深色外觀</li>
+</ul>
+
+<h4>邊框樣式</h4>
+<p>決定對話框、面板與按鈕的外框：<strong>無</strong>、<strong>經典</strong>、<strong>圓角</strong>、<strong>直角</strong>、<strong>紙張</strong>（印刷風雙線框）、<strong>虛線</strong>、<strong>郵票</strong>（鋸齒邊）、<strong>手繪</strong>（手繪抖動線條）、<strong>證書</strong>（粗框加細內線）或<strong>貼紙</strong>（圓角框加位移陰影）。對話框內的分隔線與工具列朝向頁面的那一側邊緣也套用相同樣式。</p>
+
+<h4>填色</h4>
+<p>主題表面的背景處理，與邊框互相獨立：純色、<strong>色調</strong>、<strong>漸層</strong>，或細緻的重複紋樣 &mdash; <strong>條紋</strong>、<strong>圓點</strong>、<strong>方格</strong>、<strong>橫線</strong>、<strong>交叉線</strong>。選擇漸層後，再次點擊其色塊會開啟轉盤，拖曳時即時預覽漸層的方向與強度。</p>
+
+<p>主題的範圍不只對話框：Android 12+ 的系統啟動畫面、內建<a href="#feature-startpage">起始頁</a>、工具列的載入進度線與設定頁的狀態列都會跟著套用。</p>
+</section>
+
+<section id="feature-startpage">
+<h2>起始頁</h2>
+<p>內建的起始頁，包含搜尋框與常用網站的圖磚格。</p>
+<ul>
+  <li><strong>搜尋框</strong> &mdash; 使用瀏覽器內建的搜尋建議與您設定的搜尋引擎</li>
+  <li><strong>圖磚格</strong> &mdash; 從書籤加入網站或手動輸入；圖磚會顯示各網站的 favicon</li>
+  <li><strong>點擊標題</strong>可重新命名標題文字，或從裝置挑選背景圖片；圖片會貼齊畫面底部，並依其亮度自動選擇淺色或深色文字樣式</li>
+  <li>跟隨應用程式的深色模式與所選<a href="#feature-theme">介面主題</a> &mdash; 背景、填色紋樣、搜尋列、字標與圖磚</li>
+  <li>在<a href="#settings-ui">「設定 &rarr; 介面」</a>的「<strong>新分頁行為 &rarr; 顯示起始頁</strong>」啟用；也是預設的首頁</li>
+</ul>
+</section>
+
 <section id="feature-split">
 <h2>分割畫面</h2>
 <p>分割畫面會在目前頁面旁開啟第二個網頁面板。適合邊看新聞清單邊讀文章，或在閱讀內容的同時使用 AI 對話。</p>
@@ -720,6 +757,15 @@
 <section id="feature-site-overrides">
 <h2>個別站台設定</h2>
 <p>許多顯示與行為選項可以依站台儲存，下次造訪自動套用。從工具列（或手勢綁定）開啟「<strong>網站設定</strong>」對話框即可設定。</p>
+
+<h4>規則範圍</h4>
+<ul>
+  <li><strong>整個網站或特定路徑</strong> &mdash; 規則可套用於整個主機，也可限縮到某個路徑（例如 <code>example.com/docs</code>）；以最精確的規則優先，逐一欄位判定</li>
+  <li>編輯器會顯示每個繼承值的來源（路徑規則、主機規則或全域設定）</li>
+  <li><strong>已設定的網站</strong> &mdash; <a href="#settings-startcontrol">設定 &rarr; 網站設定</a>會列出所有已儲存的規則，可在同一處檢視、編輯或移除</li>
+  <li>同頁導覽（pushState、hash 變更、重新導向）也會重新套用規則，路徑規則能跟上單頁應用程式</li>
+</ul>
+
 <h4>顯示與視窗</h4>
 <ul>
   <li><strong>桌面版視窗寬度</strong> &mdash; 強制站台以桌面版排版顯示，不受全域行動／桌面切換影響</li>
@@ -729,7 +775,7 @@
 
 <h4>內容覆寫</h4>
 <ul>
-  <li><strong>廣告封鎖、Cookie、JavaScript、桌面模式</strong> &mdash; 皆可針對目前網站強制開啟或關閉，覆寫全域設定；不必再到設定頁輸入網域即可將目前網站加入白名單</li>
+  <li><strong>廣告封鎖、Cookie、JavaScript、圖片、桌面模式</strong> &mdash; 皆可針對目前網站強制開啟或關閉，覆寫全域設定；不必再到設定頁輸入網域即可將目前網站加入白名單。圖片開關可只針對單一網站停用圖片載入以節省流量</li>
   <li>設定頁清單中的白名單項目現在可以點擊編輯</li>
   <li>手機上網站設定對話框會以全螢幕開啟，讓所有選項都放得下；平板維持置中對話框</li>
 </ul>
@@ -740,6 +786,7 @@
   <li><strong>自訂 CSS</strong> &mdash; 每次載入時自動套用（例如隱藏黏性 header、加寬文章欄寬）</li>
   <li><strong>頁面載入後的 JavaScript</strong> &mdash; DOM 就緒後執行，可用來修正「點擊展開」按鈕，或移除繞過 adblock 的彈窗</li>
 </ul>
+<p>兩者各有獨立的開關，排查頁面問題時可暫時停用修補而不必刪除。</p>
 <p>AI 代理（位於 <a href="#feature-ai">與網頁對話</a>）可以協助撰寫並儲存這些修補 &mdash; 只要對它說「把這個站的黏性橫幅關掉」，它就會寫好 CSS、限縮到當前網域並保存下來。</p>
 </section>
 
@@ -847,6 +894,7 @@
 
 <h4>自由形式 Agent</h4>
 <p>整合於「<strong>與網頁對話</strong>」中，Agent 可處理開放式的後續對話，並持續存取頁面內容與先前輪次的紀錄。無需重複貼上上下文即可反覆分析，也可回呼頁面工具。</p>
+<p>Agent 也能整理書籤：它擁有新增書籤與建立資料夾的工具，大量書籤會分頁逐批處理以維持可靠度。它同樣能撰寫各網站的 CSS／JS 修補 &mdash; 見<a href="#feature-site-overrides">個別站台設定</a>。</p>
 
 <h4>新聞主播 TTS</h4>
 <p>朗讀動作範本，以新聞主播風格的語音朗讀完整文章，使用 OpenAI 的 <code>gpt-4o-mini-tts</code> 模型與預先設定的語音指示。可於<a href="#settings-gpt">「設定 &rarr; GPT &rarr; 語音輸出指示」</a>中調整。</p>

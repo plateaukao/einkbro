@@ -70,6 +70,8 @@
   <div class="toc-section">Features</div>
   <ul>
     <li><a href="#feature-reader">Reader Mode</a></li>
+    <li><a href="#feature-theme">UI Color Themes</a></li>
+    <li><a href="#feature-startpage">Start Page</a></li>
     <li><a href="#feature-split">Split Screen</a></li>
     <li><a href="#feature-site-overrides">Per-Site Overrides</a></li>
     <li><a href="#feature-userscripts">Userscripts</a></li>
@@ -475,6 +477,7 @@
 <a href="images/settings_ui.png" target="_blank"><img src="images/settings_ui.png" alt="UI Settings" class="device-img"></a>
 
 <div class="setting-item"><div class="setting-item__name">App Language</div><div class="setting-item__desc">Change interface language. Default: system language.</div></div>
+<div class="setting-item"><div class="setting-item__name">Theme</div><div class="setting-item__desc"><span class="tag">Action</span> Accent color for buttons, borders, and dialogs. Opens the theme dialog to pick a color, border style, and fill &mdash; see <a href="#feature-theme">UI Color Themes</a>. Default: Classic (black).</div></div>
 <div class="setting-item"><div class="setting-item__name">Hide System Status Bar</div><div class="setting-item__desc"><span class="tag">Toggle</span> Always hide the system status bar. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Desktop Mode</div><div class="setting-item__desc"><span class="tag">Toggle</span> Request desktop versions of websites. Default: off.</div></div>
 <div class="setting-item"><div class="setting-item__name">Always Enable Content Zooming</div><div class="setting-item__desc"><span class="tag">Toggle</span> Force all content to be zoomable, even on sites that disable it. Default: on.</div></div>
@@ -493,7 +496,7 @@
   <figure class="gallery__item"><img src="images/eink_image_100.jpg" alt="E-ink image optimization at 100%" loading="lazy"><figcaption>100%</figcaption></figure>
 </div>
 <div class="setting-item"><div class="setting-item__name">Floating Button Position</div><div class="setting-item__desc"><span class="tag">Select</span> Position of the navigation floating button. Options: <code>Right</code>, <code>Left</code>, <code>Center</code>, <code>Don't show</code>, <code>Custom</code>. Default: Right.</div></div>
-<div class="setting-item"><div class="setting-item__name">New Tab Behavior</div><div class="setting-item__desc"><span class="tag">Select</span> What to show when opening a new tab. Options: <code>Start input URL</code>, <code>Show homepage</code>, <code>Show bookmarks</code>. Default: Start input URL.</div></div>
+<div class="setting-item"><div class="setting-item__name">New Tab Behavior</div><div class="setting-item__desc"><span class="tag">Select</span> What to show when opening a new tab. Options: <code>Start input URL</code>, <code>Show homepage</code>, <code>Show bookmarks</code>, <code>Show start page</code> (see <a href="#feature-startpage">Start Page</a>). Default: Start input URL.</div></div>
 <div class="setting-item"><div class="setting-item__name">Clear Recent Bookmark List</div><div class="setting-item__desc"><span class="tag">Action</span> Clear the list of recently used bookmarks.</div></div>
 </section>
 
@@ -579,6 +582,7 @@
 <div class="setting-item"><div class="setting-item__name">Sync with Google Drive</div><div class="setting-item__desc"><span class="tag">Action</span> Back up or restore app data in your Google Drive. Sign-in runs entirely inside EinkBro (OAuth in a normal tab) &mdash; no Play Services needed. The backup is stored in the app-private Drive area and can be restored on another device signed in to the same account.</div></div>
 <div class="setting-item"><div class="setting-item__name">Export App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Export history, bookmarks, settings, and WebView login data (cookies &amp; storage) as a zip file.</div></div>
 <div class="setting-item"><div class="setting-item__name">Import App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Import from a previously exported zip file, including WebView login data.</div></div>
+<p><strong>Restores merge, not replace:</strong> restoring a backup (from Google Drive or a zip) merges into local data &mdash; bookmarks, site settings, userscripts, AI query results, chat sessions, highlights, and saved pages are appended. Locally created data is never deleted, and restoring the same backup twice adds no duplicates.</p>
 <div class="setting-item"><div class="setting-item__name">Share App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Share app data to another device over local network.</div></div>
 <div class="setting-item"><div class="setting-item__name">Receive App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Receive app data from another device over local network.</div></div>
 <div class="setting-item"><div class="setting-item__name">Export Bookmarks</div><div class="setting-item__desc"><span class="tag">Action</span> Export bookmarks to a file.</div></div>
@@ -589,6 +593,7 @@
 <h2>Settings: Site Settings</h2>
 <a href="images/settings_startcontrol.png" target="_blank"><img src="images/settings_startcontrol.png" alt="Site Settings" class="device-img"></a>
 
+<div class="setting-item"><div class="setting-item__name">Configured Sites</div><div class="setting-item__desc"><span class="tag">Action</span> Review, edit, or remove per-site rules without visiting each site &mdash; every rule in one list. See <a href="#feature-site-overrides">Per-Site Overrides</a>.</div></div>
 <div class="setting-item"><div class="setting-item__name">Images</div><div class="setting-item__desc"><span class="tag">Toggle</span> Enable network images. Disabling saves data. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">Auto Fill Form Data</div><div class="setting-item__desc"><span class="tag">Toggle</span> Auto-fill form fields. Default: on.</div></div>
 <div class="setting-item"><div class="setting-item__name">History</div><div class="setting-item__desc"><span class="tag">Select</span> Options: <code>Save when opening</code>, <code>Save when closing</code>, <code>Disabled</code>. Default: Save when opening.</div></div>
@@ -699,6 +704,38 @@
 </ul>
 </section>
 
+<section id="feature-theme">
+<h2>UI Color Themes</h2>
+<p>Give the browser chrome your own look. Open <strong>Settings &rarr; UI &rarr; Theme</strong> to pick an accent color, a border style, and a fill &mdash; every combination applies live to dialogs, panels, settings screens, and the toolbar, with no restart.</p>
+
+<h4>Color</h4>
+<ul>
+  <li>Seven presets: Classic (black), Light Blue, Dark Blue, Green, Sepia, Purple, Red</li>
+  <li><strong>Custom</strong> &mdash; pick any accent on a hue wheel; backgrounds and text tints are derived from it automatically</li>
+  <li><strong>Invert colors</strong> &mdash; flips the theme into a colored dark look</li>
+</ul>
+
+<h4>Border Style</h4>
+<p>How dialogs, panels, and buttons are framed: <strong>None</strong>, <strong>Classic</strong>, <strong>Round</strong>, <strong>Sharp</strong>, <strong>Paper</strong> (print-like double frame), <strong>Dashed</strong>, <strong>Postage Stamp</strong> (scalloped edge), <strong>Sketch</strong> (hand-drawn wobble), <strong>Certificate</strong> (thick frame with a hairline inner rule), or <strong>Sticker</strong> (rounded frame with an offset shadow). Dividers inside dialogs and the toolbar's page-facing edge follow the same style.</p>
+
+<h4>Fill</h4>
+<p>The background treatment of themed surfaces, independent of the border: plain, <strong>Tonal</strong>, <strong>Gradient</strong>, or a subtle repeating pattern &mdash; <strong>Stripes</strong>, <strong>Dots</strong>, <strong>Graph</strong>, <strong>Ruled</strong>, or <strong>Crosshatch</strong>. With Gradient selected, tap its swatch again to open a dial that adjusts the gradient's direction and strength with a live preview while you drag.</p>
+
+<p>The theme reaches beyond dialogs: the Android 12+ system splash screen, the built-in <a href="#feature-startpage">start page</a>, the toolbar's load-progress line, and the settings status bar all follow it.</p>
+</section>
+
+<section id="feature-startpage">
+<h2>Start Page</h2>
+<p>A built-in start page with a search box and a tile grid of your favorite sites &mdash; the page shown in the <a href="index.html">hero screenshot</a>.</p>
+<ul>
+  <li><strong>Search box</strong> &mdash; uses the browser's own search suggestions and your configured search engine</li>
+  <li><strong>Tile grid</strong> &mdash; add sites from bookmarks or enter them manually; tiles show each site's favicon</li>
+  <li><strong>Tap the title</strong> to rename the heading or set a background image from your device; the image anchors to the bottom of the screen, and its brightness picks the light or dark text style</li>
+  <li>Follows the app's dark mode and the selected <a href="#feature-theme">UI theme</a> &mdash; background, fill pattern, search bar, wordmark, and tiles</li>
+  <li>Enable it via <strong>New Tab Behavior &rarr; Show start page</strong> in <a href="#settings-ui">Settings &rarr; UI</a>; it also serves as the default homepage</li>
+</ul>
+</section>
+
 <section id="feature-split">
 <h2>Split Screen</h2>
 <p>Split screen opens a second web panel alongside the current page. Useful for reading news lists while viewing articles, or for AI chat alongside content.</p>
@@ -719,6 +756,15 @@
 <section id="feature-site-overrides">
 <h2>Per-Site Overrides</h2>
 <p>Many display and behavior options can be saved per site so they apply automatically on subsequent visits. Open the <strong>Site Settings</strong> dialog from the toolbar (or via gesture binding) to configure them.</p>
+
+<h4>Rule Scope</h4>
+<ul>
+  <li><strong>Whole site or a URL path</strong> &mdash; a rule can cover the whole host or be scoped to a path such as <code>example.com/docs</code>; the most specific rule wins, field by field</li>
+  <li>The editor shows where each inherited value comes from (a path rule, the host rule, or the global setting)</li>
+  <li><strong>Configured sites</strong> &mdash; <a href="#settings-startcontrol">Settings &rarr; Site Settings</a> lists every saved rule so you can review, edit, or remove them in one place</li>
+  <li>Rules are re-applied on same-document navigations (pushState, hash changes, redirects), so path-scoped rules keep up with single-page apps</li>
+</ul>
+
 <h4>Display &amp; Viewport</h4>
 <ul>
   <li><strong>Desktop viewport width</strong> &mdash; force a site to render at desktop layout regardless of the global mobile/desktop toggle</li>
@@ -728,7 +774,7 @@
 
 <h4>Content Overrides</h4>
 <ul>
-  <li><strong>AdBlock, Cookies, JavaScript, Desktop mode</strong> &mdash; each can be forced on or off for the current site, overriding the global setting; whitelist the site you are on without typing domains in Settings</li>
+  <li><strong>AdBlock, Cookies, JavaScript, Images, Desktop mode</strong> &mdash; each can be forced on or off for the current site, overriding the global setting; whitelist the site you are on without typing domains in Settings. The Images switch lets you turn image loading off for just one site to save data</li>
   <li>Whitelist entries in the Settings lists can be edited by tapping them</li>
   <li>On phones the Site Settings dialog opens full-screen so all options fit; tablets keep the centered dialog</li>
 </ul>
@@ -739,6 +785,7 @@
   <li><strong>Custom CSS</strong> &mdash; appended to the page on every load (e.g. hide a sticky header, widen the article column)</li>
   <li><strong>Post-load JavaScript</strong> &mdash; runs after the DOM is ready, useful for click-to-expand fixes or removing pop-ups that bypass adblock</li>
 </ul>
+<p>Each has its own on/off switch, so a patch can stay saved but temporarily disabled while you troubleshoot a page.</p>
 <p>The AI agent (under <a href="#feature-ai">Chat With Web</a>) can author and save these patches for you &mdash; ask it to "hide the sticky banner on this site" and it will write CSS, scope it to the current domain, and persist it.</p>
 </section>
 
@@ -846,6 +893,7 @@
 
 <h4>Free-form Agent</h4>
 <p>Built into <strong>Chat With Web</strong>, the agent handles open-ended follow-up conversations with persistent access to the page content and previous turns. Iterate on analysis without re-pasting context, and let it call back into page tools.</p>
+<p>The agent can also organize your bookmarks: it has tools to add bookmarks and create folders, and large bookmark lists are filed page by page so it stays reliable. It can likewise author per-site CSS/JS patches &mdash; see <a href="#feature-site-overrides">Per-Site Overrides</a>.</p>
 
 <h4>News-Anchor TTS</h4>
 <p>A read-aloud action template that delivers full articles in a news-anchor voice, using OpenAI's <code>gpt-4o-mini-tts</code> model with preconfigured voice instructions. Configure under <a href="#settings-gpt">Settings &rarr; GPT &rarr; Audio Output Instructions</a>.</p>
