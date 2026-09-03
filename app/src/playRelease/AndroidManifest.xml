@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Google Play build: strip the APK-install permission. Play's
+     REQUEST_INSTALL_PACKAGES policy requires a Play Console declaration and
+     review; until that is done the Play build falls back to opening the
+     system Downloads app for downloaded APKs (DownloadHelper checks whether
+     the permission is declared at runtime). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission
+        android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+        tools:node="remove" />
+
+</manifest>

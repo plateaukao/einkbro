@@ -141,6 +141,15 @@ Google Play policy strictly forbids apps updating themselves. The app used to
 have self-update items in the About settings screen ("Update App" from GitHub
 releases, "Update with Snapshot" from CI artifacts), gated behind build flags;
 they were removed entirely in v16.0.0 so no build — GitHub or Play — can
-self-update. Do not reintroduce an in-app updater, an APK download/install flow,
-or the `REQUEST_INSTALL_PACKAGES` permission — a violation risks the Play
-listing. The About screen keeps only "What's New" and "Contributors" links.
+self-update. Do not reintroduce an in-app updater or any flow that downloads
+and installs *EinkBro itself*. The About screen keeps only "What's New" and
+"Contributors" links.
+
+Installing APKs the *user* downloads while browsing is a different matter — a
+standard browser capability, reinstated in v16.7 (2026-09). The main manifest
+declares `REQUEST_INSTALL_PACKAGES`, and `app/src/playRelease/AndroidManifest.xml`
+strips it with `tools:node="remove"` so the Play build stays clear of Play's
+permission-declaration review; `DownloadHelper` checks at runtime whether the
+permission is declared and falls back to opening the system Downloads app when
+it is not (the Play build). Keep that split: never let the permission into the
+playRelease build without going through the Play Console declaration.

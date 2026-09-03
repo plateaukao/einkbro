@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -21,6 +22,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.EBToast.showShort
@@ -551,6 +553,19 @@ object DownloadHelper {
             .ifBlank { "download" }
     }
 
+    // True when this build declares REQUEST_INSTALL_PACKAGES (the playRelease
+    // manifest strips it). Declared is enough: with the permission in the
+    // manifest the system installer takes over, including the one-time
+    // "install unknown apps" grant flow on API 26+.
+    private fun hasInstallPackagesPermission(context: Context): Boolean = try {
+        context.packageManager
+            .getPackageInfo(context.packageName, PackageManager.GET_PERMISSIONS)
+            .requestedPermissions
+            ?.contains(android.Manifest.permission.REQUEST_INSTALL_PACKAGES) == true
+    } catch (e: Exception) {
+        false
+    }
+
     private fun downloadedLocalUri(manager: DownloadManager, id: Long): String? = try {
         manager.query(DownloadManager.Query().setFilterById(id))?.use { cursor ->
             if (cursor.moveToFirst()) {
@@ -575,22 +590,32 @@ object DownloadHelper {
                 val mimeType: String? = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
                 val localUri = downloadedLocalUri(downloadManager, downloadFileId)
                 downloadFileId = -1L
-                // Without REQUEST_INSTALL_PACKAGES (dropped in v16.0.0 for Play policy),
-                // the package installer silently ignores install intents from this app.
-                // Hand APKs to the system Downloads UI instead, so the Files app the user
-                // taps the APK in becomes the install source.
-                val isApk = mimeType == "application/vnd.android.package-archive" ||
+                val isApk = mimeType == Constants.MIME_TYPE_APK ||
                     localUri?.endsWith(".apk", ignoreCase = true) == true
-                val fileIntent = if (isApk) {
-                    Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                } else {
-                    Intent(ACTION_VIEW).apply {
-                        setDataAndType(mostRecentDownload, mimeType)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
+                val fileIntent = when {
+                    // The system installer handles the rest, including walking the
+                    // user through the per-app "install unknown apps" grant.
+                    isApk && hasInstallPackagesPermission(activity) ->
+                        Intent(ACTION_VIEW).apply {
+                            // force the APK mime type: servers often send octet-stream
+                            setDataAndType(mostRecentDownload, Constants.MIME_TYPE_APK)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+                    // Without REQUEST_INSTALL_PACKAGES (stripped from the Play build),
+                    // the package installer silently ignores install intents from this
+                    // app. Hand APKs to the system Downloads UI instead, so the Files
+                    // app the user taps the APK in becomes the install source.
+                    isApk ->
+                        Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                    else ->
+                        Intent(ACTION_VIEW).apply {
+                            setDataAndType(mostRecentDownload, mimeType)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
                 }
                 DialogManager(activity).showOkCancelDialog(
                     messageResId = R.string.toast_downloadComplete,

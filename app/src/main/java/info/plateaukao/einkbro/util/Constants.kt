@@ -11,6 +11,7 @@ class Constants {
         const val MIME_TYPE_ZIP = "application/zip"
         const val MIME_TYPE_ANY = "*/*"
         const val MIME_TYPE_FONT = "application/x-font-ttf"
+        const val MIME_TYPE_APK = "application/vnd.android.package-archive"
         // from https://github.com/Smile4ever/Neat-URL
 
         const val ACTION_DICT = "action.dict"
