@@ -581,6 +581,7 @@ open class EBWebView(
         toggleCookieSupport(shouldAcceptCookies(url))
         applyDesktopMode(url)
 
+        pendingRequestedHost = Uri.parse(url).host
         super.loadUrl(url, additionalHttpHeaders)
     }
 
@@ -630,7 +631,9 @@ open class EBWebView(
         toggleCookieSupport(shouldAcceptCookies(url))
         applyDesktopMode(url)
 
-        super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
+        val finalUrl = BrowserUnit.queryWrapper(context, strippedUrl)
+        pendingRequestedHost = Uri.parse(finalUrl).host
+        super.loadUrl(finalUrl, requestHeaders)
     }
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
@@ -687,6 +690,13 @@ open class EBWebView(
     private var committedHost: String? = null
     private var verifiedCoverHost: String? = null
 
+    // Host the user actually asked for (loadUrl), pending until its document
+    // commits; when that commit lands on a different host — a cross-host redirect
+    // (threads.net -> threads.com) — the requested host is kept so the favicon is
+    // stored under it too, keeping icons on bookmarks that point at the old host.
+    private var pendingRequestedHost: String? = null
+    private var redirectedFromHost: String? = null
+
     /**
      * Chromium's onReceivedIcon bitmap is display-only. It is never persisted:
      * Chromium doesn't say which page the icon belongs to, and late deliveries
@@ -705,7 +715,12 @@ open class EBWebView(
      */
     fun onDocumentCommitted(url: String) {
         val host = Uri.parse(url).host
+        val requested = pendingRequestedHost
+        pendingRequestedHost = null
         if (host == committedHost) return
+        // A loadUrl that committed on another host was redirected; commits without
+        // a pending request (link clicks, SPA routing) carry no alias.
+        redirectedFromHost = requested?.takeIf { it != host }
         committedHost = host
         verifiedCoverHost = null
         album.setAlbumCover(host?.let { bookmarkManager.findFaviconBitmapBy(url) })
@@ -719,7 +734,8 @@ open class EBWebView(
     fun probeFavicon(pageUrl: String) {
         if (!pageUrl.startsWith("http") || isAIPage || errorPageUrl != null) return
         val host = Uri.parse(pageUrl).host ?: return
-        if (faviconFetcher.isHandled(host)) return
+        val aliasHost = redirectedFromHost?.takeIf { !faviconFetcher.isHandled(it) }
+        if (faviconFetcher.isHandled(host) && aliasHost == null) return
         evaluateJsFile("favicon_probe.js", withPrefix = false) { result ->
             val probe = FaviconFetcher.parseProbe(result)
             // No probe (JS unavailable) still gets the /favicon.ico fallback; a probe
@@ -727,7 +743,7 @@ open class EBWebView(
             if (probe != null && probe.host != host) return@evaluateJsFile
             val candidates = probe?.candidates.orEmpty()
             coroutineScope.launch(Dispatchers.IO) {
-                val bitmap = faviconFetcher.storeForPage(host, pageUrl, candidates)
+                val bitmap = faviconFetcher.storeForPage(host, pageUrl, candidates, aliasHost)
                 withContext(Dispatchers.Main) {
                     if (isWebViewDestroyed || Uri.parse(url.orEmpty()).host != host) return@withContext
                     verifiedCoverHost = host

@@ -46,13 +46,44 @@ class FaviconFetcher(private val bookmarkManager: BookmarkManager) {
 
     /**
      * Stores the best decodable icon among [candidates] (from the document at
-     * [pageUrl]) under [host]. Returns the stored bitmap, or null when the host was
-     * already handled this session or nothing decodable was found.
+     * [pageUrl]) under [host] — and under [aliasHost] too, when a cross-host
+     * redirect got here (threads.net -> threads.com), so bookmarks still pointing
+     * at the requested host keep their icon. Returns the stored bitmap, or null
+     * when every host was already handled this session or nothing decodable was
+     * found.
      */
-    suspend fun storeForPage(host: String, pageUrl: String, candidates: List<Candidate>): Bitmap? {
-        if (!handledHosts.add(host)) return null
-        val bitmap = download(FaviconCandidates.orderedUrls(candidates, pageUrl)) ?: return null
+    suspend fun storeForPage(
+        host: String,
+        pageUrl: String,
+        candidates: List<Candidate>,
+        aliasHost: String? = null,
+    ): Bitmap? = withContext(Dispatchers.IO) {
+        val alias = aliasHost?.takeIf { it != host && handledHosts.add(it) }
+        if (!handledHosts.add(host) && alias == null) return@withContext null
+        // SPA hydration can have replaced the head before the probe ran; the
+        // served HTML still declares the icons, so re-read it like refresh() does.
+        val effective = candidates.ifEmpty {
+            val (finalUrl, html) = fetchHtml(pageUrl) ?: (pageUrl to "")
+            FaviconCandidates.parseIconLinks(html, finalUrl)
+        }
+        val bitmap = download(FaviconCandidates.orderedUrls(effective, pageUrl))
+            ?: return@withContext copyStoredToAlias(host, alias)
         store(host, bitmap)
+        alias?.let { store(it, bitmap) }
+        bitmap
+    }
+
+    /**
+     * Fetch failed, but the redirect target may have an icon stored from an
+     * earlier session — good enough for the alias host, which serves nothing
+     * itself (that's why it redirects).
+     */
+    private suspend fun copyStoredToAlias(host: String, alias: String?): Bitmap? {
+        alias ?: return null
+        val bitmap = withContext(Dispatchers.Main) {
+            bookmarkManager.findFaviconBitmapBy("https://$host/")
+        } ?: return null
+        store(alias, bitmap)
         return bitmap
     }
 
@@ -91,6 +122,7 @@ class FaviconFetcher(private val bookmarkManager: BookmarkManager) {
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: continue
             return@withContext shrink(bitmap)
         }
+        Log.d(TAG, "no decodable icon among: $urls")
         null
     }
 
