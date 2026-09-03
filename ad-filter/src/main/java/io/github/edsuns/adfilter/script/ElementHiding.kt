@@ -12,10 +12,6 @@ import java.net.URL
  */
 internal class ElementHiding constructor(private val detector: Detector) {
 
-    private val extendedCssLibJS by lazy {
-        JsAssets.load("extended-css.min.js")
-    }
-
     private val eleHidingJS by lazy {
         ScriptInjection.parseScript(this, JsAssets.load("element_hiding.js"), true)
     }
@@ -63,12 +59,6 @@ internal class ElementHiding constructor(private val detector: Detector) {
 
     fun perform(webView: WebView?, url: String?) {
         if (webView == null) return
-        // The ExtendedCss library is 48 KB of JS the renderer would parse on
-        // every page; element_hiding.js only constructs ExtendedCss when the
-        // page has extended selectors, so ship the library only then.
-        if (url != null && detector.getExtendedCssSelectors(url).isNotEmpty()) {
-            webView.evaluateJavascript(extendedCssLibJS, null)
-        }
         webView.evaluateJavascript(eleHidingJS, null)
         Timber.v("Evaluated element hiding Javascript for $url")
     }
@@ -100,15 +90,15 @@ internal class ElementHiding constructor(private val detector: Detector) {
         return result.toString().replace(", ", HIDING_CSS, 200)
     }
 
+    /**
+     * Extended selectors rendered as native CSS (see [NativeExtendedCss]); the
+     * page injects the result as a plain stylesheet. The ExtendedCss JS
+     * library is gone — native :has() covers the expressible half of these
+     * rules without a per-mutation JS matcher.
+     */
     @JavascriptInterface
-    fun getExtendedCssStyleSheet(documentUrl: String): String {
-        val extendedCss = detector.getExtendedCssSelectors(documentUrl)
-        if (extendedCss.isNotEmpty()) {
-            // join to String with ", "
-            return extendedCss.joinToString() + HIDING_CSS
-        }
-        return ""
-    }
+    fun getExtendedCssStyleSheet(documentUrl: String): String =
+        NativeExtendedCss.buildRules(detector.getExtendedCssSelectors(documentUrl), HIDING_CSS)
 
     /**
      * Extract path with query from URL

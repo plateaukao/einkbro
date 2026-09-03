@@ -7,8 +7,8 @@ import android.content.Context
  * inlined into the dex string pool by Mezzanine (kapt): dex strings are stored
  * uncompressed both in the APK and on device, while assets deflate to about a
  * third of the size — and dropping Mezzanine removed the module's last kapt
- * dependency. Sources are cached after first read; the big ones (scriptlets,
- * extended-css) are only read when a page actually needs them.
+ * dependency. Sources are cached after first read; the big one (scriptlets)
+ * is only read when a page actually needs it.
  */
 internal object JsAssets {
     private lateinit var appContext: Context

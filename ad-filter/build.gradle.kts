@@ -67,4 +67,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.http.request)
+
+    testImplementation(libs.junit)
 }
