@@ -58,7 +58,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -67,7 +66,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogWindowProvider
 import androidx.navigation.NavHostController
 import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.R
@@ -82,6 +80,7 @@ import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import info.plateaukao.einkbro.view.compose.ThemedDialogWindowFrame
 import info.plateaukao.einkbro.view.compose.ebItemFrame
 
 // Rows keep this as a minimum but can grow when a larger system font scale
@@ -381,16 +380,9 @@ private fun ToolbarPositionDialog(
 ) {
     var pending by remember { mutableStateOf(initial) }
     AlertDialog(
-        modifier = Modifier
-            .padding(2.dp)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colors.primary,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .padding(2.dp),
         onDismissRequest = onDismiss,
-        backgroundColor = MaterialTheme.colors.background,
+        // the ThemedBorders window frame draws the border and fill
+        backgroundColor = Color.Transparent,
         title = {
             Text(
                 text = stringResource(titleResId) + ": " +
@@ -400,7 +392,7 @@ private fun ToolbarPositionDialog(
             )
         },
         text = {
-            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+            ThemedDialogWindowFrame()
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -599,12 +591,7 @@ private fun RowScope.EinkOptionChip(
         color = MaterialTheme.colors.onBackground,
         modifier = Modifier
             .weight(1f)
-            .border(
-                width = if (selected) 2.dp else 1.dp,
-                color = if (selected) MaterialTheme.colors.primary
-                else MaterialTheme.colors.primary.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(4.dp),
-            )
+            .ebItemFrame(if (selected) 2.dp else null)
             .clickable(onClick = onClick)
             .padding(vertical = 8.dp),
     )
@@ -639,16 +626,10 @@ private fun EinkImageAdjustmentDialog(
     }
 
     Dialog(onDismissRequest = onDismiss) {
-        (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+        // the ThemedBorders window frame draws the border and fill
+        ThemedDialogWindowFrame()
         Column(
-            modifier = Modifier
-                .background(MaterialTheme.colors.background, RoundedCornerShape(8.dp))
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colors.primary,
-                    shape = RoundedCornerShape(8.dp),
-                )
-                .padding(16.dp),
+            modifier = Modifier.padding(16.dp),
         ) {
             Text(
                 text = stringResource(titleResId),

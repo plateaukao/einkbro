@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -20,7 +19,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -42,19 +40,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogWindowProvider
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.compose.ThemedDialogWindowFrame
 import info.plateaukao.einkbro.preference.ChatGPTActionInfo
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.GptActionDisplay
@@ -312,20 +309,12 @@ fun GptActionDialog(
     val model = remember(editActionIndex, action) { mutableStateOf(action.model) }
 
     AlertDialog(
-        modifier = Modifier
-            .padding(2.dp)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colors.primary,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(2.dp),
+        // the ThemedBorders window frame draws the border and fill
+        backgroundColor = Color.Transparent,
         // use caption style
         title = { Text("Action Setting", style = MaterialTheme.typography.h6) },
         text = {
-            // set dim amount to 0 to avoid dialog window's dim
-            val dialogWindow = (LocalView.current.parent as? DialogWindowProvider)?.window
-            SideEffect { dialogWindow?.setDimAmount(0f) }
+            ThemedDialogWindowFrame()
             Column {
                 TextField(
                     modifier = Modifier.padding(2.dp),

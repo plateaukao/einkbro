@@ -550,4 +550,35 @@ private class PatternBoxDrawable(
  */
 fun <T : android.app.Dialog> T.withThemedFrame(): T = apply {
     window?.setBackgroundDrawable(ThemedBorders.windowPanel(context))
+    withThemedButtons()
+}
+
+/**
+ * Tints an AlertDialog's button-bar buttons with the theme accent, replacing
+ * MyButtonStyle's static black-on-white look. The buttons only exist once the
+ * dialog's content is installed (during show), so the tint runs when the decor
+ * attaches — an attach listener rather than setOnShowListener, which call
+ * sites may already use for their own purposes.
+ */
+fun <T : android.app.Dialog> T.withThemedButtons(): T = apply {
+    if (this !is android.app.AlertDialog) return@apply
+    fun tint() {
+        val accent = ThemedBorders.accentArgb(context)
+        intArrayOf(
+            android.content.DialogInterface.BUTTON_POSITIVE,
+            android.content.DialogInterface.BUTTON_NEGATIVE,
+            android.content.DialogInterface.BUTTON_NEUTRAL,
+        ).forEach { which -> getButton(which)?.setTextColor(accent) }
+    }
+    val decor = window?.decorView ?: return@apply
+    if (decor.isAttachedToWindow) {
+        tint()
+    } else {
+        decor.addOnAttachStateChangeListener(
+            object : android.view.View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: android.view.View) = tint()
+                override fun onViewDetachedFromWindow(v: android.view.View) = Unit
+            }
+        )
+    }
 }

@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,7 +36,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.ThemedBorders
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.themedButtonBorder
+import info.plateaukao.einkbro.view.compose.themedItemShape
 
 class TextEditorDialogFragment(
     private val title: String,
@@ -78,10 +82,14 @@ class TextEditorDialogFragment(
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-        )
+        dialog?.window?.apply {
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            )
+            // the style's static white would clash with dark/inverted/tinted themes
+            setBackgroundDrawable(ColorDrawable(ThemedBorders.baseArgb(requireContext())))
+        }
     }
 }
 
@@ -134,6 +142,8 @@ private fun TextEditorScreen(
         ) {
             OutlinedButton(
                 onClick = onCancel,
+                border = themedButtonBorder(),
+                shape = themedItemShape(),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = MaterialTheme.colors.onBackground,
                 ),
@@ -141,6 +151,7 @@ private fun TextEditorScreen(
             Spacer(Modifier.width(8.dp))
             Button(
                 onClick = { onSave(text) },
+                shape = themedItemShape(),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colors.onBackground,
                     contentColor = MaterialTheme.colors.background,

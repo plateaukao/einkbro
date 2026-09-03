@@ -68,6 +68,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.compose.ebItemFrame
+import info.plateaukao.einkbro.view.compose.themedButtonBorder
+import info.plateaukao.einkbro.view.compose.themedItemShape
 import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.Javascript
@@ -514,6 +517,8 @@ fun SiteSettingsContent(
             if (!isHostRule && ruleExists) {
                 // A path rule with nothing set is pointless, so "reset" removes it.
                 OutlinedButton(
+                border = themedButtonBorder(),
+                shape = themedItemShape(),
                     onClick = { onDeleteRule(selectedKey) },
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = MaterialTheme.colors.onBackground,
@@ -523,6 +528,8 @@ fun SiteSettingsContent(
                 }
             } else {
                 OutlinedButton(
+                border = themedButtonBorder(),
+                shape = themedItemShape(),
                     onClick = {
                         fontSize = null; fontType = null; boldFont = null; blackFont = null
                         fontBoldness = null; desktopMode = null; viewportWidth = null; javascript = null
@@ -546,6 +553,7 @@ fun SiteSettingsContent(
                 }
             }
             Button(
+                shape = themedItemShape(),
                 onClick = {
                     val updated = buildRule()
                     if (!isHostRule && updated.isEmpty) {
@@ -613,6 +621,8 @@ private fun ScopePicker(
         )
         Spacer(Modifier.width(8.dp))
         OutlinedButton(
+                border = themedButtonBorder(),
+                shape = themedItemShape(),
             onClick = { expanded = true },
             modifier = Modifier.weight(1f),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
@@ -632,6 +642,7 @@ private fun ScopePicker(
                 modifier = Modifier.size(20.dp),
             )
             DropdownMenu(
+                modifier = Modifier.ebItemFrame(paintBackground = true),
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
@@ -916,12 +927,15 @@ private fun <T> NestedNullableDropdown(
                 }
             }
             OutlinedButton(
+                border = themedButtonBorder(),
+                shape = themedItemShape(),
                 onClick = { if (enabled && hasOverride) expanded = true },
                 enabled = enabled && hasOverride,
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
             ) {
                 Text(optionLabel(effectiveValue), fontSize = 12.sp)
                 DropdownMenu(
+                    modifier = Modifier.ebItemFrame(paintBackground = true),
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
                 ) {
@@ -1183,6 +1197,8 @@ private fun <T> NullableDropdownRow(
             }
         }
         OutlinedButton(
+                border = themedButtonBorder(),
+                shape = themedItemShape(),
             onClick = { if (hasOverride) expanded = true },
             enabled = hasOverride,
             colors = ButtonDefaults.outlinedButtonColors(
@@ -1191,6 +1207,7 @@ private fun <T> NullableDropdownRow(
         ) {
             Text(optionLabel(effectiveValue), fontSize = 12.sp)
             DropdownMenu(
+                modifier = Modifier.ebItemFrame(paintBackground = true),
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
@@ -1251,6 +1268,8 @@ private fun EditTextButtonRow(
             color = color,
         )
         OutlinedButton(
+                border = themedButtonBorder(),
+                shape = themedItemShape(),
             onClick = onClick,
             colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
         ) {

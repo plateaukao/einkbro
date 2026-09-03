@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -58,6 +57,9 @@ import info.plateaukao.einkbro.userscript.UserScriptManager
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.compose.ListScaffold
 import info.plateaukao.einkbro.view.compose.MyTheme
+import info.plateaukao.einkbro.view.compose.ThemedDialogWindowFrame
+import info.plateaukao.einkbro.view.compose.themedButtonBorder
+import info.plateaukao.einkbro.view.compose.themedItemShape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -364,10 +366,11 @@ private fun ScriptEditorDialog(
     val tooLargeToEdit = code.length > EDITOR_DISPLAY_LIMIT
 
     Dialog(onDismissRequest = onDismiss) {
+        // the ThemedBorders window frame draws the border and fill
+        ThemedDialogWindowFrame()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.surface)
                 .padding(16.dp),
         ) {
             Text(
@@ -388,7 +391,11 @@ private fun ScriptEditorDialog(
                     label = { Text(stringResource(R.string.userscript_install_from_url)) },
                 )
                 Spacer(Modifier.width(8.dp))
-                OutlinedButton(onClick = { if (url.isNotBlank()) onFetchUrl(url) { code = it } }) {
+                OutlinedButton(
+                    onClick = { if (url.isNotBlank()) onFetchUrl(url) { code = it } },
+                    border = themedButtonBorder(),
+                    shape = themedItemShape(),
+                ) {
                     Text(stringResource(R.string.userscript_fetch))
                 }
             }

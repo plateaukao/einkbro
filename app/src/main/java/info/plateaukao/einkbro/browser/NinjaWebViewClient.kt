@@ -675,6 +675,7 @@ class EBWebViewClient(
                             rootView.removeView(composeView)
                         },
                         text = {
+                            info.plateaukao.einkbro.view.compose.ThemedDialogWindowFrame()
                             Text(
                                 text = stringResource(R.string.dialog_content_resubmission),
                                 color = MaterialTheme.colors.onBackground,
@@ -704,7 +705,8 @@ class EBWebViewClient(
                                 )
                             }
                         },
-                        backgroundColor = MaterialTheme.colors.background,
+                        // the ThemedBorders window frame draws the border and fill
+                        backgroundColor = androidx.compose.ui.graphics.Color.Transparent,
                     )
                 }
             }

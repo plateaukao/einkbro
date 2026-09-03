@@ -427,6 +427,30 @@ fun Modifier.ebItemFrame(
     }
 }
 
+/**
+ * Shape for themed buttons and other Material components that take a Shape,
+ * matching ebItemFrame's outline (stamp bites, sketch wobble, item radius).
+ */
+@Composable
+fun themedItemShape(): androidx.compose.ui.graphics.Shape =
+    when (val border = UiThemeState.uiBorder.value) {
+        UiBorder.STAMP -> stampShape(4.dp)
+        UiBorder.SKETCH -> sketchShape(2.5.dp)
+        else -> RoundedCornerShape(border.itemRadiusDp.dp)
+    }
+
+/**
+ * Accent border stroke at the theme border's weight, for OutlinedButton and
+ * friends whose default is a faint gray hairline. Always at least 1dp — a
+ * button needs its affordance even when the border style is NONE.
+ */
+@Composable
+fun themedButtonBorder(): androidx.compose.foundation.BorderStroke =
+    androidx.compose.foundation.BorderStroke(
+        maxOf(UiThemeState.uiBorder.value.widthDp, 1f).dp,
+        MaterialTheme.colors.primary,
+    )
+
 @Composable
 fun MyTheme(
     darkTheme: Boolean = isAppInDarkTheme(),

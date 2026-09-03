@@ -62,6 +62,8 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import info.plateaukao.einkbro.view.ThemedBorders
+import info.plateaukao.einkbro.view.withThemedButtons
+import info.plateaukao.einkbro.view.withThemedFrame
 
 
 class DialogManager(
@@ -78,6 +80,7 @@ class DialogManager(
         setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
         isIndeterminate = false
         max = 100
+        withThemedFrame()
     }
 
     fun showEpubDialog(
@@ -334,6 +337,7 @@ class DialogManager(
                 window?.setBackgroundDrawable(ThemedBorders.dialogFrame(activity))
                 window?.decorView?.setViewTreeLifecycleOwner(activity as androidx.lifecycle.LifecycleOwner)
                 window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as androidx.savedstate.SavedStateRegistryOwner)
+                withThemedButtons()
             }
         dialog.show()
         return dialog
@@ -516,6 +520,7 @@ class DialogManager(
             .create().apply {
                 window?.setGravity(if (config.ui.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawable(ThemedBorders.dialogFrame(activity))
+                withThemedButtons()
             }
 
         dialog.setOnShowListener {

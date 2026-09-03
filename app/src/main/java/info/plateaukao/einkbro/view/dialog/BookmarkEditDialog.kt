@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Bookmark
+import info.plateaukao.einkbro.view.compose.ebItemFrame
 import info.plateaukao.einkbro.view.dialog.compose.ComposeDialogFragment
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.launch
@@ -157,6 +158,7 @@ fun BookmarkEditContent(
                             ),
                         )
                         DropdownMenu(
+                            modifier = Modifier.ebItemFrame(paintBackground = true),
                             expanded = dropdownExpanded.value,
                             onDismissRequest = { dropdownExpanded.value = false },
                         ) {

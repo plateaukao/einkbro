@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.compose.ebItemFrame
 import info.plateaukao.einkbro.preference.TranslationMode
 
 class TranslationConfigDlgFragment(
@@ -79,7 +80,9 @@ fun TranslationConfigScreen(
             )
         }
         DropdownMenu(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .ebItemFrame(paintBackground = true)
+                .padding(8.dp),
             expanded = actionExpanded,
             onDismissRequest = { actionExpanded = false }
         ) {
