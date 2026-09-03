@@ -61,9 +61,27 @@ class EinkImageCache(context: Context) {
         try {
             val file = File(diskCacheDir, key)
             file.writeBytes(data)
-            trimDiskCache()
+            // Listing and stat-ing the whole cache directory per store is a
+            // full directory walk per image; keep a running byte count and
+            // only walk when the budget is actually exceeded. Overwrites make
+            // the count drift high, which just triggers an early trim that
+            // resets it to the real total.
+            ensureDiskUsageCounted()
+            if (approxDiskBytes.addAndGet(data.size.toLong()) > MAX_DISK_BYTES) {
+                trimDiskCache()
+            }
         } catch (_: Exception) {
             // Disk write failure is non-fatal
+        }
+    }
+
+    // -1 = not yet counted; first put lists the directory once.
+    private val approxDiskBytes = java.util.concurrent.atomic.AtomicLong(-1)
+
+    private fun ensureDiskUsageCounted() {
+        if (approxDiskBytes.get() < 0) {
+            val total = diskCacheDir.listFiles()?.sumOf { it.length() } ?: 0L
+            approxDiskBytes.compareAndSet(-1, total)
         }
     }
 
@@ -99,24 +117,35 @@ class EinkImageCache(context: Context) {
     private fun trimDiskCache() {
         val files = diskCacheDir.listFiles() ?: return
         var totalSize = files.sumOf { it.length() }
-        if (totalSize <= MAX_DISK_BYTES) return
-
-        // Evict oldest files first
-        files.sortBy { it.lastModified() }
-        for (file in files) {
-            if (totalSize <= MAX_DISK_BYTES) break
-            totalSize -= file.length()
-            file.delete()
+        if (totalSize > MAX_DISK_BYTES) {
+            // Evict oldest files first
+            files.sortBy { it.lastModified() }
+            for (file in files) {
+                if (totalSize <= MAX_DISK_BYTES) break
+                totalSize -= file.length()
+                file.delete()
+            }
         }
+        approxDiskBytes.set(totalSize)
     }
 
     private fun cacheKey(url: String, strength: Int): String {
         val raw = "$url|$strength"
-        val md = MessageDigest.getInstance("MD5")
-        return md.digest(raw.toByteArray()).joinToString("") { "%02x".format(it) }
+        val digest = MessageDigest.getInstance("MD5").digest(raw.toByteArray())
+        // manual hex: 32 String.format calls per lookup showed up on the
+        // request path (get computes the key too, not just put)
+        val out = CharArray(digest.size * 2)
+        for (i in digest.indices) {
+            val b = digest[i].toInt() and 0xff
+            out[i * 2] = HEX_DIGITS[b ushr 4]
+            out[i * 2 + 1] = HEX_DIGITS[b and 0xf]
+        }
+        return String(out)
     }
 
     companion object {
+        private val HEX_DIGITS = "0123456789abcdef".toCharArray()
+
         private const val MAX_MEMORY_BYTES = 16 * 1024 * 1024 // 16 MB
         private const val MAX_MEMORY_ENTRY_BYTES = MAX_MEMORY_BYTES / 4
         private const val MAX_OVERSIZED_URLS = 512

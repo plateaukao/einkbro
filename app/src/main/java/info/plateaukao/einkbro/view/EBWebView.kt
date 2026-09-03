@@ -64,7 +64,9 @@ open class EBWebView(
     var webViewCallback: WebViewCallback?,
 ) : WebView(context), AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
-    override val album: Album = Album(this, webViewCallback as? AlbumCallback)
+    // var: a lazily restored tab hands its Album over so the tab keeps its
+    // identity in the list when the real WebView is created on activation
+    override var album: Album = Album(this, webViewCallback as? AlbumCallback)
     internal val webViewClient: EBWebViewClient
     private val webChromeClient: EBWebChromeClient
     private val downloadListener by lazy { EBDownloadListener(this) }
@@ -455,6 +457,16 @@ open class EBWebView(
 
     /** Menu commands registered via GM_registerMenuCommand on the current page (caption to fnId). */
     val userScriptMenuCommands = LinkedHashMap<String, String>()
+
+    // Guards work that should run once per document even though onPageFinished
+    // can fire 4-5 times for one page (redirects, hash navigations, SPA
+    // re-commits — see WebContentPostProcessor). Cleared by the client when
+    // the document actually changes, alongside the userscript registry.
+    val perDocumentOnceKeys = mutableSetOf<String>()
+
+    fun oncePerDocument(key: String, block: () -> Unit) {
+        if (perDocumentOnceKeys.add(key)) block()
+    }
 
     fun registerUserScriptMenuCommand(caption: String, fnId: String) {
         userScriptMenuCommands[caption] = fnId

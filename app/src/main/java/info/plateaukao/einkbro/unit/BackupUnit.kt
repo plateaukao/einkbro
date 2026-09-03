@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Base64
+import android.util.JsonWriter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.core.content.FileProvider
@@ -45,6 +46,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStreamWriter
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -136,125 +138,115 @@ class BackupUnit(
         }
 
         if (BackupCategory.BOOKMARKS in categories) {
-            val bookmarks = kotlinx.coroutines.runBlocking {
-                bookmarkManager.getAllBookmarks()
+            zos.writeJsonEntry(BOOKMARKS_FILE) { w ->
+                w.beginArray()
+                for (b in bookmarkManager.getAllBookmarks()) {
+                    w.beginObject()
+                    w.name("id").value(b.id)
+                    w.name("title").value(b.title)
+                    w.name("url").value(b.url)
+                    w.name("isDirectory").value(b.isDirectory)
+                    w.name("parent").value(b.parent)
+                    w.name("order").value(b.order)
+                    w.endObject()
+                }
+                w.endArray()
             }
-            zos.putNextEntry(ZipEntry(BOOKMARKS_FILE))
-            zos.write(bookmarks.toJsonString().toByteArray())
-            zos.closeEntry()
         }
 
         if (BackupCategory.HISTORY in categories) {
-            val history = recordDb.listAllHistory()
-            val jsonArray = JSONArray()
-            for (record in history) {
-                jsonArray.put(JSONObject().apply {
-                    put("title", record.title)
-                    put("url", record.url)
-                    put("time", record.time)
-                })
+            zos.writeJsonEntry(HISTORY_FILE) { w ->
+                w.beginArray()
+                for (record in recordDb.listAllHistory()) {
+                    w.beginObject()
+                    w.name("title").value(record.title)
+                    w.name("url").value(record.url)
+                    w.name("time").value(record.time)
+                    w.endObject()
+                }
+                w.endArray()
             }
-            zos.putNextEntry(ZipEntry(HISTORY_FILE))
-            zos.write(jsonArray.toString().toByteArray())
-            zos.closeEntry()
         }
 
         if (BackupCategory.DATABASE_DATA in categories) {
             val db = bookmarkManager.database
-            val json = JSONObject()
+            // Favicon blobs are deliberately not exported: they are re-fetchable
+            // from the sites themselves and used to dominate the backup size.
+            // Restore still accepts a "favicons" array from older backups.
+            zos.writeJsonEntry(DATABASE_DATA_FILE) { w ->
+                w.beginObject()
 
-            // Favicons
-            val favicons = JSONArray()
-            for (f in db.faviconDao().getAllFavicons()) {
-                favicons.put(JSONObject().apply {
-                    put("domain", f.domain)
-                    put("icon", f.icon?.let { Base64.encodeToString(it, Base64.NO_WRAP) })
-                })
+                // Articles & Highlights (articles first since highlights reference them)
+                w.name("articles").beginArray()
+                for (a in db.articleDao().getAllArticlesAsync()) {
+                    w.beginObject()
+                    w.name("id").value(a.id)
+                    w.name("title").value(a.title)
+                    w.name("url").value(a.url)
+                    w.name("date").value(a.date)
+                    w.name("tags").value(a.tags)
+                    w.endObject()
+                }
+                w.endArray()
+
+                w.name("highlights").beginArray()
+                for (h in db.highlightDao().getAllHighlightsAsync()) {
+                    w.beginObject()
+                    w.name("id").value(h.id)
+                    w.name("articleId").value(h.articleId)
+                    w.name("content").value(h.content)
+                    w.endObject()
+                }
+                w.endArray()
+
+                w.name("chat_gpt_queries").beginArray()
+                for (q in db.chatGptQueryDao().getAllChatGptQueriesAsync()) {
+                    w.beginObject()
+                    w.name("id").value(q.id)
+                    w.name("date").value(q.date)
+                    w.name("url").value(q.url)
+                    w.name("model").value(q.model)
+                    w.name("selectedText").value(q.selectedText)
+                    w.name("result").value(q.result)
+                    w.endObject()
+                }
+                w.endArray()
+
+                w.name("domain_configurations").beginArray()
+                for (dc in db.domainConfigurationDao().getAllDomainConfigurations()) {
+                    w.beginObject()
+                    w.name("domain").value(dc.domain)
+                    w.name("configuration").value(dc.configuration)
+                    w.endObject()
+                }
+                w.endArray()
+
+                w.name("saved_pages").beginArray()
+                for (sp in db.savedPageDao().getAllSavedPagesAsync()) {
+                    w.beginObject()
+                    w.name("id").value(sp.id)
+                    w.name("title").value(sp.title)
+                    w.name("url").value(sp.url)
+                    w.name("filePath").value(sp.filePath)
+                    w.name("savedAt").value(sp.savedAt)
+                    w.endObject()
+                }
+                w.endArray()
+
+                w.name("whitelist_domains").beginArray()
+                for (d in db.domainListDao().getAllWhitelistDomains()) w.value(d)
+                w.endArray()
+
+                w.name("javascript_domains").beginArray()
+                for (d in db.domainListDao().getAllJavascriptDomains()) w.value(d)
+                w.endArray()
+
+                w.name("cookie_domains").beginArray()
+                for (d in db.domainListDao().getAllCookieDomains()) w.value(d)
+                w.endArray()
+
+                w.endObject()
             }
-            json.put("favicons", favicons)
-
-            // Articles & Highlights (articles first since highlights reference them)
-            val articles = JSONArray()
-            for (a in db.articleDao().getAllArticlesAsync()) {
-                articles.put(JSONObject().apply {
-                    put("id", a.id)
-                    put("title", a.title)
-                    put("url", a.url)
-                    put("date", a.date)
-                    put("tags", a.tags)
-                })
-            }
-            json.put("articles", articles)
-
-            val highlights = JSONArray()
-            for (h in db.highlightDao().getAllHighlightsAsync()) {
-                highlights.put(JSONObject().apply {
-                    put("id", h.id)
-                    put("articleId", h.articleId)
-                    put("content", h.content)
-                })
-            }
-            json.put("highlights", highlights)
-
-            // ChatGptQuery
-            val queries = JSONArray()
-            for (q in db.chatGptQueryDao().getAllChatGptQueriesAsync()) {
-                queries.put(JSONObject().apply {
-                    put("id", q.id)
-                    put("date", q.date)
-                    put("url", q.url)
-                    put("model", q.model)
-                    put("selectedText", q.selectedText)
-                    put("result", q.result)
-                })
-            }
-            json.put("chat_gpt_queries", queries)
-
-            // DomainConfiguration
-            val domainConfigs = JSONArray()
-            for (dc in db.domainConfigurationDao().getAllDomainConfigurations()) {
-                domainConfigs.put(JSONObject().apply {
-                    put("domain", dc.domain)
-                    put("configuration", dc.configuration)
-                })
-            }
-            json.put("domain_configurations", domainConfigs)
-
-            // SavedPage
-            val savedPages = JSONArray()
-            for (sp in db.savedPageDao().getAllSavedPagesAsync()) {
-                savedPages.put(JSONObject().apply {
-                    put("id", sp.id)
-                    put("title", sp.title)
-                    put("url", sp.url)
-                    put("filePath", sp.filePath)
-                    put("savedAt", sp.savedAt)
-                })
-            }
-            json.put("saved_pages", savedPages)
-
-            // Domain lists
-            val whitelistDomains = JSONArray()
-            for (d in db.domainListDao().getAllWhitelistDomains()) {
-                whitelistDomains.put(d)
-            }
-            json.put("whitelist_domains", whitelistDomains)
-
-            val javascriptDomains = JSONArray()
-            for (d in db.domainListDao().getAllJavascriptDomains()) {
-                javascriptDomains.put(d)
-            }
-            json.put("javascript_domains", javascriptDomains)
-
-            val cookieDomains = JSONArray()
-            for (d in db.domainListDao().getAllCookieDomains()) {
-                cookieDomains.put(d)
-            }
-            json.put("cookie_domains", cookieDomains)
-
-            zos.putNextEntry(ZipEntry(DATABASE_DATA_FILE))
-            zos.write(json.toString().toByteArray())
-            zos.closeEntry()
         }
 
         if (BackupCategory.USERSCRIPTS in categories) {
@@ -262,39 +254,52 @@ class BackupUnit(
         }
 
         if (BackupCategory.TRANSCRIPTS in categories) {
-            val transcripts = JSONArray()
-            for (t in bookmarkManager.database.videoTranscriptDao().getAllTranscripts()) {
-                transcripts.put(JSONObject().apply {
-                    put("videoId", t.videoId)
-                    put("transcript", t.transcript)
-                    put("timestamp", t.timestamp)
-                })
+            zos.writeJsonEntry(TRANSCRIPTS_FILE) { w ->
+                w.beginArray()
+                for (t in bookmarkManager.database.videoTranscriptDao().getAllTranscripts()) {
+                    w.beginObject()
+                    w.name("videoId").value(t.videoId)
+                    w.name("transcript").value(t.transcript)
+                    w.name("timestamp").value(t.timestamp)
+                    w.endObject()
+                }
+                w.endArray()
             }
-            zos.putNextEntry(ZipEntry(TRANSCRIPTS_FILE))
-            zos.write(transcripts.toString().toByteArray())
-            zos.closeEntry()
         }
 
         if (BackupCategory.CHAT_SESSIONS in categories) {
-            val chatSessions = JSONArray()
-            for (s in bookmarkManager.database.chatSessionDao().getAllSessions()) {
-                chatSessions.put(JSONObject().apply {
-                    put("id", s.id)
-                    put("title", s.title)
-                    put("created", s.created)
-                    put("lastUpdated", s.lastUpdated)
-                    put("webTitle", s.webTitle)
-                    put("webUrl", s.webUrl)
-                    put("messages", s.messages)
-                })
+            zos.writeJsonEntry(CHAT_SESSIONS_FILE) { w ->
+                w.beginArray()
+                for (s in bookmarkManager.database.chatSessionDao().getAllSessions()) {
+                    w.beginObject()
+                    w.name("id").value(s.id)
+                    w.name("title").value(s.title)
+                    w.name("created").value(s.created)
+                    w.name("lastUpdated").value(s.lastUpdated)
+                    w.name("webTitle").value(s.webTitle)
+                    w.name("webUrl").value(s.webUrl)
+                    w.name("messages").value(s.messages)
+                    w.endObject()
+                }
+                w.endArray()
             }
-            zos.putNextEntry(ZipEntry(CHAT_SESSIONS_FILE))
-            zos.write(chatSessions.toString().toByteArray())
-            zos.closeEntry()
         }
 
         zos.close()
         outputStream.close()
+    }
+
+    /**
+     * Streams one JSON zip entry through [JsonWriter] so a large table never
+     * exists as an in-memory JSON tree plus its String plus its byte array.
+     * The writer is flushed, not closed — closing it would close the zip.
+     */
+    private inline fun ZipOutputStream.writeJsonEntry(name: String, block: (JsonWriter) -> Unit) {
+        putNextEntry(ZipEntry(name))
+        val writer = JsonWriter(OutputStreamWriter(this, Charsets.UTF_8))
+        block(writer)
+        writer.flush()
+        closeEntry()
     }
 
     /**
@@ -650,10 +655,12 @@ class BackupUnit(
     private suspend fun restoreDatabaseData(json: JSONObject) {
         val db = bookmarkManager.database
 
-        // Favicons — merge: keep local icons and add only domains without one.
+        // Favicons — only present in backups from older versions (new backups no
+        // longer export the blobs). Merge: keep local icons and add only domains
+        // without one.
         if (json.has("favicons")) {
             val dao = db.faviconDao()
-            val existingDomains = dao.getAllFavicons().map { it.domain }.toHashSet()
+            val existingDomains = dao.getAllDomains().toHashSet()
             val arr = json.getJSONArray("favicons")
             val favicons = (0 until arr.length()).mapNotNull { i ->
                 val obj = arr.getJSONObject(i)
@@ -664,6 +671,7 @@ class BackupUnit(
                 ).takeIf { existingDomains.add(it.domain) }
             }
             dao.insertAll(favicons)
+            bookmarkManager.noteFaviconDomains(favicons.map { it.domain })
         }
 
         // Articles + Highlights — merge: an article matches a local one on
@@ -867,9 +875,7 @@ class BackupUnit(
             rawSum("SELECT IFNULL(SUM(LENGTH(TITLE) + LENGTH(URL) + 50), 0) FROM HISTORY")
 
         BackupCategory.DATABASE_DATA ->
-            // favicon blobs are base64-encoded in the zip, hence the 4/3 factor
-            rawSum("SELECT IFNULL(SUM(LENGTH(icon) * 4 / 3 + LENGTH(domain) + 40), 0) FROM favicons") +
-                rawSum("SELECT IFNULL(SUM(LENGTH(title) + LENGTH(url) + LENGTH(tags) + 70), 0) FROM articles") +
+            rawSum("SELECT IFNULL(SUM(LENGTH(title) + LENGTH(url) + LENGTH(tags) + 70), 0) FROM articles") +
                 rawSum("SELECT IFNULL(SUM(LENGTH(content) + 50), 0) FROM highlights") +
                 rawSum("SELECT IFNULL(SUM(LENGTH(selectedText) + LENGTH(result) + LENGTH(url) + LENGTH(model) + 90), 0) FROM chat_gpt_query") +
                 rawSum("SELECT IFNULL(SUM(LENGTH(domain) + LENGTH(configuration) + 40), 0) FROM domain_configuration") +

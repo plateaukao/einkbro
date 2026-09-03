@@ -23,10 +23,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.Collections
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 
@@ -143,6 +146,9 @@ interface HighlightDao {
 interface FaviconDao {
     @Query("SELECT * FROM favicons")
     suspend fun getAllFavicons(): List<FaviconInfo>
+
+    @Query("SELECT domain FROM favicons")
+    suspend fun getAllDomains(): List<String>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(faviconInfo: FaviconInfo)
@@ -316,7 +322,11 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     val userScriptValueDao = database.userScriptValueDao()
 
     private val faviconDao = database.faviconDao()
-    private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
+    // Only the domain keys stay resident; icon blobs are read from Room one row
+    // at a time on first use and live in the bounded bitmap cache below, instead
+    // of every stored PNG sitting on the heap for the process lifetime.
+    private val faviconDomains: MutableSet<String> =
+        Collections.newSetFromMap(ConcurrentHashMap())
     private val faviconBitmapCache = LruCache<String, Bitmap>(100)
 
     private val highlightDao = database.highlightDao()
@@ -333,8 +343,8 @@ class BookmarkManager(private val context: Context) : KoinComponent {
                 config.version = BuildConfig.VERSION_NAME
             }
             migrateNinja4DbIfNeeded()
-            faviconInfos.addAll(getAllFavicons())
-            config.domainConfigurationMap.putAll(getAllDomainConfigurations())
+            faviconDomains.addAll(faviconDao.getAllDomains())
+            config.putAllDomainRules(getAllDomainConfigurations())
             cleanupTranslationCache()
         }
     }
@@ -418,8 +428,6 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         config.whiteBackgroundList = emptyList()
     }
 
-    private suspend fun getAllFavicons(): List<FaviconInfo> = faviconDao.getAllFavicons()
-
     suspend fun insertArticle(article: Article): Article = articleDao.insertAndGetArticle(article)
     suspend fun insertHighlight(highlight: Highlight) = highlightDao.insert(highlight)
 
@@ -447,29 +455,36 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     suspend fun insertFavicon(faviconInfo: FaviconInfo) {
         faviconDao.insert(faviconInfo)
-        faviconInfos.removeAll { it.domain == faviconInfo.domain }
-        faviconInfos.add(faviconInfo)
+        faviconDomains.add(faviconInfo.domain)
         faviconBitmapCache.remove(faviconInfo.domain)
     }
 
-    private fun findFaviconBy(url: String): FaviconInfo? {
-        val host = Uri.parse(url).host ?: return null
-        return faviconInfos.firstOrNull { it.domain == host }
+    /** Marks domains written to the favicons table directly (backup restore). */
+    fun noteFaviconDomains(domains: Collection<String>) {
+        faviconDomains.addAll(domains)
     }
 
     // Decoded bitmaps are cached per domain so repeated lookups return the same
     // instance; Compose skipping and mutableStateOf equality rely on that.
+    // The domain set answers misses without I/O; a hit on an uncached domain is
+    // one single-row primary-key lookup (Room's executor, the caller blocks).
     fun findFaviconBitmapBy(url: String): Bitmap? {
         val host = Uri.parse(url).host ?: return null
         faviconBitmapCache.get(host)?.let { return it }
-        val bitmap = faviconInfos.firstOrNull { it.domain == host }?.getBitmap() ?: return null
+        if (host !in faviconDomains) return null
+        val info = runBlocking { faviconDao.findBy(host).firstOrNull() }
+        if (info == null) {
+            faviconDomains.remove(host)
+            return null
+        }
+        val bitmap = info.getBitmap() ?: return null
         faviconBitmapCache.put(host, bitmap)
         return bitmap
     }
 
     suspend fun deleteFavicon(faviconInfo: FaviconInfo) {
         faviconDao.delete(faviconInfo)
-        faviconInfos.removeAll { it.domain == faviconInfo.domain }
+        faviconDomains.remove(faviconInfo.domain)
         faviconBitmapCache.remove(faviconInfo.domain)
     }
 
@@ -560,7 +575,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
      * would not take effect until the next launch.
      */
     suspend fun reloadDomainConfigurations() {
-        config.domainConfigurationMap.putAll(getAllDomainConfigurations())
+        config.putAllDomainRules(getAllDomainConfigurations())
     }
 
     fun deleteDomainConfiguration(key: String) =

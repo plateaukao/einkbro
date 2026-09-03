@@ -15,8 +15,14 @@ class BrowserContainer {
     fun add(controller: AlbumController, index: Int) = list.add(index, controller)
 
     fun remove(controller: AlbumController) {
-        destroyWebView(controller as EBWebView)
+        (controller as? EBWebView)?.let { destroyWebView(it) }
         list.remove(controller)
+    }
+
+    /** Swaps a lazily restored controller for its materialized WebView in place. */
+    fun replace(old: AlbumController, new: AlbumController) {
+        val index = list.indexOf(old)
+        if (index >= 0) list[index] = new else list.add(new)
     }
 
     fun indexOf(controller: AlbumController?): Int = list.indexOf(controller)
@@ -29,7 +35,7 @@ class BrowserContainer {
 
     fun clear() {
         for (albumController in list) {
-            destroyWebView(albumController as EBWebView)
+            (albumController as? EBWebView)?.let { destroyWebView(it) }
         }
         list.clear()
     }

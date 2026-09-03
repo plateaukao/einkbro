@@ -24,6 +24,26 @@ class DomainConfigManager(
     // written on the main thread when a site config is saved.
     var domainConfigurationMap: MutableMap<String, DomainConfigurationData> = ConcurrentHashMap()
 
+    // Merged per-URL views, keyed by host+path. getEffectiveConfig runs twice
+    // per subresource on WebView worker threads, and scanning + sorting every
+    // rule plus a 20-field merge per request is measurable; any rule mutation
+    // clears the cache. Cached instances are shared — the getEffectiveConfig
+    // contract (read-only result) is what keeps that safe.
+    private val effectiveConfigCache = ConcurrentHashMap<String, DomainConfigurationData>()
+
+    private fun invalidateResolutionCache() = effectiveConfigCache.clear()
+
+    private fun save(rule: DomainConfigurationData) {
+        persist(rule)
+        invalidateResolutionCache()
+    }
+
+    /** Bulk-loads rules read from the database, replacing resolution state. */
+    fun putAllRules(rules: Map<String, DomainConfigurationData>) {
+        domainConfigurationMap.putAll(rules)
+        invalidateResolutionCache()
+    }
+
     // region resolution
 
     /** Rules that apply to [url], most specific first. Empty for non-http(s)-style URLs. */
@@ -50,7 +70,15 @@ class DomainConfigManager(
      * rule chain. Read-only — do not save it back (that would freeze inherited
      * values into whichever rule [DomainConfigurationData.domain] names).
      */
-    fun getEffectiveConfig(url: String): DomainConfigurationData = merge(url, matchingRules(url))
+    fun getEffectiveConfig(url: String): DomainConfigurationData {
+        val host = SiteRuleKey.hostOfUrl(url) ?: return DomainConfigurationData("")
+        val key = host + SiteRuleKey.pathOfUrl(url)
+        effectiveConfigCache[key]?.let { return it }
+        val merged = merge(url, matchingRules(url))
+        if (effectiveConfigCache.size >= MAX_CACHED_RESOLUTIONS) invalidateResolutionCache()
+        effectiveConfigCache[key] = merged
+        return merged
+    }
 
     /**
      * What [url] would resolve to if the rule [excludingKey] did not exist —
@@ -118,11 +146,14 @@ class DomainConfigManager(
             return
         }
         domainConfigurationMap[config.domain] = config
-        persist(config)
+        save(config)
     }
 
     fun deleteRule(key: String) {
-        if (domainConfigurationMap.remove(key) != null) remove(key)
+        if (domainConfigurationMap.remove(key) != null) {
+            remove(key)
+            invalidateResolutionCache()
+        }
     }
 
     /**
@@ -148,7 +179,7 @@ class DomainConfigManager(
     fun toggleFixScroll(url: String): Boolean {
         val target = writeTargetFor(url) { it.shouldFixScroll } ?: return false
         target.shouldFixScroll = !shouldFixScroll(url)
-        persist(target)
+        save(target)
         return shouldFixScroll(url)
     }
 
@@ -157,7 +188,7 @@ class DomainConfigManager(
     fun toggleTranslateSite(url: String): Boolean {
         val target = writeTargetFor(url) { it.shouldTranslateSite } ?: return false
         target.shouldTranslateSite = !shouldTranslateSite(url)
-        persist(target)
+        save(target)
         return shouldTranslateSite(url)
     }
 
@@ -166,7 +197,7 @@ class DomainConfigManager(
     fun toggleWhiteBackground(url: String): Boolean {
         val target = writeTargetFor(url) { it.shouldUseWhiteBackground } ?: return false
         target.shouldUseWhiteBackground = !whiteBackground(url)
-        persist(target)
+        save(target)
         return whiteBackground(url)
     }
 
@@ -175,14 +206,14 @@ class DomainConfigManager(
     fun toggleInvertedColor(url: String): Boolean {
         val target = writeTargetFor(url) { it.shouldInvertColor } ?: return false
         target.shouldInvertColor = !hasInvertedColor(url)
-        persist(target)
+        save(target)
         return hasInvertedColor(url)
     }
 
     fun setTranslationMode(url: String, mode: TranslationMode) {
         val target = writeTargetFor(url) { it.translationMode } ?: return
         target.translationMode = mode
-        persist(target)
+        save(target)
     }
 
     /** Writing new code switches the script back on: a fresh save is meant to take effect. */
@@ -190,14 +221,14 @@ class DomainConfigManager(
         val target = writeTargetFor(url) { it.postLoadJavascript } ?: return
         target.postLoadJavascript = code?.ifBlank { null }
         target.postLoadJavascriptEnabled = true
-        persist(target)
+        save(target)
     }
 
     fun setCustomCss(url: String, code: String?) {
         val target = writeTargetFor(url) { it.customCss } ?: return
         target.customCss = code?.ifBlank { null }
         target.customCssEnabled = true
-        persist(target)
+        save(target)
     }
 
     // endregion
@@ -236,4 +267,8 @@ class DomainConfigManager(
     fun getPostLoadJavascript(url: String): String? = resolve(url) { it.activePostLoadJavascript }
 
     // endregion
+
+    companion object {
+        private const val MAX_CACHED_RESOLUTIONS = 512
+    }
 }

@@ -2,15 +2,16 @@ package info.plateaukao.einkbro.unit
 
 import android.content.Context
 import android.net.Uri
-import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
-import com.tom_roush.pdfbox.io.MemoryUsageSetting
-import com.tom_roush.pdfbox.multipdf.PDFMergerUtility
-import com.tom_roush.pdfbox.pdmodel.PDDocument
-import com.tom_roush.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageFitWidthDestination
-import com.tom_roush.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline
-import com.tom_roush.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem
+import info.plateaukao.einkbro.unit.pdf.PdfTocEditor
 import java.io.File
 
+/**
+ * Save-as-PDF post-processing (TOC entries, page appending) on top of the
+ * in-repo COS-level engine (unit/pdf/), which writes incremental updates —
+ * everything it doesn't understand in an existing PDF is preserved verbatim.
+ * Replaced pdfbox-android, which cost about 370 KB of dex for these two
+ * operations. Encrypted PDFs fail gracefully (return false), as before.
+ */
 object PdfMergeUtil {
     /**
      * Writes [sourcePdf] (a WebView-rendered temp PDF) to [destUri], adding a TOC
@@ -23,17 +24,9 @@ object PdfMergeUtil {
         tocTitle: String?,
     ): Boolean =
         runCatching {
-            PDFBoxResourceLoader.init(context.applicationContext)
-            // disk-backed scratch: keeps peak RAM low on e-ink devices
-            PDDocument.load(sourcePdf, MemoryUsageSetting.setupTempFileOnly()).use { doc ->
-                if (!tocTitle.isNullOrBlank()) {
-                    addTocEntry(doc, tocTitle, 0)
-                }
-                openTruncatedOutputStream(context, destUri)?.use { out ->
-                    doc.save(out)
-                } ?: return false
-            }
-            true
+            openTruncatedOutputStream(context, destUri)?.use { out ->
+                PdfTocEditor.writeWithToc(sourcePdf, out, tocTitle)
+            } ?: false
         }.getOrDefault(false)
 
     /**
@@ -49,23 +42,17 @@ object PdfMergeUtil {
         tocTitle: String?,
     ): Boolean =
         runCatching {
-            PDFBoxResourceLoader.init(context.applicationContext)
+            // the parser needs a seekable file, so snapshot the SAF content first
+            val existingTemp = File.createTempFile("existing", ".pdf", context.cacheDir)
             val mergedTemp = File.createTempFile("merged", ".pdf", context.cacheDir)
             try {
-                val memory = MemoryUsageSetting.setupTempFileOnly()
-                val merged = context.contentResolver.openInputStream(existingUri)?.use { input ->
-                    PDDocument.load(input, memory).use { dest ->
-                        PDDocument.load(newPagesPdf, memory).use { src ->
-                            val firstNewPageIndex = dest.numberOfPages
-                            PDFMergerUtility().appendDocument(dest, src)
-                            if (!tocTitle.isNullOrBlank()) {
-                                addTocEntry(dest, tocTitle, firstNewPageIndex)
-                            }
-                            dest.save(mergedTemp)
-                        }
-                    }
-                    true
-                } ?: false
+                context.contentResolver.openInputStream(existingUri)?.use { input ->
+                    existingTemp.outputStream().use { input.copyTo(it) }
+                } ?: return false
+
+                val merged = mergedTemp.outputStream().use { out ->
+                    PdfTocEditor.appendWithToc(existingTemp, newPagesPdf, out, tocTitle)
+                }
                 if (!merged) return false
 
                 openTruncatedOutputStream(context, existingUri)?.use { out ->
@@ -73,21 +60,10 @@ object PdfMergeUtil {
                 } ?: return false
                 true
             } finally {
+                existingTemp.delete()
                 mergedTemp.delete()
             }
         }.getOrDefault(false)
-
-    private fun addTocEntry(doc: PDDocument, title: String, pageIndex: Int) {
-        val catalog = doc.documentCatalog
-        val outline = catalog.documentOutline
-            ?: PDDocumentOutline().also { catalog.documentOutline = it }
-        outline.addLast(PDOutlineItem().apply {
-            this.title = title
-            destination = PDPageFitWidthDestination().apply {
-                page = doc.getPage(pageIndex)
-            }
-        })
-    }
 
     // "wt" truncates existing content; some SAF providers only support "w", so fall back.
     private fun openTruncatedOutputStream(context: Context, uri: Uri) =

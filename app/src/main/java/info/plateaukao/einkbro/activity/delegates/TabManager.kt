@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.BrowserState
+import info.plateaukao.einkbro.browser.AlbumCallback
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
+import info.plateaukao.einkbro.browser.LazyAlbumController
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.preference.AlbumInfo
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -175,7 +178,45 @@ class TabManager(
         }
     }
 
+    /**
+     * Adds a restored background tab without creating its WebView: the saved
+     * title/url shows in the tab list, and the real EBWebView is built on
+     * first activation (see [materializeIfNeeded]).
+     */
+    fun addRestoredTab(title: String, url: String) {
+        val controller = LazyAlbumController(title, url, activity as? AlbumCallback)
+        browserContainer.add(controller)
+        albumViewModel.addAlbum(controller.album, browserContainer.size() - 1)
+        updateWebViewCount()
+        // The foreground tab's addAlbum saves mid-restore with a partial list;
+        // one debounced save after the loop settles makes the list whole again.
+        updateSavedAlbumInfoDebounced()
+    }
+
+    /** Swaps a [LazyAlbumController] for a real EBWebView, keeping its Album. */
+    private fun materializeIfNeeded(controller: AlbumController): AlbumController {
+        val lazy = controller as? LazyAlbumController ?: return controller
+        val webView = (preloadedWebView?.also { it.updateUserAgentString() }
+            ?: createWebView()).apply {
+            setOnTouchListener(createTouchListener(this))
+        }
+        maybeCreateNewPreloadWebView(true, webView)
+
+        lazy.album.attachController(webView)
+        webView.album = lazy.album
+        webView.albumTitle = lazy.albumTitle
+        webView.initAlbumUrl = lazy.initAlbumUrl
+        browserContainer.replace(lazy, webView)
+
+        if (config.browser.adBlock) {
+            adFilterProvider().setupWebView(webView)
+        }
+        return webView
+    }
+
     fun showAlbum(controller: AlbumController) {
+        @Suppress("NAME_SHADOWING")
+        val controller = materializeIfNeeded(controller)
         val currentAlbumController = state.currentAlbumController
         if (currentAlbumController != null) {
             if (currentAlbumController == controller) {
@@ -195,23 +236,20 @@ class TabManager(
 
         val mainContentLayout = state.mainContentLayout
         val controllerView = controller as View
-        if (mainContentLayout.childCount > 0) {
-            for (i in 0 until mainContentLayout.childCount) {
-                if (mainContentLayout.getChildAt(i) == controllerView) {
-                    mainContentLayout.removeView(controllerView)
-                    break
-                }
-            }
-        }
-
-        controllerView.visibility = View.VISIBLE
-        mainContentLayout.addView(
-            controllerView,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
+        // Re-parenting a Chromium WebView is a full detach/attach cycle; a tab
+        // that is already a (GONE) child only needs its visibility flipped.
+        // Z-order doesn't matter since every sibling is GONE.
+        if (controllerView.parent !== mainContentLayout) {
+            (controllerView.parent as? ViewGroup)?.removeView(controllerView)
+            mainContentLayout.addView(
+                controllerView,
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
             )
-        )
+        }
+        controllerView.visibility = View.VISIBLE
 
         state.currentAlbumController = (controller)
         controller.activate()
@@ -366,9 +404,10 @@ class TabManager(
     }
 
     fun getUrlMatchedBrowser(url: String): EBWebView? {
-        return browserContainer.list().firstOrNull {
+        val matched = browserContainer.list().firstOrNull {
             it.albumUrl == url || (it.albumUrl.isBlank() && it.initAlbumUrl == url)
-        } as EBWebView?
+        } ?: return null
+        return materializeIfNeeded(matched) as EBWebView
     }
 
     private fun getNextAlbumIndexAfterRemoval(removeIndex: Int): Int =

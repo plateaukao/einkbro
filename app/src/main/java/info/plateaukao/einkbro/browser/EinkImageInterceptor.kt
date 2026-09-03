@@ -8,10 +8,13 @@ import info.plateaukao.einkbro.preference.EinkImageAdjustment
 import info.plateaukao.einkbro.preference.EinkImageMode
 import info.plateaukao.einkbro.unit.EinkImageCache
 import info.plateaukao.einkbro.unit.EinkImageProcessor
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
 
 class EinkImageInterceptor(
     private val config: ConfigManager,
@@ -35,90 +38,84 @@ class EinkImageInterceptor(
         if (einkImageCache.isOversized(url)) return null
 
         return try {
-            val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
+            val requestBuilder = Request.Builder().url(url)
             request.requestHeaders?.forEach { (key, value) ->
                 // The WebView advertises gzip/br; a compressed body would defeat
                 // both the size cap below and BitmapFactory.
                 if (!key.equals("Accept-Encoding", ignoreCase = true)) {
-                    connection.setRequestProperty(key, value)
+                    requestBuilder.header(key, value)
                 }
             }
-            connection.setRequestProperty("Accept-Encoding", "identity")
+            requestBuilder.header("Accept-Encoding", "identity")
             // Add cookies from WebView's CookieManager (CDNs like Instagram require auth cookies)
             val cookies = CookieManager.getInstance().getCookie(url)
             if (!cookies.isNullOrEmpty()) {
-                connection.setRequestProperty("Cookie", cookies)
-            }
-            connection.connectTimeout = 10_000
-            connection.readTimeout = 10_000
-
-            val statusCode = connection.responseCode
-            if (statusCode !in 200..299) {
-                connection.disconnect()
-                return null
+                requestBuilder.header("Cookie", cookies)
             }
 
-            // Use response Content-Type for actual MIME; fall back to URL extension
-            val responseContentType = connection.contentType
-            // GIFs may be animated; decoding would freeze them to the first
-            // frame. Let the WebView load them natively.
-            if (responseContentType?.contains("image/gif", ignoreCase = true) == true) {
-                connection.disconnect()
-                return null
-            }
-            val mimeType = getImageMimeFromContentType(responseContentType)
-                ?: getImageMimeFromUrl(url)
-                ?: run { connection.disconnect(); return null }
+            httpClient.newCall(requestBuilder.build()).execute().use { response ->
+                if (response.code !in 200..299) return null
 
-            // Never buffer an unbounded body: a huge (or hostile) image would
-            // OOM the process. Reject by declared length first, then enforce
-            // the same cap while streaming for chunked / unknown lengths. On
-            // rejection the WebView fetches and renders the image natively.
-            val declaredLength = connection.contentLengthLong
-            if (declaredLength > MAX_SOURCE_BYTES) {
-                connection.disconnect()
-                einkImageCache.markOversized(url)
-                return null
-            }
-            val originalBytes = connection.inputStream.use {
-                readAtMost(it, MAX_SOURCE_BYTES, declaredLength)
-            } ?: run {
-                connection.disconnect()
-                einkImageCache.markOversized(url)
-                return null
-            }
-
-            // Bound concurrent decode/process/encode: several WebView threads
-            // intercept at once, and each full-size bitmap is tens of MB.
-            processSemaphore.acquire()
-            val processedBytes = try {
-                EinkImageProcessor.processBytes(originalBytes, mimeType, adjustment.strength)
-            } finally {
-                processSemaphore.release()
-            }
-
-            // null means pass-through (tiny or undecodable): serve the already
-            // downloaded original instead of making the WebView re-fetch it.
-            val servedBytes = processedBytes ?: originalBytes
-            einkImageCache.put(url, adjustment.strength, servedBytes)
-
-            // Forward response headers so CORS / caching / JS fetch still work
-            val responseHeaders = mutableMapOf<String, String>()
-            var i = 0
-            while (true) {
-                val key = connection.getHeaderFieldKey(i) ?: if (i == 0) { i++; continue } else break
-                val value = connection.getHeaderField(i) ?: break
-                val lowerKey = key.lowercase()
-                // Skip headers we override or that no longer apply after re-encoding
-                if (lowerKey !in setOf("content-length", "content-encoding", "transfer-encoding", "content-type")) {
-                    responseHeaders[key] = value
+                // Use response Content-Type for actual MIME; fall back to URL extension
+                val responseContentType = response.header("Content-Type")
+                // GIFs may be animated; decoding would freeze them to the first
+                // frame. Let the WebView load them natively.
+                if (responseContentType?.contains("image/gif", ignoreCase = true) == true) {
+                    return null
                 }
-                i++
+                val mimeType = getImageMimeFromContentType(responseContentType)
+                    ?: getImageMimeFromUrl(url)
+                    ?: return null
+
+                val body = response.body ?: return null
+
+                // Never buffer an unbounded body: a huge (or hostile) image would
+                // OOM the process. Reject by declared length first, then enforce
+                // the same cap while streaming for chunked / unknown lengths. On
+                // rejection the WebView fetches and renders the image natively.
+                val declaredLength = body.contentLength()
+                if (declaredLength > MAX_SOURCE_BYTES) {
+                    einkImageCache.markOversized(url)
+                    return null
+                }
+                val originalBytes = readAtMost(body.byteStream(), MAX_SOURCE_BYTES, declaredLength)
+                    ?: run {
+                        einkImageCache.markOversized(url)
+                        return null
+                    }
+
+                // Bound concurrent decode/process/encode: several WebView threads
+                // intercept at once, and each full-size bitmap is tens of MB.
+                processSemaphore.acquire()
+                val processedBytes = try {
+                    EinkImageProcessor.processBytes(originalBytes, mimeType, adjustment.strength)
+                } finally {
+                    processSemaphore.release()
+                }
+
+                // null means pass-through (tiny or undecodable): serve the already
+                // downloaded original instead of making the WebView re-fetch it.
+                val servedBytes = processedBytes ?: originalBytes
+                einkImageCache.put(url, adjustment.strength, servedBytes)
+
+                // Forward response headers so CORS / caching / JS fetch still work
+                val responseHeaders = mutableMapOf<String, String>()
+                for ((name, value) in response.headers) {
+                    // Skip headers we override or that no longer apply after re-encoding
+                    if (name.lowercase() !in setOf(
+                            "content-length", "content-encoding", "transfer-encoding", "content-type"
+                        )
+                    ) {
+                        responseHeaders[name] = value
+                    }
+                }
+                WebResourceResponse(
+                    // HTTP/2 responses have no reason phrase; an empty one makes
+                    // the WebResourceResponse constructor throw
+                    mimeType, null, response.code, response.message.ifBlank { "OK" },
+                    responseHeaders, ByteArrayInputStream(servedBytes)
+                )
             }
-            WebResourceResponse(
-                mimeType, null, statusCode, connection.responseMessage ?: "OK",
-                responseHeaders, ByteArrayInputStream(servedBytes)
-            )
         } catch (e: Exception) {
             null
         }
@@ -144,6 +141,16 @@ class EinkImageInterceptor(
 
     companion object {
         private val processSemaphore = Semaphore(2)
+
+        // Shared client: connection pooling and HTTP/2 keep the per-image cost
+        // close to what Chromium's own stack pays; a fresh HttpURLConnection
+        // per request paid a new TLS handshake per image on many CDNs.
+        private val httpClient by lazy {
+            OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build()
+        }
 
         private const val MB = 1024L * 1024
 

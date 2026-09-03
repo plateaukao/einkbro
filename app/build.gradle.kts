@@ -104,7 +104,7 @@ android {
             isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.txt"
             )
         }
         // Same as `release` (minify, shrink, proguard, signing) but with a `.a`
@@ -130,7 +130,6 @@ android {
 
     buildFeatures {
         buildConfig = true
-        viewBinding = true
         compose = true
     }
 
@@ -147,13 +146,13 @@ android {
         // kxml2's service file uses a non-standard comma-separated entry that R8 cannot
         // parse; Android registers KXmlParser/KXmlSerializer via its platform XmlPullParserFactory.
         resources.excludes.add("META-INF/services/org.xmlpull.v1.XmlPullParserFactory")
+        // epub4j bundles 330KB of W3C/OEB/DAISY DTDs (86KB in the APK) for its
+        // EntityResolver, but Android's parser never fetches external DTDs
+        // unless validating — which we don't.
+        resources.excludes.add("dtd/**")
     }
 
     androidResources {
-        // Default ignore chain + tom_roush: drops pdfbox-android's 4.6MB of bundled
-        // font/CMap/AFM assets, which are only needed for text extraction/rendering,
-        // not for the COS-level operations (outline entries, page merging) we use.
-        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!tom_roush"
 
         // Only package the locales the app itself is translated into. Without this,
         // AppCompat (and formerly Material Components) add ~80 extra locale configs
@@ -244,13 +243,6 @@ dependencies {
         exclude(group = "xmlpull")
     }
 
-    // PDF post-processing (TOC/outline entries, page merging). COS-level use only, so
-    // BouncyCastle (encrypted-PDF support, ~4MB of unstrippable crypto resources) is
-    // excluded — operating on password-protected PDFs will fail gracefully instead.
-    implementation(libs.pdfbox.android) {
-        exclude(group = "org.bouncycastle")
-    }
-
     // for epub saving: html processing
     implementation(libs.jsoup)
     // Nothing in the app uses AppCompat any more (framework Material theme, framework
@@ -303,6 +295,9 @@ dependencies {
     // Real org.json implementation for JVM unit tests (the android.jar on the
     // unit-test classpath only contains non-functional stubs of JSONObject/JSONArray).
     testImplementation(libs.org.json)
+    // Desktop pdfbox validates the in-repo COS-level PDF writer (unit/pdf/),
+    // which replaced pdfbox-android in the app itself.
+    testImplementation(libs.pdfbox.test)
 
     // memory leak detection
     //debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
@@ -328,7 +323,4 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.sse)
     implementation(libs.kotlinx.serialization.json)
-
-    // media session for TTS notification
-    implementation(libs.androidx.media)
 }

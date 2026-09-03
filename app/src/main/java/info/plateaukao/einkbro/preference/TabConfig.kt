@@ -25,10 +25,16 @@ class TabConfig(private val sp: SharedPreferences) {
         get() = NewTabBehavior.entries[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_NEW_TAB_BEHAVIOR, value.ordinal.toString()) }
 
+    // Decoded once and kept: the getter is hit on every tab add/switch/close
+    // (updateSavedAlbumInfo and the setter's no-change comparison), and each
+    // access used to decode the whole list from JSON again.
+    private var cachedAlbumInfoList: List<AlbumInfo>? = null
+
     var savedAlbumInfoList: List<AlbumInfo>
         get() {
+            cachedAlbumInfoList?.let { return it }
             val string = sp.getString(K_SAVED_ALBUM_INFO, "").orEmpty()
-            if (string.isBlank()) return emptyList()
+            if (string.isBlank()) return emptyList<AlbumInfo>().also { cachedAlbumInfoList = it }
 
             return try {
                 Json.decodeFromString(albumInfoListSerializer, string)
@@ -40,12 +46,13 @@ class TabConfig(private val sp: SharedPreferences) {
                     sp.edit { remove(K_SAVED_ALBUM_INFO) }
                     emptyList()
                 }
-            }
+            }.also { cachedAlbumInfoList = it }
         }
         set(value) {
             if (value == savedAlbumInfoList) {
                 return
             }
+            cachedAlbumInfoList = value
 
             sp.edit {
                 if (value.isEmpty()) {

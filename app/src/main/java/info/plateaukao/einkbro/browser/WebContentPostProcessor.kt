@@ -21,7 +21,7 @@ class WebContentPostProcessor : KoinComponent {
             val entryUrl = entry.key
             val script = entry.value
             if (url.contains(entryUrl)) {
-                ebWebView.evaluateJsFile(script)
+                ebWebView.oncePerDocument(script) { ebWebView.evaluateJsFile(script) }
             }
         }
 
@@ -39,7 +39,9 @@ class WebContentPostProcessor : KoinComponent {
         }
 
         if (configManager.browser.enableVideoAutoFullscreen) {
-            ebWebView.evaluateJsFile("video_auto_fullscreen.js")
+            ebWebView.oncePerDocument("video_auto_fullscreen") {
+                ebWebView.evaluateJsFile("video_auto_fullscreen.js")
+            }
         }
 
         // Detect if page has video elements: URL-based for known sites, DOM-based as fallback
@@ -64,7 +66,9 @@ class WebContentPostProcessor : KoinComponent {
         }
 
         // inject page scroll helper for JS-based pagination (works with inner scroll containers)
-        ebWebView.evaluateJsFile("fix_scrolling.js", withPrefix = false)
+        ebWebView.oncePerDocument("fix_scrolling") {
+            ebWebView.evaluateJsFile("fix_scrolling.js", withPrefix = false)
+        }
 
         // Some sites fire onPageFinished multiple times per page lifecycle — news.daum.net
         // chains a hash navigation + JS-driven reload that produces 4-5 callbacks at varying
@@ -77,23 +81,35 @@ class WebContentPostProcessor : KoinComponent {
             ebWebView.showTranslation()
         }
 
-        // DNS prefetch for links on the page
-        ebWebView.evaluateJsFile("dns_prefetch.js")
-
-        // text selection handling
-        ebWebView.addSelectionChangeListener()
-
-        if (configManager.touch.enableDragUrlToAction) {
-            ebWebView.evaluateJavascript(preventLinkDraggingJs, null)
+        // DNS prefetch for links on the page; the re-fires of onPageFinished
+        // would re-query every link and append duplicate <link> elements
+        ebWebView.oncePerDocument("dns_prefetch") {
+            ebWebView.evaluateJsFile("dns_prefetch.js")
         }
 
-        ebWebView.evaluateJsFile("blob_download_hook.js", withPrefix = false)
+        // text selection handling (installs a document listener — once is enough)
+        ebWebView.oncePerDocument("selection_listener") {
+            ebWebView.addSelectionChangeListener()
+        }
+
+        if (configManager.touch.enableDragUrlToAction) {
+            ebWebView.oncePerDocument("prevent_link_dragging") {
+                ebWebView.evaluateJavascript(preventLinkDraggingJs, null)
+            }
+        }
+
+        ebWebView.oncePerDocument("blob_download_hook") {
+            ebWebView.evaluateJsFile("blob_download_hook.js", withPrefix = false)
+        }
 
         // https://github.com/plateaukao/einkbro/issues/537
         // https://github.com/emvaized/text-reflow-on-zoom-mobile/blob/main/src/text_reflow_on_pinch_zoom.js
+        // 36 KB of JS — parse it once per document, not once per callback
         if (configManager.display.enableZoomTextWrapReflow) {
-            val jsZoomTextWrapReflow = HelperUnit.loadAssetFile("zoom-text-wrap-reflow.js")
-            ebWebView.evaluateJavascript(jsZoomTextWrapReflow, null)
+            ebWebView.oncePerDocument("zoom_text_wrap_reflow") {
+                val jsZoomTextWrapReflow = HelperUnit.loadAssetFile("zoom-text-wrap-reflow.js")
+                ebWebView.evaluateJavascript(jsZoomTextWrapReflow, null)
+            }
         }
     }
 

@@ -1,21 +1,12 @@
 # ProGuard rules for Kotlin Serialization
+# (modern AGP ships kotlinx-serialization's own r8 rules automatically, so the
+# old kotlinx.serialization.json.** wildcard keeps are gone; only this module's
+# serializable classes need rules here)
 
--keepattributes *Annotation*, InnerClasses
--dontnote kotlinx.serialization.AnnotationsKt # core serialization annotations
-
-# kotlinx-serialization-json specific. Add this if you have java.lang.NoClassDefFoundError kotlinx.serialization.json.JsonObjectSerializer
--keepclassmembers class kotlinx.serialization.json.** {
+-keep,includedescriptorclasses class io.github.edsuns.adfilter.**$$serializer { *; }
+-keepclassmembers class io.github.edsuns.adfilter.** {
     *** Companion;
 }
--keepclasseswithmembers class kotlinx.serialization.json.** {
-    kotlinx.serialization.KSerializer serializer(...);
-}
-
-# Change here com.yourcompany.yourpackage
--keep,includedescriptorclasses class io.github.edsuns.adfilter.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class io.github.edsuns.adfilter.** { # <-- change package name to your app's
-    *** Companion;
-}
--keepclasseswithmembers class io.github.edsuns.adfilter.** { # <-- change package name to your app's
+-keepclasseswithmembers class io.github.edsuns.adfilter.** {
     kotlinx.serialization.KSerializer serializer(...);
 }

@@ -182,6 +182,10 @@ class EBWebViewClient(
         // loadUrl/reload (issue #309). Same-document fragment jumps don't fire
         // onPageStarted, so in-article anchor links keep reader mode.
         ebWebView.resetReaderModeForNewPage()
+        // Every onPageStarted is a fresh document (reloads included), so the
+        // once-per-document script guards start over; SPA re-commits and hash
+        // navigations don't fire onPageStarted and stay deduplicated.
+        ebWebView.perDocumentOnceKeys.clear()
         // resetState() in EBWebView already cleared dualCaption; let the next
         // doUpdateVisitedHistory treat this as a fresh start so it doesn't wipe the
         // caption captured during this page's load.
@@ -207,6 +211,12 @@ class EBWebViewClient(
         }
 
         url?.let { injectForcedViewportWidth(it) }
+
+        // Apply font/style CSS as soon as the document commits so the first
+        // layout already uses the right fonts; the onPageFinished call remains
+        // as the idempotent re-assert (web-font @imports applied only after
+        // layout used to force a full second layout and repaint).
+        ebWebView.updateCssStyle()
 
         // userscripts are page-scoped; reset the per-page menu registry only when the
         // document actually changes. onPageStarted can re-fire on the same document
@@ -333,8 +343,9 @@ class EBWebViewClient(
         }
 
         // touch target tracking for link detection
-        ebWebView.evaluateJavascript(
-            """
+        ebWebView.oncePerDocument("touch_target_tracking") {
+            ebWebView.evaluateJavascript(
+                """
                     (function(){
                         if(window.__einkbroTouchInit) return;
                         window.__einkbroTouchInit = true;
@@ -354,8 +365,9 @@ class EBWebViewClient(
                             }
                         });
                     })();
-        """.trimIndent(), null
-        )
+            """.trimIndent(), null
+            )
+        }
 
         if (url != "about:blank") {
             onPageFinishedAction()
@@ -448,15 +460,6 @@ class EBWebViewClient(
                 }
             }
             return true
-        }
-
-        val list = webView.copyBackForwardList()
-
-        for (i in 0 until list.size) {
-            val item = list.getItemAtIndex(i)
-            val title = item.title
-            val url = item.url
-            Log.d("ebWebViewClient", "Title: $title - URL: $url")
         }
 
         if (url.startsWith("http")) {
@@ -606,18 +609,19 @@ class EBWebViewClient(
     ): WebResourceResponse? {
         val url = uri.toString()
 
-        // setAcceptCookie is process-wide, so it must be re-asserted on every
-        // request: link-click navigation never goes through loadUrl, and a
+        // The cookie policy is process-wide and must be re-asserted from the
+        // request path: link-click navigation never goes through loadUrl, and a
         // per-site override on the previous page would otherwise stick forever.
+        // setAcceptCookie is a process-global native call though, so only touch
+        // it when the policy actually flips.
         // currentPageUrl lags for the main frame's own request — use its URL.
         val pageUrl = if (isMainFrame) url else ebWebView.currentPageUrl ?: url
         val acceptCookies = config.getEffectiveConfig(pageUrl).enableCookies
             ?: (config.browser.cookies || cookie.isWhite(url))
-        val manager = CookieManager.getInstance()
-        if (acceptCookies && !config.browser.cookies) {
-            manager.getCookie(url)
+        if (lastAcceptCookies != acceptCookies) {
+            lastAcceptCookies = acceptCookies
+            CookieManager.getInstance().setAcceptCookie(acceptCookies)
         }
-        manager.setAcceptCookie(acceptCookies)
 
         processCustomFontRequest(uri)?.let { return it }
         dualCaptionProcessor.processUrl(url, requestHeaders)?.let {
@@ -717,6 +721,13 @@ class EBWebViewClient(
         sslHandler.onReceivedSslError(view, handler, error)
 
     companion object {
+        // Last cookie policy asserted on the process-global CookieManager, so
+        // the per-request path can skip the native call when nothing changed.
+        // Every code path that calls setAcceptCookie must keep this in sync
+        // (see WebViewConfigApplier.toggleCookieSupport).
+        @Volatile
+        internal var lastAcceptCookies: Boolean? = null
+
         private val ANALYTICS_DOMAINS = listOf(
             "google-analytics.com",
             "googletagmanager.com",

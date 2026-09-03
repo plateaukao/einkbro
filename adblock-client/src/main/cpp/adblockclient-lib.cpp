@@ -1,6 +1,32 @@
 #include <jni.h>
 #include "third-party/ad-block/ad_block_client.h"
 
+// Class/method lookups cached at load time: matches() runs once per filter
+// list for every subresource, and FindClass/GetMethodID per call showed up
+// on the request path.
+static jclass gMatchResultClass = nullptr;
+static jmethodID gMatchResultInit = nullptr;
+static jclass gStringClass = nullptr;
+static jmethodID gStringBytesInit = nullptr;
+static jstring gUtf8Encoding = nullptr;
+
+extern "C"
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *) {
+    JNIEnv *env;
+    if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
+        return JNI_ERR;
+    }
+    jclass matchResult = env->FindClass("io/github/edsuns/adblockclient/MatchResult");
+    gMatchResultClass = (jclass) env->NewGlobalRef(matchResult);
+    gMatchResultInit = env->GetMethodID(gMatchResultClass, "<init>",
+                                        "(ZLjava/lang/String;Ljava/lang/String;)V");
+    jclass stringCls = env->FindClass("java/lang/String");
+    gStringClass = (jclass) env->NewGlobalRef(stringCls);
+    gStringBytesInit = env->GetMethodID(gStringClass, "<init>", "([BLjava/lang/String;)V");
+    gUtf8Encoding = (jstring) env->NewGlobalRef(env->NewStringUTF("UTF-8"));
+    return JNI_VERSION_1_6;
+}
+
 extern "C"
 JNIEXPORT jlong
 JNICALL
@@ -149,10 +175,7 @@ Java_io_github_edsuns_adblockclient_AdBlockClient_matches(JNIEnv *env, jobject /
                                  matchedExceptionFilter->ruleDefinition : nullptr;
 
     // create java MatchResult
-    jclass match_result_class = env->FindClass("io/github/edsuns/adblockclient/MatchResult");
-    jmethodID init_id = env->GetMethodID(match_result_class, "<init>",
-                                         "(ZLjava/lang/String;Ljava/lang/String;)V");
-    jobject matchResult = env->NewObject(match_result_class, init_id,
+    jobject matchResult = env->NewObject(gMatchResultClass, gMatchResultInit,
                                          shouldBlock,
                                          env->NewStringUTF(matchedRule),
                                          env->NewStringUTF(matchedExceptionRule));
@@ -171,13 +194,10 @@ jstring bytesToStringUTF(JNIEnv *env, const char *src) {
         return nullptr;
     }
     jsize len = strlen(src);
-    jstring encoding = env->NewStringUTF("UTF-8");
-    jclass stringCls = env->FindClass("java/lang/String");
-    jmethodID methodId = env->GetMethodID(stringCls, "<init>", "([BLjava/lang/String;)V");
     jbyteArray bytes = env->NewByteArray(len);
     env->SetByteArrayRegion(bytes, 0, len, (jbyte *) src);
 
-    return (jstring) env->NewObject(stringCls, methodId, bytes, encoding);
+    return (jstring) env->NewObject(gStringClass, gStringBytesInit, bytes, gUtf8Encoding);
 }
 
 extern "C"
@@ -201,8 +221,7 @@ jobjectArray toStringArray(JNIEnv *env, const LinkedList<std::string> *rules) {
     if (!rules) {
         return nullptr;
     }
-    auto array = env->NewObjectArray(rules->length(),
-                                     env->FindClass("java/lang/String"), nullptr);
+    auto array = env->NewObjectArray(rules->length(), gStringClass, nullptr);
     int i = 0;
     for (auto r : *rules) {
         env->SetObjectArrayElement(array, i, env->NewStringUTF(r.c_str()));

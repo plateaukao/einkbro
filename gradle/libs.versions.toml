@@ -18,9 +18,8 @@ junit = "4.13.2"
 koin = "3.5.6"
 kotlinxSerializationJson = "1.6.3"
 lifecycle = "2.8.4"
-pdfboxAndroid = "2.0.27.0"
+pdfboxTest = "2.0.32"
 media = "1.7.0"
-mezzanine = "1.2.1"
 mockk = "1.13.12"
 navigation = "2.8.9"
 okhttp = "4.12.0"
@@ -63,7 +62,8 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 epub4j-core = { module = "io.documentnode:epub4j-core", version.ref = "epub4j" }
 http-request = { module = "com.github.Edsuns:HttpRequest", version.ref = "httpRequest" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
-pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfboxAndroid" }
+# desktop pdfbox, unit tests only: validates the in-repo COS-level PDF writer
+pdfbox-test = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfboxTest" }
 junit = { module = "junit:junit", version.ref = "junit" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -71,8 +71,6 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-mezzanine = { module = "com.github.Edsuns.Mezzanine:mezzanine", version.ref = "mezzanine" }
-mezzanine-compiler = { module = "com.github.Edsuns.Mezzanine:mezzanine-compiler", version.ref = "mezzanine" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
@@ -87,7 +85,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 play-publisher = { id = "com.github.triplet.play", version = "3.12.1" }

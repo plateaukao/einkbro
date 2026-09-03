@@ -131,7 +131,13 @@ class EinkBroApplication : Application() {
         }
 
         val filter = AdFilter.create(this)
-        filter.setEnabled(config.browser.adBlock)
+        // Enabling loads every processed filter blob (multi-MB file reads plus
+        // native parsing), so it must not run on the main thread before the
+        // first frame. Until it finishes the detector simply has no clients
+        // and shouldIntercept blocks nothing.
+        appScope.launch(Dispatchers.IO) {
+            filter.setEnabled(config.browser.adBlock)
+        }
         if (config.browser.adBlock) {
             appScope.launch {
                 filter.viewModel.activeDownloads.collect { notifyDownloading(it.isEmpty()) }

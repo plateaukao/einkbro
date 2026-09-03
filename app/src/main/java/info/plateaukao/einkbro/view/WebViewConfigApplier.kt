@@ -13,6 +13,7 @@ import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.DarkMode
+import info.plateaukao.einkbro.browser.EBWebViewClient
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 
@@ -271,6 +272,7 @@ class WebViewConfigApplier(
     }
 
     fun toggleCookieSupport(isEnabled: Boolean) {
+        EBWebViewClient.lastAcceptCookies = isEnabled
         with(cookieManager) {
             setAcceptCookie(isEnabled)
             setAcceptThirdPartyCookies(webView, isEnabled)

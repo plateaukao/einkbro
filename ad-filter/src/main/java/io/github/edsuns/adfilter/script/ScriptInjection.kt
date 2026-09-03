@@ -1,7 +1,5 @@
 package io.github.edsuns.adfilter.script
 
-import com.anthonycr.mezzanine.FileStream
-import com.anthonycr.mezzanine.MezzanineGenerator
 import io.github.edsuns.adfilter.BuildConfig
 
 /**
@@ -9,16 +7,11 @@ import io.github.edsuns.adfilter.BuildConfig
  */
 internal object ScriptInjection {
 
-    @FileStream("src/main/js/inject.js")
-    interface Injection {
-        fun js(): String
-    }
-
     private const val INJECTION = "{{INJECTION}}"
     private const val DEBUG_FLAG = "{{DEBUG}}"
     private const val JS_BRIDGE = "{{BRIDGE}}"
 
-    private val injectJS = parse(MezzanineGenerator.Injection().js())
+    private val injectJS by lazy { parse(JsAssets.load("inject.js")) }
 
     private val bridgeRegister = arrayListOf(
         ElementHiding::class.java,

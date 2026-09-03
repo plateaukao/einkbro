@@ -135,10 +135,19 @@ class AdBlockClient(override val id: String) : Client {
     )
 
     private fun String.baseHost(): String? {
-        return Uri.parse(this).host?.removePrefix("www.")
+        lastBaseHost?.let { (url, host) -> if (url == this) return host }
+        val host = Uri.parse(this).host?.removePrefix("www.")
+        lastBaseHost = this to host
+        return host
     }
 
     companion object {
+        // The document URL is identical across the per-list matches() calls of
+        // one request, and across most requests of a page — cache the last
+        // parse instead of running Uri.parse per client per subresource.
+        @Volatile
+        private var lastBaseHost: Pair<String, String?>? = null
+
         init {
             System.loadLibrary("adblock-client")
         }

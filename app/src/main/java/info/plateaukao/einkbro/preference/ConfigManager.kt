@@ -78,6 +78,9 @@ class ConfigManager(
             domain.domainConfigurationMap = value
         }
 
+    /** Bulk-loads rules from the database; also resets the resolution cache. */
+    fun putAllDomainRules(rules: Map<String, DomainConfigurationData>) = domain.putAllRules(rules)
+
     var scrollFixList: List<String>
         get() = sp.getStringSet(K_SCROLL_FIX_LIST, mutableSetOf())?.toList() ?: emptyList()
         set(value) = sp.edit { putStringSet(K_SCROLL_FIX_LIST, value.toSet()) }

@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -68,15 +67,4 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.http.request)
-
-    implementation(libs.mezzanine)
-    // Mezzanine ships no KSP processor, so this module stays on kapt until
-    // upstream adds one or the embedded-JS approach is replaced.
-    kapt(libs.mezzanine.compiler)
-}
-
-kapt {
-    arguments {
-        arg("mezzanine.projectPath", projectDir)
-    }
 }

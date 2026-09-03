@@ -65,29 +65,6 @@ object ViewUnit: KoinComponent {
     }
 
     @JvmStatic
-    fun capture(view: View, width: Float, height: Float): Bitmap {
-        val bitmap = Bitmap.createBitmap(width.toInt(), height.toInt(), Bitmap.Config.ARGB_8888)
-        bitmap.eraseColor(Color.WHITE)
-        val canvas = Canvas(bitmap)
-        val left = view.left
-        val top = view.top
-        val status = canvas.save()
-        canvas.translate(-left.toFloat(), -top.toFloat())
-        val scale = width / view.width
-        canvas.scale(scale, scale, left.toFloat(), top.toFloat())
-        view.draw(canvas)
-        canvas.restoreToCount(status)
-        val alphaPaint = Paint()
-        alphaPaint.color = Color.TRANSPARENT
-        canvas.drawRect(0f, 0f, 1f, height, alphaPaint)
-        canvas.drawRect(width - 1f, 0f, width, height, alphaPaint)
-        canvas.drawRect(0f, 0f, width, 1f, alphaPaint)
-        canvas.drawRect(0f, height - 1f, width, height, alphaPaint)
-        canvas.setBitmap(null)
-        return bitmap
-    }
-
-    @JvmStatic
     fun isLandscape(context: Context): Boolean =
         context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -216,19 +193,26 @@ object ViewUnit: KoinComponent {
         textView.text = language
     }
 
+    // setLayerType rebuilds the view's hardware layer, and this runs on every
+    // onPageFinished (which can fire several times per page) — skip it when
+    // the inversion state hasn't changed.
+    private val invertedViews = java.util.WeakHashMap<View, Boolean>()
+
     fun invertColor(view: View, shouldInvertColor: Boolean) {
-        val invertPaint: Paint = Paint().apply {
-            val colorMatrix = ColorMatrix(
-                floatArrayOf(
-                    -1f, 0f, 0f, 0f, 255f,
-                    0f, -1f, 0f, 0f, 255f,
-                    0f, 0f, -1f, 0f, 255f,
-                    0f, 0f, 0f, 1f, 0f
-                )
-            )
-            colorFilter = ColorMatrixColorFilter(colorMatrix)
-        }
+        if (invertedViews[view] == shouldInvertColor) return
+        invertedViews[view] = shouldInvertColor
         if (shouldInvertColor) {
+            val invertPaint = Paint().apply {
+                val colorMatrix = ColorMatrix(
+                    floatArrayOf(
+                        -1f, 0f, 0f, 0f, 255f,
+                        0f, -1f, 0f, 0f, 255f,
+                        0f, 0f, -1f, 0f, 255f,
+                        0f, 0f, 0f, 1f, 0f
+                    )
+                )
+                colorFilter = ColorMatrixColorFilter(colorMatrix)
+            }
             view.setLayerType(LAYER_TYPE_HARDWARE, invertPaint)
         } else {
             view.setLayerType(LAYER_TYPE_HARDWARE, null)

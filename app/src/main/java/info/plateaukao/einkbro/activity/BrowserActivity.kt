@@ -299,6 +299,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             addAlbumAction = { title, url, foreground, lazyLoad ->
                 addAlbum(title, url, foreground, lazyLoad = lazyLoad)
             },
+            addRestoredTab = { title, url -> tabManager.addRestoredTab(title, url) },
             updateAlbum = { url -> updateAlbum(url) },
             showAlbum = { controller -> showAlbum(controller) },
             getUrlMatchedBrowser = { url -> tabManager.getUrlMatchedBrowser(url) },

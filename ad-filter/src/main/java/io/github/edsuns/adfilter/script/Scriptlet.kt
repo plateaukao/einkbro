@@ -2,8 +2,6 @@ package io.github.edsuns.adfilter.script
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import com.anthonycr.mezzanine.FileStream
-import com.anthonycr.mezzanine.MezzanineGenerator
 import io.github.edsuns.adfilter.impl.Detector
 import timber.log.Timber
 
@@ -12,23 +10,17 @@ import timber.log.Timber
  */
 internal class Scriptlet constructor(private val detector: Detector) {
 
-    @FileStream("src/main/js/scriptlets.min.js")
-    interface Scriptlets {
-        fun js(): String
-    }
-
-    @FileStream("src/main/js/scriptlets_inject.js")
-    interface ScriptletsInjection {
-        fun js(): String
-    }
-
     private val scriptletsJS: String by lazy(LazyThreadSafetyMode.NONE) {
-        var js = MezzanineGenerator.Scriptlets().js()
-        js += ScriptInjection.parseScript(this, MezzanineGenerator.ScriptletsInjection().js(), true)
+        var js = JsAssets.load("scriptlets.min.js")
+        js += ScriptInjection.parseScript(this, JsAssets.load("scriptlets_inject.js"), true)
         js
     }
 
     fun perform(webView: WebView?, url: String?) {
+        // The scriptlets library is 147 KB of JS; most pages have no scriptlet
+        // rules, and the native lookup deciding that costs far less than the
+        // renderer parsing the library.
+        if (url == null || detector.getScriptlets(url).isEmpty()) return
         webView?.evaluateJavascript(scriptletsJS, null)
         Timber.v("Evaluated Scriptlets Javascript for $url")
     }

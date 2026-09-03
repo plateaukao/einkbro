@@ -9,6 +9,7 @@ import io.github.edsuns.adblockclient.ResourceType
 import io.github.edsuns.adfilter.*
 import io.github.edsuns.adfilter.impl.Constants.FILE_STORE_DIR
 import io.github.edsuns.adfilter.script.ElementHiding
+import io.github.edsuns.adfilter.script.JsAssets
 import io.github.edsuns.adfilter.script.ScriptInjection
 import io.github.edsuns.adfilter.script.Scriptlet
 import java.io.File
@@ -19,6 +20,12 @@ import java.util.WeakHashMap
  * Created by Edsuns@qq.com on 2021/7/29.
  */
 internal class AdFilterImpl(appContext: Context) : AdFilter {
+
+    init {
+        // Injected-JS sources live in module assets; wire up the loader before
+        // anything can touch ElementHiding/Scriptlet/ScriptInjection.
+        JsAssets.init(appContext)
+    }
 
     private val detector: Detector = DetectorImpl()
     internal val binaryDataStore: BinaryDataStore =

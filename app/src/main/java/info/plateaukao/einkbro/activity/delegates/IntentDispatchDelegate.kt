@@ -35,6 +35,7 @@ class IntentDispatchDelegate(
     private val translationViewModel: TranslationViewModel,
     private val overviewDialogControllerProvider: () -> OverviewDialogController,
     private val addAlbumAction: (title: String, url: String, foreground: Boolean, lazyLoad: Boolean) -> Unit,
+    private val addRestoredTab: (title: String, url: String) -> Unit,
     private val updateAlbum: (url: String) -> Unit,
     private val showAlbum: (controller: info.plateaukao.einkbro.browser.AlbumController) -> Unit,
     private val getUrlMatchedBrowser: (url: String) -> EBWebView?,
@@ -221,24 +222,24 @@ class IntentDispatchDelegate(
 
     fun initSavedTabs(whenNoSavedTabs: (() -> Unit)? = null) {
         if (state.currentAlbumController == null) {
-            if (config.tab.savedAlbumInfoList.isNotEmpty() &&
+            // read once: the getter decodes the whole list from JSON per access
+            val albumList = config.tab.savedAlbumInfoList
+            if (albumList.isNotEmpty() &&
                 (config.tab.shouldSaveTabs || shouldLoadTabState)
             ) {
-                if (config.tab.currentAlbumIndex >= config.tab.savedAlbumInfoList.size) {
-                    config.tab.currentAlbumIndex = config.tab.savedAlbumInfoList.size - 1
+                if (config.tab.currentAlbumIndex >= albumList.size) {
+                    config.tab.currentAlbumIndex = albumList.size - 1
                 }
-                val albumList = config.tab.savedAlbumInfoList.toList()
                 var savedIndex = config.tab.currentAlbumIndex
                 if (savedIndex == -1) savedIndex = 0
                 albumList.forEachIndexed { index, albumInfo ->
-                    // Restore background tabs lazily: keep the saved title visible in the
-                    // tab list and only load the page when the tab is first activated
-                    addAlbum(
-                        albumInfo.title,
-                        albumInfo.url,
-                        index == savedIndex,
-                        lazyLoad = index != savedIndex,
-                    )
+                    if (index == savedIndex) {
+                        addAlbum(albumInfo.title, albumInfo.url, true)
+                    } else {
+                        // Background tabs get no WebView (and no page load) until
+                        // first activated; the saved title shows in the tab list.
+                        addRestoredTab(albumInfo.title, albumInfo.url)
+                    }
                 }
             } else {
                 whenNoSavedTabs?.invoke()

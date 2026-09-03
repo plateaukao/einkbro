@@ -1,13 +1,11 @@
 -dontwarn org.xmlpull.v1.**
--keep class org.xmlpull.v1.** {*;}
+# subsumes the narrower org.xmlpull.v1 keep and the keepclassmembers variant
+-keep class org.xmlpull.** { *; }
 
 -dontwarn android.content.res.**
 # kxml2's META-INF/services/org.xmlpull.v1.XmlPullParserFactory lists parser and
 # serializer as a comma-separated entry that R8 parses literally as a missing class.
 -dontwarn org.kxml2.io.**
-
--keep class org.xmlpull.** { *; }
--keepclassmembers class org.xmlpull.** { *; }
 
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);
@@ -26,8 +24,3 @@
 # that no longer matches BrowserActionCatalog ids.
 -keepnames class info.plateaukao.einkbro.browser.BrowserAction
 -keepnames class info.plateaukao.einkbro.browser.BrowserAction$* { }
-
-# pdfbox-android: JPEG2000 support is optional (jp2-android not bundled)
--dontwarn com.gemalto.jp2.**
-# pdfbox-android: BouncyCastle excluded (only needed for encrypted PDFs)
--dontwarn org.bouncycastle.**

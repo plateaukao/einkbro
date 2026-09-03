@@ -1,25 +1,27 @@
 package info.plateaukao.einkbro.service
 
 import android.Manifest
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Icon
+import android.media.MediaMetadata
+import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import android.os.Build
-import android.support.v4.media.MediaMetadataCompat
-import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.media.app.NotificationCompat.MediaStyle
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.viewmodel.TtsReadingState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
+// Framework MediaSession/MediaStyle on purpose: minSdk 24 ships both, and the
+// androidx.media compat stack this used to pull in cost ~50 KB of dex.
 class TtsNotificationManager(private val context: Context) {
 
     private val notificationManager = NotificationManagerCompat.from(context)
@@ -27,8 +29,8 @@ class TtsNotificationManager(private val context: Context) {
     private val _actionFlow = MutableSharedFlow<TtsNotificationAction>(extraBufferCapacity = 1)
     val actionFlow: SharedFlow<TtsNotificationAction> = _actionFlow
 
-    private val mediaSession = MediaSessionCompat(context, "EinkBroTts").apply {
-        setCallback(object : MediaSessionCompat.Callback() {
+    private val mediaSession = MediaSession(context, "EinkBroTts").apply {
+        setCallback(object : MediaSession.Callback() {
             override fun onPlay() {
                 _actionFlow.tryEmit(TtsNotificationAction.PLAY_PAUSE)
             }
@@ -41,6 +43,14 @@ class TtsNotificationManager(private val context: Context) {
                 _actionFlow.tryEmit(TtsNotificationAction.CLOSE)
             }
         })
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            // default (and deprecated no-op) from O on; still required on 24/25
+            @Suppress("DEPRECATION")
+            setFlags(
+                MediaSession.FLAG_HANDLES_MEDIA_BUTTONS or
+                    MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
+            )
+        }
     }
 
     init {
@@ -80,20 +90,26 @@ class TtsNotificationManager(private val context: Context) {
         updateMediaSession(displayTitle, readingState, progress)
 
         val statusText = when (readingState) {
-            TtsReadingState.PREPARING -> "Preparing\u2026"
+            TtsReadingState.PREPARING -> "Preparing…"
             TtsReadingState.PLAYING -> "Playing $progress"
             TtsReadingState.PAUSED -> "Paused $progress"
             TtsReadingState.IDLE -> ""
         }
 
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
+        val builder = (
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Notification.Builder(context, CHANNEL_ID)
+            } else {
+                @Suppress("DEPRECATION")
+                Notification.Builder(context).setSound(null)
+            }
+        ).apply {
             setSmallIcon(R.drawable.ic_tts)
             setContentTitle(displayTitle)
             setContentText(statusText)
             setOngoing(readingState != TtsReadingState.PAUSED)
             setAutoCancel(false)
-            setSilent(true)
-            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            setVisibility(Notification.VISIBILITY_PUBLIC)
 
             // Action index 0: Play/Pause
             if (readingState == TtsReadingState.PLAYING) {
@@ -111,11 +127,7 @@ class TtsNotificationManager(private val context: Context) {
             }
 
             // Action index 1: Stop
-            addAction(
-                R.drawable.ic_stop,
-                "Stop",
-                createActionIntent(ACTION_STOP)
-            )
+            addAction(R.drawable.ic_stop, "Stop", createActionIntent(ACTION_STOP))
 
             // Action index 2: Close
             addAction(
@@ -125,11 +137,9 @@ class TtsNotificationManager(private val context: Context) {
             )
 
             // MediaStyle — shows in system media controls panel
-            setStyle(
-                MediaStyle()
-                    .setMediaSession(mediaSession.sessionToken)
-                    .setShowActionsInCompactView(0, 1, 2)
-            )
+            style = Notification.MediaStyle()
+                .setMediaSession(mediaSession.sessionToken)
+                .setShowActionsInCompactView(0, 1, 2)
         }
 
         if (ContextCompat.checkSelfPermission(
@@ -142,34 +152,46 @@ class TtsNotificationManager(private val context: Context) {
         }
     }
 
+    private fun Notification.Builder.addAction(
+        iconRes: Int,
+        actionTitle: String,
+        intent: PendingIntent,
+    ) {
+        addAction(
+            Notification.Action.Builder(
+                Icon.createWithResource(context, iconRes), actionTitle, intent
+            ).build()
+        )
+    }
+
     private fun updateMediaSession(
         title: String,
         readingState: TtsReadingState,
         progress: String,
     ) {
         val state = when (readingState) {
-            TtsReadingState.PLAYING -> PlaybackStateCompat.STATE_PLAYING
-            TtsReadingState.PAUSED -> PlaybackStateCompat.STATE_PAUSED
-            TtsReadingState.PREPARING -> PlaybackStateCompat.STATE_BUFFERING
-            TtsReadingState.IDLE -> PlaybackStateCompat.STATE_STOPPED
+            TtsReadingState.PLAYING -> PlaybackState.STATE_PLAYING
+            TtsReadingState.PAUSED -> PlaybackState.STATE_PAUSED
+            TtsReadingState.PREPARING -> PlaybackState.STATE_BUFFERING
+            TtsReadingState.IDLE -> PlaybackState.STATE_STOPPED
         }
 
-        val actions = PlaybackStateCompat.ACTION_PLAY or
-                PlaybackStateCompat.ACTION_PAUSE or
-                PlaybackStateCompat.ACTION_STOP or
-                PlaybackStateCompat.ACTION_PLAY_PAUSE
+        val actions = PlaybackState.ACTION_PLAY or
+                PlaybackState.ACTION_PAUSE or
+                PlaybackState.ACTION_STOP or
+                PlaybackState.ACTION_PLAY_PAUSE
 
         mediaSession.setPlaybackState(
-            PlaybackStateCompat.Builder()
-                .setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1f)
+            PlaybackState.Builder()
+                .setState(state, PlaybackState.PLAYBACK_POSITION_UNKNOWN, 1f)
                 .setActions(actions)
                 .build()
         )
 
         mediaSession.setMetadata(
-            MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
-                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, progress)
+            MediaMetadata.Builder()
+                .putString(MediaMetadata.METADATA_KEY_TITLE, title)
+                .putString(MediaMetadata.METADATA_KEY_DISPLAY_DESCRIPTION, progress)
                 .build()
         )
 

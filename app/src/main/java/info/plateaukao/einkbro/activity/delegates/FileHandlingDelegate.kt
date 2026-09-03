@@ -219,7 +219,7 @@ class FileHandlingDelegate(
             activity.contentResolver.openFileDescriptor(uri, "r")?.use { it.statSize }
         }.getOrNull() ?: 0L) > 0L
 
-        // Render to a cache temp file first, then post-process with pdfbox (TOC entry)
+        // Render to a cache temp file first, then post-process (TOC entry)
         // into the picked document.
         val tempPdf = File(activity.cacheDir, "web_pdf_render.pdf")
         val pfd = runCatching {
@@ -329,7 +329,7 @@ class FileHandlingDelegate(
                 // append never falls back to a raw copy — that would clobber the target
                 PdfMergeUtil.appendPdfToExisting(activity, uri, tempPdf, tocTitle)
             } else {
-                // write through pdfbox to add a TOC entry; fall back to the raw render
+                // write through the TOC post-processor; fall back to the raw render
                 PdfMergeUtil.savePdfWithToc(activity, tempPdf, uri, tocTitle)
                     || copyFileToUri(tempPdf, uri)
             }

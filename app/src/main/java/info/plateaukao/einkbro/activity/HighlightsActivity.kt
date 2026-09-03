@@ -43,12 +43,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.activity.compose.BackHandler
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.Article
@@ -93,14 +89,15 @@ class HighlightsActivity : LocaleAwareComponentActivity() {
 
 
         setContent {
-            val navController: NavHostController = rememberNavController()
-
             MyTheme {
-                val backStackEntry = navController.currentBackStackEntryAsState()
-                val currentScreen = HighlightsRoute.valueOf(
-                    backStackEntry.value?.destination?.route?.split("/")?.first()
-                        ?: HighlightsRoute.RouteArticles.name
-                )
+                // Two screens, one back level: plain state instead of a NavHost
+                // (navigation-compose was the only user of the dependency).
+                var openedArticleId by remember { mutableStateOf<Int?>(null) }
+                val currentScreen =
+                    if (openedArticleId == null) HighlightsRoute.RouteArticles
+                    else HighlightsRoute.RouteHighlights
+
+                BackHandler(enabled = openedArticleId != null) { openedArticleId = null }
 
                 SystemBarIconsForBlackTopBar()
                 Scaffold(
@@ -109,35 +106,33 @@ class HighlightsActivity : LocaleAwareComponentActivity() {
                         HighlightsBar(
                             currentScreen = currentScreen,
                             onClick = {
-                                val articleId = backStackEntry.value?.arguments
-                                    ?.getString("articleId")?.toIntOrNull() ?: 0
-                                showFileChooser(currentScreen, articleId)
+                                showFileChooser(currentScreen, openedArticleId ?: 0)
                             },
                             navigateUp = {
-                                if (navController.previousBackStackEntry != null) navController.navigateUp()
+                                if (openedArticleId != null) openedArticleId = null
                                 else finish()
                             }
                         )
                     }
                 ) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = HighlightsRoute.RouteArticles.name,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        composable(HighlightsRoute.RouteArticles.name) {
-                            ArticlesScreen(navController, highlightViewModel) { article ->
+                    when (val articleId = openedArticleId) {
+                        null -> ArticlesScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            highlightViewModel = highlightViewModel,
+                            onArticleClick = { article -> openedArticleId = article.id },
+                            onLinkClick = { article ->
                                 highlightViewModel.launchUrl(this@HighlightsActivity, article.url)
-                            }
-                        }
-                        composable("${HighlightsRoute.RouteHighlights.name}/{articleId}") { backStackEntry ->
-                            HighlightsScreen(backStackEntry.arguments?.getString("articleId")
-                                ?.toInt() ?: 0,
-                                modifier = Modifier.padding(10.dp),
-                                highlightViewModel,
-                                deleteHighlight = { highlightViewModel.deleteHighlight(it) }
-                            )
-                        }
+                            },
+                        )
+
+                        else -> HighlightsScreen(
+                            articleId,
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .padding(10.dp),
+                            highlightViewModel,
+                            deleteHighlight = { highlightViewModel.deleteHighlight(it) }
+                        )
                     }
                 }
             }
@@ -175,21 +170,22 @@ enum class HighlightsRoute(@StringRes val titleResId: Int) {
 
 @Composable
 fun ArticlesScreen(
-    navHostController: NavHostController,
+    modifier: Modifier = Modifier,
     highlightViewModel: HighlightViewModel,
+    onArticleClick: (Article) -> Unit,
     onLinkClick: (Article) -> Unit,
 ) {
     val articles by highlightViewModel.getAllArticles().collectAsState(emptyList())
     LazyColumn(
-        modifier = Modifier.padding(10.dp),
+        modifier = modifier.padding(10.dp),
         reverseLayout = true
     ) {
         items(articles.size, key = { articles[it].id }) { index ->
             val article = articles[index]
             ArticleItem(
                 modifier = Modifier.padding(vertical = 10.dp),
-                navHostController = navHostController,
                 article = article,
+                onClick = { onArticleClick(article) },
                 onLinkClick = { onLinkClick(article) },
                 deleteArticle = {
                     highlightViewModel.deleteArticle(article.id)
@@ -204,8 +200,8 @@ fun ArticlesScreen(
 @Composable
 fun ArticleItem(
     modifier: Modifier,
-    navHostController: NavHostController,
     article: Article,
+    onClick: () -> Unit = {},
     onLinkClick: () -> Unit = {},
     deleteArticle: (Article) -> Unit,
 ) {
@@ -213,9 +209,7 @@ fun ArticleItem(
         modifier = modifier
             .fillMaxWidth()
             .combinedClickable(
-                onClick = {
-                    navHostController.navigate("${HighlightsRoute.RouteHighlights.name}/${article.id}")
-                },
+                onClick = onClick,
                 onLongClick = { deleteArticle(article) }
             )
     ) {
@@ -392,7 +386,6 @@ fun PreviewArticleItem() {
                 date = System.currentTimeMillis(),
                 tags = ""
             ),
-            navHostController = rememberNavController(),
             deleteArticle = {}
         )
     }

@@ -2,8 +2,6 @@ package io.github.edsuns.adfilter.script
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import com.anthonycr.mezzanine.FileStream
-import com.anthonycr.mezzanine.MezzanineGenerator
 import io.github.edsuns.adfilter.impl.Detector
 import timber.log.Timber
 import java.net.MalformedURLException
@@ -14,30 +12,16 @@ import java.net.URL
  */
 internal class ElementHiding constructor(private val detector: Detector) {
 
-    @FileStream("src/main/js/elemhide_blocked.js")
-    interface ElemhideBlockedInjection {
-        fun js(): String
-    }
-
-    @FileStream("src/main/js/extended-css.min.js")
-    interface ExtendedCssInjection {
-        fun js(): String
-    }
-
-    @FileStream("src/main/js/element_hiding.js")
-    interface EleHidingInjection {
-        fun js(): String
+    private val extendedCssLibJS by lazy {
+        JsAssets.load("extended-css.min.js")
     }
 
     private val eleHidingJS by lazy {
-        var js = MezzanineGenerator.ExtendedCssInjection().js()
-        js += ScriptInjection.parseScript(this, MezzanineGenerator.EleHidingInjection().js(), true)
-        js
+        ScriptInjection.parseScript(this, JsAssets.load("element_hiding.js"), true)
     }
 
     private val elemhideBlockedJs by lazy {
-        val js = MezzanineGenerator.ElemhideBlockedInjection().js()
-        ScriptInjection.parseScript(this, js)
+        ScriptInjection.parseScript(this, JsAssets.load("elemhide_blocked.js"))
     }
 
     internal fun elemhideBlockedResource(webView: WebView?, resourceUrl: String?) {
@@ -78,7 +62,14 @@ internal class ElementHiding constructor(private val detector: Detector) {
     }
 
     fun perform(webView: WebView?, url: String?) {
-        webView?.evaluateJavascript(eleHidingJS, null)
+        if (webView == null) return
+        // The ExtendedCss library is 48 KB of JS the renderer would parse on
+        // every page; element_hiding.js only constructs ExtendedCss when the
+        // page has extended selectors, so ship the library only then.
+        if (url != null && detector.getExtendedCssSelectors(url).isNotEmpty()) {
+            webView.evaluateJavascript(extendedCssLibJS, null)
+        }
+        webView.evaluateJavascript(eleHidingJS, null)
         Timber.v("Evaluated element hiding Javascript for $url")
     }
 
