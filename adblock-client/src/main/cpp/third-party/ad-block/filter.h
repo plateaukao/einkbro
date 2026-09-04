@@ -13,6 +13,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <atomic>
 #include <mutex>
 #include "./base.h"
 #include "./context_domain.h"
@@ -229,7 +230,9 @@ public:
     int hostLen;
     HashSet<ContextDomain> *domains;
     HashSet<ContextDomain> *antiDomains;
-    bool domainsParsed;
+    // atomic: readers check it outside parseDomains' lock (double-checked
+    // locking); the seq_cst store publishes the built domain hash sets.
+    std::atomic<bool> domainsParsed;
 
 protected:
     // Fills |domains| and |antiDomains| sets

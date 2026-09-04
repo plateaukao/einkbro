@@ -185,7 +185,7 @@ void Filter::swapData(Filter *other) {
     tagLen = other->tagLen;
     host = other->host;
     hostLen = other->hostLen;
-    domainsParsed = other->domainsParsed;
+    domainsParsed = other->domainsParsed.load();
     domains = other->domains;
     antiDomains = other->antiDomains;
 
@@ -525,8 +525,16 @@ int indexOfFilter(const char *input, int inputLen,
 
             if (filterChar != inputChar) {
                 // ^abc^ matches both /abc/ and /abc
-                if ('^' == filterChar &&
-                    (isSeparatorChar(inputChar) || '\0' == inputChar)) {
+                if ('^' == filterChar && '\0' == inputChar) {
+                    // A separator may match end-of-input, but only as the
+                    // filter's final char — anything after it would have to
+                    // match bytes past the terminator.
+                    if (j == filterLen - 1) {
+                        continue;  // loop ends; full match at i
+                    }
+                    return -1;
+                }
+                if ('^' == filterChar && isSeparatorChar(inputChar)) {
                     continue;
                 }
                 if ('\0' == inputChar) {
@@ -786,8 +794,12 @@ uint32_t Filter::Deserialize(char *buffer, uint32_t bufferSize) {
     if (!hasNewlineBefore(buffer, bufferSize)) {
         return 0;
     }
-    sscanf(buffer, "%x,%x,%x,%x", &dataLen, (unsigned int *) &filterType,
-           (unsigned int *) &filterOption, (unsigned int *) &antiFilterOption);
+    if (sscanf(buffer, "%x,%x,%x,%x", &dataLen, (unsigned int *) &filterType,
+               (unsigned int *) &filterOption, (unsigned int *) &antiFilterOption) != 4 ||
+        dataLen < 0 || static_cast<uint32_t>(dataLen) >= bufferSize) {
+        dataLen = 0;
+        return 0;
+    }
     uint32_t consumed = static_cast<uint32_t>(strlen(buffer)) + 1;
     if (consumed + dataLen >= bufferSize) {
         return 0;
@@ -796,6 +808,12 @@ uint32_t Filter::Deserialize(char *buffer, uint32_t bufferSize) {
     data = buffer + consumed;
     consumed += dataLen;
 
+    // Each remaining section is a NUL-terminated string; on a truncated blob
+    // the terminator may be missing, so every scan must stay inside
+    // bufferSize instead of trusting strlen.
+    if (!hasNewlineBefore(buffer + consumed, bufferSize - consumed)) {
+        return 0;
+    }
     auto hostLength = static_cast<uint32_t>(strlen(buffer + consumed));
     if (hostLength != 0) {
         host = buffer + consumed;
@@ -803,11 +821,18 @@ uint32_t Filter::Deserialize(char *buffer, uint32_t bufferSize) {
         host = nullptr;
     }
     consumed += hostLength + 1;
+    if (consumed >= bufferSize) {
+        return 0;
+    }
 
     // If the domain section starts with a # then we're in a tag
     // block.
-    if (buffer[consumed] == '~' && buffer[consumed + 1] == '#') {
+    if (buffer[consumed] == '~' && consumed + 1 < bufferSize &&
+        buffer[consumed + 1] == '#') {
         consumed += 2;
+        if (!hasNewlineBefore(buffer + consumed, bufferSize - consumed)) {
+            return 0;
+        }
         tag = buffer + consumed;
         tagLen = 0;
         while (buffer[consumed + tagLen] != '\0') {
@@ -819,6 +844,9 @@ uint32_t Filter::Deserialize(char *buffer, uint32_t bufferSize) {
         }
     }
 
+    if (!hasNewlineBefore(buffer + consumed, bufferSize - consumed)) {
+        return 0;
+    }
     auto listSectionLen = static_cast<uint32_t>(strlen(buffer + consumed));
     if (listSectionLen != 0) {
         domainList = buffer + consumed;
@@ -827,7 +855,13 @@ uint32_t Filter::Deserialize(char *buffer, uint32_t bufferSize) {
         domainList = nullptr;
     }
     consumed++;
+    if (consumed >= bufferSize) {
+        return 0;
+    }
 
+    if (!hasNewlineBefore(buffer + consumed, bufferSize - consumed)) {
+        return 0;
+    }
     auto ruleDefinitionLen = static_cast<uint32_t>(strlen(buffer + consumed));
     if (ruleDefinitionLen != 0) {
         ruleDefinition = buffer + consumed;

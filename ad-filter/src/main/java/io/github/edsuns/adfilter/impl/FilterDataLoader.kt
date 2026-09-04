@@ -16,7 +16,14 @@ internal class FilterDataLoader(
         if (binaryDataStore.hasData(id)) {
             try {
                 val client = AdBlockClient(id)
-                client.loadProcessedData(binaryDataStore.loadData(id))
+                if (!client.loadProcessedData(binaryDataStore.loadData(id))) {
+                    // The stored blob is truncated or corrupt; keeping it would
+                    // make every future launch fail the same way. Discard it —
+                    // the next filter update rebuilds it from a fresh download.
+                    Timber.w("Corrupt filter data discarded: $id")
+                    binaryDataStore.clearData(id)
+                    return
+                }
                 if (id == ID_CUSTOM) {
                     detector.customFilterClient = client
                 } else {

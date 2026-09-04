@@ -113,7 +113,13 @@ Java_io_github_edsuns_adblockclient_AdBlockClient_loadProcessedData(JNIEnv *env,
     dataChars[dataLength] = '\0';
 
     auto *client = (AdBlockClient *) clientPointer;
-    client->deserialize(dataChars);
+    if (!client->deserialize(dataChars, dataLength)) {
+        // deserialize() already reset the client and dropped every borrowed
+        // pointer into dataChars, so the buffer can be freed here. Returning 0
+        // tells the Kotlin side the stored blob is corrupt.
+        delete[] dataChars;
+        return 0;
+    }
 
     // We cannot delete dataChars here as adblock keeps a ptr to it.
     // Instead we send back a ptr ref so we can delete it later in the release method
@@ -167,9 +173,18 @@ Java_io_github_edsuns_adblockclient_AdBlockClient_matches(JNIEnv *env, jobject /
                                                           jint filterOption) {
     jboolean isUrlCopy;
     const char *urlChars = env->GetStringUTFChars(url, &isUrlCopy);
+    if (!urlChars) {
+        return env->NewObject(gMatchResultClass, gMatchResultInit,
+                              static_cast<jboolean>(false), nullptr, nullptr);
+    }
 
     jboolean isDocumentCopy;
     const char *firstPartyDomainChars = env->GetStringUTFChars(firstPartyDomain, &isDocumentCopy);
+    if (!firstPartyDomainChars) {
+        env->ReleaseStringUTFChars(url, urlChars);
+        return env->NewObject(gMatchResultClass, gMatchResultInit,
+                              static_cast<jboolean>(false), nullptr, nullptr);
+    }
 
     auto *client = (AdBlockClient *) clientPointer;
 
@@ -216,6 +231,9 @@ Java_io_github_edsuns_adblockclient_AdBlockClient_getElementHidingSelectors(JNIE
                                                                             jstring url) {
     jboolean isUrlCopy;
     const char *urlChars = env->GetStringUTFChars(url, &isUrlCopy);
+    if (!urlChars) {
+        return nullptr;
+    }
 
     auto *client = (AdBlockClient *) clientPointer;
     const char *selectors = client->getElementHidingSelectors(urlChars);
@@ -246,6 +264,9 @@ Java_io_github_edsuns_adblockclient_AdBlockClient_getExtendedCssSelectors(JNIEnv
                                                                           jstring url) {
     jboolean isUrlCopy;
     const char *urlChars = env->GetStringUTFChars(url, &isUrlCopy);
+    if (!urlChars) {
+        return nullptr;
+    }
 
     auto *client = (AdBlockClient *) clientPointer;
     const LinkedList<std::string> *rules = client->getExtendedCssSelectors(urlChars);
@@ -263,6 +284,9 @@ Java_io_github_edsuns_adblockclient_AdBlockClient_getCssRules(JNIEnv *env,
                                                               jstring url) {
     jboolean isUrlCopy;
     const char *urlChars = env->GetStringUTFChars(url, &isUrlCopy);
+    if (!urlChars) {
+        return nullptr;
+    }
 
     auto *client = (AdBlockClient *) clientPointer;
     const LinkedList<std::string> *rules = client->getCssRules(urlChars);
@@ -280,6 +304,9 @@ Java_io_github_edsuns_adblockclient_AdBlockClient_getScriptlets(JNIEnv *env,
                                                                 jstring url) {
     jboolean isUrlCopy;
     const char *urlChars = env->GetStringUTFChars(url, &isUrlCopy);
+    if (!urlChars) {
+        return nullptr;
+    }
 
     auto *client = (AdBlockClient *) clientPointer;
     const LinkedList<std::string> *rules = client->getScriptlets(urlChars);

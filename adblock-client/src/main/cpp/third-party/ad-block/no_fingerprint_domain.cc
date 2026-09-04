@@ -24,21 +24,22 @@ NoFingerprintDomain::NoFingerprintDomain() :
 }
 
 NoFingerprintDomain::NoFingerprintDomain(const NoFingerprintDomain &other) {
-  borrowed_data = other.borrowed_data;
+  // Always deep-copy. A borrowed pointer may aim into a caller-owned buffer
+  // (e.g. the JNI URL string used as a cache-lookup key) that is freed right
+  // after the call; propagating the borrow would store a dangling key that
+  // every later cache probe memcmps.
+  borrowed_data = false;
   dataLen = other.dataLen;
   if (other.dataLen == -1 && other.data) {
     dataLen = static_cast<int>(strlen(other.data));
   }
 
-  if (other.borrowed_data) {
-    data = other.data;
+  if (other.data) {
+    data = new char[dataLen + 1];
+    memcpy(data, other.data, dataLen);
+    data[dataLen] = '\0';
   } else {
-    if (other.data) {
-      data = new char[dataLen + 1];
-      memcpy(data, other.data, dataLen + 1);
-    } else {
-      data = nullptr;
-    }
+    data = nullptr;
   }
 }
 
@@ -84,7 +85,14 @@ uint32_t NoFingerprintDomain::Serialize(char *buffer) {
 
 uint32_t NoFingerprintDomain::Deserialize(char *buffer, uint32_t bufferSize) {
   dataLen = 0;
-  sscanf(buffer, "%x", &dataLen);
+  // The size header must be a NUL-terminated string inside the buffer.
+  if (!memchr(buffer, '\0', bufferSize)) {
+    return 0;
+  }
+  if (sscanf(buffer, "%x", &dataLen) != 1 || dataLen < 0 ||
+      static_cast<uint32_t>(dataLen) >= bufferSize) {
+    return 0;
+  }
   uint32_t consumed = static_cast<uint32_t>(strlen(buffer)) + 1;
   if (consumed + dataLen >= bufferSize) {
     return 0;

@@ -69,10 +69,18 @@ class AdBlockClient(override val id: String) : Client {
         preserveRules: Boolean
     ): Long
 
-    fun loadProcessedData(data: ByteArray) {
+    /**
+     * @return false when the stored blob is truncated or corrupt — the native
+     * engine refused it and the caller should discard the persisted data.
+     */
+    fun loadProcessedData(data: ByteArray): Boolean {
         val unpacked = RegexFilterSet.unpack(data)
         processedDataPointer = loadProcessedData(nativeClientPointer, data, unpacked.nativeLength)
+        if (processedDataPointer == 0L) {
+            return false
+        }
         regexFilters = unpacked.regexSet
+        return true
     }
 
     private external fun loadProcessedData(clientPointer: Long, data: ByteArray, length: Int): Long

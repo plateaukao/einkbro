@@ -10,6 +10,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <vector>
 #include "./protocol.h"
 #include "./ad_block_client.h"
 #include "./bad_fingerprint.h"
@@ -83,16 +84,8 @@ void AddFilterDomainsToHashSet(Filter *filter,
       if (*p == '|' || *p == '\0') {
         const char *domain = filter_domain_list + start_offset;
         if (len > 0 && *domain != '~') {
-          char buffer[1024];
-          memset(buffer, 0, 1024);
-          memcpy(buffer, domain, len);
-          // cout << "Adding filter: " << buffer << endl;
           hashSet->Add(NoFingerprintDomain(domain, len));
         } else if (len > 0 && *domain == '~') {
-          char buffer[1024];
-          memset(buffer, 0, 1024);
-          memcpy(buffer, domain + 1, len - 1);
-          // cout << "Adding anti filter: " << buffer << endl;
           hashSet->Add(NoFingerprintDomain(domain + 1, len - 1));
         }
         start_offset += len + 1;
@@ -175,11 +168,11 @@ bool getFrom(HashMap<NoFingerprintDomain, T> *hashMap, const char *host, int hos
 }
 
 char *removeException(char *src, uint32_t srcLen, char *exception) {
-  if (srcLen == 0) {
-    srcLen = 1;
-  }
-  char buffer[srcLen];
-  memset(buffer, 0, srcLen);
+  // Heap, not a VLA: srcLen is the combined stylesheet length (can be large),
+  // and the +1 guarantees the copy below always ends on a zero byte even when
+  // nothing was removed and the output length equals srcLen.
+  std::vector<char> bufferStorage(srcLen + 1, 0);
+  char *buffer = bufferStorage.data();
   char *sStart = src, *sEnd = src, *eStart, *eEnd;
   int len = 0, sLen = 0, eLen;
   while (*sStart != '\0') {
@@ -253,6 +246,10 @@ const char *AdBlockClient::getElementHidingSelectors(const char *contextUrl) {
   if (!isBlockableProtocol(contextUrl, urlLen)) {
     return nullptr;
   }
+  // One critical section over probe+compute+insert: concurrent callers (UI,
+  // JS-bridge, and IO threads) must not race the cache or delete a value
+  // another thread is still serializing to Java.
+  std::lock_guard<std::mutex> guard(cosmeticCacheLock);
   std::string buffer;
   int hostLen;
   const char *host = getUrlHost(contextUrl, &hostLen);
@@ -309,21 +306,25 @@ const LinkedList<std::string> *getRulesFrom(HashMap<NoFingerprintDomain,
   }
   auto *result = new LinkedList<std::string>();
   auto onFind = [result](CosmeticFilterHashSet *set) { result->concat(set->toStringList()); };
-  if (getFrom<CosmeticFilterHashSet>(map, host, hostLen, onFind)) {
-    (*cache)->put(NoFingerprintDomain(host, hostLen), result);
-  }
+  getFrom<CosmeticFilterHashSet>(map, host, hostLen, onFind);
+  // Cache misses too: otherwise the list above leaks on every miss, and a
+  // page can force unbounded recomputation through the JS bridge.
+  (*cache)->put(NoFingerprintDomain(host, hostLen), result);
   return result;
 }
 
 const LinkedList<std::string> *AdBlockClient::getExtendedCssSelectors(const char *contextUrl) {
+  std::lock_guard<std::mutex> guard(cosmeticCacheLock);
   return getRulesFrom(extendedCssMap, &extendedCssCache, contextUrl);
 }
 
 const LinkedList<std::string> *AdBlockClient::getCssRules(const char *contextUrl) {
+  std::lock_guard<std::mutex> guard(cosmeticCacheLock);
   return getRulesFrom(cssRulesMap, &cssRulesCache, contextUrl);
 }
 
 const LinkedList<std::string> *AdBlockClient::getScriptlets(const char *contextUrl) {
+  std::lock_guard<std::mutex> guard(cosmeticCacheLock);
   return getRulesFrom(scriptletMap, &scriptletCache, contextUrl);
 }
 
@@ -336,8 +337,13 @@ bool extractScriptletArgsAsData(Filter &filter) {
   while (*p != '(' && *p != '\0') {
     p++;
   }
+  if (*p == '\0') {
+    // No '(' in the rule: nothing to extract, and advancing past the
+    // terminator would send the backward scan below out of bounds.
+    return true;
+  }
   p++;// skip '('
-  while (*q != ')' && q != p) {
+  while (q > p && *q != ')') {
     q--;
   }
   // copy extracted data
@@ -2157,20 +2163,38 @@ char *AdBlockClient::serialize(int *totalSize, bool ignoreHtmlFilters) const {
   return buffer;
 }
 
-// Fills the specified buffer if specified, returns the number of characters
-// written or needed
-int deserializeFilters(char *buffer, Filter *f, int numFilters) {
+// Deserializes numFilters records from buffer (at most bufferSize bytes).
+// Returns the number of bytes consumed, or -1 when a record is truncated or
+// corrupt.
+int deserializeFilters(char *buffer, Filter *f, int numFilters, int bufferSize) {
   int pos = 0;
   for (int i = 0; i < numFilters; i++) {
-    pos += f->Deserialize(buffer + pos, 1024 * 16);
+    if (pos >= bufferSize) {
+      return -1;
+    }
+    uint32_t consumed = f->Deserialize(buffer + pos, bufferSize - pos);
+    if (consumed == 0) {
+      return -1;
+    }
+    pos += static_cast<int>(consumed);
     f++;
   }
   return pos;
 }
 
-bool AdBlockClient::deserialize(char *buffer) {
+bool AdBlockClient::deserialize(char *buffer, int bufferSize) {
   clear();
   deserializedBuffer = buffer;
+  // Every bound below used to come from the blob itself; a truncated or
+  // corrupted store file could therefore walk far past the allocation (the
+  // same guard-page SIGSEGV class as the parse() NUL bug). Validate the
+  // header and every section extent against the real bufferSize, and fail
+  // deserialization instead of trusting the data.
+  if (bufferSize <= 0 || !memchr(buffer, '\0', bufferSize)) {
+    clear();
+    deserializedBuffer = nullptr;
+    return false;
+  }
   int bloomFilterSize = 0, exceptionBloomFilterSize = 0,
       hostAnchoredHashSetSize = 0, hostAnchoredExceptionHashSetSize = 0,
       noFingerprintDomainHashSetSize = 0,
@@ -2184,7 +2208,7 @@ bool AdBlockClient::deserialize(char *buffer) {
       cssRulesHashMapSize = 0,
       scriptletHashMapSize = 0;
   int pos = 0;
-  sscanf(buffer + pos,
+  int parsedFields = sscanf(buffer + pos,
          "%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x",
          &numFilters,
          &numExceptionFilters, &numCosmeticFilters, &numHtmlFilters, &numScriptletFilters,
@@ -2203,6 +2227,38 @@ bool AdBlockClient::deserialize(char *buffer) {
          &elementHidingHashMapSize, &elementHidingExceptionHashMapSize,
          &genericElementHidingSelectorsSize, &extendedCssHashMapSize,
          &cssRulesHashMapSize, &scriptletHashMapSize);
+  const int counts[] = {
+      numFilters, numExceptionFilters, numCosmeticFilters, numHtmlFilters,
+      numScriptletFilters, numNoFingerprintFilters,
+      numNoFingerprintExceptionFilters, numNoFingerprintDomainOnlyFilters,
+      numNoFingerprintAntiDomainOnlyFilters,
+      numNoFingerprintDomainOnlyExceptionFilters,
+      numNoFingerprintAntiDomainOnlyExceptionFilters,
+      numHostAnchoredFilters, numHostAnchoredExceptionFilters};
+  const int sizes[] = {
+      bloomFilterSize, exceptionBloomFilterSize, hostAnchoredHashSetSize,
+      hostAnchoredExceptionHashSetSize, noFingerprintDomainHashSetSize,
+      noFingerprintAntiDomainHashSetSize, noFingerprintDomainExceptionHashSetSize,
+      noFingerprintAntiDomainExceptionHashSetSize, elementHidingHashMapSize,
+      elementHidingExceptionHashMapSize, genericElementHidingSelectorsSize,
+      extendedCssHashMapSize, cssRulesHashMapSize, scriptletHashMapSize};
+  int64_t totalFilterCount = 0;
+  bool headerValid = parsedFields == 27;
+  for (int c : counts) {
+    if (c < 0) headerValid = false;
+    totalFilterCount += c;
+  }
+  for (int sz : sizes) {
+    if (sz < 0 || sz > bufferSize) headerValid = false;
+  }
+  // Each serialized filter record costs at least 6 bytes, so a count that
+  // implies more data than the file holds is provably corrupt (and would
+  // otherwise drive a giant Filter[] allocation).
+  if (!headerValid || totalFilterCount * 6 > bufferSize) {
+    clear();
+    deserializedBuffer = nullptr;
+    return false;
+  }
   pos += static_cast<int>(strlen(buffer + pos)) + 1;
 
   filters = new Filter[numFilters];
@@ -2219,96 +2275,142 @@ bool AdBlockClient::deserialize(char *buffer) {
   noFingerprintAntiDomainOnlyExceptionFilters =
       new Filter[numNoFingerprintAntiDomainOnlyExceptionFilters];
 
-  pos += deserializeFilters(buffer + pos, filters, numFilters);
-  pos += deserializeFilters(buffer + pos,
-                            exceptionFilters, numExceptionFilters);
-  pos += deserializeFilters(buffer + pos,
-                            htmlFilters, numHtmlFilters);
-  pos += deserializeFilters(buffer + pos,
-                            noFingerprintFilters, numNoFingerprintFilters);
-  pos += deserializeFilters(buffer + pos,
-                            noFingerprintExceptionFilters, numNoFingerprintExceptionFilters);
+  Filter *filterGroups[] = {
+      filters, exceptionFilters, htmlFilters, noFingerprintFilters,
+      noFingerprintExceptionFilters, noFingerprintDomainOnlyFilters,
+      noFingerprintAntiDomainOnlyFilters, noFingerprintDomainOnlyExceptionFilters,
+      noFingerprintAntiDomainOnlyExceptionFilters};
+  const int filterGroupCounts[] = {
+      numFilters, numExceptionFilters, numHtmlFilters, numNoFingerprintFilters,
+      numNoFingerprintExceptionFilters, numNoFingerprintDomainOnlyFilters,
+      numNoFingerprintAntiDomainOnlyFilters,
+      numNoFingerprintDomainOnlyExceptionFilters,
+      numNoFingerprintAntiDomainOnlyExceptionFilters};
+  for (size_t g = 0; g < sizeof(filterGroups) / sizeof(filterGroups[0]); g++) {
+    int used = deserializeFilters(buffer + pos, filterGroups[g],
+                                  filterGroupCounts[g], bufferSize - pos);
+    if (used < 0) {
+      clear();
+      deserializedBuffer = nullptr;
+      return false;
+    }
+    pos += used;
+  }
+  // True when the next `size` bytes fit inside what actually remains.
+  auto sectionFits = [&](int size) {
+    return size >= 0 && pos >= 0 && pos <= bufferSize && size <= bufferSize - pos;
+  };
 
-  pos += deserializeFilters(buffer + pos,
-                            noFingerprintDomainOnlyFilters, numNoFingerprintDomainOnlyFilters);
-  pos += deserializeFilters(buffer + pos,
-                            noFingerprintAntiDomainOnlyFilters,
-                            numNoFingerprintAntiDomainOnlyFilters);
-  pos += deserializeFilters(buffer + pos,
-                            noFingerprintDomainOnlyExceptionFilters,
-                            numNoFingerprintDomainOnlyExceptionFilters);
-  pos += deserializeFilters(buffer + pos,
-                            noFingerprintAntiDomainOnlyExceptionFilters,
-                            numNoFingerprintAntiDomainOnlyExceptionFilters);
-
+  if (!sectionFits(bloomFilterSize) || !sectionFits(exceptionBloomFilterSize)) {
+    clear();
+    deserializedBuffer = nullptr;
+    return false;
+  }
   initBloomFilter(&bloomFilter, buffer + pos, bloomFilterSize);
   pos += bloomFilterSize;
+  if (!sectionFits(exceptionBloomFilterSize)) {
+    clear();
+    deserializedBuffer = nullptr;
+    return false;
+  }
   initBloomFilter(&exceptionBloomFilter,
                   buffer + pos, exceptionBloomFilterSize);
   pos += exceptionBloomFilterSize;
-  if (!initHashSet(&hostAnchoredHashSet,
-                   buffer + pos, hostAnchoredHashSetSize)) {
+  if (!sectionFits(hostAnchoredHashSetSize) ||
+      !initHashSet(&hostAnchoredHashSet, buffer + pos, hostAnchoredHashSetSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += hostAnchoredHashSetSize;
-  if (!initHashSet(&hostAnchoredExceptionHashSet,
-                   buffer + pos, hostAnchoredExceptionHashSetSize)) {
+  if (!sectionFits(hostAnchoredExceptionHashSetSize) ||
+      !initHashSet(&hostAnchoredExceptionHashSet, buffer + pos, hostAnchoredExceptionHashSetSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += hostAnchoredExceptionHashSetSize;
 
-  if (!initHashSet(&noFingerprintDomainHashSet,
-                   buffer + pos, noFingerprintDomainHashSetSize)) {
+  if (!sectionFits(noFingerprintDomainHashSetSize) ||
+      !initHashSet(&noFingerprintDomainHashSet, buffer + pos, noFingerprintDomainHashSetSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += noFingerprintDomainHashSetSize;
 
-  if (!initHashSet(&noFingerprintAntiDomainHashSet,
-                   buffer + pos, noFingerprintAntiDomainHashSetSize)) {
+  if (!sectionFits(noFingerprintAntiDomainHashSetSize) ||
+      !initHashSet(&noFingerprintAntiDomainHashSet, buffer + pos, noFingerprintAntiDomainHashSetSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += noFingerprintAntiDomainHashSetSize;
 
-  if (!initHashSet(&noFingerprintDomainExceptionHashSet,
-                   buffer + pos, noFingerprintDomainExceptionHashSetSize)) {
+  if (!sectionFits(noFingerprintDomainExceptionHashSetSize) ||
+      !initHashSet(&noFingerprintDomainExceptionHashSet, buffer + pos, noFingerprintDomainExceptionHashSetSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += noFingerprintDomainExceptionHashSetSize;
 
-  if (!initHashSet(&noFingerprintAntiDomainExceptionHashSet,
-                   buffer + pos, noFingerprintAntiDomainExceptionHashSetSize)) {
+  if (!sectionFits(noFingerprintAntiDomainExceptionHashSetSize) ||
+      !initHashSet(&noFingerprintAntiDomainExceptionHashSet, buffer + pos, noFingerprintAntiDomainExceptionHashSetSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += noFingerprintAntiDomainExceptionHashSetSize;
 
-  if (!initHashMap(&elementHidingSelectorHashMap,
-                   buffer + pos, elementHidingHashMapSize)) {
+  if (!sectionFits(elementHidingHashMapSize) ||
+      !initHashMap(&elementHidingSelectorHashMap, buffer + pos, elementHidingHashMapSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += elementHidingHashMapSize;
 
-  if (!initHashMap(&elementHidingExceptionSelectorHashMap,
-                   buffer + pos, elementHidingExceptionHashMapSize)) {
+  if (!sectionFits(elementHidingExceptionHashMapSize) ||
+      !initHashMap(&elementHidingExceptionSelectorHashMap, buffer + pos, elementHidingExceptionHashMapSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += elementHidingExceptionHashMapSize;
 
   delete genericElementHidingSelectors;
   genericElementHidingSelectors = new CosmeticFilter();
-  genericElementHidingSelectors->Deserialize(buffer + pos, genericElementHidingSelectorsSize);
+  if (!sectionFits(genericElementHidingSelectorsSize) ||
+      (genericElementHidingSelectorsSize > 0 &&
+       genericElementHidingSelectors->Deserialize(
+           buffer + pos, genericElementHidingSelectorsSize) == 0)) {
+    clear();
+    deserializedBuffer = nullptr;
+    return false;
+  }
   pos += genericElementHidingSelectorsSize;
 
-  if (!initHashMap(&extendedCssMap, buffer + pos, extendedCssHashMapSize)) {
+  if (!sectionFits(extendedCssHashMapSize) ||
+      !initHashMap(&extendedCssMap, buffer + pos, extendedCssHashMapSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += extendedCssHashMapSize;
 
-  if (!initHashMap(&cssRulesMap, buffer + pos, cssRulesHashMapSize)) {
+  if (!sectionFits(cssRulesHashMapSize) ||
+      !initHashMap(&cssRulesMap, buffer + pos, cssRulesHashMapSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += cssRulesHashMapSize;
 
-  if (!initHashMap(&scriptletMap, buffer + pos, scriptletHashMapSize)) {
+  if (!sectionFits(scriptletHashMapSize) ||
+      !initHashMap(&scriptletMap, buffer + pos, scriptletHashMapSize)) {
+    clear();
+    deserializedBuffer = nullptr;
     return false;
   }
   pos += scriptletHashMapSize;

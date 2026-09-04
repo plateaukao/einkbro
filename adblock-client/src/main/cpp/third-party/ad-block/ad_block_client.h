@@ -12,6 +12,7 @@
 #define AD_BLOCK_CLIENT_H_
 
 #include <string>
+#include <mutex>
 #include <set>
 #include "./filter.h"
 #include "cosmetic_filter.h"
@@ -77,7 +78,7 @@ public:
 
     // Deserializes the buffer, a size is not needed since a serialized.
     // buffer is self described
-    bool deserialize(char *buffer);
+    bool deserialize(char *buffer, int bufferSize);
 
     void enableBadFingerprintDetection();
 
@@ -174,6 +175,10 @@ protected:
     HashMap<NoFingerprintDomain, LinkedList<std::string>> *cssRulesCache;
     HashMap<NoFingerprintDomain, LinkedList<std::string>> *scriptletCache;
     char *deserializedBuffer;
+    // Serializes probe+compute+insert on the four lazy cosmetic caches, which
+    // are hit concurrently from the UI thread, per-WebView JS-bridge threads,
+    // and WebView IO threads.
+    std::mutex cosmeticCacheLock;
     std::set<std::string> tags;
 };
 

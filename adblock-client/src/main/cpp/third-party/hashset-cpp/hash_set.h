@@ -284,11 +284,21 @@ public:
         }
 
         uint32_t multi_set = 0;
-        sscanf(buffer + pos, "%x,%x", &bucket_count_, &multi_set);
+        bucket_count_ = 0;
+        if (sscanf(buffer + pos, "%x,%x", &bucket_count_, &multi_set) != 2) {
+            return 0;
+        }
         pos += static_cast<uint32_t>(strlen(buffer + pos)) + 1;
         multi_set_ = multi_set != 0;
         if (bucket_count_ == 0) {
             return pos;// at this moment, pos == buffer_size
+        }
+        // Every serialized bucket costs at least its 1-byte terminator, so a
+        // bucket count at or above buffer_size is provably corrupt (and would
+        // otherwise drive a giant allocation below).
+        if (bucket_count_ >= buffer_size) {
+            bucket_count_ = 0;
+            return 0;
         }
         buckets_ = new HashItem<T> *[bucket_count_];
         memset(buckets_, 0, sizeof(HashItem<T> *) * bucket_count_);
@@ -297,10 +307,7 @@ public:
         }
         for (uint32_t i = 0; i < bucket_count_; i++) {
             HashItem<T> *last_hash_item = nullptr;
-            while (*(buffer + pos) != '\0') {
-                if (pos >= buffer_size) {
-                    return 0;
-                }
+            while (pos < buffer_size && *(buffer + pos) != '\0') {
 
                 HashItem<T> *hash_item = new HashItem<T>();
                 hash_item->hash_item_storage_ = new T();
@@ -320,6 +327,10 @@ public:
                     buckets_[i] = hash_item;
                 }
                 last_hash_item = hash_item;
+            }
+            // Bucket terminator: must still be inside the buffer.
+            if (pos >= buffer_size) {
+                return 0;
             }
             pos++;
         }

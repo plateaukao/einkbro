@@ -70,21 +70,37 @@ public:
     }
 
     uint32_t Deserialize(char *buffer, uint32_t buffer_size) {
-        int pos = 0;
+        // The size header must be a NUL-terminated string inside the buffer.
+        if (!memchr(buffer, '\0', buffer_size)) {
+            return 0;
+        }
+        uint32_t pos = 0;
         int keySize = 0;
         int valueSize = 0;
-        sscanf(buffer, "%x,%x", &keySize, &valueSize);
+        if (sscanf(buffer, "%x,%x", &keySize, &valueSize) != 2 ||
+            keySize < 0 || valueSize < 0) {
+            return 0;
+        }
         pos += static_cast<uint32_t>(strlen(buffer)) + 1;
+        // Both declared sizes must fit in what actually remains.
+        if (static_cast<uint32_t>(keySize) > buffer_size - pos ||
+            static_cast<uint32_t>(valueSize) > buffer_size - pos - keySize) {
+            return 0;
+        }
 
         delete _key;
         delete _value;
         _key = new K();
         _value = new V();
 
-        _key->Deserialize(buffer + pos, buffer_size);
+        if (_key->Deserialize(buffer + pos, buffer_size - pos) == 0) {
+            return 0;
+        }
         pos += keySize;
 
-        _value->Deserialize(buffer + pos, buffer_size);
+        if (_value->Deserialize(buffer + pos, buffer_size - pos) == 0) {
+            return 0;
+        }
         pos += valueSize;
 
         return pos;

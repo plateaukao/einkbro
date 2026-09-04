@@ -66,7 +66,13 @@ public:
     }
 
     uint32_t Deserialize(char *buffer, uint32_t bufferSize) {
-        int len = static_cast<int>(strlen(buffer));
+        // The serialized form is a NUL-terminated string; a truncated blob may
+        // lack the terminator, so never scan past bufferSize.
+        const char *nul = static_cast<const char *>(memchr(buffer, '\0', bufferSize));
+        if (!nul) {
+            return 0;
+        }
+        int len = static_cast<int>(nul - buffer);
         data = new char[len + 1];
         memcpy(data, buffer, len + 1);
         return len + 1;
