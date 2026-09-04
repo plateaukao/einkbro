@@ -135,6 +135,25 @@
             border-radius: 4px;
             overflow-x: auto;
         }
+        /* Diagrams rendered from ```mermaid fences, see mermaid_render.js */
+        .mermaid-diagram {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            padding: 8px;
+            overflow-x: auto;
+        }
+        .mermaid-diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+        /* Markdown images (![alt](url)) in answers: never wider than the bubble */
+        .bot-message img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 6px 0;
+        }
         code {
             font-family: monospace;
             background-color: #f0f0f0;
@@ -496,6 +515,8 @@
 <!-- Include marked.js for Markdown parsing (bundled so chat renders offline
      and on iOS, where the page loads from a local file). -->
 <script src="marked.min.js"></script>
+<!-- Lazy-loads mermaid from the CDN when an answer has a ```mermaid fence. -->
+<script src="mermaid_render.js"></script>
 
 <script>
     // Global variables
@@ -851,6 +872,7 @@
                 messageDiv.textContent = msg.content;
             } else {
                 messageDiv.innerHTML = marked.parse(msg.content);
+                EinkbroMermaid.renderBlocks(messageDiv);
             }
             
             chatMessages.appendChild(messageDiv);
@@ -1119,6 +1141,7 @@
             // If it's the final update, render the complete markdown
             const completeText = streamText + text;
             element.innerHTML = marked.parse(completeText);
+            EinkbroMermaid.renderBlocks(element);
             
             // Update the session with the complete message
             if (currentMessages.length > 0) {
@@ -1154,6 +1177,7 @@
         } else {
             const messageDiv = addMessage('', false);
             messageDiv.innerHTML = marked.parse(markdown);
+            EinkbroMermaid.renderBlocks(messageDiv);
             //scrollToBottom();
         }
     }

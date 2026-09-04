@@ -74,6 +74,11 @@ class TranslationViewModel(
 
     private var toBeSavedResponseString = ""
 
+    // Raw markdown behind [responseMessage] for AI answers (empty for the plain
+    // translators), so the dialog can pick out images an AnnotatedString can't show.
+    private val _responseMarkdown = MutableStateFlow("")
+    val responseMarkdown: StateFlow<String> = _responseMarkdown.asStateFlow()
+
     /**
      * While a task stream is driving [_responseMessage], any default GPT / translate
      * action should be suppressed. [TranslateDialogFragment.onCreateView] unconditionally
@@ -101,6 +106,7 @@ class TranslationViewModel(
     fun updateInputMessage(userMessage: String) {
         _inputMessage.value = HelperUnit.unescapeJava(userMessage)
         _responseMessage.value = AnnotatedString("...")
+        _responseMarkdown.value = ""
     }
 
     fun updateTranslationLanguage(language: TranslationLanguage) {
@@ -110,6 +116,7 @@ class TranslationViewModel(
     fun updateTranslationLanguageAndGo(language: TranslationLanguage) {
         updateTranslationLanguage(language)
         _responseMessage.value = AnnotatedString("...")
+        _responseMarkdown.value = ""
         when (_translateMethod.value) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
@@ -130,6 +137,7 @@ class TranslationViewModel(
     fun updateSourceLanguageAndGo(translateApi: TRANSLATE_API, language: TranslationLanguage) {
         updateSourceLanguage(language)
         _responseMessage.value = AnnotatedString("...")
+        _responseMarkdown.value = ""
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
             TRANSLATE_API.PAPAGO -> callPapagoTranslate()
@@ -148,6 +156,7 @@ class TranslationViewModel(
         _translateMethod.value = translateApi
         config.ai.externalSearchMethod = translateApi
         _responseMessage.value = AnnotatedString("...")
+        _responseMarkdown.value = ""
 
         if (userMessage != null) {
             _inputMessage.value = userMessage
@@ -209,11 +218,14 @@ class TranslationViewModel(
         updateTranslateMethod(TRANSLATE_API.LLM)
         _inputMessage.value = ""
         _responseMessage.value = AnnotatedString("…")
+        _responseMarkdown.value = ""
         taskStreamJob?.cancel()
         taskStreamJob = viewModelScope.launch {
             progressFlow.collect { progress ->
                 if (progress == null) return@collect
-                _responseMessage.value = HelperUnit.parseMarkdown(renderProgress(progress))
+                val progressMarkdown = renderProgress(progress)
+                _responseMarkdown.value = progressMarkdown
+                _responseMessage.value = HelperUnit.parseMarkdown(progressMarkdown)
             }
         }
     }
@@ -394,6 +406,7 @@ class TranslationViewModel(
             )
         }
         toBeSavedResponseString = ""
+        _responseMarkdown.value = ""
     }
 
 
@@ -451,6 +464,7 @@ class TranslationViewModel(
                 ?: "Something went wrong."
             // to remove think content from qwen3-style responses
             toBeSavedResponseString = responseContent
+            _responseMarkdown.value = responseContent
                 .replace(Regex("""<think>[\s\S]*?</think>\s*"""), "")
             _responseMessage.value = AnnotatedString(toBeSavedResponseString)
         }
@@ -460,6 +474,7 @@ class TranslationViewModel(
         when (val result = openAiRepository.queryGemini(messages, gptActionInfo)) {
             is ApiResult.Success -> {
                 toBeSavedResponseString = result.value
+                _responseMarkdown.value = result.value
                 _responseMessage.value = AnnotatedString(result.value)
             }
             is ApiResult.Failure -> emitFailure(result)
@@ -478,6 +493,7 @@ class TranslationViewModel(
                     responseString += it
                 }
                 toBeSavedResponseString = responseString.unescape()
+                _responseMarkdown.value = responseString.unescape()
                 _responseMessage.value = HelperUnit.parseMarkdown(toBeSavedResponseString)
             },
             doneAction = { },
@@ -503,6 +519,7 @@ class TranslationViewModel(
                 "AI request failed: ${failure.message}"
         }
         toBeSavedResponseString = text
+        _responseMarkdown.value = text
         _responseMessage.value = AnnotatedString(text)
         viewModelScope.launch { _errorFlow.emit(text) }
     }
