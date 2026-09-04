@@ -69,6 +69,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.GptActionScope
+import info.plateaukao.einkbro.unit.MarkdownBlocks
 import info.plateaukao.einkbro.unit.ShareUtil
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
@@ -181,6 +182,7 @@ private fun TranslateResponse(
     val iconPadding = 5.dp
     val requestMessage by viewModel.inputMessage.collectAsState()
     val responseMessage by viewModel.responseMessage.collectAsState()
+    val responseMarkdown by viewModel.responseMarkdown.collectAsState()
     val rotateScreen by viewModel.rotateResultScreen.collectAsState()
     val showRequest = remember { mutableStateOf(false) }
 
@@ -284,6 +286,10 @@ private fun TranslateResponse(
                     getTranslationWebView(),
                     responseMessage.text
                 )
+            } else if (responseMessage.text != "..." && MarkdownBlocks.hasRichBlocks(responseMarkdown)) {
+                // AI answer with ![alt](url) images: text runs stay AnnotatedString,
+                // each image gets a view of its own.
+                RichMarkdownResponse(responseMarkdown, modifier = Modifier.fillMaxWidth())
             } else {
                 Text(
                     text = responseMessage,
