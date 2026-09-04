@@ -1,11 +1,16 @@
 package info.plateaukao.einkbro.view
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.toArgb
@@ -546,38 +551,68 @@ private class PatternBoxDrawable(
 
 /**
  * Applies the themed frame to a framework dialog (AlertDialog etc.) whose
- * XML style would otherwise pin a static black border. Call after create().
+ * XML style would otherwise pin a static black border, strips any chrome the
+ * vendor ROM bakes into the dialog panel, and tints the button bar. Call
+ * after create(). [frame] defaults to the edge-to-edge window panel; pass
+ * [ThemedBorders.dialogFrame] for the 16dp-margin variant.
  */
-fun <T : android.app.Dialog> T.withThemedFrame(): T = apply {
-    window?.setBackgroundDrawable(ThemedBorders.windowPanel(context))
+fun <T : Dialog> T.withThemedFrame(frame: Drawable = ThemedBorders.windowPanel(context)): T = apply {
+    window?.setBackgroundDrawable(frame)
+    withoutVendorPanelBorder()
     withThemedButtons()
 }
 
 /**
- * Tints an AlertDialog's button-bar buttons with the theme accent, replacing
- * MyButtonStyle's static black-on-white look. The buttons only exist once the
- * dialog's content is installed (during show), so the tint runs when the decor
- * attaches — an attach listener rather than setOnShowListener, which call
- * sites may already use for their own purposes.
+ * Removes the decoration some vendor ROMs give the framework AlertDialog
+ * panel. Onyx Boox firmware sets alert_dialog_material's parentPanel to a
+ * white, black-stroked rounded shape (its DeviceDefault layout uses a
+ * matching foreground) as an e-ink stand-in for the window shadow; under the
+ * themed window frame that draws a second box inside the border and hides
+ * the frame's fill. Stock Android leaves the panel undecorated, so this is a
+ * no-op there.
  */
-fun <T : android.app.Dialog> T.withThemedButtons(): T = apply {
-    if (this !is android.app.AlertDialog) return@apply
-    fun tint() {
+fun <T : Dialog> T.withoutVendorPanelBorder(): T = apply {
+    if (this !is AlertDialog) return@apply
+    onContentAttached {
+        val panelId = context.resources.getIdentifier("parentPanel", "id", "android")
+        val panel = panelId.takeIf { it != 0 }?.let { findViewById<View>(it) }
+            ?: findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0)
+        panel?.background = null
+        panel?.foreground = null
+    }
+}
+
+/**
+ * Tints an AlertDialog's button-bar buttons with the theme accent, replacing
+ * MyButtonStyle's static black-on-white look.
+ */
+fun <T : Dialog> T.withThemedButtons(): T = apply {
+    if (this !is AlertDialog) return@apply
+    onContentAttached {
         val accent = ThemedBorders.accentArgb(context)
         intArrayOf(
-            android.content.DialogInterface.BUTTON_POSITIVE,
-            android.content.DialogInterface.BUTTON_NEGATIVE,
-            android.content.DialogInterface.BUTTON_NEUTRAL,
+            DialogInterface.BUTTON_POSITIVE,
+            DialogInterface.BUTTON_NEGATIVE,
+            DialogInterface.BUTTON_NEUTRAL,
         ).forEach { which -> getButton(which)?.setTextColor(accent) }
     }
-    val decor = window?.decorView ?: return@apply
+}
+
+/**
+ * Runs [block] once the dialog's content views exist. They are only
+ * installed during show(), so run when the decor attaches -- rather than via
+ * setOnShowListener, which call sites may already use for their own
+ * purposes -- or immediately if the dialog is already showing.
+ */
+private fun Dialog.onContentAttached(block: () -> Unit) {
+    val decor = window?.decorView ?: return
     if (decor.isAttachedToWindow) {
-        tint()
+        block()
     } else {
         decor.addOnAttachStateChangeListener(
-            object : android.view.View.OnAttachStateChangeListener {
-                override fun onViewAttachedToWindow(v: android.view.View) = tint()
-                override fun onViewDetachedFromWindow(v: android.view.View) = Unit
+            object : View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) = block()
+                override fun onViewDetachedFromWindow(v: View) = Unit
             }
         )
     }

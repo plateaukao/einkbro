@@ -15,7 +15,7 @@ import info.plateaukao.einkbro.unit.ViewUnit.dp
 import org.koin.core.component.KoinComponent
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import info.plateaukao.einkbro.view.ThemedBorders
+import info.plateaukao.einkbro.view.withThemedFrame
 
 class ListSettingWithNameDialog(
     private val context: Context,
@@ -60,7 +60,7 @@ class ListSettingWithNameDialog(
                 onTitleAction?.invoke()
             }
             dialog.show()
-            dialog.window?.setBackgroundDrawable(ThemedBorders.windowPanel(context))
+            dialog.withThemedFrame()
             dialog.window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
@@ -118,7 +118,7 @@ class ListSettingWithNameDialog(
            }
        }.create().also {
            it.show()
-           it.window?.setBackgroundDrawable(ThemedBorders.windowPanel(context))
+           it.withThemedFrame()
            it.window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
        }
    }

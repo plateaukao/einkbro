@@ -37,6 +37,7 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import info.plateaukao.einkbro.view.ThemedBorders
+import info.plateaukao.einkbro.view.withThemedFrame
 
 /**
  * In-process replacement for [Intent.createChooser]. The system chooser
@@ -74,7 +75,7 @@ class OpenWithDialog(
             .create()
             .apply {
                 window?.setGravity(if (config.ui.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
-                window?.setBackgroundDrawable(ThemedBorders.dialogFrame(activity))
+                withThemedFrame(ThemedBorders.dialogFrame(activity))
                 window?.decorView?.setViewTreeLifecycleOwner(activity as LifecycleOwner)
                 window?.decorView?.setViewTreeSavedStateRegistryOwner(activity as SavedStateRegistryOwner)
             }
