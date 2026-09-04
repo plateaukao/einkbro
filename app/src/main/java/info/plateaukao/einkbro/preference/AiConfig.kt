@@ -33,6 +33,16 @@ class AiConfig(private val sp: SharedPreferences) {
     var gptModel by StringPreference(sp, K_GPT_MODEL, "gpt-4.1")
     var alternativeModel by StringPreference(sp, K_ALTERNATIVE_MODEL, gptModel)
     var geminiModel by StringPreference(sp, K_GEMINI_MODEL, "gemini-3.5-flash-lite")
+
+    // Model for transcribing caption-less YouTube videos (YouTubeCaptionFetcher). Kept
+    // apart from the chat model because the video is passed as a YouTube URL, which
+    // needs a general multimodal model: the dedicated *-transcribe models are
+    // audio-only and reject video input.
+    var geminiTranscribeModel by StringPreference(
+        sp,
+        K_GEMINI_TRANSCRIBE_MODEL,
+        DEFAULT_GEMINI_TRANSCRIBE_MODEL
+    )
     var gptVoiceOption: GptVoiceOption
         get() = GptVoiceOption.entries[sp.getInt("K_GPT_VOICE_OPTION", 0)]
         set(value) = sp.edit { putInt("K_GPT_VOICE_OPTION", value.ordinal) }
@@ -207,6 +217,8 @@ class AiConfig(private val sp: SharedPreferences) {
         const val K_GPT_VOICE_PROMPT = "sp_gpt_voice_prompt"
         const val K_ALTERNATIVE_MODEL = "sp_alternative_model"
         const val K_GEMINI_MODEL = "sp_gemini_model"
+        const val K_GEMINI_TRANSCRIBE_MODEL = "sp_gemini_transcribe_model"
+        const val DEFAULT_GEMINI_TRANSCRIBE_MODEL = "gemini-3.5-flash"
         const val K_EXTERNAL_SEARCH_WITH_GPT = "sp_external_search_with_gpt"
         const val K_EXTERNAL_SEARCH_WITH_POPUP = "sp_external_search_with_pop"
         const val K_ENABLE_OPEN_AI_STREAM = "sp_enable_open_ai_stream"

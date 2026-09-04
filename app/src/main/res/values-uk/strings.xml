@@ -360,6 +360,8 @@
     <string name="setting_summary_external_search_pop">Пошук як спливний словник (для інтеграції з додатками для читання)</string>
     <string name="setting_summary_gemini_key">Введіть API-ключ Gemini</string>
     <string name="setting_summary_gemini_model_name">Введіть назву моделі Gemini (за замовч.: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Модель Gemini для транскрипції</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Модель для розшифровки відео без субтитрів; має приймати відео на вхід (типово: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">Доступні варіанти: tts-1 (за замовч.), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">За замовч. gpt-4.1. Введіть іншу назву моделі за потреби</string>
     <string name="setting_summary_gpt_prompt_for_tts">Інструкції для моделі gpt-4o-mini-tts</string>

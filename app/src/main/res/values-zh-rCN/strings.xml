@@ -398,6 +398,8 @@
     <string name="setting_summary_other_model_name">输入替代服务器模型名称</string>
     <string name="setting_title_gemini_model_name">Gemini模型名称</string>
     <string name="setting_summary_gemini_model_name">输入Gemini模型名称 (默认: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini 转录模型</string>
+    <string name="setting_summary_gemini_transcribe_model_name">用于转录无字幕视频的模型，须支持视频输入（默认：gemini-3.5-flash）</string>
     <string name="select_sentence">选择语句</string>
     <string name="select_paragraph">选择段落</string>
     <string name="setting_app_locale">界面语言</string>

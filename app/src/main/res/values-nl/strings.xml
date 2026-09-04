@@ -447,6 +447,8 @@
     <string name="setting_summary_other_model_name">Modelnaam voor alternatieve server invoeren</string>
     <string name="setting_title_gemini_model_name">Gemini-modelnaam</string>
     <string name="setting_summary_gemini_model_name">Gemini-modelnaam invoeren (standaard: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini-transcriptiemodel</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Model voor het transcriberen van video\'s zonder ondertiteling; moet video-invoer accepteren (standaard: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">AI-resultaatgeschiedenis</string>
     <string name="setting_summary_gpt_query_list">Opgeslagen AI-queryresultaten</string>
     <string name="select_sentence">Zin selecteren</string>

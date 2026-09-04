@@ -371,6 +371,8 @@
     <string name="setting_summary_external_search_pop">Søk som popup-ordbok (egnet for leseapps ordbokintegrasjon)</string>
     <string name="setting_summary_gemini_key">Skriv inn Gemini API-nøkkel</string>
     <string name="setting_summary_gemini_model_name">Skriv inn Gemini-modellnavn (standard: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini-transkripsjonsmodell</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Modell for transkripsjon av videoer uten undertekster; må godta videoinndata (standard: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">Tilgjengelige alternativer: tts-1 (standard), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Standard er gpt-4.1. Skriv inn annet modellnavn om nødvendig</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruksjoner når gpt-4o-mini-tts-modellen brukes.</string>

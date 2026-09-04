@@ -382,6 +382,8 @@
     <string name="setting_summary_external_search_pop">ポップアップ辞書として検索（リーダーアプリの辞書連携に最適）</string>
     <string name="setting_summary_gemini_key">Gemini APIキーを入力</string>
     <string name="setting_summary_gemini_model_name">Geminiモデル名を入力（デフォルト: gemini-3.5-flash-lite）</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini文字起こしモデル</string>
+    <string name="setting_summary_gemini_transcribe_model_name">字幕のない動画の文字起こしに使うモデル。動画入力に対応している必要があります（デフォルト: gemini-3.5-flash）</string>
     <string name="setting_summary_gpt_audio_model_name">選択肢: tts-1（デフォルト）、tts-1-hd、gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">デフォルトはgpt-4.1。必要に応じて他のモデル名を入力</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-ttsモデル使用時のインストラクション</string>

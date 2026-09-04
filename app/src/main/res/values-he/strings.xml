@@ -463,6 +463,8 @@
     <string name="setting_summary_other_model_name">הזן שם מודל עבור שרת חלופי</string>
     <string name="setting_title_gemini_model_name">שם מודל Gemini</string>
     <string name="setting_summary_gemini_model_name">הזן שם מודל Gemini (ברירת מחדל: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">מודל Gemini לתמלול</string>
+    <string name="setting_summary_gemini_transcribe_model_name">מודל לתמלול סרטונים ללא כתוביות; חייב לתמוך בקלט וידאו (ברירת מחדל: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">היסטוריית תוצאות AI</string>
     <string name="setting_summary_gpt_query_list">תוצאות שאילתות AI שנשמרו</string>
     <string name="select_sentence">בחירת משפט</string>

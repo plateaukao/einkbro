@@ -448,6 +448,8 @@
     <string name="setting_summary_other_model_name">Introduceți numele modelului pentru serverul alternativ</string>
     <string name="setting_title_gemini_model_name">Nume model Gemini</string>
     <string name="setting_summary_gemini_model_name">Introduceți numele modelului Gemini (implicit: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Model de transcriere Gemini</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Model pentru transcrierea videoclipurilor fără subtitrări; trebuie să accepte intrare video (implicit: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">Istoric rezultate IA</string>
     <string name="setting_summary_gpt_query_list">Rezultate IA salvate</string>
     <string name="select_sentence">Selectare propoziție</string>

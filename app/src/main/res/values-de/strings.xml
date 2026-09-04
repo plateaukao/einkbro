@@ -440,6 +440,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_other_model_name">Modellnamen für alternativen Server eingeben</string>
     <string name="setting_title_gemini_model_name">Gemini-Modellname</string>
     <string name="setting_summary_gemini_model_name">Gemini-Modellnamen eingeben (Standard: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini-Transkriptionsmodell</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Modell zum Transkribieren von Videos ohne Untertitel; muss Videoeingabe unterstützen (Standard: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">KI-Ergebnisverlauf</string>
     <string name="setting_summary_gpt_query_list">Gespeicherte KI-Abfrageergebnisse</string>
     <string name="select_sentence">Satz auswählen</string>

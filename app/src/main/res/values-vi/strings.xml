@@ -372,6 +372,8 @@
     <string name="setting_summary_external_search_pop">Tìm kiếm dưới dạng từ điển bật lên (phù hợp để tích hợp từ điển ứng dụng đọc)</string>
     <string name="setting_summary_gemini_key">Nhập khóa API Gemini</string>
     <string name="setting_summary_gemini_model_name">Nhập tên mô hình Gemini (mặc định: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Mô hình chép lời Gemini</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Mô hình dùng để chép lời video không có phụ đề; phải hỗ trợ đầu vào video (mặc định: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">Tùy chọn: tts-1 (mặc định), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Mặc định là gpt-4.1. Nhập tên mô hình khác nếu cần</string>
     <string name="setting_summary_gpt_prompt_for_tts">Hướng dẫn khi dùng mô hình gpt-4o-mini-tts</string>

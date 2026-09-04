@@ -463,6 +463,8 @@
     <string name="setting_summary_other_model_name">Εισάγετε όνομα μοντέλου για εναλλακτικό διακομιστή</string>
     <string name="setting_title_gemini_model_name">Όνομα μοντέλου Gemini</string>
     <string name="setting_summary_gemini_model_name">Εισάγετε όνομα μοντέλου Gemini (προεπιλογή: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Μοντέλο απομαγνητοφώνησης Gemini</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Μοντέλο για απομαγνητοφώνηση βίντεο χωρίς υπότιτλους· πρέπει να δέχεται είσοδο βίντεο (προεπιλογή: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">Ιστορικό αποτελεσμάτων AI</string>
     <string name="setting_summary_gpt_query_list">Αποθηκευμένα αποτελέσματα ερωτημάτων AI</string>
     <string name="select_sentence">Επιλογή Πρότασης</string>

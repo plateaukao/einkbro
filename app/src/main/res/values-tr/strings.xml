@@ -463,6 +463,8 @@
     <string name="setting_summary_other_model_name">Alternatif sunucu için model adı girin</string>
     <string name="setting_title_gemini_model_name">Gemini model adı</string>
     <string name="setting_summary_gemini_model_name">Gemini model adını girin (varsayılan: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini transkripsiyon modeli</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Altyazısız videoları yazıya dökmek için model; video girişini desteklemelidir (varsayılan: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">Yapay zeka sonuç geçmişi</string>
     <string name="setting_summary_gpt_query_list">Kaydedilmiş yapay zeka sorgu sonuçları</string>
     <string name="select_sentence">Cümle Seç</string>

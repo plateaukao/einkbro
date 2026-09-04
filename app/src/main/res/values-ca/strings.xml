@@ -454,6 +454,8 @@
     <string name="setting_summary_other_model_name">Introduïu el nom del model per al servidor alternatiu</string>
     <string name="setting_title_gemini_model_name">Nom del model Gemini</string>
     <string name="setting_summary_gemini_model_name">Introduïu el nom del model Gemini (per defecte: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Model de transcripció de Gemini</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Model per transcriure vídeos sense subtítols; ha d\'acceptar entrada de vídeo (per defecte: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">Historial de resultats d\'IA</string>
     <string name="setting_summary_gpt_query_list">Resultats de consultes d\'IA desats</string>
     <string name="select_sentence">Seleccionar frase</string>

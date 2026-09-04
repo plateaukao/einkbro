@@ -463,6 +463,8 @@
     <string name="setting_summary_other_model_name">أدخل اسم النموذج للخادم البديل</string>
     <string name="setting_title_gemini_model_name">اسم نموذج Gemini</string>
     <string name="setting_summary_gemini_model_name">أدخل اسم نموذج Gemini (الافتراضي: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">نموذج Gemini للتفريغ النصي</string>
+    <string name="setting_summary_gemini_transcribe_model_name">النموذج المستخدم لتفريغ مقاطع الفيديو بدون ترجمة؛ يجب أن يقبل إدخال الفيديو (الافتراضي: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">سجل نتائج الذكاء الاصطناعي</string>
     <string name="setting_summary_gpt_query_list">نتائج استعلام الذكاء الاصطناعي المحفوظة</string>
     <string name="select_sentence">تحديد جملة</string>

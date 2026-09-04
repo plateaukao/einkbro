@@ -632,6 +632,8 @@
     <string name="setting_summary_other_model_name">Adja meg a modell nevét az alternatív szerverhez</string>
     <string name="setting_title_gemini_model_name">Gemini modell neve</string>
     <string name="setting_summary_gemini_model_name">Adja meg a Gemini modell nevét (alapértelmezett: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini átírási modell</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Modell a felirat nélküli videók átírásához; el kell fogadnia a videobemenetet (alapértelmezett: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">AI eredmény előzmények</string>
     <string name="setting_summary_gpt_query_list">Mentett AI lekérdezési eredmények</string>
     <string name="select_sentence">Mondat kijelölése</string>

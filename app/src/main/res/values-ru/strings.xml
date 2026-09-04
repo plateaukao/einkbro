@@ -481,6 +481,8 @@
     <string name="setting_summary_other_model_name">Вставьте сюда имя модели для альтернативного сервера</string>
     <string name="setting_title_gemini_model_name">Название модели Gemini</string>
     <string name="setting_summary_gemini_model_name">Вставьте сюда имя модели Gemini (модель по умолч.: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Модель Gemini для транскрипции</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Модель для расшифровки видео без субтитров; должна принимать видео на вход (по умолчанию: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">История результатов ИИ</string>
     <string name="setting_summary_gpt_query_list">Сохранённая история результатов ИИ</string>
     <string name="select_sentence">Выбрать предложение</string>

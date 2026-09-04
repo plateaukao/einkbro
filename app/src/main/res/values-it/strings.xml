@@ -439,6 +439,8 @@
     <string name="setting_summary_other_model_name">Inserisci il nome del modello per il server alternativo</string>
     <string name="setting_title_gemini_model_name">Nome modello Gemini</string>
     <string name="setting_summary_gemini_model_name">Inserisci il nome del modello Gemini (predefinito: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Modello di trascrizione Gemini</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Modello per trascrivere i video senza sottotitoli; deve accettare input video (predefinito: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">Cronologia risultati IA</string>
     <string name="setting_summary_gpt_query_list">Risultati IA salvati</string>
     <string name="select_sentence">Seleziona frase</string>

@@ -371,6 +371,8 @@
     <string name="setting_summary_external_search_pop">Hae ponnahdusikkunasanakirjana (sopii lukusovellusten sanakirjaintegraatioon)</string>
     <string name="setting_summary_gemini_key">Syötä Gemini API -avain</string>
     <string name="setting_summary_gemini_model_name">Syötä Gemini-mallin nimi (oletus: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini-litterointimalli</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Malli tekstityksettömien videoiden litterointiin; sen on hyväksyttävä videosyöte (oletus: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">Saatavilla olevat vaihtoehdot: tts-1 (oletus), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Oletus on gpt-4.1. Syötä muu mallinimi tarvittaessa</string>
     <string name="setting_summary_gpt_prompt_for_tts">Ohjeet kun gpt-4o-mini-tts-mallia käytetään.</string>

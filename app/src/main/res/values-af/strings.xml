@@ -372,6 +372,8 @@
     <string name="setting_summary_external_search_pop">Soek as opspringwoordeboek (geskik vir leser-program woordeboekintegrasie)</string>
     <string name="setting_summary_gemini_key">Voer Gemini API-sleutel in</string>
     <string name="setting_summary_gemini_model_name">Voer Gemini-modelnaam in (verstek: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini-transkripsiemodel</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Model om video\'s sonder onderskrifte te transkribeer; moet video-invoer aanvaar (verstek: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">Opsies: tts-1 (verstek), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Verstek is gpt-4.1. Voer ander modelnaam in indien nodig</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruksies wanneer gpt-4o-mini-tts-model gebruik word</string>

@@ -217,6 +217,12 @@ fun buildGptGeminiSettingItems(deps: SettingScreenDeps): List<SettingItemInterfa
             R.string.setting_summary_gemini_model_name,
             config.ai::geminiModel
         ),
+        ValueSettingItem(
+            R.string.setting_title_gemini_transcribe_model_name,
+            0,
+            R.string.setting_summary_gemini_transcribe_model_name,
+            config.ai::geminiTranscribeModel
+        ),
         testConnectionItem(deps, GptActionType.Gemini) { config.ai.geminiModel },
     )
 }

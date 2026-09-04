@@ -483,6 +483,8 @@
     <string name="setting_summary_other_model_name">대체 서버에 대한 모델 이름 입력</string>
     <string name="setting_title_gemini_model_name">Gemini 모델 이름</string>
     <string name="setting_summary_gemini_model_name">Gemini 모델 이름 입력(기본값: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini 전사 모델</string>
+    <string name="setting_summary_gemini_transcribe_model_name">자막 없는 동영상을 전사할 모델. 동영상 입력을 지원해야 합니다 (기본값: gemini-3.5-flash)</string>
     <string name="setting_title_gpt_query_list">AI 결과 기록</string>
     <string name="setting_summary_gpt_query_list">저장된 AI 쿼리 결과</string>
     <string name="select_sentence">문장 선택</string>

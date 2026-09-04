@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.caption
 
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.VideoTranscript
+import info.plateaukao.einkbro.preference.AiConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -60,11 +61,14 @@ private data class GeminiContent(val parts: List<GeminiPart>)
 private data class GeminiSafetySetting(val category: String, val threshold: String)
 
 @Serializable
-private data class GeminiThinkingConfig(val thinkingBudget: Int)
+private data class GeminiThinkingConfig(
+    val thinkingBudget: Int? = null,
+    val thinkingLevel: String? = null,
+)
 
 @Serializable
 private data class GeminiGenerationConfig(
-    val thinkingConfig: GeminiThinkingConfig,
+    val thinkingConfig: GeminiThinkingConfig? = null,
     val mediaResolution: String,
 )
 
@@ -216,13 +220,41 @@ class YouTubeCaptionFetcher : KoinComponent {
     private sealed interface GeminiOutcome {
         data class Transcript(val text: String) : GeminiOutcome
         data object NoSpeech : GeminiOutcome
-        data class Error(val message: String, val transient: Boolean) : GeminiOutcome
+        data class Error(
+            val message: String,
+            val transient: Boolean,
+            val httpCode: Int = 0,
+        ) : GeminiOutcome
     }
 
-    private suspend fun requestGeminiTranscript(videoId: String): GeminiOutcome =
+    private suspend fun requestGeminiTranscript(videoId: String): GeminiOutcome {
+        val model = config.ai.geminiTranscribeModel
+            .ifBlank { AiConfig.DEFAULT_GEMINI_TRANSCRIBE_MODEL }
+        val outcome = postGenerateContent(model, geminiRequestBody(videoId, thinkingConfigFor(model)))
+        // The thinking knob is the one part of the request that differs per model
+        // generation, and a model that doesn't know it answers with a bare 400
+        // INVALID_ARGUMENT. Retry once with the model's default (dynamic) thinking
+        // before giving up on the transcription.
+        if (outcome is GeminiOutcome.Error && outcome.httpCode == 400) {
+            Timber.w("Gemini rejected the thinking config for $model; retrying without it")
+            return postGenerateContent(model, geminiRequestBody(videoId, thinkingConfig = null))
+        }
+        return outcome
+    }
+
+    /**
+     * Transcription needs no reasoning, so ask for the least thinking the model
+     * allows. Gemini 2.5 only understands a numeric budget (a level is a 400); 3.x
+     * replaced it with levels, and the 3.5-flash-lite rejects a budget outright,
+     * 3.8-flash rejects "minimal", so "low" is the cheapest value every 3.x accepts.
+     */
+    private fun thinkingConfigFor(model: String): GeminiThinkingConfig =
+        if (model.startsWith("gemini-2")) GeminiThinkingConfig(thinkingBudget = 0)
+        else GeminiThinkingConfig(thinkingLevel = "low")
+
+    private suspend fun postGenerateContent(model: String, body: String): GeminiOutcome =
         withContext(Dispatchers.IO) {
             try {
-                val model = config.ai.geminiModel.ifBlank { "gemini-3.5-flash-lite" }
                 val connection = URL("$GEMINI_API_PREFIX$model:generateContent")
                     .openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
@@ -230,11 +262,12 @@ class YouTubeCaptionFetcher : KoinComponent {
                 connection.setRequestProperty("Content-Type", "application/json")
                 connection.setRequestProperty("x-goog-api-key", config.ai.geminiApiKey)
                 connection.connectTimeout = 15000
-                // Gemini has to ingest the whole video before answering.
-                connection.readTimeout = 300000
-                connection.outputStream.use {
-                    it.write(geminiRequestBody(videoId).toByteArray())
-                }
+                // Gemini has to ingest the whole video before answering, and the wait
+                // isn't proportional to length: a 40-minute English talk answered in
+                // 90 s while a 2-minute Taiwanese clip took close to 5 minutes. Giving
+                // up early still leaves the server-side work billed, so allow 10 min.
+                connection.readTimeout = 600000
+                connection.outputStream.use { it.write(body.toByteArray()) }
                 val code = connection.responseCode
                 if (code != HttpURLConnection.HTTP_OK) {
                     val errorBody = connection.errorStream
@@ -244,6 +277,7 @@ class YouTubeCaptionFetcher : KoinComponent {
                     return@withContext GeminiOutcome.Error(
                         "Gemini ($code): ${parseGeminiError(errorBody)}",
                         transient = code == 429 || code >= 500,
+                        httpCode = code,
                     )
                 }
                 val body = connection.inputStream.use { String(it.readBytes()) }
@@ -267,7 +301,7 @@ class YouTubeCaptionFetcher : KoinComponent {
         "unknown error"
     }
 
-    private fun geminiRequestBody(videoId: String): String {
+    private fun geminiRequestBody(videoId: String, thinkingConfig: GeminiThinkingConfig?): String {
         val request = GeminiRequest(
             contents = listOf(
                 GeminiContent(
@@ -284,7 +318,7 @@ class YouTubeCaptionFetcher : KoinComponent {
                 GeminiSafetySetting("HARM_CATEGORY_DANGEROUS_CONTENT", "BLOCK_NONE"),
             ),
             generationConfig = GeminiGenerationConfig(
-                thinkingConfig = GeminiThinkingConfig(thinkingBudget = 0),
+                thinkingConfig = thinkingConfig,
                 // Transcription only needs the audio track; low resolution cuts the
                 // video-frame token cost roughly 4x, which matters on the free tier.
                 mediaResolution = "MEDIA_RESOLUTION_LOW",

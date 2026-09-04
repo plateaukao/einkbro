@@ -430,6 +430,8 @@
     <string name="setting_summary_other_model_name">Input model name for alternative server</string>
     <string name="setting_title_gemini_model_name">Gemini Model Name</string>
     <string name="setting_summary_gemini_model_name">Input Gemini model name (default: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini 逐字稿模型</string>
+    <string name="setting_summary_gemini_transcribe_model_name">用於將無字幕影片轉成逐字稿的模型，須支援影片輸入（預設：gemini-3.5-flash）</string>
     <string name="setting_title_gpt_query_list">AI 查詢歷史記錄</string>
     <string name="setting_summary_gpt_query_list">已儲存的 AI 回傳結果</string>
     <string name="select_sentence">選取句子</string>

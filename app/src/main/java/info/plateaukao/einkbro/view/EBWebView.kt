@@ -938,9 +938,9 @@ open class EBWebView(
         val notify = onGeminiTranscribe
             ?: { EBToast.show(context, R.string.gemini_transcribing_note) }
         // The full transcript is always fetched; this outer timeout only guards
-        // against a hung network. Sized above the Gemini fallback's 5-minute read
+        // against a hung network. Sized above the Gemini fallback's 10-minute read
         // timeout; on expiry getRawText falls back to page text.
-        val result = withTimeoutOrNull(360_000) {
+        val result = withTimeoutOrNull(660_000) {
             YouTubeCaptionFetcher().fetchCaption(pageUrl, notify)
         } ?: CaptionFetchResult.Failed("timeout", transient = true)
         when (result) {

@@ -369,6 +369,8 @@
     <string name="setting_summary_external_search_pop">Претрага као искачући речник (за интеграцију са апликацијама за читање)</string>
     <string name="setting_summary_gemini_key">Унесите Gemini API кључ</string>
     <string name="setting_summary_gemini_model_name">Унесите назив Gemini модела (подразумевано: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini модел за транскрипцију</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Модел за транскрипцију видео снимака без титлова; мора да прихвата видео улаз (подразумевано: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">Доступне опције: tts-1 (подразумевано), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Подразумевано gpt-4.1. Унесите други назив модела по потреби</string>
     <string name="setting_summary_gpt_prompt_for_tts">Упутства за модел gpt-4o-mini-tts</string>

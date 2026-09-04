@@ -514,6 +514,8 @@
     <string name="setting_summary_external_search_pop">Pencarian sebagai kamus popup (cocok untuk integrasi kamus aplikasi pembaca)</string>
     <string name="setting_summary_gemini_key">Masukkan kunci API Gemini</string>
     <string name="setting_summary_gemini_model_name">Masukkan nama model Gemini (default: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Model transkripsi Gemini</string>
+    <string name="setting_summary_gemini_transcribe_model_name">Model untuk mentranskripsi video tanpa teks; harus menerima input video (bawaan: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">Opsi: tts-1 (default), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_model_name">Default adalah gpt-4.1. Masukkan nama model lain jika perlu</string>
     <string name="setting_summary_gpt_prompt_for_tts">Instruksi saat model gpt-4o-mini-tts digunakan</string>

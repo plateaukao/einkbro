@@ -531,6 +531,8 @@
     <string name="setting_summary_external_search_pop">ᱯᱚᱯᱟᱯ ᱥᱟᱵᱫᱠᱳᱥ ᱞᱮᱠᱟᱛᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱢᱮ (ᱯᱟᱲᱦᱟᱣ ᱮᱯ ᱥᱟᱵᱫᱠᱳᱥ ᱞᱟᱹᱜᱤᱫ)</string>
     <string name="setting_summary_gemini_key">Gemini API ᱪᱟᱹᱵᱤ ᱟᱫᱮᱨ ᱢᱮ</string>
     <string name="setting_summary_gemini_model_name">Gemini ᱢᱚᱰᱮᱞ ᱧᱩᱛᱩᱢ ᱟᱫᱮᱨ ᱢᱮ (ᱢᱩᱞ: gemini-3.5-flash-lite)</string>
+    <string name="setting_title_gemini_transcribe_model_name">Gemini ᱚᱞ ᱨᱩᱣᱟᱹᱲ ᱢᱚᱰᱮᱞ</string>
+    <string name="setting_summary_gemini_transcribe_model_name">ᱥᱟᱵᱴᱟᱭᱴᱚᱞ ᱵᱟᱝ ᱢᱮᱱᱟᱜ ᱣᱤᱰᱤᱭᱚ ᱚᱞ ᱨᱩᱣᱟᱹᱲ ᱞᱟᱹᱜᱤᱫ ᱢᱚᱰᱮᱞ; ᱣᱤᱰᱤᱭᱚ ᱤᱱᱯᱩᱴ ᱦᱟᱛᱟᱣ ᱞᱟᱹᱠᱛᱤ (ᱰᱤᱯᱷᱚᱞᱴ: gemini-3.5-flash)</string>
     <string name="setting_summary_gpt_audio_model_name">ᱵᱤᱠᱚᱞᱯ: tts-1 (ᱢᱩᱞ), tts-1-hd, gpt-4o-mini-tts</string>
     <string name="setting_summary_gpt_prompt_for_tts">gpt-4o-mini-tts ᱢᱚᱰᱮᱞ ᱵᱮᱵᱷᱟᱨ ᱚᱠᱛᱚ ᱱᱤᱨᱫᱮᱥ</string>
     <string name="setting_summary_gpt_query_list">ᱥᱟᱧᱪᱟᱣ ᱟᱠᱟᱱ AI ᱥᱮᱸᱫᱽᱨᱟ ᱛᱮᱞᱟ</string>
