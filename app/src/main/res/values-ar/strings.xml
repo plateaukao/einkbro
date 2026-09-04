@@ -583,6 +583,7 @@
     <string name="drive_not_configured">لم يتم إعداد عميل Google OAuth في هذا الإصدار</string>
     <string name="gemini_transcribing_note">لم يتم العثور على ترجمات. يتم تفريغ الفيديو باستخدام Gemini… قد يستغرق ذلك بضع دقائق.</string>
     <string name="video_transcription_failed">فشل تفريغ الفيديو: %1$s</string>
+    <string name="page_crashed_reloading">تعطلت الصفحة، جارٍ إعادة التحميل…</string>
     <string name="chat_no_web_content">لا يوجد محتوى قابل للقراءة في هذه الصفحة للدردشة حوله</string>
     <string name="setting_test_connection">اختبار الاتصال</string>
     <string name="setting_summary_test_connection">أرسل طلب اختبار صغير باستخدام المفتاح والنموذج أعلاه</string>

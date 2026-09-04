@@ -576,6 +576,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="drive_not_configured">In diesem Build ist kein Google-OAuth-Client konfiguriert</string>
     <string name="gemini_transcribing_note">Keine Untertitel gefunden. Video wird mit Gemini transkribiert… das kann einige Minuten dauern.</string>
     <string name="video_transcription_failed">Videotranskription fehlgeschlagen: %1$s</string>
+    <string name="page_crashed_reloading">Seite abgestürzt. Wird neu geladen…</string>
     <string name="chat_no_web_content">Kein lesbarer Inhalt auf dieser Seite zum Chatten</string>
     <string name="setting_test_connection">Verbindung testen</string>
     <string name="setting_summary_test_connection">Sendet eine kleine Testanfrage mit dem obigen Schlüssel und Modell</string>

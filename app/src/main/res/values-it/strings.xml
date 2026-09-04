@@ -575,6 +575,7 @@
     <string name="drive_not_configured">Nessun client OAuth di Google configurato in questa build</string>
     <string name="gemini_transcribing_note">Nessun sottotitolo trovato. Trascrizione del video con Gemini… potrebbe richiedere alcuni minuti.</string>
     <string name="video_transcription_failed">Trascrizione del video non riuscita: %1$s</string>
+    <string name="page_crashed_reloading">La pagina si è bloccata. Ricaricamento…</string>
     <string name="chat_no_web_content">Nessun contenuto leggibile in questa pagina per la chat</string>
     <string name="setting_test_connection">Prova connessione</string>
     <string name="setting_summary_test_connection">Invia una piccola richiesta di prova con la chiave e il modello sopra</string>

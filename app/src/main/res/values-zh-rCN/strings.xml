@@ -640,6 +640,7 @@
     <string name="drive_not_configured">此版本未配置 Google OAuth 客户端</string>
     <string name="gemini_transcribing_note">未找到字幕。正在使用 Gemini 转录视频……可能需要几分钟。</string>
     <string name="video_transcription_failed">视频转录失败：%1$s</string>
+    <string name="page_crashed_reloading">页面崩溃，正在重新加载…</string>
     <string name="chat_no_web_content">此页面没有可读内容，无法开始聊天</string>
     <string name="setting_test_connection">测试连接</string>
     <string name="setting_summary_test_connection">使用上方的密钥和模型发送一个小测试请求</string>

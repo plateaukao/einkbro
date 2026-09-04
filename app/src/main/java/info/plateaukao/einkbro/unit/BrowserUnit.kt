@@ -13,6 +13,8 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.webkit.RenderProcessGoneDetail
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebView.HitTestResult.ANCHOR_TYPE
 import android.webkit.WebView.HitTestResult.IMAGE_ANCHOR_TYPE
@@ -178,6 +180,14 @@ object BrowserUnit : KoinComponent {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             webViewClient = object : WebViewClient() {
+                // A dead dictionary renderer must not take the app down.
+                @RequiresApi(Build.VERSION_CODES.O)
+                override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                    (view.parent as? ViewGroup)?.removeView(view)
+                    view.destroy()
+                    return true
+                }
+
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     view?.let {

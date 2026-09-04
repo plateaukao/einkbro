@@ -583,6 +583,7 @@
     <string name="drive_not_configured">לא הוגדר לקוח Google OAuth בגרסה זו</string>
     <string name="gemini_transcribing_note">לא נמצאו כתוביות. הסרטון מתומלל באמצעות Gemini… זה עשוי להימשך כמה דקות.</string>
     <string name="video_transcription_failed">תמלול הסרטון נכשל: %1$s</string>
+    <string name="page_crashed_reloading">הדף קרס. טוען מחדש…</string>
     <string name="chat_no_web_content">אין תוכן קריא בדף זה לשיחה</string>
     <string name="setting_test_connection">בדיקת חיבור</string>
     <string name="setting_summary_test_connection">שליחת בקשת בדיקה קטנה עם המפתח והמודל שלמעלה</string>

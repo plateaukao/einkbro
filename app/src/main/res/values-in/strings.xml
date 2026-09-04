@@ -636,6 +636,7 @@
     <string name="drive_not_configured">Tidak ada klien OAuth Google yang dikonfigurasi dalam build ini</string>
     <string name="gemini_transcribing_note">Subtitel tidak ditemukan. Mentranskripsikan video dengan Gemini… ini bisa memakan waktu beberapa menit.</string>
     <string name="video_transcription_failed">Transkripsi video gagal: %1$s</string>
+    <string name="page_crashed_reloading">Halaman mogok. Memuat ulang…</string>
     <string name="chat_no_web_content">Tidak ada konten yang dapat dibaca di halaman ini untuk mengobrol</string>
     <string name="setting_test_connection">Uji koneksi</string>
     <string name="setting_summary_test_connection">Kirim permintaan uji kecil dengan kunci dan model di atas</string>

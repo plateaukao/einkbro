@@ -583,6 +583,7 @@
     <string name="drive_not_configured">Δεν έχει ρυθμιστεί πρόγραμμα-πελάτης Google OAuth σε αυτήν την έκδοση</string>
     <string name="gemini_transcribing_note">Δεν βρέθηκαν υπότιτλοι. Το βίντεο απομαγνητοφωνείται με το Gemini… μπορεί να διαρκέσει μερικά λεπτά.</string>
     <string name="video_transcription_failed">Η απομαγνητοφώνηση του βίντεο απέτυχε: %1$s</string>
+    <string name="page_crashed_reloading">Η σελίδα κατέρρευσε. Επαναφόρτωση…</string>
     <string name="chat_no_web_content">Δεν υπάρχει αναγνώσιμο περιεχόμενο σε αυτήν τη σελίδα για συνομιλία</string>
     <string name="setting_test_connection">Δοκιμή σύνδεσης</string>
     <string name="setting_summary_test_connection">Αποστολή μικρού δοκιμαστικού αιτήματος με το παραπάνω κλειδί και μοντέλο</string>

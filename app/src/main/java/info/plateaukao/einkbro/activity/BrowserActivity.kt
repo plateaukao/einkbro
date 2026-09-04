@@ -23,6 +23,7 @@ import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.webkit.ValueCallback
@@ -638,6 +639,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun onLongPress(message: Message, event: MotionEvent?) = contextMenuDelegate.onLongPress(message, event)
     override fun handleKeyEvent(event: KeyEvent): Boolean = keyHandler.handleKeyEvent(event)
     override fun focusOnInput() = inputBarDelegate.focusOnInput()
+
+    override fun onRenderProcessGone(webView: EBWebView) {
+        // Not a tab (AI link preview, tool WebView, ...): nothing to rebuild.
+        if (!tabManager.recoverCrashedTab(webView)) {
+            (webView.parent as? ViewGroup)?.removeView(webView)
+            webView.destroy()
+        }
+    }
 
     override fun summarizeContent() = aiChatDelegate.summarizeContent()
     override fun chatWithWeb(useSplitScreen: Boolean, content: String?, runWithAction: ChatGPTActionInfo?) = aiChatDelegate.chatWithWeb(useSplitScreen, content, runWithAction)

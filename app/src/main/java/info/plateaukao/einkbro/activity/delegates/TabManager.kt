@@ -20,6 +20,7 @@ import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBWebView
+import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.viewmodel.AlbumViewModel
 import info.plateaukao.einkbro.viewmodel.ExternalSearchViewModel
@@ -313,6 +314,69 @@ class TabManager(
         }
     }
 
+    /**
+     * Rebuilds the tab whose WebView lost its renderer (see
+     * EBWebViewClient.onRenderProcessGone). A fresh EBWebView takes over the dead
+     * one's Album, so the tab keeps its slot and title in the tab list, and its URL
+     * is loaded again. Returns false when [crashed] is not a tab of this container.
+     */
+    // Album id -> time of its last renderer-crash recovery. Per tab, because one
+    // renderer serves every tab, so a single kill legitimately lands here once per
+    // affected tab in quick succession.
+    private val crashRecoveryTimes = mutableMapOf<Int, Long>()
+
+    fun recoverCrashedTab(crashed: EBWebView): Boolean {
+        if (crashed === preloadedWebView) {
+            preloadedWebView = null
+            crashed.destroy()
+            return true
+        }
+        if (browserContainer.indexOf(crashed) < 0) return false
+
+        // A page that kills its renderer on every load (chrome://crash, or one that
+        // reliably exhausts memory) would otherwise reload itself forever; after a
+        // quick second death the tab comes back empty instead.
+        val album = crashed.album
+        val now = System.currentTimeMillis()
+        val lastRecovery = crashRecoveryTimes[album.id] ?: 0L
+        val reloadUrl = if (now - lastRecovery > CRASH_LOOP_WINDOW_MS) {
+            crashed.albumUrl.ifBlank { crashed.initAlbumUrl }
+        } else ""
+        crashRecoveryTimes[album.id] = now
+        val wasCurrent = state.currentAlbumController === crashed
+        val replacement = (preloadedWebView?.also { it.updateUserAgentString() }
+            ?: createWebView()).apply {
+            incognito = crashed.incognito
+            setOnTouchListener(createTouchListener(this))
+        }
+        maybeCreateNewPreloadWebView(true, replacement)
+
+        album.attachController(replacement)
+        replacement.album = album
+        browserContainer.replace(crashed, replacement)
+        (crashed.parent as? ViewGroup)?.removeView(crashed)
+        crashed.destroy()
+
+        if (config.browser.adBlock) {
+            adFilterProvider().setupWebView(replacement)
+        }
+
+        if (wasCurrent) {
+            // The dead tab must not be deactivated or compared against by showAlbum.
+            state.currentAlbumController = null
+            showAlbum(replacement)
+            if (reloadUrl.isNotEmpty()) replacement.loadUrl(reloadUrl)
+        } else {
+            replacement.deactivate()
+            // Load on next activation, the same way a restored background tab does.
+            album.isLoaded = false
+            replacement.initAlbumUrl = reloadUrl
+            updateSavedAlbumInfo()
+        }
+        EBToast.show(activity, R.string.page_crashed_reloading)
+        return true
+    }
+
     fun removeCurrentAlbum() {
         state.currentAlbumController?.let { removeAlbum(it, showHome = false) }
     }
@@ -447,6 +511,7 @@ class TabManager(
     }
 
     companion object {
+        private const val CRASH_LOOP_WINDOW_MS = 10_000L
         private const val SAVE_ALBUM_INFO_DEBOUNCE_MS = 500L
     }
 }

@@ -584,6 +584,7 @@
     <string name="drive_not_configured">Geen Google OAuth-kliënt is in hierdie bou opgestel nie</string>
     <string name="gemini_transcribing_note">Geen onderskrifte gevind nie. Video word met Gemini getranskribeer… dit kan enkele minute duur.</string>
     <string name="video_transcription_failed">Videotranskripsie het misluk: %1$s</string>
+    <string name="page_crashed_reloading">Bladsy het omgeval. Herlaai tans…</string>
     <string name="chat_no_web_content">Geen leesbare inhoud op hierdie bladsy om oor te gesels nie</string>
     <string name="setting_test_connection">Toets verbinding</string>
     <string name="setting_summary_test_connection">Stuur \'n klein toetsversoek met die sleutel en model hierbo</string>

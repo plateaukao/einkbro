@@ -583,6 +583,7 @@
     <string name="drive_not_configured">Ingen Google OAuth-klient er konfigurert i denne builden</string>
     <string name="gemini_transcribing_note">Ingen undertekster funnet. Videoen transkriberes med Gemini… det kan ta noen minutter.</string>
     <string name="video_transcription_failed">Videotranskripsjon mislyktes: %1$s</string>
+    <string name="page_crashed_reloading">Siden krasjet. Laster inn på nytt…</string>
     <string name="chat_no_web_content">Ikke noe lesbart innhold på denne siden å chatte om</string>
     <string name="setting_test_connection">Test tilkobling</string>
     <string name="setting_summary_test_connection">Send en liten testforespørsel med nøkkelen og modellen ovenfor</string>

@@ -581,6 +581,7 @@
     <string name="drive_not_configured">このビルドには Google OAuth クライアントが設定されていません</string>
     <string name="gemini_transcribing_note">字幕が見つかりません。Gemini で動画を文字起こししています… 数分かかることがあります。</string>
     <string name="video_transcription_failed">動画の文字起こしに失敗しました：%1$s</string>
+    <string name="page_crashed_reloading">ページがクラッシュしました。再読み込み中…</string>
     <string name="chat_no_web_content">このページにはチャットできる読み取り可能なコンテンツがありません</string>
     <string name="setting_test_connection">接続テスト</string>
     <string name="setting_summary_test_connection">上記のキーとモデルで小さなテストリクエストを送信します</string>

@@ -575,6 +575,7 @@
     <string name="drive_not_configured">W tej kompilacji nie skonfigurowano klienta Google OAuth</string>
     <string name="gemini_transcribing_note">Nie znaleziono napisów. Transkrybowanie filmu za pomocą Gemini… może to potrwać kilka minut.</string>
     <string name="video_transcription_failed">Transkrypcja wideo nie powiodła się: %1$s</string>
+    <string name="page_crashed_reloading">Strona uległa awarii. Ponowne ładowanie…</string>
     <string name="chat_no_web_content">Brak czytelnej treści na tej stronie do rozmowy</string>
     <string name="setting_test_connection">Testuj połączenie</string>
     <string name="setting_summary_test_connection">Wysyła małe żądanie testowe z powyższym kluczem i modelem</string>

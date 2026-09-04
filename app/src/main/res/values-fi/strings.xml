@@ -583,6 +583,7 @@
     <string name="drive_not_configured">Tässä versiossa ei ole määritetty Google OAuth -asiakasta</string>
     <string name="gemini_transcribing_note">Tekstityksiä ei löytynyt. Videota litteroidaan Geminillä… tämä voi kestää muutaman minuutin.</string>
     <string name="video_transcription_failed">Videon litterointi epäonnistui: %1$s</string>
+    <string name="page_crashed_reloading">Sivu kaatui. Ladataan uudelleen…</string>
     <string name="chat_no_web_content">Tällä sivulla ei ole luettavaa sisältöä keskustelua varten</string>
     <string name="setting_test_connection">Testaa yhteys</string>
     <string name="setting_summary_test_connection">Lähettää pienen testipyynnön yllä olevalla avaimella ja mallilla</string>

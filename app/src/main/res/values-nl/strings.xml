@@ -583,6 +583,7 @@
     <string name="drive_not_configured">Er is geen Google OAuth-client geconfigureerd in deze build</string>
     <string name="gemini_transcribing_note">Geen ondertitels gevonden. Video wordt getranscribeerd met Gemini… dit kan enkele minuten duren.</string>
     <string name="video_transcription_failed">Videotranscriptie mislukt: %1$s</string>
+    <string name="page_crashed_reloading">Pagina is gecrasht. Opnieuw laden…</string>
     <string name="chat_no_web_content">Geen leesbare inhoud op deze pagina om over te chatten</string>
     <string name="setting_test_connection">Verbinding testen</string>
     <string name="setting_summary_test_connection">Stuur een klein testverzoek met de bovenstaande sleutel en het model</string>

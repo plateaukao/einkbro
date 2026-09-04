@@ -584,6 +584,7 @@
     <string name="drive_not_configured">Aucun client OAuth Google n\'est configuré dans cette version</string>
     <string name="gemini_transcribing_note">Aucun sous-titre trouvé. Transcription de la vidéo avec Gemini… cela peut prendre quelques minutes.</string>
     <string name="video_transcription_failed">Échec de la transcription de la vidéo : %1$s</string>
+    <string name="page_crashed_reloading">La page a planté. Rechargement…</string>
     <string name="chat_no_web_content">Aucun contenu lisible sur cette page pour discuter</string>
     <string name="setting_test_connection">Tester la connexion</string>
     <string name="setting_summary_test_connection">Envoie une petite requête de test avec la clé et le modèle ci-dessus</string>

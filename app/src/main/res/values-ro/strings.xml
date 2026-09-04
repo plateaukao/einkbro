@@ -584,6 +584,7 @@
     <string name="drive_not_configured">Niciun client Google OAuth nu este configurat în această versiune</string>
     <string name="gemini_transcribing_note">Nu s-au găsit subtitrări. Se transcrie videoclipul cu Gemini… poate dura câteva minute.</string>
     <string name="video_transcription_failed">Transcrierea videoclipului a eșuat: %1$s</string>
+    <string name="page_crashed_reloading">Pagina s-a blocat. Se reîncarcă…</string>
     <string name="chat_no_web_content">Nu există conținut lizibil pe această pagină pentru chat</string>
     <string name="setting_test_connection">Testează conexiunea</string>
     <string name="setting_summary_test_connection">Trimite o mică solicitare de test cu cheia și modelul de mai sus</string>

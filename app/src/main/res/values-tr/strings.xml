@@ -583,6 +583,7 @@
     <string name="drive_not_configured">Bu derlemede yapılandırılmış bir Google OAuth istemcisi yok</string>
     <string name="gemini_transcribing_note">Altyazı bulunamadı. Video Gemini ile yazıya dökülüyor… bu birkaç dakika sürebilir.</string>
     <string name="video_transcription_failed">Video transkripsiyonu başarısız oldu: %1$s</string>
+    <string name="page_crashed_reloading">Sayfa çöktü. Yeniden yükleniyor…</string>
     <string name="chat_no_web_content">Bu sayfada sohbet edilecek okunabilir içerik yok</string>
     <string name="setting_test_connection">Bağlantıyı test et</string>
     <string name="setting_summary_test_connection">Yukarıdaki anahtar ve modelle küçük bir test isteği gönderir</string>

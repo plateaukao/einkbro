@@ -627,6 +627,7 @@
     <string name="drive_not_configured">ᱱᱚᱶᱟ ᱵᱤᱞᱰ ᱨᱮ Google OAuth ᱠᱞᱟᱭᱮᱱᱴ ᱵᱟᱹᱱᱩᱜᱼᱟ</string>
     <string name="gemini_transcribing_note">ᱥᱟᱵᱴᱟᱭᱴᱚᱞ ᱵᱟᱝ ᱧᱟᱢ ᱟᱠᱟᱱᱟ ᱾ Gemini ᱥᱟᱶᱛᱮ ᱵᱷᱤᱰᱤᱭᱚ ᱛᱨᱟᱱᱥᱠᱨᱤᱯᱴ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ… ᱱᱚᱶᱟ ᱨᱮ ᱛᱷᱚᱲᱟ ᱢᱤᱱᱤᱴ ᱞᱟᱜᱟᱣ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾</string>
     <string name="video_transcription_failed">ᱵᱷᱤᱰᱤᱭᱚ ᱛᱨᱟᱱᱥᱠᱨᱤᱯᱴ ᱵᱟᱝ ᱦᱩᱭ ᱞᱮᱱᱟ: %1$s</string>
+    <string name="page_crashed_reloading">ᱥᱟᱦᱴᱟ ᱨᱟᱹᱯᱩᱫ ᱮᱱᱟ᱾ ᱫᱚᱦᱲᱟ ᱞᱟᱫᱮ ᱠᱟᱱᱟ…</string>
     <string name="chat_no_web_content">ᱱᱚᱶᱟ ᱥᱟᱦᱴᱟ ᱨᱮ ᱜᱟᱞᱢᱟᱨᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱯᱟᱲᱦᱟᱣ ᱡᱤᱱᱤᱥ ᱵᱟᱹᱱᱩᱜᱼᱟ</string>
     <string name="setting_test_connection">ᱡᱩᱲᱟᱹᱣ ᱵᱤᱰᱟᱹᱣ</string>
     <string name="setting_summary_test_connection">ᱪᱮᱛᱟᱱ ᱨᱮᱭᱟᱜ ᱠᱟᱹᱴᱷᱤ ᱟᱨ ᱢᱚᱰᱮᱞ ᱥᱟᱶ ᱦᱩᱰᱤᱧ ᱵᱤᱰᱟᱹᱣ ᱱᱮᱦᱚᱨ ᱠᱩᱞᱢᱮ</string>

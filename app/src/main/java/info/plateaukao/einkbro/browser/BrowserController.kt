@@ -183,6 +183,13 @@ interface WebViewCallback {
     // Invoked from einkbro:// links on the start page (see EBWebViewClient.handleUri)
     fun focusOnInput()
     fun chooseStartPageBackground()
+
+    /**
+     * The renderer behind [webView] died (killed for memory, or crashed), which
+     * makes the instance unusable; the host swaps it for a fresh one. See
+     * EBWebViewClient.onRenderProcessGone.
+     */
+    fun onRenderProcessGone(webView: EBWebView)
 }
 
 /** Narrow interface for Album — only the callbacks it actually uses */

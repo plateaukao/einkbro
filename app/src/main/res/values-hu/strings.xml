@@ -752,6 +752,7 @@
     <string name="drive_not_configured">Ebben a buildben nincs beállítva Google OAuth-kliens</string>
     <string name="gemini_transcribing_note">Nem található felirat. A videó átírása Gemini segítségével… ez eltarthat néhány percig.</string>
     <string name="video_transcription_failed">A videó átírása nem sikerült: %1$s</string>
+    <string name="page_crashed_reloading">Az oldal összeomlott. Újratöltés…</string>
     <string name="chat_no_web_content">Nincs olvasható tartalom ezen az oldalon a csevegéshez</string>
     <string name="setting_test_connection">Kapcsolat tesztelése</string>
     <string name="setting_summary_test_connection">Kis tesztkérést küld a fenti kulccsal és modellel</string>

@@ -9,6 +9,7 @@ import android.os.SystemClock
 import android.print.PrintDocumentAdapter
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.ViewGroup
 import android.webkit.ValueCallback
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -821,6 +822,24 @@ open class EBWebView(
     var isWebViewDestroyed = false
         private set
 
+    /** Pauses every playing media element on the page. */
+    fun pauseMediaPlayback() = evaluateJsFile("pause_media.js", withPrefix = false)
+
+    /**
+     * Called by EBWebViewClient once the renderer process is gone. WebView forbids
+     * any further use of this instance, so hand it to the host to swap out; a
+     * WebView without a host (second pane, previews) is detached and destroyed.
+     */
+    fun handleRenderProcessGone() {
+        val callback = webViewCallback
+        if (callback != null) {
+            callback.onRenderProcessGone(this)
+        } else {
+            (parent as? ViewGroup)?.removeView(this)
+            destroy()
+        }
+    }
+
     override fun destroy() {
         isWebViewDestroyed = true
         chatWebInterface?.disposeAgent()
@@ -935,8 +954,14 @@ open class EBWebView(
         if (videoId == noCaptionVideoId) return
         // Callers with a dialog pass their own notice; everyone else at least gets a
         // toast, because the Gemini fallback can take minutes with no other feedback.
-        val notify = onGeminiTranscribe
-            ?: { EBToast.show(context, R.string.gemini_transcribing_note) }
+        val notify: () -> Unit = {
+            // Gemini reads the video from its YouTube URL, not from the player, so
+            // stop playback for the wait: a live decoder is what tips a 2 GB
+            // e-reader into the OOM kill that takes the renderer with it.
+            pauseMediaPlayback()
+            if (onGeminiTranscribe != null) onGeminiTranscribe()
+            else EBToast.show(context, R.string.gemini_transcribing_note)
+        }
         // The full transcript is always fetched; this outer timeout only guards
         // against a hung network. Sized above the Gemini fallback's 10-minute read
         // timeout; on expiry getRawText falls back to page text.

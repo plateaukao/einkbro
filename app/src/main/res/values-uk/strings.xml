@@ -574,6 +574,7 @@
     <string name="drive_not_configured">У цій збірці не налаштовано клієнт Google OAuth</string>
     <string name="gemini_transcribing_note">Субтитри не знайдено. Відео розшифровується за допомогою Gemini… це може зайняти кілька хвилин.</string>
     <string name="video_transcription_failed">Не вдалося розшифрувати відео: %1$s</string>
+    <string name="page_crashed_reloading">Сторінка аварійно завершилася. Перезавантаження…</string>
     <string name="chat_no_web_content">На цій сторінці немає читабельного вмісту для чату</string>
     <string name="setting_test_connection">Перевірити з\'єднання</string>
     <string name="setting_summary_test_connection">Надсилає невеликий тестовий запит із вказаним вище ключем і моделлю</string>

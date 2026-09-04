@@ -8,6 +8,9 @@ import android.os.Message
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import android.webkit.RenderProcessGoneDetail
+import android.os.Build
 import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
 import android.webkit.GeolocationPermissions
@@ -42,6 +45,14 @@ class EBWebChromeClient(
         val newWebView = WebView(view.context).apply { initWebView(this) }
         newWebView.webViewClient = object : WebViewClient() {
             private var isUrlProcessed = false
+
+            // A dead popup renderer must not take the app down; just drop the popup.
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                (view.parent as? ViewGroup)?.removeView(view)
+                view.destroy()
+                return true
+            }
 
             override fun shouldOverrideUrlLoading(
                 view: WebView?,

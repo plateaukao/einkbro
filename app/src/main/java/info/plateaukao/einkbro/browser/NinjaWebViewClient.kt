@@ -6,18 +6,21 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
+import android.os.Build
 import android.os.Message
 import android.util.Log
 import android.view.ViewGroup
 import android.webkit.ClientCertRequest
 import android.webkit.CookieManager
 import android.webkit.HttpAuthHandler
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.RequiresApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -99,6 +102,23 @@ class EBWebViewClient(
     }
 
     private var lastVisitedHistoryKey: String? = null
+
+    /**
+     * Without this override Chromium kills the whole app when a renderer dies
+     * ("Render process kill wasn't handled by all associated webviews, killing
+     * application"). On a 2 GB e-reader the renderer of a playing video page is the
+     * first thing the OOM killer reaches for, so treat it as a page-level failure:
+     * this WebView is dead and gets discarded, and the tab is rebuilt on its URL.
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+        Log.e(
+            "EBWebViewClient",
+            "renderer gone for ${view.url} (crashed=${detail.didCrash()}, priority=${detail.rendererPriorityAtExit()})"
+        )
+        ebWebView.handleRenderProcessGone()
+        return true
+    }
 
     /** URL the userscript menu registry was last cleared for; see [onPageStarted]. */
     private var lastUserScriptUrl: String? = null

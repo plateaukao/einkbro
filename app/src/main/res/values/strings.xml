@@ -728,6 +728,7 @@
     <string name="task_unknown">Unknown task.</string>
     <string name="gemini_transcribing_note">No captions found. Transcribing video with Gemini… this may take a few minutes.</string>
     <string name="video_transcription_failed">Video transcription failed: %1$s</string>
+    <string name="page_crashed_reloading">Page crashed. Reloading…</string>
     <string name="chat_no_web_content">No readable content on this page to chat about</string>
     <string name="setting_test_connection">Test connection</string>
     <string name="setting_summary_test_connection">Send a small test request with the key and model above</string>

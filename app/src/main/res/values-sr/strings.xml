@@ -583,6 +583,7 @@
     <string name="drive_not_configured">У овој верзији није подешен Google OAuth клијент</string>
     <string name="gemini_transcribing_note">Титлови нису пронађени. Видео се транскрибује помоћу Gemini-ја… то може потрајати неколико минута.</string>
     <string name="video_transcription_failed">Транскрипција видеа није успела: %1$s</string>
+    <string name="page_crashed_reloading">Страница се срушила. Поновно учитавање…</string>
     <string name="chat_no_web_content">Нема читљивог садржаја на овој страници за ћаскање</string>
     <string name="setting_test_connection">Тестирај везу</string>
     <string name="setting_summary_test_connection">Шаље мали тестни захтев са горњим кључем и моделом</string>
