@@ -13,20 +13,16 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.webkit.RenderProcessGoneDetail
-import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebView.HitTestResult.ANCHOR_TYPE
 import android.webkit.WebView.HitTestResult.IMAGE_ANCHOR_TYPE
 import android.webkit.WebView.HitTestResult.IMAGE_TYPE
 import android.webkit.WebView.HitTestResult.SRC_ANCHOR_TYPE
 import android.webkit.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
-import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
-import android.view.ContextThemeWrapper
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
@@ -170,48 +166,6 @@ object BrowserUnit : KoinComponent {
                 withContext(Dispatchers.Main) { postAction(uri) }
             } catch (e: IOException) {
                 e.printStackTrace()
-            }
-        }
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    fun createNaverDictWebView(context: Context): WebView {
-        return WebView(ContextThemeWrapper(context, R.style.AppTheme)).apply {
-            settings.javaScriptEnabled = true
-            settings.domStorageEnabled = true
-            webViewClient = object : WebViewClient() {
-                // A dead dictionary renderer must not take the app down.
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
-                    (view.parent as? ViewGroup)?.removeView(view)
-                    view.destroy()
-                    return true
-                }
-
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
-                    view?.let {
-                        view.evaluateJavascript(
-                            """
-                            document.getElementById("bookmark").remove();
-                            document.getElementsByClassName("gnb_wrap")[0].remove();
-                            document.getElementsByClassName("search_wrap")[0].remove();
-                            document.getElementsByClassName("search_area")[0].remove();
-                        """.trimIndent(), null
-                        )
-                    }
-                    view?.postDelayed(
-                        {
-                            view.evaluateJavascript(
-                                """
-                            document.getElementById("_id_mobile_ad").remove();
-                        """.trimIndent(), null
-                            )
-
-                        },
-                        1000
-                    )
-                }
             }
         }
     }

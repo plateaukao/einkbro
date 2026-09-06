@@ -4,7 +4,6 @@ import android.graphics.Point
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.webkit.WebView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -38,7 +37,6 @@ class TranslationDelegate(
     private val translationViewModel: TranslationViewModel,
     private val actionModeMenuViewModel: ActionModeMenuViewModel,
     private val focusedWebViewProvider: () -> EBWebView,
-    private val externalSearchWebViewProvider: () -> WebView,
     private val twoPaneControllerProvider: () -> TwoPaneController,
     private val isTwoPaneControllerInitialized: () -> Boolean,
     private val maybeInitTwoPaneController: () -> Unit,
@@ -124,7 +122,6 @@ class TranslationDelegate(
         }
         TranslateDialogFragment(
             translationViewModel,
-            externalSearchWebViewProvider(),
             actionModeMenuViewModel.clickedPoint.value,
             isWholePageMode = isWholePageMode,
         )

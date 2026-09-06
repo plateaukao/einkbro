@@ -7,9 +7,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -39,7 +37,6 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
@@ -65,7 +62,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.GptActionScope
@@ -81,7 +77,6 @@ import kotlinx.coroutines.launch
 
 class TranslateDialogFragment(
     private val translationViewModel: TranslationViewModel,
-    private val webView: WebView,
     private val anchorPoint: Point? = null,
     private val isWholePageMode: Boolean = false,
     private val closeAction: (() -> Unit)? = null,
@@ -93,7 +88,6 @@ class TranslateDialogFragment(
             translationViewModel,
             showExtraIcons = config.ai.imageApiKey.isNotBlank(),
             this::changeTranslationLanguage,
-            this::getTranslationWebView,
             closeAction ?: { dismiss() },
             isWholePageMode = isWholePageMode,
         )
@@ -126,8 +120,6 @@ class TranslateDialogFragment(
             }
         }
     }
-
-    private fun getTranslationWebView() = webView
 
     private fun changeTranslationLanguage() {
         lifecycleScope.launch {
@@ -174,7 +166,6 @@ private fun TranslateResponse(
     viewModel: TranslationViewModel,
     showExtraIcons: Boolean,
     onTargetLanguageClick: () -> Unit,
-    getTranslationWebView: () -> WebView,
     closeClick: () -> Unit,
     isWholePageMode: Boolean = false,
 ) {
@@ -202,7 +193,6 @@ private fun TranslateResponse(
 
     val translateDeepL = remember { { viewModel.translate(TRANSLATE_API.DEEPL) } }
     val translateGoogle = remember { { viewModel.translate(TRANSLATE_API.GOOGLE) } }
-    val translateNaver = remember { { viewModel.translate(TRANSLATE_API.NAVER) } }
 
     val configuration = LocalConfiguration.current
     val maxHeight = (configuration.screenHeightDp * 0.8).dp
@@ -239,7 +229,6 @@ private fun TranslateResponse(
                 GoogleButton(iconSize, iconPadding, translateGoogle, onTargetLanguageClick)
                 if (showExtraIcons) {
                     DeepLButton(iconSize, iconPadding, translateDeepL, onTargetLanguageClick)
-                    NaverButton(iconSize, iconPadding, translateNaver)
                 }
                 InfoButton(showRequest, iconSize)
             }
@@ -261,10 +250,7 @@ private fun TranslateResponse(
                 .onGloballyPositioned { coordinates ->
                     viewportHeight = coordinates.size.height
                 }
-                .conditionalScroll(
-                    !viewModel.isWebViewStyle(),
-                    scrollState
-                ),
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.End
         ) {
             if (showRequest.value) {
@@ -278,13 +264,7 @@ private fun TranslateResponse(
                 )
                 HorizontalSeparator()
             }
-            if (viewModel.isWebViewStyle() && responseMessage.text != "...") {
-                WebResultView(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    getTranslationWebView(),
-                    responseMessage.text
-                )
-            } else if (responseMessage.text != "..." && MarkdownBlocks.hasRichBlocks(responseMarkdown)) {
+            if (responseMessage.text != "..." && MarkdownBlocks.hasRichBlocks(responseMarkdown)) {
                 // AI answer with ![alt](url) images: text runs stay AnnotatedString,
                 // each image gets a view of its own.
                 RichMarkdownResponse(responseMarkdown, modifier = Modifier.fillMaxWidth())
@@ -334,25 +314,6 @@ private fun InfoButton(
             .padding(10.dp)
             .clickable {
                 showRequest.value = !showRequest.value
-            }
-    )
-}
-
-@Composable
-private fun NaverButton(
-    iconSize: Dp,
-    iconPadding: Dp,
-    translateNaver: () -> Unit,
-) {
-    Icon(
-        imageVector = Icons.Default.Search,
-        contentDescription = "Naver dict icon",
-        tint = MaterialTheme.colors.onBackground,
-        modifier = Modifier
-            .size(iconSize)
-            .padding(iconPadding)
-            .clickable {
-                translateNaver()
             }
     )
 }
@@ -517,22 +478,6 @@ fun RoundedDragBar(width: Dp = 100.dp) {
     }
 }
 
-@Composable
-private fun WebResultView(modifier: Modifier, webView: WebView, webContent: String) {
-    AndroidView(
-        factory = { webView },
-        modifier = modifier
-            .height(400.dp)
-            .width(500.dp)
-    )
-
-    LaunchedEffect(webContent) {
-        delay(1)
-        val headers = HashMap<String, String>().apply { put("accept-language", "zh-TW,zh") }
-        webView.loadUrl(webContent, headers)
-    }
-}
-
 @Preview
 @Composable
 fun PreviewRoundedDragBar() {
@@ -548,13 +493,7 @@ fun PreviewRoundedDragBar() {
 //            viewModel = TranslationViewModel(),
 //            showExtraIcons = true,
 //            onTargetLanguageClick = {},
-//            getTranslationWebView = { WebView(context) },
 //            closeClick = {},
 //        )
 //    }
 //}
-
-private fun Modifier.conditionalScroll(applyScroll: Boolean, scrollState: ScrollState): Modifier =
-    this.then(
-        if (applyScroll) Modifier.verticalScroll(scrollState) else Modifier
-    )

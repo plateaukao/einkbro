@@ -17,7 +17,6 @@ import info.plateaukao.einkbro.data.remote.OpenAiRepository
 import info.plateaukao.einkbro.task.TaskProgress
 import info.plateaukao.einkbro.data.remote.ImageTranslateResult
 import info.plateaukao.einkbro.data.remote.TranslateRepository
-import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.TranslationLanguage
@@ -29,7 +28,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 class TranslationViewModel(
@@ -116,14 +114,9 @@ class TranslationViewModel(
         _responseMarkdown.value = ""
         when (_translateMethod.value) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
-            TRANSLATE_API.NAVER -> callNaverDict()
             TRANSLATE_API.DEEPL -> callDeepLTranslate()
             else -> Unit
         }
-    }
-
-    fun isWebViewStyle(): Boolean {
-        return _translateMethod.value == TRANSLATE_API.NAVER
     }
 
     fun translate(
@@ -145,7 +138,6 @@ class TranslationViewModel(
 
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
-            TRANSLATE_API.NAVER -> callNaverDict()
             TRANSLATE_API.LLM -> queryLlm()
             TRANSLATE_API.DEEPL -> callDeepLTranslate()
             TRANSLATE_API.GEMINI -> Unit
@@ -248,20 +240,6 @@ class TranslationViewModel(
         )
 
         return true
-    }
-
-    private fun callNaverDict() {
-        val message = _inputMessage.value
-        viewModelScope.launch(Dispatchers.IO) {
-            val byteArray =
-                BrowserUnit.getResourceFromUrl("https://dict.naver.com/dict.search?query=$message}")
-            val document = Jsoup.parse(String(byteArray))
-            val container = document.getElementById("contents")
-            var content = ""
-            content += container?.getElementsByClass("section")?.html().orEmpty()
-            _responseMessage.value =
-                AnnotatedString("https://ja.dict.naver.com/#/search?query=$message}")
-        }
     }
 
     private fun callGoogleTranslate() {
@@ -544,7 +522,7 @@ class TranslationViewModel(
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, NAVER, LLM, DEEPL, OPENAI, GEMINI,
+    GOOGLE, LLM, DEEPL, OPENAI, GEMINI,
 }
 
 // Status text shown while the model is reasoning, before any answer arrives.

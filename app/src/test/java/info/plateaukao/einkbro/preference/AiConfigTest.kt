@@ -135,9 +135,15 @@ class AiConfigTest {
     }
 
     @Test
-    fun `externalSearchMethod preserves other legacy provider selections`() {
+    fun `externalSearchMethod migrates legacy Naver selection to Google`() {
         sp.store["sp_external_search_method"] = 2
-        assertEquals(TRANSLATE_API.NAVER, config.externalSearchMethod)
+        assertEquals(TRANSLATE_API.GOOGLE, config.externalSearchMethod)
+    }
+
+    @Test
+    fun `externalSearchMethod preserves versioned LLM selection after Naver removal`() {
+        sp.store["sp_external_search_method"] = 102
+        assertEquals(TRANSLATE_API.LLM, config.externalSearchMethod)
     }
 
     @Test

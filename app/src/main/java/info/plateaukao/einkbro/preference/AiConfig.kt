@@ -116,7 +116,7 @@ class AiConfig(private val sp: SharedPreferences) {
             } else {
                 when (value) {
                     0, 1 -> TRANSLATE_API.GOOGLE
-                    2 -> TRANSLATE_API.NAVER
+                    2 -> TRANSLATE_API.GOOGLE
                     3 -> TRANSLATE_API.LLM
                     4 -> TRANSLATE_API.DEEPL
                     5 -> TRANSLATE_API.OPENAI
@@ -225,7 +225,9 @@ class AiConfig(private val sp: SharedPreferences) {
         }.decodeFromString<R>(this)
 
     companion object {
-        private const val EXTERNAL_SEARCH_METHOD_VERSION = 100
+        // 100 stored the removed Naver provider at ordinal 1. Bump the marker so
+        // 100/101 migrate through the legacy branch while newer values stay aligned.
+        private const val EXTERNAL_SEARCH_METHOD_VERSION = 101
         const val K_GPT_API_KEY = "sp_gpt_api_key"
         const val K_GEMINI_API_KEY = "sp_gemini_api_key"
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"

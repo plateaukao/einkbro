@@ -113,15 +113,6 @@ class ActionModeMenuViewModel(
             )
         )
         if (configManager.ai.imageApiKey.isNotEmpty()) {
-            menuInfos.add(
-                0,
-                MenuInfo(
-                    context.getString(R.string.naver_translate),
-                    drawable = ContextCompat.getDrawable(context, R.drawable.icon_search),
-                    action = { _actionModeMenuState.value = ActionModeMenuState.Naver }
-                )
-            )
-
         }
         menuInfos.add(
             0,
@@ -248,7 +239,6 @@ sealed class ActionModeMenuState {
     class Gpt(val gptActionIndex: Int) : ActionModeMenuState()
     data object GoogleTranslate : ActionModeMenuState()
     data object DeeplTranslate : ActionModeMenuState()
-    data object Naver : ActionModeMenuState()
     data object ReadFromHere: ActionModeMenuState()
     class SplitSearch(val stringFormat: String) : ActionModeMenuState()
     class Tts(val text: String) : ActionModeMenuState()

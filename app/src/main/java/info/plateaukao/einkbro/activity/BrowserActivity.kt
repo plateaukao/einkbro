@@ -190,12 +190,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val gestureHandler: GestureHandler by lazy { GestureHandler { dispatch(it) } }
     private val toolbarActionHandler: ToolbarActionHandler by lazy { ToolbarActionHandler(this) { dispatch(it) } }
     private val menuActionHandler: MenuActionHandler by lazy { MenuActionHandler(this, { dispatch(it) }) { ebWebView } }
-    private var isExternalSearchWebViewCreated = false
-    private val externalSearchWebView: WebView by lazy {
-        isExternalSearchWebViewCreated = true
-        BrowserUnit.createNaverDictWebView(this)
-    }
-
     private val displayConfigDelegate: DisplayConfigDelegate by lazy {
         DisplayConfigDelegate(
             activity = this,
@@ -341,7 +335,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             translationViewModel = translationViewModel,
             actionModeMenuViewModel = actionModeMenuViewModel,
             focusedWebViewProvider = { getFocusedWebView() },
-            externalSearchWebViewProvider = { externalSearchWebView },
             twoPaneControllerProvider = { twoPaneController },
             isTwoPaneControllerInitialized = { isTwoPaneControllerInitialized() },
             maybeInitTwoPaneController = { maybeInitTwoPaneController() },
@@ -1022,7 +1015,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (config.clearWhenQuit && shouldRunClearService) startService(Intent(this, ClearService::class.java))
         browserContainer.clear()
         if (isTwoPaneControllerInitialized()) twoPaneController.destroy()
-        if (isExternalSearchWebViewCreated) externalSearchWebView.destroy()
         unregisterReceiver(downloadReceiver)
         config.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
         chromeSetupDelegate.dispose()

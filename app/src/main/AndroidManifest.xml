@@ -4,7 +4,6 @@
 
     <queries>
         <package android:name="com.ideashower.readitlater.pro" />
-        <package android:name="info.plateaukao.naverdict" />
 
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT" />

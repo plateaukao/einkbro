@@ -79,11 +79,11 @@ class ActionModeDelegate(
                         }
                     }
 
-                    GoogleTranslate, DeeplTranslate, Naver -> {
+                    GoogleTranslate, DeeplTranslate -> {
                         val api =
                             if (GoogleTranslate == state) TRANSLATE_API.GOOGLE
                             else if (DeeplTranslate == state) TRANSLATE_API.DEEPL
-                            else TRANSLATE_API.NAVER
+                            else TRANSLATE_API.GOOGLE
                         translationViewModel.updateTranslateMethod(api)
 
                         activity.lifecycleScope.launch {
