@@ -8,7 +8,6 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.util.TranslationLanguage
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import okhttp3.FormBody
 import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -21,7 +20,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
-import org.jsoup.Jsoup
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
@@ -197,88 +195,6 @@ class TranslateRepository : KoinComponent {
         }
     }
 
-    private fun getAuthKey(): String? {
-        val url = "https://papago.naver.com"
-        val response = client.newCall(Request.Builder().url(url).build()).execute()
-        val html = response.body?.string() ?: return null
-
-        val pattern1 = "/vendors~main.*chunk.js".toRegex()
-
-        var path = ""
-        Jsoup.parse(html).getElementsByTag("script").forEach { element ->
-            val matchedElement = pattern1.find(element.toString())
-            if (matchedElement != null) {
-                path = matchedElement.value
-            }
-        }
-
-        val jsUrl = "$url$path"
-        val rest = client.newCall(Request.Builder().url(jsUrl).build()).execute()
-        val org = rest.body?.string() ?: return null
-        val pattern2 = "AUTH_KEY:\\s*\"[\\w.]+\"".toRegex()
-
-        return pattern2.find(org)?.value?.split("\"")?.get(1)
-    }
-
-    private var authKey: String? = null
-    suspend fun pTranslate(
-        text: String,
-        targetLanguage: String = "en",
-        sourceLanguage: String = "auto",
-    ): String? {
-        if (authKey == null) {
-            try {
-                authKey = getAuthKey()
-            } catch (e: Exception) {
-                Log.d("TranslateRepository", "ppTranslate: $e")
-                return ""
-            }
-        }
-        val key = authKey?.toByteArray(Charsets.UTF_8) ?: return ""
-
-        val guid = UUID.randomUUID()
-        val timestamp = System.currentTimeMillis()
-        val code = "$guid\n$API_URL\n$timestamp".toByteArray(Charsets.UTF_8)
-        val hmac = Mac.getInstance("HmacMD5")
-        val secretKeySpec = SecretKeySpec(key, "HmacMD5")
-        hmac.init(secretKeySpec)
-        val token = Base64.encodeToString(hmac.doFinal(code), Base64.DEFAULT)
-
-        return withContext(IO) {
-            val request = Request.Builder()
-                .url(API_URL)
-                .addHeader("device-type", "pc")
-                .addHeader("x-apigw-partnerid", "papago")
-                .addHeader("Origin", "https://papago.naver.com")
-                .addHeader("Sec-Fetch-Site", "same-origin")
-                .addHeader("Sec-Fetch-Mode", "cors")
-                .addHeader("Sec-Fetch-Dest", "empty")
-                .addHeader("Authorization", "PPG $guid:$token".replace("\n", ""))
-                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader("Timestamp", timestamp.toString())
-                .post(
-                    FormBody.Builder()
-                        .add("source", sourceLanguage)
-                        .add("target", targetLanguage)
-                        .add("text", text)
-                        .build()
-                )
-                .build()
-
-            try {
-                client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) return@use null
-
-                    val body = JSONObject(response.body?.string() ?: return@use null)
-                    body.getString("translatedText")
-                }
-            } catch (e: Exception) {
-                Log.d("TranslateRepository", "ppTranslate: $e")
-                null
-            }
-        }
-    }
-
     private val sid: String by lazy { "${P_IMAGE_API_VERSION}${UUID.randomUUID()}" }
 
     private fun signUrl(url: String): Signature {
@@ -449,9 +365,7 @@ class TranslateRepository : KoinComponent {
 
     companion object {
         const val P_IMAGE_API_VERSION = "1.9.9"
-        private const val API_URL = "https://papago.naver.com/apis/n2mt/translate"
         private const val IMAGE_API_URL = "https://apis.naver.com/papago/papago_app/ocr/detect"
-        private const val DETECT_LANGUAGE_URL = "https://papago.naver.com/apis/langs/dect"
         private const val MAX_IMAGE_DIMENSION = 2000
         private const val MIN_IMAGE_DIMENSION = 200
     }
@@ -463,4 +377,3 @@ data class ImageTranslateResult(
     val imageId: String,
     val renderedImage: String,
 )
-

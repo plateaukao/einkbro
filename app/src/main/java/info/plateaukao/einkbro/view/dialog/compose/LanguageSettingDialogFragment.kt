@@ -20,12 +20,10 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.SelectableText
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
-import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import info.plateaukao.einkbro.viewmodel.TranslationViewModel
 import kotlinx.coroutines.launch
 
 class LanguageSettingDialogFragment(
-    private val translateApi: TRANSLATE_API,
     private val translationViewModel: TranslationViewModel,
     private val translate: () -> Unit,
 ) : ComposeDialogFragment() {
@@ -36,11 +34,9 @@ class LanguageSettingDialogFragment(
 
     @Composable
     override fun Content() {
-        PapagoSetting(
-            translateApi == TRANSLATE_API.PAPAGO,
+        TranslationSetting(
             translationViewModel,
             { changeTranslationLanguage() },
-            { changeSourceLanguage() },
             { translate() },
             { dismiss() }
 
@@ -55,27 +51,16 @@ class LanguageSettingDialogFragment(
         }
     }
 
-    private fun changeSourceLanguage() {
-        lifecycleScope.launch {
-            config.translation.sourceLanguage =
-                TranslationLanguageDialog(requireActivity()).showPapagoSourceLanguage()
-                    ?: return@launch
-            translationViewModel.updateSourceLanguage(config.translation.sourceLanguage)
-        }
-    }
 }
 
 @Composable
-fun PapagoSetting(
-    shouldShowSourceLanguage: Boolean,
+fun TranslationSetting(
     translationViewModel: TranslationViewModel,
     changeTranslationLanguage: () -> Unit,
-    changeSourceLanguage: () -> Unit,
     translate: () -> Unit,
     dismiss: () -> Unit,
 ) {
     val targetLanguage by translationViewModel.translationLanguage.collectAsState()
-    val sourceLanguage by translationViewModel.sourceLanguage.collectAsState()
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -83,7 +68,7 @@ fun PapagoSetting(
         horizontalAlignment = Alignment.End
     ) {
         Text(
-            text = stringResource(R.string.papago_language_setting),
+            text = stringResource(R.string.translation_language),
             style = MaterialTheme.typography.h5.copy(color = MaterialTheme.colors.onBackground),
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,21 +77,6 @@ fun PapagoSetting(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (shouldShowSourceLanguage) {
-                SelectableText(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(10.dp),
-                    selected = true,
-                    text = sourceLanguage.language,
-                    textAlign = TextAlign.Center,
-                    onClick = changeSourceLanguage
-                )
-                Text(
-                    text = "→",
-                    color = MaterialTheme.colors.onBackground,
-                )
-            }
             SelectableText(
                 modifier = Modifier
                     .weight(1f)

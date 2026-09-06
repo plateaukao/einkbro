@@ -66,32 +66,4 @@ class TranslationLanguageDialog(val context: Context) : KoinComponent {
         if (locale.isEmpty()) 0
         else TranslationLanguage.values().indexOfFirst { it.value == locale } + 1
 
-    suspend fun showPapagoSourceLanguage(): TranslationLanguage? {
-        val languages = listOf(
-            TranslationLanguage.KO,
-            TranslationLanguage.EN,
-            TranslationLanguage.JA,
-            TranslationLanguage.ZH_CN,
-            TranslationLanguage.ZH_TW,
-            TranslationLanguage.ES,
-            TranslationLanguage.FR,
-            TranslationLanguage.VI,
-            TranslationLanguage.TH,
-            TranslationLanguage.ID,
-            TranslationLanguage.DE,
-            TranslationLanguage.RU,
-            TranslationLanguage.IT,
-            TranslationLanguage.PT,
-        ).map { it.language }
-
-        val selectedIndex = ListSettingWithNameDialog(
-            context,
-            R.string.source_language,
-            languages,
-            languages.indexOf(config.translation.sourceLanguage.language)
-        ).show() ?: return null
-
-        config.translation.sourceLanguage = TranslationLanguage.findByLanguage(languages[selectedIndex])
-        return config.translation.sourceLanguage
-    }
 }

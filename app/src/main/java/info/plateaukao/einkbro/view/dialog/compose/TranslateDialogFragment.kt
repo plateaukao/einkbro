@@ -202,7 +202,6 @@ private fun TranslateResponse(
 
     val translateDeepL = remember { { viewModel.translate(TRANSLATE_API.DEEPL) } }
     val translateGoogle = remember { { viewModel.translate(TRANSLATE_API.GOOGLE) } }
-    val translatePapago = remember { { viewModel.translate(TRANSLATE_API.PAPAGO) } }
     val translateNaver = remember { { viewModel.translate(TRANSLATE_API.NAVER) } }
 
     val configuration = LocalConfiguration.current
@@ -240,7 +239,6 @@ private fun TranslateResponse(
                 GoogleButton(iconSize, iconPadding, translateGoogle, onTargetLanguageClick)
                 if (showExtraIcons) {
                     DeepLButton(iconSize, iconPadding, translateDeepL, onTargetLanguageClick)
-                    PapagoButton(iconSize, iconPadding, translatePapago, onTargetLanguageClick)
                     NaverButton(iconSize, iconPadding, translateNaver)
                 }
                 InfoButton(showRequest, iconSize)
@@ -356,28 +354,6 @@ private fun NaverButton(
             .clickable {
                 translateNaver()
             }
-    )
-}
-
-@Composable
-@OptIn(ExperimentalFoundationApi::class)
-private fun PapagoButton(
-    iconSize: Dp,
-    iconPadding: Dp,
-    translatePapago: () -> Unit,
-    onTargetLanguageClick: () -> Unit,
-) {
-    Icon(
-        imageVector = ImageVector.vectorResource(id = R.drawable.ic_papago),
-        contentDescription = "Papago Translate Icon",
-        tint = MaterialTheme.colors.onBackground,
-        modifier = Modifier
-            .size(iconSize)
-            .padding(iconPadding)
-            .combinedClickable(
-                onClick = translatePapago,
-                onLongClick = onTargetLanguageClick
-            )
     )
 }
 

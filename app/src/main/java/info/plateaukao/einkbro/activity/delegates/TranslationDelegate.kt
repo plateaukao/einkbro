@@ -108,11 +108,9 @@ class TranslationDelegate(
     }
 
     fun configureTranslationLanguage(translateApi: TRANSLATE_API) {
-        LanguageSettingDialogFragment(translateApi, translationViewModel) {
+        LanguageSettingDialogFragment(translationViewModel) {
             if (translateApi == TRANSLATE_API.GOOGLE) {
                 translateByParagraph(TRANSLATE_API.GOOGLE)
-            } else if (translateApi == TRANSLATE_API.PAPAGO) {
-                translateByParagraph(TRANSLATE_API.PAPAGO)
             } else if (translateApi == TRANSLATE_API.DEEPL) {
                 translateByParagraph(TRANSLATE_API.DEEPL)
             }

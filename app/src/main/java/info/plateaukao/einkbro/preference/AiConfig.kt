@@ -107,9 +107,28 @@ class AiConfig(private val sp: SharedPreferences) {
     var isExternalSearchInSameTab by BooleanPreference(sp, K_EXTERNAL_SEARCH_IN_SAME_TAB, false)
 
     var externalSearchMethod: TRANSLATE_API
-        get() = TRANSLATE_API.entries[sp.getInt(K_EXTERNAL_SEARCH_METHOD, 0)]
+        get() {
+            val value = sp.getInt(K_EXTERNAL_SEARCH_METHOD, 0)
+            return if (value >= EXTERNAL_SEARCH_METHOD_VERSION) {
+                TRANSLATE_API.entries.getOrElse(value - EXTERNAL_SEARCH_METHOD_VERSION) {
+                    TRANSLATE_API.GOOGLE
+                }
+            } else {
+                when (value) {
+                    0, 1 -> TRANSLATE_API.GOOGLE
+                    2 -> TRANSLATE_API.NAVER
+                    3 -> TRANSLATE_API.LLM
+                    4 -> TRANSLATE_API.DEEPL
+                    5 -> TRANSLATE_API.OPENAI
+                    6 -> TRANSLATE_API.GEMINI
+                    else -> TRANSLATE_API.GOOGLE
+                }
+            }
+        }
         set(value) {
-            sp.edit { putInt(K_EXTERNAL_SEARCH_METHOD, value.ordinal) }
+            sp.edit {
+                putInt(K_EXTERNAL_SEARCH_METHOD, value.ordinal + EXTERNAL_SEARCH_METHOD_VERSION)
+            }
         }
 
     var gptActionList: List<ChatGPTActionInfo>
@@ -206,6 +225,7 @@ class AiConfig(private val sp: SharedPreferences) {
         }.decodeFromString<R>(this)
 
     companion object {
+        private const val EXTERNAL_SEARCH_METHOD_VERSION = 100
         const val K_GPT_API_KEY = "sp_gpt_api_key"
         const val K_GEMINI_API_KEY = "sp_gemini_api_key"
         const val K_GPT_SYSTEM_PROMPT = "sp_gpt_system_prompt"

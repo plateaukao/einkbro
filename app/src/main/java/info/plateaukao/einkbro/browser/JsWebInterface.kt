@@ -196,11 +196,6 @@ class JsWebInterface(
 
     private suspend fun performTranslation(originalText: String, api: TRANSLATE_API): String {
         return when (api) {
-            TRANSLATE_API.PAPAGO -> translateRepository.pTranslate(
-                originalText,
-                configManager.translation.translationLanguage.value
-            ).orEmpty()
-
             TRANSLATE_API.GOOGLE -> translateRepository.gTranslateWithApi(
                 originalText,
                 configManager.translation.translationLanguage.value

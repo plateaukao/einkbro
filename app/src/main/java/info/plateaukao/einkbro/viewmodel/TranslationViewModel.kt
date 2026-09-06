@@ -54,9 +54,6 @@ class TranslationViewModel(
     private val _translationLanguage = MutableStateFlow(config.translation.translationLanguage)
     val translationLanguage: StateFlow<TranslationLanguage> = _translationLanguage.asStateFlow()
 
-    private val _sourceLanguage = MutableStateFlow(config.translation.sourceLanguage)
-    val sourceLanguage: StateFlow<TranslationLanguage> = _sourceLanguage.asStateFlow()
-
     private val _rotateResultScreen = MutableStateFlow(false)
     val rotateResultScreen: StateFlow<Boolean> = _rotateResultScreen.asStateFlow()
 
@@ -119,30 +116,14 @@ class TranslationViewModel(
         _responseMarkdown.value = ""
         when (_translateMethod.value) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
-            TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
             TRANSLATE_API.DEEPL -> callDeepLTranslate()
             else -> Unit
         }
     }
 
-    fun updateSourceLanguage(language: TranslationLanguage) {
-        _sourceLanguage.value = language
-    }
-
     fun isWebViewStyle(): Boolean {
         return _translateMethod.value == TRANSLATE_API.NAVER
-    }
-
-    fun updateSourceLanguageAndGo(translateApi: TRANSLATE_API, language: TranslationLanguage) {
-        updateSourceLanguage(language)
-        _responseMessage.value = AnnotatedString("...")
-        _responseMarkdown.value = ""
-        when (translateApi) {
-            TRANSLATE_API.GOOGLE -> callGoogleTranslate()
-            TRANSLATE_API.PAPAGO -> callPapagoTranslate()
-            else -> {}
-        }
     }
 
     fun translate(
@@ -164,7 +145,6 @@ class TranslationViewModel(
 
         when (translateApi) {
             TRANSLATE_API.GOOGLE -> callGoogleTranslate()
-            TRANSLATE_API.PAPAGO -> callPapagoTranslate()
             TRANSLATE_API.NAVER -> callNaverDict()
             TRANSLATE_API.LLM -> queryLlm()
             TRANSLATE_API.DEEPL -> callDeepLTranslate()
@@ -308,21 +288,6 @@ class TranslationViewModel(
             )
             if (result.isNullOrEmpty()) {
                 emitTranslationError("DeepL")
-            } else {
-                _responseMessage.value = AnnotatedString(result)
-            }
-        }
-    }
-
-    private fun callPapagoTranslate() {
-        val message = _inputMessage.value
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = translateRepository.pTranslate(
-                message,
-                targetLanguage = config.translation.translationLanguage.value,
-            )
-            if (result.isNullOrEmpty()) {
-                emitTranslationError("Papago")
             } else {
                 _responseMessage.value = AnnotatedString(result)
             }
@@ -579,7 +544,7 @@ class TranslationViewModel(
 }
 
 enum class TRANSLATE_API {
-    GOOGLE, PAPAGO, NAVER, LLM, DEEPL, OPENAI, GEMINI,
+    GOOGLE, NAVER, LLM, DEEPL, OPENAI, GEMINI,
 }
 
 // Status text shown while the model is reasoning, before any answer arrives.

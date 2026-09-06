@@ -419,8 +419,7 @@ class EBWebViewClient(
     }
 
     private fun isTranslationDomain(url: String): Boolean {
-        return url.contains("translate.goog") || url.contains("papago.naver.net")
-                || url.contains("papago.naver.com") || url.contains("translate.google.com")
+        return url.contains("translate.goog") || url.contains("translate.google.com")
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =

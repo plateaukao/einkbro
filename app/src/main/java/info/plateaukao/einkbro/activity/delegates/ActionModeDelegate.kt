@@ -79,10 +79,9 @@ class ActionModeDelegate(
                         }
                     }
 
-                    GoogleTranslate, DeeplTranslate, Papago, Naver -> {
+                    GoogleTranslate, DeeplTranslate, Naver -> {
                         val api =
                             if (GoogleTranslate == state) TRANSLATE_API.GOOGLE
-                            else if (Papago == state) TRANSLATE_API.PAPAGO
                             else if (DeeplTranslate == state) TRANSLATE_API.DEEPL
                             else TRANSLATE_API.NAVER
                         translationViewModel.updateTranslateMethod(api)

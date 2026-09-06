@@ -101,7 +101,6 @@ class ToolbarConfigDialogFragment : ComposeDialogFragment() {
                     // need to filter only addable actions here
                     .filter { it.isAddable }
                     .filterNot { config.ui.toolbarActions.contains(it) }
-                    // hide papago action if papago api key is not set
                     .map { ToolbarActionItemInfo(it, false) }
 }
 

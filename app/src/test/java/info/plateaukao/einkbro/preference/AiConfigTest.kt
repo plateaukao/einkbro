@@ -129,6 +129,18 @@ class AiConfigTest {
     }
 
     @Test
+    fun `externalSearchMethod migrates legacy Papago selection to Google`() {
+        sp.store["sp_external_search_method"] = 1
+        assertEquals(TRANSLATE_API.GOOGLE, config.externalSearchMethod)
+    }
+
+    @Test
+    fun `externalSearchMethod preserves other legacy provider selections`() {
+        sp.store["sp_external_search_method"] = 2
+        assertEquals(TRANSLATE_API.NAVER, config.externalSearchMethod)
+    }
+
+    @Test
     fun `reasoningEffort defaults to Default and round trips`() {
         assertEquals(ReasoningEffort.Default, config.reasoningEffort)
         config.reasoningEffort = ReasoningEffort.Off
