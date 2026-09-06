@@ -517,7 +517,10 @@ open class EBWebView(
 
     /** Per-site image switch first, then the global Images setting (issue #634). */
     fun applyImagePolicy(url: String) {
-        settings.blockNetworkImage = !config.domain.getEnableImages(url)
+        // Image requests are intercepted by EBWebViewClient and answered with a
+        // transparent local image when disabled. Do not let Chromium block them first,
+        // or it renders its non-customizable broken-image indicator.
+        settings.blockNetworkImage = false
     }
 
     // Per-site override first, then the global setting widened by the whitelist.

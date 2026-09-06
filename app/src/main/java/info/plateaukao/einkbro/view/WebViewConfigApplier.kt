@@ -91,7 +91,10 @@ class WebViewConfigApplier(
             allowUniversalAccessFromFileURLs = config.browser.enableRemoteAccess
             domStorageEnabled = true
             databaseEnabled = true
-            blockNetworkImage = !config.browser.enableImages
+            // Network images are intercepted and replaced with a transparent local image
+            // when disabled. Keeping this false lets the interceptor avoid Chromium's
+            // built-in broken-image glyph.
+            blockNetworkImage = false
             javaScriptEnabled = config.browser.enableJavascript
             javaScriptCanOpenWindowsAutomatically = config.browser.enableJavascript
             setSupportMultipleWindows(config.browser.enableJavascript)

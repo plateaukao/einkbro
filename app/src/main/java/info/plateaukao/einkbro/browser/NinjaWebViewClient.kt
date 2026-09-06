@@ -597,13 +597,24 @@ class EBWebViewClient(
         view: WebView,
         request: WebResourceRequest,
     ): WebResourceResponse? {
+        val pageUrl =
+            if (request.isForMainFrame) request.url.toString() else ebWebView.currentPageUrl
+        if (pageUrl != null &&
+            !config.domain.getEnableImages(pageUrl) &&
+            ImageRequestClassifier.isNetworkImage(
+                request.url.toString(),
+                request.requestHeaders,
+                request.isForMainFrame,
+            )
+        ) {
+            return transparentImageResponse(request.requestHeaders)
+        }
+
         // Fast analytics/tracker blocking (lightweight check before expensive ad-filter)
         if (config.browser.blockAnalytics && isAnalyticsUrl(request.url.toString())) {
             return WebResourceResponse("text/plain", "UTF-8", ByteArrayInputStream(ByteArray(0)))
         }
 
-        val pageUrl =
-            if (request.isForMainFrame) request.url.toString() else ebWebView.currentPageUrl
         if (isAdBlockEnabled(pageUrl)) {
             val result = adFilter.shouldIntercept(view, request)
             if (result.shouldBlock) {
@@ -620,6 +631,30 @@ class EBWebViewClient(
 
     private fun isAnalyticsUrl(url: String): Boolean =
         ANALYTICS_DOMAINS.any { url.contains(it) }
+
+    private fun transparentImageResponse(requestHeaders: Map<String, String>): WebResourceResponse {
+        val origin = requestHeaders.headerValue("Origin")
+        val responseHeaders = if (origin == null) {
+            emptyMap()
+        } else {
+            mapOf(
+                "Access-Control-Allow-Origin" to origin,
+                "Access-Control-Allow-Credentials" to "true",
+                "Vary" to "Origin",
+            )
+        }
+        return WebResourceResponse(
+            "image/gif",
+            null,
+            200,
+            "OK",
+            responseHeaders,
+            ByteArrayInputStream(TRANSPARENT_GIF),
+        )
+    }
+
+    private fun Map<String, String>.headerValue(name: String): String? =
+        entries.firstOrNull { (headerName, _) -> headerName.equals(name, ignoreCase = true) }?.value
 
     private fun handleWebRequest(
         webView: WebView,
@@ -743,6 +778,15 @@ class EBWebViewClient(
         sslHandler.onReceivedSslError(view, handler, error)
 
     companion object {
+        // A valid transparent 1x1 GIF prevents Chromium from drawing its broken-image icon.
+        private val TRANSPARENT_GIF = byteArrayOf(
+            0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00,
+            0x80.toByte(), 0x00, 0x00, 0x00, 0x00, 0x00, 0xff.toByte(), 0xff.toByte(),
+            0xff.toByte(), 0x21, 0xf9.toByte(), 0x04, 0x01, 0x00, 0x00, 0x00,
+            0x00, 0x2c, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00,
+            0x00, 0x02, 0x02, 0x44, 0x01, 0x00, 0x3b,
+        )
+
         // Last cookie policy asserted on the process-global CookieManager, so
         // the per-request path can skip the native call when nothing changed.
         // Every code path that calls setAcceptCookie must keep this in sync
