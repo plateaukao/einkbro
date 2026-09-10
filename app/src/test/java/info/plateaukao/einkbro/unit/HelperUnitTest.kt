@@ -17,6 +17,14 @@ class HelperUnitTest {
     }
 
     @Test
+    fun `pruneWebTitle keeps hyphenated words in the title`() {
+        assertEquals(
+            "Work-life balance at Bioware",
+            "Work-life balance at Bioware - danluu.com".pruneWebTitle(),
+        )
+    }
+
+    @Test
     fun `pruneWebTitle keeps title without separator`() {
         assertEquals("Simple Title", "Simple Title".pruneWebTitle())
     }

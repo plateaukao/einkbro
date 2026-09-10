@@ -510,8 +510,12 @@ fun String.getWordCount(): Int {
 fun String.pruneWebTitle(): String =
     if (contains("|")) {
         substringBefore("|").trim()
-    } else if (contains("-")) {
-        substringBefore("-").trim()
+    } else if (contains(" - ")) {
+        substringBefore(" - ").trim()
+    } else if (contains(" — ")) {
+        substringBefore(" — ").trim()
+    } else if (contains(" – ")) {
+        substringBefore(" – ").trim()
     } else {
         this
     }
