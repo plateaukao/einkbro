@@ -273,9 +273,7 @@ class TabManager(
 
         externalSearchViewModel.setButtonVisibility(false)
         activity.runOnUiThread {
-            val index = albumViewModel.albums.value.indexOfFirst { it.isActivated }
-            state.composeToolbarViewController.updateFocusIndex(index)
-            albumViewModel.focusIndex.intValue = index
+            syncFocusIndexToCurrentAlbum()
         }
         updateLanguageLabel()
     }
@@ -304,11 +302,7 @@ class TabManager(
                 if (removeIndex == currentIndex) {
                     showAlbum(browserContainer[getNextAlbumIndexAfterRemoval(removeIndex)])
                 } else {
-                    // Removing another tab shifts indices; refresh the focus highlight
-                    // (showAlbum does this for the removeIndex == currentIndex case).
-                    val index = albumViewModel.albums.value.indexOfFirst { it.isActivated }
-                    state.composeToolbarViewController.updateFocusIndex(index)
-                    albumViewModel.focusIndex.intValue = index
+                    syncFocusIndexToCurrentAlbum()
                 }
             }
         }
@@ -508,6 +502,12 @@ class TabManager(
                 okAction = okAction,
             )
         }
+    }
+
+    private fun syncFocusIndexToCurrentAlbum() {
+        val index = browserContainer.indexOf(state.currentAlbumController)
+        state.composeToolbarViewController.updateFocusIndex(index)
+        albumViewModel.focusIndex.intValue = index
     }
 
     companion object {
