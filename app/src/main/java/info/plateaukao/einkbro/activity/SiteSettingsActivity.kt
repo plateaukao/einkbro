@@ -74,6 +74,7 @@ class SiteSettingsActivity : FragmentActivity(), KoinComponent {
                         globalBlackFont = config.display.blackFontStyle,
                         globalFontBoldness = config.display.fontBoldness,
                         globalDesktopMode = config.browser.desktop,
+                        globalWebViewDarkMode = config.isAppDarkMode(this@SiteSettingsActivity),
                         defaultViewportWidth = DEFAULT_DESKTOP_VIEWPORT_WIDTH,
                         globalJavascript = config.browser.enableJavascript || javascript.isWhite(url),
                         globalAdBlock = config.browser.adBlock && !adBlock.isWhite(url),

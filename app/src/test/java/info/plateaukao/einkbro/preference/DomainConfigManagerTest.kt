@@ -176,6 +176,18 @@ class DomainConfigManagerTest {
     }
 
     @Test
+    fun `webview dark mode cascades like other nullable booleans`() {
+        put(DomainConfigurationData("example.com", webViewDarkMode = true))
+        put(DomainConfigurationData("example.com/docs", webViewDarkMode = false))
+
+        assertTrue(manager.getWebViewDarkMode("https://example.com/") ?: false)
+        assertFalse(manager.getWebViewDarkMode(page) ?: true)
+
+        val inherited = manager.getInheritedConfig(page, "example.com/docs")
+        assertTrue(inherited.webViewDarkMode ?: false)
+    }
+
+    @Test
     fun `inherited config excludes the rule being edited and deeper rules`() {
         put(DomainConfigurationData("example.com", fontSize = 150))
         put(DomainConfigurationData("example.com/docs", fontSize = 170))

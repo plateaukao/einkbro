@@ -406,7 +406,7 @@ open class EBWebView(
         setWebChromeClient(webChromeClient)
         setDownloadListener(downloadListener)
 
-        configApplier.updateDarkMode()
+        configApplier.updateDarkMode(url)
         setupJsWebInterface()
     }
 
@@ -494,6 +494,7 @@ open class EBWebView(
         url?.let {
             settings.javaScriptEnabled = isJavascriptEnabled(it)
             toggleCookieSupport(shouldAcceptCookies(it))
+            configApplier.updateDarkMode(it)
         }
     }
 
@@ -511,6 +512,7 @@ open class EBWebView(
         if (!shouldUseReaderFont()) {
             settings.textZoom = config.getFontSize(url)
         }
+        configApplier.updateDarkMode(url)
         updateCssStyle()
         ViewUnit.invertColor(this, config.hasInvertedColor(url))
     }
@@ -583,6 +585,7 @@ open class EBWebView(
         settings.javaScriptEnabled = isJavascriptEnabled(url)
         applyImagePolicy(url)
         toggleCookieSupport(shouldAcceptCookies(url))
+        configApplier.updateDarkMode(url)
         applyDesktopMode(url)
 
         pendingRequestedHost = Uri.parse(url).host
@@ -633,6 +636,7 @@ open class EBWebView(
         settings.javaScriptEnabled = isJavascriptEnabled(url)
         applyImagePolicy(strippedUrl)
         toggleCookieSupport(shouldAcceptCookies(url))
+        configApplier.updateDarkMode(strippedUrl)
         applyDesktopMode(url)
 
         val finalUrl = BrowserUnit.queryWrapper(context, strippedUrl)

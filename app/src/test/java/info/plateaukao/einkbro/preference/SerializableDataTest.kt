@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.preference
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import info.plateaukao.einkbro.database.DomainConfigurationData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -61,6 +62,15 @@ class SerializableDataTest {
             """{"name":"New","someFutureField":true}"""
         )
         assertEquals("New", decoded.name)
+    }
+
+    @Test
+    fun `DomainConfigurationData round trips through Json with webview dark mode`() {
+        val rule = DomainConfigurationData(
+            domain = "example.com",
+            webViewDarkMode = true,
+        )
+        assertEquals(rule, Json.decodeFromString<DomainConfigurationData>(Json.encodeToString(rule)))
     }
 
     @Test

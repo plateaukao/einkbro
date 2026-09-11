@@ -207,10 +207,11 @@ class WebViewReaderHelper(
             FontType.JA_MINCHO -> WebViewJsBridge.JA_MINCHO_FONT_CSS
             FontType.KO_GAMJA -> WebViewJsBridge.KO_GAMJA_FONT_CSS
         }
+        val forceWhiteBackground = config.whiteBackground(url) || config.getWebViewDarkMode(url) == false
 
         val cssStyle = fontCss +
                 (if (isBlackFont) WebViewJsBridge.MAKE_TEXT_BLACK_CSS else "") +
-                (if (config.whiteBackground(url)) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
+                (if (forceWhiteBackground) WebViewJsBridge.WHITE_BACKGROUND_CSS else "") +
                 (if (isBoldFont)
                     WebViewJsBridge.BOLD_FONT_CSS.replace("value", "$boldness") else "") +
                 (if (isEpubReaderMode) loadAssetFile("readerview.css") else "") +

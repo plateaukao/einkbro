@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.view
 
-import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.DarkMode
 import info.plateaukao.einkbro.browser.EBWebViewClient
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
@@ -28,21 +26,17 @@ class WebViewConfigApplier(
     private var defaultUserAgentMetadata: UserAgentMetadata? = null
     private var uaMetadataOverridden = false
 
-    fun updateDarkMode() {
-        if (config.display.darkMode == DarkMode.DISABLED) {
-            return
-        }
-
+    fun updateDarkMode(url: String? = webView.url) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
 
-        val nightModeFlags =
-            webView.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val wantDark = nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
-            config.display.darkMode == DarkMode.FORCE_ON
+        val wantDark = config.getWebViewDarkMode(url.orEmpty())
+            ?: config.isAppDarkMode(webView.context)
 
         if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(webView.settings, wantDark)
-            if (wantDark) webView.setBackgroundColor(Color.parseColor("#000000"))
+            webView.setBackgroundColor(
+                if (wantDark) Color.parseColor("#000000") else Color.parseColor("#ffffff")
+            )
         } else if (wantDark) {
             @Suppress("DEPRECATION")
             if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
@@ -54,6 +48,10 @@ class WebViewConfigApplier(
             @Suppress("DEPRECATION")
             webView.settings.forceDark = WebSettings.FORCE_DARK_ON
             webView.setBackgroundColor(Color.parseColor("#000000"))
+        } else {
+            @Suppress("DEPRECATION")
+            webView.settings.forceDark = WebSettings.FORCE_DARK_OFF
+            webView.setBackgroundColor(Color.parseColor("#ffffff"))
         }
     }
 

@@ -96,6 +96,7 @@ class DomainConfigManager(
             shouldTranslateSite = chain.firstNotNullOfOrNull { it.shouldTranslateSite },
             shouldUseWhiteBackground = chain.firstNotNullOfOrNull { it.shouldUseWhiteBackground },
             shouldInvertColor = chain.firstNotNullOfOrNull { it.shouldInvertColor },
+            webViewDarkMode = chain.firstNotNullOfOrNull { it.webViewDarkMode },
             fontSize = chain.firstNotNullOfOrNull { it.fontSize },
             fontType = chain.firstNotNullOfOrNull { it.fontType },
             boldFontStyle = chain.firstNotNullOfOrNull { it.boldFontStyle },
@@ -202,6 +203,8 @@ class DomainConfigManager(
     }
 
     fun hasInvertedColor(url: String): Boolean = resolve(url) { it.shouldInvertColor } ?: false
+
+    fun getWebViewDarkMode(url: String): Boolean? = resolve(url) { it.webViewDarkMode }
 
     fun toggleInvertedColor(url: String): Boolean {
         val target = writeTargetFor(url) { it.shouldInvertColor } ?: return false

@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.core.content.edit
 import info.plateaukao.einkbro.database.Bookmark
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -109,6 +110,16 @@ class ConfigManager(
     fun hasInvertedColor(url: String): Boolean = domain.hasInvertedColor(url)
 
     fun toggleInvertedColor(url: String): Boolean = domain.toggleInvertedColor(url)
+
+    fun getWebViewDarkMode(url: String): Boolean? = domain.getWebViewDarkMode(url)
+
+    fun isAppDarkMode(context: Context): Boolean = when (display.darkMode) {
+        DarkMode.FORCE_ON -> true
+        DarkMode.DISABLED -> false
+        DarkMode.SYSTEM ->
+            (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES
+    }
 
     // Per-site display overrides (null = use global setting)
 

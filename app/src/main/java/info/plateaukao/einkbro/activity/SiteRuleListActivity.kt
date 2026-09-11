@@ -193,6 +193,7 @@ private fun overrideSummary(rule: DomainConfigurationData): String {
         if (rule.blackFontStyle != null) add(stringResource(R.string.black_font))
         if (rule.shouldUseWhiteBackground != null) add(stringResource(R.string.white_background))
         if (rule.shouldInvertColor != null) add(stringResource(R.string.menu_invert_color))
+        if (rule.webViewDarkMode != null) add(stringResource(R.string.site_webview_dark_mode))
         if (rule.desktopMode != null) add(stringResource(R.string.desktop_mode))
         if (rule.desktopViewportWidth != null) add(stringResource(R.string.site_force_viewport_width))
         if (rule.enableJavascript != null) add(stringResource(R.string.setting_title_javascript))

@@ -343,6 +343,7 @@
     <string name="reset_to_global">Reset All to Global</string>
     <string name="site_custom_css">Custom CSS</string>
     <string name="site_post_load_js">Post-Load JavaScript</string>
+    <string name="site_webview_dark_mode">WebView dark mode</string>
     <string name="site_force_viewport_width">Force viewport width (px)</string>
     <string name="site_force_viewport_width_hint">Use only if desktop UA alone is not enough</string>
     <string name="site_settings_scope">Apply to</string>

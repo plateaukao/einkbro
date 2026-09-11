@@ -111,6 +111,7 @@ class SiteSettingsDialogFragment(
             globalBlackFont = config.display.blackFontStyle,
             globalFontBoldness = config.display.fontBoldness,
             globalDesktopMode = config.browser.desktop,
+            globalWebViewDarkMode = config.isAppDarkMode(requireContext()),
             defaultViewportWidth = DEFAULT_DESKTOP_VIEWPORT_WIDTH,
             // "default" reflects what actually happens without an override,
             // whitelists included, so the hint doesn't lie about the site.
@@ -156,6 +157,7 @@ fun SiteSettingsContent(
     globalBlackFont: Boolean,
     globalFontBoldness: Int,
     globalDesktopMode: Boolean,
+    globalWebViewDarkMode: Boolean,
     defaultViewportWidth: Int,
     globalJavascript: Boolean,
     globalAdBlock: Boolean,
@@ -199,6 +201,7 @@ fun SiteSettingsContent(
     val hintFontBoldness = hintFor { it.fontBoldness }
     val hintWhiteBackground = hintFor { it.shouldUseWhiteBackground }
     val hintInvertColor = hintFor { it.shouldInvertColor }
+    val hintWebViewDarkMode = hintFor { it.webViewDarkMode }
     val hintDesktopMode = hintFor { it.desktopMode }
     val hintViewportWidth = hintFor { it.desktopViewportWidth }
     val hintJavascript = hintFor { it.enableJavascript }
@@ -215,6 +218,7 @@ fun SiteSettingsContent(
     var fontBoldness by remember(selectedKey) { mutableStateOf(rule.fontBoldness) }
     var whiteBackground by remember(selectedKey) { mutableStateOf(rule.shouldUseWhiteBackground) }
     var invertColor by remember(selectedKey) { mutableStateOf(rule.shouldInvertColor) }
+    var webViewDarkMode by remember(selectedKey) { mutableStateOf(rule.webViewDarkMode) }
     var desktopMode by remember(selectedKey) { mutableStateOf(rule.desktopMode) }
     var viewportWidth by remember(selectedKey) { mutableStateOf(rule.desktopViewportWidth) }
     var javascript by remember(selectedKey) { mutableStateOf(rule.enableJavascript) }
@@ -236,6 +240,7 @@ fun SiteSettingsContent(
         fontBoldness = fontBoldness,
         shouldUseWhiteBackground = whiteBackground,
         shouldInvertColor = invertColor,
+        webViewDarkMode = webViewDarkMode,
         desktopMode = desktopMode,
         desktopViewportWidth = viewportWidth,
         enableJavascript = javascript,
@@ -260,6 +265,7 @@ fun SiteSettingsContent(
     val fbFontBoldness = inherited.fontBoldness ?: globalFontBoldness
     val fbWhiteBackground = inherited.shouldUseWhiteBackground ?: false
     val fbInvertColor = inherited.shouldInvertColor ?: false
+    val fbWebViewDarkMode = inherited.webViewDarkMode ?: globalWebViewDarkMode
     val fbDesktopMode = inherited.desktopMode ?: globalDesktopMode
     val fbViewportWidth = inherited.desktopViewportWidth ?: defaultViewportWidth
     val fbJavascript = inherited.enableJavascript ?: globalJavascript
@@ -377,6 +383,18 @@ fun SiteSettingsContent(
                 offIcon = Icons.Outlined.InvertColors,
                 fallbackHint = hintInvertColor,
                 onValueChange = { invertColor = it },
+            )
+
+            // WebView dark mode
+            NullableBooleanRow(
+                label = stringResource(R.string.site_webview_dark_mode),
+                value = webViewDarkMode,
+                globalValue = fbWebViewDarkMode,
+                onIcon = Icons.Outlined.InvertColorsOff,
+                offIcon = Icons.Outlined.InvertColors,
+                fallbackHint = hintWebViewDarkMode,
+                defaultOnActivate = false,
+                onValueChange = { webViewDarkMode = it },
             )
 
             SectionHeader(stringResource(R.string.setting_title_behavior))

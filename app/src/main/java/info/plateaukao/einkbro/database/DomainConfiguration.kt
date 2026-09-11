@@ -27,6 +27,7 @@ data class DomainConfigurationData(
     var shouldTranslateSite: Boolean? = null,
     var shouldUseWhiteBackground: Boolean? = null,
     var shouldInvertColor: Boolean? = null,
+    var webViewDarkMode: Boolean? = null,
     // Per-site display overrides (null = use global setting)
     var fontSize: Int? = null,
     var fontType: FontType? = null,
@@ -64,6 +65,7 @@ data class DomainConfigurationData(
     val overrideCount: Int
         get() = listOf(
             shouldFixScroll, shouldTranslateSite, shouldUseWhiteBackground, shouldInvertColor,
+            webViewDarkMode,
             fontSize, fontType, boldFontStyle, blackFontStyle, fontBoldness,
             desktopMode, desktopViewportWidth, enableJavascript, enableAdBlock, enableCookies,
             enableImages, translationMode, customCss?.takeIf { it.isNotBlank() },
@@ -82,6 +84,7 @@ data class DomainConfigurationData(
         shouldTranslateSite = shouldTranslateSite ?: fallback.shouldTranslateSite,
         shouldUseWhiteBackground = shouldUseWhiteBackground ?: fallback.shouldUseWhiteBackground,
         shouldInvertColor = shouldInvertColor ?: fallback.shouldInvertColor,
+        webViewDarkMode = webViewDarkMode ?: fallback.webViewDarkMode,
         fontSize = fontSize ?: fallback.fontSize,
         fontType = fontType ?: fallback.fontType,
         boldFontStyle = boldFontStyle ?: fallback.boldFontStyle,
