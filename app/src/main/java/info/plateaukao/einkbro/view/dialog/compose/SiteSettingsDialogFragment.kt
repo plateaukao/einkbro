@@ -780,6 +780,24 @@ private fun SectionHeader(title: String) {
  * (if not yet) and flips the value.
  */
 @Composable
+private fun SiteSettingsCheckbox(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    enabled: Boolean = true,
+) {
+    Checkbox(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        enabled = enabled,
+        colors = CheckboxDefaults.colors(
+            checkedColor = MaterialTheme.colors.onBackground,
+            uncheckedColor = MaterialTheme.colors.onBackground,
+            checkmarkColor = MaterialTheme.colors.background,
+        ),
+    )
+}
+
+@Composable
 private fun NullableBooleanRow(
     label: String,
     value: Boolean?,
@@ -804,16 +822,11 @@ private fun NullableBooleanRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Checkbox(
+        SiteSettingsCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) defaultOnActivate else null)
             },
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.onBackground,
-                uncheckedColor = MaterialTheme.colors.onBackground,
-                checkmarkColor = MaterialTheme.colors.background,
-            ),
         )
         StateIcon(
             isOn = effectiveValue,
@@ -934,17 +947,12 @@ private fun <T> NestedNullableDropdown(
             modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Checkbox(
+            SiteSettingsCheckbox(
                 checked = hasOverride,
                 onCheckedChange = { checked ->
                     if (enabled) onValueChange(if (checked) effectiveValue else null)
                 },
                 enabled = enabled,
-                colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colors.onBackground,
-                    uncheckedColor = MaterialTheme.colors.onBackground,
-                    checkmarkColor = MaterialTheme.colors.background,
-                ),
             )
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -1024,16 +1032,11 @@ private fun NullableIntStepperRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Checkbox(
+        SiteSettingsCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) effectiveValue else null)
             },
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.onBackground,
-                uncheckedColor = MaterialTheme.colors.onBackground,
-                checkmarkColor = MaterialTheme.colors.background,
-            ),
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(text = label, fontSize = 14.sp, color = color)
@@ -1083,17 +1086,12 @@ private fun NestedNullableIntStepper(
             modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Checkbox(
+            SiteSettingsCheckbox(
                 checked = hasOverride,
                 onCheckedChange = { checked ->
                     if (enabled) onValueChange(if (checked) effectiveValue else null)
                 },
                 enabled = enabled,
-                colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colors.onBackground,
-                    uncheckedColor = MaterialTheme.colors.onBackground,
-                    checkmarkColor = MaterialTheme.colors.background,
-                ),
             )
             if (label != null) {
                 Column(modifier = Modifier.weight(1f)) {
@@ -1209,16 +1207,11 @@ private fun <T> NullableDropdownRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Checkbox(
+        SiteSettingsCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) effectiveValue else null)
             },
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.onBackground,
-                uncheckedColor = MaterialTheme.colors.onBackground,
-                checkmarkColor = MaterialTheme.colors.background,
-            ),
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(text = label, fontSize = 14.sp, color = color)
@@ -1281,16 +1274,11 @@ private fun NullableTextRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Checkbox(
+        SiteSettingsCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) effectiveValue else null)
             },
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.onBackground,
-                uncheckedColor = MaterialTheme.colors.onBackground,
-                checkmarkColor = MaterialTheme.colors.background,
-            ),
         )
         Spacer(Modifier.width(8.dp))
         Column(modifier = Modifier.weight(1f)) {
