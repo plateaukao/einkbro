@@ -22,8 +22,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -780,24 +778,6 @@ private fun SectionHeader(title: String) {
  * (if not yet) and flips the value.
  */
 @Composable
-private fun SiteSettingsCheckbox(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    enabled: Boolean = true,
-) {
-    Checkbox(
-        checked = checked,
-        onCheckedChange = onCheckedChange,
-        enabled = enabled,
-        colors = CheckboxDefaults.colors(
-            checkedColor = MaterialTheme.colors.onBackground,
-            uncheckedColor = MaterialTheme.colors.onBackground,
-            checkmarkColor = MaterialTheme.colors.background,
-        ),
-    )
-}
-
-@Composable
 private fun NullableBooleanRow(
     label: String,
     value: Boolean?,
@@ -822,7 +802,7 @@ private fun NullableBooleanRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SiteSettingsCheckbox(
+        ThemedCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) defaultOnActivate else null)
@@ -947,7 +927,7 @@ private fun <T> NestedNullableDropdown(
             modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SiteSettingsCheckbox(
+            ThemedCheckbox(
                 checked = hasOverride,
                 onCheckedChange = { checked ->
                     if (enabled) onValueChange(if (checked) effectiveValue else null)
@@ -1032,7 +1012,7 @@ private fun NullableIntStepperRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SiteSettingsCheckbox(
+        ThemedCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) effectiveValue else null)
@@ -1086,7 +1066,7 @@ private fun NestedNullableIntStepper(
             modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SiteSettingsCheckbox(
+            ThemedCheckbox(
                 checked = hasOverride,
                 onCheckedChange = { checked ->
                     if (enabled) onValueChange(if (checked) effectiveValue else null)
@@ -1207,7 +1187,7 @@ private fun <T> NullableDropdownRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SiteSettingsCheckbox(
+        ThemedCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) effectiveValue else null)
@@ -1274,7 +1254,7 @@ private fun NullableTextRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SiteSettingsCheckbox(
+        ThemedCheckbox(
             checked = hasOverride,
             onCheckedChange = { checked ->
                 onValueChange(if (checked) effectiveValue else null)

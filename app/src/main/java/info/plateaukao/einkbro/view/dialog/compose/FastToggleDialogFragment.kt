@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -179,14 +177,9 @@ fun ToggleItem(
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Checkbox(
+        ThemedCheckbox(
             checked = currentState,
             enabled = isEnabled,
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.onBackground,
-                uncheckedColor = MaterialTheme.colors.onBackground,
-                checkmarkColor = MaterialTheme.colors.background,
-            ),
             onCheckedChange = {
                 if (isEnabled) {
                     currentState = !currentState
