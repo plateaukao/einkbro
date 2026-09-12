@@ -69,6 +69,7 @@ class SerializableDataTest {
         val rule = DomainConfigurationData(
             domain = "example.com",
             webViewDarkMode = true,
+            pageReservedOffset = "50%",
         )
         assertEquals(rule, Json.decodeFromString<DomainConfigurationData>(Json.encodeToString(rule)))
     }

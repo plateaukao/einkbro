@@ -120,6 +120,7 @@ class SiteSettingsDialogFragment(
             globalCookies = config.browser.cookies || cookie.isWhite(url),
             globalImages = config.browser.enableImages,
             globalTranslationMode = config.translation.translationMode,
+            globalPageReservedOffset = config.touch.pageReservedOffsetInString,
             onEditText = { title, initial, onResult ->
                 TextEditorDialogFragment(title, initial, onResult)
                     .show(parentFragmentManager, "text_editor")
@@ -164,6 +165,7 @@ fun SiteSettingsContent(
     globalCookies: Boolean,
     globalImages: Boolean,
     globalTranslationMode: TranslationMode,
+    globalPageReservedOffset: String,
     onEditText: (title: String, initial: String, onResult: (String) -> Unit) -> Unit,
     onSave: (DomainConfigurationData) -> Unit,
     onDeleteRule: (key: String) -> Unit,
@@ -210,6 +212,7 @@ fun SiteSettingsContent(
     val hintImages = hintFor { it.enableImages }
     val hintTranslateSite = hintFor { it.shouldTranslateSite }
     val hintTranslationMode = hintFor { it.translationMode }
+    val hintPageReservedOffset = hintFor { it.pageReservedOffset?.takeIf { value -> value.isNotBlank() } }
 
     var fontSize by remember(selectedKey) { mutableStateOf(rule.fontSize) }
     var fontType by remember(selectedKey) { mutableStateOf(rule.fontType) }
@@ -227,6 +230,7 @@ fun SiteSettingsContent(
     var images by remember(selectedKey) { mutableStateOf(rule.enableImages) }
     var translateSite by remember(selectedKey) { mutableStateOf(rule.shouldTranslateSite) }
     var translationMode by remember(selectedKey) { mutableStateOf(rule.translationMode) }
+    var pageReservedOffset by remember(selectedKey) { mutableStateOf(rule.pageReservedOffset) }
     var customCss by remember(selectedKey) { mutableStateOf(rule.customCss.orEmpty()) }
     var customCssEnabled by remember(selectedKey) { mutableStateOf(rule.customCssEnabled) }
     var postLoadJs by remember(selectedKey) { mutableStateOf(rule.postLoadJavascript.orEmpty()) }
@@ -249,6 +253,7 @@ fun SiteSettingsContent(
         enableImages = images,
         shouldTranslateSite = translateSite,
         translationMode = translationMode,
+        pageReservedOffset = pageReservedOffset?.ifBlank { null },
         customCss = customCss.ifBlank { null },
         postLoadJavascript = postLoadJs.ifBlank { null },
         customCssEnabled = customCssEnabled,
@@ -274,6 +279,7 @@ fun SiteSettingsContent(
     val fbImages = inherited.enableImages ?: globalImages
     val fbTranslateSite = inherited.shouldTranslateSite ?: false
     val fbTranslationMode = inherited.translationMode ?: globalTranslationMode
+    val fbPageReservedOffset = inherited.pageReservedOffset ?: globalPageReservedOffset
 
     Column(
         modifier = modifier.padding(16.dp),
@@ -424,6 +430,15 @@ fun SiteSettingsContent(
                     else stringResource(R.string.site_force_viewport_width_hint),
             )
 
+            NullableTextRow(
+                label = stringResource(R.string.setting_title_page_left_value),
+                value = pageReservedOffset,
+                globalValue = fbPageReservedOffset,
+                fallbackHint = hintPageReservedOffset,
+                onEditText = onEditText,
+                onValueChange = { pageReservedOffset = it },
+            )
+
             // JavaScript
             NullableBooleanRow(
                 label = stringResource(R.string.setting_title_javascript),
@@ -554,6 +569,7 @@ fun SiteSettingsContent(
                         adBlock = null; cookies = null
                         whiteBackground = null; invertColor = null
                         translateSite = null; translationMode = null
+                        pageReservedOffset = null
                         customCss = ""; postLoadJs = ""
                         customCssEnabled = true; postLoadJsEnabled = true
                     },
@@ -1238,6 +1254,69 @@ private fun <T> NullableDropdownRow(
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * A row with a nullable free-text override.
+ */
+@Composable
+private fun NullableTextRow(
+    label: String,
+    value: String?,
+    globalValue: String,
+    fallbackHint: String = stringResource(R.string.default_value_hint),
+    onEditText: (title: String, initial: String, onResult: (String) -> Unit) -> Unit,
+    onValueChange: (String?) -> Unit,
+) {
+    val hasOverride = !value.isNullOrBlank()
+    val effectiveValue = value?.takeIf { it.isNotBlank() } ?: globalValue
+    val color = if (hasOverride) MaterialTheme.colors.onBackground
+        else MaterialTheme.colors.onBackground.copy(alpha = 0.55f)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Checkbox(
+            checked = hasOverride,
+            onCheckedChange = { checked ->
+                onValueChange(if (checked) effectiveValue else null)
+            },
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colors.onBackground,
+                uncheckedColor = MaterialTheme.colors.onBackground,
+                checkmarkColor = MaterialTheme.colors.background,
+            ),
+        )
+        Spacer(Modifier.width(8.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = label, fontSize = 14.sp, color = color)
+            if (!hasOverride) {
+                Text(
+                    text = fallbackHint,
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.45f),
+                )
+            }
+        }
+        OutlinedButton(
+            border = themedButtonBorder(),
+            shape = themedItemShape(),
+            onClick = {
+                onEditText(label, effectiveValue) { onValueChange(it.ifBlank { null }) }
+            },
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
+        ) {
+            Text(
+                text = if (hasOverride) effectiveValue else stringResource(R.string.whitelist_add),
+                fontSize = 12.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }

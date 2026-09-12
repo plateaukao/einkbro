@@ -17,6 +17,7 @@ class DomainConfigManager(
     private val display: DisplayConfig,
     private val browser: BrowserConfig,
     private val translation: TranslationConfig,
+    private val touch: TouchConfig,
     private val persist: (DomainConfigurationData) -> Unit,
     private val remove: (String) -> Unit = {},
 ) {
@@ -109,6 +110,7 @@ class DomainConfigManager(
             enableCookies = chain.firstNotNullOfOrNull { it.enableCookies },
             enableImages = chain.firstNotNullOfOrNull { it.enableImages },
             translationMode = chain.firstNotNullOfOrNull { it.translationMode },
+            pageReservedOffset = chain.firstNotNullOfOrNull { it.pageReservedOffset?.takeIf { value -> value.isNotBlank() } },
             customCss = chain.firstNotNullOfOrNull { it.activeCustomCss },
             postLoadJavascript = chain.firstNotNullOfOrNull { it.activePostLoadJavascript },
         )
@@ -262,6 +264,10 @@ class DomainConfigManager(
 
     fun getTranslationMode(url: String): TranslationMode =
         resolve(url) { it.translationMode } ?: translation.translationMode
+
+    fun getPageReservedOffset(url: String): String =
+        resolve(url) { it.pageReservedOffset?.takeIf { value -> value.isNotBlank() } }
+            ?: touch.pageReservedOffsetInString
 
     /** The CSS to inject for [url]: first rule in the chain whose CSS is set and switched on. */
     fun getCustomCss(url: String): String? = resolve(url) { it.activeCustomCss }

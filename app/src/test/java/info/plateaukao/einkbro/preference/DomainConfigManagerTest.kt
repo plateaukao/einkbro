@@ -73,6 +73,7 @@ class DomainConfigManagerTest {
     private lateinit var display: DisplayConfig
     private lateinit var browser: BrowserConfig
     private lateinit var translation: TranslationConfig
+    private lateinit var touch: TouchConfig
     private val persisted = mutableListOf<DomainConfigurationData>()
     private val removed = mutableListOf<String>()
     private lateinit var manager: DomainConfigManager
@@ -85,10 +86,11 @@ class DomainConfigManagerTest {
         display = DisplayConfig(sp)
         browser = BrowserConfig(sp)
         translation = TranslationConfig(sp)
+        touch = TouchConfig(sp)
         persisted.clear()
         removed.clear()
         manager = DomainConfigManager(
-            display, browser, translation,
+            display, browser, translation, touch,
             persist = { persisted += it },
             remove = { removed += it },
         )
@@ -245,6 +247,21 @@ class DomainConfigManagerTest {
 
         manager.setTranslationMode("https://example.com/blog", TranslationMode.GOOGLE_IN_PLACE)
         assertEquals(TranslationMode.GOOGLE_IN_PLACE, manager.getRule("example.com")?.translationMode)
+    }
+
+    @Test
+    fun `page reserved height cascades per site and falls back to global`() {
+        touch.pageReservedOffsetInString = "90"
+
+        assertEquals("90", manager.getPageReservedOffset(page))
+        assertEquals(1, DomainConfigurationData("example.com", pageReservedOffset = "80").overrideCount)
+
+        put(DomainConfigurationData("example.com", pageReservedOffset = "80"))
+        put(DomainConfigurationData("example.com/docs", pageReservedOffset = "50%"))
+
+        assertEquals("50%", manager.getPageReservedOffset(page))
+        assertEquals("80", manager.getInheritedConfig(page, "example.com/docs").pageReservedOffset)
+        assertEquals("50%", manager.getEffectiveConfig(page).pageReservedOffset)
     }
 
     @Test

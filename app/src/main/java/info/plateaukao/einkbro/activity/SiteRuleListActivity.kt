@@ -196,6 +196,7 @@ private fun overrideSummary(rule: DomainConfigurationData): String {
         if (rule.webViewDarkMode != null) add(stringResource(R.string.site_webview_dark_mode))
         if (rule.desktopMode != null) add(stringResource(R.string.desktop_mode))
         if (rule.desktopViewportWidth != null) add(stringResource(R.string.site_force_viewport_width))
+        if (rule.pageReservedOffset != null) add(stringResource(R.string.setting_title_page_left_value))
         if (rule.enableJavascript != null) add(stringResource(R.string.setting_title_javascript))
         if (rule.enableAdBlock != null) add(stringResource(R.string.setting_title_adblock))
         if (rule.enableCookies != null) add(stringResource(R.string.setting_title_cookie))

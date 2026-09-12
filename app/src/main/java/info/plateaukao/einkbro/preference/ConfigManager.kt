@@ -68,7 +68,7 @@ class ConfigManager(
     // Per-domain configuration (extracted to DomainConfigManager); forwards kept so
     // existing call sites are unchanged.
     val domain = DomainConfigManager(
-        display, browser, translation,
+        display, browser, translation, touch,
         persist = { bookmarkManager.addDomainConfiguration(it) },
         remove = { bookmarkManager.deleteDomainConfiguration(it) },
     )
@@ -140,6 +140,8 @@ class ConfigManager(
     fun getEnableJavascript(url: String): Boolean = domain.getEnableJavascript(url)
 
     fun getTranslationMode(url: String): TranslationMode = domain.getTranslationMode(url)
+
+    fun getPageReservedOffset(url: String): String = domain.getPageReservedOffset(url)
 
     fun getCustomCss(url: String): String? = domain.getCustomCss(url)
 

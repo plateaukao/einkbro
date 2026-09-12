@@ -150,24 +150,59 @@ class WebViewNavigationHelper(
         return if (webView.isVerticalRead) {
             webView.width - 40.dp(webView.context)
         } else {
-            val offset = config.touch.pageReservedOffsetInString
-            if (offset.endsWith('%')) {
-                val offsetPercent = offset.take(offset.length - 1).toInt()
-                webView.height - webView.height * offsetPercent / 100
-            } else {
-                webView.height - offset.toInt().dp(webView.context)
-            }
+            webView.height - reservedHeightPx().coerceIn(0, webView.height)
         }
     }
 
     private fun jsPageScroll(direction: Int, fallback: (Boolean) -> Unit) {
-        val offset = config.touch.pageReservedOffsetInString
-        val offsetPercent = if (offset.endsWith('%')) offset.take(offset.length - 1).toInt() else 0
-        val offsetPx = if (offset.endsWith('%')) 0 else offset.toInt().dp(webView.context)
+        val offset = parsePageReservedOffset()
+        val offsetPercent = when (offset) {
+            is PageReservedOffset.Percent -> offset.value / 100.0
+            is PageReservedOffset.Pixels -> 0.0
+        }
+        val offsetPx = when (offset) {
+            is PageReservedOffset.Percent -> 0
+            is PageReservedOffset.Pixels -> offset.value
+        }
         webView.evaluateJavascript(
-            "window.__einkbroPageScroll && window.__einkbroPageScroll($direction, ${offsetPercent / 100.0}, $offsetPx)"
+            "window.__einkbroPageScroll && window.__einkbroPageScroll($direction, $offsetPercent, $offsetPx)"
         ) { result ->
             fallback(result?.trim('"') == "true")
+        }
+    }
+
+    private sealed interface PageReservedOffset {
+        data class Percent(val value: Int) : PageReservedOffset
+        data class Pixels(val value: Int) : PageReservedOffset
+    }
+
+    private fun currentPageReservedOffset(): String {
+        val pageUrl = webView.currentPageUrl ?: webView.url.orEmpty()
+        return config.getPageReservedOffset(pageUrl)
+    }
+
+    private fun parsePageReservedOffset(offset: String): PageReservedOffset? {
+        val trimmed = offset.trim()
+        return if (trimmed.endsWith('%')) {
+            val percent = trimmed.dropLast(1).toIntOrNull()
+            percent?.let { PageReservedOffset.Percent(it) }
+        } else {
+            val px = trimmed.toIntOrNull()
+            px?.let { PageReservedOffset.Pixels(it.dp(webView.context)) }
+        }
+    }
+
+    private fun parsePageReservedOffset(): PageReservedOffset =
+        parsePageReservedOffset(currentPageReservedOffset())
+            ?: parsePageReservedOffset(config.touch.pageReservedOffsetInString)
+            ?: PageReservedOffset.Pixels(0)
+
+    private fun reservedHeightPx(): Int {
+        val offset = parsePageReservedOffset()
+        return when {
+            offset is PageReservedOffset.Percent -> webView.height * offset.value / 100
+            offset is PageReservedOffset.Pixels -> offset.value
+            else -> 0
         }
     }
 

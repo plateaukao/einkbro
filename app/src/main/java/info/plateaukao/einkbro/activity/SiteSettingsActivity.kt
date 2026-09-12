@@ -81,6 +81,7 @@ class SiteSettingsActivity : FragmentActivity(), KoinComponent {
                         globalCookies = config.browser.cookies || cookie.isWhite(url),
                         globalImages = config.browser.enableImages,
                         globalTranslationMode = config.translation.translationMode,
+                        globalPageReservedOffset = config.touch.pageReservedOffsetInString,
                         onEditText = { title, initial, onResult ->
                             TextEditorDialogFragment(title, initial, onResult)
                                 .show(supportFragmentManager, "text_editor")

@@ -583,7 +583,7 @@
 <div class="setting-item"><div class="setting-item__name">與 Google Drive 同步</div><div class="setting-item__desc"><span class="tag">動作</span> 在您的 Google Drive 中備份或還原應用程式資料。登入流程完全在 EinkBro 內完成（以一般分頁進行 OAuth 授權），不需要 Play 服務。備份儲存在應用程式專屬的 Drive 空間，可在登入同一帳號的其他裝置上還原。</div></div>
 <div class="setting-item"><div class="setting-item__name">匯出應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 將歷史、書籤、設定與 WebView 登入資料（Cookie 與儲存空間）匯出為壓縮檔。</div></div>
 <div class="setting-item"><div class="setting-item__name">匯入應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 從先前匯出的壓縮檔匯入，包含 WebView 登入資料。</div></div>
-<p><strong>還原採合併而非取代：</strong>還原備份（來自 Google Drive 或壓縮檔）會合併到本機資料 &mdash; 書籤、網站設定、使用者指令碼、AI 查詢紀錄、聊天工作階段、劃線與已儲存頁面都以附加方式加入。本機建立的資料不會被刪除，重複還原同一份備份也不會產生重複項目。</p>
+<p><strong>還原採合併而非取代：</strong>還原備份（來自 Google Drive 或壓縮檔）會合併到本機資料 &mdash; 書籤、網站設定（包含像換頁保留高度這類個別站台覆寫）、使用者指令碼、AI 查詢紀錄、聊天工作階段、劃線與已儲存頁面都以附加方式加入。本機建立的資料不會被刪除，重複還原同一份備份也不會產生重複項目。</p>
 <div class="setting-item"><div class="setting-item__name">分享應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 透過區域網路將應用程式資料分享至另一裝置。</div></div>
 <div class="setting-item"><div class="setting-item__name">接收應用程式資料</div><div class="setting-item__desc"><span class="tag">動作</span> 透過區域網路從另一裝置接收應用程式資料。</div></div>
 <div class="setting-item"><div class="setting-item__name">匯出書籤</div><div class="setting-item__desc"><span class="tag">動作</span> 將書籤匯出為檔案。</div></div>
@@ -769,6 +769,7 @@
 <h4>顯示與視窗</h4>
 <ul>
   <li><strong>桌面版視窗寬度</strong> &mdash; 強制站台以桌面版排版顯示，不受全域行動／桌面切換影響</li>
+  <li><strong>換頁保留高度</strong> &mdash; 針對特定站台保留自訂的翻頁重疊量</li>
   <li><strong>顯示設定</strong> &mdash; 為每個站台分別記住閱讀模式、直書、粗體／黑色字體、白底、字級等</li>
   <li><strong>翻譯模式</strong> &mdash; 每個站台可選擇不同的翻譯模式（逐段／原地）與提供者（見下方翻譯章節）</li>
 </ul>

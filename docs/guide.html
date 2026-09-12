@@ -582,7 +582,7 @@
 <div class="setting-item"><div class="setting-item__name">Sync with Google Drive</div><div class="setting-item__desc"><span class="tag">Action</span> Back up or restore app data in your Google Drive. Sign-in runs entirely inside EinkBro (OAuth in a normal tab) &mdash; no Play Services needed. The backup is stored in the app-private Drive area and can be restored on another device signed in to the same account.</div></div>
 <div class="setting-item"><div class="setting-item__name">Export App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Export history, bookmarks, settings, and WebView login data (cookies &amp; storage) as a zip file.</div></div>
 <div class="setting-item"><div class="setting-item__name">Import App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Import from a previously exported zip file, including WebView login data.</div></div>
-<p><strong>Restores merge, not replace:</strong> restoring a backup (from Google Drive or a zip) merges into local data &mdash; bookmarks, site settings, userscripts, AI query results, chat sessions, highlights, and saved pages are appended. Locally created data is never deleted, and restoring the same backup twice adds no duplicates.</p>
+<p><strong>Restores merge, not replace:</strong> restoring a backup (from Google Drive or a zip) merges into local data &mdash; bookmarks, site settings (including per-site overrides like page reserved height), userscripts, AI query results, chat sessions, highlights, and saved pages are appended. Locally created data is never deleted, and restoring the same backup twice adds no duplicates.</p>
 <div class="setting-item"><div class="setting-item__name">Share App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Share app data to another device over local network.</div></div>
 <div class="setting-item"><div class="setting-item__name">Receive App Data</div><div class="setting-item__desc"><span class="tag">Action</span> Receive app data from another device over local network.</div></div>
 <div class="setting-item"><div class="setting-item__name">Export Bookmarks</div><div class="setting-item__desc"><span class="tag">Action</span> Export bookmarks to a file.</div></div>
@@ -768,6 +768,7 @@
 <h4>Display &amp; Viewport</h4>
 <ul>
   <li><strong>Desktop viewport width</strong> &mdash; force a site to render at desktop layout regardless of the global mobile/desktop toggle</li>
+  <li><strong>Page reserved height</strong> &mdash; reserve a custom overlap when paging through a specific site</li>
   <li><strong>Display settings</strong> &mdash; remember Reader Mode, vertical text, bold/black font, white background, font size, etc. per site</li>
   <li><strong>Translation mode</strong> &mdash; pick paragraph vs. in-place, and the provider, on a per-site basis (see Translation section below)</li>
 </ul>

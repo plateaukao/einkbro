@@ -41,6 +41,7 @@ data class DomainConfigurationData(
     var enableCookies: Boolean? = null,
     var enableImages: Boolean? = null,
     var translationMode: TranslationMode? = null,
+    var pageReservedOffset: String? = null,
     var customCss: String? = null,
     var postLoadJavascript: String? = null,
     // Off = keep the script but do not apply it (temporary disable without
@@ -69,6 +70,7 @@ data class DomainConfigurationData(
             fontSize, fontType, boldFontStyle, blackFontStyle, fontBoldness,
             desktopMode, desktopViewportWidth, enableJavascript, enableAdBlock, enableCookies,
             enableImages, translationMode, customCss?.takeIf { it.isNotBlank() },
+            pageReservedOffset?.takeIf { it.isNotBlank() },
             postLoadJavascript?.takeIf { it.isNotBlank() },
         ).count { it != null }
 
@@ -97,6 +99,7 @@ data class DomainConfigurationData(
         enableCookies = enableCookies ?: fallback.enableCookies,
         enableImages = enableImages ?: fallback.enableImages,
         translationMode = translationMode ?: fallback.translationMode,
+        pageReservedOffset = pageReservedOffset?.takeIf { it.isNotBlank() } ?: fallback.pageReservedOffset,
         customCss = customCss?.takeIf { it.isNotBlank() } ?: fallback.customCss,
         postLoadJavascript = postLoadJavascript?.takeIf { it.isNotBlank() } ?: fallback.postLoadJavascript,
         // the on/off switch travels with whichever side supplied the script
