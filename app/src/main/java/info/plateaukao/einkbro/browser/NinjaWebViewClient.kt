@@ -705,6 +705,9 @@ class EBWebViewClient(
                 e.printStackTrace()
             } catch (e: SecurityException) {
                 e.printStackTrace()
+            } catch (e: IllegalArgumentException) {
+                // DocumentsProvider can report a deleted font as an invalid child URI.
+                e.printStackTrace()
             }
         }
         return null
