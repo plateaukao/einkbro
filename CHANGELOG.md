@@ -1,3 +1,14 @@
+### 16.7.1
+#### Features
+* Reader mode: optional Jev smart extraction filters out navigation, advertisements, related content, and comments with a configured TypeSafe API key
+
+#### Fixes
+* Tabs: keep original pages accessible after opening popups and avoid stale WebViews after removing tabs
+* Dictionary: restore translation by resolving the translation ViewModel through Koin
+* Custom fonts: handle missing font documents without crashing
+
+---
+
 ### 16.7.0
 #### Features
 * Site settings: override WebView dark mode and reserve page height for individual sites
