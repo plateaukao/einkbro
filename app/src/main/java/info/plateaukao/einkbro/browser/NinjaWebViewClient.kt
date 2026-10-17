@@ -248,7 +248,7 @@ class EBWebViewClient(
                 ebWebView.userScriptMenuCommands.clear()
                 // Invalidate the previous document's GM capability tokens; the new
                 // document's injections below mint fresh ones.
-                ebWebView.userScriptBridge.clearTokens()
+                ebWebView.userScriptBridge?.clearTokens()
                 // End any in-place translation session too: its getTranslation token was
                 // minted for the previous document and must not carry over to this one.
                 ebWebView.endTranslationSession()
@@ -261,6 +261,7 @@ class EBWebViewClient(
     private fun injectUserScripts(url: String, runAt: info.plateaukao.einkbro.userscript.RunAt) {
         val matching = userScriptManager.getMatchingScripts(url, runAt)
         if (matching.isEmpty()) return
+        val bridge = ebWebView.userScriptBridge
         matching.forEach { parsed ->
             // Inject as a same-origin <script> element rather than evaluateJavascript():
             // eval'd code has no script origin, so Chromium sanitizes its async exceptions
@@ -268,10 +269,10 @@ class EBWebViewClient(
             // userscript exactly like a real userscript manager does. The body is passed as
             // base64 to avoid escaping issues with large UTF-8 payloads.
             // A fresh unguessable token per injection: it authorizes bridge calls and
-            // pins them to this script. It lives only inside the injected shim's closure,
-            // so neither the page's own scripts nor other pages can present it.
+            // pins them to this script. Native calls also check its current URL rules
+            // and the grant for the specific API.
             val token = java.util.UUID.randomUUID().toString()
-            ebWebView.userScriptBridge.registerToken(token, parsed.script.id)
+            if (parsed.metadata.requiresNativeBridge) bridge?.registerToken(token, parsed.script.id)
             val js = userScriptManager.buildInjectionJs(parsed, token)
             val b64 = android.util.Base64.encodeToString(
                 js.toByteArray(Charsets.UTF_8), android.util.Base64.NO_WRAP,

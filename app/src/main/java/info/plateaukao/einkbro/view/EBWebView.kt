@@ -49,7 +49,9 @@ import info.plateaukao.einkbro.util.PdfDocumentAdapter
 import info.plateaukao.einkbro.viewmodel.TRANSLATE_API
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -96,6 +98,12 @@ open class EBWebView(
     private val cookie: Cookie by inject()
     private val coroutineScope: CoroutineScope by inject()
     private val faviconFetcher: FaviconFetcher by inject()
+    private val userScriptManager: info.plateaukao.einkbro.userscript.UserScriptManager by inject()
+
+    /** Attached only when an enabled userscript declares a native API grant. */
+    var userScriptBridge: info.plateaukao.einkbro.browser.UserScriptBridge? = null
+        private set
+    private lateinit var userScriptBridgeJob: Job
 
     // Helpers for delegated concerns
     val readerHelper = WebViewReaderHelper(this, config)
@@ -411,15 +419,6 @@ open class EBWebView(
     }
 
     /**
-     * The GM_* native bridge. It is attached to every page (a WebView interface
-     * cannot be scoped to a single origin), so it hands out no capability without a
-     * per-injection token that only the injected userscript shim holds. Kept as a
-     * property so the WebViewClient can mint/clear those tokens per navigation.
-     */
-    lateinit var userScriptBridge: info.plateaukao.einkbro.browser.UserScriptBridge
-        private set
-
-    /**
      * The `androidApp` bridge. Retained so a translation session can be opened/closed on
      * it: [JsWebInterface.getTranslation] is the only page-reachable method that spends
      * the user's translation/LLM key, and it is gated on a token minted here.
@@ -438,8 +437,23 @@ open class EBWebView(
     private fun setupJsWebInterface() {
         jsWebInterface = JsWebInterface(this, webViewCallback as? JsBrowserCallback)
         addJavascriptInterface(jsWebInterface, "androidApp")
-        userScriptBridge = info.plateaukao.einkbro.browser.UserScriptBridge(this)
-        addJavascriptInterface(userScriptBridge, "einkbroGM")
+        userScriptBridgeJob = coroutineScope.launch(
+            Dispatchers.Main.immediate, start = CoroutineStart.UNDISPATCHED,
+        ) {
+            userScriptManager.hasNativeScripts.collect { enabled ->
+                if (enabled && userScriptBridge == null) {
+                    userScriptBridge = info.plateaukao.einkbro.browser.UserScriptBridge(this@EBWebView)
+                    addJavascriptInterface(userScriptBridge!!, "einkbroGM")
+                } else if (!enabled && userScriptBridge != null) {
+                    // WebView removes the JS object on the next page load. Revoke its
+                    // capabilities now so an already-loaded page cannot keep using it.
+                    userScriptBridge?.clearTokens()
+                    removeJavascriptInterface("einkbroGM")
+                    userScriptBridge = null
+                    userScriptMenuCommands.clear()
+                }
+            }
+        }
         addJavascriptInterface(
             info.plateaukao.einkbro.browser.StartPageBridge(this),
             "einkbroStartPage",
@@ -849,6 +863,8 @@ open class EBWebView(
 
     override fun destroy() {
         isWebViewDestroyed = true
+        userScriptBridgeJob.cancel()
+        userScriptBridge?.clearTokens()
         chatWebInterface?.disposeAgent()
         stopLoading()
         onPause()

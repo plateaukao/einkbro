@@ -1,6 +1,7 @@
 // EinkBro userscript GM API shim.
 // Templated per-script: __SCRIPT_ID__ and __GM_INFO__ are substituted at inject time.
-// Defines GM_* and the promisified GM.* on the page's window so userscripts can use them.
+// Returns a private namespace containing only this script's granted GM APIs.
+(function () {
 
 // Some Android System WebView builds don't expose `globalThis` in the injected script
 // scope, which breaks modern bundles (e.g. Immersive Translate). Polyfill it first.
@@ -30,10 +31,9 @@ if (typeof globalThis === 'undefined') {
     } catch (e) { /* keep native Response if subclassing unsupported */ }
 })();
 
-(function () {
     var SCRIPT_ID = __SCRIPT_ID__;
-    // Per-injection capability token. The native bridge rejects any call without it,
-    // and it never leaves this closure, so the page's own scripts can't forge GM calls.
+    // Per-injection capability token. Native code also checks the current URL and
+    // the grant for each API; possession of a token alone is not sufficient.
     var GM_TOKEN = __GM_TOKEN__;
     var GM_INFO = __GM_INFO__;
 
@@ -235,39 +235,33 @@ if (typeof globalThis === 'undefined') {
         });
     }
 
-    // Expose globals on window (main world).
-    var w = window;
-    w.GM_getValue = GM_getValue;
-    w.GM_setValue = GM_setValue;
-    w.GM_deleteValue = GM_deleteValue;
-    w.GM_listValues = GM_listValues;
-    w.GM_addStyle = GM_addStyle;
-    w.GM_addElement = GM_addElement;
-    w.GM_xmlhttpRequest = GM_xmlhttpRequest;
-    w.GM_registerMenuCommand = GM_registerMenuCommand;
-    w.GM_unregisterMenuCommand = GM_unregisterMenuCommand;
-    w.GM_openInTab = GM_openInTab;
-    w.GM_setClipboard = GM_setClipboard;
-    w.GM_log = GM_log;
-    w.GM_notification = GM_notification;
-    w.GM_info = GM_INFO;
-    w.unsafeWindow = w;
-
-    w.GM = {
-        info: GM_INFO,
-        getValue: promisify(GM_getValue),
-        setValue: promisify(GM_setValue),
-        deleteValue: promisify(GM_deleteValue),
-        listValues: promisify(GM_listValues),
-        addStyle: promisify(GM_addStyle),
-        addElement: promisify(GM_addElement),
-        registerMenuCommand: GM_registerMenuCommand,
-        unregisterMenuCommand: GM_unregisterMenuCommand,
-        openInTab: GM_openInTab,
-        setClipboard: promisify(GM_setClipboard),
-        notification: promisify(GM_notification),
-        xmlHttpRequest: GM_xmlhttpRequestDual,
-        xmlhttpRequest: GM_xmlhttpRequestDual,
-        log: GM_log
-    };
+    // Keep privileged closures private to this userscript, never on window.
+    var grants = GM_INFO.script.grant || [];
+    var api = { GM_info: GM_INFO, unsafeWindow: window };
+    var modern = { info: GM_INFO };
+    function expose(name, fn, modernFn, modernName) {
+        modernName = modernName || name;
+        if (grants.indexOf('none') !== -1) return;
+        if (grants.indexOf('GM_' + name) === -1 &&
+            grants.indexOf('GM.' + name) === -1 &&
+            grants.indexOf('GM.' + modernName) === -1) return;
+        api['GM_' + name] = fn;
+        modern[modernName] = modernFn || fn;
+    }
+    expose('getValue', GM_getValue, promisify(GM_getValue));
+    expose('setValue', GM_setValue, promisify(GM_setValue));
+    expose('deleteValue', GM_deleteValue, promisify(GM_deleteValue));
+    expose('listValues', GM_listValues, promisify(GM_listValues));
+    expose('addStyle', GM_addStyle, promisify(GM_addStyle));
+    expose('addElement', GM_addElement, promisify(GM_addElement));
+    expose('xmlhttpRequest', GM_xmlhttpRequest, GM_xmlhttpRequestDual, 'xmlHttpRequest');
+    if (modern.xmlHttpRequest) modern.xmlhttpRequest = modern.xmlHttpRequest;
+    expose('registerMenuCommand', GM_registerMenuCommand);
+    expose('unregisterMenuCommand', GM_unregisterMenuCommand);
+    expose('openInTab', GM_openInTab);
+    expose('setClipboard', GM_setClipboard, promisify(GM_setClipboard));
+    expose('log', GM_log);
+    expose('notification', GM_notification, promisify(GM_notification));
+    api.GM = modern;
+    return api;
 })();

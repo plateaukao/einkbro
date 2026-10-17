@@ -11,6 +11,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -62,6 +64,9 @@ class UserScriptManager(private val context: Context) : KoinComponent {
     var scripts: List<ParsedUserScript> = emptyList()
         private set
 
+    private val _hasNativeScripts = MutableStateFlow(false)
+    val hasNativeScripts = _hasNativeScripts.asStateFlow()
+
     init {
         coroutineScope.launch(Dispatchers.IO) { reload() }
     }
@@ -88,6 +93,7 @@ class UserScriptManager(private val context: Context) : KoinComponent {
         }
         loaded.forEach { resolveRequires(it) }
         scripts = loaded
+        _hasNativeScripts.value = loaded.any { it.script.enabled && it.metadata.requiresNativeBridge }
     }
 
     private fun resolveRequires(parsed: ParsedUserScript) {
@@ -133,14 +139,13 @@ class UserScriptManager(private val context: Context) : KoinComponent {
     fun getById(id: Long): ParsedUserScript? = scripts.firstOrNull { it.script.id == id }
 
     /**
-     * True if the enabled script [id] applies to [url] by its @match/@include rules
-     * (and is not @exclude'd). Used by the GM bridge to confirm, at call time, that a
-     * capability token is being used on a page its script still matches.
+     * Authorizes one API against a single snapshot of the script's enabled state,
+     * URL rules and grants. Called for every native bridge operation.
      */
-    fun matches(id: Long, url: String): Boolean {
-        if (!url.startsWith("http")) return false
+    fun isApiAllowed(id: Long, url: String, api: String): Boolean {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) return false
         val parsed = getById(id) ?: return false
-        if (!parsed.script.enabled) return false
+        if (!parsed.script.enabled || !parsed.metadata.allowsApi(api)) return false
         val m = parsed.metadata
         return UrlMatcher.matches(url, m.matches, m.includes) && !UrlMatcher.isExcluded(url, m.excludes)
     }
@@ -155,9 +160,16 @@ class UserScriptManager(private val context: Context) : KoinComponent {
             .replace("__GM_TOKEN__", JSONObject.quote(token))
             .replace("__GM_INFO__", buildGmInfo(parsed))
         return buildString {
-            append(shim).append('\n')
+            // Each script gets its own granted APIs; never publish privileged closures
+            // on window, where page code and other userscripts could borrow them.
+            append("(function(){\nvar {")
+            append("GM, GM_info, unsafeWindow, GM_getValue, GM_setValue, GM_deleteValue, ")
+            append("GM_listValues, GM_addStyle, GM_addElement, GM_xmlhttpRequest, ")
+            append("GM_registerMenuCommand, GM_unregisterMenuCommand, GM_openInTab, ")
+            append("GM_setClipboard, GM_log, GM_notification")
+            append("} = ").append(shim).append(";\n")
             if (parsed.requiresContent.isNotEmpty()) append(parsed.requiresContent).append('\n')
-            append(parsed.script.code)
+            append(parsed.script.code).append("\n}).call(window);\n")
             // Give the injected script a source URL so Chromium treats its exceptions as
             // same-origin (full message + stack) instead of opaque "Script error.".
             append("\n//# sourceURL=einkbro-userscript-").append(parsed.script.id).append(".user.js\n")

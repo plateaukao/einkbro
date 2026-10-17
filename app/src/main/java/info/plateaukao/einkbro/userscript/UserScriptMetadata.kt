@@ -21,7 +21,22 @@ data class UserScriptMetadata(
     /** `@downloadURL` — points at the full script to fetch when an update is available. */
     val downloadUrl: String,
 ) {
+    /** Explicit grants only; `none` (or omitted grants) gives no native capability. */
+    fun allowsApi(api: String): Boolean = "none" !in grants && grants.any {
+        it == "GM_$api" || it == "GM.$api" ||
+            (api == "xmlhttpRequest" && it == "GM.xmlHttpRequest")
+    }
+
+    val requiresNativeBridge: Boolean
+        get() = NATIVE_APIS.any(::allowsApi)
+
     companion object {
+        private val NATIVE_APIS = listOf(
+            "getValue", "setValue", "deleteValue", "listValues", "xmlhttpRequest",
+            "registerMenuCommand", "unregisterMenuCommand", "openInTab", "setClipboard",
+            "notification", "log",
+        )
+
         /** Fallback name used when a script has no `@name` metadata. */
         const val DEFAULT_NAME = "Unnamed script"
 
