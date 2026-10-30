@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.activity.delegates
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.BrowserState
+import info.plateaukao.einkbro.activity.isSameOriginAs
 import info.plateaukao.einkbro.browser.AlbumCallback
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
@@ -410,6 +412,7 @@ class TabManager(
 
     fun updateSavedAlbumInfo() {
         uiHandler.removeCallbacks(saveAlbumInfoRunnable)
+        if (state.isWebApp) return
         // Fall back to the last saved title while a page is still loading, so a kill
         // mid-load doesn't replace a resolved title with the "..." placeholder
         val previousTitles = config.tab.savedAlbumInfoList.associate { it.url to it.title }
@@ -455,6 +458,13 @@ class TabManager(
         val ebWebView = state.ebWebView
         if (ebWebView === state.currentAlbumController) {
             state.composeToolbarViewController.updateTitle(ebWebView.title.orEmpty())
+            if (state.isWebApp) {
+                val startUri = activity.intent.data ?: return
+                val uri = ebWebView.url?.let(Uri::parse)?.takeUnless { it.isSameOriginAs(startUri) }
+                val port = uri?.port?.takeUnless { it == -1 }?.let { ":$it" }.orEmpty()
+                // Keep external destinations visible even with the browser controls hidden.
+                state.statusbarViewController.showWebAppOrigin(uri?.let { "${it.scheme}://${it.host.orEmpty()}$port" })
+            }
         }
     }
 

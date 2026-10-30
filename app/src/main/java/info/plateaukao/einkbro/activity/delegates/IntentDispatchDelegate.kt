@@ -63,6 +63,12 @@ class IntentDispatchDelegate(
 
     @SuppressLint("InlinedApi")
     fun dispatchIntent(intent: Intent) {
+        if (state.isWebApp) {
+            if (state.currentAlbumController == null) {
+                addAlbum("", intent.data.toString(), true)
+            }
+            return
+        }
         if (overviewDialogControllerProvider().isVisible()) {
             overviewDialogControllerProvider().hide()
         }
