@@ -285,13 +285,18 @@ class MainContentLayout(
             val fabImageButtonNav = TextView(context).apply {
                 id = R.id.fab_imageButtonNav
                 layoutParams = ConstraintLayout.LayoutParams(
-                    dpToPx(context, 80), dpToPx(context, 80)
-                )
+                    dpToPx(context, 48), dpToPx(context, 48)
+                ).apply {
+                    marginStart = dpToPx(context, 8)
+                    marginEnd = dpToPx(context, 8)
+                    bottomMargin = dpToPx(context, 8)
+                }
                 background = ContextCompat.getDrawable(context, R.drawable.roundcorner)
                 gravity = android.view.Gravity.CENTER
-                setShadowLayer(1.6f, 1.5f, 1.3f, android.graphics.Color.WHITE)
-                setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
-                textSize = 22f
+                contentDescription = context.getString(R.string.fullscreen)
+                setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_exit_fullscreen, 0, 0, 0)
+                val padding = dpToPx(context, 12)
+                setPadding(padding, padding, padding, padding)
                 visibility = View.GONE
             }
             root.addView(fabImageButtonNav)

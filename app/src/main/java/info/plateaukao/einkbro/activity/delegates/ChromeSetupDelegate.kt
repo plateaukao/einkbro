@@ -125,12 +125,11 @@ class ChromeSetupDelegate(
         val controller = FabImageViewController(
             displayConfigDelegate.orientation,
             activity.findViewById(R.id.fab_imageButtonNav),
-            { if (state.isWebApp) toggleFullscreen() else fullscreenDelegate.showToolbar() },
+            { fullscreenDelegate.showToolbar() },
             longClickAction = {
                 if (config.touch.enableNavButtonGesture) gestureHandler.handle(config.touch.navButtonLongClickGesture)
                 else showFastToggleDialog()
             },
-            isWebApp = state.isWebApp,
         )
         state.fabImageViewController = controller
     }
@@ -362,7 +361,7 @@ class ChromeSetupDelegate(
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
                 ebWebView.updatePageInfo()
                 twoPaneControllerProvider()?.scrollChange(scrollY - oldScrollY)
-                if (state.isWebApp || !config.ui.shouldHideToolbar) return
+                if (!config.ui.shouldHideToolbar) return
                 val height = floor(ebWebView.contentHeight * ebWebView.resources.displayMetrics.density.toDouble()).toInt()
                 val webViewHeight = ebWebView.height
                 val cutoff = height - webViewHeight - (112 * activity.resources.displayMetrics.density).roundToInt()

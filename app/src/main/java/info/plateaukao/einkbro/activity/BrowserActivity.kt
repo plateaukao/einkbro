@@ -775,7 +775,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ebWebView.url.orEmpty(), ttsViewModel.isReading(), ebWebView.isAudioOnlyMode,
         ebWebView.hasVideo, config.touch.enableTouchTurn,
         { menuActionHandler.handle(it) }, { menuActionHandler.handleLongClick(it) },
-        onHideToolbar = if (browserState.isWebApp) ({ if (binding.appBar.isVisible) toggleFullscreen() }) else null,
     ).show(supportFragmentManager, "menu_dialog")
 
     private val siteSettingsLauncher = registerForActivityResult(
@@ -969,7 +968,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         displayConfigDelegate.onResume()
         if (config.restartChanged) { config.restartChanged = false; dialogManager.showRestartConfirmDialog() }
         statusbarViewController.refresh()
-        if (!binding.appBar.isVisible && !browserState.isWebApp) statusbarViewController.show() else statusbarViewController.hide()
+        if (!binding.appBar.isVisible) statusbarViewController.show() else statusbarViewController.hide()
         updateTitle()
         disablePendingTransitions()
         if (config.display.customFontChanged && (config.display.fontType == FontType.CUSTOM || config.display.readerFontType == FontType.CUSTOM)) {
