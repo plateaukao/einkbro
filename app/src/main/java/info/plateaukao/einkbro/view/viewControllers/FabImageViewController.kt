@@ -4,15 +4,12 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Point
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.updateLayoutParams
 import android.transition.TransitionManager
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -34,31 +31,7 @@ class FabImageViewController(
     var defaultTouchListener: OnTouchListener? = null
 
     init {
-        initialize()
-    }
-
-    fun initialize() {
-        textView.alpha = 1f
         applyFabPosition(animate = false)
-        val context = textView.context
-        textView.text = ""
-        textView.contentDescription = context.getString(R.string.fullscreen)
-        textView.background = GradientDrawable().apply {
-            setColor(Color.WHITE)
-            setStroke(1.dp(context), Color.BLACK)
-            cornerRadius = 4.dp(context).toFloat()
-        }
-        val icon = context.getDrawable(R.drawable.ic_exit_fullscreen)!!.mutate().apply { setTint(Color.BLACK) }
-        textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
-        val padding = 12.dp(context)
-        textView.setPadding(padding, padding, padding, padding)
-        textView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            width = 48.dp(context)
-            height = 48.dp(context)
-            marginStart = 8.dp(context)
-            marginEnd = 8.dp(context)
-            bottomMargin = 8.dp(context)
-        }
         ViewUnit.expandViewTouchArea(textView, 20.dp(textView.context))
         setClickActions()
         textView.setOnTouchListener(defaultTouchListener)

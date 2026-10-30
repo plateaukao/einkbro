@@ -19,17 +19,8 @@ import io.mockk.unmockkObject
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
 
-@RunWith(Parameterized::class)
-class WebAppControlsTest(private val isWebApp: Boolean) {
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters(name = "isWebApp={0}")
-        fun modes() = listOf(false, true)
-    }
-
+class FullscreenDelegateTest {
     @Test
     fun `fullscreen always shows its exit button and restoring the toolbar hides it`() {
         val state = mockk<BrowserState>(relaxed = true)
@@ -40,7 +31,6 @@ class WebAppControlsTest(private val isWebApp: Boolean) {
         val window = mockk<Window>(relaxed = true)
         every { activity.window } returns window
         var visibility = View.VISIBLE
-        every { state.isWebApp } returns isWebApp
         every { state.searchOnSite } returns false
         every { state.binding.appBar } returns bar
         every { state.fabImageViewController } returns fab

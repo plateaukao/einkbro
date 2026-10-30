@@ -13,12 +13,10 @@ class WebAppActivity : BrowserActivity() {
         browserState.isWebApp = true
     }
 
-    private var startUri: Uri = Uri.EMPTY
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val uri = intent.data
         val valid = uri?.scheme in listOf("http", "https") && !uri?.host.isNullOrBlank()
-        startUri = if (valid) uri!! else Uri.parse("about:blank")
+        val startUri = if (valid) uri!! else Uri.parse("about:blank")
         intent.data = startUri
         super.onCreate(savedInstanceState)
         if (!valid) {
