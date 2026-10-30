@@ -1,10 +1,17 @@
 package info.plateaukao.einkbro.view.viewControllers
 
 import android.view.View
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.statusbar.Statusbar
@@ -22,17 +29,29 @@ class StatusbarViewController(
 
     private var items by mutableStateOf(config.ui.statusbarItems)
     private var pageInfo by mutableStateOf("")
+    private var webAppOrigin by mutableStateOf<String?>(null)
 
     init {
         composeView.setContent {
             MyTheme {
-                Statusbar(items = items, pageInfo = pageInfo)
+                val origin = webAppOrigin
+                if (origin != null) {
+                    Text(
+                        origin,
+                        Modifier.fillMaxWidth().background(MaterialTheme.colors.background).padding(8.dp),
+                        color = MaterialTheme.colors.onBackground,
+                    )
+                } else Statusbar(items = items, pageInfo = pageInfo)
             }
         }
         applyConstraints(config.ui.statusbarPosition)
     }
 
     fun show() {
+        if (webAppOrigin != null) {
+            hide()
+            return
+        }
         if (!config.ui.statusbarEnabled) {
             hide()
             return
@@ -43,7 +62,12 @@ class StatusbarViewController(
     }
 
     fun hide() {
-        composeView.visibility = View.GONE
+        composeView.visibility = if (webAppOrigin == null) View.GONE else View.VISIBLE
+    }
+
+    fun showWebAppOrigin(origin: String?) {
+        webAppOrigin = origin
+        hide()
     }
 
     fun updatePageInfo(text: String) {

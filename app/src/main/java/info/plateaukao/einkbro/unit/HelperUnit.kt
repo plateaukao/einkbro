@@ -41,6 +41,7 @@ import java.io.File
 import androidx.compose.ui.text.AnnotatedString
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.EpubReaderActivity
+import info.plateaukao.einkbro.activity.WebAppActivity
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.EBToast
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -160,13 +161,15 @@ object HelperUnit {
     @JvmStatic
     fun createShortcut(context: Context, title: String?, url: String?, bitmap: Bitmap?) {
         val url = url ?: return
-        val uri = convertUrlToAppScheme(url)
+        val uri = Uri.parse(url)
+        if (uri.scheme !in listOf("http", "https") || uri.host.isNullOrBlank()) return
+        val label = title?.takeIf { it.isNotBlank() } ?: uri.host!!
         try {
-            val intent =
-                context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
-                    action = Intent.ACTION_VIEW
-                    data = uri
-                } ?: return
+            val intent = Intent(context, WebAppActivity::class.java).apply {
+                action = Intent.ACTION_VIEW
+                data = uri
+                putExtra(Intent.EXTRA_TITLE, label)
+            }
 
             val shortcutManager =
                 context.getSystemService(ShortcutManager::class.java) ?: return
@@ -178,8 +181,8 @@ object HelperUnit {
 
             if (shortcutManager.isRequestPinShortcutSupported) {
                 val pinShortcutInfo = ShortcutInfo.Builder(context, uri.toString())
-                    .setShortLabel(title!!)
-                    .setLongLabel(title)
+                    .setShortLabel(label)
+                    .setLongLabel(label)
                     .setIcon(icon)
                     .setIntent(intent)
                     .build()
@@ -190,16 +193,6 @@ object HelperUnit {
         } catch (e: Exception) {
             println("failed_to_add")
         }
-    }
-
-    private fun convertUrlToAppScheme(url: String): Uri {
-        val originalUri = Uri.parse(url)
-        val scheme = when (originalUri.scheme) {
-            "https" -> "einkbros"
-            "http" -> "einkbro"
-            else -> originalUri.scheme
-        }
-        return originalUri.buildUpon().scheme(scheme).build()
     }
 
     fun Uri.toNormalScheme(): Uri {

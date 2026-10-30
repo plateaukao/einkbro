@@ -17,6 +17,7 @@ import info.plateaukao.einkbro.view.viewControllers.StatusbarViewController
  * Replaces the provider/setter lambdas that were passed to each delegate individually.
  */
 class BrowserState {
+    var isWebApp: Boolean = false
     lateinit var ebWebView: EBWebView
     val isWebViewInitialized: Boolean get() = ::ebWebView.isInitialized
     lateinit var binding: MainActivityLayout

@@ -130,6 +130,22 @@ class FullscreenDelegate(
     fun toggleFullscreen() {
         if (state.searchOnSite) return
 
+        if (state.isWebApp) {
+            if (state.binding.appBar.visibility == VISIBLE) {
+                state.binding.mainSearchPanel.visibility = View.INVISIBLE
+                state.binding.inputUrl.visibility = View.INVISIBLE
+                state.binding.appBar.visibility = GONE
+                state.binding.contentSeparator.visibility = GONE
+                ViewUnit.updateSideTabBarVisibility(state.binding)
+                state.statusbarViewController.hide()
+                state.fabImageViewController.show()
+                ViewUnit.hideKeyboard(activity)
+            } else {
+                showToolbar()
+            }
+            return
+        }
+
         val binding = state.binding
         if (binding.appBar.visibility == VISIBLE) {
             if (config.ui.fabPosition != FabPosition.NotShow) {
@@ -150,7 +166,7 @@ class FullscreenDelegate(
         if (state.searchOnSite) return
 
         showStatusBar()
-        state.fabImageViewController.hide()
+        if (state.isWebApp) state.fabImageViewController.show() else state.fabImageViewController.hide()
         val binding = state.binding
         binding.mainSearchPanel.visibility = View.INVISIBLE
         binding.appBar.visibility = VISIBLE

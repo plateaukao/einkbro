@@ -767,7 +767,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     override fun showMenuDialog() = MenuDialogFragment(
         ebWebView.url.orEmpty(), ttsViewModel.isReading(), ebWebView.isAudioOnlyMode,
         ebWebView.hasVideo, config.touch.enableTouchTurn,
-        { menuActionHandler.handle(it) }, { menuActionHandler.handleLongClick(it) }
+        { menuActionHandler.handle(it) }, { menuActionHandler.handleLongClick(it) },
+        onHideToolbar = if (browserState.isWebApp) ({ if (binding.appBar.isVisible) toggleFullscreen() }) else null,
     ).show(supportFragmentManager, "menu_dialog")
 
     private val siteSettingsLauncher = registerForActivityResult(
@@ -907,6 +908,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         // Clear stale album entries so initSavedTabs() doesn't append duplicates
         albumViewModel.clearAlbums();
 
+        statusbarViewController
         dispatchIntent(intent)
         intentDispatchDelegate.shouldLoadTabState = false
 
@@ -921,8 +923,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         if (config.ui.hideStatusbar) fullscreenDelegate.hideStatusBar()
 
-        // Initialize statusbar controller; show it when toolbar is configured hidden at launch
-        statusbarViewController
+        // Show the info bar when toolbar is configured hidden at launch.
         if (config.ui.shouldHideToolbar) statusbarViewController.show()
 
         chromeSetupDelegate.handleWindowInsets()
@@ -961,7 +962,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         displayConfigDelegate.onResume()
         if (config.restartChanged) { config.restartChanged = false; dialogManager.showRestartConfirmDialog() }
         statusbarViewController.refresh()
-        if (!binding.appBar.isVisible) statusbarViewController.show() else statusbarViewController.hide()
+        if (!binding.appBar.isVisible && !browserState.isWebApp) statusbarViewController.show() else statusbarViewController.hide()
         updateTitle()
         disablePendingTransitions()
         if (config.display.customFontChanged && (config.display.fontType == FontType.CUSTOM || config.display.readerFontType == FontType.CUSTOM)) {
