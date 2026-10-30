@@ -28,7 +28,6 @@ class FabImageViewController(
     private val textView: TextView,
     private val clickAction: () -> Unit,
     private val longClickAction: () -> Unit,
-    private val isWebApp: Boolean = false,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
 
@@ -39,28 +38,26 @@ class FabImageViewController(
     }
 
     fun initialize() {
-        textView.alpha = if (isWebApp) 1f else 0.5f
+        textView.alpha = 1f
         applyFabPosition(animate = false)
-        if (isWebApp) {
-            val context = textView.context
-            textView.text = ""
-            textView.contentDescription = context.getString(R.string.fullscreen)
-            textView.background = GradientDrawable().apply {
-                setColor(Color.WHITE)
-                setStroke(1.dp(context), Color.BLACK)
-                cornerRadius = 4.dp(context).toFloat()
-            }
-            val icon = context.getDrawable(R.drawable.ic_expand_web_app)!!.mutate().apply { setTint(Color.BLACK) }
-            textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
-            val padding = 12.dp(context)
-            textView.setPadding(padding, padding, padding, padding)
-            textView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                width = 48.dp(context)
-                height = 48.dp(context)
-                marginStart = 8.dp(context)
-                marginEnd = 8.dp(context)
-                bottomMargin = 8.dp(context)
-            }
+        val context = textView.context
+        textView.text = ""
+        textView.contentDescription = context.getString(R.string.fullscreen)
+        textView.background = GradientDrawable().apply {
+            setColor(Color.WHITE)
+            setStroke(1.dp(context), Color.BLACK)
+            cornerRadius = 4.dp(context).toFloat()
+        }
+        val icon = context.getDrawable(R.drawable.ic_exit_fullscreen)!!.mutate().apply { setTint(Color.BLACK) }
+        textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
+        val padding = 12.dp(context)
+        textView.setPadding(padding, padding, padding, padding)
+        textView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            width = 48.dp(context)
+            height = 48.dp(context)
+            marginStart = 8.dp(context)
+            marginEnd = 8.dp(context)
+            bottomMargin = 8.dp(context)
         }
         ViewUnit.expandViewTouchArea(textView, 20.dp(textView.context))
         setClickActions()
@@ -158,11 +155,6 @@ class FabImageViewController(
                 textView.y = maxHeight - textView.height.toFloat()
             }
         }, 1000L)
-    }
-
-    fun updateTabCount(countString: String) {
-        if (isWebApp) return
-        textView.text = countString
     }
 
     private fun setClickActions() {

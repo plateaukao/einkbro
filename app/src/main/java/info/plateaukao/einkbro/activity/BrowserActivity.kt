@@ -775,7 +775,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ebWebView.url.orEmpty(), ttsViewModel.isReading(), ebWebView.isAudioOnlyMode,
         ebWebView.hasVideo, config.touch.enableTouchTurn,
         { menuActionHandler.handle(it) }, { menuActionHandler.handleLongClick(it) },
-        onFullscreen = if (browserState.isWebApp) ({ toggleFullscreen() }) else null,
     ).show(supportFragmentManager, "menu_dialog")
 
     private val siteSettingsLauncher = registerForActivityResult(

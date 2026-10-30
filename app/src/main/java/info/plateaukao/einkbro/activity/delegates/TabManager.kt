@@ -444,7 +444,6 @@ class TabManager(
         val superScript = browserContainer.indexOf(state.currentAlbumController) + 1
         val countString = ViewUnit.createCountString(superScript, subScript)
         state.composeToolbarViewController.updateTabCount(countString)
-        state.fabImageViewController.updateTabCount(countString)
     }
 
     fun updateAlbum(url: String?) {

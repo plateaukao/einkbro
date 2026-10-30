@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentActivity
 import info.plateaukao.einkbro.activity.BrowserState
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.preference.FabPosition
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.EBWebView
 import info.plateaukao.einkbro.view.MainActivityLayout
@@ -132,19 +131,13 @@ class FullscreenDelegate(
 
         val binding = state.binding
         if (binding.appBar.visibility == VISIBLE) {
-            if (state.isWebApp || config.ui.fabPosition != FabPosition.NotShow) {
-                state.fabImageViewController.show()
-            }
+            state.fabImageViewController.show()
             binding.mainSearchPanel.visibility = View.INVISIBLE
             binding.appBar.visibility = GONE
             binding.contentSeparator.visibility = GONE
             ViewUnit.updateSideTabBarVisibility(binding)
             hideStatusBar()
-            if (state.isWebApp) {
-                binding.inputUrl.visibility = View.INVISIBLE
-                state.statusbarViewController.hide()
-                ViewUnit.hideKeyboard(activity)
-            } else state.statusbarViewController.show()
+            state.statusbarViewController.show()
         } else {
             showToolbar()
         }
@@ -154,7 +147,7 @@ class FullscreenDelegate(
         if (state.searchOnSite) return
 
         showStatusBar()
-        if (state.isWebApp) state.fabImageViewController.show() else state.fabImageViewController.hide()
+        state.fabImageViewController.hide()
         val binding = state.binding
         binding.mainSearchPanel.visibility = View.INVISIBLE
         binding.appBar.visibility = VISIBLE

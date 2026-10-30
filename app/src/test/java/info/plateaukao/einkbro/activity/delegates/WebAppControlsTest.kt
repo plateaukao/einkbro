@@ -19,10 +19,19 @@ import io.mockk.unmockkObject
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-class WebAppControlsTest {
+@RunWith(Parameterized::class)
+class WebAppControlsTest(private val isWebApp: Boolean) {
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters(name = "isWebApp={0}")
+        fun modes() = listOf(false, true)
+    }
+
     @Test
-    fun `standalone fullscreen hides system bars and always keeps the exit button available`() {
+    fun `fullscreen always shows its exit button and restoring the toolbar hides it`() {
         val state = mockk<BrowserState>(relaxed = true)
         val config = mockk<ConfigManager>()
         val bar = mockk<FrameLayout>(relaxed = true)
@@ -31,7 +40,7 @@ class WebAppControlsTest {
         val window = mockk<Window>(relaxed = true)
         every { activity.window } returns window
         var visibility = View.VISIBLE
-        every { state.isWebApp } returns true
+        every { state.isWebApp } returns isWebApp
         every { state.searchOnSite } returns false
         every { state.binding.appBar } returns bar
         every { state.fabImageViewController } returns fab
@@ -45,8 +54,7 @@ class WebAppControlsTest {
             delegate.toggleFullscreen()
             assertEquals(View.GONE, visibility)
             verify { fab.show() }
-            verify { state.statusbarViewController.hide() }
-            verify { state.binding.inputUrl.visibility = View.INVISIBLE }
+            verify { state.statusbarViewController.show() }
             verify { config wasNot Called }
             verify { window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN) }
 
@@ -54,8 +62,9 @@ class WebAppControlsTest {
             every { config.ui.isVerticalToolbar } returns false
             delegate.toggleFullscreen()
             assertEquals(View.VISIBLE, visibility)
-            verify(exactly = 2) { fab.show() }
-            verify(exactly = 0) { fab.hide() }
+            verify(exactly = 1) { fab.show() }
+            verify(exactly = 1) { fab.hide() }
+            verify { state.statusbarViewController.hide() }
             verify { window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN) }
         } finally {
             unmockkObject(ViewUnit)

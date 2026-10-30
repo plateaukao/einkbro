@@ -125,12 +125,11 @@ class ChromeSetupDelegate(
         val controller = FabImageViewController(
             displayConfigDelegate.orientation,
             activity.findViewById(R.id.fab_imageButtonNav),
-            { if (state.isWebApp) toggleFullscreen() else fullscreenDelegate.showToolbar() },
+            { fullscreenDelegate.showToolbar() },
             longClickAction = {
                 if (config.touch.enableNavButtonGesture) gestureHandler.handle(config.touch.navButtonLongClickGesture)
                 else showFastToggleDialog()
             },
-            isWebApp = state.isWebApp,
         )
         state.fabImageViewController = controller
     }

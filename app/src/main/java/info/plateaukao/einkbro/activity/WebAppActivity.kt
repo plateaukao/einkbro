@@ -26,7 +26,7 @@ class WebAppActivity : BrowserActivity() {
             return
         }
         savedInstanceState?.getBundle("webAppState")?.let { ebWebView.restoreState(it) }
-        if (savedInstanceState?.getBoolean("webAppControls", false) != true && browserState.binding.appBar.isVisible) {
+        if (savedInstanceState?.getBoolean("webAppControls", true) == false && browserState.binding.appBar.isVisible) {
             toggleFullscreen()
         }
         @Suppress("DEPRECATION")
