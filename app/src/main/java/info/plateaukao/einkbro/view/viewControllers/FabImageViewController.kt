@@ -47,11 +47,6 @@ class FabImageViewController(
             textView.translationY = 0f
         }
 
-        if (position == FabPosition.NotShow) {
-            hide()
-            return
-        }
-
         val constraintSet = ConstraintSet().apply { clone(parent) }
         constraintSet.clear(textView.id, ConstraintSet.START)
         constraintSet.clear(textView.id, ConstraintSet.END)
@@ -63,7 +58,7 @@ class FabImageViewController(
                 constraintSet.connect(textView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
                 constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
             }
-            FabPosition.Right -> {
+            FabPosition.Right, FabPosition.NotShow -> {
                 constraintSet.connect(textView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
                 constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
             }
@@ -72,7 +67,6 @@ class FabImageViewController(
                 constraintSet.connect(textView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
                 constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
             }
-            FabPosition.NotShow -> {}
         }
 
         if (animate) TransitionManager.beginDelayedTransition(parent)
