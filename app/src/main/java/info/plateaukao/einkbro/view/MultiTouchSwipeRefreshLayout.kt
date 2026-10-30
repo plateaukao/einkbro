@@ -1,6 +1,7 @@
 package info.plateaukao.einkbro.view
 
 import android.content.Context
+import android.view.InputDevice
 import android.view.MotionEvent
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
@@ -52,6 +53,8 @@ class MultiTouchSwipeRefreshLayout(context: Context) : SwipeRefreshLayout(contex
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        // A mouse drag belongs to WebView's text selection, not pull-to-refresh.
+        if (ev.isFromSource(InputDevice.SOURCE_MOUSE)) return false
         if (multiTouchDetected) return false
         return super.onInterceptTouchEvent(ev).also { intercepted ->
             if (intercepted) hasIntercepted = true

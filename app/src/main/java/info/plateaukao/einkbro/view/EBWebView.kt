@@ -7,6 +7,7 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.SystemClock
 import android.print.PrintDocumentAdapter
+import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -190,9 +191,26 @@ open class EBWebView(
     private var ebookTouchMoved = false
     private var ebookTouchMulti = false
     internal var ebookTouchTemporarilyDisabled = false
+    private var mouseLongPressHandled = false
 
     @SuppressLint("ClickableViewAccessibility")
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        // Chromium selects with a mouse without starting Android's touch ActionMode.
+        // Keep native click/drag selection, and show our menu once the button is up.
+        if (event.isFromSource(InputDevice.SOURCE_MOUSE)) {
+            if (event.actionMasked == MotionEvent.ACTION_DOWN) mouseLongPressHandled = false
+            if (event.actionMasked == MotionEvent.ACTION_UP && mouseLongPressHandled) {
+                mouseLongPressHandled = false
+                return true
+            }
+            val handled = super.dispatchTouchEvent(event)
+            if (event.actionMasked == MotionEvent.ACTION_UP) {
+                postOnAnimation {
+                    if (!isWebViewDestroyed) (webViewCallback as? InputController)?.onMouseSelection(this)
+                }
+            }
+            return handled
+        }
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             wasAtTopOnTouchStart = scrollY == 0 && isInnerScrollAtTop
         }
@@ -273,6 +291,16 @@ open class EBWebView(
         }
 
         return super.dispatchTouchEvent(event)
+    }
+
+    override fun onGenericMotionEvent(event: MotionEvent): Boolean {
+        if (event.isFromSource(InputDevice.SOURCE_MOUSE) &&
+            event.actionMasked == MotionEvent.ACTION_BUTTON_PRESS &&
+            event.actionButton == MotionEvent.BUTTON_SECONDARY
+        ) {
+            (webViewCallback as? InputController)?.onMouseContextClick(this, event)
+        }
+        return super.onGenericMotionEvent(event)
     }
 
     private fun sendCancelEvent(upEvent: MotionEvent) {
@@ -886,6 +914,13 @@ open class EBWebView(
         get() = progress >= BrowserUnit.PROGRESS_MAX
 
     fun onLongPress(event: MotionEvent) {
+        if (event.isFromSource(InputDevice.SOURCE_MOUSE) && event.isButtonPressed(MotionEvent.BUTTON_PRIMARY)) {
+            mouseLongPressHandled = true
+            // Cancel the pending native click so releasing over a link cannot navigate.
+            sendCancelEvent(event)
+            (webViewCallback as? InputController)?.onMouseContextClick(this, event, selectText = true)
+            return
+        }
         val click = clickHandler.obtainMessage()
         clickHandler.currentMotionEvent = MotionEvent.obtain(event)
         click.target = clickHandler
@@ -1082,6 +1117,8 @@ open class EBWebView(
         jsBridge.highlightTextSelection(highlightStyle)
 
     suspend fun getSelectedText(): String = jsBridge.getSelectedText()
+
+    suspend fun isEditingText(): Boolean = jsBridge.isEditingText()
 
     fun selectSentence(point: Point) = jsBridge.selectSentence(point)
 

@@ -652,6 +652,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun runCustomTask(prompt: String) = taskMenuDelegate.runCustomTask(prompt)
 
     override fun updateSelectionRect(left: Float, top: Float, right: Float, bottom: Float) = actionModeDelegate.updateSelectionRect(left, top, right, bottom)
+
+    override fun onMouseSelection(webView: EBWebView) = actionModeDelegate.onMouseSelection(webView)
+
+    override fun onMouseContextClick(webView: EBWebView, event: MotionEvent, selectText: Boolean) =
+        contextMenuDelegate.onMouseContextClick(webView, event, selectText) {
+            actionModeDelegate.onMouseSelection(webView)
+        }
     override fun isActionModeActive(): Boolean = actionModeDelegate.isActionModeActive()
     override fun dismissActionMode() = actionModeDelegate.dismissActionMode()
 

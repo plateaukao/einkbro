@@ -161,6 +161,9 @@ interface InputController :
     fun isActionModeActive(): Boolean = false
     fun dismissActionMode() {}
 
+    fun onMouseSelection(webView: EBWebView) {}
+    fun onMouseContextClick(webView: EBWebView, event: MotionEvent, selectText: Boolean = false) {}
+
     // Audio/Video
     fun toggleAudioOnlyMode()
 }

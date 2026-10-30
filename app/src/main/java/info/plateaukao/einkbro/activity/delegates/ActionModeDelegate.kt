@@ -194,59 +194,60 @@ class ActionModeDelegate(
 
     fun onActionModeStarted(mode: ActionMode) {
         val isTextEditMode = ViewUnit.isTextEditMode(activity, mode.menu)
-
-        if (remoteConnViewModel.isSendingTextSearch && !isTextEditMode) {
-            mode.hide(1000000)
-            mode.menu.clear()
-            mode.finish()
-
-            activity.lifecycleScope.launch {
-                val keyword = getFocusedWebView().getSelectedText()
-                val keywordWithContext = getFocusedWebView().getSelectedTextWithContext()
-                val action = config.ai.gptActionList.firstOrNull { it.name == config.ai.remoteQueryActionName }
-                val constructedUrlString =
-                    if (action != null) {
-                        val actionString = json.encodeToString(serializer = ChatGPTActionInfo.serializer(), action)
-                        "action|||$keywordWithContext|||$actionString"
-                    } else {
-                        externalSearchViewModel.generateSearchUrl(keyword)
-                    }
-                remoteConnViewModel.sendTextSearch(constructedUrlString)
+        if (isTextEditMode || (config.ui.showDefaultActionMenu && !remoteConnViewModel.isSendingTextSearch)) {
+            if (!actionModeMenuViewModel.isInActionMode()) {
+                actionModeMenuViewModel.updateActionMode(mode)
             }
             return
         }
 
-        if (!config.ui.showDefaultActionMenu && !isTextEditMode && isInSplitSearchMode()) {
-            mode.hide(1000000)
-            mode.menu.clear()
-
-            activity.lifecycleScope.launch {
-                toggleSplitScreen(splitSearchViewModel.getUrl(browserState.ebWebView.getSelectedText()))
-            }
-
-            mode.finish()
-            return
-        }
-
-        if (!actionModeMenuViewModel.isInActionMode()) {
+        if (!actionModeMenuViewModel.isInActionMode() || remoteConnViewModel.isSendingTextSearch || isInSplitSearchMode()) {
             actionModeMenuViewModel.updateActionMode(mode)
+            mode.hide(1000000)
+            mode.menu.clear()
+            mode.finish()
 
-            if (!config.ui.showDefaultActionMenu && !isTextEditMode) {
-                mode.hide(1000000)
-                mode.menu.clear()
-                mode.finish()
-
-                activity.lifecycleScope.launch {
-                    actionModeMenuViewModel.updateSelectedText(HelperUnit.unescapeJava(getFocusedWebView().getSelectedText()))
-                    showActionModeView(translationViewModel) {
-                        getFocusedWebView().removeTextSelection()
-                    }
-                }
+            activity.lifecycleScope.launch {
+                val webView = getFocusedWebView()
+                showSelectionActions(webView, webView.getSelectedText())
             }
         }
+        mode.menu.clear()
+    }
 
-        if (!config.ui.showDefaultActionMenu && !isTextEditMode) {
-            mode.menu.clear()
+    fun onMouseSelection(webView: EBWebView) {
+        if (config.ui.showDefaultActionMenu && !remoteConnViewModel.isSendingTextSearch) return
+        activity.lifecycleScope.launch {
+            if (webView.isEditingText()) {
+                actionModeMenuViewModel.hide()
+                return@launch
+            }
+            val text = webView.getSelectedText()
+            if (webView !== getFocusedWebView()) return@launch
+            if (text.isBlank()) {
+                actionModeMenuViewModel.finish()
+            } else {
+                showSelectionActions(webView, text)
+            }
+        }
+    }
+
+    private suspend fun showSelectionActions(webView: EBWebView, selectedText: String) {
+        if (remoteConnViewModel.isSendingTextSearch) {
+            val keywordWithContext = webView.getSelectedTextWithContext()
+            val action = config.ai.gptActionList.firstOrNull { it.name == config.ai.remoteQueryActionName }
+            val constructedUrlString = if (action != null) {
+                val actionString = json.encodeToString(serializer = ChatGPTActionInfo.serializer(), action)
+                "action|||$keywordWithContext|||$actionString"
+            } else {
+                externalSearchViewModel.generateSearchUrl(selectedText)
+            }
+            remoteConnViewModel.sendTextSearch(constructedUrlString)
+        } else if (!config.ui.showDefaultActionMenu && isInSplitSearchMode()) {
+            toggleSplitScreen(splitSearchViewModel.getUrl(selectedText))
+        } else {
+            actionModeMenuViewModel.updateSelectedText(HelperUnit.unescapeJava(selectedText))
+            showActionModeView(translationViewModel) { getFocusedWebView().removeTextSelection() }
         }
     }
 

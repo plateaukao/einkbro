@@ -385,6 +385,9 @@ class EBWebViewClient(
                                 window._touchTarget = findTargetWithA(e.touches[0].target);
                             }
                         });
+                        window.addEventListener('mousedown', function(e){
+                            window._touchTarget = findTargetWithA(e.target);
+                        });
                     })();
             """.trimIndent(), null
             )

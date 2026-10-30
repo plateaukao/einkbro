@@ -22,6 +22,7 @@ import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType
 import info.plateaukao.einkbro.viewmodel.TtsViewModel
 import android.net.Uri
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class ContextMenuDelegate(
     private val activity: FragmentActivity,
@@ -54,38 +55,72 @@ class ContextMenuDelegate(
         if (url.isNotBlank()) {
             val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ebWebView, message)
             BrowserUnit.getWebViewLinkTitle(ebWebView) { linkTitle ->
-                val titleText = linkTitle.ifBlank { url }.toString()
-                val contextMenuDialog = ContextMenuDialogFragment(
-                    url,
-                    linkImageUrl.isNotBlank(),
-                    config.ai.imageApiKey.isNotBlank(),
-                    rawPoint,
-                    isEbookMode = config.touch.isEbookModeActive,
-                    itemClicked = {
-                        handleContextMenuItem(it, titleText, url, linkImageUrl)
-                        activeContextMenuDialog = null
-                        isInLongPressMode = false
-                    },
-                    itemLongClicked = {
-                        when (it) {
-                            ContextMenuItemType.TranslateImage -> translateAllImages(linkImageUrl)
-                            ContextMenuItemType.ShareLink -> ShareUtil.copyToClipboard(
-                                activity,
-                                BrowserUnit.stripUrlQuery(url)
-                            )
-                            else -> Unit
-                        }
-                        activeContextMenuDialog = null
-                        isInLongPressMode = false
-                    }
-                )
-                activeContextMenuDialog = contextMenuDialog
-                isInLongPressMode = true
-                contextMenuDialog.show(activity.supportFragmentManager, "contextMenu")
+                showLinkContextMenu(ebWebView, url, linkImageUrl, linkTitle.ifBlank { url }.toString(), rawPoint)
             }
         } else if (config.touch.isEbookModeActive) {
             ebWebView.clickLinkElement(longPressPoint)
         }
+    }
+
+    private val mouseContextTargetJs by lazy {
+        activity.assets.open("mouse_context_target.js").bufferedReader().use { it.readText() }
+    }
+
+    fun onMouseContextClick(webView: EBWebView, event: MotionEvent, selectText: Boolean, onTextSelected: () -> Unit) {
+        val point = Point(event.x.toInt(), event.y.toInt())
+        val rawPoint = event.toRawPoint()
+        val pageUrl = webView.url
+        // Fractions of the view map to CSS coordinates even when pinch-zoomed.
+        webView.evaluateJavascript(
+            "$mouseContextTargetJs(${event.x / webView.width}, ${event.y / webView.height}, $selectText)",
+        ) { result ->
+            if (webView.isWebViewDestroyed || webView.url != pageUrl || result == "null") return@evaluateJavascript
+            val target = runCatching { JSONObject(result) }.getOrNull() ?: return@evaluateJavascript
+            if (target.optBoolean("selected")) {
+                onTextSelected()
+                return@evaluateJavascript
+            }
+            longPressPoint = point
+            val url = target.optString("url").ifBlank { return@evaluateJavascript }
+            showLinkContextMenu(webView, url, target.optString("image"), target.optString("title").ifBlank { url }, rawPoint, trackFinger = false)
+        }
+    }
+
+    private fun showLinkContextMenu(
+        ebWebView: EBWebView,
+        url: String,
+        linkImageUrl: String,
+        titleText: String,
+        rawPoint: Point,
+        trackFinger: Boolean = true,
+    ) {
+        val contextMenuDialog = ContextMenuDialogFragment(
+            url,
+            linkImageUrl.isNotBlank(),
+            config.ai.imageApiKey.isNotBlank(),
+            rawPoint,
+            isEbookMode = config.touch.isEbookModeActive,
+            itemClicked = {
+                handleContextMenuItem(it, titleText, url, linkImageUrl, ebWebView)
+                activeContextMenuDialog = null
+                isInLongPressMode = false
+            },
+            itemLongClicked = {
+                when (it) {
+                    ContextMenuItemType.TranslateImage -> translateAllImages(linkImageUrl)
+                    ContextMenuItemType.ShareLink -> ShareUtil.copyToClipboard(
+                        activity,
+                        BrowserUnit.stripUrlQuery(url)
+                    )
+                    else -> Unit
+                }
+                activeContextMenuDialog = null
+                isInLongPressMode = false
+            }
+        )
+        activeContextMenuDialog = contextMenuDialog.takeIf { trackFinger }
+        isInLongPressMode = trackFinger
+        contextMenuDialog.show(activity.supportFragmentManager, "contextMenu")
     }
 
     private fun handleContextMenuItem(
@@ -93,8 +128,8 @@ class ContextMenuDelegate(
         title: String,
         url: String,
         imageUrl: String,
+        ebWebView: EBWebView,
     ) {
-        val ebWebView = state.ebWebView
         when (contextMenuItemType) {
             ContextMenuItemType.NewTabForeground -> addAlbum(title, url, true)
             ContextMenuItemType.NewTabBackground -> addAlbum(title, url, false)

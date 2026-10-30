@@ -63,6 +63,12 @@ class WebViewJsBridge(private val webView: WebView) {
 
     //region Text Selection
 
+    suspend fun isEditingText(): Boolean = suspendCoroutine { continuation ->
+        webView.evaluateJavascript(
+            "(function(){var e=document.activeElement;return !!e && (e.tagName==='INPUT' || e.tagName==='TEXTAREA' || e.isContentEditable);})()"
+        ) { continuation.resume(it == "true") }
+    }
+
     suspend fun getSelectedText(): String = suspendCoroutine { continuation ->
         val js = "window.getSelection().toString();"
         webView.evaluateJavascript(js) { value ->
