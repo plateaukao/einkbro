@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
@@ -246,9 +247,12 @@ class ChromeSetupDelegate(
      * On Android 15+ (targetSdk 35+) the window is forced edge-to-edge, so a
      * regular page would render under the transparent status bar and its web UI
      * would be blocked; pad the content below the bar instead (the bar area
-     * shows the window background). The start page opts out: it stays behind
-     * the transparent bar for a full-bleed background and pads its own content
-     * (assets/start_page.html).
+     * shows the window background). The start page opts out only when the
+     * WebView itself occupies the top of the screen: it stays behind the
+     * transparent bar for a full-bleed background and pads its own content
+     * (assets/start_page.html). When native chrome sits at the top edge (top
+     * or vertical toolbar, top info bar, or a full-screen overlay), the root
+     * must still pad below the status bar so those controls are not covered.
      *
      * The bottom is padded by the tappable inset: 3-button navigation is opaque
      * and steals every tap aimed at the toolbar (#628), while gesture
@@ -265,23 +269,47 @@ class ChromeSetupDelegate(
      */
     fun updateTopInsetForPage(insets: WindowInsetsCompat? = null) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return
-        val root = state.binding.root
+        val binding = state.binding
+        val root = binding.root
         val windowInsets = insets
             ?: root.rootWindowInsets?.let { WindowInsetsCompat.toWindowInsetsCompat(it, root) }
             ?: return
-        val isStartPage =
-            state.ebWebView.url?.startsWith(Constants.START_PAGE_URL) == true
-        val top =
-            if (isStartPage) 0
-            else windowInsets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+        val pageUrl = if (state.isWebViewInitialized) {
+            state.ebWebView.currentPageUrl ?: state.ebWebView.url
+        } else null
+        val isStartPage = pageUrl?.startsWith(Constants.START_PAGE_URL) == true
+        val hasTopChrome =
+            (config.ui.toolbarPosition != ToolbarPosition.Bottom && binding.appBar.visibility != android.view.View.GONE) ||
+                (binding.statusBar.isVisible && config.ui.statusbarPosition == StatusbarPosition.Top) ||
+                binding.inputUrl.isVisible ||
+                binding.layoutOverview.isVisible
+        val bleedStartPageUnderStatusBar = isStartPage && !hasTopChrome
+        val statusBarTop = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+        val top = if (bleedStartPageUnderStatusBar) 0 else statusBarTop
         val bottom =
             if (config.ui.hideStatusbar) 0
             else maxOf(
                 windowInsets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom,
                 windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom,
             )
+        val rootBg = info.plateaukao.einkbro.view.ThemedBorders.baseArgb(activity)
+        root.setBackgroundColor(rootBg)
+        val isDarkBg = androidx.core.graphics.ColorUtils.calculateLuminance(rootBg) < 0.5
+        WindowCompat.getInsetsController(activity.window, root).apply {
+            isAppearanceLightStatusBars = !isDarkBg
+            isAppearanceLightNavigationBars = !isDarkBg
+        }
         if (root.paddingTop != top || root.paddingBottom != bottom) {
             root.setPadding(0, top, 0, bottom)
+            if (isStartPage && state.isWebViewInitialized) {
+                val cssTopInset =
+                    if (bleedStartPageUnderStatusBar) (statusBarTop / root.resources.displayMetrics.density).toInt()
+                    else 0
+                state.ebWebView.evaluateJavascript(
+                    "document.documentElement.style.setProperty('--top-inset', '${cssTopInset}px')",
+                    null,
+                )
+            }
         }
     }
 

@@ -52,6 +52,7 @@ object BookmarkRenderer : KoinComponent {
         webView.settings.javaScriptEnabled = true
         // base/history url is the sentinel so the tab is saved and restored as a
         // start page (about:blank tabs are dropped from the saved album list)
+        webView.currentPageUrl = Constants.START_PAGE_URL
         webView.loadDataWithBaseURL(
             Constants.START_PAGE_URL,
             getStartPageContent(webView),
@@ -118,15 +119,25 @@ object BookmarkRenderer : KoinComponent {
 
     /**
      * Status bar height in CSS pixels. On Android 15+ (targetSdk 35+) the
-     * window is forced edge-to-edge, so the page must pad its own content out
-     * from under the status bar — while the background image keeps covering the
-     * whole screen. Zero on older versions (the decor still keeps the WebView
-     * below the bar) and while the bar is hidden (fullscreen / hide statusbar).
+     * window is forced edge-to-edge, so when the start page WebView itself sits
+     * at the top of the screen it must pad its own content out from under the
+     * status bar — while the background image keeps covering the whole screen.
+     * Zero when the root view already pads below the status bar (e.g. top or
+     * vertical toolbar), on older versions (the decor still keeps the WebView
+     * below the bar), and while the bar is hidden (fullscreen / hide statusbar).
      * Reads zero while the view is not attached yet (tab restore during
      * activity creation), so callers re-apply the value on page finish.
      */
     fun statusBarCssPx(view: android.view.View): Int {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return 0
+        if (config.ui.toolbarPosition != info.plateaukao.einkbro.preference.ToolbarPosition.Bottom &&
+            !config.ui.shouldHideToolbar
+        ) return 0
+        var p = view.parent
+        while (p is android.view.View) {
+            if (p.paddingTop > 0) return 0
+            p = p.parent
+        }
         var unwrapped: Context = view.context
         while (unwrapped !is Activity && unwrapped is ContextWrapper) {
             unwrapped = unwrapped.baseContext

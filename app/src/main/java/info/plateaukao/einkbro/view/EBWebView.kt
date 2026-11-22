@@ -619,6 +619,7 @@ open class EBWebView(
         }
 
         resetState()
+        currentPageUrl = url
 
         bookmarkManager.findFaviconBitmapBy(url)?.let {
             setAlbumCover(it)
@@ -682,6 +683,7 @@ open class EBWebView(
         applyDesktopMode(url)
 
         val finalUrl = BrowserUnit.queryWrapper(context, strippedUrl)
+        currentPageUrl = finalUrl
         pendingRequestedHost = Uri.parse(finalUrl).host
         super.loadUrl(finalUrl, requestHeaders)
     }

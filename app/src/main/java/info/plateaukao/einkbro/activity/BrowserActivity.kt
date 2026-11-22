@@ -1163,6 +1163,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 statusbarViewController.refresh()
                 if (!binding.appBar.isVisible && config.ui.statusbarEnabled) statusbarViewController.show()
                 else statusbarViewController.hide()
+                chromeSetupDelegate.updateTopInsetForPage()
             }
             UiConfig.K_TOOLBAR_ICONS_FOR_LARGE, UiConfig.K_TOOLBAR_ICONS -> composeToolbarViewController.updateIcons()
             TabConfig.K_SHOW_TAB_BAR -> {
@@ -1171,10 +1172,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 // toggling the setting has to re-run the constraints that show it and
                 // push the content down.
                 ViewUnit.updateAppbarPosition(binding)
+                chromeSetupDelegate.updateTopInsetForPage()
             }
             TabConfig.K_SIDE_TAB_BAR_ON_TOP -> {
                 composeToolbarViewController.updateIcons()
                 ViewUnit.updateAppbarPosition(binding)
+                chromeSetupDelegate.updateTopInsetForPage()
             }
             DisplayConfig.K_FONT_TYPE -> ebWebView.updateCssStyle()
             DisplayConfig.K_READER_FONT_TYPE -> ebWebView.updateCssStyle()
@@ -1199,10 +1202,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             DisplayConfig.K_UI_THEME -> {
                 UiThemeState.current.value = config.display.uiTheme
                 SplashThemer.apply(this)
+                chromeSetupDelegate.updateTopInsetForPage()
             }
             DisplayConfig.K_UI_BORDER -> UiThemeState.uiBorder.value = config.display.uiBorder
             DisplayConfig.K_UI_FILL -> UiThemeState.uiFill.value = config.display.uiFill
-            DisplayConfig.K_UI_THEME_INVERTED -> UiThemeState.inverted.value = config.display.uiThemeInverted
+            DisplayConfig.K_UI_THEME_INVERTED -> {
+                UiThemeState.inverted.value = config.display.uiThemeInverted
+                chromeSetupDelegate.updateTopInsetForPage()
+            }
             DisplayConfig.K_GRADIENT_ANGLE ->
                 UiThemeState.gradientAngle.value = config.display.gradientAngle
             DisplayConfig.K_GRADIENT_LEVEL -> UiThemeState.gradientLevel.value = config.display.gradientLevel
@@ -1210,9 +1217,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 UiThemeState.customColor.value =
                     androidx.compose.ui.graphics.Color(config.display.customThemeColor)
                 SplashThemer.apply(this)
+                chromeSetupDelegate.updateTopInsetForPage()
             }
-            UiConfig.K_TOOLBAR_TOP -> ViewUnit.updateAppbarPosition(binding)
-            UiConfig.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding) }
+            UiConfig.K_TOOLBAR_TOP -> { ViewUnit.updateAppbarPosition(binding); chromeSetupDelegate.updateTopInsetForPage() }
+            UiConfig.K_TOOLBAR_POSITION -> { composeToolbarViewController.updateIcons(); ViewUnit.updateAppbarPosition(binding); chromeSetupDelegate.updateTopInsetForPage() }
             UiConfig.K_NAV_POSITION -> fabImageViewController.applyFabPosition()
             TtsConfig.K_TTS_SPEED_VALUE -> ttsViewModel.setSpeechRate(config.tts.ttsSpeedValue / 100f)
             BrowserConfig.K_CUSTOM_USER_AGENT, BrowserConfig.K_ENABLE_CUSTOM_USER_AGENT -> { ebWebView.updateUserAgentString(); ebWebView.reload() }
