@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">لون مميز للأزرار والحدود ومربعات الحوار</string>
     <string name="setting_title_border">الحد</string>
     <string name="setting_title_fill">التعبئة</string>
+    <string name="invert_color_keep_images">إبقاء الصور بألوانها الأصلية</string>
 </resources>

@@ -650,4 +650,5 @@
     <string name="setting_summary_ui_theme">버튼, 테두리, 대화상자의 강조 색상</string>
     <string name="setting_title_border">테두리</string>
     <string name="setting_title_fill">채우기</string>
+    <string name="invert_color_keep_images">이미지 색상 유지</string>
 </resources>

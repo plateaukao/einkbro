@@ -593,4 +593,5 @@
     <string name="setting_summary_ui_theme">ボタン・枠線・ダイアログのアクセントカラー</string>
     <string name="setting_title_border">枠線</string>
     <string name="setting_title_fill">塗りつぶし</string>
+    <string name="invert_color_keep_images">画像を反転しない</string>
 </resources>

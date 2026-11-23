@@ -517,6 +517,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         is BrowserAction.ShowFontBoldnessDialog -> showFontBoldnessDialog()
         is BrowserAction.ShowReaderSettingsDialog -> displayConfigDelegate.showReaderSettingsDialog()
         is BrowserAction.InvertColors -> invertColors()
+        is BrowserAction.ShowInvertColorDialog -> displayConfigDelegate.showInvertColorDialog()
         is BrowserAction.ShowOverview -> showOverview()
         is BrowserAction.ToggleFullscreen -> toggleFullscreen()
         is BrowserAction.ToggleSplitScreen -> toggleSplitScreen(action.url)

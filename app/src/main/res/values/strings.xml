@@ -742,4 +742,5 @@
     <string name="test_connection_failed">Connection failed: %1$s</string>
     <string name="setting_title_border">Border</string>
     <string name="setting_title_fill">Fill</string>
+    <string name="invert_color_keep_images">Keep images normal</string>
 </resources>

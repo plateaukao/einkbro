@@ -588,4 +588,5 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_ui_theme">Akzentfarbe für Schaltflächen, Rahmen und Dialoge</string>
     <string name="setting_title_border">Rahmen</string>
     <string name="setting_title_fill">Füllung</string>
+    <string name="invert_color_keep_images">Bilder nicht invertieren</string>
 </resources>

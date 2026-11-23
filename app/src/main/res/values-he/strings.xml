@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">צבע הדגשה לכפתורים, מסגרות ותיבות דו־שיח</string>
     <string name="setting_title_border">מסגרת</string>
     <string name="setting_title_fill">מילוי</string>
+    <string name="invert_color_keep_images">שמור תמונות בצבעים רגילים</string>
 </resources>

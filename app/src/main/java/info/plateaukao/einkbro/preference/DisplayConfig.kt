@@ -174,6 +174,7 @@ class DisplayConfig(private val sp: SharedPreferences) {
     var enableZoomTextWrapReflow by BooleanPreference(sp, K_ENABLE_ZOOM_TEXT_WRAP_REFLOW, false)
     var zoomInCustomView by BooleanPreference(sp, "sp_zoom_in_custom_view", false)
     var readerKeepExtraContent by BooleanPreference(sp, "sp_reader_keep_extra_content", false)
+    var invertColorKeepImages by BooleanPreference(sp, K_INVERT_COLOR_KEEP_IMAGES, false)
 
     var paddingForReaderMode by IntPreference(sp, K_PADDING_FOR_READER_MODE, 10)
 
@@ -215,6 +216,7 @@ class DisplayConfig(private val sp: SharedPreferences) {
         const val K_HIGHLIGHT_STYLE = "sp_highlight_style"
         const val K_ENABLE_ZOOM = "sp_enable_zoom"
         const val K_ENABLE_ZOOM_TEXT_WRAP_REFLOW = "sp_enable_zoom_text_wrap_reflow"
+        const val K_INVERT_COLOR_KEEP_IMAGES = "sp_invert_color_keep_images"
         private const val K_PADDING_FOR_READER_MODE = "sp_padding_for_reader_mode"
         private const val K_READER_LINE_SPACING = "sp_reader_line_spacing"
         private const val K_READER_TWO_COLUMN_LANDSCAPE = "sp_reader_two_column_landscape"

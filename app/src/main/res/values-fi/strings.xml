@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">Korostusväri painikkeille, reunoille ja valintaikkunoille</string>
     <string name="setting_title_border">Reunus</string>
     <string name="setting_title_fill">Täyttö</string>
+    <string name="invert_color_keep_images">Pidä kuvat normaaleina</string>
 </resources>

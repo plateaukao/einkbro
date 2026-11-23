@@ -596,4 +596,5 @@
     <string name="setting_summary_ui_theme">Couleur d\'accentuation pour les boutons, bordures et boîtes de dialogue</string>
     <string name="setting_title_border">Bordure</string>
     <string name="setting_title_fill">Remplissage</string>
+    <string name="invert_color_keep_images">Garder les images normales</string>
 </resources>

@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">Боја акцента за дугмад, ивице и дијалоге</string>
     <string name="setting_title_border">Ивица</string>
     <string name="setting_title_fill">Испуна</string>
+    <string name="invert_color_keep_images">Задржи нормалне слике</string>
 </resources>

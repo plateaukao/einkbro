@@ -645,4 +645,5 @@
     <string name="setting_summary_ui_theme">按鈕、邊框與對話框的強調色</string>
     <string name="setting_title_border">邊框</string>
     <string name="setting_title_fill">填充</string>
+    <string name="invert_color_keep_images">保持圖片原色</string>
 </resources>

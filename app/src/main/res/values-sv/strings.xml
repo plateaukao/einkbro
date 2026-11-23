@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">Accentfärg för knappar, kanter och dialogrutor</string>
     <string name="setting_title_border">Kant</string>
     <string name="setting_title_fill">Fyllning</string>
+    <string name="invert_color_keep_images">Behåll bilder normala</string>
 </resources>

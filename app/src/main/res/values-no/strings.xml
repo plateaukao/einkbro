@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">Aksentfarge for knapper, kanter og dialoger</string>
     <string name="setting_title_border">Kant</string>
     <string name="setting_title_fill">Fyll</string>
+    <string name="invert_color_keep_images">Behold normale bilder</string>
 </resources>

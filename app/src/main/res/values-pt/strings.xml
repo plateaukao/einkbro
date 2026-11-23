@@ -586,4 +586,5 @@
     <string name="setting_summary_ui_theme">Cor de destaque para botões, bordas e diálogos</string>
     <string name="setting_title_border">Borda</string>
     <string name="setting_title_fill">Preenchimento</string>
+    <string name="invert_color_keep_images">Manter imagens normais</string>
 </resources>

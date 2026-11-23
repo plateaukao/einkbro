@@ -218,7 +218,7 @@ class WebViewReaderHelper(
     }
 
     fun updateCssStyle() {
-        val url = webView.url.orEmpty()
+        val url = webView.url?.takeIf { it.isNotEmpty() } ?: webView.currentPageUrl.orEmpty()
         val fontType = if (shouldUseReaderFont()) config.display.readerFontType else config.getFontType(url)
         val isBlackFont = config.getBlackFontStyle(url)
         val isBoldFont = config.getBoldFontStyle(url)
@@ -244,7 +244,7 @@ class WebViewReaderHelper(
                 (if (isBoldFont)
                     WebViewJsBridge.BOLD_FONT_CSS.replace("value", "$boldness") else "") +
                 (if (isEpubReaderMode) loadAssetFile("readerview.css") else "") +
-                einkImageFilterCss() +
+                einkImageFilterCss(url) +
                 config.getCustomCss(url).orEmpty()
         // Always update, even when blank: an empty blob clears the slot, which
         // is how reverting to system default font (or turning styles off)
@@ -253,19 +253,38 @@ class WebViewReaderHelper(
     }
 
     /**
-     * FAST e-ink image mode: adjust images with a render-time CSS filter
-     * instead of re-encoding them at the network layer (see EinkImageMode).
-     * Roughly matches the DEEP pipeline's tone/saturation lift.
+     * FAST e-ink image mode and/or counter-inversion for images when page color
+     * inversion is active with [DisplayConfig.invertColorKeepImages] enabled.
+     * In FAST mode, tone/saturation lift runs before `invert(1)` so adjustments
+     * happen in normal color space before Android's layer inversion flips it back.
      */
-    private fun einkImageFilterCss(): String {
-        if (config.display.einkImageMode != EinkImageMode.FAST) return ""
-        val strength = config.display.einkImageAdjustment.strength
-        if (strength <= 0) return ""
-        val t = strength / 100.0
-        val brightness = String.format(Locale.ROOT, "%.3f", 1.0 + 0.15 * t)
-        val contrast = String.format(Locale.ROOT, "%.3f", 1.0 + 0.2 * t)
-        val saturate = String.format(Locale.ROOT, "%.3f", 1.0 + 0.8 * t)
-        return "img { filter: brightness($brightness) contrast($contrast) saturate($saturate) !important; }"
+    private fun einkImageFilterCss(url: String): String {
+        val keepImagesNormal = config.hasInvertedColor(url) && config.display.invertColorKeepImages
+        val fastStrength = if (config.display.einkImageMode == EinkImageMode.FAST) {
+            config.display.einkImageAdjustment.strength
+        } else {
+            0
+        }
+        if (!keepImagesNormal && fastStrength <= 0) return ""
+
+        val fastFilter = if (fastStrength > 0) {
+            val t = fastStrength / 100.0
+            val brightness = String.format(Locale.ROOT, "%.3f", 1.0 + 0.15 * t)
+            val contrast = String.format(Locale.ROOT, "%.3f", 1.0 + 0.2 * t)
+            val saturate = String.format(Locale.ROOT, "%.3f", 1.0 + 0.8 * t)
+            "brightness($brightness) contrast($contrast) saturate($saturate)"
+        } else {
+            ""
+        }
+
+        return when {
+            keepImagesNormal && fastFilter.isNotEmpty() ->
+                "img { filter: $fastFilter invert(1) !important; } video { filter: invert(1) !important; }"
+            keepImagesNormal ->
+                "img, video { filter: invert(1) !important; }"
+            else ->
+                "img { filter: $fastFilter !important; }"
+        }
     }
 
     private fun getCustomFontCss(): String {

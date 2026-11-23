@@ -591,4 +591,5 @@
     <string name="setting_summary_ui_theme">Barva zvýraznění pro tlačítka, okraje a dialogy</string>
     <string name="setting_title_border">Okraj</string>
     <string name="setting_title_fill">Výplň</string>
+    <string name="invert_color_keep_images">Ponechat obrázky normální</string>
 </resources>

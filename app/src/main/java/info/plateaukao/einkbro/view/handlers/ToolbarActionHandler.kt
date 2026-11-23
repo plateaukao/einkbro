@@ -25,6 +25,7 @@ class ToolbarActionHandler(
     fun handleLongClick(toolbarAction: ToolbarAction) = when (toolbarAction) {
         ToolbarAction.Back -> dispatch(BrowserAction.OpenHistoryPage(6))
         ToolbarAction.BoldFont -> dispatch(BrowserAction.ShowFontBoldnessDialog)
+        ToolbarAction.InvertColor -> dispatch(BrowserAction.ShowInvertColorDialog)
         ToolbarAction.Bookmark -> dispatch(BrowserAction.SaveBookmark())
         ToolbarAction.Font -> dispatch(BrowserAction.ToggleReaderMode)
         ToolbarAction.NewTab -> IntentUnit.launchNewBrowser(activity, config.favoriteUrl)

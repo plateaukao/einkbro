@@ -596,4 +596,5 @@
     <string name="setting_summary_ui_theme">Aksentkleur vir knoppies, rande en dialoë</string>
     <string name="setting_title_border">Rand</string>
     <string name="setting_title_fill">Vul</string>
+    <string name="invert_color_keep_images">Hou prente normaal</string>
 </resources>

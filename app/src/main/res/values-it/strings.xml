@@ -587,4 +587,5 @@
     <string name="setting_summary_ui_theme">Colore di accento per pulsanti, bordi e finestre di dialogo</string>
     <string name="setting_title_border">Bordo</string>
     <string name="setting_title_fill">Riempimento</string>
+    <string name="invert_color_keep_images">Mantieni immagini normali</string>
 </resources>

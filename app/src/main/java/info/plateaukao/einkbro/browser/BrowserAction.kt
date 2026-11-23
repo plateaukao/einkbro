@@ -39,6 +39,7 @@ sealed class BrowserAction {
     object ShowFontBoldnessDialog : BrowserAction()
     object ShowReaderSettingsDialog : BrowserAction()
     object InvertColors : BrowserAction()
+    object ShowInvertColorDialog : BrowserAction()
 
     // View state
     object ShowOverview : BrowserAction()

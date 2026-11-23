@@ -586,4 +586,5 @@
     <string name="setting_summary_ui_theme">Color d\'accent per a botons, vores i diàlegs</string>
     <string name="setting_title_border">Vora</string>
     <string name="setting_title_fill">Farciment</string>
+    <string name="invert_color_keep_images">Mantenir les imatges normals</string>
 </resources>

@@ -586,4 +586,5 @@
     <string name="setting_summary_ui_theme">Акцентний колір для кнопок, рамок і діалогів</string>
     <string name="setting_title_border">Рамка</string>
     <string name="setting_title_fill">Заливка</string>
+    <string name="invert_color_keep_images">Не інвертувати зображення</string>
 </resources>

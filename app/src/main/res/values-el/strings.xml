@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">Χρώμα έμφασης για κουμπιά, περιγράμματα και διαλόγους</string>
     <string name="setting_title_border">Περίγραμμα</string>
     <string name="setting_title_fill">Γέμισμα</string>
+    <string name="invert_color_keep_images">Διατήρηση κανονικών εικόνων</string>
 </resources>

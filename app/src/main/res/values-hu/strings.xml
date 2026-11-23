@@ -764,4 +764,5 @@
     <string name="setting_summary_ui_theme">Kiemelőszín a gombokhoz, keretekhez és párbeszédablakokhoz</string>
     <string name="setting_title_border">Keret</string>
     <string name="setting_title_fill">Kitöltés</string>
+    <string name="invert_color_keep_images">Képek eredeti színének megtartása</string>
 </resources>

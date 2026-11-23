@@ -648,4 +648,5 @@
     <string name="setting_summary_ui_theme">Warna aksen untuk tombol, garis tepi, dan dialog</string>
     <string name="setting_title_border">Tepi</string>
     <string name="setting_title_fill">Isian</string>
+    <string name="invert_color_keep_images">Biarkan gambar tetap normal</string>
 </resources>

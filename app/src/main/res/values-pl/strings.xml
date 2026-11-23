@@ -587,4 +587,5 @@
     <string name="setting_summary_ui_theme">Kolor akcentu dla przycisków, obramowań i okien dialogowych</string>
     <string name="setting_title_border">Obramowanie</string>
     <string name="setting_title_fill">Wypełnienie</string>
+    <string name="invert_color_keep_images">Zachowaj normalne obrazy</string>
 </resources>

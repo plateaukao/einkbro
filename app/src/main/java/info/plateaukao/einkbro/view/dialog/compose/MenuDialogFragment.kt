@@ -466,7 +466,7 @@ fun MenuItemForType(
         }
         MenuItemType.InvertColor -> {
             val invertRes = if (hasInvertedColor) Icons.Outlined.InvertColorsOff else Icons.Outlined.InvertColors
-            HideableMenuItem(type, R.string.menu_invert_color, invertRes)
+            HideableMenuItem(type, R.string.menu_invert_color, invertRes, supportsLongClick = true)
         }
         MenuItemType.WhiteBknd -> {
             val whiteRes = if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background

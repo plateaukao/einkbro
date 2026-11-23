@@ -595,4 +595,5 @@
     <string name="setting_summary_ui_theme">Düğmeler, kenarlıklar ve iletişim kutuları için vurgu rengi</string>
     <string name="setting_title_border">Kenarlık</string>
     <string name="setting_title_fill">Dolgu</string>
+    <string name="invert_color_keep_images">Görselleri normal tut</string>
 </resources>

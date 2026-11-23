@@ -99,4 +99,12 @@ class DisplayConfigTest {
         config.fontBoldness = 500
         assertEquals(500, config.fontBoldness)
     }
+
+    @Test
+    fun `invertColorKeepImages defaults to false and round trips`() {
+        assertFalse(config.invertColorKeepImages)
+        config.invertColorKeepImages = true
+        assertEquals(true, config.invertColorKeepImages)
+        assertEquals(true, sp.store[DisplayConfig.K_INVERT_COLOR_KEEP_IMAGES])
+    }
 }

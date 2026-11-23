@@ -236,6 +236,7 @@ class EBWebViewClient(
         // layout already uses the right fonts; the onPageFinished call remains
         // as the idempotent re-assert (web-font @imports applied only after
         // layout used to force a full second layout and repaint).
+        url?.let { info.plateaukao.einkbro.unit.ViewUnit.invertColor(ebWebView, config.hasInvertedColor(it)) }
         ebWebView.updateCssStyle()
 
         // userscripts are page-scoped; reset the per-page menu registry only when the

@@ -11,6 +11,7 @@ import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.dialog.compose.FontBoldnessDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontBrowserDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.FontDialogFragment
+import info.plateaukao.einkbro.view.dialog.compose.InvertColorDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderFontDialogFragment
 import info.plateaukao.einkbro.view.dialog.compose.ReaderSettingsDialogFragment
 import java.util.Locale
@@ -117,6 +118,20 @@ class DisplayConfigDelegate(
     fun invertColors() {
         val hasInvertedColor = config.toggleInvertedColor(state.ebWebView.url.orEmpty())
         ViewUnit.invertColor(state.ebWebView, hasInvertedColor)
+        state.ebWebView.updateCssStyle()
+    }
+
+    fun showInvertColorDialog() {
+        InvertColorDialogFragment {
+            val url = state.ebWebView.url.orEmpty()
+            val hasInvertedColor = if (!config.hasInvertedColor(url)) {
+                config.toggleInvertedColor(url)
+            } else {
+                true
+            }
+            ViewUnit.invertColor(state.ebWebView, hasInvertedColor)
+            state.ebWebView.updateCssStyle()
+        }.show(activity.supportFragmentManager, "InvertColorDialog")
     }
 
     fun openCustomFontPicker() {

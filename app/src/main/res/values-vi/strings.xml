@@ -596,4 +596,5 @@
     <string name="setting_summary_ui_theme">Màu nhấn cho nút, viền và hộp thoại</string>
     <string name="setting_title_border">Viền</string>
     <string name="setting_title_fill">Tô màu</string>
+    <string name="invert_color_keep_images">Giữ nguyên màu hình ảnh</string>
 </resources>

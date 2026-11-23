@@ -596,4 +596,5 @@
     <string name="setting_summary_ui_theme">Culoare de accent pentru butoane, margini și dialoguri</string>
     <string name="setting_title_border">Margine</string>
     <string name="setting_title_fill">Umplere</string>
+    <string name="invert_color_keep_images">Păstrează imaginile normale</string>
 </resources>

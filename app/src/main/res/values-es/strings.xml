@@ -598,4 +598,5 @@
     <string name="setting_summary_ui_theme">Color de acento para botones, bordes y diálogos</string>
     <string name="setting_title_border">Borde</string>
     <string name="setting_title_fill">Relleno</string>
+    <string name="invert_color_keep_images">Mantener imágenes normales</string>
 </resources>
