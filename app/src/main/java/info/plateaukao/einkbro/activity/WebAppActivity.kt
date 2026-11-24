@@ -13,12 +13,10 @@ class WebAppActivity : BrowserActivity() {
         browserState.isWebApp = true
     }
 
-    private var startUri: Uri = Uri.EMPTY
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val uri = intent.data
         val valid = uri?.scheme in listOf("http", "https") && !uri?.host.isNullOrBlank()
-        startUri = if (valid) uri!! else Uri.parse("about:blank")
+        val startUri = if (valid) uri!! else Uri.parse("about:blank")
         intent.data = startUri
         super.onCreate(savedInstanceState)
         if (!valid) {
@@ -26,7 +24,7 @@ class WebAppActivity : BrowserActivity() {
             return
         }
         savedInstanceState?.getBundle("webAppState")?.let { ebWebView.restoreState(it) }
-        if (savedInstanceState?.getBoolean("webAppControls", false) != true && browserState.binding.appBar.isVisible) {
+        if (savedInstanceState?.getBoolean("webAppControls", true) == false && browserState.binding.appBar.isVisible) {
             toggleFullscreen()
         }
         @Suppress("DEPRECATION")

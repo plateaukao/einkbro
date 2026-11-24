@@ -107,7 +107,6 @@ class MenuDialogFragment(
     private val isTouchPaginationEnabled: Boolean = false,
     private val itemClicked: (MenuItemType) -> Unit,
     private val itemLongClicked: (MenuItemType) -> Unit,
-    private val onHideToolbar: (() -> Unit)? = null,
 ) : ComposeDialogFragment() {
 
     @Composable
@@ -133,7 +132,6 @@ class MenuDialogFragment(
                 onClicked = { dialog?.dismiss(); itemClicked(it) },
                 onLongClicked = this::runItemLongClickAndDismiss,
                 menuItemOrder = menuItemOrder,
-                onHideToolbar = onHideToolbar?.let { action -> { dialog?.dismiss(); action() } },
             )
         }
     }
@@ -507,7 +505,6 @@ fun MenuItems(
     onClicked: (MenuItemType) -> Unit,
     onLongClicked: (MenuItemType) -> Unit,
     menuItemOrder: List<String> = emptyList(),
-    onHideToolbar: (() -> Unit)? = null,
 ) {
     val hiddenItems = LocalMenuHideConfig.current.hiddenItems
     val hideMode = LocalMenuHideConfig.current.hideMode
@@ -576,15 +573,6 @@ fun MenuItems(
                     }
                 }
                 renderedAnySection = true
-            }
-            if (onHideToolbar != null) {
-                HorizontalSeparator()
-                MenuItem(
-                    titleResId = R.string.setting_title_hideToolbar,
-                    iconResId = R.drawable.ic_toolbar,
-                    isLargeType = true,
-                    onClicked = onHideToolbar,
-                )
             }
         }
     }

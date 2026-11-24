@@ -4,15 +4,12 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Point
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.updateLayoutParams
 import android.transition.TransitionManager
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
@@ -28,40 +25,13 @@ class FabImageViewController(
     private val textView: TextView,
     private val clickAction: () -> Unit,
     private val longClickAction: () -> Unit,
-    private val isWebApp: Boolean = false,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
 
     var defaultTouchListener: OnTouchListener? = null
 
     init {
-        initialize()
-    }
-
-    fun initialize() {
-        textView.alpha = if (isWebApp) 1f else 0.5f
         applyFabPosition(animate = false)
-        if (isWebApp) {
-            val context = textView.context
-            textView.text = ""
-            textView.contentDescription = context.getString(R.string.setting_title_toolbar)
-            textView.background = GradientDrawable().apply {
-                setColor(Color.WHITE)
-                setStroke(1.dp(context), Color.BLACK)
-                cornerRadius = 4.dp(context).toFloat()
-            }
-            val icon = context.getDrawable(R.drawable.ic_toolbar)!!.mutate().apply { setTint(Color.BLACK) }
-            textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
-            val padding = 12.dp(context)
-            textView.setPadding(padding, padding, padding, padding)
-            textView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                width = 48.dp(context)
-                height = 48.dp(context)
-                marginStart = 8.dp(context)
-                marginEnd = 8.dp(context)
-                bottomMargin = 8.dp(context)
-            }
-        }
         ViewUnit.expandViewTouchArea(textView, 20.dp(textView.context))
         setClickActions()
         textView.setOnTouchListener(defaultTouchListener)
@@ -77,11 +47,6 @@ class FabImageViewController(
             textView.translationY = 0f
         }
 
-        if (position == FabPosition.NotShow) {
-            hide()
-            return
-        }
-
         val constraintSet = ConstraintSet().apply { clone(parent) }
         constraintSet.clear(textView.id, ConstraintSet.START)
         constraintSet.clear(textView.id, ConstraintSet.END)
@@ -93,7 +58,7 @@ class FabImageViewController(
                 constraintSet.connect(textView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
                 constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
             }
-            FabPosition.Right -> {
+            FabPosition.Right, FabPosition.NotShow -> {
                 constraintSet.connect(textView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
                 constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
             }
@@ -102,7 +67,6 @@ class FabImageViewController(
                 constraintSet.connect(textView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
                 constraintSet.connect(textView.id, ConstraintSet.BOTTOM, R.id.swipe_refresh_layout, ConstraintSet.BOTTOM)
             }
-            FabPosition.NotShow -> {}
         }
 
         if (animate) TransitionManager.beginDelayedTransition(parent)
@@ -158,11 +122,6 @@ class FabImageViewController(
                 textView.y = maxHeight - textView.height.toFloat()
             }
         }, 1000L)
-    }
-
-    fun updateTabCount(countString: String) {
-        if (isWebApp) return
-        textView.text = countString
     }
 
     private fun setClickActions() {

@@ -48,11 +48,7 @@ class StatusbarViewController(
     }
 
     fun show() {
-        if (webAppOrigin != null) {
-            hide()
-            return
-        }
-        if (!config.ui.statusbarEnabled) {
+        if (webAppOrigin != null || !config.ui.statusbarEnabled) {
             hide()
             return
         }
